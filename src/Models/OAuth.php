@@ -35,6 +35,11 @@ class OAuth extends BaseModel
     public $timestamps = true;
 
     /** @var string[] */
+    protected $casts = [
+        'user_id' => 'integer',
+    ];
+
+    /** @var string[] */
     protected $dates = [
         'expires_at',
     ];

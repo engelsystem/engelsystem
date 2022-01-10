@@ -1,0 +1,37 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('user.edit.shirt') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ block('title') }}</h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <form method="post">
+            {{ csrf() }}
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ f.select('shirt_size', config('tshirt_sizes'), __('user.shirt_size'), userdata.personalData.shirt_size) }}
+                </div>
+                <div class="col-md-6">
+                    {{ f.switch('arrived', __('user.arrived'), userdata.state.arrived, {'disabled': not has_permission_to('admin_arrive')}) }}
+
+                    {% if userdata.state.force_active %}
+                        {{ f.switch('force_active', __('user.force_active'), true, {'disabled': true}) }}
+                    {% endif %}
+
+                    {{ f.switch('active', __('user.active'), userdata.state.active) }}
+
+                    {{ f.switch('got_shirt', __('user.got_shirt'), userdata.state.got_shirt) }}
+                </div>
+                <div class="col-md-12">
+                    {{ f.submit(__('form.save')) }}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

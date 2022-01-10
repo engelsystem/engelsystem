@@ -6,6 +6,7 @@ namespace Engelsystem\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int         $id
@@ -20,6 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Faq extends BaseModel
 {
+    use HasFactory;
+
     /** @var bool Enable timestamps */
     public $timestamps = true;
 

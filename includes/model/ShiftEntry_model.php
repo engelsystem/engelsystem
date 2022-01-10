@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 

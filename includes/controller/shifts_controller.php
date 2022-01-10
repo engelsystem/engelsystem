@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ScheduleShift;
@@ -86,6 +87,7 @@ function shift_edit_controller()
 
     $shifttype_id = $shift['shifttype_id'];
     $title = $shift['title'];
+    $description = $shift['description'];
     $rid = $shift['RID'];
     $start = $shift['start'];
     $end = $shift['end'];
@@ -93,6 +95,7 @@ function shift_edit_controller()
     if ($request->hasPostData('submit')) {
         // Name/Bezeichnung der Schicht, darf leer sein
         $title = strip_request_item('title');
+        $description = strip_request_item_nl('description');
 
         // Auswahl der sichtbaren Locations für die Schichten
         if (
@@ -152,6 +155,7 @@ function shift_edit_controller()
         if ($valid) {
             $shift['shifttype_id'] = $shifttype_id;
             $shift['title'] = $title;
+            $shift['description'] = $description;
             $shift['RID'] = $rid;
             $shift['start'] = $start;
             $shift['end'] = $end;
@@ -171,6 +175,7 @@ function shift_edit_controller()
                 . '\' from ' . date('Y-m-d H:i', $start)
                 . ' to ' . date('Y-m-d H:i', $end)
                 . ' with angel types ' . join(', ', $needed_angel_types_info)
+                . ' and description ' . $description
             );
             success(__('Shift updated.'));
 
@@ -199,6 +204,8 @@ function shift_edit_controller()
                 form_select('rid', __('Room:'), $rooms, $rid),
                 form_text('start', __('Start:'), date('Y-m-d H:i', $start)),
                 form_text('end', __('End:'), date('Y-m-d H:i', $end)),
+                form_textarea('description', __('Additional description'), $description),
+                form_info('', __('This description is for single shifts, otherwise please use the description in shift type.')),
                 '<h2>' . __('Needed angels') . '</h2>',
                 $angel_types_spinner,
                 form_submit('submit', __('Save'))
@@ -375,6 +382,10 @@ function shifts_json_export_controller()
     }
 
     $shifts = load_ical_shifts();
+    foreach ($shifts as $row => $shift) {
+        $shifts[$row]['start_date'] = Carbon::createFromTimestamp($shift['start'])->toRfc3339String();
+        $shifts[$row]['end_date'] = Carbon::createFromTimestamp($shift['end'])->toRfc3339String();
+    }
 
     header('Content-Type: application/json; charset=utf-8');
     raw_output(json_encode($shifts));

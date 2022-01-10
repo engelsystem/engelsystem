@@ -2,30 +2,20 @@
 
 namespace Engelsystem\Test\Unit\Controllers;
 
-use Engelsystem\Config\Config;
 use Engelsystem\Controllers\NewsController;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\ValidationException;
-use Engelsystem\Http\Request;
-use Engelsystem\Http\Response;
-use Engelsystem\Http\UrlGenerator;
-use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\Test\TestLogger;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class NewsControllerTest extends TestCase
+class NewsControllerTest extends ControllerTest
 {
     use HasDatabase;
 
@@ -74,15 +64,6 @@ class NewsControllerTest extends TestCase
             'user_id'    => 1,
         ],
     ];
-
-    /** @var TestLogger */
-    protected $log;
-
-    /** @var Response|MockObject */
-    protected $response;
-
-    /** @var Request */
-    protected $request;
 
     /**
      * @covers \Engelsystem\Controllers\NewsController::__construct
@@ -225,8 +206,75 @@ class NewsControllerTest extends TestCase
         $this->log->hasInfoThatContains('Created news comment');
 
         /** @var NewsComment $comment */
-        $comment = NewsComment::whereNewsId(1)->first();
+        $comment = NewsComment::whereNewsId(1)->get()[2];
         $this->assertEquals('Foo bar!', $comment->text);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\NewsController::deleteComment
+     */
+    public function testDeleteCommentInvalidRequest()
+    {
+        /** @var NewsController $controller */
+        $controller = $this->app->get(NewsController::class);
+        $controller->setValidator($this->app->get(Validator::class));
+
+        $this->expectException(ValidationException::class);
+        $controller->deleteComment($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\NewsController::deleteComment
+     */
+    public function testDeleteCommentNotFound()
+    {
+        $this->request = $this->request->withAttribute('id', 42)->withParsedBody(['delete' => '1']);
+
+        /** @var NewsController $controller */
+        $controller = $this->app->get(NewsController::class);
+        $controller->setValidator($this->app->get(Validator::class));
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->deleteComment($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\NewsController::deleteComment
+     */
+    public function testDeleteCommentNotAllowed()
+    {
+        $this->request = $this->request->withAttribute('id', 2)->withParsedBody(['delete' => '1']);
+
+        $this->addUser(1);
+        $this->addUser(2);
+
+        /** @var NewsController $controller */
+        $controller = $this->app->get(NewsController::class);
+        $controller->setValidator($this->app->get(Validator::class));
+
+        $this->expectException(HttpForbidden::class);
+        $controller->deleteComment($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\NewsController::deleteComment
+     */
+    public function testDeleteComment()
+    {
+        $this->request = $this->request->withAttribute('id', 1)->withParsedBody(['delete' => '1']);
+        $this->setExpects($this->response, 'redirectTo', ['http://localhost/news/1'], $this->response);
+
+        $this->addUser(1);
+
+        /** @var NewsController $controller */
+        $controller = $this->app->get(NewsController::class);
+        $controller->setValidator($this->app->get(Validator::class));
+
+        $controller->deleteComment($this->request);
+
+        $this->assertCount(1, NewsComment::all());
+        $this->assertTrue($this->log->hasInfoThatContains('Deleted comment'));
+        $this->assertHasNotification('news.comment-delete.success');
     }
 
     /**
@@ -235,49 +283,31 @@ class NewsControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initDatabase();
 
-        $this->request = new Request();
-        $this->app->instance('request', $this->request);
-        $this->app->instance(Request::class, $this->request);
-        $this->app->instance(ServerRequestInterface::class, $this->request);
-
-        $this->response = $this->createMock(Response::class);
-        $this->app->instance(Response::class, $this->response);
-
-        $this->app->instance(Config::class, new Config(['display_news' => 2]));
-
-        $this->log = new TestLogger();
-        $this->app->instance(LoggerInterface::class, $this->log);
-
-        $this->app->instance('session', new Session(new MockArraySessionStorage()));
+        $this->config->set(['display_news' => 2]);
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
 
-        $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
-
-        $this->app->instance('config', new Config());
-
         foreach ($this->data as $news) {
             (new News($news))->save();
+        }
+
+        foreach ([1, 2] as $i) {
+            NewsComment::create([
+                'news_id' => 1,
+                'text'    => 'test comment ' . $i,
+                'user_id' => $i,
+            ]);
         }
     }
 
     /**
      * Creates a new user
      */
-    protected function addUser()
+    protected function addUser(int $id = 42)
     {
-        $user = new User([
-            'name'          => 'foo',
-            'password'      => '',
-            'email'         => '',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $user->forceFill(['id' => 42]);
-        $user->save();
+        $user = User::factory()->create(['id' => $id]);
 
         $this->auth->expects($this->any())
             ->method('user')

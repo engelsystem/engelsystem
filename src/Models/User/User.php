@@ -11,6 +11,7 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -26,6 +27,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon                         $updated_at
  *
  * @property-read QueryBuilder|Contact      $contact
+ * @property-read QueryBuilder|License      $license
  * @property-read QueryBuilder|PersonalData $personalData
  * @property-read QueryBuilder|Settings     $settings
  * @property-read QueryBuilder|State        $state
@@ -57,6 +59,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class User extends BaseModel
 {
+    use HasFactory;
+
     /** @var bool enable timestamps */
     public $timestamps = true;
 
@@ -87,6 +91,16 @@ class User extends BaseModel
     {
         return $this
             ->hasOne(Contact::class)
+            ->withDefault();
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function license()
+    {
+        return $this
+            ->hasOne(License::class)
             ->withDefault();
     }
 

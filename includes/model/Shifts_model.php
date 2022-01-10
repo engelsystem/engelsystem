@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftsFilter;
@@ -535,6 +535,7 @@ function Shift_update($shift)
         `end` = ?,
         `RID` = ?,
         `title` = ?,
+        `description` = ?,
         `URL` = ?,
         `edited_by_user_id` = ?,
         `edited_at_timestamp` = ?
@@ -546,6 +547,7 @@ function Shift_update($shift)
             $shift['end'],
             $shift['RID'],
             $shift['title'],
+            $shift['description'],
             $shift['URL'],
             $user->id,
             time(),
@@ -569,12 +571,13 @@ function Shift_create($shift)
             `end`,
             `RID`,
             `title`,
+            `description`,
             `URL`,
             `created_by_user_id`,
             `edited_at_timestamp`,
             `created_at_timestamp`
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $shift['shifttype_id'],
@@ -582,6 +585,7 @@ function Shift_create($shift)
             $shift['end'],
             $shift['RID'],
             $shift['title'],
+            $shift['description'],
             $shift['URL'],
             auth()->user()->id,
             time(),
@@ -615,7 +619,8 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
             `ShiftEntry`.`Comment`,
             ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
             `Shifts`.*,
-            @@session.time_zone AS timezone
+            @@session.time_zone AS timezone,
+            ? AS event_timezone
         FROM `ShiftEntry`
         JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
@@ -624,7 +629,8 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
         ORDER BY `start`
         ',
         [
-            $userId
+            config('timezone'),
+            $userId,
         ]
     );
 }

@@ -24,7 +24,7 @@ function user_unread_messages()
             ->count();
 
         if ($new_messages > 0) {
-            return ' <span class="badge danger">' . $new_messages . '</span>';
+            return ' <span class="badge bg-danger">' . $new_messages . '</span>';
         }
     }
     return '';
@@ -75,7 +75,7 @@ function user_messages()
             $receiver_user_source = $message->receiver;
 
             $messages_table_entry = [
-                'new'       => !$message->read ? '<span class="glyphicon glyphicon-envelope"></span>' : '',
+                'new'       => !$message->read ? icon('envelope') : '',
                 'timestamp' => $message->created_at->format(__('Y-m-d H:i')),
                 'from'      => User_Nick_render($sender_user_source),
                 'to'        => User_Nick_render($receiver_user_source),
@@ -87,14 +87,14 @@ function user_messages()
                     $messages_table_entry['actions'] = button(
                         page_link_to('user_messages', ['action' => 'read', 'id' => $message->id]),
                         __('mark as read'),
-                        'btn-xs'
+                        'btn-sm'
                     );
                 }
             } else {
                 $messages_table_entry['actions'] = button(
                     page_link_to('user_messages', ['action' => 'delete', 'id' => $message->id]),
                     __('delete message'),
-                    'btn-xs'
+                    'btn-sm'
                 );
             }
             $messages_table[] = $messages_table_entry;

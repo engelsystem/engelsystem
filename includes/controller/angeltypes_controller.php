@@ -182,7 +182,6 @@ function angeltype_controller()
 
     $angeltype = load_angeltype();
     $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
-    $user_driver_license = UserDriverLicense($user->id);
     $members = Users_by_angeltype($angeltype);
 
     $days = angeltype_controller_shiftsFilterDays($angeltype);
@@ -209,7 +208,7 @@ function angeltype_controller()
             auth()->can('admin_user_angeltypes') || $isSupporter,
             auth()->can('admin_angel_types'),
             $isSupporter,
-            $user_driver_license,
+            $user->license,
             $user,
             $shiftsFilterRenderer,
             $shiftCalendarRenderer,
@@ -254,7 +253,7 @@ function angeltype_controller_shiftsFilter($angeltype, $days)
         [$angeltype['id']]
     );
     $selected_day = date('Y-m-d');
-    if (!empty($days)) {
+    if (!empty($days) && !in_array($selected_day, $days)) {
         $selected_day = $days[0];
     }
     if ($request->has('shifts_filter_day')) {
@@ -286,7 +285,7 @@ function angeltypes_list_controller()
             button(
                 page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
                 __('view'),
-                'btn-xs'
+                'btn-sm'
             )
         ];
 
@@ -294,12 +293,12 @@ function angeltypes_list_controller()
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype['id']]),
                 __('edit'),
-                'btn-xs'
+                'btn-sm'
             );
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype['id']]),
                 __('delete'),
-                'btn-xs'
+                'btn-sm'
             );
         }
 
@@ -310,18 +309,18 @@ function angeltypes_list_controller()
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype['user_angeltype_id']]
                 ),
                 __('leave'),
-                'btn-xs'
+                'btn-sm'
             );
         } else {
             $actions[] = button(
                 page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
                 __('join'),
-                'btn-xs'
+                'btn-sm'
             );
         }
 
-        $angeltype['restricted'] = $angeltype['restricted'] ? glyph('book') : '';
-        $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : glyph('share');
+        $angeltype['restricted'] = $angeltype['restricted'] ? icon('book') : '';
+        $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : icon('pencil-square');
 
         $angeltype['name'] = '<a href="'
             . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']])

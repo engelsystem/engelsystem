@@ -5,11 +5,13 @@ namespace Engelsystem\Mail;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Mail\Transport\LogTransport;
-use InvalidArgumentException;
-use Swift_Mailer as SwiftMailer;
-use Swift_SendmailTransport as SendmailTransport;
-use Swift_SmtpTransport as SmtpTransport;
-use Swift_Transport as Transport;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Transport\SendmailTransport;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mailer\Mailer as SymfonyMailer;
 
 class MailerServiceProvider extends ServiceProvider
 {
@@ -20,13 +22,14 @@ class MailerServiceProvider extends ServiceProvider
         $mailConfig = $config->get('email');
 
         $transport = $this->getTransport($mailConfig['driver'], $mailConfig);
-        $this->app->instance(Transport::class, $transport);
+        $this->app->instance(TransportInterface::class, $transport);
         $this->app->instance('mailer.transport', $transport);
 
-        /** @var SwiftMailer $swiftMailer */
-        $swiftMailer = $this->app->make(SwiftMailer::class);
-        $this->app->instance(SwiftMailer::class, $swiftMailer);
-        $this->app->instance('mailer.swift', $swiftMailer);
+        /** @var SymfonyMailer $symfonyMailer */
+        $symfonyMailer = $this->app->make(SymfonyMailer::class);
+        $this->app->instance(SymfonyMailer::class, $symfonyMailer);
+        $this->app->instance(MailerInterface::class, $symfonyMailer);
+        $this->app->instance('mailer.symfony', $symfonyMailer);
 
         /** @var EngelsystemMailer $mailer */
         $mailer = $this->app->make(EngelsystemMailer::class);
@@ -44,7 +47,7 @@ class MailerServiceProvider extends ServiceProvider
     /**
      * @param string $transport
      * @param array  $config
-     * @return Transport
+     * @return TransportInterface
      */
     protected function getTransport($transport, $config)
     {
@@ -53,12 +56,12 @@ class MailerServiceProvider extends ServiceProvider
                 return $this->app->make(LogTransport::class);
             case 'mail':
             case 'sendmail':
-                return $this->app->make(SendmailTransport::class, ['command' => $config['sendmail']]);
+                return $this->app->make(SendmailTransport::class, ['command' => $config['sendmail'] ?? null]);
             case 'smtp':
                 return $this->getSmtpTransport($config);
+            default:
+                return Transport::fromDsn($transport ?? '');
         }
-
-        throw new InvalidArgumentException(sprintf('Mail driver "%s" not found', $transport));
     }
 
     /**
@@ -67,18 +70,19 @@ class MailerServiceProvider extends ServiceProvider
      */
     protected function getSmtpTransport(array $config)
     {
-        /** @var SmtpTransport $transport */
-        $transport = $this->app->make(SmtpTransport::class, [
-            'host'       => $config['host'],
-            'port'       => $config['port'],
-            'encryption' => $config['encryption'],
+        /** @var EsmtpTransport $transport */
+        $transport = $this->app->make(EsmtpTransport::class, [
+            'host' => $config['host'] ?? 'localhost',
+            'port' => $config['port'] ?? 0,
+            'tls'  => $config['tls'] ?? null,
+            'logger' => null,
         ]);
 
-        if ($config['username']) {
+        if (!empty($config['username'])) {
             $transport->setUsername($config['username']);
         }
 
-        if ($config['password']) {
+        if (!empty($config['password'])) {
             $transport->setPassword($config['password']);
         }
 

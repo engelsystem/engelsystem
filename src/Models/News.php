@@ -7,8 +7,10 @@ namespace Engelsystem\Models;
 use Carbon\Carbon;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Str;
 
 /**
  * @property int                           $id
@@ -20,7 +22,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon|null                   $updated_at
  *
  * @property-read Collection|NewsComment[] $comments
- * @property-read int|null $comments_count
+ * @property-read int|null                 $comments_count
  *
  * @method static QueryBuilder|LogEntry[] whereId($value)
  * @method static QueryBuilder|LogEntry[] whereTitle($value)
@@ -32,6 +34,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class News extends BaseModel
 {
+    use HasFactory;
     use UsesUserModel;
 
     /** @var bool Enable timestamps */
@@ -39,8 +42,15 @@ class News extends BaseModel
 
     /** @var array */
     protected $casts = [
+        'user_id'    => 'integer',
         'is_meeting' => 'boolean',
-        'is_pinned' => 'boolean',
+        'is_pinned'  => 'boolean',
+    ];
+
+    /** @var array Default attributes */
+    protected $attributes = [
+        'is_meeting' => false,
+        'is_pinned'  => false,
     ];
 
     /** @var array */
@@ -59,5 +69,21 @@ class News extends BaseModel
     {
         return $this->hasMany(NewsComment::class)
             ->orderBy('created_at');
+    }
+
+    /**
+     * @param bool $showMore
+     * @return string
+     */
+    public function text(bool $showMore = true): string
+    {
+        if ($showMore || !Str::contains($this->text, 'more')) {
+            // Remove more tag
+            return preg_replace('/(.*)\[\s*more\s*\](.*)/is', '$1$2', $this->text);
+        }
+
+        // Only show text before more tag
+        $text = preg_replace('/(.*)(\s*\[\s*more\s*\].*)/is', '$1', $this->text);
+        return rtrim($text);
     }
 }

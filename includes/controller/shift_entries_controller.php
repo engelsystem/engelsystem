@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @return array
  */
-function shift_entries_controller()
+function shift_entries_controller(): array
 {
     $user = auth()->user();
     if (!$user) {
@@ -28,6 +28,8 @@ function shift_entries_controller()
         case 'delete':
             return shift_entry_delete_controller();
     }
+
+    return ['', ''];
 }
 
 /**
@@ -35,7 +37,7 @@ function shift_entries_controller()
  *
  * @return array
  */
-function shift_entry_create_controller()
+function shift_entry_create_controller(): array
 {
     $user = auth()->user();
     $request = request();
@@ -74,7 +76,7 @@ function shift_entry_create_controller()
  * @param array $angeltype
  * @return array
  */
-function shift_entry_create_controller_admin($shift, $angeltype)
+function shift_entry_create_controller_admin($shift, $angeltype): array
 {
     $signup_user = auth()->user();
     $request = request();
@@ -138,7 +140,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
  * @param array $angeltype
  * @return array
  */
-function shift_entry_create_controller_supporter($shift, $angeltype)
+function shift_entry_create_controller_supporter($shift, $angeltype): array
 {
     $request = request();
     $signup_user = auth()->user();
@@ -210,7 +212,7 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
  * @param array $angeltype
  * @return array
  */
-function shift_entry_create_controller_user($shift, $angeltype)
+function shift_entry_create_controller_user($shift, $angeltype): array
 {
     $request = request();
 

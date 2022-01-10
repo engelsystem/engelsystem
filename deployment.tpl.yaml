@@ -127,6 +127,8 @@ spec:
               value: engelsystem
             - name: MYSQL_PASSWORD
               value: engelsystem
+            - name: SETUP_ADMIN_PASSWORD
+              value: '<CI_SETUP_ADMIN_PASSWORD>'
       containers:
         - image: <CI_IMAGE>
           name: engelsystem-fpm
@@ -179,7 +181,7 @@ spec:
     tier: application
 
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: engelsystem-ingress
@@ -202,6 +204,9 @@ spec:
       http:
         paths:
           - path: '<CI_INGRESS_PATH>/?(.*)'
+            pathType: Prefix
             backend:
-              serviceName: engelsystem
-              servicePort: 80
+              service:
+                name: engelsystem
+                port:
+                  number: 80

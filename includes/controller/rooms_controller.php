@@ -13,7 +13,7 @@ use Engelsystem\ShiftsFilterRenderer;
  *
  * @return array
  */
-function room_controller()
+function room_controller(): array
 {
     if (!auth()->can('view_rooms')) {
         throw_redirect(page_link_to());
@@ -37,7 +37,7 @@ function room_controller()
         AngelType_ids()
     );
     $selected_day = date('Y-m-d');
-    if (!empty($days)) {
+    if (!empty($days) && !in_array($selected_day, $days)) {
         $selected_day = $days[0];
     }
     if ($request->has('shifts_filter_day')) {
@@ -62,7 +62,7 @@ function room_controller()
  *
  * @return array
  */
-function rooms_controller()
+function rooms_controller(): array
 {
     $request = request();
     $action = $request->input('action');
@@ -77,6 +77,8 @@ function rooms_controller()
         default:
             throw_redirect(page_link_to('admin_rooms'));
     }
+
+    return ['', ''];
 }
 
 /**

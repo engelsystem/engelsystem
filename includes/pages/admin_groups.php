@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 
 /**
  * @return string
@@ -42,7 +42,7 @@ function admin_groups()
                     page_link_to('admin_groups',
                         ['action' => 'edit', 'id' => $group['UID']]),
                     __('edit'),
-                    'btn-xs'
+                    'btn-sm'
                 )
             ];
         }

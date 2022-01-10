@@ -22,17 +22,17 @@ function admin_rooms()
     foreach ($rooms_source as $room) {
         $rooms[] = [
             'name'      => Room_name_render($room),
-            'map_url'   => glyph_bool($room->map_url),
+            'map_url'   => icon_bool($room->map_url),
             'actions'   => table_buttons([
                 button(
                     page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room->id]),
                     __('edit'),
-                    'btn-xs'
+                    'btn-sm'
                 ),
                 button(
                     page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room->id]),
                     __('delete'),
-                    'btn-xs'
+                    'btn-sm'
                 )
             ])
         ];

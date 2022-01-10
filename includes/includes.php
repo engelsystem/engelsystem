@@ -21,7 +21,6 @@ $includeFiles = [
     __DIR__ . '/../includes/model/ShiftTypes_model.php',
     __DIR__ . '/../includes/model/Stats.php',
     __DIR__ . '/../includes/model/UserAngelTypes_model.php',
-    __DIR__ . '/../includes/model/UserDriverLicenses_model.php',
     __DIR__ . '/../includes/model/UserGroups_model.php',
     __DIR__ . '/../includes/model/User_model.php',
     __DIR__ . '/../includes/model/UserWorkLog_model.php',
@@ -57,8 +56,10 @@ $includeFiles = [
     __DIR__ . '/../includes/controller/user_worklog_controller.php',
 
     __DIR__ . '/../includes/helper/graph_helper.php',
+    __DIR__ . '/../includes/helper/legacy_helper.php',
     __DIR__ . '/../includes/helper/message_helper.php',
     __DIR__ . '/../includes/helper/email_helper.php',
+    __DIR__ . '/../includes/helper/oauth_helper.php',
 
     __DIR__ . '/../includes/mailer/shifts_mailer.php',
     __DIR__ . '/../includes/mailer/users_mailer.php',

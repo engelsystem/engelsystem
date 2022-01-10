@@ -128,8 +128,8 @@ class TranslatorTest extends ServiceProviderTest
         // Fallback translation
         $this->assertEquals('Lorem test2???', $translator->translate('foo.batz', ['test2']));
 
-        // Successful translation
-        $this->assertEquals('Lorem test3!', $translator->translatePlural('foo.barf', 'foo.bar2', 3, ['test3']));
+        // Successful translation, keys in replaces should be ignored
+        $this->assertEquals('Lorem test3!', $translator->translatePlural('foo.barf', 'foo.bar2', 3, ['x' => 'test3']));
     }
 
     /**

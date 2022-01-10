@@ -165,18 +165,15 @@ class AuthenticatorTest extends ServiceProviderTest
         $session = $this->createMock(Session::class);
         $userRepository = new User();
 
-        (new User([
+        User::factory([
             'name'     => 'lorem',
             'password' => password_hash('testing', PASSWORD_DEFAULT),
             'email'    => 'lorem@foo.bar',
-            'api_key'  => '',
-        ]))->save();
-        (new User([
+        ])->create();
+        User::factory([
             'name'     => 'ipsum',
             'password' => '',
-            'email'    => 'ipsum@foo.bar',
-            'api_key'  => '',
-        ]))->save();
+        ])->create();
 
         $auth = new Authenticator($request, $session, $userRepository);
         $this->assertNull($auth->authenticate('not-existing', 'foo'));
@@ -192,13 +189,11 @@ class AuthenticatorTest extends ServiceProviderTest
     {
         $this->initDatabase();
         $password = password_hash('testing', PASSWORD_ARGON2I);
-        $user = new User([
+        /** @var User $user */
+        $user = User::factory([
             'name'     => 'lorem',
             'password' => $password,
-            'email'    => 'lorem@foo.bar',
-            'api_key'  => '',
-        ]);
-        $user->save();
+        ])->create();
 
         /** @var Authenticator|MockObject $auth */
         $auth = $this->getMockBuilder(Authenticator::class)
@@ -221,12 +216,11 @@ class AuthenticatorTest extends ServiceProviderTest
     public function testSetPassword()
     {
         $this->initDatabase();
-        $user = new User([
+        /** @var User $user */
+        $user = User::factory([
             'name'     => 'ipsum',
             'password' => '',
-            'email'    => 'ipsum@foo.bar',
-            'api_key'  => '',
-        ]);
+        ])->create();
         $user->save();
 
         $auth = $this->getAuthenticator();

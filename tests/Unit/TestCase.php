@@ -3,6 +3,8 @@
 namespace Engelsystem\Test\Unit;
 
 use Engelsystem\Application;
+use Faker\Factory as FakerFactory;
+use Faker\Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
@@ -25,6 +27,10 @@ abstract class TestCase extends PHPUnitTestCase
             $times = $this->once();
         }
 
+        if (is_int($times)) {
+            $times = $this->exactly($times);
+        }
+
         $invocation = $object->expects($times)
             ->method($method);
 
@@ -45,5 +51,9 @@ abstract class TestCase extends PHPUnitTestCase
     protected function setUp(): void
     {
         $this->app = new Application(__DIR__ . '/../../');
+
+        $faker = FakerFactory::create();
+        $faker->addProvider(new FakerProvider($faker));
+        $this->app->instance(Generator::class, $faker);
     }
 }

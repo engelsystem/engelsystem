@@ -200,22 +200,10 @@ class RequestTest extends TestCase
 
         $new = $request->withUri($uri);
         $this->assertNotEquals($request, $new);
-        $this->assertEquals('http://foo.bar/bla?foo=bar', (string)$new->getUri());
+        $this->assertEquals('http://foo.bar/bla?foo=bar', $new->getUri());
 
         $new = $request->withUri($uri, true);
-        $this->assertEquals('http://lor.em/bla?foo=bar', (string)$new->getUri());
-    }
-
-    /**
-     * @covers \Engelsystem\Http\Request::getUri
-     */
-    public function testGetUri()
-    {
-        $request = Request::create('http://lor.em/test?bla=foo');
-
-        $uri = $request->getUri();
-        $this->assertInstanceOf(UriInterface::class, $uri);
-        $this->assertEquals('http://lor.em/test?bla=foo', (string)$uri);
+        $this->assertEquals('http://lor.em/bla?foo=bar', $new->getUri());
     }
 
     /**

@@ -46,10 +46,10 @@ global.formatTime = (date) => {
 global.setInput = (from, to) => {
     var fromDay = $('#start_day'), fromTime = $('#start_time'), toDay = $('#end_day'), toTime = $('#end_time');
 
-    fromDay.val(formatDay(from));
+    fromDay.val(formatDay(from)).trigger('change');
     fromTime.val(formatTime(from));
 
-    toDay.val(formatDay(to));
+    toDay.val(formatDay(to)).trigger('change');
     toTime.val(formatTime(to));
 };
 
@@ -98,8 +98,16 @@ $(function () {
  */
 $(function () {
     $([
-        {'select': $('.input-group.date'), 'format': 'YYYY-MM-DD'},
-        {'select': $('.input-group.datetime'), 'format': 'YYYY-MM-DD HH:mm'},
+        {
+            'select': $('.input-group.date'),
+            'format': 'YYYY-MM-DD',
+            'extraFormats': []
+        },
+        {
+            'select': $('.input-group.datetime'),
+            'format': 'YYYY-MM-DD HH:mm',
+            'extraFormats': ['YYYY-MM-DDTHH:mm']
+        },
     ]).each(function (_, element) {
         element.select.each(function () {
             var elem = $(this);
@@ -108,24 +116,39 @@ $(function () {
                 maxDate: '',
                 locale: $('html').attr('lang'),
                 format: element.format,
-                widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
+                extraFormats: element.extraFormats,
+                widgetPositioning: {horizontal: 'auto', vertical: 'bottom'},
+                icons: {
+                    time: 'bi bi-clock',
+                    date: 'bi bi-calendar',
+                    up: 'bi bi-arrow-up',
+                    down: 'bi bi-arrow-down',
+                    previous: 'bi bi-arrow-left',
+                    next: 'bi bi-arrow-right'
+                }
             };
+
             $.extend(opts, elem.data());
+
             if (opts.minDate.length === 0) {
                 delete opts.minDate;
             }
+
             if (opts.maxDate.length === 0) {
                 delete opts.maxDate;
             }
+
             elem.children('input').attr('type', 'text');
-            elem.children().on('click', function (ev) {
+            elem.datetimepicker(opts);
+
+            // close on click anywhere outside
+            $(document).on('click', () => {
+                elem.data('datetimepicker').hide()
+            })
+
+            elem.children().on('click', (ev) => {
                 ev.stopImmediatePropagation();
-                if (typeof elem.data('DateTimePicker') === 'undefined') {
-                    elem.datetimepicker(opts);
-                    elem.data('DateTimePicker').show();
-                } else {
-                    elem.data('DateTimePicker').toggle();
-                }
+                elem.data('datetimepicker').toggle();
             });
         });
     });
@@ -140,19 +163,29 @@ $(function () {
         var opts = {
             locale: $('html').attr('lang'),
             format: 'HH:mm',
-            widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
+            widgetPositioning: {horizontal: 'auto', vertical: 'bottom'},
+            icons: {
+                up: 'bi bi-arrow-up',
+                down: 'bi bi-arrow-down'
+            }
         };
         $.extend(opts, elem.data());
         elem.children('input').attr('type', 'text');
         elem.children('input').on('click', function (ev) {
             ev.stopImmediatePropagation();
-            if (typeof elem.data('DateTimePicker') === 'undefined') {
+            if (typeof elem.data('datetimepicker') === 'undefined') {
                 elem.datetimepicker(opts);
-                elem.data('DateTimePicker').show();
+                elem.data('datetimepicker').show();
+
+                // close on click anywhere outside
+                $(document).on('click', () => {
+                    elem.data('datetimepicker').hide()
+                })
             } else {
-                elem.data('DateTimePicker').toggle();
+                elem.data('datetimepicker').toggle();
             }
         });
+
     });
 });
 
@@ -177,24 +210,24 @@ $(function () {
     });
 });
 
-/**
- * Enable select2
- */
 $(function () {
-    $.fn.select2.defaults.set('theme', 'bootstrap');
-
-    $('select').select2();
-});
+    $('select').select2({
+        theme: 'bootstrap-5',
+    });
+})
 
 /**
  * Show oauth buttons on welcome title click
  */
 $(function () {
     $('#welcome-title').on('click', function () {
-        $('.form-group.btn-group .btn.hidden').removeClass('hidden');
+        $('.btn-group.btn-group .btn.d-none').removeClass('d-none');
+    });
+    $('#settings-title').on('click', function () {
+        $('.user-settings .nav-item').removeClass('d-none');
     });
     $('#oauth-settings-title').on('click', function () {
-        $('table tr.hidden').removeClass('hidden');
+        $('table tr.d-none').removeClass('d-none');
     });
 });
 
@@ -209,7 +242,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    filter.classList.remove('in');
+    filter.classList.remove('show');
 });
 $(() => {
     if (typeof (localStorage) === 'undefined') {

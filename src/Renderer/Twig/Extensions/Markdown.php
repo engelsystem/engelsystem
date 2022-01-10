@@ -40,10 +40,6 @@ class Markdown extends TwigExtension
      */
     public function render(string $text, bool $escapeHtml = true): string
     {
-        if ($escapeHtml) {
-            $text = htmlspecialchars($text);
-        }
-
-        return $this->renderer->text($text);
+        return $this->renderer->setSafeMode($escapeHtml)->text($text);
     }
 }

@@ -12,6 +12,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
@@ -121,6 +122,22 @@ class StatsTest extends TestCase
             ['theme' => 1, 'count' => 2],
             ['theme' => 4, 'count' => 1],
         ], $themes->toArray());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::licenses
+     */
+    public function testLicenses()
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(1, $stats->licenses('has_car'));
+        $this->assertEquals(1, $stats->licenses('forklift'));
+        $this->assertEquals(2, $stats->licenses('car'));
+        $this->assertEquals(0, $stats->licenses('3.5t'));
+        $this->assertEquals(0, $stats->licenses('7.5t'));
+        $this->assertEquals(1, $stats->licenses('12t'));
     }
 
     /**
@@ -260,6 +277,7 @@ class StatsTest extends TestCase
         $this->assertEquals(0, $stats->email('not-available-option'));
         $this->assertEquals(2, $stats->email('system'));
         $this->assertEquals(3, $stats->email('humans'));
+        $this->assertEquals(1, $stats->email('goody'));
         $this->assertEquals(1, $stats->email('news'));
     }
 
@@ -390,14 +408,20 @@ class StatsTest extends TestCase
     {
         $this->addUser();
         $this->addUser([], ['shirt_size' => 'L'], ['email_human' => true, 'email_shiftinfo' => true]);
-        $this->addUser(['arrived' => 1], [], ['email_human' => true, 'email_news' => true]);
+        $this->addUser(['arrived' => 1], [], ['email_human' => true, 'email_goody' => true, 'email_news' => true]);
         $this->addUser(['arrived' => 1], ['pronoun' => 'unicorn'], ['language' => 'lo_RM', 'email_shiftinfo' => true]);
         $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL'], ['language' => 'lo_RM']);
-        $this->addUser(['arrived' => 1, 'got_voucher' => 9, 'force_active' => true], [], ['theme' => 1]);
+        $this->addUser(
+            ['arrived' => 1, 'got_voucher' => 9, 'force_active' => true],
+            [],
+            ['theme' => 1],
+            ['drive_car' => true, 'drive_12t' => true]
+        );
         $this->addUser(
             ['arrived' => 1, 'got_voucher' => 3],
             ['pronoun' => 'per'],
-            ['theme' => 1, 'email_human' => true]
+            ['theme' => 1, 'email_human' => true],
+            ['has_car' => true, 'drive_forklift' => true, 'drive_car' => true]
         );
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true, 'force_active' => true]);
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L'], ['theme' => 4]);
@@ -410,7 +434,7 @@ class StatsTest extends TestCase
      *
      * @return User
      */
-    protected function addUser(array $state = [], $personalData = [], $settings = []): User
+    protected function addUser(array $state = [], $personalData = [], $settings = [], $license = []): User
     {
         $name = 'user_' . Str::random(5);
 
@@ -439,6 +463,11 @@ class StatsTest extends TestCase
             'email_shiftinfo' => false,
         ], $settings));
         $settings->user()
+            ->associate($user)
+            ->save();
+
+        $license = new License($license);
+        $license->user()
             ->associate($user)
             ->save();
 

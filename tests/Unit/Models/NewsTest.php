@@ -25,13 +25,7 @@ class NewsTest extends ModelTest
     {
         parent::setUp();
 
-        $this->user = (new User())->create([
-            'name'     => 'lorem',
-            'password' => '',
-            'email'    => 'foo@bar.batz',
-            'api_key'  => '',
-        ]);
-
+        $this->user = User::factory()->create();
         $this->newsData = [
             'title'   => 'test title',
             'text'    => 'test text',
@@ -68,6 +62,26 @@ class NewsTest extends ModelTest
         $comments = $news->comments;
         $this->assertCount(1, $comments);
         $this->assertEquals($comment->toArray(), $news->comments->first()->toArray());
+    }
+
+    /**
+     * Tests that text more tags work
+     *
+     * @covers \Engelsystem\Models\News::text
+     */
+    public function testTextMore(): void
+    {
+        $news = new News($this->newsData);
+
+        $news->text = "Foo\n\n\nBar";
+        $this->assertEquals("Foo\n\n\nBar", $news->text);
+        $this->assertEquals("Foo\n\n\nBar", $news->text());
+        $this->assertEquals("Foo\n\n\nBar", $news->text(false));
+
+        $news->text = "Foo\n[more]\nBar";
+        $this->assertEquals("Foo\n[more]\nBar", $news->text);
+        $this->assertEquals("Foo\n\nBar", $news->text());
+        $this->assertEquals('Foo', $news->text(false));
     }
 
     /**

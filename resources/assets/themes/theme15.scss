@@ -1,0 +1,223 @@
+// rc3 2021
+
+//== Colors
+@import "dark";
+
+$gray-darker:            #000;
+$gray-dark:              lighten($gray-darker, 15%);
+$gray:                   lighten($gray-dark, 15%);
+$gray-light:             lighten($gray, 15%);
+$gray-lighter:           lighten($gray-light, 15%);
+$black:                  #000;
+
+$brand-primary: #000;
+$primary:       $brand-primary;
+$secondary:     rgba(0, 0, 0, 0.5);
+$dark:          #000;
+$brand-success: #070;
+$success:       $brand-success;
+$brand-info:    $gray;
+$info:          $brand-info;
+$brand-warning: #dd0;
+$warning:       $brand-warning;
+$brand-danger:  #700;
+$danger:        $brand-danger;
+
+$table-bg: rgba(0, 0, 0, 0.5);
+$body-color: #fff;
+
+//== Scaffolding
+
+$body-bg:               #000;
+$text-color:            #fff;
+$link-color:            #fff;
+
+//== Typography
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('theme15/SpaceMono-BoldItalic.woff2') format('woff2'),
+      url('theme15/SpaceMono-BoldItalic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('theme15/SpaceMono-Regular.woff2') format('woff2'),
+      url('theme15/SpaceMono-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('theme15/SpaceMono-Bold.woff2') format('woff2'),
+      url('theme15/SpaceMono-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+    font-family: 'Changa';
+    src: url('theme15/Changa-SemiBold.woff2') format('woff2'),
+        url('theme15/Changa-SemiBold.woff') format('woff'),;
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+$font-family-sans-serif: 'Space Mono', Helvetica Neue, Helvetica, Arial, sans-serif;
+$font-family-serif:      'Changa', Georgia, "Times New Roman", Times, serif;
+$headings-font-family:   $font-family-serif;
+
+//== Buttons
+
+.btn {
+  border: 1px solid #fff !important;
+}
+
+.btn.btn-secondary {
+  background-color: rgba(0,0,0,0.5);
+}
+
+//== Forms
+
+$input-bg:                       $gray-darker;
+$input-bg-disabled:              darken($gray-dark, 10%);
+
+$input-group-addon-bg:           $gray-lighter;
+
+//== Pagination
+
+$pagination-color:                     #fff;
+
+$pagination-hover-color:               #fff;
+
+$pagination-active-color:              #fff;
+
+//== Form states and alerts
+
+$state-success-text:             #fff;
+
+$state-info-text:                #fff;
+
+$state-warning-text:             #fff;
+
+$state-danger-text:              #fff;
+
+//== Labels
+
+$label-link-hover-color:      $gray-dark;
+
+//== Badges
+
+$badge-color:                 $black;
+
+.badge.bg-primary {
+  color: #fff;
+}
+
+.badge.bg-secondary {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  color: #fff;
+}
+
+//== Type
+
+$headings-small-color:        $gray-light;
+
+// Bootswatch
+// -----------------------------------------------------
+@import "cyborg_variables.scss";
+@import "cyborg_styles.scss";
+// Forms ======================================================================
+
+.input-group-addon {
+  background-color: #000;
+}
+
+// Containers =================================================================
+
+// datetimepicker
+
+.bootstrap-datetimepicker-widget {
+
+  .timepicker-hour,
+  .timepicker-minute,
+  [data-action='selectHour'],
+  [data-action='selectMinute'],
+  [data-action='incrementHours'],
+  [data-action='decrementHours'],
+  [data-action='incrementMinutes'],
+  [data-action='decrementMinutes'] {
+
+    &:hover {
+      color: $gray;
+    }
+  }
+}
+
+// code tag
+code {
+  background-color: $input-bg-disabled;
+  color: $input-color;
+}
+
+// Specials ===================================================================
+body {
+  background: #000 url('theme15/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+h1, h2, h3, h4, h5 {
+  text-transform: lowercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-link {
+  text-transform: lowercase;
+}
+
+.navbar {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+}
+
+.footer a{
+  color: #fff;
+}
+
+.shift-calendar .lane.time {
+  width: 80px;
+}
+
+@include media-breakpoint-down(lg) {
+  .navbar {
+    background-color: #000 !important;
+  }
+}
+
+.user-info {
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 1em 0;
+  padding: 1em 0;
+}
+
+.stats {
+  background-color:rgba(0, 0, 0, 0.5);
+  margin: 1em 0;
+  padding: 1em 0;
+  height: 200px;
+}
+
+.card a {
+  text-decoration: underline;
+}
+
+.card .btn {
+  text-decoration: none;
+}

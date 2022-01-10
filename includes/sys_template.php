@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /**
  * Render a stat for dashborad (big number with label).
  * If no style given, style is danger if number > 0, and success if number == 0.
@@ -18,7 +20,7 @@ function stats($label, $number, $style = null)
             $style = 'success';
         }
     }
-    return div('stats stats-' . $style, [
+    return div('col stats stats-' . $style, [
         $label,
         div('number', [
             $number
@@ -38,28 +40,34 @@ function tabs($tabs, $selected = 0)
     $tab_header = [];
     $tab_content = [];
     foreach ($tabs as $header => $content) {
-        $class = '';
+        $active = false;
         $id = $header;
         $href = '#' . $id;
         if (count($tab_header) == $selected) {
-            $class = 'active';
+            $active = true;
         }
         if (is_array($content)) {
             $href = $content['href'];
             $content = null;
             $id = null;
         }
-        $tab_header[] = '<li role="presentation" class="' . $class . '">
-                <a href="'. $href . '"'
-            . ($id ? ' aria-controls="' . $id . '" role="tab" data-toggle="tab"' : '')
+        $tab_header[] = '<li role="presentation" class="nav-item">
+                <a href="'. $href . '" class="nav-link' . ($active ? ' active' : '') . '" role="tab"'
+            . ($id ? ' id="' . $id . '-tab"' : '')
+            . ($id ? ' aria-controls="' . $id . '" data-bs-target="#' . $id . '" data-bs-toggle="tab" role="tab"' : '')
+            . ($id && $active ? ' aria-selected="true"' : ' aria-selected="false"')
             . '>'
             . $header . '</a></li>';
-        $tab_content[] = $content ? '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $id . '">'
+        $tab_content[] = $content
+            ? '<div role="tabpanel" class="tab-pane' . ($active ? ' show active' : '') . '" id="' . $id . '"'
+            . ' aria-labelledby="' . $id . '-tab"'
+            . '>'
             . $content
-            . '</div>' : '';
+            . '</div>'
+            : '';
     }
     return div('', [
-        '<ul class="nav nav-tabs" role="tablist">' . join($tab_header) . '</ul>',
+        '<ul class="nav nav-tabs mb-3" role="tablist">' . join($tab_header) . '</ul>',
         '<div class="tab-content">' . join($tab_content) . '</div>'
     ]);
 }
@@ -82,9 +90,9 @@ function mute($text)
  * @param string $class   default, primary, info, success, warning, danger
  * @return string
  */
-function label($content, $class = 'default')
+function badge($content, $class = 'default')
 {
-    return '<span class="label label-' . $class . '">' . $content . '</span>';
+    return '<span class="badge rounded-pill bg-' . $class . '">' . $content . '</span>';
 }
 
 /**
@@ -108,14 +116,16 @@ function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '
 }
 
 /**
- * Render glyphicon
+ * Render bootstrap icon
  *
- * @param string $glyph_name
+ * @param string $icon_name
+ * @param string $class
+ *
  * @return string
  */
-function glyph($glyph_name)
+function icon(string $icon_name, string $class = ''): string
 {
-    return ' <span class="glyphicon glyphicon-' . $glyph_name . '"></span> ';
+    return ' <span class="bi bi-' . $icon_name . ($class ? ' ' . $class : '') . '"></span> ';
 }
 
 /**
@@ -124,10 +134,10 @@ function glyph($glyph_name)
  * @param boolean $boolean
  * @return string
  */
-function glyph_bool($boolean)
+function icon_bool($boolean)
 {
     return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">'
-        . glyph($boolean ? 'ok' : 'remove')
+        . icon($boolean ? 'check-lg' : 'x-lg')
         . '</span>';
 }
 
@@ -169,76 +179,97 @@ function toolbar_pills($items)
  * Render a link for a toolbar.
  *
  * @param string $href
- * @param string $glyphicon
+ * @param string $icon
  * @param string $label
- * @param bool   $selected
+ * @param bool   $active
  * @return string
  */
-function toolbar_item_link($href, $glyphicon, $label, $selected = false)
+function toolbar_item_link($href, $icon, $label, $active = false)
 {
-    return '<li class="' . ($selected ? 'active' : '') . '">'
-        . '<a href="' . $href . '">'
-        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
+    return '<li class="nav-item">'
+        . '<a class="nav-link ' . ($active ? 'active' : '') . '" href="' . $href . '">'
+        . ($icon != '' ? '<span class="bi bi-' . $icon . '"></span> ' : '')
         . $label
         . '</a>'
         . '</li>';
 }
 
-/**
- * @return string
- */
-function toolbar_item_divider()
+function toolbar_dropdown_item(string $href, string $label, bool $active, string $icon = null): string
 {
-    return '<li class="divider"></li>';
+    return strtr(
+        '<li><a class="dropdown-item{active}" href="{href}">{icon} {label}</a></li>',
+        [
+            '{href}'   => $href,
+            '{icon}'   => $icon === null ? '' : '<i class="bi bi-' . $icon . '"></i>',
+            '{label}'  => $label,
+            '{active}' => $active ? ' active' : ''
+        ]
+    );
+}
+
+function toolbar_dropdown_item_divider(): string
+{
+    return '<li><hr class="dropdown-divider"></li>';
 }
 
 /**
- * @param string $glyphicon
+ * @param string $icon
  * @param string $label
  * @param array  $submenu
  * @param string $class
  * @return string
  */
-function toolbar_dropdown($glyphicon, $label, $submenu, $class = '')
+function toolbar_dropdown($icon, $label, $submenu, $class = ''): string
 {
-    return '<li class="dropdown ' . $class . '">'
-        . '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
-        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
-        . $label
-        . '<span class="caret"></span></a>'
-        . '<ul class="dropdown-menu" role="menu">'
-        . join("\n", $submenu)
-        . '</ul></li>';
+    $template =<<<EOT
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle {class}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {icon} {label}
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        {submenu}
+    </ul>
+</li>
+EOT;
+
+    return strtr(
+        $template,
+        [
+            '{class}'   => $class,
+            '{label}'   => $label,
+            '{icon}'    => empty($icon) ? '' : '<i class="bi ' . $icon . '"></i>',
+            '{submenu}' => join("\n", $submenu)
+        ]
+    );
 }
 
 /**
- * @param string   $glyphicon
+ * @param string   $icon
  * @param string   $label
  * @param string[] $content
  * @param string   $class
+ *
  * @return string
  */
-function toolbar_popover($glyphicon, $label, $content, $class = '')
+function toolbar_popover($icon, $label, $content, $class = '')
 {
-    $dom_id = md5(microtime() . $glyphicon . $label);
-    return '<li class="dropdown messages ' . $class . '">'
-        . '<a id="' . $dom_id . '" href="#" tabindex="0">'
-        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
+    $dom_id = md5(microtime() . $icon . $label);
+    return '<li class="nav-item nav-item--userhints d-flex align-items-center ' . $class . '">'
+        . '<a id="' . $dom_id . '" href="#" tabindex="0" class="nav-link">'
+        . ($icon ? icon($icon) : '')
         . $label
-        . ' <span class="caret"></span></a>'
+        . '<small class="bi bi-caret-down-fill"></small>'
+        . '</a>'
         . '<script type="text/javascript">
-                $(function(){
-                    $(\'#' . $dom_id . '\').popover({
-                        trigger: \'click\',
-                        html: true,
-                        content: \'' . addslashes(join('', $content)) . '\',
-                        placement: \'bottom\',
-                        container: \'#navbar-offcanvas\'
-                    })
-                });
+                new bootstrap.Popover(document.getElementById(\'' . $dom_id . '\'), {
+                    container: \'body\',
+                    html: true,
+                    content: \'' . addslashes(join('', $content)) . '\',
+                    placement: \'bottom\',
+                    customClass: \'popover--userhints\'
+                })
             </script></li>';
 }
-
 
 /**
  * Generiert HTML Code für eine "Seite".
@@ -282,10 +313,10 @@ function description($data)
     $elements = [];
     foreach ($data as $label => $description) {
         if (!empty($label) && !empty($description)) {
-            $elements[] = '<dt>' . $label . '</dt><dd>' . $description . '</dd>';
+            $elements[] = '<dt class="col-sm-1">' . $label . '</dt><dd class="col-sm-11">' . $description . '</dd>';
         }
     }
-    return '<dl class="dl-horizontal">' . join($elements) . '</dl>';
+    return '<dl class="row">' . join($elements) . '</dl>';
 }
 
 /**
@@ -362,7 +393,11 @@ function render_table($columns, $rows, $data = true)
  */
 function button($href, $label, $class = '')
 {
-    return '<a href="' . $href . '" class="btn btn-default ' . $class . '">' . $label . '</a>';
+    if (!Str::contains(str_replace(['btn-sm', 'btn-xl'], '', $class), 'btn-')) {
+        $class = 'btn-secondary' . ($class ? ' ' . $class : '');
+    }
+
+    return '<a href="' . $href . '" class="btn ' . $class . '">' . $label . '</a>';
 }
 
 /**
@@ -375,20 +410,21 @@ function button($href, $label, $class = '')
  */
 function button_js($javascript, $label, $class = '')
 {
-    return '<a onclick="' . $javascript . '" href="#" class="btn btn-default ' . $class . '">' . $label . '</a>';
+    return '<a onclick="' . $javascript . '" href="#" class="btn btn-secondary ' . $class . '">' . $label . '</a>';
 }
 
 /**
- * Rendert einen Knopf mit Glyph
+ * Renders a button with an icon
  *
  * @param string $href
- * @param string $glyph
+ * @param string $icon
  * @param string $class
+ *
  * @return string
  */
-function button_glyph($href, $glyph, $class = '')
+function button_icon($href, $icon, $class = '')
 {
-    return button($href, glyph($glyph), $class);
+    return button($href, icon($icon), $class);
 }
 
 /**
@@ -399,7 +435,7 @@ function button_glyph($href, $glyph, $class = '')
  */
 function button_help($topic = '')
 {
-    return button(config('documentation_url') . $topic, glyph('question-sign'), 'btn-sm');
+    return button(config('documentation_url') . $topic, icon('question-circle'), 'btn-sm');
 }
 
 /**
@@ -410,7 +446,7 @@ function button_help($topic = '')
  */
 function buttons($buttons = [])
 {
-    return '<div class="form-group">' . table_buttons($buttons) . '</div>';
+    return '<div class="mb-3">' . table_buttons($buttons) . '</div>';
 }
 
 /**

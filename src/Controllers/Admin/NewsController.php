@@ -80,14 +80,6 @@ class NewsController extends BaseController
      */
     protected function showEdit(?News $news, bool $isMeetingDefault = false): Response
     {
-        if (
-            $news
-            && !$this->auth->can('admin_news_html')
-            && strip_tags($news->text) != $news->text
-        ) {
-            $this->addNotification('news.edit.contains-html', 'warnings');
-        }
-
         if ($news) {
             $this->cleanupModelNullValues($news);
         }
@@ -136,10 +128,6 @@ class NewsController extends BaseController
             $this->addNotification('news.delete.success');
 
             return $this->redirect->to('/news');
-        }
-
-        if (!$this->auth->can('admin_news_html')) {
-            $data['text'] = strip_tags($data['text']);
         }
 
         if (!$news->user) {

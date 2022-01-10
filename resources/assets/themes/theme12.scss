@@ -1,0 +1,109 @@
+// 36c3
+
+//== Colors
+@import "dark";
+
+$gray-dark:    #282828;
+$gray-darker:  #222;
+$gray-light:   #888;
+$gray-lighter: #D0D0CE;
+$black:        #000;
+
+$brand-primary: #fe5000;
+$primary:       $brand-primary;
+$brand-success: #00bb31;
+$success:       $brand-success;
+$brand-info:    #5bc0de;
+$info:          $brand-info;
+$brand-warning: #febb00;
+$warning:       $brand-warning;
+$brand-danger:  #bb3100;
+$danger:        $brand-danger;
+
+//== Scaffolding
+
+$body-bg:               #000;
+$text-color:            $gray-lighter;
+
+//== Buttons
+
+$btn-color:                      $gray-lighter;
+$btn-default-bg:                 lighten($gray-dark, 10%);
+
+$btn-primary-color:              $black;
+$btn-primary-border:             darken($btn-default-bg, 10%);
+
+$btn-success-color:              $black;
+$btn-success-border:             darken($btn-default-bg, 10%);
+
+$btn-info-color:                 $black;
+$btn-info-border:                darken($btn-default-bg, 10%);
+
+$btn-warning-color:              $black;
+$btn-warning-border:             darken($btn-default-bg, 10%);
+
+$btn-danger-border:              darken($btn-default-bg, 10%);
+
+
+//== Forms
+
+$input-bg:                       $gray-darker;
+$input-bg-disabled:              darken($gray-dark, 10%);
+$input-group-addon-bg:           $gray-lighter;
+
+//== Pagination
+
+$pagination-color:                     $black;
+$pagination-hover-color:               $black;
+$pagination-active-color:              $black;
+
+//== Labels
+
+$label-color:                 #000;
+$label-link-hover-color:      $gray-dark;
+
+//== Badges
+
+$badge-color:                 $black;
+
+//== Type
+
+$headings-small-color:        $gray-light;
+
+// Bootswatch
+// -----------------------------------------------------
+@import "cyborg_variables.scss";
+@import "cyborg_styles.scss";
+// Forms ======================================================================
+
+.input-group-addon {
+  background-color: $btn-default-bg;
+}
+
+// Containers =================================================================
+
+// datetimepicker
+
+.bootstrap-datetimepicker-widget {
+
+  .timepicker-hour,
+  .timepicker-minute,
+  [data-action='selectHour'],
+  [data-action='selectMinute'],
+  [data-action='incrementHours'],
+  [data-action='decrementHours'],
+  [data-action='incrementMinutes'],
+  [data-action='decrementMinutes'] {
+
+    &:hover {
+
+      color: $gray;
+    }
+  }
+}
+
+// code tag
+code {
+  background-color: $btn-default-bg;
+  color: $input-color;
+}

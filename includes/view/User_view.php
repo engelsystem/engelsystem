@@ -19,7 +19,6 @@ use Engelsystem\Controllers\SettingsController;
  * @param int   $teardown_end_date  Unix timestamp
  * @param bool  $enable_tshirt_size
  * @param array $tshirt_sizes
- * @param array $oauth2_providers
  *
  * @return string
  */
@@ -30,14 +29,14 @@ function User_settings_view(
     $buildup_start_date,
     $teardown_end_date,
     $enable_tshirt_size,
-    $tshirt_sizes,
-    $oauth2_providers
+    $tshirt_sizes
 ) {
     $personalData = $user_source->personalData;
     $enable_user_name = config('enable_user_name');
     $enable_pronoun = config('enable_pronoun');
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
+    $enable_goody = config('enable_goody');
 
     /** @var Renderer $renderer */
     $renderer = app(Renderer::class);
@@ -100,9 +99,15 @@ function User_settings_view(
                             ),
                             form_checkbox(
                                 'email_by_human_allowed',
-                                __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
+                                __('Allow heaven angels to contact you by e-mail.'),
                                 $user_source->settings->email_human
                             ),
+                            $enable_goody ? form_checkbox(
+                                'email_goody',
+                                __('To receive vouchers, give consent that nick, email address, worked hours and shirt size will be stored until the next similar event.')
+                                . (config('privacy_email') ? ' ' . __('To withdraw your approval, send an email to <a href="mailto:%s">%1$s</a>.', [config('privacy_email')]) : ''),
+                                $user_source->settings->email_goody
+                            ) : '',
                             $enable_tshirt_size ? form_select(
                                 'tshirt_size',
                                 __('Shirt size'),
@@ -140,7 +145,7 @@ function User_delete_view($user)
     return page_with_title(sprintf(__('Delete %s'), User_Nick_render($user)), [
         msg(),
         buttons([
-            button(user_edit_link($user->id), glyph('chevron-left') . __('back'))
+            button(user_edit_link($user->id), icon('chevron-left') . __('back'))
         ]),
         error(
             __('Do you really want to delete the user including all his shifts and every other piece of his data?'),
@@ -164,7 +169,7 @@ function User_edit_vouchers_view($user)
     return page_with_title(sprintf(__('%s\'s vouchers'), User_Nick_render($user)), [
         msg(),
         buttons([
-            button(user_link($user->id), glyph('chevron-left') . __('back'))
+            button(user_link($user->id), icon('chevron-left') . __('back'))
         ]),
         info(sprintf(
             __('Angel should receive at least  %d vouchers.'),
@@ -208,12 +213,12 @@ function Users_view(
         $u['first_name'] = $user->personalData->first_name;
         $u['last_name'] = $user->personalData->last_name;
         $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', $user->contact->dect);
-        $u['arrived'] = glyph_bool($user->state->arrived);
+        $u['arrived'] = icon_bool($user->state->arrived);
         $u['got_voucher'] = $user->state->got_voucher;
         $u['freeloads'] = $user->getAttribute('freeloads');
-        $u['active'] = glyph_bool($user->state->active);
-        $u['force_active'] = glyph_bool($user->state->force_active);
-        $u['got_shirt'] = glyph_bool($user->state->got_shirt);
+        $u['active'] = icon_bool($user->state->active);
+        $u['force_active'] = icon_bool($user->state->force_active);
+        $u['got_shirt'] = icon_bool($user->state->got_shirt);
         $u['shirt_size'] = $user->personalData->shirt_size;
         $u['arrival_date'] = $user->personalData->planned_arrival_date
             ? $user->personalData->planned_arrival_date->format(__('Y-m-d')) : '';
@@ -221,7 +226,7 @@ function Users_view(
             ? $user->personalData->planned_departure_date->format(__('Y-m-d')) : '';
         $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
         $u['actions'] = table_buttons([
-            button_glyph(page_link_to('admin_user', ['id' => $user->id]), 'edit', 'btn-xs')
+            button_icon(page_link_to('admin_user', ['id' => $user->id]), 'pencil-square', 'btn-sm')
         ]);
         $usersList[] = $u;
     }
@@ -269,7 +274,7 @@ function Users_view(
     return page_with_title(__('All users'), [
         msg(),
         buttons([
-            button(page_link_to('register'), glyph('plus') . __('New user'))
+            button(page_link_to('register'), icon('plus-lg') . __('New user'))
         ]),
         table($user_table_headers, $usersList)
     ]);
@@ -390,9 +395,9 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     $myshift = [
-        'date'       => glyph('calendar')
+        'date'       => icon('calendar3')
             . date('Y-m-d', $shift['start']) . '<br>'
-            . glyph('time') . date('H:i', $shift['start'])
+            . icon('clock') . date('H:i', $shift['start'])
             . ' - '
             . date('H:i', $shift['end']),
         'duration'   => sprintf('%.2f', ($shift['end'] - $shift['start']) / 3600) . '&nbsp;h',
@@ -418,20 +423,20 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     $myshift['actions'] = [
-        button(shift_link($shift), glyph('eye-open') . __('view'), 'btn-xs')
+        button(shift_link($shift), icon('eye') . __('view'), 'btn-sm')
     ];
     if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
             page_link_to('user_myshifts', ['edit' => $shift['id'], 'id' => $user_source->id]),
-            glyph('edit') . __('edit'),
-            'btn-xs'
+            icon('pencil-square') . __('edit'),
+            'btn-sm'
         );
     }
     if (Shift_signout_allowed($shift, ['id' => $shift['TID']], $user_source->id)) {
         $myshift['actions'][] = button(
             shift_entry_delete_link($shift),
-            glyph('trash') . __('sign off'),
-            'btn-xs'
+            icon('trash') . __('sign off'),
+            'btn-sm'
         );
     }
     $myshift['actions'] = table_buttons($myshift['actions']);
@@ -518,19 +523,19 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
         $actions = table_buttons([
             button(
                 user_worklog_edit_link($worklog),
-                glyph('edit') . __('edit'),
-                'btn-xs'
+                icon('pencil-square') . __('edit'),
+                'btn-sm'
             ),
             button(
                 user_worklog_delete_link($worklog),
-                glyph('trash') . __('delete'),
-                'btn-xs'
+                icon('trash') . __('delete'),
+                'btn-sm'
             )
         ]);
     }
 
     return [
-        'date'       => glyph('calendar') . date('Y-m-d', $worklog->worked_at->timestamp),
+        'date'       => icon('calendar3') . date('Y-m-d', $worklog->worked_at->timestamp),
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
         'room'       => '',
         'shift_info' => __('Work log entry'),
@@ -600,7 +605,7 @@ function User_view(
                 'actions'    => __('Action')
             ], $my_shifts);
         } elseif ($user_source->state->force_active) {
-            $myshifts_table = success(__('You have done enough to get a t-shirt.'), true);
+            $myshifts_table = success(__('You have done enough.'), true);
         }
     }
 
@@ -615,45 +620,49 @@ function User_view(
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
         [
             msg(),
-            div('row space-top', [
+            div('row', [
                 div('col-md-12', [
                     buttons([
+                        $auth->can('user.edit.shirt') ? button(
+                            url('/admin/user/' . $user_source->id . '/shirt'),
+                            icon('person') . __('Shirt')
+                        ) : '',
                         $admin_user_privilege ? button(
                             page_link_to('admin_user', ['id' => $user_source->id]),
-                            glyph('edit') . __('edit')
+                            icon('pencil-square') . __('edit')
                         ) : '',
                         $admin_user_privilege ? button(
                             user_driver_license_edit_link($user_source),
-                            glyph('road') . __('driving license')
+                            icon('wallet2') . __('driving license')
                         ) : '',
                         (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
-                                form_submit('submit', __('arrived'), '', false, 'default')
+                                form_submit('submit', __('arrived'), '', false, 'primary')
                             ], page_link_to('admin_arrive'), true) : '',
                         $admin_user_privilege ? button(
                             page_link_to(
                                 'users',
                                 ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
                             ),
-                            glyph('cutlery') . __('Edit vouchers')
+                            icon('file-binary-fill') . __('Edit vouchers')
                         ) : '',
                         $admin_user_worklog_privilege ? button(
                             user_worklog_add_link($user_source),
-                            glyph('list') . __('Add work log')
+                            icon('list') . __('Add work log')
                         ) : '',
                         $its_me ? button(
                             page_link_to('user_settings'),
-                            glyph('list-alt') . __('Settings')
+                            icon('gear') . __('Settings')
                         ) : '',
                         ($its_me && $auth->can('ical')) ? button(
                             page_link_to('ical', ['key' => $user_source->api_key]),
-                            glyph('calendar') . __('iCal Export')
+                            icon('calendar3') . __('iCal Export')
                         ) : '',
                         ($its_me && $auth->can('shifts_json_export')) ? button(
                             page_link_to('shifts_json_export', ['key' => $user_source->api_key]),
-                            glyph('export') . __('JSON Export')
+                            icon('box-arrow-up-right') . __('JSON Export')
                         ) : '',
                         ($its_me && (
                             $auth->can('shifts_json_export')
@@ -661,14 +670,14 @@ function User_view(
                             || $auth->can('atom')
                         )) ? button(
                             page_link_to('user_myshifts', ['reset' => 1]),
-                            glyph('repeat') . __('Reset API key')
+                            icon('arrow-repeat') . __('Reset API key')
                         ) : ''
                     ])
                 ])
             ]),
-            div('row', [
+            div('row user-info', [
                 div('col-md-2', [
-                    heading(glyph('phone')
+                    heading(icon('phone')
                         . '<a href="tel:' . $user_source->contact->dect . '">'
                         . $user_source->contact->dect, 1)
                         . '</a>'
@@ -681,7 +690,7 @@ function User_view(
             ($its_me || $admin_user_privilege) ? '<h2>' . __('Shifts') . '</h2>' : '',
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled']) ? info(
-                glyph('info-sign') . sprintf(
+                icon('info-circle') . sprintf(
                     __('Your night shifts between %d and %d am count twice.'),
                     $nightShiftsConfig['start'],
                     $nightShiftsConfig['end']
@@ -734,7 +743,7 @@ function User_view_state_user($user_source)
     ];
 
     if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . glyph('home') . __('Arrived') . '</span>';
+        $state[] = '<span class="text-success">' . icon('house') . __('Arrived') . '</span>';
     } else {
         $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
     }
@@ -755,13 +764,13 @@ function User_view_state_admin($freeloader, $user_source)
     $state = [];
 
     if ($freeloader) {
-        $state[] = '<span class="text-danger">' . glyph('exclamation-sign') . __('Freeloader') . '</span>';
+        $state[] = '<span class="text-danger">' . icon('exclamation-circle') . __('Freeloader') . '</span>';
     }
 
     $state[] = User_shift_state_render($user_source);
 
     if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . glyph('home')
+        $state[] = '<span class="text-success">' . icon('house')
             . sprintf(
                 __('Arrived at %s'),
                 $user_source->state->arrival_date ? $user_source->state->arrival_date->format('Y-m-d') : ''
@@ -791,7 +800,7 @@ function User_view_state_admin($freeloader, $user_source)
     $availableCount = max($voucherCount, $availableCount);
     if ($user_source->state->got_voucher > 0) {
         $state[] = '<span class="text-success">'
-            . glyph('cutlery')
+            . icon('file-binary-fill')
             . __('Got %s of %s vouchers', [$voucherCount, $availableCount])
             . '</span>';
     } else {
@@ -817,7 +826,7 @@ function User_angeltypes_render($user_angeltypes)
             $class = 'text-warning';
         }
         $output[] = '<a href="' . angeltype_link($angeltype['id']) . '" class="' . $class . '">'
-            . ($angeltype['supporter'] ? glyph('education') : '') . $angeltype['name']
+            . ($angeltype['supporter'] ? icon('patch-check') : '') . $angeltype['name']
             . '</a>';
     }
     return div('col-md-2', [
@@ -859,6 +868,10 @@ function User_oauth_render(User $user)
             ? $config[$oauth->provider]['name']
             : Str::ucfirst($oauth->provider)
         );
+    }
+
+    if (!$output) {
+        return '';
     }
 
     return div('col-md-2', [
@@ -934,7 +947,7 @@ function render_user_departure_date_hint()
 {
     if (config('enable_planned_arrival') && !auth()->user()->personalData->planned_departure_date) {
         $text = __('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
-        return render_profile_link($text, null, 'alert-link');
+        return render_profile_link($text, null, 'text-danger');
     }
 
     return null;
@@ -980,7 +993,7 @@ function render_user_tshirt_hint()
 {
     if (config('enable_tshirt_size') && !auth()->user()->personalData->shirt_size) {
         $text = __('You need to specify a tshirt size in your settings!');
-        return render_profile_link($text, null, 'alert-link');
+        return render_profile_link($text, null, 'text-danger');
     }
 
     return null;
@@ -994,7 +1007,7 @@ function render_user_dect_hint()
     $user = auth()->user();
     if ($user->state->arrived && config('enable_dect') && !$user->contact->dect) {
         $text = __('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
-        return render_profile_link($text, null, 'alert-link');
+        return render_profile_link($text, null, 'text-danger');
     }
 
     return null;

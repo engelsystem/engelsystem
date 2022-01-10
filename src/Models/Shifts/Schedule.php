@@ -5,6 +5,7 @@ namespace Engelsystem\Models\Shifts;
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -31,8 +32,17 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class Schedule extends BaseModel
 {
+    use HasFactory;
+
     /** @var bool enable timestamps */
     public $timestamps = true;
+
+    /** @var string[] */
+    protected $casts = [
+        'shift_type'     => 'integer',
+        'minutes_before' => 'integer',
+        'minutes_after'  => 'integer',
+    ];
 
     /** @var array Values that are mass assignable */
     protected $fillable = [

@@ -1,0 +1,396 @@
+// Basic variables
+@use "sass:map";
+
+// select 2 variables
+$link-decoration: none !default;
+$link-hover-decoration: underline !default;
+
+$nav-tabs-link-active-color:        #fff !default;
+$nav-tabs-link-active-bg:           $primary !default;
+$nav-tabs-link-active-border-color: none !default;
+
+// Imports
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+$custom-colors: (
+  black: #000
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "~bootstrap/scss/bootstrap";
+
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "~tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4";
+@import "~select2/src/scss/core";
+@import "~select2-bootstrap-5-theme/src/include-all";
+@import "error";
+
+// temporary bg-body fix (remove once Bootstrap 5.1.1 has been released)
+.bg-body {
+    --bs-bg-opacity: 1;
+    background-color: $body-bg !important;
+}
+
+$navbar-height: 3.125rem;
+
+body {
+  padding-top: 70px;
+}
+
+.footer a {
+  color: $text-muted;
+}
+
+.text-inherit {
+    color: inherit;
+
+    &:hover {
+        color: inherit;
+    }
+}
+
+.text-big {
+  display: block;
+  font-size: 30px;
+  line-height: 30px;
+  margin: 0;
+}
+
+.icon-icon_angel {
+  background-color: $body-color;
+
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+
+  mask: url(../icons/angel.svg) no-repeat 50% 50%;
+  mask-size: cover;
+}
+
+.text-light .icon-icon_angel {
+  background-color: map.get($theme-colors, "light");
+}
+
+.dark .icon-icon_angel {
+  background-color: map.get($theme-colors, "dark");
+}
+
+a .icon-icon_angel {
+  background-color: $link-color;
+}
+
+.navbar .icon-icon_angel {
+  background-color: $nav-link-disabled-color;
+}
+
+.navbar-brand .icon-icon_angel {
+  background-color: $body-color;
+}
+
+.nav-item--userhints {
+    margin: -$navbar-padding-y 0;
+}
+
+.popover--userhints .alert:last-of-type {
+    margin-bottom: 0;
+}
+
+table a > .icon-icon_angel {
+  background-color: $body-color;
+}
+
+.table .form-group {
+  margin-bottom: 0;
+}
+
+.table-striped > tbody > tr:nth-of-type(2n+1) {
+  color: var(--bs-table-color);
+}
+
+.input-group.date,
+.input-group.datetime,
+.input-group.time {
+    .bootstrap-datetimepicker-widget {
+        inset: 42px auto auto 0 !important;
+    }
+}
+
+.stats {
+  font-size: 20px;
+  height: 150px;
+  text-align: center;
+
+  .number {
+    font-size: 80px;
+    font-weight: 200;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, 'md')) {
+    font-size: inherit;
+    .number {
+      font-size: 40px;
+    }
+  }
+}
+
+
+.stats-danger {
+  color: map-get($theme-colors, 'danger');
+}
+
+.stats-warning {
+  color: map-get($theme-colors, 'warning');
+}
+
+.stats-success {
+  color: map-get($theme-colors, 'success');
+}
+
+.dashboard-card {
+  position: relative;
+  font-size: 20px;
+  color: $headings-color;
+
+  .card-link {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none; /* No underlines on the link */
+    z-index: 10; /* Places the link above everything else in the div */
+    background-color: $primary; /* Fix to make div clickable in IE */
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+  }
+
+  .card-link:hover {
+    opacity: 0.3;
+  }
+}
+
+.select2-dropdown {
+  background-color: $input-bg;
+
+  .select2-search__field {
+    background-color: lighten($input-bg, 10%) !important;
+  }
+}
+
+.selection .checkbox {
+  display: block;
+}
+
+.shift-calendar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  width: 100%;
+
+  .lane {
+    background: $table-striped-bg;
+    flex-grow: 1;
+    min-width: 280px;
+    width: 280px;
+    flex-shrink: 1;
+
+    .header {
+      border-bottom: 1px solid $table-border-color;
+      height: 30px;
+      padding: 5px 5px 5px 16px;
+    }
+
+    .tick {
+      height: 30px;
+      border-top: 1px solid darken($table-striped-bg, 2%);
+    }
+
+    .tick.hour {
+      border-top: 2px solid $table-border-color;
+      font-size: 0.9em;
+      padding-left: 5px;
+    }
+
+    .tick.day {
+      border-top: 2px solid $primary;
+      font-size: 0.9em;
+      padding-left: 5px;
+    }
+  }
+
+  .lane.time {
+    border-right: 1px solid $table-border-color;
+    flex-grow: 0;
+    min-width: 50px;
+    width: 50px;
+    flex-shrink: 0;
+  }
+
+  .shift-card {
+    z-index: 0;
+    overflow: hidden;
+    position: relative;
+    margin: 0 5px 5px 0;
+
+    &:hover {
+      overflow: visible;
+      z-index: 100;
+    }
+
+    .shift {
+      min-height: 100%;
+    }
+  }
+}
+
+.column_duration {
+  text-align: right;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  code {
+    background-color: inherit;
+  }
+}
+
+.messages {
+  &:focus {
+    outline: none;
+  }
+
+  a:focus {
+    outline: none;
+  }
+}
+
+.messages span.text-danger {
+  animation: pulse 1s infinite;
+}
+
+.legend .label {
+  white-space: pre-wrap;
+  line-height: 2;
+}
+
+.shift-calendar.table-responsive {
+  overflow-x: inherit;
+}
+
+span.ref-id[id] {
+  padding-top: 50px;
+}
+
+.faq {
+  .card-header {
+    small a.ref-link {
+      display: none;
+    }
+
+    &:hover {
+      small a.ref-link {
+        display: inherit;
+      }
+    }
+  }
+}
+
+// Cards
+.card-body > *:last-child {
+    margin-bottom: 0;
+}
+
+.card-header {
+  &.bg-dark {
+    color: map.get($theme-colors, "light");
+  }
+
+  &.bg-light {
+    color: map.get($theme-colors, "dark");
+  }
+}
+
+// code tag
+code {
+  background-color: $input-disabled-bg;
+  @include border-radius($input-border-radius);
+}
+
+@keyframes pulse {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(5deg) translateY(-2px);
+  }
+  20% {
+    transform: rotate(-5deg);
+  }
+  30% {
+    transform: rotate(5deg) translateY(-2px);;
+  }
+  40% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(0deg) translateY(-2px);
+  }
+  75% {
+    transform: rotate(0deg) translateY(0px);
+  }
+}
+
+@media (max-width: 525px) {
+  .col-xxs-12 {
+    float: none;
+    width: 100%;
+
+    position: relative;
+    left: 0;
+    right: 0;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+@media print {
+  a[href]:after {
+    content: "";
+  }
+}
+
+.navbar-toggle {
+  transform: scale(1.25, 0.96);
+  padding: 2px 6px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  max-height: $navbar-height;
+
+  .icon {
+    border-color: $primary;
+    font-weight: bold;
+    color: $primary;
+    font-size: 25px;
+    &-close {
+      padding: 0 3px;
+      display: none;
+    }
+  }
+  &.is-open .icon {
+    &-open {
+      display: none;
+    }
+    &-close {
+      display: block;
+    }
+  }
+}
+
+// Forms
+.form-label {
+  font-weight: $font-weight-bold;
+}

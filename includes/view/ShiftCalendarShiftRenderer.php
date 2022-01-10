@@ -5,6 +5,9 @@ namespace Engelsystem;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
+use function config;
+use function theme_type;
+
 /**
  * Renders a single shift for the shift calendar
  */
@@ -23,7 +26,7 @@ class ShiftCalendarShiftRenderer
     {
         $info_text = '';
         if ($shift['title'] != '') {
-            $info_text = glyph('info-sign') . $shift['title'] . '<br>';
+            $info_text = icon('info-circle') . $shift['title'] . '<br>';
         }
         list($shift_signup_state, $shifts_row) = $this->renderShiftNeededAngeltypes(
             $shift,
@@ -48,10 +51,10 @@ class ShiftCalendarShiftRenderer
                 . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN)
                 . 'px;',
                 div(
-                    'shift panel panel-' . $class,
+                    'shift card bg-' . $class,
                     [
                         $this->renderShiftHead($shift, $class, $shift_signup_state->getFreeEntries()),
-                        div('panel-body', [
+                        div('card-body ' . $this->classBg(), [
                             $info_text,
                             Room_name_render($room)
                         ]),
@@ -79,7 +82,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::NOT_ARRIVED:
             case ShiftSignupState::NOT_YET:
             case ShiftSignupState::SHIFT_ENDED:
-                return 'default';
+                return 'secondary';
 
             case ShiftSignupState::ANGELTYPE:
             case ShiftSignupState::COLLIDES:
@@ -88,7 +91,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::FREE:
                 return 'success';
             default:
-                return '';
+                return 'light';
         }
     }
 
@@ -133,17 +136,17 @@ class ShiftCalendarShiftRenderer
         }
 
         if (auth()->can('user_shifts_admin')) {
-            $html .= '<li class="list-group-item">';
+            $html .= '<li class="list-group-item d-flex align-items-center ' . $this->classBg() . '">';
             $html .= button(shift_entry_create_link_admin($shift),
-                glyph('plus') . __('Add more angels'),
-                'btn-xs'
+                icon('plus-lg') . __('Add more angels'),
+                'btn-sm'
             );
             $html .= '</li>';
         }
         if ($html != '') {
             return [
                 $shift_signup_state,
-                '<ul class="list-group">' . $html . '</ul>'
+                '<ul class="list-group list-group-flush">' . $html . '</ul>'
             ];
         }
 
@@ -167,8 +170,8 @@ class ShiftCalendarShiftRenderer
     {
         $entry_list = [];
         foreach ($shift_entries as $entry) {
-            $style = $entry['freeloaded'] ? ' text-decoration: line-through;' : '';
-            $entry_list[] = '<span style="' . $style . '">' . User_Nick_render($entry) . '</span>';
+            $class = $entry['freeloaded'] ? 'text-decoration-line-through' : '';
+            $entry_list[] = '<span class="text-nowrap ' . $class . '">' . User_Nick_render($entry) . '</span>';
         }
         $shift_signup_state = Shift_signup_allowed(
             $user,
@@ -186,14 +189,14 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::ADMIN:
             case ShiftSignupState::FREE:
                 // When admin or free display a link + button for sign up
-                $entry_list[] = '<a href="'
+                $entry_list[] = '<a class="me-1 text-nowrap" href="'
                     . shift_entry_create_link($shift, $angeltype)
                     . '">'
                     . $inner_text
                     . '</a> '
                     . button(
                         shift_entry_create_link($shift, $angeltype),
-                        __('Sign up'), 'btn-xs btn-primary hidden-print'
+                        __('Sign up'), 'btn-sm btn-primary text-nowrap d-print-none'
                     );
                 break;
 
@@ -214,7 +217,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::ANGELTYPE:
                 if ($angeltype['restricted'] == 1) {
                     // User has to be confirmed on the angeltype first
-                    $entry_list[] = $inner_text . glyph('book');
+                    $entry_list[] = $inner_text . icon('book');
                 } else {
                     // Add link to join the angeltype first
                     $entry_list[] = $inner_text . '<br />'
@@ -224,7 +227,7 @@ class ShiftCalendarShiftRenderer
                                 ['action' => 'add', 'angeltype_id' => $angeltype['id']]
                             ),
                             sprintf(__('Become %s'), $angeltype['name']),
-                            'btn-xs'
+                            'btn-sm'
                         );
                 }
                 break;
@@ -240,14 +243,28 @@ class ShiftCalendarShiftRenderer
                 break;
         }
 
-        $shifts_row = '<li class="list-group-item">';
-        $shifts_row .= '<strong>' . AngelType_name_render($angeltype) . ':</strong> ';
+        $shifts_row = '<li class="list-group-item d-flex flex-wrap align-items-center ' . $this->classBg() . '">';
+        $shifts_row .= '<strong class="me-1">' . AngelType_name_render($angeltype) . ':</strong> ';
         $shifts_row .= join(', ', $entry_list);
         $shifts_row .= '</li>';
         return [
             $shift_signup_state,
             $shifts_row
         ];
+    }
+
+    /**
+     * Return the corresponding bg class
+     *
+     * @return string
+     */
+    private function classBg(): string
+    {
+        if (theme_type() === 'light') {
+            return 'bg-white';
+        }
+
+        return 'bg-dark';
     }
 
     /**
@@ -261,16 +278,16 @@ class ShiftCalendarShiftRenderer
     {
         $header_buttons = '';
         if (auth()->can('admin_shifts')) {
-            $header_buttons = '<div class="pull-right hidden-print">' . table_buttons([
+            $header_buttons = '<div class="ms-auto d-print-none">' . table_buttons([
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
-                        glyph('edit'),
-                        "btn-$class btn-xs"
+                        icon('pencil'),
+                        "btn-$class btn-sm border-light text-white"
                     ),
                     button(
                         page_link_to('user_shifts', ['delete_shift' => $shift['SID']]),
-                        glyph('trash'),
-                        "btn-$class btn-xs"
+                        icon('trash'),
+                        "btn-$class btn-sm border-light text-white"
                     )
                 ]) . '</div>';
         }
@@ -278,12 +295,12 @@ class ShiftCalendarShiftRenderer
             . date('H:i', $shift['end']) . ' &mdash; '
             . $shift['name'];
 
-        if($needed_angeltypes_count > 0) {
-            $shift_heading = '<span class="badge">' . $needed_angeltypes_count . '</span> ' . $shift_heading;
+        if ($needed_angeltypes_count > 0) {
+            $shift_heading = '<span class="badge bg-light text-danger me-1">' . $needed_angeltypes_count . '</span> ' . $shift_heading;
         }
 
-        return div('panel-heading', [
-            '<a href="' . shift_link($shift) . '">' . $shift_heading . '</a>',
+        return div('card-header d-flex align-items-center', [
+            '<a class="d-flex align-items-center text-white" href="' . shift_link($shift) . '">' . $shift_heading . '</a>',
             $header_buttons
         ]);
     }

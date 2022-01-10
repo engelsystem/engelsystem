@@ -60,7 +60,7 @@ msgstr "No sleep found"
 
 #: resources/views/errors/405.twig:3 resources/views/errors/405.twig:5
 msgid "405: Method not allowed"
-msgstr "405: Method not allowed"
+msgstr ""
 
 #: resources/views/errors/419.twig:3
 msgid "Authentication expired"
@@ -128,6 +128,9 @@ msgstr "Registrieren"
 msgid "Login"
 msgstr "Login"
 
+msgid "page.403.login"
+msgstr "Bitte melde dich an."
+
 #: resources/views/macros/form.twig:17
 msgid "form.submit"
 msgstr "Absenden"
@@ -140,7 +143,7 @@ msgstr "Quellcode"
 #: resources/views/pages/credits.twig:18
 #, python-format
 msgid "Version: _%s_"
-msgstr "Version: _%s_"
+msgstr ""
 
 #: resources/views/pages/credits.twig:20
 msgid "credits.credit"
@@ -148,16 +151,13 @@ msgstr ""
 "Das ursprüngliche Engelsystem wurde entwickelt von [cookie](https://github."
 "com/cookieBerlin/engelsystem). Danach wurde es von [msquare](https://"
 "notrademark.de) (Maintainer) und [MyIgel](https://myigel.name) völlig "
-"überarbeitet und verbessert. Zuletzt wurde es von "
-"[stuvus](https://github.com/stuvusIT) geforkt und abgewandelt zu einem System "
-"(genannt Handtuchsystem) zur Buchung von Arbeitsplätzen während der "
-"COVID-19-Pandemie."
+"überarbeitet und verbessert."
 
 #: resources/views/pages/credits.twig:23
 msgid "credits.contributors"
 msgstr ""
 "Eine vollständige Liste der Mitwirkenden findest Du [auf GitHub](https://"
-"github.com/stuvusIT/handtuchsystem/graphs/contributors)."
+"github.com/engelsystem/engelsystem/graphs/contributors)."
 
 #: resources/views/pages/login.twig:10 includes/view/EventConfig_view.php:27
 #, python-format, php-format
@@ -1418,6 +1418,13 @@ msgstr "Karte"
 msgid "Create shifts"
 msgstr "Schichten erstellen"
 
+#: includes/pages/admin_shifts.php
+msgid "Additional description"
+msgstr "Zusätzliche Beschreibung"
+
+msgid "This description is for single shifts, otherwise please use the description in shift type."
+msgstr "Diese Beschreibung ist für einzelne Schichten, ansonsten nutze bitte die Beschreibung im Schichttyp."
+
 #: includes/pages/admin_shifts.php:82
 msgid "Please select a location."
 msgstr "Bitte einen Ort auswählen."
@@ -1614,14 +1621,23 @@ msgstr ""
 #: includes/pages/guest_login.php:284 includes/view/User_view.php:66
 #, php-format
 msgid "The %s is allowed to send me an email (e.g. when my shifts change)"
-msgstr "Das %s darf mir E-Mails senden (z. B. wenn sich meine Schichten ändern)"
+msgstr "Das %s darf mir E-Mails senden (z.B. wenn sich meine Schichten ändern)"
 
 msgid "Notify me of new news"
 msgstr "Benachrichtige mich bei neuen News"
 
 #: includes/pages/guest_login.php:291 includes/view/User_view.php:73
-msgid "Humans are allowed to send me an email (e.g. for ticket vouchers)"
-msgstr "Menschen dürfen mir eine E-Mail senden"
+msgid "Allow heaven angels to contact you by e-mail."
+msgstr "Erlaube Supportern dich per Mail zu kontaktieren."
+
+msgid ""
+"To receive vouchers, give consent that nick, email address, worked hours and shirt size "
+"will be stored until the next similar event."
+msgstr "Um Voucher zu erhalten, stimme zu, dass Nick, E-Mail-Adresse, geleistete Arbeit und Shirtgröße "
+"bis zum nächsten gleichartigen Event gespeichert werden."
+
+msgid "To withdraw your approval, send an email to <a href=\"mailto:%s\">%1$s</a>."
+msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
 
 #: includes/pages/guest_login.php:300 includes/view/User_view.php:48
 msgid "Planned date of arrival"
@@ -2404,6 +2420,9 @@ msgstr "Möchtest Du wirklich %s von %s entfernen?"
 msgid "Do you really want to add %s to %s?"
 msgstr "Möchtest Du wirklich %s zu %s hinzufügen?"
 
+msgid "Confirm user"
+msgstr "Benutzer bestätigen"
+
 #: includes/view/UserAngelTypes_view.php:176
 msgid "save"
 msgstr "Speichern"
@@ -2867,6 +2886,9 @@ msgstr "+"
 msgid "news.is_meeting"
 msgstr "[Treffen]"
 
+msgid "news.read_more"
+msgstr "Weiterlesen"
+
 msgid "news.updated"
 msgstr "Aktualisiert"
 
@@ -2897,6 +2919,9 @@ msgstr "Oben anpinnen"
 msgid "news.edit.message"
 msgstr "Nachricht"
 
+msgid "news.edit.hint"
+msgstr "Du kannst Markdown und den [more] Tag benutzen"
+
 msgid "form.search"
 msgstr "Suchen"
 
@@ -2911,7 +2936,6 @@ msgstr "Level"
 
 msgid "log.message"
 msgstr "Nachricht"
-
 
 msgid "settings.settings"
 msgstr "Einstellungen"
@@ -2955,6 +2979,9 @@ msgstr "Trennen"
 msgid "faq.faq"
 msgstr "FAQ"
 
+msgid "faq.questions_link"
+msgstr "Wenn deine Frage hier nicht beantwortet wurde, <a href=\"%s\">frag den Himmel</a>."
+
 msgid "faq.edit"
 msgstr "FAQ Eintrag bearbeiten"
 
@@ -2970,8 +2997,11 @@ msgstr "Antwort"
 msgid "question.questions"
 msgstr "Fragen"
 
+msgid "question.faq_link"
+msgstr "Hast du eine generelle Frage? Vielleicht ist diese schon in den <a href=\"%s\">FAQ</a> beantwortet."
+
 msgid "question.add"
-msgstr "Fragen"
+msgstr "Stelle eine Frage"
 
 msgid "question.edit"
 msgstr "Frage bearbeiten"
@@ -2981,3 +3011,24 @@ msgstr "Frage"
 
 msgid "question.answer"
 msgstr "Antwort"
+
+msgid "user.edit.shirt"
+msgstr "Shirt bearbeiten"
+
+msgid "form.shirt"
+msgstr "Shirt"
+
+msgid "user.shirt_size"
+msgstr "Shirt größe"
+
+msgid "user.active"
+msgstr "Aktiv"
+
+msgid "user.force_active"
+msgstr "Aktiv (erzwungen)"
+
+msgid "user.arrived"
+msgstr "Angekommen"
+
+msgid "user.got_shirt"
+msgstr "Shirt bekommen"

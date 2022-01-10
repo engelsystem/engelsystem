@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Models\User;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -15,6 +16,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class Contact extends HasUserModel
 {
+    use HasFactory;
+
     /** @var string The table associated with the model */
     protected $table = 'users_contact';
 

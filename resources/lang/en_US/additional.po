@@ -51,6 +51,9 @@ msgstr "The shift type can't not be found."
 msgid "schedule.import.success"
 msgstr "Schedule import successful."
 
+msgid "shifts.filter.toggle"
+msgstr "collapse/show filters"
+
 msgid "validation.schedule-url.required"
 msgstr "The schedule URL is required."
 
@@ -72,14 +75,14 @@ msgstr "The minutes after the talk have to be an integer."
 msgid "news.comment.success"
 msgstr "Comment saved."
 
+msgid "news.comment-delete.success"
+msgstr "Comment successfully deleted."
+
 msgid "news.edit.success"
 msgstr "News successfully updated."
 
 msgid "news.delete.success"
 msgstr "News successfully deleted."
-
-msgid "news.edit.contains-html"
-msgstr "This message contains HTML. After saving the post some formatting will be lost!"
 
 msgid "oauth.invalid-state"
 msgstr "Invalid OAuth state"
@@ -128,3 +131,24 @@ msgstr "A new news is available: %1$s"
 
 msgid "notification.news.new.text"
 msgstr "You can watch it at %3$s"
+
+msgid "notification.angeltype.confirmed"
+msgstr "You have been confirmed as an %s"
+
+msgid "notification.angeltype.confirmed.introduction"
+msgstr "You have been confirmed as an %1$s by a supporter."
+
+msgid "notification.angeltype.confirmed.text"
+msgstr "You can find a description at %2$s"
+
+msgid "notification.angeltype.added"
+msgstr "You have been added as an %s"
+
+msgid "notification.angeltype.added.introduction"
+msgstr "You have been added as an %1$s by a supporter."
+
+msgid "notification.angeltype.added.text"
+msgstr "You can find a description at %2$s"
+
+msgid "user.edit.success"
+msgstr "User edited successfully."

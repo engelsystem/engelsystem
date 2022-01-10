@@ -1,6 +1,9 @@
 <?php
 
+use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\User;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\Exception\TransportException;
 
 /**
  * Display a hint for team/angeltype supporters if there are unconfirmed users for his angeltype.
@@ -16,7 +19,7 @@ function user_angeltypes_unconfirmed_hint()
 
     $unconfirmed_links = [];
     foreach ($unconfirmed_user_angeltypes as $user_angeltype) {
-        $unconfirmed_links[] = '<a href="'
+        $unconfirmed_links[] = '<a class="text-info" href="'
             . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $user_angeltype['angeltype_id']])
             . '">' . $user_angeltype['name']
             . ' (+' . $user_angeltype['count'] . ')'
@@ -39,7 +42,7 @@ function user_angeltypes_unconfirmed_hint()
  *
  * @return array
  */
-function user_angeltypes_delete_all_controller()
+function user_angeltypes_delete_all_controller(): array
 {
     $request = request();
 
@@ -78,7 +81,7 @@ function user_angeltypes_delete_all_controller()
  *
  * @return array
  */
-function user_angeltypes_confirm_all_controller()
+function user_angeltypes_confirm_all_controller(): array
 {
     $user = auth()->user();
     $request = request();
@@ -100,10 +103,17 @@ function user_angeltypes_confirm_all_controller()
     }
 
     if ($request->hasPostData('confirm_all')) {
+        $users = UserAngelTypes_all_unconfirmed($angeltype['id']);
         UserAngelTypes_confirm_all($angeltype['id'], $user->id);
 
         engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype, true)));
         success(sprintf(__('Confirmed all users for angeltype %s.'), AngelType_name_render($angeltype)));
+
+        foreach ($users as $user) {
+            $user = User::find($user['user_id']);
+            user_angeltype_confirm_email($user, $angeltype);
+        }
+
         throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
@@ -118,7 +128,7 @@ function user_angeltypes_confirm_all_controller()
  *
  * @return array
  */
-function user_angeltype_confirm_controller()
+function user_angeltype_confirm_controller(): array
 {
     $user = auth()->user();
     $request = request();
@@ -164,6 +174,9 @@ function user_angeltype_confirm_controller()
             User_Nick_render($user_source),
             AngelType_name_render($angeltype)
         ));
+
+        user_angeltype_confirm_email($user_source, $angeltype);
+
         throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
@@ -174,11 +187,71 @@ function user_angeltype_confirm_controller()
 }
 
 /**
+ * @param User  $user
+ * @param array $angeltype
+ * @return void
+ */
+function user_angeltype_confirm_email(User $user, array $angeltype): void
+{
+    if (!$user->settings->email_shiftinfo) {
+        return;
+    }
+
+    try {
+        /** @var EngelsystemMailer $mailer */
+        $mailer = app(EngelsystemMailer::class);
+        $mailer->sendViewTranslated(
+            $user,
+            'notification.angeltype.confirmed',
+            'emails/angeltype-confirmed',
+            ['name' => $angeltype['name'], 'angeltype' => $angeltype, 'username' => $user->name]
+        );
+    } catch (TransportException $e) {
+        /** @var LoggerInterface $logger */
+        $logger = app('logger');
+        $logger->error(
+            'Unable to send email "{title}" to user {user} with {exception}',
+            ['title' => __('notification.angeltype.confirmed'), 'user' => $user->name, 'exception' => $e]
+        );
+    }
+}
+
+/**
+ * @param User  $user
+ * @param array $angeltype
+ * @return void
+ */
+function user_angeltype_add_email(User $user, array $angeltype): void
+{
+    if (!$user->settings->email_shiftinfo || $user->id == auth()->user()->id) {
+        return;
+    }
+
+    try {
+        /** @var EngelsystemMailer $mailer */
+        $mailer = app(EngelsystemMailer::class);
+        $mailer->sendViewTranslated(
+            $user,
+            'notification.angeltype.added',
+            'emails/angeltype-added',
+            ['name' => $angeltype['name'], 'angeltype' => $angeltype, 'username' => $user->name]
+        );
+    } catch (TransportException $e) {
+        /** @var LoggerInterface $logger */
+        $logger = app('logger');
+        $logger->error(
+            'Unable to send email "{title}" to user {user} with {exception}',
+            ['title' => __('notification.angeltype.added'), 'user' => $user->name, 'exception' => $e]
+        );
+    }
+}
+
+/**
  * Remove a user from an Angeltype.
  *
  * @return array
  */
-function user_angeltype_delete_controller()
+function user_angeltype_delete_controller(): array
 {
     $request = request();
     $user = auth()->user();
@@ -231,7 +304,7 @@ function user_angeltype_delete_controller()
  *
  * @return array
  */
-function user_angeltype_update_controller()
+function user_angeltype_update_controller(): array
 {
     $supporter = false;
     $request = request();
@@ -302,7 +375,7 @@ function user_angeltype_update_controller()
  *
  * @return array
  */
-function user_angeltype_add_controller()
+function user_angeltype_add_controller(): array
 {
     $angeltype = load_angeltype();
 
@@ -319,7 +392,8 @@ function user_angeltype_add_controller()
     // Load possible users, that are not in the angeltype already
     $users_source = Users_by_angeltype_inverted($angeltype);
 
-    if (request()->hasPostData('submit')) {
+    $request = request();
+    if ($request->hasPostData('submit')) {
         $user_source = load_user();
 
         if (!UserAngelType_exists($user_source->id, $angeltype)) {
@@ -336,12 +410,16 @@ function user_angeltype_add_controller()
                 AngelType_name_render($angeltype)
             ));
 
-            UserAngelType_confirm($user_angeltype_id, $user_source->id);
-            engelsystem_log(sprintf(
-                'User %s confirmed as %s.',
-                User_Nick_render($user_source, true),
-                AngelType_name_render($angeltype, true)
-            ));
+            if ($request->hasPostData('auto_confirm_user')) {
+                UserAngelType_confirm($user_angeltype_id, $user_source->id);
+                engelsystem_log(sprintf(
+                    'User %s confirmed as %s.',
+                    User_Nick_render($user_source, true),
+                    AngelType_name_render($angeltype, true)
+                ));
+            }
+
+            user_angeltype_add_email($user_source, $angeltype);
 
             throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
         }
@@ -369,7 +447,8 @@ function user_angeltype_join_controller($angeltype)
         throw_redirect(page_link_to('angeltypes'));
     }
 
-    if (request()->hasPostData('submit')) {
+    $request = request();
+    if ($request->hasPostData('submit')) {
         $user_angeltype_id = UserAngelType_create($user->id, $angeltype);
 
         $success_message = sprintf(__('You joined %s.'), $angeltype['name']);
@@ -380,7 +459,7 @@ function user_angeltype_join_controller($angeltype)
         ));
         success($success_message);
 
-        if (auth()->can('admin_user_angeltypes')) {
+        if (auth()->can('admin_user_angeltypes') && $request->hasPostData('auto_confirm_user')) {
             UserAngelType_confirm($user_angeltype_id, $user->id);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',
@@ -403,7 +482,7 @@ function user_angeltype_join_controller($angeltype)
  *
  * @return array
  */
-function user_angeltypes_controller()
+function user_angeltypes_controller(): array
 {
     $request = request();
     if (!$request->has('action')) {
@@ -426,4 +505,6 @@ function user_angeltypes_controller()
         default:
             throw_redirect(page_link_to('angeltypes'));
     }
+
+    return ['', ''];
 }

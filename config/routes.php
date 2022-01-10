@@ -39,6 +39,7 @@ $route->get('/news', 'NewsController@index');
 $route->get('/meetings', 'NewsController@meetings');
 $route->get('/news/{id:\d+}', 'NewsController@show');
 $route->post('/news/{id:\d+}', 'NewsController@comment');
+$route->post('/news/comment/{id:\d+}', 'NewsController@deleteComment');
 
 // FAQ
 $route->get('/faq', 'FaqController@index');
@@ -92,6 +93,16 @@ $route->addGroup(
                 $route->post('', 'Admin\\QuestionsController@delete');
                 $route->get('/{id:\d+}', 'Admin\\QuestionsController@edit');
                 $route->post('/{id:\d+}', 'Admin\\QuestionsController@save');
+            }
+        );
+
+        // User
+        $route->addGroup(
+            '/user/{id:\d+}',
+            // Shirts
+            function (RouteCollector $route) {
+                $route->get('/shirt', 'Admin\\UserShirtController@editShirt');
+                $route->post('/shirt', 'Admin\\UserShirtController@saveShirt');
             }
         );
 

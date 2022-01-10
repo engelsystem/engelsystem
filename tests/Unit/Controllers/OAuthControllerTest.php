@@ -5,6 +5,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\AuthController;
 use Engelsystem\Controllers\OAuthController;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
@@ -82,6 +83,7 @@ class OAuthControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\OAuthController::__construct
      * @covers \Engelsystem\Controllers\OAuthController::index
      * @covers \Engelsystem\Controllers\OAuthController::handleArrive
+     * @covers \Engelsystem\Controllers\OAuthController::getId
      */
     public function testIndexArrive()
     {
@@ -101,11 +103,9 @@ class OAuthControllerTest extends TestCase
         /** @var ResourceOwnerInterface|MockObject $resourceOwner */
         $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
         $this->setExpects($resourceOwner, 'toArray', null, [], $this->atLeastOnce());
-        $resourceOwner->expects($this->exactly(7))
+        $resourceOwner->expects($this->exactly(5))
             ->method('getId')
             ->willReturnOnConsecutiveCalls(
-                'other-provider-user-identifier',
-                'other-provider-user-identifier',
                 'other-provider-user-identifier',
                 'other-provider-user-identifier',
                 'provider-user-identifier',
@@ -123,6 +123,11 @@ class OAuthControllerTest extends TestCase
             $this->atLeastOnce()
         );
         $this->setExpects($provider, 'getResourceOwner', [$accessToken], $resourceOwner, $this->atLeastOnce());
+
+        /** @var EventDispatcher|MockObject $event */
+        $event = $this->createMock(EventDispatcher::class);
+        $this->app->instance('events.dispatcher', $event);
+        $this->setExpects($event, 'dispatch', ['oauth2.login'], null, 4);
 
         $this->authController->expects($this->atLeastOnce())
             ->method('loginUser')
@@ -241,18 +246,38 @@ class OAuthControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\OAuthController::index
+     * @covers \Engelsystem\Controllers\OAuthController::handleOAuthError
      */
     public function testIndexProviderError()
     {
+        /** @var AccessToken|MockObject $accessToken */
+        $accessToken = $this->createMock(AccessToken::class);
+
+        $thrown = false;
         /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
-        $provider->expects($this->once())
+        $provider->expects($this->exactly(2))
             ->method('getAccessToken')
             ->with('authorization_code', ['code' => 'lorem-ipsum-code'])
+            ->willReturnCallback(function () use (&$thrown, $accessToken) {
+                if (!$thrown) {
+                    $thrown = true;
+                    throw new IdentityProviderException(
+                        'Oops',
+                        42,
+                        ['error' => 'some_error', 'error_description' => 'Some kind of error']
+                    );
+                }
+
+                return $accessToken;
+            });
+        $provider->expects($this->once())
+            ->method('getResourceOwner')
+            ->with($accessToken)
             ->willThrowException(new IdentityProviderException(
-                'Oops',
-                42,
-                ['error' => 'some_error', 'error_description' => 'Some kind of error']
+                'Something\'s wrong!',
+                1337,
+                '500 Internal server error'
             ));
 
         $this->session->set('oauth2_state', 'some-internal-state');
@@ -263,8 +288,9 @@ class OAuthControllerTest extends TestCase
             ->withQueryParams(['code' => 'lorem-ipsum-code', 'state' => 'some-internal-state']);
 
         $controller = $this->getMock(['getProvider']);
-        $this->setExpects($controller, 'getProvider', ['testprovider'], $provider);
+        $this->setExpects($controller, 'getProvider', ['testprovider'], $provider, 2);
 
+        // Invalid state
         $exception = null;
         try {
             $controller->index($request);
@@ -274,6 +300,18 @@ class OAuthControllerTest extends TestCase
 
         $this->log->hasErrorThatContains('Some kind of error');
         $this->log->hasErrorThatContains('some_error');
+        $this->assertNotNull($exception, 'Exception not thrown');
+        $this->assertEquals('oauth.provider-error', $exception->getMessage());
+
+        // Error while getting data
+        $exception = null;
+        try {
+            $controller->index($request);
+        } catch (HttpNotFound $e) {
+            $exception = $e;
+        }
+
+        $this->log->hasErrorThatContains('500');
         $this->assertNotNull($exception, 'Exception not thrown');
         $this->assertEquals('oauth.provider-error', $exception->getMessage());
     }
@@ -325,7 +363,7 @@ class OAuthControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\OAuthController::index
-     * @covers \Engelsystem\Controllers\OAuthController::redirectRegisterOrThrowNotFound
+     * @covers \Engelsystem\Controllers\OAuthController::redirectRegister
      */
     public function testIndexRedirectRegister()
     {
@@ -389,6 +427,7 @@ class OAuthControllerTest extends TestCase
         $this->assertEquals('test-token', $this->session->get('oauth2_access_token'));
         $this->assertEquals('test-refresh-token', $this->session->get('oauth2_refresh_token'));
         $this->assertEquals(4242424242, $this->session->get('oauth2_expires_at')->unix());
+        $this->assertEquals(null, $this->session->get('oauth2_allow_registration'));
         $this->assertEquals(
             [
                 'name' => 'username',
@@ -402,6 +441,84 @@ class OAuthControllerTest extends TestCase
         $this->config->set('registration_enabled', false);
         $this->expectException(HttpNotFound::class);
         $controller->index($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::index
+     * @covers \Engelsystem\Controllers\OAuthController::getId
+     * @covers \Engelsystem\Controllers\OAuthController::redirectRegister
+     */
+    public function testIndexRedirectRegisterNestedInfo()
+    {
+        $accessToken = $this->createMock(AccessToken::class);
+        $this->setExpects($accessToken, 'getToken', null, 'test-token', $this->atLeastOnce());
+        $this->setExpects($accessToken, 'getRefreshToken', null, 'test-refresh-token', $this->atLeastOnce());
+        $this->setExpects($accessToken, 'getExpires', null, 4242424242, $this->atLeastOnce());
+
+        $config = $this->config->get('oauth');
+        $config['testprovider'] = array_merge($config['testprovider'], [
+            'nested_info' => true,
+            'id'          => 'nested.id',
+            'email'       => 'nested.email',
+            'username'    => 'nested.name',
+            'first_name'  => 'nested.first',
+            'last_name'   => 'nested.last',
+        ]);
+        $this->config->set('oauth', $config);
+
+        $this->config->set('registration_enabled', true);
+
+        /** @var ResourceOwnerInterface|MockObject $resourceOwner */
+        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $this->setExpects($resourceOwner, 'getId', null, null, $this->never());
+        $this->setExpects(
+            $resourceOwner,
+            'toArray',
+            null,
+            [
+                'nested' => [
+                    'id'    => 'new-provider-user-identifier',
+                    'name'  => 'testuser',
+                    'email' => 'foo.bar@localhost',
+                    'first' => 'Test',
+                    'last'  => 'Tester',
+                ],
+            ],
+            $this->atLeastOnce()
+        );
+
+        /** @var GenericProvider|MockObject $provider */
+        $provider = $this->createMock(GenericProvider::class);
+        $this->setExpects(
+            $provider,
+            'getAccessToken',
+            ['authorization_code', ['code' => 'lorem-ipsum-code']],
+            $accessToken,
+            $this->atLeastOnce()
+        );
+        $this->setExpects($provider, 'getResourceOwner', [$accessToken], $resourceOwner, $this->atLeastOnce());
+
+        $this->session->set('oauth2_state', 'some-internal-state');
+
+        $this->setExpects($this->auth, 'user', null, null, $this->atLeastOnce());
+
+        $this->setExpects($this->redirect, 'to', ['/register']);
+
+        $request = new Request();
+        $request = $request
+            ->withAttribute('provider', 'testprovider')
+            ->withQueryParams(['code' => 'lorem-ipsum-code', 'state' => 'some-internal-state']);
+
+        $controller = $this->getMock(['getProvider']);
+        $this->setExpects($controller, 'getProvider', ['testprovider'], $provider, $this->atLeastOnce());
+
+        $controller->index($request);
+        $this->assertEquals([
+            'email'      => 'foo.bar@localhost',
+            'name'       => 'testuser',
+            'first_name' => 'Test',
+            'last_name'  => 'Tester',
+        ], $this->session->get('form_data'));
     }
 
 
@@ -494,36 +611,15 @@ class OAuthControllerTest extends TestCase
 
         $this->app->instance('session', $this->session);
 
-        $this->authenticatedUser = new User([
-            'name'          => 'foo',
-            'password'      => '',
-            'email'         => 'foo@localhost',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $this->authenticatedUser->save();
+        $this->authenticatedUser = User::factory()->create();
         (new OAuth(['provider' => 'testprovider', 'identifier' => 'provider-user-identifier']))
             ->user()
             ->associate($this->authenticatedUser)
             ->save();
 
-        $this->otherUser = new User([
-            'name'          => 'bar',
-            'password'      => '',
-            'email'         => 'bar@localhost',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $this->otherUser->save();
+        $this->otherUser = User::factory()->create();
 
-        $this->otherAuthenticatedUser = new User([
-            'name'          => 'baz',
-            'password'      => '',
-            'email'         => 'baz@localhost',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $this->otherAuthenticatedUser->save();
+        $this->otherAuthenticatedUser = User::factory()->create();
         (new OAuth(['provider' => 'testprovider', 'identifier' => 'provider-baz-identifier']))
             ->user()
             ->associate($this->otherAuthenticatedUser)

@@ -7,6 +7,8 @@ use Engelsystem\Http\Request;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Twig\Extension\GlobalsInterface as GlobalsInterface;
 
+use function array_key_exists;
+
 class Globals extends TwigExtension implements GlobalsInterface
 {
     /** @var Authenticator */
@@ -33,10 +35,30 @@ class Globals extends TwigExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         $user = $this->auth->user();
+        $themes = config('themes');
+
+        if ($user === null) {
+            $themeId = config('theme');
+        } else {
+            $themeId = $user->settings->theme;
+        }
+
+        $query = $this->request->query->get('theme');
+        if (!is_null($query) && isset($themes[(int)$query])) {
+            $themeId = (int)$query;
+        }
+
+        if (array_key_exists($themeId, $themes) === false) {
+            $themeId = array_key_first($themes);
+        }
+
+        $theme = $themes[$themeId];
 
         return [
-            'user'    => $user ? $user : [],
+            'user'    => $user ?? [],
             'request' => $this->request,
+            'themeId' => $themeId,
+            'theme'   => $theme,
         ];
     }
 }

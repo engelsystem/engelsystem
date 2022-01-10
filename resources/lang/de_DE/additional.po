@@ -53,6 +53,9 @@ msgstr "Der Schichttyp konnte nicht gefunden werden."
 msgid "schedule.import.success"
 msgstr "Das Programm wurde erfolgreich importiert."
 
+msgid "shifts.filter.toggle"
+msgstr "Filter verstecken/anzeigen"
+
 msgid "validation.schedule-url.required"
 msgstr "Bitte gib eine Programm URL an."
 
@@ -74,16 +77,14 @@ msgstr "Die Minuten nach dem Talk müssen eine Zahl sein."
 msgid "news.comment.success"
 msgstr "Kommentar gespeichert."
 
+msgid "news.comment-delete.success"
+msgstr "Kommentar erfolgreich gelöscht."
+
 msgid "news.edit.success"
 msgstr "News erfolgreich aktualisiert."
 
 msgid "news.delete.success"
 msgstr "News erfolgreich gelöscht."
-
-msgid "news.edit.contains-html"
-msgstr ""
-"Diese Nachricht beinhaltet HTML. Wenn du sie speicherst gehen diese "
-"Formatierungen verloren!"
 
 msgid "oauth.invalid-state"
 msgstr "Ungültiger OAuth-Status"
@@ -132,3 +133,24 @@ msgstr "Es gibt eine neue News: %1$s"
 
 msgid "notification.news.new.text"
 msgstr "Du kannst sie dir unter %3$s anschauen."
+
+msgid "notification.angeltype.confirmed"
+msgstr "Du wurdest als %s bestätigt"
+
+msgid "notification.angeltype.confirmed.introduction"
+msgstr "Du wurdest von einem Supporter als %1$s bestätigt."
+
+msgid "notification.angeltype.confirmed.text"
+msgstr "Eine Beschreibung findest du unter %2$s"
+
+msgid "notification.angeltype.added"
+msgstr "Du wurdest als %s hinzugefügt"
+
+msgid "notification.angeltype.added.introduction"
+msgstr "Du wurdest von einem Supporter als %1$s hinzugefügt."
+
+msgid "notification.angeltype.added.text"
+msgstr "Eine Beschreibung findest du unter %2$s"
+
+msgid "user.edit.success"
+msgstr "Benutzer erfolgreich bearbeitet."

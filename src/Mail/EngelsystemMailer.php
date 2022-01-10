@@ -5,7 +5,7 @@ namespace Engelsystem\Mail;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Renderer;
-use Swift_Mailer as SwiftMailer;
+use Symfony\Component\Mailer\MailerInterface;
 
 class EngelsystemMailer extends Mailer
 {
@@ -19,11 +19,11 @@ class EngelsystemMailer extends Mailer
     protected $subjectPrefix = null;
 
     /**
-     * @param SwiftMailer $mailer
-     * @param Renderer    $view
-     * @param Translator  $translation
+     * @param MailerInterface $mailer
+     * @param Renderer|null   $view
+     * @param Translator|null $translation
      */
-    public function __construct(SwiftMailer $mailer, Renderer $view = null, Translator $translation = null)
+    public function __construct(MailerInterface $mailer, Renderer $view = null, Translator $translation = null)
     {
         parent::__construct($mailer);
 
@@ -37,7 +37,6 @@ class EngelsystemMailer extends Mailer
      * @param string               $template
      * @param array                $data
      * @param string|null          $locale
-     * @return int
      */
     public function sendViewTranslated(
         $to,
@@ -45,7 +44,7 @@ class EngelsystemMailer extends Mailer
         string $template,
         array $data = [],
         ?string $locale = null
-    ): int {
+    ): void {
         if ($to instanceof User) {
             $locale = $locale ?: $to->settings->language;
             $to = $to->contact->email ? $to->contact->email : $to->email;
@@ -62,13 +61,11 @@ class EngelsystemMailer extends Mailer
         }
 
         $subject = $this->translation ? $this->translation->translate($subject, $data) : $subject;
-        $sentMails = $this->sendView($to, $subject, $template, $data);
+        $this->sendView($to, $subject, $template, $data);
 
         if ($activeLocale) {
             $this->translation->setLocale($activeLocale);
         }
-
-        return $sentMails;
     }
 
     /**
@@ -78,13 +75,12 @@ class EngelsystemMailer extends Mailer
      * @param string          $subject
      * @param string          $template
      * @param array           $data
-     * @return int
      */
-    public function sendView($to, string $subject, string $template, array $data = []): int
+    public function sendView($to, string $subject, string $template, array $data = []): void
     {
         $body = $this->view->render($template, $data);
 
-        return $this->send($to, $subject, $body);
+        $this->send($to, $subject, $body);
     }
 
     /**
@@ -93,15 +89,14 @@ class EngelsystemMailer extends Mailer
      * @param string|string[] $to
      * @param string          $subject
      * @param string          $body
-     * @return int
      */
-    public function send($to, string $subject, string $body): int
+    public function send($to, string $subject, string $body): void
     {
         if ($this->subjectPrefix) {
-            $subject = sprintf('[%s] %s', $this->subjectPrefix, $subject);
+            $subject = sprintf('[%s] %s', $this->subjectPrefix, trim($subject));
         }
 
-        return parent::send($to, $subject, $body);
+        parent::send($to, $subject, $body);
     }
 
     /**

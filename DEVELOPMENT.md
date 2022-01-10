@@ -70,7 +70,7 @@ To view the output of `dump` call the following commands:
 ```bash
 vendor/bin/var-dump-server
 # or for running in docker
-docker exec -it engelsystem_dev_es_php_fpm_1 vendor/bin/var-dump-server
+docker exec -it engelsystem_dev-es_php_fpm-1 vendor/bin/var-dump-server
 ```
 
 For more information check out the Var Dump Server documentation: [Symfony VarDumper](https://symfony.com/components/VarDumper)
@@ -121,26 +121,26 @@ Run these commands once initially and then as required after changes
 
 ```bash
 # Install composer dependencies
-docker exec -it engelsystem_dev_es_workspace_1 composer i
+docker exec -it engelsystem_dev-es_workspace-1 composer i
 
 # Install node packages
-docker exec -it engelsystem_dev_es_workspace_1 yarn install
+docker exec -it engelsystem_dev-es_workspace-1 yarn install
 
 # Run a front-end build
-docker exec -it engelsystem_dev_es_workspace_1 yarn build
+docker exec -it engelsystem_dev-es_workspace-1 yarn build
 
 # Update the translation files
-docker exec -it engelsystem_dev_es_workspace_1 find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+docker exec -it engelsystem_dev-es_workspace-1 find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
 
 # Run the migrations
-docker exec -it engelsystem_dev_es_workspace_1 bin/migrate
+docker exec -it engelsystem_dev-es_workspace-1 bin/migrate
 ```
 
 While developing you may use the watch mode to rebuild the system on changes
 
 ```bash
 # Run a front-end build
-docker exec -it engelsystem_dev_es_workspace_1 yarn build:watch
+docker exec -it engelsystem_dev-es_workspace-1 yarn build:watch
 ```
 
 **Hint for using Xdebug with *PhpStorm***

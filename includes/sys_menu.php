@@ -60,24 +60,24 @@ function make_user_submenu()
     $user_submenu = make_language_select();
 
     if (auth()->can('user_settings') || auth()->can('logout')) {
-        $user_submenu[] = toolbar_item_divider();
+        $user_submenu[] = toolbar_dropdown_item_divider();
     }
 
     if (auth()->can('user_settings')) {
-        $user_submenu[] = toolbar_item_link(
+        $user_submenu[] = toolbar_dropdown_item(
             page_link_to('user_settings'),
-            'list-alt',
             __('Settings'),
-            $page == 'user_settings'
+            $page == 'user_settings',
+            'gear'
         );
     }
 
     if (auth()->can('logout')) {
-        $user_submenu[] = toolbar_item_link(
+        $user_submenu[] = toolbar_dropdown_item(
             page_link_to('logout'),
-            'log-out',
             __('Logout'),
-            $page == 'logout'
+            $page == 'logout',
+            'box-arrow-left',
         );
     }
 
@@ -116,7 +116,7 @@ function make_navigation()
         // path              => [name, permission]
         'admin_arrive'       => 'Arrive angels',
         'admin_active'       => 'Active angels',
-        'admin_user'         => 'All Angels',
+        'users'              => ['All Angels', 'admin_user'],
         'admin_free'         => 'Free angels',
         'admin/questions'    => ['Answer questions', 'question.edit'],
         'shifttypes'         => 'Shifttypes',
@@ -138,9 +138,8 @@ function make_navigation()
         }
 
         $title = ((array)$options)[0];
-        $admin_menu[] = toolbar_item_link(
+        $admin_menu[] = toolbar_dropdown_item(
             page_link_to($menu_page),
-            '',
             __($title),
             $menu_page == $page
         );
@@ -150,7 +149,7 @@ function make_navigation()
         $menu[] = toolbar_dropdown('', __('Admin'), $admin_menu);
     }
 
-    return '<ul class="nav navbar-nav">' . join("\n", $menu) . '</ul>';
+    return '<ul class="navbar-nav mb-2 mb-lg-0">' . join("\n", $menu) . '</ul>';
 }
 
 /**
@@ -187,13 +186,13 @@ function make_room_navigation($menu)
     $rooms = Rooms();
     $room_menu = [];
     if (auth()->can('admin_rooms')) {
-        $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', __('Manage rooms'));
+        $room_menu[] = toolbar_dropdown_item(page_link_to('admin_rooms'), __('Manage rooms'), false, 'list');
     }
     if (count($room_menu) > 0) {
-        $room_menu[] = toolbar_item_divider();
+        $room_menu[] = toolbar_dropdown_item_divider();
     }
     foreach ($rooms as $room) {
-        $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room->name);
+        $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'geo-alt');
     }
     if (count($room_menu) > 0) {
         $menu[] = toolbar_dropdown('map-marker', __('Rooms'), $room_menu);
@@ -215,9 +214,8 @@ function make_language_select()
     foreach (config('locales') as $locale => $name) {
         $url = url($request->getPathInfo(), ['set-locale' => $locale]);
 
-        $items[] = toolbar_item_link(
+        $items[] = toolbar_dropdown_item(
             htmlspecialchars($url),
-            '',
             $name,
             $locale == $activeLocale
         );
@@ -241,7 +239,7 @@ function admin_new_questions()
         return null;
     }
 
-    return '<a href="' . page_link_to('/admin/questions') . '">'
+    return '<a class="text-info" href="' . page_link_to('/admin/questions') . '">'
         . __('There are unanswered questions!')
         . '</a>';
 }

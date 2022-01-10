@@ -29,12 +29,7 @@ class NewsCommentsTest extends ModelTest
     {
         parent::setUp();
 
-        $this->user = User::create([
-            'name'     => 'lorem',
-            'password' => '',
-            'email'    => 'lorem@example.com',
-            'api_key'  => '',
-        ]);
+        $this->user = User::factory()->create();
 
         $this->news = News::create([
             'title'   => 'test title',

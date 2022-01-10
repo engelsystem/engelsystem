@@ -9,19 +9,31 @@
 {% endblock %}
 
 {% block comments %}
-    <div class="col-md-12">
+    <div class="col-md-12 mt-4">
         <h2>{{ __('news.comments') }}</h2>
 
         {% for comment in news.comments %}
-            <div class="panel panel-default">
-                <div class="panel-body">
+        <div class="card {% if theme.type == 'light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
+                <div class="card-body {{ m.type_bg_class() }}">
                     {{ comment.text|nl2br }}
                 </div>
-                <div class="panel-footer text-muted">
-                    {{ m.glyphicon('time') }}
-                    {{ comment.created_at.format(__('Y-m-d H:i')) }}
-
+                <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} text-muted d-flex align-items-center">
+                    <div class="me-3">
+                        {{ m.icon('clock') }}
+                        {{ comment.created_at.format(__('Y-m-d H:i')) }}
+                    </div>
                     {{ m.user(comment.user) }}
+
+                    {% if comment.user.id == user.id or has_permission_to('admin_news') or has_permission_to('comment.delete') %}
+                        <div class="ms-auto">
+                            <form
+                                action="{{ url('/news/comment/' ~ comment.id) }}" enctype="multipart/form-data"
+                                method="post">
+                                {{ csrf() }}
+                                {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'title': __('form.delete')}) }}
+                            </form>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
@@ -30,14 +42,12 @@
 
 {% block write_comment %}
     {% if has_permission_to('news_comments') %}
-        <div class="col-md-12">
+        <div class="col-md-12 mt-4">
             <h3>{{ __('news.comments.new') }}</h3>
 
             <form action="" enctype="multipart/form-data" method="post">
                 {{ csrf() }}
-
                 {{ f.textarea('comment', __('news.comments.message'), {'required': true}) }}
-
                 {{ f.submit() }}
             </form>
         </div>

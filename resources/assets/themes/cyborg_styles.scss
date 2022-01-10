@@ -1,0 +1,160 @@
+// cyborg_styles
+
+
+/*
+The MIT License (MIT)
+
+Copyright (c) 2013 Thomas Park
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+// Cyborg 3.2.0
+
+//== Types
+
+.messages .text-danger {
+  color: #fff;
+}
+
+.messages .text-info {
+  color: #fff;
+}
+
+.messages .caret {
+  color: #fff;
+}
+
+
+// Bootswatch
+// -----------------------------------------------------
+
+// Tables =====================================================================
+
+table,
+.table {
+  color: #fff;
+
+  a:not(.btn) {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .text-muted {
+    color: $text-muted;
+  }
+}
+
+.table-responsive > .table {
+  background-color: $table-bg;
+}
+
+// Forms ======================================================================
+
+.has-warning {
+  .help-block,
+  .control-label,
+  .form-control-feedback {
+    color: $warning;
+  }
+
+  .form-control,
+  .form-control:focus,
+  .input-group-addon {
+    border-color: $warning;
+  }
+}
+
+.has-error {
+  .help-block,
+  .control-label,
+  .form-control-feedback {
+    color: $danger;
+  }
+
+  .form-control,
+  .form-control:focus,
+  .input-group-addon {
+    border-color: $danger;
+  }
+}
+
+.has-success {
+  .help-block,
+  .control-label,
+  .form-control-feedback {
+    color: $success;
+  }
+
+  .form-control,
+  .form-control:focus,
+  .input-group-addon {
+    border-color: $success;
+  }
+}
+
+// Navs =======================================================================
+
+.nav-tabs,
+.nav-pills,
+.breadcrumb,
+.pager {
+
+  a {
+    color: #fff;
+  }
+}
+
+// Indicators =================================================================
+
+.alert {
+
+  .alert-link,
+  a {
+    color: $alert-warning-text;
+    text-decoration: underline;
+  }
+
+  .close {
+    text-decoration: none;
+  }
+}
+
+.close {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.4;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    opacity: 1;
+  }
+}
+
+// Progress bars ==============================================================
+
+// Containers =================================================================
+
+.jumbotron {
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+  }
+}

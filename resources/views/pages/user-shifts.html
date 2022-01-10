@@ -3,75 +3,79 @@
     <div class="row">
         <div class="col-md-6">
             <h1>%title%</h1>
-            <div class="form-group">%start_select%</div>
-            <div class="form-group">
-                <div class="input-group time">
-                    <input
-                        type="time" class="form-control" id="start_time" name="start_time" size="5"
-                        pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"
-                    >
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" title="Now" type="button">
-                            <span class="glyphicon glyphicon-time"></span>
-                        </button>
+            <div class="row align-items-center">
+                <div class="col-12 col-xxl-5 row pe-xxl-0">
+                    <div class="col-6 pe-xxl-0">%start_select%</div>
+                    <div class="col-6">
+                        <div class="input-group time" data-target-input="nearest">
+                            <input
+                                type="time" class="form-control" id="start_time" name="start_time" size="5"
+                                pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"
+                            >
+                            <div class="input-group-btn">
+                                <button class="btn btn-secondary" title="Now" type="button">
+                                    <span class="bi bi-clock"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xxl-1 text-center px-xxl-0">&#8211;</div>
+                <div class="col-12 col-xxl-5 row px-xxl-0">
+                    <div class="col-6 pe-xxl-0">%end_select%</div>
+                    <div class="col-6">
+                        <div class="input-group time" data-target-input="nearest">
+                            <input
+                                type="time" class="form-control" id="end_time" name="end_time" size="5"
+                                pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"
+                            >
+                            <div class="input-group-btn">
+                                <button class="btn btn-secondary" title="Now" type="button">
+                                    <span class="bi bi-clock"></span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            &#8211;
-            <div class="form-group">%end_select%</div>
-            <div class="form-group">
-                <div class="input-group time">
-                    <input
-                        type="time" class="form-control" id="end_time" name="end_time" size="5"
-                        pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"
-                    >
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" title="Now" type="button">
-                            <span class="glyphicon glyphicon-time"></span>
-                        </button>
-                    </div>
+            <div class="form-group d-print-none" style="margin-top: .5em">
+                <div class="btn-group mb-1">
+                    <a href="javascript:setDay(-1)" class="btn btn-secondary ">%set_yesterday%</a>
+                    <a href="javascript:setDay()" class="btn btn-secondary ">%set_today%</a>
+                    <a href="javascript:setDay(1)" class="btn btn-secondary ">%set_tomorrow%</a>
                 </div>
-            </div>
-            <div class="form-group hidden-print" style="margin-top: .5em">
-                <div class="btn-group">
-                    <a href="javascript:setDay(-1)" class="btn btn-default ">%set_yesterday%</a>
-                    <a href="javascript:setDay()" class="btn btn-default ">%set_today%</a>
-                    <a href="javascript:setDay(1)" class="btn btn-default ">%set_tomorrow%</a>
+                <div class="btn-group mb-1">
+                    <a href="javascript:setHours(-8)" class="btn btn-secondary ">%set_last_8h%</a>
+                    <a href="javascript:setHours(-4)" class="btn btn-secondary ">%set_last_4h%</a>
+                    <a href="javascript:setHours(4)" class="btn btn-secondary ">%set_next_4h%</a>
+                    <a href="javascript:setHours(8)" class="btn btn-secondary ">%set_next_8h%</a>
                 </div>
-                <div class="btn-group">
-                    <a href="javascript:setHours(-8)" class="btn btn-default ">%set_last_8h%</a>
-                    <a href="javascript:setHours(-4)" class="btn btn-default ">%set_last_4h%</a>
-                    <a href="javascript:setHours(4)" class="btn btn-default ">%set_next_4h%</a>
-                    <a href="javascript:setHours(8)" class="btn btn-default ">%set_next_8h%</a>
-                </div>
-            </div>
-            <div class="form-group hidden-print" style="margin-top: .5em">
-                <div class="btn-group">
+                <div class="btn-group mb-1">
                     %buttons%
                 </div>
             </div>
-            <div class="row hidden-print">
+            <div class="row d-print-none">
                 <div class="col-md-12">
                     <input class="btn btn-primary" type="submit" style="width:100%; margin: 1em 0" value="%filter%">
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <button class="btn btn-info btn-sm hidden-print" style="margin-top: 20px; margin-bottom:10px" type="button"
-                    data-toggle="collapse"
-                    data-target="#collapseShiftsFilterSelect" aria-expanded="true"
-                    aria-controls="collapseShiftsFilterSelect"
+            <button class="btn btn-info btn-sm mb-3 d-print-none" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapseShiftsFilterSelect"
+                    aria-expanded="true" aria-controls="collapseShiftsFilterSelect"
             >
-                collapse/show filters
+                %filter_toggle%
             </button>
-            <div class="collapse in" id="collapseShiftsFilterSelect">
+
+            <div class="collapse show d-print-none" id="collapseShiftsFilterSelect">
                 <div class="row">
-                    <div class="col-xs-4 col-xxs-12">%room_select%</div>
-                    <div class="col-xs-4 col-xxs-12">%type_select%</div>
-                    <div class="col-xs-4 col-xxs-12">%filled_select%</div>
+                    <div class="col col-xs-4 col-xxs-12">%room_select%</div>
+                    <div class="col col-xs-4 col-xxs-12">%type_select%</div>
+                    <div class="col col-xs-4 col-xxs-12">%filled_select%</div>
                 </div>
-                <div class="row hidden-print">
-                    <div class="col-md-12" style="margin: 1em 0">
+                <div class="row">
+                    <div class="col col-md-12 m-1">
                         <p>%task_notice%</p>
                     </div>
                 </div>
@@ -82,6 +86,6 @@
 
 %shifts_table%
 
-<div class="hidden-print">
+<div class="d-print-none">
     %ical_text%
 </div>

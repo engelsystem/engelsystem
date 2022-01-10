@@ -40,15 +40,13 @@ class SetLocaleTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockForAbstractClass(ResponseInterface::class);
 
-        $user = User::create([
-            'name'     => 'user',
-            'password' => '',
-            'email'    => 'foo@bar.baz',
-            'api_key'  => '',
-        ]);
-        $settings = new Settings(['language' => 'uf_UF', 'theme' => '']);
-        $settings->user()->associate($user);
-        $settings->save();
+        /** @var User $user */
+        $user = User::factory([
+                'name'  => 'user',
+                'email' => 'foo@bar.baz',
+            ])
+            ->has(Settings::factory(['language' => 'uf_UF']))
+            ->create();
 
         $locale = 'te_ST';
 

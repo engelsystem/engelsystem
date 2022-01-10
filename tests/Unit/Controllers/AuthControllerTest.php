@@ -141,9 +141,9 @@ class AuthControllerTest extends TestCase
         $session->set('foo', 'bar');
         $user = $this->createUser();
 
-        $redirect->expects($this->once())
+        $redirect->expects($this->exactly(2))
             ->method('to')
-            ->with('news')
+            ->withConsecutive(['news'], ['/test'])
             ->willReturn($response);
 
         $controller = new AuthController($response, $session, $redirect, $config, $auth);
@@ -152,6 +152,10 @@ class AuthControllerTest extends TestCase
         $this->assertFalse($session->has('foo'));
         $this->assertNotNull($user->last_login_at);
         $this->assertEquals(['user_id' => 42, 'locale' => 'de_DE'], $session->all());
+
+        // Redirect to previous page
+        $session->set('previous_page', '/test');
+        $controller->loginUser($user);
     }
 
     /**
@@ -185,22 +189,9 @@ class AuthControllerTest extends TestCase
      */
     protected function createUser(): User
     {
-        $user = new User([
-            'name'          => 'foo',
-            'password'      => '',
-            'email'         => '',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $user->forceFill(['id' => 42]);
-        $user->save();
-
-        $settings = new Settings(['language' => 'de_DE', 'theme' => '']);
-        $settings->user()
-            ->associate($user)
-            ->save();
-
-        return $user;
+        return User::factory(['id' => 42])
+            ->has(Settings::factory(['language' => 'de_DE']))
+            ->create();
     }
 
     /**

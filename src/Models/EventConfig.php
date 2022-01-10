@@ -50,7 +50,7 @@ class EventConfig extends BaseModel
      */
     public function getValueAttribute($value)
     {
-        $value = $this->fromJson($value);
+        $value = $value ? $this->fromJson($value) : null;
 
         /** @see \Illuminate\Database\Eloquent\Concerns\HasAttributes::castAttribute */
         if (!empty($value)) {

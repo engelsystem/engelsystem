@@ -43,7 +43,8 @@ abstract class AbstractHandler implements SessionHandlerInterface
      * @param int $maxLifetime
      * @return bool
      */
-    public function gc($maxLifetime): bool
+    #[\ReturnTypeWillChange]
+    public function gc($maxLifetime)
     {
         return true;
     }

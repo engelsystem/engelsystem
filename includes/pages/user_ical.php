@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 
 /**
@@ -54,6 +55,9 @@ function send_ical_from_shifts($shifts)
  */
 function make_ical_entry_from_shift($shift)
 {
+    $start = Carbon::createFromTimestamp($shift['start']);
+    $end = Carbon::createFromTimestamp($shift['end']);
+
     $output = "BEGIN:VEVENT\r\n";
     $output .= 'UID:' . md5($shift['start'] . $shift['end'] . $shift['name']) . "\r\n";
     $output .= 'SUMMARY:' . str_replace("\n", "\\n", $shift['name'])
@@ -61,8 +65,9 @@ function make_ical_entry_from_shift($shift)
     if (isset($shift['Comment'])) {
         $output .= 'DESCRIPTION:' . str_replace("\n", "\\n", $shift['Comment']) . "\r\n";
     }
-    $output .= 'DTSTART;TZID=Europe/Berlin:' . date("Ymd\THis", $shift['start']) . "\r\n";
-    $output .= 'DTEND;TZID=Europe/Berlin:' . date("Ymd\THis", $shift['end']) . "\r\n";
+    $output .= 'DTSTAMP:' . $start->utc()->format('Ymd\THis\Z') . "\r\n";
+    $output .= 'DTSTART:' . $start->utc()->format('Ymd\THis\Z') . "\r\n";
+    $output .= 'DTEND:' . $end->utc()->format('Ymd\THis\Z') . "\r\n";
     $output .= 'LOCATION:' . $shift['Name'] . "\r\n";
     $output .= "END:VEVENT\r\n";
     return $output;

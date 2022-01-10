@@ -175,8 +175,8 @@ class Authenticator
     }
 
     /**
-     * @param UserRepository $user
-     * @param string         $password
+     * @param User   $user
+     * @param string $password
      */
     public function setPassword(User $user, string $password)
     {

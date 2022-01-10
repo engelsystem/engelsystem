@@ -11,6 +11,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Models\OAuth;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
@@ -106,6 +107,7 @@ class OAuthController extends BaseController
             throw new HttpNotFound('oauth.invalid-state');
         }
 
+        $accessToken = null;
         try {
             $accessToken = $provider->getAccessToken(
                 'authorization_code',
@@ -114,22 +116,16 @@ class OAuthController extends BaseController
                 ]
             );
         } catch (IdentityProviderException $e) {
-            $response = $e->getResponseBody();
-            $response = is_array($response) ? json_encode($response) : $response;
-            $this->log->error(
-                '{provider} identity provider error: {error} {description}',
-                [
-                    'provider'    => $providerName,
-                    'error'       => $e->getMessage(),
-                    'description' => $response,
-                ]
-            );
-
-            throw new HttpNotFound('oauth.provider-error');
+            $this->handleOAuthError($e, $providerName);
         }
 
-        $resourceOwner = $provider->getResourceOwner($accessToken);
-        $resourceId = $resourceOwner->getId();
+        $resourceOwner = null;
+        try {
+            $resourceOwner = $provider->getResourceOwner($accessToken);
+        } catch (IdentityProviderException $e) {
+            $this->handleOAuthError($e, $providerName);
+        }
+        $resourceId = $this->getId($providerName, $resourceOwner);
 
         /** @var OAuth|null $oauth */
         $oauth = $this->oauth
@@ -138,7 +134,7 @@ class OAuthController extends BaseController
             ->where('identifier', $resourceId)
             ->get()
             // Explicit case sensitive comparison using PHP as some DBMS collations are case sensitive and some arent
-            ->where('identifier', '===', $resourceId)
+            ->where('identifier', '===', (string)$resourceId)
             ->first();
 
         $expirationTime = $accessToken->getExpires();
@@ -161,7 +157,7 @@ class OAuthController extends BaseController
         if (!$oauth && $user && $connectProvider && $connectProvider == $providerName) {
             $oauth = new OAuth([
                 'provider'      => $providerName,
-                'identifier'    => $resourceOwner->getId(),
+                'identifier'    => $resourceId,
                 'access_token'  => $accessToken->getToken(),
                 'refresh_token' => $accessToken->getRefreshToken(),
                 'expires_at'    => $expirationTime,
@@ -172,17 +168,22 @@ class OAuthController extends BaseController
 
             $this->log->info(
                 'Connected OAuth user {user} using {provider}',
-                ['provider' => $providerName, 'user' => $resourceOwner->getId()]
+                ['provider' => $providerName, 'user' => $resourceId]
             );
             $this->addNotification('oauth.connected');
         }
 
         $config = $this->config->get('oauth')[$providerName];
-        $userdata = new Collection($resourceOwner->toArray());
+        $resourceData = $resourceOwner->toArray();
+        if (!empty($config['nested_info'])) {
+            $resourceData = Arr::dot($resourceData);
+        }
+
+        $userdata = new Collection($resourceData);
         if (!$oauth) {
-            return $this->redirectRegisterOrThrowNotFound(
+            return $this->redirectRegister(
                 $providerName,
-                $resourceOwner->getId(),
+                $resourceId,
                 $accessToken,
                 $config,
                 $userdata
@@ -193,7 +194,10 @@ class OAuthController extends BaseController
             $this->handleArrive($providerName, $oauth, $resourceOwner);
         }
 
-        return $this->authController->loginUser($oauth->user);
+        $response = $this->authController->loginUser($oauth->user);
+        event('oauth2.login', ['provider' => $providerName, 'data' => $userdata]);
+
+        return $response;
     }
 
     /**
@@ -255,6 +259,22 @@ class OAuthController extends BaseController
     }
 
     /**
+     * @param string        $providerName
+     * @param ResourceOwner $resourceOwner
+     * @return mixed
+     */
+    protected function getId(string $providerName, ResourceOwner $resourceOwner)
+    {
+        $config = $this->config->get('oauth')[$providerName];
+        if (empty($config['nested_info'])) {
+            return $resourceOwner->getId();
+        }
+
+        $data = Arr::dot($resourceOwner->toArray());
+        return $data[$config['id']];
+    }
+
+    /**
      * @param string $provider
      */
     protected function requireProvider(string $provider): void
@@ -301,11 +321,33 @@ class OAuthController extends BaseController
             'Set user {name} ({id}) as arrived via {provider} user {user}',
             [
                 'provider' => $providerName,
-                'user'     => $resourceOwner->getId(),
+                'user'     => $this->getId($providerName, $resourceOwner),
                 'name'     => $user->name,
                 'id'       => $user->id
             ]
         );
+    }
+
+    /**
+     * @param IdentityProviderException $e
+     * @param string                    $providerName
+     *
+     * @throws HttpNotFound
+     */
+    protected function handleOAuthError(IdentityProviderException $e, string $providerName): void
+    {
+        $response = $e->getResponseBody();
+        $response = is_array($response) ? json_encode($response) : $response;
+        $this->log->error(
+            '{provider} identity provider error: {error} {description}',
+            [
+                'provider'    => $providerName,
+                'error'       => $e->getMessage(),
+                'description' => $response,
+            ]
+        );
+
+        throw new HttpNotFound('oauth.provider-error');
     }
 
     /**
@@ -317,21 +359,29 @@ class OAuthController extends BaseController
      *
      * @return Response
      */
-    protected function redirectRegisterOrThrowNotFound(
+    protected function redirectRegister(
         string $providerName,
         string $providerUserIdentifier,
         AccessTokenInterface $accessToken,
         array $config,
         Collection $userdata
     ): Response {
-        if (!$this->config->get('registration_enabled')) {
+        $config = array_merge(
+            [
+                'username'           => null,
+                'email'              => null,
+                'first_name'         => null,
+                'last_name'          => null,
+                'allow_registration' => null,
+                'groups'             => null,
+            ],
+            $config
+        );
+
+        if (!$this->config->get('registration_enabled') && !$config['allow_registration']) {
             throw new HttpNotFound('oauth.not-found');
         }
 
-        $config = array_merge(
-            ['username' => null, 'email' => null, 'first_name' => null, 'last_name' => null],
-            $config
-        );
         $this->session->set(
             'form_data',
             [
@@ -341,6 +391,7 @@ class OAuthController extends BaseController
                 'last_name'  => $userdata->get($config['last_name']),
             ],
         );
+        $this->session->set('oauth2_groups', $userdata->get($config['groups'], []));
         $this->session->set('oauth2_connect_provider', $providerName);
         $this->session->set('oauth2_user_id', $providerUserIdentifier);
 
@@ -349,6 +400,7 @@ class OAuthController extends BaseController
         $this->session->set('oauth2_access_token', $accessToken->getToken());
         $this->session->set('oauth2_refresh_token', $accessToken->getRefreshToken());
         $this->session->set('oauth2_expires_at', $expirationTime);
+        $this->session->set('oauth2_allow_registration', $config['allow_registration']);
 
         return $this->redirector->to('/register');
     }

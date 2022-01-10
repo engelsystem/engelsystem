@@ -2732,6 +2732,12 @@ msgstr "Your password is incorrect. Please try it again."
 msgid "form.submit"
 msgstr "Submit"
 
+msgid "login.login"
+msgstr "Login"
+
+msgid "page.403.login"
+msgstr "Please log in."
+
 msgid "page.404.text"
 msgstr ""
 "This page could not be found or you don't have permission to view it. "
@@ -2765,7 +2771,7 @@ msgid "form.save"
 msgstr "Save"
 
 msgid "form.edit"
-msgstr "Bearbeiten"
+msgstr "Edit"
 
 msgid "form.preview"
 msgstr "Preview"
@@ -2854,6 +2860,9 @@ msgstr "+"
 msgid "news.is_meeting"
 msgstr "[Meeting]"
 
+msgid "news.read_more"
+msgstr "Continue reading"
+
 msgid "news.updated"
 msgstr "Updated"
 
@@ -2883,6 +2892,9 @@ msgstr "Pin to top"
 
 msgid "news.edit.message"
 msgstr "Message"
+
+msgid "news.edit.hint"
+msgstr "You can use Markdown and the [more] tag"
 
 msgid "form.search"
 msgstr "Search"
@@ -2941,6 +2953,9 @@ msgstr "Disconnect"
 msgid "faq.faq"
 msgstr "FAQ"
 
+msgid "faq.questions_link"
+msgstr "If you don't find an answer, you can <a href=\"%s\">ask the heaven</a>."
+
 msgid "faq.edit"
 msgstr "Edit FAQ entry"
 
@@ -2954,10 +2969,13 @@ msgid "faq.message"
 msgstr "Answer"
 
 msgid "question.questions"
-msgstr "Fragen"
+msgstr "Questions"
+
+msgid "question.faq_link"
+msgstr "For general questions, have a look at our <a href=\"%s\">FAQ</a>."
 
 msgid "question.add"
-msgstr "Ask"
+msgstr "Ask a question"
 
 msgid "question.edit"
 msgstr "Edit question"
@@ -2967,3 +2985,24 @@ msgstr "Question"
 
 msgid "question.answer"
 msgstr "Answer"
+
+msgid "user.edit.shirt"
+msgstr "Edit shirt"
+
+msgid "form.shirt"
+msgstr "Shirt"
+
+msgid "user.shirt_size"
+msgstr "Shirt size"
+
+msgid "user.active"
+msgstr "Active"
+
+msgid "user.force_active"
+msgstr "Active (forced)"
+
+msgid "user.arrived"
+msgstr "Arrived"
+
+msgid "user.got_shirt"
+msgstr "Got shirt"

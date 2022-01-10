@@ -90,14 +90,7 @@ class QuestionsControllerTest extends ControllerTest
      */
     public function testDeleteNotOwn()
     {
-        $otherUser = new User([
-            'name'          => 'bar',
-            'password'      => '',
-            'email'         => '.',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $otherUser->save();
+        $otherUser = User::factory()->create();
         (new Question([
             'user_id' => $otherUser->id,
             'text'    => 'Lorem?',
@@ -189,14 +182,7 @@ class QuestionsControllerTest extends ControllerTest
 
         $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
 
-        $this->user = new User([
-            'name'          => 'foo',
-            'password'      => '',
-            'email'         => '',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $this->user->save();
+        $this->user = User::factory()->create();
         $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
 
         (new Question([

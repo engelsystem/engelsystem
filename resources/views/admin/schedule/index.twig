@@ -10,7 +10,7 @@
             {% block content_title %}{{ title }}{% endblock %}
 
             {% if is_index|default(false) %}
-                {{ m.button(m.glyphicon('plus'), url('/admin/schedule/edit')) }}
+                {{ m.button(m.icon('plus-lg'), url('/admin/schedule/edit'), 'secondary') }}
             {% endif %}
         </h1>
 
@@ -40,12 +40,12 @@
                                         <div class="btn-group">
                                             <a
                                                 href="{{ url('/admin/schedule/load/' ~ schedule.id) }}"
-                                                class="btn btn-xs btn-default">
+                                                class="btn btn-sm btn-secondary">
                                                 {{ __('form.import') }}
                                             </a>
                                             <a
                                                 href="{{ url('/admin/schedule/edit/' ~ schedule.id) }}"
-                                                class="btn btn-xs btn-default">
+                                                class="btn btn-sm btn-secondary">
                                                 {{ __('form.edit') }}
                                             </a>
                                         </div>

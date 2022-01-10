@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 use Engelsystem\Models\User\User;
 
 /**
@@ -143,6 +143,21 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user_id)
 }
 
 /**
+ * Get all unconfirmed Users for given Angeltype
+ *
+ * @param int $angeltype_id
+ */
+function UserAngelTypes_all_unconfirmed($angeltype_id)
+{
+    return DB::select('
+        SELECT *
+        FROM `UserAngelTypes`
+        WHERE `angeltype_id`=?
+        AND `confirm_user_id` IS NULL
+    ', [$angeltype_id]);
+}
+
+/**
  * Confirm an UserAngelType with confirming user.
  *
  * @param int $user_angeltype_id
@@ -238,15 +253,27 @@ function UserAngelType_by_User_and_AngelType($userId, $angeltype)
  * Get an UserAngelTypes by user
  *
  * @param int $userId
+ * @param bool $onlyConfirmed
  * @return array[]|null
  */
-function UserAngelTypes_by_User($userId)
+function UserAngelTypes_by_User($userId, $onlyConfirmed=false)
 {
-    return DB::select('
+    return DB::select(
+        '
             SELECT *
             FROM `UserAngelTypes`
+            ' . ($onlyConfirmed ? 'LEFT JOIN AngelTypes AS a ON a.id=UserAngelTypes.angeltype_id' : '') . '
             WHERE `user_id`=?
-        ',
+        '
+        . (
+        $onlyConfirmed ? 'AND (
+                a.`restricted`=0
+                OR (
+                    NOT `UserAngelTypes`.`confirm_user_id` IS NULL
+                    OR `UserAngelTypes`.`id` IS NULL
+                )
+            )' : ''
+        ),
         [$userId]
     );
 }

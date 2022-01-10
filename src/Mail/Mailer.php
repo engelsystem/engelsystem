@@ -2,12 +2,12 @@
 
 namespace Engelsystem\Mail;
 
-use Swift_Mailer as SwiftMailer;
-use Swift_Message as SwiftMessage;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class Mailer
 {
-    /** @var SwiftMailer */
+    /** @var MailerInterface */
     protected $mailer;
 
     /** @var string */
@@ -16,7 +16,7 @@ class Mailer
     /** @var string */
     protected $fromName = null;
 
-    public function __construct(SwiftMailer $mailer)
+    public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
     }
@@ -27,18 +27,16 @@ class Mailer
      * @param string|string[] $to
      * @param string          $subject
      * @param string          $body
-     * @return int
      */
-    public function send($to, string $subject, string $body): int
+    public function send($to, string $subject, string $body): void
     {
-        /** @var SwiftMessage $message */
-        $message = $this->mailer->createMessage();
-        $message->setTo((array)$to)
-            ->setFrom($this->fromAddress, $this->fromName)
-            ->setSubject($subject)
-            ->setBody($body);
+        $message = (new Email())
+            ->to(...(array)$to)
+            ->from(sprintf('%s <%s>', $this->fromName, $this->fromAddress))
+            ->subject($subject)
+            ->text($body);
 
-        return $this->mailer->send($message);
+        $this->mailer->send($message);
     }
 
     /**

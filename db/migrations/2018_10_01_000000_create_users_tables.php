@@ -93,7 +93,7 @@ class CreateUsersTables extends Migration
                     'password'      => $data->Passwort,
                     'email'         => $data->email,
                     'api_key'       => $data->api_key,
-                    'last_login_at' => Carbon::createFromTimestamp($data->lastLogIn),
+                    'last_login_at' => $data->lastLogIn ? Carbon::createFromTimestamp($data->lastLogIn) : null,
                 ]);
                 $user->setAttribute('id', $data->UID);
                 if (!in_array($data->CreateDate, $emptyDates)) {
@@ -130,6 +130,9 @@ class CreateUsersTables extends Migration
                     'email_human'     => $data->email_by_human_allowed,
                     'email_shiftinfo' => $data->email_shiftinfo,
                 ]);
+                unset($settings->email_news);
+                unset($settings->email_goody);
+
                 $settings->user()
                     ->associate($user)
                     ->save();

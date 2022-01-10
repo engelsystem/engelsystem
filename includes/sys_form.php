@@ -11,7 +11,7 @@ use Carbon\Carbon;
  */
 function form_hidden($name, $value)
 {
-    return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
+    return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" />';
 }
 
 /**
@@ -24,19 +24,17 @@ function form_hidden($name, $value)
  */
 function form_spinner($name, $label, $value)
 {
-    $value = htmlspecialchars($value);
+    $value = htmlspecialchars((string)$value);
 
     return form_element($label, '
         <div class="input-group">
             <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . $value . '" />
-            <div class="input-group-btn">
-                <button id="spinner-' . $name . '-down" class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-minus"></span>
-                </button>
-                <button id="spinner-' . $name . '-up" class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-            </div>
+            <button id="spinner-' . $name . '-down" class="btn btn-secondary" type="button">
+                ' . icon('dash-lg') . '
+            </button>
+            <button id="spinner-' . $name . '-up" class="btn btn-secondary" type="button">
+                ' . icon('plus-lg') . '
+            </button>
         </div>
         <script type="text/javascript">
             $(\'#spinner-' . $name . '-down\').click(function() {
@@ -70,9 +68,9 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
 
     return form_element($label, '
-    <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
-        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '" autocomplete="off">'
-        . '<span class="input-group-addon">' . glyph('th') . '</span>
+    <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '" data-target-input="nearest">
+        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars((string)$value) . '" autocomplete="off">'
+        . '<span class="input-group-text">' . icon('grid-3x3-gap-fill') . '</span>
     </div>
     ', $dom_id);
 }
@@ -94,12 +92,12 @@ function form_datetime(string $name, string $label, $value)
     }
 
     return form_element($label, sprintf('
-    <div class="input-group datetime" id="%s">
+    <div class="input-group datetime" id="%s" data-target-input="nearest">
         <input type="datetime-local" placeholder="YYYY-MM-DD HH:MM" name="%s"
-            class="form-control" value="%s" autocomplete="off">'
-        . '<span class="input-group-addon">' . glyph('th') . '</span>
+            class="form-control" value="%s" autocomplete="off" data-target="#%s">'
+        . '<span class="input-group-text">' . icon('grid-3x3-gap-fill') . '</span>
     </div>
-    ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : '')), $dom_id);
+    ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : ''), $dom_id), $dom_id);
 }
 
 /**
@@ -180,7 +178,7 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
     }
 
     return '<div class="checkbox"><label>'
-        . '<input type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars($value) . '" '
+        . '<input type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
         . ($selected ? ' checked="checked"' : '') . ' /> '
         . $label
         . '</label></div>';
@@ -198,7 +196,7 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
 function form_radio($name, $label, $selected, $value)
 {
     return '<div class="radio">'
-        . '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '" '
+        . '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
         . ($selected ? ' checked="checked"' : '') . ' /> '
         . $label
         . '</label></div>';
@@ -214,7 +212,7 @@ function form_radio($name, $label, $selected, $value)
 function form_info($label, $text = '')
 {
     if ($label == '') {
-        return '<span class="help-block">' . glyph('info-sign') . $text . '</span>';
+        return '<span class="help-block">' . icon('info-circle') . $text . '</span>';
     }
     if ($text == '') {
         return '<h4>' . $label . '</h4>';
@@ -257,10 +255,11 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
  * @param bool        $disabled
  * @param int|null    $maxlength
  * @param string|null $autocomplete
+ * @param string|null $class
  *
  * @return string
  */
-function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null)
+function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null, $class = '')
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
@@ -269,8 +268,9 @@ function form_text($name, $label, $value, $disabled = false, $maxlength = null, 
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars($value) . '"' . $maxlength . $disabled . $autocomplete . '/>',
-        'form_' . $name
+        . '" value="' . htmlspecialchars((string)$value) . '"' . $maxlength . $disabled . $autocomplete . '/>',
+        'form_' . $name,
+        $class
     );
 }
 
@@ -288,7 +288,7 @@ function form_text_placeholder($name, $placeholder, $value, $disabled = false)
     $disabled = $disabled ? ' disabled="disabled"' : '';
     return form_element('',
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars($value) . '" placeholder="' . $placeholder
+        . '" value="' . htmlspecialchars((string)$value) . '" placeholder="' . $placeholder
         . '" ' . $disabled . '/>'
     );
 }
@@ -313,7 +313,7 @@ function form_email($name, $label, $value, $disabled = false, $autocomplete = nu
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="'
-        . htmlspecialchars($value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
+        . htmlspecialchars((string)$value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
         'form_' . $name
     );
 }
@@ -391,7 +391,7 @@ function form_textarea($name, $label, $value, $disabled = false)
     return form_element(
         $label,
         '<textarea rows="5" class="form-control" id="form_' . $name . '" name="'
-        . $name . '" ' . $disabled . '>' . htmlspecialchars($value) . '</textarea>',
+        . $name . '" ' . $disabled . '>' . htmlspecialchars((string)$value) . '</textarea>',
         'form_' . $name
     );
 }
@@ -404,14 +404,16 @@ function form_textarea($name, $label, $value, $disabled = false)
  * @param string[] $values
  * @param string   $selected
  * @param string   $selectText
+ * @param string   $class
  * @return string
  */
-function form_select($name, $label, $values, $selected, $selectText = '')
+function form_select($name, $label, $values, $selected, $selectText = '', $class = '')
 {
     return form_element(
         $label,
         html_select_key('form_' . $name, $name, $values, $selected, $selectText),
-        'form_' . $name
+        'form_' . $name,
+        $class
     );
 }
 
@@ -421,15 +423,21 @@ function form_select($name, $label, $values, $selected, $selectText = '')
  * @param string $label
  * @param string $input
  * @param string $for
+ * @param string $class
  * @return string
  */
-function form_element($label, $input, $for = '')
+function form_element($label, $input, $for = '', $class = '')
 {
+    $class = $class ? ' ' . $class : '';
+
     if (empty($label)) {
-        return '<div class="form-group">' . $input . '</div>';
+        return '<div class="mb-3' . $class . '">' . $input . '</div>';
     }
 
-    return '<div class="form-group">' . '<label for="' . $for . '">' . $label . '</label>' . $input . '</div>';
+    return '<div class="mb-3' . $class . '">'
+        . '<label class="form-label" for="' . $for . '">' . $label . '</label>'
+        . $input
+        . '</div>';
 }
 
 /**
@@ -440,11 +448,13 @@ function form_element($label, $input, $for = '')
  * @param bool     $inline
  * @return string
  */
-function form($elements, $action = '', $inline = false)
+function form($elements, $action = '', $inline = false, $btnGroup = false)
 {
-    return '<form action="' . $action . '" enctype="multipart/form-data" method="post"' . ($inline ? ' style="float:left"' : '') . '>'
-        . form_csrf()
+    return '<form action="' . $action . '" enctype="multipart/form-data" method="post"'
+        . ($btnGroup ? ' class="btn-group"' : '')
+        . ($inline ? ' style="float:left"' : '') . '>'
         . join($elements)
+        . form_csrf()
         . '</form>';
 }
 

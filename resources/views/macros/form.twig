@@ -1,7 +1,7 @@
 {% macro input(name, label, type, opt) %}
-    <div class="form-group">
+    <div class="mb-3">
         {% if label -%}
-            <label for="{{ name }}"{% if opt.hide_label|default(false) %} class="sr-only"{% endif %}>{{ label }}</label>
+            <label for="{{ name }}" class="form-label {% if opt.hide_label|default(false) %}sr-only{% endif %}">{{ label }}</label>
         {%- endif %}
         <input
             type="{{ type|default('text') }}" class="form-control"
@@ -22,9 +22,9 @@
 {%- endmacro %}
 
 {% macro textarea(name, label, opt) %}
-    <div class="form-group">
+    <div class="mb-3">
         {% if label -%}
-            <label for="{{ name }}">{{ label }}</label>
+            <label class="form-label" for="{{ name }}">{{ label }}</label>
         {%- endif %}
         <textarea class="form-control" id="{{ name }}" name="{{ name }}"
             {%- if opt.required|default(false) %}
@@ -38,23 +38,24 @@
 {%- endmacro %}
 
 {% macro select(name, data, label, selected) %}
-    <div class="form-group">
+    <div class="mb-3">
         {% if label -%}
-            <label for="{{ name }}">{{ label }}</label>
+            <label class="form-label" for="{{ name }}">{{ label }}</label>
         {% endif %}
         <select id="{{ name }}" name="{{ name }}" class="form-control">
             {% for value,decription in data -%}
-                <option value="{{ value }}" {% if value == selected %} selected{% endif %}>{{ decription }}</option>
+                <option value="{{ value }}"{% if value == selected %} selected{% endif %}>{{ decription }}</option>
             {% endfor %}
         </select>
     </div>
 {%- endmacro %}
 
-{% macro checkbox(name, label, checked, value) %}
-    <div class="checkbox">
+{% macro checkbox(name, label, checked, value, disabled) %}
+    <div class="form-check mb-3">
         <label>
-            <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}"
+            <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}" class="form-check-input"
                 {%- if checked|default(false) %} checked{% endif %}
+                {%- if disabled|default(false) %} disabled{% endif %}
             >
             {{ label }}
         </label>
@@ -66,7 +67,9 @@
 {%- endmacro %}
 
 {% macro button(label, opt) %}
-    <button class="btn btn-{{ opt.btn_type|default('primary') }} btn-{{ opt.btn_size|default('m') }}"
+    <button
+        class="btn btn-{{ opt.btn_type|default('secondary') }}
+        {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}"
         {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
         {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
         {%- if opt.title is defined %} title="{{ opt.title }}"{% endif %}
@@ -77,5 +80,15 @@
 {%- endmacro %}
 
 {% macro submit(label, opt) %}
-    {{ _self.button(label|default(__('form.submit')), opt|default({})|merge({'type': 'submit'})) }}
+    {{ _self.button(label|default(__('form.submit')), {'type': 'submit', 'btn_type': 'primary'}|merge(opt|default({}))) }}
+{%- endmacro %}
+
+{% macro switch(name, label, checked, opt) %}
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ opt.value|default('1') }}"
+            {%- if checked|default(false) %} checked{% endif %}
+            {%- if opt.disabled|default(false) %} disabled{% endif %}
+        >
+        <label class="form-check-label" for="{{ name }}">{{ label }}</label>
+    </div>
 {%- endmacro %}

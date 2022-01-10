@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
@@ -408,14 +408,14 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
 
         if (
             in_array(ShiftsFilter::FILLED_FREE, $shiftsFilter->getFilled())
-            && $taken < $needed_angels_count
+            && $needed_angels_count > 0
         ) {
             $filtered_shifts[] = $shift;
         }
 
         if (
             in_array(ShiftsFilter::FILLED_FILLED, $shiftsFilter->getFilled())
-            && $taken >= $needed_angels_count
+            && $needed_angels_count == 0
         ) {
             $filtered_shifts[] = $shift;
         }

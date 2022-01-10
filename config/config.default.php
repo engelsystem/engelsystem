@@ -49,7 +49,7 @@ return [
 
     // Email config
     'email'                   => [
-        // Can be mail, smtp, sendmail or log
+        // Can be mail, smtp, sendmail or log or an symfony mailer dsn string like smtps://[usr]:[pass]@smtp.foo.bar:465
         'driver' => env('MAIL_DRIVER', 'mail'),
         'from'   => [
             // From address of all emails
@@ -59,12 +59,18 @@ return [
 
         'host'       => env('MAIL_HOST', 'localhost'),
         'port'       => env('MAIL_PORT', 587),
-        // Transport encryption like tls (for starttls) or ssl
-        'encryption' => env('MAIL_ENCRYPTION', null),
+        // If tls transport encryption should be used
+        'tls'        => env('MAIL_TLS', null),
         'username'   => env('MAIL_USERNAME'),
         'password'   => env('MAIL_PASSWORD'),
         'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
     ],
+
+    # Your privacy@ contact address
+    'privacy_email' => '',
+
+    // Initial admin password
+    'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),
 
     'oauth'                   => [
         // '[name]' => [config]
@@ -93,12 +99,25 @@ return [
             'first_name' => 'first-name',
             // Info last name field (optional)
             'last_name' => 'last-name',
-            // User URL to provider, shown on provider settings page (optional)
+            // User URL to provider, linked on provider settings page (optional)
             'url' => '[provider page]',
+            // Whether info attributes are nested arrays (optional)
+            // For example {"user":{"name":"foo"}} can be accessed using user.name
+            'nested_info' => false,
             // Only show after clicking the page title (optional)
             'hidden' => false,
             // Mark user as arrived when using this provider (optional)
             'mark_arrived' => false,
+            // Allow registration even if disabled in config (optional)
+            'allow_registration' => null,
+            // Auto join teams
+            // Info groups field (optional)
+            'groups' => 'groups',
+            // Groups to team (angeltype) mapping (optional)
+            'teams' => [
+                '/Lorem' => 4, // 4 being the ID of the angeltype
+                '/Foo Mod' => ['id' => 5, 'supporter' => true], // 5 being the ID of the angeltype
+            ],
         ],
         */
     ],
@@ -106,24 +125,87 @@ return [
     // Default theme, 1=style1.css
     'theme'                   => env('THEME', 1),
 
-    // Available themes
-    'available_themes'        => [
-        '15' => 'Engelsystem DiVOC R2R',
-        '14' => 'Engelsystem rC3 teal (2020)',
-        '13' => 'Engelsystem rC3 violet (2020)',
-        '12' => 'Engelsystem 36c3 (2019)',
-        '10' => 'Engelsystem cccamp19 green (2019)',
-        '9'  => 'Engelsystem cccamp19 yellow (2019)',
-        '8'  => 'Engelsystem cccamp19 blue (2019)',
-        '7'  => 'Engelsystem 35c3 dark (2018)',
-        '6'  => 'Engelsystem 34c3 dark (2017)',
-        '5'  => 'Engelsystem 34c3 light (2017)',
-        '4'  => 'Engelsystem 33c3 (2016)',
-        '3'  => 'Engelsystem 32c3 (2015)',
-        '2'  => 'Engelsystem cccamp15',
-        '11' => 'Engelsystem high contrast',
-        '0'  => 'Engelsystem light',
-        '1'  => 'Engelsystem dark',
+    'themes' => [
+        15 => [
+            'name' => 'Engelsystem rC3 (2021)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark',
+        ],
+        14 => [
+            'name' => 'Engelsystem rC3 teal (2020)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        13 => [
+            'name' => 'Engelsystem rC3 violet (2020)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        12 => [
+            'name' => 'Engelsystem 36c3 (2019)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        10 => [
+            'name' => 'Engelsystem cccamp19 green (2019)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        9 => [
+            'name' => 'Engelsystem cccamp19 yellow (2019)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        8 => [
+            'name' => 'Engelsystem cccamp19 blue (2019)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        7 => [
+            'name' => 'Engelsystem 35c3 dark (2018)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-primary bg-black border-primary',
+        ],
+        6 => [
+            'name' => 'Engelsystem 34c3 dark (2017)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        5 => [
+            'name' => 'Engelsystem 34c3 light (2017)',
+            'type' => 'light',
+            'navbar_classes' => 'navbar-light bg-light',
+        ],
+        4 => [
+            'name' => 'Engelsystem 33c3 (2016)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-body border-dark',
+        ],
+        3 => [
+            'name' => 'Engelsystem 32c3 (2015)',
+            'type' => 'light',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        2 => [
+            'name' => 'Engelsystem cccamp15',
+            'type' => 'light',
+            'navbar_classes' => 'navbar-light bg-light',
+        ],
+        11 => [
+            'name' => 'Engelsystem high contrast',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        0 => [
+            'name' => 'Engelsystem light',
+            'type' => 'light',
+            'navbar_classes' => 'navbar-light bg-light',
+        ],
+        1 => [
+            'name' => 'Engelsystem dark',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
     ],
 
     // Redirect to this site after logging in or when pressing the top-left button
@@ -182,6 +264,9 @@ return [
     // Enables the T-Shirt configuration on signup and profile
     'enable_tshirt_size'      => (bool)env('ENABLE_TSHIRT_SIZE', true),
 
+    // Enables the goody/voucher configuration on signup and profile
+    'enable_goody'            => (bool)env('ENABLE_GOODY', false),
+
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
 
@@ -238,7 +323,7 @@ return [
     // Shifts overview
     // Set max number of hours that can be shown at once
     // 0 means no limit
-    'filter_max_duration' => env('FILTER_MAX_DURATION', 0),
+    'filter_max_duration'     => env('FILTER_MAX_DURATION', 0),
 
     // Session config
     'session'                 => [
@@ -258,7 +343,7 @@ return [
         'X-Content-Type-Options'  => 'nosniff',
         'X-Frame-Options'         => 'sameorigin',
         'Referrer-Policy'         => 'strict-origin-when-cross-origin',
-        'Content-Security-Policy' => 'default-src \'self\' \'unsafe-inline\' \'unsafe-eval\'',
+        'Content-Security-Policy' => 'default-src \'self\' \'unsafe-inline\' \'unsafe-eval\'; img-src \'self\' data:;',
         'X-XSS-Protection'        => '1; mode=block',
         'Feature-Policy'          => 'autoplay \'none\'',
         //'Strict-Transport-Security' => 'max-age=7776000',
@@ -273,7 +358,7 @@ return [
     ],
 
     // var dump server
-    'var_dump_server' => [
+    'var_dump_server'         => [
         'host' => '127.0.0.1',
         'port' => '9912',
         'enable' => false,

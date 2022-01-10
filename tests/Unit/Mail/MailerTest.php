@@ -5,8 +5,9 @@ namespace Engelsystem\Test\Unit\Mail;
 use Engelsystem\Mail\Mailer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Swift_Mailer as SwiftMailer;
-use Swift_Message as SwiftMessage;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\RawMessage;
 
 class MailerTest extends TestCase
 {
@@ -19,10 +20,10 @@ class MailerTest extends TestCase
      */
     public function testInitAndSettersAndGetters()
     {
-        /** @var SwiftMailer|MockObject $swiftMailer */
-        $swiftMailer = $this->createMock(SwiftMailer::class);
+        /** @var MailerInterface|MockObject $symfonyMailer */
+        $symfonyMailer = $this->createMock(MailerInterface::class);
 
-        $mailer = new Mailer($swiftMailer);
+        $mailer = new Mailer($symfonyMailer);
 
         $mailer->setFromName('From Name');
         $this->assertEquals('From Name', $mailer->getFromName());
@@ -36,42 +37,22 @@ class MailerTest extends TestCase
      */
     public function testSend()
     {
-        /** @var SwiftMessage|MockObject $message */
-        $message = $this->createMock(SwiftMessage::class);
-        /** @var SwiftMailer|MockObject $swiftMailer */
-        $swiftMailer = $this->createMock(SwiftMailer::class);
-        $swiftMailer->expects($this->once())
-            ->method('createMessage')
-            ->willReturn($message);
-        $swiftMailer->expects($this->once())
+        /** @var MailerInterface|MockObject $symfonyMailer */
+        $symfonyMailer = $this->createMock(MailerInterface::class);
+        $symfonyMailer->expects($this->once())
             ->method('send')
-            ->willReturn(1);
+            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null) {
+                $this->assertStringContainsString('to@xam.pel', $message->toString());
+                $this->assertStringContainsString('foo@bar.baz', $message->toString());
+                $this->assertStringContainsString('Test Tester', $message->toString());
+                $this->assertStringContainsString('Foo Bar', $message->toString());
+                $this->assertStringContainsString('Lorem Ipsum!', $message->toString());
+            });
 
-        $message->expects($this->once())
-            ->method('setTo')
-            ->with(['to@xam.pel'])
-            ->willReturn($message);
-
-        $message->expects($this->once())
-            ->method('setFrom')
-            ->with('foo@bar.baz', 'Lorem Ipsum')
-            ->willReturn($message);
-
-        $message->expects($this->once())
-            ->method('setSubject')
-            ->with('Foo Bar')
-            ->willReturn($message);
-
-        $message->expects($this->once())
-            ->method('setBody')
-            ->with('Lorem Ipsum!')
-            ->willReturn($message);
-
-        $mailer = new Mailer($swiftMailer);
+        $mailer = new Mailer($symfonyMailer);
         $mailer->setFromAddress('foo@bar.baz');
-        $mailer->setFromName('Lorem Ipsum');
+        $mailer->setFromName('Test Tester');
 
-        $return = $mailer->send('to@xam.pel', 'Foo Bar', 'Lorem Ipsum!');
-        $this->assertEquals(1, $return);
+        $mailer->send('to@xam.pel', 'Foo Bar', 'Lorem Ipsum!');
     }
 }

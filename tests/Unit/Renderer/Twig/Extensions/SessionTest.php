@@ -21,5 +21,6 @@ class SessionTest extends ExtensionTest
         $functions = $extension->getFunctions();
 
         $this->assertExtensionExists('session_get', [$session, 'get'], $functions);
+        $this->assertExtensionExists('session_set', [$session, 'set'], $functions);
     }
 }

@@ -106,7 +106,7 @@ class Translator
             return $key;
         }
 
-        return call_user_func_array('sprintf', array_merge([$key], $replace));
+        return call_user_func_array('sprintf', array_merge([$key], array_values($replace)));
     }
 
     /**

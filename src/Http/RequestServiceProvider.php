@@ -38,7 +38,7 @@ class RequestServiceProvider extends ServiceProvider
     protected function setTrustedProxies(
         $request,
         $proxies,
-        $trustedHeadersSet = Request::HEADER_FORWARDED | Request::HEADER_X_FORWARDED_ALL
+        $trustedHeadersSet = Request::HEADER_FORWARDED | Request::HEADER_X_FORWARDED_TRAEFIK
     ) {
         $request->setTrustedProxies($proxies, $trustedHeadersSet);
     }

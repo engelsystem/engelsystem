@@ -256,15 +256,7 @@ class PasswordResetControllerTest extends TestCase
      */
     protected function createUser(): User
     {
-        $user = new User([
-            'name'     => 'foo',
-            'password' => '',
-            'email'    => 'foo@bar.batz',
-            'api_key'  => '',
-        ]);
-        $user->save();
-
-        return $user;
+        return User::factory()->create(['email' => 'foo@bar.batz']);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\JoinClause;
 
@@ -26,44 +26,49 @@ function admin_free()
 
     $angel_types_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
     $angel_types = [
-        '' => __('Alle')
+        '' => __('All')
     ];
     foreach ($angel_types_source as $angel_type) {
         $angel_types[$angel_type['id']] = $angel_type['name'];
     }
 
     $angelType = $request->input('angeltype', '');
-    $query = User::with('personalData')
-        ->select('users.*')
-        ->leftJoin('ShiftEntry', 'users.id', 'ShiftEntry.UID')
-        ->leftJoin('users_state', 'users.id', 'users_state.user_id')
-        ->leftJoin('Shifts', function ($join) {
-            /** @var JoinClause $join */
-            $join->on('ShiftEntry.SID', '=', 'Shifts.SID')
-                ->where('Shifts.start', '<', time())
-                ->where('Shifts.end', '>', time());
-        })
-        ->where('users_state.arrived', '=', 1)
-        ->whereNull('Shifts.SID')
-        ->orderBy('users.name')
-        ->groupBy('users.id');
 
-    if (!empty($angelType)) {
-        $query->join('UserAngelTypes', function ($join) use ($angelType) {
-            /** @var JoinClause $join */
-            $join->on('UserAngelTypes.user_id', '=', 'users.id')
-                ->where('UserAngelTypes.angeltype_id', '=', $angelType);
-        });
-        $query->join('AngelTypes', 'UserAngelTypes.angeltype_id', 'AngelTypes.id')
-            ->whereNotNull('UserAngelTypes.confirm_user_id')
-            ->orWhere('AngelTypes.restricted', '=', '0');
-    }
-
+    $users = [];
     if ($request->has('submit')) {
+        $query = User::with('personalData')
+            ->select('users.*')
+            ->leftJoin('ShiftEntry', 'users.id', 'ShiftEntry.UID')
+            ->leftJoin('users_state', 'users.id', 'users_state.user_id')
+            ->leftJoin('Shifts', function ($join) {
+                /** @var JoinClause $join */
+                $join->on('ShiftEntry.SID', '=', 'Shifts.SID')
+                    ->where('Shifts.start', '<', time())
+                    ->where('Shifts.end', '>', time());
+            })
+            ->where('users_state.arrived', '=', 1)
+            ->whereNull('Shifts.SID')
+            ->orderBy('users.name')
+            ->groupBy('users.id');
+
+        if (!empty($angelType)) {
+            $query->join('UserAngelTypes', function ($join) use ($angelType) {
+                /** @var JoinClause $join */
+                $join->on('UserAngelTypes.user_id', '=', 'users.id')
+                    ->where('UserAngelTypes.angeltype_id', '=', $angelType);
+            });
+
+            $query->join('AngelTypes', function ($join) {
+                /** @var JoinClause $join */
+                $join->on('UserAngelTypes.angeltype_id', '=', 'AngelTypes.id')
+                    ->whereNotNull('UserAngelTypes.confirm_user_id')
+                    ->orWhere('AngelTypes.restricted', '=', '0');
+            });
+        }
+
         $users = $query->get();
-    } else {
-        $users = [];
     }
+
     $free_users_table = [];
     if ($search == '') {
         $tokens = [];
@@ -94,10 +99,10 @@ function admin_free()
             'dect'        => sprintf('<a href="tel:%s">%1$s</a>', $usr->contact->dect),
             'email'       => $usr->settings->email_human
                 ? sprintf('<a href="email:%s">%1$s</a>', $email)
-                : glyph('eye-close'),
+                : icon('eye-slash'),
             'actions'     =>
                 auth()->can('admin_user')
-                    ? button(page_link_to('admin_user', ['id' => $usr->id]), __('edit'), 'btn-xs')
+                    ? button(page_link_to('admin_user', ['id' => $usr->id]), __('edit'), 'btn-sm')
                     : ''
         ];
     }
@@ -105,9 +110,9 @@ function admin_free()
         form([
             div('row', [
                 div('col-md-12 form-inline', [
-                    div('inline-form-spacing', [
-                        form_text('search', __('Search'), $search),
-                        form_select('angeltype', __('Angeltype'), $angel_types, $angelType),
+                    div('row', [
+                        form_text('search', __('Search'), $search, null, null, null, 'col'),
+                        form_select('angeltype', __('Angeltype'), $angel_types, $angelType, '', 'col'),
                         form_submit('submit', __('Search'))
                     ]),
                 ]),

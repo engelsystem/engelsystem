@@ -58,13 +58,13 @@ class ShiftsFilterRenderer
 
             if ($dashboardFilter) {
                 $toolbar[] = sprintf(
-                    '<li role="presentation"><a href="%s">%s</a></li>',
+                    '<li role="presentation"><a class="nav-link" href="%s">%s</a></li>',
                     url('/public-dashboard', ['filtered' => true] + $dashboardFilter),
-                    glyph('dashboard') . __('Dashboard')
+                    icon('speedometer2') . __('Dashboard')
                 );
             }
         }
-        return div('form-group', [
+        return div('mb-3', [
             toolbar_pills($toolbar)
         ]);
     }

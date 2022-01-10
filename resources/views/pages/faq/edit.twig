@@ -14,12 +14,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <p>
-                        {{ m.glyphicon('time') }} {{ faq.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ faq.updated_at.format(__('Y-m-d H:i')) }}
 
                         {% if faq.updated_at != faq.created_at %}
                             &emsp;{{ __('form.updated') }}
                             <br>
-                            {{ m.glyphicon('time') }} {{ faq.created_at.format(__('Y-m-d H:i')) }}
+                            {{ m.icon('clock') }} {{ faq.created_at.format(__('Y-m-d H:i')) }}
                         {% endif %}
                     </p>
                 </div>
@@ -29,7 +29,7 @@
         <form action="" enctype="multipart/form-data" method="post">
             {{ csrf() }}
 
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col-md-12">
                     {{ f.input('question', __('faq.question'), null, {'required': true, 'value': faq ? faq.question : ''}) }}
                 </div>
@@ -38,10 +38,10 @@
 
                     {{ f.submit() }}
 
-                    {{ f.submit(m.glyphicon('eye-close'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
+                    {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
 
                     {% if faq and faq.id %}
-                        {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
+                        {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
                     {% endif %}
                 </div>
             </div>
@@ -51,12 +51,11 @@
                     <div class="col-md-12">
                         <h2>{{ __('form.preview') }}</h2>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                        <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %}">
+                            <div class="card-header">
                                 {{ faq.question }}
                             </div>
-
-                            <div class="panel-body">
+                            <div class="card-body bg-body">
                                 {{ faq.text|markdown }}
                             </div>
                         </div>

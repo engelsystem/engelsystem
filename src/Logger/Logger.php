@@ -72,7 +72,7 @@ class Logger extends AbstractLogger
             }
 
             // replace the values of the message
-            $message = str_replace('{' . $key . '}', $val, $message);
+            $message = str_replace('{' . $key . '}', (string)$val, $message);
         }
 
         return $message;

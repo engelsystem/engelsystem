@@ -62,7 +62,8 @@ function mail_shift_change($old_shift, $new_shift)
     $message .= $new_shift['name'] . "\n";
     $message .= $new_shift['title'] . "\n";
     $message .= date('Y-m-d H:i', $new_shift['start']) . ' - ' . date('H:i', $new_shift['end']) . "\n";
-    $message .= $new_room->name . "\n";
+    $message .= $new_room->name . "\n\n";
+    $message .= url('/shifts', ['action' => 'view', 'shift_id' => $new_shift['SID']]) . "\n";
 
     foreach ($users as $user) {
         $user = (new User())->forceFill($user);
@@ -121,7 +122,8 @@ function mail_shift_assign($user, $shift)
     $message .= $shift['name'] . "\n";
     $message .= $shift['title'] . "\n";
     $message .= date('Y-m-d H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']) . "\n";
-    $message .= $room->name . "\n";
+    $message .= $room->name . "\n\n";
+    $message .= url('/shifts', ['action' => 'view', 'shift_id' => $shift['SID']]) . "\n";
 
     engelsystem_email_to_user($user, __('Assigned to Shift'), $message, true);
 }

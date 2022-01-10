@@ -4,7 +4,10 @@
 {% block title %}{{ __('settings.oauth') }}{% endblock %}
 
 {% block container_title %}
-    <h1 id="oauth-settings-title">{{ __('settings.settings') }} <small>{{ block('title') }}</small></h1>
+    <h1 id="oauth-settings-title">
+        {{ __('settings.settings') }}
+        <small class="text-muted">{{ block('title') }}</small>
+    </h1>
 {% endblock %}
 
 {% block row_content %}
@@ -17,7 +20,7 @@
     </thead>
     <tbody>
     {% for name,config in providers %}
-        <tr{% if config.hidden|default(false) %} class="hidden"{% endif %}>
+        <tr{% if config.hidden|default(false) %} class="d-none"{% endif %}>
             <td>
                 {% if config.url|default %}
                     <a href="{{ config.url }}" target="_blank" rel="noopener">
@@ -32,13 +35,13 @@
                     <form method="POST" action="{{ url('/oauth/' ~ name ~ '/connect') }}">
                         {{ csrf() }}
 
-                        {{ f.submit(__('form.connect'), {'btn_size' : 'xs'}) }}
+                        {{ f.submit(__('form.connect'), {'size' : 'sm'}) }}
                     </form>
                 {% else %}
                     <form method="POST" action="{{ url('/oauth/' ~ name ~ '/disconnect') }}">
                         {{ csrf() }}
 
-                        {{ f.submit(__('form.disconnect'), {'btn_type': 'danger', 'btn_size' : 'xs'}) }}
+                        {{ f.submit(__('form.disconnect'), {'btn_type': 'danger', 'size' : 'sm'}) }}
                     </form>
                 {% endif %}
             </td>

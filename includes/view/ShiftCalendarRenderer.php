@@ -204,6 +204,7 @@ class ShiftCalendarRenderer
             $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
         }
 
+
         return div('lane', [
             div('header', $lane->getHeader()),
             $html
@@ -244,6 +245,7 @@ class ShiftCalendarRenderer
      */
     private function renderTimeLane()
     {
+
         $time_slot = [
             div('header', [
                 __('Time')
@@ -311,12 +313,12 @@ class ShiftCalendarRenderer
      */
     private function renderLegend()
     {
-        return div('legend', [
-            label(__('Your shift'), 'primary'),
-            label(__('Help needed'), 'success'),
-            label(__('Other angeltype needed / collides with my shifts'), 'warning'),
-            label(__('Shift is full'), 'danger'),
-            label(__('Shift running/ended or user not arrived/allowed'), 'default')
+        return div('legend mt-3', [
+            badge(__('Your shift'), 'primary'),
+            badge(__('Help needed'), 'success'),
+            badge(__('Other angeltype needed / collides with my shifts'), 'warning'),
+            badge(__('Shift is full'), 'danger'),
+            badge(__('Shift running/ended or user not arrived/allowed'), 'default')
         ]);
     }
 }

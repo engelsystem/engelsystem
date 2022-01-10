@@ -12,7 +12,7 @@ class AssetsTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Assets::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Assets::getFunctions
      */
-    public function testGetGlobals()
+    public function testGetFunctions()
     {
         /** @var UrlGenerator|MockObject $urlGenerator */
         $urlGenerator = $this->createMock(UrlGenerator::class);
