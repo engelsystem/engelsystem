@@ -59,13 +59,13 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'babel-loader',
       },
-      { test: /\.(jpg|eot|ttf|otf|svg|woff2?)(\?.*)?$/, loader: 'file-loader' },
+      { test: /\.(jpg|eot|ttf|otf|svg|woff2?)(\?.*)?$/, type: 'asset/resource' },
       { test: /\.json$/, loader: 'json-loader' },
       {
         test: /\.(scss|css)$/,
         use: [
           { loader: MiniCssExtractPlugin.loader },
-          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'css-loader' },
           {
             loader: 'postcss-loader',
             options: {
