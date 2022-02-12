@@ -311,8 +311,12 @@ deploy:
     # CI_ENVIRONMENT_URL is the URL configured in the GitLab environment
     - export CI_ENVIRONMENT_URL="${CI_ENVIRONMENT_URL:-https://${CI_PROJECT_PATH_SLUG}.${KUBE_INGRESS_BASE_DOMAIN}/}"
     - export CI_IMAGE=$RELEASE_IMAGE
+    - export CI_INGRESS_CLASS=${CI_INGRESS_CLASS:-traefik}
+    - export CI_INGRESS_MATCH=${CI_INGRESS_MATCH:-$( if [[ "$CI_INGRESS_CLASS" == "nginx" ]]; then echo '/?(.*)'; fi )}
+    - export CI_INGRESS_TRAEFIK_ENTRYPOINT=${CI_INGRESS_TRAEFIK_ENTRYPOINT:-websecure}
     - export CI_INGRESS_DOMAIN=$(echo "$CI_ENVIRONMENT_URL" | grep -oP '(?:https?://)?\K([^/]+)' | head -n1)
     - export CI_INGRESS_PATH=$(echo "$CI_ENVIRONMENT_URL" | grep -oP '(?:https?://)?(?:[^/])+\K(.*)')
+    - '[[ "${CI_INGRESS_PATH}" == /* ]] || export CI_INGRESS_PATH="/${CI_INGRESS_PATH}"'
     - export CI_KUBE_NAMESPACE=$KUBE_NAMESPACE
     # Any available storage class like default, local-path (if you know what you are doing ;), longhorn etc.
     - export CI_PVC_SC=${CI_PVC_SC:-"${CI_PVC_SC_LOCAL:-local-path}"}
@@ -328,6 +332,7 @@ deploy:
       done
 
     - echo "Deploying to ${CI_ENVIRONMENT_URL}"
+    - kubectl diff -f deployment.yaml || true
     - kubectl apply -f deployment.yaml
     - >-
       kubectl -n $CI_KUBE_NAMESPACE wait --for=condition=Ready pods --timeout=${CI_WAIT_TIMEOUT:-5}m

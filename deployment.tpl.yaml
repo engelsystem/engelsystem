@@ -66,7 +66,6 @@ metadata:
   labels:
     app: <CI_PROJECT_PATH_SLUG>
     environment: <CI_ENVIRONMENT_SLUG>
-    commit: '<CI_COMMIT_SHORT_SHA>'
 spec:
   type: ClusterIP
   ports:
@@ -105,6 +104,7 @@ spec:
         environment: <CI_ENVIRONMENT_SLUG>
         tier: application
         commit: '<CI_COMMIT_SHORT_SHA>'
+        pipeline: '<CI_PIPELINE_ID>'
       annotations:
         app.gitlab.com/app: <CI_PROJECT_PATH_SLUG>
         app.gitlab.com/env: <CI_ENVIRONMENT_SLUG>
@@ -159,7 +159,6 @@ metadata:
   labels:
     app: <CI_PROJECT_PATH_SLUG>
     environment: <CI_ENVIRONMENT_SLUG>
-    commit: '<CI_COMMIT_SHORT_SHA>'
   annotations:
     prometheus.io/port: '80'
     prometheus.io/scrape: 'true'
@@ -181,13 +180,14 @@ metadata:
   name: engelsystem-ingress
   annotations:
     kubernetes.io/tls-acme: 'true'
-    kubernetes.io/ingress.class: 'nginx'
+    kubernetes.io/ingress.class: <CI_INGRESS_CLASS>
     cert-manager.io/cluster-issuer: <CI_CLUSTER_ISSUER>
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+    traefik.ingress.kubernetes.io/router.entrypoints: <CI_INGRESS_TRAEFIK_ENTRYPOINT>
+    traefik.ingress.kubernetes.io/router.tls: 'true'
   labels:
     app: <CI_PROJECT_PATH_SLUG>
     environment: <CI_ENVIRONMENT_SLUG>
-    commit: '<CI_COMMIT_SHORT_SHA>'
 spec:
   tls:
     - hosts:
@@ -197,7 +197,7 @@ spec:
     - host: <CI_INGRESS_DOMAIN>
       http:
         paths:
-          - path: '<CI_INGRESS_PATH>/?(.*)'
+          - path: '<CI_INGRESS_PATH><CI_INGRESS_MATCH>'
             pathType: Prefix
             backend:
               service:

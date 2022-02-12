@@ -1,11 +1,17 @@
 #!/usr/bin/env sh
 set -e
 
-nginx -g 'daemon off;'&
-
 # If first arg starts with a `-` or is empty
 if [[ "${1#-}" != "${1}" ]] || [[ -z "${1}" ]]; then
   set -- php-fpm "$@"
+fi
+
+# Configure app url
+url=$(echo "$APP_URL" | sed -n 's~https*://[^/]\+/\(.*\)~\1~p')
+url=${url%/}
+if [[ -n "${url}" ]]; then
+  echo "Url prefix: '${url}'"
+  sed -i "s~location /~rewrite ^/${url}(/.*)?$ /\$1;\n    location /~" /etc/nginx/nginx.conf
 fi
 
 function get_name() {
@@ -37,4 +43,6 @@ if [[ -n "${RUN_USER}" ]]; then
   echo "Running as $user:$group"
 fi
 
+
+nginx -g 'daemon off;'&
 exec "$@"
