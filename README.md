@@ -89,3 +89,7 @@ For usage see `./bin/deploy.sh -h`
 The `bin/migrate` script can be used to import and update the database of the Engelsystem.
 
 For more information on how to use it call `./bin/migrate help`
+
+### Documentation
+
+More documentation can be found at: https://engelsystem.de/doc/
