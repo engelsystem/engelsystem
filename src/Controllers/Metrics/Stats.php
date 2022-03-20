@@ -309,7 +309,7 @@ class Stats
             $this->workSecondsQuery($done, $freeloaded),
             'UID',
             'SUM(end - start)',
-            'end - start'
+            'SUM(end - start)'
         );
     }
 
@@ -364,7 +364,7 @@ class Stats
             Worklog::query(),
             'user_id',
             'SUM(hours * 60 * 60)',
-            'hours * 60 * 60'
+            'SUM(hours * 60 * 60)'
         );
     }
 
