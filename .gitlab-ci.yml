@@ -343,7 +343,10 @@ deploy:
     - export CI_SETUP_ADMIN_PASSWORD=${CI_SETUP_ADMIN_PASSWORD}
 
     - cp deployment.tpl.yaml deployment.yaml
-    - for env in ${!CI_*}; do sed -i "s#<${env}>#$(echo "${!env}"|head -n1)#g" deployment.yaml; done
+    - >-
+      for env in ${!CI_*}; do
+        sed -i "s#<${env}>#$( echo "${!env}" | head -n1 | sed -e 's~\\~\\\\~' -e 's~#~\\#~' )#g" deployment.yaml;
+      done
 
     - echo "Deploying to ${CI_ENVIRONMENT_URL}"
     - kubectl apply -f deployment.yaml

@@ -52,10 +52,17 @@ class Whoops extends Legacy implements HandlerInterface
      */
     protected function getPrettyPageHandler(Throwable $e)
     {
+        /** @var PrettyPageHandler $handler */
         $handler = $this->app->make(PrettyPageHandler::class);
 
         $handler->setPageTitle('Just another ' . get_class($e) . ' to fix :(');
-        $handler->setApplicationPaths([realpath(__DIR__ . '/../..')]);
+        $handler->setApplicationPaths([
+            realpath(__DIR__ . '/../..'),
+            realpath(__DIR__ . '/../../../includes/'),
+            realpath(__DIR__ . '/../../../db/'),
+            realpath(__DIR__ . '/../../../tests/'),
+            realpath(__DIR__ . '/../../../public/'),
+        ]);
 
         $data = $this->getData();
         $handler->addDataTable('Application', $data);
