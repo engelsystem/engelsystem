@@ -1020,6 +1020,9 @@ msgstr "Nick"
 msgid "Size"
 msgstr "Größe"
 
+msgid "No."
+msgstr "Nr."
+
 #: includes/pages/admin_active.php:317 includes/pages/user_shifts.php:11
 #: includes/sys_menu.php:96 includes/view/AngelTypes_view.php:357
 #: includes/view/Rooms_view.php:39 includes/view/User_view.php:641

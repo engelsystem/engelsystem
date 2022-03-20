@@ -209,6 +209,7 @@ function admin_active()
 
         $shirtSize = $usr->personalData->shirt_size;
         $userData = [];
+        $userData['no'] = count($matched_users) + 1;
         $userData['nick'] = User_Nick_render($usr) . User_Pronoun_render($usr);
         $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '');
         $userData['work_time'] = round($usr['shift_length'] / 60)
@@ -310,6 +311,7 @@ function admin_active()
         ]) : $set_active,
         $msg . msg(),
         table([
+            'no'           => __('No.'),
             'nick'         => __('Nickname'),
             'shirt_size'   => __('Size'),
             'shift_count'  => __('Shifts'),
