@@ -232,53 +232,57 @@ function admin_shifts()
                     }
                 });
 
-                // Chronologisch absteigend sortieren (WHY???)
-                usort($change_hours, function ($a, $b) {
-                    return str_replace(':', '', $a) > str_replace(':', '', $b) ? -1 : 1;
-                });
-
-                // Start-Tag
+                // Alle Tage durchgehen
+                $end_day = parse_date('Y-m-d H:i', date('Y-m-d', $end) . ' 00:00');
                 $day = parse_date('Y-m-d H:i', date('Y-m-d', $start) . ' 00:00');
-
-                $change_index = 0;
-                // Ersten/nächsten passenden Schichtwechsel suchen
-                foreach ($change_hours as $i => $change_time) {
-                    list($change_hour, $change_minute) = explode(':', $change_time);
-
-                    $shift_end = $day + $change_hour * 60 * 60 + $change_minute * 60;
-                    if ($start < $shift_end) {
-                        $change_index = $i;
-                    } elseif ($start == $shift_end) {
-                        // Start trifft Schichtwechsel
-                        $change_index = ($i + count($change_hours) - 1) % count($change_hours);
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-
-                $shift_start = $start;
                 do {
-                    $day = parse_date('Y-m-d H:i', date('Y-m-d', $shift_start) . ' 00:00');
-
-                    list($change_hour, $change_minute) = explode(':', $change_hours[$change_index]);
-
-                    $shift_end = $day + $change_hour * 60 * 60 + $change_minute * 60;
-
-                    if ($shift_end > $end) {
-                        $shift_end = $end;
-                    }
-                    if ($shift_start >= $shift_end) {
-                        $shift_end += 24 * 60 * 60;
-                        if ($shift_end > $end) {
-                            $shift_end = $end;
+                    // Alle Schichtwechselstunden durchgehen
+                    for($i = 0; $i < count($change_hours); $i++) {
+                        $start_hour = $change_hours[$i];
+                        if ($i < count($change_hours) - 1) {
+                            // Normales Intervall zwischen zwei Schichtwechselstunden
+                            $end_hour = $change_hours[$i+1];
+                        } elseif ($shift_over_midnight) {
+                            // Letzte Schichtwechselstunde: Wenn eine 24h Abdeckung gewünscht ist, hier die erste Schichtwechselstunde als Ende ensetzen
+                            $end_hour = $change_hours[0];
+                        } else {
+                            // Letzte Schichtwechselstunde: Keine Schicht erstellen
+                            break;
                         }
-                    }
 
-                    if($shift_over_midnight || $day == parse_date('Y-m-d H:i', date('Y-m-d', $shift_end) . ' 00:00')) {
+                        $interval_start = parse_date('Y-m-d H:i', date('Y-m-d', $day) . ' ' . $start_hour);
+                        if (str_replace(':', '', $end_hour) < str_replace(':', '', $start_hour)) {
+                            // Endstunde kleiner Startstunde? Dann sind wir im nächsten Tag gelandet
+                            $interval_end = parse_date('Y-m-d H:i', date('Y-m-d', $day + 36 * 60 * 60) . ' ' . $end_hour);
+                        } else {
+                            // Endstunde ist noch im selben Tag
+                            $interval_end = parse_date('Y-m-d H:i', date('Y-m-d', $day) . ' ' . $end_hour);
+                        }
+
+                        // Liegt das Intervall vor dem Startzeitpunkt -> Überspringen
+                        if ($interval_end <= $start) {
+                            continue;
+                        }
+
+                        // Liegt das Intervall nach dem Endzeitpunkt -> Überspringen
+                        if ($interval_start >= $end) {
+                            continue;
+                        }
+
+                        // Liegt nur der Schichtstart vor dem Startzeitpunkt -> Startzeitpunkt übernehmen
+                        if ($interval_start < $start) {
+                            $interval_start = $start;
+                        }
+
+                        // Liegt nur das Schichtende nach dem Endzeitpunkt -> Endzeitpunkt übernehmen
+                        if ($interval_end > $end) {
+                            $interval_end = $end;
+                        }
+
+                        // Intervall für Schicht hinzufügen
                         $shifts[] = [
-                            'start'        => $shift_start,
-                            'end'          => $shift_end,
+                            'start'        => $interval_start,
+                            'end'          => $interval_end,
                             'RID'          => $rid,
                             'title'        => $title,
                             'shifttype_id' => $shifttype_id,
@@ -286,12 +290,13 @@ function admin_shifts()
                         ];
                     }
 
-                    $shift_start = $shift_end;
-                    $change_index--;
-                    if($change_index < 0) {
-                        $change_index = count($change_hours) - 1;
-                    }
-                } while ($shift_end < $end);
+                    $day = parse_date('Y-m-d H:i', date('Y-m-d', $day + 36 * 60 * 60) . ' 00:00');
+                } while($day <= $end_day);
+
+                usort($shifts, function ($a, $b) {
+                    return $a['start'] < $b['start'] ? -1 : 1;
+                });
+
             }
 
             $shifts_table = [];
