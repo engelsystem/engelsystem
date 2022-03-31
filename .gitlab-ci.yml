@@ -91,7 +91,7 @@ build-image-nginx:
     - check-editorconfig
     - validate-yarn
   script:
-    - /kaniko/executor --context ${CI_PROJECT_DIR}
+    - /kaniko/executor --force --context ${CI_PROJECT_DIR}
       --dockerfile ${CI_PROJECT_DIR}/docker/nginx/Dockerfile
       --destination "${TEST_IMAGE_NGINX}"
 
@@ -106,7 +106,7 @@ build-image:
   dependencies:
     - generate-version
   script:
-    - /kaniko/executor --context ${CI_PROJECT_DIR}
+    - /kaniko/executor --force --context ${CI_PROJECT_DIR}
       --dockerfile ${CI_PROJECT_DIR}/docker/Dockerfile
       --destination "${TEST_IMAGE}"
 
