@@ -219,7 +219,9 @@ release-image-nginx:
     - build-image-nginx
   dependencies: [ ]
   script:
-    - echo -e "FROM ${TEST_IMAGE_NGINX}" | /kaniko/executor --force --dockerfile /dev/stdin --destination "${RELEASE_IMAGE_NGINX}"
+    - >-
+      echo -e "FROM ${TEST_IMAGE_NGINX}" |
+        /kaniko/executor --force --dockerfile /dev/stdin --destination "${RELEASE_IMAGE_NGINX}"
   only:
     - main
 
