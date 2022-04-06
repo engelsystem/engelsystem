@@ -206,19 +206,6 @@ trait MessageTrait
     }
 
     /**
-     * Gets the body of the message.
-     *
-     * @return StreamInterface Returns the body as a stream.
-     */
-    public function getBody()
-    {
-        $stream = Stream::create($this->getContent());
-        $stream->rewind();
-
-        return $stream;
-    }
-
-    /**
      * Return an instance with the specified message body.
      *
      * The body MUST be a StreamInterface object.

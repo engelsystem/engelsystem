@@ -1,10 +1,10 @@
 # Engelsystem PHP FPM development image including Xdebug
 FROM php:8-fpm-alpine AS es_php_fpm
 WORKDIR /var/www
-RUN apk add --no-cache icu-dev $PHPIZE_DEPS && \
+RUN apk add --no-cache icu-dev libxml2-dev $PHPIZE_DEPS && \
     pecl install pcov xdebug && \
-    docker-php-ext-install intl pdo_mysql && \
-    docker-php-ext-enable pcov xdebug
+    docker-php-ext-install intl pdo pdo_mysql simplexml xml && \
+    docker-php-ext-enable pcov xdebug pdo pdo_mysql simplexml xml
 RUN echo -e "xdebug.mode=debug\nxdebug.discover_client_host=1\n" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\

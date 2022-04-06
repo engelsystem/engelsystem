@@ -24,7 +24,6 @@ class Renderer
             if (!$renderer->canRender($template)) {
                 continue;
             }
-
             return $renderer->get($template, $data);
         }
 

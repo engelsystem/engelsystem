@@ -34,6 +34,7 @@
         "illuminate/database": "^8.76",
         "illuminate/support": "^8.76",
         "league/oauth2-client": "^2.6",
+        "league/oauth2-server": "^8.3",
         "nikic/fast-route": "^1.3",
         "nyholm/psr7": "^1.4",
         "psr/container": "^1.1",

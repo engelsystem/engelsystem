@@ -14,10 +14,14 @@ $route->get('/login', 'AuthController@login');
 $route->post('/login', 'AuthController@postLogin');
 $route->get('/logout', 'AuthController@logout');
 
-// OAuth
+// OAuth Resource Server
 $route->get('/oauth/{provider}', 'OAuthController@index');
 $route->post('/oauth/{provider}/connect', 'OAuthController@connect');
 $route->post('/oauth/{provider}/disconnect', 'OAuthController@disconnect');
+
+// OAuth Identity Provider
+$route->get('/oauthidp/authorize', 'OAuthIDPController@authorize');
+$route->post('/oauthidp/token', 'OAuthIDPController@accessToken');
 
 // User settings
 $route->get('/settings/password', 'SettingsController@password');

@@ -7,7 +7,7 @@
 
 {% block content_text %}
     {% if is_guest() %}
-        {% do session_set('previous_page', request.url) %}
+        {% do session_set('previous_page', request.requestUri) %}
 
         <p>{{ __('page.403.login') }}</p>
         <p>{{ m.button(__('login.login'), url('login')) }}</p>

@@ -34,6 +34,7 @@ class VerifyCsrfToken implements MiddlewareInterface
         if (
             $this->isReading($request)
             || $this->tokensMatch($request)
+            || $this->isIDPTokenRequest($request)
         ) {
             return $handler->handle($request);
         }
@@ -51,6 +52,15 @@ class VerifyCsrfToken implements MiddlewareInterface
             $request->getMethod(),
             ['GET', 'HEAD', 'OPTIONS']
         );
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return bool
+     */
+    protected function isIDPTokenRequest(ServerRequestInterface $request): bool
+    {
+        return parse_url($request->getUri(), PHP_URL_PATH) === '/oauthidp/token';
     }
 
     /**

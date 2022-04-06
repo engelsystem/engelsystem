@@ -2,8 +2,10 @@
 
 namespace Engelsystem\Http;
 
+use Nyholm\Psr7\Stream;
 use Nyholm\Psr7\UploadedFile;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyFile;
@@ -379,6 +381,18 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     public function getParsedBody()
     {
         return $this->request->all();
+    }
+
+    /**
+     * Gets the body of the message.
+     *
+     * @return StreamInterface Returns the body as a stream.
+     */
+    public function getBody()
+    {
+        $stream = Stream::create($this->getContent());
+        $stream->rewind();
+        return $stream;
     }
 
     /**
