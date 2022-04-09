@@ -1,0 +1,64 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('messages.title') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                {{ block('title') }}
+            </h1>
+        </div>
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+            <div class="row gx-2 mb-3">
+                <div class="col-auto">
+                    <select id="user_id" name="user_id" class="form-control pe-5" required>
+                        <option value="">{{ __('messages.choose.an.angel') }}</option>
+                        {% for value,decription in users -%}
+                            <option value="{{ value }}">{{ decription }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    {{ f.submit(__('messages.to.conversation'), {'btn_type': 'secondary'}) }}
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-striped data">
+            <thead>
+            <tr>
+                <th>{{ __('angel') }}</th>
+                <th>{{ __('message') }}</th>
+                <th>{{ __('Date') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in conversations %}
+            <tr>
+                <td>
+                    <span class="icon-icon_angel"></span>
+                    {{ c.other_user.nameWithPronoun() }}
+                    {% if c.unread_messages > 0 %}
+                        <span class="badge bg-danger">{{ c.unread_messages }}</span>
+                    {% endif %}
+                    </td>
+                <td>
+                    <a href="{{ url('messages/' ~ c.other_user.id) }}">
+                        {{ c.latest_message.text|length > 100 ? c.latest_message.text|slice(0, 100) ~ '...' : c.latest_message.text }}
+                    </a>
+                </td>
+                <td>
+                    {{ c.latest_message.created_at }}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

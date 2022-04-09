@@ -1,0 +1,66 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('messages.title') }}: {{ other_user.nameWithPronoun() }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                {{ __('messages.title') }}: <span class="icon-icon_angel"></span> {{ other_user.nameWithPronoun() }}
+            </h1>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-8 offset-lg-2">
+                <div class="row conversation">
+                    {% for msg in messages %}
+                        {% if msg.user_id == other_user.id %}
+                            <div class="col-12">
+                                <div>
+                                    <div class="message alert alert-secondary position-relative">
+                                        <div>{{ msg.text | nl2br }}</div>
+                                        <div class="text-end">
+                                            <small class="opacity-75">{{ msg.created_at }}</small>
+                                        </div>
+                                        {% if msg.read == false %}
+                                            <span class="position-absolute top-0 start-100 translate-middle-x p-2 bg-danger rounded-circle">
+                                                <span class="visually-hidden">New alerts</span>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <div class="message alert alert-primary">
+                                        <div>{{ msg.text | nl2br }}</div>
+                                        <div class="text-end">
+
+                                    <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ msg.id) }}"
+                                          enctype="multipart/form-data" method="post">
+                                        {{ csrf() }}
+                                        <small class="opacity-75">{{ msg.created_at }}</small>
+                                        {{ f.submit(m.icon('trash'), {'btn_type': 'primary', 'size': 'sm'}) }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+
+            <div class="input-group">
+                <textarea class="form-control" id="text" name="text" required="" rows="1"></textarea>
+                {{ f.submit(m.icon('send-fill')) }}
+            </div>
+        </form>
+
+    </div>
+{% endblock %}
