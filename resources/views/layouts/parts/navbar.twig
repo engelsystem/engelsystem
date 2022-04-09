@@ -44,7 +44,7 @@
                 {% endif %}
 
                 {% if is_user() and has_permission_to('user_messages') %}
-                    {{ _self.toolbar_item(menuUserMessages(), url('user-messages'), 'user-messages', 'envelope') }}
+                    {{ _self.toolbar_item(menuUserMessages(), url('messages'), 'messages', 'envelope') }}
                 {% endif %}
 
                 {{ menuUserHints() }}
