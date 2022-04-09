@@ -1,0 +1,39 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ __('Messages') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                {{ block('title') }}
+            </h1>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-secondary"><i class="bi bi-plus-lg"></i> New Conversation</button>
+                <div class="conversations">
+                    <ul class="nav nav-pills flex-column">
+                        {% for message in latestMessagesPerConversation %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{ message.text }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-8">
+                Aut accusamus ex vel. Ut omnis tenetur asperiores dolores non deserunt doloremque. Velit rem eius iste eligendi veniam vel enim voluptates. Consequatur eos eveniet et quo molestiae id. Dolorem praesentium provident consequatur voluptas voluptas minus.
+                Voluptatum qui odit nostrum cupiditate. Doloremque et quia neque exercitationem officia error. Explicabo autem autem sint ab est suscipit laborum.
+                Aut exercitationem facere nihil totam consectetur culpa. Ducimus in minus placeat non cumque velit. Dolorem excepturi laudantium dolorem magnam. Libero aut et quia doloremque non voluptatem vel. Et ratione sed doloremque eveniet tempore inventore. Repellendus impedit sed aliquam sed dolor enim neque.
+                Deserunt laboriosam quo quas incidunt praesentium. Hic voluptatum sunt in voluptatem labore repellat consequatur. Eum eius sunt dolor consectetur ad. Modi doloremque sint voluptatem. Esse consequuntur voluptas minima tenetur. Error dolores natus doloribus.
+                Velit ex qui eligendi perspiciatis rerum alias a facere. Adipisci praesentium blanditiis aspernatur. Vitae aliquam consequatur ut voluptas ullam aspernatur quaerat non. Earum aut est quam pariatur nisi accusantium voluptatum. Esse asperiores ea vel aut dolor. Iste laborum nihil deleniti dolor consequuntur culpa provident.
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}

@@ -50,6 +50,9 @@ $route->post('/questions', 'QuestionsController@delete');
 $route->get('/questions/new', 'QuestionsController@add');
 $route->post('/questions/new', 'QuestionsController@save');
 
+// Messages
+$route->get('/messages', 'MessagesController@index');
+
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
 
