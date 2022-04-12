@@ -106,6 +106,8 @@ PRODUCTION_REMOTE_PATH  # Same as STAGING_REMOTE_PATH but for the production env
 
 ## Docker
 
+If unspecific issues appear try using Docker version >= 20.10.14.
+
 This repo [ships a docker setup](docker/dev) for a quick development start.
 
 If you use another uid/gid than 1000 on your machine you have to adjust it in [docker/dev/.env](docker/dev/.env).
@@ -121,26 +123,26 @@ Run these commands once initially and then as required after changes
 
 ```bash
 # Install composer dependencies
-docker exec -it engelsystem_dev-es_workspace-1 composer i
+docker-compose exec es_workspace composer i
 
 # Install node packages
-docker exec -it engelsystem_dev-es_workspace-1 yarn install
+docker-compose exec es_workspace yarn install
 
 # Run a front-end build
-docker exec -it engelsystem_dev-es_workspace-1 yarn build
+docker-compose exec es_workspace yarn build
 
 # Update the translation files
-docker exec -it engelsystem_dev-es_workspace-1 find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+docker-compose exec es_workspace find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
 
 # Run the migrations
-docker exec -it engelsystem_dev-es_workspace-1 bin/migrate
+docker-compose exec es_workspace bin/migrate
 ```
 
 While developing you may use the watch mode to rebuild the system on changes
 
 ```bash
 # Run a front-end build
-docker exec -it engelsystem_dev-es_workspace-1 yarn build:watch
+docker-compose exec es_workspace yarn build:watch
 ```
 
 **Hint for using Xdebug with *PhpStorm***
