@@ -53,7 +53,7 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
             'Y-m-d',
             $days[0] ?? (new DateTime())->format('Y-m-d')
         )->getTimestamp();
-        if(time() < $first_day) {
+        if (time() < $first_day) {
             $start_time = $first_day;
         } else {
             $start_time = time();

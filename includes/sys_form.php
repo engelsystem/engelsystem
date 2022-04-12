@@ -1,4 +1,5 @@
 <?php
+
 // Methods to build a html form.
 use Carbon\Carbon;
 
@@ -68,9 +69,8 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
 
     return form_element($label, '
-    <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '" data-target-input="nearest">
-        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars((string)$value) . '" autocomplete="off">'
-        . '<span class="input-group-text">' . icon('grid-3x3-gap-fill') . '</span>
+    <div class="input-group date" id="' . $dom_id . '">
+        <input type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="' . $start_date . '" max="' . $end_date . '" name="' . $name . '" class="form-control" value="' . htmlspecialchars((string)$value) . '" autocomplete="off">
     </div>
     ', $dom_id);
 }
@@ -92,10 +92,9 @@ function form_datetime(string $name, string $label, $value)
     }
 
     return form_element($label, sprintf('
-    <div class="input-group datetime" id="%s" data-target-input="nearest">
-        <input type="datetime-local" placeholder="YYYY-MM-DD HH:MM" name="%s"
-            class="form-control" value="%s" autocomplete="off" data-target="#%s">'
-        . '<span class="input-group-text">' . icon('grid-3x3-gap-fill') . '</span>
+    <div class="input-group datetime" id="%s">
+        <input type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} ([01][0-9]|2[0-3]):[0-5][0-9]" placeholder="YYYY-MM-DD HH:MM" name="%s"
+            class="form-control" value="%s" autocomplete="off">
     </div>
     ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : ''), $dom_id), $dom_id);
 }
@@ -286,7 +285,8 @@ function form_text($name, $label, $value, $disabled = false, $maxlength = null, 
 function form_text_placeholder($name, $placeholder, $value, $disabled = false)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element('',
+    return form_element(
+        '',
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
         . '" value="' . htmlspecialchars((string)$value) . '" placeholder="' . $placeholder
         . '" ' . $disabled . '/>'
