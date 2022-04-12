@@ -4,7 +4,9 @@ namespace Engelsystem\Http;
 
 use Engelsystem\Renderer\Renderer;
 use InvalidArgumentException;
+use Nyholm\Psr7\Stream;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -19,6 +21,9 @@ class Response extends SymfonyResponse implements ResponseInterface
 
     /** @var Renderer */
     protected $renderer;
+
+    /** @var Stream */
+    protected $stream;
 
     /**
      * @param string           $content
@@ -36,6 +41,7 @@ class Response extends SymfonyResponse implements ResponseInterface
     ) {
         $this->renderer = $renderer;
         $this->session = $session;
+        $this->stream = Stream::create();
 
         parent::__construct($content, $status, $headers);
     }
@@ -99,9 +105,30 @@ class Response extends SymfonyResponse implements ResponseInterface
     public function withContent($content)
     {
         $new = clone $this;
-        $new->setContent($content);
+        $new->getBody()->write((string) $content);
 
         return $new;
+    }
+
+    /**
+     * Sets the response content.
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function setContent(?string $content)
+    {
+        $this->getBody()->write((string) $content);
+        return $this;
+    }
+
+    /**
+     * Gets the body of the message.
+     *
+     * @return StreamInterface Returns the body as a stream.
+     */
+    public function getBody()
+    {
+        return $this->stream;
     }
 
     /**

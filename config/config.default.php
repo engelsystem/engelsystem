@@ -71,7 +71,18 @@ return [
 
     // Initial admin password
     'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),
-
+    'oauthidp' => [
+        'secret' => 'YivsJcNL+QFOINP4BNRpXwpe4jXlFXWnxRmlI9aLcuI=',
+        'privateKeyPath' => 'file://' . __DIR__ . '/private.key',
+        'clients' => [
+            'testclient' => [
+                'name' => 'testclient',
+                'secret' => 'testclientsecret',
+                'redirect_uri' => 'http://localhost:8000/oauth/callback',
+                'is_confidential' => true
+            ],
+        ],
+    ],
     'oauth'                   => [
         // '[name]' => [config]
         /*
