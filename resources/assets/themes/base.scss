@@ -23,7 +23,6 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 @import "~bootstrap/scss/bootstrap";
 
 @import "~bootstrap-icons/font/bootstrap-icons";
-@import "~tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4";
 @import "~select2/src/scss/core";
 @import "~select2-bootstrap-5-theme/src/include-all";
 @import "error";

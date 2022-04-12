@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\Room;
 
 /**
@@ -21,7 +22,7 @@ function admin_shifts()
     $valid = true;
     $request = request();
     $session = session();
-    $start = parse_date('Y-m-d H:i', date('Y-m-d') . ' 00:00');
+    $start = Carbon::createTimestampFromDatetime(date('Y-m-d') . 'T00:00');
     $end = $start;
     $mode = 'single';
     $angelmode = 'manually';
@@ -87,14 +88,14 @@ function admin_shifts()
             error(__('Please select a location.'));
         }
 
-        if ($request->has('start') && $tmp = parse_date('Y-m-d H:i', $request->input('start'))) {
+        if ($request->has('start') && $tmp = Carbon::createTimestampFromDatetime($request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
             error(__('Please select a start time.'));
         }
 
-        if ($request->has('end') && $tmp = parse_date('Y-m-d H:i', $request->input('end'))) {
+        if ($request->has('end') && $tmp = Carbon::createTimestampFromDatetime($request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
@@ -202,9 +203,9 @@ function admin_shifts()
                     'description'  => $description,
                 ];
             } elseif ($mode == 'multi') {
-                $shift_start = (int)$start;
+                $shift_start = (int) $start;
                 do {
-                    $shift_end = $shift_start + (int)$length * 60;
+                    $shift_end = $shift_start + (int) $length * 60;
 
                     if ($shift_end > $end) {
                         $shift_end = $end;
@@ -233,8 +234,8 @@ function admin_shifts()
                 });
 
                 // Alle Tage durchgehen
-                $end_day = parse_date('Y-m-d H:i', date('Y-m-d', $end) . ' 00:00');
-                $day = parse_date('Y-m-d H:i', date('Y-m-d', $start) . ' 00:00');
+                $end_day = Carbon::createTimestampFromDatetime(date('Y-m-d', $end) . ' 00:00');
+                $day = Carbon::createTimestampFromDatetime(date('Y-m-d', $start) . ' 00:00');
                 do {
                     // Alle Schichtwechselstunden durchgehen
                     for($i = 0; $i < count($change_hours); $i++) {
@@ -250,13 +251,13 @@ function admin_shifts()
                             break;
                         }
 
-                        $interval_start = parse_date('Y-m-d H:i', date('Y-m-d', $day) . ' ' . $start_hour);
+                        $interval_start = Carbon::createTimestampFromDatetime(date('Y-m-d', $day) . ' ' . $start_hour);
                         if (str_replace(':', '', $end_hour) < str_replace(':', '', $start_hour)) {
                             // Endstunde kleiner Startstunde? Dann sind wir im nächsten Tag gelandet
-                            $interval_end = parse_date('Y-m-d H:i', date('Y-m-d', $day + 36 * 60 * 60) . ' ' . $end_hour);
+                            $interval_end = Carbon::createTimestampFromDatetime(date('Y-m-d', $day + 36 * 60 * 60) . ' ' . $end_hour);
                         } else {
                             // Endstunde ist noch im selben Tag
-                            $interval_end = parse_date('Y-m-d H:i', date('Y-m-d', $day) . ' ' . $end_hour);
+                            $interval_end = Carbon::createTimestampFromDatetime(date('Y-m-d', $day) . ' ' . $end_hour);
                         }
 
                         // Liegt das Intervall vor dem Startzeitpunkt -> Überspringen
@@ -290,13 +291,12 @@ function admin_shifts()
                         ];
                     }
 
-                    $day = parse_date('Y-m-d H:i', date('Y-m-d', $day + 36 * 60 * 60) . ' 00:00');
+                    $day = Carbon::createTimestampFromDatetime(date('Y-m-d', $day + 36 * 60 * 60) . ' 00:00');
                 } while($day <= $end_day);
 
                 usort($shifts, function ($a, $b) {
                     return $a['start'] < $b['start'] ? -1 : 1;
                 });
-
             }
 
             $shifts_table = [];

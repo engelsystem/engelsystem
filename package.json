@@ -20,8 +20,7 @@
     "moment": "^2.29.2",
     "moment-timezone": "^0.5.31",
     "select2": "^4.0.13",
-    "select2-bootstrap-5-theme": "^1.1.1",
-    "tempusdominus-bootstrap-4": "^5.39.0"
+    "select2-bootstrap-5-theme": "^1.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.5",
