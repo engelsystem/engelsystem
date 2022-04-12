@@ -16,4 +16,5 @@ ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\
 # Engelsystem development workspace
 # Contains all tools required to build / manage the system
 FROM es_php_fpm AS es_workspace
-RUN apk add --no-cache composer gettext nodejs npm yarn
+RUN apk add --no-cache gettext nodejs npm yarn
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
