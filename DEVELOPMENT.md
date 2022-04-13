@@ -25,10 +25,14 @@ The following instructions explain how to get, build and run the latest Engelsys
   ```
   to install the Engelsystem
 * Build the frontend assets
-```bash
-yarn build
-```
-* Optionally (for better performance)
+  * All
+    ```bash
+    yarn build
+    ```
+  * Specific themes only by providing the `THEMES` environment variable, e.g.
+    ```bash
+    THEMES=0,1 yarn build
+    ```
 * Generate translation files
   ```bash
   find resources/lang/ -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
@@ -128,8 +132,11 @@ docker-compose exec es_workspace composer i
 # Install node packages
 docker-compose exec es_workspace yarn install
 
-# Run a front-end build
+# Run a full front-end build
 docker-compose exec es_workspace yarn build
+
+# Or run a front-end build for specific themes only, e.g.
+docker-compose exec -e THEMES=0,1 es_workspace yarn build
 
 # Update the translation files
 docker-compose exec es_workspace find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
@@ -141,8 +148,11 @@ docker-compose exec es_workspace bin/migrate
 While developing you may use the watch mode to rebuild the system on changes
 
 ```bash
-# Run a front-end build
+# Run a front-end build and update on change
 docker-compose exec es_workspace yarn build:watch
+
+# Or run a front-end build and update on change for specific themes only, e.g.
+docker-compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
 
 **Hint for using Xdebug with *PhpStorm***
