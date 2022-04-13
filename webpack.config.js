@@ -23,7 +23,12 @@ const plugins = [
   }),
 ];
 
-const themeFileNameRegex = /theme\d+/;
+let themeFileNameRegex = /theme\d+/;
+
+if (process.env.THEMES) {
+    themeFileNameRegex = new RegExp(`theme(${process.env.THEMES.replace(/,/g, '|')})\\.`);
+}
+
 const themePath = path.resolve('resources/assets/themes');
 const themeEntries = fs
   .readdirSync(themePath)
