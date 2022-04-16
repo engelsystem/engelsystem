@@ -1,0 +1,58 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('Messages') }}: {{ other_user.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                {{ block('title') }}
+            </h1>
+        </div>
+
+        <div class="row" style="height: 60vh; overflow-x: hidden; overflow-y: auto">
+            {% for m in messages %}
+                {% if m.user_id == other_user.id %}
+                    <div class="col-12">
+                        <div class="alert alert-secondary position-relative"
+                             style="max-width: 75%; display: inline-block;">
+                            <div>{{ m.text | nl2br }}</div>
+                            <div class="text-end">
+                                <small class="opacity-75">{{ m.created_at }}</small>
+                            </div>
+                            {% if m.read == false %}
+                                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
+                                    <span class="visually-hidden">New alerts</span>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12 d-flex justify-content-end">
+                        <div class="alert alert-primary"
+                             style="max-width: 75%; display: inline-block;">
+                            <div>{{ m.text | nl2br }}</div>
+                            <div class="text-end">
+                                <small class="opacity-75">{{ m.created_at }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+
+            <div class="input-group">
+                <textarea class="form-control" id="text" name="text" required="" rows="1"></textarea>
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </form>
+
+
+    </div>
+{% endblock %}

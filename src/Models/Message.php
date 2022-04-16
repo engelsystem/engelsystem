@@ -23,7 +23,7 @@ use Illuminate\Support\Carbon;
  * @property-read User   $sender
  * @property-read User   $receiver
  * @method static Builder|Message whereId($value)
- * @method static Builder|Message whereSenderId($value)
+ * @method static Builder|Message whereUserId($value)
  * @method static Builder|Message whereReceiverId($value)
  * @method static Builder|Message whereRead($value)
  * @method static Builder|Message whereText($value)
