@@ -1,0 +1,46 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ __('Messages') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                {{ block('title') }}
+            </h1>
+        </div>
+        <button class="btn btn-secondary"><i class="bi bi-plus-lg"></i> New Conversation</button>
+
+        <table class="table table-striped data">
+            <thead>
+            <tr>
+                <th>Angel</th>
+                <th>Message</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in conversations %}
+            <tr>
+                <td>
+                    {{ c.other_user.name }}
+                    {% if c.unread_messages > 0 %}
+                        <span class="badge bg-danger">{{ c.unread_messages }}</span>
+                    {% endif %}
+                    </td>
+                <td>
+                    <a href="{{ url('messages/' ~ c.other_user.id) }}">
+                        {{ c.latest_message.text|length > 100 ? c.latest_message.text|slice(0, 100) ~ '...' : c.latest_message.text }}
+                    </a>
+                </td>
+                <td>
+                    {{ c.latest_message.created_at }}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

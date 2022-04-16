@@ -52,6 +52,8 @@ $route->post('/questions/new', 'QuestionsController@save');
 
 // Messages
 $route->get('/messages', 'MessagesController@index');
+$route->get('/messages/{id:\d+}', 'MessagesController@conversation');
+$route->post('/messages/{id:\d+}', 'MessagesController@send');
 
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
