@@ -3,7 +3,6 @@
 namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;

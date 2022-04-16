@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers;
 
-use Psr\SimpleCache\InvalidArgumentException;
-
 class Carbon extends \Carbon\Carbon
 {
     public const DATETIME_LOCAL = '!Y-m-d\TH:i';
