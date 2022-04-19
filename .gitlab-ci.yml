@@ -30,7 +30,7 @@ check-style:
   image: composer:latest
   stage: validate
   before_script:
-    - composer --no-ansi global require squizlabs/php_codesniffer
+    - composer --no-ansi global require slevomat/coding-standard squizlabs/php_codesniffer
     - export PATH=$PATH:$COMPOSER_HOME/vendor/bin
   script:
     - phpcs -p --no-colors --basepath="$PWD"
