@@ -52,8 +52,11 @@ $route->post('/questions/new', 'QuestionsController@save');
 
 // Messages
 $route->get('/messages', 'MessagesController@index');
-$route->get('/messages/{id:\d+}', 'MessagesController@conversation');
-$route->post('/messages/{id:\d+}', 'MessagesController@send');
+$route->get('/messages/new_conversation', 'MessagesController@newConversation');
+$route->post('/messages/new_conversation', 'MessagesController@send');
+$route->get('/messages/{user_id:\d+}', 'MessagesController@conversation');
+$route->post('/messages/{user_id:\d+}', 'MessagesController@send');
+$route->post('/messages/{user_id:\d+}/{msg_id:\d+}', 'MessagesController@delete');
 
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
