@@ -74,7 +74,7 @@ To view the output of `dump` call the following commands:
 ```bash
 vendor/bin/var-dump-server
 # or for running in docker
-docker-compose exec es_php_fpm vendor/bin/var-dump-server
+docker-compose exec es_server vendor/bin/var-dump-server
 ```
 
 For more information check out the Var Dump Server documentation: [Symfony VarDumper](https://symfony.com/components/VarDumper)

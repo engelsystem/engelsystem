@@ -1,30 +1,15 @@
 version: "3.6"
 services:
-  es_nginx:
-    image: es_dev_nginx
-    build:
-      context: ./../..
-      dockerfile: docker/nginx/Dockerfile
-      target: es_nginx
-    volumes:
-      - ./../..:/var/www
-    ports:
-      - 5000:80
-    networks:
-      - fpm
-      - internet
-    depends_on:
-      - es_php_fpm
-  es_php_fpm:
-    image: es_dev_php_fpm
+  es_server:
+    image: es_dev_webserver
     build:
       context: ./../..
       dockerfile: docker/dev/Dockerfile
-      target: es_php_fpm
-    user: "${UID}:${GID}"
+      target: es_webserver
     volumes:
       - ./../..:/var/www
     environment:
+      RUN_USER: "${UID}:${GID}"
       MYSQL_HOST: es_database
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
@@ -34,9 +19,10 @@ services:
       MAIL_DRIVER: log
       APP_NAME: Engelsystem DEV
     env_file: deployment.env
+    ports:
+      - "5000:80"
     networks:
       - database
-      - fpm
       - internet
     depends_on:
       - es_database
@@ -60,7 +46,6 @@ services:
       APP_NAME: Engelsystem DEV
     networks:
       - database
-      - fpm
       - internet
     depends_on:
       - es_database
@@ -81,7 +66,5 @@ volumes:
 
 networks:
   database:
-    internal: true
-  fpm:
     internal: true
   internet:
