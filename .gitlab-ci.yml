@@ -2,9 +2,7 @@ image: php
 
 variables:
   TEST_IMAGE: ${CI_REGISTRY_IMAGE}/engelsystem:${CI_COMMIT_REF_SLUG}
-  TEST_IMAGE_NGINX: ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG}
   RELEASE_IMAGE: ${CI_REGISTRY_IMAGE}/engelsystem:latest
-  RELEASE_IMAGE_NGINX: ${CI_REGISTRY_IMAGE}/nginx:latest
   MYSQL_DATABASE: engelsystem
   MYSQL_USER: engel
   MYSQL_PASSWORD: engelsystem
@@ -78,22 +76,11 @@ generate-version:
 .container_template: &container_definition
   image:
     name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [ "" ]
+    entrypoint: [ '' ]
   before_script:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}"
       > /kaniko/.docker/config.json
-
-build-image-nginx:
-  <<: *container_definition
-  stage: build
-  needs:
-    - check-editorconfig
-    - validate-yarn
-  script:
-    - /kaniko/executor --force --context ${CI_PROJECT_DIR}
-      --dockerfile ${CI_PROJECT_DIR}/docker/nginx/Dockerfile
-      --destination "${TEST_IMAGE_NGINX}"
 
 build-image:
   <<: *container_definition
@@ -103,10 +90,11 @@ build-image:
     - check-style
     - generate-version
     - validate-composer
+    - validate-yarn
   dependencies:
     - generate-version
   script:
-    - /kaniko/executor --force --context ${CI_PROJECT_DIR}
+    - /kaniko/executor --context ${CI_PROJECT_DIR}
       --dockerfile ${CI_PROJECT_DIR}/docker/Dockerfile
       --destination "${TEST_IMAGE}"
 
@@ -132,7 +120,9 @@ audit-yarn:
     - yarn audit
 
 test:
-  image: ${TEST_IMAGE}
+  image:
+    name: ${TEST_IMAGE}
+    entrypoint: [ '' ]
   stage: test
   needs: [ build-image ]
   services:
@@ -164,7 +154,9 @@ test:
     - '"${DOCROOT}/bin/migrate" down'
 
 dump-database:
-  image: ${TEST_IMAGE}
+  image:
+    name: ${TEST_IMAGE}
+    entrypoint: [ '' ]
   stage: test
   needs: [ build-image ]
   services:
@@ -185,10 +177,10 @@ dump-database:
 
 generate-assets:
   image:
-    name: $TEST_IMAGE_NGINX
-    entrypoint: [ "" ]
+    name: $TEST_IMAGE
+    entrypoint: [ '' ]
   stage: test
-  needs: [ build-image-nginx ]
+  needs: [ build-image ]
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}_assets"
     expire_in: 1 day
@@ -204,30 +196,19 @@ generate-assets:
 release-image:
   <<: *container_definition
   stage: release
-  needs: [ test ]
-  dependencies: [ ]
-  script:
-    - echo -e "FROM ${TEST_IMAGE}" | /kaniko/executor --force --dockerfile /dev/stdin --destination "${RELEASE_IMAGE}"
-  only:
-    - main
-
-release-image-nginx:
-  <<: *container_definition
-  stage: release
   needs:
     - test
-    - build-image-nginx
   dependencies: [ ]
   script:
-    - >-
-      echo -e "FROM ${TEST_IMAGE_NGINX}" |
-        /kaniko/executor --force --dockerfile /dev/stdin --destination "${RELEASE_IMAGE_NGINX}"
+    - echo -e "FROM ${TEST_IMAGE}" | /kaniko/executor --dockerfile /dev/stdin --destination "${RELEASE_IMAGE}"
   only:
     - main
 
 .deploy_template: &deploy_definition
   stage: release
-  image: ${TEST_IMAGE}
+  image:
+    name: ${TEST_IMAGE}
+    entrypoint: [ '' ]
   before_script:
     - apk add -q bash rsync openssh-client
 
@@ -236,7 +217,6 @@ build-release-file:
   stage: release
   needs:
     - build-image
-    - build-image-nginx
     - audit-yarn
     - audit-composer
     - test
@@ -314,7 +294,6 @@ deploy:
   needs:
     - test
     - build-image
-    - build-image-nginx
   before_script:
     - &kubectl_deployment_script if [[ -z "${KUBE_INGRESS_BASE_DOMAIN}" ]]; then echo "Skipping deployment"; exit; fi
 
@@ -331,7 +310,6 @@ deploy:
     # CI_ENVIRONMENT_URL is the URL configured in the GitLab environment
     - export CI_ENVIRONMENT_URL="${CI_ENVIRONMENT_URL:-https://${CI_PROJECT_PATH_SLUG}.${KUBE_INGRESS_BASE_DOMAIN}/}"
     - export CI_IMAGE=$RELEASE_IMAGE
-    - export CI_IMAGE_NGINX=$RELEASE_IMAGE_NGINX
     - export CI_INGRESS_DOMAIN=$(echo "$CI_ENVIRONMENT_URL" | grep -oP '(?:https?://)?\K([^/]+)' | head -n1)
     - export CI_INGRESS_PATH=$(echo "$CI_ENVIRONMENT_URL" | grep -oP '(?:https?://)?(?:[^/])+\K(.*)')
     - export CI_KUBE_NAMESPACE=$KUBE_NAMESPACE
@@ -380,7 +358,6 @@ deploy-k8s-review:
   before_script:
     - *kubectl_deployment_script
     - RELEASE_IMAGE=$TEST_IMAGE
-    - RELEASE_IMAGE_NGINX=$TEST_IMAGE_NGINX
 
 stop-k8s-review:
   <<: *deploy_k8s_stop
@@ -426,7 +403,6 @@ deploy-k8s-production:
   stage: deploy-production
   needs:
     - release-image
-    - release-image-nginx
     - audit-yarn
     - audit-composer
   environment:

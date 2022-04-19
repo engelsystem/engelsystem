@@ -1,20 +1,8 @@
 ---
 version: "3.6"
 services:
-  es_nginx:
-    image: es_nginx
-    build:
-      context: ..
-      dockerfile: docker/nginx/Dockerfile
-    ports:
-      - 5000:80
-    networks:
-      - fpm
-      - internet
-    depends_on:
-      - es_php_fpm
-  es_php_fpm:
-    image: es_php_fpm
+  es_server:
+    image: es_server
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -23,10 +11,11 @@ services:
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
       MYSQL_DATABASE: engelsystem
+    ports:
+      - "5000:80"
     env_file: deployment.env
     networks:
       - database
-      - fpm
       - internet
     depends_on:
       - es_database
@@ -47,7 +36,5 @@ volumes:
 
 networks:
   database:
-    internal: true
-  fpm:
     internal: true
   internet:

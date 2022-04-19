@@ -53,16 +53,15 @@ The Engelsystem can now be used.
 
 ### Docker
 #### Build
-To build the `es_nginx` and the `es_php_fpm` containers:
+To build the `es_server` container:
 ```bash
 cd docker
 docker-compose build
 ```
 
-or to build the containers separately
+or to build the container by its own:
 ```bash
-docker build -f docker/nginx/Dockerfile . -t es_nginx
-docker build -f docker/Dockerfile . -t es_php_fpm
+docker build -f docker/Dockerfile . -t es_server
 ```
 
 #### Run
@@ -76,7 +75,7 @@ docker-compose up -d
 Import database changes to migrate it to the newest version
 ```bash
 cd docker
-docker-compose exec es_php_fpm bin/migrate
+docker-compose exec es_server bin/migrate
 ```
 
 ### Scripts
