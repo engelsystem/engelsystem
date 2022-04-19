@@ -1,0 +1,34 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('Messages') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+
+            <div class="page-header">
+                <h1 class="d-flex justify-content-start align-items-center">
+                    <div class="me-2">{{ block('title') }}:</div>
+                    <select id="user_id" name="user_id" class="form-control" required>
+                        <option value="">Select a user</option>
+                        {% for value,decription in users -%}
+                            <option value="{{ value }}">{{ decription }}</option>
+                        {% endfor %}
+                    </select>
+                </h1>
+            </div>
+
+
+            <div class="row" style="height: 60vh;"></div>
+            <div class="input-group">
+                <textarea class="form-control" id="text" name="text" required="" rows="1"></textarea>
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

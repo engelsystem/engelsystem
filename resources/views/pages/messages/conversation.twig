@@ -15,26 +15,38 @@
             {% for m in messages %}
                 {% if m.user_id == other_user.id %}
                     <div class="col-12">
-                        <div class="alert alert-secondary position-relative"
-                             style="max-width: 75%; display: inline-block;">
-                            <div>{{ m.text | nl2br }}</div>
-                            <div class="text-end">
-                                <small class="opacity-75">{{ m.created_at }}</small>
-                            </div>
-                            {% if m.read == false %}
-                                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
+                        <div>
+                            <div class="alert alert-secondary position-relative"
+                                 style="max-width: 75%; display: inline-block;">
+                                <div>{{ m.text | nl2br }}</div>
+                                <div class="text-end">
+                                    <small class="opacity-75">{{ m.created_at }}</small>
+                                </div>
+                                {% if m.read == false %}
+                                    <span class="position-absolute top-0 start-100 translate-middle-x p-2 bg-danger rounded-circle">
                                     <span class="visually-hidden">New alerts</span>
                                 </span>
-                            {% endif %}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% else %}
-                    <div class="col-12 d-flex justify-content-end">
-                        <div class="alert alert-primary"
-                             style="max-width: 75%; display: inline-block;">
-                            <div>{{ m.text | nl2br }}</div>
-                            <div class="text-end">
-                                <small class="opacity-75">{{ m.created_at }}</small>
+                    <div class="col-12">
+                        <div class="d-flex justify-content-end">
+                            <div class="alert alert-primary"
+                                 style="max-width: 75%; display: inline-block;">
+                                <div>{{ m.text | nl2br }}</div>
+                                <div class="text-end">
+
+                                    <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ m.id) }}"
+                                          enctype="multipart/form-data" method="post">
+                                        {{ csrf() }}
+                                        <small class="opacity-75">{{ m.created_at }}</small>
+                                        <button class="btn btn-primary btn-sm" type="submit">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,7 +64,6 @@
                 </button>
             </div>
         </form>
-
 
     </div>
 {% endblock %}

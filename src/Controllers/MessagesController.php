@@ -133,6 +133,20 @@ class MessagesController extends BaseController
             ->get();
     }
 
+    public function newConversation(): Response
+    {
+        $current_user = $this->auth->user();
+        $users = $this->user->all()->except($current_user->id)
+            ->mapWithKeys(function ($u) {
+                return [ $u->id => $u->name ];
+            });
+
+        return $this->response->withView(
+            'pages/messages/new.twig',
+            ['users' => $users]
+        );
+    }
+
     /**
      * Returns a list of messages between the current user and a user with the given id. Unread messages will be marked
      * as read. Still, they will be shown as unread in the frontend to highlight them as new.
@@ -142,7 +156,7 @@ class MessagesController extends BaseController
     public function conversation(Request $request): Response
     {
         $current_user = $this->auth->user();
-        $other_user = $this->user->findOrFail($request->getAttribute('id'));
+        $other_user = $this->user->findOrFail($request->getAttribute('user_id'));
 
         $messages = $this->message
             ->where(function($q) use ($current_user, $other_user) {
@@ -174,9 +188,18 @@ class MessagesController extends BaseController
 
     public function send(Request $request): Response
     {
-        $data = $this->validate($request, [ 'text' => 'required' ]);
+        $data = $this->validate($request,
+            [
+                'text' => 'required',
+                'user_id' => 'optional|int'
+            ]
+        );
 
-        $other_user = $this->user->findOrFail($request->getAttribute('id'));
+        if (isset($data['user_id'])) {
+            $other_user = $this->user->findOrFail($data['user_id']);
+        } elseif ($request->getAttribute('user_id') !== null) {
+            $other_user = $this->user->findOrFail($request->getAttribute('user_id'));
+        }
 
         $new_message = new Message();
         $new_message->sender()->associate($this->auth->user());
@@ -186,6 +209,19 @@ class MessagesController extends BaseController
         $new_message->save();
 
         return $this->redirect->to('/messages/'. $other_user->id);
+    }
+
+    public function delete(Request $request): Response
+    {
+        $current_user = $this->auth->user();
+        $other_user_id = $request->getAttribute('user_id');
+        $msg = $this->message->findOrFail($request->getAttribute('msg_id'));
+
+        if ($msg->user_id == $current_user->id) {
+            $msg->delete();
+        }
+
+        return $this->redirect->to('/messages/'. $other_user_id);
     }
 
     protected function raw($value): QueryExpression
