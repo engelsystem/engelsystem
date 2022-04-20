@@ -79,7 +79,6 @@ class MessagesController extends BaseController
     /**
      * Returns a list of conversations of the current user, each containing the other participant,
      * the most recent message, and the number of unread messages.
-     * @returns Response
      */
     public function list_conversations(): Response
     {
@@ -99,59 +98,33 @@ class MessagesController extends BaseController
             ]);
         }
 
-        return $this->response->withView(
-            'pages/messages/overview.twig',
-            ['conversations' => $conversations]
-        );
-    }
-
-    protected function number_of_unread_messages_per_conversation($current_user): Collection
-    {
-        return $current_user->messagesReceived()
-            ->select('user_id', $this->raw('count(*) as amount'))
-            ->where('read', false)
-            ->groupBy('user_id')
-            ->get(['user_id', 'amount'])
-            ->mapWithKeys(function ($unread) {
-                return [ $unread->user_id => $unread->amount ];
-            });
-    }
-
-    protected function latest_message_per_conversation($current_user): Collection
-    {
-        $latest_message_ids = $this->message
-            ->select($this->raw('max(id) as last_id'))
-            ->where('user_id', "=", $current_user->id)
-            ->orWhere('receiver_id', "=", $current_user->id)
-            ->groupBy($this->raw('IF (user_id = '.$current_user->id.', receiver_id, user_id)'));
-
-        return $this->message
-            ->joinSub($latest_message_ids, 'conversations', function($join) {
-                $join->on('messages.id', '=' , 'conversations.last_id');
-            })
-            ->orderBy('created_at', 'DESC')
-            ->get();
-    }
-
-    public function newConversation(): Response
-    {
-        $current_user = $this->auth->user();
         $users = $this->user->all()->except($current_user->id)
             ->mapWithKeys(function ($u) {
                 return [ $u->id => $u->name ];
             });
 
         return $this->response->withView(
-            'pages/messages/new.twig',
-            ['users' => $users]
+            'pages/messages/overview.twig',
+            [
+                'conversations' => $conversations,
+                'users' => $users
+                ]
         );
     }
 
     /**
-     * Returns a list of messages between the current user and a user with the given id. Unread messages will be marked
-     * as read. Still, they will be shown as unread in the frontend to highlight them as new.
-     * @param Request $request
-     * @return Response
+     * Forwards to the conversation with the user of the given id.
+     */
+    public function toConversation(Request $request): Response
+    {
+        $data = $this->validate($request, [ 'user_id' => 'required|int' ]);
+        return $this->redirect->to('/messages/'. $data['user_id']);
+    }
+
+    /**
+     * Returns a list of messages between the current user and a user with the given id. The ids shall not be the same.
+     * Unread messages will be marked as read during this call. Still, they will be shown as unread in the frontend to
+     * highlight them to the user as new.
      */
     public function conversation(Request $request): Response
     {
@@ -186,20 +159,18 @@ class MessagesController extends BaseController
         );
     }
 
+    /**
+     * Sends a message to another user.
+     */
     public function send(Request $request): Response
     {
         $data = $this->validate($request,
             [
-                'text' => 'required',
-                'user_id' => 'optional|int'
+                'text' => 'required'
             ]
         );
 
-        if (isset($data['user_id'])) {
-            $other_user = $this->user->findOrFail($data['user_id']);
-        } elseif ($request->getAttribute('user_id') !== null) {
-            $other_user = $this->user->findOrFail($request->getAttribute('user_id'));
-        }
+        $other_user = $this->user->findOrFail($request->getAttribute('user_id'));
 
         $new_message = new Message();
         $new_message->sender()->associate($this->auth->user());
@@ -211,6 +182,9 @@ class MessagesController extends BaseController
         return $this->redirect->to('/messages/'. $other_user->id);
     }
 
+    /**
+     * Deletes a message from a given id, as long as this message was send by the current user.
+     */
     public function delete(Request $request): Response
     {
         $current_user = $this->auth->user();
@@ -222,6 +196,34 @@ class MessagesController extends BaseController
         }
 
         return $this->redirect->to('/messages/'. $other_user_id);
+    }
+
+    protected function number_of_unread_messages_per_conversation($current_user): Collection
+    {
+        return $current_user->messagesReceived()
+            ->select('user_id', $this->raw('count(*) as amount'))
+            ->where('read', false)
+            ->groupBy('user_id')
+            ->get(['user_id', 'amount'])
+            ->mapWithKeys(function ($unread) {
+                return [ $unread->user_id => $unread->amount ];
+            });
+    }
+
+    protected function latest_message_per_conversation($current_user): Collection
+    {
+        $latest_message_ids = $this->message
+            ->select($this->raw('max(id) as last_id'))
+            ->where('user_id', "=", $current_user->id)
+            ->orWhere('receiver_id', "=", $current_user->id)
+            ->groupBy($this->raw('IF (user_id = '.$current_user->id.', receiver_id, user_id)'));
+
+        return $this->message
+            ->joinSub($latest_message_ids, 'conversations', function($join) {
+                $join->on('messages.id', '=' , 'conversations.last_id');
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get();
     }
 
     protected function raw($value): QueryExpression
