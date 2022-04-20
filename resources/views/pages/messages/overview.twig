@@ -9,9 +9,26 @@
                 {{ block('title') }}
             </h1>
         </div>
-        <a class="btn btn-secondary" href="/messages/new_conversation">
-            <i class="bi bi-plus-lg"></i> New Conversation
-        </a>
+        <form action=""
+        enctype="multipart/form-data" method="post">
+        {{ csrf() }}
+            <div class="row gx-2">
+                <div class="col-auto">
+                    <select id="user_id" name="user_id" class="form-control pe-5" required>
+                        <option value="">Select a user</option>
+                        {% for value,decription in users -%}
+                            <option value="{{ value }}">{{ decription }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">
+                        <i class="bi bi-plus-lg"></i> New Conversation
+                    </button>
+                </div>
+            </div>
+        </form>
+
 
         <table class="table table-striped data">
             <thead>
