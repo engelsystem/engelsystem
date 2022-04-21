@@ -55,7 +55,7 @@ function public_dashboard_view($stats, $free_shifts)
         div('first col-md-12 text-center', [buttons([
             button_js(
                 '
-                $(\'#navbar-collapse-1,.navbar-nav,.navbar-toggle,#footer,#fullscreen-button\').remove();
+                $(\'#navbar-collapse-1,.navbar-nav,.navbar-toggler,#footer,#fullscreen-button\').remove();
                 $(\'.navbar-brand\').append(\' ' . __('Public Dashboard') . '\');
                 ',
                 icon('fullscreen') . __('Fullscreen')
