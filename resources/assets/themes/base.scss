@@ -20,18 +20,40 @@ $custom-colors: (
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
-@import "~bootstrap/scss/bootstrap";
+$form-label-font-weight: $font-weight-bold;
+
+@import "~bootstrap/scss/utilities";
+
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/button-group";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+@import "~bootstrap/scss/card";
+@import "~bootstrap/scss/pagination";
+@import "~bootstrap/scss/badge";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/progress";
+@import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/close";
+@import "~bootstrap/scss/popover";
+
+@import "~bootstrap/scss/helpers";
+
+@import "~bootstrap/scss/utilities/api";
 
 @import "~bootstrap-icons/font/bootstrap-icons";
 @import "~select2/src/scss/core";
 @import "~select2-bootstrap-5-theme/src/include-all";
 @import "error";
-
-// temporary bg-body fix (remove once Bootstrap 5.1.1 has been released)
-.bg-body {
-    --bs-bg-opacity: 1;
-    background-color: $body-bg !important;
-}
 
 $navbar-height: 3.125rem;
 
@@ -49,13 +71,6 @@ body {
     &:hover {
         color: inherit;
     }
-}
-
-.text-big {
-  display: block;
-  font-size: 30px;
-  line-height: 30px;
-  margin: 0;
 }
 
 .icon-icon_angel {
@@ -85,7 +100,8 @@ a .icon-icon_angel {
   background-color: $nav-link-disabled-color;
 }
 
-.navbar-brand .icon-icon_angel {
+.navbar-brand .icon-icon_angel,
+table a > .icon-icon_angel {
   background-color: $body-color;
 }
 
@@ -97,24 +113,8 @@ a .icon-icon_angel {
     margin-bottom: 0;
 }
 
-table a > .icon-icon_angel {
-  background-color: $body-color;
-}
-
 .table .form-group {
   margin-bottom: 0;
-}
-
-.table-striped > tbody > tr:nth-of-type(2n+1) {
-  color: var(--bs-table-color);
-}
-
-.input-group.date,
-.input-group.datetime,
-.input-group.time {
-    .bootstrap-datetimepicker-widget {
-        inset: 42px auto auto 0 !important;
-    }
 }
 
 .stats {
@@ -133,19 +133,6 @@ table a > .icon-icon_angel {
       font-size: 40px;
     }
   }
-}
-
-
-.stats-danger {
-  color: map-get($theme-colors, 'danger');
-}
-
-.stats-warning {
-  color: map-get($theme-colors, 'warning');
-}
-
-.stats-success {
-  color: map-get($theme-colors, 'success');
 }
 
 .dashboard-card {
@@ -360,36 +347,4 @@ code {
   a[href]:after {
     content: "";
   }
-}
-
-.navbar-toggle {
-  transform: scale(1.25, 0.96);
-  padding: 2px 6px;
-  margin-top: 6px;
-  margin-bottom: 4px;
-  max-height: $navbar-height;
-
-  .icon {
-    border-color: $primary;
-    font-weight: bold;
-    color: $primary;
-    font-size: 25px;
-    &-close {
-      padding: 0 3px;
-      display: none;
-    }
-  }
-  &.is-open .icon {
-    &-open {
-      display: none;
-    }
-    &-close {
-      display: block;
-    }
-  }
-}
-
-// Forms
-.form-label {
-  font-weight: $font-weight-bold;
 }
