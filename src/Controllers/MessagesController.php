@@ -41,6 +41,11 @@ class MessagesController extends BaseController
     /** @var User */
     protected $user;
 
+    /** @var string[] */
+    protected $permissions = [
+        'user_messages',
+    ];
+
     /**
      * @param Authenticator   $auth
      * @param LoggerInterface $log
