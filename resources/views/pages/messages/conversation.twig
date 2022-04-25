@@ -1,7 +1,8 @@
 {% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('Messages') }}: {{ other_user.name }}{% endblock %}
+{% block title %}{{ __('messages.title') }}: {{ other_user.name }}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -13,21 +14,20 @@
 
         <div class="row">
             <div class="col-12 col-lg-8 offset-lg-2">
-                <div class="row" style="height: 60vh; overflow-x: hidden; overflow-y: auto">
-                    {% for m in messages %}
-                        {% if m.user_id == other_user.id %}
+                <div class="row conversation">
+                    {% for msg in messages %}
+                        {% if msg.user_id == other_user.id %}
                             <div class="col-12">
                                 <div>
-                                    <div class="alert alert-secondary position-relative"
-                                         style="max-width: 75%; display: inline-block;">
-                                        <div>{{ m.text | nl2br }}</div>
+                                    <div class="message alert alert-secondary position-relative">
+                                        <div>{{ msg.text | nl2br }}</div>
                                         <div class="text-end">
-                                            <small class="opacity-75">{{ m.created_at }}</small>
+                                            <small class="opacity-75">{{ msg.created_at }}</small>
                                         </div>
-                                        {% if m.read == false %}
+                                        {% if msg.read == false %}
                                             <span class="position-absolute top-0 start-100 translate-middle-x p-2 bg-danger rounded-circle">
-                                    <span class="visually-hidden">New alerts</span>
-                                </span>
+                                                <span class="visually-hidden">New alerts</span>
+                                            </span>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -35,18 +35,15 @@
                         {% else %}
                             <div class="col-12">
                                 <div class="d-flex justify-content-end">
-                                    <div class="alert alert-primary"
-                                         style="max-width: 75%; display: inline-block;">
-                                        <div>{{ m.text | nl2br }}</div>
+                                    <div class="message alert alert-primary">
+                                        <div>{{ msg.text | nl2br }}</div>
                                         <div class="text-end">
 
-                                    <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ m.id) }}"
+                                    <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ msg.id) }}"
                                           enctype="multipart/form-data" method="post">
                                         {{ csrf() }}
-                                        <small class="opacity-75">{{ m.created_at }}</small>
-                                        <button class="btn btn-primary btn-sm" type="submit">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <small class="opacity-75">{{ msg.created_at }}</small>
+                                        {{ f.submit(m.icon('trash'), {'btn_type': 'primary', 'size': 'sm'}) }}
                                     </form>
                                 </div>
                             </div>
@@ -61,9 +58,7 @@
 
             <div class="input-group">
                 <textarea class="form-control" id="text" name="text" required="" rows="1"></textarea>
-                <button class="btn btn-primary" type="submit">
-                    <i class="bi bi-send-fill"></i>
-                </button>
+                {{ f.submit(m.icon('send-fill')) }}
             </div>
         </form>
 

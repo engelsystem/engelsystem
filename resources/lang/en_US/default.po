@@ -300,3 +300,18 @@ msgstr "Arrived"
 
 msgid "user.got_shirt"
 msgstr "Got shirt"
+
+msgid "messages.title"
+msgstr "Messages"
+
+msgid "messages.choose.an.angel"
+msgstr "Choose an Angel"
+
+msgid "messages.to.conversation"
+msgstr "To Conversation"
+
+msgid "angel"
+msgstr "Angel"
+
+msgid "message"
+msgstr "Message"

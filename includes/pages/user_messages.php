@@ -8,7 +8,7 @@ use Engelsystem\Models\User\User;
  */
 function messages_title()
 {
-    return __('Messages');
+    return __('messages.title');
 }
 
 /**
@@ -109,7 +109,7 @@ function user_messages()
                     'timestamp' => __('Date'),
                     'from'      => __('Transmitted'),
                     'to'        => __('Recipient'),
-                    'text'      => __('Message'),
+                    'text'      => __('message'),
                     'actions'   => ''
                 ], $messages_table)
             ], page_link_to('user_messages', ['action' => 'send']))

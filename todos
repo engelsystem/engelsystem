@@ -1,0 +1,18 @@
+X Ensuring permissions are considered
+- Checking if my changes reflect the old status
+  - user with pronoun setting
+  - what else?
+- Writing unit tests
+X Fixing frontend spacing
+X Frontend: Using utils more
+  X tables (will keep own table)
+  X forms (will keep own form)
+  X buttons
+  X headings
+X Frontend: Using CSS instead of style stuff
+- Security: Throw exceptions or something.
+- Logging
+X Frontend: Language stuff
+- run the PHP check
+X Frontend: change button +NewConversation to something different
+- old code cleaned up? (What the actual task was)

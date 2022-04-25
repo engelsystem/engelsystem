@@ -1308,10 +1308,6 @@ msgstr "Zu löschende Schichten"
 msgid "It's done!"
 msgstr "Erledigt!"
 
-#: includes/pages/user_messages.php:121
-msgid "Message"
-msgstr "Nachricht"
-
 #: includes/pages/admin_rooms.php:202
 #: includes/view/User_view.php:129
 msgid "Delete"
@@ -1684,10 +1680,6 @@ msgstr "Nachname"
 #: includes/pages/guest_login.php:350 includes/view/User_view.php:38
 msgid "Entry required!"
 msgstr "Pflichtfeld!"
-
-#: includes/pages/user_messages.php:11
-msgid "Messages"
-msgstr "Nachrichten"
 
 #: includes/pages/user_messages.php:49
 msgid "Select recipient..."
@@ -3038,3 +3030,18 @@ msgstr "Angekommen"
 
 msgid "user.got_shirt"
 msgstr "Shirt bekommen"
+
+msgid "messages.title"
+msgstr "Nachrichten"
+
+msgid "messages.choose.an.angel"
+msgstr "Wähle einen Engel"
+
+msgid "messages.to.conversation"
+msgstr "Zur Konversation"
+
+msgid "angel"
+msgstr "Engel"
+
+msgid "message"
+msgstr "Nachricht"
