@@ -225,4 +225,18 @@ class User extends BaseModel
             ->orderBy('read')
             ->orderBy('id', 'DESC');
     }
+
+    /**
+     * Return either just the user name or the name alongside with the pronoun.
+     * @return string
+     */
+    public function nameWithPronoun(): string
+    {
+        if (config('enable_pronoun')) {
+            $pronoun = $this->personalData->pronoun;
+            return $pronoun ? $this->name . ' (' . $pronoun . ')': $this->name;
+        } else {
+            return $this->name;
+        }
+    }
 }

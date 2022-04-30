@@ -40,7 +40,8 @@
             {% for c in conversations %}
             <tr>
                 <td>
-                    {{ c.other_user.name }}
+                    <span class="icon-icon_angel"></span>
+                    {{ c.other_user.nameWithPronoun() }}
                     {% if c.unread_messages > 0 %}
                         <span class="badge bg-danger">{{ c.unread_messages }}</span>
                     {% endif %}

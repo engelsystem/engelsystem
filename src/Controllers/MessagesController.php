@@ -105,7 +105,7 @@ class MessagesController extends BaseController
 
         $users = $this->user->all()->except($current_user->id)
             ->mapWithKeys(function ($u) {
-                return [ $u->id => $u->name ];
+                return [ $u->id => $u->nameWithPronoun() ];
             });
 
         return $this->response->withView(
@@ -120,7 +120,7 @@ class MessagesController extends BaseController
     /**
      * Forwards to the conversation with the user of the given id.
      */
-    public function toConversation(Request $request): Response
+    public function to_conversation(Request $request): Response
     {
         $data = $this->validate($request, [ 'user_id' => 'required|int' ]);
         return $this->redirect->to('/messages/'. $data['user_id']);
@@ -201,6 +201,18 @@ class MessagesController extends BaseController
         }
 
         return $this->redirect->to('/messages/'. $other_user_id);
+    }
+
+    public function number_of_unread_messages(): int
+    {
+        $current_user = auth()->user();
+        if ($current_user) {
+            return $current_user->messagesReceived()
+                ->where('read', false)
+                ->count();
+        } else {
+            return 0;
+        }
     }
 
     protected function number_of_unread_messages_per_conversation($current_user): Collection
