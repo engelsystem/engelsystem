@@ -89,6 +89,11 @@ class OAuthController extends BaseController
         $providerName = $request->getAttribute('provider');
         $provider = $this->getProvider($providerName);
 
+        // Handle OAuth error response according to https://www.rfc-editor.org/rfc/rfc6749#section-4.1.2.1
+        if ($request->has('error')) {
+            throw new HttpNotFound('oauth.' . $request->get('error'));
+        }
+
         if (!$request->has('code')) {
             $authorizationUrl = $provider->getAuthorizationUrl();
             $this->session->set('oauth2_state', $provider->getState());

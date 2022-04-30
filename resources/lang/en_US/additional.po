@@ -105,6 +105,28 @@ msgstr "Unable to find account"
 msgid "oauth.provider-not-found"
 msgstr "Unable to find OAuth provider"
 
+msgid "oauth.invalid_request"
+msgstr "The OAuth-Provider rejected the request due to a missing or invalid parameter."
+
+msgid "oauth.unauthorized_client"
+msgstr "Not authorized as a client with the OAuth-Provider."
+
+msgid "oauth.access_denied"
+msgstr "The resource owner or authorization server denied the request."
+
+msgid "oauth.unsupported_response_type"
+msgstr "The OAuth-Provider does not support obtaining an authorization code using this method."
+
+msgid "oauth.invalid_scope"
+msgstr "The requested scope is invalid, unknown, or malformed."
+
+msgid "oauth.server_error"
+msgstr "The OAuth-Provider encountered an unexpected condition that prevented it from fulfilling the request."
+
+msgid "oauth.temporarily_unavailable"
+msgstr "The OAuth-Provider is currently unable to handle the request "
+"due to a temporary overloading or maintenance of the server."
+
 msgid "settings.profile"
 msgstr "Profile"
 
