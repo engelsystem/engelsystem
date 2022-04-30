@@ -1,7 +1,7 @@
 X Ensuring permissions are considered
-- Checking if my changes reflect the old status
-  - user with pronoun setting
-  - what else?
+X Checking if my changes reflect the old status
+  X user with pronoun setting
+  X what else?
 - Writing unit tests
 X Fixing frontend spacing
 X Frontend: Using utils more
