@@ -363,6 +363,43 @@ class OAuthControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\OAuthController::index
+     * @dataProvider oAuthErrorCodeProvider
+     */
+    public function testIndexOAuthErrorResponse(string $oauth_error_code)
+    {
+        $controller = $this->getMock(['getProvider']);
+
+        $request = new Request();
+        $request = $request
+                    ->withAttribute('provider', 'testprovider')
+                    ->withQueryParams(['error' => $oauth_error_code]);
+
+        $exception = null;
+        try {
+            $controller->index($request);
+        } catch (HttpNotFound $e) {
+            $exception = $e;
+        }
+
+        $this->assertNotNull($exception, 'Exception not thrown');
+        $this->assertEquals('oauth.' . $oauth_error_code, $exception->getMessage());
+    }
+
+    public function oAuthErrorCodeProvider(): array
+    {
+        return [
+            ['invalid_request'],
+            ['unauthorized_client'],
+            ['access_denied'],
+            ['unsupported_response_type'],
+            ['invalid_scope'],
+            ['server_error'],
+            ['temporarily_unavailable']
+        ];
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::index
      * @covers \Engelsystem\Controllers\OAuthController::redirectRegister
      */
     public function testIndexRedirectRegister()

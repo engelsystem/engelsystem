@@ -107,6 +107,27 @@ msgstr "Account nicht gefunden"
 msgid "oauth.provider-not-found"
 msgstr "OAuth-Provider nicht gefunden"
 
+msgid "oauth.invalid_request"
+msgstr "Der OAuth-Provider lehnt die Anfrage aufgrund eines ungültigen oder fehlenden Parameters ab."
+
+msgid "oauth.unauthorized_client"
+msgstr "Authorisierung als Client beim OAuth-Provider ungültig."
+
+msgid "oauth.access_denied"
+msgstr "Der Nutzer oder der OAuth-Provider hat die Anfrage abgelehnt."
+
+msgid "oauth.unsupported_response_type"
+msgstr "Der OAuth-Provider unterstützt die gewählte Methode zum Erhalt eines Auth-Codes nicht."
+
+msgid "oauth.invalid_scope"
+msgstr "Der angefragte Scope ist ungültig, unbekannt oder fehlerhaft."
+
+msgid "oauth.server_error"
+msgstr "Der OAuth-Provider ist aufgrund eines unerwarteten Fehlers nicht in der Lage, die Anfrage zu erfüllen"
+
+msgid "oauth.temporarily_unavailable"
+msgstr "Der OAuth-Provider ist aufgrund Überlastung oder Wartung temporär nicht in der Lage, die Anfrage zu erfüllen"
+
 msgid "settings.profile"
 msgstr "Profil"
 
