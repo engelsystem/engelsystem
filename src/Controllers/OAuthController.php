@@ -88,6 +88,7 @@ class OAuthController extends BaseController
     {
         $providerName = $request->getAttribute('provider');
         $provider = $this->getProvider($providerName);
+        $config = $this->config->get('oauth')[$providerName];
 
         // Handle OAuth error response according to https://www.rfc-editor.org/rfc/rfc6749#section-4.1.2.1
         if ($request->has('error')) {
@@ -95,7 +96,13 @@ class OAuthController extends BaseController
         }
 
         if (!$request->has('code')) {
-            $authorizationUrl = $provider->getAuthorizationUrl();
+            $authorizationUrl = $provider->getAuthorizationUrl(
+                [
+                    // Leauge separates scopes by comma, which is wrong, so we do it
+                    // here properly by spaces. See https://www.rfc-editor.org/rfc/rfc6749#section-3.3
+                    'scope' => join(' ', $config['scope'] ?? [])
+                ]
+            );
             $this->session->set('oauth2_state', $provider->getState());
 
             return $this->redirector->to($authorizationUrl);
@@ -178,7 +185,6 @@ class OAuthController extends BaseController
             $this->addNotification('oauth.connected');
         }
 
-        $config = $this->config->get('oauth')[$providerName];
         $resourceData = $resourceOwner->toArray();
         if (!empty($config['nested_info'])) {
             $resourceData = Arr::dot($resourceData);

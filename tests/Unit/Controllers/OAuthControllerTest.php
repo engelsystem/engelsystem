@@ -76,6 +76,7 @@ class OAuthControllerTest extends TestCase
             'first_name'    => 'given-name',
             'last_name'     => 'last-name',
             'url'           => 'http://localhost/',
+            'scope'         => ['foo', 'bar'],
         ],
     ];
 
@@ -197,6 +198,7 @@ class OAuthControllerTest extends TestCase
                 $this->assertStringStartsWith('http://localhost/auth', $url);
                 $this->assertStringContainsString('testsystem', $url);
                 $this->assertStringContainsString('code', $url);
+                $this->assertStringContainsString('scope=foo%20bar', $url);
                 return new Response();
             });
 
