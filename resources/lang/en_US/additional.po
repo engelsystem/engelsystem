@@ -152,3 +152,6 @@ msgstr "You can find a description at %2$s"
 
 msgid "user.edit.success"
 msgstr "User edited successfully."
+
+msgid "messages.delete.success"
+msgstr "Message successfully deleted."

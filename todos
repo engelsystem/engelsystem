@@ -10,9 +10,11 @@ X Frontend: Using utils more
   X buttons
   X headings
 X Frontend: Using CSS instead of style stuff
-- Security: Throw exceptions or something.
-- Logging
+X Security: Throw exceptions or something.
+X Logging
 X Frontend: Language stuff
 - run the PHP check
 X Frontend: change button +NewConversation to something different
-- old code cleaned up? (What the actual task was)
+X old code cleaned up? (What the actual task was)
+X add notifications (manchmal "+ $this->getNotifications()")
+? cleanupModelNullValues used correctly?
