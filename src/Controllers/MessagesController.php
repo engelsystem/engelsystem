@@ -15,7 +15,6 @@ use Illuminate\Support\Collection;
 
 class MessagesController extends BaseController
 {
-    use CleanupModel;
 
     /** @var Authenticator */
     protected $auth;
@@ -169,21 +168,24 @@ class MessagesController extends BaseController
      */
     public function send(Request $request): Response
     {
-        $data = $this->validate($request,
-            [
-                'text' => 'required'
-            ]
-        );
+        $current_user = $this->auth->user();
+
+        $data = $this->validate($request, [ 'text' => 'required' ]);
 
         $other_user = $this->user->findOrFail($request->getAttribute('user_id'));
 
         $new_message = new Message();
-        $new_message->sender()->associate($this->auth->user());
+        $new_message->sender()->associate($current_user);
         $new_message->receiver()->associate($other_user);
         $new_message->text = $data['text'];
         $new_message->read = false;
         $new_message->save();
 
+        $this->log->info('User {from} has written a message to user {to}',
+            [
+                'from' => $current_user->id,
+                'to' => $other_user->id
+            ]);
         return $this->redirect->to('/messages/'. $other_user->id);
     }
 
@@ -194,10 +196,27 @@ class MessagesController extends BaseController
     {
         $current_user = $this->auth->user();
         $other_user_id = $request->getAttribute('user_id');
-        $msg = $this->message->findOrFail($request->getAttribute('msg_id'));
+        $msg_id = $request->getAttribute('msg_id');
+        $msg = $this->message->findOrFail($msg_id);
 
         if ($msg->user_id == $current_user->id) {
             $msg->delete();
+
+            $this->log->info('User {from} deleted message {msg} in a conversation with user {to}',
+                [
+                    'from' => $current_user->id,
+                    'to' => $other_user_id,
+                    'msg' => $msg_id
+                ]);
+
+        } else {
+            $this->log->warning('User {from} tried to delete message {msg} which was not written by them,
+                in a conversation with user {to}',
+                [
+                    'from' => $current_user->id,
+                    'to' => $other_user_id,
+                    'msg' => $msg_id
+                ]);
         }
 
         return $this->redirect->to('/messages/'. $other_user_id);
@@ -205,7 +224,7 @@ class MessagesController extends BaseController
 
     public function number_of_unread_messages(): int
     {
-        $current_user = auth()->user();
+        $current_user = $this->auth->user();
         if ($current_user) {
             return $current_user->messagesReceived()
                 ->where('read', false)
@@ -233,7 +252,7 @@ class MessagesController extends BaseController
             ->select($this->raw('max(id) as last_id'))
             ->where('user_id', "=", $current_user->id)
             ->orWhere('receiver_id', "=", $current_user->id)
-            ->groupBy($this->raw('IF (user_id = '.$current_user->id.', receiver_id, user_id)'));
+            ->groupBy($this->raw('(CASE WHEN user_id = '.$current_user->id.' THEN receiver_id ELSE user_id END)'));
 
         return $this->message
             ->joinSub($latest_message_ids, 'conversations', function($join) {
