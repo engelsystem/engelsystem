@@ -209,6 +209,25 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
+    public function testToConversation_withNoUserIdGiven_throwsException() {
+        $this->expectException(ValidationException::class);
+        $this->controller->setValidator(new Validator());
+        $this->controller->to_conversation($this->request);
+    }
+
+    public function testToConversation_withUserIdGiven_redirect() {
+        $this->request = $this->request->withParsedBody([
+            'user_id'  => '1',
+        ]);
+        $this->response->expects($this->once())
+            ->method('redirectTo')
+            ->with('http://localhost/messages/1')
+            ->willReturn($this->response);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->to_conversation($this->request);
+    }
+
     /**
      * Setup environment
      */
