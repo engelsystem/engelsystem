@@ -54,6 +54,8 @@ class MessagesControllerTest extends ControllerTest
                 $this->assertEquals('pages/messages/overview.twig', $view);
                 $this->assertArrayHasKey('conversations', $data);
                 $this->assertArrayHasKey('users', $data);
+                $this->assertArrayOrCollection($data['conversations']);
+                $this->assertArrayOrCollection($data['users']);
                 return $this->response;
             });
 
@@ -135,9 +137,9 @@ class MessagesControllerTest extends ControllerTest
     public function testIndex_withConversation_conversationContainsOtherUserAndLatestMessageAndUnreadCount()
     {
         // save messages in wrong order to ensure latest message considers creation date, not id.
-        $this->create_message($this->user_a, $this->user_b, "a>b", $this->now);
-        $this->create_message($this->user_b, $this->user_a, "b>a", $this->two_minutes_ago);
-        $this->create_message($this->user_b, $this->user_a, "b>a", $this->one_minute_ago);
+        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->create_message($this->user_b, $this->user_a, 'b>a', $this->two_minutes_ago);
+        $this->create_message($this->user_b, $this->user_a, 'b>a', $this->one_minute_ago);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -151,8 +153,8 @@ class MessagesControllerTest extends ControllerTest
                 $this->assertArrayHasKey('latest_message', $c);
                 $this->assertArrayHasKey('unread_messages', $c);
 
-                $this->assertEquals('User', class_basename($c['other_user']));
-                $this->assertEquals('Message', class_basename($c['latest_message']));
+                $this->assertTrue($c['other_user'] instanceof User);
+                $this->assertTrue($c['latest_message'] instanceof Message);
                 $this->assertEquals('string', gettype($c['unread_messages']));
 
                 $this->assertEquals('b', $c['other_user']->name);
@@ -168,9 +170,9 @@ class MessagesControllerTest extends ControllerTest
     public function testIndex_withConversations_onlyContainsConversationsWithMe()
     {
         // save messages in wrong order to ensure latest message considers creation date, not id.
-        $this->create_message($this->user_a, $this->user_b, "a>b", $this->now);
-        $this->create_message($this->user_b, $this->user_c, "b>c", $this->now);
-        $this->create_message($this->user_c, $this->user_a, "c>a", $this->now);
+        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->create_message($this->user_b, $this->user_c, 'b>c', $this->now);
+        $this->create_message($this->user_c, $this->user_a, 'c>a', $this->now);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -190,9 +192,9 @@ class MessagesControllerTest extends ControllerTest
 
     public function testIndex_withConversations_conversationsOrderedByDate()
     {
-        $this->create_message($this->user_a, $this->user_b, "a>b", $this->now);
-        $this->create_message($this->user_d, $this->user_a, "d>a", $this->two_minutes_ago);
-        $this->create_message($this->user_a, $this->user_c, "a>c", $this->one_minute_ago);
+        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->create_message($this->user_d, $this->user_a, 'd>a', $this->two_minutes_ago);
+        $this->create_message($this->user_a, $this->user_c, 'a>c', $this->one_minute_ago);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -228,6 +230,80 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->to_conversation($this->request);
     }
 
+    public function testConversation_withNoUserIdGiven_throwsException() {
+        $this->expectException(ModelNotFoundException::class);
+        $this->controller->conversation($this->request);
+    }
+
+    public function testConversation_withMyUserIdGiven_throwsException() {
+        $this->request->attributes->set('user_id', $this->user_a->id);
+        $this->expectException(HttpForbidden::class);
+        $this->controller->conversation($this->request);
+    }
+
+    public function testConversation_withUnknownUserIdGiven_throwsException() {
+        $this->request->attributes->set('user_id', '1234');
+        $this->expectException(ModelNotFoundException::class);
+        $this->controller->conversation($this->request);
+    }
+
+    public function testConversation_underNormalConditions_returnsCorrectViewAndData() {
+        $this->request->attributes->set('user_id', $this->user_b->id);
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function (string $view, array $data) {
+                $this->assertEquals('pages/messages/conversation.twig', $view);
+                $this->assertArrayHasKey('messages', $data);
+                $this->assertArrayHasKey('other_user', $data);
+                $this->assertArrayOrCollection($data['messages']);
+                $this->assertTrue($data['other_user'] instanceof User);
+                return $this->response;
+            });
+
+        $this->controller->conversation($this->request);
+    }
+
+    public function testConversation_withNoMessages_returnsEmptyMessageList() {
+        $this->request->attributes->set('user_id', $this->user_b->id);
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function (string $view, array $data) {
+                $this->assertEquals(0,$data['messages']);
+                return $this->response;
+            });
+
+        $this->controller->conversation($this->request);
+    }
+
+    public function testConversation_withMessages_messagesOnlyWithThatUserOrderedByDate() {
+        $this->request->attributes->set('user_id', $this->user_b->id);
+
+        // to be listed
+        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->create_message($this->user_b, $this->user_a, 'b>a', $this->two_minutes_ago);
+        $this->create_message($this->user_b, $this->user_a, 'b>a2', $this->one_minute_ago);
+
+        // not to be listed
+        $this->create_message($this->user_a, $this->user_c, 'a>c', $this->now);
+        $this->create_message($this->user_c, $this->user_b, 'b>c', $this->now);
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function (string $view, array $data) {
+                $messages = $data['messages'];
+                $this->assertEquals(3, count($messages));
+                $this->assertEquals('b>a', $messages[0]->text);
+                $this->assertEquals('b>a2', $messages[1]->text);
+                $this->assertEquals('a>b', $messages[2]->text);
+
+                return $this->response;
+            });
+
+        $this->controller->conversation($this->request);
+    }
+
     /**
      * Setup environment
      */
@@ -251,6 +327,11 @@ class MessagesControllerTest extends ControllerTest
         $this->two_minutes_ago = Carbon::now()->subMinutes(2);
 
         $this->controller = $this->app->get(MessagesController::class);
+    }
+
+    protected function assertArrayOrCollection($obj)
+    {
+        $this->assertTrue(gettype($obj) == 'array' || $obj instanceof Collection);
     }
 
     protected function create_message(User $from, User $to, string $text, Carbon $at): Message
