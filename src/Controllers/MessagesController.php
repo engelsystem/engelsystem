@@ -180,6 +180,10 @@ class MessagesController extends BaseController
 
         $other_user = $this->user->findOrFail($request->getAttribute('user_id'));
 
+        if ($other_user->id == $current_user->id) {
+            throw new HttpForbidden('You can not send a message to yourself.');
+        }
+
         $new_message = new Message();
         $new_message->sender()->associate($current_user);
         $new_message->receiver()->associate($other_user);
