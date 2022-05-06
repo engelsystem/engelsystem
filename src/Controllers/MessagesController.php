@@ -102,7 +102,8 @@ class MessagesController extends BaseController
             ]);
         }
 
-        $users = $this->user->all()->except($current_user->id)
+        $users = $this->user->orderBy('name')->get()
+            ->except($current_user->id)
             ->mapWithKeys(function ($u) {
                 return [ $u->id => $u->nameWithPronoun() ];
             });
