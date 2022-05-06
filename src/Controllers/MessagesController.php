@@ -12,6 +12,7 @@ use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Psr\Log\LoggerInterface;
 use Illuminate\Support\Collection;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 
 class MessagesController extends BaseController
 {
@@ -135,6 +136,10 @@ class MessagesController extends BaseController
     {
         $current_user = $this->auth->user();
         $other_user = $this->user->findOrFail($request->getAttribute('user_id'));
+
+        if ($current_user->id == $other_user->id) {
+            throw new HttpForbidden('You can not start a conversation with yourself.');
+        }
 
         $messages = $this->message
             ->where(function($q) use ($current_user, $other_user) {
