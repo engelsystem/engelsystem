@@ -4,7 +4,6 @@ require('jquery-ui');
 window.bootstrap = require('bootstrap');
 window.moment = require('moment');
 require('moment/locale/de');
-require('tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4');
 require('chart.js');
 require('./forms');
 require('./sticky-headers');

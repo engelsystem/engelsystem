@@ -25,10 +25,14 @@ The following instructions explain how to get, build and run the latest Engelsys
   ```
   to install the Engelsystem
 * Build the frontend assets
-```bash
-yarn build
-```
-* Optionally (for better performance)
+  * All
+    ```bash
+    yarn build
+    ```
+  * Specific themes only by providing the `THEMES` environment variable, e.g.
+    ```bash
+    THEMES=0,1 yarn build
+    ```
 * Generate translation files
   ```bash
   find resources/lang/ -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
@@ -70,7 +74,7 @@ To view the output of `dump` call the following commands:
 ```bash
 vendor/bin/var-dump-server
 # or for running in docker
-docker exec -it engelsystem_dev-es_php_fpm-1 vendor/bin/var-dump-server
+docker-compose exec es_server vendor/bin/var-dump-server
 ```
 
 For more information check out the Var Dump Server documentation: [Symfony VarDumper](https://symfony.com/components/VarDumper)
@@ -106,6 +110,8 @@ PRODUCTION_REMOTE_PATH  # Same as STAGING_REMOTE_PATH but for the production env
 
 ## Docker
 
+If unspecific issues appear try using Docker version >= 20.10.14.
+
 This repo [ships a docker setup](docker/dev) for a quick development start.
 
 If you use another uid/gid than 1000 on your machine you have to adjust it in [docker/dev/.env](docker/dev/.env).
@@ -121,26 +127,32 @@ Run these commands once initially and then as required after changes
 
 ```bash
 # Install composer dependencies
-docker exec -it engelsystem_dev-es_workspace-1 composer i
+docker-compose exec es_workspace composer i
 
 # Install node packages
-docker exec -it engelsystem_dev-es_workspace-1 yarn install
+docker-compose exec es_workspace yarn install
 
-# Run a front-end build
-docker exec -it engelsystem_dev-es_workspace-1 yarn build
+# Run a full front-end build
+docker-compose exec es_workspace yarn build
+
+# Or run a front-end build for specific themes only, e.g.
+docker-compose exec -e THEMES=0,1 es_workspace yarn build
 
 # Update the translation files
-docker exec -it engelsystem_dev-es_workspace-1 find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+docker-compose exec es_workspace find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
 
 # Run the migrations
-docker exec -it engelsystem_dev-es_workspace-1 bin/migrate
+docker-compose exec es_workspace bin/migrate
 ```
 
 While developing you may use the watch mode to rebuild the system on changes
 
 ```bash
-# Run a front-end build
-docker exec -it engelsystem_dev-es_workspace-1 yarn build:watch
+# Run a front-end build and update on change
+docker-compose exec es_workspace yarn build:watch
+
+# Or run a front-end build and update on change for specific themes only, e.g.
+docker-compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
 
 **Hint for using Xdebug with *PhpStorm***

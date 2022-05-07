@@ -21,8 +21,8 @@ class DatabaseTest extends TestCase
      */
     public function testInit()
     {
-        /** @var Pdo|MockObject $pdo */
-        $pdo = $this->getMockBuilder(Pdo::class)
+        /** @var PDO|MockObject $pdo */
+        $pdo = $this->getMockBuilder(PDO::class)
             ->disableOriginalConstructor()
             ->getMock();
 

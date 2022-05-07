@@ -131,7 +131,7 @@ spec:
               value: '<CI_SETUP_ADMIN_PASSWORD>'
       containers:
         - image: <CI_IMAGE>
-          name: engelsystem-fpm
+          name: engelsystem-server
           imagePullPolicy: Always
           env:
             - name: MYSQL_HOST
@@ -146,12 +146,6 @@ spec:
               value: <CI_ENVIRONMENT_URL>
             - name: APP_NAME
               value: '<CI_APP_NAME>'
-        - image: <CI_IMAGE_NGINX>
-          name: engelsystem-nginx
-          imagePullPolicy: Always
-          env:
-            - name: PHP_FPM_HOST
-              value: localhost
           livenessProbe:
             httpGet:
               path: /health

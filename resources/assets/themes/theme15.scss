@@ -142,25 +142,6 @@ $headings-small-color:        $gray-light;
 
 // Containers =================================================================
 
-// datetimepicker
-
-.bootstrap-datetimepicker-widget {
-
-  .timepicker-hour,
-  .timepicker-minute,
-  [data-action='selectHour'],
-  [data-action='selectMinute'],
-  [data-action='incrementHours'],
-  [data-action='decrementHours'],
-  [data-action='incrementMinutes'],
-  [data-action='decrementMinutes'] {
-
-    &:hover {
-      color: $gray;
-    }
-  }
-}
-
 // code tag
 code {
   background-color: $input-bg-disabled;

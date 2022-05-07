@@ -17,8 +17,8 @@ class DbTest extends TestCase
      */
     public function testSetDbManager()
     {
-        /** @var Pdo|MockObject $pdo */
-        $pdo = $this->getMockBuilder(Pdo::class)
+        /** @var PDO|MockObject $pdo */
+        $pdo = $this->getMockBuilder(PDO::class)
             ->disableOriginalConstructor()
             ->getMock();
         /** @var CapsuleManager|MockObject $dbManager */

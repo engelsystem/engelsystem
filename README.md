@@ -41,7 +41,7 @@ The Engelsystem may be installed manually or by using the provided [docker setup
  * Recommended: Directory Listing should be disabled.
  * There must be a MySQL database set up with a user who has full rights to that database.
  * If necessary, create a ```config/config.php``` to override values from ```config/config.default.php```.
-   * To remove values from the `footer_items`, `themes`, `locales`, `tshirt_sizes` or `headers` lists the config file has to be renamed.
+   * To edit values from the `footer_items`, `themes`, `locales`, `tshirt_sizes` or `headers` lists, directly modify the ```config/config.default.php``` file or rename it to ```config/config.php```.
  * To import the database, the ```bin/migrate``` script has to be run. If you can't execute scripts, you can use the `initial-install.sql` file from the release zip.
  * In the browser, login with credentials ```admin``` : ```asdfasdf``` and change the password.
 
@@ -53,16 +53,15 @@ The Engelsystem can now be used.
 
 ### Docker
 #### Build
-To build the `es_nginx` and the `es_php_fpm` containers:
+To build the `es_server` container:
 ```bash
 cd docker
 docker-compose build
 ```
 
-or to build the containers separately
+or to build the container by its own:
 ```bash
-docker build -f docker/nginx/Dockerfile . -t es_nginx
-docker build -f docker/Dockerfile . -t es_php_fpm
+docker build -f docker/Dockerfile . -t es_server
 ```
 
 #### Run
@@ -76,7 +75,7 @@ docker-compose up -d
 Import database changes to migrate it to the newest version
 ```bash
 cd docker
-docker-compose exec es_php_fpm bin/migrate
+docker-compose exec es_server bin/migrate
 ```
 
 ### Scripts

@@ -4,7 +4,6 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Renderer\Twig\Extensions\Markdown;
 use Parsedown;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class MarkdownTest extends ExtensionTest
 {

@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const nodeEnv = (process.env.NODE_ENV || 'development').trim();
+const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
 const fs = require('fs');
 
 // eslint-disable-next-line
@@ -18,12 +19,18 @@ const plugins = [
     },
   }),
   new MiniCssExtractPlugin({
-    filename: '[name].css',
-    chunkFilename: '[id]-[hash].css',
+    filename: '[name]-[contenthash].css',
+    chunkFilename: '[id]-[contenthash].css',
   }),
+  new WebpackManifestPlugin({}),
 ];
 
-const themeFileNameRegex = /theme\d+/;
+let themeFileNameRegex = /theme\d+/;
+
+if (process.env.THEMES) {
+    themeFileNameRegex = new RegExp(`theme(${process.env.THEMES.replace(/,/g, '|')})\\.`);
+}
+
 const themePath = path.resolve('resources/assets/themes');
 const themeEntries = fs
   .readdirSync(themePath)
@@ -45,7 +52,7 @@ module.exports = {
   },
   output: {
     path: path.resolve('public/assets'),
-    filename: '[name].js',
+    filename: '[name]-[contenthash].js',
     publicPath: '',
     clean: true,
   },

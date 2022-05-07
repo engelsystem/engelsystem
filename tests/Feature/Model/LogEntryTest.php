@@ -3,10 +3,10 @@
 namespace Engelsystem\Test\Feature\Model;
 
 use Engelsystem\Models\LogEntry;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Feature\ApplicationFeatureTest;
 use Psr\Log\LogLevel;
 
-class LogEntryTest extends TestCase
+class LogEntryTest extends ApplicationFeatureTest
 {
     /**
      * @covers \Engelsystem\Models\LogEntry::filter

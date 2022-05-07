@@ -61,7 +61,7 @@ class ResponseTest extends TestCase
      */
     public function testWithView()
     {
-        /** @var REnderer|MockObject $renderer */
+        /** @var Renderer|MockObject $renderer */
         $renderer = $this->createMock(Renderer::class);
 
         $renderer->expects($this->once())
@@ -77,7 +77,7 @@ class ResponseTest extends TestCase
         $this->assertEquals(505, $newResponse->getStatusCode());
         $this->assertArraySubset(['test' => ['er']], $newResponse->getHeaders());
 
-        /** @var REnderer|MockObject $renderer */
+        /** @var Renderer|MockObject $renderer */
         $anotherRenderer = $this->createMock(Renderer::class);
         $anotherRenderer->expects($this->once())
             ->method('render')

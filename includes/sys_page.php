@@ -1,6 +1,6 @@
 <?php
 
-use Carbon\Carbon;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpTemporaryRedirect;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\ValidationResult;
@@ -145,9 +145,14 @@ function check_request_date($name, $error_message = null, $null_allowed = false,
  */
 function check_date($input, $error_message = null, $null_allowed = false, $time_allowed = false)
 {
+    $trimmed_input = trim((string) $input);
+
     try {
-        $format = $time_allowed ? 'Y-m-d H:i' : 'Y-m-d';
-        $time = Carbon::createFromFormat($format, trim($input));
+        if ($time_allowed) {
+            $time = Carbon::createFromDatetime($trimmed_input);
+        } else {
+            $time = Carbon::createFromFormat('Y-m-d', $trimmed_input);
+        }
     } catch (InvalidArgumentException $e) {
         $time = null;
     }
