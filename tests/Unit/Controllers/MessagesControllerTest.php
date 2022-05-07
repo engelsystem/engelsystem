@@ -34,8 +34,6 @@ class MessagesControllerTest extends ControllerTest
     protected $user_a;
     /** @var User */
     protected $user_b;
-    /** @var User */
-    protected $user_c;
 
     /** @var Carbon */
     protected $now;
@@ -67,9 +65,8 @@ class MessagesControllerTest extends ControllerTest
             ->willReturnCallback(function (string $view, array $data) {
                 $users = $data['users'];
 
-                $this->assertEquals(2, count($users));
+                $this->assertEquals(1, count($users));
                 $this->assertEquals('b', $users[$this->user_b->id]);
-                $this->assertEquals('c', $users[$this->user_c->id]);
 
                 return $this->response;
             });
@@ -81,7 +78,7 @@ class MessagesControllerTest extends ControllerTest
     {
         $this->user_with_pronoun = User::factory(['name' => 'x'])
             ->has(PersonalData::factory(['pronoun' => 'X']))->create();
-        $this->user_without_pronoun = User::factory(['name' => 'y'])->create();
+        $this->user_without_pronoun = $this->user_b;
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -89,7 +86,7 @@ class MessagesControllerTest extends ControllerTest
                 $users = $data['users'];
 
                 $this->assertEquals('x', $users[$this->user_with_pronoun->id]);
-                $this->assertEquals('y', $users[$this->user_without_pronoun->id]);
+                $this->assertEquals('b', $users[$this->user_without_pronoun->id]);
 
                 return $this->response;
             });
@@ -103,7 +100,7 @@ class MessagesControllerTest extends ControllerTest
 
         $this->user_with_pronoun = User::factory(['name' => 'x'])
             ->has(PersonalData::factory(['pronoun' => 'X']))->create();
-        $this->user_without_pronoun = User::factory(['name' => 'y'])->create();
+        $this->user_without_pronoun = $this->user_b;
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -111,7 +108,7 @@ class MessagesControllerTest extends ControllerTest
                 $users = $data['users'];
 
                 $this->assertEquals('x (X)', $users[$this->user_with_pronoun->id]);
-                $this->assertEquals('y', $users[$this->user_without_pronoun->id]);
+                $this->assertEquals('b', $users[$this->user_without_pronoun->id]);
 
                 return $this->response;
             });
@@ -166,10 +163,12 @@ class MessagesControllerTest extends ControllerTest
 
     public function testIndex_withConversations_onlyContainsConversationsWithMe()
     {
+        $user_c = User::factory(['name' => 'c'])->create();
+
         // save messages in wrong order to ensure latest message considers creation date, not id.
         $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
-        $this->create_message($this->user_b, $this->user_c, 'b>c', $this->now);
-        $this->create_message($this->user_c, $this->user_a, 'c>a', $this->now);
+        $this->create_message($this->user_b, $user_c, 'b>c', $this->now);
+        $this->create_message($user_c, $this->user_a, 'c>a', $this->now);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -189,11 +188,12 @@ class MessagesControllerTest extends ControllerTest
 
     public function testIndex_withConversations_conversationsOrderedByDate()
     {
+        $user_c = User::factory(['name' => 'c'])->create();
         $user_d = User::factory(['name' => 'd'])->create();
 
         $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
         $this->create_message($user_d, $this->user_a, 'd>a', $this->two_minutes_ago);
-        $this->create_message($this->user_a, $this->user_c, 'a>c', $this->one_minute_ago);
+        $this->create_message($this->user_a, $user_c, 'a>c', $this->one_minute_ago);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -279,14 +279,16 @@ class MessagesControllerTest extends ControllerTest
     public function testConversation_withMessages_messagesOnlyWithThatUserOrderedByDate() {
         $this->request->attributes->set('user_id', $this->user_b->id);
 
+        $user_c = User::factory(['name' => 'c'])->create();
+
         // to be listed
         $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
         $this->create_message($this->user_b, $this->user_a, 'b>a', $this->two_minutes_ago);
         $this->create_message($this->user_b, $this->user_a, 'b>a2', $this->one_minute_ago);
 
         // not to be listed
-        $this->create_message($this->user_a, $this->user_c, 'a>c', $this->now);
-        $this->create_message($this->user_c, $this->user_b, 'b>c', $this->now);
+        $this->create_message($this->user_a, $user_c, 'a>c', $this->now);
+        $this->create_message($user_c, $this->user_b, 'b>c', $this->now);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -405,7 +407,6 @@ class MessagesControllerTest extends ControllerTest
 
         $this->user_a = User::factory(['name' => 'a'])->create();
         $this->user_b = User::factory(['name' => 'b'])->create();
-        $this->user_c = User::factory(['name' => 'c'])->create();
         $this->setExpects($this->auth, 'user', null, $this->user_a, $this->any());
 
         $this->now = Carbon::now();
