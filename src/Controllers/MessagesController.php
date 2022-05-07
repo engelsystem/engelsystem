@@ -16,7 +16,6 @@ use Engelsystem\Http\Exceptions\HttpForbidden;
 
 class MessagesController extends BaseController
 {
-
     /** @var Authenticator */
     protected $auth;
 
@@ -78,24 +77,24 @@ class MessagesController extends BaseController
 
     public function index(): Response
     {
-        return $this->list_conversations();
+        return $this->listConversations();
     }
 
     /**
      * Returns a list of conversations of the current user, each containing the other participant,
      * the most recent message, and the number of unread messages.
      */
-    public function list_conversations(): Response
+    public function listConversations(): Response
     {
         $current_user = $this->auth->user();
 
-        $latest_messages = $this->latest_message_per_conversation($current_user);
-        $number_of_unread_messages = $this->number_of_unread_messages_per_conversation($current_user);
+        $latest_messages = $this->latestMessagePerConversation($current_user);
+        $numberOfUnreadMessages = $this->numberOfUnreadMessagesPerConversation($current_user);
 
         $conversations = [];
         foreach ($latest_messages as $msg) {
             $other_user = $msg->user_id == $current_user->id ? $msg->receiver : $msg->sender;
-            $unread_messages = $number_of_unread_messages[$other_user->id] ?? 0;
+            $unread_messages = $numberOfUnreadMessages[$other_user->id] ?? 0;
             array_push($conversations, [
                 'other_user' => $other_user,
                 'latest_message' => $msg,
@@ -121,10 +120,10 @@ class MessagesController extends BaseController
     /**
      * Forwards to the conversation with the user of the given id.
      */
-    public function to_conversation(Request $request): Response
+    public function toConversation(Request $request): Response
     {
         $data = $this->validate($request, [ 'user_id' => 'required|int' ]);
-        return $this->redirect->to('/messages/'. $data['user_id']);
+        return $this->redirect->to('/messages/' . $data['user_id']);
     }
 
     /**
@@ -142,11 +141,11 @@ class MessagesController extends BaseController
         }
 
         $messages = $this->message
-            ->where(function($q) use ($current_user, $other_user) {
+            ->where(function ($q) use ($current_user, $other_user) {
                 $q->whereUserId($current_user->id)
                     ->whereReceiverId($other_user->id);
             })
-            ->orWhere(function($q) use ($current_user, $other_user) {
+            ->orWhere(function ($q) use ($current_user, $other_user) {
                 $q->whereUserId($other_user->id)
                     ->whereReceiverId($current_user->id);
             })
@@ -191,12 +190,14 @@ class MessagesController extends BaseController
         $new_message->read = false;
         $new_message->save();
 
-        $this->log->info('User {from} has written a message to user {to}',
+        $this->log->info(
+            'User {from} has written a message to user {to}',
             [
                 'from' => $current_user->id,
                 'to' => $other_user->id
-            ]);
-        return $this->redirect->to('/messages/'. $other_user->id);
+            ]
+        );
+        return $this->redirect->to('/messages/' . $other_user->id);
     }
 
     /**
@@ -213,29 +214,32 @@ class MessagesController extends BaseController
         if ($msg->user_id == $current_user->id) {
             $msg->delete();
 
-            $this->log->info('User {from} deleted message {msg} in a conversation with user {to}',
+            $this->log->info(
+                'User {from} deleted message {msg} in a conversation with user {to}',
                 [
                     'from' => $current_user->id,
                     'to' => $other_user_id,
                     'msg' => $msg_id
-                ]);
-
+                ]
+            );
         } else {
-            $this->log->warning('User {from} tried to delete message {msg} which was not written by them,
-                in a conversation with user {to}',
+            $this->log->warning(
+                'User {from} tried to delete message {msg} which was not written by them, ' .
+                'in a conversation with user {to}',
                 [
                     'from' => $current_user->id,
                     'to' => $other_user_id,
                     'msg' => $msg_id
-                ]);
+                ]
+            );
 
             throw new HttpForbidden('You can not delete a message you haven\'t send');
         }
 
-        return $this->redirect->to('/messages/'. $other_user_id);
+        return $this->redirect->to('/messages/' . $other_user_id);
     }
 
-    public function number_of_unread_messages(): int
+    public function numberOfUnreadMessages(): int
     {
         return $this->auth->user()
             ->messagesReceived()
@@ -243,7 +247,7 @@ class MessagesController extends BaseController
             ->count();
     }
 
-    protected function number_of_unread_messages_per_conversation($current_user): Collection
+    protected function numberOfUnreadMessagesPerConversation($current_user): Collection
     {
         return $current_user->messagesReceived()
             ->select('user_id', $this->raw('count(*) as amount'))
@@ -255,17 +259,20 @@ class MessagesController extends BaseController
             });
     }
 
-    protected function latest_message_per_conversation($current_user): Collection
+    protected function latestMessagePerConversation($current_user): Collection
     {
         $latest_message_ids = $this->message
             ->select($this->raw('max(id) as last_id'))
             ->where('user_id', "=", $current_user->id)
             ->orWhere('receiver_id', "=", $current_user->id)
-            ->groupBy($this->raw('(CASE WHEN user_id = '.$current_user->id.' THEN receiver_id ELSE user_id END)'));
+            ->groupBy($this->raw(
+                '(CASE WHEN user_id = ' . $current_user->id .
+                ' THEN receiver_id ELSE user_id END)'
+            ));
 
         return $this->message
-            ->joinSub($latest_message_ids, 'conversations', function($join) {
-                $join->on('messages.id', '=' , 'conversations.last_id');
+            ->joinSub($latest_message_ids, 'conversations', function ($join) {
+                $join->on('messages.id', '=', 'conversations.last_id');
             })
             ->orderBy('created_at', 'DESC')
             ->get();

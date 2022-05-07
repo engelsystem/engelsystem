@@ -52,7 +52,7 @@ $route->post('/questions/new', 'QuestionsController@save');
 
 // Messages
 $route->get('/messages', 'MessagesController@index');
-$route->post('/messages', 'MessagesController@to_conversation');
+$route->post('/messages', 'MessagesController@toConversation');
 $route->get('/messages/{user_id:\d+}', 'MessagesController@conversation');
 $route->post('/messages/{user_id:\d+}', 'MessagesController@send');
 $route->post('/messages/{user_id:\d+}/{msg_id:\d+}', 'MessagesController@delete');
