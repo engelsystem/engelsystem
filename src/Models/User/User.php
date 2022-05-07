@@ -234,7 +234,7 @@ class User extends BaseModel
     {
         if (config('enable_pronoun')) {
             $pronoun = $this->personalData->pronoun;
-            return $pronoun ? $this->name . ' (' . $pronoun . ')': $this->name;
+            return $pronoun ? $this->name . ' (' . $pronoun . ')' : $this->name;
         } else {
             return $this->name;
         }

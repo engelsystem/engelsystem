@@ -42,7 +42,10 @@ class MessagesControllerTest extends ControllerTest
     /** @var Carbon */
     protected $two_minutes_ago;
 
-    public function testIndex_underNormalConditions_returnsCorrectViewAndData()
+    /**
+     * @testdox index: underNormalConditions -> returnsCorrectViewAndData
+     */
+    public function testIndexUnderNormalConditionsReturnsCorrectViewAndData()
     {
         $this->response->expects($this->once())
             ->method('withView')
@@ -58,7 +61,10 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
-    public function testIndex_otherUsersExist_returnsUsersWithoutMeOrderedByName()
+    /**
+     * @testdox index: otherUsersExist -> returnsUsersWithoutMeOrderedByName
+     */
+    public function testIndexOtherUsersExistReturnsUsersWithoutMeOrderedByName()
     {
         $this->response->expects($this->once())
             ->method('withView')
@@ -74,7 +80,10 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
-    public function testIndex_whenPronounsDeactivated_userListHasNoPronouns()
+    /**
+     * @testdox index: pronounsDeactivated -> userListHasNoPronouns
+     */
+    public function testIndexPronounsDeactivatedUserListHasNoPronouns()
     {
         $this->user_with_pronoun = User::factory(['name' => 'x'])
             ->has(PersonalData::factory(['pronoun' => 'X']))->create();
@@ -94,7 +103,10 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
-    public function testIndex_whenPronounsActivated_userListHasPronouns()
+    /**
+     * @testdox index: pronounsActivated -> userListHasPronouns
+     */
+    public function testIndexPronounsActivatedUserListHasPronouns()
     {
         config(['enable_pronoun' => true]);
 
@@ -116,7 +128,10 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
-    public function testIndex_withNoConversation_returnsEmptyConversationList()
+    /**
+     * @testdox index: withNoConversation -> returnsEmptyConversationList
+     */
+    public function testIndexWithNoConversationReturnsEmptyConversationList()
     {
         $this->response->expects($this->once())
             ->method('withView')
@@ -128,12 +143,15 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
-    public function testIndex_withConversation_conversationContainsOtherUserAndLatestMessageAndUnreadCount()
+    /**
+     * @testdox index: withConversation -> conversationContainsCorrectData
+     */
+    public function testIndexWithConversationConversationContainsCorrectData()
     {
         // save messages in wrong order to ensure latest message considers creation date, not id.
-        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
-        $this->create_message($this->user_b, $this->user_a, 'b>a', $this->two_minutes_ago);
-        $this->create_message($this->user_b, $this->user_a, 'b>a', $this->one_minute_ago);
+        $this->createMessage($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->createMessage($this->user_b, $this->user_a, 'b>a', $this->two_minutes_ago);
+        $this->createMessage($this->user_b, $this->user_a, 'b>a', $this->one_minute_ago);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -161,14 +179,17 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
-    public function testIndex_withConversations_onlyContainsConversationsWithMe()
+    /**
+     * @testdox index: withConversations -> onlyContainsConversationsWithMe
+     */
+    public function testIndexWithConversationsOnlyContainsConversationsWithMe()
     {
         $user_c = User::factory(['name' => 'c'])->create();
 
         // save messages in wrong order to ensure latest message considers creation date, not id.
-        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
-        $this->create_message($this->user_b, $user_c, 'b>c', $this->now);
-        $this->create_message($user_c, $this->user_a, 'c>a', $this->now);
+        $this->createMessage($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->createMessage($this->user_b, $user_c, 'b>c', $this->now);
+        $this->createMessage($user_c, $this->user_a, 'c>a', $this->now);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -186,14 +207,17 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
-    public function testIndex_withConversations_conversationsOrderedByDate()
+    /**
+     * @testdox index: withConversations -> conversationsOrderedByDate
+     */
+    public function testIndexWithConversationsConversationsOrderedByDate()
     {
         $user_c = User::factory(['name' => 'c'])->create();
         $user_d = User::factory(['name' => 'd'])->create();
 
-        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
-        $this->create_message($user_d, $this->user_a, 'd>a', $this->two_minutes_ago);
-        $this->create_message($this->user_a, $user_c, 'a>c', $this->one_minute_ago);
+        $this->createMessage($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->createMessage($user_d, $this->user_a, 'd>a', $this->two_minutes_ago);
+        $this->createMessage($this->user_a, $user_c, 'a>c', $this->one_minute_ago);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -210,12 +234,20 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->index();
     }
 
-    public function testToConversation_withNoUserIdGiven_throwsException() {
+    /**
+     * @testdox ToConversation: withNoUserIdGiven -> throwsException
+     */
+    public function testToConversationWithNoUserIdGivenThrowsException()
+    {
         $this->expectException(ValidationException::class);
-        $this->controller->to_conversation($this->request);
+        $this->controller->toConversation($this->request);
     }
 
-    public function testToConversation_withUserIdGiven_redirect() {
+    /**
+     * @testdox ToConversation: withUserIdGiven -> redirect
+     */
+    public function testToConversationWithUserIdGivenRedirect()
+    {
         $this->request = $this->request->withParsedBody([
             'user_id'  => '1',
         ]);
@@ -224,27 +256,43 @@ class MessagesControllerTest extends ControllerTest
             ->with('http://localhost/messages/1')
             ->willReturn($this->response);
 
-        $this->controller->to_conversation($this->request);
+        $this->controller->toConversation($this->request);
     }
 
-    public function testConversation_withNoUserIdGiven_throwsException() {
+    /**
+     * @testdox conversation: withNoUserIdGiven -> throwsException
+     */
+    public function testConversationWithNoUserIdGivenThrowsException()
+    {
         $this->expectException(ModelNotFoundException::class);
         $this->controller->conversation($this->request);
     }
 
-    public function testConversation_withMyUserIdGiven_throwsException() {
+    /**
+     * @testdox conversation: withMyUserIdGiven -> throwsException
+     */
+    public function testConversationWithMyUserIdGivenThrowsException()
+    {
         $this->request->attributes->set('user_id', $this->user_a->id);
         $this->expectException(HttpForbidden::class);
         $this->controller->conversation($this->request);
     }
 
-    public function testConversation_withUnknownUserIdGiven_throwsException() {
+    /**
+     * @testdox conversation: withUnknownUserIdGiven -> throwsException
+     */
+    public function testConversationWithUnknownUserIdGivenThrowsException()
+    {
         $this->request->attributes->set('user_id', '1234');
         $this->expectException(ModelNotFoundException::class);
         $this->controller->conversation($this->request);
     }
 
-    public function testConversation_underNormalConditions_returnsCorrectViewAndData() {
+    /**
+     * @testdox conversation: underNormalConditions -> returnsCorrectViewAndData
+     */
+    public function testConversationUnderNormalConditionsReturnsCorrectViewAndData()
+    {
         $this->request->attributes->set('user_id', $this->user_b->id);
 
         $this->response->expects($this->once())
@@ -261,7 +309,11 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->conversation($this->request);
     }
 
-    public function testConversation_withNoMessages_returnsEmptyMessageList() {
+    /**
+     * @testdox conversation: withNoMessages -> returnsEmptyMessageList
+     */
+    public function testConversationWithNoMessagesReturnsEmptyMessageList()
+    {
         $this->request->attributes->set('user_id', $this->user_b->id);
 
         $this->response->expects($this->once())
@@ -274,19 +326,23 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->conversation($this->request);
     }
 
-    public function testConversation_withMessages_messagesOnlyWithThatUserOrderedByDate() {
+    /**
+     * @testdox conversation: withMessages -> messagesOnlyWithThatUserOrderedByDate
+     */
+    public function testConversationWithMessagesMessagesOnlyWithThatUserOrderedByDate()
+    {
         $this->request->attributes->set('user_id', $this->user_b->id);
 
         $user_c = User::factory(['name' => 'c'])->create();
 
         // to be listed
-        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
-        $this->create_message($this->user_b, $this->user_a, 'b>a', $this->two_minutes_ago);
-        $this->create_message($this->user_b, $this->user_a, 'b>a2', $this->one_minute_ago);
+        $this->createMessage($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->createMessage($this->user_b, $this->user_a, 'b>a', $this->two_minutes_ago);
+        $this->createMessage($this->user_b, $this->user_a, 'b>a2', $this->one_minute_ago);
 
         // not to be listed
-        $this->create_message($this->user_a, $user_c, 'a>c', $this->now);
-        $this->create_message($user_c, $this->user_b, 'b>c', $this->now);
+        $this->createMessage($this->user_a, $user_c, 'a>c', $this->now);
+        $this->createMessage($user_c, $this->user_b, 'b>c', $this->now);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -303,9 +359,13 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->conversation($this->request);
     }
 
-    public function testConversation_withUnreadMessages_messagesToMeWillStillBeReturnedAsUnread() {
+    /**
+     * @testdox conversation: withUnreadMessages -> messagesToMeWillStillBeReturnedAsUnread
+     */
+    public function testConversationWithUnreadMessagesMessagesToMeWillStillBeReturnedAsUnread()
+    {
         $this->request->attributes->set('user_id', $this->user_b->id);
-        $this->create_message($this->user_b, $this->user_a, 'b>a', $this->now);
+        $this->createMessage($this->user_b, $this->user_a, 'b>a', $this->now);
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -314,26 +374,39 @@ class MessagesControllerTest extends ControllerTest
                 return $this->response;
             });
         $this->controller->conversation($this->request);
-
     }
 
-    public function testConversation_withUnreadMessages_messagesToMeWillBeMarkedAsRead() {
+    /**
+     * @testdox conversation: withUnreadMessages -> messagesToMeWillBeMarkedAsRead
+     */
+    public function testConversationWithUnreadMessagesMessagesToMeWillBeMarkedAsRead()
+    {
         $this->request->attributes->set('user_id', $this->user_b->id);
         $this->response->expects($this->once())
             ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) { return $this->response; });
+            ->willReturnCallback(function (string $view, array $data) {
+                return $this->response;
+            });
 
-        $msg = $this->create_message($this->user_b, $this->user_a, 'b>a', $this->now);
+        $msg = $this->createMessage($this->user_b, $this->user_a, 'b>a', $this->now);
         $this->controller->conversation($this->request);
         $this->assertTrue(Message::whereId($msg->id)->first()->read);
     }
 
-    public function testSend_withNoTextGiven_throwsException() {
+    /**
+     * @testdox send: withNoTextGiven -> throwsException
+     */
+    public function testSendWithNoTextGivenThrowsException()
+    {
         $this->expectException(ValidationException::class);
         $this->controller->send($this->request);
     }
 
-    public function testSend_withNoUserIdGiven_throwsException() {
+    /**
+     * @testdox send: withNoUserIdGiven -> throwsException
+     */
+    public function testSendWithNoUserIdGivenThrowsException()
+    {
         $this->request = $this->request->withParsedBody([
             'text'  => 'a',
         ]);
@@ -341,7 +414,11 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->send($this->request);
     }
 
-    public function testSend_withMyUserIdGiven_throwsException() {
+    /**
+     * @testdox send: withMyUserIdGiven -> throwsException
+     */
+    public function testSendWithMyUserIdGivenThrowsException()
+    {
         $this->request = $this->request->withParsedBody([
             'text'  => 'a',
         ]);
@@ -350,7 +427,11 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->send($this->request);
     }
 
-    public function testSend_withUnknownUserIdGiven_throwsException() {
+    /**
+     * @testdox send: withUnknownUserIdGiven -> throwsException
+     */
+    public function testSendWithUnknownUserIdGivenThrowsException()
+    {
         $this->request = $this->request->withParsedBody([
             'text'  => 'a',
         ]);
@@ -359,7 +440,11 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->send($this->request);
     }
 
-    public function testSend_withUserAndTextGiven_savesMessage() {
+    /**
+     * @testdox send: withUserAndTextGiven -> savesMessage
+     */
+    public function testSendWithUserAndTextGivenSavesMessage()
+    {
         $this->request = $this->request->withParsedBody([
             'text'  => 'a',
         ]);
@@ -367,7 +452,7 @@ class MessagesControllerTest extends ControllerTest
 
         $this->response->expects($this->once())
             ->method('redirectTo')
-            ->with('http://localhost/messages/'. $this->user_b->id)
+            ->with('http://localhost/messages/' . $this->user_b->id)
             ->willReturn($this->response);
 
         $this->controller->send($this->request);
@@ -378,22 +463,34 @@ class MessagesControllerTest extends ControllerTest
         $this->assertFalse($msg->read);
     }
 
-    public function testDelete_withNoMsgIdGiven_throwsException() {
+    /**
+     * @testdox delete: withNoMsgIdGiven -> throwsException
+     */
+    public function testDeleteWithNoMsgIdGivenThrowsException()
+    {
         $this->expectException(ModelNotFoundException::class);
         $this->controller->delete($this->request);
     }
 
-    public function testDelete_whenTryingToDeleteSomeoneElsesMessage_throwsException() {
+    /**
+     * @testdox delete: tryingToDeleteSomeonesMessage -> throwsException
+     */
+    public function testDeleteTryingToDeleteSomeonesMessageThrowsException()
+    {
         $this->expectException(HttpForbidden::class);
 
-        $msg = $this->create_message($this->user_b, $this->user_a, 'a>b', $this->now);
+        $msg = $this->createMessage($this->user_b, $this->user_a, 'a>b', $this->now);
         $this->request->attributes->set('msg_id', $msg->id);
 
         $this->controller->delete($this->request);
     }
 
-    public function testDelete_whenTryingToDeleteMyMessage_deletesItAndRedirect() {
-        $msg = $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
+    /**
+     * @testdox delete: tryingToDeleteMyMessage -> deletesItAndRedirect
+     */
+    public function testDeleteTryingToDeleteMyMessageDeletesItAndRedirect()
+    {
+        $msg = $this->createMessage($this->user_a, $this->user_b, 'a>b', $this->now);
         $this->request->attributes->set('msg_id', $msg->id);
         $this->request->attributes->set('user_id', '1');
 
@@ -407,33 +504,39 @@ class MessagesControllerTest extends ControllerTest
         $this->assertEquals(0, count(Message::whereId($msg->id)->get()));
     }
 
-    public function testNumberOfUnreadMessages_withNoMessages_returns0() {
-        $this->assertEquals(0, $this->controller->number_of_unread_messages());
+    /**
+     * @testdox NumberOfUnreadMessages: withNoMessages -> returns0
+     */
+    public function testNumberOfUnreadMessagesWithNoMessagesReturns0()
+    {
+        $this->assertEquals(0, $this->controller->numberOfUnreadMessages());
     }
 
-    public function testNumberOfUnreadMessages_withMessagesNotToMe_messagesNotToMeAreIgnored() {
+    /**
+     * @testdox NumberOfUnreadMessages: withMessagesNotToMe -> messagesNotToMeAreIgnored
+     */
+    public function testNumberOfUnreadMessagesWithMessagesNotToMeMessagesNotToMeAreIgnored()
+    {
         $user_c = User::factory(['name' => 'c'])->create();
 
-        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
-        $this->create_message($this->user_b, $user_c, 'b>c', $this->now);
-        $this->assertEquals(0, $this->controller->number_of_unread_messages());
+        $this->createMessage($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->createMessage($this->user_b, $user_c, 'b>c', $this->now);
+        $this->assertEquals(0, $this->controller->numberOfUnreadMessages());
     }
 
-    public function testNumberOfUnreadMessages_withMessages_returnsSumOfUnreadMessagesSentToMe() {
+    /**
+     * @testdox NumberOfUnreadMessages: withMessages -> returnsSumOfUnreadMessagesSentToMe
+     */
+    public function testNumberOfUnreadMessagesWithMessagesReturnsSumOfUnreadMessagesSentToMe()
+    {
         $user_c = User::factory(['name' => 'c'])->create();
 
-        $this->create_message($this->user_b, $this->user_a, 'b>a1', $this->now);
-        $this->create_message($this->user_b, $this->user_a, 'b>a2', $this->now);
-        $this->create_message($user_c, $this->user_a, 'c>a', $this->now);
+        $this->createMessage($this->user_b, $this->user_a, 'b>a1', $this->now);
+        $this->createMessage($this->user_b, $this->user_a, 'b>a2', $this->now);
+        $this->createMessage($user_c, $this->user_a, 'c>a', $this->now);
 
-        $this->assertEquals(3, $this->controller->number_of_unread_messages());
+        $this->assertEquals(3, $this->controller->numberOfUnreadMessages());
     }
-
-
-
-
-
-
 
     /**
      * Setup environment
@@ -464,7 +567,7 @@ class MessagesControllerTest extends ControllerTest
         $this->assertTrue(gettype($obj) == 'array' || $obj instanceof Collection);
     }
 
-    protected function create_message(User $from, User $to, string $text, Carbon $at): Message
+    protected function createMessage(User $from, User $to, string $text, Carbon $at): Message
     {
         Message::unguard(); // unguard temporarily to save custom creation dates.
         $msg = new Message([
@@ -479,5 +582,4 @@ class MessagesControllerTest extends ControllerTest
 
         return $msg;
     }
-
 }

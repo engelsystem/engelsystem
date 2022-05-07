@@ -8,7 +8,7 @@ use Engelsystem\Controllers\MessagesController;
 function user_unread_messages()
 {
     $count = app()->make(MessagesController::class)
-        ->number_of_unread_messages();
+        ->numberOfUnreadMessages();
 
     return $count > 0 ? ' <span class="badge bg-danger">' . $count . '</span>' : '';
 }
