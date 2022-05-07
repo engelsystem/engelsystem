@@ -212,7 +212,6 @@ class MessagesControllerTest extends ControllerTest
 
     public function testToConversation_withNoUserIdGiven_throwsException() {
         $this->expectException(ValidationException::class);
-        $this->controller->setValidator(new Validator());
         $this->controller->to_conversation($this->request);
     }
 
@@ -225,7 +224,6 @@ class MessagesControllerTest extends ControllerTest
             ->with('http://localhost/messages/1')
             ->willReturn($this->response);
 
-        $this->controller->setValidator(new Validator());
         $this->controller->to_conversation($this->request);
     }
 
@@ -332,7 +330,6 @@ class MessagesControllerTest extends ControllerTest
 
     public function testSend_withNoTextGiven_throwsException() {
         $this->expectException(ValidationException::class);
-        $this->controller->setValidator(new Validator());
         $this->controller->send($this->request);
     }
 
@@ -341,7 +338,6 @@ class MessagesControllerTest extends ControllerTest
             'text'  => 'a',
         ]);
         $this->expectException(ModelNotFoundException::class);
-        $this->controller->setValidator(new Validator());
         $this->controller->send($this->request);
     }
 
@@ -351,7 +347,6 @@ class MessagesControllerTest extends ControllerTest
         ]);
         $this->request->attributes->set('user_id', $this->user_a->id);
         $this->expectException(HttpForbidden::class);
-        $this->controller->setValidator(new Validator());
         $this->controller->send($this->request);
     }
 
@@ -361,7 +356,6 @@ class MessagesControllerTest extends ControllerTest
         ]);
         $this->request->attributes->set('user_id', '1234');
         $this->expectException(ModelNotFoundException::class);
-        $this->controller->setValidator(new Validator());
         $this->controller->send($this->request);
     }
 
@@ -370,7 +364,6 @@ class MessagesControllerTest extends ControllerTest
             'text'  => 'a',
         ]);
         $this->request->attributes->set('user_id', $this->user_b->id);
-        $this->controller->setValidator(new Validator());
 
         $this->response->expects($this->once())
             ->method('redirectTo')
@@ -385,7 +378,56 @@ class MessagesControllerTest extends ControllerTest
         $this->assertFalse($msg->read);
     }
 
+    public function testDelete_withNoMsgIdGiven_throwsException() {
+        $this->expectException(ModelNotFoundException::class);
+        $this->controller->delete($this->request);
+    }
 
+    public function testDelete_whenTryingToDeleteSomeoneElsesMessage_throwsException() {
+        $this->expectException(HttpForbidden::class);
+
+        $msg = $this->create_message($this->user_b, $this->user_a, 'a>b', $this->now);
+        $this->request->attributes->set('msg_id', $msg->id);
+
+        $this->controller->delete($this->request);
+    }
+
+    public function testDelete_whenTryingToDeleteMyMessage_deletesItAndRedirect() {
+        $msg = $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->request->attributes->set('msg_id', $msg->id);
+        $this->request->attributes->set('user_id', '1');
+
+        $this->response->expects($this->once())
+            ->method('redirectTo')
+            ->with('http://localhost/messages/1')
+            ->willReturn($this->response);
+
+        $this->controller->delete($this->request);
+
+        $this->assertEquals(0, count(Message::whereId($msg->id)->get()));
+    }
+
+    public function testNumberOfUnreadMessages_withNoMessages_returns0() {
+        $this->assertEquals(0, $this->controller->number_of_unread_messages());
+    }
+
+    public function testNumberOfUnreadMessages_withMessagesNotToMe_messagesNotToMeAreIgnored() {
+        $user_c = User::factory(['name' => 'c'])->create();
+
+        $this->create_message($this->user_a, $this->user_b, 'a>b', $this->now);
+        $this->create_message($this->user_b, $user_c, 'b>c', $this->now);
+        $this->assertEquals(0, $this->controller->number_of_unread_messages());
+    }
+
+    public function testNumberOfUnreadMessages_withMessages_returnsSumOfUnreadMessagesSentToMe() {
+        $user_c = User::factory(['name' => 'c'])->create();
+
+        $this->create_message($this->user_b, $this->user_a, 'b>a1', $this->now);
+        $this->create_message($this->user_b, $this->user_a, 'b>a2', $this->now);
+        $this->create_message($user_c, $this->user_a, 'c>a', $this->now);
+
+        $this->assertEquals(3, $this->controller->number_of_unread_messages());
+    }
 
 
 
@@ -414,6 +456,7 @@ class MessagesControllerTest extends ControllerTest
         $this->two_minutes_ago = Carbon::now()->subMinutes(2);
 
         $this->controller = $this->app->get(MessagesController::class);
+        $this->controller->setValidator(new Validator());
     }
 
     protected function assertArrayOrCollection($obj)

@@ -200,7 +200,8 @@ class MessagesController extends BaseController
     }
 
     /**
-     * Deletes a message from a given id, as long as this message was send by the current user.
+     * Deletes a message from a given id, as long as this message was send by the current user. The given user_id
+     * The given user_id is used to redirect back to the conversation with that user.
      */
     public function delete(Request $request): Response
     {
@@ -227,6 +228,8 @@ class MessagesController extends BaseController
                     'to' => $other_user_id,
                     'msg' => $msg_id
                 ]);
+
+            throw new HttpForbidden('You can not delete a message you haven\'t send');
         }
 
         return $this->redirect->to('/messages/'. $other_user_id);
@@ -234,14 +237,10 @@ class MessagesController extends BaseController
 
     public function number_of_unread_messages(): int
     {
-        $current_user = $this->auth->user();
-        if ($current_user) {
-            return $current_user->messagesReceived()
-                ->where('read', false)
-                ->count();
-        } else {
-            return 0;
-        }
+        return $this->auth->user()
+            ->messagesReceived()
+            ->where('read', false)
+            ->count();
     }
 
     protected function number_of_unread_messages_per_conversation($current_user): Collection
