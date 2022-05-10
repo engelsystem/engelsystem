@@ -57,7 +57,7 @@ class MetricsEngine implements EngineInterface
             }
         }
 
-        return implode("\n", $return);
+        return implode("\n", $return) . "\n";
     }
 
     /**

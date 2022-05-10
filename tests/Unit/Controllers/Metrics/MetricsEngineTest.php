@@ -19,28 +19,28 @@ class MetricsEngineTest extends TestCase
     {
         $engine = new MetricsEngine();
 
-        $this->assertEquals('', $engine->get('/metrics'));
+        $this->assertEquals("\n", $engine->get('/metrics'));
 
-        $this->assertEquals('engelsystem_users 13', $engine->get('/metrics', ['users' => 13]));
+        $this->assertEquals("engelsystem_users 13\n", $engine->get('/metrics', ['users' => 13]));
 
-        $this->assertEquals('engelsystem_bool_val 0', $engine->get('/metrics', ['bool_val' => false]));
+        $this->assertEquals("engelsystem_bool_val 0\n", $engine->get('/metrics', ['bool_val' => false]));
 
-        $this->assertEquals('# Lorem \n Ipsum', $engine->get('/metrics', ["Lorem \n Ipsum"]));
+        $this->assertEquals('# Lorem \n Ipsum' . "\n", $engine->get('/metrics', ["Lorem \n Ipsum"]));
 
         $this->assertEquals(
-            'engelsystem_foo{lorem="ip\\\\sum"} \\"lorem\\n\\\\ipsum\\"',
+            'engelsystem_foo{lorem="ip\\\\sum"} \\"lorem\\n\\\\ipsum\\"' . "\n",
             $engine->get('/metrics', [
                 'foo' => ['labels' => ['lorem' => 'ip\\sum'], 'value' => "\"lorem\n\\ipsum\""],
             ])
         );
 
         $this->assertEquals(
-            'engelsystem_foo_count{bar="14"} 42',
+            'engelsystem_foo_count{bar="14"} 42' . "\n",
             $engine->get('/metrics', ['foo_count' => ['labels' => ['bar' => 14], 'value' => 42]])
         );
 
         $this->assertEquals(
-            'engelsystem_lorem{test="123"} NaN' . "\n" . 'engelsystem_lorem{test="456"} 999.99',
+            'engelsystem_lorem{test="123"} NaN' . "\n" . 'engelsystem_lorem{test="456"} 999.99' . "\n",
             $engine->get('/metrics', [
                 'lorem' => [
                     ['labels' => ['test' => 123], 'value' => 'NaN'],
@@ -50,7 +50,7 @@ class MetricsEngineTest extends TestCase
         );
 
         $this->assertEquals(
-            "# HELP engelsystem_test Some help\\n  text\n# TYPE engelsystem_test counter\nengelsystem_test 99",
+            "# HELP engelsystem_test Some help\\n  text\n# TYPE engelsystem_test counter\nengelsystem_test 99\n",
             $engine->get('/metrics', ['test' => ['help' => "Some help\n  text", 'type' => 'counter', 'value' => 99]])
         );
     }
@@ -71,6 +71,7 @@ engelsystem_test_minimum_histogram_bucket{le="3"} 4
 engelsystem_test_minimum_histogram_bucket{le="+Inf"} 4
 engelsystem_test_minimum_histogram_sum 1.337
 engelsystem_test_minimum_histogram_count 4
+
 EOD,
             $engine->get('/metrics', [
                 'test_minimum_histogram' => [
@@ -88,6 +89,7 @@ engelsystem_test_short_histogram_bucket{le="120"} 19
 engelsystem_test_short_histogram_bucket{le="+Inf"} 300
 engelsystem_test_short_histogram_sum 123.456
 engelsystem_test_short_histogram_count 300
+
 EOD,
             $engine->get('/metrics', [
                 'test_short_histogram' => [
@@ -109,6 +111,7 @@ engelsystem_test_multiple_histogram_bucket{handler="bar",le="0.2"} 0
 engelsystem_test_multiple_histogram_bucket{handler="bar",le="+Inf"} 3
 engelsystem_test_multiple_histogram_sum{handler="bar"} 3
 engelsystem_test_multiple_histogram_count{handler="bar"} 3
+
 EOD,
             $engine->get('/metrics', [
                 'test_multiple_histogram' => [
@@ -125,6 +128,7 @@ EOD,
 engelsystem_test_minimum_histogram_bucket{le="+Inf"} NaN
 engelsystem_test_minimum_histogram_sum NaN
 engelsystem_test_minimum_histogram_count NaN
+
 EOD,
             $engine->get('/metrics', [
                 'test_minimum_histogram' => [
@@ -154,6 +158,7 @@ EOD,
         $engine = new MetricsEngine();
 
         $engine->share('foo', 42);
-        $this->assertEquals('', $engine->get('/metrics'));
+        // Just ignore it
+        $this->assertEquals("\n", $engine->get('/metrics'));
     }
 }
