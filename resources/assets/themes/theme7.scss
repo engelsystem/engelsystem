@@ -163,6 +163,15 @@ $alert-color-scale: 0;
   color: $gray-darker;
 }
 
+.navbar-brand {
+  strong {
+    color: $brand-primary;
+  }
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: $brand-primary;
+}
 
 // Bootswatch
 // -----------------------------------------------------

@@ -166,7 +166,7 @@ return [
         7 => [
             'name' => 'Engelsystem 35c3 dark (2018)',
             'type' => 'dark',
-            'navbar_classes' => 'navbar-primary bg-black border-primary',
+            'navbar_classes' => 'navbar-primary navbar-dark bg-black border-primary',
         ],
         6 => [
             'name' => 'Engelsystem 34c3 dark (2017)',
