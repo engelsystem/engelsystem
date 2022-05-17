@@ -6,8 +6,14 @@
     <span class="bi bi-{{ icon }} {% if color %} text-{{ color }} {% endif %}"></span>
 {% endmacro %}
 
-{% macro alert(message, type) %}
-    <div class="alert alert-{{ type|default('info') }}">{{ message }}</div>
+{% macro alert(message, type, raw) %}
+    <div class="alert alert-{{ type|default('info') }}">
+        {%- if raw|default(false) -%}
+            {{ message|raw }}
+        {%- else -%}
+            {{ message }}
+        {%- endif -%}
+    </div>
 {% endmacro %}
 
 {% macro user(user) %}
