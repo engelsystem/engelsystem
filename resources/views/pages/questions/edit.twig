@@ -31,7 +31,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    {{ f.textarea('text', __('question.question'), {'required': true, 'rows': 10, 'value': question ? question.text : ''}) }}
+                    {{ f.textarea('text', __('question.question'), {'required': true, 'rows': 1, 'value': question ? question.text : ''}) }}
                 </div>
                 <div class="col-md-12">
                     {% if is_admin|default(false) %}
