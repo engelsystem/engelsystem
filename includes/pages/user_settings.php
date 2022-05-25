@@ -39,6 +39,8 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     $user_source->settings->email_shiftinfo = $request->has('email_shiftinfo');
     $user_source->settings->email_human = $request->has('email_by_human_allowed');
     $user_source->settings->email_news = $request->has('email_news');
+    $user_source->settings->theme = $user_source->settings->theme ?? config('theme');
+    $user_source->settings->language = $user_source->settings->language ?? config('default_locale');
     if (config('enable_goody')) {
         $user_source->settings->email_goody = $request->has('email_goody');
     }
@@ -124,6 +126,7 @@ function user_settings_theme($user_source, $themes)
     }
 
     if ($valid) {
+        $user_source->settings->language = $user_source->settings->language ?? config('default_locale');
         $user_source->settings->save();
 
         success(__('Theme changed.'));
@@ -153,6 +156,7 @@ function user_settings_locale($user_source, $locales)
     }
 
     if ($valid) {
+        $user_source->settings->theme = $user_source->settings->theme ?? config('theme');
         $user_source->settings->save();
         $session->set('locale', $user_source->settings->language);
 

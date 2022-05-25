@@ -120,12 +120,12 @@ function User_settings_view(
                         ]),
                         form([
                             form_info(__('Here you can choose your color settings:')),
-                            form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
+                            form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme ?? config('theme')),
                             form_submit('submit_theme', __('Save'))
                         ]),
                         form([
                             form_info(__('Here you can choose your language:')),
-                            form_select('language', __('Language:'), $locales, $user_source->settings->language),
+                            form_select('language', __('Language:'), $locales, $user_source->settings->language ?? config('default_locale')),
                             form_submit('submit_language', __('Save'))
                         ]),
                     ])
