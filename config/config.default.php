@@ -263,7 +263,7 @@ return [
     'enable_user_name'        => (bool)env('ENABLE_USER_NAME', false),
 
     // Enable displaying the pronoun fields
-    'enable_pronoun'          => (bool)env('ENABLE_PRONOUN', false),
+    'enable_pronoun'          => (bool)env('ENABLE_PRONOUN', true),
 
     // Enables the planned arrival/leave date
     'enable_planned_arrival'  => (bool)env('ENABLE_PLANNED_ARRIVAL', true),
