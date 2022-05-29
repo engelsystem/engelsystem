@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Engelsystem\Database\Database;
 use Engelsystem\Database\Db;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Models\OAuth;
@@ -9,6 +10,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Connection;
 
 /**
  * @return string
@@ -37,6 +39,8 @@ function guest_register()
     $config = config();
     $request = request();
     $session = session();
+    /** @var Connection $db */
+    $db = app(Database::class)->getConnection();
     $is_oauth = $session->has('oauth2_connect_provider');
 
     $msg = '';
@@ -211,6 +215,9 @@ function guest_register()
         }
 
         if ($valid) {
+            // Safeguard against partially created user data
+            $db->beginTransaction();
+
             $user = new User([
                 'name'          => $nick,
                 'password'      => $password_hash,
@@ -294,6 +301,9 @@ function guest_register()
                 );
                 $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
             }
+
+            // Commit complete user data
+            $db->commit();
 
             engelsystem_log(
                 'User ' . User_Nick_render($user, true)
