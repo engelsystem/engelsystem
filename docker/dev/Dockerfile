@@ -24,6 +24,7 @@ ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\
 # Engelsystem development workspace
 # Contains all tools required to build / manage the system
 FROM es_base AS es_workspace
+RUN echo 'memory_limit = 512M' > /usr/local/etc/php/conf.d/docker-php.ini
 RUN apk add --no-cache gettext nodejs npm yarn
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 ENTRYPOINT php -r 'sleep(PHP_INT_MAX);'

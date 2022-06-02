@@ -55,7 +55,7 @@ vendor/bin/phpunit
 To run code coverage reports its highly recommended to use [`pcov`](https://github.com/krakjoe/pcov) or
 at least `phpdbg -qrr`(which has problems with switch case statements) as using Xdebug slows down execution.
 ```bash
-php -d pcov.enabled=1 vendor/bin/phpunit --testsuite Unit --coverage-text
+php -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit --testsuite Unit --coverage-text
 ```
 
 ### Var Dump server
