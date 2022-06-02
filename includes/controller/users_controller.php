@@ -146,7 +146,7 @@ function user_edit_vouchers_controller()
         $user_source = $user;
     }
 
-    if (!auth()->can('admin_user')) {
+    if (!auth()->can('admin_user') && !auth()->can('voucher.edit')) {
         throw_redirect(page_link_to(''));
     }
 

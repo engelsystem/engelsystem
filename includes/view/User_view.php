@@ -641,7 +641,7 @@ function User_view(
                                 form_hidden('user', $user_source->id),
                                 form_submit('submit', __('arrived'), '', false, 'primary')
                             ], page_link_to('admin_arrive'), true) : '',
-                        $admin_user_privilege ? button(
+                        $admin_user_privilege || $auth->can('voucher.edit') ? button(
                             page_link_to(
                                 'users',
                                 ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
