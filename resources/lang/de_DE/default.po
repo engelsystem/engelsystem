@@ -531,6 +531,18 @@ msgstr "Benötigte Engel"
 msgid "Shift deleted."
 msgstr "Schicht gelöscht."
 
+msgid "Shifts history"
+msgstr "Schichten historie"
+
+msgid "%s shifts deleted."
+msgstr "%s Schichten gelöscht."
+
+msgid "Created"
+msgstr "Erstellt"
+
+msgid "delete all"
+msgstr "alle löschen"
+
 #: includes/controller/shifts_controller.php:238
 #, php-format
 msgid "Do you want to delete the shift %s from %s to %s?"

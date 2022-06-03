@@ -2,7 +2,9 @@
 
 use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -363,9 +365,10 @@ function admin_shifts()
             throw_redirect(page_link_to('admin_shifts'));
         }
 
+        $transactionId = Shift_get_next_transaction_id();
         foreach ($session->get('admin_shifts_shifts', []) as $shift) {
             $shift['URL'] = null;
-            $shift_id = Shift_create($shift);
+            $shift_id = Shift_create($shift, $transactionId);
 
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift['shifttype_id']]
@@ -424,7 +427,12 @@ function admin_shifts()
             . '</div>';
     }
 
-    return page_with_title(admin_shifts_title(), [
+    return page_with_title(
+        admin_shifts_title() . ' ' .  sprintf(
+            '<a href="%s">%s</a>',
+            page_link_to('admin_shifts_history'),
+            icon('clock-history')
+        ), [
         msg(),
         form([
             div('row',[
@@ -493,4 +501,91 @@ function admin_shifts()
             form_submit('preview', icon('search') . __('Preview'))
         ])
     ]);
+}
+
+/**
+ * @return string
+ */
+function admin_shifts_history_title(): string
+{
+    return __('Shifts history');
+}
+
+/**
+ * Display shifts transaction history
+ *
+ * @return string
+ */
+function admin_shifts_history(): string
+{
+    if (!auth()->can('admin_shifts')) {
+        throw new HttpForbidden();
+    }
+
+    $request = request();
+    $transactionId = $request->postData('transaction_id');
+    if ($request->hasPostData('delete') && $transactionId) {
+        $shifts = Db::select('
+            SELECT SID
+            FROM Shifts
+            WHERE transaction_id = ?
+        ', [$transactionId]);
+
+        engelsystem_log('Deleting ' . count($shifts) . ' shifts (transaction id ' . $transactionId . ')');
+
+        foreach ($shifts as $shift) {
+            $shift = Shift($shift['SID']);
+            UserWorkLog_from_shift($shift);
+            shift_delete($shift['SID']);
+
+            engelsystem_log(
+                'Deleted shift ' . $shift['name']
+                . ' from ' . date('Y-m-d H:i', $shift['start'])
+                . ' to ' . date('Y-m-d H:i', $shift['end'])
+            );
+        }
+
+        success(sprintf(__('%s shifts deleted.'), count($shifts)));
+        throw_redirect(page_link_to('admin_shifts_history'));
+    }
+
+    $shifts = Db::select('
+        SELECT
+            transaction_id,
+            title,
+            COUNT(SID) AS count,
+            MIN(start) AS start,
+            MAX(end) AS end,
+            created_by_user_id AS user_id,
+            created_at_timestamp AS created_at
+        FROM Shifts
+        WHERE transaction_id IS NOT NULL
+        GROUP BY transaction_id
+        ORDER BY transaction_id DESC
+    ');
+
+    foreach ($shifts as &$shift) {
+        $shift['user'] = User_Nick_render(User::find($shift['user_id']));
+        $shift['start'] = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
+        $shift['end'] = Carbon::createFromTimestamp($shift['end'])->format(__('Y-m-d H:i'));
+        $shift['created_at'] = Carbon::createFromTimestamp($shift['created_at'])->format(__('Y-m-d H:i'));
+        $shift['actions'] = form([
+            form_hidden('transaction_id', $shift['transaction_id']),
+            form_submit('delete', icon('trash') . __('delete all'), 'btn-sm', true, 'danger'),
+        ]);
+    }
+
+    return page_with_title(admin_shifts_history_title(), [
+        msg(),
+        table([
+            'transaction_id' => __('ID'),
+            'title'          => __('Title'),
+            'count'          => __('Count'),
+            'start'          => __('Start'),
+            'end'            => __('End'),
+            'user'           => __('User'),
+            'created_at'     => __('Created'),
+            'actions'        => ''
+        ], $shifts)
+    ], true);
 }

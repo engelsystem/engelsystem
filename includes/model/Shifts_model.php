@@ -557,12 +557,21 @@ function Shift_update($shift)
 }
 
 /**
+ * Get the next free shifts transaction id
+ */
+function Shift_get_next_transaction_id(): int
+{
+    return Db::selectOne('SELECT MAX(transaction_id) + 1 AS transaction_id FROM Shifts')['transaction_id'] ?? 1;
+}
+
+/**
  * Create a new shift.
  *
  * @param array $shift
+ * @param int   $transactionId
  * @return int ID of the new created shift
  */
-function Shift_create($shift)
+function Shift_create($shift, $transactionId = null)
 {
     DB::insert('
         INSERT INTO `Shifts` (
@@ -573,11 +582,12 @@ function Shift_create($shift)
             `title`,
             `description`,
             `URL`,
+            `transaction_id`,
             `created_by_user_id`,
             `edited_at_timestamp`,
             `created_at_timestamp`
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $shift['shifttype_id'],
@@ -587,6 +597,7 @@ function Shift_create($shift)
             $shift['title'],
             $shift['description'],
             $shift['URL'],
+            $transactionId,
             auth()->user()->id,
             time(),
             time(),
