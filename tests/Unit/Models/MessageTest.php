@@ -83,6 +83,7 @@ class MessageTest extends ModelTest
      * Tests that the Messages have the correct senders.
      *
      * @covers \Engelsystem\Models\Message::user
+     * @covers \Engelsystem\Models\Message::sender
      *
      * @return void
      */
@@ -91,6 +92,10 @@ class MessageTest extends ModelTest
         $this->assertSame($this->user1->id, $this->message1->user->id);
         $this->assertSame($this->user1->id, $this->message2->user->id);
         $this->assertSame($this->user2->id, $this->message3->user->id);
+
+        $this->assertSame($this->user1->id, $this->message1->sender->id);
+        $this->assertSame($this->user1->id, $this->message2->sender->id);
+        $this->assertSame($this->user2->id, $this->message3->sender->id);
     }
 
     /**

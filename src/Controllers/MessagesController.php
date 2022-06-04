@@ -104,6 +104,7 @@ class MessagesController extends BaseController
             ->mapWithKeys(function ($u) {
                 return [ $u->id => $u->name ];
             });
+        $users->prepend($currentUser->name, $currentUser->id);
 
         return $this->response->withView(
             'pages/messages/overview.twig',
@@ -120,21 +121,17 @@ class MessagesController extends BaseController
     public function redirectToConversation(Request $request): Response
     {
         $data = $this->validate($request, ['user_id' => 'required|int']);
-        return $this->redirect->to('/messages/' . $data['user_id']);
+        return $this->redirect->to('/messages/' . $data['user_id'] . '#newest');
     }
 
     /**
      * Returns a list of messages between the current user and a user with the given id. Unread messages will be marked
-     * as read during this call. Still, they will be shown as unread in the frontend to highlight them to the user as new.
+     * as read during this call. Still, they will be shown as unread in the frontend to show that they are new.
      */
     public function messagesOfConversation(Request $request): Response
     {
         $currentUser = $this->auth->user();
         $otherUser = $this->user->findOrFail($request->getAttribute('user_id'));
-
-        if ($currentUser->id == $otherUser->id) {
-            throw new HttpForbidden('You can not start a conversation with yourself.');
-        }
 
         $messages = $this->message
             ->where(function ($query) use ($currentUser, $otherUser) {
@@ -175,15 +172,11 @@ class MessagesController extends BaseController
 
         $otherUser = $this->user->findOrFail($request->getAttribute('user_id'));
 
-        if ($otherUser->id == $currentUser->id) {
-            throw new HttpForbidden('You can not send a message to yourself.');
-        }
-
         $newMessage = new Message();
         $newMessage->sender()->associate($currentUser);
         $newMessage->receiver()->associate($otherUser);
         $newMessage->text = $data['text'];
-        $newMessage->read = false;
+        $newMessage->read = $otherUser->id == $currentUser->id; // if its to myself, I obviously read it.
         $newMessage->save();
 
         return $this->redirect->to('/messages/' . $otherUser->id);
@@ -202,7 +195,6 @@ class MessagesController extends BaseController
 
         if ($msg->user_id == $currentUser->id) {
             $msg->delete();
-
         } else {
             throw new HttpForbidden('You can not delete a message you haven\'t send');
         }
