@@ -155,5 +155,5 @@ msgstr "Eine Beschreibung findest du unter %2$s"
 msgid "user.edit.success"
 msgstr "Benutzer erfolgreich bearbeitet."
 
-msgid "messages.delete.success"
+msgid "message.delete.success"
 msgstr "Nachricht erfolgreich gelöscht."

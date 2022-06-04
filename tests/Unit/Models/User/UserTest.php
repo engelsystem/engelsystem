@@ -4,7 +4,6 @@ namespace Engelsystem\Test\Unit\Models\User;
 
 use Carbon\Carbon;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
-use Engelsystem\Config\Config;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
@@ -276,46 +275,5 @@ class UserTest extends ModelTest
         $this->assertCount(2, $answers);
         $this->assertContains($question1->id, $answers);
         $this->assertContains($question2->id, $answers);
-    }
-
-    /**
-     * @testdox nameWithPronoun: pronounsDeactivated -> returnNameOnly
-     */
-    public function testNameWithPronounPronounsDeactivatedReturnNameOnly()
-    {
-        $user_with_pronoun = User::factory(['name' => 'x'])
-            ->has(PersonalData::factory(['pronoun' => 'X']))->create();
-        $user_without_pronoun = User::factory(['name' => 'y'])->create();
-
-        $this->assertEquals('x', $user_with_pronoun->nameWithPronoun());
-        $this->assertEquals('y', $user_without_pronoun->nameWithPronoun());
-    }
-
-    /**
-     * @testdox nameWithPronoun: pronounsActivated -> returnNameAndPronoun
-     */
-    public function testNameWithPronounPronounsActivatedReturnNameAndPronoun()
-    {
-        config(['enable_pronoun' => true]);
-
-        $user_with_pronoun = User::factory(['name' => 'x'])
-            ->has(PersonalData::factory(['pronoun' => 'X']))->create();
-        $user_without_pronoun = User::factory(['name' => 'y'])->create();
-
-        $this->assertEquals('x (X)', $user_with_pronoun->nameWithPronoun());
-        $this->assertEquals('y', $user_without_pronoun->nameWithPronoun());
-    }
-
-    /**
-     * Prepare test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // config needed for checking if pronouns are activated.
-        $config = new Config();
-        $this->app->instance('config', $config);
-        $this->app->instance(Config::class, $config);
     }
 }
