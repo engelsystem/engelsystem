@@ -301,17 +301,20 @@ msgstr "Arrived"
 msgid "user.got_shirt"
 msgstr "Got shirt"
 
-msgid "messages.title"
+msgid "message.title"
 msgstr "Messages"
 
-msgid "messages.choose.an.angel"
+msgid "message.choose_angel"
 msgstr "Choose an Angel"
 
-msgid "messages.to.conversation"
+msgid "message.to_conversation"
 msgstr "To Conversation"
+
+msgid "message.message"
+msgstr "Message"
 
 msgid "angel"
 msgstr "Angel"
 
-msgid "message"
-msgstr "Message"
+msgid "date"
+msgstr "Date"

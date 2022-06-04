@@ -1063,11 +1063,6 @@ msgstr "Autor"
 msgid "Subject"
 msgstr "Assunto"
 
-#: includes/pages/admin_news.php:33 includes/pages/user_messages.php:79
-#: includes/pages/user_news.php:106 includes/pages/user_news.php:162
-msgid "Message"
-msgstr "Mensagem"
-
 #: includes/pages/admin_news.php:34 includes/pages/user_news.php:163
 msgid "Meeting"
 msgstr "Reunião"
@@ -1452,10 +1447,6 @@ msgstr "Por favor leia sobre as tarefas que pode realizar para nos ajudar."
 #: includes/pages/guest_login.php:390
 msgid "Please sign up, if you want to help us!"
 msgstr "Se você quer nos ajudar, por favor se registre!"
-
-#: includes/pages/user_messages.php:4
-msgid "Messages"
-msgstr "Mensagens"
 
 #: includes/pages/user_messages.php:26
 msgid "Select recipient..."

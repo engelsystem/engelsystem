@@ -2,13 +2,13 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('messages.title') }}: {{ other_user.nameWithPronoun() }}{% endblock %}
+{% block title %}{{ __('message.title') }}: {{ other_user.name }}{% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="page-header">
             <h1>
-                {{ __('messages.title') }}: <span class="icon-icon_angel"></span> {{ other_user.nameWithPronoun() }}
+                {{ __('message.title') }}: {{ m.user(other_user, {'show_pronoun_if_configured': true}) }}
             </h1>
         </div>
 
@@ -22,12 +22,12 @@
                                     <div class="message alert alert-secondary position-relative">
                                         <div>{{ msg.text | nl2br }}</div>
                                         <div class="text-end">
-                                            <small class="opacity-75">{{ msg.created_at }}</small>
+                                            <small
+                                                class="opacity-75">{{ msg.created_at.format(__('Y-m-d H:i')) }}</small>
                                         </div>
                                         {% if msg.read == false %}
-                                            <span class="position-absolute top-0 start-100 translate-middle-x p-2 bg-danger rounded-circle">
-                                                <span class="visually-hidden">New alerts</span>
-                                            </span>
+                                            <span class="position-absolute top-0 start-100 translate-middle-x p-2
+                                            bg-danger rounded-circle"></span>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -39,28 +39,29 @@
                                         <div>{{ msg.text | nl2br }}</div>
                                         <div class="text-end">
 
-                                    <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ msg.id) }}"
-                                          enctype="multipart/form-data" method="post">
-                                        {{ csrf() }}
-                                        <small class="opacity-75">{{ msg.created_at }}</small>
-                                        {{ f.submit(m.icon('trash'), {'btn_type': 'primary', 'size': 'sm'}) }}
-                                    </form>
+                                            <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ msg.id) }}"
+                                                  enctype="multipart/form-data" method="post">
+                                                {{ csrf() }}
+                                                <small class="opacity-75">{{ msg.created_at }}</small>
+                                                {{ f.submit(m.icon('trash'), {'btn_type': 'primary', 'size': 'sm'}) }}
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <form action="" enctype="multipart/form-data" method="post">
+                    {{ csrf() }}
+
+                    <div class="input-group">
+                        <textarea class="form-control" id="text" name="text" required="" rows="2"></textarea>
+                        {{ f.submit(m.icon('send-fill')) }}
                     </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-        <form action="" enctype="multipart/form-data" method="post">
-            {{ csrf() }}
-
-            <div class="input-group">
-                <textarea class="form-control" id="text" name="text" required="" rows="1"></textarea>
-                {{ f.submit(m.icon('send-fill')) }}
+                </form>
             </div>
-        </form>
-
+        </div>
     </div>
 {% endblock %}

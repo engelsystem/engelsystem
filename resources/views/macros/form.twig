@@ -37,12 +37,17 @@
     </div>
 {%- endmacro %}
 
-{% macro select(name, data, label, selected) %}
+{% macro select(name, data, label, selected, opt) %}
     <div class="mb-3">
         {% if label -%}
             <label class="form-label" for="{{ name }}">{{ label }}</label>
         {% endif %}
-        <select id="{{ name }}" name="{{ name }}" class="form-control">
+        <select id="{{ name }}" name="{{ name }}"
+                class="form-control {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
+                {%- if opt.required|default(false) %}required{%- endif -%}>
+            {%- if opt.default_option is defined %}
+                <option value="">{{ opt.default_option }}</option>
+            {% endif %}
             {% for value,decription in data -%}
                 <option value="{{ value }}"{% if value == selected %} selected{% endif %}>{{ decription }}</option>
             {% endfor %}

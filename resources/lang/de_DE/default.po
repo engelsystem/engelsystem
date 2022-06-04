@@ -3031,17 +3031,20 @@ msgstr "Angekommen"
 msgid "user.got_shirt"
 msgstr "Shirt bekommen"
 
-msgid "messages.title"
+msgid "message.title"
 msgstr "Nachrichten"
 
-msgid "messages.choose.an.angel"
+msgid "message.choose_angel"
 msgstr "Wähle einen Engel"
 
-msgid "messages.to.conversation"
+msgid "message.to_conversation"
 msgstr "Zur Konversation"
+
+msgid "message.message"
+msgstr "Nachricht"
 
 msgid "angel"
 msgstr "Engel"
 
-msgid "message"
-msgstr "Nachricht"
+msgid "date"
+msgstr "Datum"
