@@ -203,17 +203,6 @@ class MessagesController extends BaseController
     }
 
     /**
-     * Returns the overall unread messages of the current user.
-     */
-    public function numberOfUnreadMessages(): int
-    {
-        return $this->auth->user()
-            ->messagesReceived()
-            ->where('read', false)
-            ->count();
-    }
-
-    /**
      * The number of unread messages per conversation of the current user.
      * @return Collection of unread message amounts. Each object with key=other user, value=amount of unread messages
      */
