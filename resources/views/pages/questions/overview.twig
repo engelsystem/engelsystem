@@ -44,7 +44,7 @@
                                             </div>
 
                                             {% if has_permission_to('question.edit') %}
-                                                {{ m.user(question.user) }}
+                                                {{ m.user(question.user, {'pronoun': true}) }}
                                                 <div class="d-flex ms-auto">
                                             {% endif %}
 
@@ -78,7 +78,7 @@
                                                 <div class="me-3">
                                                     {{ m.icon('clock') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
                                                 </div>
-                                                {{ m.user(question.answerer) }}
+                                                {{ m.user(question.answerer, {'pronoun': true}) }}
                                             </div>
                                         </div>
                                     </div>

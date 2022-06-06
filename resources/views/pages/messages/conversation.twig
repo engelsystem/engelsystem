@@ -8,7 +8,7 @@
     <div class="container">
         <div class="page-header">
             <h1>
-                {{ __('message.title') }}: {{ m.user(other_user, {'show_pronoun_if_configured': true}) }}
+                {{ __('message.title') }}: {{ m.user(other_user, {'pronoun': true}) }}
             </h1>
         </div>
 
@@ -17,16 +17,16 @@
                 <div class="row conversation">
                     {% for msg in messages %}
                         {% if msg.user_id == user.id %}
-                            <div class="col-12">
+                            <div class="col-12"{% if loop.last %} id="newest"{% endif %}>
                                 <div class="d-flex justify-content-end">
                                     <div class="message alert alert-primary">
-                                        <div>{{ msg.text | nl2br }}</div>
+                                        <p>{{ msg.text | nl2br }}</p>
                                         <div class="text-end">
-
                                             <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ msg.id) }}"
-                                                  enctype="multipart/form-data" method="post">
+                                                enctype="multipart/form-data" method="post"
+                                            >
                                                 {{ csrf() }}
-                                                <small class="opacity-75">{{ msg.created_at }}</small>
+                                                <small class="opacity-75">{{ msg.created_at.format(__('Y-m-d H:i')) }}</small>
                                                 {{ f.submit(m.icon('trash'), {'btn_type': 'primary', 'size': 'sm'}) }}
                                             </form>
                                         </div>
@@ -34,31 +34,29 @@
                                 </div>
                             </div>
                         {% else %}
-                            <div class="col-12">
+                            <div class="col-12"{% if loop.last %} id="newest"{% endif %}>
                                 <div>
                                     <div class="message alert alert-secondary position-relative">
                                         <div>{{ msg.text | nl2br }}</div>
                                         <div class="text-end">
-                                            <small
-                                                class="opacity-75">{{ msg.created_at.format(__('Y-m-d H:i')) }}</small>
+                                            <small class="opacity-75">{{ msg.created_at.format(__('Y-m-d H:i')) }}</small>
                                         </div>
                                         {% if msg.read == false %}
-                                            <span class="position-absolute top-0 start-100 translate-middle-x p-2
-                                            bg-danger rounded-circle"></span>
+                                            <span class="position-absolute top-0 start-100 translate-middle-x p-2 bg-danger rounded-circle"></span>
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <div id="newest">{# id for scrolling to the newest messages #}</div>
                 </div>
 
                 <form action="" enctype="multipart/form-data" method="post">
                     {{ csrf() }}
 
                     <div class="input-group">
-                        <textarea class="form-control" id="text" name="text" required="" rows="2"></textarea>
+                        <label for="message" class="visually-hidden">{{ __('message.message') }}</label>
+                        <textarea class="form-control" id="message" name="text" required="" rows="2"></textarea>
                         {{ f.submit(m.icon('send-fill')) }}
                     </div>
                 </form>

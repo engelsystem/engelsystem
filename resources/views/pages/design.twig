@@ -317,8 +317,11 @@
                 <p>{{ m.alert('Test content', 'info') }}</p>
             </div>
             <div class="col-md-3">
-                <h4><code>user(user)</code></h4>
-                <p>{{ m.user(demo_user) }}<br>{{ m.user(demo_user_2) }}</p>
+                <h4><code>user(user, opt)</code></h4>
+                <p>
+                    {{ m.user(demo_user) }}<br>
+                    {{ m.user(demo_user_2, {'pronoun': true}) }}
+                </p>
             </div>
             <div class="col-md-3">
                 <h4><code>button(label, url, type, size)</code></h4>
