@@ -443,7 +443,7 @@ class MessagesControllerTest extends ControllerTest
 
         $this->response->expects($this->once())
             ->method('redirectTo')
-            ->with('http://localhost/messages/' . $this->userB->id)
+            ->with('http://localhost/messages/' . $this->userB->id . '#newest')
             ->willReturn($this->response);
 
         $this->controller->send($this->request);
@@ -465,7 +465,7 @@ class MessagesControllerTest extends ControllerTest
 
         $this->response->expects($this->once())
             ->method('redirectTo')
-            ->with('http://localhost/messages/' . $this->userA->id)
+            ->with('http://localhost/messages/' . $this->userA->id . '#newest')
             ->willReturn($this->response);
 
         $this->controller->send($this->request);
@@ -511,7 +511,7 @@ class MessagesControllerTest extends ControllerTest
 
         $this->response->expects($this->once())
             ->method('redirectTo')
-            ->with('http://localhost/messages/1')
+            ->with('http://localhost/messages/1#newest')
             ->willReturn($this->response);
 
         $this->controller->delete($this->request);
