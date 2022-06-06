@@ -179,7 +179,7 @@ class MessagesController extends BaseController
         $newMessage->read = $otherUser->id == $currentUser->id; // if its to myself, I obviously read it.
         $newMessage->save();
 
-        return $this->redirect->to('/messages/' . $otherUser->id);
+        return $this->redirect->to('/messages/' . $otherUser->id . '#newest');
     }
 
     /**
@@ -199,7 +199,7 @@ class MessagesController extends BaseController
             throw new HttpForbidden('You can not delete a message you haven\'t send');
         }
 
-        return $this->redirect->to('/messages/' . $otherUserId);
+        return $this->redirect->to('/messages/' . $otherUserId . '#newest');
     }
 
     /**
