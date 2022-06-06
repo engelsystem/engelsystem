@@ -75,7 +75,7 @@ abstract class ExtensionTest extends TestCase
      */
     protected function assertGlobalsExists($name, $value, $globals)
     {
-        if (isset($globals[$name])) {
+        if (array_key_exists($name, $globals)) {
             $this->assertArraySubset([$name => $value], $globals);
 
             return;

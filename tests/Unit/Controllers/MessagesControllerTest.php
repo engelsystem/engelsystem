@@ -520,43 +520,6 @@ class MessagesControllerTest extends ControllerTest
     }
 
     /**
-     * @testdox NumberOfUnreadMessages: withNoMessages -> returns0
-     * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessages
-     */
-    public function testNumberOfUnreadMessagesWithNoMessagesReturns0()
-    {
-        $this->assertEquals(0, $this->controller->numberOfUnreadMessages());
-    }
-
-    /**
-     * @testdox NumberOfUnreadMessages: withMessagesNotToMe -> messagesNotToMeAreIgnored
-     * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessages
-     */
-    public function testNumberOfUnreadMessagesWithMessagesNotToMeMessagesNotToMeAreIgnored()
-    {
-        $userC = User::factory(['name' => 'c'])->create();
-
-        $this->createMessage($this->userA, $this->userB, 'a>b', $this->now);
-        $this->createMessage($this->userB, $userC, 'b>c', $this->now);
-        $this->assertEquals(0, $this->controller->numberOfUnreadMessages());
-    }
-
-    /**
-     * @testdox NumberOfUnreadMessages: withMessages -> returnsSumOfUnreadMessagesSentToMe
-     * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessages
-     */
-    public function testNumberOfUnreadMessagesWithMessagesReturnsSumOfUnreadMessagesSentToMe()
-    {
-        $userC = User::factory(['name' => 'c'])->create();
-
-        $this->createMessage($this->userB, $this->userA, 'b>a1', $this->now);
-        $this->createMessage($this->userB, $this->userA, 'b>a2', $this->now);
-        $this->createMessage($userC, $this->userA, 'c>a', $this->now);
-
-        $this->assertEquals(3, $this->controller->numberOfUnreadMessages());
-    }
-
-    /**
      * Setup environment
      */
     public function setUp(): void

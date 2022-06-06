@@ -51,6 +51,7 @@ class GlobalsTest extends ExtensionTest
         // No user
         $globals = $extension->getGlobals();
         $this->assertGlobalsExists('user', [], $globals);
+        $this->assertGlobalsExists('user_messages', null, $globals);
         $this->assertGlobalsExists('request', $request, $globals);
         $this->assertGlobalsExists('themeId', 23, $globals);
         $this->assertGlobalsExists('theme', $theme2, $globals);
@@ -58,6 +59,7 @@ class GlobalsTest extends ExtensionTest
         // User
         $globals = $extension->getGlobals();
         $this->assertGlobalsExists('user', $user, $globals);
+        $this->assertGlobalsExists('user_messages', 0, $globals);
         $this->assertGlobalsExists('themeId', 42, $globals);
         $this->assertGlobalsExists('theme', $theme, $globals);
 
