@@ -21,7 +21,7 @@
             {%- if not user.state.arrived %} class="text-muted"{% endif -%}
     >
         {{ _self.angel() }} {{ user.name }}
-        {%- if opt.show_pronoun_if_configured|default(false) and config('enable_pronoun')
+        {%- if opt.pronoun|default(false) and config('enable_pronoun')
             and user.personalData.pronoun %}
             ({{ user.personalData.pronoun }})
         {% endif -%}

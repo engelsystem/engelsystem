@@ -4,6 +4,7 @@ namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 
@@ -47,6 +48,9 @@ class DesignController extends BaseController
         $demoUser2->__set('state', (new State())->forceFill([
             'user_id' => 1337,
             'arrived' => false,
+        ]));
+        $demoUser2->__set('personalData', (new PersonalData())->forceFill([
+            'pronoun' => 'it/its',
         ]));
 
         $themes = $this->config->get('themes');

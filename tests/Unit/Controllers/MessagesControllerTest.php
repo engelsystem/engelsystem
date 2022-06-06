@@ -141,7 +141,7 @@ class MessagesControllerTest extends ControllerTest
 
                 $this->assertTrue($c['other_user'] instanceof User);
                 $this->assertTrue($c['latest_message'] instanceof Message);
-                $this->assertEquals('string', gettype($c['unread_messages']));
+                $this->assertIsNumeric($c['unread_messages']);
 
                 $this->assertEquals('b', $c['other_user']->name);
                 $this->assertEquals('b>a', $c['latest_message']->text);

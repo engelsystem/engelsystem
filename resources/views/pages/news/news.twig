@@ -22,7 +22,7 @@
                         {{ m.icon('clock') }}
                         {{ comment.created_at.format(__('Y-m-d H:i')) }}
                     </div>
-                    {{ m.user(comment.user) }}
+                    {{ m.user(comment.user, {'pronoun': true}) }}
 
                     {% if comment.user.id == user.id or has_permission_to('admin_news') or has_permission_to('comment.delete') %}
                         <div class="ms-auto">
