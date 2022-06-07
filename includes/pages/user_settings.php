@@ -106,34 +106,6 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 }
 
 /**
- * Change user theme
- *
- * @param User  $user_source The user
- * @param array $themes      List of available themes
- * @return User
- */
-function user_settings_theme($user_source, $themes)
-{
-    $valid = true;
-    $request = request();
-
-    if ($request->has('theme') && isset($themes[$request->input('theme')])) {
-        $user_source->settings->theme = $request->input('theme');
-    } else {
-        $valid = false;
-    }
-
-    if ($valid) {
-        $user_source->settings->save();
-
-        success(__('Theme changed.'));
-        throw_redirect(page_link_to('user_settings'));
-    }
-
-    return $user_source;
-}
-
-/**
  * Change use locale
  *
  * @param User  $user_source The user
@@ -172,13 +144,6 @@ function user_settings()
 {
     $request = request();
     $config = config();
-    $themesConfig = config('themes');
-
-    $themes = [];
-
-    foreach ($themesConfig as $themeIndex => $themeConfig) {
-        $themes[$themeIndex] = $themeConfig['name'];
-    }
 
     $enable_tshirt_size = config('enable_tshirt_size');
     $tshirt_sizes = config('tshirt_sizes');
@@ -200,8 +165,6 @@ function user_settings()
     $user_source = auth()->user();
     if ($request->hasPostData('submit')) {
         $user_source = user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
-    } elseif ($request->hasPostData('submit_theme')) {
-        $user_source = user_settings_theme($user_source, $themes);
     } elseif ($request->hasPostData('submit_language')) {
         $user_source = user_settings_locale($user_source, $locales);
     }
@@ -209,7 +172,6 @@ function user_settings()
     return User_settings_view(
         $user_source,
         $locales,
-        $themes,
         $buildup_start_date,
         $teardown_end_date,
         $enable_tshirt_size,

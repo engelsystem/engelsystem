@@ -14,7 +14,6 @@ use Engelsystem\Controllers\SettingsController;
  *
  * @param User  $user_source        The user
  * @param array $locales            Available languages
- * @param array $themes             Available themes
  * @param int   $buildup_start_date Unix timestamp
  * @param int   $teardown_end_date  Unix timestamp
  * @param bool  $enable_tshirt_size
@@ -25,7 +24,6 @@ use Engelsystem\Controllers\SettingsController;
 function User_settings_view(
     $user_source,
     $locales,
-    $themes,
     $buildup_start_date,
     $teardown_end_date,
     $enable_tshirt_size,
@@ -117,11 +115,6 @@ function User_settings_view(
                             ) : '',
                             form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
                             form_submit('submit', __('Save'))
-                        ]),
-                        form([
-                            form_info(__('Here you can choose your color settings:')),
-                            form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
-                            form_submit('submit_theme', __('Save'))
                         ]),
                         form([
                             form_info(__('Here you can choose your language:')),

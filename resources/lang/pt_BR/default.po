@@ -1614,10 +1614,6 @@ msgstr "-> não OK. Por favor tente novamente."
 msgid "Failed setting password."
 msgstr "A alteração da senha falhaou."
 
-#: includes/pages/user_settings.php:126
-msgid "Theme changed."
-msgstr "Tema alterado."
-
 #: includes/pages/user_shifts.php:82
 msgid "The administration has not configured any rooms yet."
 msgstr "O administrador não configurou nenhuma sala ainda."
@@ -2210,14 +2206,6 @@ msgstr "Nova senha:"
 #: includes/view/User_view.php:64
 msgid "Password confirmation:"
 msgstr "Confirmação de senha:"
-
-#: includes/view/User_view.php:68
-msgid "Here you can choose your color settings:"
-msgstr "Aqui você pode selecionar sua configuração de cor:"
-
-#: includes/view/User_view.php:69
-msgid "Color settings:"
-msgstr "Configuração de cor:"
 
 #: includes/view/User_view.php:73
 msgid "Here you can choose your language:"
