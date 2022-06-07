@@ -1818,10 +1818,6 @@ msgstr "-> Nicht OK. Bitte erneut versuchen."
 msgid "Your password is to short (please use at least 6 characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
 
-#: includes/pages/user_settings.php:146
-msgid "Theme changed."
-msgstr "Aussehen geändert."
-
 #: includes/pages/user_shifts.php:101
 msgid "The administration has not configured any rooms yet."
 msgstr "Die Administratoren habe noch keine Räume eingerichtet."
@@ -2513,14 +2509,6 @@ msgstr "Geplanter Abreisetag"
 msgid "Please visit the angeltypes page to manage your angeltypes."
 msgstr "Bitte benutze die Engeltypen-Seite um deine Engeltypen zu verwalten."
 
-#: includes/view/User_view.php:96
-msgid "Here you can choose your color settings:"
-msgstr "Hier kannst Du das Aussehen auswählen:"
-
-#: includes/view/User_view.php:97
-msgid "Color settings:"
-msgstr "Aussehen:"
-
 #: includes/view/User_view.php:101
 msgid "Here you can choose your language:"
 msgstr "Hier kannst Du Deine Sprache auswählen:"
@@ -2955,6 +2943,15 @@ msgstr "Passwort wiederholen"
 
 msgid "settings.password.success"
 msgstr "Passwort wurde erfolgreich geändert."
+
+msgid "settings.theme"
+msgstr "Theme"
+
+msgid "settings.theme.info"
+msgstr "Hier kannst Du Dein Theme ändern."
+
+msgid "settings.theme.success"
+msgstr "Theme wurde erfolgreich geändert."
 
 msgid "settings.oauth"
 msgstr "Single Sign-On"

@@ -226,6 +226,15 @@ msgstr "Password confirmation"
 msgid "settings.password.success"
 msgstr "Password was changed successfully."
 
+msgid "settings.theme"
+msgstr "Theme"
+
+msgid "settings.theme.info"
+msgstr "Here you can change your theme."
+
+msgid "settings.theme.success"
+msgstr "Theme was changed successfully."
+
 msgid "settings.oauth"
 msgstr "Single Sign-On"
 

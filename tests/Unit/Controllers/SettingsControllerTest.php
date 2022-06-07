@@ -6,6 +6,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\User\Settings;
 use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -241,6 +242,88 @@ class SettingsControllerTest extends TestCase
     }
 
     /**
+     * @testdox theme: underNormalConditions -> returnsCorrectViewAndData
+     * @covers \Engelsystem\Controllers\SettingsController::theme
+     */
+    public function testThemeUnderNormalConditionReturnsCorrectViewAndData()
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+
+        /** @var Response|MockObject $response */
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertEquals('pages/settings/theme', $view);
+                $this->assertArrayHasKey('settings_menu', $data);
+                $this->assertArrayHasKey('themes', $data);
+                $this->assertArrayHasKey('current_theme', $data);
+                $this->assertEquals([0 => 'Engelsystem light', 1 => 'Engelsystem dark'], $data['themes']);
+                $this->assertEquals(1, $data['current_theme']);
+
+                return $this->response;
+            });
+
+        /** @var SettingsController $controller */
+        $controller = $this->app->make(SettingsController::class);
+        $controller->theme();
+    }
+
+    /**
+     * @testdox saveTheme: withNoSelectedThemeGiven -> throwsException
+     * @covers \Engelsystem\Controllers\SettingsController::saveTheme
+     */
+    public function testSaveThemeWithNoSelectedThemeGivenThrowsException()
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->expectException(ValidationException::class);
+
+        /** @var SettingsController $controller */
+        $controller = $this->app->make(SettingsController::class);
+        $controller->setValidator(new Validator());
+        $controller->saveTheme($this->request);
+    }
+
+    /**
+     * @testdox saveTheme: withUnknownSelectedThemeGiven -> throwsException
+     * @covers \Engelsystem\Controllers\SettingsController::saveTheme
+     */
+    public function testSaveThemeWithUnknownSelectedThemeGivenThrowsException()
+    {
+        $this->request = $this->request->withParsedBody(['select_theme' => 2]);
+
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->expectException(HttpNotFound::class);
+
+        /** @var SettingsController $controller */
+        $controller = $this->app->make(SettingsController::class);
+        $controller->setValidator(new Validator());
+        $controller->saveTheme($this->request);
+    }
+
+    /**
+     * @testdox saveTheme: withKnownSelectedThemeGiven -> savesThemeAndRedirect
+     * @covers \Engelsystem\Controllers\SettingsController::saveTheme
+     */
+    public function testSaveThemeWithKnownSelectedThemeGivenSavesThemeAndRedirect()
+    {
+        $this->assertEquals(1, $this->user->settings->theme);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->response->expects($this->once())
+            ->method('redirectTo')
+            ->with('http://localhost/settings/theme')
+            ->willReturn($this->response);
+
+        $this->request = $this->request->withParsedBody(['select_theme' => 0]);
+
+        /** @var SettingsController $controller */
+        $controller = $this->app->make(SettingsController::class);
+        $controller->setValidator(new Validator());
+        $controller->saveTheme($this->request);
+
+        $this->assertEquals(0, $this->user->settings->theme);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\SettingsController::__construct
      * @covers \Engelsystem\Controllers\SettingsController::oauth
      */
@@ -294,6 +377,7 @@ class SettingsControllerTest extends TestCase
         $this->assertEquals([
             'http://localhost/user-settings' => 'settings.profile',
             'http://localhost/settings/password' => 'settings.password',
+            'http://localhost/settings/theme' => 'settings.theme',
             'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => false]
         ], $controller->settingsMenu());
 
@@ -301,6 +385,7 @@ class SettingsControllerTest extends TestCase
         $this->assertEquals([
             'http://localhost/user-settings' => 'settings.profile',
             'http://localhost/settings/password' => 'settings.password',
+            'http://localhost/settings/theme' => 'settings.theme',
             'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => true]
         ], $controller->settingsMenu());
     }
@@ -317,7 +402,8 @@ class SettingsControllerTest extends TestCase
 
         $this->assertEquals([
             'http://localhost/user-settings' => 'settings.profile',
-            'http://localhost/settings/password' => 'settings.password'
+            'http://localhost/settings/password' => 'settings.password',
+            'http://localhost/settings/theme' => 'settings.theme'
         ], $controller->settingsMenu());
     }
 
@@ -329,7 +415,11 @@ class SettingsControllerTest extends TestCase
         parent::setUp();
         $this->initDatabase();
 
-        $this->config = new Config(['min_password_length' => 6]);
+        $themes = [
+            0 => ['name' => 'Engelsystem light'],
+            1 => ['name' => 'Engelsystem dark']
+        ];
+        $this->config = new Config(['min_password_length' => 6, 'themes' => $themes]);
         $this->app->instance('config', $this->config);
         $this->app->instance(Config::class, $this->config);
 
@@ -352,6 +442,8 @@ class SettingsControllerTest extends TestCase
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
 
-        $this->user = User::factory()->create();
+        $this->user = User::factory()
+            ->has(Settings::factory(['theme' => 1]))
+            ->create();
     }
 }
