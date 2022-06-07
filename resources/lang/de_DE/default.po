@@ -1039,7 +1039,7 @@ msgstr "Aktiv?"
 
 #: includes/pages/admin_active.php:320 includes/view/User_view.php:231
 msgid "Forced"
-msgstr "Gezwungen"
+msgstr "Erzwungen"
 
 #: includes/pages/admin_active.php:321
 msgid "T-shirt?"
@@ -2708,7 +2708,7 @@ msgstr "Angekommen am %s"
 
 #: includes/view/User_view.php:732
 msgid "Active (forced)"
-msgstr "Aktiv (gezwungen)"
+msgstr "Aktiv (erzwungen)"
 
 #: includes/view/User_view.php:743
 #, php-format
