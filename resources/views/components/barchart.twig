@@ -1,0 +1,33 @@
+<div class="barchart {{ barChartClass }}">
+    <div class="barchart-graph-container">
+        {% for yLabel in yLabels %}
+            <label class="barchart-ylabel" style="bottom: {{ yLabel.bottom }};">
+                {{ yLabel.label }}
+            </label>
+            <hr class="barchart-ygraph" style="bottom: {{ yLabel.bottom }};" />
+        {% endfor %}
+        {% for group in groups %}
+            <div class="barchart-group">
+                {% for bar in group.bars %}
+                <div
+                    class="barchart-bar"
+                    title="bar.title"
+                    style="height: {{ bar.height }}; background-color: {{ bar.bg }};"
+                ></div>
+                {% endfor %}
+                <div class="barchart-xlabel">{{ group.label }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="barchart-legend">
+    {% for key, color in colors %}
+        <div
+            class="barchart-legend-item"
+            style="border-left-color: {{ color }};"
+        >
+            {{ rowLabels[key] }}
+        </div>
+    {% endfor %}
+</div>

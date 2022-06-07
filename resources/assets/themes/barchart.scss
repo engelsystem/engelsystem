@@ -1,0 +1,122 @@
+.barchart {
+    --barchart-padding-left: 50px;
+    --barchart-bar-margin: 2%;
+    --barchart-group-margin: 2%;
+    --barchart-label-font-size: 14px;
+
+    height: 300px;
+    margin-bottom: map-get($spacers, 3);
+    margin-top: map-get($spacers, 4);
+    position: relative;
+    // enable printing backgrounds
+    print-color-adjust: exact;
+
+    &-20  {
+        // >= 20 bars
+        --barchart-group-margin: .75%;
+    }
+
+    &-40 {
+        // >= 40 bars
+        --barchart-bar-margin: 1px;
+        --barchart-bar-margin: .5px;
+        --barchart-group-margin: .5%;
+    }
+
+    &-50 {
+        // >= 50 bars
+        --barchart-bar-margin: .5px;
+        --barchart-group-margin: 0.2%;
+
+        .barchart-group:nth-child(2n) .barchart-xlabel {
+            // hide every second label
+            display: none;
+        }
+    }
+
+    &-graph-container {
+        align-items: flex-end;
+        display: flex;
+        left: var(--barchart-padding-left);
+        bottom: 75px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    &-group {
+        align-items: flex-end;
+        border-right: 1px solid $gray-400;
+        display: flex;
+        flex-grow: 1;
+        height: 100%;
+        padding-left: var(--barchart-group-margin);
+        padding-right: var(--barchart-group-margin);
+        position: relative;
+
+        &:first-of-type {
+            border-left: 1px solid $gray-400;
+        }
+
+        &:last-of-type {
+            border-right: 1px solid $gray-400;
+        }
+    }
+
+    &-bar {
+        flex-grow: 1;
+        margin-left: var(--barchart-bar-margin);
+        margin-right: var(--barchart-bar-margin);
+    }
+
+    &-ygraph {
+        background-color: $gray-400;
+        height: 1px;
+        left: 0;
+        margin: 0;
+        opacity: 1;
+        position: absolute;
+        right: 0;
+    }
+
+    &-xlabel {
+        bottom: 0;
+        font-size: var(--barchart-label-font-size);
+        left: 50%;
+        line-height: 1;
+        position: absolute;
+        transform-origin: top right;
+        transform: translateY(100%) translateX(-100%) rotate(-45deg);
+    }
+
+    &-ylabel {
+        font-size: var(--barchart-label-font-size);
+        left: calc(-1 * var(--barchart-padding-left));
+        position: absolute;
+        text-align: right;
+        transform: translateY(50%);
+        width: 45px;
+    }
+}
+
+.barchart-legend {
+    margin-bottom: map-get($spacers, 5);
+    padding-left: 50px;
+    // enable printing backgrounds
+    print-color-adjust: exact;
+
+    &-item {
+        align-items: center;
+        border-left-style: solid;
+        border-left-width: 50px;
+        font-size: 14px;
+        display: flex;
+        height: 20px;
+        margin-bottom: 8px;
+        padding-left: 8px;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+}

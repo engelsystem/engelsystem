@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\BarChart;
 use Engelsystem\Models\User\User;
 
 /**
@@ -193,8 +194,8 @@ function admin_arrive()
         ], $users_matched),
         div('row', [
             div('col-md-4', [
-                heading(__('Planned arrival statistics'), 2),
-                bargraph('planned_arrives', 'day', [
+                heading(__('Planned arrival statistics'), 3),
+                BarChart::render([
                     'count' => __('arrived'),
                     'sum'   => __('arrived sum')
                 ], [
@@ -208,8 +209,8 @@ function admin_arrive()
                 ], $planned_arrival_at_day)
             ]),
             div('col-md-4', [
-                heading(__('Arrival statistics'), 2),
-                bargraph('arrives', 'day', [
+                heading(__('Arrival statistics'), 3),
+                BarChart::render([
                     'count' => __('arrived'),
                     'sum'   => __('arrived sum')
                 ], [
@@ -223,8 +224,8 @@ function admin_arrive()
                 ], $arrival_at_day)
             ]),
             div('col-md-4', [
-                heading(__('Planned departure statistics'), 2),
-                bargraph('planned_departures', 'day', [
+                heading(__('Planned departure statistics'), 3),
+                BarChart::render([
                     'count' => __('arrived'),
                     'sum'   => __('arrived sum')
                 ], [
