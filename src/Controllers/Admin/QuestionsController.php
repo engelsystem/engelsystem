@@ -4,7 +4,6 @@ namespace Engelsystem\Controllers\Admin;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\BaseController;
-use Engelsystem\Controllers\CleanupModel;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Redirector;
@@ -16,7 +15,6 @@ use Psr\Log\LoggerInterface;
 class QuestionsController extends BaseController
 {
     use HasUserNotifications;
-    use CleanupModel;
 
     /** @var Authenticator */
     protected $auth;
@@ -69,7 +67,6 @@ class QuestionsController extends BaseController
             ->orderBy('answered_at')
             ->orderByDesc('created_at')
             ->get();
-        $this->cleanupModelNullValues($questions);
 
         return $this->response->withView(
             'pages/questions/overview.twig',
@@ -167,8 +164,6 @@ class QuestionsController extends BaseController
      */
     protected function showEdit(?Question $question): Response
     {
-        $this->cleanupModelNullValues($question);
-
         return $this->response->withView(
             'pages/questions/edit.twig',
             ['question' => $question, 'is_admin' => true] + $this->getNotifications()

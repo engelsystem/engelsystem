@@ -3,7 +3,6 @@
 namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Controllers\BaseController;
-use Engelsystem\Controllers\CleanupModel;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -14,7 +13,6 @@ use Psr\Log\LoggerInterface;
 class FaqController extends BaseController
 {
     use HasUserNotifications;
-    use CleanupModel;
 
     /** @var LoggerInterface */
     protected $log;
@@ -116,8 +114,6 @@ class FaqController extends BaseController
      */
     protected function showEdit(?Faq $faq): Response
     {
-        $this->cleanupModelNullValues($faq);
-
         return $this->response->withView(
             'pages/faq/edit.twig',
             ['faq' => $faq] + $this->getNotifications()

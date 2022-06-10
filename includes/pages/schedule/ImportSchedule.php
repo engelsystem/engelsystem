@@ -6,7 +6,6 @@ namespace Engelsystem\Controllers\Admin\Schedule;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\BaseController;
-use Engelsystem\Controllers\CleanupModel;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Schedule\Event;
 use Engelsystem\Helpers\Schedule\Room;
@@ -29,7 +28,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ImportSchedule extends BaseController
 {
-    use CleanupModel;
     use HasUserNotifications;
 
     /** @var DatabaseConnection */
@@ -104,7 +102,6 @@ class ImportSchedule extends BaseController
     public function edit(Request $request): Response
     {
         $schedule = ScheduleUrl::find($request->getAttribute('id'));
-        $this->cleanupModelNullValues($schedule);
 
         return $this->response->withView(
             'admin/schedule/edit.twig',

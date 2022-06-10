@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
 class QuestionsController extends BaseController
 {
     use HasUserNotifications;
-    use CleanupModel;
 
     /** @var Authenticator */
     protected $auth;
@@ -66,7 +65,6 @@ class QuestionsController extends BaseController
             ->orderByDesc('answered_at')
             ->orderBy('created_at')
             ->get();
-        $this->cleanupModelNullValues($questions);
 
         return $this->response->withView(
             'pages/questions/overview.twig',

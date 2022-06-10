@@ -19,6 +19,7 @@ use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as Twig;
 use Twig\Extension\CoreExtension as TwigCore;
 use Twig\Loader\LoaderInterface as TwigLoaderInterface;
+use TwigBridge\Extension\Laravel\Model as TwigModel;
 
 class TwigServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,7 @@ class TwigServiceProvider extends ServiceProvider
         'csrf'           => Csrf::class,
         'develop'        => Develop::class,
         'globals'        => Globals::class,
+        'twigmodel'      => TwigModel::class,
         'session'        => Session::class,
         'legacy'         => Legacy::class,
         'markdown'       => Markdown::class,

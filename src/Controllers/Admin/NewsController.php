@@ -3,7 +3,6 @@
 namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Controllers\BaseController;
-use Engelsystem\Controllers\CleanupModel;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Redirector;
@@ -15,7 +14,6 @@ use Psr\Log\LoggerInterface;
 class NewsController extends BaseController
 {
     use HasUserNotifications;
-    use CleanupModel;
 
     /** @var Authenticator */
     protected $auth;
@@ -80,10 +78,6 @@ class NewsController extends BaseController
      */
     protected function showEdit(?News $news, bool $isMeetingDefault = false): Response
     {
-        if ($news) {
-            $this->cleanupModelNullValues($news);
-        }
-
         return $this->response->withView(
             'pages/news/edit.twig',
             [
