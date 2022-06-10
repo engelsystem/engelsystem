@@ -670,11 +670,24 @@ function User_view(
             ]),
             div('row user-info', [
                 div('col-md-2', [
-                    heading(icon('phone')
-                        . '<a href="tel:' . $user_source->contact->dect . '">'
-                        . $user_source->contact->dect, 1)
-                        . '</a>'
-                ]),
+                    config('enable_dect') ?
+                        heading(
+                            icon('phone')
+                            . ' <a href="tel:' . $user_source->contact->dect . '">'
+                            . $user_source->contact->dect
+                            . '</a>', 1
+                        )
+                     : '' ,
+                    $auth->can('user_messages') ?
+                        heading(
+                            '<a href="' . page_link_to('/messages/' . $user_source->id) . '">'
+                            . icon('envelope')
+                            . '</a>',
+                            1
+                        )
+                    : '' ,
+                ]
+                ),
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),
                 User_groups_render($user_groups),
