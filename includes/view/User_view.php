@@ -634,13 +634,15 @@ function User_view(
                                 form_hidden('user', $user_source->id),
                                 form_submit('submit', __('arrived'), '', false, 'primary')
                             ], page_link_to('admin_arrive'), true) : '',
-                        $admin_user_privilege || $auth->can('voucher.edit') ? button(
-                            page_link_to(
-                                'users',
-                                ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
-                            ),
-                            icon('file-binary-fill') . __('Edit vouchers')
-                        ) : '',
+                        ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
+                            button(
+                                page_link_to(
+                                    'users',
+                                    ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
+                                ),
+                                icon('file-binary-fill') . __('Edit vouchers')
+                            )
+                        : '',
                         $admin_user_worklog_privilege ? button(
                             user_worklog_add_link($user_source),
                             icon('list') . __('Add work log')
