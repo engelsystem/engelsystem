@@ -5,6 +5,7 @@ use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
+use Illuminate\Support\Str;
 
 /**
  * @return string
@@ -365,17 +366,10 @@ function admin_shifts()
             throw_redirect(page_link_to('admin_shifts'));
         }
 
-        $transactionRunning = true;
-        Db::connection()->beginTransaction();
-        $transactionId = Shift_get_next_transaction_id();
-
+        $transactionId = Str::uuid();
         foreach ($session->get('admin_shifts_shifts', []) as $shift) {
             $shift['URL'] = null;
             $shift_id = Shift_create($shift, $transactionId);
-            if ($transactionRunning) {
-                $transactionRunning = false;
-                Db::connection()->commit();
-            }
 
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift['shifttype_id']]
@@ -383,6 +377,7 @@ function admin_shifts()
                 . ' with description ' . $shift['description']
                 . ' from ' . date('Y-m-d H:i', $shift['start'])
                 . ' to ' . date('Y-m-d H:i', $shift['end'])
+                . ', transaction: ' . $transactionId
             );
 
             $needed_angel_types_info = [];

@@ -532,7 +532,7 @@ msgid "Shift deleted."
 msgstr "Schicht gelöscht."
 
 msgid "Shifts history"
-msgstr "Schichten historie"
+msgstr "Schichten Historie"
 
 msgid "%s shifts deleted."
 msgstr "%s Schichten gelöscht."

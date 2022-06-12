@@ -557,19 +557,6 @@ function Shift_update($shift)
 }
 
 /**
- * Get the next free shifts transaction id
- */
-function Shift_get_next_transaction_id($lock = true): int
-{
-    $query = Db::connection()->table('Shifts')->select('transaction_id');
-    if ($lock) {
-        $query->lockForUpdate();
-    }
-
-    return $query->max('transaction_id') + 1;
-}
-
-/**
  * Create a new shift.
  *
  * @param array $shift

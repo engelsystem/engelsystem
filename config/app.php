@@ -35,6 +35,7 @@ return [
         \Engelsystem\Mail\MailerServiceProvider::class,
         \Engelsystem\Http\HttpClientServiceProvider::class,
         \Engelsystem\Helpers\DumpServerServiceProvider::class,
+        \Engelsystem\Helpers\UuidServiceProvider::class,
     ],
 
     // Application middleware
