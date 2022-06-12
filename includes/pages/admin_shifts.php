@@ -365,10 +365,17 @@ function admin_shifts()
             throw_redirect(page_link_to('admin_shifts'));
         }
 
+        $transactionRunning = true;
+        Db::connection()->beginTransaction();
         $transactionId = Shift_get_next_transaction_id();
+
         foreach ($session->get('admin_shifts_shifts', []) as $shift) {
             $shift['URL'] = null;
             $shift_id = Shift_create($shift, $transactionId);
+            if ($transactionRunning) {
+                $transactionRunning = false;
+                Db::connection()->commit();
+            }
 
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift['shifttype_id']]

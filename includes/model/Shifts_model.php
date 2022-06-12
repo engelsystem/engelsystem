@@ -559,9 +559,14 @@ function Shift_update($shift)
 /**
  * Get the next free shifts transaction id
  */
-function Shift_get_next_transaction_id(): int
+function Shift_get_next_transaction_id($lock = true): int
 {
-    return Db::selectOne('SELECT MAX(transaction_id) + 1 AS transaction_id FROM Shifts')['transaction_id'] ?? 1;
+    $query = Db::connection()->table('Shifts')->select('transaction_id');
+    if ($lock) {
+        $query->lockForUpdate();
+    }
+
+    return $query->max('transaction_id') + 1;
 }
 
 /**
