@@ -206,7 +206,7 @@ function user_controller()
     $shifts = Shifts_by_user($user_source->id, auth()->can('user_shifts_admin'));
     foreach ($shifts as &$shift) {
         // TODO: Move queries to model
-        $shift['needed_angeltypes'] = DB::select('
+        $shift['needed_angeltypes'] = Db::select('
             SELECT DISTINCT `AngelTypes`.*
             FROM `ShiftEntry`
             JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
@@ -216,7 +216,7 @@ function user_controller()
             [$shift['SID']]
         );
         foreach ($shift['needed_angeltypes'] as &$needed_angeltype) {
-            $needed_angeltype['users'] = DB::select('
+            $needed_angeltype['users'] = Db::select('
                     SELECT `ShiftEntry`.`freeloaded`, `users`.*
                     FROM `ShiftEntry`
                     JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`

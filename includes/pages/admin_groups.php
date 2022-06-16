@@ -17,12 +17,12 @@ function admin_groups()
 {
     $html = '';
     $request = request();
-    $groups = DB::select('SELECT * FROM `Groups` ORDER BY `Name`');
+    $groups = Db::select('SELECT * FROM `Groups` ORDER BY `Name`');
 
     if (!$request->has('action')) {
         $groups_table = [];
         foreach ($groups as $group) {
-            $privileges = DB::select('
+            $privileges = Db::select('
                 SELECT `name`
                 FROM `GroupPrivileges`
                 JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`)
@@ -63,9 +63,9 @@ function admin_groups()
                     return error('Incomplete call, missing Groups ID.', true);
                 }
 
-                $group = DB::select('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
+                $group = Db::select('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
                 if (!empty($group)) {
-                    $privileges = DB::select('
+                    $privileges = Db::select('
                         SELECT `Privileges`.*, `GroupPrivileges`.`group_id`
                         FROM `Privileges`
                         LEFT OUTER JOIN `GroupPrivileges`
@@ -121,22 +121,22 @@ function admin_groups()
                     return error('Incomplete call, missing Groups ID.', true);
                 }
 
-                $group = DB::selectOne('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
+                $group = Db::selectOne('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
                 $privileges = $request->request->all('privileges');
                 if (!is_array($privileges)) {
                     $privileges = [];
                 }
                 if (!empty($group)) {
-                    DB::delete('DELETE FROM `GroupPrivileges` WHERE `group_id`=?', [$group_id]);
+                    Db::delete('DELETE FROM `GroupPrivileges` WHERE `group_id`=?', [$group_id]);
                     $privilege_names = [];
                     foreach ($privileges as $privilege) {
                         if (preg_match('/^\d{1,}$/', $privilege)) {
-                            $group_privileges_source = DB::selectOne(
+                            $group_privileges_source = Db::selectOne(
                                 'SELECT `name` FROM `Privileges` WHERE `id`=? LIMIT 1',
                                 [$privilege]
                             );
                             if (!empty($group_privileges_source)) {
-                                DB::insert(
+                                Db::insert(
                                     'INSERT INTO `GroupPrivileges` (`group_id`, `privilege_id`) VALUES (?, ?)',
                                     [$group_id, $privilege]
                                 );

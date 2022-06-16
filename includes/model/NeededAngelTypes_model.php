@@ -18,7 +18,7 @@ use Engelsystem\Database\Db;
  */
 function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 {
-    DB::insert('
+    Db::insert('
             INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`)
             VALUES (?, ?, ?, ?)
         ',
@@ -29,7 +29,7 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
             $count,
         ]);
 
-    return DB::getPdo()->lastInsertId();
+    return Db::getPdo()->lastInsertId();
 }
 
 /**
@@ -39,7 +39,7 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
  */
 function NeededAngelTypes_delete_by_shift($shift_id)
 {
-    DB::delete('DELETE FROM `NeededAngelTypes` WHERE `shift_id` = ?', [$shift_id]);
+    Db::delete('DELETE FROM `NeededAngelTypes` WHERE `shift_id` = ?', [$shift_id]);
 }
 
 /**
@@ -49,7 +49,7 @@ function NeededAngelTypes_delete_by_shift($shift_id)
  */
 function NeededAngelTypes_delete_by_room($room_id)
 {
-    DB::delete(
+    Db::delete(
         'DELETE FROM `NeededAngelTypes` WHERE `room_id` = ?',
         [$room_id]
     );
@@ -63,7 +63,7 @@ function NeededAngelTypes_delete_by_room($room_id)
  */
 function NeededAngelTypes_by_room($room_id)
 {
-    return DB::select(
+    return Db::select(
         'SELECT `angel_type_id`, `count` FROM `NeededAngelTypes` WHERE `room_id`=?',
         [$room_id]
     );
@@ -77,7 +77,7 @@ function NeededAngelTypes_by_room($room_id)
  */
 function NeededAngelTypes_by_shift($shiftId)
 {
-    $needed_angeltypes_source = DB::select('
+    $needed_angeltypes_source = Db::select('
         SELECT
             `NeededAngelTypes`.*,
             `AngelTypes`.`id`,
@@ -94,7 +94,7 @@ function NeededAngelTypes_by_shift($shiftId)
 
     // Use settings from room
     if (count($needed_angeltypes_source) == 0) {
-        $needed_angeltypes_source = DB::select('
+        $needed_angeltypes_source = Db::select('
         SELECT `NeededAngelTypes`.*, `AngelTypes`.`name`, `AngelTypes`.`restricted`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`

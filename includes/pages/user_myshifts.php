@@ -48,7 +48,7 @@ function user_myshifts()
         ]);
     } elseif ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
         $shift_entry_id = $request->input('edit');
-        $shift = DB::selectOne('
+        $shift = Db::selectOne('
                 SELECT
                     `ShiftEntry`.`freeloaded`,
                     `ShiftEntry`.`freeload_comment`,

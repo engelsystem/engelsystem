@@ -22,7 +22,7 @@ use Illuminate\Support\Collection;
 function User_tshirt_score($userId)
 {
     $shift_sum_formula = User_get_shifts_sum_query();
-    $result_shifts = DB::selectOne(sprintf('
+    $result_shifts = Db::selectOne(sprintf('
         SELECT ROUND((%s) / 3600, 2) AS `tshirt_score`
         FROM `users` LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
         LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID`

@@ -43,7 +43,7 @@ function AngelType_has_contact_info($angeltype)
  */
 function AngelType_delete($angeltype)
 {
-    DB::delete('
+    Db::delete('
         DELETE FROM `AngelTypes`
         WHERE `id`=?
         LIMIT 1
@@ -58,7 +58,7 @@ function AngelType_delete($angeltype)
  */
 function AngelType_update($angeltype)
 {
-    DB::update('
+    Db::update('
             UPDATE `AngelTypes` SET
             `name` = ?,
             `restricted` = ?,
@@ -104,7 +104,7 @@ function AngelType_update($angeltype)
  */
 function AngelType_create($angeltype)
 {
-    DB::insert('
+    Db::insert('
             INSERT INTO `AngelTypes` (
                 `name`,
                 `restricted`,
@@ -131,7 +131,7 @@ function AngelType_create($angeltype)
         ]
     );
 
-    $angeltype['id'] = DB::getPdo()->lastInsertId();
+    $angeltype['id'] = Db::getPdo()->lastInsertId();
     engelsystem_log(
         'Created angeltype: ' . $angeltype['name']
         . ($angeltype['restricted'] ? ', restricted' : '')
@@ -161,7 +161,7 @@ function AngelType_validate_name($name, $angeltype)
         return new ValidationResult(false, '');
     }
     if (!empty($angeltype) && isset($angeltype['id'])) {
-        $valid = (count(DB::select('
+        $valid = (count(Db::select('
             SELECT `id`
             FROM `AngelTypes`
             WHERE `name`=?
@@ -170,7 +170,7 @@ function AngelType_validate_name($name, $angeltype)
         ', [$name, $angeltype['id']])) == 0);
         return new ValidationResult($valid, $name);
     }
-    $valid = (count(DB::select('
+    $valid = (count(Db::select('
         SELECT `id`
         FROM `AngelTypes`
         WHERE `name`=?
@@ -187,7 +187,7 @@ function AngelType_validate_name($name, $angeltype)
  */
 function AngelTypes_with_user($userId)
 {
-    return DB::select('
+    return Db::select('
         SELECT `AngelTypes`.*,
         `UserAngelTypes`.`id` AS `user_angeltype_id`,
         `UserAngelTypes`.`confirm_user_id`,
@@ -205,7 +205,7 @@ function AngelTypes_with_user($userId)
  */
 function AngelTypes()
 {
-    return DB::select('
+    return Db::select('
         SELECT *
         FROM `AngelTypes`
         ORDER BY `name`
@@ -219,7 +219,7 @@ function AngelTypes()
  */
 function AngelType_ids()
 {
-    $result = DB::select('SELECT `id` FROM `AngelTypes`');
+    $result = Db::select('SELECT `id` FROM `AngelTypes`');
     return select_array($result, 'id', 'id');
 }
 
@@ -231,7 +231,7 @@ function AngelType_ids()
  */
 function AngelType($angeltype_id)
 {
-    $angelType = DB::selectOne(
+    $angelType = Db::selectOne(
         'SELECT * FROM `AngelTypes` WHERE `id`=?',
         [$angeltype_id]
     );

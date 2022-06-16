@@ -9,7 +9,7 @@ use Engelsystem\Database\Db;
 function privileges_for_user($user_id)
 {
     $privileges = [];
-    $user_privileges = DB::select('
+    $user_privileges = Db::select('
         SELECT `Privileges`.`name`
         FROM `users`
         JOIN `UserGroups` ON (`users`.`id` = `UserGroups`.`uid`)
@@ -30,7 +30,7 @@ function privileges_for_user($user_id)
 function privileges_for_group($group_id)
 {
     $privileges = [];
-    $groups_privileges = DB::select('
+    $groups_privileges = Db::select('
         SELECT `name`
         FROM `GroupPrivileges`
         JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`)

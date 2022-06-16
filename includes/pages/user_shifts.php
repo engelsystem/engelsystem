@@ -118,7 +118,7 @@ function load_rooms()
  */
 function load_days()
 {
-    $days = (new Collection(DB::select(
+    $days = (new Collection(Db::select(
         '
                 SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
                 FROM `Shifts`
@@ -145,11 +145,11 @@ function load_types()
 {
     $user = auth()->user();
 
-    if (!count(DB::select('SELECT `id`, `name` FROM `AngelTypes`'))) {
+    if (!count(Db::select('SELECT `id`, `name` FROM `AngelTypes`'))) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
         throw_redirect(page_link_to('/'));
     }
-    $types = DB::select('
+    $types = Db::select('
             SELECT
                 `AngelTypes`.`id`,
                 `AngelTypes`.`name`,
@@ -183,7 +183,7 @@ function load_types()
  */
 function unrestricted_angeltypes()
 {
-    return DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0');
+    return Db::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0');
 }
 
 /**

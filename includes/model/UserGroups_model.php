@@ -10,7 +10,7 @@ use Engelsystem\Database\Db;
  */
 function User_groups($userId)
 {
-    return DB::select('
+    return Db::select('
             SELECT `Groups`.*
             FROM `UserGroups`
             JOIN `Groups` ON `Groups`.`UID`=`UserGroups`.`group_id`

@@ -24,7 +24,7 @@ function admin_free()
         $search = strip_request_item('search');
     }
 
-    $angel_types_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
+    $angel_types_source = Db::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
     $angel_types = [
         '' => __('All')
     ];

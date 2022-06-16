@@ -45,7 +45,7 @@ function admin_shifts()
     }
 
     // Engeltypen laden
-    $types = DB::select('SELECT * FROM `AngelTypes` ORDER BY `name`');
+    $types = Db::select('SELECT * FROM `AngelTypes` ORDER BY `name`');
     $needed_angel_types = [];
     foreach ($types as $type) {
         $needed_angel_types[$type['id']] = 0;
@@ -182,7 +182,7 @@ function admin_shifts()
         if ($valid) {
             if ($angelmode == 'location') {
                 $needed_angel_types = [];
-                $needed_angel_types_location = DB::select(
+                $needed_angel_types_location = Db::select(
                     '
                         SELECT `angel_type_id`, `count`
                         FROM `NeededAngelTypes`
@@ -382,14 +382,14 @@ function admin_shifts()
 
             $needed_angel_types_info = [];
             foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
-                $angel_type_source = DB::selectOne('
+                $angel_type_source = Db::selectOne('
                     SELECT *
                     FROM `AngelTypes`
                     WHERE `id` = ?
                     LIMIT 1', [$type_id]);
 
                 if (!empty($angel_type_source)) {
-                    DB::insert('
+                    Db::insert('
                         INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`)
                         VALUES (?, ?, ?)
                         ',

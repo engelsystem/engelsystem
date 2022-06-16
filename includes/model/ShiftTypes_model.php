@@ -9,7 +9,7 @@ use Engelsystem\Database\Db;
  */
 function ShiftType_delete($shifttype_id)
 {
-    DB::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
+    Db::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
 }
 
 /**
@@ -22,7 +22,7 @@ function ShiftType_delete($shifttype_id)
  */
 function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
 {
-    DB::update('
+    Db::update('
         UPDATE `ShiftTypes` SET
             `name`=?,
             `angeltype_id`=?,
@@ -48,7 +48,7 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
  */
 function ShiftType_create($name, $angeltype_id, $description)
 {
-    DB::insert('
+    Db::insert('
         INSERT INTO `ShiftTypes` (`name`, `angeltype_id`, `description`)
         VALUES(?, ?, ?)
         ',
@@ -59,7 +59,7 @@ function ShiftType_create($name, $angeltype_id, $description)
         ]
     );
 
-    return DB::getPdo()->lastInsertId();
+    return Db::getPdo()->lastInsertId();
 }
 
 /**
@@ -70,7 +70,7 @@ function ShiftType_create($name, $angeltype_id, $description)
  */
 function ShiftType($shifttype_id)
 {
-    $shiftType = DB::selectOne('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
+    $shiftType = Db::selectOne('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
 
     return empty($shiftType) ? null : $shiftType;
 }
@@ -82,5 +82,5 @@ function ShiftType($shifttype_id)
  */
 function ShiftTypes()
 {
-    return DB::select('SELECT * FROM `ShiftTypes` ORDER BY `name`');
+    return Db::select('SELECT * FROM `ShiftTypes` ORDER BY `name`');
 }

@@ -16,7 +16,7 @@ use Engelsystem\Models\User\User;
  */
 function UserAngelType_exists($userId, $angeltype)
 {
-    return count(DB::select('
+    return count(Db::select('
         SELECT `id`
         FROM `UserAngelTypes`
         WHERE `UserAngelTypes`.`user_id`=?
@@ -32,7 +32,7 @@ function UserAngelType_exists($userId, $angeltype)
  */
 function User_angeltypes($userId)
 {
-    return DB::select('
+    return Db::select('
         SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`supporter`
         FROM `UserAngelTypes`
         JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
@@ -48,7 +48,7 @@ function User_angeltypes($userId)
  */
 function User_unconfirmed_AngelTypes($userId)
 {
-    return DB::select('
+    return Db::select('
         SELECT
             `UserAngelTypes`.*,
             `AngelTypes`.`name`,
@@ -80,7 +80,7 @@ function User_is_AngelType_supporter($user, $angeltype)
 
     $privileges = privileges_for_user($user->id);
 
-    return (count(DB::select('
+    return (count(Db::select('
                     SELECT `id`
                     FROM `UserAngelTypes`
                     WHERE `user_id`=?
@@ -104,7 +104,7 @@ function User_is_AngelType_supporter($user, $angeltype)
  */
 function UserAngelType_update($user_angeltype_id, $supporter)
 {
-    DB::update('
+    Db::update('
         UPDATE `UserAngelTypes`
         SET `supporter`=?
         WHERE `id`=?
@@ -119,7 +119,7 @@ function UserAngelType_update($user_angeltype_id, $supporter)
  */
 function UserAngelTypes_delete_all($angeltype_id)
 {
-    DB::delete('
+    Db::delete('
         DELETE FROM `UserAngelTypes`
         WHERE `angeltype_id`=?
         AND `confirm_user_id` IS NULL
@@ -134,7 +134,7 @@ function UserAngelTypes_delete_all($angeltype_id)
  */
 function UserAngelTypes_confirm_all($angeltype_id, $confirm_user_id)
 {
-    DB::update('
+    Db::update('
         UPDATE `UserAngelTypes`
         SET `confirm_user_id`=?
         WHERE `angeltype_id`=?
@@ -149,7 +149,7 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user_id)
  */
 function UserAngelTypes_all_unconfirmed($angeltype_id)
 {
-    return DB::select('
+    return Db::select('
         SELECT *
         FROM `UserAngelTypes`
         WHERE `angeltype_id`=?
@@ -165,7 +165,7 @@ function UserAngelTypes_all_unconfirmed($angeltype_id)
  */
 function UserAngelType_confirm($user_angeltype_id, $confirm_user_id)
 {
-    DB::update('
+    Db::update('
         UPDATE `UserAngelTypes`
         SET `confirm_user_id`=?
         WHERE `id`=?
@@ -179,7 +179,7 @@ function UserAngelType_confirm($user_angeltype_id, $confirm_user_id)
  */
 function UserAngelType_delete($user_angeltype)
 {
-    DB::delete('
+    Db::delete('
         DELETE FROM `UserAngelTypes`
         WHERE `id`=?
         LIMIT 1', [$user_angeltype['id']]);
@@ -194,7 +194,7 @@ function UserAngelType_delete($user_angeltype)
  */
 function UserAngelType_create($userId, $angeltype)
 {
-    DB::insert('
+    Db::insert('
             INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`, `supporter`)
             VALUES (?, ?, FALSE)
         ',
@@ -204,7 +204,7 @@ function UserAngelType_create($userId, $angeltype)
         ]
     );
 
-    return DB::getPdo()->lastInsertId();
+    return Db::getPdo()->lastInsertId();
 }
 
 /**
@@ -215,7 +215,7 @@ function UserAngelType_create($userId, $angeltype)
  */
 function UserAngelType($user_angeltype_id)
 {
-    $angelType = DB::selectOne('
+    $angelType = Db::selectOne('
         SELECT *
         FROM `UserAngelTypes`
         WHERE `id`=?
@@ -233,7 +233,7 @@ function UserAngelType($user_angeltype_id)
  */
 function UserAngelType_by_User_and_AngelType($userId, $angeltype)
 {
-    $angelType = DB::selectOne('
+    $angelType = Db::selectOne('
             SELECT *
             FROM `UserAngelTypes`
             WHERE `user_id`=?
@@ -258,7 +258,7 @@ function UserAngelType_by_User_and_AngelType($userId, $angeltype)
  */
 function UserAngelTypes_by_User($userId, $onlyConfirmed=false)
 {
-    return DB::select(
+    return Db::select(
         '
             SELECT *
             FROM `UserAngelTypes`

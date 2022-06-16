@@ -12,7 +12,7 @@ use Engelsystem\Models\User\User;
  */
 function ShiftEntries_freeloaded_count()
 {
-    $result = DB::selectOne('SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1');
+    $result = Db::selectOne('SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1');
 
     if (empty($result)) {
         return 0;
@@ -29,7 +29,7 @@ function ShiftEntries_freeloaded_count()
  */
 function ShiftEntries_by_shift($shift_id)
 {
-    return DB::select('
+    return Db::select('
             SELECT
                 `users`.*,
                 `ShiftEntry`.`UID`,
@@ -60,7 +60,7 @@ function ShiftEntry_create($shift_entry)
     $shifttype = ShiftType($shift['shifttype_id']);
     $room = Room::find($shift['RID']);
     $angeltype = AngelType($shift_entry['TID']);
-    $result = DB::insert('
+    $result = Db::insert('
             INSERT INTO `ShiftEntry` (
                 `SID`,
                 `TID`,
@@ -101,7 +101,7 @@ function ShiftEntry_create($shift_entry)
  */
 function ShiftEntry_update($shift_entry)
 {
-    DB::update('
+    Db::update('
             UPDATE `ShiftEntry`
             SET
                 `Comment` = ?,
@@ -126,7 +126,7 @@ function ShiftEntry_update($shift_entry)
  */
 function ShiftEntry($shift_entry_id)
 {
-    $shiftEntry = DB::selectOne('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+    $shiftEntry = Db::selectOne('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
 
     return empty($shiftEntry) ? null : $shiftEntry;
 }
@@ -138,7 +138,7 @@ function ShiftEntry($shift_entry_id)
  */
 function ShiftEntry_delete($shiftEntry)
 {
-    DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shiftEntry['id']]);
+    Db::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shiftEntry['id']]);
 
     $signout_user = User::find($shiftEntry['UID']);
     $shift = Shift($shiftEntry['SID']);
@@ -167,7 +167,7 @@ function ShiftEntry_delete($shiftEntry)
  */
 function ShiftEntries_upcoming_for_user($userId)
 {
-    return DB::select('
+    return Db::select('
         SELECT *
         FROM `ShiftEntry`
         JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
@@ -192,7 +192,7 @@ function ShiftEntries_upcoming_for_user($userId)
  */
 function ShiftEntries_finished_by_user($userId, Carbon $sinceTime = null)
 {
-    return DB::select('
+    return Db::select('
             SELECT *
             FROM `ShiftEntry`
             JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
@@ -219,7 +219,7 @@ function ShiftEntries_finished_by_user($userId, Carbon $sinceTime = null)
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
 {
-    return DB::select('
+    return Db::select('
             SELECT *
             FROM `ShiftEntry`
             WHERE `SID` = ?
@@ -240,7 +240,7 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
  */
 function ShiftEntries_freeloaded_by_user($userId)
 {
-    return DB::select('
+    return Db::select('
             SELECT *
             FROM `ShiftEntry`
             WHERE `freeloaded` = 1

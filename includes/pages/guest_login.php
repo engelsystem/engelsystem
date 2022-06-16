@@ -287,7 +287,7 @@ function guest_register()
             }
 
             // Assign user-group and set password
-            DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user->id]);
+            Db::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user->id]);
             if ($enable_password) {
                 auth()->setPassword($user, $request->postData('password'));
             }
@@ -295,7 +295,7 @@ function guest_register()
             // Assign angel-types
             $user_angel_types_info = [];
             foreach ($selected_angel_types as $selected_angel_type_id) {
-                DB::insert(
+                Db::insert(
                     'INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`, `supporter`) VALUES (?, ?, FALSE)',
                     [$user->id, $selected_angel_type_id]
                 );
