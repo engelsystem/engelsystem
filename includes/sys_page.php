@@ -173,7 +173,7 @@ function check_date($input, $error_message = null, $null_allowed = false, $time_
  * Returns REQUEST value filtered or default value (null) if not set.
  *
  * @param string $name
- * @param string $default_value
+ * @param string|null $default_value
  * @return mixed|null
  */
 function strip_request_item($name, $default_value = null)
@@ -215,7 +215,7 @@ function strip_request_item_nl($name, $default_value = null)
     if ($request->has($name)) {
         // Only allow letters, symbols, punctuation, separators, numbers and newlines without html tags
         return preg_replace(
-            "/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui",
+            "/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]+)/ui",
             '',
             strip_tags($request->input($name))
         );
@@ -232,7 +232,7 @@ function strip_request_item_nl($name, $default_value = null)
 function strip_item($item)
 {
     // Only allow letters, symbols, punctuation, separators and numbers without html tags
-    return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+]{1,})/ui", '', strip_tags($item));
+    return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+]+)/ui", '', strip_tags($item));
 }
 
 /**

@@ -2,7 +2,6 @@
 
 use Carbon\Carbon;
 use Engelsystem\Models\Room;
-use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Illuminate\Support\Collection;
 

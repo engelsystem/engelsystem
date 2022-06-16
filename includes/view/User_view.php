@@ -632,7 +632,7 @@ function User_view(
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
-                                form_submit('submit', __('arrived'), '', false, 'primary')
+                                form_submit('submit', __('arrived'), '', false)
                             ], page_link_to('admin_arrive'), true) : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(
@@ -677,19 +677,17 @@ function User_view(
                             icon('phone')
                             . ' <a href="tel:' . $user_source->contact->dect . '">'
                             . $user_source->contact->dect
-                            . '</a>', 1
+                            . '</a>'
                         )
-                     : '' ,
+                    : '' ,
                     $auth->can('user_messages') ?
                         heading(
                             '<a href="' . page_link_to('/messages/' . $user_source->id) . '">'
                             . icon('envelope')
-                            . '</a>',
-                            1
+                            . '</a>'
                         )
                     : '' ,
-                ]
-                ),
+                ]),
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),
                 User_groups_render($user_groups),

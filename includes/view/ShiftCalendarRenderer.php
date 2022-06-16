@@ -34,19 +34,19 @@ class ShiftCalendarRenderer
     private $shiftsFilter;
 
     /** @var int */
-    private $firstBlockStartTime = 0;
+    private $firstBlockStartTime;
 
     /** @var int */
-    private $lastBlockEndTime = 0;
+    private $lastBlockEndTime;
 
     /** @var int */
     private $blocksPerSlot = null;
 
     /** @var array[] */
-    private $needed_angeltypes = [];
+    private $needed_angeltypes;
 
     /** @var array[] */
-    private $shift_entries = [];
+    private $shift_entries;
 
     /**
      * ShiftCalendarRenderer constructor.
@@ -100,7 +100,7 @@ class ShiftCalendarRenderer
                 }
             }
             // If all lanes for this room are busy, create a new lane and add shift to it
-            if ($shift_added == false) {
+            if (!$shift_added) {
                 $newLane = new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
                 $newLane->addShift($shift);
                 $lanes[$room_id][] = $newLane;

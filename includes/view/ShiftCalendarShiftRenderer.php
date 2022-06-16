@@ -5,7 +5,6 @@ namespace Engelsystem;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
-use function config;
 use function theme_type;
 
 /**

@@ -24,7 +24,7 @@ function user_myshifts()
     if (
         $request->has('id')
         && auth()->can('user_shifts_admin')
-        && preg_match('/^\d{1,}$/', $request->input('id'))
+        && preg_match('/^\d+$/', $request->input('id'))
         && User::find($request->input('id'))
     ) {
         $shift_entry_id = $request->input('id');

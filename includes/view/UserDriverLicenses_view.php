@@ -54,7 +54,7 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
         '
         <script type="text/javascript">
             $(function() {
-                var checkbox = $(\'#wants_to_drive\');
+                let checkbox = $(\'#wants_to_drive\');
                 if(checkbox.is(\':checked\'))
                     $(\'#driving_license\').show();
                 else

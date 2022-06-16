@@ -19,7 +19,7 @@ function users_controller()
     $request = request();
 
     if (!$user) {
-        throw_redirect(page_link_to(''));
+        throw_redirect(page_link_to());
     }
 
     $action = 'list';
@@ -58,7 +58,7 @@ function user_delete_controller()
     }
 
     if (!auth()->can('admin_user')) {
-        throw_redirect(page_link_to(''));
+        throw_redirect(page_link_to());
     }
 
     // You cannot delete yourself
@@ -150,7 +150,7 @@ function user_edit_vouchers_controller()
         (!auth()->can('admin_user') && !auth()->can('voucher.edit'))
         || !config('enable_voucher')
     ) {
-        throw_redirect(page_link_to(''));
+        throw_redirect(page_link_to());
     }
 
     if ($request->hasPostData('submit')) {
@@ -266,7 +266,7 @@ function users_list_controller()
     $request = request();
 
     if (!auth()->can('admin_user')) {
-        throw_redirect(page_link_to(''));
+        throw_redirect(page_link_to());
     }
 
     $order_by = 'name';
@@ -385,8 +385,6 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     $filtered_shifts = [];
     foreach ($shifts as $shift) {
         $needed_angels_count = 0;
-        $taken = 0;
-
         foreach ($needed_angeltypes[$shift['SID']] as $needed_angeltype) {
             $taken = 0;
 

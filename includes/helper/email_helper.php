@@ -29,7 +29,7 @@ function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe
 
         $translator->setLocale($recipientUser->settings->language);
         $mailer->sendView(
-            $recipientUser->contact->email ? $recipientUser->contact->email : $recipientUser->email,
+            $recipientUser->contact->email ?: $recipientUser->email,
             $title,
             'emails/mail',
             ['username' => $recipientUser->name, 'message' => $message]

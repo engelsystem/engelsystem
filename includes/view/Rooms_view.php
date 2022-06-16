@@ -24,7 +24,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
     if ($room->description) {
         $description = '<h3>' . __('Description') . '</h3>';
         $parsedown = new Parsedown();
-        $description .= $parsedown->parse((string)$room->description);
+        $description .= $parsedown->parse($room->description);
     }
 
     $tabs = [];

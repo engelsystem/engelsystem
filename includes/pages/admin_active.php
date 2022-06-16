@@ -306,7 +306,7 @@ function admin_active()
             form_submit('submit', __('Search'))
         ], page_link_to('admin_active')),
         $set_active == '' ? form([
-            form_text('count', __('How much angels should be active?'), $count ? $count : $forced_count),
+            form_text('count', __('How much angels should be active?'), $count ?: $forced_count),
             form_submit('set_active', __('Preview'))
         ]) : $set_active,
         $msg . msg(),

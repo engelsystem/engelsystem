@@ -40,7 +40,7 @@ function user_driver_licenses_controller()
     $user = auth()->user();
 
     if (!$user) {
-        throw_redirect(page_link_to(''));
+        throw_redirect(page_link_to());
     }
 
     $action = strip_request_item('action', 'edit');

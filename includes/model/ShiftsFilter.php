@@ -27,13 +27,13 @@ class ShiftsFilter
     private $userShiftsAdmin;
 
     /** @var int[] */
-    private $filled = [];
+    private $filled;
 
     /** @var int[] */
-    private $rooms = [];
+    private $rooms;
 
     /** @var int[] */
-    private $types = [];
+    private $types;
 
     /** @var int unix timestamp */
     private $startTime = null;

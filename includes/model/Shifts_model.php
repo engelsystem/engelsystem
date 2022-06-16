@@ -375,8 +375,8 @@ function Shift_signup_allowed_angel(
 
     if (
         empty($user_angeltype)
-        || ($angeltype['no_self_signup'] == 1 && !empty($user_angeltype))
-        || ($angeltype['restricted'] == 1 && !empty($user_angeltype) && !isset($user_angeltype['confirm_user_id']))
+        || $angeltype['no_self_signup'] == 1
+        || ($angeltype['restricted'] == 1 && !isset($user_angeltype['confirm_user_id']))
     ) {
         // you cannot join if user is not of this angel type
         // you cannot join if you are not confirmed

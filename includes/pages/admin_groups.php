@@ -123,14 +123,11 @@ function admin_groups()
 
                 $group = Db::selectOne('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
                 $privileges = $request->request->all('privileges');
-                if (!is_array($privileges)) {
-                    $privileges = [];
-                }
                 if (!empty($group)) {
                     Db::delete('DELETE FROM `GroupPrivileges` WHERE `group_id`=?', [$group_id]);
                     $privilege_names = [];
                     foreach ($privileges as $privilege) {
-                        if (preg_match('/^\d{1,}$/', $privilege)) {
+                        if (preg_match('/^\d+$/', $privilege)) {
                             $group_privileges_source = Db::selectOne(
                                 'SELECT `name` FROM `Privileges` WHERE `id`=? LIMIT 1',
                                 [$privilege]

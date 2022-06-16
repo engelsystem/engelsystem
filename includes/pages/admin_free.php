@@ -91,7 +91,7 @@ function admin_free()
             }
         }
 
-        $email = ($usr->contact->email ? $usr->contact->email : $usr->email);
+        $email = $usr->contact->email ?: $usr->email;
         $free_users_table[] = [
             'name'        => User_Nick_render($usr) . User_Pronoun_render($usr),
             'shift_state' => User_shift_state_render($usr),

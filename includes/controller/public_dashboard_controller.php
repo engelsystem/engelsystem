@@ -81,7 +81,7 @@ function public_dashboard_controller_free_shift($shift, ShiftsFilter $filter = n
         'shifttype_name' => $shifttype['name'],
         'title'          => $shift['title'],
         'room_name'      => $room->name,
-        'needed_angels'  => []
+        'needed_angels'  => public_dashboard_needed_angels($shift['NeedAngels'], $filter),
     ];
 
     if (time() + 3 * 60 * 60 > $shift['start']) {
@@ -90,8 +90,6 @@ function public_dashboard_controller_free_shift($shift, ShiftsFilter $filter = n
     if (time() > $shift['start']) {
         $free_shift['style'] = 'danger';
     }
-
-    $free_shift['needed_angels'] = public_dashboard_needed_angels($shift['NeedAngels'], $filter);
 
     return $free_shift;
 }

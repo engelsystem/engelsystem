@@ -39,11 +39,11 @@ function form_spinner($name, $label, $value)
         </div>
         <script type="text/javascript">
             $(\'#spinner-' . $name . '-down\').click(function() {
-                var spinner = $(\'#spinner-' . $name . '\');
+                let spinner = $(\'#spinner-' . $name . '\');
                 spinner.val(parseInt(spinner.val()) - 1);
             });
             $(\'#spinner-' . $name . '-up\').click(function() {
-                var spinner = $(\'#spinner-' . $name . '\');
+                let spinner = $(\'#spinner-' . $name . '\');
                 spinner.val(parseInt(spinner.val()) + 1);
             });
         </script>
@@ -55,7 +55,7 @@ function form_spinner($name, $label, $value)
  *
  * @param string $name       Name of the parameter
  * @param string $label      Label
- * @param int    $value      Unix Timestamp
+ * @param int|Carbon $value  Unix Timestamp
  * @param string $start_date Earliest possible date
  * @param string $end_date
  * @return string HTML
@@ -93,10 +93,12 @@ function form_datetime(string $name, string $label, $value)
 
     return form_element($label, sprintf('
     <div class="input-group datetime" id="%s">
-        <input type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} ([01][0-9]|2[0-3]):[0-5][0-9]" placeholder="YYYY-MM-DD HH:MM" name="%s"
+        <input type="datetime-local"
+            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} ([01][0-9]|2[0-3]):[0-5][0-9]" placeholder="YYYY-MM-DD HH:MM"
+            name="%s"
             class="form-control" value="%s" autocomplete="off">
     </div>
-    ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : ''), $dom_id), $dom_id);
+    ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : '')), $dom_id);
 }
 
 /**
@@ -112,7 +114,7 @@ function form_checkboxes($name, $label, $items, $selected)
 {
     $html = form_element($label, '');
     foreach ($items as $key => $item) {
-        $html .= form_checkbox($name . '_' . $key, $item, array_search($key, $selected) !== false);
+        $html .= form_checkbox($name . '_' . $key, $item, in_array($key, $selected));
     }
     return $html;
 }
@@ -140,8 +142,8 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = []
         $dom_id = '';
         foreach ($names as $name => $title) {
             $dom_id = $name . '_' . $key;
-            $sel = array_search($key, $selected[$name]) !== false ? ' checked="checked"' : '';
-            if (!empty($disabled) && !empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false) {
+            $sel = in_array($key, $selected[$name]) ? ' checked="checked"' : '';
+            if (!empty($disabled) && !empty($disabled[$name]) && in_array($key, $disabled[$name])) {
                 $sel .= ' disabled="disabled"';
             }
             $html .= '<td style="text-align: center;">'
@@ -216,7 +218,7 @@ function form_info($label, $text = '')
     if ($text == '') {
         return '<h4>' . $label . '</h4>';
     }
-    return form_element($label, '<p class="form-control-static">' . $text . '</p>', '');
+    return form_element($label, '<p class="form-control-static">' . $text . '</p>');
 }
 
 /**

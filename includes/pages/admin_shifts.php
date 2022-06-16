@@ -27,8 +27,8 @@ function admin_shifts()
     $session = session();
     $start = Carbon::createTimestampFromDatetime(date('Y-m-d') . 'T00:00');
     $end = $start;
-    $mode = 'single';
-    $angelmode = 'manually';
+    $mode = '';
+    $angelmode = '';
     $length = '';
     $change_hours = [];
     $title = '';
@@ -452,7 +452,7 @@ function admin_shifts()
                 div('col-md-6', [
                     form_datetime('start', __('Start'), $start),
                     form_datetime('end', __('End'), $end),
-                    form_info(__('Mode'), ''),
+                    form_info(__('Mode')),
                     form_radio('mode', __('Create one shift'), $mode == 'single', 'single'),
                     form_radio('mode', __('Create multiple shifts'), $mode == 'multi', 'multi'),
                     form_text(
@@ -482,7 +482,7 @@ function admin_shifts()
                     )
                 ]),
                 div('col-md-6', [
-                    form_info(__('Needed angels'), ''),
+                    form_info(__('Needed angels')),
                     form_radio(
                         'angelmode',
                         __('Take needed angels from room settings'),

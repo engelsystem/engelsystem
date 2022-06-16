@@ -110,7 +110,7 @@ function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '
         . 'aria-valuenow="' . $valuenow . '" aria-valuemin="' . $valuemin . '" aria-valuemax="' . $valuemax . '" '
         . 'style="width: ' . floor(($valuenow - $valuemin) * 100 / ($valuemax - $valuemin)) . '%"'
         . '>'
-        . $content . ''
+        . $content
         . '</div>'
         . '</div>';
 }

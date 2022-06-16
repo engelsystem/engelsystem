@@ -17,9 +17,7 @@ function shift_link($shift)
         $parameters['shift_id'] = $shift['SID'];
     }
 
-    $link = page_link_to('shifts', $parameters);
-
-    return $link;
+    return page_link_to('shifts', $parameters);
 }
 
 /**

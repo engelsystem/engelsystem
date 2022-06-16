@@ -87,7 +87,7 @@ function user_worklog_from_request(Worklog $worklog)
     }
 
     $worklog->hours = $request->input('work_hours');
-    if (!preg_match("/^[0-9]+(\.[0-9]{0,2})?$/", $worklog->hours)) {
+    if (!preg_match("/^\d+(\.\d{0,2})?$/", $worklog->hours)) {
         $valid = false;
         error(__('Please enter work hours in format ##[.##].'));
     }

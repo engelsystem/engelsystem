@@ -44,7 +44,7 @@ function admin_user()
             . page_link_to('admin_user', ['action' => 'save', 'id' => $user_id])
             . '" method="post">' . "\n";
         $html .= form_csrf();
-        $html .= '<table border="0">' . "\n";
+        $html .= '<table>' . "\n";
         $html .= '<input type="hidden" name="Type" value="Normal">' . "\n";
         $html .= '<tr><td>' . "\n";
         $html .= '<table>' . "\n";
@@ -100,7 +100,7 @@ function admin_user()
         $html .= '  <tr><td>T-Shirt</td><td>' . "\n";
         $html .= html_options('eTshirt', $options, $user_source->state->got_shirt) . '</td></tr>' . "\n";
 
-        $html .= '</table>' . "\n" . '</td><td valign="top"></td></tr>';
+        $html .= '</table>' . "\n" . '</td><td></td></tr>';
 
         $html .= '</td></tr>' . "\n";
         $html .= '</table>' . "\n" . '<br />' . "\n";
