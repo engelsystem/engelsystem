@@ -24,6 +24,8 @@ $route->get('/settings/password', 'SettingsController@password');
 $route->post('/settings/password', 'SettingsController@savePassword');
 $route->get('/settings/theme', 'SettingsController@theme');
 $route->post('/settings/theme', 'SettingsController@saveTheme');
+$route->get('/settings/language', 'SettingsController@language');
+$route->post('/settings/language', 'SettingsController@saveLanguage');
 $route->get('/settings/oauth', 'SettingsController@oauth');
 
 // Password recovery

@@ -2521,14 +2521,6 @@ msgstr "Geplanter Abreisetag"
 msgid "Please visit the angeltypes page to manage your angeltypes."
 msgstr "Bitte benutze die Engeltypen-Seite um deine Engeltypen zu verwalten."
 
-#: includes/view/User_view.php:101
-msgid "Here you can choose your language:"
-msgstr "Hier kannst Du Deine Sprache auswählen:"
-
-#: includes/view/User_view.php:102
-msgid "Language:"
-msgstr "Sprache:"
-
 #: includes/view/User_view.php:124
 msgid ""
 "Do you really want to delete the user including all his shifts and every "
@@ -2964,6 +2956,15 @@ msgstr "Hier kannst Du Dein Theme ändern."
 
 msgid "settings.theme.success"
 msgstr "Theme wurde erfolgreich geändert."
+
+msgid "settings.language"
+msgstr "Sprache"
+
+msgid "settings.language.info"
+msgstr "Hier kannst Du Deine Sprache ändern."
+
+msgid "settings.language.success"
+msgstr "Sprache wurde erfolgreich geändert."
 
 msgid "settings.oauth"
 msgstr "Single Sign-On"
