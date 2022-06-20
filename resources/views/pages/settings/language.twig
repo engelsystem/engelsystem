@@ -1,0 +1,19 @@
+{% extends 'pages/settings/settings.twig' %}
+{% import 'macros/form.twig' as f %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __('settings.language') }}{% endblock %}
+
+{% block row_content %}
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ csrf() }}
+
+        <div class="row">
+            <div class="col-md-12">
+                {{ m.info(__('settings.language.info')) }}
+                {{ f.select('select_language', languages, __('settings.language'), current_language) }}
+                {{ f.submit() }}
+            </div>
+        </div>
+    </form>
+{% endblock %}

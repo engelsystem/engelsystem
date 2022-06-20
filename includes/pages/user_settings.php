@@ -106,36 +106,6 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 }
 
 /**
- * Change use locale
- *
- * @param User  $user_source The user
- * @param array $locales     List of available locales
- * @return User
- */
-function user_settings_locale($user_source, $locales)
-{
-    $valid = true;
-    $request = request();
-    $session = session();
-
-    if ($request->has('language') && isset($locales[$request->input('language')])) {
-        $user_source->settings->language = $request->input('language');
-    } else {
-        $valid = false;
-    }
-
-    if ($valid) {
-        $user_source->settings->save();
-        $session->set('locale', $user_source->settings->language);
-
-        success('Language changed.');
-        throw_redirect(page_link_to('user_settings'));
-    }
-
-    return $user_source;
-}
-
-/**
  * Main user settings page/controller
  *
  * @return string
@@ -147,7 +117,6 @@ function user_settings()
 
     $enable_tshirt_size = config('enable_tshirt_size');
     $tshirt_sizes = config('tshirt_sizes');
-    $locales = config('locales');
 
     $buildup_start_date = null;
     $teardown_end_date = null;
@@ -165,13 +134,10 @@ function user_settings()
     $user_source = auth()->user();
     if ($request->hasPostData('submit')) {
         $user_source = user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
-    } elseif ($request->hasPostData('submit_language')) {
-        $user_source = user_settings_locale($user_source, $locales);
     }
 
     return User_settings_view(
         $user_source,
-        $locales,
         $buildup_start_date,
         $teardown_end_date,
         $enable_tshirt_size,

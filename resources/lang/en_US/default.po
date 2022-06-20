@@ -235,6 +235,15 @@ msgstr "Here you can change your theme."
 msgid "settings.theme.success"
 msgstr "Theme was changed successfully."
 
+msgid "settings.language"
+msgstr "Language"
+
+msgid "settings.language.info"
+msgstr "Here you can change your language."
+
+msgid "settings.language.success"
+msgstr "Language was changed successfully."
+
 msgid "settings.oauth"
 msgstr "Single Sign-On"
 

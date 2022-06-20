@@ -2207,14 +2207,6 @@ msgstr "Nova senha:"
 msgid "Password confirmation:"
 msgstr "Confirmação de senha:"
 
-#: includes/view/User_view.php:73
-msgid "Here you can choose your language:"
-msgstr "Aqui você pode selecionar seu idioma:"
-
-#: includes/view/User_view.php:74
-msgid "Language:"
-msgstr "Idioma:"
-
 #: includes/view/User_view.php:88
 msgid "Registration successful"
 msgstr "Registrado com sucesso"
