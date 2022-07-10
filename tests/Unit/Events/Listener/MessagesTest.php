@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Events\Listener;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Events\Listener\Messages;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\Message;
@@ -110,5 +111,6 @@ class MessagesTest extends TestCase
 
         parent::setUp();
         $this->initDatabase();
+        $this->app->instance('config', new Config());
     }
 }

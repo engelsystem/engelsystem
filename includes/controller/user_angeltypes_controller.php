@@ -169,7 +169,7 @@ function user_angeltype_confirm_controller(): array
             User_Nick_render($user_source, true),
             AngelType_name_render($angeltype, true)
         ));
-        success(sprintf(__('%s confirmed for angeltype %s.'), $user_source->name, $angeltype->name));
+        success(sprintf(__('%s confirmed for angeltype %s.'), $user_source->displayName, $angeltype->name));
 
         user_angeltype_confirm_email($user_source, $angeltype);
 
@@ -195,7 +195,7 @@ function user_angeltype_confirm_email(User $user, AngelType $angeltype): void
             $user,
             'notification.angeltype.confirmed',
             'emails/angeltype-confirmed',
-            ['name' => $angeltype->name, 'angeltype' => $angeltype, 'username' => $user->name]
+            ['name' => $angeltype->name, 'angeltype' => $angeltype, 'username' => $user->displayName]
         );
     } catch (TransportException $e) {
         /** @var LoggerInterface $logger */
@@ -220,7 +220,7 @@ function user_angeltype_add_email(User $user, AngelType $angeltype): void
             $user,
             'notification.angeltype.added',
             'emails/angeltype-added',
-            ['name' => $angeltype->name, 'angeltype' => $angeltype, 'username' => $user->name]
+            ['name' => $angeltype->name, 'angeltype' => $angeltype, 'username' => $user->displayName]
         );
     } catch (TransportException $e) {
         /** @var LoggerInterface $logger */
@@ -264,7 +264,7 @@ function user_angeltype_delete_controller(): array
         $user_angeltype->delete();
 
         engelsystem_log(sprintf('User %s removed from %s.', User_Nick_render($user_source, true), $angeltype->name));
-        success(sprintf(__('User %s removed from %s.'), $user_source->name, $angeltype->name));
+        success(sprintf(__('User %s removed from %s.'), $user_source->displayName, $angeltype->name));
 
         throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
     }
@@ -319,7 +319,7 @@ function user_angeltype_update_controller(): array
             AngelType_name_render($angeltype, true),
             User_Nick_render($user_source, true)
         ));
-        success(sprintf($msg, $angeltype->name, $user_source->name));
+        success(sprintf($msg, $angeltype->name, $user_source->displayName));
 
         throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
     }
@@ -367,7 +367,7 @@ function user_angeltype_add_controller(): array
                 User_Nick_render($user_source, true),
                 AngelType_name_render($angeltype, true)
             ));
-            success(sprintf(__('User %s added to %s.'), $user_source->name, $angeltype->name));
+            success(sprintf(__('User %s added to %s.'), $user_source->displayName, $angeltype->name));
 
             if ($request->hasPostData('auto_confirm_user')) {
                 $userAngelType->confirmUser()->associate($user_source);

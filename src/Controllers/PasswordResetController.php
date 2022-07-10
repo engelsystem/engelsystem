@@ -61,7 +61,7 @@ class PasswordResetController extends BaseController
                 $user,
                 'Password recovery',
                 'emails/password-reset',
-                ['username' => $user->name, 'reset' => $reset]
+                ['username' => $user->displayName, 'reset' => $reset]
             );
         }
 

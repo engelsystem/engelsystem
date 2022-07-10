@@ -63,6 +63,28 @@ class MessagesControllerTest extends ControllerTest
     }
 
     /**
+     * @testdox index: User is shown as first name and last name instead of nickname
+     * @covers \Engelsystem\Controllers\MessagesController::listConversations
+     */
+    public function testIndexUnderNormalConditionsReturnsFormattedUserName(): void
+    {
+        $this->config->set('display_full_name', true);
+
+        $this->userA->personalData->first_name = 'Frank';
+        $this->userA->personalData->last_name = 'Nord';
+        $this->userA->personalData->save();
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function (string $view, array $data) {
+                $this->assertEquals('Frank Nord', $data['users'][1]);
+                return $this->response;
+            });
+
+        $this->controller->index();
+    }
+
+    /**
      * @testdox index: usersExist -> returnsUsersWithMeAtFirstPosition
      * @covers \Engelsystem\Controllers\MessagesController::index
      * @covers \Engelsystem\Controllers\MessagesController::listConversations

@@ -129,9 +129,11 @@ function Users_view(
         'actions'      => '<strong>' . count($usersList) . '</strong>',
     ];
 
-    $user_table_headers = [
-        'name' => Users_table_header_link('name', __('Nick'), $order_by),
-    ];
+    $user_table_headers = [];
+
+    if (!config('display_full_name')) {
+        $user_table_headers['name'] = Users_table_header_link('name', __('Nick'), $order_by);
+    }
     if (config('enable_user_name')) {
         $user_table_headers['first_name'] = Users_table_header_link('first_name', __('Prename'), $order_by);
         $user_table_headers['last_name'] = Users_table_header_link('last_name', __('Name'), $order_by);
@@ -844,11 +846,11 @@ function User_Nick_render($user, $plain = false)
     }
 
     if ($plain) {
-        return sprintf('%s (%u)', $user->name, $user->id);
+        return sprintf('%s (%u)', $user->displayName, $user->id);
     }
 
     return render_profile_link(
-        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user->name) . '</a>',
+        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user->displayName) . '</a>',
         $user->id,
         ($user->state->arrived ? '' : 'text-muted')
     );

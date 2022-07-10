@@ -41,7 +41,7 @@ class News
                 $user,
                 $subject,
                 $template,
-                ['title' => $news->title, 'news' => $news, 'username' => $user->name]
+                ['title' => $news->title, 'news' => $news, 'username' => $user->displayName]
             );
         } catch (TransportException $e) {
             $this->log->error(

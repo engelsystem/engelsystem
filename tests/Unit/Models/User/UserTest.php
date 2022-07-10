@@ -482,4 +482,42 @@ class UserTest extends ModelTest
         $this->assertCount(2, $user2->shiftsCreated);
         $this->assertCount(2, $user2->shiftsUpdated);
     }
+
+    public function getDisplayNameAttributeProvider(): array
+    {
+        return [
+            ['lorem'],
+            ['lorem', ' '],
+            ['lorem', null, ' '],
+            ['lorem', ' ', ' '],
+            ['Test', 'Test', ' '],
+            ['Tester', ' ', 'Tester'],
+            ['Foo', 'Foo'],
+            ['Bar', null, 'Bar'],
+            ['Foo Bar', 'Foo', 'Bar'],
+            ['Some name', ' Some', ' name'],
+            ['Another Surname', ' Another ', ' Surname '],
+        ];
+    }
+
+    /**
+     * @covers       \Engelsystem\Models\User\User::getDisplayNameAttribute
+     * @dataProvider getDisplayNameAttributeProvider
+     */
+    public function testGetDisplayNameAttribute(
+        string $expected,
+        ?string $firstName = null,
+        ?string $lastName = null
+    ): void {
+        $this->app->instance('config', new Config());
+
+        ($user1 = new User($this->data))->save();
+        $user1->personalData->first_name = $firstName;
+        $user1->personalData->last_name = $lastName;
+
+        $this->assertEquals('lorem', $user1->displayName);
+
+        config(['display_full_name' => true]);
+        $this->assertEquals($expected, $user1->displayName);
+    }
 }

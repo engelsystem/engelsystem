@@ -266,8 +266,12 @@ return [
     // Whether the mobile number can be shown to other users
     'enable_mobile_show'      => (bool) env('ENABLE_MOBILE_SHOW', false),
 
-    // Enables prename and lastname
+    // Enables first name and last name
     'enable_user_name'        => (bool) env('ENABLE_USER_NAME', false),
+
+    // Show a users first name and last name instead of username
+    'display_full_name'  => env('display_full_name', false)
+        && env('ENABLE_USER_NAME', false),
 
     // Enable displaying the pronoun fields
     'enable_pronoun'          => (bool) env('ENABLE_PRONOUN', true),

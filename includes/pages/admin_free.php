@@ -3,6 +3,7 @@
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
 
 /**
@@ -25,6 +26,7 @@ function admin_free()
         $search = strip_request_item('search');
     }
 
+    /** @var AngelType[]|Collection $angel_types_source */
     $angel_types_source = AngelType::all(['id', 'name']);
     $angel_types = [
         '' => __('All'),
@@ -121,7 +123,7 @@ function admin_free()
             ]),
         ]),
         table([
-            'name'        => __('Nick'),
+            'name'        => __('Name'),
             'shift_state' => __('Next shift'),
             'last_shift'  => __('Last shift'),
             'dect'        => __('DECT'),
