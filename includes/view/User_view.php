@@ -91,12 +91,15 @@ function Users_view(
         $u['last_name'] = $user->personalData->last_name;
         $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', $user->contact->dect);
         $u['arrived'] = icon_bool($user->state->arrived);
-        $u['got_voucher'] = $user->state->got_voucher;
+        if(config('enable_voucher'))
+            $u['got_voucher'] = $user->state->got_voucher;
         $u['freeloads'] = $user->getAttribute('freeloads');
         $u['active'] = icon_bool($user->state->active);
         $u['force_active'] = icon_bool($user->state->force_active);
-        $u['got_shirt'] = icon_bool($user->state->got_shirt);
-        $u['shirt_size'] = $user->personalData->shirt_size;
+        if(config('enable_tshirt_size'))
+            $u['got_shirt'] = icon_bool($user->state->got_shirt);
+        if(config('enable_tshirt_size'))
+            $u['shirt_size'] = $user->personalData->shirt_size;
         $u['arrival_date'] = $user->personalData->planned_arrival_date
             ? $user->personalData->planned_arrival_date->format(__('Y-m-d')) : '';
         $u['departure_date'] = $user->personalData->planned_departure_date
@@ -129,12 +132,15 @@ function Users_view(
         $user_table_headers['dect'] = Users_table_header_link('dect', __('DECT'), $order_by);
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
-    $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
+    if(config('enable_voucher'))
+        $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('Active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
-    $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
-    $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
+    if(config('enable_tshirt_size'))
+        $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
+    if(config('enable_tshirt_size'))
+        $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
     $user_table_headers['arrival_date'] = Users_table_header_link(
         'planned_arrival_date',
         __('Planned arrival'),
@@ -510,7 +516,7 @@ function User_view(
             div('row', [
                 div('col-md-12', [
                     buttons([
-                        $auth->can('user.edit.shirt') ? button(
+                        $auth->can('user.edit.shirt') && config('enable_tshirt_size') ? button(
                             url('/admin/user/' . $user_source->id . '/shirt'),
                             icon('person') . __('Shirt')
                         ) : '',
@@ -713,7 +719,7 @@ function User_view_state_admin($freeloader, $user_source)
             . icon('valentine')
             . __('Got %s of %s vouchers', [$voucherCount, $availableCount])
             . '</span>';
-    } else {
+    } else if (config('enable_voucher')) {
         $state[] = '<span class="text-danger">'
             . __('Got no vouchers')
             . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')

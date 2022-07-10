@@ -63,16 +63,15 @@ function admin_user()
         if ($user_source->settings->email_human) {
             $html .= "  <tr><td>" . __('settings.profile.email') . "</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
         }
-        if (config('enable_tshirt_size')) {
-            $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
-                . html_select_key(
-                    'size',
-                    'eSize',
-                    $tshirt_sizes,
-                    $user_source->personalData->shirt_size,
-                    __('Please select...')
-                )
-                . '</td></tr>' . "\n";
+        if(config('enable_tshirt_size')) {
+        $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
+            . html_select_key(
+                'size',
+                'eSize',
+                $tshirt_sizes, $user_source->personalData->shirt_size,
+                __('Please select...')
+            )
+            . '</td></tr>' . "\n";
         }
 
         $options = [
@@ -99,7 +98,7 @@ function admin_user()
             $html .= html_options('force_active', $options, $user_source->state->force_active) . '</td></tr>' . "\n";
         }
 
-        if (config('enable_tshirt_size')) {
+        if(config('enable_tshirt_size')) {
             // T-Shirt bekommen?
             $html .= '  <tr><td>' . __('T-Shirt') . '</td><td>' . "\n";
             $html .= html_options('eTshirt', $options, $user_source->state->got_shirt) . '</td></tr>' . "\n";

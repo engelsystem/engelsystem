@@ -329,10 +329,10 @@ function admin_active()
             'tshirt'       => __('T-shirt?'),
             'actions'      => ''
         ], $matched_users),
-        '<h2>' . __('Shirt statistics') . '</h2>',
-        table([
+        config('enable_tshirt_size') ? '<h2>' . __('Shirt statistics') . '</h2>': null,
+        !empty($shirt_statistics) ? table([
             'size'  => __('Size'),
             'given' => __('Given shirts')
-        ], $shirt_statistics)
+        ], $shirt_statistics) : null
     ]);
 }
