@@ -108,7 +108,7 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
         $shiftEntry->save();
         ShiftEntry_onCreate($shiftEntry);
 
-        success(sprintf(__('%s has been subscribed to the shift.'), $signup_user->name));
+        success(sprintf(__('%s has been subscribed to the shift.'), $signup_user->displayName));
         throw_redirect(shift_link($shift));
     }
 
@@ -116,7 +116,7 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
     $users = User::query()->orderBy('name')->get();
     $users_select = [];
     foreach ($users as $user) {
-        $users_select[$user->id] = $user->name;
+        $users_select[$user->id] = $user->displayName;
     }
 
     $angeltypes_select = $angeltypes->pluck('name', 'id')->toArray();
@@ -157,14 +157,14 @@ function shift_entry_create_controller_supporter(Shift $shift, AngelType $angelt
         $shiftEntry->save();
         ShiftEntry_onCreate($shiftEntry);
 
-        success(sprintf(__('%s has been subscribed to the shift.'), $signup_user->name));
+        success(sprintf(__('%s has been subscribed to the shift.'), $signup_user->displayName));
         throw_redirect(shift_link($shift));
     }
 
     $users = $angeltype->userAngelTypes->sortBy('name');
     $users_select = [];
     foreach ($users as $u) {
-        $users_select[$u->id] = $u->name;
+        $users_select[$u->id] = $u->displayName;
     }
 
     $room = $shift->room;

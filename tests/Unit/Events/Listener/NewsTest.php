@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Events\Listener;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Events\Listener\News;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\News as NewsModel;
@@ -33,6 +34,7 @@ class NewsTest extends TestCase
      */
     public function testCreated(): void
     {
+        $this->app->instance('config', new Config());
         /** @var NewsModel $news */
         $news = NewsModel::factory(['title' => 'Foo'])->create();
 

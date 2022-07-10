@@ -84,7 +84,7 @@ class Shift
                     'end'        => $end,
                     'room'       => $room,
                     'freeloaded' => $freeloaded,
-                    'username'   => $user->name,
+                    'username'   => $user->displayName,
                 ]
             );
         } catch (TransportException $e) {

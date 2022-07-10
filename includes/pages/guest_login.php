@@ -13,6 +13,7 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @return string
@@ -67,6 +68,7 @@ function guest_register()
     $selected_angel_types = [];
     $planned_arrival_date = null;
 
+    /** @var AngelType[]|Collection $angel_types_source */
     $angel_types_source = AngelType::all();
     $angel_types = [];
     if (!empty($session->get('oauth2_groups'))) {

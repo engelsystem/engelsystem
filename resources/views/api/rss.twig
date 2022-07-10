@@ -16,7 +16,7 @@
                 <link>{{ url('/news/' ~ news.id) }}</link>
                 <guid isPermaLink="false">{{ uuidBy(news.id, '113115') }}</guid>
                 <pubDate>{{ news.created_at.format(dateFormat) }}</pubDate>
-                <author>{{ news.user.name }}</author>
+                <author>{{ news.user.displayName }}</author>
                 <description>
                     {{ news.text }}
                 </description>

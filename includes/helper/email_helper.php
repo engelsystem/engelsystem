@@ -32,7 +32,7 @@ function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe
             $recipientUser->contact->email ?: $recipientUser->email,
             $title,
             'emails/mail',
-            ['username' => $recipientUser->name, 'message' => $message]
+            ['username' => $recipientUser->displayName, 'message' => $message]
         );
     } catch (Exception $e) {
         $status = false;
@@ -48,7 +48,7 @@ function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe
     $translator->setLocale($locale);
 
     if (!$status) {
-        error(sprintf(__('User %s could not be notified by email due to an error.'), $recipientUser->name));
+        error(sprintf(__('User %s could not be notified by email due to an error.'), $recipientUser->displayName));
         engelsystem_log(sprintf('User %s could not be notified by email due to an error.', $recipientUser->name));
     }
 

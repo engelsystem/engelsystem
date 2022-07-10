@@ -10,6 +10,7 @@ use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 /**
@@ -55,6 +56,7 @@ function admin_shifts()
     }
 
     // Load shift types
+    /** @var ShiftType[]|Collection $shifttypes_source */
     $shifttypes_source = ShiftType::all();
     $shifttypes = [];
     foreach ($shifttypes_source as $shifttype) {

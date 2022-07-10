@@ -65,12 +65,14 @@ class MessagesController extends BaseController
             ];
         }
 
+        /** @var Collection $users */
         $users = $this->user->orderBy('name')->get()
             ->except($currentUser->id)
-            ->mapWithKeys(function ($u) {
-                return [$u->id => $u->name];
+            ->mapWithKeys(function (User $u) {
+                return [$u->id => $u->displayName];
             });
-        $users->prepend($currentUser->name, $currentUser->id);
+
+        $users->prepend($currentUser->displayName, $currentUser->id);
 
         return $this->response->withView(
             'pages/messages/overview.twig',

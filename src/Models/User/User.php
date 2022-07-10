@@ -42,6 +42,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read QueryBuilder|PersonalData     $personalData
  * @property-read QueryBuilder|Settings         $settings
  * @property-read QueryBuilder|State            $state
+ * @property-read string                        $displayName
  *
  * @property-read Collection|Group[]            $groups
  * @property-read Collection|News[]             $news
@@ -262,5 +263,21 @@ class User extends BaseModel
     public function shiftsUpdated(): HasMany
     {
         return $this->hasMany(Shift::class, 'updated_by');
+    }
+
+    public function getDisplayNameAttribute(): string
+    {
+        if (
+            config('display_full_name')
+            && !empty(trim($this->personalData->first_name . $this->personalData->last_name))
+        ) {
+            return trim(
+                trim((string) $this->personalData->first_name)
+                . ' ' .
+                trim((string) $this->personalData->last_name)
+            );
+        }
+
+        return $this->name;
     }
 }

@@ -16,7 +16,7 @@
             <updated>{{ news.updated_at.format(dateFormat) }}</updated>
             <published>{{ news.created_at.format(dateFormat) }}</published>
             <author>
-                <name>{{ news.user.name }}</name>
+                <name>{{ news.user.displayName }}</name>
             </author>
             <content type="html">
                 {{ news.text }}

@@ -34,7 +34,11 @@ class Messages
                 $user,
                 $subject,
                 $template,
-                ['sender' => $message->sender->name, 'send_message' => $message, 'username' => $user->name]
+                [
+                    'sender'       => $message->sender->displayName,
+                    'send_message' => $message,
+                    'username'     => $user->displayName,
+                ]
             );
         } catch (TransportException $e) {
             $this->log->error(
