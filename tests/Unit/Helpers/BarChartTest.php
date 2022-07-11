@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Helpers;
 
+use Carbon\CarbonImmutable;
 use Engelsystem\Helpers\BarChart;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\TestCase;
@@ -39,6 +40,12 @@ class BarChartTest extends TestCase
         $this->mockTranslator();
     }
 
+    /**
+     * @covers \Engelsystem\Helpers\BarChart::render
+     * @covers \Engelsystem\Helpers\BarChart::calculateChartGroups
+     * @covers \Engelsystem\Helpers\BarChart::calculateYLabels
+     * @covers \Engelsystem\Helpers\BarChart::generateChartDemoData
+     */
     public function testRender(): void
     {
         $this->rendererMock->expects(self::once())
@@ -103,6 +110,7 @@ class BarChartTest extends TestCase
     public function provideBarChartClassTestData(): array
     {
         return [
+            [5, ''],
             [10, 'barchart-20'], // number to be passed to BarChart::generateChartDemoData, expected class
             [20, 'barchart-40'],
             [25, 'barchart-50'],
@@ -111,6 +119,7 @@ class BarChartTest extends TestCase
 
     /**
      * @dataProvider provideBarChartClassTestData
+     * @covers       \Engelsystem\Helpers\BarChart::calculateBarChartClass
      */
     public function testRenderBarChartClass(int $testDataCount, string $expectedClass): void
     {
@@ -123,5 +132,38 @@ class BarChartTest extends TestCase
                 }
             );
         BarChart::render(...BarChart::generateChartDemoData($testDataCount));
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\BarChart::generateChartDemoData
+     */
+    public function testGenerateChartDemoData()
+    {
+        $first = CarbonImmutable::now()->subDays(2)->format('Y-m-d');
+        $second = CarbonImmutable::now()->subDays()->format('Y-m-d');
+        $expected = [
+            [
+                'count' => 'arrived',
+                'sum'   => 'arrived sum',
+            ],
+            [
+                'count' => '#090',
+                'sum'   => '#888',
+            ],
+            [
+                $first  => [
+                    'day'   => $first,
+                    'count' => 5001.0,
+                    'sum'   => 5001.0,
+                ],
+                $second => [
+                    'day'   => $second,
+                    'count' => 5001.0,
+                    'sum'   => 10002.0,
+                ],
+            ],
+        ];
+        $data = BarChart::generateChartDemoData(2);
+        $this->assertEquals($expected, $data);
     }
 }
