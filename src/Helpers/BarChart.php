@@ -38,7 +38,6 @@ class BarChart
         }
 
         $roundedMax = (int) ceil($max / 5) * 5;
-        $step = $roundedMax / 5;
 
         return view('components/barchart', [
             'groups' => self::calculateChartGroups(
