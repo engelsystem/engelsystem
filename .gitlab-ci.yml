@@ -28,6 +28,7 @@ check-style:
   image: composer:latest
   stage: validate
   before_script:
+    - composer --no-ansi global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
     - composer --no-ansi global require slevomat/coding-standard squizlabs/php_codesniffer
     - export PATH=$PATH:$COMPOSER_HOME/vendor/bin
   script:
