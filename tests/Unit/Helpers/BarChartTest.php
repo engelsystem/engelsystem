@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Helpers;
 
-use Engelsystem\Application;
 use Engelsystem\Helpers\BarChart;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\TestCase;
@@ -38,12 +37,6 @@ class BarChartTest extends TestCase
         parent::setUp();
         $this->rendererMock = $this->mockRenderer(false);
         $this->mockTranslator();
-        Application::setInstance($this->app);
-    }
-
-    protected function tearDown(): void
-    {
-        Application::setInstance(null);
     }
 
     public function testRender(): void

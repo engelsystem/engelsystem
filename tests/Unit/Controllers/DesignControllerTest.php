@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Test\Unit\Controllers;
 
-use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\DesignController;
 use Engelsystem\Http\Response;
@@ -16,7 +15,6 @@ class DesignControllerTest extends TestCase
         parent::setUp();
         $this->mockRenderer();
         $this->mockTranslator();
-        Application::setInstance($this->app);
     }
 
     /**
