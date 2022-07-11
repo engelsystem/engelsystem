@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit;
 
 use Engelsystem\Application;
+use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Renderer\Renderer;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
@@ -58,15 +59,25 @@ abstract class TestCase extends PHPUnitTestCase
         $this->app->instance(Generator::class, $faker);
     }
 
-    protected function mockTranslator(): void
+    /**
+     * @param bool $mockImplementation
+     * @return Translator&MockObject
+     */
+    protected function mockTranslator(bool $mockImplementation = true): Translator
     {
         $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
-            ->setMethods(['translate'])
+            ->onlyMethods(['translate'])
             ->getMock();
-        $translator->method('translate')
-            ->willReturnCallback(fn(string $key, array $replace = []) => $key);
+
+        if ($mockImplementation) {
+            $translator->method('translate')
+                ->willReturnCallback(fn(string $key, array $replace = []) => $key);
+        }
+
         $this->app->instance('translator', $translator);
+
+        return $translator;
     }
 
     /**
@@ -77,7 +88,7 @@ abstract class TestCase extends PHPUnitTestCase
     {
         $renderer = $this->getMockBuilder(Renderer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['render'])
+            ->onlyMethods(['render'])
             ->getMock();
 
         if ($mockImplementation) {
@@ -86,6 +97,7 @@ abstract class TestCase extends PHPUnitTestCase
         }
 
         $this->app->instance('renderer', $renderer);
+
         return $renderer;
     }
 }
