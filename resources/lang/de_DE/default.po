@@ -1590,6 +1590,10 @@ msgstr "Gib bitte einen Nick an."
 msgid "E-mail address is not correct."
 msgstr "Die E-Mail Adresse ist nicht in Ordnung."
 
+#: includes/pages/guest_login.php:137
+msgid "Please enter your mobile number."
+msgstr "Bitte gebe deine Handynummer an."
+
 #: includes/pages/guest_login.php:97
 msgid "E-mail address is already used by another user."
 msgstr "Die E-Mail Adresse wurde bereits von einem anderen User benutzt."
