@@ -258,6 +258,9 @@ return [
 
     // Whether the DECT field should be enabled
     'enable_dect'             => (bool)env('ENABLE_DECT', true),
+    
+    // Whether the Mobile field should be required
+    'enable_mobile_required'  => (bool)env('ENABLE_MOBILE_REQUIRED', false),
 
     // Enables prename and lastname
     'enable_user_name'        => (bool)env('ENABLE_USER_NAME', false),
