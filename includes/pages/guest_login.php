@@ -133,6 +133,11 @@ function guest_register()
             $valid = false;
             $msg .= error(__('Please enter your e-mail.'), true);
         }
+        
+        if(config('enable_mobile_required') && $request->has('mobile') && strlen(strip_request_item('mobile')) < 1 ) {
+            $valid = false;
+            $msg .= error(__('Please enter your mobile number.'), true);
+        }
 
         if ($request->has('email_shiftinfo')) {
             $email_shiftinfo = true;
@@ -438,7 +443,7 @@ function guest_register()
                 ]) : '',
 
                 div('col', [
-                    form_text('mobile', __('Mobile'), $mobile, false, 40, 'tel-national')
+                    form_text('mobile', __('Mobile'). (config('enable_mobile_required') ? ' ' . entry_required() : ''), $mobile, false, 40, 'tel-national')
                 ])
             ]),
 
