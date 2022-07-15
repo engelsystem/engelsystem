@@ -330,6 +330,9 @@ return [
         'voucher' => [0, 1, 2, 3, 5, 10, 15, 20],
     ],
 
+    //Shift view Seconds per Row Default: 15m * 60s/m = 900s
+    'shift_view_seconds_per_row' => env('SHIFT_VIEW_SECONDS_PER_ROW', 900),
+
     // Shifts overview
     // Set max number of hours that can be shown at once
     // 0 means no limit

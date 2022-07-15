@@ -36,7 +36,7 @@ class ShiftCalendarShiftRenderer
 
         $class = $this->classForSignupState($shift_signup_state);
 
-        $blocks = ceil(($shift['end'] - $shift['start']) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+        $blocks = ceil(($shift['end'] - $shift['start']) / (int)config('shift_view_seconds_per_row'));
         $blocks = max(1, $blocks);
 
         $room = new Room();
