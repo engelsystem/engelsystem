@@ -283,7 +283,7 @@ function view_user_shifts()
                     . ' <a href="' . page_link_to('angeltypes', ['action' => 'about']) . '">'
                     . __('Description of the jobs.')
                     . '</a>',
-                'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
+                'shifts_calendar'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),
                 'filter_toggle' => __('shifts.filter.toggle'),
