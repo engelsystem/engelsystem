@@ -219,6 +219,7 @@ function view_user_shifts()
     $session->set('shifts-filter', $shiftsFilter->sessionExport());
 
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
+    $shiftTableRenderer = shiftTableRendererByShiftFilter($shiftsFilter);
 
     if (empty($user->api_key)) {
         User_reset_api_key($user, false);
@@ -284,6 +285,9 @@ function view_user_shifts()
                     . __('Description of the jobs.')
                     . '</a>',
                 'shifts_calendar'  => msg() . $shiftCalendarRenderer->render(),
+                'shifts_table'  => msg() . $shiftTableRenderer->render(),
+                'calendar_view_text' => __("Calendar View"),
+                'table_view_text' => __("Table View"),
                 'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),
                 'filter_toggle' => __('shifts.filter.toggle'),

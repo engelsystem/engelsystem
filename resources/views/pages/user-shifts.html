@@ -84,7 +84,16 @@
     </div>
 </form>
 
-%shifts_calendar%
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-calendar-tab" data-bs-toggle="tab" data-bs-target="#nav-calendar" type="button" role="tab" aria-controls="nav-calendar" aria-selected="false">%calendar_view_text%</button>
+        <button class="nav-link" id="nav-table-tab" data-bs-toggle="tab" data-bs-target="#nav-table" type="button" role="tab" aria-controls="nav-table" aria-selected="false">%table_view_text%</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-calendar" role="tabpanel" aria-labelledby="nav-calendar-tab">%shifts_calendar%</div>
+    <div class="tab-pane fade" id="nav-table" role="tabpanel" aria-labelledby="nav-table-tab">%shifts_table%</div>
+</div>
 
 <div class="d-print-none">
     %ical_text%

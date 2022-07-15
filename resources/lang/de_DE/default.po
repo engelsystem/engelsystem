@@ -3094,3 +3094,9 @@ msgstr "Passwort zurückgesetzt."
 
 msgid "The entries must match and must not be empty!"
 msgstr "Die Einträge müssen übereinstimmen und dürfen nicht leer sein!"
+
+msgid "Calendar View"
+msgstr "Kalendar Ansicht"
+
+msgid "Table View"
+msgstr "Tabellen Ansicht"
