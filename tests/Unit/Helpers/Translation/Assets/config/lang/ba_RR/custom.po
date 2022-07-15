@@ -1,0 +1,8 @@
+msgid "msg.default"
+msgstr "Custom default"
+
+msgid "msg.additional"
+msgstr "Custom additional"
+
+msgid "msg.overwritten"
+msgstr "Custom overwritten"

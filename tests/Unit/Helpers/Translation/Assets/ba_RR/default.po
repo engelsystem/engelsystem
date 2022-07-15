@@ -1,3 +1,9 @@
 # Testing content
 msgid "foo.bar"
 msgstr "B Arr!"
+
+msgid "msg.default"
+msgstr "Default"
+
+msgid "msg.overwritten"
+msgstr "From default"
