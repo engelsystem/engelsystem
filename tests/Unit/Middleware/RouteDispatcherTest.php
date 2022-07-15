@@ -9,7 +9,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -132,8 +131,6 @@ class RouteDispatcherTest extends TestCase
         $request = $this->createMock(Request::class);
         /** @var RequestHandlerInterface|MockObject $handler */
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
-        /** @var UriInterface|MockObject $uriInterface */
-        $uriInterface = $this->getMockForAbstractClass(UriInterface::class);
 
         $request->expects($this->atLeastOnce())
             ->method('getMethod')

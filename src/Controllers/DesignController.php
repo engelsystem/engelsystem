@@ -3,6 +3,7 @@
 namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Helpers\BarChart;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\State;
@@ -58,6 +59,7 @@ class DesignController extends BaseController
             'demo_user'   => $demoUser,
             'demo_user_2' => $demoUser2,
             'themes'      => $themes,
+            'bar_chart'   => BarChart::render(...BarChart::generateChartDemoData(23)),
         ];
 
         return $this->response->withView(

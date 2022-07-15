@@ -10,6 +10,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class DesignControllerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->mockRenderer();
+        $this->mockTranslator();
+    }
+
     /**
      * @covers \Engelsystem\Controllers\DesignController::__construct
      * @covers \Engelsystem\Controllers\DesignController::index
