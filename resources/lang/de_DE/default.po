@@ -2706,6 +2706,42 @@ msgstr ""
 "Bitte eine DECT-Telefonnummer in den Einstellungen eingeben. Wenn du noch "
 "keine Nummer hast, bitte einfach \"-\" angeben."
 
+msgid "Hello,"
+msgstr "Hallo,"
+
+msgid "here you can change the entry. Under the item 'Came' the angel is marked as present, a yes at Active means that the angel was active."
+msgstr "hier kannst du den Eintrag &auml;ndern. Unter dem Punkt 'Gekommen' wird der Engel als anwesend markiert, ein Ja bei Aktiv bedeutet, dass der Engel aktiv war."
+
+msgid "If the angel was Active, this entitles him to a T-shirt. If T-shirt contains a 'Ja', it means that the angel has already received his T-shirt."
+msgstr "War der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enth&auml;lt, bedeutet dies, dass der Engel bereits sein T-Shirt erhalten hat."
+
+msgid "Please visit the angeltypes page or the users profile to manage users angeltypes."
+msgstr "Bitte besuchen Sie die Seite angeltypes oder das Benutzerprofil, um die angeltypes der Benutzer zu verwalten."
+
+msgid "Here you can reset the password of this angel:"
+msgstr "Hier können Sie das Passwort für diesen Engel zurücksetzen:"
+
+msgid "Here you can define the user groups of the angel:"
+msgstr "Hier können Sie die Benutzergruppen des Engels definieren:"
+
+msgid "User groups saved."
+msgstr "Benutzergruppen gespeichert."
+
+msgid "You cannot edit angels with more rights."
+msgstr "Sie können keine Engel mit mehr Rechten bearbeiten."
+
+msgid "You cannot edit your own rights."
+msgstr "Sie können Ihre eigenen Rechte nicht bearbeiten."
+
+msgid "Change was saved..."
+msgstr "Änderung wurde gespeichert..."
+
+msgid "Password reset done."
+msgstr "Passwort zurückgesetzt."
+
+msgid "The entries must match and must not be empty!"
+msgstr "Die Einträge müssen übereinstimmen und dürfen nicht leer sein!"
+
 #: src/Middleware/LegacyMiddleware.php:83
 msgid "page.404.text"
 msgstr ""
