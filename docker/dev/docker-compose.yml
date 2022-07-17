@@ -20,7 +20,7 @@ services:
       APP_NAME: Engelsystem DEV
     env_file: deployment.env
     ports:
-      - "5000:80"
+      - "15000:80"
     networks:
       - database
       - internet
@@ -60,11 +60,12 @@ services:
     volumes:
       - db:/var/lib/mysql
     networks:
-      - database
+      - internet
+    ports:
+      - "15001:3306"
 volumes:
   db: {}
 
 networks:
   database:
-    internal: true
   internet:

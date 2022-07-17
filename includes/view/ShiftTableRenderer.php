@@ -56,20 +56,26 @@ class ShiftTableRenderer
         }
 
         return div('shift-table table-responsive', [
+            '<script>function setStateShiftTableRow(sid, cssclass){
+                $("#shift_row_"+sid).parent().addClass("table-"+cssclass)
+                $("#shift_row_"+sid).parent().parent().parent().parent().removeClass("table-striped");
+}</script>',
             table(
                 $this->getTableHeadRows(),
                 $shifts_table
             )
+
         ]);
     }
 
     protected function getTableHeadRows(): array
     {
         return [
+            'state' => 'State',
             'timeslot'        => __('Time and location'),
             'title'           => __('Type and title'),
             'needed_angels'   => __('Needed angels'),
-            'selected_angels' => __('Angels')
+            'selected_angels' => __('Angel'),
         ];
     }
 

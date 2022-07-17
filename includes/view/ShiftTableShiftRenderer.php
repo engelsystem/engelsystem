@@ -23,6 +23,7 @@ class ShiftTableShiftRenderer extends ShiftCalendarShiftRenderer
      */
     public function render($shift, $needed_angeltypes, $shift_entries, $user)
     {
+        [$shiftState, $neededAngels] = $this->renderShiftNeededAngeltypes($shift, $needed_angeltypes, $shift_entries, $user);
         return [
             'timeslot'        =>
                 icon('clock') . ' '
@@ -34,11 +35,57 @@ class ShiftTableShiftRenderer extends ShiftCalendarShiftRenderer
             'title'           =>
                 $shift["name"]
                 . ($shift['title'] ? '<br />' . $shift['title'] : ''),
-            'needed_angels'   => $this->renderShiftNeededAngeltypes($shift, $needed_angeltypes, $shift_entries, $user),
+            'needed_angels'   => $neededAngels,
             'selected_angels' => $this->renderRegisterdAngels($shift, $needed_angeltypes, $shift_entries, $user),
+            'state' => $this->getState($shift, $shiftState),
         ];
     }
 
+    private function getState($shift, $shiftState){
+        $class = $this->classForSignupState($shiftState);
+        $stateText = $this->getStateText($class);
+        return "<span id='shift_row_{$shift['SID']}'>{$stateText}<script>setStateShiftTableRow({$shift['SID']},'{$class}')</script></span>";
+    }
+
+    /**
+     * @param ShiftSignupState $shiftSignupState
+     * @return string
+     */
+    private function classForSignupState(ShiftSignupState $shiftSignupState)
+    {
+        switch ($shiftSignupState->getState()) {
+            case ShiftSignupState::ADMIN:
+            case ShiftSignupState::OCCUPIED:
+                return 'success';
+
+            case ShiftSignupState::SIGNED_UP:
+                return 'primary';
+
+            case ShiftSignupState::NOT_ARRIVED:
+            case ShiftSignupState::NOT_YET:
+            case ShiftSignupState::SHIFT_ENDED:
+                return 'secondary';
+
+            case ShiftSignupState::ANGELTYPE:
+            case ShiftSignupState::COLLIDES:
+                return 'warning';
+
+            case ShiftSignupState::FREE:
+                return 'danger';
+            default:
+                return 'light';
+        }
+    }
+
+    private function getStateText(string $cssClass){
+        switch ($cssClass){
+            case "primary": return __('Your shift');
+            case "danger": return __('Help needed');
+            case "warning": return __('Other angeltype needed / collides with my shifts');
+            case "success": return __('Shift is full');
+            case "secondary": return __('Shift running/ended or user not arrived/allowed');
+        }
+    }
 
     /**
      * @param array $shift
@@ -90,10 +137,16 @@ class ShiftTableShiftRenderer extends ShiftCalendarShiftRenderer
             $html .= '</li>';
         }
         if ($html != '') {
-            return '<ul class="list-group list-group-flush">' . $html . '</ul>';
+            return [
+                $shift_signup_state,
+                '<ul class="list-group list-group-flush">' . $html . '</ul>'
+            ];
         }
 
-        return '';
+        return [
+            $shift_signup_state,
+            ''
+        ];
     }
 
     protected function renderRegisterdAngels($shift, $needed_angeltypes, $shift_entries, $user)

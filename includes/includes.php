@@ -34,6 +34,7 @@ $includeFiles = [
     __DIR__ . '/../includes/view/ShiftCalendarRenderer.php',
     __DIR__ . '/../includes/view/ShiftTableRenderer.php',
     __DIR__ . '/../includes/view/ShiftCalendarShiftRenderer.php',
+    __DIR__ . '/../includes/view/ShiftTableShiftRenderer.php',
     __DIR__ . '/../includes/view/ShiftsFilterRenderer.php',
     __DIR__ . '/../includes/view/Shifts_view.php',
     __DIR__ . '/../includes/view/ShiftEntry_view.php',
