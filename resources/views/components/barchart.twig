@@ -11,7 +11,7 @@
                 {% for bar in group.bars %}
                 <div
                     class="barchart-bar"
-                    title="bar.title"
+                    title="{{ bar.title }}"
                     style="height: {{ bar.height }}; background-color: {{ bar.bg }};"
                 ></div>
                 {% endfor %}
