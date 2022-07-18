@@ -15,7 +15,7 @@
     "bootstrap": "^5.1.0",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
-    "jquery-ui": "^1.13.0",
+    "jquery-ui": "^1.13.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.31",
     "select2": "^4.0.13",
