@@ -28,7 +28,7 @@ function admin_shifts()
     $start = Carbon::createTimestampFromDatetime(date('Y-m-d') . 'T00:00');
     $end = $start;
     $mode = '';
-    $angelmode = '';
+    $angelmode = 'manually';
     $length = '';
     $change_hours = [];
     $title = '';
@@ -150,7 +150,6 @@ function admin_shifts()
             if ($request->input('angelmode') == 'location') {
                 $angelmode = 'location';
             } elseif ($request->input('angelmode') == 'manually') {
-                $angelmode = 'manually';
                 foreach ($types as $type) {
                     if (preg_match('/^\d+$/', trim($request->input('type_' . $type['id'], 0)))) {
                         $needed_angel_types[$type['id']] = trim($request->input('type_' . $type['id'], 0));
