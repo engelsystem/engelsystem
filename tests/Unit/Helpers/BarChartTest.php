@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use Engelsystem\Helpers\BarChart;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\TestCase;
+use Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class BarChartTest extends TestCase
@@ -40,17 +41,48 @@ class BarChartTest extends TestCase
         $this->mockTranslator();
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\BarChart::render
-     * @covers \Engelsystem\Helpers\BarChart::calculateChartGroups
-     * @covers \Engelsystem\Helpers\BarChart::calculateYLabels
-     * @covers \Engelsystem\Helpers\BarChart::generateChartDemoData
-     */
-    public function testRender(): void
+    public function provideRenderTestData(): Generator
     {
-        $this->rendererMock->expects(self::once())
-            ->method('render')
-            ->with('components/barchart', [
+        $yLabels = [
+            [
+                'label' => '0',
+                'bottom' => '0%',
+            ],
+            [
+                'label' => '1',
+                'bottom' => '20%',
+            ],
+            [
+                'label' => '2',
+                'bottom' => '40%',
+            ],
+            [
+                'label' => '3',
+                'bottom' => '60%',
+            ],
+            [
+                'label' => '4',
+                'bottom' => '80%',
+            ],
+            [
+                'label' => '5',
+                'bottom' => '100%',
+            ],
+        ];
+
+        yield 'empty data' => [
+            [],
+            [
+                'groups' => [],
+                'colors' => self::COLORS,
+                'rowLabels' => self::ROW_LABELS,
+                'barChartClass' => '',
+                'yLabels' => $yLabels,
+            ]
+        ];
+        yield 'non-empty data' => [
+            self::DATA,
+            [
                 'groups' => [
                     [
                         'bars' => [
@@ -73,37 +105,27 @@ class BarChartTest extends TestCase
                 'colors' => self::COLORS,
                 'rowLabels' => self::ROW_LABELS,
                 'barChartClass' => '',
-                'yLabels' => [
-                    [
-                        'label' => '0',
-                        'bottom' => '0%',
-                    ],
-                    [
-                        'label' => '1',
-                        'bottom' => '20%',
-                    ],
-                    [
-                        'label' => '2',
-                        'bottom' => '40%',
-                    ],
-                    [
-                        'label' => '3',
-                        'bottom' => '60%',
-                    ],
-                    [
-                        'label' => '4',
-                        'bottom' => '80%',
-                    ],
-                    [
-                        'label' => '5',
-                        'bottom' => '100%',
-                    ],
-                ],
-            ])
+                'yLabels' => $yLabels,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideRenderTestData
+     * @covers \Engelsystem\Helpers\BarChart::render
+     * @covers \Engelsystem\Helpers\BarChart::calculateChartGroups
+     * @covers \Engelsystem\Helpers\BarChart::calculateYLabels
+     * @covers \Engelsystem\Helpers\BarChart::generateChartDemoData
+     */
+    public function testRender(array $testData, array $expected): void
+    {
+        $this->rendererMock->expects(self::once())
+            ->method('render')
+            ->with('components/barchart', $expected)
             ->willReturn('test bar chart');
         self::assertSame(
             'test bar chart',
-            BarChart::render(self::ROW_LABELS, self::COLORS, self::DATA)
+            BarChart::render(self::ROW_LABELS, self::COLORS, $testData)
         );
     }
 
