@@ -37,7 +37,9 @@ class BarChart
             }
         }
 
-        $roundedMax = (int) ceil($max / 5) * 5;
+        $roundedMax = $max === 0
+            ? 5
+            : (int) ceil($max / 5) * 5;
 
         return view('components/barchart', [
             'groups' => self::calculateChartGroups(
@@ -74,7 +76,7 @@ class BarChart
                 $group['bars'][] = [
                     'value' => $value,
                     'title' => $group['label'] . "\n" . $rowName . ': ' . $value,
-                    'height' => ($value / $max * 100) . '%',
+                    'height' => $max === 0 ? '0%' : ($value / $max * 100) . '%',
                     'bg' => $colors[$rowKey],
                 ];
             }
@@ -97,7 +99,7 @@ class BarChart
         for ($y = 0; $y <= $max; $y += $step) {
             $yLabels[] = [
                 'label' => $y,
-                'bottom' => ($y / $max * 100) . '%',
+                'bottom' => $max === 0 ? '0%' : ($y / $max * 100) . '%',
             ];
         }
 
@@ -131,7 +133,7 @@ class BarChart
      */
     public static function generateChartDemoData(int $days): array
     {
-        $step = floor(10000 / $days + 1);
+        $step = $days === 0 ? 0 : floor(10000 / $days + 1);
         $now = CarbonImmutable::now();
         $twoWeeksAgo = $now->subDays($days);
         $current = $twoWeeksAgo;
