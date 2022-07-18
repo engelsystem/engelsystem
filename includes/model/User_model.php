@@ -114,7 +114,7 @@ function User_validate_Nick($nick)
     if (strlen($nick) == 0 || strlen($nick) > 24) {
         return new ValidationResult(false, $nick);
     }
-    if (preg_match('/([^\p{L}\p{N}\-_. ]+)/ui', $nick)) {
+    if (preg_match(config('username_regex', '/([^\p{L}\p{N}\-_. ]+)/ui'), $nick)) {
         return new ValidationResult(false, $nick);
     }
 
