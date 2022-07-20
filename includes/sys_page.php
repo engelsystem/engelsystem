@@ -186,6 +186,23 @@ function strip_request_item($name, $default_value = null)
 }
 
 /**
+ * Returns REQUEST value or default value (null) if not set.
+ *
+ * @param string $name
+ * @param string|null $default_value
+ * @return mixed|null
+ */
+function strip_request_tags($name, $default_value = null)
+{
+    $request = request();
+    if ($request->has($name)) {
+        return strip_tags($request->input($name));
+    }
+
+    return $default_value;
+}
+
+/**
  * Testet, ob der angegebene REQUEST Wert ein Integer ist, bzw.
  * eine ID sein könnte.
  *

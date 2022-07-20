@@ -75,8 +75,8 @@ function admin_rooms()
             if ($request->hasPostData('submit')) {
                 $valid = true;
 
-                if ($request->has('name') && strlen(strip_request_item('name')) > 0) {
-                    $result = Room_validate_name(strip_request_item('name'), $room_id);
+                if ($request->has('name') && strlen(strip_request_tags('name')) > 0) {
+                    $result = Room_validate_name(strip_request_tags('name'), $room_id);
                     if (!$result->isValid()) {
                         $valid = false;
                         $msg .= error(__('This name is already in use.'), true);
