@@ -2535,8 +2535,13 @@ msgstr "Dein Passwort"
 
 #: includes/view/User_view.php:148
 #, php-format
-msgid "Angel should receive at least  %d vouchers."
+msgid "Angel should receive at least %d vouchers."
 msgstr "Engel sollte mindestens %d Gutscheine bekommen."
+
+#: includes/view/User_view.php:148
+#, php-format
+msgid "Angel should receive at least %d vouchers and is FA."
+msgstr "Engel sollte mindestens %d Gutscheine bekommen und ist FA."
 
 #: includes/view/User_view.php:153
 msgid "Number of vouchers given out"

@@ -158,7 +158,9 @@ function User_edit_vouchers_view($user)
             button(user_link($user->id), icon('chevron-left') . __('back'))
         ]),
         info(sprintf(
-            __('Angel should receive at least  %d vouchers.'),
+            $user->state->force_active
+                ? __('Angel should receive at least %d vouchers and is FA.')
+                : __('Angel should receive at least %d vouchers.'),
             User_get_eligable_voucher_count($user)
         ), true),
         form(
