@@ -777,8 +777,8 @@ msgid "Please enter work date."
 msgstr "Bitte Einsatzdatum angeben."
 
 #: includes/controller/user_worklog_controller.php:87
-msgid "Please enter work hours in format ##[.##]."
-msgstr "Bitte Stunden im Format ##[.##| eingeben."
+msgid "Please enter work hours in format ##[.##]"
+msgstr "Bitte Stunden im Format ##[.##] eingeben."
 
 #: includes/controller/user_worklog_controller.php:93
 msgid "Please enter a comment."
