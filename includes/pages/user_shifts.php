@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\Room;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Support\Collection;
@@ -49,9 +50,10 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
 {
     $start_time = $shiftsFilter->getStartTime();
     if (is_null($start_time)) {
+        $now = (new DateTime())->format('Y-m-d');
         $first_day = DateTime::createFromFormat(
             'Y-m-d',
-            $days[0] ?? (new DateTime())->format('Y-m-d')
+            in_array($now, $days) ? $now : ($days[0] ?? (new DateTime())->format('Y-m-d'))
         )->getTimestamp();
         if (time() < $first_day) {
             $start_time = $first_day;
@@ -61,8 +63,13 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
     }
 
     $end_time = $shiftsFilter->getEndTime();
-    if ($end_time == null) {
+    if (is_null($end_time)) {
         $end_time = $start_time + 24 * 60 * 60;
+        $end = Carbon::createFromTimestamp($end_time);
+        if (!in_array($end->format('Y-m-d'), $days)) {
+            $end->startOfDay()->subSecond(); // the day before
+            $end_time = $end->timestamp;
+        }
     }
 
     $shiftsFilter->setStartTime(check_request_datetime(
