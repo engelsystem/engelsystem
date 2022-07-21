@@ -167,6 +167,12 @@ table a > .icon-icon_angel {
   }
 }
 
+.dropdown-menu {
+    // prevent dropdown-menu from overflowing the view
+    max-height: calc(100vh - $navbar-height - 16px); // 16px extra padding
+    overflow: auto;
+}
+
 .selection .checkbox {
   display: block;
 }
