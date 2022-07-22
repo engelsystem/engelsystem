@@ -167,10 +167,16 @@ table a > .icon-icon_angel {
   }
 }
 
+// prevent dropdown-menu from overflowing the view
 .dropdown-menu {
-    // prevent dropdown-menu from overflowing the view
-    max-height: calc(100vh - $navbar-height - 16px); // 16px extra padding
+    max-height: calc(100vh - 300px); // 300px: menu offset
     overflow: auto;
+}
+
+@media (min-width: map-get($grid-breakpoints, 'lg')) {
+    .dropdown-menu {
+        max-height: calc(100vh - $navbar-height - 16px); // 16px extra padding
+    }
 }
 
 .selection .checkbox {
