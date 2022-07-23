@@ -363,7 +363,7 @@ return [
     // A list of credits
     'credits'                 => [
         'Contribution' => 'Please visit [engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
-            . 'you want to to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
+            . 'you want to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
             . 'or need help.'
     ],
 
