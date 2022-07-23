@@ -2518,8 +2518,8 @@ msgid "Planned date of departure"
 msgstr "Geplanter Abreisetag"
 
 #: includes/view/User_view.php:83
-msgid "Please visit the angeltypes page to manage your angeltypes."
-msgstr "Bitte benutze die Engeltypen-Seite um deine Engeltypen zu verwalten."
+msgid "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
+msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
 
 #: includes/view/User_view.php:124
 msgid ""

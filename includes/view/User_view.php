@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
@@ -34,6 +35,8 @@ function User_settings_view(
     $enable_planned_arrival = config('enable_planned_arrival');
     $enable_goody = config('enable_goody');
 
+    /** @var $urlGenerator UrlGeneratorInterface */
+    $urlGenerator = app(UrlGeneratorInterface::class);
     /** @var Renderer $renderer */
     $renderer = app(Renderer::class);
     return $renderer->render(
@@ -111,7 +114,13 @@ function User_settings_view(
                                 $personalData->shirt_size,
                                 __('Please select...')
                             ) : '',
-                            form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
+                            form_info(
+                                '',
+                                __(
+                                    'You can manage your Angeltypes <a href="%s">on the Angeltypes page</a>.',
+                                    [$urlGenerator->to('angeltypes')]
+                                )
+                            ),
                             form_submit('submit', __('Save'))
                         ]),
                     ])
