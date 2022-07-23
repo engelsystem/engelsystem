@@ -2535,13 +2535,13 @@ msgstr "Dein Passwort"
 
 #: includes/view/User_view.php:148
 #, php-format
-msgid "Angel should receive at least %d vouchers."
-msgstr "Engel sollte mindestens %d Gutscheine bekommen."
+msgid "Angel can receive another %d vouchers."
+msgstr "Engel kann noch %d Gutscheine bekommen."
 
 #: includes/view/User_view.php:148
 #, php-format
-msgid "Angel should receive at least %d vouchers and is FA."
-msgstr "Engel sollte mindestens %d Gutscheine bekommen und ist FA."
+msgid "Angel can receive another %d vouchers and is FA."
+msgstr "Engel kann noch %d Gutscheine bekommen und ist FA."
 
 #: includes/view/User_view.php:153
 msgid "Number of vouchers given out"
@@ -2649,8 +2649,8 @@ msgid "driving license"
 msgstr "Führerschein"
 
 #: includes/view/User_view.php:608
-msgid "Edit vouchers"
-msgstr "Gutschein bearbeiten"
+msgid "Vouchers"
+msgstr "Gutscheine"
 
 #: includes/view/User_view.php:612
 msgid "Add work log"

@@ -159,8 +159,8 @@ function User_edit_vouchers_view($user)
         ]),
         info(sprintf(
             $user->state->force_active
-                ? __('Angel should receive at least %d vouchers and is FA.')
-                : __('Angel should receive at least %d vouchers.'),
+                ? __('Angel can receive another %d vouchers and is FA.')
+                : __('Angel can receive another %d vouchers.'),
             User_get_eligable_voucher_count($user)
         ), true),
         form(
@@ -635,7 +635,7 @@ function User_view(
                                     'users',
                                     ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
                                 ),
-                                icon('file-binary-fill') . __('Edit vouchers')
+                                icon('file-binary-fill') . __('Vouchers')
                             )
                         : '',
                         $admin_user_worklog_privilege ? button(
