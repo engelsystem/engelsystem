@@ -1,6 +1,5 @@
 require('core-js/stable');
 window.$ = window.jQuery = require('jquery');
-require('jquery-ui');
 window.bootstrap = require('bootstrap');
 window.moment = require('moment');
 require('moment/locale/de');
