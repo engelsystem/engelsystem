@@ -64,11 +64,21 @@ function throw_redirect($url)
 }
 
 /**
+ * Sends a JSON response
+ * @param array $data
+ */
+function json_output(array $data): void
+{
+    header('Content-Type: application/json; charset=utf-8');
+    raw_output(json_encode($data));
+}
+
+/**
  * Echoes given output and dies.
  *
  * @param String $output String to display
  */
-function raw_output($output = '')
+function raw_output($output = '', $headers = [])
 {
     echo $output;
     die();

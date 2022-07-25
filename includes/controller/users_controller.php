@@ -172,10 +172,19 @@ function user_edit_vouchers_controller()
             $user_source->state->got_voucher = $vouchers;
             $user_source->state->save();
 
-            success(__('Saved the number of vouchers.'));
-            engelsystem_log(User_Nick_render($user_source, true) . ': ' . sprintf('Got %s vouchers',
-                    $user_source->state->got_voucher));
+            engelsystem_log(
+                User_Nick_render($user_source, true) . ': ' .
+                sprintf('Got %s vouchers', $user_source->state->got_voucher)
+            );
 
+            if (in_array('application/json', $request->getAcceptableContentTypes())) {
+                json_output([
+                    'issued' => $user_source->state->got_voucher,
+                    'eligible' => $user_source->state->got_voucher + User_get_eligable_voucher_count($user_source),
+                ]);
+            }
+
+            success(__('Saved the number of vouchers.'));
             throw_redirect(user_link($user_source->id));
         }
     }
@@ -317,7 +326,8 @@ function users_list_controller()
             State::whereForceActive(true)->count(),
             ShiftEntries_freeloaded_count(),
             State::whereGotShirt(true)->count(),
-            State::query()->sum('got_voucher')
+            State::query()->sum('got_voucher'),
+            auth()->can('admin_user'),
         )
     ];
 }
