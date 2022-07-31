@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Admin\Schedule;
 
-use Carbon\Carbon;
+use Engelsystem\Helpers\Carbon;
 use DateTimeInterface;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
@@ -17,6 +17,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Models\Room as RoomModel;
 use Engelsystem\Models\Shifts\Schedule as ScheduleUrl;
 use Engelsystem\Models\Shifts\ScheduleShift;
+use Engelsystem\Models\User\User;
 use ErrorException;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Database\Connection as DatabaseConnection;
@@ -267,6 +268,7 @@ class ImportSchedule extends BaseController
         }
 
         foreach ($deleteEvents as $event) {
+            $this->fireDeleteShiftEntryEvents($event);
             $this->deleteEvent($event);
         }
 
@@ -287,6 +289,39 @@ class ImportSchedule extends BaseController
         $roomModel->save();
 
         $this->log('Created schedule room "{room}"', ['room' => $room->getName()]);
+    }
+
+    /**
+     * @param Event $event
+     */
+    protected function fireDeleteShiftEntryEvents(Event $event): void
+    {
+        $shiftEntries = $this->db
+            ->table('ShiftEntry')
+            ->select([
+                'ShiftTypes.name', 'Shifts.title', 'AngelTypes.name AS type', 'rooms.id AS room_id',
+                'Shifts.start', 'Shifts.end', 'ShiftEntry.UID as user_id', 'ShiftEntry.freeloaded'
+            ])
+            ->join('Shifts', 'Shifts.SID', 'ShiftEntry.SID')
+            ->join('schedule_shift', 'Shifts.SID', 'schedule_shift.shift_id')
+            ->join('rooms', 'rooms.id', 'Shifts.RID')
+            ->join('AngelTypes', 'AngelTypes.id', 'ShiftEntry.TID')
+            ->join('ShiftTypes', 'ShiftTypes.id', 'Shifts.shifttype_id')
+            ->where('schedule_shift.guid', $event->getGuid())
+            ->get();
+
+        foreach ($shiftEntries as $shiftEntry) {
+            event('shift.entry.deleting', [
+                'user'       => User::find($shiftEntry->user_id),
+                'start'      => Carbon::createFromTimestamp($shiftEntry->start),
+                'end'        => Carbon::createFromTimestamp($shiftEntry->end),
+                'name'       => $shiftEntry->name,
+                'title'      => $shiftEntry->title,
+                'type'       => $shiftEntry->type,
+                'room'       => RoomModel::find($shiftEntry->room_id),
+                'freeloaded' => $shiftEntry->freeloaded,
+            ]);
+        }
     }
 
     /**

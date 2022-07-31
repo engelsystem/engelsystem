@@ -14,7 +14,7 @@ class ShiftsTest extends TestCase
     /**
      * @covers \Engelsystem\Helpers\Shifts::isNightShift
      */
-    public function testIsNightShift()
+    public function testIsNightShiftDisabled()
     {
         $config = new Config(['night_shifts' => [
             'enabled'    => false,
@@ -29,38 +29,43 @@ class ShiftsTest extends TestCase
             new Carbon('2042-01-01 04:00'),
             new Carbon('2042-01-01 05:00')
         ));
+    }
 
-        $config->set('night_shifts', array_merge($config->get('night_shifts'), ['enabled' => true]));
+    /**
+     * @return array[][]
+     */
+    public function nightShiftData(): array
+    {
+        // $start, $end, $isNightShift
+        return [
+            // Is night shift
+            [new Carbon('2042-01-01 04:00'), new Carbon('2042-01-01 05:00'), true],
+            // Starts as night shift
+            [new Carbon('2042-01-01 05:45'), new Carbon('2042-01-01 07:00'), true],
+            // Ends as night shift
+            [new Carbon('2042-01-01 00:00'), new Carbon('2042-01-01 02:15'), true],
+            // Too early
+            [new Carbon('2042-01-01 00:00'), new Carbon('2042-01-01 01:59'), false],
+            // Too late
+            [new Carbon('2042-01-01 06:00'), new Carbon('2042-01-01 09:59'), false],
+        ];
+    }
 
-        // Is night shift
-        $this->assertTrue(Shifts::isNightShift(
-            new Carbon('2042-01-01 04:00'),
-            new Carbon('2042-01-01 05:00')
-        ));
+    /**
+     * @covers       \Engelsystem\Helpers\Shifts::isNightShift
+     * @dataProvider nightShiftData
+     */
+    public function testIsNightShiftEnabled($start, $end, $isNightShift)
+    {
+        $config = new Config(['night_shifts' => [
+            'enabled'    => true,
+            'start'      => 2,
+            'end'        => 6,
+            'multiplier' => 2,
+        ]]);
+        $this->app->instance('config', $config);
 
-        // Starts as night shift
-        $this->assertTrue(Shifts::isNightShift(
-            new Carbon('2042-01-01 05:45'),
-            new Carbon('2042-01-01 07:00')
-        ));
-
-        // Ends as night shift
-        $this->assertTrue(Shifts::isNightShift(
-            new Carbon('2042-01-01 00:00'),
-            new Carbon('2042-01-01 02:15')
-        ));
-
-        // Too early
-        $this->assertFalse(Shifts::isNightShift(
-            new Carbon('2042-01-01 00:00'),
-            new Carbon('2042-01-01 01:59')
-        ));
-
-        // Too late
-        $this->assertFalse(Shifts::isNightShift(
-            new Carbon('2042-01-01 06:00'),
-            new Carbon('2042-01-01 09:59')
-        ));
+        $this->assertEquals($isNightShift, Shifts::isNightShift($start, $end));
     }
 
     /**

@@ -152,6 +152,17 @@ msgstr "Du wurdest von einem Supporter als %1$s hinzugefügt."
 msgid "notification.angeltype.added.text"
 msgstr "Eine Beschreibung findest du unter %2$s"
 
+msgid "notification.shift.deleted"
+msgstr "Deine Schicht wurde gelöscht"
+
+msgid "notification.shift.deleted.introduction"
+msgstr "Eine deiner Schichten wurde gelöscht:"
+
+msgid "notification.shift.deleted.worklog"
+msgstr ""
+"Da die gelöschte Schicht bereits vergangen ist, "
+"haben wir einen entsprechenden Arbeitseinsatz hinzugefügt."
+
 msgid "user.edit.success"
 msgstr "Benutzer erfolgreich bearbeitet."
 

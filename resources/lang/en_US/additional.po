@@ -150,6 +150,17 @@ msgstr "You have been added as an %1$s by a supporter."
 msgid "notification.angeltype.added.text"
 msgstr "You can find a description at %2$s"
 
+msgid "notification.shift.deleted"
+msgstr "Your Shift was deleted"
+
+msgid "notification.shift.deleted.introduction"
+msgstr "A Shift you are registered on was deleted:"
+
+msgid "notification.shift.deleted.worklog"
+msgstr ""
+"Since the deleted shift was already done, "
+"we added a worklog entry instead, to keep your work hours correct."
+
 msgid "user.edit.success"
 msgstr "User edited successfully."
 

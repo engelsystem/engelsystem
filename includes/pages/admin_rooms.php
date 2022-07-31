@@ -1,6 +1,8 @@
 <?php
 
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -180,9 +182,19 @@ function admin_rooms()
                 $shifts = Shifts_by_room($room);
                 foreach ($shifts as $shift) {
                     $shift = Shift($shift['SID']);
-
-                    UserWorkLog_from_shift($shift);
-                    mail_shift_delete($shift);
+                    foreach ($shift['ShiftEntry'] as $entry) {
+                        $type = AngelType($entry['TID']);
+                        event('shift.entry.deleting', [
+                            'user'       => User::find($entry['user_id']),
+                            'start'      => Carbon::createFromTimestamp($shift['start']),
+                            'end'        => Carbon::createFromTimestamp($shift['end']),
+                            'name'       => $shift['name'],
+                            'title'      => $shift['title'],
+                            'type'       => $type['name'],
+                            'room'       => $room,
+                            'freeloaded' => (bool)$entry['freeloaded'],
+                        ]);
+                    }
                 }
 
                 Room_delete($room);
