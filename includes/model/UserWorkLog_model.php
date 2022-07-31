@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Engelsystem\Helpers\Shifts;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Worklog;
 use Illuminate\Support\Collection;
@@ -71,8 +72,6 @@ function UserWorkLog_create(Worklog $worklog)
 function UserWorkLog_from_shift($shift)
 {
     $shift = is_array($shift) ? $shift : Shift($shift);
-    $nightShifts = config('night_shifts');
-
     if ($shift['start'] > time()) {
         return;
     }
@@ -85,18 +84,9 @@ function UserWorkLog_from_shift($shift)
 
         $type = AngelType($entry['TID']);
 
-        $nightShiftMultiplier = 1;
         $shiftStart = Carbon::createFromTimestamp($shift['start']);
         $shiftEnd = Carbon::createFromTimestamp($shift['end']);
-        if (
-            $nightShifts['enabled']
-            && (
-                $shiftStart->hour >= $nightShifts['start'] && $shiftStart->hour < $nightShifts['end']
-                || $shiftEnd->hour >= $nightShifts['start'] && $shiftEnd->hour < $nightShifts['end']
-            )
-        ) {
-            $nightShiftMultiplier = $nightShifts['multiplier'];
-        }
+        $nightShiftMultiplier = Shifts::getNightShiftMultiplier($shiftStart, $shiftEnd);
 
         $worklog = UserWorkLog_new($entry['UID']);
         $worklog->hours = (($shift['end'] - $shift['start']) / 60 / 60) * $nightShiftMultiplier;
