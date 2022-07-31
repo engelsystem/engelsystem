@@ -1,0 +1,16 @@
+{% extends "emails/mail.twig" %}
+
+{% block introduction %}
+{{ __('notification.shift.deleted.introduction') }}
+{% endblock %}
+
+{% block message %}
+{{ name }}
+{{ title }}
+{{ start.format(__('Y-m-d H:i')) }} - {{ end.format(__('Y-m-d H:i')) }}
+{{ room.name }}
+
+{% if start <= date() and not freeloaded %}
+{{ __('notification.shift.deleted.worklog') }}
+{% endif %}
+{% endblock %}

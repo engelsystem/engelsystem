@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Helpers;
 
-use \Carbon\Carbon;
+use Carbon\Carbon;
 
 // Should be moved to the shift model if it's available
 class Shifts

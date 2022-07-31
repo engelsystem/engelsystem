@@ -536,7 +536,21 @@ function admin_shifts_history(): string
 
         foreach ($shifts as $shift) {
             $shift = Shift($shift['SID']);
-            UserWorkLog_from_shift($shift);
+            $room = Room::find($shift['RID']);
+            foreach ($shift['ShiftEntry'] as $entry) {
+                $type = AngelType($entry['TID']);
+                event('shift.entry.deleting', [
+                    'user'       => User::find($entry['user_id']),
+                    'start'      => Carbon::createFromTimestamp($shift['start']),
+                    'end'        => Carbon::createFromTimestamp($shift['end']),
+                    'name'       => $shift['name'],
+                    'title'      => $shift['title'],
+                    'type'       => $type['name'],
+                    'room'       => $room,
+                    'freeloaded' => (bool)$entry['freeloaded'],
+                ]);
+            }
+
             shift_delete($shift['SID']);
 
             engelsystem_log(

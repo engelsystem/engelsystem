@@ -47,7 +47,7 @@ class EngelsystemMailer extends Mailer
     ): void {
         if ($to instanceof User) {
             $locale = $locale ?: $to->settings->language;
-            $to = $to->contact->email ? $to->contact->email : $to->email;
+            $to = $to->contact->email ?: $to->email;
         }
 
         $activeLocale = null;

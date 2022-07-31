@@ -512,7 +512,6 @@ function Shift_signup_allowed(
  */
 function Shift_delete($shift_id)
 {
-    mail_shift_delete(Shift($shift_id));
     Db::delete('DELETE FROM `Shifts` WHERE `SID`=?', [$shift_id]);
 }
 
@@ -657,7 +656,9 @@ function Shift($shift_id)
     }
 
     $shiftsEntry_source = Db::select('
-        SELECT `ShiftEntry`.`id`, `ShiftEntry`.`TID` , `ShiftEntry`.`UID` , `ShiftEntry`.`freeloaded`, `users`.`name` AS `username`
+        SELECT
+            `ShiftEntry`.`id`, `ShiftEntry`.`TID` , `ShiftEntry`.`UID` , `ShiftEntry`.`freeloaded`,
+            `users`.`name` AS `username`, `users`.`id` AS `user_id`
         FROM `ShiftEntry`
         LEFT JOIN `users` ON (`users`.`id` = `ShiftEntry`.`UID`)
         WHERE `SID`=?', [$shift_id]);

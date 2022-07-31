@@ -1,9 +1,10 @@
 <?php
 
-use Carbon\Carbon;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ScheduleShift;
+use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -236,7 +237,21 @@ function shift_delete_controller()
 
     // Schicht löschen bestätigt
     if ($request->hasPostData('delete')) {
-        UserWorkLog_from_shift($shift_id);
+        $room = Room::find($shift['RID']);
+        foreach ($shift['ShiftEntry'] as $entry) {
+            $type = AngelType($entry['TID']);
+            event('shift.entry.deleting', [
+                'user'       => User::find($entry['user_id']),
+                'start'      => Carbon::createFromTimestamp($shift['start']),
+                'end'        => Carbon::createFromTimestamp($shift['end']),
+                'name'       => $shift['name'],
+                'title'      => $shift['title'],
+                'type'       => $type['name'],
+                'room'       => $room,
+                'freeloaded' => (bool)$entry['freeloaded'],
+            ]);
+        }
+
         Shift_delete($shift_id);
 
         engelsystem_log(
