@@ -2605,7 +2605,7 @@ msgstr "Schicht endete %c"
 
 #: includes/view/User_view.php:409
 msgid "sign off"
-msgstr "abmelden"
+msgstr "austragen"
 
 #: includes/view/User_view.php:461
 msgid "Sum:"
