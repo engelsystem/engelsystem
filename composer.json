@@ -44,7 +44,7 @@
         "symfony/http-foundation": "^5.4",
         "symfony/mailer": "^5.4",
         "symfony/psr-http-message-bridge": "^2.1",
-        "twig/twig": "^3.3",
+        "twig/twig": "^3.4",
         "vlucas/phpdotenv": "^5.4"
     },
     "require-dev": {
