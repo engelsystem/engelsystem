@@ -63,6 +63,27 @@ class ValidatorTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Validation\Validator::validate
      */
+    public function testValidateMultipleParameters()
+    {
+        $val = new Validator();
+
+        $this->assertFalse($val->validate(
+            ['lorem' => 'h'],
+            ['lorem' => 'length:2:3']
+        ));
+        $this->assertTrue($val->validate(
+            ['lorem' => 'hey'],
+            ['lorem' => 'length:2:3']
+        ));
+        $this->assertFalse($val->validate(
+            ['lorem' => 'heyy'],
+            ['lorem' => 'length:2:3']
+        ));
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Validation\Validator::validate
+     */
     public function testValidateNotImplemented()
     {
         $val = new Validator();

@@ -1,13 +1,19 @@
 {% macro input(name, label, type, opt) %}
     <div class="mb-3">
         {% if label -%}
-            <label for="{{ name }}" class="form-label {% if opt.hide_label|default(false) %}sr-only{% endif %}">{{ label }}</label>
+            <label for="{{ name }}" class="form-label {% if opt.hide_label|default(false) %}sr-only{% endif %}">
+                {{ label }}
+                {% if opt.entry_required_icon|default(false) %}
+                    <span class="bi bi-exclamation-triangle text-info"></span>
+                {% endif %}
+            </label>
         {%- endif %}
         <input
             type="{{ type|default('text') }}" class="form-control"
             id="{{ name }}" name="{{ name }}"
             value="{{ opt.value|default('')|escape('html_attr') }}"
             {%- if opt.min is defined %} minlength="{{ opt.min }}"{% endif %}
+            {%- if opt.max is defined %} maxlength="{{ opt.max }}"{% endif %}
             {%- if opt.required|default(false) %}
                 required
             {%- endif -%}
