@@ -20,6 +20,8 @@ $route->post('/oauth/{provider}/connect', 'OAuthController@connect');
 $route->post('/oauth/{provider}/disconnect', 'OAuthController@disconnect');
 
 // User settings
+$route->get('/settings/profile', 'SettingsController@profile');
+$route->post('/settings/profile', 'SettingsController@saveProfile');
 $route->get('/settings/password', 'SettingsController@password');
 $route->post('/settings/password', 'SettingsController@savePassword');
 $route->get('/settings/theme', 'SettingsController@theme');

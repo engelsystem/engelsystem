@@ -52,6 +52,82 @@ class SettingsController extends BaseController
         $this->response = $response;
     }
 
+    public function profile(): Response
+    {
+        $user = $this->auth->user();
+
+        return $this->response->withView(
+            'pages/settings/profile',
+            [
+                'settings_menu' => $this->settingsMenu(),
+                'user' => $user,
+            ] + $this->getNotifications()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function saveProfile(Request $request): Response
+    {
+        $user = $this->auth->user();
+        $data = $this->validate($request, [
+            'pronoun'                => 'optional|max:15',
+            'first_name'             => 'optional|max:64',
+            'last_name'              => 'optional|max:64',
+            'planned_arrival_date'   => 'required|date:Y-m-d',
+            'planned_departure_date' => 'optional|date:Y-m-d',
+            'dect'                   => 'optional|length:0:40', // dect/mobile can be purely numbers. "max" would have
+            'mobile'                 => 'optional|length:0:40', // checked their values, not their character length.
+            'email'                  => 'required|email|max:254',
+            'email_shiftinfo'        => 'optional|checked',
+            'email_news'             => 'optional|checked',
+            'email_human'            => 'optional|checked',
+            'email_goody'            => 'optional|checked',
+            'shirt_size'             => 'required',
+        ]);
+
+        if (config('enable_pronoun')) {
+            $user->personalData->pronoun = $data['pronoun'];
+        }
+
+        if (config('enable_user_name')) {
+            $user->personalData->first_name = $data['first_name'];
+            $user->personalData->last_name = $data['last_name'];
+        }
+
+        if (config('enable_planned_arrival')) {
+            $user->personalData->planned_arrival_date = $data['planned_arrival_date'];
+            $user->personalData->planned_departure_date = $data['planned_departure_date'];
+        }
+
+        if (config('enable_dect')) {
+            $user->contact->dect = $data['dect'];
+        }
+
+        $user->contact->mobile = $data['mobile'];
+        $user->email = $data['email'];
+        $user->settings->email_shiftinfo = $data['email_shiftinfo'];
+        $user->settings->email_news = $data['email_news'];
+        $user->settings->email_human = $data['email_human'];
+
+        if (config('enable_goody')) {
+            $user->settings->email_goody = $data['email_goody'];
+        }
+
+        $user->personalData->shirt_size = $data['shirt_size'];
+
+        $user->personalData->save();
+        $user->contact->save();
+        $user->settings->save();
+        $user->save();
+
+        $this->addNotification('settings.profile.success');
+
+        return $this->redirect->to('/settings/profile');
+    }
+
     /**
      * @return Response
      */
@@ -62,7 +138,6 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'min_length'    => config('min_password_length')
-
             ] + $this->getNotifications()
         );
     }
