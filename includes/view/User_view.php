@@ -157,6 +157,10 @@ function Users_view(
     );
     $user_table_headers['last_login_at'] = Users_table_header_link('last_login_at', __('Last login'), $order_by);
     $user_table_headers['actions'] = '';
+    
+    foreach(config('disabled_user_view_columns') ?? [] as $key){
+        unset($user_table_headers[$key]);
+    }
 
     return page_with_title(__('All users'), [
         msg(),
