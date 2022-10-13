@@ -108,6 +108,17 @@ msgstr "Unable to find OAuth provider"
 msgid "settings.profile"
 msgstr "Profile"
 
+msgid "settings.profile.planned_arrival_date.invalid"
+msgstr "Please enter your planned date of arrival. "
+"It should be after the buildup start date and before teardown end date."
+
+msgid "settings.profile.planned_departure_date.invalid"
+msgstr "Please enter your planned date of departure. "
+"It should be after your planned arrival date and after buildup start date and before teardown end date."
+
+msgid "settings.profile.success"
+msgstr "Settings saved."
+
 msgid "faq.delete.success"
 msgstr "FAQ entry successfully deleted."
 

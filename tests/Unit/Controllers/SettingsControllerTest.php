@@ -613,7 +613,13 @@ class SettingsControllerTest extends TestCase
             'en_US' => 'English',
             'de_DE' => 'Deutsch'
         ];
-        $this->config = new Config(['min_password_length' => 6, 'themes' => $themes, 'locales' => $languages]);
+        $tshirt_sizes = ['S' => 'Small'];
+        $this->config = new Config([
+            'min_password_length' => 6,
+            'themes' => $themes,
+            'locales' => $languages,
+            'tshirt_sizes' => $tshirt_sizes
+        ]);
         $this->app->instance('config', $this->config);
         $this->app->instance(Config::class, $this->config);
 
