@@ -23,7 +23,7 @@
                         'pronoun',
                         __('settings.profile.pronoun'),
                         'text',
-                        {'value': user.personalData.pronoun ,'max': 15}
+                        {'value': user.personalData.pronoun ,'max_length': 15}
                     ) }}
                     {{ m.info(__('settings.profile.pronoun.info')) }}
                 {% endif %}
@@ -32,13 +32,13 @@
                         'first_name',
                         __('settings.profile.firstname'),
                         'text',
-                        {'value': user.personalData.first_name, 'max': 64}
+                        {'value': user.personalData.first_name, 'max_length': 64}
                     ) }}
                     {{ f.input(
                         'last_name',
                         __('settings.profile.lastname'),
                         'text',
-                        {'value': user.personalData.last_name, 'max': 64}
+                        {'value': user.personalData.last_name, 'max_length': 64}
                     ) }}
                 {% endif %}
             </div>
@@ -50,16 +50,22 @@
                         __('settings.profile.planned_arrival_date'),
                         'date',
                         {
-                            'value': user.personalData.planned_arrival_date.format(__('Y-m-d')),
+                            'value': user.personalData.planned_arrival_date.format('Y-m-d'),
                             'required': true,
-                            'entry_required_icon': true
+                            'entry_required_icon': true,
+                            'min': config('buildup_start') ? config('buildup_start').format('Y-m-d') : '',
+                            'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
                         }
                     ) }}
                     {{ f.input(
                         'planned_departure_date',
                         __('settings.profile.planned_departure_date'),
-                        'text',
-                        {'value': user.personalData.planned_departure_date.format(__('Y-m-d'))}
+                        'date',
+                        {
+                            'value': user.personalData.planned_departure_date.format('Y-m-d'),
+                            'min': config('buildup_start') ? config('buildup_start').format('Y-m-d') : '',
+                            'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
+                        }
                     ) }}
                 </div>
             {% endif %}
@@ -67,30 +73,30 @@
             <div class="col-md-12">
                 {% if config('enable_dect') %}
                     {{ f.input(
-                    'dect',
-                    __('settings.profile.dect'),
-                    'text',
-                    {'value': user.contact.dect, 'max': 40}
+                        'dect',
+                        __('settings.profile.dect'),
+                        'text',
+                        {'value': user.contact.dect, 'max_length': 40}
                     ) }}
                 {% endif %}
                 {{ f.input(
                     'mobile',
                     __('settings.profile.mobile'),
                     'text',
-                    {'value': user.contact.mobile, 'max': 40}
+                    {'value': user.contact.mobile, 'max_length': 40}
                 ) }}
                 {{ f.input(
                     'email',
                     __('settings.profile.email'),
                     'email',
-                    {'value': user.email, 'max': 254, 'required': true, 'entry_required_icon': true}
+                    {'value': user.email, 'max_length': 254, 'required': true, 'entry_required_icon': true}
                 ) }}
             </div>
 
             <div class="col-md-12">
                 {{ f.checkbox(
                     'email_shiftinfo',
-                    __('settings.profile.email_shiftinfo'),
+                    __('settings.profile.email_shiftinfo', [config('app_name')]),
                     user.settings.email_shiftinfo
                 ) }}
                 {{ f.checkbox(
@@ -104,10 +110,17 @@
                     user.settings.email_human
                 ) }}
                 {% if config('enable_goody') %}
+                    {% set privacy_email = config('privacy_email') %}
+                    {% set email_goody_label = __('settings.profile.email_goody') ~
+                        (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
+                    %}
                     {{ f.checkbox(
                         'email_goody',
-                        __('settings.profile.email_goody'),
-                        user.settings.email_goody
+                        email_goody_label,
+                        user.settings.email_goody,
+                        user.settings.email_goody,
+                        false,
+                        true
                     ) }}
                 {% endif %}
             </div>
@@ -122,7 +135,7 @@
             </div>
 
             <div class="col-md-12">
-                {{ m.info(__('settings.profile.user_details.info')) }}
+                {{ m.info(__('settings.profile.angeltypes.info', [url('/angeltypes')]), true) }}
                 {{ f.submit() }}
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Controllers;
 
+use Carbon\Carbon;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
@@ -13,6 +14,7 @@ use Psr\Log\LoggerInterface;
 class SettingsController extends BaseController
 {
     use HasUserNotifications;
+    use ChecksArrivalsAndDepartures;
 
     /** @var Authenticator */
     protected $auth;
@@ -72,6 +74,10 @@ class SettingsController extends BaseController
     public function saveProfile(Request $request): Response
     {
         $user = $this->auth->user();
+
+        config('buildup_start');
+        config('teardown_end');
+
         $data = $this->validate($request, [
             'pronoun'                => 'optional|max:15',
             'first_name'             => 'optional|max:64',
@@ -98,8 +104,18 @@ class SettingsController extends BaseController
         }
 
         if (config('enable_planned_arrival')) {
-            $user->personalData->planned_arrival_date = $data['planned_arrival_date'];
-            $user->personalData->planned_departure_date = $data['planned_departure_date'];
+            if (!$this->isArrivalDateValid($data['planned_arrival_date'], $data['planned_departure_date'])) {
+                $this->addNotification('settings.profile.planned_arrival_date.invalid', 'errors');
+                return $this->redirect->to('/settings/profile');
+
+            } else if (!$this->isDepartureDateValid($data['planned_arrival_date'], $data['planned_departure_date'])) {
+                $this->addNotification('settings.profile.planned_departure_date.invalid', 'errors');
+                return $this->redirect->to('/settings/profile');
+
+            } else {
+                $user->personalData->planned_arrival_date = $data['planned_arrival_date'];
+                $user->personalData->planned_departure_date = $data['planned_departure_date'];
+            }
         }
 
         if (config('enable_dect')) {
@@ -116,7 +132,10 @@ class SettingsController extends BaseController
             $user->settings->email_goody = $data['email_goody'];
         }
 
-        $user->personalData->shirt_size = $data['shirt_size'];
+        if (isset(config('tshirt_sizes')[$data['shirt_size']])) {
+            $user->personalData->shirt_size = $data['shirt_size'];
+            $user->personalData->save();
+        }
 
         $user->personalData->save();
         $user->contact->save();

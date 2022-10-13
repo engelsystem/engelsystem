@@ -2942,6 +2942,64 @@ msgstr "Nachricht"
 msgid "settings.settings"
 msgstr "Einstellungen"
 
+msgid "settings.profile.user_details.info"
+msgstr "Hier kannst Du Deine Details ändern."
+
+msgid "settings.profile.entry_required"
+msgstr "Pflichtfeld!"
+
+msgid "settings.profile.nick"
+msgstr "Nick"
+
+msgid "settings.profile.pronoun"
+msgstr "Pronomen"
+
+msgid "settings.profile.pronoun.info"
+msgstr "Wird auf deiner Profilseite und in Engellisten angezeigt."
+
+msgid "settings.profile.firstname"
+msgstr "Vorname"
+
+msgid "settings.profile.lastname"
+msgstr "Nachname"
+
+msgid "settings.profile.planned_arrival_date"
+msgstr "Geplanter Ankunftstag"
+
+msgid "settings.profile.planned_departure_date"
+msgstr "Geplanter Abreisetag"
+
+msgid "settings.profile.dect"
+msgstr "DECT"
+
+msgid "settings.profile.mobile"
+msgstr "Handy"
+
+msgid "settings.profile.email"
+msgstr "E-Mail"
+
+msgid "settings.profile.email_shiftinfo"
+msgstr "Das %s darf mir E-Mails senden (z.B. wenn sich meine Schichten ändern)."
+
+msgid "settings.profile.email_news"
+msgstr "Benachrichtige mich bei neuen News."
+
+msgid "settings.profile.email_by_human_allowed"
+msgstr "Erlaube Himmel-Engeln dich per Mail zu kontaktieren."
+
+msgid "settings.profile.email_goody"
+msgstr "Um Voucher zu erhalten, stimme zu, dass Nick, E-Mail-Adresse, geleistete Arbeit und Shirtgröße "
+"bis zum nächsten gleichartigen Event gespeichert werden."
+
+msgid "settings.profile.privacy"
+msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
+
+msgid "settings.profile.shirt_size"
+msgstr "T-Shirt-Größe"
+
+msgid "settings.profile.angeltypes.info"
+msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
+
 msgid "settings.password"
 msgstr "Passwort"
 

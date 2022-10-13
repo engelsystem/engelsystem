@@ -12,8 +12,10 @@
             type="{{ type|default('text') }}" class="form-control"
             id="{{ name }}" name="{{ name }}"
             value="{{ opt.value|default('')|escape('html_attr') }}"
-            {%- if opt.min is defined %} minlength="{{ opt.min }}"{% endif %}
-            {%- if opt.max is defined %} maxlength="{{ opt.max }}"{% endif %}
+            {%- if opt.min_length is defined %} minlength="{{ opt.min_length }}"{% endif %}
+            {%- if opt.max_length is defined %} maxlength="{{ opt.max_length }}"{% endif %}
+            {%- if opt.min is defined %} min="{{ opt.min }}"{% endif %}
+            {%- if opt.max is defined %} max="{{ opt.max }}"{% endif %}
             {%- if opt.required|default(false) %}
                 required
             {%- endif -%}
@@ -61,14 +63,18 @@
     </div>
 {%- endmacro %}
 
-{% macro checkbox(name, label, checked, value, disabled) %}
+{% macro checkbox(name, label, checked, value, disabled, raw_label) %}
     <div class="form-check mb-3">
         <label>
             <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}" class="form-check-input"
                 {%- if checked|default(false) %} checked{% endif %}
                 {%- if disabled|default(false) %} disabled{% endif %}
             >
-            {{ label }}
+            {%- if raw_label|default(false) -%}
+                {{ label|raw }}
+            {%- else -%}
+                {{ label }}
+            {%- endif -%}
         </label>
     </div>
 {%- endmacro %}

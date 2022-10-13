@@ -36,8 +36,15 @@
     </a>
 {% endmacro %}
 
-{% macro info(text) %}
-    <span class="help-block">{{ _self.icon('info-circle') }}{{ text }}</span>
+{% macro info(text, raw) %}
+    <span class="help-block">
+        {{ _self.icon('info-circle') }}
+        {%- if raw|default(false) -%}
+            {{ text|raw }}
+        {%- else -%}
+            {{ text }}
+        {%- endif -%}
+    </span>
 {%- endmacro %}
 
 {% macro entry_required(text) %}

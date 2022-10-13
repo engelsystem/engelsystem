@@ -110,6 +110,17 @@ msgstr "OAuth-Provider nicht gefunden"
 msgid "settings.profile"
 msgstr "Profil"
 
+msgid "settings.profile.planned_arrival_date.invalid"
+msgstr "Bitte gib Dein geplantes Ankunftsdatum an. "
+"Es sollte nach dem Aufbaubeginn und vor dem Abbauende liegen."
+
+msgid "settings.profile.planned_departure_date.invalid"
+msgstr "Bitte gib Dein geplantes Abreisedatum an, damit wir ein Gefühl für die Abbauplanung bekommen. "
+"Es sollte nach dem Aufbaubeginn und vor dem Abbauende liegen."
+
+msgid "settings.profile.success"
+msgstr "Einstellungen gespeichert."
+
 msgid "faq.delete.success"
 msgstr "FAQ Eintrag erfolgreich gelöscht."
 
