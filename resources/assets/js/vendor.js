@@ -6,6 +6,12 @@ require('moment/locale/de');
 require('./forms');
 require('./sticky-headers');
 require('./moment-countdown');
+require('./voucher');
+
+const jsOnlyElements = document.querySelectorAll('.js-only');
+jsOnlyElements.forEach((jsOnlyElement) => {
+    jsOnlyElement.classList.remove('js-only');
+});
 
 moment.updateLocale('en', {
     week : {

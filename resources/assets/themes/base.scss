@@ -312,6 +312,12 @@ span.ref-id[id] {
   }
 }
 
+// JavaScript only
+
+.js-only {
+    display: none;
+}
+
 // code tag
 code {
   background-color: $input-disabled-bg;

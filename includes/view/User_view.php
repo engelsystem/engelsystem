@@ -201,17 +201,53 @@ function Users_view(
     $force_active_count,
     $freeloads_count,
     $tshirts_count,
-    $voucher_count
+    $voucher_count,
+    $admin_user_privilege,
 ) {
     $usersList = [];
+
     foreach ($users as $user) {
+        $voucher_template = <<<EOT
+        <div class="d-flex align-items-center text-nowrap js-only">
+            <div data-field="voucher-status" class="flex-grow-1 text-end">
+                {issued} / {eligible}
+            </div>
+            {plus_one}
+        </div>
+EOT;
+
+        if (($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher')) {
+            $plus_one = <<<EOT
+            <div
+                class="btn btn-sm btn-secondary ms-2"
+                data-voucher-amount="{amount}"
+                data-voucher-user-id="{user}"
+            >
+                +1
+            </div>
+EOT;
+
+            $voucher_template = strtr($voucher_template, [
+                '{plus_one}' => $plus_one,
+            ]);
+        }
+
+        $voucher_field = strtr(
+            $voucher_template,
+            [
+                '{issued}' => $user->state->got_voucher,
+                '{eligible}' => $user->state->got_voucher + User_get_eligable_voucher_count($user),
+                '{user}' => $user->id,
+                '{amount}' => $user->state->got_voucher + 1,
+            ]
+        );
         $u = [];
         $u['name'] = User_Nick_render($user) . User_Pronoun_render($user);
         $u['first_name'] = $user->personalData->first_name;
         $u['last_name'] = $user->personalData->last_name;
         $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', $user->contact->dect);
         $u['arrived'] = icon_bool($user->state->arrived);
-        $u['got_voucher'] = $user->state->got_voucher;
+        $u['got_voucher'] = $voucher_field;
         $u['freeloads'] = $user->getAttribute('freeloads');
         $u['active'] = icon_bool($user->state->active);
         $u['force_active'] = icon_bool($user->state->force_active);
@@ -227,6 +263,7 @@ function Users_view(
         ]);
         $usersList[] = $u;
     }
+
     $usersList[] = [
         'name'         => '<strong>' . __('Sum') . '</strong>',
         'arrived'      => $arrived_count,
@@ -249,7 +286,7 @@ function Users_view(
         $user_table_headers['dect'] = Users_table_header_link('dect', __('DECT'), $order_by);
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
-    $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
+    $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Vouchers'), $order_by);
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('Active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
