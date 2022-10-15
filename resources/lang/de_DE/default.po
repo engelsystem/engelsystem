@@ -245,7 +245,6 @@ msgstr ""
 "Wir haben dir eine eMail mit einem Link zum Passwort-zurücksetzen geschickt."
 
 #: resources/views/pages/password/reset-success.twig:9
-#: includes/pages/user_settings.php:120
 msgid "Password saved."
 msgstr "Passwort gespeichert."
 
@@ -388,7 +387,6 @@ msgid "The buildup start date has to be before the teardown end date."
 msgstr "Das Aufbau Start Datum muss vor dem Abbau Ende Datum liegen."
 
 #: includes/controller/event_config_controller.php:120
-#: includes/pages/user_settings.php:93
 msgid "Settings saved."
 msgstr "Einstellungen gespeichert."
 
@@ -1586,7 +1584,7 @@ msgstr "Der Nick &quot;%s&quot; existiert schon."
 msgid "Please enter a nickname."
 msgstr "Gib bitte einen Nick an."
 
-#: includes/pages/guest_login.php:93 includes/pages/user_settings.php:32
+#: includes/pages/guest_login.php:93
 msgid "E-mail address is not correct."
 msgstr "Die E-Mail Adresse ist nicht in Ordnung."
 
@@ -1594,7 +1592,7 @@ msgstr "Die E-Mail Adresse ist nicht in Ordnung."
 msgid "E-mail address is already used by another user."
 msgstr "Die E-Mail Adresse wurde bereits von einem anderen User benutzt."
 
-#: includes/pages/guest_login.php:101 includes/pages/user_settings.php:36
+#: includes/pages/guest_login.php:101
 msgid "Please enter your e-mail."
 msgstr "Bitte gib Deine E-Mail-Adresse ein."
 
@@ -1608,7 +1606,6 @@ msgid "Your password is too short (please use at least %s characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens %s Zeichen nutzen)."
 
 #: includes/pages/guest_login.php:140 includes/pages/guest_login.php:144
-#: includes/pages/user_settings.php:54
 msgid ""
 "Please enter your planned date of arrival. It should be after the buildup "
 "start date and before teardown end date."
@@ -1616,7 +1613,7 @@ msgstr ""
 "Bitte gib Dein geplantes Ankunftsdatum an. Es sollte nach dem Aufbaubeginn "
 "und vor dem Abbauende liegen."
 
-#: includes/pages/guest_login.php:166 includes/pages/user_settings.php:82
+#: includes/pages/guest_login.php:166
 msgid "For dect numbers are only 40 digits allowed."
 msgstr "Die DECT Nummer darf nur 40 Zeichen lang sein."
 
@@ -1809,12 +1806,11 @@ msgstr "Unvollständiger Aufruf, fehlende Fragen ID."
 msgid "No question found."
 msgstr "Keine Frage gefunden."
 
-#: includes/pages/user_settings.php:11 includes/sys_menu.php:69
+#: includes/sys_menu.php:69
 #: includes/view/User_view.php:616
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: includes/pages/user_settings.php:68
 msgid ""
 "Please enter your planned date of departure. It should be after your planned "
 "arrival date and after buildup start date and before teardown end date."
@@ -1822,11 +1818,9 @@ msgstr ""
 "Bitte gibt dein geplantes Abreisedatum an. Es sollte nach Deinem "
 "Anreisedatum, nach dem Aufbaubeginn und vor dem Abbauende liegen."
 
-#: includes/pages/user_settings.php:113
 msgid "-> not OK. Please try again."
 msgstr "-> Nicht OK. Bitte erneut versuchen."
 
-#: includes/pages/user_settings.php:115
 msgid "Your password is to short (please use at least 6 characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
 

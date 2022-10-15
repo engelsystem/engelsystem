@@ -141,10 +141,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 return [$title, $content];
             case 'user_worklog':
                 return user_worklog_controller();
-            case 'user_settings':
-                $title = settings_title();
-                $content = user_settings();
-                return [$title, $content];
             case 'register':
                 $title = register_title();
                 $content = guest_register();
