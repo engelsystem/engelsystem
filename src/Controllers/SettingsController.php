@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Controllers;
 
-use Carbon\Carbon;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
@@ -107,14 +106,12 @@ class SettingsController extends BaseController
             if (!$this->isArrivalDateValid($data['planned_arrival_date'], $data['planned_departure_date'])) {
                 $this->addNotification('settings.profile.planned_arrival_date.invalid', 'errors');
                 return $this->redirect->to('/settings/profile');
-
-            } else if (!$this->isDepartureDateValid($data['planned_arrival_date'], $data['planned_departure_date'])) {
+            } elseif (!$this->isDepartureDateValid($data['planned_arrival_date'], $data['planned_departure_date'])) {
                 $this->addNotification('settings.profile.planned_departure_date.invalid', 'errors');
                 return $this->redirect->to('/settings/profile');
-
             } else {
                 $user->personalData->planned_arrival_date = $data['planned_arrival_date'];
-                $user->personalData->planned_departure_date = $data['planned_departure_date'];
+                $user->personalData->planned_departure_date = $data['planned_departure_date'] ?: null;
             }
         }
 
@@ -124,12 +121,12 @@ class SettingsController extends BaseController
 
         $user->contact->mobile = $data['mobile'];
         $user->email = $data['email'];
-        $user->settings->email_shiftinfo = $data['email_shiftinfo'];
-        $user->settings->email_news = $data['email_news'];
-        $user->settings->email_human = $data['email_human'];
+        $user->settings->email_shiftinfo = $data['email_shiftinfo'] ?: false;
+        $user->settings->email_news = $data['email_news'] ?: false;
+        $user->settings->email_human = $data['email_human'] ?: false;
 
         if (config('enable_goody')) {
-            $user->settings->email_goody = $data['email_goody'];
+            $user->settings->email_goody = $data['email_goody'] ?: false;
         }
 
         if (isset(config('tshirt_sizes')[$data['shirt_size']])) {
@@ -301,7 +298,7 @@ class SettingsController extends BaseController
     public function settingsMenu(): array
     {
         $menu = [
-            url('/user-settings')     => 'settings.profile',
+            url('/settings/profile')  => 'settings.profile',
             url('/settings/password') => 'settings.password',
             url('/settings/language') => 'settings.language',
             url('/settings/theme')    => 'settings.theme'

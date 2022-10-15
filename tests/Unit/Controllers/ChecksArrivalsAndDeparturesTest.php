@@ -9,35 +9,57 @@ use Engelsystem\Test\Unit\TestCase;
 
 class ChecksArrivalsAndDeparturesTest extends TestCase
 {
-    public function invalidDateCombinations(): array
+    public function invalidArrivalCombinations(): array
     {
         return [
-            [null, null, '2022-01-16', '2022-01-15'],                 # arrival greater than departure
-            ['2022-01-15', '2022-01-15', '2022-01-14', '2022-01-16'], # arrival before buildup, departure after teardown
+            [null, null, null, null],                 # arrival being null
+            [null, null, '2022-01-16', '2022-01-15'], # arrival greater than departure
+            ['2022-01-15', null, '2022-01-14', null], # arrival before buildup
+            [null, '2022-01-14', '2022-01-15', null], # arrival after teardown
         ];
     }
 
-    public function validDateCombinations(): array
+    public function invalidDepartureCombinations(): array
+    {
+        return [
+            [null, null, '2022-01-16', '2022-01-15'], # departure smaller than arrival
+            ['2022-01-15', null, null, '2022-01-14'], # departure before buildup
+            [null, '2022-01-14', null, '2022-01-15'], # departure after teardown
+        ];
+    }
+
+    public function validArrivalCombinations(): array
     {
         return [
             [null, null, '2022-01-15', '2022-01-15'],                 # arrival equals departure
             [null, null, '2022-01-14', '2022-01-15'],                 # arrival smaller than departure
             ['2022-01-14', null, '2022-01-14', '2022-01-15'],         # arrival on buildup
             ['2022-01-13', null, '2022-01-14', '2022-01-15'],         # arrival after buildup
+        ];
+    }
+
+    public function validDepartureCombinations(): array
+    {
+        return [
+            [null, null, '2022-01-15', null],                         # departure being null
+            [null, null, '2022-01-15', '2022-01-15'],                 # departure equals arrival
+            [null, null, '2022-01-14', '2022-01-15'],                 # departure greater than arrival
             [null, '2022-01-15', '2022-01-14', '2022-01-15'],         # departure on teardown
             [null, '2022-01-16', '2022-01-14', '2022-01-15'],         # departure before teardown
-            ['2022-01-14', '2022-01-16', '2022-01-14', '2022-01-15'], # all together
         ];
     }
 
     /**
      * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isArrivalDateValid
-     * @dataProvider invalidDateCombinations
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::toCarbon
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isBeforeBuildup
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isAfterTeardown
+     * @dataProvider invalidArrivalCombinations
      */
     public function testCheckInvalidDatesForArrival($buildup, $teardown, $arrival, $departure)
     {
-        config(['buildup_start' => is_null($buildup) ? null: new Carbon($buildup)]);
-        config(['teardown_end' => is_null($teardown) ? null: new Carbon($teardown)]);
+        config(['buildup_start' => is_null($buildup) ? null : new Carbon($buildup)]);
+        config(['teardown_end' => is_null($teardown) ? null : new Carbon($teardown)]);
 
         $check = new ChecksArrivalsAndDeparturesImplementation();
         $this->assertFalse($check->checkArrival($arrival, $departure));
@@ -45,12 +67,15 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isDepartureDateValid
-     * @dataProvider invalidDateCombinations
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::toCarbon
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isBeforeBuildup
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isAfterTeardown
+     * @dataProvider invalidDepartureCombinations
      */
     public function testCheckInvalidDatesForDeparture($buildup, $teardown, $arrival, $departure)
     {
-        config(['buildup_start' => is_null($buildup) ? null: new Carbon($buildup)]);
-        config(['teardown_end' => is_null($teardown) ? null: new Carbon($teardown)]);
+        config(['buildup_start' => is_null($buildup) ? null : new Carbon($buildup)]);
+        config(['teardown_end' => is_null($teardown) ? null : new Carbon($teardown)]);
 
         $check = new ChecksArrivalsAndDeparturesImplementation();
         $this->assertFalse($check->checkDeparture($arrival, $departure));
@@ -58,12 +83,15 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isArrivalDateValid
-     * @dataProvider validDateCombinations
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::toCarbon
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isBeforeBuildup
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isAfterTeardown
+     * @dataProvider validArrivalCombinations
      */
     public function testCheckValidDatesForArrival($buildup, $teardown, $arrival, $departure)
     {
-        config(['buildup_start' => is_null($buildup) ? null: new Carbon($buildup)]);
-        config(['teardown_end' => is_null($teardown) ? null: new Carbon($teardown)]);
+        config(['buildup_start' => is_null($buildup) ? null : new Carbon($buildup)]);
+        config(['teardown_end' => is_null($teardown) ? null : new Carbon($teardown)]);
 
         $check = new ChecksArrivalsAndDeparturesImplementation();
         $this->assertTrue($check->checkArrival($arrival, $departure));
@@ -71,12 +99,15 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isDepartureDateValid
-     * @dataProvider validDateCombinations
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::toCarbon
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isBeforeBuildup
+     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isAfterTeardown
+     * @dataProvider validDepartureCombinations
      */
     public function testCheckValidDatesForDeparture($buildup, $teardown, $arrival, $departure)
     {
-        config(['buildup_start' => is_null($buildup) ? null: new Carbon($buildup)]);
-        config(['teardown_end' => is_null($teardown) ? null: new Carbon($teardown)]);
+        config(['buildup_start' => is_null($buildup) ? null : new Carbon($buildup)]);
+        config(['teardown_end' => is_null($teardown) ? null : new Carbon($teardown)]);
 
         $check = new ChecksArrivalsAndDeparturesImplementation();
         $this->assertTrue($check->checkDeparture($arrival, $departure));

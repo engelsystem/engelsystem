@@ -3,15 +3,10 @@
 namespace Engelsystem\Test\Unit\Controllers;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Controllers\Admin\UserShirtController;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
-use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Response;
-use Engelsystem\Models\User\Contact;
-use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
-use Engelsystem\Models\User\State;
 use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -56,7 +51,8 @@ class SettingsControllerTest extends TestCase
     /** @var SettingsController */
     protected $controller;
 
-    protected function setUpProfileTest() {
+    protected function setUpProfileTest()
+    {
         $body = [
             'pronoun'                => 'Herr',
             'first_name'             => 'John',
@@ -128,8 +124,14 @@ class SettingsControllerTest extends TestCase
         $this->assertEquals($body['pronoun'], $this->user->personalData->pronoun);
         $this->assertEquals($body['first_name'], $this->user->personalData->first_name);
         $this->assertEquals($body['last_name'], $this->user->personalData->last_name);
-        $this->assertEquals($body['planned_arrival_date'], $this->user->personalData->planned_arrival_date->format('Y-m-d'));
-        $this->assertEquals($body['planned_departure_date'], $this->user->personalData->planned_departure_date->format('Y-m-d'));
+        $this->assertEquals(
+            $body['planned_arrival_date'],
+            $this->user->personalData->planned_arrival_date->format('Y-m-d')
+        );
+        $this->assertEquals(
+            $body['planned_departure_date'],
+            $this->user->personalData->planned_departure_date->format('Y-m-d')
+        );
         $this->assertEquals($body['dect'], $this->user->contact->dect);
         $this->assertEquals($body['mobile'], $this->user->contact->mobile);
         $this->assertEquals($body['email'], $this->user->email);
@@ -565,7 +567,7 @@ class SettingsControllerTest extends TestCase
         config(['oauth' => $providers]);
 
         $this->assertEquals([
-            'http://localhost/user-settings' => 'settings.profile',
+            'http://localhost/settings/profile' => 'settings.profile',
             'http://localhost/settings/password' => 'settings.password',
             'http://localhost/settings/language' => 'settings.language',
             'http://localhost/settings/theme' => 'settings.theme',
@@ -574,7 +576,7 @@ class SettingsControllerTest extends TestCase
 
         config(['oauth' => $providersHidden]);
         $this->assertEquals([
-            'http://localhost/user-settings' => 'settings.profile',
+            'http://localhost/settings/profile' => 'settings.profile',
             'http://localhost/settings/password' => 'settings.password',
             'http://localhost/settings/language' => 'settings.language',
             'http://localhost/settings/theme' => 'settings.theme',
@@ -590,7 +592,7 @@ class SettingsControllerTest extends TestCase
         config(['oauth' => []]);
 
         $this->assertEquals([
-            'http://localhost/user-settings' => 'settings.profile',
+            'http://localhost/settings/profile' => 'settings.profile',
             'http://localhost/settings/password' => 'settings.password',
             'http://localhost/settings/language' => 'settings.language',
             'http://localhost/settings/theme' => 'settings.theme'

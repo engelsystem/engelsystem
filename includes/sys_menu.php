@@ -65,9 +65,9 @@ function make_user_submenu()
 
     if (auth()->can('user_settings')) {
         $user_submenu[] = toolbar_dropdown_item(
-            page_link_to('user_settings'),
+            page_link_to('settings/profile'),
             __('Settings'),
-            $page == 'user_settings',
+            $page == 'settings/profile',
             'gear'
         );
     }

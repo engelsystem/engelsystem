@@ -9,13 +9,14 @@ trait ChecksArrivalsAndDepartures
 {
     protected function isArrivalDateValid(?string $arrival, ?string $departure): bool
     {
-        if (is_null($arrival)) {
+        $arrival_carbon = $this->toCarbon($arrival);
+        $departure_carbon = $this->toCarbon($departure);
+
+        if (is_null($arrival_carbon)) {
             return false; // since required value
         }
 
-        $arrival_carbon = $this->toCarbon($arrival);
-
-        if (!is_null($departure) && $arrival_carbon->greaterThan($this->toCarbon($departure))) {
+        if (!is_null($departure_carbon) && $arrival_carbon->greaterThan($departure_carbon)) {
             return false;
         }
 
@@ -24,29 +25,32 @@ trait ChecksArrivalsAndDepartures
 
     protected function isDepartureDateValid(?string $arrival, ?string $departure): bool
     {
-        if (is_null($departure)) {
-            return true; // since optional value
-        }
+        $arrival_carbon = $this->toCarbon($arrival);
         $departure_carbon = $this->toCarbon($departure);
 
-        return $departure_carbon->greaterThanOrEqualTo($this->toCarbon($arrival)) &&
+        if (is_null($departure_carbon)) {
+            return true; // since optional value
+        }
+
+        return $departure_carbon->greaterThanOrEqualTo($arrival_carbon) &&
             !$this->isBeforeBuildup($departure_carbon) && !$this->isAfterTeardown($departure_carbon);
     }
 
-    private function toCarbon(string $date_string): Carbon
+    private function toCarbon(?string $date_string): ?Carbon
     {
-        return new Carbon(DateTime::createFromFormat('Y-m-d', $date_string));
+        $dateTime = DateTime::createFromFormat('Y-m-d', $date_string ?: '');
+        return $dateTime ? new Carbon($dateTime) : null;
     }
 
     private function isBeforeBuildup(Carbon $date): bool
     {
         $buildup = config('buildup_start');
-        return !empty($buildup) && $date->lessThan($buildup->setTime(0,0));
+        return !empty($buildup) && $date->lessThan($buildup->setTime(0, 0));
     }
 
     private function isAfterTeardown(Carbon $date): bool
     {
         $teardown = config('teardown_end');
-        return !empty($teardown) && $date->greaterThanOrEqualTo($teardown->addDay()->setTime(0,0));
+        return !empty($teardown) && $date->greaterThanOrEqualTo($teardown->addDay()->setTime(0, 0));
     }
 }

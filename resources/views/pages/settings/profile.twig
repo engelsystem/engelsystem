@@ -57,12 +57,13 @@
                             'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
                         }
                     ) }}
+                    {% set planned_departure_date = user.personalData.planned_departure_date %}
                     {{ f.input(
                         'planned_departure_date',
                         __('settings.profile.planned_departure_date'),
                         'date',
                         {
-                            'value': user.personalData.planned_departure_date.format('Y-m-d'),
+                            'value': planned_departure_date ? planned_departure_date.format('Y-m-d') : '',
                             'min': config('buildup_start') ? config('buildup_start').format('Y-m-d') : '',
                             'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
                         }

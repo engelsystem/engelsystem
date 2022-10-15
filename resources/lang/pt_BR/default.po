@@ -139,7 +139,6 @@ msgid "The buildup start date has to be before the teardown end date."
 msgstr "A data de montagem deve ser anterior a data de desmontagem do evento."
 
 #: includes/controller/event_config_controller.php:92
-#: includes/pages/user_settings.php:77
 msgid "Settings saved."
 msgstr "Configurações salvas."
 
@@ -515,28 +514,26 @@ msgid "Token is not correct."
 msgstr "O token não está correto."
 
 #: includes/controller/users_controller.php:227
-#: includes/pages/guest_login.php:102 includes/pages/user_settings.php:97
+#: includes/pages/guest_login.php:102
 msgid "Your passwords don't match."
 msgstr "Suas senhas não correspondem."
 
 #: includes/controller/users_controller.php:231
-#: includes/pages/user_settings.php:95
 msgid "Your password is to short (please use at least 6 characters)."
 msgstr "Sua senha é muito curta (por favor use no mínimo 6 caracteres)."
 
 #: includes/controller/users_controller.php:236
-#: includes/pages/user_settings.php:99
 msgid "Password saved."
 msgstr "Sua senha foi salva."
 
 #: includes/controller/users_controller.php:257
 #: includes/controller/users_controller.php:261
-#: includes/pages/guest_login.php:67 includes/pages/user_settings.php:21
+#: includes/pages/guest_login.php:67
 msgid "E-mail address is not correct."
 msgstr "E-mail não está correto."
 
 #: includes/controller/users_controller.php:265
-#: includes/pages/guest_login.php:71 includes/pages/user_settings.php:25
+#: includes/pages/guest_login.php:71
 msgid "Please enter your e-mail."
 msgstr "Por favor digite seu e-mail."
 
@@ -1307,7 +1304,7 @@ msgstr "Seu apelido &quot;%s&quot; já existe."
 msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
 msgstr "Seu apelido &quot;%s&quot; é muito pequeno (mínimo 2 caracteres)."
 
-#: includes/pages/guest_login.php:86 includes/pages/user_settings.php:36
+#: includes/pages/guest_login.php:86
 msgid "Please check your jabber account information."
 msgstr "Por favor verifique a informação da sua conta jabber."
 
@@ -1320,7 +1317,7 @@ msgstr "Por favor escolha o tamanho da camisa."
 msgid "Your password is too short (please use at least %s characters)."
 msgstr "Sua senha é muito curta (por favor use pelo menos %s caracteres)."
 
-#: includes/pages/guest_login.php:115 includes/pages/user_settings.php:52
+#: includes/pages/guest_login.php:115
 msgid ""
 "Please enter your planned date of arrival. It should be after the buildup "
 "start date and before teardown end date."
@@ -1593,11 +1590,10 @@ msgstr "Chamada incompletada, falta o ID da pergunta."
 msgid "No question found."
 msgstr "Nenhuma dúvida encontrada."
 
-#: includes/pages/user_settings.php:4 includes/view/User_view.php:332
+#: includes/view/User_view.php:332
 msgid "Settings"
 msgstr "Configurações"
 
-#: includes/pages/user_settings.php:62
 msgid ""
 "Please enter your planned date of departure. It should be after your planned "
 "arrival date and after buildup start date and before teardown end date."
@@ -1606,11 +1602,9 @@ msgstr ""
 "chegada\n"
 "e ao início da montagem, e anterior à data de desmontagem."
 
-#: includes/pages/user_settings.php:93
 msgid "-> not OK. Please try again."
 msgstr "-> não OK. Por favor tente novamente."
 
-#: includes/pages/user_settings.php:101
 msgid "Failed setting password."
 msgstr "A alteração da senha falhaou."
 
