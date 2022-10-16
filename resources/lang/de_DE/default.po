@@ -2716,6 +2716,10 @@ msgstr "Keine Gutscheine bekommen"
 msgid "out of %s"
 msgstr "von %s"
 
+#: includes/view/User_view.php:89
+msgid "Show mobile number to other users to contact me"
+msgstr "Mache meine Handynummer für andere Benutzer sichtbar"
+
 #: includes/view/User_view.php:797
 msgid "Rights"
 msgstr "Rechte"

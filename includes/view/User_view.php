@@ -34,6 +34,7 @@ function User_settings_view(
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
     $enable_goody = config('enable_goody');
+    $enable_mobile_show = config('enable_mobile_show');
 
     /** @var $urlGenerator UrlGeneratorInterface */
     $urlGenerator = app(UrlGeneratorInterface::class);
@@ -82,6 +83,11 @@ function User_settings_view(
                             ) : '',
                             $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect, false, 40) : '',
                             form_text('mobile', __('Mobile'), $user_source->contact->mobile, false, 40),
+                            $enable_mobile_show ? form_checkbox(
+                                'mobile_show',
+                                __('Show mobile number to other users to contact me'),
+                                $user_source->settings->mobile_show
+                            ): '',
                             form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email, false, 254),
                             form_checkbox(
                                 'email_shiftinfo',
@@ -676,13 +682,23 @@ function User_view(
             ]),
             div('row user-info', [
                 div('col-md-2', [
-                    config('enable_dect') ?
+                    config('enable_dect') && $user_source->contact->dect ?
                         heading(
                             icon('phone')
                             . ' <a href="tel:' . $user_source->contact->dect . '">'
                             . $user_source->contact->dect
                             . '</a>'
                         )
+                    : '' ,
+                    config('enable_mobile_show') && $user_source->contact->mobile ?
+                        $user_source->settings->mobile_show ?
+                            heading(
+                                icon('phone')
+                                . ' <a href="tel:' . $user_source->contact->mobile . '">'
+                                . $user_source->contact->mobile
+                                . '</a>'
+                            )
+                        : ''
                     : '' ,
                     $auth->can('user_messages') ?
                         heading(

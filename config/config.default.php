@@ -259,6 +259,9 @@ return [
     // Whether the DECT field should be enabled
     'enable_dect'             => (bool)env('ENABLE_DECT', true),
 
+    // Whether the mobile number can be shown to other users
+    'enable_mobile_show'      => (bool)env('ENABLE_MOBILE_SHOW', false),
+
     // Enables prename and lastname
     'enable_user_name'        => (bool)env('ENABLE_USER_NAME', false),
 

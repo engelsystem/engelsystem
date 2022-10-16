@@ -19,6 +19,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Room[] whereId($value)
  * @method static QueryBuilder|Room[] whereName($value)
  * @method static QueryBuilder|Room[] whereMapUrl($value)
+ * @method static QueryBuilder|Room[] whereDect($value)
  * @method static QueryBuilder|Room[] whereDescription($value)
  * @method static QueryBuilder|Room[] whereCreatedAt($value)
  * @method static QueryBuilder|Room[] whereUpdatedAt($value)
