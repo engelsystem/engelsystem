@@ -36,6 +36,7 @@ function guest_register()
     $min_password_length = config('min_password_length');
     $enable_password = config('enable_password');
     $enable_pronoun = config('enable_pronoun');
+    $enable_mobile_show = config('enable_mobile_show');
     $config = config();
     $request = request();
     $session = session();
@@ -49,6 +50,7 @@ function guest_register()
     $preName = '';
     $dect = '';
     $mobile = '';
+    $mobile_show = false;
     $email = '';
     $pronoun = '';
     $email_shiftinfo = false;
@@ -119,6 +121,10 @@ function guest_register()
         } else {
             $valid = false;
             $msg .= error(__('Please enter a nickname.'), true);
+        }
+
+        if ($request->has('mobile_show') && $enable_mobile_show) {
+            $mobile_show = true;
         }
 
         if ($request->has('email') && strlen(strip_request_item('email')) > 0) {
@@ -255,6 +261,7 @@ function guest_register()
                 'email_goody'     => $email_goody,
                 'email_shiftinfo' => $email_shiftinfo,
                 'email_news'      => $email_news,
+                'mobile_show'     => $mobile_show,
             ]);
             $settings->user()
                 ->associate($user)
@@ -442,7 +449,12 @@ function guest_register()
                 ]) : '',
 
                 div('col', [
-                    form_text('mobile', __('Mobile'), $mobile, false, 40, 'tel-national')
+                    form_text('mobile', __('Mobile'), $mobile, false, 40, 'tel-national'),
+                    $enable_mobile_show ? form_checkbox(
+                        'mobile_show',
+                        __('Show mobile number to other users to contact me'),
+                        $mobile_show
+                    ) : ''
                 ])
             ]),
 

@@ -91,6 +91,9 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         }
     }
     $user_source->contact->mobile = strip_request_item('mobile', $user_source->contact->mobile);
+    if (config('enable_mobile_show')) {
+        $user_source->settings->mobile_show = $request->has('mobile_show');
+    }
 
     if ($valid) {
         $user_source->save();
