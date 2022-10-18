@@ -56,10 +56,23 @@ class DesignController extends BaseController
 
         $themes = $this->config->get('themes');
         $data = [
-            'demo_user'   => $demoUser,
-            'demo_user_2' => $demoUser2,
-            'themes'      => $themes,
-            'bar_chart'   => BarChart::render(...BarChart::generateChartDemoData(23)),
+            'demo_user'    => $demoUser,
+            'demo_user_2'  => $demoUser2,
+            'themes'       => $themes,
+            'bar_chart'    => BarChart::render(...BarChart::generateChartDemoData(23)),
+            'timestamp30m' => time() + 30 * 60,
+            'timestamp59m' => time() + 59 * 60,
+            'timestamp1h'  => time() + 1 * 60 * 60,
+            'timestamp1h30m'  => time() + 90 * 60,
+            'timestamp1h31m'  => time() + 91 * 60,
+            'timestamp2h'  => time() + 2 * 60 * 60,
+            'timestamp2d'  => time() + 2 * 24 * 60 * 60,
+            'timestamp3m' => time() + 3 * 30 * 24 * 60 * 60,
+            'timestamp22y' => time() + 22 * 365 * 24 * 60 * 60,
+            'timestamp30s' => time() + 30,
+
+            'timestamp30mago' => time() - 30 * 60,
+            'timestamp45mago' => time() - 45 * 60,
         ];
 
         return $this->response->withView(
