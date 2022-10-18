@@ -317,23 +317,23 @@ function User_shift_state_render($user)
 
     if ($nextShift['start'] > time()) {
         if ($nextShift['start'] - time() > 3600) {
-            return '<span class="text-success moment-countdown" data-timestamp="' . $nextShift['start'] . '">'
+            return '<span class="text-success" data-countdown-ts="' . $nextShift['start'] . '">'
                 . __('Next shift %c')
                 . '</span>';
         }
-        return '<span class="text-warning moment-countdown" data-timestamp="' . $nextShift['start'] . '">'
+        return '<span class="text-warning" data-countdown-ts="' . $nextShift['start'] . '">'
             . __('Next shift %c')
             . '</span>';
     }
     $halfway = ($nextShift['start'] + $nextShift['end']) / 2;
 
     if (time() < $halfway) {
-        return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['start'] . '">'
+        return '<span class="text-danger" data-countdown-ts="' . $nextShift['start'] . '">'
             . __('Shift started %c')
             . '</span>';
     }
 
-    return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['end'] . '">'
+    return '<span class="text-danger" data-countdown-ts="' . $nextShift['end'] . '">'
         . __('Shift ends %c')
         . '</span>';
 }
@@ -350,7 +350,7 @@ function User_last_shift_render($user)
     }
 
     $lastShift = array_shift($last_shifts);
-    return '<span class="moment-countdown" data-timestamp="' . $lastShift['end'] . '">'
+    return '<span data-countdown-ts="' . $lastShift['end'] . '">'
         . __('Shift ended %c')
         . '</span>';
 }

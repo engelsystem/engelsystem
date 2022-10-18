@@ -84,7 +84,7 @@ function ShiftEntry_create_view_admin($shift, Room $room, $angeltype, $angeltype
 {
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',
+        . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(__('Do you want to sign up the following user for this shift?'), true),
@@ -111,7 +111,7 @@ function ShiftEntry_create_view_supporter($shift, Room $room, $angeltype, $signu
 {
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',
+        . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(sprintf(
@@ -139,7 +139,7 @@ function ShiftEntry_create_view_user($shift, Room $room, $angeltype, $comment)
 {
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',
+        . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(sprintf(__('Do you want to sign up for this shift as %s?'), AngelType_name_render($angeltype)), true),

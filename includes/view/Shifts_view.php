@@ -191,7 +191,7 @@ function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSig
     }
 
     return page_with_title(
-        $shift['name'] . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',
+        $shift['name'] . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
         $content
     );
 }
