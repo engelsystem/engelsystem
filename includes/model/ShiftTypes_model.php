@@ -22,7 +22,8 @@ function ShiftType_delete($shifttype_id)
  */
 function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
 {
-    Db::update('
+    Db::update(
+        '
         UPDATE `ShiftTypes` SET
             `name`=?,
             `angeltype_id`=?,
@@ -48,7 +49,8 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
  */
 function ShiftType_create($name, $angeltype_id, $description)
 {
-    Db::insert('
+    Db::insert(
+        '
         INSERT INTO `ShiftTypes` (`name`, `angeltype_id`, `description`)
         VALUES(?, ?, ?)
         ',

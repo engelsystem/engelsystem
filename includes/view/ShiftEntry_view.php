@@ -93,7 +93,8 @@ function ShiftEntry_create_view_admin($shift, Room $room, $angeltype, $angeltype
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
                 form_submit('submit', icon('check-lg') . __('Save'))
             ])
-        ]);
+        ]
+    );
 }
 
 /**
@@ -108,17 +109,21 @@ function ShiftEntry_create_view_admin($shift, Room $room, $angeltype, $angeltype
  */
 function ShiftEntry_create_view_supporter($shift, Room $room, $angeltype, $signup_user, $users_select)
 {
-    return page_with_title(ShiftEntry_create_title() . ': ' . $shift['name']
+    return page_with_title(
+        ShiftEntry_create_title() . ': ' . $shift['name']
         . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',
         [
             Shift_view_header($shift, $room),
-            info(sprintf(__('Do you want to sign up the following user for this shift as %s?'),
-                AngelType_name_render($angeltype)), true),
+            info(sprintf(
+                __('Do you want to sign up the following user for this shift as %s?'),
+                AngelType_name_render($angeltype)
+            ), true),
             form([
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
                 form_submit('submit', icon('check-lg') . __('Save'))
             ])
-        ]);
+        ]
+    );
 }
 
 /**
@@ -132,7 +137,8 @@ function ShiftEntry_create_view_supporter($shift, Room $room, $angeltype, $signu
  */
 function ShiftEntry_create_view_user($shift, Room $room, $angeltype, $comment)
 {
-    return page_with_title(ShiftEntry_create_title() . ': ' . $shift['name']
+    return page_with_title(
+        ShiftEntry_create_title() . ': ' . $shift['name']
         . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',
         [
             Shift_view_header($shift, $room),
@@ -141,7 +147,8 @@ function ShiftEntry_create_view_user($shift, Room $room, $angeltype, $comment)
                 form_textarea('comment', __('Comment (for your eyes only):'), $comment),
                 form_submit('submit', icon('check-lg') . __('Save'))
             ])
-        ]);
+        ]
+    );
 }
 
 /**

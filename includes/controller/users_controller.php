@@ -70,10 +70,12 @@ function user_delete_controller()
     if ($request->hasPostData('submit')) {
         $valid = true;
 
-        if (!(
+        if (
+            !(
             $request->has('password')
             && $auth->verifyPassword($user, $request->postData('password'))
-        )) {
+            )
+        ) {
             $valid = false;
             error(__('auth.password.error'));
         }
@@ -173,8 +175,10 @@ function user_edit_vouchers_controller()
             $user_source->state->save();
 
             success(__('Saved the number of vouchers.'));
-            engelsystem_log(User_Nick_render($user_source, true) . ': ' . sprintf('Got %s vouchers',
-                    $user_source->state->got_voucher));
+            engelsystem_log(User_Nick_render($user_source, true) . ': ' . sprintf(
+                'Got %s vouchers',
+                $user_source->state->got_voucher
+            ));
 
             throw_redirect(user_link($user_source->id));
         }
@@ -206,7 +210,8 @@ function user_controller()
     $shifts = Shifts_by_user($user_source->id, auth()->can('user_shifts_admin'));
     foreach ($shifts as &$shift) {
         // TODO: Move queries to model
-        $shift['needed_angeltypes'] = Db::select('
+        $shift['needed_angeltypes'] = Db::select(
+            '
             SELECT DISTINCT `AngelTypes`.*
             FROM `ShiftEntry`
             JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
@@ -216,7 +221,8 @@ function user_controller()
             [$shift['SID']]
         );
         foreach ($shift['needed_angeltypes'] as &$needed_angeltype) {
-            $needed_angeltype['users'] = Db::select('
+            $needed_angeltype['users'] = Db::select(
+                '
                     SELECT `ShiftEntry`.`freeloaded`, `users`.*
                     FROM `ShiftEntry`
                     JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
@@ -270,7 +276,8 @@ function users_list_controller()
     }
 
     $order_by = 'name';
-    if ($request->has('OrderBy') && in_array($request->input('OrderBy'), [
+    if (
+        $request->has('OrderBy') && in_array($request->input('OrderBy'), [
             'name',
             'first_name',
             'last_name',
@@ -285,7 +292,8 @@ function users_list_controller()
             'planned_arrival_date',
             'planned_departure_date',
             'last_login_at',
-        ])) {
+        ])
+    ) {
         $order_by = $request->input('OrderBy');
     }
 

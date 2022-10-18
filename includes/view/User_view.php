@@ -357,7 +357,7 @@ function User_view_shiftentries($needed_angel_type)
 {
     $shift_info = '<br><a href="'
         . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $needed_angel_type['id']])
-        .'"><b>' . $needed_angel_type['name'] . '</a>:</b> ';
+        . '"><b>' . $needed_angel_type['name'] . '</a>:</b> ';
 
     $shift_entries = [];
     foreach ($needed_angel_type['users'] as $user_shift) {
@@ -579,8 +579,8 @@ function User_view(
     $auth = auth();
     $nightShiftsConfig = config('night_shifts');
     $user_name = htmlspecialchars(
-            $user_source->personalData->first_name) . ' ' . htmlspecialchars($user_source->personalData->last_name
-        );
+        $user_source->personalData->first_name
+    ) . ' ' . htmlspecialchars($user_source->personalData->last_name);
     $myshifts_table = '';
     if ($its_me || $admin_user_privilege) {
         $my_shifts = User_view_myshifts(
@@ -709,9 +709,9 @@ function User_view(
             ) : '',
             $its_me && count($shifts) == 0
                 ? error(sprintf(
-                __('Go to the <a href="%s">shifts table</a> to sign yourself up for some shifts.'),
-                page_link_to('user_shifts')
-            ), true)
+                    __('Go to the <a href="%s">shifts table</a> to sign yourself up for some shifts.'),
+                    page_link_to('user_shifts')
+                ), true)
                 : '',
             $its_me ? ical_hint() : ''
         ]

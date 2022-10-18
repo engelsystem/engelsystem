@@ -107,8 +107,10 @@ function guest_register()
 
             if (!$nickValidation->isValid()) {
                 $valid = false;
-                $msg .= error(sprintf(__('Please enter a valid nick.') . ' ' . __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.'),
-                    $nick), true);
+                $msg .= error(sprintf(
+                    __('Please enter a valid nick.') . ' ' . __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.'),
+                    $nick
+                ), true);
             }
             if (User::whereName($nick)->count() > 0) {
                 $valid = false;
@@ -164,7 +166,7 @@ function guest_register()
                 $valid = false;
                 $msg .= error(__('Your passwords don\'t match.'), true);
             }
-        } else if ($enable_password) {
+        } elseif ($enable_password) {
             $valid = false;
             $msg .= error(sprintf(
                 __('Your password is too short (please use at least %s characters).'),
@@ -378,8 +380,10 @@ function guest_register()
                         24,
                         'nickname'
                     ),
-                    form_info('',
-                        __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.'))
+                    form_info(
+                        '',
+                        __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.')
+                    )
                 ]),
 
                 $enable_pronoun ? div('col', [
@@ -451,7 +455,9 @@ function guest_register()
                     form_date(
                         'planned_arrival_date',
                         __('Planned date of arrival') . ' ' . entry_required(),
-                        $planned_arrival_date, $buildup_start_date, $teardown_end_date
+                        $planned_arrival_date,
+                        $buildup_start_date,
+                        $teardown_end_date
                     )
                 ]) : '',
             ]),
@@ -462,9 +468,13 @@ function guest_register()
                 ]) : '',
 
                 div('col', [
-                    $enable_tshirt_size ? form_select('tshirt_size',
+                    $enable_tshirt_size ? form_select(
+                        'tshirt_size',
                         __('Shirt size') . ' ' . entry_required(),
-                        $tshirt_sizes, $tshirt_size, __('Please select...')) : ''
+                        $tshirt_sizes,
+                        $tshirt_size,
+                        __('Please select...')
+                    ) : ''
                 ]),
             ]),
 

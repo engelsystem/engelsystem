@@ -226,14 +226,14 @@ class ShiftCalendarRenderer
                 return div('tick day');
             }
             return div('tick day', [
-                date(__('m-d'), $time) .'<br>'.date(__('H:i'), $time)
+                date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time)
             ]);
         } elseif ($time % (60 * 60) == 0) {
             if (!$label) {
                 return div('tick hour');
             }
             return div('tick hour', [
-                date(__('m-d'), $time) .'<br>'.date(__('H:i'), $time)
+                date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time)
             ]);
         }
         return div('tick');
@@ -276,9 +276,9 @@ class ShiftCalendarRenderer
             }
         }
         return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(
-                ($start_time - ShiftCalendarRenderer::TIME_MARGIN)
+            ($start_time - ShiftCalendarRenderer::TIME_MARGIN)
                 / ShiftCalendarRenderer::SECONDS_PER_ROW
-            );
+        );
     }
 
     /**
@@ -295,9 +295,9 @@ class ShiftCalendarRenderer
         }
 
         return ShiftCalendarRenderer::SECONDS_PER_ROW * ceil(
-                ($end_time + ShiftCalendarRenderer::TIME_MARGIN)
+            ($end_time + ShiftCalendarRenderer::TIME_MARGIN)
                 / ShiftCalendarRenderer::SECONDS_PER_ROW
-            );
+        );
     }
 
     /**

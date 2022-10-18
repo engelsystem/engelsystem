@@ -93,8 +93,10 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
     } elseif (empty($user_angeltype)) {
         return button(
             page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
-            sprintf(__('Become %s'),
-                $angeltype['name'])
+            sprintf(
+                __('Become %s'),
+                $angeltype['name']
+            )
         );
     }
     return '';
@@ -284,10 +286,10 @@ function shift_length($shift)
 {
     $length = floor(($shift['end'] - $shift['start']) / (60 * 60)) . ':';
     $length .= str_pad(
-            (($shift['end'] - $shift['start']) % (60 * 60)) / 60,
-            2,
-            '0',
-            STR_PAD_LEFT
-        ) . 'h';
+        (($shift['end'] - $shift['start']) % (60 * 60)) / 60,
+        2,
+        '0',
+        STR_PAD_LEFT
+    ) . 'h';
     return $length;
 }

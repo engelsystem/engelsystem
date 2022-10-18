@@ -305,7 +305,8 @@ function angeltypes_list_controller()
         $angeltype['membership'] = AngelType_render_membership($angeltype);
         if (!empty($angeltype['user_angeltype_id'])) {
             $actions[] = button(
-                page_link_to('user_angeltypes',
+                page_link_to(
+                    'user_angeltypes',
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype['user_angeltype_id']]
                 ),
                 __('leave'),

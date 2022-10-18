@@ -136,7 +136,8 @@ class ShiftCalendarShiftRenderer
 
         if (auth()->can('user_shifts_admin')) {
             $html .= '<li class="list-group-item d-flex align-items-center ' . $this->classBg() . '">';
-            $html .= button(shift_entry_create_link_admin($shift),
+            $html .= button(
+                shift_entry_create_link_admin($shift),
                 icon('plus-lg') . __('Add more angels'),
                 'btn-sm'
             );
@@ -195,7 +196,8 @@ class ShiftCalendarShiftRenderer
                     . '</a> '
                     . button(
                         shift_entry_create_link($shift, $angeltype),
-                        __('Sign up'), 'btn-sm btn-primary text-nowrap d-print-none'
+                        __('Sign up'),
+                        'btn-sm btn-primary text-nowrap d-print-none'
                     );
                 break;
 

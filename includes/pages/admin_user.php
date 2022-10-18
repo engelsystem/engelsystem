@@ -67,7 +67,8 @@ function admin_user()
             . html_select_key(
                 'size',
                 'eSize',
-                $tshirt_sizes, $user_source->personalData->shirt_size,
+                $tshirt_sizes,
+                $user_source->personalData->shirt_size,
                 __('Please select...')
             )
             . '</td></tr>' . "\n";
@@ -151,7 +152,8 @@ function admin_user()
             $html .= form_csrf();
             $html .= '<table>';
 
-            $groups = Db::select('
+            $groups = Db::select(
+                '
                     SELECT *
                     FROM `Groups`
                     LEFT OUTER JOIN `UserGroups` ON (
@@ -205,7 +207,8 @@ function admin_user()
                             || ($my_highest_group['group_id'] <= $his_highest_group['group_id'])
                         )
                     ) {
-                        $groups_source = Db::select('
+                        $groups_source = Db::select(
+                            '
                                 SELECT *
                                 FROM `Groups`
                                 LEFT OUTER JOIN `UserGroups` ON (

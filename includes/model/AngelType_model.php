@@ -58,7 +58,8 @@ function AngelType_delete($angeltype)
  */
 function AngelType_update($angeltype)
 {
-    Db::update('
+    Db::update(
+        '
             UPDATE `AngelTypes` SET
             `name` = ?,
             `restricted` = ?,
@@ -104,7 +105,8 @@ function AngelType_update($angeltype)
  */
 function AngelType_create($angeltype)
 {
-    Db::insert('
+    Db::insert(
+        '
             INSERT INTO `AngelTypes` (
                 `name`,
                 `restricted`,

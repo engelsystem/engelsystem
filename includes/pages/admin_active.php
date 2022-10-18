@@ -230,7 +230,9 @@ function admin_active()
             }
             $actions[] = form(
                 [form_submit('submit', __('set active'), 'btn-sm', false, 'secondary')],
-                page_link_to('admin_active', $parameters), false, true
+                page_link_to('admin_active', $parameters),
+                false,
+                true
             );
         }
         if ($usr->state->active) {
@@ -243,7 +245,9 @@ function admin_active()
             }
             $actions[] = form(
                 [form_submit('submit', __('remove active'), 'btn-sm', false, 'secondary')],
-                page_link_to('admin_active', $parametersRemove), false, true
+                page_link_to('admin_active', $parametersRemove),
+                false,
+                true
             );
         }
         if (!$usr->state->got_shirt) {
@@ -256,7 +260,9 @@ function admin_active()
             }
             $actions[] = form(
                 [form_submit('submit', __('got t-shirt'), 'btn-sm', false, 'secondary')],
-                page_link_to('admin_active', $parametersShirt), false, true
+                page_link_to('admin_active', $parametersShirt),
+                false,
+                true
             );
         }
         if ($usr->state->got_shirt) {
@@ -269,7 +275,9 @@ function admin_active()
             }
             $actions[] = form(
                 [form_submit('submit', __('remove t-shirt'), 'btn-sm', false, 'secondary')],
-                page_link_to('admin_active', $parameters), false, true
+                page_link_to('admin_active', $parameters),
+                false,
+                true
             );
         }
 

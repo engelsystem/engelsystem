@@ -80,7 +80,8 @@ function User_is_AngelType_supporter($user, $angeltype)
 
     $privileges = privileges_for_user($user->id);
 
-    return (count(Db::select('
+    return (count(Db::select(
+        '
                     SELECT `id`
                     FROM `UserAngelTypes`
                     WHERE `user_id`=?
@@ -88,11 +89,11 @@ function User_is_AngelType_supporter($user, $angeltype)
                     AND `supporter`=TRUE
                     LIMIT 1
                 ',
-                [
+        [
                     $user->id,
                     $angeltype['id']
                 ]
-            )) > 0)
+    )) > 0)
         || in_array('admin_user_angeltypes', $privileges);
 }
 
@@ -194,7 +195,8 @@ function UserAngelType_delete($user_angeltype)
  */
 function UserAngelType_create($userId, $angeltype)
 {
-    Db::insert('
+    Db::insert(
+        '
             INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`, `supporter`)
             VALUES (?, ?, FALSE)
         ',
@@ -233,7 +235,8 @@ function UserAngelType($user_angeltype_id)
  */
 function UserAngelType_by_User_and_AngelType($userId, $angeltype)
 {
-    $angelType = Db::selectOne('
+    $angelType = Db::selectOne(
+        '
             SELECT *
             FROM `UserAngelTypes`
             WHERE `user_id`=?
@@ -256,7 +259,7 @@ function UserAngelType_by_User_and_AngelType($userId, $angeltype)
  * @param bool $onlyConfirmed
  * @return array[]|null
  */
-function UserAngelTypes_by_User($userId, $onlyConfirmed=false)
+function UserAngelTypes_by_User($userId, $onlyConfirmed = false)
 {
     return Db::select(
         '

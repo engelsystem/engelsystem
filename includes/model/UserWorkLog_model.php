@@ -1,8 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use Engelsystem\Helpers\Shifts;
-use Engelsystem\Models\Room;
 use Engelsystem\Models\Worklog;
 use Illuminate\Support\Collection;
 

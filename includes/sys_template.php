@@ -52,7 +52,7 @@ function tabs($tabs, $selected = 0)
             $id = null;
         }
         $tab_header[] = '<li role="presentation" class="nav-item">
-                <a href="'. $href . '" class="nav-link' . ($active ? ' active' : '') . '" role="tab"'
+                <a href="' . $href . '" class="nav-link' . ($active ? ' active' : '') . '" role="tab"'
             . ($id ? ' id="' . $id . '-tab"' : '')
             . ($id ? ' aria-controls="' . $id . '" data-bs-target="#' . $id . '" data-bs-toggle="tab" role="tab"' : '')
             . ($id && $active ? ' aria-selected="true"' : ' aria-selected="false"')
@@ -221,7 +221,7 @@ function toolbar_dropdown_item_divider(): string
  */
 function toolbar_dropdown($icon, $label, $submenu, $class = ''): string
 {
-    $template =<<<EOT
+    $template = <<<EOT
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle {class}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         {icon} {label}

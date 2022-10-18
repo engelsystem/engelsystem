@@ -4,6 +4,7 @@
 
     <file>config</file>
     <file>db</file>
+    <file>includes</file>
     <file>public/index.php</file>
     <file>src</file>
     <file>tests</file>
@@ -18,5 +19,8 @@
         <properties>
             <property name="ignoreUnusedValuesWhenOnlyKeysAreUsedInForeach" value="true" />
         </properties>
-    </rule>
+        </rule>
+        <rule ref="Generic.Files.LineLength.TooLong">
+            <exclude-pattern>/includes</exclude-pattern>
+        </rule>
 </ruleset>

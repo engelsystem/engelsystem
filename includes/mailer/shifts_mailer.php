@@ -30,19 +30,19 @@ function mail_shift_change($old_shift, $new_shift)
 
     if ($old_shift['start'] != $new_shift['start']) {
         $message .= sprintf(
-                __('* Shift Start changed from %s to %s'),
-                date('Y-m-d H:i', $old_shift['start']),
-                date('Y-m-d H:i', $new_shift['start'])
-            ) . "\n";
+            __('* Shift Start changed from %s to %s'),
+            date('Y-m-d H:i', $old_shift['start']),
+            date('Y-m-d H:i', $new_shift['start'])
+        ) . "\n";
         $noticeable_changes = true;
     }
 
     if ($old_shift['end'] != $new_shift['end']) {
         $message .= sprintf(
-                __('* Shift End changed from %s to %s'),
-                date('Y-m-d H:i', $old_shift['end']),
-                date('Y-m-d H:i', $new_shift['end'])
-            ) . "\n";
+            __('* Shift End changed from %s to %s'),
+            date('Y-m-d H:i', $old_shift['end']),
+            date('Y-m-d H:i', $new_shift['end'])
+        ) . "\n";
         $noticeable_changes = true;
     }
 

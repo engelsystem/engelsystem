@@ -197,7 +197,8 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
  */
 function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
 {
-    return Db::selectOne('
+    return Db::selectOne(
+        '
             SELECT
                 `NeededAngelTypes`.*,
                 `Shifts`.`SID`,
@@ -245,7 +246,8 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
  */
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    $sql = sprintf('
+    $sql = sprintf(
+        '
             SELECT
                 users.*,
                 `ShiftEntry`.`UID`,
@@ -527,7 +529,8 @@ function Shift_update($shift)
     $shift['name'] = ShiftType($shift['shifttype_id'])['name'];
     mail_shift_change(Shift($shift['SID']), $shift);
 
-    return Db::update('
+    return Db::update(
+        '
         UPDATE `Shifts` SET
         `shifttype_id` = ?,
         `start` = ?,
@@ -564,7 +567,8 @@ function Shift_update($shift)
  */
 function Shift_create($shift, $transactionId = null)
 {
-    Db::insert('
+    Db::insert(
+        '
         INSERT INTO `Shifts` (
             `shifttype_id`,
             `start`,
@@ -607,7 +611,8 @@ function Shift_create($shift, $transactionId = null)
  */
 function Shifts_by_user($userId, $include_freeload_comments = false)
 {
-    return Db::select('
+    return Db::select(
+        '
         SELECT
             `rooms`.*,
             `rooms`.name AS Name,

@@ -110,7 +110,7 @@ function user_driver_license_edit_controller()
             $driverLicense->drive_car = $request->has('has_license_car');
             $driverLicense->drive_3_5t = $request->has('has_license_3_5t_transporter');
             $driverLicense->drive_7_5t = $request->has('has_license_7_5t_truck');
-            $driverLicense->drive_12t= $request->has('has_license_12t_truck');
+            $driverLicense->drive_12t = $request->has('has_license_12t_truck');
             $driverLicense->drive_forklift = $request->has('has_license_forklift');
 
             if ($driverLicense->wantsToDrive()) {

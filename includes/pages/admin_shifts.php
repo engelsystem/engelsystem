@@ -240,11 +240,11 @@ function admin_shifts()
                 $day = Carbon::createTimestampFromDatetime(date('Y-m-d', $start) . ' 00:00');
                 do {
                     // Alle Schichtwechselstunden durchgehen
-                    for($i = 0; $i < count($change_hours); $i++) {
+                    for ($i = 0; $i < count($change_hours); $i++) {
                         $start_hour = $change_hours[$i];
                         if ($i < count($change_hours) - 1) {
                             // Normales Intervall zwischen zwei Schichtwechselstunden
-                            $end_hour = $change_hours[$i+1];
+                            $end_hour = $change_hours[$i + 1];
                         } elseif ($shift_over_midnight) {
                             // Letzte Schichtwechselstunde: Wenn eine 24h Abdeckung gewünscht ist, hier die erste Schichtwechselstunde als Ende ensetzen
                             $end_hour = $change_hours[0];
@@ -294,7 +294,7 @@ function admin_shifts()
                     }
 
                     $day = Carbon::createTimestampFromDatetime(date('Y-m-d', $day + 36 * 60 * 60) . ' 00:00');
-                } while($day <= $end_day);
+                } while ($day <= $end_day);
 
                 usort($shifts, function ($a, $b) {
                     return $a['start'] < $b['start'] ? -1 : 1;
@@ -388,7 +388,8 @@ function admin_shifts()
                     LIMIT 1', [$type_id]);
 
                 if (!empty($angel_type_source)) {
-                    Db::insert('
+                    Db::insert(
+                        '
                         INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`)
                         VALUES (?, ?, ?)
                         ',
@@ -421,10 +422,10 @@ function admin_shifts()
     $angel_types = '';
     foreach ($types as $type) {
         $angel_types .= '<div class="col-md-4">' . form_spinner(
-                'type_' . $type['id'],
-                $type['name'],
-                $needed_angel_types[$type['id']]
-            )
+            'type_' . $type['id'],
+            $type['name'],
+            $needed_angel_types[$type['id']]
+        )
             . '</div>';
     }
 
@@ -433,10 +434,11 @@ function admin_shifts()
             '<a href="%s">%s</a>',
             page_link_to('admin_shifts_history'),
             icon('clock-history')
-        ), [
+        ),
+        [
         msg(),
         form([
-            div('row',[
+            div('row', [
                 div('col-md-6', [
                     form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
                     form_text('title', __('Title'), $title),
@@ -501,7 +503,8 @@ function admin_shifts()
             ]),
             form_submit('preview', icon('search') . __('Preview'))
         ])
-    ]);
+        ]
+    );
 }
 
 /**

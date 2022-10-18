@@ -74,10 +74,10 @@ function make_atom_entry_from_news(News $news)
     <title>' . htmlspecialchars($news->title) . '</title>
     <link href="' . page_link_to('news/' . $news->id) . '"/>
     <id>' . preg_replace(
-            '#^https?://#',
-            '',
-            page_link_to('news/' . $news->id)
-        ) . '</id>
+        '#^https?://#',
+        '',
+        page_link_to('news/' . $news->id)
+    ) . '</id>
     <updated>' . $news->updated_at->format('Y-m-d\TH:i:sP') . '</updated>
     <summary type="html">' . htmlspecialchars($news->text) . '</summary>
 </entry>' . "\n";

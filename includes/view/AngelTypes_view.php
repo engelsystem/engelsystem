@@ -97,14 +97,17 @@ function AngelType_edit_view($angeltype, $supporter_mode)
                 ? form_info(__('No Self Sign Up allowed'), $angeltype['no_self_signup'] ? __('Yes') : __('No'))
                 : form_checkbox('no_self_signup', __('No Self Sign Up allowed'), $angeltype['no_self_signup']),
             $supporter_mode
-                ? form_info(__('Requires driver license'),
-                $angeltype['requires_driver_license']
+                ? form_info(
+                    __('Requires driver license'),
+                    $angeltype['requires_driver_license']
                     ? __('Yes')
-                    : __('No'))
+                    : __('No')
+                )
                 : form_checkbox(
-                'requires_driver_license',
-                __('Requires driver license'),
-                $angeltype['requires_driver_license']),
+                    'requires_driver_license',
+                    __('Requires driver license'),
+                    $angeltype['requires_driver_license']
+                ),
             $supporter_mode
                 ? form_info(__('Show on dashboard'), $angeltype['show_on_dashboard'] ? __('Yes') : __('No'))
                 : form_checkbox('show_on_dashboard', __('Show on dashboard'), $angeltype['show_on_dashboard']),
@@ -256,12 +259,15 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
             if ($admin_user_angeltypes) {
                 $member['actions'] = table_buttons([
                     $admin_angeltypes
-                        ? button(page_link_to('user_angeltypes', [
-                        'action'            => 'update',
-                        'user_angeltype_id' => $member['user_angeltype_id'],
-                        'supporter'         => 1
-                    ]),
-                        __('Add supporter rights'), 'btn-sm')
+                        ? button(
+                            page_link_to('user_angeltypes', [
+                            'action'            => 'update',
+                            'user_angeltype_id' => $member['user_angeltype_id'],
+                            'supporter'         => 1
+                            ]),
+                            __('Add supporter rights'),
+                            'btn-sm'
+                        )
                         : '',
                     button(
                         page_link_to('user_angeltypes', [

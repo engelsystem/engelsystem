@@ -39,8 +39,10 @@ function admin_groups()
                 'name'       => $group['Name'],
                 'privileges' => join(', ', $privileges_html),
                 'actions'    => button(
-                    page_link_to('admin_groups',
-                        ['action' => 'edit', 'id' => $group['UID']]),
+                    page_link_to(
+                        'admin_groups',
+                        ['action' => 'edit', 'id' => $group['UID']]
+                    ),
                     __('edit'),
                     'btn-sm'
                 )

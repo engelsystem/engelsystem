@@ -156,7 +156,8 @@ function load_types()
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
         throw_redirect(page_link_to('/'));
     }
-    $types = Db::select('
+    $types = Db::select(
+        '
             SELECT
                 `AngelTypes`.`id`,
                 `AngelTypes`.`name`,
@@ -318,7 +319,7 @@ function view_user_shifts()
 function ical_hint()
 {
     $user = auth()->user();
-    if(!auth()->can('ical')) {
+    if (!auth()->can('ical')) {
         return '';
     }
 

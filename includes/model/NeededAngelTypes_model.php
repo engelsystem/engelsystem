@@ -18,7 +18,8 @@ use Engelsystem\Database\Db;
  */
 function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 {
-    Db::insert('
+    Db::insert(
+        '
             INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`)
             VALUES (?, ?, ?, ?)
         ',
@@ -27,7 +28,8 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
             $angeltype_id,
             $room_id,
             $count,
-        ]);
+        ]
+    );
 
     return Db::getPdo()->lastInsertId();
 }
@@ -77,7 +79,8 @@ function NeededAngelTypes_by_room($room_id)
  */
 function NeededAngelTypes_by_shift($shiftId)
 {
-    $needed_angeltypes_source = Db::select('
+    $needed_angeltypes_source = Db::select(
+        '
         SELECT
             `NeededAngelTypes`.*,
             `AngelTypes`.`id`,

@@ -87,7 +87,8 @@ function Users_by_angeltype_inverted($angeltype)
 function Users_by_angeltype($angeltype)
 {
     return User::query()
-        ->select('users.*',
+        ->select(
+            'users.*',
             'UserAngelTypes.id AS user_angeltype_id',
             'UserAngelTypes.confirm_user_id',
             'UserAngelTypes.supporter',
@@ -151,13 +152,13 @@ function User_validate_planned_arrival_date($planned_arrival_date)
     $teardown = $config->get('teardown_end');
 
     /** @var Carbon $buildup */
-    if (!empty($buildup) && Carbon::createFromTimestamp($planned_arrival_date)->lessThan($buildup->setTime(0,0))) {
+    if (!empty($buildup) && Carbon::createFromTimestamp($planned_arrival_date)->lessThan($buildup->setTime(0, 0))) {
         // Planned arrival can not be before buildup start date
         return new ValidationResult(false, $buildup->getTimestamp());
     }
 
     /** @var Carbon $teardown */
-    if (!empty($teardown) && Carbon::createFromTimestamp($planned_arrival_date)->greaterThanOrEqualTo($teardown->addDay()->setTime(0,0))) {
+    if (!empty($teardown) && Carbon::createFromTimestamp($planned_arrival_date)->greaterThanOrEqualTo($teardown->addDay()->setTime(0, 0))) {
         // Planned arrival can not be after teardown end date
         return new ValidationResult(false, $teardown->getTimestamp());
     }
@@ -189,13 +190,13 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
     $teardown = $config->get('teardown_end');
 
     /** @var Carbon $buildup */
-    if (!empty($buildup) && Carbon::createFromTimestamp($planned_departure_date)->lessThan($buildup->setTime(0,0))) {
+    if (!empty($buildup) && Carbon::createFromTimestamp($planned_departure_date)->lessThan($buildup->setTime(0, 0))) {
         // Planned departure can not be before buildup start date
         return new ValidationResult(false, $buildup->getTimestamp());
     }
 
     /** @var Carbon $teardown */
-    if (!empty($teardown) && Carbon::createFromTimestamp($planned_departure_date)->greaterThanOrEqualTo($teardown->addDay()->setTime(0,0))) {
+    if (!empty($teardown) && Carbon::createFromTimestamp($planned_departure_date)->greaterThanOrEqualTo($teardown->addDay()->setTime(0, 0))) {
         // Planned departure can not be after teardown end date
         return new ValidationResult(false, $teardown->getTimestamp());
     }
@@ -237,18 +238,18 @@ function User_get_eligable_voucher_count($user)
         + $worklog->count();
 
     $shiftsTime = 0;
-    foreach ($shifts as $shift){
+    foreach ($shifts as $shift) {
         $shiftsTime += ($shift['end'] - $shift['start']) / 60 / 60;
     }
-    foreach ($worklog as $entry){
+    foreach ($worklog as $entry) {
         $shiftsTime += $entry->hours;
     }
 
     $vouchers = $voucher_settings['initial_vouchers'];
-    if($voucher_settings['shifts_per_voucher']){
+    if ($voucher_settings['shifts_per_voucher']) {
         $vouchers +=  $shifts_done / $voucher_settings['shifts_per_voucher'];
     }
-    if($voucher_settings['hours_per_voucher']){
+    if ($voucher_settings['hours_per_voucher']) {
         $vouchers +=  $shiftsTime / $voucher_settings['hours_per_voucher'];
     }
 
@@ -273,7 +274,8 @@ function User_get_shifts_sum_query()
         return 'COALESCE(SUM(`end` - `start`), 0)';
     }
 
-    return sprintf('
+    return sprintf(
+        '
             COALESCE(SUM(
                 (1 + (
                     (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < %2$d)

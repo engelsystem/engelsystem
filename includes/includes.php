@@ -3,6 +3,7 @@
 /**
  * Include legacy code
  */
+
 $includeFiles = [
     __DIR__ . '/../includes/sys_auth.php',
     __DIR__ . '/../includes/sys_form.php',

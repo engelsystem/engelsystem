@@ -29,7 +29,8 @@ function ShiftEntries_freeloaded_count()
  */
 function ShiftEntries_by_shift($shift_id)
 {
-    return Db::select('
+    return Db::select(
+        '
             SELECT
                 `users`.*,
                 `ShiftEntry`.`UID`,
@@ -60,7 +61,8 @@ function ShiftEntry_create($shift_entry)
     $shifttype = ShiftType($shift['shifttype_id']);
     $room = Room::find($shift['RID']);
     $angeltype = AngelType($shift_entry['TID']);
-    $result = Db::insert('
+    $result = Db::insert(
+        '
             INSERT INTO `ShiftEntry` (
                 `SID`,
                 `TID`,
@@ -101,7 +103,8 @@ function ShiftEntry_create($shift_entry)
  */
 function ShiftEntry_update($shift_entry)
 {
-    Db::update('
+    Db::update(
+        '
             UPDATE `ShiftEntry`
             SET
                 `Comment` = ?,
@@ -167,7 +170,8 @@ function ShiftEntry_delete($shiftEntry)
  */
 function ShiftEntries_upcoming_for_user($userId)
 {
-    return Db::select('
+    return Db::select(
+        '
         SELECT *
         FROM `ShiftEntry`
         JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
@@ -192,7 +196,8 @@ function ShiftEntries_upcoming_for_user($userId)
  */
 function ShiftEntries_finished_by_user($userId, Carbon $sinceTime = null)
 {
-    return Db::select('
+    return Db::select(
+        '
             SELECT *
             FROM `ShiftEntry`
             JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
@@ -219,7 +224,8 @@ function ShiftEntries_finished_by_user($userId, Carbon $sinceTime = null)
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
 {
-    return Db::select('
+    return Db::select(
+        '
             SELECT *
             FROM `ShiftEntry`
             WHERE `SID` = ?
@@ -240,7 +246,8 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
  */
 function ShiftEntries_freeloaded_by_user($userId)
 {
-    return Db::select('
+    return Db::select(
+        '
             SELECT *
             FROM `ShiftEntry`
             WHERE `freeloaded` = 1

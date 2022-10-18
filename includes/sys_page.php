@@ -261,7 +261,7 @@ function strip_item($item)
 function check_email($email)
 {
     // Convert the domain part from idn to ascii
-    if(substr_count($email, '@') == 1) {
+    if (substr_count($email, '@') == 1) {
         list($name, $domain) = explode('@', $email);
         $domain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
         $email = $name . '@' . $domain;
