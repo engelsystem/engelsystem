@@ -13,6 +13,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string      $name
  * @property string      $map_url
  * @property string      $description
+ * @property string      $dect
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -33,6 +34,7 @@ class Room extends BaseModel
     /** @var array */
     protected $fillable = [
         'name',
+        'dect',
         'map_url',
         'description',
     ];
