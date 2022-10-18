@@ -24,6 +24,7 @@ function admin_rooms()
     foreach ($rooms_source as $room) {
         $rooms[] = [
             'name'      => Room_name_render($room),
+            'dect'      => icon_bool($room->dect),
             'map_url'   => icon_bool($room->map_url),
             'actions'   => table_buttons([
                 button(
@@ -46,6 +47,7 @@ function admin_rooms()
         $name = '';
         $map_url = null;
         $description = null;
+        $dect = null;
         $room_id = 0;
 
         $angeltypes_source = AngelTypes();
@@ -66,6 +68,7 @@ function admin_rooms()
             $name = $room->name;
             $map_url = $room->map_url;
             $description = $room->description;
+            $dect = $room->dect;
 
             $needed_angeltypes = NeededAngelTypes_by_room($room_id);
             foreach ($needed_angeltypes as $needed_angeltype) {
@@ -97,6 +100,9 @@ function admin_rooms()
                 if ($request->has('description')) {
                     $description = strip_request_item_nl('description');
                 }
+                if ($request->has('dect')) {
+                    $dect = strip_request_item_nl('dect');
+                }
 
                 foreach ($angeltypes as $angeltype_id => $angeltype) {
                     $angeltypes_count[$angeltype_id] = 0;
@@ -118,9 +124,9 @@ function admin_rooms()
 
                 if ($valid) {
                     if (empty($room_id)) {
-                        $room_id = Room_create($name, $map_url, $description);
+                        $room_id = Room_create($name, $map_url, $description, $dect);
                     } else {
-                        Room_update($room_id, $name, $map_url, $description);
+                        Room_update($room_id, $name, $map_url, $description, $dect);
                     }
 
                     NeededAngelTypes_delete_by_room($room_id);
@@ -159,6 +165,7 @@ function admin_rooms()
                     div('row', [
                         div('col-md-6', [
                             form_text('name', __('Name'), $name, false, 35),
+                            form_text('dect', __('DECT'), $dect),
                             form_text('map_url', __('Map URL'), $map_url),
                             form_info('', __('The map url is used to display an iframe on the room page.')),
                             form_textarea('description', __('Description'), $description),
@@ -222,6 +229,7 @@ function admin_rooms()
         msg(),
         table([
             'name'      => __('Name'),
+            'dect'      => __('DECT'),
             'map_url'   => __('Map'),
             'actions'   => ''
         ], $rooms)

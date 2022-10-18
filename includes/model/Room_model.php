@@ -72,16 +72,18 @@ function Room_delete(Room $room)
  *
  * @return null|int
  */
-function Room_create(string $name, string $map_url = null, string $description = null)
+function Room_create(string $name, string $map_url = null, string $description = null, string $dect = null)
 {
     $room = new Room();
     $room->name = $name;
     $room->description = $description;
     $room->map_url = $map_url;
+    $room->dect = $dect;
     $room->save();
 
     engelsystem_log(
         'Room created: ' . $name
+        . ', dect: ' . $dect
         . ', map_url: ' . $map_url
         . ', description: ' . $description
     );
@@ -97,16 +99,23 @@ function Room_create(string $name, string $map_url = null, string $description =
  * @param string|null $map_url     URL to a map tha can be displayed in an iframe
  * @param string|null $description Markdown description
  */
-function Room_update(int $room_id, string $name, string $map_url = null, string $description = null)
-{
+function Room_update(
+    int $room_id,
+    string $name,
+    string $map_url = null,
+    string $description = null,
+    string $dect = null
+) {
     $room = Room::find($room_id);
     $room->name = $name;
     $room->description = $description ?: null;
     $room->map_url = $map_url ?: null;
+    $room->dect = $dect ?: null;
     $room->save();
 
     engelsystem_log(
         'Room updated: ' . $name .
+        ', dect: ' . $dect .
         ', map_url: ' . $map_url .
         ', description: ' . $description
     );

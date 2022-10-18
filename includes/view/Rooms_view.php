@@ -27,6 +27,12 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
         $description .= $parsedown->parse($room->description);
     }
 
+    $dect = '';
+    if (config('enable_dect') && $room->dect) {
+        $dect = heading(__('Contact'), 3)
+            . description([__('DECT') => sprintf('<a href="tel:%s">%1$s</a>', $room->dect)]);
+    }
+
     $tabs = [];
     if ($room->map_url) {
         $tabs[__('Map')] = sprintf(
@@ -65,6 +71,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
                 'btn'
             )
         ]) : '',
+        $dect,
         $description,
         tabs($tabs, $selected_tab),
     ], true);
