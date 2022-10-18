@@ -132,6 +132,7 @@ class CreateUsersTables extends Migration
                 ]);
                 unset($settings->email_news);
                 unset($settings->email_goody);
+                unset($settings->mobile_show);
 
                 $settings->user()
                     ->associate($user)
