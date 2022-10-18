@@ -87,7 +87,7 @@ function User_settings_view(
                                 'mobile_show',
                                 __('Show mobile number to other users to contact me'),
                                 $user_source->settings->mobile_show
-                            ): '',
+                            ) : '',
                             form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email, false, 254),
                             form_checkbox(
                                 'email_shiftinfo',
