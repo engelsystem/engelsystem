@@ -77,7 +77,6 @@ function admin_groups()
                             )
                         ORDER BY `Privileges`.`name`
                     ', [$group_id]);
-                    $privileges_html = '';
                     $privileges_form = [];
                     foreach ($privileges as $privilege) {
                         $privileges_form[] = form_checkbox(
@@ -86,17 +85,6 @@ function admin_groups()
                             $privilege['group_id'] != '',
                             $privilege['id'],
                             'privilege-' . $privilege['name']
-                        );
-                        $privileges_html .= sprintf(
-                            '<tr>'
-                            . '<td><input type="checkbox" name="privileges[]" value="%s" %s /></td>'
-                            . '<td>%s</td>'
-                            . '<td>%s</td>'
-                            . '</tr>',
-                            $privilege['id'],
-                            ($privilege['group_id'] != '' ? 'checked="checked"' : ''),
-                            $privilege['name'],
-                            $privilege['desc']
                         );
                     }
 

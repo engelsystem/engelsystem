@@ -9,23 +9,23 @@ class ShiftCalendarRenderer
     /**
      * 15m * 60s/m = 900s
      */
-    const SECONDS_PER_ROW = 900;
+    public const SECONDS_PER_ROW = 900;
 
     /**
      * Height of a block in pixel.
      * Do not change - corresponds with theme/css
      */
-    const BLOCK_HEIGHT = 30;
+    public const BLOCK_HEIGHT = 30;
 
     /**
      * Distance between two shifts in pixels
      */
-    const MARGIN = 5;
+    public const MARGIN = 5;
 
     /**
      * Seconds added to the start and end time
      */
-    const TIME_MARGIN = 1800;
+    public const TIME_MARGIN = 1800;
 
     /** @var array */
     private $lanes;

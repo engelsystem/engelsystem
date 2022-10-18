@@ -46,7 +46,6 @@ function shift_edit_link($shift)
  */
 function shift_edit_controller()
 {
-    $msg = '';
     $valid = true;
     $request = request();
 
@@ -105,33 +104,33 @@ function shift_edit_controller()
             $rid = $request->input('rid');
         } else {
             $valid = false;
-            $msg .= error(__('Please select a room.'), true);
+            error(__('Please select a room.'), true);
         }
 
         if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
             $shifttype_id = $request->input('shifttype_id');
         } else {
             $valid = false;
-            $msg .= error(__('Please select a shifttype.'), true);
+            error(__('Please select a shifttype.'), true);
         }
 
         if ($request->has('start') && $tmp = parse_date('Y-m-d H:i', $request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
-            $msg .= error(__('Please enter a valid starting time for the shifts.'), true);
+            error(__('Please enter a valid starting time for the shifts.'), true);
         }
 
         if ($request->has('end') && $tmp = parse_date('Y-m-d H:i', $request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
-            $msg .= error(__('Please enter a valid ending time for the shifts.'), true);
+            error(__('Please enter a valid ending time for the shifts.'), true);
         }
 
         if ($start >= $end) {
             $valid = false;
-            $msg .= error(__('The ending time has to be after the starting time.'), true);
+            error(__('The ending time has to be after the starting time.'), true);
         }
 
         foreach ($needed_angel_types as $needed_angeltype_id => $count) {
@@ -143,7 +142,7 @@ function shift_edit_controller()
                     $needed_angel_types[$needed_angeltype_id] = trim($request->input($queryKey));
                 } else {
                     $valid = false;
-                    $msg .= error(sprintf(
+                    error(sprintf(
                         __('Please check your input for needed angels of type %s.'),
                         $angeltypes[$needed_angeltype_id]
                     ), true);
@@ -351,6 +350,7 @@ function shifts_controller()
         /** @noinspection PhpMissingBreakStatementInspection */
         case 'next':
             shift_next_controller();
+            // fall through
         default:
             throw_redirect(page_link_to('/'));
     }

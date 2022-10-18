@@ -11,47 +11,47 @@ class ShiftSignupState
     /**
      * Shift has free places
      */
-    const FREE = 'FREE';
+    public const FREE = 'FREE';
 
     /**
      * Shift collides with users shifts
      */
-    const COLLIDES = 'COLLIDES';
+    public const COLLIDES = 'COLLIDES';
 
     /**
      * User cannot join because of a restricted angeltype or user is not in the angeltype
      */
-    const ANGELTYPE = 'ANGELTYPE';
+    public const ANGELTYPE = 'ANGELTYPE';
 
     /**
      * Shift is full
      */
-    const OCCUPIED = 'OCCUPIED';
+    public const OCCUPIED = 'OCCUPIED';
 
     /**
      * User is admin and can do what he wants.
      */
-    const ADMIN = 'ADMIN';
+    public const ADMIN = 'ADMIN';
 
     /**
      * Shift has already ended, no signup
      */
-    const SHIFT_ENDED = 'SHIFT_ENDED';
+    public const SHIFT_ENDED = 'SHIFT_ENDED';
 
     /**
      * Shift is not available yet
      */
-    const NOT_YET = 'NOT_YET';
+    public const NOT_YET = 'NOT_YET';
 
     /**
      * User is already signed up
      */
-    const SIGNED_UP = 'SIGNED_UP';
+    public const SIGNED_UP = 'SIGNED_UP';
 
     /**
      * User has to be arrived
      */
-    const NOT_ARRIVED = 'NOT_ARRIVED';
+    public const NOT_ARRIVED = 'NOT_ARRIVED';
 
     /** @var string */
     private $state;
