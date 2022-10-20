@@ -85,6 +85,7 @@ class SettingsController extends BaseController
             'planned_departure_date' => 'optional|date:Y-m-d',
             'dect'                   => 'optional|length:0:40', // dect/mobile can be purely numbers. "max" would have
             'mobile'                 => 'optional|length:0:40', // checked their values, not their character length.
+            'mobile_show'            => 'optional|checked',
             'email'                  => 'required|email|max:254',
             'email_shiftinfo'        => 'optional|checked',
             'email_news'             => 'optional|checked',
@@ -120,6 +121,11 @@ class SettingsController extends BaseController
         }
 
         $user->contact->mobile = $data['mobile'];
+
+        if (config('enable_mobile_show')) {
+            $user->settings->mobile_show = $data['mobile_show'] ?: false;
+        }
+
         $user->email = $data['email'];
         $user->settings->email_shiftinfo = $data['email_shiftinfo'] ?: false;
         $user->settings->email_news = $data['email_news'] ?: false;

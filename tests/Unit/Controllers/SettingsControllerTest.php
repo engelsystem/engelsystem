@@ -61,6 +61,7 @@ class SettingsControllerTest extends TestCase
             'planned_departure_date' => '2022-01-02',
             'dect'                   => '1234',
             'mobile'                 => '0123456789',
+            'mobile_show'            => true,
             'email'                  => 'a@bc.de',
             'email_shiftinfo'        => true,
             'email_news'             => true,
@@ -82,6 +83,7 @@ class SettingsControllerTest extends TestCase
             'enable_user_name'       => true,
             'enable_planned_arrival' => true,
             'enable_dect'            => true,
+            'enable_mobile_show'     => true,
             'enable_goody'           => true,
         ]);
 
@@ -134,6 +136,7 @@ class SettingsControllerTest extends TestCase
         );
         $this->assertEquals($body['dect'], $this->user->contact->dect);
         $this->assertEquals($body['mobile'], $this->user->contact->mobile);
+        $this->assertEquals($body['mobile_show'], $this->user->settings->mobile_show);
         $this->assertEquals($body['email'], $this->user->email);
         $this->assertEquals($body['email_shiftinfo'], $this->user->settings->email_shiftinfo);
         $this->assertEquals($body['email_news'], $this->user->settings->email_news);
@@ -186,6 +189,17 @@ class SettingsControllerTest extends TestCase
         config(['enable_dect' => false]);
         $this->controller->saveProfile($this->request);
         $this->assertEquals('', $this->user->contact->dect);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveProfile
+     */
+    public function testSaveProfileIgnoresMobileShowIfDisabled()
+    {
+        $this->setUpProfileTest();
+        config(['enable_mobile_show' => false]);
+        $this->controller->saveProfile($this->request);
+        $this->assertFalse($this->user->settings->mobile_show);
     }
 
     /**
@@ -646,7 +660,12 @@ class SettingsControllerTest extends TestCase
         $this->app->instance(Authenticator::class, $this->auth);
 
         $this->user = User::factory()
-            ->has(Settings::factory(['theme' => 1, 'language' => 'en_US', 'email_goody' => false]))
+            ->has(Settings::factory([
+                'theme' => 1,
+                'language' => 'en_US',
+                'email_goody' => false,
+                'mobile_show' => false,
+            ]))
             ->create();
 
         $this->controller = $this->app->make(SettingsController::class);

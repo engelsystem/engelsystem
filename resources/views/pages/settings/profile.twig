@@ -86,6 +86,13 @@
                     'text',
                     {'value': user.contact.mobile, 'max_length': 40}
                 ) }}
+                {% if config('enable_mobile_show') %}
+                    {{ f.checkbox(
+                        'mobile_show',
+                        __('settings.profile.mobile_show'),
+                        user.settings.mobile_show
+                    ) }}
+                {% endif %}
                 {{ f.input(
                     'email',
                     __('settings.profile.email'),
