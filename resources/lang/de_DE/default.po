@@ -2969,6 +2969,9 @@ msgstr "DECT"
 msgid "settings.profile.mobile"
 msgstr "Handy"
 
+msgid "settings.profile.mobile_show"
+msgstr "Mache meine Handynummer für andere Benutzer sichtbar."
+
 msgid "settings.profile.email"
 msgstr "E-Mail"
 

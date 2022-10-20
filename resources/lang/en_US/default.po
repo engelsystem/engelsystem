@@ -241,6 +241,9 @@ msgstr "DECT"
 msgid "settings.profile.mobile"
 msgstr "Mobile"
 
+msgid "settings.profile.mobile_show"
+msgstr "Show mobile number to other users to contact me."
+
 msgid "settings.profile.email"
 msgstr "E-Mail"
 
