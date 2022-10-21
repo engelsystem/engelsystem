@@ -40,7 +40,9 @@ class SessionServiceProviderTest extends ServiceProviderTest
             ->getMock();
 
         /** @var Config|MockObject $config */
-        $config = $this->createMock(Config::class);
+        $config = new Config([
+            'session' => ['driver' => 'native', 'name' => 'session', 'lifetime' => 2],
+        ]);
 
         $serviceProvider->expects($this->exactly(3))
             ->method('isCli')
@@ -54,6 +56,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 [
                     NativeSessionStorage::class,
                     [
+                        // 2 days
                         'options' => ['cookie_httponly' => true, 'name' => 'session', 'cookie_lifetime' => 172800],
                         'handler' => null
                     ],
@@ -63,6 +66,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 [
                     NativeSessionStorage::class,
                     [
+                        // 5 days
                         'options' => ['cookie_httponly' => true, 'name' => 'foobar', 'cookie_lifetime' => 432000],
                         'handler' => $databaseHandler
                     ],
@@ -103,14 +107,6 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 $request
             );
 
-        $config->expects($this->exactly(2))
-            ->method('get')
-            ->with('session')
-            ->willReturnOnConsecutiveCalls(
-                ['driver' => 'native', 'name' => 'session', 'lifetime' => 2],
-                ['driver' => 'pdo', 'name' => 'foobar', 'lifetime' => 5]
-            );
-
         $app->expects($this->atLeastOnce())
             ->method('bind')
             ->withConsecutive(
@@ -124,8 +120,9 @@ class SessionServiceProviderTest extends ServiceProviderTest
         $this->setExpects($session, 'start', null, null, $this->atLeastOnce());
 
         $serviceProvider->register();
-        $serviceProvider->register();
-        $serviceProvider->register();
+        $serviceProvider->register(); // native handler
+        $config->set('session', ['driver' => 'pdo', 'name' => 'foobar', 'lifetime' => 5]);
+        $serviceProvider->register(); // pdo handler
     }
 
     /**
