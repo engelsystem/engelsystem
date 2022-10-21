@@ -19,7 +19,8 @@ function AngelType_new()
         'contact_name'            => null,
         'contact_dect'            => null,
         'contact_email'           => null,
-        'show_on_dashboard'       => true
+        'show_on_dashboard'       => true,
+        'hide_register'           => false
     ];
 }
 
@@ -69,7 +70,8 @@ function AngelType_update($angeltype)
             `contact_name` = ?,
             `contact_dect` = ?,
             `contact_email` = ?,
-            `show_on_dashboard` = ?
+            `show_on_dashboard` = ?,
+            `hide_register` = ?
             WHERE `id` = ?
         ',
         [
@@ -82,6 +84,7 @@ function AngelType_update($angeltype)
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
             (int)$angeltype['show_on_dashboard'],
+            (int)$angeltype['hide_register'],
             $angeltype['id'],
         ]
     );
@@ -93,7 +96,8 @@ function AngelType_update($angeltype)
         . $angeltype['contact_name'] . ', '
         . $angeltype['contact_dect'] . ', '
         . $angeltype['contact_email'] . ', '
-        . $angeltype['show_on_dashboard']
+        . $angeltype['show_on_dashboard'] . ', '
+        . $angeltype['hide_register']
     );
 }
 
@@ -116,9 +120,10 @@ function AngelType_create($angeltype)
                 `contact_name`,
                 `contact_dect`,
                 `contact_email`,
-                `show_on_dashboard`
+                `show_on_dashboard`,
+                `hide_register`
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $angeltype['name'],
@@ -129,7 +134,8 @@ function AngelType_create($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
-            (int)$angeltype['show_on_dashboard']
+            (int)$angeltype['show_on_dashboard'],
+            (int)$angeltype['hide_register'],
         ]
     );
 
@@ -141,7 +147,8 @@ function AngelType_create($angeltype)
         . $angeltype['contact_name'] . ', '
         . $angeltype['contact_dect'] . ', '
         . $angeltype['contact_email'] . ', '
-        . $angeltype['show_on_dashboard']
+        . $angeltype['show_on_dashboard'] . ', '
+        . $angeltype['hide_register']
     );
 
     return $angeltype;

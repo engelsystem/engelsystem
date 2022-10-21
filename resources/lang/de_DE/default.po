@@ -2429,6 +2429,9 @@ msgstr "Möchtest Du wirklich %s zu %s hinzufügen?"
 msgid "Confirm user"
 msgstr "Benutzer bestätigen"
 
+msgid "Hide at Registration"
+msgstr "Ausblenden bei Registrierung"
+
 #: includes/view/UserAngelTypes_view.php:176
 msgid "save"
 msgstr "Speichern"

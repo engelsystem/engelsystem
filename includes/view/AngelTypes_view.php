@@ -111,6 +111,9 @@ function AngelType_edit_view($angeltype, $supporter_mode)
             $supporter_mode
                 ? form_info(__('Show on dashboard'), $angeltype['show_on_dashboard'] ? __('Yes') : __('No'))
                 : form_checkbox('show_on_dashboard', __('Show on dashboard'), $angeltype['show_on_dashboard']),
+            $supporter_mode
+                ? form_info(__('Hide at Registration'), $angeltype['hide_register'] ? __('Yes') : __('No'))
+                : form_checkbox('hide_register', __('Hide at Registration'), $angeltype['hide_register']),
             form_textarea('description', __('Description'), $angeltype['description']),
             form_info('', __('Please use markdown for the description.')),
             heading(__('Contact'), 3),

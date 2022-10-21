@@ -75,8 +75,11 @@ function guest_register()
         }
     }
     foreach ($angel_types_source as $angel_type) {
+        if ($angel_type['hide_register']) {
+            continue;
+        }
         $angel_types[$angel_type['id']] = $angel_type['name']
-            . ($angel_type['restricted'] ? ' (' . __('Requires introduction') . ')' : '');
+        . ($angel_type['restricted'] ? ' (' . __('Requires introduction') . ')' : '');
         if (!$angel_type['restricted']) {
             $selected_angel_types[] = $angel_type['id'];
         }

@@ -139,6 +139,7 @@ function angeltype_edit_controller()
             $angeltype['restricted'] = $request->has('restricted');
             $angeltype['no_self_signup'] = $request->has('no_self_signup');
             $angeltype['show_on_dashboard'] = $request->has('show_on_dashboard');
+            $angeltype['hide_register'] = $request->has('hide_register');
 
             $angeltype['requires_driver_license'] = $request->has('requires_driver_license');
         }
