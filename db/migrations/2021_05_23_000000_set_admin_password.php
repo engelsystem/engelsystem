@@ -5,7 +5,6 @@ namespace Engelsystem\Migrations;
 use Engelsystem\Config\Config;
 use Engelsystem\Database\Migration\Migration;
 use Engelsystem\Helpers\Authenticator;
-use Engelsystem\Models\User\User;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 
 class SetAdminPassword extends Migration
@@ -13,10 +12,10 @@ class SetAdminPassword extends Migration
     use Reference;
 
     /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
     /** @var Config */
-    protected $config;
+    protected Config $config;
 
     /**
      * @param SchemaBuilder $schemaBuilder
@@ -36,7 +35,6 @@ class SetAdminPassword extends Migration
      */
     public function up()
     {
-        /** @var User $admin */
         $admin = $this->auth->authenticate('admin', 'asdfasdf');
         $setupPassword = $this->config->get('setup_admin_password');
         if (!$admin || !$setupPassword) {

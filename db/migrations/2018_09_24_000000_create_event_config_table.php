@@ -4,13 +4,13 @@ namespace Engelsystem\Migrations;
 
 use Carbon\Carbon;
 use Engelsystem\Database\Migration\Migration;
-use Engelsystem\Models\EventConfig;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Collection;
 
 class CreateEventConfigTable extends Migration
 {
-    protected $mapping = [
+    protected array $mapping = [
         'buildup_start_date' => 'buildup_start',
         'event_start_date'   => 'event_start',
         'event_end_date'     => 'event_end',
@@ -41,26 +41,24 @@ class CreateEventConfigTable extends Migration
         }
 
         if ($this->schema->hasTable('EventConfig')) {
-            $config = $this->schema->getConnection()
+            $connection = $this->schema->getConnection();
+            $config = $connection
                 ->table('EventConfig')
                 ->first();
 
             if (!empty($config)) {
-                (new EventConfig([
-                    'name'  => 'name',
-                    'value' => $config->event_name,
-                ]))->save();
-
-                (new EventConfig([
-                    'name'  => 'welcome_msg',
-                    'value' => $config->event_welcome_msg,
-                ]))->save();
+                $connection->table('event_config')
+                    ->insert([
+                        ['name' => 'name', 'value' => $config->event_name],
+                        ['name' => 'welcome_msg', 'value' => $config->event_welcome_msg],
+                    ]);
 
                 foreach ($this->mapping as $old => $new) {
-                    (new EventConfig([
-                        'name'  => $new,
-                        'value' => (new Carbon())->setTimestamp($config->{$old}),
-                    ]))->save();
+                    $connection->table('event_config')
+                        ->insert([
+                            'name'  => $new,
+                            'value' => (new Carbon())->setTimestamp($config->{$old}),
+                        ]);
                 }
             }
 
@@ -73,6 +71,8 @@ class CreateEventConfigTable extends Migration
      */
     public function down()
     {
+        $connection = $this->schema->getConnection();
+
         $this->schema->create('EventConfig', function (Blueprint $table) {
             $table->string('event_name')->nullable();
             $table->integer('buildup_start_date')->nullable();
@@ -82,19 +82,19 @@ class CreateEventConfigTable extends Migration
             $table->string('event_welcome_msg')->nullable();
         });
 
-        $config = new EventConfig();
+        $config = $connection->table('event_config')->get();
         $data = [
-            'event_name'        => $config->findOrNew('name')->value,
-            'event_welcome_msg' => $config->findOrNew('welcome_msg')->value,
+            'event_name'        => $this->getConfigValue($config, 'name'),
+            'event_welcome_msg' => $this->getConfigValue($config, 'welcome_msg'),
         ];
         foreach ($this->mapping as $new => $old) {
-            /** @var Carbon $value */
-            $value = $config->findOrNew($old)->value;
+            $value = $this->getConfigValue($config, $old);
 
             if (!$value) {
                 continue;
             }
 
+            $value = Carbon::make($value);
             $data[$new] = $value->getTimestamp();
         }
 
@@ -110,5 +110,17 @@ class CreateEventConfigTable extends Migration
         }
 
         $this->schema->dropIfExists('event_config');
+    }
+
+    /**
+     * @param Collection $config
+     * @param string     $name
+     * @return mixed|null
+     */
+    protected function getConfigValue(Collection $config, string $name)
+    {
+        $value = $config->where('name', $name)->first('value', (object)['value' => null])->value;
+
+        return $value ? json_decode($value, true) : null;
     }
 }

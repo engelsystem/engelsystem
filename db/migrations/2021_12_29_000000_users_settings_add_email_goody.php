@@ -14,6 +14,8 @@ class UsersSettingsAddEmailGoody extends Migration
      */
     public function up()
     {
+        $connection = $this->schema->getConnection();
+
         $this->schema->table(
             'users_settings',
             function (Blueprint $table) {
@@ -21,7 +23,6 @@ class UsersSettingsAddEmailGoody extends Migration
             }
         );
 
-        $connection = $this->schema->getConnection();
         $connection
             ->table('users_settings')
             ->update(['email_goody' => $connection->raw('email_human')]);

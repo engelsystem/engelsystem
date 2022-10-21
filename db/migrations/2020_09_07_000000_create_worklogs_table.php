@@ -6,7 +6,6 @@ namespace Engelsystem\Migrations;
 
 use Carbon\Carbon;
 use Engelsystem\Database\Migration\Migration;
-use Engelsystem\Models\Worklog;
 use Illuminate\Database\Schema\Blueprint;
 use stdClass;
 
@@ -38,18 +37,19 @@ class CreateWorklogsTable extends Migration
                 ->get();
 
             foreach ($previousRecords as $previousRecord) {
-                $room = new Worklog([
-                    'user_id'    => $previousRecord->user_id,
-                    'creator_id' => $previousRecord->created_user_id,
-                    'worked_at'  => $previousRecord->work_timestamp,
-                    'hours'      => $previousRecord->work_hours,
-                    'comment'    => $previousRecord->comment,
-                ]);
                 $created_at = Carbon::createFromTimestamp($previousRecord->created_timestamp);
-                $room->setAttribute('id', $previousRecord->id);
-                $room->setAttribute('created_at', $created_at);
-                $room->setAttribute('updated_at', $created_at);
-                $room->save();
+                $this->schema->getConnection()
+                    ->table('worklogs')
+                    ->insert([
+                        'id'         => $previousRecord->id,
+                        'user_id'    => $previousRecord->user_id,
+                        'creator_id' => $previousRecord->created_user_id,
+                        'worked_at'  => $previousRecord->work_timestamp,
+                        'hours'      => $previousRecord->work_hours,
+                        'comment'    => $previousRecord->comment,
+                        'created_at' => $created_at,
+                        'updated_at' => $created_at,
+                    ]);
             }
 
             $this->changeReferences(
@@ -68,6 +68,8 @@ class CreateWorklogsTable extends Migration
      */
     public function down(): void
     {
+        $connection = $this->schema->getConnection();
+
         $this->schema->create('UserWorkLog', function (Blueprint $table) {
             $table->increments('id');
             $this->referencesUser($table);
@@ -78,10 +80,9 @@ class CreateWorklogsTable extends Migration
             $table->integer('created_timestamp')->index();
         });
 
-        foreach (Worklog::all() as $record) {
-            /** @var Worklog $record */
-            $this->schema
-                ->getConnection()
+        foreach ($connection->table('worklogs')->get() as $record) {
+            /** @var stdClass $record */
+            $connection
                 ->table('UserWorkLog')
                 ->insert([
                     'id'                => $record->id,

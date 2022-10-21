@@ -4,7 +4,6 @@ namespace Engelsystem\Migrations;
 
 use Carbon\Carbon;
 use Engelsystem\Database\Migration\Migration;
-use Engelsystem\Models\Shifts\Schedule;
 use Illuminate\Database\Schema\Blueprint;
 
 class AddNameMinutesAndTimestampsToSchedules extends Migration
@@ -16,6 +15,8 @@ class AddNameMinutesAndTimestampsToSchedules extends Migration
      */
     public function up()
     {
+        $connection = $this->schema->getConnection();
+
         $this->schema->table(
             'schedules',
             function (Blueprint $table) {
@@ -27,7 +28,7 @@ class AddNameMinutesAndTimestampsToSchedules extends Migration
             }
         );
 
-        Schedule::query()
+        $connection->table('schedules')
             ->update([
                 'created_at'     => Carbon::now(),
                 'minutes_before' => 15,
@@ -46,7 +47,6 @@ class AddNameMinutesAndTimestampsToSchedules extends Migration
 
         // Add legacy reference
         if ($this->schema->hasTable('ShiftTypes')) {
-            $connection = $this->schema->getConnection();
             $query = $connection
                 ->table('Shifts')
                 ->select('Shifts.shifttype_id')
@@ -54,8 +54,10 @@ class AddNameMinutesAndTimestampsToSchedules extends Migration
                 ->where('schedule_shift.schedule_id', $connection->raw('schedules.id'))
                 ->limit(1);
 
-            Schedule::query()
-                ->update(['shift_type' => $connection->raw('(' . $query->toSql() . ')')]);
+            $connection->table('schedules')
+                ->update([
+                    'shift_type' => $connection->raw('(' . $query->toSql() . ')')
+                ]);
 
             $this->schema->table(
                 'schedules',

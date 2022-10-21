@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;
-use Engelsystem\Models\Room;
 use Illuminate\Database\Schema\Blueprint;
 use stdClass;
 
@@ -35,13 +34,13 @@ class CreateRoomsTable extends Migration
                 ->get();
 
             foreach ($previousRecords as $previousRecord) {
-                $room = new Room([
-                    'name'        => $previousRecord->Name,
-                    'map_url'     => $previousRecord->map_url ?: null,
-                    'description' => $previousRecord->description ?: null,
-                ]);
-                $room->setAttribute('id', $previousRecord->RID);
-                $room->save();
+                $connection->table('rooms')
+                    ->insert([
+                        'id'          => $previousRecord->RID,
+                        'name'        => $previousRecord->Name,
+                        'map_url'     => $previousRecord->map_url ?: null,
+                        'description' => $previousRecord->description ?: null,
+                    ]);
             }
 
             $this->changeReferences(
@@ -60,6 +59,8 @@ class CreateRoomsTable extends Migration
      */
     public function down(): void
     {
+        $connection = $this->schema->getConnection();
+
         $this->schema->create('Room', function (Blueprint $table) {
             $table->increments('RID');
             $table->string('Name', 35)->unique();
@@ -67,9 +68,9 @@ class CreateRoomsTable extends Migration
             $table->mediumText('description')->nullable();
         });
 
-        foreach (Room::all() as $room) {
-            $this->schema
-                ->getConnection()
+        foreach ($connection->table('rooms')->get() as $room) {
+            /** @var stdClass $room */
+            $connection
                 ->table('Room')
                 ->insert([
                     'RID'         => $room->id,

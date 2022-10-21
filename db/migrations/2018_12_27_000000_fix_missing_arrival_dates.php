@@ -3,7 +3,7 @@
 namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;
-use Engelsystem\Models\User\State;
+use stdClass;
 
 class FixMissingArrivalDates extends Migration
 {
@@ -12,10 +12,24 @@ class FixMissingArrivalDates extends Migration
      */
     public function up()
     {
-        $states = State::whereArrived(true)->whereArrivalDate(null)->get();
+        $connection = $this->schema->getConnection();
+
+        /** @var stdClass[] $states */
+        $states = $connection
+            ->table('users_state')
+            ->where('arrived', true)
+            ->where('arrival_date', null)
+            ->get();
+
         foreach ($states as $state) {
-            $state->arrival_date = $state->user->personalData->planned_arrival_date;
-            $state->save();
+            /** @var stdClass $personalData */
+            $personalData = $connection
+                ->table('users_personal_data')
+                ->where('user_id', $state->user_id)
+                ->first();
+            $state->arrival_date = $personalData->planned_arrival_date;
+            $connection->table('users_state')
+                ->update((array)$state);
         }
     }
 
