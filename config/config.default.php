@@ -345,6 +345,9 @@ return [
 
         // Cookie name
         'name'   => env('SESSION_NAME', 'session'),
+
+        // Lifetime in days
+        'lifetime' => env('SESSION_LIFETIME', 30)
     ],
 
     // IP addresses of reverse proxies that are trusted, can be an array or a comma separated list

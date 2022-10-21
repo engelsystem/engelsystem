@@ -53,13 +53,19 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 [Session::class],
                 [
                     NativeSessionStorage::class,
-                    ['options' => ['cookie_httponly' => true, 'name' => 'session'], 'handler' => null],
+                    [
+                        'options' => ['cookie_httponly' => true, 'name' => 'session', 'cookie_lifetime' => 172800],
+                        'handler' => null
+                    ],
                 ],
                 [Session::class],
                 [DatabaseHandler::class],
                 [
                     NativeSessionStorage::class,
-                    ['options' => ['cookie_httponly' => true, 'name' => 'foobar'], 'handler' => $databaseHandler],
+                    [
+                        'options' => ['cookie_httponly' => true, 'name' => 'foobar', 'cookie_lifetime' => 432000],
+                        'handler' => $databaseHandler
+                    ],
                 ],
                 [Session::class]
             )
@@ -101,8 +107,8 @@ class SessionServiceProviderTest extends ServiceProviderTest
             ->method('get')
             ->with('session')
             ->willReturnOnConsecutiveCalls(
-                ['driver' => 'native', 'name' => 'session'],
-                ['driver' => 'pdo', 'name' => 'foobar']
+                ['driver' => 'native', 'name' => 'session', 'lifetime' => 2],
+                ['driver' => 'pdo', 'name' => 'foobar', 'lifetime' => 5]
             );
 
         $app->expects($this->atLeastOnce())
