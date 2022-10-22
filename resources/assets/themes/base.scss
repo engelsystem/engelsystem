@@ -279,22 +279,21 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   overflow-x: inherit;
 }
 
-span.ref-id[id] {
-  padding-top: 50px;
-}
+// Reference links
+h1, h2, h3, h4, h5, h6, .card-header {
+  a.ref-link {
+    display: none;
+  }
 
-.faq {
-  .card-header {
-    small a.ref-link {
-      display: none;
-    }
-
-    &:hover {
-      small a.ref-link {
-        display: inherit;
-      }
+  &:hover {
+    a.ref-link {
+      display: inline;
     }
   }
+}
+
+.ref-id[id] {
+  padding-top: 3em;
 }
 
 // Cards

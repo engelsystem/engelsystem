@@ -29,7 +29,7 @@
 {% set types_buttons=['link']|merge(types) %}
 {% set shortsum='Lorem ipsum dolor…' %}
 {% set lipsum='Lorem ipsum dolor sit amet, consectetur adipisici elit…' %}
-{% set linksum='Lorem ipsum! Dolor <a href="#">link</a> amet, consectetur adipisici elit!' %}
+{% set linksum='Lorem ipsum! Dolor <a href="#" onclick="return false">link</a> amet, consectetur adipisici elit!' %}
 
 {% block content %}
     <div class="col-12">
@@ -37,8 +37,8 @@
         <h1 class="mb-4">
             {{ block('title') }} <small class="text-muted">{{ themes[themeId]['name'] }}</small>
         </h1>
-
-        <h2>Elements <small class="text-muted">small</small></h2>
+        <span id="elements" class="ref-id"></span>
+        <h2>Elements <small class="text-muted">small</small> <a href="#elements" class="ref-link">{{ m.icon('link') }}</a></h2>
         <div class="row">
             <div class="col-md-6 col-lg-2 mb-4">
                 <h3>Headings <small class="text-muted">small</small></h3>
@@ -80,7 +80,8 @@
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-4 mb-4">
-                <h3>Tables</h3>
+                <span id="tables" class="ref-id"></span>
+                <h3>Tables <a href="#tables" class="ref-link">{{ m.icon('link') }}</a></h3>
                 <table class="table table-striped">
                     <tr>
                         <th>Header 1</th>
@@ -103,13 +104,13 @@
                 <h3>Navigation Tabs</h3>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Lorem</a>
+                        <a class="nav-link active" href="#" onclick="return false">Lorem</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Ipsum</a>
+                        <a class="nav-link" href="#" onclick="return false">Ipsum</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Dolor</a>
+                        <a class="nav-link" href="#" onclick="return false">Dolor</a>
                     </li>
                 </ul>
             </div>
@@ -117,13 +118,13 @@
                 <h3>Navigation Pills</h3>
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Some</a>
+                        <a class="nav-link active" href="#" onclick="return false">Some</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Test</a>
+                        <a class="nav-link" href="#" onclick="return false">Test</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Menu</a>
+                        <a class="nav-link" href="#" onclick="return false">Menu</a>
                     </li>
                 </ul>
             </div>
@@ -131,7 +132,8 @@
 
         <div class="row">
             <div class="col-6 col-md-12 mb-4">
-                <h3>Texts</h3>
+                <span id="texts" class="ref-id"></span>
+                <h3>Texts <a href="#texts" class="ref-link">{{ m.icon('link') }}</a></h3>
                 <p>
                     {{ linksum|raw }}<br>
                     {{ lipsum }} {{ lipsum|replace({'…': '.'}) }} {{ lipsum|replace({'…': '.'}) }} {{ lipsum }}
@@ -149,7 +151,8 @@
 
         <div class="row">
             <div class="col-6 col-md-12 mb-4">
-                <h3>Badges</h3>
+                <span id="badges" class="ref-id"></span>
+                <h3>Badges <a href="#badges" class="ref-link">{{ m.icon('link') }}</a></h3>
                 <p>
                     {% for type in types_color %}
                         <span class="badge bg-{{ type[0] }} text-{{ type[1] }}">{{ type[0]|capitalize }}</span>
@@ -157,7 +160,8 @@
                 </p>
             </div>
             <div class="col-6 col-md-12 mb-4">
-                <h3>Buttons</h3>
+                <span id="buttons" class="ref-id"></span>
+                <h3>Buttons <a href="#buttons" class="ref-link">{{ m.icon('link') }}</a></h3>
                 <p>
                     {% for type in types_buttons %}
                         {{ f.button(type|capitalize, {'btn_type': type, 'name': 'button-' ~ type}) }}
@@ -168,7 +172,8 @@
 
         <div class="row mb-4">
             <div class="col">
-                <h3>Alerts</h3>
+                <span id="alerts" class="ref-id"></span>
+                <h3>Alerts <a href="#alerts" class="ref-link">{{ m.icon('link') }}</a></h3>
 
                 <div class="row">
                     {% for color in colors %}
@@ -183,7 +188,8 @@
 
         <div class="row mb-4">
             <div class="col-md-12 mb-3">
-                <h3>Cards</h3>
+                <span id="cards" class="ref-id"></span>
+                <h3>Cards <a href="#cards" class="ref-link">{{ m.icon('link') }}</a></h3>
 
                 <div class="row">
                     {% for type in types %}
@@ -192,7 +198,7 @@
                                 <h4 class="card-header bg-{{ type }}">{{ type|capitalize }}</h4>
                                 <div class="card-body">
                                     <p class="card-text">{{ shortsum }}</p>
-                                    <p class="card-text"><a href="#" class="card-link">Some link</a></p>
+                                    <p class="card-text"><a href="#" onclick="return false" class="card-link">Some link</a></p>
                                 </div>
                                 <div class="card-footer text-muted">
                                     Footer
@@ -206,7 +212,8 @@
 
         <div class="row mb-4">
             <div class="col-md-12">
-                <h3>Forms</h3>
+                <span id="forms" class="ref-id"></span>
+                <h3>Forms <a href="#forms" class="ref-link">{{ m.icon('link') }}</a></h3>
 
                 <div class="row">
                     <div class="col-md-3 col-lg-2">
@@ -262,22 +269,23 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3 col-lg-2">
-                        <label class="form-label">Date</label>
+                        <label class="form-label" for="input_date">Date</label>
                         <div class="input-group date">
-                            <input type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="design-date" class="form-control" value="2021-09-15">
+                            <input id="input_date" type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="design-date" class="form-control" value="2021-09-15">
                         </div>
                     </div>
                     <div class="col-md-3 col-lg-2">
-                        <label class="form-label">Datetime</label>
+                        <label class="form-label" for="input_datetime_local">Datetime</label>
                         <div class="input-group datetime">
-                            <input type="datetime-local" placeholder="YYYY-MM-DD HH:MM" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} ([01][0-9]|2[0-3]):[0-5][0-9]" name="design-datetime" class="form-control" value="2021-09-15T13:37">
+                            <input id="input_datetime_local" type="datetime-local" placeholder="YYYY-MM-DD HH:MM" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} ([01][0-9]|2[0-3]):[0-5][0-9]" name="design-datetime" class="form-control" value="2021-09-15T13:37">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <h3>Other</h3>
+        <span id="other" class="ref-id"></span>
+        <h3>Other <a href="#other" class="ref-link">{{ m.icon('link') }}</a></h3>
         <div class="row mb-4">
             <div class="col">
                 <h4>Code</h4>
@@ -289,13 +297,13 @@
                 <h4>Pagination</h4>
                 <ul class="pagination">
                     <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
+                        <a class="page-link" href="#" onclick="return false">1</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="#">2</a>
+                        <a class="page-link" href="#" onclick="return false">2</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="#">3</a>
+                        <a class="page-link" href="#" onclick="return false">3</a>
                     </li>
                 </ul>
             </div>
@@ -320,7 +328,8 @@
             </div>
         </div>
 
-        <h2>Macros</h2>
+        <span id="macros" class="ref-id"></span>
+        <h2>Macros <a href="#macros" class="ref-link">{{ m.icon('link') }}</a></h2>
         <h3>base.twig</h3>
         <div class="row mb-4">
             <div class="col-md-3">
@@ -394,7 +403,8 @@
             </div>
         </div>
 
-        <h3>Bar Chart</h3>
+        <span id="bar_chart" class="ref-id"></span>
+        <h3>Bar Chart <a href="#bar_chart" class="ref-link">{{ m.icon('link') }}</a></h3>
         {{ bar_chart | raw }}
     </div>
     </div>
