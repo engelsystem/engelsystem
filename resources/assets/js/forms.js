@@ -1,5 +1,5 @@
-const moment = require('moment');
 require('select2')
+import { formatDay, formatTime } from "./date";
 
 /**
  * Sets all checkboxes to the wanted state
@@ -26,25 +26,25 @@ global.checkOwnTypes = (id, shiftsList) => {
 };
 
 /**
- * @param {moment} date
- */
-global.formatDay = (date) => {
-    return date.format('YYYY-MM-DD');
-};
-
-/**
- * @param {moment} date
- */
-global.formatTime = (date) => {
-    return date.format('HH:mm');
-};
-
-/**
- * @param {moment} from
- * @param {moment} to
+ * Sets the values of the input fields with the IDs to from/to:
+ * - date portion of from → start_day
+ * - time portion of from → start_time
+ * - date portion of to → end_day
+ * - time portion of to → end_time
+ *
+ * @param {Date} from
+ * @param {Date} to
  */
 global.setInput = (from, to) => {
-    var fromDay = $('#start_day'), fromTime = $('#start_time'), toDay = $('#end_day'), toTime = $('#end_time');
+    const fromDay = $('#start_day');
+    const fromTime = $('#start_time');
+    const toDay = $('#end_day');
+    const toTime = $('#end_time');
+
+    if (!fromDay || !fromTime || !toDay || !toTime) {
+        console.warn("cannot set input date because of missing field");
+        return;
+    }
 
     fromDay.val(formatDay(from)).trigger('change');
     fromTime.val(formatTime(from));
@@ -56,13 +56,14 @@ global.setInput = (from, to) => {
 global.setDay = (days) => {
     days = days || 0;
 
-    var from = moment();
-    from.hours(0).minutes(0).seconds(0);
+    var from = new Date();
+    from.setHours(0, 0, 0, 0);
 
-    from.add(days, 'd');
+    // add days, Date handles the overflow
+    from.setDate(from.getDate() + days);
 
-    var to = from.clone();
-    to.hours(23).minutes(59);
+    var to = new Date(from);
+    to.setHours(23, 59);
 
     setInput(from, to);
 };
@@ -70,10 +71,12 @@ global.setDay = (days) => {
 global.setHours = (hours) => {
     hours = hours || 1;
 
-    var from = moment();
-    var to = from.clone();
+    var from = new Date();
+    var to = new Date(from);
 
-    to.add(hours, 'h');
+    // convert hours to add to milliseconds (60 minutes * 60 seconds * 1000 for milliseconds)
+    const msToAdd = hours * 60 * 60 * 1000;
+    to.setTime(to.getTime() + msToAdd, 'h');
     if (to < from) {
         setInput(to, from);
         return;
@@ -100,12 +103,14 @@ $(function () {
     $('.input-group.time').each(function () {
         var elem = $(this);
         elem.find('button').on('click', function () {
+            const now = new Date();
             var input = elem.children('input').first();
-            input.val(moment().format('HH:mm'));
+            input.val(formatTime(now));
             var daySelector = $('#' + input.attr('id').replace('time', 'day'));
             var days = daySelector.children('option');
+            const yyyyMMDD = formatDay(now);
             days.each(function (i) {
-                if ($(days[i]).val() === moment().format('YYYY-MM-DD')) {
+                if ($(days[i]).val() === yyyyMMDD) {
                     daySelector.val($(days[i]).val());
                     return false;
                 }
@@ -148,6 +153,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     filter.classList.remove('show');
 });
+
 $(() => {
     if (typeof (localStorage) === 'undefined') {
         return;
