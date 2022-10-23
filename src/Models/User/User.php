@@ -4,43 +4,51 @@ namespace Engelsystem\Models\User;
 
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\Group;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
+use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Worklog;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection as SupportCollection;
 
 /**
- * @property int                            $id
- * @property string                         $name
- * @property string                         $email
- * @property string                         $password
- * @property string                         $api_key
- * @property Carbon|null                    $last_login_at
- * @property Carbon                         $created_at
- * @property Carbon                         $updated_at
+ * @property int                                $id
+ * @property string                             $name
+ * @property string                             $email
+ * @property string                             $password
+ * @property string                             $api_key
+ * @property Carbon|null                        $last_login_at
+ * @property Carbon                             $created_at
+ * @property Carbon                             $updated_at
  *
- * @property-read QueryBuilder|Contact      $contact
- * @property-read QueryBuilder|License      $license
- * @property-read QueryBuilder|PersonalData $personalData
- * @property-read QueryBuilder|Settings     $settings
- * @property-read QueryBuilder|State        $state
- * @property-read Collection|News[]         $news
- * @property-read Collection|NewsComment[]  $newsComments
- * @property-read Collection|OAuth[]        $oauth
- * @property-read Collection|Worklog[]      $worklogs
- * @property-read Collection|Worklog[]      $worklogsCreated
- * @property-read int|null                  $news_count
- * @property-read int|null                  $news_comments_count
- * @property-read int|null                  $oauth_count
- * @property-read int|null                  $worklogs_count
- * @property-read int|null                  $worklogs_created_count
+ * @property-read QueryBuilder|Contact          $contact
+ * @property-read QueryBuilder|License          $license
+ * @property-read QueryBuilder|PersonalData     $personalData
+ * @property-read QueryBuilder|Settings         $settings
+ * @property-read QueryBuilder|State            $state
+ *
+ * @property-read Collection|Group[]            $groups
+ * @property-read Collection|News[]             $news
+ * @property-read Collection|NewsComment[]      $newsComments
+ * @property-read Collection|OAuth[]            $oauth
+ * @property-read SupportCollection|Privilege[] $privileges
+ * @property-read Collection|Worklog[]          $worklogs
+ * @property-read Collection|Worklog[]          $worklogsCreated
+ * @property-read Collection|Question[]         $questionsAsked
+ * @property-read Collection|Question[]         $questionsAnswered
+ * @property-read Collection|Message[]          $messagesReceived
+ * @property-read Collection|Message[]          $messagesSent
+ * @property-read Collection|Message[]          $messages
  *
  * @method static QueryBuilder|User[] whereId($value)
  * @method static QueryBuilder|User[] whereName($value)
@@ -50,12 +58,6 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|User[] whereLastLoginAt($value)
  * @method static QueryBuilder|User[] whereCreatedAt($value)
  * @method static QueryBuilder|User[] whereUpdatedAt($value)
- *
- * @property-read Collection|Question[] $questionsAsked
- * @property-read Collection|Question[] $questionsAnswered
- * @property-read Collection|Message[]  $messagesReceived
- * @property-read Collection|Message[]  $messagesSent
- * @property-read Collection|Message[]  $messages
  */
 class User extends BaseModel
 {
@@ -95,6 +97,14 @@ class User extends BaseModel
     }
 
     /**
+     * @return BelongsToMany
+     */
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'users_groups');
+    }
+
+    /**
      * @return HasOne
      */
     public function license()
@@ -102,6 +112,33 @@ class User extends BaseModel
         return $this
             ->hasOne(License::class)
             ->withDefault();
+    }
+
+    /**
+     * @return Builder
+     */
+    public function privileges(): Builder
+    {
+        /** @var Builder $builder */
+        $builder = Privilege::query()
+            ->whereIn('id', function ($query) {
+                /** @var QueryBuilder $query */
+                $query->select('privilege_id')
+                    ->from('group_privileges')
+                    ->join('users_groups', 'users_groups.group_id', '=', 'group_privileges.group_id')
+                    ->where('users_groups.user_id', '=', $this->id)
+                    ->distinct();
+            });
+
+        return $builder;
+    }
+
+    /**
+     * @return SupportCollection
+     */
+    public function getPrivilegesAttribute(): SupportCollection
+    {
+        return $this->privileges()->get();
     }
 
     /**
