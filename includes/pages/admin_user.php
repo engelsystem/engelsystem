@@ -135,7 +135,7 @@ function admin_user()
         }
 
         $angel_highest_group = DB::selectOne(
-            'SELECT `group_id` FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` LIMIT 1',
+            'SELECT group_id FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` DESC LIMIT 1',
             [$user_id]
         );
         if (!empty($angel_highest_group)) {

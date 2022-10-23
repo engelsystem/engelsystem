@@ -17,7 +17,7 @@ return [
     // Enable maintenance mode (show a static page)
     'maintenance'             => (bool)env('MAINTENANCE', false),
 
-    // Application name (not the event name!)
+    // Application name (not the event name)
     'app_name'                => env('APP_NAME', 'Engelsystem'),
 
     // Set to development to enable debugging messages

@@ -299,7 +299,7 @@ function guest_register()
             }
 
             // Assign user-group and set password
-            Db::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user->id]);
+            Db::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, 20)', [$user->id]);
             if ($enable_password) {
                 auth()->setPassword($user, $request->postData('password'));
             }
