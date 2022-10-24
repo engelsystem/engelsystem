@@ -398,7 +398,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     if ($admin_user_worklog_privilege) {
         $actions = table_buttons([
             button(
-                user_worklog_edit_link($worklog),
+                url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id),
                 icon('pencil-square') . __('edit'),
                 'btn-sm'
             ),
@@ -532,8 +532,8 @@ function User_view(
                             )
                         : '',
                         $admin_user_worklog_privilege ? button(
-                            user_worklog_add_link($user_source),
-                            icon('list') . __('Add work log')
+                            url('/admin/user/' . $user_source->id . '/worklog'),
+                            icon('list') . __('user.add.worklog')
                         ) : '',
                         $its_me ? button(
                             page_link_to('settings/profile'),

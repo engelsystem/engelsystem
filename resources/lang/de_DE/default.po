@@ -766,18 +766,6 @@ msgstr "Bearbeite die Führerschein-Infos von %s"
 msgid "Work log entry deleted."
 msgstr "Arbeitseinsatz gelöscht."
 
-#: includes/controller/user_worklog_controller.php:52
-msgid "Work log entry updated."
-msgstr "Arbeitseinsatz geändert."
-
-#: includes/controller/user_worklog_controller.php:81
-msgid "Please enter work date."
-msgstr "Bitte Einsatzdatum angeben."
-
-#: includes/controller/user_worklog_controller.php:87
-msgid "Please enter work hours in format ##[.##]"
-msgstr "Bitte Stunden im Format ##[.##] eingeben."
-
 #: includes/controller/user_worklog_controller.php:93
 msgid "Please enter a comment."
 msgstr "Bitte Kommentar angeben."
@@ -2480,25 +2468,9 @@ msgstr "Möchtest du den Arbeitseinsatz von %s wirklich löschen?"
 msgid "Delete work log entry"
 msgstr "Arbeitseinsatz gelöscht."
 
-#: includes/view/UserWorkLog_view.php:46
-msgid "Work date"
-msgstr "Einsatzdatum"
-
-#: includes/view/UserWorkLog_view.php:47
-msgid "Work hours"
-msgstr "Arbeitsstunden"
-
 #: includes/view/UserWorkLog_view.php:48 includes/view/User_view.php:572
 msgid "Comment"
 msgstr "Kommentar"
-
-#: includes/view/UserWorkLog_view.php:94
-msgid "Edit work log entry"
-msgstr "Arbeitseinsatz bearbeiten"
-
-#: includes/view/UserWorkLog_view.php:102
-msgid "Add work log entry"
-msgstr "Arbeitseinsatz hinzufügen"
 
 msgid "Pronoun"
 msgstr "Pronomen"
@@ -2648,10 +2620,6 @@ msgstr "Führerschein"
 #: includes/view/User_view.php:608
 msgid "Vouchers"
 msgstr "Gutscheine"
-
-#: includes/view/User_view.php:612
-msgid "Add work log"
-msgstr "Neuer Arbeitseinsatz"
 
 #: includes/view/User_view.php:620
 msgid "iCal Export"
