@@ -397,3 +397,18 @@ msgstr "Angel"
 
 msgid "date"
 msgstr "Date"
+
+msgid "user.add.worklog"
+msgstr "Add work log"
+
+msgid "user.edit.worklog"
+msgstr "Edit work log"
+
+msgid "user.work_date"
+msgstr "Work date"
+
+msgid "user.work_hours"
+msgstr "Work hours"
+
+msgid "user.comment"
+msgstr "Comment"

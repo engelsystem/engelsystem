@@ -3125,3 +3125,18 @@ msgstr "Engel"
 
 msgid "date"
 msgstr "Datum"
+
+msgid "user.add.worklog"
+msgstr "Arbeitseinsatz hinzufügen"
+
+msgid "user.edit.worklog"
+msgstr "Arbeitseinsatz bearbeiten"
+
+msgid "user.work_date"
+msgstr "Einsatzdatum"
+
+msgid "user.work_hours"
+msgstr "Arbeitsstunden"
+
+msgid "user.comment"
+msgstr "Kommentar"
