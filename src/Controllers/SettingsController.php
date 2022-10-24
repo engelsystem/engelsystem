@@ -36,7 +36,10 @@ class SettingsController extends BaseController
     ];
 
     /**
-     * @param Config   $config
+     * @param Authenticator $auth
+     * @param Config $config
+     * @param LoggerInterface $log
+     * @param Redirector $redirector
      * @param Response $response
      */
     public function __construct(
@@ -53,6 +56,9 @@ class SettingsController extends BaseController
         $this->response = $response;
     }
 
+    /**
+     * @return Response
+     */
     public function profile(): Response
     {
         $user = $this->auth->user();
@@ -73,26 +79,7 @@ class SettingsController extends BaseController
     public function saveProfile(Request $request): Response
     {
         $user = $this->auth->user();
-
-        config('buildup_start');
-        config('teardown_end');
-
-        $data = $this->validate($request, [
-            'pronoun'                => 'optional|max:15',
-            'first_name'             => 'optional|max:64',
-            'last_name'              => 'optional|max:64',
-            'planned_arrival_date'   => 'required|date:Y-m-d',
-            'planned_departure_date' => 'optional|date:Y-m-d',
-            'dect'                   => 'optional|length:0:40', // dect/mobile can be purely numbers. "max" would have
-            'mobile'                 => 'optional|length:0:40', // checked their values, not their character length.
-            'mobile_show'            => 'optional|checked',
-            'email'                  => 'required|email|max:254',
-            'email_shiftinfo'        => 'optional|checked',
-            'email_news'             => 'optional|checked',
-            'email_human'            => 'optional|checked',
-            'email_goody'            => 'optional|checked',
-            'shirt_size'             => 'required',
-        ]);
+        $data = $this->validate($request, $this->getSaveProfileRules());
 
         if (config('enable_pronoun')) {
             $user->personalData->pronoun = $data['pronoun'];
@@ -135,9 +122,8 @@ class SettingsController extends BaseController
             $user->settings->email_goody = $data['email_goody'] ?: false;
         }
 
-        if (isset(config('tshirt_sizes')[$data['shirt_size']])) {
+        if (config('enable_tshirt_size') && isset(config('tshirt_sizes')[$data['shirt_size']])) {
             $user->personalData->shirt_size = $data['shirt_size'];
-            $user->personalData->save();
         }
 
         $user->personalData->save();
@@ -329,5 +315,33 @@ class SettingsController extends BaseController
         }
 
         return true;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getSaveProfileRules(): array
+    {
+        $rules = [
+            'pronoun' => 'optional|max:15',
+            'first_name' => 'optional|max:64',
+            'last_name' => 'optional|max:64',
+            'dect' => 'optional|length:0:40', // dect/mobile can be purely numbers. "max" would have
+            'mobile' => 'optional|length:0:40', // checked their values, not their character length.
+            'mobile_show' => 'optional|checked',
+            'email' => 'required|email|max:254',
+            'email_shiftinfo' => 'optional|checked',
+            'email_news' => 'optional|checked',
+            'email_human' => 'optional|checked',
+            'email_goody' => 'optional|checked',
+        ];
+        if (config('enable_planned_arrival')) {
+            $rules['planned_arrival_date'] = 'required|date:Y-m-d';
+            $rules['planned_departure_date'] = 'optional|date:Y-m-d';
+        }
+        if (config('enable_tshirt_size')) {
+            $rules['shirt_size'] = 'required';
+        }
+        return $rules;
     }
 }

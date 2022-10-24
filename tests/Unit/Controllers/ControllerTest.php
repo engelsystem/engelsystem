@@ -37,12 +37,12 @@ abstract class ControllerTest extends TestCase
 
     /**
      * @param string      $value
-     * @param string|null $message
+     * @param string|null $type
      */
-    protected function assertHasNotification(string $value, string $message = null)
+    protected function assertHasNotification(string $value, string $type = 'messages')
     {
-        $messages = $this->session->get('messages', []);
-        $this->assertTrue(in_array($value, $messages), $message ?: 'Session does not contain message "' . $value . '"');
+        $messages = $this->session->get($type, []);
+        $this->assertTrue(in_array($value, $messages));
     }
 
     /**

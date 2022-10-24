@@ -1,10 +1,14 @@
+{% macro entry_required() %}
+    <span class="bi bi-exclamation-triangle text-info"></span>
+{%- endmacro %}
+
 {% macro input(name, label, type, opt) %}
     <div class="mb-3">
         {% if label -%}
             <label for="{{ name }}" class="form-label {% if opt.hide_label|default(false) %}sr-only{% endif %}">
                 {{ label }}
                 {% if opt.entry_required_icon|default(false) %}
-                    <span class="bi bi-exclamation-triangle text-info"></span>
+                    {{ _self.entry_required() }}
                 {% endif %}
             </label>
         {%- endif %}
@@ -48,7 +52,12 @@
 {% macro select(name, data, label, selected, opt) %}
     <div class="mb-3">
         {% if label -%}
-            <label class="form-label" for="{{ name }}">{{ label }}</label>
+            <label class="form-label" for="{{ name }}">
+                {{ label }}
+                {% if opt.entry_required_icon|default(false) %}
+                    {{ _self.entry_required() }}
+                {% endif %}
+            </label>
         {% endif %}
         <select id="{{ name }}" name="{{ name }}"
                 class="form-control {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
