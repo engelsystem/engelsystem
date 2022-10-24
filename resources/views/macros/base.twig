@@ -47,10 +47,6 @@
     </span>
 {%- endmacro %}
 
-{% macro entry_required(text) %}
-    <h4 class="help-block">{{ _self.icon('exclamation-triangle', 'info') }}{{ text }}</h4>
-{%- endmacro %}
-
 {% macro type_bg_class() -%}
     {% if theme.type == 'light' %}bg-white{% else %}bg-dark{% endif %}
 {%- endmacro %}

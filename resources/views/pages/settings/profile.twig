@@ -2,7 +2,7 @@
 {% import 'macros/form.twig' as f %}
 {% import 'macros/base.twig' as m %}
 
-{% block title %}{{ __('settings.language') }}{% endblock %}
+{% block title %}{{ __('settings.profile') }}{% endblock %}
 
 {% block row_content %}
     <form action="" enctype="multipart/form-data" method="post">
@@ -10,8 +10,13 @@
 
         <div class="row g-4">
             <div class="col-md-12">
+                <strong class="help-block">
+                    {{ f.entry_required() }} = {{ __('settings.profile.entry_required') }}
+                </strong>
+            </div>
+
+            <div class="col-md-12">
                 {{ m.info(__('settings.profile.user_details.info')) }}
-                {{ m.entry_required(' = ' ~ __('settings.profile.entry_required')) }}
                 {{ f.input(
                     'nick',
                     __('settings.profile.nick'),
@@ -133,17 +138,23 @@
                 {% endif %}
             </div>
 
-            <div class="col-md-12">
-                {{ f.select(
-                    'shirt_size',
-                    config('tshirt_sizes'),
-                    __('settings.profile.shirt_size'),
-                    user.personalData.shirt_size
-                ) }}
-            </div>
+            {% if config('enable_tshirt_size') %}
+                <div class="col-md-12">
+                    {{ f.select(
+                        'shirt_size',
+                        config('tshirt_sizes'),
+                        __('settings.profile.shirt_size'),
+                        user.personalData.shirt_size,
+                        {'required': true, 'entry_required_icon': true}
+                    ) }}
+                </div>
+            {% endif %}
 
             <div class="col-md-12">
                 {{ m.info(__('settings.profile.angeltypes.info', [url('/angeltypes')]), true) }}
+            </div>
+
+            <div class="col-md-12">
                 {{ f.submit() }}
             </div>
         </div>

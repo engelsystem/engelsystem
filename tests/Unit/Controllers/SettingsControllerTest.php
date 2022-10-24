@@ -2,51 +2,30 @@
 
 namespace Engelsystem\Test\Unit\Controllers;
 
+use Carbon\Carbon;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\User\Settings;
-use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Psr\Log\LoggerInterface;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Http\Request;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\Test\TestLogger;
-use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Models\User\User;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Http\Exceptions\ValidationException;
 
-class SettingsControllerTest extends TestCase
+class SettingsControllerTest extends ControllerTest
 {
     use HasDatabase;
 
     /** @var Authenticator|MockObject */
     protected $auth;
 
-    /** @var Config */
-    protected $config;
-
-    /** @var TestLogger */
-    protected $log;
-
-    /** @var Response|MockObject */
-    protected $response;
-
-    /** @var Request */
-    protected $request;
-
     /** @var User */
     protected $user;
-
-    /** @var Session */
-    protected $session;
 
     /** @var SettingsController */
     protected $controller;
@@ -85,6 +64,7 @@ class SettingsControllerTest extends TestCase
             'enable_dect'            => true,
             'enable_mobile_show'     => true,
             'enable_goody'           => true,
+            'enable_tshirt_size'     => true,
         ]);
 
         $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
@@ -117,6 +97,7 @@ class SettingsControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::saveProfile
+     * @covers \Engelsystem\Controllers\SettingsController::getSaveProfileRules
      */
     public function testSaveProfile()
     {
@@ -143,6 +124,28 @@ class SettingsControllerTest extends TestCase
         $this->assertEquals($body['email_human'], $this->user->settings->email_human);
         $this->assertEquals($body['email_goody'], $this->user->settings->email_goody);
         $this->assertEquals($body['shirt_size'], $this->user->personalData->shirt_size);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveProfile
+     */
+    public function testSaveProfileThrowsErrorOnInvalidArrival()
+    {
+        $this->setUpProfileTest();
+        config(['buildup_start' => new Carbon('2022-01-02')]); // arrival before buildup
+        $this->controller->saveProfile($this->request);
+        $this->assertHasNotification('settings.profile.planned_arrival_date.invalid', 'errors');
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveProfile
+     */
+    public function testSaveProfileThrowsErrorOnInvalidDeparture()
+    {
+        $this->setUpProfileTest();
+        config(['teardown_end' => new Carbon('2022-01-01')]); // departure after teardown
+        $this->controller->saveProfile($this->request);
+        $this->assertHasNotification('settings.profile.planned_departure_date.invalid', 'errors');
     }
 
     /**
@@ -211,6 +214,17 @@ class SettingsControllerTest extends TestCase
         config(['enable_goody' => false]);
         $this->controller->saveProfile($this->request);
         $this->assertFalse($this->user->settings->email_goody);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveProfile
+     */
+    public function testSaveProfileIgnoresTShirtSizeIfDisabled()
+    {
+        $this->setUpProfileTest();
+        config(['enable_tshirt_size' => false]);
+        $this->controller->saveProfile($this->request);
+        $this->assertEquals('', $this->user->personalData->shirt_size);
     }
 
     /**
@@ -619,7 +633,6 @@ class SettingsControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initDatabase();
 
         $themes = [
             0 => ['name' => 'Engelsystem light'],
@@ -639,22 +652,7 @@ class SettingsControllerTest extends TestCase
         $this->app->instance('config', $this->config);
         $this->app->instance(Config::class, $this->config);
 
-        $this->request = Request::create('http://localhost');
-        $this->app->instance('request', $this->request);
-        $this->app->instance(Request::class, $this->request);
-        $this->app->instance(ServerRequestInterface::class, $this->request);
-
-        $this->response = $this->createMock(Response::class);
-        $this->app->instance(Response::class, $this->response);
-
-        $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
         $this->app->bind('http.urlGenerator', UrlGenerator::class);
-
-        $this->log = new TestLogger();
-        $this->app->instance(LoggerInterface::class, $this->log);
-
-        $this->session = new Session(new MockArraySessionStorage());
-        $this->app->instance('session', $this->session);
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
