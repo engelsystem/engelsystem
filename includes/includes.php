@@ -5,7 +5,6 @@
  */
 
 $includeFiles = [
-    __DIR__ . '/../includes/sys_auth.php',
     __DIR__ . '/../includes/sys_form.php',
     __DIR__ . '/../includes/sys_log.php',
     __DIR__ . '/../includes/sys_menu.php',
@@ -22,7 +21,6 @@ $includeFiles = [
     __DIR__ . '/../includes/model/ShiftTypes_model.php',
     __DIR__ . '/../includes/model/Stats.php',
     __DIR__ . '/../includes/model/UserAngelTypes_model.php',
-    __DIR__ . '/../includes/model/UserGroups_model.php',
     __DIR__ . '/../includes/model/User_model.php',
     __DIR__ . '/../includes/model/UserWorkLog_model.php',
     __DIR__ . '/../includes/model/ValidationResult.php',

@@ -3,6 +3,8 @@
 namespace Engelsystem\Test\Unit\Helpers;
 
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Models\Group;
+use Engelsystem\Models\Privilege;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\Helpers\Stub\UserModelImplementation;
@@ -108,14 +110,23 @@ class AuthenticatorTest extends ServiceProviderTest
      */
     public function testCan()
     {
+        $this->initDatabase();
+
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
         /** @var Session|MockObject $session */
         $session = $this->createMock(Session::class);
         /** @var UserModelImplementation|MockObject $userRepository */
         $userRepository = new UserModelImplementation();
-        /** @var User|MockObject $user */
-        $user = $this->createMock(User::class);
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Group $group */
+        $group = Group::factory()->create();
+        /** @var Privilege $privilege */
+        $privilege = Privilege::factory()->create(['name' => 'bar']);
+
+        $user->groups()->attach($group);
+        $group->privileges()->attach($privilege);
 
         $session->expects($this->once())
             ->method('get')
@@ -128,19 +139,13 @@ class AuthenticatorTest extends ServiceProviderTest
         /** @var Authenticator|MockObject $auth */
         $auth = $this->getMockBuilder(Authenticator::class)
             ->setConstructorArgs([$request, $session, $userRepository])
-            ->onlyMethods(['getPermissionsByGroup', 'getPermissionsByUser', 'user'])
+            ->onlyMethods(['user'])
             ->getMock();
-        $auth->expects($this->exactly(1))
-            ->method('getPermissionsByGroup')
-            ->with(10)
-            ->willReturn([]);
-        $auth->expects($this->exactly(1))
-            ->method('getPermissionsByUser')
-            ->with($user)
-            ->willReturn(['bar']);
         $auth->expects($this->exactly(2))
             ->method('user')
             ->willReturnOnConsecutiveCalls(null, $user);
+
+        Group::factory()->create(['id' => $auth->getGuestRole()]);
 
         // No user, no permissions
         $this->assertFalse($auth->can('foo'));
@@ -246,6 +251,18 @@ class AuthenticatorTest extends ServiceProviderTest
     }
 
     /**
+     * @covers \Engelsystem\Helpers\Authenticator::setDefaultRole
+     * @covers \Engelsystem\Helpers\Authenticator::getDefaultRole
+     */
+    public function testDefaultRole()
+    {
+        $auth = $this->getAuthenticator();
+
+        $auth->setDefaultRole(1337);
+        $this->assertEquals(1337, $auth->getDefaultRole());
+    }
+
+    /**
      * @covers \Engelsystem\Helpers\Authenticator::setGuestRole
      * @covers \Engelsystem\Helpers\Authenticator::getGuestRole
      */
@@ -262,8 +279,7 @@ class AuthenticatorTest extends ServiceProviderTest
      */
     protected function getAuthenticator()
     {
-        return new class extends Authenticator
-        {
+        return new class extends Authenticator {
             /** @noinspection PhpMissingParentConstructorInspection */
             public function __construct()
             {

@@ -251,7 +251,7 @@ function user_controller()
             auth()->can('admin_user'),
             User_is_freeloader($user_source),
             User_angeltypes($user_source->id),
-            User_groups($user_source->id),
+            $user_source->groups,
             $shifts,
             $user->id == $user_source->id,
             $tshirt_score,
