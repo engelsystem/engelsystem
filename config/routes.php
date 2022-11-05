@@ -64,6 +64,7 @@ $route->post('/messages/{user_id:\d+}', 'MessagesController@send');
 $route->post('/messages/{user_id:\d+}/{msg_id:\d+}', 'MessagesController@delete');
 
 // API
+$route->get('/api/usershifts[/{email:.+}]', 'ApiController@usershifts');
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
 
 // Design
