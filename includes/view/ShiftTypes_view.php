@@ -36,21 +36,12 @@ function ShiftType_delete_view($shifttype)
 
 /**
  * @param string   $name
- * @param int      $angeltype_id
- * @param array[]  $angeltypes
  * @param string   $description
  * @param int|bool $shifttype_id
  * @return string
  */
-function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $shifttype_id)
+function ShiftType_edit_view($name, $description, $shifttype_id)
 {
-    $angeltypes_select = [
-        '' => __('All')
-    ];
-    foreach ($angeltypes as $angeltype) {
-        $angeltypes_select[$angeltype['id']] = $angeltype['name'];
-    }
-
     return page_with_title($shifttype_id ? __('Edit shifttype') : __('Create shifttype'), [
         msg(),
         buttons([
@@ -58,7 +49,6 @@ function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $s
         ]),
         form([
             form_text('name', __('Name'), $name),
-            form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype_id),
             form_textarea('description', __('Description'), $description),
             form_info('', __('Please use markdown for the description.')),
             form_submit('submit', __('Save'))
@@ -68,24 +58,16 @@ function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $s
 
 /**
  * @param array $shifttype
- * @param array $angeltype
  * @return string
  */
-function ShiftType_view($shifttype, $angeltype)
+function ShiftType_view($shifttype)
 {
     $parsedown = new Parsedown();
     $title = $shifttype['name'];
-    if ($angeltype) {
-        $title .= ' <small>' . sprintf(__('for team %s'), $angeltype['name']) . '</small>';
-    }
     return page_with_title($title, [
         msg(),
         buttons([
             button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
-            $angeltype ? button(
-                page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
-                $angeltype['name']
-            ) : '',
             button(
                 page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype['id']]),
                 __('edit'),

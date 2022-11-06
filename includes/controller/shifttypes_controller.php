@@ -49,10 +49,8 @@ function shifttype_edit_controller()
 {
     $shifttype_id = null;
     $name = '';
-    $angeltype_id = null;
     $description = '';
 
-    $angeltypes = AngelTypes();
     $request = request();
 
     if ($request->has('shifttype_id')) {
@@ -63,7 +61,6 @@ function shifttype_edit_controller()
         }
         $shifttype_id = $shifttype['id'];
         $name = $shifttype['name'];
-        $angeltype_id = $shifttype['angeltype_id'];
         $description = $shifttype['description'];
     }
 
@@ -77,24 +74,18 @@ function shifttype_edit_controller()
             error(__('Please enter a name.'));
         }
 
-        if ($request->has('angeltype_id') && preg_match('/^\d+$/', $request->input('angeltype_id'))) {
-            $angeltype_id = $request->input('angeltype_id');
-        } else {
-            $angeltype_id = null;
-        }
-
         if ($request->has('description')) {
             $description = strip_request_item_nl('description');
         }
 
         if ($valid) {
             if ($shifttype_id) {
-                ShiftType_update($shifttype_id, $name, $angeltype_id, $description);
+                ShiftType_update($shifttype_id, $name, $description);
 
                 engelsystem_log('Updated shifttype ' . $name);
                 success(__('Updated shifttype.'));
             } else {
-                $shifttype_id = ShiftType_create($name, $angeltype_id, $description);
+                $shifttype_id = ShiftType_create($name, $description);
 
                 engelsystem_log('Created shifttype ' . $name);
                 success(__('Created shifttype.'));
@@ -105,7 +96,7 @@ function shifttype_edit_controller()
 
     return [
         shifttypes_title(),
-        ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $shifttype_id)
+        ShiftType_edit_view($name, $description, $shifttype_id)
     ];
 }
 
@@ -123,14 +114,9 @@ function shifttype_controller()
         throw_redirect(page_link_to('shifttypes'));
     }
 
-    $angeltype = [];
-    if (!empty($shifttype['angeltype_id'])) {
-        $angeltype = AngelType($shifttype['angeltype_id']);
-    }
-
     return [
         $shifttype['name'],
-        ShiftType_view($shifttype, $angeltype)
+        ShiftType_view($shifttype)
     ];
 }
 

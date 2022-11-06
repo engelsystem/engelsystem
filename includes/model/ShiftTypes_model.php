@@ -17,22 +17,19 @@ function ShiftType_delete($shifttype_id)
  *
  * @param int    $shifttype_id
  * @param string $name
- * @param int    $angeltype_id
  * @param string $description
  */
-function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
+function ShiftType_update($shifttype_id, $name, $description)
 {
     Db::update(
         '
         UPDATE `ShiftTypes` SET
             `name`=?,
-            `angeltype_id`=?,
             `description`=?
         WHERE `id`=?
     ',
         [
             $name,
-            $angeltype_id,
             $description,
             $shifttype_id,
         ]
@@ -43,20 +40,18 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
  * Create a shift type.
  *
  * @param string $name
- * @param int    $angeltype_id
  * @param string $description
  * @return int|false new shifttype id
  */
-function ShiftType_create($name, $angeltype_id, $description)
+function ShiftType_create($name, $description)
 {
     Db::insert(
         '
-        INSERT INTO `ShiftTypes` (`name`, `angeltype_id`, `description`)
-        VALUES(?, ?, ?)
+        INSERT INTO `ShiftTypes` (`name`, `description`)
+        VALUES(?, ?)
         ',
         [
             $name,
-            $angeltype_id,
             $description
         ]
     );

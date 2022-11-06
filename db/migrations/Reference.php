@@ -57,9 +57,10 @@ trait Reference
         Blueprint $table,
         string $fromColumn,
         string $targetTable,
-        ?string $targetColumn = null
-    ) {
-        $table->foreign($fromColumn)
+        ?string $targetColumn = null,
+        ?string $name = null
+    ): void {
+        $table->foreign($fromColumn, $name)
             ->references($targetColumn ?: 'id')->on($targetTable)
             ->onUpdate('cascade')
             ->onDelete('cascade');
