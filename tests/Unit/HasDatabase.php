@@ -60,6 +60,7 @@ trait HasDatabase
                     ['migration' => '2022_06_03_000000_shifts_add_transaction_id'],
                     ['migration' => '2022_07_21_000000_fix_old_groups_table_id_and_name'],
                     ['migration' => '2022_10_21_000000_add_hide_register_to_angeltypes'],
+                    ['migration' => '2022_11_06_000000_shifttype_remove_angeltype'],
                 ]
             );
 
