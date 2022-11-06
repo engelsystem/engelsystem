@@ -78,7 +78,7 @@ function User_is_AngelType_supporter($user, $angeltype)
         return false;
     }
 
-    $privileges = privileges_for_user($user->id);
+    $privileges = $user->privileges->pluck('name')->toArray();
 
     return (count(Db::select(
         '

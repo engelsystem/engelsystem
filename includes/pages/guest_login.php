@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Database\Db;
 use Engelsystem\Events\Listener\OAuth2;
+use Engelsystem\Models\Group;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
@@ -299,7 +300,8 @@ function guest_register()
             }
 
             // Assign user-group and set password
-            Db::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, 20)', [$user->id]);
+            $defaultGroup = Group::find(auth()->getDefaultRole());
+            $user->groups()->attach($defaultGroup);
             if ($enable_password) {
                 auth()->setPassword($user, $request->postData('password'));
             }

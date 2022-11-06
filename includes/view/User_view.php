@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Engelsystem\Models\Group;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
@@ -431,7 +432,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
  * @param bool                 $admin_user_privilege
  * @param bool                 $freeloader
  * @param array[]              $user_angeltypes
- * @param array[]              $user_groups
+ * @param Group[]              $user_groups
  * @param array[]              $shifts
  * @param bool                 $its_me
  * @param int                  $tshirt_score
@@ -734,14 +735,14 @@ function User_angeltypes_render($user_angeltypes)
 }
 
 /**
- * @param array[] $user_groups
+ * @param Group[] $user_groups
  * @return string
  */
 function User_groups_render($user_groups)
 {
     $output = [];
     foreach ($user_groups as $group) {
-        $output[] = __($group['Name']);
+        $output[] = __($group->name);
     }
 
     return div('col-md-2', [

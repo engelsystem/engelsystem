@@ -1,7 +1,9 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Collection;
 
 /**
  * @return string
@@ -126,20 +128,15 @@ function admin_user()
 
         $html .= '<hr />';
 
-        $my_highest_group = DB::selectOne(
-            'SELECT group_id FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` DESC LIMIT 1',
-            [$user->id]
-        );
+        /** @var Group $my_highest_group */
+        $my_highest_group = $user->groups()->orderByDesc('id')->first();
         if (!empty($my_highest_group)) {
-            $my_highest_group = $my_highest_group['group_id'];
+            $my_highest_group = $my_highest_group->id;
         }
 
-        $angel_highest_group = DB::selectOne(
-            'SELECT group_id FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` DESC LIMIT 1',
-            [$user_id]
-        );
+        $angel_highest_group = $user_source->groups()->orderByDesc('id')->first();
         if (!empty($angel_highest_group)) {
-            $angel_highest_group = $angel_highest_group['group_id'];
+            $angel_highest_group = $angel_highest_group->id;
         }
 
         if (
@@ -152,26 +149,11 @@ function admin_user()
             $html .= form_csrf();
             $html .= '<table>';
 
-            $groups = DB::select(
-                '
-                    SELECT *
-                    FROM `Groups`
-                    LEFT OUTER JOIN `UserGroups` ON (
-                        `UserGroups`.`group_id` = `Groups`.`UID`
-                        AND `UserGroups`.`uid` = ?
-                    )
-                    WHERE `Groups`.`UID` <= ?
-                    ORDER BY `Groups`.`Name`
-                ',
-                [
-                    $user_id,
-                    $my_highest_group,
-                ]
-            );
+            $groups = changeableGroups($my_highest_group, $user_id);
             foreach ($groups as $group) {
-                $html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group['UID'] . '" '
-                    . ($group['group_id'] != '' ? ' checked="checked"' : '')
-                    . ' /></td><td>' . $group['Name'] . '</td></tr>';
+                $html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group->id . '" '
+                    . ($group->selected ? ' checked="checked"' : '')
+                    . ' /></td><td>' . $group->name . '</td></tr>';
             }
 
             $html .= '</table><br>';
@@ -190,44 +172,26 @@ function admin_user()
     } else {
         switch ($request->input('action')) {
             case 'save_groups':
-                if ($user_id != $user->id || auth()->can('admin_groups')) {
-                    $my_highest_group = DB::selectOne(
-                        'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` DESC LIMIT 1',
-                        [$user->id]
-                    );
-                    $angel_highest_group = DB::selectOne(
-                        'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` DESC LIMIT 1',
-                        [$user_id]
-                    );
+                $angel = User::findOrFail($user_id);
+                if ($angel->id != $user->id || auth()->can('admin_groups')) {
+                    /** @var Group $my_highest_group */
+                    $my_highest_group = $user->groups()->orderByDesc('id')->first();
+                    /** @var Group $angel_highest_group */
+                    $angel_highest_group = $angel->groups()->orderByDesc('id')->first();
 
                     if (
                         $my_highest_group
                         && (
                             empty($angel_highest_group)
-                            || ($my_highest_group['group_id'] >= $angel_highest_group['group_id'])
+                            || ($my_highest_group->id >= $angel_highest_group->id)
                         )
                     ) {
-                        $groups_source = DB::select(
-                            '
-                                SELECT *
-                                FROM `Groups`
-                                LEFT OUTER JOIN `UserGroups` ON (
-                                    `UserGroups`.`group_id` = `Groups`.`UID`
-                                    AND `UserGroups`.`uid` = ?
-                                )
-                                WHERE `Groups`.`UID` <= ?
-                                ORDER BY `Groups`.`Name`
-                            ',
-                            [
-                                $user_id,
-                                $my_highest_group['group_id'],
-                            ]
-                        );
+                        $groups_source = changeableGroups($my_highest_group->id, $angel->id);
                         $groups = [];
-                        $grouplist = [];
+                        $groupList = [];
                         foreach ($groups_source as $group) {
-                            $groups[$group['UID']] = $group;
-                            $grouplist[] = $group['UID'];
+                            $groups[$group->id] = $group;
+                            $groupList[] = $group->id;
                         }
 
                         $groupsRequest = $request->input('groups');
@@ -235,20 +199,17 @@ function admin_user()
                             $groupsRequest = [];
                         }
 
-                        DB::delete('DELETE FROM `UserGroups` WHERE `uid`=?', [$user_id]);
+                        $angel->groups()->detach();
                         $user_groups_info = [];
                         foreach ($groupsRequest as $group) {
-                            if (in_array($group, $grouplist)) {
-                                DB::insert(
-                                    'INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, ?)',
-                                    [$user_id, $group]
-                                );
-                                $user_groups_info[] = $groups[$group]['Name'];
+                            if (in_array($group, $groupList)) {
+                                $group = $groups[$group];
+                                $angel->groups()->attach($group);
+                                $user_groups_info[] = $group->name;
                             }
                         }
-                        $user_source = User::find($user_id);
                         engelsystem_log(
-                            'Set groups of ' . User_Nick_render($user_source, true) . ' to: '
+                            'Set groups of ' . User_Nick_render($angel, true) . ' to: '
                             . join(', ', $user_groups_info)
                         );
                         $html .= success('Benutzergruppen gespeichert.', true);
@@ -320,4 +281,25 @@ function admin_user()
     return page_with_title(__('Edit user'), [
         $html
     ]);
+}
+
+/**
+ * @param $myHighestGroup
+ * @param $angelId
+ * @return Collection|Group[]
+ */
+function changeableGroups($myHighestGroup, $angelId): Collection
+{
+    return Group::query()
+        ->where('groups.id', '<=', $myHighestGroup)
+        ->join('users_groups', function ($query) use ($angelId) {
+            /** @var JoinClause $query */
+            $query->where('users_groups.group_id', '=', $query->raw('groups.id'))
+                ->where('users_groups.user_id', $angelId);
+        }, null, null, 'left outer')
+        ->orderBy('name')
+        ->get([
+            'groups.*',
+            'users_groups.group_id as selected'
+        ]);
 }

@@ -1,6 +1,9 @@
 <?php
 
-use Engelsystem\Database\Db;
+use Engelsystem\Models\Group;
+use Engelsystem\Models\Privilege;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Collection;
 
 /**
  * @return string
@@ -17,18 +20,14 @@ function admin_groups()
 {
     $html = '';
     $request = request();
-    $groups = Db::select('SELECT * FROM `Groups` ORDER BY `Name`');
+    /** @var Group[]|Collection $groups */
+    $groups = Group::query()->orderBy('name')->get();
 
     if (!$request->has('action')) {
         $groups_table = [];
         foreach ($groups as $group) {
-            $privileges = Db::select('
-                SELECT `name`
-                FROM `GroupPrivileges`
-                JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`)
-                WHERE `group_id`=?
-                ORDER BY `name`
-            ', [$group['UID']]);
+            /** @var Privilege[]|Collection $privileges */
+            $privileges = $group->privileges()->orderBy('name')->get();
             $privileges_html = [];
 
             foreach ($privileges as $privilege) {
@@ -36,12 +35,12 @@ function admin_groups()
             }
 
             $groups_table[] = [
-                'name'       => $group['Name'],
+                'name'       => $group->name,
                 'privileges' => join(', ', $privileges_html),
                 'actions'    => button(
                     page_link_to(
                         'admin_groups',
-                        ['action' => 'edit', 'id' => $group['UID']]
+                        ['action' => 'edit', 'id' => $group->id]
                     ),
                     __('edit'),
                     'btn-sm'
@@ -65,34 +64,26 @@ function admin_groups()
                     return error('Incomplete call, missing Groups ID.', true);
                 }
 
-                $group = Db::select('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
+                /** @var Group|null $group */
+                $group = Group::find($group_id);
                 if (!empty($group)) {
-                    $privileges = Db::select('
-                        SELECT `Privileges`.*, `GroupPrivileges`.`group_id`
-                        FROM `Privileges`
-                        LEFT OUTER JOIN `GroupPrivileges`
-                            ON (
-                                `Privileges`.`id` = `GroupPrivileges`.`privilege_id`
-                                AND `GroupPrivileges`.`group_id`=?
-                            )
-                        ORDER BY `Privileges`.`name`
-                    ', [$group_id]);
+                    $privileges = groupPrivilegesWithSelected($group);
                     $privileges_form = [];
                     foreach ($privileges as $privilege) {
                         $privileges_form[] = form_checkbox(
                             'privileges[]',
-                            $privilege['desc'] . ' (' . $privilege['name'] . ')',
-                            $privilege['group_id'] != '',
-                            $privilege['id'],
-                            'privilege-' . $privilege['name']
+                            $privilege->description . ' (' . $privilege->name . ')',
+                            $privilege->selected != '',
+                            $privilege->id,
+                            'privilege-' . $privilege->name
                         );
                     }
 
                     $privileges_form[] = form_submit('submit', __('Save'));
-                    $html .= page_with_title(__('Edit group'), [
+                    $html .= page_with_title(__('Edit group') . ' ' . $group->name, [
                         form(
                             $privileges_form,
-                            page_link_to('admin_groups', ['action' => 'save', 'id' => $group_id])
+                            page_link_to('admin_groups', ['action' => 'save', 'id' => $group->id])
                         )
                     ]);
                 } else {
@@ -110,29 +101,21 @@ function admin_groups()
                     return error('Incomplete call, missing Groups ID.', true);
                 }
 
-                $group = Db::selectOne('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
+                /** @var Group|null $group */
+                $group = Group::find($group_id);
                 $privileges = $request->request->all('privileges');
                 if (!empty($group)) {
-                    Db::delete('DELETE FROM `GroupPrivileges` WHERE `group_id`=?', [$group_id]);
+                    $group->privileges()->detach();
                     $privilege_names = [];
                     foreach ($privileges as $privilege) {
-                        $privilege = (int)$privilege;
+                        $privilege = Privilege::find($privilege);
                         if ($privilege) {
-                            $group_privileges_source = Db::selectOne(
-                                'SELECT `name` FROM `Privileges` WHERE `id`=? LIMIT 1',
-                                [$privilege]
-                            );
-                            if (!empty($group_privileges_source)) {
-                                Db::insert(
-                                    'INSERT INTO `GroupPrivileges` (`group_id`, `privilege_id`) VALUES (?, ?)',
-                                    [$group_id, $privilege]
-                                );
-                                $privilege_names[] = $group_privileges_source['name'];
-                            }
+                            $group->privileges()->attach($privilege);
+                            $privilege_names[] = $privilege->name;
                         }
                     }
                     engelsystem_log(
-                        'Group privileges of group ' . $group['Name']
+                        'Group privileges of group ' . $group->name
                         . ' edited: ' . join(', ', $privilege_names)
                     );
                     throw_redirect(page_link_to('admin_groups'));
@@ -143,4 +126,25 @@ function admin_groups()
         }
     }
     return $html;
+}
+
+/**
+ * @param Group $group
+ * @return Collection|Privilege[]
+ */
+function groupPrivilegesWithSelected(Group $group): Collection
+{
+    return Privilege::query()
+        ->join('group_privileges', function ($query) use ($group) {
+            /** @var JoinClause $query */
+            $query
+                ->where('privileges.id', '=', $query->raw('group_privileges.privilege_id'))
+                ->where('group_privileges.group_id', $group->id)
+            ;
+        }, null, null, 'left outer')
+        ->orderBy('name')
+        ->get([
+            'privileges.*',
+            'group_privileges.group_id as selected'
+        ]);
 }

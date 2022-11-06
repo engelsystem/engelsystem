@@ -11,47 +11,56 @@ trait Reference
     /**
      * @param Blueprint $table
      * @param bool      $setPrimary
+     * @return ColumnDefinition
      */
-    protected function referencesUser(Blueprint $table, bool $setPrimary = false)
+    protected function referencesUser(Blueprint $table, bool $setPrimary = false): ColumnDefinition
     {
-        $this->references($table, 'users', null, $setPrimary);
+        return $this->references($table, 'users', null, null, $setPrimary);
     }
 
     /**
      * @param Blueprint   $table
      * @param string      $targetTable
      * @param string|null $fromColumn
+     * @param string|null $targetColumn
      * @param bool        $setPrimary
-     *
+     * @param string      $type
      * @return ColumnDefinition
      */
     protected function references(
         Blueprint $table,
         string $targetTable,
         ?string $fromColumn = null,
-        bool $setPrimary = false
+        ?string $targetColumn = null,
+        bool $setPrimary = false,
+        string $type = 'unsignedInteger'
     ): ColumnDefinition {
         $fromColumn = $fromColumn ?? Str::singular($targetTable) . '_id';
-        $col = $table->unsignedInteger($fromColumn);
+        $col = $table->{$type}($fromColumn);
 
         if ($setPrimary) {
             $table->primary($fromColumn);
         }
 
-        $this->addReference($table, $fromColumn, $targetTable);
+        $this->addReference($table, $fromColumn, $targetTable, $targetColumn ?: 'id');
 
         return $col;
     }
 
     /**
-     * @param Blueprint $table
-     * @param string    $fromColumn
-     * @param string    $targetTable
+     * @param Blueprint   $table
+     * @param string      $fromColumn
+     * @param string      $targetTable
+     * @param string|null $targetColumn
      */
-    protected function addReference(Blueprint $table, string $fromColumn, string $targetTable)
-    {
+    protected function addReference(
+        Blueprint $table,
+        string $fromColumn,
+        string $targetTable,
+        ?string $targetColumn = null
+    ) {
         $table->foreign($fromColumn)
-            ->references('id')->on($targetTable)
+            ->references($targetColumn ?: 'id')->on($targetTable)
             ->onUpdate('cascade')
             ->onDelete('cascade');
     }

@@ -3,6 +3,7 @@
 namespace Engelsystem\Helpers;
 
 use Carbon\Carbon;
+use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\User as UserRepository;
 use Psr\Http\Message\ServerRequestInterface;
@@ -10,26 +11,29 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class Authenticator
 {
-    /** @var User */
-    protected $user = null;
+    /** @var User|null */
+    protected ?User $user = null;
 
     /** @var ServerRequestInterface */
-    protected $request;
+    protected ServerRequestInterface $request;
 
     /** @var Session */
-    protected $session;
+    protected Session $session;
 
     /** @var UserRepository */
-    protected $userRepository;
+    protected UserRepository $userRepository;
 
     /** @var string[] */
-    protected $permissions;
+    protected array $permissions = [];
 
     /** @var int|string|null */
     protected $passwordAlgorithm = PASSWORD_DEFAULT;
 
     /** @var int */
-    protected $guestRole = 10;
+    protected int $defaultRole = 20;
+
+    /** @var int */
+    protected int $guestRole = 10;
 
     /**
      * @param ServerRequestInterface $request
@@ -48,7 +52,7 @@ class Authenticator
      *
      * @return User|null
      */
-    public function user()
+    public function user(): ?User
     {
         if ($this->user) {
             return $this->user;
@@ -77,7 +81,7 @@ class Authenticator
      * @param string $parameter
      * @return User|null
      */
-    public function apiUser($parameter = 'api_key')
+    public function apiUser(string $parameter = 'api_key'): ?User
     {
         if ($this->user) {
             return $this->user;
@@ -88,6 +92,7 @@ class Authenticator
             return null;
         }
 
+        /** @var User|null $user */
         $user = $this
             ->userRepository
             ->whereApiKey($params[$parameter])
@@ -113,7 +118,7 @@ class Authenticator
             $user = $this->user();
 
             if ($user) {
-                $this->permissions = $this->getPermissionsByUser($user);
+                $this->permissions = $user->privileges->pluck('name')->toArray();
 
                 $user->last_login_at = new Carbon();
                 $user->save();
@@ -122,7 +127,9 @@ class Authenticator
             }
 
             if (empty($this->permissions)) {
-                $this->permissions = $this->getPermissionsByGroup($this->guestRole);
+                /** @var Group $group */
+                $group = Group::find($this->guestRole);
+                $this->permissions = $group->privileges->pluck('name')->toArray();
             }
         }
 
@@ -140,7 +147,7 @@ class Authenticator
      * @param string $password
      * @return User|null
      */
-    public function authenticate(string $login, string $password)
+    public function authenticate(string $login, string $password): ?User
     {
         /** @var User $user */
         $user = $this->userRepository->whereName($login)->first();
@@ -164,7 +171,7 @@ class Authenticator
      * @param string $password
      * @return bool
      */
-    public function verifyPassword(User $user, string $password)
+    public function verifyPassword(User $user, string $password): bool
     {
         if (!password_verify($password, $user->password)) {
             return false;
@@ -206,7 +213,23 @@ class Authenticator
     /**
      * @return int
      */
-    public function getGuestRole()
+    public function getDefaultRole(): int
+    {
+        return $this->defaultRole;
+    }
+
+    /**
+     * @param int $defaultRole
+     */
+    public function setDefaultRole(int $defaultRole)
+    {
+        $this->defaultRole = $defaultRole;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGuestRole(): int
     {
         return $this->guestRole;
     }
@@ -217,25 +240,5 @@ class Authenticator
     public function setGuestRole(int $guestRole)
     {
         $this->guestRole = $guestRole;
-    }
-
-    /**
-     * @param User $user
-     * @return array
-     * @codeCoverageIgnore
-     */
-    protected function getPermissionsByUser($user)
-    {
-        return privileges_for_user($user->id);
-    }
-
-    /**
-     * @param int $groupId
-     * @return array
-     * @codeCoverageIgnore
-     */
-    protected function getPermissionsByGroup(int $groupId)
-    {
-        return privileges_for_group($groupId);
     }
 }
