@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -20,6 +21,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon                                       $updated_at
  *
  * @property-read QueryBuilder|Collection|ScheduleShift[] $scheduleShifts
+ * @property-read QueryBuilder|ShiftType                  $shiftType
  *
  * @method static QueryBuilder|Schedule[] whereId($value)
  * @method static QueryBuilder|Schedule[] whereName($value)
@@ -56,8 +58,16 @@ class Schedule extends BaseModel
     /**
      * @return HasMany
      */
-    public function scheduleShifts()
+    public function scheduleShifts(): HasMany
     {
         return $this->hasMany(ScheduleShift::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function shiftType(): BelongsTo
+    {
+        return $this->belongsTo(ShiftType::class, 'shift_type', 'id');
     }
 }

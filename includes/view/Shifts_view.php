@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Collection;
@@ -104,13 +105,13 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
 
 /**
  * @param array            $shift
- * @param array            $shifttype
+ * @param ShiftType        $shifttype
  * @param Room             $room
  * @param array[]          $angeltypes_source
  * @param ShiftSignupState $shift_signup_state
  * @return string
  */
-function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
+function Shift_view($shift, ShiftType $shifttype, Room $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
 {
     $shift_admin = auth()->can('admin_shifts');
     $user_shift_admin = auth()->can('user_shifts_admin');
@@ -166,7 +167,7 @@ function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSig
         $buttons = [
             $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
             $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
-            $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
+            $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype->name) : '',
             $admin_rooms ? button(room_link($room), icon('geo-alt') . $room->name) : '',
         ];
     }
@@ -181,7 +182,7 @@ function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSig
         ]),
         div('col-sm-6', [
             '<h2>' . __('Description') . '</h2>',
-            $parsedown->parse((string)$shifttype['description']),
+            $parsedown->parse($shifttype->description),
             $parsedown->parse((string)$shift['description']),
         ])
     ]);

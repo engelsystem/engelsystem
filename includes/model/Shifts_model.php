@@ -2,6 +2,7 @@
 
 use Engelsystem\Database\Db;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftSignupState;
@@ -98,10 +99,10 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     $sql = '
     SELECT * FROM (
-        SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `rooms`.`name` AS `room_name`
+        SELECT DISTINCT `Shifts`.*, `shift_types`.`name`, `rooms`.`name` AS `room_name`
         FROM `Shifts`
         JOIN `rooms` ON `Shifts`.`RID` = `rooms`.`id`
-        JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
+        JOIN `shift_types` ON `shift_types`.`id` = `Shifts`.`shifttype_id`
         JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id` = `Shifts`.`SID`
         LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
         WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
@@ -112,10 +113,10 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 
         UNION
 
-        SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `rooms`.`name` AS `room_name`
+        SELECT DISTINCT `Shifts`.*, `shift_types`.`name`, `rooms`.`name` AS `room_name`
         FROM `Shifts`
         JOIN `rooms` ON `Shifts`.`RID` = `rooms`.`id`
-        JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
+        JOIN `shift_types` ON `shift_types`.`id` = `Shifts`.`shifttype_id`
         JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
         LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
         WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
@@ -526,7 +527,7 @@ function Shift_delete($shift_id)
 function Shift_update($shift)
 {
     $user = auth()->user();
-    $shift['name'] = ShiftType($shift['shifttype_id'])['name'];
+    $shift['name'] = ShiftType::find($shift['shifttype_id'])->name;
     mail_shift_change(Shift($shift['SID']), $shift);
 
     return Db::update(
@@ -616,8 +617,8 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
         SELECT
             `rooms`.*,
             `rooms`.name AS Name,
-            `ShiftTypes`.`id` AS `shifttype_id`,
-            `ShiftTypes`.`name`,
+            `shift_types`.`id` AS `shifttype_id`,
+            `shift_types`.`name`,
             `ShiftEntry`.`id`,
             `ShiftEntry`.`SID`,
             `ShiftEntry`.`TID`,
@@ -630,7 +631,7 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
             ? AS event_timezone
         FROM `ShiftEntry`
         JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
-        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+        JOIN `shift_types` ON (`shift_types`.`id` = `Shifts`.`shifttype_id`)
         JOIN `rooms` ON (`Shifts`.`RID` = `rooms`.`id`)
         WHERE `UID` = ?
         ORDER BY `start`
@@ -651,9 +652,9 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
 function Shift($shift_id)
 {
     $result = Db::selectOne('
-        SELECT `Shifts`.*, `ShiftTypes`.`name`
+        SELECT `Shifts`.*, `shift_types`.`name`
         FROM `Shifts`
-        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+        JOIN `shift_types` ON (`shift_types`.`id` = `Shifts`.`shifttype_id`)
         WHERE `SID`=?', [$shift_id]);
 
     if (empty($result)) {
