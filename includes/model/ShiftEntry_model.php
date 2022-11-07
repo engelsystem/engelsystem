@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Engelsystem\Database\Db;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 
 /**
@@ -58,7 +59,7 @@ function ShiftEntry_create($shift_entry)
 {
     $user = User::find($shift_entry['UID']);
     $shift = Shift($shift_entry['SID']);
-    $shifttype = ShiftType($shift['shifttype_id']);
+    $shifttype = ShiftType::find($shift['shifttype_id']);
     $room = Room::find($shift['RID']);
     $angeltype = AngelType($shift_entry['TID']);
     $result = Db::insert(
@@ -85,7 +86,7 @@ function ShiftEntry_create($shift_entry)
     engelsystem_log(
         'User ' . User_Nick_render($user, true)
         . ' signed up for shift ' . $shift['name']
-        . ' (' . $shifttype['name'] . ')'
+        . ' (' . $shifttype->name . ')'
         . ' at ' . $room->name
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
@@ -145,14 +146,14 @@ function ShiftEntry_delete($shiftEntry)
 
     $signout_user = User::find($shiftEntry['UID']);
     $shift = Shift($shiftEntry['SID']);
-    $shifttype = ShiftType($shift['shifttype_id']);
+    $shifttype = ShiftType::find($shift['shifttype_id']);
     $room = Room::find($shift['RID']);
     $angeltype = AngelType($shiftEntry['TID']);
 
     engelsystem_log(
         'Shift signout: ' . User_Nick_render($signout_user, true)
         . ' from shift ' . $shift['name']
-        . ' (' . $shifttype['name'] . ')'
+        . ' (' . $shifttype->name . ')'
         . ' at ' . $room->name
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
@@ -175,7 +176,7 @@ function ShiftEntries_upcoming_for_user($userId)
         SELECT *
         FROM `ShiftEntry`
         JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
-        JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
+        JOIN `shift_types` ON `shift_types`.`id` = `Shifts`.`shifttype_id`
         WHERE `ShiftEntry`.`UID` = ?
         AND `Shifts`.`end` > ?
         ORDER BY `Shifts`.`end`
@@ -201,7 +202,7 @@ function ShiftEntries_finished_by_user($userId, Carbon $sinceTime = null)
             SELECT *
             FROM `ShiftEntry`
             JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
-            JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
+            JOIN `shift_types` ON `shift_types`.`id` = `Shifts`.`shifttype_id`
             WHERE `ShiftEntry`.`UID` = ?
             AND `Shifts`.`end` < ?
             AND `ShiftEntry`.`freeloaded` = 0

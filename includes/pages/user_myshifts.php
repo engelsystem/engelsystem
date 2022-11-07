@@ -55,14 +55,14 @@ function user_myshifts()
                     `ShiftEntry`.`freeload_comment`,
                     `ShiftEntry`.`Comment`,
                     `ShiftEntry`.`UID`,
-                    `ShiftTypes`.`name`,
+                    `shift_types`.`name`,
                     `Shifts`.*,
                     `rooms`.`name` as room_name,
                     `AngelTypes`.`name` AS `angel_type`
                 FROM `ShiftEntry`
                 JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`)
                 JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
-                JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+                JOIN `shift_types` ON (`shift_types`.`id` = `Shifts`.`shifttype_id`)
                 JOIN `rooms` ON (`Shifts`.`RID` = `rooms`.`id`)
                 WHERE `ShiftEntry`.`id`=?
                 AND `UID`=?

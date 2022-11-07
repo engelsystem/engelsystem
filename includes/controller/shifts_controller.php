@@ -4,6 +4,7 @@ use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ScheduleShift;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
 
@@ -70,7 +71,7 @@ function shift_edit_controller()
         $rooms[$room->id] = $room->name;
     }
     $angeltypes = select_array(AngelTypes(), 'id', 'name');
-    $shifttypes = select_array(ShiftTypes(), 'id', 'name');
+    $shifttypes = select_array(ShiftType::all(), 'id', 'name');
 
     $needed_angel_types = select_array(
         NeededAngelTypes_by_shift($shift_id),
@@ -301,7 +302,7 @@ function shift_controller()
         throw_redirect(page_link_to('user_shifts'));
     }
 
-    $shifttype = ShiftType($shift['shifttype_id']);
+    $shifttype = ShiftType::find($shift['shifttype_id']);
     $room = Room::find($shift['RID']);
     $angeltypes = AngelTypes();
     $user_shifts = Shifts_by_user($user->id);

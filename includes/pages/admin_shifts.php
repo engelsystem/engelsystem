@@ -4,6 +4,7 @@ use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Str;
 
@@ -52,15 +53,15 @@ function admin_shifts()
     }
 
     // Load shift types
-    $shifttypes_source = ShiftTypes();
+    $shifttypes_source = ShiftType::all();
     $shifttypes = [];
     foreach ($shifttypes_source as $shifttype) {
-        $shifttypes[$shifttype['id']] = $shifttype['name'];
+        $shifttypes[$shifttype->id] = $shifttype->name;
     }
 
     if ($request->has('preview') || $request->has('back')) {
         if ($request->has('shifttype_id')) {
-            $shifttype = ShiftType($request->input('shifttype_id'));
+            $shifttype = ShiftType::find($request->input('shifttype_id'));
             if (empty($shifttype)) {
                 $valid = false;
                 error(__('Please select a shift type.'));
@@ -205,9 +206,9 @@ function admin_shifts()
                     'description'  => $description,
                 ];
             } elseif ($mode == 'multi') {
-                $shift_start = (int) $start;
+                $shift_start = (int)$start;
                 do {
-                    $shift_end = $shift_start + (int) $length * 60;
+                    $shift_end = $shift_start + (int)$length * 60;
 
                     if ($shift_end > $end) {
                         $shift_end = $end;
@@ -312,7 +313,7 @@ function admin_shifts()
                         . '<br />'
                         . Room_name_render(Room::find($shift['RID'])),
                     'title'         =>
-                        ShiftType_name_render(ShiftType($shifttype_id))
+                        ShiftType_name_render(ShiftType::find($shifttype_id))
                         . ($shift['title'] ? '<br />' . $shift['title'] : ''),
                     'needed_angels' => ''
                 ];
@@ -421,88 +422,89 @@ function admin_shifts()
     }
     $angel_types = '';
     foreach ($types as $type) {
-        $angel_types .= '<div class="col-md-4">' . form_spinner(
-            'type_' . $type['id'],
-            $type['name'],
-            $needed_angel_types[$type['id']]
-        )
+        $angel_types .= '<div class="col-md-4">'
+            . form_spinner(
+                'type_' . $type['id'],
+                $type['name'],
+                $needed_angel_types[$type['id']]
+            )
             . '</div>';
     }
 
     return page_with_title(
-        admin_shifts_title() . ' ' .  sprintf(
+        admin_shifts_title() . ' ' . sprintf(
             '<a href="%s">%s</a>',
             page_link_to('admin_shifts_history'),
             icon('clock-history')
         ),
         [
-        msg(),
-        form([
-            div('row', [
-                div('col-md-6', [
-                    form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
-                    form_text('title', __('Title'), $title),
-                    form_select('rid', __('Room'), $room_array, $rid),
+            msg(),
+            form([
+                div('row', [
+                    div('col-md-6', [
+                        form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
+                        form_text('title', __('Title'), $title),
+                        form_select('rid', __('Room'), $room_array, $rid),
+                    ]),
+                    div('col-md-6', [
+                        form_textarea('description', __('Additional description'), $description),
+                        __('This description is for single shifts, otherwise please use the description in shift type.'),
+                    ]),
                 ]),
-                div('col-md-6', [
-                    form_textarea('description', __('Additional description'), $description),
-                    __('This description is for single shifts, otherwise please use the description in shift type.'),
-                ]),
-            ]),
-            div('row', [
-                div('col-md-6', [
-                    form_datetime('start', __('Start'), $start),
-                    form_datetime('end', __('End'), $end),
-                    form_info(__('Mode')),
-                    form_radio('mode', __('Create one shift'), $mode == 'single', 'single'),
-                    form_radio('mode', __('Create multiple shifts'), $mode == 'multi', 'multi'),
-                    form_text(
-                        'length',
-                        __('Length'),
-                        $request->has('length')
-                            ? $request->input('length')
-                            : '120'
-                    ),
-                    form_radio(
-                        'mode',
-                        __('Create multiple shifts with variable length'),
-                        $mode == 'variable',
-                        'variable'
-                    ),
-                    form_text(
-                        'change_hours',
-                        __('Shift change hours'),
-                        $request->has('change_hours')
-                            ? $request->input('change_hours')
-                            : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
-                    ),
-                    form_checkbox(
-                        'shift_over_midnight',
-                        __('Create a shift over midnight.'),
-                        $shift_over_midnight
-                    )
-                ]),
-                div('col-md-6', [
-                    form_info(__('Needed angels')),
-                    form_radio(
-                        'angelmode',
-                        __('Take needed angels from room settings'),
-                        $angelmode == 'location',
-                        'location'
-                    ),
-                    form_radio(
-                        'angelmode',
-                        __('The following angels are needed'),
-                        $angelmode == 'manually',
-                        'manually'
-                    ),
-                    div('row', [
-                        $angel_types
+                div('row', [
+                    div('col-md-6', [
+                        form_datetime('start', __('Start'), $start),
+                        form_datetime('end', __('End'), $end),
+                        form_info(__('Mode')),
+                        form_radio('mode', __('Create one shift'), $mode == 'single', 'single'),
+                        form_radio('mode', __('Create multiple shifts'), $mode == 'multi', 'multi'),
+                        form_text(
+                            'length',
+                            __('Length'),
+                            $request->has('length')
+                                ? $request->input('length')
+                                : '120'
+                        ),
+                        form_radio(
+                            'mode',
+                            __('Create multiple shifts with variable length'),
+                            $mode == 'variable',
+                            'variable'
+                        ),
+                        form_text(
+                            'change_hours',
+                            __('Shift change hours'),
+                            $request->has('change_hours')
+                                ? $request->input('change_hours')
+                                : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
+                        ),
+                        form_checkbox(
+                            'shift_over_midnight',
+                            __('Create a shift over midnight.'),
+                            $shift_over_midnight
+                        )
+                    ]),
+                    div('col-md-6', [
+                        form_info(__('Needed angels')),
+                        form_radio(
+                            'angelmode',
+                            __('Take needed angels from room settings'),
+                            $angelmode == 'location',
+                            'location'
+                        ),
+                        form_radio(
+                            'angelmode',
+                            __('The following angels are needed'),
+                            $angelmode == 'manually',
+                            'manually'
+                        ),
+                        div('row', [
+                            $angel_types
+                        ])
                     ])
-                ])
-            ]),
-            form_submit('preview', icon('search') . __('Preview'))
-        ])
+                ]),
+                form_submit('preview', icon('search') . __('Preview'))
+            ])
         ]
     );
 }

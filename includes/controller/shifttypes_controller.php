@@ -1,12 +1,14 @@
 <?php
 
+use Engelsystem\Models\Shifts\ShiftType;
+
 /**
- * @param array $shifttype
+ * @param ShiftType $shifttype
  * @return string
  */
-function shifttype_link($shifttype)
+function shifttype_link(ShiftType $shifttype)
 {
-    return page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype['id']]);
+    return page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype->id]);
 }
 
 /**
@@ -21,21 +23,17 @@ function shifttype_delete_controller()
         throw_redirect(page_link_to('shifttypes'));
     }
 
-    $shifttype = ShiftType($request->input('shifttype_id'));
-    if (empty($shifttype)) {
-        throw_redirect(page_link_to('shifttypes'));
-    }
-
+    $shifttype = ShiftType::findOrFail($request->input('shifttype_id'));
     if ($request->hasPostData('delete')) {
-        ShiftType_delete($shifttype['id']);
+        engelsystem_log('Deleted shifttype ' . $shifttype->name);
+        success(sprintf(__('Shifttype %s deleted.'), $shifttype->name));
 
-        engelsystem_log('Deleted shifttype ' . $shifttype['name']);
-        success(sprintf(__('Shifttype %s deleted.'), $shifttype['name']));
+        $shifttype->delete();
         throw_redirect(page_link_to('shifttypes'));
     }
 
     return [
-        sprintf(__('Delete shifttype %s'), $shifttype['name']),
+        sprintf(__('Delete shifttype %s'), $shifttype->name),
         ShiftType_delete_view($shifttype)
     ];
 }
@@ -54,14 +52,10 @@ function shifttype_edit_controller()
     $request = request();
 
     if ($request->has('shifttype_id')) {
-        $shifttype = ShiftType($request->input('shifttype_id'));
-        if (empty($shifttype)) {
-            error(__('Shifttype not found.'));
-            throw_redirect(page_link_to('shifttypes'));
-        }
-        $shifttype_id = $shifttype['id'];
-        $name = $shifttype['name'];
-        $description = $shifttype['description'];
+        $shifttype = ShiftType::findOrFail($request->input('shifttype_id'));
+        $shifttype_id = $shifttype->id;
+        $name = $shifttype->name;
+        $description = $shifttype->description;
     }
 
     if ($request->hasPostData('submit')) {
@@ -79,17 +73,21 @@ function shifttype_edit_controller()
         }
 
         if ($valid) {
-            if ($shifttype_id) {
-                ShiftType_update($shifttype_id, $name, $description);
+            $shiftType = ShiftType::findOrNew($shifttype_id);
+            $shiftType->name = $name;
+            $shiftType->description = $description;
+            $shiftType->save();
 
+            if ($shifttype_id) {
                 engelsystem_log('Updated shifttype ' . $name);
                 success(__('Updated shifttype.'));
             } else {
-                $shifttype_id = ShiftType_create($name, $description);
+                $shifttype_id = $shiftType->id;
 
                 engelsystem_log('Created shifttype ' . $name);
                 success(__('Created shifttype.'));
             }
+
             throw_redirect(page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]));
         }
     }
@@ -109,13 +107,10 @@ function shifttype_controller()
     if (!$request->has('shifttype_id')) {
         throw_redirect(page_link_to('shifttypes'));
     }
-    $shifttype = ShiftType($request->input('shifttype_id'));
-    if (empty($shifttype)) {
-        throw_redirect(page_link_to('shifttypes'));
-    }
+    $shifttype = ShiftType::findOrFail($request->input('shifttype_id'));
 
     return [
-        $shifttype['name'],
+        $shifttype->name,
         ShiftType_view($shifttype)
     ];
 }
@@ -127,7 +122,7 @@ function shifttype_controller()
  */
 function shifttypes_list_controller()
 {
-    $shifttypes = ShiftTypes();
+    $shifttypes = ShiftType::all();
 
     return [
         shifttypes_title(),

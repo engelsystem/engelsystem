@@ -1,25 +1,28 @@
 <?php
 
+use Engelsystem\Models\Shifts\ShiftType;
+use Illuminate\Support\Collection;
+
 /**
- * @param array $shifttype
+ * @param ShiftType $shifttype
  * @return string
  */
-function ShiftType_name_render($shifttype)
+function ShiftType_name_render(ShiftType $shifttype)
 {
     if (auth()->can('shifttypes')) {
-        return '<a href="' . shifttype_link($shifttype) . '">' . $shifttype['name'] . '</a>';
+        return '<a href="' . shifttype_link($shifttype) . '">' . $shifttype->name . '</a>';
     }
-    return $shifttype['name'];
+    return $shifttype->name;
 }
 
 /**
- * @param array $shifttype
+ * @param ShiftType $shifttype
  * @return string
  */
-function ShiftType_delete_view($shifttype)
+function ShiftType_delete_view(ShiftType $shifttype)
 {
-    return page_with_title(sprintf(__('Delete shifttype %s'), $shifttype['name']), [
-        info(sprintf(__('Do you want to delete shifttype %s?'), $shifttype['name']), true),
+    return page_with_title(sprintf(__('Delete shifttype %s'), $shifttype->name), [
+        info(sprintf(__('Do you want to delete shifttype %s?'), $shifttype->name), true),
         form([
             buttons([
                 button(page_link_to('shifttypes'), icon('x-lg') . __('cancel')),
@@ -35,9 +38,9 @@ function ShiftType_delete_view($shifttype)
 }
 
 /**
- * @param string   $name
- * @param string   $description
- * @param int|bool $shifttype_id
+ * @param string $name
+ * @param string $description
+ * @param int    $shifttype_id
  * @return string
  */
 function ShiftType_edit_view($name, $description, $shifttype_id)
@@ -57,56 +60,56 @@ function ShiftType_edit_view($name, $description, $shifttype_id)
 }
 
 /**
- * @param array $shifttype
+ * @param ShiftType $shifttype
  * @return string
  */
-function ShiftType_view($shifttype)
+function ShiftType_view(ShiftType $shifttype)
 {
     $parsedown = new Parsedown();
-    $title = $shifttype['name'];
+    $title = $shifttype->name;
     return page_with_title($title, [
         msg(),
         buttons([
             button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
             button(
-                page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype['id']]),
+                page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype->id]),
                 __('edit'),
                 'edit'
             ),
             button(
-                page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype['id']]),
+                page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
                 __('delete'),
                 'delete'
             )
         ]),
         heading(__('Description'), 2),
-        $parsedown->parse((string)$shifttype['description'])
+        $parsedown->parse($shifttype->description)
     ], true);
 }
 
 /**
- * @param array[] $shifttypes
+ * @param ShiftType[]|array[]|Collection $shifttypes
  * @return string
  */
 function ShiftTypes_list_view($shifttypes)
 {
-    foreach ($shifttypes as &$shifttype) {
-        $shifttype['name'] = '<a href="'
-            . page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype['id']])
+    foreach ($shifttypes as $shifttype) {
+        $shifttype->name = '<a href="'
+            . page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype->id])
             . '">'
-            . $shifttype['name']
+            . $shifttype->name
             . '</a>';
-        $shifttype['actions'] = table_buttons([
+        $shifttype->actions = table_buttons([
             button(
                 page_link_to(
                     'shifttypes',
-                    ['action' => 'edit', 'shifttype_id' => $shifttype['id']]
+                    ['action' => 'edit', 'shifttype_id' => $shifttype->id]
                 ),
                 __('edit'),
                 'btn-sm'
             ),
             button(
-                page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype['id']]),
+                page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
                 __('delete'),
                 'btn-sm'
             )

@@ -17,6 +17,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Models\Room as RoomModel;
 use Engelsystem\Models\Shifts\Schedule as ScheduleUrl;
 use Engelsystem\Models\Shifts\ScheduleShift;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use ErrorException;
 use GuzzleHttp\Client as GuzzleClient;
@@ -109,7 +110,7 @@ class ImportSchedule extends BaseController
             'admin/schedule/edit.twig',
             [
                 'schedule'    => $schedule,
-                'shift_types' => $this->getShiftTypes(),
+                'shift_types' => ShiftType::all()->pluck('name', 'id'),
             ] + $this->getNotifications()
         );
     }
@@ -133,7 +134,7 @@ class ImportSchedule extends BaseController
             'minutes_after'  => 'int',
         ]);
 
-        if (!isset($this->getShiftTypes()[$data['shift_type']])) {
+        if (!ShiftType::find($data['shift_type'])) {
             throw new ErrorException('schedule.import.invalid-shift-type');
         }
 
@@ -196,12 +197,12 @@ class ImportSchedule extends BaseController
         return $this->response->withView(
             'admin/schedule/load.twig',
             [
-                'schedule_id'    => $scheduleUrl->id,
-                'schedule'       => $schedule,
-                'rooms'          => [
+                'schedule_id' => $scheduleUrl->id,
+                'schedule'    => $schedule,
+                'rooms'       => [
                     'add' => $newRooms,
                 ],
-                'shifts'         => [
+                'shifts'      => [
                     'add'    => $newEvents,
                     'update' => $changeEvents,
                     'delete' => $deleteEvents,
@@ -299,14 +300,14 @@ class ImportSchedule extends BaseController
         $shiftEntries = $this->db
             ->table('ShiftEntry')
             ->select([
-                'ShiftTypes.name', 'Shifts.title', 'AngelTypes.name AS type', 'rooms.id AS room_id',
+                'shift_types.name', 'Shifts.title', 'AngelTypes.name AS type', 'rooms.id AS room_id',
                 'Shifts.start', 'Shifts.end', 'ShiftEntry.UID as user_id', 'ShiftEntry.freeloaded'
             ])
             ->join('Shifts', 'Shifts.SID', 'ShiftEntry.SID')
             ->join('schedule_shift', 'Shifts.SID', 'schedule_shift.shift_id')
             ->join('rooms', 'rooms.id', 'Shifts.RID')
             ->join('AngelTypes', 'AngelTypes.id', 'ShiftEntry.TID')
-            ->join('ShiftTypes', 'ShiftTypes.id', 'Shifts.shifttype_id')
+            ->join('shift_types', 'shift_types.id', 'Shifts.shifttype_id')
             ->where('schedule_shift.guid', $event->getGuid())
             ->get();
 
@@ -637,22 +638,6 @@ class ImportSchedule extends BaseController
             ',
             [$id]
         );
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function getShiftTypes()
-    {
-        $return = [];
-        /** @var stdClass[] $shiftTypes */
-        $shiftTypes = $this->db->select('SELECT t.id, t.name FROM ShiftTypes AS t');
-
-        foreach ($shiftTypes as $shiftType) {
-            $return[$shiftType->id] = $shiftType->name;
-        }
-
-        return $return;
     }
 
     /**
