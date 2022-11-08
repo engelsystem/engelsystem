@@ -1,18 +1,19 @@
 <?php
 
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
 /**
- * Sign off from an user from a shift with admin permissions, asking for ack.
+ * Sign off from a user from a shift with admin permissions, asking for ack.
  *
  * @param array $shift
- * @param array $angeltype
+ * @param AngelType $angeltype
  * @param User  $signoff_user
  *
  * @return string HTML
  */
-function ShiftEntry_delete_view_admin($shift, $angeltype, $signoff_user)
+function ShiftEntry_delete_view_admin($shift, AngelType $angeltype, $signoff_user)
 {
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
@@ -21,7 +22,7 @@ function ShiftEntry_delete_view_admin($shift, $angeltype, $signoff_user)
             $shift['name'],
             date('Y-m-d H:i', $shift['start']),
             date('Y-m-d H:i', $shift['end']),
-            $angeltype['name']
+            $angeltype->name
         ), true),
         form([
             buttons([
@@ -36,12 +37,12 @@ function ShiftEntry_delete_view_admin($shift, $angeltype, $signoff_user)
  * Sign off from a shift, asking for ack.
  *
  * @param array $shift
- * @param array $angeltype
+ * @param AngelType $angeltype
  * @param int   $signoff_user_id
  *
  * @return string HTML
  */
-function ShiftEntry_delete_view($shift, $angeltype, $signoff_user_id)
+function ShiftEntry_delete_view($shift, AngelType $angeltype, $signoff_user_id)
 {
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
@@ -49,7 +50,7 @@ function ShiftEntry_delete_view($shift, $angeltype, $signoff_user_id)
             $shift['name'],
             date('Y-m-d H:i', $shift['start']),
             date('Y-m-d H:i', $shift['end']),
-            $angeltype['name']
+            $angeltype->name
         ), true),
 
         form([
@@ -72,16 +73,22 @@ function ShiftEntry_delete_title()
 /**
  * Admin puts user into shift.
  *
- * @param array $shift
- * @param Room  $room
- * @param array $angeltype
- * @param array $angeltypes_select
- * @param User  $signup_user
- * @param array $users_select
+ * @param array     $shift
+ * @param Room      $room
+ * @param AngelType $angeltype
+ * @param array     $angeltypes_select
+ * @param User      $signup_user
+ * @param array     $users_select
  * @return string
  */
-function ShiftEntry_create_view_admin($shift, Room $room, $angeltype, $angeltypes_select, $signup_user, $users_select)
-{
+function ShiftEntry_create_view_admin(
+    $shift,
+    Room $room,
+    AngelType $angeltype,
+    $angeltypes_select,
+    $signup_user,
+    $users_select
+) {
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
         . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
@@ -89,7 +96,7 @@ function ShiftEntry_create_view_admin($shift, Room $room, $angeltype, $angeltype
             Shift_view_header($shift, $room),
             info(__('Do you want to sign up the following user for this shift?'), true),
             form([
-                form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype['id']),
+                form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype->id),
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
                 form_submit('submit', icon('check-lg') . __('Save'))
             ])
@@ -102,12 +109,12 @@ function ShiftEntry_create_view_admin($shift, Room $room, $angeltype, $angeltype
  *
  * @param array $shift
  * @param Room  $room
- * @param array $angeltype
+ * @param AngelType $angeltype
  * @param User  $signup_user
  * @param array $users_select
  * @return string
  */
-function ShiftEntry_create_view_supporter($shift, Room $room, $angeltype, $signup_user, $users_select)
+function ShiftEntry_create_view_supporter($shift, Room $room, AngelType $angeltype, $signup_user, $users_select)
 {
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
@@ -131,11 +138,11 @@ function ShiftEntry_create_view_supporter($shift, Room $room, $angeltype, $signu
  *
  * @param array  $shift
  * @param Room   $room
- * @param array  $angeltype
+ * @param AngelType  $angeltype
  * @param string $comment
  * @return string
  */
-function ShiftEntry_create_view_user($shift, Room $room, $angeltype, $comment)
+function ShiftEntry_create_view_user($shift, Room $room, AngelType $angeltype, $comment)
 {
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']

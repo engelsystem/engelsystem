@@ -2,6 +2,7 @@
 
 namespace Engelsystem;
 
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
@@ -15,10 +16,10 @@ class ShiftCalendarShiftRenderer
     /**
      * Renders a shift
      *
-     * @param array $shift The shift to render
-     * @param array $needed_angeltypes
-     * @param array $shift_entries
-     * @param User  $user  The user who is viewing the shift calendar
+     * @param array   $shift The shift to render
+     * @param array[] $needed_angeltypes
+     * @param array   $shift_entries
+     * @param User    $user The user who is viewing the shift calendar
      * @return array
      */
     public function render($shift, $needed_angeltypes, $shift_entries, $user)
@@ -159,15 +160,16 @@ class ShiftCalendarShiftRenderer
     /**
      * Renders a list entry containing the needed angels for an angeltype
      *
-     * @param array   $shift     The shift which is rendered
+     * @param array   $shift The shift which is rendered
      * @param array[] $shift_entries
-     * @param array[] $angeltype The angeltype, containing information about needed angeltypes
+     * @param array   $angeltype The angeltype, containing information about needed angeltypes
      *                           and already signed up angels
-     * @param User    $user      The user who is viewing the shift calendar
+     * @param User    $user The user who is viewing the shift calendar
      * @return array
      */
     private function renderShiftNeededAngeltype($shift, $shift_entries, $angeltype, $user)
     {
+        $angeltype = (new AngelType())->forceFill($angeltype);
         $entry_list = [];
         foreach ($shift_entries as $entry) {
             $class = $entry['freeloaded'] ? 'text-decoration-line-through' : '';
@@ -216,7 +218,7 @@ class ShiftCalendarShiftRenderer
                 break;
 
             case ShiftSignupState::ANGELTYPE:
-                if ($angeltype['restricted'] == 1) {
+                if ($angeltype->restricted) {
                     // User has to be confirmed on the angeltype first
                     $entry_list[] = $inner_text . icon('book');
                 } else {
@@ -225,9 +227,9 @@ class ShiftCalendarShiftRenderer
                         . button(
                             page_link_to(
                                 'user_angeltypes',
-                                ['action' => 'add', 'angeltype_id' => $angeltype['id']]
+                                ['action' => 'add', 'angeltype_id' => $angeltype->id]
                             ),
-                            sprintf(__('Become %s'), $angeltype['name']),
+                            sprintf(__('Become %s'), $angeltype->name),
                             'btn-sm'
                         );
                 }

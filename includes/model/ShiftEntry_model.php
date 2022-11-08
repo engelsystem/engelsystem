@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\Db;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
@@ -37,12 +38,12 @@ function ShiftEntries_by_shift($shift_id)
                 `ShiftEntry`.`UID`,
                 `ShiftEntry`.`TID`,
                 `ShiftEntry`.`SID`,
-                `AngelTypes`.`name` AS `angel_type_name`,
+                `angel_types`.`name` AS `angel_type_name`,
                 `ShiftEntry`.`Comment`,
                 `ShiftEntry`.`freeloaded`
             FROM `ShiftEntry`
             JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
-            JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
+            JOIN `angel_types` ON `ShiftEntry`.`TID`=`angel_types`.`id`
             WHERE `ShiftEntry`.`SID` = ?
         ',
         [$shift_id]
@@ -61,7 +62,7 @@ function ShiftEntry_create($shift_entry)
     $shift = Shift($shift_entry['SID']);
     $shifttype = ShiftType::find($shift['shifttype_id']);
     $room = Room::find($shift['RID']);
-    $angeltype = AngelType($shift_entry['TID']);
+    $angeltype = AngelType::find($shift_entry['TID']);
     $result = Db::insert(
         '
             INSERT INTO `ShiftEntry` (
@@ -90,7 +91,7 @@ function ShiftEntry_create($shift_entry)
         . ' at ' . $room->name
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
-        . ' as ' . $angeltype['name']
+        . ' as ' . $angeltype->name
     );
     mail_shift_assign($user, $shift);
 
@@ -148,7 +149,7 @@ function ShiftEntry_delete($shiftEntry)
     $shift = Shift($shiftEntry['SID']);
     $shifttype = ShiftType::find($shift['shifttype_id']);
     $room = Room::find($shift['RID']);
-    $angeltype = AngelType($shiftEntry['TID']);
+    $angeltype = AngelType::find($shiftEntry['TID']);
 
     engelsystem_log(
         'Shift signout: ' . User_Nick_render($signout_user, true)
@@ -157,7 +158,7 @@ function ShiftEntry_delete($shiftEntry)
         . ' at ' . $room->name
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
-        . ' as ' . $angeltype['name']
+        . ' as ' . $angeltype->name
     );
 
     mail_shift_removed(User::find($shiftEntry['UID']), Shift($shiftEntry['SID']));

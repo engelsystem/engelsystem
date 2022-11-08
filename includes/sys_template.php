@@ -87,7 +87,7 @@ function mute($text)
  * Renders a bootstrap label with given content and class.
  *
  * @param string $content The text
- * @param string $class   default, primary, info, success, warning, danger
+ * @param string $class default, primary, info, success, warning, danger
  * @return string
  */
 function badge($content, $class = 'default')
@@ -322,9 +322,9 @@ function description($data)
 /**
  * Rendert eine Datentabelle
  *
- * @param array|string $columns
- * @param array[]      $rows_raw
- * @param bool         $data
+ * @param array|string        $columns
+ * @param array[]|ArrayAccess $rows_raw
+ * @param bool                $data
  * @return string
  */
 function table($columns, $rows_raw, $data = true)

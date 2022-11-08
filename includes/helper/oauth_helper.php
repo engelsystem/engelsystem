@@ -4,6 +4,7 @@ namespace Engelsystem\Events\Listener;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Database\Database;
+use Engelsystem\Models\AngelType;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
@@ -55,8 +56,8 @@ class OAuth2
                     'SSO {provider}: Added to angeltype {angeltype}, confirmed: {confirmed}, supporter: {supporter}',
                     [
                         'provider'  => $provider,
-                        'angeltype' => AngelType($team['id'])['name'],
-                        'confirmed'   => $confirmed ? 'yes' : 'no',
+                        'angeltype' => AngelType::find($team['id'])->name,
+                        'confirmed' => $confirmed ? 'yes' : 'no',
                         'supporter' => $supporter ? 'yes' : 'no',
                     ]
                 );
@@ -81,7 +82,7 @@ class OAuth2
                     'SSO {provider}: Set supporter state for angeltype {angeltype}',
                     [
                         'provider'  => $provider,
-                        'angeltype' => AngelType($userAngeltype->angeltype_id)['name'],
+                        'angeltype' => AngelType::find($userAngeltype->angeltype_id)->name,
                     ]
                 );
             }
@@ -95,7 +96,7 @@ class OAuth2
                     'SSO {provider}: Set confirmed state for angeltype {angeltype}',
                     [
                         'provider'  => $provider,
-                        'angeltype' => AngelType($userAngeltype->angeltype_id)['name'],
+                        'angeltype' => AngelType::find($userAngeltype->angeltype_id)->name,
                     ]
                 );
             }

@@ -300,13 +300,13 @@ class ImportSchedule extends BaseController
         $shiftEntries = $this->db
             ->table('ShiftEntry')
             ->select([
-                'shift_types.name', 'Shifts.title', 'AngelTypes.name AS type', 'rooms.id AS room_id',
+                'shift_types.name', 'Shifts.title', 'angel_types.name AS type', 'rooms.id AS room_id',
                 'Shifts.start', 'Shifts.end', 'ShiftEntry.UID as user_id', 'ShiftEntry.freeloaded'
             ])
             ->join('Shifts', 'Shifts.SID', 'ShiftEntry.SID')
             ->join('schedule_shift', 'Shifts.SID', 'schedule_shift.shift_id')
             ->join('rooms', 'rooms.id', 'Shifts.RID')
-            ->join('AngelTypes', 'AngelTypes.id', 'ShiftEntry.TID')
+            ->join('angel_types', 'angel_types.id', 'ShiftEntry.TID')
             ->join('shift_types', 'shift_types.id', 'Shifts.shifttype_id')
             ->where('schedule_shift.guid', $event->getGuid())
             ->get();

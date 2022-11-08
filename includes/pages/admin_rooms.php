@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
@@ -50,12 +51,12 @@ function admin_rooms()
         $dect = null;
         $room_id = 0;
 
-        $angeltypes_source = AngelTypes();
+        $angeltypes_source = AngelType::all();
         $angeltypes = [];
         $angeltypes_count = [];
         foreach ($angeltypes_source as $angeltype) {
-            $angeltypes[$angeltype['id']] = $angeltype['name'];
-            $angeltypes_count[$angeltype['id']] = 0;
+            $angeltypes[$angeltype->id] = $angeltype->name;
+            $angeltypes_count[$angeltype->id] = 0;
         }
 
         if (test_request_int('id')) {
@@ -132,11 +133,11 @@ function admin_rooms()
                     NeededAngelTypes_delete_by_room($room_id);
                     $needed_angeltype_info = [];
                     foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
-                        $angeltype = AngelType($angeltype_id);
+                        $angeltype = AngelType::find($angeltype_id);
                         if (!empty($angeltype)) {
                             NeededAngelType_add(null, $angeltype_id, $room_id, $angeltype_count);
                             if ($angeltype_count > 0) {
-                                $needed_angeltype_info[] = $angeltype['name'] . ': ' . $angeltype_count;
+                                $needed_angeltype_info[] = $angeltype->name . ': ' . $angeltype_count;
                             }
                         }
                     }
@@ -150,9 +151,9 @@ function admin_rooms()
                 }
             }
             $angeltypes_count_form = [];
-            foreach ($angeltypes as $angeltype_id => $angeltype) {
+            foreach ($angeltypes as $angeltype_id => $angeltypeName) {
                 $angeltypes_count_form[] = div('col-lg-4 col-md-6 col-xs-6', [
-                    form_spinner('angeltype_count_' . $angeltype_id, $angeltype, $angeltypes_count[$angeltype_id])
+                    form_spinner('angeltype_count_' . $angeltype_id, $angeltypeName, $angeltypes_count[$angeltype_id])
                 ]);
             }
 
@@ -190,14 +191,14 @@ function admin_rooms()
                 foreach ($shifts as $shift) {
                     $shift = Shift($shift['SID']);
                     foreach ($shift['ShiftEntry'] as $entry) {
-                        $type = AngelType($entry['TID']);
+                        $type = AngelType::find($entry['TID']);
                         event('shift.entry.deleting', [
                             'user'       => User::find($entry['user_id']),
                             'start'      => Carbon::createFromTimestamp($shift['start']),
                             'end'        => Carbon::createFromTimestamp($shift['end']),
                             'name'       => $shift['name'],
                             'title'      => $shift['title'],
-                            'type'       => $type['name'],
+                            'type'       => $type->name,
                             'room'       => $room,
                             'freeloaded' => (bool)$entry['freeloaded'],
                         ]);

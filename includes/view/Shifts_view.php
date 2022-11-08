@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
@@ -72,31 +73,31 @@ function Shift_editor_info_render($shift)
 }
 
 /**
- * @param array $shift
- * @param array $angeltype
- * @param array $user_angeltype
+ * @param array     $shift
+ * @param AngelType $angeltype
+ * @param array     $user_angeltype
  * @return string
  */
-function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
+function Shift_signup_button_render($shift, AngelType $angeltype, $user_angeltype = null)
 {
     if (empty($user_angeltype)) {
         $user_angeltype = UserAngelType_by_User_and_AngelType(auth()->user()->id, $angeltype);
     }
 
     if (
-        isset($angeltype['shift_signup_state'])
+        isset($angeltype->shift_signup_state)
         && (
-            $angeltype['shift_signup_state']->isSignupAllowed()
+            $angeltype->shift_signup_state->isSignupAllowed()
             || User_is_AngelType_supporter(auth()->user(), $angeltype)
         )
     ) {
         return button(shift_entry_create_link($shift, $angeltype), __('Sign up'));
     } elseif (empty($user_angeltype)) {
         return button(
-            page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
+            page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
             sprintf(
                 __('Become %s'),
-                $angeltype['name']
+                $angeltype->name
             )
         );
     }
@@ -104,11 +105,11 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
 }
 
 /**
- * @param array            $shift
- * @param ShiftType        $shifttype
- * @param Room             $room
- * @param array[]          $angeltypes_source
- * @param ShiftSignupState $shift_signup_state
+ * @param array                  $shift
+ * @param ShiftType              $shifttype
+ * @param Room                   $room
+ * @param AngelType[]|Collection $angeltypes_source
+ * @param ShiftSignupState       $shift_signup_state
  * @return string
  */
 function Shift_view($shift, ShiftType $shifttype, Room $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
@@ -122,7 +123,7 @@ function Shift_view($shift, ShiftType $shifttype, Room $room, $angeltypes_source
 
     $angeltypes = [];
     foreach ($angeltypes_source as $angeltype) {
-        $angeltypes[$angeltype['id']] = $angeltype;
+        $angeltypes[$angeltype->id] = $angeltype;
     }
 
     $needed_angels = '';
@@ -198,10 +199,10 @@ function Shift_view($shift, ShiftType $shifttype, Room $room, $angeltypes_source
 }
 
 /**
- * @param array   $needed_angeltype
- * @param array   $angeltypes
- * @param array[] $shift
- * @param bool    $user_shift_admin
+ * @param array                  $needed_angeltype
+ * @param AngelType[]|Collection $angeltypes
+ * @param array[]                $shift
+ * @param bool                   $user_shift_admin
  * @return string
  */
 function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin)
@@ -269,7 +270,7 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
                 'btn-sm'
             );
         }
-        $angeltype = AngelType($shift_entry['TID']);
+        $angeltype = AngelType::find($shift_entry['TID']);
         $disabled = Shift_signout_allowed($shift, $angeltype, $shift_entry['UID']) ? '' : ' btn-disabled';
         $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-sm' . $disabled);
         $entry .= '</div>';
@@ -291,6 +292,7 @@ function shift_length($shift)
         2,
         '0',
         STR_PAD_LEFT
-    ) . 'h';
+    );
+    $length .= 'h';
     return $length;
 }

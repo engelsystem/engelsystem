@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
@@ -51,7 +52,7 @@ function shift_entry_create_controller(): array
         throw_redirect(user_link($user->id));
     }
 
-    $angeltype = AngelType($request->input('angeltype_id'));
+    $angeltype = AngelType::find($request->input('angeltype_id'));
 
     if (auth()->can('user_shifts_admin')) {
         return shift_entry_create_controller_admin($shift, $angeltype);
@@ -72,11 +73,11 @@ function shift_entry_create_controller(): array
  * Sign up for a shift.
  * Case: Admin
  *
- * @param array $shift
- * @param array $angeltype
+ * @param array          $shift
+ * @param AngelType|null $angeltype
  * @return array
  */
-function shift_entry_create_controller_admin($shift, $angeltype): array
+function shift_entry_create_controller_admin($shift, ?AngelType $angeltype): array
 {
     $signup_user = auth()->user();
     $request = request();
@@ -88,9 +89,9 @@ function shift_entry_create_controller_admin($shift, $angeltype): array
         throw_redirect(shift_link($shift));
     }
 
-    $angeltypes = AngelTypes();
+    $angeltypes = AngelType::all();
     if ($request->hasPostData('angeltype_id')) {
-        $angeltype = AngelType($request->postData('angeltype_id'));
+        $angeltype = AngelType::find($request->postData('angeltype_id'));
     }
     if (empty($angeltype)) {
         if (count($angeltypes) == 0) {
@@ -102,7 +103,7 @@ function shift_entry_create_controller_admin($shift, $angeltype): array
     if ($request->hasPostData('submit')) {
         ShiftEntry_create([
             'SID'              => $shift['SID'],
-            'TID'              => $angeltype['id'],
+            'TID'              => $angeltype->id,
             'UID'              => $signup_user->id,
             'Comment'          => '',
             'freeloaded'       => false,
@@ -120,11 +121,7 @@ function shift_entry_create_controller_admin($shift, $angeltype): array
         $users_select[$user->id] = $user->name;
     }
 
-    $angeltypes_select = [];
-    foreach ($angeltypes as $a) {
-        $angeltypes_select[$a['id']] = $a['name'];
-    }
-
+    $angeltypes_select = $angeltypes->pluck('name', 'id')->toArray();
     $room = Room::find($shift['RID']);
     return [
         ShiftEntry_create_title(),
@@ -136,11 +133,11 @@ function shift_entry_create_controller_admin($shift, $angeltype): array
  * Sign up for a shift.
  * Case: Supporter
  *
- * @param array $shift
- * @param array $angeltype
+ * @param array     $shift
+ * @param AngelType $angeltype
  * @return array
  */
-function shift_entry_create_controller_supporter($shift, $angeltype): array
+function shift_entry_create_controller_supporter($shift, AngelType $angeltype): array
 {
     $request = request();
     $signup_user = auth()->user();
@@ -156,7 +153,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype): array
     if ($request->hasPostData('submit')) {
         ShiftEntry_create([
             'SID'              => $shift['SID'],
-            'TID'              => $angeltype['id'],
+            'TID'              => $angeltype->id,
             'UID'              => $signup_user->id,
             'Comment'          => '',
             'freeloaded'       => false,
@@ -209,16 +206,16 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
  * Case: User
  *
  * @param array $shift
- * @param array $angeltype
+ * @param AngelType $angeltype
  * @return array
  */
-function shift_entry_create_controller_user($shift, $angeltype): array
+function shift_entry_create_controller_user($shift, AngelType $angeltype): array
 {
     $request = request();
 
     $signup_user = auth()->user();
-    $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
-    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
+    $needed_angeltype = (new AngelType())->forceFill(NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype));
+    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype->id);
     $shift_signup_state = Shift_signup_allowed(
         $signup_user,
         $shift,
@@ -238,14 +235,14 @@ function shift_entry_create_controller_user($shift, $angeltype): array
         $comment = strip_request_item_nl('comment');
         ShiftEntry_create([
             'SID'              => $shift['SID'],
-            'TID'              => $angeltype['id'],
+            'TID'              => $angeltype->id,
             'UID'              => $signup_user->id,
             'Comment'          => $comment,
             'freeloaded'       => false,
             'freeload_comment' => ''
         ]);
 
-        if ($angeltype['restricted'] == false && !UserAngelType_exists($signup_user->id, $angeltype)) {
+        if (!$angeltype->restricted && !UserAngelType_exists($signup_user->id, $angeltype)) {
             UserAngelType_create($signup_user->id, $angeltype);
         }
 
@@ -264,16 +261,16 @@ function shift_entry_create_controller_user($shift, $angeltype): array
  * Link to create a shift entry.
  *
  * @param array $shift
- * @param array $angeltype
+ * @param AngelType $angeltype
  * @param array $params
  * @return string URL
  */
-function shift_entry_create_link($shift, $angeltype, $params = [])
+function shift_entry_create_link($shift, AngelType $angeltype, $params = [])
 {
     $params = array_merge([
         'action'       => 'create',
         'shift_id'     => $shift['SID'],
-        'angeltype_id' => $angeltype['id']
+        'angeltype_id' => $angeltype->id
     ], $params);
     return page_link_to('shift_entries', $params);
 }
@@ -327,7 +324,7 @@ function shift_entry_delete_controller()
     $shiftEntry = shift_entry_load();
 
     $shift = Shift($shiftEntry['SID']);
-    $angeltype = AngelType($shiftEntry['TID']);
+    $angeltype = AngelType::find($shiftEntry['TID']);
     $signout_user = User::find($shiftEntry['UID']);
     if (!Shift_signout_allowed($shift, $angeltype, $signout_user->id)) {
         error(__(

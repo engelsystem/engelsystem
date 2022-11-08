@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\ShiftsFilter;
@@ -109,11 +110,11 @@ function public_dashboard_needed_angels($needed_angels, ShiftsFilter $filter = n
     foreach ($needed_angels as $needed_angel) {
         $need = $needed_angel['count'] - $needed_angel['taken'];
         if ($need > 0 && (!$filter || in_array($needed_angel['TID'], $filter->getTypes()))) {
-            $angeltype = AngelType($needed_angel['TID']);
-            if ($angeltype['show_on_dashboard']) {
+            $angeltype = AngelType::find($needed_angel['TID']);
+            if ($angeltype->show_on_dashboard) {
                 $result[] = [
                     'need'           => $need,
-                    'angeltype_name' => $angeltype['name']
+                    'angeltype_name' => $angeltype->name
                 ];
             }
         }

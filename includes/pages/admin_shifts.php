@@ -3,6 +3,7 @@
 use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
@@ -46,10 +47,10 @@ function admin_shifts()
     }
 
     // Engeltypen laden
-    $types = Db::select('SELECT * FROM `AngelTypes` ORDER BY `name`');
+    $types = AngelType::all();
     $needed_angel_types = [];
     foreach ($types as $type) {
-        $needed_angel_types[$type['id']] = 0;
+        $needed_angel_types[$type->id] = 0;
     }
 
     // Load shift types
@@ -152,11 +153,11 @@ function admin_shifts()
                 $angelmode = 'location';
             } elseif ($request->input('angelmode') == 'manually') {
                 foreach ($types as $type) {
-                    if (preg_match('/^\d+$/', trim($request->input('type_' . $type['id'], 0)))) {
-                        $needed_angel_types[$type['id']] = trim($request->input('type_' . $type['id'], 0));
+                    if (preg_match('/^\d+$/', trim($request->input('type_' . $type->id, 0)))) {
+                        $needed_angel_types[$type->id] = trim($request->input('type_' . $type->id, 0));
                     } else {
                         $valid = false;
-                        error(sprintf(__('Please check the needed angels for team %s.'), $type['name']));
+                        error(sprintf(__('Please check the needed angels for team %s.'), $type->name));
                     }
                 }
 
@@ -318,9 +319,9 @@ function admin_shifts()
                     'needed_angels' => ''
                 ];
                 foreach ($types as $type) {
-                    if (isset($needed_angel_types[$type['id']]) && $needed_angel_types[$type['id']] > 0) {
+                    if (isset($needed_angel_types[$type->id]) && $needed_angel_types[$type->id] > 0) {
                         $shifts_table_entry['needed_angels'] .= '<b>' . AngelType_name_render($type) . ':</b> '
-                            . $needed_angel_types[$type['id']] . '<br />';
+                            . $needed_angel_types[$type->id] . '<br />';
                     }
                 }
                 $shifts_table[] = $shifts_table_entry;
@@ -382,12 +383,7 @@ function admin_shifts()
 
             $needed_angel_types_info = [];
             foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
-                $angel_type_source = Db::selectOne('
-                    SELECT *
-                    FROM `AngelTypes`
-                    WHERE `id` = ?
-                    LIMIT 1', [$type_id]);
-
+                $angel_type_source = AngelType::find($type_id);
                 if (!empty($angel_type_source)) {
                     Db::insert(
                         '
@@ -402,7 +398,7 @@ function admin_shifts()
                     );
 
                     if ($count > 0) {
-                        $needed_angel_types_info[] = $angel_type_source['name'] . ': ' . $count;
+                        $needed_angel_types_info[] = $angel_type_source->name . ': ' . $count;
                     }
                 }
             }
@@ -424,9 +420,9 @@ function admin_shifts()
     foreach ($types as $type) {
         $angel_types .= '<div class="col-sm-6 col-md-8 col-lg-6 col-xl-4 col-xxl-3">'
             . form_spinner(
-                'type_' . $type['id'],
-                $type['name'],
-                $needed_angel_types[$type['id']]
+                'type_' . $type->id,
+                $type->name,
+                $needed_angel_types[$type->id]
             )
             . '</div>';
     }
@@ -549,14 +545,14 @@ function admin_shifts_history(): string
             $shift = Shift($shift['SID']);
             $room = Room::find($shift['RID']);
             foreach ($shift['ShiftEntry'] as $entry) {
-                $type = AngelType($entry['TID']);
+                $type = AngelType::find($entry['TID']);
                 event('shift.entry.deleting', [
                     'user'       => User::find($entry['user_id']),
                     'start'      => Carbon::createFromTimestamp($shift['start']),
                     'end'        => Carbon::createFromTimestamp($shift['end']),
                     'name'       => $shift['name'],
                     'title'      => $shift['title'],
-                    'type'       => $type['name'],
+                    'type'       => $type->name,
                     'room'       => $room,
                     'freeloaded' => (bool)$entry['freeloaded'],
                 ]);

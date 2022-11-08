@@ -2,6 +2,7 @@
 
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -70,14 +71,10 @@ function shift_edit_controller()
     foreach (Rooms() as $room) {
         $rooms[$room->id] = $room->name;
     }
-    $angeltypes = select_array(AngelTypes(), 'id', 'name');
-    $shifttypes = select_array(ShiftType::all(), 'id', 'name');
+    $angeltypes = AngelType::all()->pluck('name', 'id')->toArray();
+    $shifttypes = ShiftType::all()->pluck('name', 'id')->toArray();
 
-    $needed_angel_types = select_array(
-        NeededAngelTypes_by_shift($shift_id),
-        'angel_type_id',
-        'count'
-    );
+    $needed_angel_types = collect(NeededAngelTypes_by_shift($shift_id))->pluck('count', 'angel_type_id')->toArray();
     foreach (array_keys($angeltypes) as $angeltype_id) {
         if (!isset($needed_angel_types[$angeltype_id])) {
             $needed_angel_types[$angeltype_id] = 0;
@@ -242,14 +239,14 @@ function shift_delete_controller()
     if ($request->hasPostData('delete')) {
         $room = Room::find($shift['RID']);
         foreach ($shift['ShiftEntry'] as $entry) {
-            $type = AngelType($entry['TID']);
+            $type = AngelType::find($entry['TID']);
             event('shift.entry.deleting', [
                 'user'       => User::find($entry['user_id']),
                 'start'      => Carbon::createFromTimestamp($shift['start']),
                 'end'        => Carbon::createFromTimestamp($shift['end']),
                 'name'       => $shift['name'],
                 'title'      => $shift['title'],
-                'type'       => $type['name'],
+                'type'       => $type->name,
                 'room'       => $room,
                 'freeloaded' => (bool)$entry['freeloaded'],
             ]);
@@ -304,17 +301,18 @@ function shift_controller()
 
     $shifttype = ShiftType::find($shift['shifttype_id']);
     $room = Room::find($shift['RID']);
-    $angeltypes = AngelTypes();
+    $angeltypes = AngelType::all();
     $user_shifts = Shifts_by_user($user->id);
 
     $shift_signup_state = new ShiftSignupState(ShiftSignupState::OCCUPIED, 0);
-    foreach ($angeltypes as &$angeltype) {
+    foreach ($angeltypes as $angeltype) {
         $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
         if (empty($needed_angeltype)) {
             continue;
         }
 
-        $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
+        $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype->id);
+        $needed_angeltype = (new AngelType())->forceFill($needed_angeltype);
 
         $angeltype_signup_state = Shift_signup_allowed(
             $user,
@@ -326,7 +324,7 @@ function shift_controller()
             $shift_entries
         );
         $shift_signup_state->combineWith($angeltype_signup_state);
-        $angeltype['shift_signup_state'] = $angeltype_signup_state;
+        $angeltype->shift_signup_state = $angeltype_signup_state;
     }
 
     return [
