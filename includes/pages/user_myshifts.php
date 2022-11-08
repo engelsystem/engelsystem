@@ -58,9 +58,9 @@ function user_myshifts()
                     `shift_types`.`name`,
                     `Shifts`.*,
                     `rooms`.`name` as room_name,
-                    `AngelTypes`.`name` AS `angel_type`
+                    `angel_types`.`name` AS `angel_type`
                 FROM `ShiftEntry`
-                JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`)
+                JOIN `angel_types` ON (`ShiftEntry`.`TID` = `angel_types`.`id`)
                 JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
                 JOIN `shift_types` ON (`shift_types`.`id` = `Shifts`.`shifttype_id`)
                 JOIN `rooms` ON (`Shifts`.`RID` = `rooms`.`id`)

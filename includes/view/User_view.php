@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
@@ -308,7 +309,7 @@ function User_view_myshift($shift, $user_source, $its_me)
             'btn-sm'
         );
     }
-    if (Shift_signout_allowed($shift, ['id' => $shift['TID']], $user_source->id)) {
+    if (Shift_signout_allowed($shift, (new AngelType())->forceFill(['id' => $shift['TID']]), $user_source->id)) {
         $myshift['actions'][] = button(
             shift_entry_delete_link($shift),
             icon('trash') . __('sign off'),

@@ -212,11 +212,11 @@ function user_controller()
         // TODO: Move queries to model
         $shift['needed_angeltypes'] = Db::select(
             '
-            SELECT DISTINCT `AngelTypes`.*
+            SELECT DISTINCT `angel_types`.*
             FROM `ShiftEntry`
-            JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
+            JOIN `angel_types` ON `ShiftEntry`.`TID`=`angel_types`.`id`
             WHERE `ShiftEntry`.`SID` = ?
-            ORDER BY `AngelTypes`.`name`
+            ORDER BY `angel_types`.`name`
             ',
             [$shift['SID']]
         );

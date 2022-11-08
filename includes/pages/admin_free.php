@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\Db;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\JoinClause;
 
@@ -24,12 +24,12 @@ function admin_free()
         $search = strip_request_item('search');
     }
 
-    $angel_types_source = Db::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
+    $angel_types_source = AngelType::all(['id', 'name']);
     $angel_types = [
         '' => __('All')
     ];
     foreach ($angel_types_source as $angel_type) {
-        $angel_types[$angel_type['id']] = $angel_type['name'];
+        $angel_types[$angel_type->id] = $angel_type->name;
     }
 
     $angelType = $request->input('angeltype', '');
@@ -58,11 +58,11 @@ function admin_free()
                     ->where('UserAngelTypes.angeltype_id', '=', $angelType);
             });
 
-            $query->join('AngelTypes', function ($join) {
+            $query->join('angel_types', function ($join) {
                 /** @var JoinClause $join */
-                $join->on('UserAngelTypes.angeltype_id', '=', 'AngelTypes.id')
+                $join->on('UserAngelTypes.angeltype_id', '=', 'angel_types.id')
                     ->whereNotNull('UserAngelTypes.confirm_user_id')
-                    ->orWhere('AngelTypes.restricted', '=', '0');
+                    ->orWhere('angel_types.restricted', '=', '0');
             });
         }
 

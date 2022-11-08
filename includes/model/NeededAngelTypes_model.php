@@ -9,7 +9,7 @@ use Engelsystem\Database\Db;
 /**
  * Insert a new needed angel type.
  *
- * @param int      $shift_id     The shift. Can be null, but then a room_id must be given.
+ * @param int|null $shift_id     The shift. Can be null, but then a room_id must be given.
  * @param int      $angeltype_id The angeltype
  * @param int|null $room_id      The room. Can be null, but then a shift_id must be given.
  * @param int      $count        How many angels are needed?
@@ -83,12 +83,12 @@ function NeededAngelTypes_by_shift($shiftId)
         '
         SELECT
             `NeededAngelTypes`.*,
-            `AngelTypes`.`id`,
-            `AngelTypes`.`name`,
-            `AngelTypes`.`restricted`,
-            `AngelTypes`.`no_self_signup`
+            `angel_types`.`id`,
+            `angel_types`.`name`,
+            `angel_types`.`restricted`,
+            `angel_types`.`no_self_signup`
         FROM `NeededAngelTypes`
-        JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
+        JOIN `angel_types` ON `angel_types`.`id` = `NeededAngelTypes`.`angel_type_id`
         WHERE `shift_id` = ?
         AND `count` > 0
         ORDER BY `room_id` DESC',
@@ -98,9 +98,9 @@ function NeededAngelTypes_by_shift($shiftId)
     // Use settings from room
     if (count($needed_angeltypes_source) == 0) {
         $needed_angeltypes_source = Db::select('
-        SELECT `NeededAngelTypes`.*, `AngelTypes`.`name`, `AngelTypes`.`restricted`
+        SELECT `NeededAngelTypes`.*, `angel_types`.`name`, `angel_types`.`restricted`
         FROM `NeededAngelTypes`
-        JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
+        JOIN `angel_types` ON `angel_types`.`id` = `NeededAngelTypes`.`angel_type_id`
         JOIN `Shifts` ON `Shifts`.`RID` = `NeededAngelTypes`.`room_id`
         WHERE `Shifts`.`SID` = ?
         AND `count` > 0

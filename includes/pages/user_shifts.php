@@ -2,6 +2,7 @@
 
 use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Support\Collection;
@@ -152,29 +153,29 @@ function load_types()
 {
     $user = auth()->user();
 
-    if (!count(Db::select('SELECT `id`, `name` FROM `AngelTypes`'))) {
+    if (!AngelType::count()) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
         throw_redirect(page_link_to('/'));
     }
     $types = Db::select(
         '
             SELECT
-                `AngelTypes`.`id`,
-                `AngelTypes`.`name`,
+                `angel_types`.`id`,
+                `angel_types`.`name`,
                 (
-                    `AngelTypes`.`restricted`=0
+                    `angel_types`.`restricted`=0
                     OR (
                         NOT `UserAngelTypes`.`confirm_user_id` IS NULL
                         OR `UserAngelTypes`.`id` IS NULL
                     )
                 ) AS `enabled`
-            FROM `AngelTypes`
+            FROM `angel_types`
             LEFT JOIN `UserAngelTypes`
                 ON (
-                    `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
+                    `UserAngelTypes`.`angeltype_id`=`angel_types`.`id`
                     AND `UserAngelTypes`.`user_id`=?
                 )
-            ORDER BY `AngelTypes`.`name`
+            ORDER BY `angel_types`.`name`
         ',
         [
             $user->id,
@@ -191,7 +192,7 @@ function load_types()
  */
 function unrestricted_angeltypes()
 {
-    return Db::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0');
+    return AngelType::whereRestricted(0)->get(['id', 'name'])->toArray();
 }
 
 /**

@@ -46,12 +46,12 @@ class ShiftsFilter
      *
      * @param bool  $user_shifts_admin
      * @param int[] $rooms
-     * @param int[] $types
+     * @param int[] $angelTypes
      */
-    public function __construct($user_shifts_admin = false, $rooms = [], $types = [])
+    public function __construct($user_shifts_admin = false, $rooms = [], $angelTypes = [])
     {
         $this->rooms = $rooms;
-        $this->types = $types;
+        $this->types = $angelTypes;
 
         $this->filled = [
             ShiftsFilter::FILLED_FREE

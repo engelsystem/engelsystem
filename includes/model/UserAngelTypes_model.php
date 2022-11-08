@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 
 /**
@@ -10,18 +11,18 @@ use Engelsystem\Models\User\User;
 /**
  * Checks if a user joined an angeltype.
  *
- * @param int   $userId    The user to be checked
- * @param array $angeltype The angeltype to be checked
+ * @param int       $userId The user to be checked
+ * @param AngelType $angeltype The angeltype to be checked
  * @return boolean
  */
-function UserAngelType_exists($userId, $angeltype)
+function UserAngelType_exists($userId, AngelType $angeltype)
 {
     return count(Db::select('
         SELECT `id`
         FROM `UserAngelTypes`
         WHERE `UserAngelTypes`.`user_id`=?
         AND `angeltype_id`=?
-        ', [$userId, $angeltype['id']])) > 0;
+        ', [$userId, $angeltype->id])) > 0;
 }
 
 /**
@@ -33,9 +34,9 @@ function UserAngelType_exists($userId, $angeltype)
 function User_angeltypes($userId)
 {
     return Db::select('
-        SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`supporter`
+        SELECT `angel_types`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`supporter`
         FROM `UserAngelTypes`
-        JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
+        JOIN `angel_types` ON `UserAngelTypes`.`angeltype_id` = `angel_types`.`id`
         WHERE `UserAngelTypes`.`user_id`=?
         ', [$userId]);
 }
@@ -51,28 +52,28 @@ function User_unconfirmed_AngelTypes($userId)
     return Db::select('
         SELECT
             `UserAngelTypes`.*,
-            `AngelTypes`.`name`,
+            `angel_types`.`name`,
             count(`UnconfirmedMembers`.`user_id`) AS `count`
         FROM `UserAngelTypes`
-        JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
+        JOIN `angel_types` ON `UserAngelTypes`.`angeltype_id`=`angel_types`.`id`
         JOIN `UserAngelTypes` AS `UnconfirmedMembers` ON `UserAngelTypes`.`angeltype_id`=`UnconfirmedMembers`.`angeltype_id`
         WHERE `UserAngelTypes`.`user_id`=?
             AND `UserAngelTypes`.`supporter`=TRUE
-            AND `AngelTypes`.`restricted`=TRUE
+            AND `angel_types`.`restricted`=TRUE
             AND `UnconfirmedMembers`.`confirm_user_id` IS NULL
-        GROUP BY `UserAngelTypes`.`angeltype_id`, `UserAngelTypes`.`id`, AngelTypes.name, UserAngelTypes.user_id, UserAngelTypes.confirm_user_id, UserAngelTypes.supporter
-        ORDER BY `AngelTypes`.`name`
+        GROUP BY `UserAngelTypes`.`angeltype_id`, `UserAngelTypes`.`id`, angel_types.name, UserAngelTypes.user_id, UserAngelTypes.confirm_user_id, UserAngelTypes.supporter
+        ORDER BY `angel_types`.`name`
     ', [$userId]);
 }
 
 /**
  * Returns true if user is angeltype supporter or has privilege admin_user_angeltypes.
  *
- * @param User  $user
- * @param array $angeltype
+ * @param User      $user
+ * @param AngelType $angeltype
  * @return bool
  */
-function User_is_AngelType_supporter($user, $angeltype)
+function User_is_AngelType_supporter($user, AngelType $angeltype)
 {
     if (!$user) {
         return false;
@@ -80,8 +81,10 @@ function User_is_AngelType_supporter($user, $angeltype)
 
     $privileges = $user->privileges->pluck('name')->toArray();
 
-    return (count(Db::select(
-        '
+    return
+        count(
+            Db::select(
+                '
                     SELECT `id`
                     FROM `UserAngelTypes`
                     WHERE `user_id`=?
@@ -89,11 +92,12 @@ function User_is_AngelType_supporter($user, $angeltype)
                     AND `supporter`=TRUE
                     LIMIT 1
                 ',
-        [
+                [
                     $user->id,
-                    $angeltype['id']
+                    $angeltype->id
                 ]
-    )) > 0)
+            )
+        ) > 0
         || in_array('admin_user_angeltypes', $privileges);
 }
 
@@ -118,7 +122,7 @@ function UserAngelType_update($user_angeltype_id, $supporter)
  *
  * @param int $angeltype_id
  */
-function UserAngelTypes_delete_all($angeltype_id)
+function UserAngelTypes_delete_all_unconfirmed(int $angeltype_id)
 {
     Db::delete('
         DELETE FROM `UserAngelTypes`
@@ -189,11 +193,11 @@ function UserAngelType_delete($user_angeltype)
 /**
  * Create an UserAngelType.
  *
- * @param int   $userId
- * @param array $angeltype
+ * @param int       $userId
+ * @param AngelType $angeltype
  * @return int
  */
-function UserAngelType_create($userId, $angeltype)
+function UserAngelType_create($userId, AngelType $angeltype)
 {
     Db::insert(
         '
@@ -202,7 +206,7 @@ function UserAngelType_create($userId, $angeltype)
         ',
         [
             $userId,
-            $angeltype['id']
+            $angeltype->id
         ]
     );
 
@@ -217,25 +221,25 @@ function UserAngelType_create($userId, $angeltype)
  */
 function UserAngelType($user_angeltype_id)
 {
-    $angelType = Db::selectOne('
+    $userAngelType = Db::selectOne('
         SELECT *
         FROM `UserAngelTypes`
         WHERE `id`=?
         LIMIT 1', [$user_angeltype_id]);
 
-    return empty($angelType) ? null : $angelType;
+    return empty($userAngelType) ? null : $userAngelType;
 }
 
 /**
  * Get an UserAngelType by user and angeltype.
  *
- * @param int   $userId
- * @param array $angeltype
+ * @param int       $userId
+ * @param AngelType $angeltype
  * @return array|null
  */
-function UserAngelType_by_User_and_AngelType($userId, $angeltype)
+function UserAngelType_by_User_and_AngelType($userId, AngelType $angeltype)
 {
-    $angelType = Db::selectOne(
+    return Db::selectOne(
         '
             SELECT *
             FROM `UserAngelTypes`
@@ -245,17 +249,15 @@ function UserAngelType_by_User_and_AngelType($userId, $angeltype)
         ',
         [
             $userId,
-            $angeltype['id']
+            $angeltype->id
         ]
     );
-
-    return empty($angelType) ? null : $angelType;
 }
 
 /**
  * Get an UserAngelTypes by user
  *
- * @param int $userId
+ * @param int  $userId
  * @param bool $onlyConfirmed
  * @return array[]|null
  */
@@ -265,7 +267,7 @@ function UserAngelTypes_by_User($userId, $onlyConfirmed = false)
         '
             SELECT *
             FROM `UserAngelTypes`
-            ' . ($onlyConfirmed ? 'LEFT JOIN AngelTypes AS a ON a.id=UserAngelTypes.angeltype_id' : '') . '
+            ' . ($onlyConfirmed ? 'LEFT JOIN angel_types AS a ON a.id=UserAngelTypes.angeltype_id' : '') . '
             WHERE `user_id`=?
         '
         . (

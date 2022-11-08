@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Database\Db;
 use Engelsystem\Events\Listener\OAuth2;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\Contact;
@@ -63,7 +64,7 @@ function guest_register()
     $selected_angel_types = [];
     $planned_arrival_date = null;
 
-    $angel_types_source = AngelTypes();
+    $angel_types_source = AngelType::all();
     $angel_types = [];
     if (!empty($session->get('oauth2_groups'))) {
         /** @var OAuth2 $oauth */
@@ -76,13 +77,13 @@ function guest_register()
         }
     }
     foreach ($angel_types_source as $angel_type) {
-        if ($angel_type['hide_register']) {
+        if ($angel_type->hide_register) {
             continue;
         }
-        $angel_types[$angel_type['id']] = $angel_type['name']
-        . ($angel_type['restricted'] ? ' (' . __('Requires introduction') . ')' : '');
-        if (!$angel_type['restricted']) {
-            $selected_angel_types[] = $angel_type['id'];
+        $angel_types[$angel_type->id] = $angel_type->name
+        . ($angel_type->restricted ? ' (' . __('Requires introduction') . ')' : '');
+        if (!$angel_type->restricted) {
+            $selected_angel_types[] = $angel_type->id;
         }
     }
 

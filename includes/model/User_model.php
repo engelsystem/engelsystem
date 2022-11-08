@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\Db;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Engelsystem\ValidationResult;
@@ -81,10 +82,10 @@ function Users_by_angeltype_inverted($angeltype)
 /**
  * Returns all members of given angeltype.
  *
- * @param array $angeltype
+ * @param AngelType $angeltype
  * @return User[]|Collection
  */
-function Users_by_angeltype($angeltype)
+function Users_by_angeltype(AngelType $angeltype)
 {
     return User::query()
         ->select(
@@ -96,7 +97,7 @@ function Users_by_angeltype($angeltype)
         )
         ->join('UserAngelTypes', 'users.id', '=', 'UserAngelTypes.user_id')
         ->leftJoin('users_licenses', 'users.id', '=', 'users_licenses.user_id')
-        ->where('UserAngelTypes.angeltype_id', '=', $angeltype['id'])
+        ->where('UserAngelTypes.angeltype_id', '=', $angeltype->id)
         ->orderBy('users.name')
         ->get();
 }
@@ -120,18 +121,6 @@ function User_validate_Nick($nick)
     }
 
     return new ValidationResult(true, $nick);
-}
-
-/**
- * Validate user email address.
- *
- * @param string $mail The email address to validate
- * @return ValidationResult
- */
-function User_validate_mail($mail)
-{
-    $mail = strip_item($mail);
-    return new ValidationResult(check_email($mail), $mail);
 }
 
 /**
@@ -169,7 +158,7 @@ function User_validate_planned_arrival_date($planned_arrival_date)
 /**
  * Validate the planned departure date
  *
- * @param int $planned_arrival_date   Unix timestamp
+ * @param int $planned_arrival_date Unix timestamp
  * @param int $planned_departure_date Unix timestamp
  * @return ValidationResult
  */
@@ -247,10 +236,10 @@ function User_get_eligable_voucher_count($user)
 
     $vouchers = $voucher_settings['initial_vouchers'];
     if ($voucher_settings['shifts_per_voucher']) {
-        $vouchers +=  $shifts_done / $voucher_settings['shifts_per_voucher'];
+        $vouchers += $shifts_done / $voucher_settings['shifts_per_voucher'];
     }
     if ($voucher_settings['hours_per_voucher']) {
-        $vouchers +=  $shiftsTime / $voucher_settings['hours_per_voucher'];
+        $vouchers += $shiftsTime / $voucher_settings['hours_per_voucher'];
     }
 
     $vouchers -= $user->state->got_voucher;

@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftsFilterRenderer;
@@ -34,7 +35,7 @@ function room_controller(): array
     $shiftsFilter = new ShiftsFilter(
         true,
         [$room->id],
-        AngelType_ids()
+        AngelType::query()->get('id')->pluck('id')->toArray()
     );
     $selected_day = date('Y-m-d');
     if (!empty($days) && !in_array($selected_day, $days)) {

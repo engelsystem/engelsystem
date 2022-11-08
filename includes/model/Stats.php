@@ -84,14 +84,14 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                     (
                     SELECT SUM(`count`)
                     FROM `NeededAngelTypes`
-                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id`
-                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE
+                    JOIN `angel_types` ON `angel_types`.`id`=`NeededAngelTypes`.`angel_type_id`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
                         ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
                     SELECT COUNT(*) FROM `ShiftEntry`
-                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID`
-                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE
+                    JOIN `angel_types` ON `angel_types`.`id`=`ShiftEntry`.`TID`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `ShiftEntry`.`SID`=`Shifts`.`SID`
                         AND `freeloaded`=0
                         ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
@@ -111,14 +111,14 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                     (
                     SELECT SUM(`count`)
                     FROM `NeededAngelTypes`
-                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id`
-                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE
+                    JOIN `angel_types` ON `angel_types`.`id`=`NeededAngelTypes`.`angel_type_id`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
                         ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
                     SELECT COUNT(*) FROM `ShiftEntry`
-                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID`
-                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE
+                    JOIN `angel_types` ON `angel_types`.`id`=`ShiftEntry`.`TID`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `ShiftEntry`.`SID`=`Shifts`.`SID`
                         AND `freeloaded`=0
                         ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
@@ -163,14 +163,14 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
                     (
                     SELECT SUM(`count`)
                     FROM `NeededAngelTypes`
-                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id`
-                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE
+                    JOIN `angel_types` ON `angel_types`.`id`=`NeededAngelTypes`.`angel_type_id`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
                         ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
                     SELECT COUNT(*) FROM `ShiftEntry`
-                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID`
-                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE
+                    JOIN `angel_types` ON `angel_types`.`id`=`ShiftEntry`.`TID`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `ShiftEntry`.`SID`=`Shifts`.`SID`
                         AND `freeloaded`=0
                         ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
@@ -190,14 +190,14 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
                     (
                     SELECT SUM(`count`)
                     FROM `NeededAngelTypes`
-                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id`
-                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE
+                    JOIN `angel_types` ON `angel_types`.`id`=`NeededAngelTypes`.`angel_type_id`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
-                        ' . ($filter ? 'AND AngelTypes.id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                        ' . ($filter ? 'AND angel_types.id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
                     SELECT COUNT(*) FROM `ShiftEntry`
-                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID`
-                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE
+                    JOIN `angel_types` ON `angel_types`.`id`=`ShiftEntry`.`TID`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `ShiftEntry`.`SID`=`Shifts`.`SID`
                         AND `freeloaded`=0
                         ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
