@@ -38,12 +38,12 @@ function form_spinner($name, $label, $value)
             </button>
         </div>
         <script type="text/javascript">
-            $(\'#spinner-' . $name . '-down\').click(function() {
-                let spinner = $(\'#spinner-' . $name . '\');
+            $(\'#spinner-' . $name . '-down\').click(function () {
+                const spinner = $(\'#spinner-' . $name . '\');
                 spinner.val(parseInt(spinner.val()) - 1);
             });
-            $(\'#spinner-' . $name . '-up\').click(function() {
-                let spinner = $(\'#spinner-' . $name . '\');
+            $(\'#spinner-' . $name . '-up\').click(function () {
+                const spinner = $(\'#spinner-' . $name . '\');
                 spinner.val(parseInt(spinner.val()) + 1);
             });
         </script>

@@ -1,11 +1,11 @@
 /**
  * Enables the fixed headers and time lane for the shift-calendar and datatables
  */
-$(document).ready(function () {
+$(function () {
     if ($('.shift-calendar').length) {
-        var timeLanes = $('.shift-calendar .time');
-        var headers = $('.shift-calendar .header');
-        var topReference = $('.container-fluid .row');
+        const timeLanes = $('.shift-calendar .time');
+        const headers = $('.shift-calendar .header');
+        const topReference = $('.container-fluid .row');
         timeLanes.css({
             'position': 'relative',
             'z-index': 999
@@ -16,8 +16,8 @@ $(document).ready(function () {
         });
         $(window).scroll(
             function () {
-                var top = headers.parent().offset().top;
-                var left = 15;
+                const top = headers.parent().offset().top;
+                const left = 15;
                 timeLanes.css({
                     'left': Math.max(0, $(window).scrollLeft() - left) + 'px'
                 });

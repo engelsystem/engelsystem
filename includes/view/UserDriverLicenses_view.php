@@ -53,15 +53,15 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
         ]),
         '
         <script type="text/javascript">
-            $(function() {
-                let checkbox = $(\'#wants_to_drive\');
-                if(checkbox.is(\':checked\'))
+            $(function () {
+                const checkbox = $(\'#wants_to_drive\');
+                if (checkbox.is(\':checked\'))
                     $(\'#driving_license\').show();
                 else
                     $(\'#driving_license\').hide();
 
-                checkbox.click(function() {
-                if($(\'#wants_to_drive\').is(\':checked\'))
+                checkbox.click(function () {
+                if ($(\'#wants_to_drive\').is(\':checked\'))
                     $(\'#driving_license\').show();
                 else
                     $(\'#driving_license\').hide();

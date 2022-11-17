@@ -1,35 +1,35 @@
 const lang = document.documentElement.getAttribute('lang');
 
 const templateFuture = 'in %value %unit';
-const templatePast = lang === "en"
+const templatePast = lang === 'en'
     ? '%value %unit ago'
     : 'vor %value %unit';
 
-const yearUnits = lang === "en"
-    ? ["year", "years"]
-    : ["Jahr", "Jahren"];
+const yearUnits = lang === 'en'
+    ? ['year', 'years']
+    : ['Jahr', 'Jahren'];
 
-const monthUnits = lang === "en"
-    ? ["month", "months"]
-    : ["Monat", "Monaten"];
+const monthUnits = lang === 'en'
+    ? ['month', 'months']
+    : ['Monat', 'Monaten'];
 
-const dayUnits = lang === "en"
-    ? ["day", "days"]
-    : ["Tag", "Tagen"];
+const dayUnits = lang === 'en'
+    ? ['day', 'days']
+    : ['Tag', 'Tagen'];
 
-const hourUnits = lang === "en"
-    ? ["hour", "hours"]
-    : ["Stunde", "Stunden"];
+const hourUnits = lang === 'en'
+    ? ['hour', 'hours']
+    : ['Stunde', 'Stunden'];
 
-const minuteUnits = lang === "en"
-    ? ["minute", "minutes"]
-    : ["Minute", "Minuten"];
+const minuteUnits = lang === 'en'
+    ? ['minute', 'minutes']
+    : ['Minute', 'Minuten'];
 
-const secondUnits = lang === "en"
-    ? ["second", "seconds"]
-    : ["Sekunde", "Sekunden"];
+const secondUnits = lang === 'en'
+    ? ['second', 'seconds']
+    : ['Sekunde', 'Sekunden'];
 
-const nowString = lang === "en" ? "now" : "jetzt";
+const nowString = lang === 'en' ? 'now' : 'jetzt';
 
 const secondsHour = 60 * 60;
 
@@ -56,8 +56,8 @@ function formatFromNow(timestamp) {
             const template = ago ? templatePast : templateFuture;
             const unit = value === 1 ? singular : plural;
             return template
-                .replace("%value", value)
-                .replace("%unit", unit);
+                .replace('%value', value)
+                .replace('%unit', unit);
         }
     }
 
@@ -67,11 +67,11 @@ function formatFromNow(timestamp) {
 /**
  * Initialises all countdown fields on the page.
  */
-$(document).ready(function () {
+$(function () {
     $.each($('[data-countdown-ts]'), function (i, e) {
-        var span = $(e);
-        const timestamp = span.data("countdown-ts");
-        var text = span.html();
+        const span = $(e);
+        const timestamp = span.data('countdown-ts');
+        const text = span.html();
         span.html(text.replace('%c', formatFromNow(timestamp)));
         setInterval(function () {
             span.html(text.replace('%c', formatFromNow(timestamp)));

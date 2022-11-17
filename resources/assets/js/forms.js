@@ -1,5 +1,5 @@
-require('select2')
-import { formatDay, formatTime } from "./date";
+require('select2');
+import { formatDay, formatTime } from './date';
 
 /**
  * Sets all checkboxes to the wanted state
@@ -42,7 +42,7 @@ global.setInput = (from, to) => {
     const toTime = $('#end_time');
 
     if (!fromDay || !fromTime || !toDay || !toTime) {
-        console.warn("cannot set input date because of missing field");
+        console.warn('cannot set input date because of missing field');
         return;
     }
 
@@ -56,13 +56,13 @@ global.setInput = (from, to) => {
 global.setDay = (days) => {
     days = days || 0;
 
-    var from = new Date();
+    const from = new Date();
     from.setHours(0, 0, 0, 0);
 
     // add days, Date handles the overflow
     from.setDate(from.getDate() + days);
 
-    var to = new Date(from);
+    const to = new Date(from);
     to.setHours(23, 59);
 
     setInput(from, to);
@@ -71,8 +71,8 @@ global.setDay = (days) => {
 global.setHours = (hours) => {
     hours = hours || 1;
 
-    var from = new Date();
-    var to = new Date(from);
+    const from = new Date();
+    const to = new Date(from);
 
     // convert hours to add to milliseconds (60 minutes * 60 seconds * 1000 for milliseconds)
     const msToAdd = hours * 60 * 60 * 1000;
@@ -101,13 +101,13 @@ $(function () {
  */
 $(function () {
     $('.input-group.time').each(function () {
-        var elem = $(this);
+        const elem = $(this);
         elem.find('button').on('click', function () {
             const now = new Date();
-            var input = elem.children('input').first();
+            const input = elem.children('input').first();
             input.val(formatTime(now));
-            var daySelector = $('#' + input.attr('id').replace('time', 'day'));
-            var days = daySelector.children('option');
+            const daySelector = $('#' + input.attr('id').replace('time', 'day'));
+            const days = daySelector.children('option');
             const yyyyMMDD = formatDay(now);
             days.each(function (i) {
                 if ($(days[i]).val() === yyyyMMDD) {
