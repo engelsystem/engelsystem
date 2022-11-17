@@ -278,7 +278,7 @@ function view_user_shifts()
                     __('Angeltypes') . '<sup>1</sup>',
                     [
                         button(
-                            'javascript: checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
+                            'javascript:checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
                             __('Own'),
                             'd-print-none'
                         ),
@@ -365,8 +365,8 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
     }
 
     $buttons = [];
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', __('All'), 'd-print-none');
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', __('None'), 'd-print-none');
+    $buttons[] = button('javascript:checkAll(\'selection_' . $name . '\', true)', __('All'), 'd-print-none');
+    $buttons[] = button('javascript:checkAll(\'selection_' . $name . '\', false)', __('None'), 'd-print-none');
     $buttons = array_merge($buttons, $additionalButtons);
 
     $html .= buttons($buttons);

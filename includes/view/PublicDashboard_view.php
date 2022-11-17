@@ -42,8 +42,8 @@ function public_dashboard_view($stats, $free_shifts)
                     stats(__('Angels currently working'), $stats['angels-working'], 'default'),
                     stats(__('Hours to be worked'), $stats['hours-to-work'], 'default'),
                     '<script>
-                    $(function() {
-                        setInterval(function() {
+                    $(function () {
+                        setInterval(function () {
                             $(\'#content .wrapper\').load(window.location.href + \' #public-dashboard\');
                         }, 60000);
                     })
