@@ -2,13 +2,13 @@
 <html lang="{{ session_get('locale')|split('_')[0]|escape('html_attr') }}">
 <head>
     {% block head %}
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}"/>
+
         <title>{% block title %}{{ title }}{% endblock %} - {{ config('app_name') }}</title>
 
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
-        <link rel="icon" href="{{ asset('assets/angel.svg') }}">
+        <link rel="icon" href="{{ asset('assets/angel.svg') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme' ~ themeId ~ '.css') }}"/>
         <script type="text/javascript" src="{{ asset('assets/vendor.js') }}"></script>
 
