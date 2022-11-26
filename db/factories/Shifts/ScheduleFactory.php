@@ -16,7 +16,7 @@ class ScheduleFactory extends Factory
     public function definition()
     {
         return [
-            'name'           => $this->faker->words(4, true),
+            'name'           => $this->faker->unique()->words(4, true),
             'url'            => $this->faker->parse('https://{{safeEmailDomain}}/{{slug}}.xml'),
             'shift_type'     => $this->faker->numberBetween(1, 5),
             'minutes_before' => 15,
