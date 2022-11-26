@@ -4,13 +4,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const nodeEnv = (process.env.NODE_ENV || 'development').trim();
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const fs = require('fs');
 
 // eslint-disable-next-line
 const __DEV__ = nodeEnv !== 'production';
 
-const devtool = __DEV__ ? 'source-map' : undefined
+const devtool = __DEV__ ? 'source-map' : undefined;
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -28,7 +28,7 @@ const plugins = [
 let themeFileNameRegex = /theme\d+/;
 
 if (process.env.THEMES) {
-    themeFileNameRegex = new RegExp(`theme(${process.env.THEMES.replace(/,/g, '|')})\\.`);
+  themeFileNameRegex = new RegExp(`theme(${process.env.THEMES.replace(/,/g, '|')})\\.`);
 }
 
 const themePath = path.resolve('resources/assets/themes');
@@ -77,7 +77,7 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [ [ 'autoprefixer', ], ],
+                plugins: [['autoprefixer']],
               },
             },
           },
@@ -89,12 +89,12 @@ module.exports = {
             options: {
               sourceMap: true,
               sassOptions: {
-                quietDeps: true
-              }
-            }
+                quietDeps: true,
+              },
+            },
           },
-        ]
-      }
+        ],
+      },
     ],
   },
   plugins,

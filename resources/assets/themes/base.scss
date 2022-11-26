@@ -5,8 +5,8 @@
 $link-decoration: none !default;
 $link-hover-decoration: underline !default;
 
-$nav-tabs-link-active-color:        #fff !default;
-$nav-tabs-link-active-bg:           $primary !default;
+$nav-tabs-link-active-color: #fff !default;
+$nav-tabs-link-active-bg: $primary !default;
 $nav-tabs-link-active-border-color: none !default;
 
 // Imports
@@ -16,7 +16,7 @@ $nav-tabs-link-active-border-color: none !default;
 @import "~bootstrap/scss/mixins";
 
 $custom-colors: (
-  black: #000
+  black: #000,
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
@@ -68,11 +68,11 @@ body {
 }
 
 .text-inherit {
-    color: inherit;
+  color: inherit;
 
-    &:hover {
-        color: inherit;
-    }
+  &:hover {
+    color: inherit;
+  }
 }
 
 .icon-icon_angel {
@@ -108,11 +108,11 @@ table a > .icon-icon_angel {
 }
 
 .nav-item--userhints {
-    margin: -$navbar-padding-y 0;
+  margin: -$navbar-padding-y 0;
 }
 
 .popover--userhints .alert:last-of-type {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .table .form-group {
@@ -129,7 +129,7 @@ table a > .icon-icon_angel {
     font-weight: 200;
   }
 
-  @media (max-width: map-get($grid-breakpoints, 'md')) {
+  @media (max-width: map-get($grid-breakpoints, "md")) {
     font-size: inherit;
     .number {
       font-size: 40px;
@@ -170,14 +170,14 @@ table a > .icon-icon_angel {
 
 // prevent dropdown-menu from overflowing the view
 .dropdown-menu {
-    max-height: calc(100vh - 300px); // 300px: menu offset
-    overflow: auto;
+  max-height: calc(100vh - 300px); // 300px: menu offset
+  overflow: auto;
 }
 
-@media (min-width: map-get($grid-breakpoints, 'lg')) {
-    .dropdown-menu {
-        max-height: calc(100vh - $navbar-height - 16px); // 16px extra padding
-    }
+@media (min-width: map-get($grid-breakpoints, "lg")) {
+  .dropdown-menu {
+    max-height: calc(100vh - $navbar-height - 16px); // 16px extra padding
+  }
 }
 
 .selection .checkbox {
@@ -251,7 +251,18 @@ table a > .icon-icon_angel {
   text-align: right;
 }
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   code {
     background-color: inherit;
   }
@@ -281,7 +292,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 // Reference links
-h1, h2, h3, h4, h5, h6, .card-header {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.card-header {
   a.ref-link {
     display: none;
   }
@@ -299,7 +316,7 @@ h1, h2, h3, h4, h5, h6, .card-header {
 
 // Cards
 .card-body > *:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .card-header {
@@ -329,7 +346,7 @@ code {
     transform: rotate(-5deg);
   }
   30% {
-    transform: rotate(5deg) translateY(-2px);;
+    transform: rotate(5deg) translateY(-2px);
   }
   40% {
     transform: rotate(-5deg);
@@ -365,7 +382,7 @@ code {
 .conversation {
   height: 55vh;
   overflow-x: hidden;
-  overflow-y: auto
+  overflow-y: auto;
 }
 
 .message {

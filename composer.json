@@ -60,7 +60,9 @@
         "psr-4": {
             "Engelsystem\\": "src/"
         },
-        "classmap": ["db/migrations"],
+        "classmap": [
+            "db/migrations"
+        ],
         "files": [
             "src/helpers.php"
         ]

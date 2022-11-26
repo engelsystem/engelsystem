@@ -4,7 +4,7 @@
   $card-border: $value;
   $card-color: $value;
 
-  @if (contrast-ratio($card-background, $card-color) < $min-contrast-ratio*.7) {
+  @if (contrast-ratio($card-background, $card-color) < $min-contrast-ratio * 0.7) {
     $card-color: mix($value, color-contrast($card-background), 40%);
   }
 
