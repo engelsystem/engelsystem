@@ -2,6 +2,7 @@
 ## Coding guide lines
 * Make sure your code follows the [PSR-12](https://www.php-fig.org/psr/psr-12/) code style and is [.editorconfig](.editorconfig) valid.
   You may use `composer run phpcs` and [Editorconfig-Checker](https://editorconfig-checker.github.io) to verify that.
+* You should use an [editorconfig plugin for your editor](https://editorconfig.org/#pre-installed) for automatic basic code formatting.
 * Use `use` statements wherever possible instead of writing the fully qualified name.
 * Order the composer/npm dependencies alphabetically.
 * Do not use code from the [includes](includes) directory anywhere else.
@@ -11,6 +12,8 @@
   This is done by PostCSS + Autoprefixer according to the [`.browserslistrc`](.browserslistrc).
 * Translations must be abbreviated, for example `form.save`.
   The `default.po` files contain translations that can be auto-detected using Poedit, `additional.po` contains generated messages like validations.
+* JavaScript code must pass the ESLint check `yarn lint`.
+  Auto-fixing is supported via `yarn lint:fix`.
 
 ## Pull requests
 * The PR should contain a short overview of the changes.

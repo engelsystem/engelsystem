@@ -24,7 +24,7 @@ stages:
 # Validation
 #
 
-check-style:
+check-php-style:
   image: composer:latest
   stage: validate
   before_script:
@@ -33,6 +33,14 @@ check-style:
     - export PATH=$PATH:$COMPOSER_HOME/vendor/bin
   script:
     - phpcs -p --no-colors --basepath="$PWD"
+
+check-frontend-style:
+  image: node:alpine
+  stage: validate
+  before_script:
+    - yarn
+  script:
+    - yarn lint
 
 check-editorconfig:
   image: mstruebing/editorconfig-checker
@@ -88,7 +96,8 @@ build-image:
   stage: build
   needs:
     - check-editorconfig
-    - check-style
+    - check-php-style
+    - check-frontend-style
     - generate-version
     - validate-composer
     - validate-yarn

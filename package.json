@@ -8,7 +8,9 @@
   "scripts": {
     "build": "NODE_ENV=production yarn build:webpack",
     "build:webpack": "webpack",
-    "build:watch": "webpack --watch"
+    "build:watch": "webpack --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
@@ -20,12 +22,15 @@
   },
   "devDependencies": {
     "@babel/core": "^7.11.5",
+    "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.11.5",
     "autoprefixer": "^10.2.5",
     "babel-loader": "^8.1.0",
     "bootstrap-icons": "^1.4.1",
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.0.0",
+    "eslint": "^8.28.0",
+    "eslint-plugin-editorconfig": "^4.0.2",
     "mini-css-extract-plugin": "^2.5.3",
     "postcss": "^8.3.0",
     "postcss-loader": "^6.2.1",

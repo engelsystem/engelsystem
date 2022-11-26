@@ -1,0 +1,15 @@
+{
+  "parser": "@babel/eslint-parser",
+  "extends": [ "plugin:editorconfig/all" ],
+  "plugins": [ "editorconfig" ],
+  "rules": {
+    "no-var": "error",
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ]
+  }
+}
