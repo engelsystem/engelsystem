@@ -1,0 +1,10 @@
+*.html
+*.md
+*.yml
+*.yaml
+
+composer.lock
+package-lock.json
+
+/public/assets
+/vendor

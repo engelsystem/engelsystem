@@ -11,6 +11,8 @@
   This is done by PostCSS + Autoprefixer according to the [`.browserslistrc`](.browserslistrc).
 * Translations must be abbreviated, for example `form.save`.
   The `default.po` files contain translations that can be auto-detected using Poedit, `additional.po` contains generated messages like validations.
+* Format JavaScript and Stylesheet files with prettier (`yarn lint:fix`).
+* You should use an [editorconfig plugin for your editor](https://editorconfig.org/#pre-installed) for automatic basic code formatting.
 
 ## Pull requests
 * The PR should contain a short overview of the changes.
