@@ -485,6 +485,11 @@ function User_view(
         }
     }
 
+    $needs_drivers_license = false;
+    foreach ($user_angeltypes as $angeltype) {
+        $needs_drivers_license = $needs_drivers_license || $angeltype['requires_driver_license'];
+    }
+
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
         . (
@@ -507,7 +512,7 @@ function User_view(
                             page_link_to('admin_user', ['id' => $user_source->id]),
                             icon('pencil-square') . __('edit')
                         ) : '',
-                        $admin_user_privilege ? button(
+                        $admin_user_privilege || ($its_me && $needs_drivers_license) ? button(
                             user_driver_license_edit_link($user_source),
                             icon('wallet2') . __('driving license')
                         ) : '',
