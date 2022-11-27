@@ -34,12 +34,16 @@ check-php-style:
   script:
     - phpcs -p --no-colors --basepath="$PWD"
 
-check-frontend-style:
+# does everything that depends on packages installed by yarn
+check-frontend:
   image: node:alpine
   stage: validate
+  needs:
+    - validate-yarn
   before_script:
-    - yarn
+    - yarn --frozen-lockfile
   script:
+    - yarn check
     - yarn lint
 
 check-editorconfig:
@@ -97,7 +101,7 @@ build-image:
   needs:
     - check-editorconfig
     - check-php-style
-    - check-frontend-style
+    - check-frontend
     - generate-version
     - validate-composer
     - validate-yarn
