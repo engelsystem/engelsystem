@@ -33,16 +33,16 @@ The Engelsystem may be installed manually or by using the provided [docker setup
  * Extract the files to your webroot and continue with the directions for configurations and setup.
 
 ### Configuration and Setup
- * The webserver must have write access to the ```storage``` directory and read access for all other directories
- * The webserver must point to the ```public``` directory.
- * The webserver must read the ```.htaccess``` file and ```mod_rewrite``` must be enabled
+ * The webserver must have write access to the `storage` directory and read access for all other directories
+ * The webserver must point to the `public` directory.
+ * The webserver must read the `.htaccess` file and `mod_rewrite` must be enabled
 
  * Recommended: Directory Listing should be disabled.
  * There must be a MySQL database set up with a user who has full rights to that database.
- * If necessary, create a ```config/config.php``` to override values from ```config/config.default.php```.
-   * To edit values from the `footer_items`, `themes`, `locales`, `tshirt_sizes` or `headers` lists, directly modify the ```config/config.default.php``` file or rename it to ```config/config.php```.
- * To import the database, the ```bin/migrate``` script has to be run. If you can't execute scripts, you can use the `initial-install.sql` file from the release zip.
- * In the browser, login with credentials ```admin``` : ```asdfasdf``` and change the password.
+ * If necessary, create a `config/config.php` to override values from `config/config.default.php`.
+   * To edit values from the `footer_items`, `themes`, `locales`, `tshirt_sizes` or `headers` lists, directly modify the `config/config.default.php` file or rename it to `config/config.php`.
+ * To import the database, the `bin/migrate` script has to be run. If you can't execute scripts, you can use the `initial-install.sql` file from the release zip.
+ * In the browser, login with credentials `admin` : `asdfasdf` and change the password.
 
 The Engelsystem can now be used.
 

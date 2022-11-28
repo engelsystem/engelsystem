@@ -42,7 +42,7 @@ The following instructions explain how to get, build and run the latest Engelsys
 To run the unit tests use
 ```bash
 vendor/bin/phpunit --testsuite Unit
-``` 
+```
 
 If a database is configured and the Engelsystem is allowed to mess around with some files, you can run feature tests.
 The tests can potentially delete some database entries, so they should never be run on a production system!
@@ -50,7 +50,7 @@ The tests can potentially delete some database entries, so they should never be 
 vendor/bin/phpunit --testsuite Feature
 # or for unit- and feature tests:
 vendor/bin/phpunit
-``` 
+```
 
 To run code coverage reports its highly recommended to use [`pcov`](https://github.com/krakjoe/pcov) or
 at least `phpdbg -qrr`(which has problems with switch case statements) as using Xdebug slows down execution.
@@ -64,7 +64,7 @@ This Var Dump Server is especially useful for when you want to debug a request w
 
 To use simply call the method `dump` and pass the arguments in exactly the same way you would when using `var_dump`.
 
-This will send the output to the Var Dump server which can be viewed in the terminal. 
+This will send the output to the Var Dump server which can be viewed in the terminal.
 This does however require that you start the var-dump-server otherwise the output will be printed in your browser
 
 You can also `dump` and `die` if you wish to not let your code continue any further by calling the `dd` method
