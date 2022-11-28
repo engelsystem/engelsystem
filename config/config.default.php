@@ -280,7 +280,7 @@ return [
     'enable_goody'            => (bool)env('ENABLE_GOODY', false),
 
     // Enables the food voucher in the user profile
-    'enable_voucher'            => (bool)env('ENABLE_VOUCHER', true),
+    'enable_voucher'          => (bool)env('ENABLE_VOUCHER', true),
 
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
