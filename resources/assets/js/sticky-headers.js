@@ -1,34 +1,44 @@
 import { ready } from './ready';
 
 /**
+ * @param {NodeList} elements
+ * @param {string} styleProp
+ * @param {*} value
+ */
+const applyStyle = (elements, prop, value) => {
+  elements.forEach((element) => {
+    element.style[prop] = value;
+  });
+}
+
+/**
  * Enables the fixed headers and time lane for the shift-calendar and datatables
  */
-ready(function () {
-  if ($('.shift-calendar').length) {
-    const timeLanes = $('.shift-calendar .time');
-    const headers = $('.shift-calendar .header');
-    const topReference = $('.container-fluid .row');
-    timeLanes.css({
-      'position': 'relative',
-      'z-index': 999
-    });
-    headers.css({
-      'position': 'relative',
-      'z-index': 900
-    });
-    $(window).scroll(
-      function () {
-        const top = headers.parent().offset().top;
-        const left = 15;
-        timeLanes.css({
-          'left': Math.max(0, $(window).scrollLeft() - left) + 'px'
-        });
-        headers.css({
-          'top': Math.max(0, $(window).scrollTop() - top
-                        - 13
-                        + topReference.offset().top)
-                        + 'px'
-        });
-      });
-  }
+ready(() => {
+  if (!document.querySelector('.shift-calendar')) return;
+
+  const headers = document.querySelectorAll('.shift-calendar .header');
+  const timeLane = document.querySelector('.shift-calendar .time');
+  const topReference = document.querySelector('.container-fluid .row');
+
+  if (!headers.length || !timeLane || !topReference) return;
+
+  timeLane.style.position = 'relative';
+  timeLane.style.zIndex = 999;
+
+  applyStyle(headers, 'position', 'relative');
+  applyStyle(headers, 'zIndex', 900);
+
+  window.addEventListener('scroll', () => {
+    const top = headers.item(0).parentNode.getBoundingClientRect().top;
+    const left = 15;
+
+    timeLane.style.left = Math.max(0, window.scrollX - left) + 'px';
+
+    const headersTop = Math.max(
+      0,
+      window.scrollY - top - 13 + topReference.getBoundingClientRect().top
+    ) + 'px';
+    applyStyle(headers, 'top', headersTop);
+  });
 });

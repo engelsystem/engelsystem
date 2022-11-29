@@ -389,15 +389,18 @@ function render_table($columns, $rows, $data = true)
  * @param string $href
  * @param string $label
  * @param string $class
+ * @param string $id
  * @return string
  */
-function button($href, $label, $class = '')
+function button($href, $label, $class = '', $id = '')
 {
     if (!Str::contains(str_replace(['btn-sm', 'btn-xl'], '', $class), 'btn-')) {
         $class = 'btn-secondary' . ($class ? ' ' . $class : '');
     }
 
-    return '<a href="' . $href . '" class="btn ' . $class . '">' . $label . '</a>';
+    $idAttribute = $id ? 'id="' . $id . '"' : '';
+
+    return '<a ' . $idAttribute . ' href="' . $href . '" class="btn ' . $class . '">' . $label . '</a>';
 }
 
 /**

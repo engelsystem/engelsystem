@@ -69,14 +69,13 @@ function formatFromNow(timestamp) {
 /**
  * Initialises all countdown fields on the page.
  */
-ready(function () {
-  $.each($('[data-countdown-ts]'), function (i, e) {
-    const span = $(e);
-    const timestamp = span.data('countdown-ts');
-    const text = span.html();
-    span.html(text.replace('%c', formatFromNow(timestamp)));
-    setInterval(function () {
-      span.html(text.replace('%c', formatFromNow(timestamp)));
+ready(() => {
+  document.querySelectorAll('[data-countdown-ts]').forEach((element) => {
+    const timestamp = element.dataset.countdownTs;
+    const template = element.innerHTML;
+    element.innerHTML = template.replace('%c', formatFromNow(timestamp));
+    setInterval(() => {
+      element.innerHTML = template.replace('%c', formatFromNow(timestamp));
     }, 1000);
   });
 });

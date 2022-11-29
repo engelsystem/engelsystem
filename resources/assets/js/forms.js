@@ -1,6 +1,14 @@
-require('select2');
+import 'select2';
 import { formatDay, formatTime } from './date';
 import { ready } from './ready';
+
+/**
+ * @param {HTMLElement} element
+ */
+const triggerChange = (element) => {
+  const changeEvent = new Event('change');
+  element.dispatchEvent(changeEvent);
+}
 
 /**
  * Sets all checkboxes to the wanted state
@@ -9,8 +17,8 @@ import { ready } from './ready';
  * @param {boolean} checked True if the checkboxes should be checked
  */
 global.checkAll = (id, checked) => {
-  $('#' + id + ' input[type="checkbox"]').each(function () {
-    this.checked = checked;
+  document.querySelectorAll('#' + id + ' input[type="checkbox"]').forEach((element) => {
+    element.checked = checked;
   });
 };
 
@@ -18,11 +26,12 @@ global.checkAll = (id, checked) => {
  * Sets the checkboxes according to the given type
  *
  * @param {string} id The elements ID
- * @param {list} shiftsList A list of numbers
+ * @param {int[]} shiftsList A list of numbers
  */
 global.checkOwnTypes = (id, shiftsList) => {
-  $('#' + id + ' input[type="checkbox"]').each(function () {
-    this.checked = $.inArray(parseInt(this.value), shiftsList) != -1;
+  document.querySelectorAll('#' + id + ' input[type="checkbox"]').forEach((element) => {
+    const value = parseInt(element.value, 10);
+    element.checked = shiftsList.includes(value);
   });
 };
 
@@ -37,21 +46,23 @@ global.checkOwnTypes = (id, shiftsList) => {
  * @param {Date} to
  */
 global.setInput = (from, to) => {
-  const fromDay = $('#start_day');
-  const fromTime = $('#start_time');
-  const toDay = $('#end_day');
-  const toTime = $('#end_time');
+  const fromDay = document.getElementById('start_day');
+  const fromTime = document.getElementById('start_time');
+  const toDay = document.getElementById('end_day');
+  const toTime = document.getElementById('end_time');
 
   if (!fromDay || !fromTime || !toDay || !toTime) {
     console.warn('cannot set input date because of missing field');
     return;
   }
 
-  fromDay.val(formatDay(from)).trigger('change');
-  fromTime.val(formatTime(from));
+  fromDay.value = formatDay(from);
+  triggerChange(fromDay);
+  fromTime.value = formatTime(from);
 
-  toDay.val(formatDay(to)).trigger('change');
-  toTime.val(formatTime(to));
+  toDay.value = formatDay(to);
+  triggerChange(toDay);
+  toTime.value = formatTime(to);
 };
 
 global.setDay = (days) => {
@@ -86,33 +97,42 @@ global.setHours = (hours) => {
   setInput(from, to);
 };
 
-ready(function () {
+ready(() => {
   /**
-     * Disable every submit button after clicking (to prevent double-clicking)
-     */
-  $('form').submit(function (ev) {
-    $('input[type="submit"]').prop('readonly', true).addClass('disabled');
-    return true;
+   * Disable every submit button after clicking (to prevent double-clicking)
+   */
+  document.querySelectorAll('form').forEach((formElement) => {
+    formElement.addEventListener('submit', () => {
+      document.querySelectorAll('input[type="submit"],button[type="submit"]').forEach((element) => {
+        element.readOnly = true;
+        element.classList.add('disabled');
+      });
+    });
   });
-
 });
 
 /*
  * Button to set current time in time input fields.
  */
-ready(function () {
-  $('.input-group.time').each(function () {
-    const elem = $(this);
-    elem.find('button').on('click', function () {
+ready(() => {
+  document.querySelectorAll('.input-group.time').forEach((element) => {
+    const button = element.querySelector('button');
+    if (!button) return;
+
+    button.addEventListener('click', () => {
       const now = new Date();
-      const input = elem.children('input').first();
-      input.val(formatTime(now));
-      const daySelector = $('#' + input.attr('id').replace('time', 'day'));
-      const days = daySelector.children('option');
+      const input = element.querySelector('input');
+      if (!input) return;
+
+      input.value = formatTime(now);
+      const daySelector = document.getElementById(input.id.replace('time', 'day'));
+      if (!daySelector) return;
+
+      const dayElements = daySelector.querySelectorAll('option');
       const yyyyMMDD = formatDay(now);
-      days.each(function (i) {
-        if ($(days[i]).val() === yyyyMMDD) {
-          daySelector.val($(days[i]).val());
+      dayElements.forEach((dayElement) => {
+        if (dayElement.value === yyyyMMDD) {
+          daySelector.value = dayElement.value;
           return false;
         }
       });
@@ -120,7 +140,7 @@ ready(function () {
   });
 });
 
-ready(function () {
+ready(() => {
   $('select').select2({
     theme: 'bootstrap-5',
     width: '100%',
@@ -130,15 +150,17 @@ ready(function () {
 /**
  * Show oauth buttons on welcome title click
  */
-ready(function () {
-  $('#welcome-title').on('click', function () {
-    $('.btn-group.btn-group .btn.d-none').removeClass('d-none');
-  });
-  $('#settings-title').on('click', function () {
-    $('.user-settings .nav-item').removeClass('d-none');
-  });
-  $('#oauth-settings-title').on('click', function () {
-    $('table tr.d-none').removeClass('d-none');
+ready(() => {
+  [
+    ['welcome-title', '.btn-group.btn-group .btn.d-none'],
+    ['settings-title', '.user-settings .nav-item'],
+    ['oauth-settings-title', 'table tr.d-none'],
+  ].forEach(([id, selector]) => {
+    document.getElementById(id)?.addEventListener('click', () => {
+      document.querySelectorAll(selector).forEach((element) => {
+        element.classList.remove('d-none');
+      });
+    });
   });
 });
 
@@ -149,7 +171,7 @@ ready(function () {
  */
 ready(() => {
   const filter = document.getElementById('collapseShiftsFilterSelect');
-  if (!filter || localStorage.getItem('collapseShiftsFilterSelect') !== 'hidden') {
+  if (!filter || localStorage.getItem('collapseShiftsFilterSelect') !== 'hidden.bs.collapse') {
     return;
   }
 
@@ -165,7 +187,9 @@ ready(() => {
     localStorage.setItem('collapseShiftsFilterSelect', e.type);
   };
 
-  $('#collapseShiftsFilterSelect')
-    .on('hidden.bs.collapse', onChange)
-    .on('shown.bs.collapse', onChange);
+  document.getElementById('collapseShiftsFilterSelect')
+    ?.addEventListener('hidden.bs.collapse', onChange);
+
+  document.getElementById('collapseShiftsFilterSelect')
+    ?.addEventListener('shown.bs.collapse', onChange);
 });

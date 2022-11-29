@@ -3,6 +3,7 @@
   "extends": [ "plugin:editorconfig/all" ],
   "plugins": [ "editorconfig" ],
   "rules": {
+    "prefer-arrow-callback": "error",
     "no-var": "error",
     "quotes": [
       "error",

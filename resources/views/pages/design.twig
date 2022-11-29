@@ -249,13 +249,27 @@
                         </div>
                     </div>
                     <div class="col-md-3 col-lg-2">
-                        Submit button<br>
-                        {{ f.submit() }}
+                        Form submit
+                        <form id="form">
+                            {{ f.submit() }}
+                        </form>
                     </div>
-                    <div class="col-md-3 col-lg-2">
+                    <div id="checkboxes" class="col-md-3 col-lg-2">
                         Checkbox<br>
-                        {{ f.checkbox('form-input-checkbox', 'Checkbox', true) }}
-                        {{ f.checkbox('form-input-checkbox-2', 'Checkbox 2') }}
+                        {{ f.checkbox('form-input-checkbox', 'Checkbox 1', true, '1') }}
+                        {{ f.checkbox('form-input-checkbox-2', 'Checkbox 2', false, '2') }}
+                        {{ f.checkbox('form-input-checkbox-3', 'Checkbox 3', false, '3') }}
+                        <div class="d-grid gap-2">
+                            <div id="select-all-checkboxes" class="btn btn-sm btn-block btn-primary">
+                                Select all
+                            </div>
+                            <div id="select-23-checkboxes" class="btn btn-sm btn-block btn-primary">
+                                Select 2, 3
+                            </div>
+                            <div id="unselect-all-checkboxes" class="btn btn-sm btn-block btn-danger">
+                                Unselect all
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-3 col-lg-2 checkbox-inline">
                         Radio<br>
@@ -406,4 +420,22 @@
         {{ bar_chart | raw }}
     </div>
     </div>
+    <script>
+        document.getElementById('select-all-checkboxes').addEventListener('click', () => {
+            checkAll('checkboxes', true);
+        });
+
+        document.getElementById('unselect-all-checkboxes').addEventListener('click', () => {
+            checkAll('checkboxes', false);
+        });
+
+        document.getElementById('select-23-checkboxes').addEventListener('click', () => {
+            checkOwnTypes('checkboxes', [2, 3]);
+        });
+
+        document.getElementById('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            return false;
+        });
+    </script>
 {% endblock %}

@@ -53,20 +53,20 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
         ]),
         '
         <script type="text/javascript">
-            $(function () {
-                const checkbox = $(\'#wants_to_drive\');
-                if (checkbox.is(\':checked\'))
-                    $(\'#driving_license\').show();
-                else
-                    $(\'#driving_license\').hide();
+            const drivingLicenseElement = document.getElementById("driving_license");
 
-                checkbox.click(function () {
-                if ($(\'#wants_to_drive\').is(\':checked\'))
-                    $(\'#driving_license\').show();
-                else
-                    $(\'#driving_license\').hide();
+            if (drivingLicenseElement) {
+                const checkbox = document.getElementById("wants_to_drive");
+                drivingLicenseElement.style.display = checkbox?.checked
+                    ? ""
+                    : "none";
+
+                checkbox.addEventListener("click", () => {
+                    drivingLicenseElement.style.display = document.getElementById("wants_to_drive")?.checked
+                        ? ""
+                        : "none";
                 });
-            });
+            }
         </script>
         '
     ], true);
