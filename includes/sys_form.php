@@ -178,9 +178,9 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
         $html_id = $name;
     }
 
-    return '<div class="checkbox"><label>'
-        . '<input type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
-        . ($selected ? ' checked="checked"' : '') . ' /> '
+    return '<div class="form-check">'
+        . '<input class="form-check-input" type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
+        . ($selected ? ' checked="checked"' : '') . ' /><label class="form-check-label" for="' . $html_id . '">'
         . $label
         . '</label></div>';
 }
