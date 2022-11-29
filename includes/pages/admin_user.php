@@ -147,16 +147,17 @@ function admin_user()
                 . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
                 . '" method="post">' . "\n";
             $html .= form_csrf();
-            $html .= '<table>';
+            $html .= '<div>';
 
             $groups = changeableGroups($my_highest_group, $user_id);
             foreach ($groups as $group) {
-                $html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group->id . '" '
+                $html .= '<div class="form-check">'
+                    . '<input class="form-check-input" type="checkbox" id="' . $group->id . '" name="groups[]" value="' . $group->id . '" '
                     . ($group->selected ? ' checked="checked"' : '')
-                    . ' /></td><td>' . $group->name . '</td></tr>';
+                    . ' /><label class="form-check-label" for="' . $group->id . '">' . $group->name . '</label></div>';
             }
 
-            $html .= '</table><br>';
+            $html .= '</div><br>';
 
             $html .= '<input type="submit" value="Speichern" class="btn btn-primary">' . "\n";
             $html .= '</form>';

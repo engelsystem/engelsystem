@@ -372,10 +372,11 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
     $html .= buttons($buttons);
 
     foreach ($items as $i) {
-        $htmlItems[] = '<div class="checkbox">'
-            . '<label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '" '
+        $id = $name . '_' . $i['id'];
+        $htmlItems[] = '<div class="form-check">'
+            . '<input class="form-check-input" type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $i['id'] . '" '
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
-            . ' > ' . $i['name'] . '</label>'
+            . ' /><label class="form-check-label" for="' . $id . '">' . $i['name'] . '</label>'
             . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('book'))
             . '</div>';
     }
