@@ -196,9 +196,10 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
  */
 function form_radio($name, $label, $selected, $value)
 {
-    return '<div class="radio">'
-        . '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
-        . ($selected ? ' checked="checked"' : '') . ' /> '
+    return '<div class="form-check">'
+        . '<input class="form-check-input" type="radio" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
+        . ($selected ? ' checked="checked"' : '') . ' />'
+        . '<label class="form-check-label" for="' . $name . '">'
         . $label
         . '</label></div>';
 }
@@ -478,8 +479,11 @@ function html_options($name, $options, $selected = '')
 {
     $html = '';
     foreach ($options as $value => $label) {
-        $html .= '<input type="radio"' . ($value == $selected ? ' checked="checked"' : '') . ' name="'
-            . $name . '" value="' . $value . '"> ' . $label;
+        $html .= '<div class="form-check form-check-inline">'
+            . '<input class="form-check-input" type="radio" id="' . $name . '_' . $value . '" name="' . $name . '"'
+            . ($value == $selected ? ' checked="checked"' : '') . ' value="' . $value . '" />'
+            . '<label class="form-check-label" for="' . $name . '_' . $value . '">' . $label . '</label>'
+            . '</div>';
     }
 
     return $html;
