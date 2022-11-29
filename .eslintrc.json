@@ -4,6 +4,7 @@
   "plugins": [ "editorconfig" ],
   "rules": {
     "prefer-arrow-callback": "error",
+    "prefer-template": "error",
     "no-var": "error",
     "quotes": [
       "error",

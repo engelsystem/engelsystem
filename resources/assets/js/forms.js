@@ -17,7 +17,7 @@ const triggerChange = (element) => {
  * @param {boolean} checked True if the checkboxes should be checked
  */
 global.checkAll = (id, checked) => {
-  document.querySelectorAll('#' + id + ' input[type="checkbox"]').forEach((element) => {
+  document.querySelectorAll(`#${id} input[type="checkbox"]`).forEach((element) => {
     element.checked = checked;
   });
 };
@@ -29,7 +29,7 @@ global.checkAll = (id, checked) => {
  * @param {int[]} shiftsList A list of numbers
  */
 global.checkOwnTypes = (id, shiftsList) => {
-  document.querySelectorAll('#' + id + ' input[type="checkbox"]').forEach((element) => {
+  document.querySelectorAll(`#${id} input[type="checkbox"]`).forEach((element) => {
     const value = parseInt(element.value, 10);
     element.checked = shiftsList.includes(value);
   });

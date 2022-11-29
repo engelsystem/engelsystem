@@ -31,14 +31,14 @@ ready(() => {
 
   window.addEventListener('scroll', () => {
     const top = headers.item(0).parentNode.getBoundingClientRect().top;
-    const left = 15;
+    const left = Math.max(0, window.scrollX - 15);
 
-    timeLane.style.left = Math.max(0, window.scrollX - left) + 'px';
+    timeLane.style.left = `${left}px`;
 
     const headersTop = Math.max(
       0,
       window.scrollY - top - 13 + topReference.getBoundingClientRect().top
-    ) + 'px';
-    applyStyle(headers, 'top', headersTop);
+    );
+    applyStyle(headers, 'top', `${headersTop}px`);
   });
 });
