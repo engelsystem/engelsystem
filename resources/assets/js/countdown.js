@@ -1,3 +1,5 @@
+import { ready } from './ready';
+
 const lang = document.documentElement.getAttribute('lang');
 
 const templateFuture = 'in %value %unit';
@@ -67,7 +69,7 @@ function formatFromNow(timestamp) {
 /**
  * Initialises all countdown fields on the page.
  */
-$(function () {
+ready(function () {
   $.each($('[data-countdown-ts]'), function (i, e) {
     const span = $(e);
     const timestamp = span.data('countdown-ts');

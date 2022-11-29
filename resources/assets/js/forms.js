@@ -1,5 +1,6 @@
 require('select2');
 import { formatDay, formatTime } from './date';
+import { ready } from './ready';
 
 /**
  * Sets all checkboxes to the wanted state
@@ -85,7 +86,7 @@ global.setHours = (hours) => {
   setInput(from, to);
 };
 
-$(function () {
+ready(function () {
   /**
      * Disable every submit button after clicking (to prevent double-clicking)
      */
@@ -99,7 +100,7 @@ $(function () {
 /*
  * Button to set current time in time input fields.
  */
-$(function () {
+ready(function () {
   $('.input-group.time').each(function () {
     const elem = $(this);
     elem.find('button').on('click', function () {
@@ -119,7 +120,7 @@ $(function () {
   });
 });
 
-$(function () {
+ready(function () {
   $('select').select2({
     theme: 'bootstrap-5',
     width: '100%',
@@ -129,7 +130,7 @@ $(function () {
 /**
  * Show oauth buttons on welcome title click
  */
-$(function () {
+ready(function () {
   $('#welcome-title').on('click', function () {
     $('.btn-group.btn-group .btn.d-none').removeClass('d-none');
   });
@@ -146,7 +147,7 @@ $(function () {
  *
  * Uses DOMContentLoaded to prevent flickering
  */
-window.addEventListener('DOMContentLoaded', () => {
+ready(() => {
   const filter = document.getElementById('collapseShiftsFilterSelect');
   if (!filter || localStorage.getItem('collapseShiftsFilterSelect') !== 'hidden') {
     return;
@@ -155,7 +156,7 @@ window.addEventListener('DOMContentLoaded', () => {
   filter.classList.remove('show');
 });
 
-$(() => {
+ready(() => {
   if (typeof (localStorage) === 'undefined') {
     return;
   }

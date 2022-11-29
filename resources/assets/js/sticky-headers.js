@@ -1,7 +1,9 @@
+import { ready } from './ready';
+
 /**
  * Enables the fixed headers and time lane for the shift-calendar and datatables
  */
-$(function () {
+ready(function () {
   if ($('.shift-calendar').length) {
     const timeLanes = $('.shift-calendar .time');
     const headers = $('.shift-calendar .header');
