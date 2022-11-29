@@ -117,49 +117,6 @@ function form_checkboxes($name, $label, $items, $selected)
 }
 
 /**
- * Rendert eine Tabelle von Checkboxen für ein Formular
- *
- * @param string[] $names    Assoziatives Array mit Namen der Checkboxen als Keys und Überschriften als Values
- * @param string   $label    Die Beschriftung der gesamten Tabelle
- * @param string[] $items    Array mit den Beschriftungen der Zeilen
- * @param array[]  $selected Mehrdimensionales Array, wobei $selected[foo] ein Array der in der Datenreihe foo
- *                           markierten Checkboxen ist
- * @param array    $disabled Wie selected, nur dass die entsprechenden Checkboxen deaktiviert statt markiert sind
- * @return string
- */
-function form_multi_checkboxes($names, $label, $items, $selected, $disabled = [])
-{
-    $html = '<table><thead><tr>';
-    foreach ($names as $title) {
-        $html .= '<th>' . $title . '</th>';
-    }
-    $html .= '</tr></thead><tbody>';
-    foreach ($items as $key => $item) {
-        $html .= '<tr>';
-        $dom_id = '';
-        foreach ($names as $name => $title) {
-            $dom_id = $name . '_' . $key;
-            $sel = in_array($key, $selected[$name]) ? ' checked="checked"' : '';
-            if (!empty($disabled) && !empty($disabled[$name]) && in_array($key, $disabled[$name])) {
-                $sel .= ' disabled="disabled"';
-            }
-            $html .= '<td style="text-align: center;">'
-                . sprintf(
-                    '<input type="checkbox" id="%s" name="%s[]" value="%s" %s />',
-                    $dom_id,
-                    $name,
-                    $key,
-                    $sel
-                )
-                . '</td>';
-        }
-        $html .= '<td><label for="' . $dom_id . '">' . $item . '</label></td></tr>';
-    }
-    $html .= '</tbody></table>';
-    return form_element($label, $html);
-}
-
-/**
  * Rendert eine Checkbox
  *
  * @param string $name
