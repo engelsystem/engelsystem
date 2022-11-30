@@ -398,17 +398,17 @@ msgstr "Angel"
 msgid "date"
 msgstr "Date"
 
-msgid "user.add.worklog"
+msgid "worklog.add"
 msgstr "Add work log"
 
-msgid "user.edit.worklog"
+msgid "worklog.edit"
 msgstr "Edit work log"
 
-msgid "user.work_date"
+msgid "worklog.date"
 msgstr "Work date"
 
-msgid "user.work_hours"
+msgid "worklog.hours"
 msgstr "Work hours"
 
-msgid "user.comment"
+msgid "worklog.comment"
 msgstr "Comment"

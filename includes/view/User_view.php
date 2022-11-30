@@ -533,7 +533,7 @@ function User_view(
                         : '',
                         $admin_user_worklog_privilege ? button(
                             url('/admin/user/' . $user_source->id . '/worklog'),
-                            icon('list') . __('user.add.worklog')
+                            icon('list') . __('worklog.add')
                         ) : '',
                         $its_me ? button(
                             page_link_to('settings/profile'),

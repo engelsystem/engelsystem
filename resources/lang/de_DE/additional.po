@@ -207,6 +207,3 @@ msgstr "Arbeitseinsatz erfolgreich angelegt."
 msgid "worklog.edit.success"
 msgstr "Arbeitseinsatz erfolgreich bearbeitet."
 
-msgid "worklog.not.associated.to.user"
-msgstr "Arbeitseinsatz nicht dem Nutzer zugeordnet."
-

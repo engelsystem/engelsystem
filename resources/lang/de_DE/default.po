@@ -3094,17 +3094,17 @@ msgstr "Engel"
 msgid "date"
 msgstr "Datum"
 
-msgid "user.add.worklog"
+msgid "worklog.add"
 msgstr "Arbeitseinsatz hinzufügen"
 
-msgid "user.edit.worklog"
+msgid "worklog.edit"
 msgstr "Arbeitseinsatz bearbeiten"
 
-msgid "user.work_date"
+msgid "worklog.date"
 msgstr "Einsatzdatum"
 
-msgid "user.work_hours"
+msgid "worklog.hours"
 msgstr "Arbeitsstunden"
 
-msgid "user.comment"
+msgid "worklog.comment"
 msgstr "Kommentar"

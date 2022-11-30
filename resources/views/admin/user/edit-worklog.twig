@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __(is_edit ? 'user.edit.worklog' : 'user.add.worklog') }}{% endblock %}
+{% block title %}{{ __(is_edit ? 'worklog.edit' : 'worklog.add') }}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -25,19 +25,19 @@
                 <div class="col-12">
                     {{ f.input(
                         'work_date',
-                        __('user.work_date'),
+                        __('worklog.date'),
                         'date',
                         {'value': work_date.format('Y-m-d'), 'required': true}
                     ) }}
                     {{ f.input(
                         'work_hours',
-                        __('user.work_hours'),
+                        __('worklog.hours'),
                         'number',
                         {'value': work_hours, 'required': true, 'step': '0.01', 'min': 0}
                     ) }}
                     {{ f.input(
                         'comment',
-                        __('user.comment'),
+                        __('worklog.comment'),
                         'text',
                         {'value': comment, 'required': true, 'max_length': 200}
                     ) }}

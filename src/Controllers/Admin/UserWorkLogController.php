@@ -86,7 +86,7 @@ class UserWorkLogController extends BaseController
             $worklog = $this->worklog->findOrFail($worklog_id);
 
             if ($worklog->user->id != $user_id) {
-                throw new HttpNotFound('worklog.not.associated.to.user');
+                throw new HttpNotFound();
             }
             return $this->showEditWorklog($user, $worklog->worked_at, $worklog->hours, $worklog->comment, true);
         } else {
@@ -114,7 +114,7 @@ class UserWorkLogController extends BaseController
             $worklog = $this->worklog->findOrFail($worklog_id);
 
             if ($worklog->user->id != $user_id) {
-                throw new HttpNotFound('worklog.not.associated.to.user');
+                throw new HttpNotFound();
             }
         } else {
             $worklog = new Worklog();
