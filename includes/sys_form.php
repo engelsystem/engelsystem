@@ -47,7 +47,7 @@ function form_spinner($name, $label, $value)
                 spinner.val(parseInt(spinner.val()) + 1);
             });
         </script>
-        ');
+        ', 'spinner-' . $name);
 }
 
 /**
