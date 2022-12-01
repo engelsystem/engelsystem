@@ -86,7 +86,7 @@ function raw_output($output = '')
 function select_array($data, $key_name, $value_name)
 {
     if ($data instanceof Collection) {
-        return $data->mapToDictionary(function (BaseModel $model) use ($key_name, $value_name) {
+        return $data->mapWithKeys(function (BaseModel $model) use ($key_name, $value_name) {
             return [$model->{$key_name} => $model->{$value_name}];
         });
     }
