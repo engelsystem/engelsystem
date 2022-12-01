@@ -422,7 +422,7 @@ function admin_shifts()
     }
     $angel_types = '';
     foreach ($types as $type) {
-        $angel_types .= '<div class="col-md-4">'
+        $angel_types .= '<div class="col-sm-6 col-md-8 col-lg-6 col-xl-4 col-xxl-3">'
             . form_spinner(
                 'type_' . $type['id'],
                 $type['name'],
@@ -441,20 +441,26 @@ function admin_shifts()
             msg(),
             form([
                 div('row', [
-                    div('col-md-6', [
+                    div('col-md-6 col-xl-5', [
                         form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
                         form_text('title', __('Title'), $title),
                         form_select('rid', __('Room'), $room_array, $rid),
                     ]),
-                    div('col-md-6', [
+                    div('col-md-6 col-xl-7', [
                         form_textarea('description', __('Additional description'), $description),
                         __('This description is for single shifts, otherwise please use the description in shift type.'),
                     ]),
                 ]),
                 div('row', [
-                    div('col-md-6', [
-                        form_datetime('start', __('Start'), $start),
-                        form_datetime('end', __('End'), $end),
+                    div('col-md-6 col-xl-5', [
+                        div('row', [
+                            div('col-lg-6', [
+                                form_datetime('start', __('Start'), $start)
+                            ]),
+                            div('col-lg-6', [
+                                form_datetime('end', __('End'), $end)
+                            ]),
+                        ]),
                         form_info(__('Mode')),
                         form_radio('mode', __('Create one shift'), $mode == 'single', 'single'),
                         form_radio('mode', __('Create multiple shifts'), $mode == 'multi', 'multi'),
@@ -484,7 +490,7 @@ function admin_shifts()
                             $shift_over_midnight
                         )
                     ]),
-                    div('col-md-6', [
+                    div('col-md-6 col-xl-7', [
                         form_info(__('Needed angels')),
                         form_radio(
                             'angelmode',
