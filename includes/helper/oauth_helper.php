@@ -3,7 +3,6 @@
 namespace Engelsystem\Events\Listener;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Database\Database;
 use Engelsystem\Models\AngelType;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -12,10 +11,10 @@ use Psr\Log\LoggerInterface;
 class OAuth2
 {
     /** @var array */
-    protected $config;
+    protected array $config;
 
     /** @var LoggerInterface */
-    protected $log;
+    protected LoggerInterface $log;
 
     /**
      * @param Config          $config
@@ -29,16 +28,14 @@ class OAuth2
 
     /**
      * @param string     $event
-     * @param string     $provider
+     * @param string     $provider OAuth provider name
      * @param Collection $data OAuth userdata
      */
-    public function login(string $event, string $provider, Collection $data)
+    public function login(string $event, string $provider, Collection $data): void
     {
-        /** @var Database $db */
-        $db = app(Database::class);
         $ssoTeams = $this->getSsoTeams($provider);
         $user = auth()->user();
-        $currentUserAngeltypes = collect($db->select('SELECT * FROM UserAngelTypes WHERE user_id = ?', [$user->id]));
+        $currentUserAngeltypes = $user->userAngelTypes;
         $userGroups = $data->get(($this->config[$provider] ?? [])['groups'] ?? 'groups', []);
 
         foreach ($userGroups as $groupName) {
@@ -47,7 +44,9 @@ class OAuth2
             }
 
             $team = $ssoTeams[$groupName];
-            $userAngeltype = $currentUserAngeltypes->where('angeltype_id', $team['id'])->first();
+            $angelType = AngelType::find($team['id']);
+            /** @var AngelType $userAngeltype */
+            $userAngeltype = $currentUserAngeltypes->where('pivot.angel_type_id', $team['id'])->first();
             $supporter = $team['supporter'];
             $confirmed = $supporter ? $user->id : null;
 
@@ -56,15 +55,13 @@ class OAuth2
                     'SSO {provider}: Added to angeltype {angeltype}, confirmed: {confirmed}, supporter: {supporter}',
                     [
                         'provider'  => $provider,
-                        'angeltype' => AngelType::find($team['id'])->name,
+                        'angeltype' => $angelType->name,
                         'confirmed' => $confirmed ? 'yes' : 'no',
                         'supporter' => $supporter ? 'yes' : 'no',
                     ]
                 );
-                $db->insert(
-                    'INSERT INTO UserAngelTypes (user_id, angeltype_id, confirm_user_id, supporter) VALUES (?, ?, ?, ?)',
-                    [$user->id, $team['id'], $confirmed, $supporter]
-                );
+
+                $user->userAngelTypes()->attach($angelType, ['supporter' => $supporter, 'confirm_user_id' => $confirmed]);
 
                 continue;
             }
@@ -73,40 +70,33 @@ class OAuth2
                 continue;
             }
 
-            if ($userAngeltype->supporter != $supporter) {
-                $db->update(
-                    'UPDATE UserAngelTypes SET supporter=? WHERE id = ?',
-                    [$supporter, $userAngeltype->id]
-                );
+            if ($userAngeltype->pivot->supporter != $supporter) {
+                $userAngeltype->pivot->supporter = $supporter;
+                $userAngeltype->pivot->save();
+
                 $this->log->info(
                     'SSO {provider}: Set supporter state for angeltype {angeltype}',
                     [
                         'provider'  => $provider,
-                        'angeltype' => AngelType::find($userAngeltype->angeltype_id)->name,
+                        'angeltype' => $userAngeltype->pivot->angelType->name,
                     ]
                 );
             }
 
-            if (!$userAngeltype->confirm_user_id) {
-                $db->update(
-                    'UPDATE UserAngelTypes SET confirm_user_id=? WHERE id = ?',
-                    [$user->id, $userAngeltype->id]
-                );
+            if (!$userAngeltype->pivot->confirm_user_id) {
+                $userAngeltype->pivot->confirmUser()->associate($user);
+                $userAngeltype->pivot->save();
                 $this->log->info(
                     'SSO {provider}: Set confirmed state for angeltype {angeltype}',
                     [
                         'provider'  => $provider,
-                        'angeltype' => AngelType::find($userAngeltype->angeltype_id)->name,
+                        'angeltype' => $userAngeltype->pivot->angelType->name,
                     ]
                 );
             }
         }
     }
 
-    /**
-     * @param string $provider
-     * @return array
-     */
     public function getSsoTeams(string $provider): array
     {
         $config = $this->config[$provider] ?? [];

@@ -4,6 +4,7 @@ namespace Engelsystem\Test\Unit\Models\User;
 
 use Carbon\Carbon;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\News;
@@ -18,6 +19,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\Models\ModelTest;
 use Exception;
@@ -210,6 +212,52 @@ class UserTest extends ModelTest
         }
 
         $this->assertEquals($relatedModelIds, $user->{$name}->modelKeys());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::userAngelTypes
+     * @return void
+     */
+    public function testUserAngelTypes()
+    {
+        AngelType::factory(2)->create();
+        $angelType1 = AngelType::factory()->create();
+        AngelType::factory(1)->create();
+        $angelType2 = AngelType::factory()->create();
+
+        $user = new User($this->data);
+        $user->save();
+
+        $user->userAngelTypes()->attach($angelType1);
+        $user->userAngelTypes()->attach($angelType2);
+
+        /** @var UserAngelType $userAngelType */
+        $userAngelType = UserAngelType::find(1);
+        $this->assertEquals($user->id, $userAngelType->user->id);
+
+        $angeltypes = $user->userAngelTypes;
+        $this->assertCount(2, $angeltypes);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::isAngelTypeSupporter
+     * @return void
+     */
+    public function testIsAngelTypeSupporter()
+    {
+        /** @var AngelType $angelType1 */
+        $angelType1 = AngelType::factory()->create();
+        /** @var AngelType $angelType2 */
+        $angelType2 = AngelType::factory()->create();
+
+        $user = new User($this->data);
+        $user->save();
+
+        $user->userAngelTypes()->attach($angelType1, ['supporter' => true]);
+        $user->userAngelTypes()->attach($angelType2);
+
+        $this->assertTrue($user->isAngelTypeSupporter($angelType1));
+        $this->assertFalse($user->isAngelTypeSupporter($angelType2));
     }
 
     /**

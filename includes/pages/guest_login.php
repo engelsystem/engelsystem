@@ -2,7 +2,6 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\Database;
-use Engelsystem\Database\Db;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
@@ -81,7 +80,7 @@ function guest_register()
             continue;
         }
         $angel_types[$angel_type->id] = $angel_type->name
-        . ($angel_type->restricted ? ' (' . __('Requires introduction') . ')' : '');
+            . ($angel_type->restricted ? ' (' . __('Requires introduction') . ')' : '');
         if (!$angel_type->restricted) {
             $selected_angel_types[] = $angel_type->id;
         }
@@ -310,11 +309,9 @@ function guest_register()
             // Assign angel-types
             $user_angel_types_info = [];
             foreach ($selected_angel_types as $selected_angel_type_id) {
-                Db::insert(
-                    'INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`, `supporter`) VALUES (?, ?, FALSE)',
-                    [$user->id, $selected_angel_type_id]
-                );
-                $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
+                $angelType = AngelType::findOrFail($selected_angel_type_id);
+                $user->userAngelTypes()->attach($angelType);
+                $user_angel_types_info[] = $angelType->name;
             }
 
             // Commit complete user data

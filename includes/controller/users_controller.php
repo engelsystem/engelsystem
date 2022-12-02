@@ -250,7 +250,7 @@ function user_controller()
             $user_source,
             auth()->can('admin_user'),
             User_is_freeloader($user_source),
-            User_angeltypes($user_source->id),
+            $user_source->userAngelTypes,
             $user_source->groups,
             $shifts,
             $user->id == $user_source->id,

@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftsFilterRenderer;
 use Engelsystem\ValidationResult;
@@ -45,7 +46,7 @@ function angeltypes_controller()
  * Path to angeltype view.
  *
  * @param int   $angeltype_id AngelType id
- * @param array $params additional params
+ * @param array $params       additional params
  * @return string
  */
 function angeltype_link($angeltype_id, $params = [])
@@ -116,7 +117,7 @@ function angeltype_edit_controller()
         // Edit existing angeltype
         $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
 
-        if (!User_is_AngelType_supporter(auth()->user(), $angeltype)) {
+        if (!auth()->user()->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
             throw_redirect(page_link_to('angeltypes'));
         }
     } else {
@@ -193,8 +194,9 @@ function angeltype_controller()
     }
 
     $angeltype = AngelType::findOrFail(request()->input('angeltype_id'));
-    $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
-    $members = Users_by_angeltype($angeltype);
+    /** @var UserAngelType $user_angeltype */
+    $user_angeltype = UserAngelType::whereUserId($user->id)->where('angel_type_id', $angeltype->id)->first();
+    $members = $angeltype->userAngelTypes->sortBy('name');
 
     $days = angeltype_controller_shiftsFilterDays($angeltype);
     $shiftsFilter = angeltype_controller_shiftsFilter($angeltype, $days);
@@ -210,7 +212,7 @@ function angeltype_controller()
         $tab = 1;
     }
 
-    $isSupporter = !is_null($user_angeltype) && $user_angeltype['supporter'];
+    $isSupporter = !is_null($user_angeltype) && $user_angeltype->supporter;
     return [
         sprintf(__('Team %s'), $angeltype->name),
         AngelType_view(
@@ -291,7 +293,6 @@ function angeltypes_list_controller()
     }
 
     $angeltypes = AngelTypes_with_user($user->id);
-
     foreach ($angeltypes as $angeltype) {
         $actions = [
             button(
@@ -315,11 +316,11 @@ function angeltypes_list_controller()
         }
 
         $angeltype->membership = AngelType_render_membership($angeltype);
-        if (!empty($angeltype->user_angeltype_id)) {
+        if (!empty($angeltype->user_angel_type_id)) {
             $actions[] = button(
                 page_link_to(
                     'user_angeltypes',
-                    ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angeltype_id]
+                    ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angel_type_id]
                 ),
                 icon('box-arrow-right') . __('leave'),
                 'btn-sm'
@@ -387,13 +388,13 @@ function AngelTypes_with_user($userId): Collection
     return AngelType::query()
         ->select([
             'angel_types.*',
-            'UserAngelTypes.id AS user_angeltype_id',
-            'UserAngelTypes.confirm_user_id',
-            'UserAngelTypes.supporter',
+            'user_angel_type.id AS user_angel_type_id',
+            'user_angel_type.confirm_user_id',
+            'user_angel_type.supporter',
         ])
-        ->leftJoin('UserAngelTypes', function (JoinClause $join) use ($userId) {
-            $join->on('angel_types.id', 'UserAngelTypes.angeltype_id');
-            $join->where('UserAngelTypes.user_id', $userId);
+        ->leftJoin('user_angel_type', function (JoinClause $join) use ($userId) {
+            $join->on('angel_types.id', 'user_angel_type.angel_type_id');
+            $join->where('user_angel_type.user_id', $userId);
         })
         ->get();
 }

@@ -34,6 +34,7 @@ function admin_free()
 
     $angelType = $request->input('angeltype', '');
 
+    /** @var User[] $users */
     $users = [];
     if ($request->has('submit')) {
         $query = User::with('personalData')
@@ -52,16 +53,16 @@ function admin_free()
             ->groupBy('users.id');
 
         if (!empty($angelType)) {
-            $query->join('UserAngelTypes', function ($join) use ($angelType) {
+            $query->join('user_angel_type', function ($join) use ($angelType) {
                 /** @var JoinClause $join */
-                $join->on('UserAngelTypes.user_id', '=', 'users.id')
-                    ->where('UserAngelTypes.angeltype_id', '=', $angelType);
+                $join->on('user_angel_type.user_id', '=', 'users.id')
+                    ->where('user_angel_type.angel_type_id', '=', $angelType);
             });
 
             $query->join('angel_types', function ($join) {
                 /** @var JoinClause $join */
-                $join->on('UserAngelTypes.angeltype_id', '=', 'angel_types.id')
-                    ->whereNotNull('UserAngelTypes.confirm_user_id')
+                $join->on('user_angel_type.angel_type_id', '=', 'angel_types.id')
+                    ->whereNotNull('user_angel_type.confirm_user_id')
                     ->orWhere('angel_types.restricted', '=', '0');
             });
         }

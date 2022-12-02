@@ -3,6 +3,7 @@
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -62,7 +63,7 @@ function shift_entry_create_controller(): array
         throw_redirect(user_link($user->id));
     }
 
-    if (User_is_AngelType_supporter($user, $angeltype)) {
+    if ($user->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes')) {
         return shift_entry_create_controller_supporter($shift, $angeltype);
     }
 
@@ -145,7 +146,8 @@ function shift_entry_create_controller_supporter($shift, AngelType $angeltype): 
     if ($request->has('user_id')) {
         $signup_user = User::find($request->input('user_id'));
     }
-    if (!UserAngelType_exists($signup_user->id, $angeltype)) {
+
+    if (!$signup_user->userAngelTypes()->wherePivot('angel_type_id', $angeltype->id)->exists()) {
         error(__('User is not in angeltype.'));
         throw_redirect(shift_link($shift));
     }
@@ -164,7 +166,7 @@ function shift_entry_create_controller_supporter($shift, AngelType $angeltype): 
         throw_redirect(shift_link($shift));
     }
 
-    $users = Users_by_angeltype($angeltype);
+    $users = $angeltype->userAngelTypes->sortBy('name');
     $users_select = [];
     foreach ($users as $u) {
         $users_select[$u->id] = $u->name;
@@ -205,7 +207,7 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
  * Sign up for a shift.
  * Case: User
  *
- * @param array $shift
+ * @param array     $shift
  * @param AngelType $angeltype
  * @return array
  */
@@ -242,8 +244,14 @@ function shift_entry_create_controller_user($shift, AngelType $angeltype): array
             'freeload_comment' => ''
         ]);
 
-        if (!$angeltype->restricted && !UserAngelType_exists($signup_user->id, $angeltype)) {
-            UserAngelType_create($signup_user->id, $angeltype);
+        if (
+            !$angeltype->restricted
+            && !$angeltype->userAngelTypes()->wherePivot('user_id', $signup_user->id)->exists()
+        ) {
+            $userAngelType = new UserAngelType();
+            $userAngelType->user()->associate($signup_user);
+            $userAngelType->angelType()->associate($angeltype);
+            $userAngelType->save();
         }
 
         success(__('You are subscribed. Thank you!'));
@@ -260,9 +268,9 @@ function shift_entry_create_controller_user($shift, AngelType $angeltype): array
 /**
  * Link to create a shift entry.
  *
- * @param array $shift
+ * @param array     $shift
  * @param AngelType $angeltype
- * @param array $params
+ * @param array     $params
  * @return string URL
  */
 function shift_entry_create_link($shift, AngelType $angeltype, $params = [])

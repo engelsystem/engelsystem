@@ -4,6 +4,7 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Collection;
 
@@ -75,20 +76,21 @@ function Shift_editor_info_render($shift)
 /**
  * @param array     $shift
  * @param AngelType $angeltype
- * @param array     $user_angeltype
  * @return string
  */
-function Shift_signup_button_render($shift, AngelType $angeltype, $user_angeltype = null)
+function Shift_signup_button_render($shift, AngelType $angeltype)
 {
-    if (empty($user_angeltype)) {
-        $user_angeltype = UserAngelType_by_User_and_AngelType(auth()->user()->id, $angeltype);
-    }
+    /** @var UserAngelType|null $user_angeltype */
+    $user_angeltype = UserAngelType::whereUserId(auth()->user()->id)
+        ->where('angel_type_id', $angeltype->id)
+        ->first();
 
     if (
         isset($angeltype->shift_signup_state)
         && (
             $angeltype->shift_signup_state->isSignupAllowed()
-            || User_is_AngelType_supporter(auth()->user(), $angeltype)
+            || auth()->user()->isAngelTypeSupporter($angeltype)
+            || auth()->can('admin_user_angeltypes')
         )
     ) {
         return button(shift_entry_create_link($shift, $angeltype), __('Sign up'));
@@ -101,6 +103,7 @@ function Shift_signup_button_render($shift, AngelType $angeltype, $user_angeltyp
             )
         );
     }
+
     return '';
 }
 
@@ -208,7 +211,8 @@ function Shift_view($shift, ShiftType $shifttype, Room $room, $angeltypes_source
 function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin)
 {
     $angeltype = $angeltypes[$needed_angeltype['TID']];
-    $angeltype_supporter = User_is_AngelType_supporter(auth()->user(), $angeltype);
+    $angeltype_supporter = auth()->user()->isAngelTypeSupporter($angeltype)
+        || auth()->can('admin_user_angeltypes');
 
     $needed_angels = '';
 

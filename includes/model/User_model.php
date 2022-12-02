@@ -60,44 +60,21 @@ function User_is_freeloader($user)
 /**
  * Returns all users that are not member of given angeltype.
  *
- * @param array $angeltype Angeltype
+ * @param AngelType $angeltype Angeltype
  *
  * @return User[]|Collection
  */
-function Users_by_angeltype_inverted($angeltype)
+function Users_by_angeltype_inverted(AngelType $angeltype)
 {
     return User::query()
         ->select('users.*')
-        ->leftJoin('UserAngelTypes', function ($query) use ($angeltype) {
+        ->leftJoin('user_angel_type', function ($query) use ($angeltype) {
             /** @var JoinClause $query */
             $query
-                ->on('users.id', '=', 'UserAngelTypes.user_id')
-                ->where('UserAngelTypes.angeltype_id', '=', $angeltype['id']);
+                ->on('users.id', '=', 'user_angel_type.user_id')
+                ->where('user_angel_type.angel_type_id', '=', $angeltype->id);
         })
-        ->whereNull('UserAngelTypes.id')
-        ->orderBy('users.name')
-        ->get();
-}
-
-/**
- * Returns all members of given angeltype.
- *
- * @param AngelType $angeltype
- * @return User[]|Collection
- */
-function Users_by_angeltype(AngelType $angeltype)
-{
-    return User::query()
-        ->select(
-            'users.*',
-            'UserAngelTypes.id AS user_angeltype_id',
-            'UserAngelTypes.confirm_user_id',
-            'UserAngelTypes.supporter',
-            'users_licenses.*'
-        )
-        ->join('UserAngelTypes', 'users.id', '=', 'UserAngelTypes.user_id')
-        ->leftJoin('users_licenses', 'users.id', '=', 'users_licenses.user_id')
-        ->where('UserAngelTypes.angeltype_id', '=', $angeltype->id)
+        ->whereNull('user_angel_type.id')
         ->orderBy('users.name')
         ->get();
 }

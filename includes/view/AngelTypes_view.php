@@ -3,6 +3,7 @@
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilterRenderer;
 use Illuminate\Support\Collection;
@@ -38,7 +39,7 @@ function AngelType_name_render(AngelType $angeltype, $plain = false)
  */
 function AngelType_render_membership(AngelType $user_angeltype)
 {
-    if (!empty($user_angeltype->user_angeltype_id)) {
+    if (!empty($user_angeltype->user_angel_type_id)) {
         if ($user_angeltype->restricted) {
             if (empty($user_angeltype->confirm_user_id)) {
                 return icon('mortarboard-fill') . __('Unconfirmed');
@@ -135,17 +136,17 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
 /**
  * Renders the buttons for the angeltype view.
  *
- * @param AngelType  $angeltype
- * @param array|null $user_angeltype
- * @param bool       $admin_angeltypes
- * @param bool       $supporter
- * @param License    $user_driver_license
- * @param User|null  $user
+ * @param AngelType          $angeltype
+ * @param UserAngelType|null $user_angeltype
+ * @param bool               $admin_angeltypes
+ * @param bool               $supporter
+ * @param License            $user_driver_license
+ * @param User|null          $user
  * @return string
  */
 function AngelType_view_buttons(
     AngelType $angeltype,
-    $user_angeltype,
+    ?UserAngelType $user_angeltype,
     $admin_angeltypes,
     $supporter,
     $user_driver_license,
@@ -173,14 +174,14 @@ function AngelType_view_buttons(
             error(__('This angeltype requires a driver license. Please enter your driver license information!'));
         }
 
-        if ($angeltype->restricted && empty($user_angeltype['confirm_user_id'])) {
+        if ($angeltype->restricted && !$user_angeltype->confirm_user_id) {
             error(sprintf(
                 __('You are unconfirmed for this angeltype. Please go to the introduction for %s to get confirmed.'),
                 $angeltype->name
             ));
         }
         $buttons[] = button(
-            page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype['id']]),
+            page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype->id]),
             icon('box-arrow-right') . __('leave')
         );
     }
@@ -230,12 +231,12 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
             $member['has_license_forklift'] = icon_bool($member->license->drive_forklift);
         }
 
-        if ($angeltype->restricted && empty($member['confirm_user_id'])) {
+        if ($angeltype->restricted && empty($member->pivot->confirm_user_id)) {
             $member['actions'] = table_buttons([
                 button(
                     page_link_to(
                         'user_angeltypes',
-                        ['action' => 'confirm', 'user_angeltype_id' => $member['user_angeltype_id']]
+                        ['action' => 'confirm', 'user_angeltype_id' => $member->pivot->id]
                     ),
                     __('confirm'),
                     'btn-sm'
@@ -243,20 +244,20 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                 button(
                     page_link_to(
                         'user_angeltypes',
-                        ['action' => 'delete', 'user_angeltype_id' => $member['user_angeltype_id']]
+                        ['action' => 'delete', 'user_angeltype_id' => $member->pivot->id]
                     ),
                     __('deny'),
                     'btn-sm'
                 )
             ]);
             $members_unconfirmed[] = $member;
-        } elseif ($member['supporter']) {
+        } elseif ($member->pivot->supporter) {
             if ($admin_angeltypes) {
                 $member['actions'] = table_buttons([
                     button(
                         page_link_to('user_angeltypes', [
                             'action'            => 'update',
-                            'user_angeltype_id' => $member['user_angeltype_id'],
+                            'user_angeltype_id' => $member->pivot->id,
                             'supporter'         => 0
                         ]),
                         icon('person-fill-down') . __('Remove supporter rights'),
@@ -274,7 +275,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                         button(
                             page_link_to('user_angeltypes', [
                                 'action'            => 'update',
-                                'user_angeltype_id' => $member['user_angeltype_id'],
+                                'user_angeltype_id' => $member->pivot->id,
                                 'supporter'         => 1
                             ]),
                             icon('person-fill-up') . __('Add supporter rights'),
@@ -284,7 +285,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                     button(
                         page_link_to('user_angeltypes', [
                             'action'            => 'delete',
-                            'user_angeltype_id' => $member['user_angeltype_id']
+                            'user_angeltype_id' => $member->pivot->id
                         ]),
                         icon('trash') . __('remove'),
                         'btn-sm'
@@ -338,7 +339,7 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
  *
  * @param AngelType             $angeltype
  * @param User[]                $members
- * @param array                 $user_angeltype
+ * @param UserAngelType|null    $user_angeltype
  * @param bool                  $admin_user_angeltypes
  * @param bool                  $admin_angeltypes
  * @param bool                  $supporter
@@ -352,7 +353,7 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
 function AngelType_view(
     AngelType $angeltype,
     $members,
-    $user_angeltype,
+    ?UserAngelType $user_angeltype,
     $admin_user_angeltypes,
     $admin_angeltypes,
     $supporter,
@@ -553,13 +554,13 @@ function AngelTypes_about_view_angeltype(AngelType $angeltype)
         $html .= AngelTypes_render_contact_info($angeltype);
     }
 
-    if (isset($angeltype->user_angeltype_id)) {
+    if (isset($angeltype->user_angel_type_id)) {
         $buttons = [];
-        if (!empty($angeltype->user_angeltype_id)) {
+        if (!empty($angeltype->user_angel_type_id)) {
             $buttons[] = button(
                 page_link_to(
                     'user_angeltypes',
-                    ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angeltype_id]
+                    ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angel_type_id]
                 ),
                 icon('box-arrow-right') . __('leave')
             );
