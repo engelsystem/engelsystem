@@ -42,7 +42,7 @@ function admin_groups()
                         'admin_groups',
                         ['action' => 'edit', 'id' => $group->id]
                     ),
-                    __('edit'),
+                    icon('pencil') . __('edit'),
                     'btn-sm'
                 )
             ];

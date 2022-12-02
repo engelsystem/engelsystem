@@ -73,12 +73,12 @@ function ShiftType_view(ShiftType $shifttype)
             button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
             button(
                 page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype->id]),
-                __('edit'),
+                icon('pencil') . __('edit'),
                 'edit'
             ),
             button(
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
-                __('delete'),
+                icon('trash') . __('delete'),
                 'delete'
             )
         ]),
@@ -105,12 +105,12 @@ function ShiftTypes_list_view($shifttypes)
                     'shifttypes',
                     ['action' => 'edit', 'shifttype_id' => $shifttype->id]
                 ),
-                __('edit'),
+                icon('pencil') . __('edit'),
                 'btn-sm'
             ),
             button(
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
-                __('delete'),
+                icon('trash') . __('delete'),
                 'btn-sm'
             )
         ]);

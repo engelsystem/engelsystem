@@ -68,7 +68,7 @@ function make_user_submenu()
             page_link_to('settings/profile'),
             __('Settings'),
             $page == 'settings/profile',
-            'gear'
+            'person-fill-gear'
         );
     }
 
@@ -192,7 +192,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_dropdown_item_divider();
     }
     foreach ($rooms as $room) {
-        $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'geo-alt');
+        $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'pin-map-fill');
     }
     if (count($room_menu) > 0) {
         $menu[] = toolbar_dropdown('map-marker', __('Rooms'), $room_menu);

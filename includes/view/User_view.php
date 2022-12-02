@@ -103,7 +103,7 @@ function Users_view(
             ? $user->personalData->planned_departure_date->format(__('Y-m-d')) : '';
         $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
         $u['actions'] = table_buttons([
-            button_icon(page_link_to('admin_user', ['id' => $user->id]), 'pencil-square', 'btn-sm')
+            button_icon(page_link_to('admin_user', ['id' => $user->id]), 'pencil', 'btn-sm')
         ]);
         $usersList[] = $u;
     }
@@ -272,9 +272,9 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     $myshift = [
-        'date'       => icon('calendar3')
+        'date'       => icon('calendar-event')
             . date('Y-m-d', $shift['start']) . '<br>'
-            . icon('clock') . date('H:i', $shift['start'])
+            . icon('clock-history') . date('H:i', $shift['start'])
             . ' - '
             . date('H:i', $shift['end']),
         'duration'   => sprintf('%.2f', ($shift['end'] - $shift['start']) / 3600) . '&nbsp;h',
@@ -305,7 +305,7 @@ function User_view_myshift($shift, $user_source, $its_me)
     if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
             page_link_to('user_myshifts', ['edit' => $shift['id'], 'id' => $user_source->id]),
-            icon('pencil-square') . __('edit'),
+            icon('pencil') . __('edit'),
             'btn-sm'
         );
     }
@@ -400,7 +400,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
         $actions = table_buttons([
             button(
                 url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id),
-                icon('pencil-square') . __('edit'),
+                icon('pencil') . __('edit'),
                 'btn-sm'
             ),
             button(
@@ -412,7 +412,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     }
 
     return [
-        'date'       => icon('calendar3') . date('Y-m-d', $worklog->worked_at->timestamp),
+        'date'       => icon('calendar-event') . date('Y-m-d', $worklog->worked_at->timestamp),
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
         'room'       => '',
         'shift_info' => __('Work log entry'),
@@ -511,11 +511,11 @@ function User_view(
                         ) : '',
                         $admin_user_privilege ? button(
                             page_link_to('admin_user', ['id' => $user_source->id]),
-                            icon('pencil-square') . __('edit')
+                            icon('pencil') . __('edit')
                         ) : '',
                         $admin_user_privilege || ($its_me && $needs_drivers_license) ? button(
                             user_driver_license_edit_link($user_source),
-                            icon('wallet2') . __('driving license')
+                            icon('person-vcard') . __('driving license')
                         ) : '',
                         (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
                             form([
@@ -529,24 +529,24 @@ function User_view(
                                     'users',
                                     ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
                                 ),
-                                icon('file-binary-fill') . __('Vouchers')
+                                icon('valentine') . __('Vouchers')
                             )
                         : '',
                         $admin_user_worklog_privilege ? button(
                             url('/admin/user/' . $user_source->id . '/worklog'),
-                            icon('list') . __('worklog.add')
+                            icon('clock-history') . __('worklog.add')
                         ) : '',
                         $its_me ? button(
                             page_link_to('settings/profile'),
-                            icon('gear') . __('Settings')
+                            icon('person-fill-gear') . __('Settings')
                         ) : '',
                         ($its_me && $auth->can('ical')) ? button(
                             page_link_to('ical', ['key' => $user_source->api_key]),
-                            icon('calendar3') . __('iCal Export')
+                            icon('calendar-week') . __('iCal Export')
                         ) : '',
                         ($its_me && $auth->can('shifts_json_export')) ? button(
                             page_link_to('shifts_json_export', ['key' => $user_source->api_key]),
-                            icon('box-arrow-up-right') . __('JSON Export')
+                            icon('braces') . __('JSON Export')
                         ) : '',
                         ($its_me && (
                             $auth->can('shifts_json_export')
@@ -705,7 +705,7 @@ function User_view_state_admin($freeloader, $user_source)
     $availableCount = max($voucherCount, $availableCount);
     if ($user_source->state->got_voucher > 0) {
         $state[] = '<span class="text-success">'
-            . icon('file-binary-fill')
+            . icon('valentine')
             . __('Got %s of %s vouchers', [$voucherCount, $availableCount])
             . '</span>';
     } else {

@@ -28,7 +28,7 @@ function Shift_view_header($shift, Room $room)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('Start') . '</h4>',
             '<p class="lead' . (time() >= $shift['start'] ? ' text-success' : '') . '">',
-            icon('calendar3') . date(__('Y-m-d'), $shift['start']),
+            icon('calendar-event') . date(__('Y-m-d'), $shift['start']),
             '<br />',
             icon('clock') . date('H:i', $shift['start']),
             '</p>'
@@ -36,7 +36,7 @@ function Shift_view_header($shift, Room $room)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('End') . '</h4>',
             '<p class="lead' . (time() >= $shift['end'] ? ' text-success' : '') . '">',
-            icon('calendar3') . date(__('Y-m-d'), $shift['end']),
+            icon('calendar-event') . date(__('Y-m-d'), $shift['end']),
             '<br />',
             icon('clock') . date('H:i', $shift['end']),
             '</p>'
@@ -169,7 +169,7 @@ function Shift_view($shift, ShiftType $shifttype, Room $room, $angeltypes_source
             $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
             $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
             $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype->name) : '',
-            $admin_rooms ? button(room_link($room), icon('geo-alt') . $room->name) : '',
+            $admin_rooms ? button(room_link($room), icon('pin-map-fill') . $room->name) : '',
         ];
     }
     $buttons[] = button(user_link(auth()->user()->id), '<span class="icon-icon_angel"></span> ' . __('My shifts'));
