@@ -432,7 +432,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
  * @param User                 $user_source
  * @param bool                 $admin_user_privilege
  * @param bool                 $freeloader
- * @param array[]              $user_angeltypes
+ * @param AngelType[]          $user_angeltypes
  * @param Group[]              $user_groups
  * @param array[]              $shifts
  * @param bool                 $its_me
@@ -488,7 +488,7 @@ function User_view(
 
     $needs_drivers_license = false;
     foreach ($user_angeltypes as $angeltype) {
-        $needs_drivers_license = $needs_drivers_license || $angeltype['requires_driver_license'];
+        $needs_drivers_license = $needs_drivers_license || $angeltype->requires_driver_license;
     }
 
     return page_with_title(
@@ -719,7 +719,7 @@ function User_view_state_admin($freeloader, $user_source)
 }
 
 /**
- * @param array[] $user_angeltypes
+ * @param AngelType[] $user_angeltypes
  * @return string
  */
 function User_angeltypes_render($user_angeltypes)
@@ -727,11 +727,11 @@ function User_angeltypes_render($user_angeltypes)
     $output = [];
     foreach ($user_angeltypes as $angeltype) {
         $class = 'text-success';
-        if ($angeltype['restricted'] == 1 && empty($angeltype['confirm_user_id'])) {
+        if ($angeltype->restricted && !$angeltype->pivot->confirm_user_id) {
             $class = 'text-warning';
         }
-        $output[] = '<a href="' . angeltype_link($angeltype['id']) . '" class="' . $class . '">'
-            . ($angeltype['supporter'] ? icon('patch-check') : '') . $angeltype['name']
+        $output[] = '<a href="' . angeltype_link($angeltype->id) . '" class="' . $class . '">'
+            . ($angeltype->pivot->supporter ? icon('patch-check') : '') . $angeltype->name
             . '</a>';
     }
     return div('col-md-2', [

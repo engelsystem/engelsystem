@@ -4,7 +4,10 @@ use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
 /**
@@ -94,9 +97,9 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
 /**
  * Update given ShiftsFilter with filter params from user input
  *
- * @param ShiftsFilter $shiftsFilter      The shifts filter to update from request data
+ * @param ShiftsFilter $shiftsFilter The shifts filter to update from request data
  * @param boolean      $user_shifts_admin Has the user user_shift_admin privilege?
- * @param string[]     $days              An array of available filter days
+ * @param string[]     $days An array of available filter days
  */
 function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $days)
 {
@@ -157,6 +160,7 @@ function load_types()
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
         throw_redirect(page_link_to('/'));
     }
+
     $types = Db::select(
         '
             SELECT
@@ -165,15 +169,15 @@ function load_types()
                 (
                     `angel_types`.`restricted`=0
                     OR (
-                        NOT `UserAngelTypes`.`confirm_user_id` IS NULL
-                        OR `UserAngelTypes`.`id` IS NULL
+                        NOT `user_angel_type`.`confirm_user_id` IS NULL
+                        OR `user_angel_type`.`id` IS NULL
                     )
                 ) AS `enabled`
             FROM `angel_types`
-            LEFT JOIN `UserAngelTypes`
+            LEFT JOIN `user_angel_type`
                 ON (
-                    `UserAngelTypes`.`angeltype_id`=`angel_types`.`id`
-                    AND `UserAngelTypes`.`user_id`=?
+                    `user_angel_type`.`angel_type_id`=`angel_types`.`id`
+                    AND `user_angel_type`.`user_id`=?
                 )
             ORDER BY `angel_types`.`name`
         ',
@@ -181,9 +185,11 @@ function load_types()
             $user->id,
         ]
     );
+
     if (empty($types)) {
         return unrestricted_angeltypes();
     }
+
     return $types;
 }
 
@@ -208,12 +214,16 @@ function view_user_shifts()
     $types = load_types();
     $ownTypes = [];
 
-    foreach (UserAngelTypes_by_User($user->id, true) as $type) {
-        if (!$type['confirm_user_id'] && $type['restricted']) {
-            continue;
-        }
-
-        $ownTypes[] = (int)$type['angeltype_id'];
+    /** @var EloquentCollection|UserAngelType[] $userAngelTypes */
+    $userAngelTypes = UserAngelType::whereUserId($user->id)
+        ->leftJoin('angel_types', 'user_angel_type.angel_type_id', 'angel_types.id')
+        ->where(function (Builder $query) {
+            $query->whereNotNull('user_angel_type.confirm_user_id')
+                ->orWhere('angel_types.restricted', false);
+        })
+        ->get();
+    foreach ($userAngelTypes as $type) {
+        $ownTypes[] = $type->angel_type_id;
     }
 
     if (!$session->has('shifts-filter')) {

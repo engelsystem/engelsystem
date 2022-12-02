@@ -3,6 +3,8 @@
 namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 
 class AngelTypeTest extends ModelTest
 {
@@ -36,7 +38,31 @@ class AngelTypeTest extends ModelTest
     }
 
     /**
-     * @covers       \Engelsystem\Models\AngelType::boot
+     * @covers \Engelsystem\Models\AngelType::userAngelTypes
+     */
+    public function testUserAngelTypes(): void
+    {
+        User::factory(2)->create();
+        $user1 = User::factory()->create();
+        User::factory(1)->create();
+        $user2 = User::factory()->create();
+
+        $angelType = new AngelType(['name' => 'Test']);
+        $angelType->save();
+
+        $angelType->userAngelTypes()->attach($user1);
+        $angelType->userAngelTypes()->attach($user2);
+
+        /** @var UserAngelType $userAngelType */
+        $userAngelType = UserAngelType::find(1);
+        $this->assertEquals($angelType->id, $userAngelType->angelType->id);
+
+        $angeltypes = $angelType->userAngelTypes;
+        $this->assertCount(2, $angeltypes);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\AngelType::boot
      */
     public function testBoot(): void
     {

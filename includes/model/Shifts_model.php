@@ -5,6 +5,7 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftSignupState;
 
@@ -376,7 +377,7 @@ function Shift_signup_allowed_angel(
     }
 
     if (empty($user_angeltype)) {
-        $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
+        $user_angeltype = UserAngelType::whereUserId($user->id)->where('angel_type_id', $angeltype->id)->first();
     }
 
     if (
@@ -421,7 +422,7 @@ function Shift_signup_allowed_angeltype_supporter(AngelType $needed_angeltype, $
  * Check if an admin can sign up a user to a shift.
  *
  * @param AngelType $needed_angeltype
- * @param array[] $shift_entries
+ * @param array[]   $shift_entries
  * @return ShiftSignupState
  */
 function Shift_signup_allowed_admin(AngelType $needed_angeltype, $shift_entries)
@@ -456,7 +457,7 @@ function Shift_signout_allowed($shift, AngelType $angeltype, $signout_user_id)
     // angeltype supporter can sign out any user at any time from their supported angeltype
     if (
         auth()->can('shiftentry_edit_angeltype_supporter')
-        && User_is_AngelType_supporter($user, $angeltype)
+        && ($user->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes'))
     ) {
         return true;
     }
@@ -495,7 +496,7 @@ function Shift_signup_allowed(
 
     if (
         auth()->can('shiftentry_edit_angeltype_supporter')
-        && User_is_AngelType_supporter(auth()->user(), $angeltype)
+        && (auth()->user()->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes'))
     ) {
         return Shift_signup_allowed_angeltype_supporter($needed_angeltype, $shift_entries);
     }

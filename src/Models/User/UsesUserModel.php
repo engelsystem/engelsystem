@@ -3,14 +3,14 @@
 namespace Engelsystem\Models\User;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @property int                    $user_id
+ * @property int       $user_id
  *
- * @property-read QueryBuilder|User $user
+ * @property-read User $user
  *
- * @method static QueryBuilder|static[] whereUserId($value)
+ * @method static Builder|static[] whereUserId($value)
  */
 trait UsesUserModel
 {

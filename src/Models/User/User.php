@@ -3,6 +3,7 @@
 namespace Engelsystem\Models\User;
 
 use Carbon\Carbon;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Message;
@@ -11,6 +12,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -42,6 +44,8 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|NewsComment[]      $newsComments
  * @property-read Collection|OAuth[]            $oauth
  * @property-read SupportCollection|Privilege[] $privileges
+ * @property-read Collection|AngelType[]        $userAngelTypes
+ * @property-read UserAngelType                 $pivot
  * @property-read Collection|Worklog[]          $worklogs
  * @property-read Collection|Worklog[]          $worklogsCreated
  * @property-read Collection|Question[]         $questionsAsked
@@ -169,6 +173,29 @@ class User extends BaseModel
         return $this
             ->hasOne(State::class)
             ->withDefault();
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function userAngelTypes(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(AngelType::class, 'user_angel_type')
+            ->using(UserAngelType::class)
+            ->withPivot(UserAngelType::getPivotAttributes());
+    }
+
+    /**
+     * @param AngelType $angelType
+     * @return bool
+     */
+    public function isAngelTypeSupporter(AngelType $angelType): bool
+    {
+        return $this->userAngelTypes()
+            ->wherePivot('angel_type_id', $angelType->id)
+            ->wherePivot('supporter', true)
+            ->exists();
     }
 
     /**

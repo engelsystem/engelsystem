@@ -41,8 +41,8 @@ class ScheduleTest extends ModelTest
         $st->save();
 
         $schedule = new Schedule($this->data);
-        $schedule->save();
         $schedule->shiftType()->associate($st);
+        $schedule->save();
 
         $this->assertEquals('Shift Type', Schedule::find(1)->shiftType->name);
     }

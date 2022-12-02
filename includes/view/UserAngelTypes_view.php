@@ -2,15 +2,16 @@
 
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 
 /**
- * @param array     $user_angeltype
- * @param User      $user
- * @param AngelType $angeltype
- * @param bool      $supporter
+ * @param UserAngelType $user_angeltype
+ * @param User          $user
+ * @param AngelType     $angeltype
+ * @param bool          $supporter
  * @return string
  */
-function UserAngelType_update_view($user_angeltype, User $user, AngelType $angeltype, bool $supporter)
+function UserAngelType_update_view(UserAngelType $user_angeltype, User $user, AngelType $angeltype, bool $supporter)
 {
     return page_with_title($supporter ? __('Add supporter rights') : __('Remove supporter rights'), [
         msg(),
@@ -31,7 +32,7 @@ function UserAngelType_update_view($user_angeltype, User $user, AngelType $angel
             ]),
         ], page_link_to('user_angeltypes', [
             'action'            => 'update',
-            'user_angeltype_id' => $user_angeltype['id'],
+            'user_angeltype_id' => $user_angeltype->id,
             'supporter'         => ($supporter ? '1' : '0'),
         ])),
     ]);
@@ -80,12 +81,12 @@ function UserAngelTypes_confirm_all_view(AngelType $angeltype)
 }
 
 /**
- * @param array     $user_angeltype
- * @param User      $user
- * @param AngelType $angeltype
+ * @param UserAngelType $user_angeltype
+ * @param User          $user
+ * @param AngelType     $angeltype
  * @return string
  */
-function UserAngelType_confirm_view($user_angeltype, $user, AngelType $angeltype)
+function UserAngelType_confirm_view(UserAngelType $user_angeltype, User $user, AngelType $angeltype)
 {
     return page_with_title(__('Confirm angeltype for user'), [
         msg(),
@@ -99,17 +100,17 @@ function UserAngelType_confirm_view($user_angeltype, $user, AngelType $angeltype
                 button(angeltype_link($angeltype->id), icon('x-lg') . __('cancel')),
                 form_submit('confirm_user', icon('check-lg') . __('yes'), 'btn-primary', false),
             ]),
-        ], page_link_to('user_angeltypes', ['action' => 'confirm', 'user_angeltype_id' => $user_angeltype['id']])),
+        ], page_link_to('user_angeltypes', ['action' => 'confirm', 'user_angeltype_id' => $user_angeltype->id])),
     ]);
 }
 
 /**
- * @param array     $user_angeltype
- * @param User      $user
- * @param AngelType $angeltype
+ * @param UserAngelType $user_angeltype
+ * @param User          $user
+ * @param AngelType     $angeltype
  * @return string
  */
-function UserAngelType_delete_view($user_angeltype, $user, AngelType $angeltype)
+function UserAngelType_delete_view(UserAngelType $user_angeltype, User $user, AngelType $angeltype)
 {
     return page_with_title(__('Remove angeltype'), [
         msg(),
@@ -123,7 +124,7 @@ function UserAngelType_delete_view($user_angeltype, $user, AngelType $angeltype)
                 button(angeltype_link($angeltype->id), icon('x-lg') . __('cancel')),
                 form_submit('delete', icon('check-lg') . __('yes'), 'btn-primary', false),
             ]),
-        ], page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype['id']])),
+        ], page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype->id])),
     ], true);
 }
 
