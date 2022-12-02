@@ -30,12 +30,12 @@ function admin_rooms()
             'actions'   => table_buttons([
                 button(
                     page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room->id]),
-                    __('edit'),
+                    icon('pencil') . __('edit'),
                     'btn-sm'
                 ),
                 button(
                     page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room->id]),
-                    __('delete'),
+                    icon('trash') . __('delete'),
                     'btn-sm'
                 )
             ])

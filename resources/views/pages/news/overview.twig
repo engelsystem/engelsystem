@@ -94,7 +94,7 @@
 
                 {% if has_permission_to('admin_news') %}
                     <div class="ms-auto">
-                        {{ m.button(m.icon('pencil-square'), url('admin/news/' ~ news.id), 'secondary', 'sm') }}
+                        {{ m.button(m.icon('pencil'), url('admin/news/' ~ news.id), 'secondary', 'sm') }}
                     </div>
                 {% endif %}
             </div>

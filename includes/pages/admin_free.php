@@ -102,7 +102,7 @@ function admin_free()
                 : icon('eye-slash'),
             'actions'     =>
                 auth()->can('admin_user')
-                    ? button(page_link_to('admin_user', ['id' => $usr->id]), __('edit'), 'btn-sm')
+                    ? button(page_link_to('admin_user', ['id' => $usr->id]), icon('pencil') . __('edit'), 'btn-sm')
                     : ''
         ];
     }

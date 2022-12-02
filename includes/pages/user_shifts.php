@@ -257,7 +257,12 @@ function view_user_shifts()
             msg(),
             view(__DIR__ . '/../../resources/views/pages/user-shifts.html', [
                 'title'         => shifts_title(),
-                'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), 'rooms', __('Rooms')),
+                'room_select'   => make_select(
+                    $rooms,
+                    $shiftsFilter->getRooms(),
+                    'rooms',
+                    icon('pin-map-fill') . __('Rooms')
+                ),
                 'start_select'  => html_select_key(
                     'start_day',
                     'start_day',
@@ -276,7 +281,7 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    __('Angeltypes') . '<sup>1</sup>',
+                    icon('person-lines-fill') . __('Angeltypes') . '<sup>1</sup>',
                     [
                         button(
                             'javascript:checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
@@ -285,7 +290,12 @@ function view_user_shifts()
                         ),
                     ]
                 ),
-                'filled_select' => make_select($filled, $shiftsFilter->getFilled(), 'filled', __('Occupancy')),
+                'filled_select' => make_select(
+                    $filled,
+                    $shiftsFilter->getFilled(),
+                    'filled',
+                    icon('person-fill-slash') . __('Occupancy')
+                ),
                 'task_notice'   =>
                     '<sup>1</sup>'
                     . __('The tasks shown here are influenced by the angeltypes you joined already!')
@@ -378,7 +388,7 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
             . '<input class="form-check-input" type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $i['id'] . '" '
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
             . '><label class="form-check-label" for="' . $id . '">' . $i['name'] . '</label>'
-            . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('book'))
+            . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('mortarboard-fill'))
             . '</div>';
     }
     $html .= '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";

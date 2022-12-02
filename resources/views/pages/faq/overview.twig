@@ -56,7 +56,7 @@
 
                                 {% if has_permission_to('faq.edit') %}
                                     <span class="ms-auto">
-                                        {{ m.button(m.icon('pencil-square'), url('admin/faq/' ~ item.id), 'secondary', 'sm') }}
+                                        {{ m.button(m.icon('pencil'), url('admin/faq/' ~ item.id), 'secondary', 'sm') }}
                                     </span>
                                 {% endif %}
                             </div>

@@ -307,7 +307,7 @@ function admin_shifts()
             foreach ($shifts as $shift) {
                 $shifts_table_entry = [
                     'timeslot'      =>
-                        icon('clock') . ' '
+                        icon('clock-history') . ' '
                         . date('Y-m-d H:i', $shift['start'])
                         . ' - '
                         . date('H:i', $shift['end'])

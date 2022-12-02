@@ -62,7 +62,7 @@
                                             {% endif %}
 
                                             {% if has_permission_to('question.edit') %}
-                                                {{ m.button(m.icon('pencil-square'), url('admin/questions/' ~ question.id), null, 'sm') }}
+                                                {{ m.button(m.icon('pencil'), url('admin/questions/' ~ question.id), null, 'sm') }}
                                                 </div>
                                             {% endif %}
                                         </div>

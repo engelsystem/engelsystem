@@ -296,7 +296,7 @@ function angeltypes_list_controller()
         $actions = [
             button(
                 page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
-                __('view'),
+                icon('eye') . __('view'),
                 'btn-sm'
             )
         ];
@@ -304,12 +304,12 @@ function angeltypes_list_controller()
         if (auth()->can('admin_angel_types')) {
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
-                __('edit'),
+                icon('pencil') . __('edit'),
                 'btn-sm'
             );
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
-                __('delete'),
+                icon('trash') . __('delete'),
                 'btn-sm'
             );
         }
@@ -321,18 +321,18 @@ function angeltypes_list_controller()
                     'user_angeltypes',
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angeltype_id]
                 ),
-                __('leave'),
+                icon('box-arrow-right') . __('leave'),
                 'btn-sm'
             );
         } else {
             $actions[] = button(
                 page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
-                __('join'),
+                icon('box-arrow-in-right') . __('join'),
                 'btn-sm'
             );
         }
 
-        $angeltype->is_restricted = $angeltype->restricted ? icon('book') : '';
+        $angeltype->is_restricted = $angeltype->restricted ? icon('mortarboard-fill') : '';
         $angeltype->no_self_signup_allowed = $angeltype->no_self_signup ? '' : icon('pencil-square');
 
         $angeltype->name = '<a href="'
