@@ -47,7 +47,7 @@ function form_spinner($name, $label, $value)
                 spinner.val(parseInt(spinner.val()) + 1);
             });
         </script>
-        ');
+        ', 'spinner-' . $name);
 }
 
 /**
@@ -68,11 +68,11 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     $start_date = is_numeric($start_date) ? date('Y-m-d', $start_date) : '';
     $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
 
-    return form_element($label, '
-    <div class="input-group date" id="' . $dom_id . '">
-        <input type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="' . $start_date . '" max="' . $end_date . '" name="' . $name . '" class="form-control" value="' . htmlspecialchars((string)$value) . '" autocomplete="off">
-    </div>
-    ', $dom_id);
+    return form_element(
+        $label,
+        '<input class="form-control" id="' . $dom_id . '" type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="' . $start_date . '" max="' . $end_date . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" autocomplete="off">',
+        $dom_id
+    );
 }
 
 /**
@@ -92,12 +92,9 @@ function form_datetime(string $name, string $label, $value)
     }
 
     return form_element($label, sprintf('
-    <div class="input-group datetime" id="%s">
-        <input type="datetime-local"
+        <input class="form-control" id="%s" type="datetime-local"
             pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} ([01][0-9]|2[0-3]):[0-5][0-9]" placeholder="YYYY-MM-DD HH:MM"
-            name="%s"
-            class="form-control" value="%s" autocomplete="off">
-    </div>
+            name="%s" value="%s" autocomplete="off">
     ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : '')), $dom_id);
 }
 
