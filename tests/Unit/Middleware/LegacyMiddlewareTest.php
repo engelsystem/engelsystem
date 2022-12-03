@@ -48,13 +48,13 @@ class LegacyMiddlewareTest extends TestCase
 
         $middleware->expects($this->once())
             ->method('loadPage')
-            ->with('user_worklog')
+            ->with('users')
             ->willReturn(['title', 'content']);
 
         $middleware->expects($this->exactly(2))
             ->method('renderPage')
             ->withConsecutive(
-                ['user_worklog', 'title', 'content'],
+                ['users', 'title', 'content'],
                 ['404', 'Page not found', 'It\'s not available!']
             )
             ->willReturn($response);
@@ -82,7 +82,7 @@ class LegacyMiddlewareTest extends TestCase
         $defaultRequest->query = $parameters;
         $defaultRequest->expects($this->once())
             ->method('path')
-            ->willReturn('user-worklog');
+            ->willReturn('users');
 
         $parameters->expects($this->exactly(2))
             ->method('get')

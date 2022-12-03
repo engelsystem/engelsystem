@@ -207,3 +207,5 @@ msgstr "Arbeitseinsatz erfolgreich angelegt."
 msgid "worklog.edit.success"
 msgstr "Arbeitseinsatz erfolgreich bearbeitet."
 
+msgid "worklog.delete.success"
+msgstr "Arbeitseinsatz erfolgreich gelöscht."

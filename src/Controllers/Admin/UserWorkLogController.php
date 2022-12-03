@@ -128,11 +128,59 @@ class UserWorkLogController extends BaseController
 
         $this->addNotification(isset($worklog_id) ? 'worklog.edit.success' : 'worklog.add.success');
 
-        return $this->redirect->back();
+        return $this->redirect->to('/users?action=view&user_id=' . $user_id);
+        // TODO Once User_view.php gets removed, change this to withView + getNotifications
     }
 
-    private function showEditWorklog($user, $work_date, $work_hours = 0, $comment = '', $is_edit = false): Response
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function showDeleteWorklog(Request $request): Response
     {
+        $user_id = $request->getAttribute('id');
+        $user = $this->user->findOrFail($user_id);
+        $worklog_id = $request->getAttribute('worklog_id');
+        $worklog = $this->worklog->findOrFail($worklog_id);
+
+        if ($worklog->user->id != $user_id) {
+            throw new HttpNotFound();
+        }
+
+        return $this->response->withView(
+            'admin/user/delete-worklog.twig',
+            [ 'user' => $user ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function deleteWorklog(Request $request): Response
+    {
+        $user_id = $request->getAttribute('id');
+        $worklog_id = $request->getAttribute('worklog_id');
+        $worklog = $this->worklog->findOrFail($worklog_id);
+
+        if ($worklog->user->id != $user_id) {
+            throw new HttpNotFound();
+        }
+        $worklog->delete();
+
+        $this->addNotification('worklog.delete.success');
+
+        return $this->redirect->to('/users?action=view&user_id=' . $user_id);
+        // TODO Once User_view.php gets removed, change this to withView + getNotifications
+    }
+
+    private function showEditWorklog(
+        User $user,
+        Carbon $work_date,
+        float $work_hours = 0,
+        string $comment = '',
+        bool $is_edit = false
+    ): Response {
         return $this->response->withView(
             'admin/user/edit-worklog.twig',
             [
@@ -141,7 +189,7 @@ class UserWorkLogController extends BaseController
                 'work_hours' => $work_hours,
                 'comment' => $comment,
                 'is_edit' => $is_edit,
-            ] + $this->getNotifications()
+            ]
         );
     }
 

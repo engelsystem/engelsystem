@@ -403,7 +403,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
                 'btn-sm'
             ),
             button(
-                user_worklog_delete_link($worklog),
+                url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id . '/delete'),
                 icon('trash') . __('delete'),
                 'btn-sm'
             )
@@ -500,7 +500,7 @@ function User_view(
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
         [
-            msg(),
+            msg(true),
             div('row', [
                 div('col-md-12', [
                     buttons([

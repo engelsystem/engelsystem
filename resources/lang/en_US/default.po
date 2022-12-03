@@ -76,6 +76,9 @@ msgstr "Delete"
 msgid "form.updated"
 msgstr "Updated"
 
+msgid "form.cancel"
+msgstr "Cancel"
+
 msgid "schedule.import"
 msgstr "Import schedule"
 
@@ -412,3 +415,9 @@ msgstr "Work hours"
 
 msgid "worklog.comment"
 msgstr "Comment"
+
+msgid "worklog.delete"
+msgstr "Delete work log"
+
+msgid "worklog.delete.info"
+msgstr "Do you really want to delete the work log for %s?"

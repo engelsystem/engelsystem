@@ -162,7 +162,8 @@ class UserWorkLogControllerTest extends ControllerTest
         $request = $this->request->withAttribute('id', $this->user->id)->withParsedBody($body);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
         $this->redirect->expects($this->once())
-            ->method('back')
+            ->method('to')
+            ->with('/users?action=view&user_id=' . $this->user->id)
             ->willReturn($this->response);
 
         $this->controller->saveWorklog($request);
@@ -212,7 +213,7 @@ class UserWorkLogControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
      */
-    public function testOverwriteWorklogWithWorkLogNotAssociatedToUserThrowsd()
+    public function testOverwriteWorklog()
     {
         /** @var Worklog $worklog */
         $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
@@ -227,7 +228,8 @@ class UserWorkLogControllerTest extends ControllerTest
             ->withParsedBody($body);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
         $this->redirect->expects($this->once())
-            ->method('back')
+            ->method('to')
+            ->with('/users?action=view&user_id=' . $this->user->id)
             ->willReturn($this->response);
 
         $this->controller->saveWorklog($request);
@@ -237,6 +239,96 @@ class UserWorkLogControllerTest extends ControllerTest
         $this->assertEquals($work_date, $worklog->worked_at);
         $this->assertEquals($work_hours, $worklog->hours);
         $this->assertEquals($comment, $worklog->comment);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::showDeleteWorklog
+     */
+    public function testShowDeleteWorklogWithWorkLogNotAssociatedToUserThrows()
+    {
+        /** @var User $user2 */
+        $user2 = User::factory()->create();
+        /** @var Worklog $worklog */
+        $worklog = Worklog::factory(['user_id' => $user2->id])->create();
+
+        $request = $this->request
+            ->withAttribute('id', $this->user->id)
+            ->withAttribute('worklog_id', $worklog->id);
+        $this->expectException(HttpNotFound::class);
+        $this->controller->showDeleteWorklog($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::showDeleteWorklog
+     */
+    public function testShowDeleteWorklog()
+    {
+        /** @var Worklog $worklog */
+        $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
+
+        $request = $this->request
+            ->withAttribute('id', $this->user->id)
+            ->withAttribute('worklog_id', $worklog->id);
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function (string $view, array $data) {
+                $this->assertEquals($this->user->id, $data['user']->id);
+                return $this->response;
+            });
+        $this->controller->showDeleteWorklog($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::deleteWorklog
+     */
+    public function testDeleteWorklogWithUnknownWorkLogIdThrows()
+    {
+        $request = $this->request
+            ->withAttribute('id', $this->user->id)
+            ->withAttribute('worklog_id', 1234);
+        $this->expectException(ModelNotFoundException::class);
+        $this->controller->deleteWorklog($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::deleteWorklog
+     */
+    public function testDeleteWorklogWithWorkLogNotAssociatedToUserThrows()
+    {
+        /** @var User $user2 */
+        $user2 = User::factory()->create();
+        /** @var Worklog $worklog */
+        $worklog = Worklog::factory(['user_id' => $user2->id])->create();
+
+        $request = $this->request
+            ->withAttribute('id', $this->user->id)
+            ->withAttribute('worklog_id', $worklog->id);
+        $this->expectException(HttpNotFound::class);
+        $this->controller->deleteWorklog($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::deleteWorklog
+     */
+    public function testDeleteWorklog()
+    {
+        /** @var Worklog $worklog */
+        $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
+
+        $request = $this->request
+            ->withAttribute('id', $this->user->id)
+            ->withAttribute('worklog_id', $worklog->id);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/users?action=view&user_id=' . $this->user->id)
+            ->willReturn($this->response);
+
+        $this->controller->deleteWorklog($request);
+
+        $this->assertHasNotification('worklog.delete.success');
+        $worklog = Worklog::find($worklog->id);
+        $this->assertNull($worklog);
     }
 
     /**

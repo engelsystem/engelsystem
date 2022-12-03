@@ -122,6 +122,14 @@ $route->addGroup(
                 $route->post('/worklog', 'Admin\\UserWorkLogController@saveWorklog');
                 $route->get('/worklog/{worklog_id:\d+}', 'Admin\\UserWorkLogController@editWorklog');
                 $route->post('/worklog/{worklog_id:\d+}', 'Admin\\UserWorkLogController@saveWorklog');
+                $route->get(
+                    '/worklog/{worklog_id:\d+}/delete',
+                    'Admin\\UserWorkLogController@showDeleteWorklog'
+                );
+                $route->post(
+                    '/worklog/{worklog_id:\d+}/delete',
+                    'Admin\\UserWorkLogController@deleteWorklog'
+                );
             }
         );
 
