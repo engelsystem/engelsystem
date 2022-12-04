@@ -14,6 +14,7 @@
   The `default.po` files contain translations that can be auto-detected using Poedit, `additional.po` contains generated messages like validations.
 * JavaScript code must pass the ESLint check `yarn lint`.
   Auto-fixing is supported via `yarn lint:fix`.
+* Don't put function calls in a template-literal (template-strings).
 
 ## Pull requests
 * The PR should contain a short overview of the changes.
