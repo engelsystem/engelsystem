@@ -82,7 +82,7 @@ class LegacyDevelopment extends Legacy
 
             $return[] = [
                 'file'        => $path . ':' . $line,
-                $functionName => $args ?? null,
+                $functionName => $args,
             ];
         }
 

@@ -41,7 +41,7 @@ class ControllerTest extends TestCase
 
         $engine->expects($this->once())
             ->method('get')
-            ->willReturnCallback(function ($path, $data) use ($response) {
+            ->willReturnCallback(function ($path, $data) {
                 $this->assertEquals('/metrics', $path);
                 $this->assertArrayHasKey('info', $data);
                 $this->assertArrayHasKey('users', $data);

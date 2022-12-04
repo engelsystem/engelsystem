@@ -45,7 +45,7 @@ class MailerServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param string $transport
+     * @param string|null $transport
      * @param array  $config
      * @return TransportInterface
      */

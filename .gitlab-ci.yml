@@ -12,6 +12,7 @@ variables:
   DOCROOT: /var/www/
 
 stages:
+  - prepare
   - validate
   - build
   - test
@@ -20,56 +21,90 @@ stages:
   - deploy-production
   - stop
 
-#
-# Validation
-#
+.use_cache: &use_cache
+  cache:
+    key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .yarn-cache/
+      - vendor/
 
-check-php-style:
-  image: composer:latest
-  stage: validate
-  before_script:
-    - composer --no-ansi global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-    - composer --no-ansi global require slevomat/coding-standard squizlabs/php_codesniffer
-    - export PATH=$PATH:$COMPOSER_HOME/vendor/bin
-  script:
-    - phpcs -p --no-colors --basepath="$PWD"
-
-# does everything that depends on packages installed by yarn
-check-frontend:
-  image: node:alpine
-  stage: validate
+# for jobs that depend on composer
+.use_composer: &use_composer
+  <<: *use_cache
   needs:
-    - validate-yarn
+    - composer install
   before_script:
-    - yarn --frozen-lockfile
-  script:
-    - yarn check
-    - yarn lint
+    - composer install --no-ansi --no-progress
 
-check-editorconfig:
-  image: mstruebing/editorconfig-checker
-  stage: validate
-  script:
-    - ec -v
+# for jobs that depend on yarn
+.use_yarn: &use_yarn
+  <<: *use_cache
+  needs:
+    - yarn install
+  before_script:
+    - yarn install --check-frontend --cache-folder .yarn-cache
 
-validate-composer:
+#
+# Preparation
+#
+
+composer validate:
   image: composer:latest
-  stage: validate
+  stage: prepare
   script:
     - composer --no-ansi validate --strict
 
-validate-yarn:
+composer install:
+  <<: *use_cache
+  image: composer:latest
+  stage: prepare
+  needs:
+    - composer audit
+    - composer validate
+  script:
+    - composer install --no-ansi --no-progress
+
+composer audit:
+  image: php:latest
+  stage: prepare
+  needs:
+    - composer validate
+  before_script:
+    - curl -Ls https://github.com/symfony/cli/releases/latest/download/symfony_linux_amd64.gz | gzip -d > /bin/symfony
+    - chmod +x /bin/symfony
+  script:
+    - symfony check:security --no-ansi
+
+yarn-validate:
   image: node:alpine
-  stage: validate
+  stage: prepare
   before_script:
     - yarn global add package-json-validator
     - export PATH=$PATH:~/.yarn/bin
   script:
     - pjv
 
+yarn install:
+  <<: *use_cache
+  image: node:alpine
+  stage: prepare
+  needs:
+    - yarn-validate
+    - yarn audit
+  script:
+    - yarn install --check-frontend --cache-folder .yarn-cache
+
+yarn audit:
+  image: node:alpine
+  stage: prepare
+  needs:
+    - yarn-validate
+  script:
+    - yarn audit
+
 generate-version:
   image: alpine
-  stage: validate
+  stage: prepare
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}_version"
     expire_in: 1 day
@@ -81,6 +116,44 @@ generate-version:
     - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
     - echo "${VERSION}"
     - echo -n "${VERSION}" > storage/app/VERSION
+
+#
+# Validation
+#
+
+phpcs:
+  <<: *use_composer
+  image: composer:latest
+  stage: validate
+  script:
+    - ./vendor/bin/phpcs -p --no-colors --basepath="$PWD"
+
+phpstan:
+  <<: *use_composer
+  image: composer:latest
+  stage: validate
+  script:
+    - ./vendor/bin/phpstan --no-progress
+
+yarn check:
+  <<: *use_yarn
+  image: node:alpine
+  stage: validate
+  script:
+    - yarn check
+
+eslint:
+  <<: *use_yarn
+  image: node:alpine
+  stage: validate
+  script:
+    - yarn lint
+
+check-editorconfig:
+  image: mstruebing/editorconfig-checker
+  stage: validate
+  script:
+    - ec -v
 
 #
 # Build
@@ -100,11 +173,12 @@ build-image:
   stage: build
   needs:
     - check-editorconfig
-    - check-php-style
-    - check-frontend
+    - phpcs
+    - phpstan
+    - composer validate
+    - yarn check
+    - eslint
     - generate-version
-    - validate-composer
-    - validate-yarn
   dependencies:
     - generate-version
   script:
@@ -115,23 +189,6 @@ build-image:
 #
 # Test
 #
-
-audit-composer:
-  image: php:latest
-  stage: test
-  needs: [ ]
-  before_script:
-    - curl -Ls https://github.com/symfony/cli/releases/latest/download/symfony_linux_amd64.gz | gzip -d > /bin/symfony
-    - chmod +x /bin/symfony
-  script:
-    - symfony check:security --no-ansi
-
-audit-yarn:
-  image: node:alpine
-  stage: test
-  needs: [ ]
-  script:
-    - yarn audit
 
 test:
   image:
@@ -231,8 +288,8 @@ build-release-file:
   stage: release
   needs:
     - build-image
-    - audit-yarn
-    - audit-composer
+    - yarn audit
+    - composer audit
     - test
     - dump-database
     - generate-assets
@@ -394,8 +451,8 @@ deploy-production:
   stage: deploy-production
   needs:
     - test
-    - audit-yarn
-    - audit-composer
+    - yarn audit
+    - composer audit
     - build-image
     - generate-assets
   dependencies:
@@ -422,8 +479,8 @@ deploy-k8s-production:
   stage: deploy-production
   needs:
     - release-image
-    - audit-yarn
-    - audit-composer
+    - yarn audit
+    - composer audit
   environment:
     name: production
     on_stop: stop-k8s-production
