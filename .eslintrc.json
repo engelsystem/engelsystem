@@ -3,6 +3,7 @@
   "extends": [ "plugin:editorconfig/all" ],
   "plugins": [ "editorconfig" ],
   "rules": {
+    "function-paren-newline": "error",
     "prefer-arrow-callback": "error",
     "no-var": "error",
     "quotes": [

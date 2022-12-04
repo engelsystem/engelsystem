@@ -25,9 +25,8 @@ ready(() => {
   document.getElementById('dashboard-fullscreen')
     ?.addEventListener('click', (event) => {
       event.preventDefault();
-      document.querySelectorAll(
-        '#navbar-collapse-1,.navbar-nav,.navbar-toggler,#footer,#fullscreen-button'
-      ).forEach((element) => {
+      const removeElementsSelector = '#navbar-collapse-1,.navbar-nav,.navbar-toggler,#footer,#fullscreen-button';
+      document.querySelectorAll(removeElementsSelector).forEach((element) => {
         element.parentNode.removeChild(element);
       });
 
