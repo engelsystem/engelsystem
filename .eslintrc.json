@@ -5,6 +5,7 @@
   "rules": {
     "function-paren-newline": "error",
     "prefer-arrow-callback": "error",
+    "prefer-template": "error",
     "no-var": "error",
     "quotes": [
       "error",
