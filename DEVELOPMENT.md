@@ -108,6 +108,14 @@ PRODUCTION_REMOTE       # Same as STAGING_REMOTE but for the production environm
 PRODUCTION_REMOTE_PATH  # Same as STAGING_REMOTE_PATH but for the production environment
 ```
 
+## Static code analysis
+
+You can run a static code analysis with this command:
+
+```bash
+composer phpstan
+```
+
 ## Docker
 
 If unspecific issues appear try using Docker version >= 20.10.14.

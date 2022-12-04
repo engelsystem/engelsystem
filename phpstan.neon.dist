@@ -1,0 +1,10 @@
+parameters:
+    phpVersion: 70400
+    level: 1
+    paths:
+        - config
+        - db
+        - src
+        - tests
+    scanDirectories:
+        - includes

@@ -9,6 +9,8 @@ use Engelsystem\Test\Unit\TestCase;
 
 class ChecksArrivalsAndDeparturesTest extends TestCase
 {
+    private Config $config;
+
     public function invalidArrivalCombinations(): array
     {
         return [
