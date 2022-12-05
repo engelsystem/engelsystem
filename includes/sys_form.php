@@ -20,13 +20,12 @@ function form_hidden($name, $value)
  *
  * @param string $name
  * @param string $label
- * @param string $value
+ * @param float  $value
  * @return string
  */
-function form_spinner($name, $label, $value)
+function form_spinner(string $name, string $label, float $value)
 {
     $id = 'spinner-' . $name;
-    $value = htmlspecialchars((string)$value);
 
     return form_element($label, '
         <div class="input-group">
