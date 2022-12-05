@@ -25,29 +25,28 @@ function form_hidden($name, $value)
  */
 function form_spinner($name, $label, $value)
 {
+    $id = 'spinner-' . $name;
     $value = htmlspecialchars((string)$value);
 
     return form_element($label, '
         <div class="input-group">
-            <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . $value . '" />
-            <button id="spinner-' . $name . '-down" class="btn btn-secondary" type="button">
+            <input id="' . $id . '" class="form-control" type="number" min="0" step="1" name="' . $name . '" value="' . $value . '" />
+            <button id="' . $id . '-down" class="btn btn-secondary" type="button">
                 ' . icon('dash-lg') . '
             </button>
-            <button id="spinner-' . $name . '-up" class="btn btn-secondary" type="button">
+            <button id="' . $id . '-up" class="btn btn-secondary" type="button">
                 ' . icon('plus-lg') . '
             </button>
         </div>
         <script type="text/javascript">
-            document.getElementById("spinner-' . $name . '-down")?.addEventListener("click", () => {
-                const spinner = document.getElementById("spinner-' . $name . '");
-                spinner.value = parseInt(spinner.value, 10) - 1;
+            document.getElementById("' . $id . '-down")?.addEventListener("click", () => {
+                document.getElementById("' . $id . '").stepDown();
             });
-            document.getElementById("spinner-' . $name . '-up")?.addEventListener("click", () => {
-                const spinner = document.getElementById("spinner-' . $name . '");
-                spinner.value = parseInt(spinner.value, 10) + 1;
+            document.getElementById("' . $id . '-up")?.addEventListener("click", () => {
+                document.getElementById("' . $id . '").stepUp();
             });
         </script>
-        ', 'spinner-' . $name);
+        ', $id);
 }
 
 /**
