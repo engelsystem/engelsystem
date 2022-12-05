@@ -420,7 +420,7 @@ function admin_shifts()
     foreach ($types as $type) {
         $angel_types .= '<div class="col-sm-6 col-md-8 col-lg-6 col-xl-4 col-xxl-3">'
             . form_spinner(
-                'type_' . $type->id,
+                'angeltype_count_' . $type->id,
                 $type->name,
                 $needed_angel_types[$type->id]
             )

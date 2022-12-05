@@ -184,7 +184,7 @@ function shift_edit_controller()
     $angel_types_spinner = '';
     foreach ($angeltypes as $angeltype_id => $angeltype_name) {
         $angel_types_spinner .= form_spinner(
-            'type_' . $angeltype_id,
+            'angeltype_count_' . $angeltype_id,
             $angeltype_name,
             $needed_angel_types[$angeltype_id]
         );
