@@ -212,7 +212,7 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
  */
 function User_reset_api_key($user, $log = true)
 {
-    $user->api_key = bin2hex(random_bytes(16));
+    $user->api_key = bin2hex(random_bytes(32));
     $user->save();
 
     if ($log) {
