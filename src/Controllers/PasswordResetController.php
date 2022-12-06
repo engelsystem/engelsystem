@@ -76,7 +76,7 @@ class PasswordResetController extends BaseController
         if ($user) {
             $reset = (new PasswordReset())->findOrNew($user->id);
             $reset->user_id = $user->id;
-            $reset->token = md5(random_bytes(64));
+            $reset->token = bin2hex(random_bytes(16));
             $reset->save();
 
             $this->log->info(
