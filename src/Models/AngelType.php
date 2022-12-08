@@ -62,6 +62,9 @@ class AngelType extends BaseModel
         'hide_register'           => 'boolean',
     ];
 
+    /**
+     * @codeCoverageIgnore For some reasons parent::boot gets ignored here 0o
+     */
     protected static function boot(): void
     {
         parent::boot();
