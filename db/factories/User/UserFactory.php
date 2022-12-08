@@ -19,7 +19,7 @@ class UserFactory extends Factory
             'name'     => $this->faker->unique()->userName(),
             'password' => password_hash($this->faker->password(), PASSWORD_DEFAULT),
             'email'    => $this->faker->unique()->safeEmail(),
-            'api_key'  => md5($this->faker->unique()->password()),
+            'api_key'  => bin2hex(random_bytes(32)),
         ];
     }
 }

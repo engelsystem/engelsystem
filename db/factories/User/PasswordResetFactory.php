@@ -16,7 +16,7 @@ class PasswordResetFactory extends Factory
     public function definition()
     {
         return [
-            'token' => md5($this->faker->unique()->password()),
+            'token' => bin2hex(random_bytes(16)),
         ];
     }
 }
