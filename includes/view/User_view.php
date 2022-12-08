@@ -398,12 +398,12 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     if ($admin_user_worklog_privilege) {
         $actions = table_buttons([
             button(
-                user_worklog_edit_link($worklog),
+                url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id),
                 icon('pencil-square') . __('edit'),
                 'btn-sm'
             ),
             button(
-                user_worklog_delete_link($worklog),
+                url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id . '/delete'),
                 icon('trash') . __('delete'),
                 'btn-sm'
             )
@@ -500,7 +500,7 @@ function User_view(
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
         [
-            msg(),
+            msg(true),
             div('row', [
                 div('col-md-12', [
                     buttons([
@@ -532,8 +532,8 @@ function User_view(
                             )
                         : '',
                         $admin_user_worklog_privilege ? button(
-                            user_worklog_add_link($user_source),
-                            icon('list') . __('Add work log')
+                            url('/admin/user/' . $user_source->id . '/worklog'),
+                            icon('list') . __('worklog.add')
                         ) : '',
                         $its_me ? button(
                             page_link_to('settings/profile'),

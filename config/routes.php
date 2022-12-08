@@ -112,10 +112,24 @@ $route->addGroup(
         // User
         $route->addGroup(
             '/user/{id:\d+}',
-            // Shirts
             function (RouteCollector $route) {
+                // Shirts
                 $route->get('/shirt', 'Admin\\UserShirtController@editShirt');
                 $route->post('/shirt', 'Admin\\UserShirtController@saveShirt');
+
+                // Worklogs
+                $route->get('/worklog', 'Admin\\UserWorkLogController@editWorklog');
+                $route->post('/worklog', 'Admin\\UserWorkLogController@saveWorklog');
+                $route->get('/worklog/{worklog_id:\d+}', 'Admin\\UserWorkLogController@editWorklog');
+                $route->post('/worklog/{worklog_id:\d+}', 'Admin\\UserWorkLogController@saveWorklog');
+                $route->get(
+                    '/worklog/{worklog_id:\d+}/delete',
+                    'Admin\\UserWorkLogController@showDeleteWorklog'
+                );
+                $route->post(
+                    '/worklog/{worklog_id:\d+}/delete',
+                    'Admin\\UserWorkLogController@deleteWorklog'
+                );
             }
         );
 

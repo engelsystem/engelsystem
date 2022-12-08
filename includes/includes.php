@@ -39,7 +39,6 @@ $includeFiles = [
     __DIR__ . '/../includes/view/UserDriverLicenses_view.php',
     __DIR__ . '/../includes/view/UserHintsRenderer.php',
     __DIR__ . '/../includes/view/User_view.php',
-    __DIR__ . '/../includes/view/UserWorkLog_view.php',
 
     __DIR__ . '/../includes/controller/angeltypes_controller.php',
     __DIR__ . '/../includes/controller/event_config_controller.php',
@@ -51,7 +50,6 @@ $includeFiles = [
     __DIR__ . '/../includes/controller/users_controller.php',
     __DIR__ . '/../includes/controller/user_angeltypes_controller.php',
     __DIR__ . '/../includes/controller/user_driver_licenses_controller.php',
-    __DIR__ . '/../includes/controller/user_worklog_controller.php',
 
     __DIR__ . '/../includes/helper/legacy_helper.php',
     __DIR__ . '/../includes/helper/message_helper.php',

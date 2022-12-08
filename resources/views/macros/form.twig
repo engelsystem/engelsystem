@@ -20,6 +20,7 @@
             {%- if opt.max_length is defined %} maxlength="{{ opt.max_length }}"{% endif %}
             {%- if opt.min is defined %} min="{{ opt.min }}"{% endif %}
             {%- if opt.max is defined %} max="{{ opt.max }}"{% endif %}
+            {%- if opt.step is defined %} step="{{ opt.step }}"{% endif %}
             {%- if opt.required|default(false) %}
                 required
             {%- endif -%}

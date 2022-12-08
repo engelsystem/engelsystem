@@ -26,7 +26,6 @@ class LegacyMiddleware implements MiddlewareInterface
         'shifts_json_export',
         'users',
         'user_driver_licenses',
-        'user_worklog',
         'admin_shifts_history',
     ];
 
@@ -139,8 +138,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = shifts_title();
                 $content = user_shifts();
                 return [$title, $content];
-            case 'user_worklog':
-                return user_worklog_controller();
             case 'register':
                 $title = register_title();
                 $content = guest_register();

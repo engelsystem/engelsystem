@@ -19,6 +19,7 @@ class Validator
     protected $mapping = [
         'accepted' => 'TrueVal',
         'int'      => 'IntVal',
+        'float'    => 'FloatVal',
         'required' => 'NotEmpty',
     ];
 

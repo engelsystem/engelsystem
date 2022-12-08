@@ -199,3 +199,12 @@ msgstr "User edited successfully."
 
 msgid "message.delete.success"
 msgstr "Message successfully deleted."
+
+msgid "worklog.add.success"
+msgstr "Work log successfully added."
+
+msgid "worklog.edit.success"
+msgstr "Work log successfully updated."
+
+msgid "worklog.delete.success"
+msgstr "Work log successfully deleted."

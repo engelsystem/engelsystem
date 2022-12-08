@@ -112,6 +112,14 @@ class ValidatorTest extends TestCase
             ['foo' => '0'],
             ['foo' => 'int']
         ));
+        $this->assertFalse($val->validate(
+            ['foo' => '0.0'],
+            ['foo' => 'int']
+        ));
+        $this->assertTrue($val->validate(
+            ['foo' => '0.0'],
+            ['foo' => 'float']
+        ));
         $this->assertTrue($val->validate(
             ['foo' => 'on'],
             ['foo' => 'accepted']
