@@ -20,10 +20,10 @@ function form_hidden($name, $value)
  *
  * @param string $name
  * @param string $label
- * @param float  $value
+ * @param int    $value
  * @return string
  */
-function form_spinner(string $name, string $label, float $value)
+function form_spinner(string $name, string $label, int $value)
 {
     $id = 'spinner-' . $name;
 
