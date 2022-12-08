@@ -373,6 +373,7 @@ code {
   display: inline-block;
 }
 
+/* Hide the arrow up/down buttons rendered by the browser in the input field */
 /* Chrome, Safari, Edge, Opera */
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
