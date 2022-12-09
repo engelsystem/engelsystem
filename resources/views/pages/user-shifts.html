@@ -35,18 +35,18 @@
                 </div>
             </div>
             <div class="form-group d-print-none" style="margin-top: .5em">
-                <div class="btn-group mb-1">
-                    <a href="javascript:setDay(-1)" class="btn btn-secondary ">%set_yesterday%</a>
-                    <a href="javascript:setDay()" class="btn btn-secondary ">%set_today%</a>
-                    <a href="javascript:setDay(1)" class="btn btn-secondary ">%set_tomorrow%</a>
+                <div class="btn-group mb-1" role="group">
+                    <button type="button" class="btn btn-secondary set-date" data-days="-1">%set_yesterday%</button>
+                    <button type="button" class="btn btn-secondary set-date" data-days="0">%set_today%</button>
+                    <button type="button" class="btn btn-secondary set-date" data-days="1">%set_tomorrow%</button>
                 </div>
-                <div class="btn-group mb-1">
-                    <a href="javascript:setHours(-8)" class="btn btn-secondary ">%set_last_8h%</a>
-                    <a href="javascript:setHours(-4)" class="btn btn-secondary ">%set_last_4h%</a>
-                    <a href="javascript:setHours(4)" class="btn btn-secondary ">%set_next_4h%</a>
-                    <a href="javascript:setHours(8)" class="btn btn-secondary ">%set_next_8h%</a>
+                <div class="btn-group mb-1" role="group">
+                    <button type="button" class="btn btn-secondary set-time" data-hours="-8">%set_last_8h%</button>
+                    <button type="button" class="btn btn-secondary set-time" data-hours="-4">%set_last_4h%</button>
+                    <button type="button" class="btn btn-secondary set-time" data-hours="4">%set_next_4h%</button>
+                    <button type="button" class="btn btn-secondary set-time" data-hours="8">%set_next_8h%</button>
                 </div>
-                <div class="btn-group mb-1">
+                <div class="btn-group mb-1" role="group">
                     %buttons%
                 </div>
             </div>
