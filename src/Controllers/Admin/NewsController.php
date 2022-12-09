@@ -63,8 +63,9 @@ class NewsController extends BaseController
      */
     public function edit(Request $request): Response
     {
-        $id = $request->getAttribute('id');
-        $news = $this->news->find($id);
+        $newsId = $request->getAttribute('news_id'); // optional
+
+        $news = $this->news->find($newsId);
         $isMeeting = $request->get('meeting', false);
 
         return $this->showEdit($news, $isMeeting);
@@ -95,9 +96,10 @@ class NewsController extends BaseController
      */
     public function save(Request $request): Response
     {
-        $id = $request->getAttribute('id');
+        $newsId = $request->getAttribute('news_id'); // optional
+
         /** @var News $news */
-        $news = $this->news->findOrNew($id);
+        $news = $this->news->findOrNew($newsId);
 
         $data = $this->validate($request, [
             'title'      => 'required',

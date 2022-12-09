@@ -34,12 +34,14 @@ class SessionHandler implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $requestHandler = $request->getAttribute('route-request-handler');
+
         $return = $handler->handle($request);
 
         $cookies = $request->getCookieParams();
         if (
             $this->session instanceof NativeSessionStorage
-            && in_array($request->getAttribute('route-request-path'), $this->paths)
+            && in_array($requestHandler, $this->paths)
             && !isset($cookies[$this->session->getName()])
         ) {
             $this->destroyNative();

@@ -104,7 +104,9 @@ class ImportSchedule extends BaseController
      */
     public function edit(Request $request): Response
     {
-        $schedule = ScheduleUrl::find($request->getAttribute('id'));
+        $scheduleId = $request->getAttribute('schedule_id'); // optional
+
+        $schedule = ScheduleUrl::find($scheduleId);
 
         return $this->response->withView(
             'admin/schedule/edit.twig',
@@ -122,9 +124,10 @@ class ImportSchedule extends BaseController
      */
     public function save(Request $request): Response
     {
-        $id = $request->getAttribute('id');
+        $scheduleId = $request->getAttribute('schedule_id'); // optional
+
         /** @var ScheduleUrl $schedule */
-        $schedule = ScheduleUrl::findOrNew($id);
+        $schedule = ScheduleUrl::findOrNew($scheduleId);
 
         $data = $this->validate($request, [
             'name'           => 'required',
@@ -437,9 +440,10 @@ class ImportSchedule extends BaseController
      */
     protected function getScheduleData(Request $request)
     {
-        $id = $request->getAttribute('id');
+        $scheduleId = (int)$request->getAttribute('schedule_id');
+
         /** @var ScheduleUrl $scheduleUrl */
-        $scheduleUrl = ScheduleUrl::findOrFail($id);
+        $scheduleUrl = ScheduleUrl::findOrFail($scheduleId);
 
         $scheduleResponse = $this->guzzle->get($scheduleUrl->url);
         if ($scheduleResponse->getStatusCode() != 200) {

@@ -71,8 +71,9 @@ class UserShirtController extends BaseController
      */
     public function editShirt(Request $request): Response
     {
-        $id = $request->getAttribute('id');
-        $user = $this->user->findOrFail($id);
+        $userId = (int)$request->getAttribute('user_id');
+
+        $user = $this->user->findOrFail($userId);
 
         return $this->response->withView(
             'admin/user/edit-shirt.twig',
@@ -87,9 +88,10 @@ class UserShirtController extends BaseController
      */
     public function saveShirt(Request $request): Response
     {
-        $id = $request->getAttribute('id');
+        $userId = (int)$request->getAttribute('user_id');
+
         /** @var User $user */
-        $user = $this->user->findOrFail($id);
+        $user = $this->user->findOrFail($userId);
 
         $data = $this->validate($request, [
             'shirt_size' => 'required',

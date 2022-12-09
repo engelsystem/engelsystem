@@ -87,6 +87,7 @@ class OAuthController extends BaseController
     public function index(Request $request): Response
     {
         $providerName = $request->getAttribute('provider');
+
         $provider = $this->getProvider($providerName);
         $config = $this->config->get('oauth')[$providerName];
 
@@ -218,10 +219,11 @@ class OAuthController extends BaseController
      */
     public function connect(Request $request): Response
     {
-        $provider = $request->getAttribute('provider');
-        $this->requireProvider($provider);
+        $providerName = $request->getAttribute('provider');
 
-        $this->session->set('oauth2_connect_provider', $provider);
+        $this->requireProvider($providerName);
+
+        $this->session->set('oauth2_connect_provider', $providerName);
 
         return $this->index($request);
     }
@@ -233,14 +235,14 @@ class OAuthController extends BaseController
      */
     public function disconnect(Request $request): Response
     {
-        $provider = $request->getAttribute('provider');
+        $providerName = $request->getAttribute('provider');
 
         $this->oauth
             ->whereUserId($this->auth->user()->id)
-            ->where('provider', $provider)
+            ->where('provider', $providerName)
             ->delete();
 
-        $this->log->info('Disconnected OAuth from {provider}', ['provider' => $provider]);
+        $this->log->info('Disconnected OAuth from {provider}', ['provider' => $providerName]);
         $this->addNotification('oauth.disconnected');
 
         return $this->redirector->back();

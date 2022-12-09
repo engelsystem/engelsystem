@@ -61,9 +61,9 @@ $route->addGroup(
     '/news',
     function (RouteCollector $route) {
         $route->get('', 'NewsController@index');
-        $route->get('/{id:\d+}', 'NewsController@show');
-        $route->post('/{id:\d+}', 'NewsController@comment');
-        $route->post('/comment/{id:\d+}', 'NewsController@deleteComment');
+        $route->get('/{news_id:\d+}', 'NewsController@show');
+        $route->post('/{news_id:\d+}', 'NewsController@comment');
+        $route->post('/comment/{comment_id:\d+}', 'NewsController@deleteComment');
     }
 );
 
@@ -107,8 +107,8 @@ $route->addGroup(
         $route->addGroup(
             '/faq',
             function (RouteCollector $route) {
-                $route->get('[/{id:\d+}]', 'Admin\\FaqController@edit');
-                $route->post('[/{id:\d+}]', 'Admin\\FaqController@save');
+                $route->get('[/{faq_id:\d+}]', 'Admin\\FaqController@edit');
+                $route->post('[/{faq_id:\d+}]', 'Admin\\FaqController@save');
             }
         );
 
@@ -126,10 +126,10 @@ $route->addGroup(
             '/schedule',
             function (RouteCollector $route) {
                 $route->get('', 'Admin\\Schedule\\ImportSchedule@index');
-                $route->get('/edit[/{id:\d+}]', 'Admin\\Schedule\\ImportSchedule@edit');
-                $route->post('/edit[/{id:\d+}]', 'Admin\\Schedule\\ImportSchedule@save');
-                $route->get('/load/{id:\d+}', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
-                $route->post('/import/{id:\d+}', 'Admin\\Schedule\\ImportSchedule@importSchedule');
+                $route->get('/edit[/{schedule_id:\d+}]', 'Admin\\Schedule\\ImportSchedule@edit');
+                $route->post('/edit[/{schedule_id:\d+}]', 'Admin\\Schedule\\ImportSchedule@save');
+                $route->get('/load/{schedule_id:\d+}', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
+                $route->post('/import/{schedule_id:\d+}', 'Admin\\Schedule\\ImportSchedule@importSchedule');
             }
         );
 
@@ -139,14 +139,14 @@ $route->addGroup(
             function (RouteCollector $route) {
                 $route->get('', 'Admin\\QuestionsController@index');
                 $route->post('', 'Admin\\QuestionsController@delete');
-                $route->get('/{id:\d+}', 'Admin\\QuestionsController@edit');
-                $route->post('/{id:\d+}', 'Admin\\QuestionsController@save');
+                $route->get('/{question_id:\d+}', 'Admin\\QuestionsController@edit');
+                $route->post('/{question_id:\d+}', 'Admin\\QuestionsController@save');
             }
         );
 
         // User
         $route->addGroup(
-            '/user/{id:\d+}',
+            '/user/{user_id:\d+}',
             function (RouteCollector $route) {
                 // Shirts
                 $route->addGroup(
@@ -180,8 +180,8 @@ $route->addGroup(
         $route->addGroup(
             '/news',
             function (RouteCollector $route) {
-                $route->get('[/{id:\d+}]', 'Admin\\NewsController@edit');
-                $route->post('[/{id:\d+}]', 'Admin\\NewsController@save');
+                $route->get('[/{news_id:\d+}]', 'Admin\\NewsController@edit');
+                $route->post('[/{news_id:\d+}]', 'Admin\\NewsController@save');
             }
         );
     }

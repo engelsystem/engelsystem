@@ -57,8 +57,9 @@ class FaqController extends BaseController
      */
     public function edit(Request $request): Response
     {
-        $id = $request->getAttribute('id');
-        $faq = $this->faq->find($id);
+        $faqId = $request->getAttribute('faq_id'); // optional
+
+        $faq = $this->faq->find($faqId);
 
         return $this->showEdit($faq);
     }
@@ -70,9 +71,10 @@ class FaqController extends BaseController
      */
     public function save(Request $request): Response
     {
-        $id = $request->getAttribute('id');
+        $faqId = $request->getAttribute('faq_id'); // optional
+
         /** @var Faq $faq */
-        $faq = $this->faq->findOrNew($id);
+        $faq = $this->faq->findOrNew($faqId);
 
         $data = $this->validate($request, [
             'question' => 'required',

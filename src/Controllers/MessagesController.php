@@ -130,8 +130,10 @@ class MessagesController extends BaseController
      */
     public function messagesOfConversation(Request $request): Response
     {
+        $userId = (int)$request->getAttribute('user_id');
+
         $currentUser = $this->auth->user();
-        $otherUser = $this->user->findOrFail($request->getAttribute('user_id'));
+        $otherUser = $this->user->findOrFail($userId);
 
         $messages = $this->message
             ->where(function ($query) use ($currentUser, $otherUser) {
@@ -166,11 +168,13 @@ class MessagesController extends BaseController
      */
     public function send(Request $request): Response
     {
+        $userId = (int)$request->getAttribute('user_id');
+
         $currentUser = $this->auth->user();
 
         $data = $this->validate($request, ['text' => 'required']);
 
-        $otherUser = $this->user->findOrFail($request->getAttribute('user_id'));
+        $otherUser = $this->user->findOrFail($userId);
 
         $newMessage = new Message();
         $newMessage->sender()->associate($currentUser);
@@ -188,9 +192,10 @@ class MessagesController extends BaseController
      */
     public function delete(Request $request): Response
     {
+        $otherUserId = (int)$request->getAttribute('user_id');
+        $msgId = (int)$request->getAttribute('msg_id');
+
         $currentUser = $this->auth->user();
-        $otherUserId = $request->getAttribute('user_id');
-        $msgId = $request->getAttribute('msg_id');
         $msg = $this->message->findOrFail($msgId);
 
         if ($msg->user_id == $currentUser->id) {
