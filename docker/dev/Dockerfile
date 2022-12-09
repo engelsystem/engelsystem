@@ -1,5 +1,5 @@
 # Engelsystem PHP FPM/Nginx development image including Xdebug
-FROM php:8-fpm-alpine AS es_base
+FROM php:8.1-fpm-alpine AS es_base
 WORKDIR /var/www
 RUN apk add --no-cache icu-dev $PHPIZE_DEPS && \
     pecl install pcov xdebug && \
