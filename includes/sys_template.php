@@ -120,7 +120,6 @@ function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '
  *
  * @param string $icon_name
  * @param string $class
- *
  * @return string
  */
 function icon(string $icon_name, string $class = ''): string

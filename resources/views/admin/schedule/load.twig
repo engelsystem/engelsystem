@@ -4,7 +4,7 @@
 {% block title %}{{ __('schedule.import.load.title') }}{% endblock %}
 
 {% block row_content %}
-    <form method="POST" action="{{ url('/admin/schedule/import/' ~ schedule_id) }}">
+    <form method="post" action="{{ url('/admin/schedule/import/' ~ schedule_id) }}">
         {{ csrf() }}
 
         <div class="col-lg-12">
