@@ -39,6 +39,6 @@ class AbstractHandlerTest extends TestCase
         $handler = new ArrayHandler();
         $return = $handler->gc(60 * 60 * 24);
 
-        $this->assertTrue($return);
+        $this->assertEquals(0, $return);
     }
 }
