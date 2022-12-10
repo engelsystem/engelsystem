@@ -44,6 +44,10 @@ const timeFrames = [
   [1, secondUnits],
 ];
 
+/**
+ * @param {number} timestamp
+ * @returns {string}
+ */
 function formatFromNow(timestamp) {
   const now = Date.now() / 1000;
   const diff = Math.abs(timestamp - now);
