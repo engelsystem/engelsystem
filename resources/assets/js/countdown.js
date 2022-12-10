@@ -75,7 +75,7 @@ function formatFromNow(timestamp) {
  */
 ready(() => {
   document.querySelectorAll('[data-countdown-ts]').forEach((element) => {
-    const timestamp = element.dataset.countdownTs;
+    const timestamp = Number(element.dataset.countdownTs);
     const template = element.innerHTML;
     element.innerHTML = template.replace('%c', formatFromNow(timestamp));
     setInterval(() => {
