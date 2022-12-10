@@ -137,7 +137,7 @@ function icon(string $icon_name, string $class = ''): string
 function icon_bool($boolean)
 {
     return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">'
-        . icon($boolean ? 'check-lg' : 'x-lg')
+        . ($boolean ? '✓' : '☓')
         . '</span>';
 }
 

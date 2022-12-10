@@ -43,13 +43,13 @@ function AngelType_render_membership(AngelType $user_angeltype)
             if (empty($user_angeltype->confirm_user_id)) {
                 return icon('book') . __('Unconfirmed');
             } elseif ($user_angeltype->supporter) {
-                return icon_bool(true) . __('Supporter');
+                return icon_bool(true) . ' ' . __('Supporter');
             }
-            return icon_bool(true) . __('Member');
+            return icon_bool(true) . ' ' . __('Member');
         } elseif ($user_angeltype->supporter) {
-            return icon_bool(true) . __('Supporter');
+            return icon_bool(true) . ' ' . __('Supporter');
         }
-        return icon_bool(true) . __('Member');
+        return icon_bool(true) . ' ' . __('Member');
     }
     return icon_bool(false);
 }
