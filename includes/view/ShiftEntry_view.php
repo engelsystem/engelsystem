@@ -198,7 +198,7 @@ function ShiftEntry_edit_view(
     $freeload_form = [];
     if ($user_admin_shifts) {
         $freeload_form = [
-            form_checkbox('freeloaded', __('Freeloaded'), $freeloaded),
+            form_checkbox('freeloaded', __('Freeloaded'), (bool)$freeloaded),
             form_textarea(
                 'freeload_comment',
                 __('Freeload comment (Only for shift coordination):'),
