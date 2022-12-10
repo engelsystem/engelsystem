@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -10,7 +12,7 @@ use Psr\Log\LogLevel;
  * @param string $message
  * @param string $level
  */
-function engelsystem_log($message, $level = LogLevel::INFO)
+function engelsystem_log(string $message, string $level = LogLevel::INFO): void
 {
     /** @var LoggerInterface $logger */
     $logger = app('logger');

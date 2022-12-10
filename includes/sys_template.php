@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
 
 /**
@@ -11,7 +13,7 @@ use Illuminate\Support\Str;
  * @param string $style default, warning, danger or success. Optional.
  * @return string
  */
-function stats($label, $number, $style = null)
+function stats(string $label, string $number, ?string $style = null): string
 {
     if (empty($style)) {
         if ($number > 0) {
@@ -35,7 +37,7 @@ function stats($label, $number, $style = null)
  * @param int   $selected The selected tab, default 0
  * @return string HTML
  */
-function tabs($tabs, $selected = 0)
+function tabs(array $tabs, int $selected = 0): string
 {
     $tab_header = [];
     $tab_content = [];
@@ -78,7 +80,7 @@ function tabs($tabs, $selected = 0)
  * @param string $text
  * @return string
  */
-function mute($text)
+function mute(string $text): string
 {
     return '<span class="text-muted">' . $text . '</span>';
 }
@@ -90,7 +92,7 @@ function mute($text)
  * @param string $class default, primary, info, success, warning, danger
  * @return string
  */
-function badge($content, $class = 'default')
+function badge(string $content, string $class = 'default'): string
 {
     return '<span class="badge rounded-pill bg-' . $class . '">' . $content . '</span>';
 }
@@ -103,7 +105,7 @@ function badge($content, $class = 'default')
  * @param string $content
  * @return string
  */
-function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '')
+function progress_bar(int $valuemin, int $valuemax, int $valuenow, string $class = '', string $content = ''): string
 {
     return '<div class="progress">'
         . '<div class="progress-bar ' . $class . '" role="progressbar" '
@@ -130,10 +132,10 @@ function icon(string $icon_name, string $class = ''): string
 /**
  * Renders a tick or a cross by given boolean
  *
- * @param boolean $boolean
+ * @param bool $boolean
  * @return string
  */
-function icon_bool($boolean)
+function icon_bool($boolean): string
 {
     return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">'
         . icon($boolean ? 'check-lg' : 'x-lg')
@@ -141,12 +143,12 @@ function icon_bool($boolean)
 }
 
 /**
- * @param string $class
- * @param array  $content
- * @param string $dom_id
+ * @param string          $class
+ * @param string|string[] $content
+ * @param string          $dom_id
  * @return string
  */
-function div($class, $content = [], $dom_id = '')
+function div(string $class, $content = [], string $dom_id = ''): string
 {
     if (is_array($content)) {
         $content = join("\n", $content);
@@ -160,7 +162,7 @@ function div($class, $content = [], $dom_id = '')
  * @param int    $number
  * @return string
  */
-function heading($content, $number = 1)
+function heading(string $content, int $number = 1): string
 {
     return '<h' . $number . '>' . $content . '</h' . $number . '>';
 }
@@ -169,7 +171,7 @@ function heading($content, $number = 1)
  * @param string[] $items
  * @return string
  */
-function toolbar_pills($items)
+function toolbar_pills(array $items): string
 {
     return '<ul class="nav nav-pills">' . join("\n", $items) . '</ul>';
 }
@@ -183,7 +185,7 @@ function toolbar_pills($items)
  * @param bool   $active
  * @return string
  */
-function toolbar_item_link($href, $icon, $label, $active = false)
+function toolbar_item_link(string $href, string $icon, string $label, bool $active = false): string
 {
     return '<li class="nav-item">'
         . '<a class="nav-link ' . ($active ? 'active' : '') . '" href="' . $href . '">'
@@ -193,7 +195,14 @@ function toolbar_item_link($href, $icon, $label, $active = false)
         . '</li>';
 }
 
-function toolbar_dropdown_item(string $href, string $label, bool $active, string $icon = null): string
+/**
+ * @param string $href
+ * @param string $label
+ * @param bool   $active
+ * @param string $icon
+ * @return string
+ */
+function toolbar_dropdown_item(string $href, string $label, bool $active, ?string $icon = null): string
 {
     return strtr(
         '<li><a class="dropdown-item{active}" href="{href}">{icon} {label}</a></li>',
@@ -206,19 +215,22 @@ function toolbar_dropdown_item(string $href, string $label, bool $active, string
     );
 }
 
+/**
+ * @return string
+ */
 function toolbar_dropdown_item_divider(): string
 {
     return '<li><hr class="dropdown-divider"></li>';
 }
 
 /**
- * @param string $icon
- * @param string $label
- * @param array  $submenu
- * @param string $class
+ * @param string   $icon
+ * @param string   $label
+ * @param string[] $submenu
+ * @param string   $class
  * @return string
  */
-function toolbar_dropdown($icon, $label, $submenu, $class = ''): string
+function toolbar_dropdown(string $icon, string $label, array $submenu, string $class = ''): string
 {
     $template = <<<EOT
 <li class="nav-item dropdown">
@@ -247,10 +259,9 @@ EOT;
  * @param string   $label
  * @param string[] $content
  * @param string   $class
- *
  * @return string
  */
-function toolbar_popover($icon, $label, $content, $class = '')
+function toolbar_popover(string $icon, string $label, array $content, string $class = ''): string
 {
     $dom_id = md5(microtime() . $icon . $label);
     return '<li class="nav-item nav-item--userhints d-flex align-items-center ' . $class . '">'
@@ -266,7 +277,7 @@ function toolbar_popover($icon, $label, $content, $class = '')
                     content: \'' . addslashes(join('', $content)) . '\',
                     placement: \'bottom\',
                     customClass: \'popover--userhints\'
-                })
+                });
             </script></li>';
 }
 
@@ -277,7 +288,7 @@ function toolbar_popover($icon, $label, $content, $class = '')
  * @param string[] $elements
  * @return string
  */
-function page($elements)
+function page(array $elements): string
 {
     return join($elements);
 }
@@ -291,7 +302,7 @@ function page($elements)
  * @param bool     $container
  * @return string
  */
-function page_with_title($title, $elements, bool $container = false)
+function page_with_title(string $title, array $elements, bool $container = false): string
 {
     if ($container) {
         $html = '<div class="container">';
@@ -307,7 +318,7 @@ function page_with_title($title, $elements, bool $container = false)
  * @param array $data
  * @return string
  */
-function description($data)
+function description(array $data): string
 {
     $elements = [];
     foreach ($data as $label => $description) {
@@ -326,7 +337,7 @@ function description($data)
  * @param bool                $data
  * @return string
  */
-function table($columns, $rows_raw, $data = true)
+function table($columns, $rows_raw, bool $data = true): string
 {
     // If only one column is given
     if (!is_array($columns)) {
@@ -348,12 +359,12 @@ function table($columns, $rows_raw, $data = true)
  * Helper for rendering a html-table.
  * use table()
  *
- * @param string[] $columns
- * @param array[]  $rows
- * @param bool     $data
+ * @param array[] $columns
+ * @param array[] $rows
+ * @param bool    $data
  * @return string
  */
-function render_table($columns, $rows, $data = true)
+function render_table(array $columns, $rows, bool $data = true): string
 {
     if (count($rows) == 0) {
         return info(__('No data found.'), true);
@@ -391,7 +402,7 @@ function render_table($columns, $rows, $data = true)
  * @param string $id
  * @return string
  */
-function button($href, $label, $class = '', $id = '')
+function button(string $href, string $label, string $class = '', string $id = ''): string
 {
     if (!Str::contains(str_replace(['btn-sm', 'btn-xl'], '', $class), 'btn-')) {
         $class = 'btn-secondary' . ($class ? ' ' . $class : '');
@@ -403,28 +414,14 @@ function button($href, $label, $class = '', $id = '')
 }
 
 /**
- * Rendert einen Knopf mit JavaScript onclick Handler
- *
- * @param string $javascript
- * @param string $label
- * @param string $class
- * @return string
- */
-function button_js($javascript, $label, $class = '')
-{
-    return '<a onclick="' . $javascript . '" href="#" class="btn btn-secondary ' . $class . '">' . $label . '</a>';
-}
-
-/**
  * Renders a button with an icon
  *
  * @param string $href
  * @param string $icon
  * @param string $class
- *
  * @return string
  */
-function button_icon($href, $icon, $class = '')
+function button_icon(string $href, string $icon, string $class = ''): string
 {
     return button($href, icon($icon), $class);
 }
@@ -435,7 +432,7 @@ function button_icon($href, $icon, $class = '')
  * @param string $topic documentation resource (like user/), is appended to documentation url.
  * @return string
  */
-function button_help($topic = '')
+function button_help(string $topic = ''): string
 {
     return button(config('documentation_url') . $topic, icon('question-circle'), 'btn-sm');
 }
@@ -443,19 +440,19 @@ function button_help($topic = '')
 /**
  * Rendert eine Toolbar mit Knöpfen
  *
- * @param array $buttons
+ * @param string[] $buttons
  * @return string
  */
-function buttons($buttons = [])
+function buttons(array $buttons = []): string
 {
     return '<div class="mb-3">' . table_buttons($buttons) . '</div>';
 }
 
 /**
- * @param array $buttons
+ * @param string[] $buttons
  * @return string
  */
-function table_buttons($buttons = [])
+function table_buttons(array $buttons = []): string
 {
     return '<div class="btn-group">' . join(' ', $buttons) . '</div>';
 }

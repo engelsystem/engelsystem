@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Engelsystem\Models\Question;
 use Engelsystem\UserHintsRenderer;
 
@@ -8,7 +10,7 @@ use Engelsystem\UserHintsRenderer;
  * @param array  $parameters get parameters
  * @return string
  */
-function page_link_to($page = '', $parameters = [])
+function page_link_to($page = '', $parameters = []): string
 {
     $page = str_replace('_', '-', $page);
     return url($page, $parameters);
@@ -19,7 +21,7 @@ function page_link_to($page = '', $parameters = [])
  *
  * @return string
  */
-function header_render_hints()
+function header_render_hints(): string
 {
     $user = auth()->user();
 
@@ -46,15 +48,15 @@ function header_render_hints()
  *
  * @return string
  */
-function current_page()
+function current_page(): string
 {
     return request()->query->get('p') ?: str_replace('-', '_', request()->path());
 }
 
 /**
- * @return array
+ * @return string[]
  */
-function make_user_submenu()
+function make_user_submenu(): array
 {
     $page = current_page();
     $user_submenu = make_language_select();
@@ -87,7 +89,7 @@ function make_user_submenu()
 /**
  * @return string
  */
-function make_navigation()
+function make_navigation(): string
 {
     $page = current_page();
     $menu = [];
@@ -155,10 +157,9 @@ function make_navigation()
 /**
  * @param string          $page
  * @param string|string[] $options
- *
  * @return bool
  */
-function menu_is_allowed(string $page, $options)
+function menu_is_allowed(string $page, $options): bool
 {
     $options = (array)$options;
     $permissions = $page;
@@ -176,7 +177,7 @@ function menu_is_allowed(string $page, $options)
  * @param string[] $menu Rendered menu
  * @return string[]
  */
-function make_room_navigation($menu)
+function make_room_navigation($menu): array
 {
     if (!auth()->can('view_rooms')) {
         return $menu;
@@ -203,9 +204,9 @@ function make_room_navigation($menu)
 /**
  * Renders language selection.
  *
- * @return array
+ * @return string[]
  */
-function make_language_select()
+function make_language_select(): array
 {
     $request = app('request');
     $activeLocale = session()->get('locale');
@@ -228,7 +229,7 @@ function make_language_select()
  *
  * @return string|null
  */
-function admin_new_questions()
+function admin_new_questions(): ?string
 {
     if (!auth()->can('question.edit') || current_page() == 'admin/questions') {
         return null;
