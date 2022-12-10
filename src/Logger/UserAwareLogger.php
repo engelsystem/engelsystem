@@ -4,6 +4,7 @@ namespace Engelsystem\Logger;
 
 use Engelsystem\Helpers\Authenticator;
 use Psr\Log\InvalidArgumentException;
+use Stringable;
 
 class UserAwareLogger extends Logger
 {
@@ -13,13 +14,13 @@ class UserAwareLogger extends Logger
     /**
      * Logs with an arbitrary level and prepends the user
      *
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
+     * @param mixed             $level
+     * @param string|Stringable $message
+     * @param array             $context
      *
      * @throws InvalidArgumentException
      */
-    public function log($level, $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
         if ($this->auth && ($user = $this->auth->user())) {
             $message = sprintf('%s (%u): %s', $user->name, $user->id, $message);

@@ -6,31 +6,23 @@ use SessionHandlerInterface;
 
 abstract class AbstractHandler implements SessionHandlerInterface
 {
-    /** @var string */
-    protected $name;
+    protected string $name;
 
-    /** @var string */
-    protected $sessionPath;
+    protected string $sessionPath;
 
     /**
      * Bootstrap the session handler
-     *
-     * @param string $sessionPath
-     * @param string $name
-     * @return bool
      */
-    public function open($sessionPath, $name): bool
+    public function open(string $path, string $name): bool
     {
         $this->name = $name;
-        $this->sessionPath = $sessionPath;
+        $this->sessionPath = $path;
 
         return true;
     }
 
     /**
      * Shutdown the session handler
-     *
-     * @return bool
      */
     public function close(): bool
     {
@@ -39,38 +31,24 @@ abstract class AbstractHandler implements SessionHandlerInterface
 
     /**
      * Remove old sessions
-     *
-     * @param int $maxLifetime
-     * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function gc($maxLifetime)
+    public function gc(int $max_lifetime): int|false
     {
-        return true;
+        return 0;
     }
 
     /**
      * Read session data
-     *
-     * @param string $id
-     * @return string
      */
-    abstract public function read($id): string;
+    abstract public function read(string $id): string;
 
     /**
      * Write session data
-     *
-     * @param string $id
-     * @param string $data
-     * @return bool
      */
-    abstract public function write($id, $data): bool;
+    abstract public function write(string $id, string $data): bool;
 
     /**
      * Delete a session
-     *
-     * @param string $id
-     * @return bool
      */
-    abstract public function destroy($id): bool;
+    abstract public function destroy(string $id): bool;
 }

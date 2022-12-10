@@ -6,6 +6,7 @@ use Engelsystem\Models\LogEntry;
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
+use Stringable;
 use Throwable;
 
 class Logger extends AbstractLogger
@@ -35,13 +36,12 @@ class Logger extends AbstractLogger
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
+     * @param mixed             $level
+     * @param string|Stringable $message
+     * @param array             $context
      *
-     * @throws InvalidArgumentException
      */
-    public function log($level, $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
         if (!$this->checkLevel($level)) {
             throw new InvalidArgumentException('Unknown log level: ' . $level);

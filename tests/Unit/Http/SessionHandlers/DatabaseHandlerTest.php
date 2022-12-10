@@ -76,7 +76,7 @@ class DatabaseHandlerTest extends TestCase
 
         $handler = new DatabaseHandler($this->database);
 
-        $this->assertTrue($handler->gc(60 * 60));
+        $this->assertEquals(1, $handler->gc(60 * 60));
 
         $return = $this->database->select('SELECT * FROM sessions');
         $this->assertCount(1, $return);
