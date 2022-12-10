@@ -294,18 +294,20 @@ function form_file($name, $label)
  *
  * @param string $name
  * @param string $label
+ * @param string $autocomplete
  * @param bool   $disabled
  * @return string
  */
-function form_password($name, $label, $disabled = false)
+function form_password($name, $label, $autocomplete, $disabled = false)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     return form_element(
         $label,
         sprintf(
-            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value=""%3$s/>',
+            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value="" autocomplete="%3$s"%4$s/>',
             $name,
             config('min_password_length'),
+            $autocomplete,
             $disabled
         ),
         'form_' . $name
