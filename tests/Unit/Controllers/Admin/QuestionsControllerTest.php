@@ -100,7 +100,7 @@ class QuestionsControllerTest extends ControllerTest
      */
     public function testEdit()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('question_id', 1);
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
@@ -139,7 +139,7 @@ class QuestionsControllerTest extends ControllerTest
      */
     public function testSaveCreateEdit()
     {
-        $this->request->attributes->set('id', 2);
+        $this->request->attributes->set('question_id', 2);
         $body = [
             'text' => 'Foo?',
             'answer' => 'Bar!',
@@ -170,7 +170,7 @@ class QuestionsControllerTest extends ControllerTest
      */
     public function testSavePreview()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('question_id', 1);
         $this->request = $this->request->withParsedBody([
             'text'    => 'Foo?',
             'answer'  => 'Bar!',
@@ -207,7 +207,7 @@ class QuestionsControllerTest extends ControllerTest
      */
     public function testSaveDelete()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('question_id', 1);
         $this->request = $this->request->withParsedBody([
             'text'   => '.',
             'answer' => '.',

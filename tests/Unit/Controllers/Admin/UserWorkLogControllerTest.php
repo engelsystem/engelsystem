@@ -35,7 +35,7 @@ class UserWorkLogControllerTest extends ControllerTest
      */
     public function testShowAddWorklogWithUnknownUserIdThrows()
     {
-        $request = $this->request->withAttribute('id', 1234);
+        $request = $this->request->withAttribute('user_id', 1234);
         $this->expectException(ModelNotFoundException::class);
         $this->controller->editWorklog($request);
     }
@@ -47,7 +47,7 @@ class UserWorkLogControllerTest extends ControllerTest
      */
     public function testShowAddWorklog()
     {
-        $request = $this->request->withAttribute('id', $this->user->id);
+        $request = $this->request->withAttribute('user_id', $this->user->id);
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
@@ -70,7 +70,7 @@ class UserWorkLogControllerTest extends ControllerTest
      */
     public function testShowAddWorklogWithSuggestedWorkDate($buildup_start, $event_start, $suggested_work_date)
     {
-        $request = $this->request->withAttribute('id', $this->user->id);
+        $request = $this->request->withAttribute('user_id', $this->user->id);
         config(['buildup_start' => $buildup_start]);
         config(['event_start' => $event_start]);
         $this->response->expects($this->once())
@@ -93,7 +93,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $worklog = Worklog::factory(['user_id' => $user2->id])->create();
 
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id);
         $this->expectException(HttpNotFound::class);
         $this->controller->editWorklog($request);
@@ -113,7 +113,7 @@ class UserWorkLogControllerTest extends ControllerTest
         ])->create();
 
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id);
         $this->response->expects($this->once())
             ->method('withView')
@@ -133,7 +133,7 @@ class UserWorkLogControllerTest extends ControllerTest
      */
     public function testSaveWorklogWithUnkownUserIdThrows()
     {
-        $request = $this->request->withAttribute('id', 1234)->withParsedBody([]);
+        $request = $this->request->withAttribute('user_id', 1234)->withParsedBody([]);
         $this->expectException(ModelNotFoundException::class);
         $this->controller->saveWorklog($request);
     }
@@ -145,7 +145,7 @@ class UserWorkLogControllerTest extends ControllerTest
      */
     public function testSaveWorklogWithInvalidParamsThrows($body)
     {
-        $request = $this->request->withAttribute('id', $this->user->id)->withParsedBody($body);
+        $request = $this->request->withAttribute('user_id', $this->user->id)->withParsedBody($body);
         $this->expectException(ValidationException::class);
         $this->controller->saveWorklog($request);
     }
@@ -159,7 +159,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $work_hours = 3.14;
         $comment = str_repeat('X', 200);
         $body = ['work_date' => $work_date, 'work_hours' => $work_hours, 'comment' => $comment];
-        $request = $this->request->withAttribute('id', $this->user->id)->withParsedBody($body);
+        $request = $this->request->withAttribute('user_id', $this->user->id)->withParsedBody($body);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
         $this->redirect->expects($this->once())
             ->method('to')
@@ -184,7 +184,7 @@ class UserWorkLogControllerTest extends ControllerTest
     {
         $body = ['work_date' => Carbon::today(), 'work_hours' => 3.14, 'comment' => 'a comment'];
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', 1234)
             ->withParsedBody($body);
         $this->expectException(ModelNotFoundException::class);
@@ -203,7 +203,7 @@ class UserWorkLogControllerTest extends ControllerTest
 
         $body = ['work_date' => Carbon::today(), 'work_hours' => 3.14, 'comment' => 'a comment'];
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id)
             ->withParsedBody($body);
         $this->expectException(HttpNotFound::class);
@@ -223,7 +223,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $body = ['work_date' => $work_date, 'work_hours' => $work_hours, 'comment' => $comment];
 
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id)
             ->withParsedBody($body);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
@@ -252,7 +252,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $worklog = Worklog::factory(['user_id' => $user2->id])->create();
 
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id);
         $this->expectException(HttpNotFound::class);
         $this->controller->showDeleteWorklog($request);
@@ -267,7 +267,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
 
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id);
         $this->response->expects($this->once())
             ->method('withView')
@@ -284,7 +284,7 @@ class UserWorkLogControllerTest extends ControllerTest
     public function testDeleteWorklogWithUnknownWorkLogIdThrows()
     {
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', 1234);
         $this->expectException(ModelNotFoundException::class);
         $this->controller->deleteWorklog($request);
@@ -301,7 +301,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $worklog = Worklog::factory(['user_id' => $user2->id])->create();
 
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id);
         $this->expectException(HttpNotFound::class);
         $this->controller->deleteWorklog($request);
@@ -316,7 +316,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
 
         $request = $this->request
-            ->withAttribute('id', $this->user->id)
+            ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
         $this->redirect->expects($this->once())
