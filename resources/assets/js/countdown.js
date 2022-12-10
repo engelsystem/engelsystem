@@ -1,85 +1,46 @@
 import { ready } from './ready';
 
-const lang = document.documentElement.getAttribute('lang');
-
-const templateFuture = 'in %value %unit';
-const templatePast = lang === 'en'
-  ? '%value %unit ago'
-  : 'vor %value %unit';
-
-const yearUnits = lang === 'en'
-  ? ['year', 'years']
-  : ['Jahr', 'Jahren'];
-
-const monthUnits = lang === 'en'
-  ? ['month', 'months']
-  : ['Monat', 'Monaten'];
-
-const dayUnits = lang === 'en'
-  ? ['day', 'days']
-  : ['Tag', 'Tagen'];
-
-const hourUnits = lang === 'en'
-  ? ['hour', 'hours']
-  : ['Stunde', 'Stunden'];
-
-const minuteUnits = lang === 'en'
-  ? ['minute', 'minutes']
-  : ['Minute', 'Minuten'];
-
-const secondUnits = lang === 'en'
-  ? ['second', 'seconds']
-  : ['Sekunde', 'Sekunden'];
-
-const nowString = lang === 'en' ? 'now' : 'jetzt';
-
-const secondsHour = 60 * 60;
-
-const timeFrames = [
-  [365 * 24 * 60 * 60, yearUnits],
-  [30 * 24 * 60 * 60, monthUnits],
-  [24 * 60 * 60, dayUnits],
-  [secondsHour, hourUnits],
-  [60, minuteUnits],
-  [1, secondUnits],
-];
-
-/**
- * @param {number} timestamp
- * @returns {string}
- */
-function formatFromNow(timestamp) {
-  const now = Date.now() / 1000;
-  const diff = Math.abs(timestamp - now);
-  const ago = now > timestamp;
-
-  for (const [duration, [singular, plural]] of timeFrames) {
-    const value = diff < secondsHour
-      ? Math.floor(diff / duration)
-      : Math.round(diff / duration);
-
-    if (value) {
-      const template = ago ? templatePast : templateFuture;
-      const unit = value === 1 ? singular : plural;
-      return template
-        .replace('%value', value)
-        .replace('%unit', unit);
-    }
-  }
-
-  return nowString;
-}
-
 /**
  * Initialises all countdown fields on the page.
  */
 ready(() => {
+  const lang = document.documentElement.getAttribute('lang');
+
+  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
+
+  const timeFrames = [
+    [60 * 60 * 24 * 365, 'year'],
+    [60 * 60 * 24 * 30, 'month'],
+    [60 * 60 * 24 * 7, 'week'],
+    [60 * 60 * 24, 'day'],
+    [60 * 60, 'hour'],
+    [60, 'minute'],
+    [1, 'second'],
+  ];
+
+  /**
+   * @param {number} timestamp
+   * @returns {string}
+   */
+  function formatFromNow(timestamp) {
+    const now = Date.now() / 1000;
+    const diff = Math.round(timestamp - now);
+    const absValue = Math.abs(diff);
+
+    for (const [duration, unit] of timeFrames) {
+      if (absValue >= duration) {
+        return rtf.format(Math.round(diff / duration), unit);
+      }
+    }
+
+    return rtf.format(0, 'second');
+  }
+
   document.querySelectorAll('[data-countdown-ts]').forEach((element) => {
     const timestamp = Number(element.dataset.countdownTs);
-    const template = element.innerHTML;
-    element.innerHTML = template.replace('%c', formatFromNow(timestamp));
+    element.innerHTML = formatFromNow(timestamp);
     setInterval(() => {
-      element.innerHTML = template.replace('%c', formatFromNow(timestamp));
+      element.innerHTML = formatFromNow(timestamp);
     }, 1000);
   });
 });
