@@ -27,7 +27,7 @@ function User_delete_view($user)
             true
         ),
         form([
-            form_password('password', __('Your password')),
+            form_password('password', __('Your password'), 'current-password'),
             form_submit('submit', __('Delete'))
         ])
     ]);

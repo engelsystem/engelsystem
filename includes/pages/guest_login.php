@@ -466,7 +466,7 @@ function guest_register()
 
             div('row', [
                 $enable_password ? div('col', [
-                    form_password('password', __('Password') . ' ' . entry_required())
+                    form_password('password', __('Password') . ' ' . entry_required(), 'new-password')
                 ]) : '',
 
                 $enable_planned_arrival ? div('col', [
@@ -482,7 +482,7 @@ function guest_register()
 
             div('row', [
                 $enable_password ? div('col', [
-                    form_password('password2', __('Confirm password') . ' ' . entry_required())
+                    form_password('password2', __('Confirm password') . ' ' . entry_required(), 'new-password')
                 ]) : '',
 
                 div('col', [

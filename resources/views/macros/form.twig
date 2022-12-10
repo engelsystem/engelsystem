@@ -21,6 +21,7 @@
             {%- if opt.min is defined %} min="{{ opt.min }}"{% endif %}
             {%- if opt.max is defined %} max="{{ opt.max }}"{% endif %}
             {%- if opt.step is defined %} step="{{ opt.step }}"{% endif %}
+            {%- if opt.autocomplete is defined %} autocomplete="{{ opt.autocomplete }}"{% endif %}
             {%- if opt.required|default(false) %}
                 required
             {%- endif -%}
