@@ -1,7 +1,7 @@
 # Engelsystem PHP FPM/Nginx development image including Xdebug
 FROM php:8.1-fpm-alpine AS es_base
 WORKDIR /var/www
-RUN apk add --no-cache icu-dev $PHPIZE_DEPS && \
+RUN apk add --no-cache icu-dev linux-headers $PHPIZE_DEPS && \
     pecl install pcov xdebug && \
     docker-php-ext-install intl pdo_mysql && \
     docker-php-ext-enable pcov xdebug

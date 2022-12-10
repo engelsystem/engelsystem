@@ -15,7 +15,7 @@ Please read the [CONTRIBUTING.md](CONTRIBUTING.md) and [DEVELOPMENT.md](DEVELOPM
 The Engelsystem may be installed manually or by using the provided [docker setup](#docker).
 
 ### Requirements
- * PHP >= 7.4
+ * PHP >= 8.1
    * Required modules:
      * dom
      * json

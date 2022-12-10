@@ -42,6 +42,10 @@ trait ChecksArrivalsAndDepartures
             return true; // since optional value
         }
 
+        if (is_null($arrival_carbon)) {
+            return false; // Will be false any ways
+        }
+
         return $departure_carbon->greaterThanOrEqualTo($arrival_carbon) &&
             !$this->isBeforeBuildup($departure_carbon) && !$this->isAfterTeardown($departure_carbon);
     }
