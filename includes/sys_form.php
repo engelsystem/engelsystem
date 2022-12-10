@@ -30,21 +30,13 @@ function form_spinner(string $name, string $label, int $value)
     return form_element($label, '
         <div class="input-group">
             <input id="' . $id . '" class="form-control" type="number" min="0" step="1" name="' . $name . '" value="' . $value . '" />
-            <button id="' . $id . '-down" class="btn btn-secondary" type="button">
+            <button class="btn btn-secondary spinner-down" type="button" data-input-id="' . $id . '">
                 ' . icon('dash-lg') . '
             </button>
-            <button id="' . $id . '-up" class="btn btn-secondary" type="button">
+            <button class="btn btn-secondary spinner-up" type="button" data-input-id="' . $id . '">
                 ' . icon('plus-lg') . '
             </button>
         </div>
-        <script type="text/javascript">
-            document.getElementById("' . $id . '-down")?.addEventListener("click", () => {
-                document.getElementById("' . $id . '").stepDown();
-            });
-            document.getElementById("' . $id . '-up")?.addEventListener("click", () => {
-                document.getElementById("' . $id . '").stepUp();
-            });
-        </script>
         ', $id);
 }
 
