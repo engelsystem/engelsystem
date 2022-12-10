@@ -457,5 +457,5 @@ function buttons($buttons = [])
  */
 function table_buttons($buttons = [])
 {
-    return '<div class="btn-group">' . join(' ', $buttons) . '</div>';
+    return '<div class="btn-group" role="group">' . join('', $buttons) . '</div>';
 }

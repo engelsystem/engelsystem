@@ -17,12 +17,12 @@ global.checkAll = (id, checked) => {
 /**
  * Sets the checkboxes according to the given type
  *
- * @param {string} id The elements ID
+ * @param {string} id The Id of the element containing all the checkboxes
  * @param {int[]} shiftsList A list of numbers
  */
 global.checkOwnTypes = (id, shiftsList) => {
   document.querySelectorAll(`#${id} input[type="checkbox"]`).forEach((element) => {
-    const value = parseInt(element.value, 10);
+    const value = Number(element.value);
     element.checked = shiftsList.includes(value);
   });
 };
