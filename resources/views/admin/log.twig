@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="mb-3">
-                    <form method="POST" action="{{ url('/admin/logs') }}" class="form-inline">
+                    <form method="post" action="{{ url('/admin/logs') }}" class="form-inline">
                         {{ csrf() }}
 
                         {{ f.input('search', __('form.search'), 'text', {'value': search, 'hide_label': true}) }}

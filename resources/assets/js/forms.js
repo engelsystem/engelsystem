@@ -111,7 +111,7 @@ ready(() => {
   });
 });
 
-/*
+/**
  * Button to set current time in time input fields.
  */
 ready(() => {
@@ -152,7 +152,7 @@ ready(() => {
  */
 ready(() => {
   [
-    ['welcome-title', '.btn-group.btn-group .btn.d-none'],
+    ['welcome-title', '.btn-group .btn.d-none'],
     ['settings-title', '.user-settings .nav-item'],
     ['oauth-settings-title', 'table tr.d-none'],
   ].forEach(([id, selector]) => {
@@ -183,8 +183,11 @@ ready(() => {
     return;
   }
 
-  const onChange = (e) => {
-    localStorage.setItem('collapseShiftsFilterSelect', e.type);
+  /**
+   * @param {Event} event
+   */
+  const onChange = (event) => {
+    localStorage.setItem('collapseShiftsFilterSelect', event.type);
   };
 
   document.getElementById('collapseShiftsFilterSelect')
