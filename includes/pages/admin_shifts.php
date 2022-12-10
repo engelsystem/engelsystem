@@ -153,8 +153,8 @@ function admin_shifts()
                 $angelmode = 'location';
             } elseif ($request->input('angelmode') == 'manually') {
                 foreach ($types as $type) {
-                    if (preg_match('/^\d+$/', trim($request->input('type_' . $type->id, 0)))) {
-                        $needed_angel_types[$type->id] = trim($request->input('type_' . $type->id, 0));
+                    if (preg_match('/^\d+$/', trim($request->input('angeltype_count_' . $type->id, 0)))) {
+                        $needed_angel_types[$type->id] = trim($request->input('angeltype_count_' . $type->id, 0));
                     } else {
                         $valid = false;
                         error(sprintf(__('Please check the needed angels for team %s.'), $type->name));
@@ -333,7 +333,7 @@ function admin_shifts()
 
             $hidden_types = '';
             foreach ($needed_angel_types as $type_id => $count) {
-                $hidden_types .= form_hidden('type_' . $type_id, $count);
+                $hidden_types .= form_hidden('angeltype_count_' . $type_id, $count);
             }
             return page_with_title(__('Preview'), [
                 form([
