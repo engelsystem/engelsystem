@@ -111,6 +111,25 @@ ready(() => {
   });
 });
 
+ready(() => {
+  document.querySelectorAll('.spinner-down').forEach((element) => {
+    const inputElement = document.getElementById(element.dataset.inputId);
+    if (inputElement) {
+      element.addEventListener('click', () => {
+        inputElement.stepDown();
+      });
+    }
+  });
+  document.querySelectorAll('.spinner-up').forEach((element) => {
+    const inputElement = document.getElementById(element.dataset.inputId);
+    if (inputElement) {
+      element.addEventListener('click', () => {
+        inputElement.stepUp();
+      });
+    }
+  });
+});
+
 /**
  * Button to set current time in time input fields.
  */
