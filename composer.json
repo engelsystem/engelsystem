@@ -19,7 +19,7 @@
         "phpstan": "phpstan"
     },
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=8.1.0",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
