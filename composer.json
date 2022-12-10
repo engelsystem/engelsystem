@@ -14,7 +14,7 @@
         }
     ],
     "scripts": {
-        "phpcs": "phpcs -p",
+        "phpcs": "phpcs -p --cache",
         "phpcbf": "phpcbf -p",
         "phpstan": "phpstan"
     },
