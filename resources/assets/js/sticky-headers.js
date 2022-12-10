@@ -2,7 +2,7 @@ import { ready } from './ready';
 
 /**
  * @param {NodeList} elements
- * @param {string} styleProp
+ * @param {string} prop
  * @param {*} value
  */
 const applyStyle = (elements, prop, value) => {
