@@ -101,6 +101,7 @@ class NewsController extends BaseController
     public function show(Request $request): Response
     {
         $newsId = (int)$request->getAttribute('news_id');
+
         $news = $this->news
             ->with('user')
             ->with('comments')
