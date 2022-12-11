@@ -154,6 +154,7 @@ class PasswordResetController extends BaseController
     protected function requireToken(Request $request): PasswordReset
     {
         $token = $request->getAttribute('token');
+
         /** @var PasswordReset|null $reset */
         $reset = PasswordReset::whereToken($token)->first();
 

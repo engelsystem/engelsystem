@@ -100,10 +100,12 @@ class NewsController extends BaseController
      */
     public function show(Request $request): Response
     {
+        $newsId = (int)$request->getAttribute('news_id');
+
         $news = $this->news
             ->with('user')
             ->with('comments')
-            ->findOrFail($request->getAttribute('id'));
+            ->findOrFail($newsId);
 
         return $this->renderView('pages/news/news.twig', ['news' => $news]);
     }
@@ -114,12 +116,13 @@ class NewsController extends BaseController
      */
     public function comment(Request $request): Response
     {
+        $newsId = (int)$request->getAttribute('news_id');
+
         $data = $this->validate($request, [
             'comment' => 'required',
         ]);
         $user = $this->auth->user();
-        $news = $this->news
-            ->findOrFail($request->getAttribute('id'));
+        $news = $this->news->findOrFail($newsId);
 
         /** @var NewsComment $comment */
         $comment = $news->comments()->create([
@@ -147,7 +150,8 @@ class NewsController extends BaseController
      */
     public function deleteComment(Request $request): Response
     {
-        $id = $request->getAttribute('id');
+        $commentId = (int)$request->getAttribute('comment_id');
+
         $this->validate(
             $request,
             [
@@ -155,7 +159,7 @@ class NewsController extends BaseController
             ]
         );
 
-        $comment = $this->comment->findOrFail($id);
+        $comment = $this->comment->findOrFail($commentId);
         if (
             $comment->user->id != $this->auth->user()->id
             && !$this->auth->can('admin_news')

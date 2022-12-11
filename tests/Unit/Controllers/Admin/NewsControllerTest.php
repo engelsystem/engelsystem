@@ -35,7 +35,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testEdit()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('news_id', 1);
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
@@ -83,7 +83,7 @@ class NewsControllerTest extends ControllerTest
         $controller->edit($this->request);
 
         // Should stay no meeting
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('news_id', 1);
         $controller->edit($this->request);
     }
 
@@ -126,7 +126,7 @@ class NewsControllerTest extends ControllerTest
         bool $isMeeting,
         int $id = null
     ) {
-        $this->request->attributes->set('id', $id);
+        $this->request->attributes->set('news_id', $id);
         $id = $id ?: 2;
         $body = [
             'title'      => 'Some Title',
@@ -166,7 +166,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testSavePreview()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('news_id', 1);
         $this->request = $this->request->withParsedBody([
             'title'      => 'New title',
             'text'       => 'New text',
@@ -209,7 +209,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testSaveDelete()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('news_id', 1);
         $this->request = $this->request->withParsedBody([
             'title'  => '.',
             'text'   => '.',

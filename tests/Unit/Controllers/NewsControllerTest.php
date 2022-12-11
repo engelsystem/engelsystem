@@ -129,7 +129,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testShow()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('news_id', 1);
         $this->response->expects($this->once())
             ->method('withView')
             ->with('pages/news/news.twig')
@@ -146,7 +146,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testShowNotFound()
     {
-        $this->request->attributes->set('id', 42);
+        $this->request->attributes->set('news_id', 42);
 
         /** @var NewsController $controller */
         $controller = $this->app->make(NewsController::class);
@@ -173,7 +173,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testCommentNewsNotFound()
     {
-        $this->request->attributes->set('id', 42);
+        $this->request->attributes->set('news_id', 42);
         $this->request = $this->request->withParsedBody(['comment' => 'Foo bar!']);
         $this->addUser();
 
@@ -190,7 +190,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testComment()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('news_id', 1);
         $this->request = $this->request->withParsedBody(['comment' => 'Foo bar!']);
         $this->addUser();
 
@@ -228,7 +228,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testDeleteCommentNotFound()
     {
-        $this->request = $this->request->withAttribute('id', 42)->withParsedBody(['delete' => '1']);
+        $this->request = $this->request->withAttribute('news_id', 42)->withParsedBody(['delete' => '1']);
 
         /** @var NewsController $controller */
         $controller = $this->app->get(NewsController::class);
@@ -243,7 +243,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testDeleteCommentNotAllowed()
     {
-        $this->request = $this->request->withAttribute('id', 2)->withParsedBody(['delete' => '1']);
+        $this->request = $this->request->withAttribute('comment_id', 2)->withParsedBody(['delete' => '1']);
 
         $this->addUser(1);
         $this->addUser(2);
@@ -261,7 +261,7 @@ class NewsControllerTest extends ControllerTest
      */
     public function testDeleteComment()
     {
-        $this->request = $this->request->withAttribute('id', 1)->withParsedBody(['delete' => '1']);
+        $this->request = $this->request->withAttribute('comment_id', 1)->withParsedBody(['delete' => '1']);
         $this->setExpects($this->response, 'redirectTo', ['http://localhost/news/1'], $this->response);
 
         $this->addUser(1);

@@ -25,7 +25,7 @@ class FaqControllerTest extends ControllerTest
      */
     public function testEdit()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('faq_id', 1);
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
@@ -63,7 +63,7 @@ class FaqControllerTest extends ControllerTest
      */
     public function testSaveCreateEdit()
     {
-        $this->request->attributes->set('id', 2);
+        $this->request->attributes->set('faq_id', 2);
         $body = $this->data;
 
         $this->request = $this->request->withParsedBody($body);
@@ -95,7 +95,7 @@ class FaqControllerTest extends ControllerTest
      */
     public function testSavePreview()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('faq_id', 1);
         $this->request = $this->request->withParsedBody([
             'question' => 'New question',
             'text'     => 'New text',
@@ -132,7 +132,7 @@ class FaqControllerTest extends ControllerTest
      */
     public function testSaveDelete()
     {
-        $this->request->attributes->set('id', 1);
+        $this->request->attributes->set('faq_id', 1);
         $this->request = $this->request->withParsedBody([
             'question' => '.',
             'text'     => '.',

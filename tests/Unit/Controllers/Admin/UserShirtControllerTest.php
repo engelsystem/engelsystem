@@ -24,7 +24,7 @@ class UserShirtControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $request = $this->request->withAttribute('id', 1);
+        $request = $this->request->withAttribute('user_id', 1);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var Redirector|MockObject $redirector */
@@ -62,7 +62,7 @@ class UserShirtControllerTest extends ControllerTest
     public function testSaveShirt()
     {
         $request = $this->request
-            ->withAttribute('id', 1)
+            ->withAttribute('user_id', 1)
             ->withParsedBody([
                 'shirt_size' => 'S',
             ]);

@@ -102,8 +102,9 @@ class QuestionsController extends BaseController
      */
     public function edit(Request $request): Response
     {
-        $id = $request->getAttribute('id');
-        $questions = $this->question->find($id);
+        $questionId = (int)$request->getAttribute('question_id');
+
+        $questions = $this->question->find($questionId);
 
         return $this->showEdit($questions);
     }
@@ -115,9 +116,10 @@ class QuestionsController extends BaseController
      */
     public function save(Request $request): Response
     {
-        $id = $request->getAttribute('id');
+        $questionId = (int)$request->getAttribute('question_id');
+
         /** @var Question $question */
-        $question = $this->question->findOrNew($id);
+        $question = $this->question->findOrNew($questionId);
 
         $data = $this->validate($request, [
             'text'    => 'required',

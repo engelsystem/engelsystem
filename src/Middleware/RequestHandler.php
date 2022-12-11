@@ -38,6 +38,7 @@ class RequestHandler implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $requestHandler = $request->getAttribute('route-request-handler');
+
         $requestHandler = $this->resolveRequestHandler($requestHandler);
 
         if ($requestHandler instanceof CallableHandler) {
