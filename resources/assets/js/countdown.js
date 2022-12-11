@@ -38,10 +38,10 @@ ready(() => {
 
   document.querySelectorAll('[data-countdown-ts]').forEach((element) => {
     const timestamp = Number(element.dataset.countdownTs);
-    const template = element.innerHTML;
-    element.innerHTML = template.replace('%c', formatFromNow(timestamp));
+    const template = element.textContent;
+    element.textContent = template.replace('%c', formatFromNow(timestamp));
     setInterval(() => {
-      element.innerHTML = template.replace('%c', formatFromNow(timestamp));
+      element.textContent = template.replace('%c', formatFromNow(timestamp));
     }, 1000);
   });
 });
