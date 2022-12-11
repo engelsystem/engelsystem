@@ -141,7 +141,7 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
 function form_radio($name, $label, $selected, $value)
 {
     $value = htmlspecialchars((string)$value);
-    $id = $name . '_' . $value;
+    $id = preg_replace('/\s/', '-', $name . '_' . $value);
 
     return '<div class="form-check">'
         . '<input class="form-check-input" type="radio" id="' . $id . '" name="' . $name . '" value="' . $value . '" '
