@@ -114,7 +114,7 @@ class CreateEventConfigTable extends Migration
         $this->schema->dropIfExists('event_config');
     }
 
-    protected function getConfigValue(Collection $config, string $name): mixed
+    private function getConfigValue(Collection $config, string $name): mixed
     {
         $value = $config->where('name', $name)->first('value', (object) ['value' => null])->value;
 
