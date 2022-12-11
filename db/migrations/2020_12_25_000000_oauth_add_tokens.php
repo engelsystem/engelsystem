@@ -16,14 +16,11 @@ class OauthAddTokens extends Migration
      */
     public function up(): void
     {
-        $this->schema->table(
-            'oauth',
-            function (Blueprint $table): void {
-                $table->string('access_token')->nullable()->default(null)->after('identifier');
-                $table->string('refresh_token')->nullable()->default(null)->after('access_token');
-                $table->dateTime('expires_at')->nullable()->default(null)->after('refresh_token');
-            }
-        );
+        $this->schema->table('oauth', function (Blueprint $table): void {
+            $table->string('access_token')->nullable()->default(null)->after('identifier');
+            $table->string('refresh_token')->nullable()->default(null)->after('access_token');
+            $table->dateTime('expires_at')->nullable()->default(null)->after('refresh_token');
+        });
     }
 
     /**
@@ -31,13 +28,10 @@ class OauthAddTokens extends Migration
      */
     public function down(): void
     {
-        $this->schema->table(
-            'oauth',
-            function (Blueprint $table): void {
-                $table->dropColumn('access_token');
-                $table->dropColumn('refresh_token');
-                $table->dropColumn('expires_at');
-            }
-        );
+        $this->schema->table('oauth', function (Blueprint $table): void {
+            $table->dropColumn('access_token');
+            $table->dropColumn('refresh_token');
+            $table->dropColumn('expires_at');
+        });
     }
 }

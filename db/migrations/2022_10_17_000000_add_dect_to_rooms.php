@@ -14,12 +14,9 @@ class AddDectToRooms extends Migration
      */
     public function up(): void
     {
-        $this->schema->table(
-            'rooms',
-            function (Blueprint $table): void {
-                $table->text('dect')->nullable()->after('description');
-            }
-        );
+        $this->schema->table('rooms', function (Blueprint $table): void {
+            $table->text('dect')->nullable()->after('description');
+        });
     }
 
     /**
@@ -27,11 +24,8 @@ class AddDectToRooms extends Migration
      */
     public function down(): void
     {
-        $this->schema->table(
-            'rooms',
-            function (Blueprint $table): void {
-                $table->dropColumn('dect');
-            }
-        );
+        $this->schema->table('rooms', function (Blueprint $table): void {
+            $table->dropColumn('dect');
+        });
     }
 }

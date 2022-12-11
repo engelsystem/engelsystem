@@ -59,18 +59,13 @@ class CreateQuestionsTable extends Migration
 
     private function createNewQuestionsTable(): void
     {
-        $this->schema->create(
-            'questions',
-            function (Blueprint $table): void {
-                $table->increments('id');
-                $this->referencesUser($table);
-                $table->text('text');
-                $table->text('answer')
-                    ->nullable();
-                $this->references($table, 'users', 'answerer_id')
-                    ->nullable();
-            }
-        );
+        $this->schema->create('questions', function (Blueprint $table): void {
+            $table->increments('id');
+            $this->referencesUser($table);
+            $table->text('text');
+            $table->text('answer')->nullable();
+            $this->references($table, 'users', 'answerer_id')->nullable();
+        });
     }
 
     private function copyPreviousToNewQuestionsTable(): void
@@ -94,18 +89,13 @@ class CreateQuestionsTable extends Migration
 
     private function createPreviousQuestionsTable(): void
     {
-        $this->schema->create(
-            'Questions',
-            function (Blueprint $table): void {
-                $table->increments('QID');
-                $this->references($table, 'users', 'UID');
-                $table->text('Question');
-                $this->references($table, 'users', 'AID')
-                    ->nullable();
-                $table->text('Answer')
-                    ->nullable();
-            }
-        );
+        $this->schema->create('Questions', function (Blueprint $table): void {
+            $table->increments('QID');
+            $this->references($table, 'users', 'UID');
+            $table->text('Question');
+            $this->references($table, 'users', 'AID')->nullable();
+            $table->text('Answer')->nullable();
+        });
     }
 
     private function copyNewToPreviousQuestionsTable(): void

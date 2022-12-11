@@ -20,13 +20,10 @@ class ShifttypeRemoveAngeltype extends Migration
             return;
         }
 
-        $this->schema->table(
-            'ShiftTypes',
-            function (Blueprint $table): void {
-                $table->dropForeign('shifttypes_ibfk_1');
-                $table->dropColumn('angeltype_id');
-            }
-        );
+        $this->schema->table('ShiftTypes', function (Blueprint $table): void {
+            $table->dropForeign('shifttypes_ibfk_1');
+            $table->dropColumn('angeltype_id');
+        });
     }
 
     /**
@@ -38,15 +35,9 @@ class ShifttypeRemoveAngeltype extends Migration
             return;
         }
 
-        $this->schema->table(
-            'ShiftTypes',
-            function (Blueprint $table): void {
-                $table->integer('angeltype_id')
-                    ->after('name')
-                    ->index()
-                    ->nullable();
-                $this->addReference($table, 'angeltype_id', 'AngelTypes', null, 'shifttypes_ibfk_1');
-            }
-        );
+        $this->schema->table('ShiftTypes', function (Blueprint $table): void {
+            $table->integer('angeltype_id')->after('name')->index()->nullable();
+            $this->addReference($table, 'angeltype_id', 'AngelTypes', null, 'shifttypes_ibfk_1');
+        });
     }
 }

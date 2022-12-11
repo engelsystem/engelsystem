@@ -16,12 +16,9 @@ class AddEmailNewsToUsersSettings extends Migration
      */
     public function up(): void
     {
-        $this->schema->table(
-            'users_settings',
-            function (Blueprint $table): void {
-                $table->boolean('email_news')->default(false)->after('email_shiftinfo');
-            }
-        );
+        $this->schema->table('users_settings', function (Blueprint $table): void {
+            $table->boolean('email_news')->default(false)->after('email_shiftinfo');
+        });
     }
 
     /**
@@ -29,11 +26,8 @@ class AddEmailNewsToUsersSettings extends Migration
      */
     public function down(): void
     {
-        $this->schema->table(
-            'users_settings',
-            function (Blueprint $table): void {
-                $table->dropColumn('email_news');
-            }
-        );
+        $this->schema->table('users_settings', function (Blueprint $table): void {
+            $table->dropColumn('email_news');
+        });
     }
 }

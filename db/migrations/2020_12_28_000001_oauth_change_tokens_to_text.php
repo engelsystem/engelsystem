@@ -16,13 +16,10 @@ class OauthChangeTokensToText extends Migration
      */
     public function up(): void
     {
-        $this->schema->table(
-            'oauth',
-            function (Blueprint $table): void {
-                $table->text('access_token')->change();
-                $table->text('refresh_token')->change();
-            }
-        );
+        $this->schema->table('oauth', function (Blueprint $table): void {
+            $table->text('access_token')->change();
+            $table->text('refresh_token')->change();
+        });
     }
 
     /**
@@ -30,12 +27,9 @@ class OauthChangeTokensToText extends Migration
      */
     public function down(): void
     {
-        $this->schema->table(
-            'oauth',
-            function (Blueprint $table): void {
-                $table->string('access_token')->change();
-                $table->string('refresh_token')->change();
-            }
-        );
+        $this->schema->table('oauth', function (Blueprint $table): void {
+            $table->string('access_token')->change();
+            $table->string('refresh_token')->change();
+        });
     }
 }

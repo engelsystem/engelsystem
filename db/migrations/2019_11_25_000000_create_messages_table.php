@@ -66,17 +66,14 @@ class CreateMessagesTable extends Migration
 
     private function createNewMessagesTable(): void
     {
-        $this->schema->create(
-            'messages',
-            function (Blueprint $table): void {
-                $table->increments('id');
-                $this->referencesUser($table);
-                $this->references($table, 'users', 'receiver_id');
-                $table->boolean('read')->default(0);
-                $table->text('text');
-                $table->timestamps();
-            }
-        );
+        $this->schema->create('messages', function (Blueprint $table): void {
+            $table->increments('id');
+            $this->referencesUser($table);
+            $this->references($table, 'users', 'receiver_id');
+            $table->boolean('read')->default(0);
+            $table->text('text');
+            $table->timestamps();
+        });
     }
 
     private function copyPreviousToNewMessagesTable(): void
@@ -105,18 +102,14 @@ class CreateMessagesTable extends Migration
 
     private function createPreviousMessagesTable(): void
     {
-        $this->schema->create(
-            'Messages',
-            function (Blueprint $table): void {
-                $table->increments('id');
-                $table->integer('Datum');
-                $this->references($table, 'users', 'SUID');
-                $this->references($table, 'users', 'RUID');
-                $table->char('isRead')
-                    ->default('N');
-                $table->text('Text');
-            }
-        );
+        $this->schema->create('Messages', function (Blueprint $table): void {
+            $table->increments('id');
+            $table->integer('Datum');
+            $this->references($table, 'users', 'SUID');
+            $this->references($table, 'users', 'RUID');
+            $table->char('isRead')->default('N');
+            $table->text('Text');
+        });
     }
 
     private function copyNewToPreviousMessagesTable(): void
