@@ -1,7 +1,11 @@
 // Basic variables
 @use 'sass:map';
 
-// select 2 variables
+// Imports
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import '~bootstrap/scss/functions';
+
+// 2. Include any default variable overrides here
 $link-decoration: none !default;
 $link-hover-decoration: underline !default;
 
@@ -9,25 +13,28 @@ $nav-tabs-link-active-color: #fff !default;
 $nav-tabs-link-active-bg: $primary !default;
 $nav-tabs-link-active-border-color: none !default;
 
-// Imports
-@import '~bootstrap/scss/functions';
+// 3. Include remainder of required Bootstrap stylesheets
 @import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/maps';
-@import '~bootstrap/scss/mixins';
 
+// 4. Include any default map overrides here
 $custom-colors: (
   black: #000,
 );
-
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 $form-label-font-weight: $font-weight-bold;
 
+// 5. Include remainder of required parts
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/root';
+
+// 6. Optionally include any other parts as needed
 @import '~bootstrap/scss/utilities';
 
-@import '~bootstrap/scss/root';
 @import '~bootstrap/scss/reboot';
 @import '~bootstrap/scss/type';
+// @import '~bootstrap/scss/images'; // currently not used
 @import '~bootstrap/scss/containers';
 @import '~bootstrap/scss/grid';
 @import '~bootstrap/scss/tables';
@@ -39,18 +46,29 @@ $form-label-font-weight: $font-weight-bold;
 @import '~bootstrap/scss/nav';
 @import '~bootstrap/scss/navbar';
 @import '~bootstrap/scss/card';
+// @import '~bootstrap/scss/accordion'; // currently not used
+// @import '~bootstrap/scss/breadcrumb'; // currently not used
 @import '~bootstrap/scss/pagination';
 @import '~bootstrap/scss/badge';
 @import '~bootstrap/scss/alert';
 @import '~bootstrap/scss/progress';
 @import '~bootstrap/scss/list-group';
 @import '~bootstrap/scss/close';
+// @import '~bootstrap/scss/toasts'; // currently not used
+// @import '~bootstrap/scss/modal'; // currently not used
+// @import '~bootstrap/scss/tooltip'; // currently not used
 @import '~bootstrap/scss/popover';
+// @import '~bootstrap/scss/carousel'; // currently not used
+// @import '~bootstrap/scss/spinners'; // currently not used
+// @import '~bootstrap/scss/offcanvas'; // currently not used
+// @import '~bootstrap/scss/placeholders'; // currently not used
 
 @import '~bootstrap/scss/helpers';
 
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
 @import '~bootstrap/scss/utilities/api';
 
+// 8. Add additional custom code here
 @import '~bootstrap-icons/font/bootstrap-icons';
 @import 'choices';
 @import 'error';
