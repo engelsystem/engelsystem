@@ -3,6 +3,7 @@
 namespace Engelsystem\Events\Listener;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\AngelType;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -10,6 +11,9 @@ use Psr\Log\LoggerInterface;
 
 class OAuth2
 {
+    /** @var Authenticator */
+    protected Authenticator $auth;
+
     /** @var array */
     protected array $config;
 
@@ -20,8 +24,9 @@ class OAuth2
      * @param Config          $config
      * @param LoggerInterface $log
      */
-    public function __construct(Config $config, LoggerInterface $log)
+    public function __construct(Config $config, LoggerInterface $log, Authenticator $auth)
     {
+        $this->auth = $auth;
         $this->config = $config->get('oauth');
         $this->log = $log;
     }
@@ -34,9 +39,10 @@ class OAuth2
     public function login(string $event, string $provider, Collection $data): void
     {
         $ssoTeams = $this->getSsoTeams($provider);
-        $user = auth()->user();
+        $user = $this->auth->user();
         $currentUserAngeltypes = $user->userAngelTypes;
-        $userGroups = $data->get(($this->config[$provider] ?? [])['groups'] ?? 'groups', []);
+        $groupsKey = ($this->config[$provider] ?? [])['groups'] ?? 'groups';
+        $userGroups = $data->get($groupsKey, []);
 
         foreach ($userGroups as $groupName) {
             if (!isset($ssoTeams[$groupName])) {
