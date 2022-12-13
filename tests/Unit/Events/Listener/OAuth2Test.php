@@ -32,6 +32,7 @@ class OAuth2Test extends TestCase
 
     /**
      * @covers \Engelsystem\Events\Listener\OAuth2::login
+     * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
      * @covers \Engelsystem\Events\Listener\OAuth2::__construct
      */
     public function testLogin()
@@ -84,6 +85,7 @@ class OAuth2Test extends TestCase
 
     /**
      * @covers \Engelsystem\Events\Listener\OAuth2::login
+     * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
      */
     public function testLoginNoChanges()
     {
@@ -112,6 +114,7 @@ class OAuth2Test extends TestCase
 
     /**
      * @covers \Engelsystem\Events\Listener\OAuth2::login
+     * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
      */
     public function testLoginChangeSupport()
     {
