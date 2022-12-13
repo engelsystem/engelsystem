@@ -36,11 +36,4 @@ class FixOldTables extends Migration
             });
         }
     }
-
-    /**
-     * Reverse the migration
-     */
-    public function down(): void
-    {
-    }
 }

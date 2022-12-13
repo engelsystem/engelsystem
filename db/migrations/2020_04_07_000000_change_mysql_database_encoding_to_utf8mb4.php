@@ -28,11 +28,5 @@ class ChangeMysqlDatabaseEncodingToUtf8mb4 extends Migration
         }
     }
 
-    /**
-     * Reverse the migration
-     */
-    public function down(): void
-    {
-        // As utf8mb4 is a superset of utf8, there is nothing to do here
-    }
+    // As utf8mb4 is a superset of utf8, there is nothing to do in the downgrade
 }
