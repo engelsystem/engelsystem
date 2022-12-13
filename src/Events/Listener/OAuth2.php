@@ -5,6 +5,7 @@ namespace Engelsystem\Events\Listener;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
@@ -38,9 +39,8 @@ class OAuth2
      */
     public function login(string $event, string $provider, Collection $data): void
     {
-        $ssoTeams = $this->getSsoTeams($provider);
         $user = $this->auth->user();
-        $currentUserAngeltypes = $user->userAngelTypes;
+        $ssoTeams = $this->getSsoTeams($provider);
         $groupsKey = ($this->config[$provider] ?? [])['groups'] ?? 'groups';
         $userGroups = $data->get($groupsKey, []);
 
@@ -49,57 +49,7 @@ class OAuth2
                 continue;
             }
 
-            $team = $ssoTeams[$groupName];
-            $angelType = AngelType::find($team['id']);
-            /** @var AngelType $userAngeltype */
-            $userAngeltype = $currentUserAngeltypes->where('pivot.angel_type_id', $team['id'])->first();
-            $supporter = $team['supporter'];
-            $confirmed = $supporter ? $user->id : null;
-
-            if (!$userAngeltype) {
-                $this->log->info(
-                    'SSO {provider}: Added to angeltype {angeltype}, confirmed: {confirmed}, supporter: {supporter}',
-                    [
-                        'provider'  => $provider,
-                        'angeltype' => $angelType->name,
-                        'confirmed' => $confirmed ? 'yes' : 'no',
-                        'supporter' => $supporter ? 'yes' : 'no',
-                    ]
-                );
-
-                $user->userAngelTypes()->attach($angelType, ['supporter' => $supporter, 'confirm_user_id' => $confirmed]);
-
-                continue;
-            }
-
-            if (!$supporter) {
-                continue;
-            }
-
-            if ($userAngeltype->pivot->supporter != $supporter) {
-                $userAngeltype->pivot->supporter = $supporter;
-                $userAngeltype->pivot->save();
-
-                $this->log->info(
-                    'SSO {provider}: Set supporter state for angeltype {angeltype}',
-                    [
-                        'provider'  => $provider,
-                        'angeltype' => $userAngeltype->pivot->angelType->name,
-                    ]
-                );
-            }
-
-            if (!$userAngeltype->pivot->confirm_user_id) {
-                $userAngeltype->pivot->confirmUser()->associate($user);
-                $userAngeltype->pivot->save();
-                $this->log->info(
-                    'SSO {provider}: Set confirmed state for angeltype {angeltype}',
-                    [
-                        'provider'  => $provider,
-                        'angeltype' => $userAngeltype->pivot->angelType->name,
-                    ]
-                );
-            }
+            $this->syncTeams($provider, $user, $ssoTeams[$groupName]);
         }
     }
 
@@ -117,5 +67,60 @@ class OAuth2
         }
 
         return $teams;
+    }
+
+    protected function syncTeams(string $providerName, User $user, array $ssoTeam)
+    {
+        $currentUserAngeltypes = $user->userAngelTypes;
+        $angelType = AngelType::find($ssoTeam['id']);
+        /** @var AngelType $userAngeltype */
+        $userAngeltype = $currentUserAngeltypes->where('pivot.angel_type_id', $ssoTeam['id'])->first();
+        $supporter = $ssoTeam['supporter'];
+        $confirmed = $supporter ? $user->id : null;
+
+        if (!$userAngeltype) {
+            $this->log->info(
+                'SSO {provider}: Added to angeltype {angeltype}, confirmed: {confirmed}, supporter: {supporter}',
+                [
+                    'provider'  => $providerName,
+                    'angeltype' => $angelType->name,
+                    'confirmed' => $confirmed ? 'yes' : 'no',
+                    'supporter' => $supporter ? 'yes' : 'no',
+                ]
+            );
+
+            $user->userAngelTypes()->attach($angelType, ['supporter' => $supporter, 'confirm_user_id' => $confirmed]);
+
+            return;
+        }
+
+        if (!$supporter) {
+            return;
+        }
+
+        if ($userAngeltype->pivot->supporter != $supporter) {
+            $userAngeltype->pivot->supporter = $supporter;
+            $userAngeltype->pivot->save();
+
+            $this->log->info(
+                'SSO {provider}: Set supporter state for angeltype {angeltype}',
+                [
+                    'provider'  => $providerName,
+                    'angeltype' => $userAngeltype->pivot->angelType->name,
+                ]
+            );
+        }
+
+        if (!$userAngeltype->pivot->confirm_user_id) {
+            $userAngeltype->pivot->confirmUser()->associate($user);
+            $userAngeltype->pivot->save();
+            $this->log->info(
+                'SSO {provider}: Set confirmed state for angeltype {angeltype}',
+                [
+                    'provider'  => $providerName,
+                    'angeltype' => $userAngeltype->pivot->angelType->name,
+                ]
+            );
+        }
     }
 }
