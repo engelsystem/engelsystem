@@ -24,11 +24,6 @@ class FaqController extends BaseController
         'faq.view',
     ];
 
-    /**
-     * @param Config          $config
-     * @param Faq             $faq
-     * @param Response        $response
-     */
     public function __construct(
         Config $config,
         Faq $faq,

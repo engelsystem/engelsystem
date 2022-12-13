@@ -26,13 +26,9 @@ class UrlGeneratorTest extends TestCase
      * @covers       \Engelsystem\Http\UrlGenerator::to
      * @covers       \Engelsystem\Http\UrlGenerator::generateUrl
      *
-     * @param string   $path
-     * @param string   $willReturn
-     * @param string   $urlToPath
      * @param string[] $arguments
-     * @param string   $expectedUrl
      */
-    public function testTo($urlToPath, $path, $willReturn, $arguments, $expectedUrl)
+    public function testTo(string $urlToPath, string $path, string $willReturn, array $arguments, string $expectedUrl)
     {
         $request = $this->getMockBuilder(Request::class)
             ->getMock();

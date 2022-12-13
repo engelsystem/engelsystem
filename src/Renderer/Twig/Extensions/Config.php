@@ -11,9 +11,6 @@ class Config extends TwigExtension
     /** @var EngelsystemConfig */
     protected $config;
 
-    /**
-     * @param EngelsystemConfig $config
-     */
     public function __construct(EngelsystemConfig $config)
     {
         $this->config = $config;

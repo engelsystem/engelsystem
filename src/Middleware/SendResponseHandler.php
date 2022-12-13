@@ -14,8 +14,6 @@ class SendResponseHandler implements MiddlewareInterface
      *
      * This should be the first middleware
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(
@@ -57,12 +55,9 @@ class SendResponseHandler implements MiddlewareInterface
     /**
      * Send a raw HTTP header
      *
-     * @param string $content
-     * @param bool   $replace
-     * @param int    $code
      * @codeCoverageIgnore
      */
-    protected function sendHeader($content, $replace = true, $code = null)
+    protected function sendHeader(string $content, bool $replace = true, int $code = null)
     {
         if (is_null($code)) {
             header($content, $replace);

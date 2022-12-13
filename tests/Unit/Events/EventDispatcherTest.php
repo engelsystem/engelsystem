@@ -114,9 +114,6 @@ class EventDispatcherTest extends TestCase
         $this->assertEquals(['default' => 'handler'], $response);
     }
 
-    /**
-     * @param string $event
-     */
     public function eventHandler(string $event): void
     {
         if (!isset($this->firedEvents[$event])) {

@@ -17,10 +17,6 @@ class DesignController extends BaseController
     /** @var Config */
     protected $config;
 
-    /**
-     * @param Response $response
-     * @param Config   $config
-     */
     public function __construct(Response $response, Config $config)
     {
         $this->config = $config;

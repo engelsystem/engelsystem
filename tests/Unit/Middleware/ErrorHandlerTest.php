@@ -75,6 +75,10 @@ class ErrorHandlerTest extends TestCase
                 ['application/json']
             );
 
+        $response->expects(self::any())
+            ->method('getHeaders')
+            ->willReturn([]);
+
         $returnResponseHandler->setResponse($response);
         $return = $errorHandler->process($request, $returnResponseHandler);
         $this->assertEquals($response, $return, 'Only Responses >= 400 should be processed');

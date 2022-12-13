@@ -12,9 +12,6 @@ class ValidationException extends RuntimeException
     protected $validator;
 
     /**
-     * @param Validator      $validator
-     * @param string         $message
-     * @param int            $code
      * @param Throwable|null $previous
      */
     public function __construct(

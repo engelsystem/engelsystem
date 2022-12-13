@@ -12,7 +12,6 @@ abstract class ServiceProvider
     /**
      * ServiceProvider constructor.
      *
-     * @param Application $app
      */
     public function __construct(Application $app)
     {

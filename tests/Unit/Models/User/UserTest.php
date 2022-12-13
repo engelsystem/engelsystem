@@ -141,12 +141,10 @@ class UserTest extends ModelTest
      *
      * @dataProvider hasOneRelationsProvider
      *
-     * @param string $class
-     * @param string $name
      * @param array  $data
      * @throws Exception
      */
-    public function testHasOneRelations($class, $name, $data)
+    public function testHasOneRelations(string $class, string $name, array $data)
     {
         $user = new User($this->data);
         $user->save();

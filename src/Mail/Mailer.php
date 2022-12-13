@@ -25,10 +25,8 @@ class Mailer
      * Send the mail
      *
      * @param string|string[] $to
-     * @param string          $subject
-     * @param string          $body
      */
-    public function send($to, string $subject, string $body): void
+    public function send(string|array $to, string $subject, string $body): void
     {
         $message = (new Email())
             ->to(...(array)$to)
@@ -47,9 +45,6 @@ class Mailer
         return $this->fromAddress;
     }
 
-    /**
-     * @param string $fromAddress
-     */
     public function setFromAddress(string $fromAddress)
     {
         $this->fromAddress = $fromAddress;
@@ -63,9 +58,6 @@ class Mailer
         return $this->fromName;
     }
 
-    /**
-     * @param string $fromName
-     */
     public function setFromName(string $fromName)
     {
         $this->fromName = $fromName;

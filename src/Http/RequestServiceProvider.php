@@ -53,7 +53,7 @@ class RequestServiceProvider extends ServiceProvider
         array $cookies = [],
         array $files = [],
         array $server = [],
-        $content = null
+        mixed $content = null
     ): Request {
         if (
             !empty($this->appUrl['path'])
@@ -81,15 +81,13 @@ class RequestServiceProvider extends ServiceProvider
      *
      * Required for unit tests (static methods can't be mocked)
      *
-     * @param Request $request
      * @param array   $proxies
-     * @param int     $trustedHeadersSet
      * @codeCoverageIgnore
      */
     protected function setTrustedProxies(
-        $request,
-        $proxies,
-        $trustedHeadersSet = Request::HEADER_FORWARDED | Request::HEADER_X_FORWARDED_TRAEFIK
+        Request $request,
+        array $proxies,
+        int $trustedHeadersSet = Request::HEADER_FORWARDED | Request::HEADER_X_FORWARDED_TRAEFIK
     ) {
         $request->setTrustedProxies($proxies, $trustedHeadersSet);
     }

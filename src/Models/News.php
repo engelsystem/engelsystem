@@ -72,7 +72,6 @@ class News extends BaseModel
     }
 
     /**
-     * @param bool $showMore
      * @return string
      */
     public function text(bool $showMore = true): string

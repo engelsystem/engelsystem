@@ -7,9 +7,6 @@ use Gettext\Translator;
 class GettextTranslator extends Translator
 {
     /**
-     * @param string|null $domain
-     * @param string|null $context
-     * @param string      $original
      * @return string
      * @throws TranslationNotFound
      */
@@ -21,11 +18,6 @@ class GettextTranslator extends Translator
     }
 
     /**
-     * @param string|null $domain
-     * @param string|null $context
-     * @param string      $original
-     * @param string      $plural
-     * @param int         $value
      * @return string
      * @throws TranslationNotFound
      */
@@ -42,12 +34,9 @@ class GettextTranslator extends Translator
     }
 
     /**
-     * @param string $domain
-     * @param string $context
-     * @param string $original
      * @throws TranslationNotFound
      */
-    protected function assertHasTranslation($domain, $context, $original)
+    protected function assertHasTranslation(?string $domain, ?string $context, string $original)
     {
         if ($this->getTranslation($domain, $context, $original)) {
             return;

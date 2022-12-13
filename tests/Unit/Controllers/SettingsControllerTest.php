@@ -382,7 +382,6 @@ class SettingsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\SettingsController::savePassword
      * @dataProvider savePasswordValidationProvider
-     * @param string $password
      * @param string $new_password
      * @param string $new_password2
      */

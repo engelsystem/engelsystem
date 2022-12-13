@@ -17,10 +17,6 @@ class Globals extends TwigExtension implements GlobalsInterface
     /** @var Request */
     protected $request;
 
-    /**
-     * @param Authenticator $auth
-     * @param Request       $request
-     */
     public function __construct(Authenticator $auth, Request $request)
     {
         $this->auth = $auth;

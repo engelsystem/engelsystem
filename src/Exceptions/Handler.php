@@ -30,7 +30,7 @@ class Handler
      *
      * @param string $environment prod|dev
      */
-    public function __construct($environment = self::ENV_PRODUCTION)
+    public function __construct(string $environment = self::ENV_PRODUCTION)
     {
         $this->environment = $environment;
     }
@@ -44,24 +44,16 @@ class Handler
         set_exception_handler([$this, 'exceptionHandler']);
     }
 
-    /**
-     * @param int    $number
-     * @param string $message
-     * @param string $file
-     * @param int    $line
-     */
-    public function errorHandler($number, $message, $file, $line)
+    public function errorHandler(int $number, string $message, string $file, int $line)
     {
         $exception = new ErrorException($message, 0, $number, $file, $line);
         $this->exceptionHandler($exception);
     }
 
     /**
-     * @param Throwable $e
-     * @param bool      $return
      * @return string
      */
-    public function exceptionHandler($e, $return = false)
+    public function exceptionHandler(Throwable $e, bool $return = false)
     {
         if (!$this->request instanceof Request) {
             $this->request = new Request();
@@ -90,9 +82,8 @@ class Handler
      * Exit the application
      *
      * @codeCoverageIgnore
-     * @param string $message
      */
-    protected function terminateApplicationImmediately($message = '')
+    protected function terminateApplicationImmediately(string $message = '')
     {
         echo $message;
         die(1);
@@ -106,19 +97,15 @@ class Handler
         return $this->environment;
     }
 
-    /**
-     * @param string $environment
-     */
-    public function setEnvironment($environment)
+    public function setEnvironment(string $environment)
     {
         $this->environment = $environment;
     }
 
     /**
-     * @param string $environment
      * @return HandlerInterface|HandlerInterface[]
      */
-    public function getHandler($environment = null)
+    public function getHandler(string $environment = null)
     {
         if (!is_null($environment)) {
             return $this->handler[$environment];
@@ -127,11 +114,7 @@ class Handler
         return $this->handler;
     }
 
-    /**
-     * @param string           $environment
-     * @param HandlerInterface $handler
-     */
-    public function setHandler($environment, HandlerInterface $handler)
+    public function setHandler(string $environment, HandlerInterface $handler)
     {
         $this->handler[$environment] = $handler;
     }
@@ -144,9 +127,6 @@ class Handler
         return $this->request;
     }
 
-    /**
-     * @param Request $request
-     */
     public function setRequest(Request $request)
     {
         $this->request = $request;

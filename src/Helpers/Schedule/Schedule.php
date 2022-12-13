@@ -18,8 +18,6 @@ class Schedule
     protected $day;
 
     /**
-     * @param string     $version
-     * @param Conference $conference
      * @param Day[]      $days
      */
     public function __construct(

@@ -19,18 +19,13 @@ class Whoops extends Legacy implements HandlerInterface
     /**
      * Whoops constructor.
      *
-     * @param Container $app
      */
     public function __construct(Container $app)
     {
         $this->app = $app;
     }
 
-    /**
-     * @param Request   $request
-     * @param Throwable $e
-     */
-    public function render($request, Throwable $e)
+    public function render(Request $request, Throwable $e)
     {
         $whoops = $this->app->make(WhoopsRunner::class);
         $handler = $this->getPrettyPageHandler($e);
@@ -47,7 +42,6 @@ class Whoops extends Legacy implements HandlerInterface
     }
 
     /**
-     * @param Throwable $e
      * @return PrettyPageHandler
      */
     protected function getPrettyPageHandler(Throwable $e)

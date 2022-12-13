@@ -113,8 +113,6 @@ class CreateEventConfigTable extends Migration
     }
 
     /**
-     * @param Collection $config
-     * @param string     $name
      * @return mixed|null
      */
     protected function getConfigValue(Collection $config, string $name)

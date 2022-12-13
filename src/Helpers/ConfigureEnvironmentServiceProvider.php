@@ -27,7 +27,6 @@ class ConfigureEnvironmentServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param CarbonTimeZone $timeZone
      * @codeCoverageIgnore
      */
     protected function setTimeZone(CarbonTimeZone $timeZone)
@@ -37,7 +36,6 @@ class ConfigureEnvironmentServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param bool $displayErrors
      * @codeCoverageIgnore
      */
     protected function displayErrors(bool $displayErrors)
@@ -46,7 +44,6 @@ class ConfigureEnvironmentServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param int $errorReporting
      * @codeCoverageIgnore
      */
     protected function errorReporting(int $errorReporting)

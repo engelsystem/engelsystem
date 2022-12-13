@@ -35,13 +35,6 @@ class NewsController extends BaseController
         'admin_news',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param LoggerInterface $log
-     * @param News            $news
-     * @param Redirector      $redirector
-     * @param Response        $response
-     */
     public function __construct(
         Authenticator $auth,
         LoggerInterface $log,
@@ -57,7 +50,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -72,8 +64,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param News|null $news
-     * @param bool      $isMeetingDefault
      *
      * @return Response
      */
@@ -90,7 +80,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */

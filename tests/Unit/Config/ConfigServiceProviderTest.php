@@ -129,7 +129,6 @@ class ConfigServiceProviderTest extends ServiceProviderTest
     }
 
     /**
-     * @param string $configPath
      * @return Application[]|Config[]
      */
     protected function getConfiguredApp(string $configPath)

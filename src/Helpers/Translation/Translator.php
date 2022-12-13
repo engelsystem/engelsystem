@@ -22,11 +22,7 @@ class Translator
     /**
      * Translator constructor.
      *
-     * @param string   $locale
-     * @param string   $fallbackLocale
-     * @param callable $getTranslatorCallback
      * @param string[] $locales
-     * @param callable $localeChangeCallback
      */
     public function __construct(
         string $locale,
@@ -46,7 +42,6 @@ class Translator
     /**
      * Get the translation for a given key
      *
-     * @param string $key
      * @param array  $replace
      * @return string
      */
@@ -58,9 +53,6 @@ class Translator
     /**
      * Get the translation for a given key
      *
-     * @param string $key
-     * @param string $pluralKey
-     * @param int    $number
      * @param array  $replace
      * @return string
      */
@@ -70,7 +62,6 @@ class Translator
     }
 
     /**
-     * @param string $type
      * @param array  $parameters
      * @param array  $replace
      * @return mixed|string
@@ -96,7 +87,6 @@ class Translator
     /**
      * Replace placeholders
      *
-     * @param string $key
      * @param array  $replace
      * @return mixed|string
      */
@@ -117,9 +107,6 @@ class Translator
         return $this->locale;
     }
 
-    /**
-     * @param string $locale
-     */
     public function setLocale(string $locale)
     {
         $this->locale = $locale;
@@ -138,7 +125,6 @@ class Translator
     }
 
     /**
-     * @param string $locale
      * @return bool
      */
     public function hasLocale(string $locale): bool

@@ -36,13 +36,6 @@ class AuthController extends BaseController
         'postLogin' => 'login',
     ];
 
-    /**
-     * @param Response         $response
-     * @param SessionInterface $session
-     * @param Redirector       $redirect
-     * @param Config           $config
-     * @param Authenticator    $auth
-     */
     public function __construct(
         Response $response,
         SessionInterface $session,
@@ -79,7 +72,6 @@ class AuthController extends BaseController
     /**
      * Posted login form
      *
-     * @param Request $request
      * @return Response
      */
     public function postLogin(Request $request): Response
@@ -101,7 +93,6 @@ class AuthController extends BaseController
     }
 
     /**
-     * @param User $user
      *
      * @return Response
      */

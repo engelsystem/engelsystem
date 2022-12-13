@@ -14,7 +14,6 @@ class Renderer
     /**
      * Render a template
      *
-     * @param string  $template
      * @param mixed[] $data
      * @return string
      */
@@ -38,7 +37,6 @@ class Renderer
     /**
      * Add a new renderer engine
      *
-     * @param EngineInterface $renderer
      */
     public function addRenderer(EngineInterface $renderer): void
     {

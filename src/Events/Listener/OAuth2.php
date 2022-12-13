@@ -21,10 +21,6 @@ class OAuth2
     /** @var LoggerInterface */
     protected LoggerInterface $log;
 
-    /**
-     * @param Config          $config
-     * @param LoggerInterface $log
-     */
     public function __construct(Config $config, LoggerInterface $log, Authenticator $auth)
     {
         $this->auth = $auth;
@@ -33,7 +29,6 @@ class OAuth2
     }
 
     /**
-     * @param string     $event
      * @param string     $provider OAuth provider name
      * @param Collection $data OAuth userdata
      */

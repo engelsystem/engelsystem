@@ -22,6 +22,7 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
+use Illuminate\Contracts\Database\Query\Builder as BuilderContract;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
@@ -31,9 +32,6 @@ class Stats
     /** @var Database */
     protected $db;
 
-    /**
-     * @param Database $db
-     */
     public function __construct(Database $db)
     {
         $this->db = $db;
@@ -103,7 +101,6 @@ class Stats
     }
 
     /**
-     * @param string $type
      *
      * @return int
      */
@@ -315,16 +312,17 @@ class Stats
 
     /**
      * @param array        $buckets
-     * @param QueryBuilder $basicQuery
-     * @param string       $groupBy
-     * @param string       $having
-     * @param string       $count
      *
      * @return array
      * @codeCoverageIgnore As long as its only used for old tables
      */
-    protected function getBuckets(array $buckets, $basicQuery, string $groupBy, string $having, string $count): array
-    {
+    protected function getBuckets(
+        array $buckets,
+        BuilderContract $basicQuery,
+        string $groupBy,
+        string $having,
+        string $count
+    ): array {
         $return = [];
 
         foreach ($buckets as $bucket) {
@@ -512,7 +510,6 @@ class Stats
     }
 
     /**
-     * @param string $table
      * @return QueryBuilder
      */
     protected function getQuery(string $table): QueryBuilder
@@ -523,10 +520,9 @@ class Stats
     }
 
     /**
-     * @param mixed $value
      * @return QueryExpression
      */
-    protected function raw($value): QueryExpression
+    protected function raw(mixed $value): QueryExpression
     {
         return $this->db->getConnection()->raw($value);
     }

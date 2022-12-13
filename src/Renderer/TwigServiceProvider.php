@@ -102,10 +102,6 @@ class TwigServiceProvider extends ServiceProvider
         $this->app->tag('renderer.twigEngine', ['renderer.engine']);
     }
 
-    /**
-     * @param string $class
-     * @param string $alias
-     */
     protected function registerTwigExtensions(string $class, string $alias)
     {
         $alias = 'twig.extension.' . $alias;

@@ -16,11 +16,9 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Get POST input
      *
-     * @param string $key
-     * @param mixed  $default
      * @return mixed
      */
-    public function postData($key, $default = null)
+    public function postData(string $key, mixed $default = null)
     {
         return $this->request->get($key, $default);
     }
@@ -28,11 +26,9 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Get input data
      *
-     * @param string $key
-     * @param mixed  $default
      * @return mixed
      */
-    public function input($key, $default = null)
+    public function input(string $key, mixed $default = null)
     {
         return $this->get($key, $default);
     }
@@ -40,10 +36,9 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Checks if the input exists
      *
-     * @param string $key
      * @return bool
      */
-    public function has($key)
+    public function has(string $key)
     {
         $value = $this->input($key);
 
@@ -53,10 +48,9 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Checks if the POST data exists
      *
-     * @param string $key
      * @return bool
      */
-    public function hasPostData($key)
+    public function hasPostData(string $key)
     {
         $value = $this->postData($key);
 
@@ -122,10 +116,9 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * @link http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
-     * @param mixed $requestTarget
      * @return static
      */
-    public function withRequestTarget($requestTarget)
+    public function withRequestTarget(mixed $requestTarget)
     {
         return $this->create($requestTarget);
     }
@@ -145,7 +138,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return static
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod($method)
+    public function withMethod(mixed $method)
     {
         $new = clone $this;
         $new->setMethod($method);
@@ -183,7 +176,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @param bool         $preserveHost Preserve the original state of the Host header.
      * @return static
      */
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    public function withUri(UriInterface $uri, mixed $preserveHost = false)
     {
         $new = $this->create($uri);
         if ($preserveHost) {
@@ -409,7 +402,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @throws \InvalidArgumentException if an unsupported argument type is
      *                                provided.
      */
-    public function withParsedBody($data)
+    public function withParsedBody(mixed $data)
     {
         $new = clone $this;
         $new->request = clone $this->request;
@@ -450,7 +443,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return mixed
      * @see getAttributes()
      */
-    public function getAttribute($name, $default = null)
+    public function getAttribute(mixed $name, mixed $default = null)
     {
         return $this->attributes->get($name, $default);
     }
@@ -470,7 +463,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return static
      * @see getAttributes()
      */
-    public function withAttribute($name, $value)
+    public function withAttribute(mixed $name, mixed $value)
     {
         $new = clone $this;
         $new->attributes = clone $this->attributes;
@@ -494,7 +487,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return static
      * @see getAttributes()
      */
-    public function withoutAttribute($name)
+    public function withoutAttribute(mixed $name)
     {
         $new = clone $this;
         $new->attributes = clone $this->attributes;

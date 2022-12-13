@@ -35,13 +35,6 @@ class SettingsController extends BaseController
         'user_settings',
     ];
 
-    /**
-     * @param Authenticator $auth
-     * @param Config $config
-     * @param LoggerInterface $log
-     * @param Redirector $redirector
-     * @param Response $response
-     */
     public function __construct(
         Authenticator $auth,
         Config $config,
@@ -73,7 +66,6 @@ class SettingsController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function saveProfile(Request $request): Response
@@ -151,7 +143,6 @@ class SettingsController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function savePassword(Request $request): Response
@@ -201,7 +192,6 @@ class SettingsController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function saveTheme(Request $request): Response
@@ -242,7 +232,6 @@ class SettingsController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function saveLanguage(Request $request): Response

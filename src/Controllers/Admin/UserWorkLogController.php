@@ -45,15 +45,6 @@ class UserWorkLogController extends BaseController
         'admin_user_worklog',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param Config          $config
-     * @param LoggerInterface $log
-     * @param Worklog         $worklog
-     * @param Redirector      $redirector
-     * @param Response        $response
-     * @param User            $user
-     */
     public function __construct(
         Authenticator $auth,
         Config $config,
@@ -73,7 +64,6 @@ class UserWorkLogController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function editWorklog(Request $request): Response
@@ -96,7 +86,6 @@ class UserWorkLogController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function saveWorklog(Request $request): Response
@@ -135,7 +124,6 @@ class UserWorkLogController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function showDeleteWorklog(Request $request): Response
@@ -157,7 +145,6 @@ class UserWorkLogController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function deleteWorklog(Request $request): Response

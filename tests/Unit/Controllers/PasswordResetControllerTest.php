@@ -214,7 +214,6 @@ class PasswordResetControllerTest extends TestCase
     }
 
     /**
-     * @param string $view
      * @param array  $data
      * @return PasswordResetController
      */
@@ -260,7 +259,6 @@ class PasswordResetControllerTest extends TestCase
     }
 
     /**
-     * @param User $user
      * @return PasswordReset
      */
     protected function createToken(User $user): PasswordReset

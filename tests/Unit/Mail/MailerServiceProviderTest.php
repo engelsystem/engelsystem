@@ -86,11 +86,10 @@ class MailerServiceProviderTest extends ServiceProviderTest
 
     /**
      * @covers       \Engelsystem\Mail\MailerServiceProvider::getTransport
-     * @param string $class
      * @param array  $emailConfig
      * @dataProvider provideTransports
      */
-    public function testGetTransport($class, $emailConfig = [])
+    public function testGetTransport(string $class, array $emailConfig = [])
     {
         $app = $this->getApplication($emailConfig);
 
@@ -134,7 +133,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
      * @param array $configuration
      * @return Application
      */
-    protected function getApplication($configuration = []): Application
+    protected function getApplication(array $configuration = []): Application
     {
         $app = new Application();
 
@@ -149,9 +148,8 @@ class MailerServiceProviderTest extends ServiceProviderTest
 
     /**
      * @param string[]    $abstracts
-     * @param Application $container
      */
-    protected function assertExistsInContainer($abstracts, $container)
+    protected function assertExistsInContainer(array $abstracts, Application $container)
     {
         $first = array_shift($abstracts);
         $this->assertContainerHas($first, $container);
@@ -162,11 +160,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
         }
     }
 
-    /**
-     * @param string      $abstract
-     * @param Application $container
-     */
-    protected function assertContainerHas($abstract, $container)
+    protected function assertContainerHas(string $abstract, Application $container)
     {
         $this->assertTrue(
             $container->has($abstract) || $container->hasMethodBinding($abstract),

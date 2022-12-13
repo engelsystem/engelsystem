@@ -51,9 +51,8 @@ class LoggerTest extends ApplicationFeatureTest
     /**
      * @covers       \Engelsystem\Logger\Logger::log
      * @dataProvider provideLogLevels
-     * @param string $level
      */
-    public function testAllLevels($level)
+    public function testAllLevels(string $level)
     {
         LogEntry::query()->truncate();
         $logger = $this->getLogger();
@@ -98,11 +97,9 @@ class LoggerTest extends ApplicationFeatureTest
      * @covers       \Engelsystem\Logger\Logger::log
      * @dataProvider provideContextReplaceValues
      *
-     * @param string   $message
      * @param string[] $context
-     * @param string   $expected
      */
-    public function testContextReplaceValues($message, $context, $expected)
+    public function testContextReplaceValues(string $message, array $context, string $expected)
     {
         $logger = $this->getLogger();
         $logger->log(LogLevel::INFO, $message, $context);

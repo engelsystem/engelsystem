@@ -35,12 +35,6 @@ class PasswordResetController extends BaseController
         'postResetPassword' => 'login',
     ];
 
-    /**
-     * @param Response          $response
-     * @param SessionInterface  $session
-     * @param EngelsystemMailer $mail
-     * @param LoggerInterface   $log
-     */
     public function __construct(
         Response $response,
         SessionInterface $session,
@@ -62,7 +56,6 @@ class PasswordResetController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function postReset(Request $request): Response
@@ -96,7 +89,6 @@ class PasswordResetController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function resetPassword(Request $request): Response
@@ -110,7 +102,6 @@ class PasswordResetController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function postResetPassword(Request $request): Response
@@ -135,11 +126,10 @@ class PasswordResetController extends BaseController
     }
 
     /**
-     * @param string $view
      * @param array  $data
      * @return Response
      */
-    protected function showView($view = 'pages/password/reset', $data = []): Response
+    protected function showView(string $view = 'pages/password/reset', array $data = []): Response
     {
         return $this->response->withView(
             $view,
@@ -148,7 +138,6 @@ class PasswordResetController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return PasswordReset
      */
     protected function requireToken(Request $request): PasswordReset

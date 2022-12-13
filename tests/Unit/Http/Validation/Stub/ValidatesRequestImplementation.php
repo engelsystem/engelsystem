@@ -8,7 +8,6 @@ use Engelsystem\Http\Request;
 class ValidatesRequestImplementation extends BaseController
 {
     /**
-     * @param Request $request
      * @param array   $rules
      * @return array
      */

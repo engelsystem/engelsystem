@@ -15,20 +15,16 @@ class ResolvesMiddlewareTraitImplementation
     /** @var Application */
     protected $container;
 
-    /**
-     * @param Application $container
-     */
     public function __construct(Application $container = null)
     {
         $this->container = $container;
     }
 
     /**
-     * @param string|callable|MiddlewareInterface|RequestHandlerInterface $middleware
      * @return MiddlewareInterface|RequestHandlerInterface
      * @throws InvalidArgumentException
      */
-    public function callResolveMiddleware($middleware)
+    public function callResolveMiddleware(string|callable|MiddlewareInterface|RequestHandlerInterface $middleware)
     {
         return $this->resolveMiddleware($middleware);
     }

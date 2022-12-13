@@ -32,10 +32,7 @@ class ExceptionsServiceProvider extends ServiceProvider
         $this->addLogger($handler);
     }
 
-    /**
-     * @param Handler $errorHandler
-     */
-    protected function addProductionHandler($errorHandler)
+    protected function addProductionHandler(Handler $errorHandler)
     {
         $handler = $this->app->make(Legacy::class);
         $this->app->instance('error.handler.production', $handler);
@@ -43,10 +40,7 @@ class ExceptionsServiceProvider extends ServiceProvider
         $this->app->bind(HandlerInterface::class, 'error.handler.production');
     }
 
-    /**
-     * @param Handler $errorHandler
-     */
-    protected function addDevelopmentHandler($errorHandler)
+    protected function addDevelopmentHandler(Handler $errorHandler)
     {
         $handler = $this->app->make(LegacyDevelopment::class);
 
@@ -58,9 +52,6 @@ class ExceptionsServiceProvider extends ServiceProvider
         $errorHandler->setHandler(Handler::ENV_DEVELOPMENT, $handler);
     }
 
-    /**
-     * @param Handler $handler
-     */
     protected function addLogger(Handler $handler)
     {
         foreach ($handler->getHandler() as $h) {

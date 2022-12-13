@@ -21,11 +21,6 @@ class SetLocale implements MiddlewareInterface
     /** @var Session */
     protected $session;
 
-    /**
-     * @param Translator    $translator
-     * @param Session       $session
-     * @param Authenticator $auth
-     */
     public function __construct(Translator $translator, Session $session, Authenticator $auth)
     {
         $this->auth = $auth;
@@ -36,8 +31,6 @@ class SetLocale implements MiddlewareInterface
     /**
      * Process an incoming server request and setting the locale if required
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

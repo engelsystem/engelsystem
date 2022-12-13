@@ -73,7 +73,6 @@ class RedirectorTest extends TestCase
     /**
      * Returns the provided path
      *
-     * @param string $path
      * @return string
      */
     public function returnPath(string $path)

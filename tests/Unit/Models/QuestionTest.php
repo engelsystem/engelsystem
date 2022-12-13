@@ -87,8 +87,6 @@ class QuestionTest extends ModelTest
     }
 
     /**
-     * @param User      $user
-     * @param User|null $answerer
      * @return Question
      */
     private function createQuestion(User $user, ?User $answerer = null): Question

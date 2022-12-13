@@ -19,7 +19,6 @@ class EngelsystemMailer extends Mailer
     protected $subjectPrefix = null;
 
     /**
-     * @param MailerInterface $mailer
      * @param Renderer|null   $view
      * @param Translator|null $translation
      */
@@ -33,13 +32,10 @@ class EngelsystemMailer extends Mailer
 
     /**
      * @param string|string[]|User $to
-     * @param string               $subject
-     * @param string               $template
      * @param array                $data
-     * @param string|null          $locale
      */
     public function sendViewTranslated(
-        $to,
+        string|array|User $to,
         string $subject,
         string $template,
         array $data = [],
@@ -72,11 +68,9 @@ class EngelsystemMailer extends Mailer
      * Send a template
      *
      * @param string|string[] $to
-     * @param string          $subject
-     * @param string          $template
      * @param array           $data
      */
-    public function sendView($to, string $subject, string $template, array $data = []): void
+    public function sendView(string|array $to, string $subject, string $template, array $data = []): void
     {
         $body = $this->view->render($template, $data);
 
@@ -87,10 +81,8 @@ class EngelsystemMailer extends Mailer
      * Send the mail
      *
      * @param string|string[] $to
-     * @param string          $subject
-     * @param string          $body
      */
-    public function send($to, string $subject, string $body): void
+    public function send(string|array $to, string $subject, string $body): void
     {
         if ($this->subjectPrefix) {
             $subject = sprintf('[%s] %s', $this->subjectPrefix, trim($subject));
@@ -107,9 +99,6 @@ class EngelsystemMailer extends Mailer
         return $this->subjectPrefix;
     }
 
-    /**
-     * @param string $subjectPrefix
-     */
     public function setSubjectPrefix(string $subjectPrefix)
     {
         $this->subjectPrefix = $subjectPrefix;

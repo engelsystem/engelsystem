@@ -169,11 +169,10 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * @param Application $app
      * @param array       $methods
      * @return ServiceProvider|MockObject
      */
-    protected function mockServiceProvider(Application $app, $methods = [])
+    protected function mockServiceProvider(Application $app, array $methods = [])
     {
         return $this->getMockBuilder(ServiceProvider::class)
             ->setConstructorArgs([$app])

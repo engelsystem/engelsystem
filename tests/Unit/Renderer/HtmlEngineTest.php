@@ -41,11 +41,9 @@ class HtmlEngineTest extends TestCase
     }
 
     /**
-     * @param string $content
-     * @param string $extension
      * @return string
      */
-    protected function createTempFile($content = '', $extension = '.html')
+    protected function createTempFile(string $content = '', string $extension = '.html')
     {
         $tmpFileName = tempnam(sys_get_temp_dir(), 'EngelsystemUnitTest');
 

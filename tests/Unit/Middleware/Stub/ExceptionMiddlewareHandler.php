@@ -12,7 +12,6 @@ class ExceptionMiddlewareHandler implements RequestHandlerInterface
     /**
      * Throws an exception
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws Exception
      */

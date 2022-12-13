@@ -18,7 +18,6 @@ class SessionHandler implements MiddlewareInterface
     protected $paths = [];
 
     /**
-     * @param SessionStorageInterface $session
      * @param array                   $paths
      */
     public function __construct(SessionStorageInterface $session, array $paths = [])
@@ -28,8 +27,6 @@ class SessionHandler implements MiddlewareInterface
     }
 
     /**
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

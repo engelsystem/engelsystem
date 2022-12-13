@@ -12,9 +12,6 @@ class Translation extends TwigExtension
     /** @var Translator */
     protected $translator;
 
-    /**
-     * @param Translator $translator
-     */
     public function __construct(Translator $translator)
     {
         $this->translator = $translator;

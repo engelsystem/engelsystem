@@ -4,7 +4,6 @@ namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Application;
 use Engelsystem\Middleware\Dispatcher;
-use Engelsystem\Test\Unit\Middleware\Stub\NotARealMiddleware;
 use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -126,20 +125,6 @@ class DispatcherTest extends TestCase
         $this->expectException(LogicException::class);
 
         $dispatcher = new Dispatcher();
-        $dispatcher->handle($request);
-    }
-
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::handle
-     */
-    public function testHandleNoRealMiddleware()
-    {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-
-        $this->expectException(InvalidArgumentException::class);
-
-        $dispatcher = new Dispatcher([new NotARealMiddleware()]);
         $dispatcher->handle($request);
     }
 

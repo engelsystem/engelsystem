@@ -35,10 +35,6 @@ class LegacyMiddleware implements MiddlewareInterface
     /** @var Authenticator */
     protected $auth;
 
-    /**
-     * @param ContainerInterface $container
-     * @param Authenticator      $auth
-     */
     public function __construct(ContainerInterface $container, Authenticator $auth)
     {
         $this->container = $container;
@@ -50,8 +46,6 @@ class LegacyMiddleware implements MiddlewareInterface
      *
      * Should be used before a 404 is send
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(
@@ -89,11 +83,10 @@ class LegacyMiddleware implements MiddlewareInterface
     /**
      * Get the legacy page content and title
      *
-     * @param string $page
      * @return array ['title', 'content']
      * @codeCoverageIgnore
      */
-    protected function loadPage($page)
+    protected function loadPage(string $page)
     {
         switch ($page) {
             case 'ical':
@@ -182,13 +175,10 @@ class LegacyMiddleware implements MiddlewareInterface
     /**
      * Render the template
      *
-     * @param string $page
-     * @param string $title
-     * @param string $content
      * @return Response
      * @codeCoverageIgnore
      */
-    protected function renderPage($page, $title, $content)
+    protected function renderPage(string $page, string $title, string $content)
     {
         if (!empty($page) && is_int($page)) {
             return response($content, (int)$page);

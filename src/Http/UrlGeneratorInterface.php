@@ -8,7 +8,6 @@ namespace Engelsystem\Http;
 interface UrlGeneratorInterface
 {
     /**
-     * @param string $path
      * @param array  $parameters
      * @return string
      */

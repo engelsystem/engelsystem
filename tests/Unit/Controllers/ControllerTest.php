@@ -36,7 +36,6 @@ abstract class ControllerTest extends TestCase
     protected $session;
 
     /**
-     * @param string      $value
      * @param string|null $type
      */
     protected function assertHasNotification(string $value, string $type = 'messages')

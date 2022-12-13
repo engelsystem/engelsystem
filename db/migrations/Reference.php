@@ -9,8 +9,6 @@ use Illuminate\Support\Str;
 trait Reference
 {
     /**
-     * @param Blueprint $table
-     * @param bool      $setPrimary
      * @return ColumnDefinition
      */
     protected function referencesUser(Blueprint $table, bool $setPrimary = false): ColumnDefinition
@@ -19,12 +17,6 @@ trait Reference
     }
 
     /**
-     * @param Blueprint   $table
-     * @param string      $targetTable
-     * @param string|null $fromColumn
-     * @param string|null $targetColumn
-     * @param bool        $setPrimary
-     * @param string      $type
      * @return ColumnDefinition
      */
     protected function references(
@@ -47,12 +39,6 @@ trait Reference
         return $col;
     }
 
-    /**
-     * @param Blueprint   $table
-     * @param string      $fromColumn
-     * @param string      $targetTable
-     * @param string|null $targetColumn
-     */
     protected function addReference(
         Blueprint $table,
         string $fromColumn,

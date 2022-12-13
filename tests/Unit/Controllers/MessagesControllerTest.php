@@ -543,7 +543,7 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->setValidator(new Validator());
     }
 
-    protected function assertArrayOrCollection($obj)
+    protected function assertArrayOrCollection(mixed $obj)
     {
         $this->assertTrue(gettype($obj) == 'array' || $obj instanceof Collection);
     }

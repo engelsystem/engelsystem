@@ -89,7 +89,7 @@ class EventConfigTest extends ModelTest
      */
     public function testGetValueCast()
     {
-        $model = new EventConfig(['value' => 'bar']);
+        $model = new EventConfig(['name' => 'foo', 'value' => 'bar']);
         $this->assertEquals('bar', $model->value);
 
         return;
@@ -105,11 +105,9 @@ class EventConfigTest extends ModelTest
         return new class extends EventConfig
         {
             /**
-             * @param string $value
-             * @param string $type
              * @return EventConfig
              */
-            public function setValueCast($value, $type)
+            public function setValueCast(string $value, string $type)
             {
                 $this->valueCasts[$value] = $type;
 

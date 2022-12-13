@@ -45,10 +45,9 @@ class EventConfig extends BaseModel
     /**
      * Value accessor
      *
-     * @param mixed $value
      * @return mixed
      */
-    public function getValueAttribute($value)
+    public function getValueAttribute(mixed $value)
     {
         $value = $value ? $this->fromJson($value) : null;
 
@@ -68,10 +67,9 @@ class EventConfig extends BaseModel
     /**
      * Value mutator
      *
-     * @param mixed $value
      * @return static
      */
-    public function setValueAttribute($value)
+    public function setValueAttribute(mixed $value)
     {
         if (!empty($value)) {
             switch ($this->getValueCast($this->name)) {
@@ -95,10 +93,9 @@ class EventConfig extends BaseModel
     /**
      * Check if the value has to be casted
      *
-     * @param string $value
      * @return string|null
      */
-    protected function getValueCast($value)
+    protected function getValueCast(string $value)
     {
         return isset($this->valueCasts[$value]) ? $this->valueCasts[$value] : null;
     }

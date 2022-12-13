@@ -5,7 +5,6 @@ namespace Engelsystem\Http\Exceptions;
 class HttpPermanentRedirect extends HttpRedirect
 {
     /**
-     * @param string $url
      * @param array  $headers
      */
     public function __construct(

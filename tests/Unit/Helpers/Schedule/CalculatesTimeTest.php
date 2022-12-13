@@ -16,7 +16,6 @@ class CalculatesTimeTest extends TestCase
             use CalculatesTime;
 
             /**
-             * @param string $time
              * @return int
              */
             public function calc(string $time): int

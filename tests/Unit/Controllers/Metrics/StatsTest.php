@@ -434,8 +434,12 @@ class StatsTest extends TestCase
      *
      * @return User
      */
-    protected function addUser(array $state = [], $personalData = [], $settings = [], $license = []): User
-    {
+    protected function addUser(
+        array $state = [],
+        array $personalData = [],
+        array $settings = [],
+        array $license = []
+    ): User {
         $name = 'user_' . Str::random(5);
 
         $user = new User([

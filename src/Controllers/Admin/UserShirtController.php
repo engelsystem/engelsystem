@@ -40,14 +40,6 @@ class UserShirtController extends BaseController
         'saveShirt' => 'user.edit.shirt',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param Config          $config
-     * @param LoggerInterface $log
-     * @param Redirector      $redirector
-     * @param Response        $response
-     * @param User            $user
-     */
     public function __construct(
         Authenticator $auth,
         Config $config,
@@ -65,7 +57,6 @@ class UserShirtController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -82,7 +73,6 @@ class UserShirtController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */

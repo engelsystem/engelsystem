@@ -18,11 +18,6 @@ class HomeController extends BaseController
     /** @var Redirector */
     protected $redirect;
 
-    /**
-     * @param Authenticator $auth
-     * @param Config        $config
-     * @param Redirector    $redirect
-     */
     public function __construct(Authenticator $auth, Config $config, Redirector $redirect)
     {
         $this->auth = $auth;

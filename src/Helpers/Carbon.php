@@ -18,7 +18,6 @@ class Carbon extends \Carbon\Carbon
     /**
      * Parses HTML datetime-local and ISO date/time strings.
      *
-     * @param string $value
      * @return \Carbon\Carbon|null Carbon if parseable, else null
      * @see self::DATETIME_FORMATS
      */
@@ -36,7 +35,6 @@ class Carbon extends \Carbon\Carbon
     /**
      * Parses HTML datetime-local and ISO date/time strings.
      *
-     * @param string $value
      * @return int|null Timestamp if parseable, else null
      * @see self::DATETIME_FORMATS
      */

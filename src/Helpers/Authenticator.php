@@ -35,11 +35,6 @@ class Authenticator
     /** @var int */
     protected int $guestRole = 10;
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param Session                $session
-     * @param UserRepository         $userRepository
-     */
     public function __construct(ServerRequestInterface $request, Session $session, UserRepository $userRepository)
     {
         $this->request = $request;
@@ -78,7 +73,6 @@ class Authenticator
     /**
      * Get the user by his api key
      *
-     * @param string $parameter
      * @return User|null
      */
     public function apiUser(string $parameter = 'api_key'): ?User
@@ -110,7 +104,7 @@ class Authenticator
      * @param string[]|string $abilities
      * @return bool
      */
-    public function can($abilities): bool
+    public function can(array|string $abilities): bool
     {
         $abilities = (array)$abilities;
 
@@ -143,8 +137,6 @@ class Authenticator
     }
 
     /**
-     * @param string $login
-     * @param string $password
      * @return User|null
      */
     public function authenticate(string $login, string $password): ?User
@@ -167,8 +159,6 @@ class Authenticator
     }
 
     /**
-     * @param User   $user
-     * @param string $password
      * @return bool
      */
     public function verifyPassword(User $user, string $password): bool
@@ -184,10 +174,6 @@ class Authenticator
         return true;
     }
 
-    /**
-     * @param User   $user
-     * @param string $password
-     */
     public function setPassword(User $user, string $password)
     {
         $user->password = password_hash($password, $this->passwordAlgorithm);
@@ -202,10 +188,7 @@ class Authenticator
         return $this->passwordAlgorithm;
     }
 
-    /**
-     * @param int|string|null $passwordAlgorithm
-     */
-    public function setPasswordAlgorithm($passwordAlgorithm)
+    public function setPasswordAlgorithm(int|string|null $passwordAlgorithm)
     {
         $this->passwordAlgorithm = $passwordAlgorithm;
     }
@@ -218,9 +201,6 @@ class Authenticator
         return $this->defaultRole;
     }
 
-    /**
-     * @param int $defaultRole
-     */
     public function setDefaultRole(int $defaultRole)
     {
         $this->defaultRole = $defaultRole;
@@ -234,9 +214,6 @@ class Authenticator
         return $this->guestRole;
     }
 
-    /**
-     * @param int $guestRole
-     */
     public function setGuestRole(int $guestRole)
     {
         $this->guestRole = $guestRole;

@@ -27,7 +27,7 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
      * @param MiddlewareInterface[]|string[] $stack
      * @param Application|null               $container
      */
-    public function __construct($stack = [], Application $container = null)
+    public function __construct(array $stack = [], Application $container = null)
     {
         $this->stack = $stack;
         $this->container = $container;
@@ -39,8 +39,6 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
      *
      * Could be used to group middleware
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(
@@ -57,7 +55,6 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
      *
      * It calls all configured middleware and handles their response
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -80,9 +77,6 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
         return $middleware->process($request, $this);
     }
 
-    /**
-     * @param Application $container
-     */
     public function setContainer(Application $container)
     {
         $this->container = $container;

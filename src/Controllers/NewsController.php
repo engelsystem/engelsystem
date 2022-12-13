@@ -48,16 +48,6 @@ class NewsController extends BaseController
         'deleteComment' => 'news_comments',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param Config          $config
-     * @param NewsComment     $comment
-     * @param LoggerInterface $log
-     * @param News            $news
-     * @param Redirector      $redirector
-     * @param Response        $response
-     * @param Request         $request
-     */
     public function __construct(
         Authenticator $auth,
         NewsComment $comment,
@@ -95,7 +85,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function show(Request $request): Response
@@ -111,7 +100,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function comment(Request $request): Response
@@ -144,7 +132,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -180,7 +167,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param bool $onlyMeetings
      * @return Response
      */
     protected function showOverview(bool $onlyMeetings = false): Response
@@ -216,7 +202,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param string $page
      * @param array $data
      * @return Response
      */

@@ -7,7 +7,6 @@ class HtmlEngine extends Engine
     /**
      * Render a template
      *
-     * @param string  $path
      * @param mixed[] $data
      * @return string
      */
@@ -26,7 +25,6 @@ class HtmlEngine extends Engine
     }
 
     /**
-     * @param string $path
      * @return bool
      */
     public function canRender(string $path): bool

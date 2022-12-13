@@ -11,9 +11,6 @@ class Markdown extends TwigExtension
     /** @var Parsedown */
     protected $renderer;
 
-    /**
-     * @param Parsedown $renderer
-     */
     public function __construct(Parsedown $renderer)
     {
         $this->renderer = $renderer;
@@ -33,8 +30,6 @@ class Markdown extends TwigExtension
     }
 
     /**
-     * @param string $text
-     * @param bool   $escapeHtml
      *
      * @return string
      */

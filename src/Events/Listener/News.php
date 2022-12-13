@@ -21,11 +21,6 @@ class News
     /** @var UserSettings */
     protected $settings;
 
-    /**
-     * @param LoggerInterface   $log
-     * @param EngelsystemMailer $mailer
-     * @param UserSettings      $settings
-     */
     public function __construct(
         LoggerInterface $log,
         EngelsystemMailer $mailer,
@@ -36,9 +31,6 @@ class News
         $this->settings = $settings;
     }
 
-    /**
-     * @param NewsModel $news
-     */
     public function created(NewsModel $news)
     {
         /** @var UserSettings[]|Collection $recipients */
@@ -52,12 +44,6 @@ class News
         }
     }
 
-    /**
-     * @param NewsModel $news
-     * @param User      $user
-     * @param string    $subject
-     * @param string    $template
-     */
     protected function sendMail(NewsModel $news, User $user, string $subject, string $template)
     {
         try {

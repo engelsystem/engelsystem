@@ -34,8 +34,6 @@ class Migrate
     /**
      * Migrate constructor
      *
-     * @param SchemaBuilder $schema
-     * @param Application   $app
      */
     public function __construct(SchemaBuilder $schema, Application $app)
     {
@@ -48,12 +46,9 @@ class Migrate
     /**
      * Run a migration
      *
-     * @param string $path
      * @param string $type (up|down)
-     * @param bool   $oneStep
-     * @param bool   $forceMigration
      */
-    public function run($path, $type = self::UP, $oneStep = false, $forceMigration = false)
+    public function run(string $path, string $type = self::UP, bool $oneStep = false, bool $forceMigration = false)
     {
         $this->initMigration();
 
@@ -118,8 +113,6 @@ class Migrate
     /**
      * Merge file migrations with already migrated tables
      *
-     * @param Collection $migrations
-     * @param Collection $migrated
      * @return Collection
      */
     protected function mergeMigrations(Collection $migrations, Collection $migrated)
@@ -163,11 +156,9 @@ class Migrate
     /**
      * Migrate a migration
      *
-     * @param string $file
-     * @param string $migration
      * @param string $type (up|down)
      */
-    protected function migrate($file, $migration, $type = self::UP)
+    protected function migrate(string $file, string $migration, string $type = self::UP)
     {
         require_once $file;
 
@@ -183,10 +174,9 @@ class Migrate
     /**
      * Set a migration to migrated
      *
-     * @param string $migration
      * @param string $type (up|down)
      */
-    protected function setMigrated($migration, $type = self::UP)
+    protected function setMigrated(string $migration, string $type = self::UP)
     {
         $table = $this->getTableQuery();
 
@@ -201,11 +191,10 @@ class Migrate
     /**
      * Lock the migrations table
      *
-     * @param bool $forceMigration
      *
      * @throws Throwable
      */
-    protected function lockTable($forceMigration = false)
+    protected function lockTable(bool $forceMigration = false)
     {
         $this->schema->getConnection()->transaction(function () use ($forceMigration) {
             $lock = $this->getTableQuery()
@@ -235,11 +224,10 @@ class Migrate
     /**
      * Get a list of migration files
      *
-     * @param string $dir
      *
      * @return Collection
      */
-    protected function getMigrations($dir)
+    protected function getMigrations(string $dir)
     {
         $files = $this->getMigrationFiles($dir);
 
@@ -260,11 +248,10 @@ class Migrate
     /**
      * List all migration files from the given directory
      *
-     * @param string $dir
      *
      * @return array
      */
-    protected function getMigrationFiles($dir)
+    protected function getMigrationFiles(string $dir)
     {
         return glob($dir . '/*_*.php');
     }
@@ -282,7 +269,6 @@ class Migrate
     /**
      * Set the output function
      *
-     * @param callable $output
      */
     public function setOutput(callable $output)
     {

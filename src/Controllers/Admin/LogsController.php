@@ -20,10 +20,6 @@ class LogsController extends BaseController
         'admin_log',
     ];
 
-    /**
-     * @param LogEntry $log
-     * @param Response $response
-     */
     public function __construct(LogEntry $log, Response $response)
     {
         $this->log = $log;
@@ -31,7 +27,6 @@ class LogsController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function index(Request $request): Response

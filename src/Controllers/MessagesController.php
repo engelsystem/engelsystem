@@ -41,15 +41,6 @@ class MessagesController extends BaseController
         'user_messages',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param Redirector      $redirect
-     * @param Response        $response
-     * @param Request         $request
-     * @param Database        $db
-     * @param Message         $message
-     * @param User            $user
-     */
     public function __construct(
         Authenticator $auth,
         Redirector $redirect,
@@ -211,7 +202,7 @@ class MessagesController extends BaseController
      * The number of unread messages per conversation of the current user.
      * @return Collection of unread message amounts. Each object with key=other user, value=amount of unread messages
      */
-    protected function numberOfUnreadMessagesPerConversation($currentUser): Collection
+    protected function numberOfUnreadMessagesPerConversation(User $currentUser): Collection
     {
         return $currentUser->messagesReceived()
             ->select('user_id', $this->raw('count(*) as amount'))
@@ -228,7 +219,7 @@ class MessagesController extends BaseController
      * which were either send by or addressed to the current user.
      * @return Collection of messages
      */
-    protected function latestMessagePerConversation($currentUser): Collection
+    protected function latestMessagePerConversation(User $currentUser): Collection
     {
         /* requesting the IDs first, grouped by "conversation".
         The more complex grouping is required for associating the messages to the correct conversations.
@@ -252,10 +243,9 @@ class MessagesController extends BaseController
     }
 
     /**
-     * @param mixed $value
      * @return QueryExpression
      */
-    protected function raw($value): QueryExpression
+    protected function raw(mixed $value): QueryExpression
     {
         return $this->db->getConnection()->raw($value);
     }

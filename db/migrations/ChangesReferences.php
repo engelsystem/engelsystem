@@ -7,13 +7,6 @@ use stdClass;
 
 trait ChangesReferences
 {
-    /**
-     * @param string $fromTable
-     * @param string $fromColumn
-     * @param string $targetTable
-     * @param string $targetColumn
-     * @param string $type
-     */
     protected function changeReferences(
         string $fromTable,
         string $fromColumn,
@@ -44,8 +37,6 @@ trait ChangesReferences
     }
 
     /**
-     * @param string $table
-     * @param string $column
      *
      * @return array
      */

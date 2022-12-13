@@ -11,7 +11,6 @@ trait ValidatesRequest
     protected $validator;
 
     /**
-     * @param Request $request
      * @param array   $rules
      * @return array
      */
@@ -29,9 +28,6 @@ trait ValidatesRequest
         return $this->validator->getData();
     }
 
-    /**
-     * @param Validator $validator
-     */
     public function setValidator(Validator $validator)
     {
         $this->validator = $validator;

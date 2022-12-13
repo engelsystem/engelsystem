@@ -334,11 +334,9 @@ class HelpersTest extends TestCase
     }
 
     /**
-     * @param string $alias
-     * @param object $object
      * @return Application|MockObject
      */
-    protected function getAppMock($alias, $object)
+    protected function getAppMock(string $alias, object $object)
     {
         /** @var Application|MockObject $appMock */
         $appMock = $this->getMockBuilder(Container::class)

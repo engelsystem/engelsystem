@@ -32,10 +32,9 @@ class RequestServiceProviderTest extends ServiceProviderTest
      * @dataProvider provideRegister
      * @covers       \Engelsystem\Http\RequestServiceProvider::register
      *
-     * @param string|array $configuredProxies
      * @param array        $trustedProxies
      */
-    public function testRegister($configuredProxies, array $trustedProxies)
+    public function testRegister(string|array $configuredProxies, array $trustedProxies)
     {
         $config = new Config([
             'trusted_proxies' => $configuredProxies,

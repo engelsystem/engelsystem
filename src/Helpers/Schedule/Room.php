@@ -15,7 +15,6 @@ class Room
     /**
      * Room constructor.
      *
-     * @param string  $name
      * @param Event[] $events
      */
     public function __construct(

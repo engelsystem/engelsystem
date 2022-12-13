@@ -32,13 +32,6 @@ class Conference
     /**
      * Event constructor.
      *
-     * @param string      $title
-     * @param string      $acronym
-     * @param string|null $start
-     * @param string|null $end
-     * @param int|null    $days
-     * @param string|null $timeslotDuration
-     * @param string|null $baseUrl
      */
     public function __construct(
         string $title,

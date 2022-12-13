@@ -13,11 +13,6 @@ class Redirector
     /** @var UrlGeneratorInterface */
     protected $url;
 
-    /**
-     * @param Request               $request
-     * @param Response              $response
-     * @param UrlGeneratorInterface $url
-     */
     public function __construct(Request $request, Response $response, UrlGeneratorInterface $url)
     {
         $this->request = $request;
@@ -28,8 +23,6 @@ class Redirector
     /**
      * Redirects to a path, generating a full URL
      *
-     * @param string $path
-     * @param int    $status
      * @param array  $headers
      * @return Response
      */
@@ -39,7 +32,6 @@ class Redirector
     }
 
     /**
-     * @param int   $status
      * @param array $headers
      * @return Response
      */

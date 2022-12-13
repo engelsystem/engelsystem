@@ -16,10 +16,6 @@ class Assets extends TwigExtension
     /** @var UrlGeneratorInterface */
     protected $urlGenerator;
 
-    /**
-     * @param AssetsProvider $assets
-     * @param UrlGeneratorInterface $urlGenerator
-     */
     public function __construct(AssetsProvider $assets, UrlGeneratorInterface $urlGenerator)
     {
         $this->assets = $assets;
@@ -37,7 +33,6 @@ class Assets extends TwigExtension
     }
 
     /**
-     * @param string $path
      * @return string
      */
     public function getAsset(string $path): string

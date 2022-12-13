@@ -30,9 +30,8 @@ class CallableHandlerTest extends TestCase
      * @dataProvider provideCallable
      * @covers       \Engelsystem\Middleware\CallableHandler::__construct
      * @covers       \Engelsystem\Middleware\CallableHandler::getCallable
-     * @param callable $callable
      */
-    public function testInit($callable)
+    public function testInit(callable $callable)
     {
         $handler = new CallableHandler($callable);
 

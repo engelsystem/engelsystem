@@ -10,9 +10,6 @@ class Database
     /** @var DatabaseConnection */
     protected $connection;
 
-    /**
-     * @param DatabaseConnection $connection
-     */
     public function __construct(DatabaseConnection $connection)
     {
         $this->connection = $connection;
@@ -21,11 +18,10 @@ class Database
     /**
      * Run a select query
      *
-     * @param string $query
      * @param array  $bindings
      * @return object[]
      */
-    public function select($query, array $bindings = [])
+    public function select(string $query, array $bindings = [])
     {
         return $this->connection->select($query, $bindings);
     }
@@ -33,11 +29,10 @@ class Database
     /**
      * Run a select query and return only the first result or null if no result is found.
      *
-     * @param string $query
      * @param array  $bindings
      * @return object|null
      */
-    public function selectOne($query, array $bindings = [])
+    public function selectOne(string $query, array $bindings = [])
     {
         return $this->connection->selectOne($query, $bindings);
     }
@@ -45,11 +40,10 @@ class Database
     /**
      * Run an insert query
      *
-     * @param string $query
      * @param array  $bindings
      * @return bool
      */
-    public function insert($query, array $bindings = [])
+    public function insert(string $query, array $bindings = [])
     {
         return $this->connection->insert($query, $bindings);
     }
@@ -57,11 +51,10 @@ class Database
     /**
      * Run an update query
      *
-     * @param string $query
      * @param array  $bindings
      * @return int
      */
-    public function update($query, array $bindings = [])
+    public function update(string $query, array $bindings = [])
     {
         return $this->connection->update($query, $bindings);
     }
@@ -69,11 +62,10 @@ class Database
     /**
      * Run a delete query
      *
-     * @param string $query
      * @param array  $bindings
      * @return int
      */
-    public function delete($query, array $bindings = [])
+    public function delete(string $query, array $bindings = [])
     {
         return $this->connection->delete($query, $bindings);
     }

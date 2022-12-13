@@ -117,8 +117,6 @@ class NewsControllerTest extends ControllerTest
      * @covers       \Engelsystem\Controllers\Admin\NewsController::save
      * @dataProvider saveCreateEditProvider
      *
-     * @param string $text
-     * @param bool $isMeeting
      * @param int|null $id
      */
     public function testSaveCreateEdit(

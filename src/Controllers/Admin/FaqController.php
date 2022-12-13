@@ -32,12 +32,6 @@ class FaqController extends BaseController
         'faq.edit',
     ];
 
-    /**
-     * @param LoggerInterface $log
-     * @param Faq             $faq
-     * @param Redirector      $redirector
-     * @param Response        $response
-     */
     public function __construct(
         LoggerInterface $log,
         Faq $faq,
@@ -51,7 +45,6 @@ class FaqController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -65,7 +58,6 @@ class FaqController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -110,7 +102,6 @@ class FaqController extends BaseController
     }
 
     /**
-     * @param Faq|null $faq
      *
      * @return Response
      */

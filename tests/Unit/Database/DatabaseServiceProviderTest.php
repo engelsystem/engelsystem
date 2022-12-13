@@ -73,10 +73,9 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
      * Prepare some mocks
      *
      * @param array $dbConfigData
-     * @param bool  $getPdoThrowException
      * @return array
      */
-    protected function prepare($dbConfigData, $getPdoThrowException = false)
+    protected function prepare(array $dbConfigData, bool $getPdoThrowException = false)
     {
         /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(Config::class)

@@ -53,10 +53,9 @@ class AddAngelSupporterPermissions extends Migration
     }
 
     /**
-     * @param string $type
      * @return string
      */
-    protected function getQuery($type)
+    protected function getQuery(string $type)
     {
         return sprintf('
                 %s FROM GroupPrivileges

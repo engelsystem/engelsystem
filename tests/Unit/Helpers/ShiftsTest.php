@@ -55,7 +55,7 @@ class ShiftsTest extends TestCase
      * @covers       \Engelsystem\Helpers\Shifts::isNightShift
      * @dataProvider nightShiftData
      */
-    public function testIsNightShiftEnabled($start, $end, $isNightShift)
+    public function testIsNightShiftEnabled(Carbon $start, Carbon $end, bool $isNightShift)
     {
         $config = new Config(['night_shifts' => [
             'enabled'    => true,

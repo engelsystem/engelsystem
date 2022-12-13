@@ -13,9 +13,6 @@ class AddHeaders implements MiddlewareInterface
     /** @var Config */
     protected $config;
 
-    /**
-     * @param Config $config
-     */
     public function __construct(Config $config)
     {
         $this->config = $config;
@@ -24,8 +21,6 @@ class AddHeaders implements MiddlewareInterface
     /**
      * Process an incoming server request and setting the locale if required
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

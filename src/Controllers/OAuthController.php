@@ -49,16 +49,6 @@ class OAuthController extends BaseController
     /** @var UrlGenerator */
     protected $url;
 
-    /**
-     * @param Authenticator   $auth
-     * @param AuthController  $authController
-     * @param Config          $config
-     * @param LoggerInterface $log
-     * @param OAuth           $oauth
-     * @param Redirector      $redirector
-     * @param Session         $session
-     * @param UrlGenerator    $url
-     */
     public function __construct(
         Authenticator $auth,
         AuthController $authController,
@@ -80,7 +70,6 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -213,7 +202,6 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -229,7 +217,6 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -249,7 +236,6 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param string $name
      *
      * @return AbstractProvider
      */
@@ -272,8 +258,6 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param string        $providerName
-     * @param ResourceOwner $resourceOwner
      * @return mixed
      */
     protected function getId(string $providerName, ResourceOwner $resourceOwner)
@@ -287,9 +271,6 @@ class OAuthController extends BaseController
         return $data[$config['id']];
     }
 
-    /**
-     * @param string $provider
-     */
     protected function requireProvider(string $provider): void
     {
         if (!$this->isValidProvider($provider)) {
@@ -298,7 +279,6 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param string $name
      *
      * @return bool
      */
@@ -309,11 +289,6 @@ class OAuthController extends BaseController
         return isset($config[$name]);
     }
 
-    /**
-     * @param OAuth         $auth
-     * @param string        $providerName
-     * @param ResourceOwner $resourceOwner
-     */
     protected function handleArrive(
         string $providerName,
         OAuth $auth,
@@ -342,8 +317,6 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param IdentityProviderException $e
-     * @param string                    $providerName
      *
      * @throws HttpNotFound
      */
@@ -364,11 +337,7 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param string               $providerName
-     * @param string               $providerUserIdentifier
-     * @param AccessTokenInterface $accessToken
      * @param array                $config
-     * @param Collection           $userdata
      *
      * @return Response
      */

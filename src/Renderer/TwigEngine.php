@@ -20,7 +20,6 @@ class TwigEngine extends Engine
     /**
      * Render a twig template
      *
-     * @param string $path
      * @param array  $data
      * @return string
      * @throws LoaderError|RuntimeError|SyntaxError
@@ -33,7 +32,6 @@ class TwigEngine extends Engine
     }
 
     /**
-     * @param string $path
      * @return bool
      */
     public function canRender(string $path): bool

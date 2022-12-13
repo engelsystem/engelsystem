@@ -11,9 +11,6 @@ class Authentication extends TwigExtension
     /** @var Authenticator */
     protected $auth;
 
-    /**
-     * @param Authenticator $auth
-     */
     public function __construct(Authenticator $auth)
     {
         $this->auth = $auth;

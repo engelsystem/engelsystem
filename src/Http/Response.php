@@ -21,14 +21,10 @@ class Response extends SymfonyResponse implements ResponseInterface
     protected $renderer;
 
     /**
-     * @param string           $content
-     * @param int              $status
      * @param array            $headers
-     * @param Renderer         $renderer
-     * @param SessionInterface $session
      */
     public function __construct(
-        $content = '',
+        string $content = '',
         int $status = 200,
         array $headers = [],
         Renderer $renderer = null,
@@ -60,7 +56,7 @@ class Response extends SymfonyResponse implements ResponseInterface
      * @return static
      * @throws InvalidArgumentException For invalid status code arguments.
      */
-    public function withStatus($code, $reasonPhrase = '')
+    public function withStatus(mixed $code, mixed $reasonPhrase = '')
     {
         $new = clone $this;
         $new->setStatusCode($code, !empty($reasonPhrase) ? $reasonPhrase : null);
@@ -96,7 +92,7 @@ class Response extends SymfonyResponse implements ResponseInterface
      * @param mixed $content Content that can be cast to string
      * @return static
      */
-    public function withContent($content)
+    public function withContent(mixed $content)
     {
         $new = clone $this;
         $new->setContent($content);
@@ -110,13 +106,11 @@ class Response extends SymfonyResponse implements ResponseInterface
      * This method retains the immutability of the message and returns
      * an instance with the updated status and headers
      *
-     * @param string              $view
      * @param array               $data
-     * @param int                 $status
      * @param string[]|string[][] $headers
      * @return Response
      */
-    public function withView($view, $data = [], $status = 200, $headers = [])
+    public function withView(string $view, array $data = [], int $status = 200, array $headers = [])
     {
         if (!$this->renderer instanceof Renderer) {
             throw new InvalidArgumentException('Renderer not defined');
@@ -139,12 +133,10 @@ class Response extends SymfonyResponse implements ResponseInterface
      * This method retains the immutability of the message and returns
      * an instance with the updated status and headers
      *
-     * @param string $path
-     * @param int    $status
      * @param array  $headers
      * @return Response
      */
-    public function redirectTo($path, $status = 302, $headers = [])
+    public function redirectTo(string $path, int $status = 302, array $headers = [])
     {
         $response = $this->withStatus($status);
         $response = $response->withHeader('location', $path);
@@ -159,7 +151,6 @@ class Response extends SymfonyResponse implements ResponseInterface
     /**
      * Set the renderer to use
      *
-     * @param Renderer $renderer
      */
     public function setRenderer(Renderer $renderer)
     {
@@ -169,11 +160,9 @@ class Response extends SymfonyResponse implements ResponseInterface
     /**
      * Sets a session attribute (which is mutable)
      *
-     * @param string        $key
-     * @param mixed|mixed[] $value
      * @return Response
      */
-    public function with(string $key, $value)
+    public function with(string $key, mixed $value)
     {
         if (!$this->session instanceof SessionInterface) {
             throw new InvalidArgumentException('Session not defined');

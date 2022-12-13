@@ -57,7 +57,6 @@ class DatabaseServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param Throwable $exception
      *
      * @throws Exception
      */

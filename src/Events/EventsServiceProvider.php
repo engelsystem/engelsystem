@@ -17,9 +17,6 @@ class EventsServiceProvider extends ServiceProvider
         $this->registerEvents($dispatcher);
     }
 
-    /**
-     * @param EventDispatcher $dispatcher
-     */
     protected function registerEvents(EventDispatcher $dispatcher)
     {
         /** @var Config $config */

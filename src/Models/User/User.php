@@ -187,7 +187,6 @@ class User extends BaseModel
     }
 
     /**
-     * @param AngelType $angelType
      * @return bool
      */
     public function isAngelTypeSupporter(AngelType $angelType): bool

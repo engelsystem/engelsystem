@@ -16,7 +16,6 @@ class XmlParser
     protected $schedule;
 
     /**
-     * @param string $xml
      * @return bool
      */
     public function load(string $xml): bool
@@ -82,7 +81,6 @@ class XmlParser
 
     /**
      * @param SimpleXMLElement[] $eventElements
-     * @param Room               $room
      * @return array
      */
     protected function parseEvents(array $eventElements, Room $room): array
@@ -129,8 +127,6 @@ class XmlParser
     }
 
     /**
-     * @param string                $path
-     * @param SimpleXMLElement|null $xml
      * @return string
      */
     protected function getFirstXpathContent(string $path, ?SimpleXMLElement $xml = null): string
@@ -143,10 +139,6 @@ class XmlParser
     /**
      * Resolves a list from a sequence of elements
      *
-     * @param SimpleXMLElement $element
-     * @param string           $firstElement
-     * @param string           $secondElement
-     * @param string           $idAttribute
      * @return array
      */
     protected function getListFromSequence(

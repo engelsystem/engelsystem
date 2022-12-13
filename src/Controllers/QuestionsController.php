@@ -34,13 +34,6 @@ class QuestionsController extends BaseController
         'question.add',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param LoggerInterface $log
-     * @param Question        $question
-     * @param Redirector      $redirect
-     * @param Response        $response
-     */
     public function __construct(
         Authenticator $auth,
         LoggerInterface $log,
@@ -84,7 +77,6 @@ class QuestionsController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */
@@ -112,7 +104,6 @@ class QuestionsController extends BaseController
     }
 
     /**
-     * @param Request $request
      *
      * @return Response
      */

@@ -26,10 +26,6 @@ class Day
     /**
      * Day constructor.
      *
-     * @param string $date
-     * @param Carbon $start
-     * @param Carbon $end
-     * @param int    $index
      * @param Room[] $rooms
      */
     public function __construct(

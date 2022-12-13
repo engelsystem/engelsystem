@@ -25,9 +25,6 @@ class Logger extends AbstractLogger
     /** @var LogEntry */
     protected $log;
 
-    /**
-     * @param LogEntry $log
-     */
     public function __construct(LogEntry $log)
     {
         $this->log = $log;
@@ -36,12 +33,10 @@ class Logger extends AbstractLogger
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed             $level
-     * @param string|Stringable $message
      * @param array             $context
      *
      */
-    public function log($level, string|Stringable $message, array $context = []): void
+    public function log(mixed $level, string|Stringable $message, array $context = []): void
     {
         if (!$this->checkLevel($level)) {
             throw new InvalidArgumentException('Unknown log level: ' . $level);
@@ -59,11 +54,10 @@ class Logger extends AbstractLogger
     /**
      * Interpolates context values into the message placeholders.
      *
-     * @param string $message
      * @param array  $context
      * @return string
      */
-    protected function interpolate($message, array $context = []): string
+    protected function interpolate(string $message, array $context = []): string
     {
         foreach ($context as $key => $val) {
             // check that the value can be casted to string
@@ -79,7 +73,6 @@ class Logger extends AbstractLogger
     }
 
     /**
-     * @param Throwable $e
      * @return string
      */
     protected function formatException(Throwable $e): string
@@ -95,10 +88,9 @@ class Logger extends AbstractLogger
     }
 
     /**
-     * @param string $level
      * @return bool
      */
-    protected function checkLevel($level): bool
+    protected function checkLevel(string $level): bool
     {
         return in_array($level, $this->allowedLevels);
     }

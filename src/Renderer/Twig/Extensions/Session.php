@@ -11,9 +11,6 @@ class Session extends TwigExtension
     /** @var SymfonySession */
     protected $session;
 
-    /**
-     * @param SymfonySession $session
-     */
     public function __construct(SymfonySession $session)
     {
         $this->session = $session;

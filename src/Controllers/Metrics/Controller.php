@@ -31,14 +31,6 @@ class Controller extends BaseController
     /** @var Version */
     protected $version;
 
-    /**
-     * @param Response      $response
-     * @param MetricsEngine $engine
-     * @param Config        $config
-     * @param Request       $request
-     * @param Stats         $stats
-     * @param Version       $version
-     */
     public function __construct(
         Response $response,
         MetricsEngine $engine,
@@ -242,9 +234,8 @@ class Controller extends BaseController
     /**
      * Ensure that the if the request is authorized
      *
-     * @param bool $isJson
      */
-    protected function checkAuth($isJson = false)
+    protected function checkAuth(bool $isJson = false)
     {
         $apiKey = $this->config->get('api_key');
         if (empty($apiKey) || $this->request->get('api_key') == $apiKey) {
@@ -265,10 +256,6 @@ class Controller extends BaseController
     /**
      * Formats the stats collection as stats data
      *
-     * @param Collection  $data
-     * @param string      $config
-     * @param string      $dataField
-     * @param string|null $label
      * @return array
      */
     protected function formatStats(Collection $data, string $config, string $dataField, ?string $label = null): array

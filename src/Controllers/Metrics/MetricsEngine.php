@@ -12,7 +12,6 @@ class MetricsEngine implements EngineInterface
     /**
      * Render metrics
      *
-     * @param string  $path
      * @param mixed[] $data
      *
      * @return string
@@ -62,7 +61,6 @@ class MetricsEngine implements EngineInterface
 
     /**
      * @param array  $row
-     * @param string $name
      *
      * @return array[]
      */
@@ -94,11 +92,9 @@ class MetricsEngine implements EngineInterface
     /**
      * Expand the value to be an array
      *
-     * @param $data
-     *
      * @return array
      */
-    protected function expandData($data): array
+    protected function expandData(mixed $data): array
     {
         $data = is_array($data) ? $data : [$data];
         $return = ['labels' => [], 'value' => null];
@@ -124,13 +120,11 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @param string      $name
-     * @param array|mixed $row
      *
      * @return string
      * @see https://prometheus.io/docs/instrumenting/exposition_formats/
      */
-    protected function formatData($name, $row): string
+    protected function formatData(string $name, mixed $row): string
     {
         return sprintf(
             '%s%s %s',
@@ -159,11 +153,10 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @param array|mixed $row
      *
      * @return mixed
      */
-    protected function renderValue($row)
+    protected function renderValue(mixed $row)
     {
         if (is_array($row)) {
             $row = array_pop($row);
@@ -173,11 +166,10 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @param mixed $value
      *
      * @return mixed
      */
-    protected function formatValue($value)
+    protected function formatValue(mixed $value)
     {
         if (is_bool($value)) {
             return (int)$value;
@@ -187,11 +179,10 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @param mixed $value
      *
      * @return mixed
      */
-    protected function escape($value)
+    protected function escape(mixed $value)
     {
         $replace = [
             '\\' => '\\\\',
@@ -207,7 +198,6 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @param string $path
      *
      * @return bool
      */
@@ -220,9 +210,8 @@ class MetricsEngine implements EngineInterface
      * Does nothing as shared data will only result in unexpected behaviour
      *
      * @param string|mixed[] $key
-     * @param mixed          $value
      */
-    public function share($key, $value = null): void
+    public function share(string|array $key, mixed $value = null): void
     {
     }
 }

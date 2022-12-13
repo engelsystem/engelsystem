@@ -38,9 +38,6 @@ class ErrorHandler implements MiddlewareInterface
         '_token',
     ];
 
-    /**
-     * @param TwigLoader $loader
-     */
     public function __construct(TwigLoader $loader)
     {
         $this->loader = $loader;
@@ -51,8 +48,6 @@ class ErrorHandler implements MiddlewareInterface
      *
      * Should be added at the beginning
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(
@@ -105,7 +100,6 @@ class ErrorHandler implements MiddlewareInterface
     /**
      * Select a view based on the given status code
      *
-     * @param int $statusCode
      * @return string
      */
     protected function selectView(int $statusCode): string
@@ -125,8 +119,6 @@ class ErrorHandler implements MiddlewareInterface
     /**
      * Create a new response
      *
-     * @param string $content
-     * @param int    $status
      * @param array  $headers
      * @return Response
      * @codeCoverageIgnore

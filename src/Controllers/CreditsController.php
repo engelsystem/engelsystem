@@ -17,11 +17,6 @@ class CreditsController extends BaseController
     /** @var Version */
     protected $version;
 
-    /**
-     * @param Response $response
-     * @param Config   $config
-     * @param Version  $version
-     */
     public function __construct(Response $response, Config $config, Version $version)
     {
         $this->config = $config;

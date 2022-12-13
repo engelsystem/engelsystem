@@ -12,7 +12,6 @@ class UrlGenerator implements UrlGeneratorInterface
     /**
      * Create a URL for the given path, using the applications base url if configured
      *
-     * @param string $path
      * @param array  $parameters
      * @return string url in the form [app url]/[path]?[parameters]
      */
@@ -35,7 +34,6 @@ class UrlGenerator implements UrlGeneratorInterface
     /**
      * Check if the URL is valid
      *
-     * @param string $path
      * @return bool
      */
     public function isValidUrl(string $path): bool

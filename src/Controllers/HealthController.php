@@ -9,9 +9,6 @@ class HealthController extends BaseController
     /** @var Response */
     protected $response;
 
-    /**
-     * @param Response $response
-     */
     public function __construct(Response $response)
     {
         $this->response = $response;

@@ -11,9 +11,6 @@ class Url extends TwigExtension
     /** @var UrlGeneratorInterface */
     protected $urlGenerator;
 
-    /**
-     * @param UrlGeneratorInterface $urlGenerator
-     */
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
@@ -30,7 +27,6 @@ class Url extends TwigExtension
     }
 
     /**
-     * @param string $path
      * @param array  $parameters
      * @return string
      */

@@ -39,14 +39,11 @@ class UrlTest extends ExtensionTest
     /**
      * @dataProvider getUrls
      *
-     * @param string $url
-     * @param string $return
-     * @param string $urlTo
      * @param array  $parameters
      *
      * @covers       \Engelsystem\Renderer\Twig\Extensions\Url::getUrl
      */
-    public function testGetUrl($url, $urlTo, $return, $parameters = [])
+    public function testGetUrl(string $url, string $urlTo, string $return, array $parameters = [])
     {
         /** @var UrlGenerator|MockObject $urlGenerator */
         $urlGenerator = $this->createMock(UrlGenerator::class);

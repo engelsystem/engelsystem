@@ -11,10 +11,9 @@ class ParentClassImplementation
     public $lastInput;
 
     /**
-     * @param mixed $input
      * @return bool
      */
-    public function validate($input): bool
+    public function validate(mixed $input): bool
     {
         $this->lastInput = $input;
 

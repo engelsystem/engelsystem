@@ -17,14 +17,15 @@ abstract class TestCase extends PHPUnitTestCase
     protected $app;
 
     /**
-     * @param MockObject      $object
-     * @param string          $method
      * @param array           $arguments
-     * @param mixed           $return
-     * @param InvocationOrder $times
      */
-    protected function setExpects($object, $method, $arguments = null, $return = null, $times = null)
-    {
+    protected function setExpects(
+        MockObject $object,
+        string $method,
+        array $arguments = null,
+        mixed $return = null,
+        InvocationOrder|int $times = null
+    ) {
         if (is_null($times)) {
             $times = $this->once();
         }
@@ -60,7 +61,6 @@ abstract class TestCase extends PHPUnitTestCase
     }
 
     /**
-     * @param bool $mockImplementation
      * @return Translator&MockObject
      */
     protected function mockTranslator(bool $mockImplementation = true): Translator

@@ -68,8 +68,11 @@ class UserWorkLogControllerTest extends ControllerTest
      *
      * @dataProvider buildupConfigsAndWorkDates
      */
-    public function testShowAddWorklogWithSuggestedWorkDate($buildup_start, $event_start, $suggested_work_date)
-    {
+    public function testShowAddWorklogWithSuggestedWorkDate(
+        Carbon|null $buildup_start,
+        Carbon|null $event_start,
+        Carbon $suggested_work_date
+    ) {
         $request = $this->request->withAttribute('user_id', $this->user->id);
         config(['buildup_start' => $buildup_start]);
         config(['event_start' => $event_start]);
@@ -143,7 +146,7 @@ class UserWorkLogControllerTest extends ControllerTest
      *
      * @dataProvider invalidSaveWorkLogParams
      */
-    public function testSaveWorklogWithInvalidParamsThrows($body)
+    public function testSaveWorklogWithInvalidParamsThrows(array $body)
     {
         $request = $this->request->withAttribute('user_id', $this->user->id)->withParsedBody($body);
         $this->expectException(ValidationException::class);

@@ -105,7 +105,7 @@ class RequestHandlerTest extends TestCase
         $request->expects($this->exactly(1))
             ->method('getAttribute')
             ->with('route-request-handler')
-            ->willReturn('FooBarTestController@showStuff');
+            ->willReturn('FooBarTestController@process');
 
         /** @var RequestHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(RequestHandler::class)
@@ -114,7 +114,7 @@ class RequestHandlerTest extends TestCase
             ->getMock();
         $middleware->expects($this->once())
             ->method('resolveMiddleware')
-            ->with([$middlewareInterface, 'showStuff'])
+            ->with([$middlewareInterface, 'process'])
             ->willReturn($middlewareInterface);
 
         $middlewareInterface->expects($this->once())

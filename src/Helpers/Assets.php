@@ -19,7 +19,6 @@ class Assets
     }
 
     /**
-     * @param string $asset
      * @return string
      */
     public function getAssetPath(string $asset): string

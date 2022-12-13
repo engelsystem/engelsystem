@@ -54,7 +54,6 @@ class TranslationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param string $locale
      * @codeCoverageIgnore
      */
     public function setLocale(string $locale): void
@@ -70,7 +69,6 @@ class TranslationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param string $locale
      * @return GettextTranslator
      */
     public function getTranslator(string $locale): GettextTranslator
@@ -101,8 +99,6 @@ class TranslationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param string $locale
-     * @param string $name
      * @return string
      */
     protected function getFile(string $locale, string $name = 'default'): string

@@ -15,9 +15,6 @@ class ExceptionHandler implements MiddlewareInterface
     /** @var ContainerInterface */
     protected $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -28,8 +25,6 @@ class ExceptionHandler implements MiddlewareInterface
      *
      * Should be added at the beginning
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(

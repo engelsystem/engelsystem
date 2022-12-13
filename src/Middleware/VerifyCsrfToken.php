@@ -14,9 +14,6 @@ class VerifyCsrfToken implements MiddlewareInterface
     /** @var SessionInterface */
     protected $session;
 
-    /**
-     * @param SessionInterface $session
-     */
     public function __construct(SessionInterface $session)
     {
         $this->session = $session;
@@ -25,8 +22,6 @@ class VerifyCsrfToken implements MiddlewareInterface
     /**
      * Verify csrf tokens
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -42,7 +37,6 @@ class VerifyCsrfToken implements MiddlewareInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return bool
      */
     protected function isReading(ServerRequestInterface $request): bool
@@ -54,7 +48,6 @@ class VerifyCsrfToken implements MiddlewareInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return bool
      */
     protected function tokensMatch(ServerRequestInterface $request): bool

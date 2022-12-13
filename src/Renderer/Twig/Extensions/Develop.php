@@ -15,9 +15,6 @@ class Develop extends TwigExtension
     /** @var VarDumper|null */
     protected $dumper;
 
-    /**
-     * @param Config $config
-     */
     public function __construct(Config $config)
     {
         $this->config = $config;
@@ -39,10 +36,9 @@ class Develop extends TwigExtension
     }
 
     /**
-     * @param mixed $vars
      * @return string
      */
-    public function dump(...$vars): string
+    public function dump(mixed ...$vars): string
     {
         ob_start();
 
@@ -54,10 +50,9 @@ class Develop extends TwigExtension
     }
 
     /**
-     * @param mixed $vars
      * @return string
      */
-    public function dd(...$vars): string
+    public function dd(mixed ...$vars): string
     {
         $this->flushBuffers();
 
@@ -68,10 +63,7 @@ class Develop extends TwigExtension
         return '';
     }
 
-    /**
-     * @param VarDumper $dumper
-     */
-    public function setDumper($dumper)
+    public function setDumper(VarDumper $dumper)
     {
         $this->dumper = $dumper;
     }

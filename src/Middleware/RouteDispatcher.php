@@ -22,7 +22,6 @@ class RouteDispatcher implements MiddlewareInterface
     protected $notFound;
 
     /**
-     * @param FastRouteDispatcher      $dispatcher
      * @param ResponseInterface        $response Default response
      * @param MiddlewareInterface|null $notFound Handles any requests if the route can't be found
      */
@@ -40,8 +39,6 @@ class RouteDispatcher implements MiddlewareInterface
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

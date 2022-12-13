@@ -31,9 +31,8 @@ class Application extends Container
     /**
      * Application constructor.
      *
-     * @param string $appPath
      */
-    public function __construct($appPath = null)
+    public function __construct(string $appPath = null)
     {
         if (!is_null($appPath)) {
             $this->setAppPath($appPath);
@@ -56,10 +55,9 @@ class Application extends Container
     }
 
     /**
-     * @param string|ServiceProvider $provider
      * @return ServiceProvider
      */
-    public function register($provider)
+    public function register(string|ServiceProvider $provider)
     {
         if (is_string($provider)) {
             $provider = $this->make($provider);
@@ -124,10 +122,9 @@ class Application extends Container
     /**
      * Set app base path
      *
-     * @param string $appPath
      * @return static
      */
-    public function setAppPath($appPath)
+    public function setAppPath(string $appPath)
     {
         $appPath = realpath($appPath);
         $appPath = rtrim($appPath, DIRECTORY_SEPARATOR);

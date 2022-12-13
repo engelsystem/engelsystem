@@ -79,27 +79,10 @@ class Event
     /**
      * Event constructor.
      *
-     * @param string      $guid
-     * @param int         $id
-     * @param Room        $room
-     * @param string      $title
-     * @param string      $subtitle
-     * @param string      $type
-     * @param Carbon      $date
-     * @param string      $start
-     * @param string      $duration
-     * @param string      $abstract
-     * @param string      $slug
-     * @param string      $track
-     * @param string|null $logo
      * @param string[]    $persons
-     * @param string|null $language
-     * @param string|null $description
      * @param string|null $recording license
      * @param array       $links
      * @param array       $attachments
-     * @param string|null $url
-     * @param string|null $videoDownloadUrl
      */
     public function __construct(
         string $guid,
@@ -183,9 +166,6 @@ class Event
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
     public function setTitle(string $title): void
     {
         $this->title = $title;

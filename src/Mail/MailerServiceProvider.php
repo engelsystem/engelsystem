@@ -45,11 +45,10 @@ class MailerServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param string|null $transport
      * @param array  $config
      * @return TransportInterface
      */
-    protected function getTransport($transport, $config)
+    protected function getTransport(?string $transport, array $config)
     {
         switch ($transport) {
             case 'log':

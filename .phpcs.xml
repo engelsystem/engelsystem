@@ -19,8 +19,13 @@
         <properties>
             <property name="ignoreUnusedValuesWhenOnlyKeysAreUsedInForeach" value="true" />
         </properties>
-        </rule>
-        <rule ref="Generic.Files.LineLength.TooLong">
-            <exclude-pattern>/includes</exclude-pattern>
-        </rule>
+    </rule>
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <exclude-pattern>/includes</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude-pattern>/includes</exclude-pattern>
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification" />
+    </rule>
+    <rule ref="SlevomatCodingStandard.Commenting.EmptyComment" />
 </ruleset>

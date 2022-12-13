@@ -15,10 +15,6 @@ class Version
     /** @var string */
     protected $versionFile = 'VERSION';
 
-    /**
-     * @param string $storage
-     * @param Config $config
-     */
     public function __construct(string $storage, Config $config)
     {
         $this->storage = $storage;

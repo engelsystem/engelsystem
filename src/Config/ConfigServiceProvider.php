@@ -16,10 +16,6 @@ class ConfigServiceProvider extends ServiceProvider
     /** @var EventConfig */
     protected $eventConfig;
 
-    /**
-     * @param Application $app
-     * @param EventConfig $eventConfig
-     */
     public function __construct(Application $app, EventConfig $eventConfig = null)
     {
         parent::__construct($app);
@@ -84,10 +80,9 @@ class ConfigServiceProvider extends ServiceProvider
     /**
      * Get the config path
      *
-     * @param string $path
      * @return string
      */
-    protected function getConfigPath($path = ''): string
+    protected function getConfigPath(string $path = ''): string
     {
         return config_path($path);
     }

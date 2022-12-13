@@ -14,10 +14,7 @@ class HttpException extends RuntimeException
     protected $headers = [];
 
     /**
-     * @param int            $statusCode
-     * @param string         $message
      * @param array          $headers
-     * @param int            $code
      * @param Throwable|null $previous
      */
     public function __construct(
