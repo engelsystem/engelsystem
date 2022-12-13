@@ -286,7 +286,7 @@ return [
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
 
     // Local timezone
-    'timezone'                => env('TIMEZONE', ini_get('date.timezone') ?: 'Europe/Berlin'),
+    'timezone'                => env('TIMEZONE', 'Europe/Berlin'),
 
     // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
     'night_shifts'            => [
