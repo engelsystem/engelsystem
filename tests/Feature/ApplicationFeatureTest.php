@@ -11,4 +11,18 @@ abstract class ApplicationFeatureTest extends TestCase
         $_SERVER['HTTP_HOST'] = 'foo.bar';
         require __DIR__ . '/../../includes/engelsystem.php';
     }
+
+    /**
+     * Undo the changes done by the ConfigureEnvironmentServiceProvider
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        ini_set('display_errors', true);
+        error_reporting(E_ALL);
+
+        ini_set('date.timezone', 'UTC');
+        date_default_timezone_set('UTC');
+    }
 }
