@@ -27,17 +27,11 @@ class Csrf extends TwigExtension
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getCsrfField(): string
     {
         return sprintf('<input type="hidden" name="_token" value="%s">', $this->getCsrfToken());
     }
 
-    /**
-     * @return string
-     */
     public function getCsrfToken(): string
     {
         return $this->session->get('_token');

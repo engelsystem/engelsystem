@@ -14,10 +14,7 @@ class ApiController extends BaseController
         $this->response = $response;
     }
 
-    /**
-     * @return Response
-     */
-    public function index()
+    public function index(): Response
     {
         return $this->response
             ->setStatusCode(501)

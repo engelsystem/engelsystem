@@ -23,7 +23,7 @@ class FaqControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\Admin\FaqController::edit
      * @covers \Engelsystem\Controllers\Admin\FaqController::showEdit
      */
-    public function testEdit()
+    public function testEdit(): void
     {
         $this->request->attributes->set('faq_id', 1);
         $this->response->expects($this->once())
@@ -48,7 +48,7 @@ class FaqControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\FaqController::save
      */
-    public function testSaveCreateInvalid()
+    public function testSaveCreateInvalid(): void
     {
         /** @var FaqController $controller */
         $this->expectException(ValidationException::class);
@@ -61,7 +61,7 @@ class FaqControllerTest extends ControllerTest
     /**
      * @covers       \Engelsystem\Controllers\Admin\FaqController::save
      */
-    public function testSaveCreateEdit()
+    public function testSaveCreateEdit(): void
     {
         $this->request->attributes->set('faq_id', 2);
         $body = $this->data;
@@ -93,7 +93,7 @@ class FaqControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\FaqController::save
      */
-    public function testSavePreview()
+    public function testSavePreview(): void
     {
         $this->request->attributes->set('faq_id', 1);
         $this->request = $this->request->withParsedBody([
@@ -130,7 +130,7 @@ class FaqControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\FaqController::save
      */
-    public function testSaveDelete()
+    public function testSaveDelete(): void
     {
         $this->request->attributes->set('faq_id', 1);
         $this->request = $this->request->withParsedBody([

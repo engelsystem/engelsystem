@@ -40,7 +40,7 @@ class LogEntry extends BaseModel
     /**
      * @return Builder[]|Collection|SupportCollection|LogEntry[]
      */
-    public static function filter(string $keyword = null)
+    public static function filter(string $keyword = null): array|Collection|SupportCollection
     {
         $query = self::query()
             ->select()

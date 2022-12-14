@@ -9,7 +9,7 @@ class CreateVoucherEditPermission extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if (!$this->schema->hasTable('Privileges')) {
             return;
@@ -36,7 +36,7 @@ class CreateVoucherEditPermission extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         if (!$this->schema->hasTable('Privileges')) {
             return;

@@ -20,7 +20,7 @@ class FaqControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\FaqController::__construct
      * @covers \Engelsystem\Controllers\FaqController::index
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $this->initDatabase();
         (new Faq(['question' => 'Xyz', 'text' => 'Abc']))->save();

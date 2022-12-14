@@ -14,7 +14,7 @@ class PersonalDataFactory extends Factory
     /**
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $arrival = $this->faker->optional()->dateTimeThisMonth('2 weeks');
         $departure = $this->faker->optional()->dateTimeThisMonth('2 weeks');

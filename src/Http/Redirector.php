@@ -24,7 +24,6 @@ class Redirector
      * Redirects to a path, generating a full URL
      *
      * @param array  $headers
-     * @return Response
      */
     public function to(string $path, int $status = 302, array $headers = []): Response
     {
@@ -33,16 +32,12 @@ class Redirector
 
     /**
      * @param array $headers
-     * @return Response
      */
     public function back(int $status = 302, array $headers = []): Response
     {
         return $this->to($this->getPreviousUrl(), $status, $headers);
     }
 
-    /**
-     * @return string
-     */
     protected function getPreviousUrl(): string
     {
         if ($header = $this->request->getHeader('referer')) {

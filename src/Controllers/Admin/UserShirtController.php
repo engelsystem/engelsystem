@@ -56,10 +56,6 @@ class UserShirtController extends BaseController
         $this->user = $user;
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function editShirt(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -72,10 +68,6 @@ class UserShirtController extends BaseController
         );
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function saveShirt(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');

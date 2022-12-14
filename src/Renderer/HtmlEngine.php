@@ -8,7 +8,6 @@ class HtmlEngine extends Engine
      * Render a template
      *
      * @param mixed[] $data
-     * @return string
      */
     public function get(string $path, array $data = []): string
     {
@@ -24,9 +23,6 @@ class HtmlEngine extends Engine
         return $template;
     }
 
-    /**
-     * @return bool
-     */
     public function canRender(string $path): bool
     {
         return mb_strpos($path, '.htm') !== false && file_exists($path);

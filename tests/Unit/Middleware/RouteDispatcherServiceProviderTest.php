@@ -17,7 +17,7 @@ class RouteDispatcherServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Middleware\RouteDispatcherServiceProvider::register()
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var ContextualBindingBuilder|MockObject $bindingBuilder */
         $bindingBuilder = $this->createMock(ContextualBindingBuilder::class);

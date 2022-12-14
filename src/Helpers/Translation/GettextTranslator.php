@@ -7,7 +7,6 @@ use Gettext\Translator;
 class GettextTranslator extends Translator
 {
     /**
-     * @return string
      * @throws TranslationNotFound
      */
     protected function translate(?string $domain, ?string $context, string $original): string
@@ -18,7 +17,6 @@ class GettextTranslator extends Translator
     }
 
     /**
-     * @return string
      * @throws TranslationNotFound
      */
     protected function translatePlural(
@@ -36,7 +34,7 @@ class GettextTranslator extends Translator
     /**
      * @throws TranslationNotFound
      */
-    protected function assertHasTranslation(?string $domain, ?string $context, string $original)
+    protected function assertHasTranslation(?string $domain, ?string $context, string $original): void
     {
         if ($this->getTranslation($domain, $context, $original)) {
             return;

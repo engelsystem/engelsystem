@@ -62,18 +62,12 @@ class News extends BaseModel
         'user_id',
     ];
 
-    /**
-     * @return HasMany
-     */
     public function comments(): HasMany
     {
         return $this->hasMany(NewsComment::class)
             ->orderBy('created_at');
     }
 
-    /**
-     * @return string
-     */
     public function text(bool $showMore = true): string
     {
         if ($showMore || !Str::contains($this->text, 'more')) {

@@ -10,7 +10,7 @@ class AddHideRegisterToAngeltypes extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if (!$this->schema->hasTable('AngelTypes')) {
             return;
@@ -18,7 +18,7 @@ class AddHideRegisterToAngeltypes extends Migration
 
         $this->schema->table(
             'AngelTypes',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->boolean('hide_register')->default(false)->after('show_on_dashboard');
             }
         );
@@ -27,7 +27,7 @@ class AddHideRegisterToAngeltypes extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         if (!$this->schema->hasTable('AngelTypes')) {
             return;
@@ -35,7 +35,7 @@ class AddHideRegisterToAngeltypes extends Migration
 
         $this->schema->table(
             'AngelTypes',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('hide_register');
             }
         );

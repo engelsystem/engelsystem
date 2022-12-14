@@ -15,9 +15,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 /**
  * Get the global app instance
  *
- * @return mixed|Application
  */
-function app(string $id = null)
+function app(string $id = null): mixed
 {
     if (is_null($id)) {
         return Application::getInstance();
@@ -26,17 +25,11 @@ function app(string $id = null)
     return Application::getInstance()->get($id);
 }
 
-/**
- * @return Authenticator
- */
 function auth(): Authenticator
 {
     return app('authenticator');
 }
 
-/**
- * @return string
- */
 function base_path(string $path = ''): string
 {
     return app('path') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
@@ -44,7 +37,6 @@ function base_path(string $path = ''): string
 
 /**
  * @param array $headers
- * @return Response
  */
 function back(int $status = 302, array $headers = []): Response
 {
@@ -57,9 +49,8 @@ function back(int $status = 302, array $headers = []): Response
 /**
  * Get or set config values
  *
- * @return mixed|Config
  */
-function config(string|array $key = null, mixed $default = null)
+function config(string|array $key = null, mixed $default = null): mixed
 {
     /** @var Config $config */
     $config = app('config');
@@ -76,20 +67,15 @@ function config(string|array $key = null, mixed $default = null)
     return $config->get($key, $default);
 }
 
-/**
- * @return string
- */
 function config_path(string $path = ''): string
 {
     return app('path.config') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
 }
 
 /**
- * @param array              $payload
- *
- * @return EventDispatcher
+ * @param array $payload
  */
-function event(string|object|null $event = null, array $payload = [])
+function event(string|object|null $event = null, array $payload = []): array|EventDispatcher
 {
     /** @var EventDispatcher $dispatcher */
     $dispatcher = app('events.dispatcher');
@@ -103,7 +89,6 @@ function event(string|object|null $event = null, array $payload = [])
 
 /**
  * @param array  $headers
- * @return Response
  */
 function redirect(string $path, int $status = 302, array $headers = []): Response
 {
@@ -113,10 +98,7 @@ function redirect(string $path, int $status = 302, array $headers = []): Respons
     return $redirect->to($path, $status, $headers);
 }
 
-/**
- * @return Request|mixed
- */
-function request(string $key = null, mixed $default = null)
+function request(string $key = null, mixed $default = null): mixed
 {
     /** @var Request $request */
     $request = app('request');
@@ -130,7 +112,6 @@ function request(string $key = null, mixed $default = null)
 
 /**
  * @param array $headers
- * @return Response
  */
 function response(mixed $content = '', int $status = 200, array $headers = []): Response
 {
@@ -147,10 +128,7 @@ function response(mixed $content = '', int $status = 200, array $headers = []): 
     return $response;
 }
 
-/**
- * @return SessionInterface|mixed
- */
-function session(string $key = null, mixed $default = null)
+function session(string $key = null, mixed $default = null): mixed
 {
     /** @var SessionInterface $session */
     $session = app('session');
@@ -166,9 +144,8 @@ function session(string $key = null, mixed $default = null)
  * Translate the given message
  *
  * @param array  $replace
- * @return string|Translator
  */
-function trans(string $key = null, array $replace = [])
+function trans(string $key = null, array $replace = []): string|Translator
 {
     /** @var Translator $translator */
     $translator = app('translator');
@@ -184,7 +161,6 @@ function trans(string $key = null, array $replace = [])
  * Translate the given message
  *
  * @param array  $replace
- * @return string
  */
 function __(string $key, array $replace = []): string
 {
@@ -198,7 +174,6 @@ function __(string $key, array $replace = []): string
  * Translate the given message
  *
  * @param array  $replace
- * @return string
  */
 function _e(string $key, string $keyPlural, int $number, array $replace = []): string
 {
@@ -210,9 +185,8 @@ function _e(string $key, string $keyPlural, int $number, array $replace = []): s
 
 /**
  * @param array  $parameters
- * @return UrlGeneratorInterface|string
  */
-function url(string $path = null, array $parameters = [])
+function url(string $path = null, array $parameters = []): UrlGeneratorInterface|string
 {
     /** @var UrlGeneratorInterface $urlGenerator */
     $urlGenerator = app('http.urlGenerator');
@@ -226,9 +200,8 @@ function url(string $path = null, array $parameters = [])
 
 /**
  * @param mixed[] $data
- * @return Renderer|string
  */
-function view(string $template = null, array $data = [])
+function view(string $template = null, array $data = []): Renderer|string
 {
     /** @var Renderer $renderer */
     $renderer = app('renderer');

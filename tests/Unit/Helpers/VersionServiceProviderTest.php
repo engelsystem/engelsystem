@@ -12,7 +12,7 @@ class VersionServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\VersionServiceProvider::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = new Application();
         $app->instance('path.storage.app', '/tmp');

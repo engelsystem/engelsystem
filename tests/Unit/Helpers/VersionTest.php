@@ -12,7 +12,7 @@ class VersionTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\Version::__construct
      * @covers \Engelsystem\Helpers\Version::getVersion
      */
-    public function testGetVersion()
+    public function testGetVersion(): void
     {
         $config = new Config();
         $version = new Version(__DIR__ . '/Stub', $config);

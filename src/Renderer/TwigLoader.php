@@ -8,7 +8,6 @@ use Twig\Loader\FilesystemLoader as FilesystemLoader;
 class TwigLoader extends FilesystemLoader
 {
     /**
-     * @return string|null
      * @throws ErrorLoader
      */
     public function findTemplate(string $name, bool $throw = true): ?string

@@ -64,12 +64,9 @@ class CreateNewsTable extends Migration
         $this->schema->drop('new_news');
     }
 
-    /**
-     * @return void
-     */
     private function createNewNewsTable(): void
     {
-        $this->schema->create('news', function (Blueprint $table) {
+        $this->schema->create('news', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title', 150);
             $table->text('text');
@@ -79,9 +76,6 @@ class CreateNewsTable extends Migration
         });
     }
 
-    /**
-     * @return void
-     */
     private function copyPreviousToNewNewsTable(): void
     {
         $connection = $this->schema->getConnection();
@@ -104,12 +98,9 @@ class CreateNewsTable extends Migration
         }
     }
 
-    /**
-     * @return void
-     */
     private function createPreviousNewsTable(): void
     {
-        $this->schema->create('News', function (Blueprint $table) {
+        $this->schema->create('News', function (Blueprint $table): void {
             $table->increments('ID');
             $table->integer('Datum');
             $table->string('Betreff', 150)
@@ -120,9 +111,6 @@ class CreateNewsTable extends Migration
         });
     }
 
-    /**
-     * @return void
-     */
     private function copyNewToPreviousNewsTable(): void
     {
         $connection = $this->schema->getConnection();

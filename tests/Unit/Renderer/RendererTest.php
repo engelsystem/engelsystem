@@ -14,7 +14,7 @@ class RendererTest extends TestCase
      * @covers \Engelsystem\Renderer\Renderer::render
      * @covers \Engelsystem\Renderer\Renderer::addRenderer
      */
-    public function testGet()
+    public function testGet(): void
     {
         $renderer = new Renderer();
 
@@ -48,7 +48,7 @@ class RendererTest extends TestCase
     /**
      * @covers \Engelsystem\Renderer\Renderer::render
      */
-    public function testError()
+    public function testError(): void
     {
         $renderer = new Renderer();
 

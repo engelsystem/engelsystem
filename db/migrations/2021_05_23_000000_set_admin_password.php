@@ -28,7 +28,7 @@ class SetAdminPassword extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $admin = $this->auth->authenticate('admin', 'asdfasdf');
         $setupPassword = $this->config->get('setup_admin_password');

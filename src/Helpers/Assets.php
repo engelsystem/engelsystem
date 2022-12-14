@@ -18,9 +18,6 @@ class Assets
         $this->assetsPath = $assetsPath;
     }
 
-    /**
-     * @return string
-     */
     public function getAssetPath(string $asset): string
     {
         $manifest = $this->assetsPath . DIRECTORY_SEPARATOR . $this->manifestFile;

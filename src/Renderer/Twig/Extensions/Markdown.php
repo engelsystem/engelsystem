@@ -29,10 +29,6 @@ class Markdown extends TwigExtension
         ];
     }
 
-    /**
-     *
-     * @return string
-     */
     public function render(string $text, bool $escapeHtml = true): string
     {
         return $this->renderer->setSafeMode($escapeHtml)->text($text);

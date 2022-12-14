@@ -38,9 +38,6 @@ class HttpException extends RuntimeException
         return $this->headers;
     }
 
-    /**
-     * @return int
-     */
     public function getStatusCode(): int
     {
         return $this->statusCode;

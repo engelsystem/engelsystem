@@ -59,9 +59,6 @@ class MessagesController extends BaseController
         $this->user = $user;
     }
 
-    /**
-     * @return Response
-     */
     public function index(): Response
     {
         return $this->listConversations();
@@ -127,11 +124,11 @@ class MessagesController extends BaseController
         $otherUser = $this->user->findOrFail($userId);
 
         $messages = $this->message
-            ->where(function ($query) use ($currentUser, $otherUser) {
+            ->where(function ($query) use ($currentUser, $otherUser): void {
                 $query->whereUserId($currentUser->id)
                     ->whereReceiverId($otherUser->id);
             })
-            ->orWhere(function ($query) use ($currentUser, $otherUser) {
+            ->orWhere(function ($query) use ($currentUser, $otherUser): void {
                 $query->whereUserId($otherUser->id)
                     ->whereReceiverId($currentUser->id);
             })
@@ -235,16 +232,13 @@ class MessagesController extends BaseController
 
         // then getting the full message objects for each ID.
         return $this->message
-            ->joinSub($latestMessageIds, 'conversations', function ($join) {
+            ->joinSub($latestMessageIds, 'conversations', function ($join): void {
                 $join->on('messages.id', '=', 'conversations.last_id');
             })
             ->orderBy('created_at', 'DESC')
             ->get();
     }
 
-    /**
-     * @return QueryExpression
-     */
     protected function raw(mixed $value): QueryExpression
     {
         return $this->db->getConnection()->raw($value);

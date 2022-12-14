@@ -91,15 +91,12 @@ class EngelsystemMailer extends Mailer
         parent::send($to, $subject, $body);
     }
 
-    /**
-     * @return string
-     */
     public function getSubjectPrefix(): string
     {
         return $this->subjectPrefix;
     }
 
-    public function setSubjectPrefix(string $subjectPrefix)
+    public function setSubjectPrefix(string $subjectPrefix): void
     {
         $this->subjectPrefix = $subjectPrefix;
     }

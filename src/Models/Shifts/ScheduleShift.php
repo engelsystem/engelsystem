@@ -34,10 +34,7 @@ class ScheduleShift extends BaseModel
         'schedule_id' => 'integer',
     ];
 
-    /**
-     * @return BelongsTo
-     */
-    public function schedule()
+    public function schedule(): BelongsTo
     {
         return $this->belongsTo(Schedule::class);
     }

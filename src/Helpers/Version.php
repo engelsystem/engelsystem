@@ -21,10 +21,7 @@ class Version
         $this->config = $config;
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $file = $this->storage . DIRECTORY_SEPARATOR . $this->versionFile;
 

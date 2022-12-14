@@ -17,7 +17,7 @@ $route->get('/logout', 'AuthController@logout');
 // OAuth
 $route->addGroup(
     '/oauth/{provider}',
-    function (RouteCollector $route) {
+    function (RouteCollector $route): void {
         $route->get('', 'OAuthController@index');
         $route->post('/connect', 'OAuthController@connect');
         $route->post('/disconnect', 'OAuthController@disconnect');
@@ -27,7 +27,7 @@ $route->addGroup(
 // User settings
 $route->addGroup(
     '/settings',
-    function (RouteCollector $route) {
+    function (RouteCollector $route): void {
         $route->get('/profile', 'SettingsController@profile');
         $route->post('/profile', 'SettingsController@saveProfile');
         $route->get('/password', 'SettingsController@password');
@@ -43,7 +43,7 @@ $route->addGroup(
 // Password recovery
 $route->addGroup(
     '/password/reset',
-    function (RouteCollector $route) {
+    function (RouteCollector $route): void {
         $route->get('', 'PasswordResetController@reset');
         $route->post('', 'PasswordResetController@postReset');
         $route->get('/{token:.+}', 'PasswordResetController@resetPassword');
@@ -59,7 +59,7 @@ $route->get('/stats', 'Metrics\\Controller@stats');
 $route->get('/meetings', 'NewsController@meetings');
 $route->addGroup(
     '/news',
-    function (RouteCollector $route) {
+    function (RouteCollector $route): void {
         $route->get('', 'NewsController@index');
         $route->get('/{news_id:\d+}', 'NewsController@show');
         $route->post('/{news_id:\d+}', 'NewsController@comment');
@@ -73,7 +73,7 @@ $route->get('/faq', 'FaqController@index');
 // Questions
 $route->addGroup(
     '/questions',
-    function (RouteCollector $route) {
+    function (RouteCollector $route): void {
         $route->get('', 'QuestionsController@index');
         $route->post('', 'QuestionsController@delete');
         $route->get('/new', 'QuestionsController@add');
@@ -84,7 +84,7 @@ $route->addGroup(
 // Messages
 $route->addGroup(
     '/messages',
-    function (RouteCollector $route) {
+    function (RouteCollector $route): void {
         $route->get('', 'MessagesController@index');
         $route->post('', 'MessagesController@redirectToConversation');
         $route->get('/{user_id:\d+}', 'MessagesController@messagesOfConversation');
@@ -102,11 +102,11 @@ $route->get('/design', 'DesignController@index');
 // Administration
 $route->addGroup(
     '/admin',
-    function (RouteCollector $route) {
+    function (RouteCollector $route): void {
         // FAQ
         $route->addGroup(
             '/faq',
-            function (RouteCollector $route) {
+            function (RouteCollector $route): void {
                 $route->get('[/{faq_id:\d+}]', 'Admin\\FaqController@edit');
                 $route->post('[/{faq_id:\d+}]', 'Admin\\FaqController@save');
             }
@@ -115,7 +115,7 @@ $route->addGroup(
         // Log
         $route->addGroup(
             '/logs',
-            function (RouteCollector $route) {
+            function (RouteCollector $route): void {
                 $route->get('', 'Admin\\LogsController@index');
                 $route->post('', 'Admin\\LogsController@index');
             }
@@ -124,7 +124,7 @@ $route->addGroup(
         // Schedule
         $route->addGroup(
             '/schedule',
-            function (RouteCollector $route) {
+            function (RouteCollector $route): void {
                 $route->get('', 'Admin\\Schedule\\ImportSchedule@index');
                 $route->get('/edit[/{schedule_id:\d+}]', 'Admin\\Schedule\\ImportSchedule@edit');
                 $route->post('/edit[/{schedule_id:\d+}]', 'Admin\\Schedule\\ImportSchedule@save');
@@ -136,7 +136,7 @@ $route->addGroup(
         // Questions
         $route->addGroup(
             '/questions',
-            function (RouteCollector $route) {
+            function (RouteCollector $route): void {
                 $route->get('', 'Admin\\QuestionsController@index');
                 $route->post('', 'Admin\\QuestionsController@delete');
                 $route->get('/{question_id:\d+}', 'Admin\\QuestionsController@edit');
@@ -147,11 +147,11 @@ $route->addGroup(
         // User
         $route->addGroup(
             '/user/{user_id:\d+}',
-            function (RouteCollector $route) {
+            function (RouteCollector $route): void {
                 // Shirts
                 $route->addGroup(
                     '/shirt',
-                    function (RouteCollector $route) {
+                    function (RouteCollector $route): void {
                         $route->get('', 'Admin\\UserShirtController@editShirt');
                         $route->post('', 'Admin\\UserShirtController@saveShirt');
                     }
@@ -160,7 +160,7 @@ $route->addGroup(
                 // Worklogs
                 $route->addGroup(
                     '/worklog',
-                    function (RouteCollector $route) {
+                    function (RouteCollector $route): void {
                         $route->get('[/{worklog_id:\d+}]', 'Admin\\UserWorkLogController@editWorklog');
                         $route->post('[/{worklog_id:\d+}]', 'Admin\\UserWorkLogController@saveWorklog');
                         $route->get(
@@ -179,7 +179,7 @@ $route->addGroup(
         // News
         $route->addGroup(
             '/news',
-            function (RouteCollector $route) {
+            function (RouteCollector $route): void {
                 $route->get('[/{news_id:\d+}]', 'Admin\\NewsController@edit');
                 $route->post('[/{news_id:\d+}]', 'Admin\\NewsController@save');
             }

@@ -34,9 +34,6 @@ class FaqController extends BaseController
         $this->response = $response;
     }
 
-    /**
-     * @return Response
-     */
     public function index(): Response
     {
         $text = $this->config->get('faq_text');

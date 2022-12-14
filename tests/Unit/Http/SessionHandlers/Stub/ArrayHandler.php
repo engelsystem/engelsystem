@@ -41,17 +41,11 @@ class ArrayHandler extends AbstractHandler
         return true;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getSessionPath(): string
     {
         return $this->sessionPath;

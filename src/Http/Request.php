@@ -16,9 +16,8 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Get POST input
      *
-     * @return mixed
      */
-    public function postData(string $key, mixed $default = null)
+    public function postData(string $key, mixed $default = null): mixed
     {
         return $this->request->get($key, $default);
     }
@@ -26,9 +25,8 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Get input data
      *
-     * @return mixed
      */
-    public function input(string $key, mixed $default = null)
+    public function input(string $key, mixed $default = null): mixed
     {
         return $this->get($key, $default);
     }
@@ -36,9 +34,8 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Checks if the input exists
      *
-     * @return bool
      */
-    public function has(string $key)
+    public function has(string $key): bool
     {
         $value = $this->input($key);
 
@@ -48,9 +45,8 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Checks if the POST data exists
      *
-     * @return bool
      */
-    public function hasPostData(string $key)
+    public function hasPostData(string $key): bool
     {
         $value = $this->postData($key);
 
@@ -60,9 +56,8 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Get the requested path
      *
-     * @return string
      */
-    public function path()
+    public function path(): string
     {
         $pattern = trim($this->getPathInfo(), '/');
 
@@ -72,9 +67,8 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     /**
      * Return the current URL
      *
-     * @return string
      */
-    public function url()
+    public function url(): string
     {
         return rtrim(preg_replace('/\?.*/', '', $this->getUri()), '/');
     }
@@ -94,9 +88,8 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * If no URI is available, and no request-target has been specifically
      * provided, this method MUST return the string "/".
      *
-     * @return string
      */
-    public function getRequestTarget()
+    public function getRequestTarget(): string
     {
         $query = $this->getQueryString();
         return '/' . $this->path() . (!empty($query) ? '?' . $query : '');
@@ -118,7 +111,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *     request-target forms allowed in request messages)
      * @return static
      */
-    public function withRequestTarget(mixed $requestTarget)
+    public function withRequestTarget(mixed $requestTarget): static
     {
         return $this->create($requestTarget);
     }
@@ -138,7 +131,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return static
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod(mixed $method)
+    public function withMethod(mixed $method): static
     {
         $new = clone $this;
         $new->setMethod($method);
@@ -176,7 +169,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @param bool         $preserveHost Preserve the original state of the Host header.
      * @return static
      */
-    public function withUri(UriInterface $uri, mixed $preserveHost = false)
+    public function withUri(UriInterface $uri, mixed $preserveHost = false): static
     {
         $new = $this->create($uri);
         if ($preserveHost) {
@@ -195,7 +188,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * @return array
      */
-    public function getServerParams()
+    public function getServerParams(): array
     {
         return $this->server->all();
     }
@@ -210,7 +203,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * @return array
      */
-    public function getCookieParams()
+    public function getCookieParams(): array
     {
         return $this->cookies->all();
     }
@@ -232,7 +225,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @param array $cookies Array of key/value pairs representing cookies.
      * @return static
      */
-    public function withCookieParams(array $cookies)
+    public function withCookieParams(array $cookies): static
     {
         $new = clone $this;
         $new->cookies = clone $this->cookies;
@@ -253,7 +246,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * @return array
      */
-    public function getQueryParams()
+    public function getQueryParams(): array
     {
         return $this->query->all();
     }
@@ -280,7 +273,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *                     $_GET.
      * @return static
      */
-    public function withQueryParams(array $query)
+    public function withQueryParams(array $query): static
     {
         $new = clone $this;
         $new->query = clone $this->query;
@@ -301,7 +294,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return array An array tree of UploadedFileInterface instances; an empty
      *     array MUST be returned if no data is present.
      */
-    public function getUploadedFiles()
+    public function getUploadedFiles(): array
     {
         $files = [];
         /** @var SymfonyFile $file */
@@ -329,7 +322,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return static
      * @throws \InvalidArgumentException if an invalid structure is provided.
      */
-    public function withUploadedFiles(array $uploadedFiles)
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         $new = clone $this;
         $new->files = clone $this->files;
@@ -369,7 +362,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return null|array|object The deserialized body parameters, if any.
      *     These will typically be an array or object.
      */
-    public function getParsedBody()
+    public function getParsedBody(): array|object|null
     {
         return $this->request->all();
     }
@@ -402,7 +395,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @throws \InvalidArgumentException if an unsupported argument type is
      *                                provided.
      */
-    public function withParsedBody(mixed $data)
+    public function withParsedBody(mixed $data): static
     {
         $new = clone $this;
         $new->request = clone $this->request;
@@ -423,7 +416,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * @return array Attributes derived from the request.
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes->all();
     }
@@ -440,10 +433,9 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * @param string $name    The attribute name.
      * @param mixed  $default Default value to return if the attribute does not exist.
-     * @return mixed
      * @see getAttributes()
      */
-    public function getAttribute(mixed $name, mixed $default = null)
+    public function getAttribute(mixed $name, mixed $default = null): mixed
     {
         return $this->attributes->get($name, $default);
     }
@@ -463,7 +455,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return static
      * @see getAttributes()
      */
-    public function withAttribute(mixed $name, mixed $value)
+    public function withAttribute(mixed $name, mixed $value): static
     {
         $new = clone $this;
         $new->attributes = clone $this->attributes;
@@ -487,7 +479,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @return static
      * @see getAttributes()
      */
-    public function withoutAttribute(mixed $name)
+    public function withoutAttribute(mixed $name): static
     {
         $new = clone $this;
         $new->attributes = clone $this->attributes;

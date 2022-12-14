@@ -24,10 +24,7 @@ class CreditsController extends BaseController
         $this->version = $version;
     }
 
-    /**
-     * @return Response
-     */
-    public function index()
+    public function index(): Response
     {
         return $this->response->withView(
             'pages/credits.twig',

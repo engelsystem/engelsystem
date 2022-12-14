@@ -47,10 +47,7 @@ class Controller extends BaseController
         $this->version = $version;
     }
 
-    /**
-     * @return Response
-     */
-    public function metrics()
+    public function metrics(): Response
     {
         $now = microtime(true);
         $this->checkAuth();
@@ -212,10 +209,7 @@ class Controller extends BaseController
             ->withContent($this->engine->get('/metrics', $data));
     }
 
-    /**
-     * @return Response
-     */
-    public function stats()
+    public function stats(): Response
     {
         $this->checkAuth(true);
 
@@ -235,7 +229,7 @@ class Controller extends BaseController
      * Ensure that the if the request is authorized
      *
      */
-    protected function checkAuth(bool $isJson = false)
+    protected function checkAuth(bool $isJson = false): void
     {
         $apiKey = $this->config->get('api_key');
         if (empty($apiKey) || $this->request->get('api_key') == $apiKey) {

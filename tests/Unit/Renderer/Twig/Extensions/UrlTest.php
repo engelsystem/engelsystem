@@ -12,7 +12,7 @@ class UrlTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Url::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Url::getFunctions
      */
-    public function testGetGlobals()
+    public function testGetGlobals(): void
     {
         /** @var UrlGenerator|MockObject $urlGenerator */
         $urlGenerator = $this->createMock(UrlGenerator::class);
@@ -26,7 +26,7 @@ class UrlTest extends ExtensionTest
     /**
      * @return string[][]
      */
-    public function getUrls()
+    public function getUrls(): array
     {
         return [
             ['/', '/', 'http://foo.bar/'],
@@ -43,7 +43,7 @@ class UrlTest extends ExtensionTest
      *
      * @covers       \Engelsystem\Renderer\Twig\Extensions\Url::getUrl
      */
-    public function testGetUrl(string $url, string $urlTo, string $return, array $parameters = [])
+    public function testGetUrl(string $url, string $urlTo, string $return, array $parameters = []): void
     {
         /** @var UrlGenerator|MockObject $urlGenerator */
         $urlGenerator = $this->createMock(UrlGenerator::class);

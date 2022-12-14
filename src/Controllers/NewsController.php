@@ -68,25 +68,16 @@ class NewsController extends BaseController
         $this->request = $request;
     }
 
-    /**
-     * @return Response
-     */
-    public function index()
+    public function index(): Response
     {
         return $this->showOverview();
     }
 
-    /**
-     * @return Response
-     */
     public function meetings(): Response
     {
         return $this->showOverview(true);
     }
 
-    /**
-     * @return Response
-     */
     public function show(Request $request): Response
     {
         $newsId = (int)$request->getAttribute('news_id');
@@ -99,9 +90,6 @@ class NewsController extends BaseController
         return $this->renderView('pages/news/news.twig', ['news' => $news]);
     }
 
-    /**
-     * @return Response
-     */
     public function comment(Request $request): Response
     {
         $newsId = (int)$request->getAttribute('news_id');
@@ -131,10 +119,6 @@ class NewsController extends BaseController
         return $this->redirect->back();
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function deleteComment(Request $request): Response
     {
         $commentId = (int)$request->getAttribute('comment_id');
@@ -166,9 +150,6 @@ class NewsController extends BaseController
         return $this->redirect->to('/news/' . $comment->news->id);
     }
 
-    /**
-     * @return Response
-     */
     protected function showOverview(bool $onlyMeetings = false): Response
     {
         $query = $this->news;
@@ -203,7 +184,6 @@ class NewsController extends BaseController
 
     /**
      * @param array $data
-     * @return Response
      */
     protected function renderView(string $page, array $data): Response
     {

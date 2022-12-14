@@ -16,7 +16,7 @@ class Db
      * Set the database connection manager
      *
      */
-    public static function setDbManager(CapsuleManager $dbManager)
+    public static function setDbManager(CapsuleManager $dbManager): void
     {
         self::$dbManager = $dbManager;
     }
@@ -27,7 +27,7 @@ class Db
      * @param array  $bindings
      * @return array[]
      */
-    public static function select(string $query, array $bindings = [])
+    public static function select(string $query, array $bindings = []): array
     {
         $return = self::connection()->select($query, $bindings);
 
@@ -45,7 +45,7 @@ class Db
      * @param array  $bindings
      * @return array|null
      */
-    public static function selectOne(string $query, array $bindings = [])
+    public static function selectOne(string $query, array $bindings = []): ?array
     {
         $result = self::connection()->selectOne($query, $bindings);
 
@@ -62,9 +62,8 @@ class Db
      * Run an insert query
      *
      * @param array  $bindings
-     * @return bool
      */
-    public static function insert(string $query, array $bindings = [])
+    public static function insert(string $query, array $bindings = []): bool
     {
         return self::connection()->insert($query, $bindings);
     }
@@ -73,9 +72,8 @@ class Db
      * Run an update query
      *
      * @param array  $bindings
-     * @return int
      */
-    public static function update(string $query, array $bindings = [])
+    public static function update(string $query, array $bindings = []): int
     {
         return self::connection()->update($query, $bindings);
     }
@@ -84,17 +82,13 @@ class Db
      * Run a delete query
      *
      * @param array  $bindings
-     * @return int
      */
-    public static function delete(string $query, array $bindings = [])
+    public static function delete(string $query, array $bindings = []): int
     {
         return self::connection()->delete($query, $bindings);
     }
 
-    /**
-     * @return DatabaseConnection
-     */
-    public static function connection()
+    public static function connection(): DatabaseConnection
     {
         return self::$dbManager->getConnection();
     }
@@ -102,9 +96,8 @@ class Db
     /**
      * Get the PDO instance
      *
-     * @return PDO
      */
-    public static function getPdo()
+    public static function getPdo(): PDO
     {
         return self::connection()->getPdo();
     }

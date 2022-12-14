@@ -10,9 +10,6 @@ class ParentClassImplementation
     /** @var mixed */
     public $lastInput;
 
-    /**
-     * @return bool
-     */
     public function validate(mixed $input): bool
     {
         $this->lastInput = $input;

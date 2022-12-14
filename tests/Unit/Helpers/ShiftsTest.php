@@ -14,7 +14,7 @@ class ShiftsTest extends TestCase
     /**
      * @covers \Engelsystem\Helpers\Shifts::isNightShift
      */
-    public function testIsNightShiftDisabled()
+    public function testIsNightShiftDisabled(): void
     {
         $config = new Config(['night_shifts' => [
             'enabled'    => false,
@@ -55,7 +55,7 @@ class ShiftsTest extends TestCase
      * @covers       \Engelsystem\Helpers\Shifts::isNightShift
      * @dataProvider nightShiftData
      */
-    public function testIsNightShiftEnabled(Carbon $start, Carbon $end, bool $isNightShift)
+    public function testIsNightShiftEnabled(Carbon $start, Carbon $end, bool $isNightShift): void
     {
         $config = new Config(['night_shifts' => [
             'enabled'    => true,
@@ -71,7 +71,7 @@ class ShiftsTest extends TestCase
     /**
      * @covers \Engelsystem\Helpers\Shifts::getNightShiftMultiplier
      */
-    public function testGetNightShiftMultiplier()
+    public function testGetNightShiftMultiplier(): void
     {
         $config = new Config(['night_shifts' => [
             'enabled'    => true,

@@ -14,7 +14,6 @@ class MetricsEngine implements EngineInterface
      *
      * @param mixed[] $data
      *
-     * @return string
      *
      * @example $data = ['foo' => [['labels' => ['foo'=>'bar'], 'value'=>42]], 'bar'=>123]
      */
@@ -121,7 +120,6 @@ class MetricsEngine implements EngineInterface
 
     /**
      *
-     * @return string
      * @see https://prometheus.io/docs/instrumenting/exposition_formats/
      */
     protected function formatData(string $name, mixed $row): string
@@ -152,11 +150,7 @@ class MetricsEngine implements EngineInterface
         return '{' . implode(',', $labels) . '}';
     }
 
-    /**
-     *
-     * @return mixed
-     */
-    protected function renderValue(mixed $row)
+    protected function renderValue(mixed $row): mixed
     {
         if (is_array($row)) {
             $row = array_pop($row);
@@ -165,11 +159,7 @@ class MetricsEngine implements EngineInterface
         return $this->formatValue($row);
     }
 
-    /**
-     *
-     * @return mixed
-     */
-    protected function formatValue(mixed $value)
+    protected function formatValue(mixed $value): mixed
     {
         if (is_bool($value)) {
             return (int)$value;
@@ -178,11 +168,7 @@ class MetricsEngine implements EngineInterface
         return $this->escape($value);
     }
 
-    /**
-     *
-     * @return mixed
-     */
-    protected function escape(mixed $value)
+    protected function escape(mixed $value): mixed
     {
         $replace = [
             '\\' => '\\\\',
@@ -197,10 +183,6 @@ class MetricsEngine implements EngineInterface
         );
     }
 
-    /**
-     *
-     * @return bool
-     */
     public function canRender(string $path): bool
     {
         return $path == '/metrics';

@@ -26,9 +26,6 @@ class SessionHandler implements MiddlewareInterface
         $this->session = $session;
     }
 
-    /**
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $requestPath = $request->getAttribute('route-request-path');
@@ -48,10 +45,9 @@ class SessionHandler implements MiddlewareInterface
     }
 
     /**
-     * @return bool
      * @codeCoverageIgnore
      */
-    protected function destroyNative()
+    protected function destroyNative(): bool
     {
         return session_destroy();
     }

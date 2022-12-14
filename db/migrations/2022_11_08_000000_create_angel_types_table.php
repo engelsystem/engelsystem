@@ -19,7 +19,7 @@ class CreateAngelTypesTable extends Migration
     public function up(): void
     {
         $connection = $this->schema->getConnection();
-        $this->schema->create('angel_types', function (Blueprint $table) {
+        $this->schema->create('angel_types', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name')->unique();
             $table->text('description')->default('');
@@ -77,7 +77,7 @@ class CreateAngelTypesTable extends Migration
     public function down(): void
     {
         $connection = $this->schema->getConnection();
-        $this->schema->create('AngelTypes', function (Blueprint $table) {
+        $this->schema->create('AngelTypes', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->string('name', 50)->default('')->unique();
             $table->boolean('restricted');

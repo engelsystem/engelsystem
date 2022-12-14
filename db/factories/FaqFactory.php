@@ -13,7 +13,7 @@ class FaqFactory extends Factory
     /**
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'question' => $this->faker->text(100),

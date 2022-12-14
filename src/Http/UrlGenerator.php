@@ -34,7 +34,6 @@ class UrlGenerator implements UrlGeneratorInterface
     /**
      * Check if the URL is valid
      *
-     * @return bool
      */
     public function isValidUrl(string $path): bool
     {
@@ -45,7 +44,6 @@ class UrlGenerator implements UrlGeneratorInterface
      * Prepend the auto detected or configured app base path and domain
      *
      * @param $path
-     * @return string
      */
     protected function generateUrl(string $path): string
     {

@@ -21,7 +21,7 @@ class MigrateTest extends TestCase
      * @covers \Engelsystem\Database\Migration\Migrate::setOutput
      * @covers \Engelsystem\Database\Migration\Migrate::mergeMigrations
      */
-    public function testRun()
+    public function testRun(): void
     {
         /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Application::class)
@@ -84,7 +84,7 @@ class MigrateTest extends TestCase
         $migration->run('foo', Migrate::UP);
 
         $messages = [];
-        $migration->setOutput(function ($text) use (&$messages) {
+        $migration->setOutput(function ($text) use (&$messages): void {
             $messages[] = $text;
         });
 
@@ -122,7 +122,7 @@ class MigrateTest extends TestCase
     /**
      * @covers \Engelsystem\Database\Migration\Migrate::run
      */
-    public function testRunExceptionUnlockTable()
+    public function testRunExceptionUnlockTable(): void
     {
         /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Application::class)
@@ -154,7 +154,7 @@ class MigrateTest extends TestCase
         $this->setExpects($migration, 'getMigrated', null, collect([]));
         $migration->expects($this->once())
             ->method('migrate')
-            ->willReturnCallback(function () {
+            ->willReturnCallback(function (): void {
                 throw new Exception();
             });
 
@@ -172,7 +172,7 @@ class MigrateTest extends TestCase
      * @covers \Engelsystem\Database\Migration\Migrate::lockTable
      * @covers \Engelsystem\Database\Migration\Migrate::unlockTable
      */
-    public function testRunIntegration()
+    public function testRunIntegration(): void
     {
         $app = new Application();
         $dbManager = new CapsuleManager($app);
@@ -188,7 +188,7 @@ class MigrateTest extends TestCase
         $migration = new Migrate($schema, $app);
 
         $messages = [];
-        $migration->setOutput(function ($msg) use (&$messages) {
+        $migration->setOutput(function ($msg) use (&$messages): void {
             $messages[] = $msg;
         });
 

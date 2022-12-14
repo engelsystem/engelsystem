@@ -215,7 +215,6 @@ class PasswordResetControllerTest extends TestCase
 
     /**
      * @param array  $data
-     * @return PasswordResetController
      */
     protected function getController(?string $view = null, ?array $data = null): PasswordResetController
     {
@@ -250,17 +249,11 @@ class PasswordResetControllerTest extends TestCase
         return $controller;
     }
 
-    /**
-     * @return User
-     */
     protected function createUser(): User
     {
         return User::factory()->create(['email' => 'foo@bar.batz']);
     }
 
-    /**
-     * @return PasswordReset
-     */
     protected function createToken(User $user): PasswordReset
     {
         $reset = new PasswordReset(['user_id' => $user->id, 'token' => 'SomeTestToken123']);

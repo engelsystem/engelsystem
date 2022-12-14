@@ -56,17 +56,11 @@ class Question extends BaseModel
         'answerer_id' => 'integer',
     ];
 
-    /**
-     * @return BelongsTo
-     */
     public function answerer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'answerer_id');
     }
 
-    /**
-     * @return Builder
-     */
     public static function unanswered(): Builder
     {
         return static::whereAnswererId(null);

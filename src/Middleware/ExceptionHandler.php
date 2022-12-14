@@ -25,7 +25,6 @@ class ExceptionHandler implements MiddlewareInterface
      *
      * Should be added at the beginning
      *
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,

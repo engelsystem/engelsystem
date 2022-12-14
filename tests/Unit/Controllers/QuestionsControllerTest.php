@@ -27,7 +27,7 @@ class QuestionsControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\QuestionsController::index
      * @covers \Engelsystem\Controllers\QuestionsController::__construct
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $this->response->expects($this->once())
             ->method('withView')
@@ -48,7 +48,7 @@ class QuestionsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\QuestionsController::add
      */
-    public function testAdd()
+    public function testAdd(): void
     {
         $this->response->expects($this->once())
             ->method('withView')
@@ -70,7 +70,7 @@ class QuestionsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\QuestionsController::delete
      */
-    public function testDeleteNotFound()
+    public function testDeleteNotFound(): void
     {
         $this->request = $this->request->withParsedBody([
             'id'     => '3',
@@ -88,7 +88,7 @@ class QuestionsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\QuestionsController::delete
      */
-    public function testDeleteNotOwn()
+    public function testDeleteNotOwn(): void
     {
         $otherUser = User::factory()->create();
         (new Question([
@@ -111,7 +111,7 @@ class QuestionsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\QuestionsController::delete
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->request = $this->request->withParsedBody([
             'id'     => '2',
@@ -136,7 +136,7 @@ class QuestionsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\QuestionsController::save
      */
-    public function testSaveInvalid()
+    public function testSaveInvalid(): void
     {
         /** @var QuestionsController $controller */
         $controller = $this->app->get(QuestionsController::class);
@@ -149,7 +149,7 @@ class QuestionsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\QuestionsController::save
      */
-    public function testSave()
+    public function testSave(): void
     {
         $this->request = $this->request->withParsedBody([
             'text' => 'Some question?',

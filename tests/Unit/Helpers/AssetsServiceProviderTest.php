@@ -12,7 +12,7 @@ class AssetsServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\AssetsServiceProvider::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = new Application();
         $app->instance('path.assets.public', '/tmp');

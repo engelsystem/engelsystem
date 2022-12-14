@@ -10,7 +10,7 @@ class ConfigTest extends TestCase
     /**
      * @covers \Engelsystem\Config\Config::get
      */
-    public function testGet()
+    public function testGet(): void
     {
         $config = new Config();
 
@@ -26,7 +26,7 @@ class ConfigTest extends TestCase
     /**
      * @covers \Engelsystem\Config\Config::set
      */
-    public function testSet()
+    public function testSet(): void
     {
         $config = new Config();
 
@@ -44,7 +44,7 @@ class ConfigTest extends TestCase
     /**
      * @covers \Engelsystem\Config\Config::has
      */
-    public function testHas()
+    public function testHas(): void
     {
         $config = new Config();
 
@@ -57,7 +57,7 @@ class ConfigTest extends TestCase
     /**
      * @covers \Engelsystem\Config\Config::remove
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $config = new Config();
         $config->set(['foo' => 'bar', 'test' => '123']);
@@ -69,7 +69,7 @@ class ConfigTest extends TestCase
     /**
      * @covers \Engelsystem\Config\Config::__get
      */
-    public function testMagicGet()
+    public function testMagicGet(): void
     {
         $config = new Config();
 
@@ -80,7 +80,7 @@ class ConfigTest extends TestCase
     /**
      * @covers \Engelsystem\Config\Config::__set
      */
-    public function testMagicSet()
+    public function testMagicSet(): void
     {
         $config = new Config();
 
@@ -91,7 +91,7 @@ class ConfigTest extends TestCase
     /**
      * @covers \Engelsystem\Config\Config::__isset
      */
-    public function testMagicIsset()
+    public function testMagicIsset(): void
     {
         $config = new Config();
 
@@ -104,7 +104,7 @@ class ConfigTest extends TestCase
     /**
      * @covers \Engelsystem\Config\Config::__unset
      */
-    public function testMagicUnset()
+    public function testMagicUnset(): void
     {
         $config = new Config();
         $config->set(['foo' => 'bar', 'test' => '123']);

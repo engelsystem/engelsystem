@@ -16,10 +16,10 @@ use stdClass;
 
 class CallableHandlerTest extends TestCase
 {
-    public function provideCallable()
+    public function provideCallable(): array
     {
         return [
-            [function () {
+            [function (): void {
             }],
             [[$this, 'provideCallable']],
             [[HasStaticMethod::class, 'foo']],
@@ -31,7 +31,7 @@ class CallableHandlerTest extends TestCase
      * @covers       \Engelsystem\Middleware\CallableHandler::__construct
      * @covers       \Engelsystem\Middleware\CallableHandler::getCallable
      */
-    public function testInit(callable $callable)
+    public function testInit(callable $callable): void
     {
         $handler = new CallableHandler($callable);
 
@@ -41,7 +41,7 @@ class CallableHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\CallableHandler::process
      */
-    public function testProcess()
+    public function testProcess(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         /** @var ResponseInterface|MockObject $response */
@@ -61,7 +61,7 @@ class CallableHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\CallableHandler::handle
      */
-    public function testHandler()
+    public function testHandler(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         /** @var ResponseInterface|MockObject $response */
@@ -80,7 +80,7 @@ class CallableHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\CallableHandler::execute
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         /** @var Response|MockObject $response */

@@ -21,14 +21,14 @@ abstract class ServiceProvider
     /**
      * Register container bindings
      */
-    public function register()
+    public function register(): void
     {
     }
 
     /**
      * Called after other services had been registered
      */
-    public function boot()
+    public function boot(): void
     {
     }
 }

@@ -35,7 +35,7 @@ class EventTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Event::getVideoDownloadUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getEndDate
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $room = new Room('Foo');
         $date = new Carbon('2020-12-28T19:30:00+00:00');
@@ -104,7 +104,7 @@ class EventTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Event::getUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getVideoDownloadUrl
      */
-    public function testCreateNotDefault()
+    public function testCreateNotDefault(): void
     {
         $persons = [1337 => 'Some Person'];
         $links = ['https://foo.bar' => 'Foo Bar'];

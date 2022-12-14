@@ -63,9 +63,6 @@ class UserWorkLogController extends BaseController
         $this->user = $user;
     }
 
-    /**
-     * @return Response
-     */
     public function editWorklog(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -85,9 +82,6 @@ class UserWorkLogController extends BaseController
         }
     }
 
-    /**
-     * @return Response
-     */
     public function saveWorklog(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -123,9 +117,6 @@ class UserWorkLogController extends BaseController
         // TODO Once User_view.php gets removed, change this to withView + getNotifications
     }
 
-    /**
-     * @return Response
-     */
     public function showDeleteWorklog(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -144,9 +135,6 @@ class UserWorkLogController extends BaseController
         );
     }
 
-    /**
-     * @return Response
-     */
     public function deleteWorklog(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -184,9 +172,6 @@ class UserWorkLogController extends BaseController
         );
     }
 
-    /**
-     * @return Carbon
-     */
     private function getWorkDateSuggestion(): Carbon
     {
         $buildup_start = config('buildup_start');

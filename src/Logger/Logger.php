@@ -55,7 +55,6 @@ class Logger extends AbstractLogger
      * Interpolates context values into the message placeholders.
      *
      * @param array  $context
-     * @return string
      */
     protected function interpolate(string $message, array $context = []): string
     {
@@ -72,9 +71,6 @@ class Logger extends AbstractLogger
         return $message;
     }
 
-    /**
-     * @return string
-     */
     protected function formatException(Throwable $e): string
     {
         return sprintf(
@@ -87,9 +83,6 @@ class Logger extends AbstractLogger
         );
     }
 
-    /**
-     * @return bool
-     */
     protected function checkLevel(string $level): bool
     {
         return in_array($level, $this->allowedLevels);

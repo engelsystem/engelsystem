@@ -55,9 +55,6 @@ class Worklog extends BaseModel
         'worked_at',
     ];
 
-    /**
-     * @return BelongsTo
-     */
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');

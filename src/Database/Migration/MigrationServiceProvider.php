@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Builder as SchemaBuilder;
 
 class MigrationServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         /** @var Database $database */
         $database = $this->app->get(Database::class);

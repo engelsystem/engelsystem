@@ -12,7 +12,7 @@ class RequestServiceProvider extends ServiceProvider
     /** @var array */
     protected array $appUrl;
 
-    public function register()
+    public function register(): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');
@@ -44,7 +44,6 @@ class RequestServiceProvider extends ServiceProvider
      * @param array $files Uploaded files
      * @param array $server Server env
      * @param mixed $content Request content
-     * @return Request
      */
     public function createRequestWithoutPrefix(
         array $query = [],
@@ -88,7 +87,7 @@ class RequestServiceProvider extends ServiceProvider
         Request $request,
         array $proxies,
         int $trustedHeadersSet = Request::HEADER_FORWARDED | Request::HEADER_X_FORWARDED_TRAEFIK
-    ) {
+    ): void {
         $request->setTrustedProxies($proxies, $trustedHeadersSet);
     }
 }

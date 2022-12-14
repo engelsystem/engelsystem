@@ -17,10 +17,7 @@ trait UsesUserModel
     // protected $fillable = ['user_id'];
     // protected $casts = ['user_id' => 'integer];
 
-    /**
-     * @return BelongsTo
-     */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

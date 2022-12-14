@@ -22,11 +22,7 @@ class EventDispatcher
         unset($this->listeners[$event]);
     }
 
-    /**
-     *
-     * @return array|mixed|null
-     */
-    public function fire(string|object $event, mixed $payload = [], bool $halt = false)
+    public function fire(string|object $event, mixed $payload = [], bool $halt = false): mixed
     {
         return $this->dispatch($event, $payload, $halt);
     }
@@ -34,9 +30,8 @@ class EventDispatcher
     /**
      * @param bool          $halt     Stop on first non-null return
      *
-     * @return array|null|mixed
      */
-    public function dispatch(string|object $event, mixed $payload = [], bool $halt = false)
+    public function dispatch(string|object $event, mixed $payload = [], bool $halt = false): mixed
     {
         if (is_object($event)) {
             $payload = $event;

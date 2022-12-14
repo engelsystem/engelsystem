@@ -21,7 +21,7 @@ class DesignControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\DesignController::__construct
      * @covers \Engelsystem\Controllers\DesignController::index
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);

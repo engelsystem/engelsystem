@@ -11,12 +11,12 @@ class Legacy implements HandlerInterface
     /** @var LoggerInterface */
     protected $log;
 
-    public function render(Request $request, Throwable $e)
+    public function render(Request $request, Throwable $e): void
     {
         echo 'An <del>un</del>expected error occurred. A team of untrained monkeys has been dispatched to fix it.';
     }
 
-    public function report(Throwable $e)
+    public function report(Throwable $e): void
     {
         $previous = $e->getPrevious();
         error_log(sprintf(
@@ -39,15 +39,12 @@ class Legacy implements HandlerInterface
         }
     }
 
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->log = $logger;
     }
 
-    /**
-     * @return string
-     */
-    protected function stripBasePath(string $path)
+    protected function stripBasePath(string $path): string
     {
         $basePath = realpath(__DIR__ . '/../../..') . '/';
         return str_replace($basePath, '', $path);

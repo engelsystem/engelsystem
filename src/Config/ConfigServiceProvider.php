@@ -23,7 +23,7 @@ class ConfigServiceProvider extends ServiceProvider
         $this->eventConfig = $eventConfig;
     }
 
-    public function register()
+    public function register(): void
     {
         $config = $this->app->make(Config::class);
         $this->app->instance(Config::class, $config);
@@ -48,7 +48,7 @@ class ConfigServiceProvider extends ServiceProvider
         }
     }
 
-    public function boot()
+    public function boot(): void
     {
         if (!$this->eventConfig) {
             return;
@@ -80,7 +80,6 @@ class ConfigServiceProvider extends ServiceProvider
     /**
      * Get the config path
      *
-     * @return string
      */
     protected function getConfigPath(string $path = ''): string
     {

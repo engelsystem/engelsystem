@@ -14,7 +14,7 @@ class ValidationServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Http\Validation\ValidationServiceProvider::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = new Application();
 

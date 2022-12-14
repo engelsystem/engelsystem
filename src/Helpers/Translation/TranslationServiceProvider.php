@@ -68,9 +68,6 @@ class TranslationServiceProvider extends ServiceProvider
         setlocale(LC_NUMERIC, 'C');
     }
 
-    /**
-     * @return GettextTranslator
-     */
     public function getTranslator(string $locale): GettextTranslator
     {
         if (!isset($this->translators[$locale])) {
@@ -98,9 +95,6 @@ class TranslationServiceProvider extends ServiceProvider
         return $this->translators[$locale];
     }
 
-    /**
-     * @return string
-     */
     protected function getFile(string $locale, string $name = 'default'): string
     {
         $filepath = $file = $this->app->get('path.lang') . '/' . $locale . '/' . $name;

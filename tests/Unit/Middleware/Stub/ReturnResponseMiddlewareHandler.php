@@ -20,7 +20,6 @@ class ReturnResponseMiddlewareHandler implements RequestHandlerInterface
     /**
      * Returns a given response
      *
-     * @return ResponseInterface
      * @throws Exception
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -32,7 +31,7 @@ class ReturnResponseMiddlewareHandler implements RequestHandlerInterface
      * Set the response
      *
      */
-    public function setResponse(ResponseInterface $response)
+    public function setResponse(ResponseInterface $response): void
     {
         $this->response = $response;
     }

@@ -12,7 +12,7 @@ class HttpExceptionTest extends TestCase
      * @covers \Engelsystem\Http\Exceptions\HttpException::getHeaders
      * @covers \Engelsystem\Http\Exceptions\HttpException::getStatusCode
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $exception = new HttpException(123);
         $this->assertEquals(123, $exception->getStatusCode());

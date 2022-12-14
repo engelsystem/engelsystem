@@ -12,11 +12,11 @@ class NewsAddIsPinned extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $this->schema->table(
             'news',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->boolean('is_pinned')->default(false)->after('is_meeting');
             }
         );
@@ -25,11 +25,11 @@ class NewsAddIsPinned extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->table(
             'news',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('is_pinned');
             }
         );

@@ -51,9 +51,6 @@ class QuestionsController extends BaseController
         $this->response = $response;
     }
 
-    /**
-     * @return Response
-     */
     public function index(): Response
     {
         $questions = $this->question
@@ -67,10 +64,6 @@ class QuestionsController extends BaseController
         );
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function delete(Request $request): Response
     {
         $data = $this->validate($request, [
@@ -87,10 +80,6 @@ class QuestionsController extends BaseController
         return $this->redirect->to('/admin/questions');
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function edit(Request $request): Response
     {
         $questionId = (int)$request->getAttribute('question_id');
@@ -100,10 +89,6 @@ class QuestionsController extends BaseController
         return $this->showEdit($questions);
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function save(Request $request): Response
     {
         $questionId = (int)$request->getAttribute('question_id');
@@ -149,10 +134,6 @@ class QuestionsController extends BaseController
         return $this->redirect->to('/admin/questions');
     }
 
-    /**
-     *
-     * @return Response
-     */
     protected function showEdit(?Question $question): Response
     {
         return $this->response->withView(

@@ -42,33 +42,21 @@ class Day
         $this->room = $rooms;
     }
 
-    /**
-     * @return string
-     */
     public function getDate(): string
     {
         return $this->date;
     }
 
-    /**
-     * @return Carbon
-     */
     public function getStart(): Carbon
     {
         return $this->start;
     }
 
-    /**
-     * @return Carbon
-     */
     public function getEnd(): Carbon
     {
         return $this->end;
     }
 
-    /**
-     * @return int
-     */
     public function getIndex(): int
     {
         return $this->index;

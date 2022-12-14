@@ -48,9 +48,6 @@ class QuestionsController extends BaseController
         $this->response = $response;
     }
 
-    /**
-     * @return Response
-     */
     public function index(): Response
     {
         $questions = $this->question
@@ -65,9 +62,6 @@ class QuestionsController extends BaseController
         );
     }
 
-    /**
-     * @return Response
-     */
     public function add(): Response
     {
         return $this->response->withView(
@@ -76,10 +70,6 @@ class QuestionsController extends BaseController
         );
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function delete(Request $request): Response
     {
         $data = $this->validate(
@@ -103,10 +93,6 @@ class QuestionsController extends BaseController
         return $this->redirect->to('/questions');
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function save(Request $request): Response
     {
         $data = $this->validate(

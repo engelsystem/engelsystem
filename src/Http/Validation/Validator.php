@@ -29,9 +29,8 @@ class Validator
     /**
      * @param array $data
      * @param array $rules
-     * @return bool
      */
-    public function validate(array $data, array $rules)
+    public function validate(array $data, array $rules): bool
     {
         $this->errors = [];
         $this->data = [];
@@ -85,18 +84,12 @@ class Validator
         return empty($this->errors);
     }
 
-    /**
-     * @return string
-     */
-    protected function map(string $rule)
+    protected function map(string $rule): string
     {
         return $this->mapping[$rule] ?? $rule;
     }
 
-    /**
-     * @return string
-     */
-    protected function mapBack(string $rule)
+    protected function mapBack(string $rule): string
     {
         $mapping = array_flip($this->mapping);
 

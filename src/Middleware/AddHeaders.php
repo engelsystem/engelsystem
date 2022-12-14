@@ -21,7 +21,6 @@ class AddHeaders implements MiddlewareInterface
     /**
      * Process an incoming server request and setting the locale if required
      *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

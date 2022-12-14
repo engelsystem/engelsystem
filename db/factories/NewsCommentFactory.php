@@ -15,7 +15,7 @@ class NewsCommentFactory extends Factory
     /**
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'news_id' => News::factory(),

@@ -39,9 +39,6 @@ class LogTransport extends AbstractTransport
         );
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return 'log://';

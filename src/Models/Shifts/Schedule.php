@@ -55,17 +55,11 @@ class Schedule extends BaseModel
         'minutes_after',
     ];
 
-    /**
-     * @return HasMany
-     */
     public function scheduleShifts(): HasMany
     {
         return $this->hasMany(ScheduleShift::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function shiftType(): BelongsTo
     {
         return $this->belongsTo(ShiftType::class, 'shift_type', 'id');

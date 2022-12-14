@@ -132,9 +132,6 @@ class EventDispatcherTest extends TestCase
         return null;
     }
 
-    /**
-     * @return bool
-     */
     public function returnFalse(): bool
     {
         return false;

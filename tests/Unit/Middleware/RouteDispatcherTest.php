@@ -18,7 +18,7 @@ class RouteDispatcherTest extends TestCase
      * @covers \Engelsystem\Middleware\RouteDispatcher::__construct
      * @covers \Engelsystem\Middleware\RouteDispatcher::process
      */
-    public function testProcess()
+    public function testProcess(): void
     {
         /** @var FastRouteDispatcher|MockObject $dispatcher */
         /** @var ResponseInterface|MockObject $response */
@@ -54,7 +54,7 @@ class RouteDispatcherTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\RouteDispatcher::process
      */
-    public function testProcessNotFound()
+    public function testProcessNotFound(): void
     {
         /** @var FastRouteDispatcher|MockObject $dispatcher */
         /** @var ResponseInterface|MockObject $response */
@@ -91,7 +91,7 @@ class RouteDispatcherTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\RouteDispatcher::process
      */
-    public function testProcessNotAllowed()
+    public function testProcessNotAllowed(): void
     {
         /** @var FastRouteDispatcher|MockObject $dispatcher */
         /** @var ResponseInterface|MockObject $response */

@@ -15,9 +15,9 @@ class CreateUsersTables extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->create('users', function (Blueprint $table) {
+        $this->schema->create('users', function (Blueprint $table): void {
             $table->increments('id');
 
             $table->string('name', 24)->unique();
@@ -29,7 +29,7 @@ class CreateUsersTables extends Migration
             $table->timestamps();
         });
 
-        $this->schema->create('users_personal_data', function (Blueprint $table) {
+        $this->schema->create('users_personal_data', function (Blueprint $table): void {
             $this->referencesUser($table, true);
 
             $table->string('first_name', 64)->nullable();
@@ -40,7 +40,7 @@ class CreateUsersTables extends Migration
             $table->date('planned_departure_date')->nullable();
         });
 
-        $this->schema->create('users_contact', function (Blueprint $table) {
+        $this->schema->create('users_contact', function (Blueprint $table): void {
             $this->referencesUser($table, true);
 
             $table->string('dect', 5)->nullable();
@@ -48,7 +48,7 @@ class CreateUsersTables extends Migration
             $table->string('email', 254)->nullable();
         });
 
-        $this->schema->create('users_settings', function (Blueprint $table) {
+        $this->schema->create('users_settings', function (Blueprint $table): void {
             $this->referencesUser($table, true);
 
             $table->string('language', 64);
@@ -57,7 +57,7 @@ class CreateUsersTables extends Migration
             $table->boolean('email_shiftinfo')->default(false);
         });
 
-        $this->schema->create('users_state', function (Blueprint $table) {
+        $this->schema->create('users_state', function (Blueprint $table): void {
             $this->referencesUser($table, true);
 
             $table->boolean('arrived')->default(false);
@@ -68,7 +68,7 @@ class CreateUsersTables extends Migration
             $table->integer('got_voucher')->default(0);
         });
 
-        $this->schema->create('password_resets', function (Blueprint $table) {
+        $this->schema->create('password_resets', function (Blueprint $table): void {
             $this->referencesUser($table, true);
 
             $table->text('token');
@@ -155,11 +155,11 @@ class CreateUsersTables extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $connection = $this->schema->getConnection();
 
-        $this->schema->create('User', function (Blueprint $table) {
+        $this->schema->create('User', function (Blueprint $table): void {
             $table->integer('UID', true);
 
             $table->string('Nick', 23)->unique()->default('');

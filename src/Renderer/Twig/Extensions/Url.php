@@ -28,7 +28,6 @@ class Url extends TwigExtension
 
     /**
      * @param array  $parameters
-     * @return string
      */
     public function getUrl(string $path, array $parameters = []): string
     {

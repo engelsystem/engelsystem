@@ -33,7 +33,7 @@ class NewsControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\Admin\NewsController::edit
      * @covers \Engelsystem\Controllers\Admin\NewsController::showEdit
      */
-    public function testEdit()
+    public function testEdit(): void
     {
         $this->request->attributes->set('news_id', 1);
         $this->response->expects($this->once())
@@ -58,7 +58,7 @@ class NewsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::edit
      */
-    public function testEditIsMeeting()
+    public function testEditIsMeeting(): void
     {
         $isMeeting = false;
         $this->response->expects($this->exactly(3))
@@ -90,7 +90,7 @@ class NewsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::save
      */
-    public function testSaveCreateInvalid()
+    public function testSaveCreateInvalid(): void
     {
         /** @var NewsController $controller */
         $controller = $this->app->make(NewsController::class);
@@ -123,7 +123,7 @@ class NewsControllerTest extends ControllerTest
         string $text,
         bool $isMeeting,
         int $id = null
-    ) {
+    ): void {
         $this->request->attributes->set('news_id', $id);
         $id = $id ?: 2;
         $body = [
@@ -162,7 +162,7 @@ class NewsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::save
      */
-    public function testSavePreview()
+    public function testSavePreview(): void
     {
         $this->request->attributes->set('news_id', 1);
         $this->request = $this->request->withParsedBody([
@@ -205,7 +205,7 @@ class NewsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::save
      */
-    public function testSaveDelete()
+    public function testSaveDelete(): void
     {
         $this->request->attributes->set('news_id', 1);
         $this->request = $this->request->withParsedBody([
@@ -235,7 +235,7 @@ class NewsControllerTest extends ControllerTest
     /**
      * Creates a new user
      */
-    protected function addUser()
+    protected function addUser(): void
     {
         $user = User::factory(['id' => 42])->create();
 
@@ -255,6 +255,9 @@ class NewsControllerTest extends ControllerTest
         $this->app->instance(Authenticator::class, $this->auth);
 
         $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher->expects(self::any())
+            ->method('dispatch')
+            ->willReturnSelf();
         $this->app->instance('events.dispatcher', $eventDispatcher);
 
         (new News([

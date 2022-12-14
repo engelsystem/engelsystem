@@ -14,9 +14,6 @@ class HealthController extends BaseController
         $this->response = $response;
     }
 
-    /**
-     * @return Response
-     */
     public function index(): Response
     {
         return $this->response->withContent('Ok');

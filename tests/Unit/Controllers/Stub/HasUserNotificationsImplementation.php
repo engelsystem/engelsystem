@@ -8,7 +8,7 @@ class HasUserNotificationsImplementation
 {
     use HasUserNotifications;
 
-    public function add(string|array $value, string $type = 'messages')
+    public function add(string|array $value, string $type = 'messages'): void
     {
         $this->addNotification($value, $type);
     }

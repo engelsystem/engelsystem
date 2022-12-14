@@ -12,7 +12,7 @@ use Throwable;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $config = $this->app->get('config');
         $capsule = $this->app->make(CapsuleManager::class);
@@ -60,7 +60,7 @@ class DatabaseServiceProvider extends ServiceProvider
      *
      * @throws Exception
      */
-    protected function exitOnError(Throwable $exception)
+    protected function exitOnError(Throwable $exception): void
     {
         throw new Exception('Error: Unable to connect to database', 0, $exception);
     }

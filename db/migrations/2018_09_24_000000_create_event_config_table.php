@@ -20,11 +20,11 @@ class CreateEventConfigTable extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         foreach (['json', 'text'] as $type) {
             try {
-                $this->schema->create('event_config', function (Blueprint $table) use ($type) {
+                $this->schema->create('event_config', function (Blueprint $table) use ($type): void {
                     $table->string('name')->index()->unique();
                     $table->{$type}('value');
                     $table->timestamps();
@@ -69,11 +69,11 @@ class CreateEventConfigTable extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $connection = $this->schema->getConnection();
 
-        $this->schema->create('EventConfig', function (Blueprint $table) {
+        $this->schema->create('EventConfig', function (Blueprint $table): void {
             $table->string('event_name')->nullable();
             $table->integer('buildup_start_date')->nullable();
             $table->integer('event_start_date')->nullable();
@@ -112,10 +112,7 @@ class CreateEventConfigTable extends Migration
         $this->schema->dropIfExists('event_config');
     }
 
-    /**
-     * @return mixed|null
-     */
-    protected function getConfigValue(Collection $config, string $name)
+    protected function getConfigValue(Collection $config, string $name): mixed
     {
         $value = $config->where('name', $name)->first('value', (object)['value' => null])->value;
 

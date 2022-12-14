@@ -15,7 +15,7 @@ class MetricsEngineTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::renderLabels
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::renderValue
      */
-    public function testGet()
+    public function testGet(): void
     {
         $engine = new MetricsEngine();
 
@@ -60,7 +60,7 @@ class MetricsEngineTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::formatHistogram
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::get
      */
-    public function testGetHistogram()
+    public function testGetHistogram(): void
     {
         $engine = new MetricsEngine();
 
@@ -141,7 +141,7 @@ EOD,
     /**
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::canRender
      */
-    public function testCanRender()
+    public function testCanRender(): void
     {
         $engine = new MetricsEngine();
 
@@ -153,7 +153,7 @@ EOD,
     /**
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::share
      */
-    public function testShare()
+    public function testShare(): void
     {
         $engine = new MetricsEngine();
 

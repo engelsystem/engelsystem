@@ -12,7 +12,7 @@ class HttpClientServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Http\HttpClientServiceProvider::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = new Application();
 

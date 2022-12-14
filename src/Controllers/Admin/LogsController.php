@@ -26,9 +26,6 @@ class LogsController extends BaseController
         $this->response = $response;
     }
 
-    /**
-     * @return Response
-     */
     public function index(Request $request): Response
     {
         $search = $request->input('search');

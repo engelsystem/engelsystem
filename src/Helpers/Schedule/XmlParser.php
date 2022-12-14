@@ -15,9 +15,6 @@ class XmlParser
     /** @var Schedule */
     protected $schedule;
 
-    /**
-     * @return bool
-     */
     public function load(string $xml): bool
     {
         $this->scheduleXML = simplexml_load_string($xml);
@@ -126,9 +123,6 @@ class XmlParser
         return $events;
     }
 
-    /**
-     * @return string
-     */
     protected function getFirstXpathContent(string $path, ?SimpleXMLElement $xml = null): string
     {
         $element = ($xml ?: $this->scheduleXML)->xpath($path);
@@ -158,9 +152,6 @@ class XmlParser
         return $items;
     }
 
-    /**
-     * @return Schedule
-     */
     public function getSchedule(): Schedule
     {
         return $this->schedule;

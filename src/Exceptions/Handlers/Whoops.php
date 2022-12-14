@@ -25,7 +25,7 @@ class Whoops extends Legacy implements HandlerInterface
         $this->app = $app;
     }
 
-    public function render(Request $request, Throwable $e)
+    public function render(Request $request, Throwable $e): void
     {
         $whoops = $this->app->make(WhoopsRunner::class);
         $handler = $this->getPrettyPageHandler($e);
@@ -41,10 +41,7 @@ class Whoops extends Legacy implements HandlerInterface
         echo $whoops->handleException($e);
     }
 
-    /**
-     * @return PrettyPageHandler
-     */
-    protected function getPrettyPageHandler(Throwable $e)
+    protected function getPrettyPageHandler(Throwable $e): PrettyPageHandler
     {
         /** @var PrettyPageHandler $handler */
         $handler = $this->app->make(PrettyPageHandler::class);
@@ -64,10 +61,7 @@ class Whoops extends Legacy implements HandlerInterface
         return $handler;
     }
 
-    /**
-     * @return JsonResponseHandler
-     */
-    protected function getJsonResponseHandler()
+    protected function getJsonResponseHandler(): JsonResponseHandler
     {
         $handler = $this->app->make(JsonResponseHandler::class);
         $handler->setJsonApi(true);
@@ -81,7 +75,7 @@ class Whoops extends Legacy implements HandlerInterface
      *
      * @return array
      */
-    protected function getData()
+    protected function getData(): array
     {
         $data = [];
         $user = null;

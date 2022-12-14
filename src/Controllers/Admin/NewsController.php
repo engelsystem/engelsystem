@@ -49,10 +49,6 @@ class NewsController extends BaseController
         $this->response = $response;
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function edit(Request $request): Response
     {
         $newsId = $request->getAttribute('news_id'); // optional
@@ -63,10 +59,6 @@ class NewsController extends BaseController
         return $this->showEdit($news, $isMeeting);
     }
 
-    /**
-     *
-     * @return Response
-     */
     protected function showEdit(?News $news, bool $isMeetingDefault = false): Response
     {
         return $this->response->withView(
@@ -79,10 +71,6 @@ class NewsController extends BaseController
         );
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function save(Request $request): Response
     {
         $newsId = $request->getAttribute('news_id'); // optional

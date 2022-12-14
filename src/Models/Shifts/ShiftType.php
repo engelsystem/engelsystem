@@ -31,9 +31,6 @@ class ShiftType extends BaseModel
         'description',
     ];
 
-    /**
-     * @return HasMany
-     */
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class, 'shift_type');

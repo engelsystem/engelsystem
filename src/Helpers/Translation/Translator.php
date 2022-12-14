@@ -43,7 +43,6 @@ class Translator
      * Get the translation for a given key
      *
      * @param array  $replace
-     * @return string
      */
     public function translate(string $key, array $replace = []): string
     {
@@ -54,7 +53,6 @@ class Translator
      * Get the translation for a given key
      *
      * @param array  $replace
-     * @return string
      */
     public function translatePlural(string $key, string $pluralKey, int $number, array $replace = []): string
     {
@@ -64,9 +62,8 @@ class Translator
     /**
      * @param array  $parameters
      * @param array  $replace
-     * @return mixed|string
      */
-    protected function translateText(string $type, array $parameters, array $replace = [])
+    protected function translateText(string $type, array $parameters, array $replace = []): mixed
     {
         $translated = $parameters[0];
 
@@ -88,9 +85,8 @@ class Translator
      * Replace placeholders
      *
      * @param array  $replace
-     * @return mixed|string
      */
-    protected function replaceText(string $key, array $replace = [])
+    protected function replaceText(string $key, array $replace = []): mixed
     {
         if (empty($replace)) {
             return $key;
@@ -99,15 +95,12 @@ class Translator
         return call_user_func_array('sprintf', array_merge([$key], array_values($replace)));
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    public function setLocale(string $locale)
+    public function setLocale(string $locale): void
     {
         $this->locale = $locale;
 
@@ -124,9 +117,6 @@ class Translator
         return $this->locales;
     }
 
-    /**
-     * @return bool
-     */
     public function hasLocale(string $locale): bool
     {
         return isset($this->locales[$locale]);
@@ -135,7 +125,7 @@ class Translator
     /**
      * @param string[] $locales
      */
-    public function setLocales(array $locales)
+    public function setLocales(array $locales): void
     {
         $this->locales = $locales;
     }

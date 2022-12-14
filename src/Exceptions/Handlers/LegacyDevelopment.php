@@ -7,7 +7,7 @@ use Throwable;
 
 class LegacyDevelopment extends Legacy
 {
-    public function render(Request $request, Throwable $e)
+    public function render(Request $request, Throwable $e): void
     {
         $file = $this->stripBasePath($e->getFile());
 
@@ -36,7 +36,7 @@ class LegacyDevelopment extends Legacy
      * @param array $stackTrace
      * @return array
      */
-    protected function formatStackTrace(array $stackTrace)
+    protected function formatStackTrace(array $stackTrace): array
     {
         $return = [];
         $stackTrace = array_reverse($stackTrace);

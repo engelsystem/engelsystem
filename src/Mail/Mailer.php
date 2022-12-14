@@ -37,28 +37,22 @@ class Mailer
         $this->mailer->send($message);
     }
 
-    /**
-     * @return string
-     */
     public function getFromAddress(): string
     {
         return $this->fromAddress;
     }
 
-    public function setFromAddress(string $fromAddress)
+    public function setFromAddress(string $fromAddress): void
     {
         $this->fromAddress = $fromAddress;
     }
 
-    /**
-     * @return string
-     */
     public function getFromName(): string
     {
         return $this->fromName;
     }
 
-    public function setFromName(string $fromName)
+    public function setFromName(string $fromName): void
     {
         $this->fromName = $fromName;
     }

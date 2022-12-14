@@ -10,7 +10,7 @@ class FixMissingArrivalDates extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $connection = $this->schema->getConnection();
 
@@ -36,7 +36,7 @@ class FixMissingArrivalDates extends Migration
     /**
      * Down is not possible and not needed since this is a bugfix.
      */
-    public function down()
+    public function down(): void
     {
     }
 }

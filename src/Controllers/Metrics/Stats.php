@@ -23,6 +23,7 @@ use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Illuminate\Contracts\Database\Query\Builder as BuilderContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
@@ -41,7 +42,6 @@ class Stats
      * The number of not arrived users
      *
      * @param bool|null $working
-     * @return int
      */
     public function arrivedUsers(bool $working = null): int
     {
@@ -54,7 +54,7 @@ class Stats
                 ->leftJoin('ShiftEntry', 'ShiftEntry.UID', '=', 'users_state.user_id')
                 ->distinct();
 
-            $query->where(function ($query) use ($working) {
+            $query->where(function ($query) use ($working): void {
                 /** @var QueryBuilder $query */
                 if ($working) {
                     $query
@@ -77,33 +77,22 @@ class Stats
     /**
      * The number of not arrived users
      *
-     * @return int
      */
     public function newUsers(): int
     {
         return State::whereArrived(false)->count();
     }
 
-    /**
-     * @return int
-     */
     public function forceActiveUsers(): int
     {
         return State::whereForceActive(true)->count();
     }
 
-    /**
-     * @return int
-     */
     public function usersPronouns(): int
     {
         return PersonalData::where('pronoun', '!=', '')->count();
     }
 
-    /**
-     *
-     * @return int
-     */
     public function email(string $type): int
     {
         switch ($type) {
@@ -130,7 +119,6 @@ class Stats
      * The number of currently working users
      *
      * @param bool|null $freeloaded
-     * @return int
      * @codeCoverageIgnore
      */
     public function currentlyWorkingUsers(bool $freeloaded = null): int
@@ -148,17 +136,11 @@ class Stats
         return $query->count();
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    protected function vouchersQuery()
+    protected function vouchersQuery(): Builder
     {
         return State::query();
     }
 
-    /**
-     * @return int
-     */
     public function vouchers(): int
     {
         return (int)$this->vouchersQuery()->sum('got_voucher');
@@ -185,17 +167,11 @@ class Stats
         return $return;
     }
 
-    /**
-     * @return int
-     */
     public function tshirts(): int
     {
         return State::whereGotShirt(true)->count();
     }
 
-    /**
-     * @return Collection
-     */
     public function tshirtSizes(): Collection
     {
         return PersonalData::query()
@@ -205,9 +181,6 @@ class Stats
             ->get();
     }
 
-    /**
-     * @return Collection
-     */
     public function languages(): Collection
     {
         return Settings::query()
@@ -216,9 +189,6 @@ class Stats
             ->get();
     }
 
-    /**
-     * @return Collection
-     */
     public function themes(): Collection
     {
         return Settings::query()
@@ -229,7 +199,6 @@ class Stats
 
     /**
      * @param string|null $vehicle
-     * @return int
      */
     public function licenses(string $vehicle): int
     {
@@ -254,7 +223,6 @@ class Stats
      * @param bool|null $freeloaded
      *
      * @codeCoverageIgnore
-     * @return QueryBuilder
      */
     protected function workSecondsQuery(bool $done = null, bool $freeloaded = null): QueryBuilder
     {
@@ -279,7 +247,6 @@ class Stats
      * @param bool|null $done
      * @param bool|null $freeloaded
      *
-     * @return int
      * @codeCoverageIgnore
      */
     public function workSeconds(bool $done = null, bool $freeloaded = null): int
@@ -340,7 +307,6 @@ class Stats
     }
 
     /**
-     * @return int
      * @codeCoverageIgnore
      */
     public function worklogSeconds(): int
@@ -366,9 +332,6 @@ class Stats
         );
     }
 
-    /**
-     * @return int
-     */
     public function rooms(): int
     {
         return Room::query()
@@ -376,7 +339,6 @@ class Stats
     }
 
     /**
-     * @return int
      * @codeCoverageIgnore
      */
     public function shifts(): int
@@ -388,7 +350,6 @@ class Stats
 
     /**
      * @param bool|null $meeting
-     * @return int
      */
     public function announcements(bool $meeting = null): int
     {
@@ -397,9 +358,6 @@ class Stats
         return $query->count();
     }
 
-    /**
-     * @return int
-     */
     public function comments(): int
     {
         return NewsComment::query()
@@ -408,7 +366,6 @@ class Stats
 
     /**
      * @param bool|null $answered
-     * @return int
      */
     public function questions(bool $answered = null): int
     {
@@ -424,25 +381,16 @@ class Stats
         return $query->count();
     }
 
-    /**
-     * @return int
-     */
     public function faq(): int
     {
         return Faq::query()->count();
     }
 
-    /**
-     * @return int
-     */
     public function messages(): int
     {
         return Message::query()->count();
     }
 
-    /**
-     * @return int
-     */
     public function sessions(): int
     {
         return $this
@@ -450,9 +398,6 @@ class Stats
             ->count();
     }
 
-    /**
-     * @return Collection
-     */
     public function oauth(): Collection
     {
         return OAuth::query()
@@ -461,9 +406,6 @@ class Stats
             ->get();
     }
 
-    /**
-     * @return float
-     */
     public function databaseRead(): float
     {
         $start = microtime(true);
@@ -473,9 +415,6 @@ class Stats
         return microtime(true) - $start;
     }
 
-    /**
-     * @return float
-     */
     public function databaseWrite(): float
     {
         $config = (new EventConfig())->findOrNew('last_metrics');
@@ -492,7 +431,6 @@ class Stats
 
     /**
      * @param string|null $level
-     * @return int
      */
     public function logEntries(string $level = null): int
     {
@@ -501,17 +439,11 @@ class Stats
         return $query->count();
     }
 
-    /**
-     * @return int
-     */
     public function passwordResets(): int
     {
         return PasswordReset::query()->count();
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function getQuery(string $table): QueryBuilder
     {
         return $this->db
@@ -519,9 +451,6 @@ class Stats
             ->table($table);
     }
 
-    /**
-     * @return QueryExpression
-     */
     protected function raw(mixed $value): QueryExpression
     {
         return $this->db->getConnection()->raw($value);

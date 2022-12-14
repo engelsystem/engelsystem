@@ -14,7 +14,6 @@ class SendResponseHandler implements MiddlewareInterface
      *
      * This should be the first middleware
      *
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,
@@ -44,10 +43,9 @@ class SendResponseHandler implements MiddlewareInterface
     /**
      * Checks if headers have been sent
      *
-     * @return bool
      * @codeCoverageIgnore
      */
-    protected function headersSent()
+    protected function headersSent(): bool
     {
         return headers_sent();
     }
@@ -57,7 +55,7 @@ class SendResponseHandler implements MiddlewareInterface
      *
      * @codeCoverageIgnore
      */
-    protected function sendHeader(string $content, bool $replace = true, int $code = null)
+    protected function sendHeader(string $content, bool $replace = true, int $code = null): void
     {
         if (is_null($code)) {
             header($content, $replace);

@@ -18,7 +18,7 @@ abstract class ExtensionTest extends TestCase
      *
      * @param TwigFunction[] $functions
      */
-    protected function assertFilterExists(string $name, callable $callback, array $functions)
+    protected function assertFilterExists(string $name, callable $callback, array $functions): void
     {
         foreach ($functions as $function) {
             if ($function->getName() != $name) {
@@ -39,8 +39,12 @@ abstract class ExtensionTest extends TestCase
      * @param array          $options
      * @throws Exception
      */
-    protected function assertExtensionExists(string $name, callable $callback, array $functions, array $options = [])
-    {
+    protected function assertExtensionExists(
+        string $name,
+        callable $callback,
+        array $functions,
+        array $options = []
+    ): void {
         foreach ($functions as $function) {
             if ($function->getName() != $name) {
                 continue;
@@ -67,7 +71,7 @@ abstract class ExtensionTest extends TestCase
      * @param mixed[] $globals
      * @throws Exception
      */
-    protected function assertGlobalsExists(string $name, mixed $value, array $globals)
+    protected function assertGlobalsExists(string $name, mixed $value, array $globals): void
     {
         if (array_key_exists($name, $globals)) {
             $this->assertArraySubset([$name => $value], $globals);

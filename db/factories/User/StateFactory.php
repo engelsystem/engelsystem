@@ -14,7 +14,7 @@ class StateFactory extends Factory
     /**
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $arrival = $this->faker->optional()->dateTimeThisMonth();
 
@@ -31,9 +31,8 @@ class StateFactory extends Factory
     /**
      * Indicate that the user is arrived
      *
-     * @return self
      */
-    public function arrived()
+    public function arrived(): self
     {
         return $this->state(
             function (array $attributes) {

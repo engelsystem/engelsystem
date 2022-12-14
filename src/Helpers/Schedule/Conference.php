@@ -51,57 +51,36 @@ class Conference
         $this->baseUrl = $baseUrl;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getAcronym(): string
     {
         return $this->acronym;
     }
 
-    /**
-     * @return string|null
-     */
     public function getStart(): ?string
     {
         return $this->start;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEnd(): ?string
     {
         return $this->end;
     }
 
-    /**
-     * @return int|null
-     */
     public function getDays(): ?int
     {
         return $this->days;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTimeslotDuration(): ?string
     {
         return $this->timeslotDuration;
     }
 
-    /**
-     * @return int|null
-     */
     public function getTimeslotDurationSeconds(): ?int
     {
         $duration = $this->getTimeslotDuration();
@@ -112,9 +91,6 @@ class Conference
         return $this->secondsFromTime($duration);
     }
 
-    /**
-     * @return string|null
-     */
     public function getBaseUrl(): ?string
     {
         return $this->baseUrl;

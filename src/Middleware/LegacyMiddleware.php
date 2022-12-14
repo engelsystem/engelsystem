@@ -5,7 +5,6 @@ namespace Engelsystem\Middleware;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Request;
-use Engelsystem\Http\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -46,7 +45,6 @@ class LegacyMiddleware implements MiddlewareInterface
      *
      * Should be used before a 404 is send
      *
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,
@@ -86,7 +84,7 @@ class LegacyMiddleware implements MiddlewareInterface
      * @return array ['title', 'content']
      * @codeCoverageIgnore
      */
-    protected function loadPage(string $page)
+    protected function loadPage(string $page): array
     {
         switch ($page) {
             case 'ical':
@@ -175,10 +173,9 @@ class LegacyMiddleware implements MiddlewareInterface
     /**
      * Render the template
      *
-     * @return Response
      * @codeCoverageIgnore
      */
-    protected function renderPage(string $page, string $title, string $content)
+    protected function renderPage(string $page, string $title, string $content): ResponseInterface
     {
         if (!empty($page) && is_int($page)) {
             return response($content, (int)$page);

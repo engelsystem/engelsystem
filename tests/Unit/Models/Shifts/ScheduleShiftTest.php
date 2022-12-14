@@ -12,7 +12,7 @@ class ScheduleShiftTest extends ModelTest
     /**
      * @covers \Engelsystem\Models\Shifts\ScheduleShift::schedule
      */
-    public function testScheduleShifts()
+    public function testScheduleShifts(): void
     {
         $schedule = new Schedule([
             'url' => 'https://lorem.ipsum/schedule.xml',

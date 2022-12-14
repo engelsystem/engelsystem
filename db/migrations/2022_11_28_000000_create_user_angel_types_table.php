@@ -20,7 +20,7 @@ class CreateUserAngelTypesTable extends Migration
     {
         $connection = $this->schema->getConnection();
 
-        $this->schema->create('user_angel_type', function (Blueprint $table) {
+        $this->schema->create('user_angel_type', function (Blueprint $table): void {
             $table->increments('id');
             $this->referencesUser($table);
             $this->references($table, 'angel_types')->index();
@@ -65,7 +65,7 @@ class CreateUserAngelTypesTable extends Migration
     {
         $connection = $this->schema->getConnection();
 
-        $this->schema->create('UserAngelTypes', function (Blueprint $table) {
+        $this->schema->create('UserAngelTypes', function (Blueprint $table): void {
             $table->increments('id');
             $this->referencesUser($table);
             $this->references($table, 'angel_types', 'angeltype_id')->index('angeltype_id');

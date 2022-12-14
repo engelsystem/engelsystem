@@ -69,10 +69,6 @@ class OAuthController extends BaseController
         $this->url = $url;
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function index(Request $request): Response
     {
         $providerName = $request->getAttribute('provider');
@@ -201,10 +197,6 @@ class OAuthController extends BaseController
         return $response;
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function connect(Request $request): Response
     {
         $providerName = $request->getAttribute('provider');
@@ -216,10 +208,6 @@ class OAuthController extends BaseController
         return $this->index($request);
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function disconnect(Request $request): Response
     {
         $providerName = $request->getAttribute('provider');
@@ -235,10 +223,6 @@ class OAuthController extends BaseController
         return $this->redirector->back();
     }
 
-    /**
-     *
-     * @return AbstractProvider
-     */
     protected function getProvider(string $name): AbstractProvider
     {
         $this->requireProvider($name);
@@ -257,10 +241,7 @@ class OAuthController extends BaseController
         );
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getId(string $providerName, ResourceOwner $resourceOwner)
+    protected function getId(string $providerName, ResourceOwner $resourceOwner): mixed
     {
         $config = $this->config->get('oauth')[$providerName];
         if (empty($config['nested_info'])) {
@@ -278,10 +259,6 @@ class OAuthController extends BaseController
         }
     }
 
-    /**
-     *
-     * @return bool
-     */
     protected function isValidProvider(string $name): bool
     {
         $config = $this->config->get('oauth');
@@ -339,7 +316,6 @@ class OAuthController extends BaseController
     /**
      * @param array                $config
      *
-     * @return Response
      */
     protected function redirectRegister(
         string $providerName,

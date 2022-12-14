@@ -64,14 +64,11 @@ class CreateMessagesTable extends Migration
         $this->schema->drop('new_messages');
     }
 
-    /**
-     * @return void
-     */
     private function createNewMessagesTable(): void
     {
         $this->schema->create(
             'messages',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->increments('id');
                 $this->referencesUser($table);
                 $this->references($table, 'users', 'receiver_id');
@@ -82,9 +79,6 @@ class CreateMessagesTable extends Migration
         );
     }
 
-    /**
-     * @return void
-     */
     private function copyPreviousToNewMessagesTable(): void
     {
         $connection = $this->schema->getConnection();
@@ -109,14 +103,11 @@ class CreateMessagesTable extends Migration
         }
     }
 
-    /**
-     * @return void
-     */
     private function createPreviousMessagesTable(): void
     {
         $this->schema->create(
             'Messages',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->increments('id');
                 $table->integer('Datum');
                 $this->references($table, 'users', 'SUID');
@@ -128,9 +119,6 @@ class CreateMessagesTable extends Migration
         );
     }
 
-    /**
-     * @return void
-     */
     private function copyNewToPreviousMessagesTable(): void
     {
         $connection = $this->schema->getConnection();

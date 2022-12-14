@@ -13,7 +13,7 @@ class EventsServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Events\EventsServiceProvider::register
      * @covers \Engelsystem\Events\EventsServiceProvider::registerEvents
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance(EventDispatcher::class, $dispatcher);

@@ -18,7 +18,7 @@ trait HasDatabase
     /**
      * Setup in memory database
      */
-    protected function initDatabase()
+    protected function initDatabase(): void
     {
         $dbManager = new CapsuleManager();
         $dbManager->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);

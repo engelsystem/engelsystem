@@ -17,7 +17,7 @@ class HomeControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\HomeController::__construct
      * @covers \Engelsystem\Controllers\HomeController::index
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $config = new Config(['home_site' => '/foo']);
         /** @var Authenticator|MockObject $auth */

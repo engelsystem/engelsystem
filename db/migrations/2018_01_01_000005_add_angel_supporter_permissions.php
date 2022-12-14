@@ -15,7 +15,7 @@ class AddAngelSupporterPermissions extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if (!$this->schema->hasTable('GroupPrivileges')) {
             return;
@@ -39,7 +39,7 @@ class AddAngelSupporterPermissions extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         if (!$this->schema->hasTable('GroupPrivileges')) {
             return;
@@ -52,10 +52,7 @@ class AddAngelSupporterPermissions extends Migration
         );
     }
 
-    /**
-     * @return string
-     */
-    protected function getQuery(string $type)
+    protected function getQuery(string $type): string
     {
         return sprintf('
                 %s FROM GroupPrivileges

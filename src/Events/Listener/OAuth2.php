@@ -64,7 +64,7 @@ class OAuth2
         return $teams;
     }
 
-    protected function syncTeams(string $providerName, User $user, array $ssoTeam)
+    protected function syncTeams(string $providerName, User $user, array $ssoTeam): void
     {
         $currentUserAngeltypes = $user->userAngelTypes;
         $angelType = AngelType::find($ssoTeam['id']);

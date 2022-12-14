@@ -15,7 +15,7 @@ class ConfigureEnvironmentServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\ConfigureEnvironmentServiceProvider::register
      * @covers \Engelsystem\Helpers\ConfigureEnvironmentServiceProvider::setupDevErrorHandler
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $config = new Config(['timezone' => 'Australia/Eucla', 'environment' => 'production']);
         $this->app->instance('config', $config);
@@ -31,7 +31,7 @@ class ConfigureEnvironmentServiceProviderTest extends ServiceProviderTest
 
         $serviceProvider->expects($this->exactly(2))
             ->method('setTimeZone')
-            ->willReturnCallback(function (CarbonTimeZone $timeZone) {
+            ->willReturnCallback(function (CarbonTimeZone $timeZone): void {
                 $this->assertEquals('Australia/Eucla', $timeZone->getName());
             });
         $serviceProvider->expects($this->exactly(3))

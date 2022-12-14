@@ -56,7 +56,7 @@ class Response extends SymfonyResponse implements ResponseInterface
      * @return static
      * @throws InvalidArgumentException For invalid status code arguments.
      */
-    public function withStatus(mixed $code, mixed $reasonPhrase = '')
+    public function withStatus(mixed $code, mixed $reasonPhrase = ''): static
     {
         $new = clone $this;
         $new->setStatusCode($code, !empty($reasonPhrase) ? $reasonPhrase : null);
@@ -77,7 +77,7 @@ class Response extends SymfonyResponse implements ResponseInterface
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
      */
-    public function getReasonPhrase()
+    public function getReasonPhrase(): string
     {
         return $this->statusText;
     }
@@ -92,7 +92,7 @@ class Response extends SymfonyResponse implements ResponseInterface
      * @param mixed $content Content that can be cast to string
      * @return static
      */
-    public function withContent(mixed $content)
+    public function withContent(mixed $content): static
     {
         $new = clone $this;
         $new->setContent($content);
@@ -108,9 +108,8 @@ class Response extends SymfonyResponse implements ResponseInterface
      *
      * @param array               $data
      * @param string[]|string[][] $headers
-     * @return Response
      */
-    public function withView(string $view, array $data = [], int $status = 200, array $headers = [])
+    public function withView(string $view, array $data = [], int $status = 200, array $headers = []): Response
     {
         if (!$this->renderer instanceof Renderer) {
             throw new InvalidArgumentException('Renderer not defined');
@@ -134,9 +133,8 @@ class Response extends SymfonyResponse implements ResponseInterface
      * an instance with the updated status and headers
      *
      * @param array  $headers
-     * @return Response
      */
-    public function redirectTo(string $path, int $status = 302, array $headers = [])
+    public function redirectTo(string $path, int $status = 302, array $headers = []): Response
     {
         $response = $this->withStatus($status);
         $response = $response->withHeader('location', $path);
@@ -152,7 +150,7 @@ class Response extends SymfonyResponse implements ResponseInterface
      * Set the renderer to use
      *
      */
-    public function setRenderer(Renderer $renderer)
+    public function setRenderer(Renderer $renderer): void
     {
         $this->renderer = $renderer;
     }
@@ -160,9 +158,8 @@ class Response extends SymfonyResponse implements ResponseInterface
     /**
      * Sets a session attribute (which is mutable)
      *
-     * @return Response
      */
-    public function with(string $key, mixed $value)
+    public function with(string $key, mixed $value): Response
     {
         if (!$this->session instanceof SessionInterface) {
             throw new InvalidArgumentException('Session not defined');
@@ -182,9 +179,8 @@ class Response extends SymfonyResponse implements ResponseInterface
      * Sets form data to the mutable session
      *
      * @param array $input
-     * @return Response
      */
-    public function withInput(array $input)
+    public function withInput(array $input): Response
     {
         if (!$this->session instanceof SessionInterface) {
             throw new InvalidArgumentException('Session not defined');

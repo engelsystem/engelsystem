@@ -12,7 +12,7 @@ class ConfigTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Config::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Config::getFunctions
      */
-    public function testGetFunctions()
+    public function testGetFunctions(): void
     {
         /** @var EngelsystemConfig|MockObject $config */
         $config = $this->createMock(EngelsystemConfig::class);

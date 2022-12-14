@@ -19,7 +19,7 @@ class TranslatorTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\Translation\Translator::setLocale
      * @covers \Engelsystem\Helpers\Translation\Translator::setLocales
      */
-    public function testInit()
+    public function testInit(): void
     {
         $locales = ['te_ST' => 'Tests', 'fo_OO' => 'SomeFOO'];
         $locale = 'te_ST';
@@ -51,7 +51,7 @@ class TranslatorTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\Translation\Translator::translate
      */
-    public function testTranslate()
+    public function testTranslate(): void
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
@@ -73,7 +73,7 @@ class TranslatorTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\Translation\Translator::translatePlural
      */
-    public function testTranslatePlural()
+    public function testTranslatePlural(): void
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
@@ -94,7 +94,7 @@ class TranslatorTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\Translation\Translator::translateText
      * @covers \Engelsystem\Helpers\Translation\Translator::replaceText
      */
-    public function testReplaceText()
+    public function testReplaceText(): void
     {
         /** @var GettextTranslator|MockObject $gtt */
         $gtt = $this->createMock(GettextTranslator::class);
@@ -135,7 +135,7 @@ class TranslatorTest extends ServiceProviderTest
     /**
      * Does nothing
      */
-    public function doNothing()
+    public function doNothing(): void
     {
     }
 }

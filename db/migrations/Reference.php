@@ -8,17 +8,11 @@ use Illuminate\Support\Str;
 
 trait Reference
 {
-    /**
-     * @return ColumnDefinition
-     */
     protected function referencesUser(Blueprint $table, bool $setPrimary = false): ColumnDefinition
     {
         return $this->references($table, 'users', null, null, $setPrimary);
     }
 
-    /**
-     * @return ColumnDefinition
-     */
     protected function references(
         Blueprint $table,
         string $targetTable,

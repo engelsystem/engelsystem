@@ -11,7 +11,7 @@ class CsrfTest extends ExtensionTest
     /**
      * @covers \Engelsystem\Renderer\Twig\Extensions\Csrf::getFunctions
      */
-    public function testGetGlobals()
+    public function testGetGlobals(): void
     {
         /** @var SessionInterface|MockObject $session */
         $session = $this->createMock(SessionInterface::class);
@@ -26,7 +26,7 @@ class CsrfTest extends ExtensionTest
     /**
      * @covers \Engelsystem\Renderer\Twig\Extensions\Csrf::getCsrfField
      */
-    public function testGetCsrfField()
+    public function testGetCsrfField(): void
     {
         /** @var Csrf|MockObject $extension */
         $extension = $this->getMockBuilder(Csrf::class)
@@ -48,7 +48,7 @@ class CsrfTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Csrf::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Csrf::getCsrfToken
      */
-    public function testGetCsrfToken()
+    public function testGetCsrfToken(): void
     {
         /** @var SessionInterface|MockObject $session */
         $session = $this->createMock(SessionInterface::class);

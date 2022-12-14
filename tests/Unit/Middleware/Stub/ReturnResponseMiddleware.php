@@ -23,7 +23,6 @@ class ReturnResponseMiddleware implements MiddlewareInterface
      *
      * Could be used to group middleware
      *
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,

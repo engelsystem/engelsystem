@@ -10,7 +10,7 @@ class AnotherStuff extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         // nope
     }
@@ -18,15 +18,12 @@ class AnotherStuff extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         // nope
     }
 
-    /**
-     * @return SchemaBuilder
-     */
-    public function getSchema()
+    public function getSchema(): SchemaBuilder
     {
         return $this->schema;
     }

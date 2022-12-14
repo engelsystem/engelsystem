@@ -11,7 +11,7 @@ class RoutesFileTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testLoadRoutes()
+    public function testLoadRoutes(): void
     {
         /** @var RouteCollector|MockObject $route */
         $route = $this->getMockBuilder(RouteCollector::class)
@@ -23,7 +23,7 @@ class RoutesFileTest extends TestCase
         /** @see RouteCollector::addRoute */
         $route->expects($this->any())
             ->method('addRoute')
-            ->willReturnCallback(function ($httpMethod, $route, $handler) {
+            ->willReturnCallback(function ($httpMethod, $route, $handler): void {
                 /**
                  * @param string|string[] $httpMethod
                  * @param string          $route

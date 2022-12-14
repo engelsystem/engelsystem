@@ -32,9 +32,6 @@ class Assets extends TwigExtension
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getAsset(string $path): string
     {
         $path = ltrim($path, '/');

@@ -6,7 +6,7 @@ use Engelsystem\Container\ServiceProvider;
 
 class VersionServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->when(Version::class)
             ->needs('$storage')

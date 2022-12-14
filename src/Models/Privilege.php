@@ -30,9 +30,6 @@ class Privilege extends BaseModel
         'description',
     ];
 
-    /**
-     * @return BelongsToMany
-     */
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'group_privileges');

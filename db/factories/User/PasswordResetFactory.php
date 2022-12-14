@@ -13,7 +13,7 @@ class PasswordResetFactory extends Factory
     /**
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'token' => bin2hex(random_bytes(16)),

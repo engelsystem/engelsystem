@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 trait HasUserNotifications
 {
-    protected function addNotification(string|array $value, string $type = 'messages')
+    protected function addNotification(string|array $value, string $type = 'messages'): void
     {
         session()->set(
             $type,

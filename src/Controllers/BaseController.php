@@ -16,7 +16,7 @@ abstract class BaseController
      *
      * @return string[]|string[][]
      */
-    public function getPermissions()
+    public function getPermissions(): array
     {
         return $this->permissions;
     }

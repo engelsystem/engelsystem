@@ -12,7 +12,7 @@ class SessionTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Session::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Session::getFunctions
      */
-    public function testGetGlobals()
+    public function testGetGlobals(): void
     {
         /** @var SymfonySession|MockObject $session */
         $session = $this->createMock(SymfonySession::class);

@@ -13,7 +13,7 @@ class ContactFactory extends Factory
     /**
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'dect'   => $this->faker->optional()->numberBetween(1000, 9999),

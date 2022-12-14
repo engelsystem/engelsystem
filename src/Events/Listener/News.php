@@ -31,7 +31,7 @@ class News
         $this->settings = $settings;
     }
 
-    public function created(NewsModel $news)
+    public function created(NewsModel $news): void
     {
         /** @var UserSettings[]|Collection $recipients */
         $recipients = $this->settings
@@ -44,7 +44,7 @@ class News
         }
     }
 
-    protected function sendMail(NewsModel $news, User $user, string $subject, string $template)
+    protected function sendMail(NewsModel $news, User $user, string $subject, string $template): void
     {
         try {
             $this->mailer->sendViewTranslated(

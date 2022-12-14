@@ -13,7 +13,7 @@ class HealthControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\HealthController::__construct
      * @covers \Engelsystem\Controllers\HealthController::index
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);

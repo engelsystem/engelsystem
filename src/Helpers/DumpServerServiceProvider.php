@@ -46,7 +46,7 @@ class DumpServerServiceProvider extends ServiceProvider
 
         VarDumper::setHandler(
             // @codeCoverageIgnoreStart
-            static function ($var) use ($cloner, $dumper) {
+            static function ($var) use ($cloner, $dumper): void {
                 $dumper->dump($cloner->cloneVar($var));
             }
             // @codeCoverageIgnoreEnd

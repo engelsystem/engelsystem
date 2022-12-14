@@ -32,9 +32,6 @@ class Legacy extends TwigExtension
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getPage(): string
     {
         if ($this->request->has('p')) {

@@ -15,7 +15,7 @@ use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 
 class Psr7ServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $psr17Factory = Psr17Factory::class;
 

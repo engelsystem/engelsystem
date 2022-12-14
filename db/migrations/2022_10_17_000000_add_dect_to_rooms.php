@@ -10,11 +10,11 @@ class AddDectToRooms extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $this->schema->table(
             'rooms',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->text('dect')->nullable()->after('description');
             }
         );
@@ -23,11 +23,11 @@ class AddDectToRooms extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->table(
             'rooms',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('dect');
             }
         );

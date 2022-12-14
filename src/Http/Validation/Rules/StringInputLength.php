@@ -11,7 +11,6 @@ trait StringInputLength
     /**
      * Use the input length of a string
      *
-     * @return bool
      */
     public function validate(mixed $input): bool
     {
@@ -26,9 +25,6 @@ trait StringInputLength
         return parent::validate($input);
     }
 
-    /**
-     * @return bool
-     */
     protected function isDateTime(mixed $input): bool
     {
         try {

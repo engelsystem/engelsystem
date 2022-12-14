@@ -25,9 +25,6 @@ class Room
         $this->event = $events;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;

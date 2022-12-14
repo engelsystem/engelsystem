@@ -25,7 +25,7 @@ abstract class TestCase extends PHPUnitTestCase
         array $arguments = null,
         mixed $return = null,
         InvocationOrder|int $times = null
-    ) {
+    ): void {
         if (is_null($times)) {
             $times = $this->once();
         }

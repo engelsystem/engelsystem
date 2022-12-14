@@ -13,7 +13,7 @@ class HttpRedirectTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Exceptions\HttpRedirect::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $exception = new HttpRedirect('https://lorem.ipsum/foo/bar');
         $this->assertEquals(302, $exception->getStatusCode());

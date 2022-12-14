@@ -47,9 +47,6 @@ class NewsComment extends BaseModel
         'user_id',
     ];
 
-    /**
-     * @return BelongsTo
-     */
     public function news(): BelongsTo
     {
         return $this->belongsTo(News::class);

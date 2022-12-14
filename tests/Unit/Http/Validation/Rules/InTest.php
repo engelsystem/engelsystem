@@ -10,7 +10,7 @@ class InTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Validation\Rules\In::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $rule = new In('foo,bar');
 

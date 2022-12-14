@@ -44,10 +44,6 @@ class FaqController extends BaseController
         $this->response = $response;
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function edit(Request $request): Response
     {
         $faqId = $request->getAttribute('faq_id'); // optional
@@ -57,10 +53,6 @@ class FaqController extends BaseController
         return $this->showEdit($faq);
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function save(Request $request): Response
     {
         $faqId = $request->getAttribute('faq_id'); // optional
@@ -101,10 +93,6 @@ class FaqController extends BaseController
         return $this->redirect->to('/faq#faq-' . $faq->id);
     }
 
-    /**
-     *
-     * @return Response
-     */
     protected function showEdit(?Faq $faq): Response
     {
         return $this->response->withView(

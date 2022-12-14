@@ -13,7 +13,7 @@ class LicenseFactory extends Factory
     /**
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $drive_car = $this->faker->boolean(.8);
         $drive_3_5t = $drive_car && $this->faker->boolean(.7);

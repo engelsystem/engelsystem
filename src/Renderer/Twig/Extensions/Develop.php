@@ -35,9 +35,6 @@ class Develop extends TwigExtension
         ];
     }
 
-    /**
-     * @return string
-     */
     public function dump(mixed ...$vars): string
     {
         ob_start();
@@ -49,9 +46,6 @@ class Develop extends TwigExtension
         return ob_get_clean();
     }
 
-    /**
-     * @return string
-     */
     public function dd(mixed ...$vars): string
     {
         $this->flushBuffers();
@@ -63,7 +57,7 @@ class Develop extends TwigExtension
         return '';
     }
 
-    public function setDumper(VarDumper $dumper)
+    public function setDumper(VarDumper $dumper): void
     {
         $this->dumper = $dumper;
     }
@@ -71,7 +65,7 @@ class Develop extends TwigExtension
     /**
      * @codeCoverageIgnore
      */
-    protected function exit()
+    protected function exit(): void
     {
         exit(1);
     }
@@ -79,7 +73,7 @@ class Develop extends TwigExtension
     /**
      * @codeCoverageIgnore
      */
-    protected function flushBuffers()
+    protected function flushBuffers(): void
     {
         ob_end_flush();
     }

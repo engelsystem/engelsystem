@@ -50,17 +50,11 @@ class AuthController extends BaseController
         $this->auth = $auth;
     }
 
-    /**
-     * @return Response
-     */
     public function login(): Response
     {
         return $this->showLogin();
     }
 
-    /**
-     * @return Response
-     */
     protected function showLogin(): Response
     {
         return $this->response->withView(
@@ -72,7 +66,6 @@ class AuthController extends BaseController
     /**
      * Posted login form
      *
-     * @return Response
      */
     public function postLogin(Request $request): Response
     {
@@ -92,10 +85,6 @@ class AuthController extends BaseController
         return $this->loginUser($user);
     }
 
-    /**
-     *
-     * @return Response
-     */
     public function loginUser(User $user): Response
     {
         $previousPage = $this->session->get('previous_page');
@@ -110,9 +99,6 @@ class AuthController extends BaseController
         return $this->redirect->to($previousPage ?: $this->config->get('home_site'));
     }
 
-    /**
-     * @return Response
-     */
     public function logout(): Response
     {
         $this->session->invalidate();

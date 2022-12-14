@@ -15,7 +15,7 @@ class DatabaseHandlerTest extends TestCase
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::getQuery
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::read
      */
-    public function testRead()
+    public function testRead(): void
     {
         $handler = new DatabaseHandler($this->database);
         $this->assertEquals('', $handler->read('foo'));
@@ -28,7 +28,7 @@ class DatabaseHandlerTest extends TestCase
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::getCurrentTimestamp
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::write
      */
-    public function testWrite()
+    public function testWrite(): void
     {
         $handler = new DatabaseHandler($this->database);
 
@@ -46,7 +46,7 @@ class DatabaseHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::destroy
      */
-    public function testDestroy()
+    public function testDestroy(): void
     {
         $this->database->insert("INSERT INTO sessions VALUES ('foo', 'Lorem Ipsum', CURRENT_TIMESTAMP)");
         $this->database->insert("INSERT INTO sessions VALUES ('bar', 'Dolor Sit', CURRENT_TIMESTAMP)");
@@ -69,7 +69,7 @@ class DatabaseHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::gc
      */
-    public function testGc()
+    public function testGc(): void
     {
         $this->database->insert("INSERT INTO sessions VALUES ('foo', 'Lorem Ipsum', '2000-01-01 01:00')");
         $this->database->insert("INSERT INTO sessions VALUES ('bar', 'Dolor Sit', '3000-01-01 01:00')");

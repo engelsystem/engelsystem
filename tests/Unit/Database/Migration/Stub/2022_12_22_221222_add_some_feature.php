@@ -9,7 +9,7 @@ class AddSomeFeature extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         // nope
     }
@@ -17,7 +17,7 @@ class AddSomeFeature extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         // nope
     }

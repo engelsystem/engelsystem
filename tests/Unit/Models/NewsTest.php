@@ -18,9 +18,6 @@ class NewsTest extends ModelTest
     /** @var User */
     private $user;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();

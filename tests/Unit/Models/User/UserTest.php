@@ -41,7 +41,7 @@ class UserTest extends ModelTest
     /**
      * @return array
      */
-    public function hasOneRelationsProvider()
+    public function hasOneRelationsProvider(): array
     {
         return [
             [
@@ -144,7 +144,7 @@ class UserTest extends ModelTest
      * @param array  $data
      * @throws Exception
      */
-    public function testHasOneRelations(string $class, string $name, array $data)
+    public function testHasOneRelations(string $class, string $name, array $data): void
     {
         $user = new User($this->data);
         $user->save();
@@ -214,9 +214,8 @@ class UserTest extends ModelTest
 
     /**
      * @covers \Engelsystem\Models\User\User::userAngelTypes
-     * @return void
      */
-    public function testUserAngelTypes()
+    public function testUserAngelTypes(): void
     {
         AngelType::factory(2)->create();
         $angelType1 = AngelType::factory()->create();
@@ -239,9 +238,8 @@ class UserTest extends ModelTest
 
     /**
      * @covers \Engelsystem\Models\User\User::isAngelTypeSupporter
-     * @return void
      */
-    public function testIsAngelTypeSupporter()
+    public function testIsAngelTypeSupporter(): void
     {
         /** @var AngelType $angelType1 */
         $angelType1 = AngelType::factory()->create();
@@ -262,7 +260,7 @@ class UserTest extends ModelTest
      * @covers \Engelsystem\Models\User\User::privileges
      * @covers \Engelsystem\Models\User\User::getPrivilegesAttribute
      */
-    public function testPrivileges()
+    public function testPrivileges(): void
     {
         $user = new User($this->data);
         $user->save();

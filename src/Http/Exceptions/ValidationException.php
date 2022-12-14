@@ -24,9 +24,6 @@ class ValidationException extends RuntimeException
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * @return Validator
-     */
     public function getValidator(): Validator
     {
         return $this->validator;

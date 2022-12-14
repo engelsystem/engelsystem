@@ -63,7 +63,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         ?string $teardown,
         ?string $arrival,
         ?string $departure
-    ) {
+    ): void {
         config(['buildup_start' => is_null($buildup) ? null : new Carbon($buildup)]);
         config(['teardown_end' => is_null($teardown) ? null : new Carbon($teardown)]);
 
@@ -83,7 +83,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         ?string $teardown,
         ?string $arrival,
         ?string $departure
-    ) {
+    ): void {
         config(['buildup_start' => is_null($buildup) ? null : new Carbon($buildup)]);
         config(['teardown_end' => is_null($teardown) ? null : new Carbon($teardown)]);
 
@@ -103,7 +103,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         ?string $teardown,
         ?string $arrival,
         ?string $departure
-    ) {
+    ): void {
         config(['buildup_start' => is_null($buildup) ? null : new Carbon($buildup)]);
         config(['teardown_end' => is_null($teardown) ? null : new Carbon($teardown)]);
 
@@ -123,7 +123,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         ?string $teardown,
         ?string $arrival,
         ?string $departure
-    ) {
+    ): void {
         config(['buildup_start' => is_null($buildup) ? null : new Carbon($buildup)]);
         config(['teardown_end' => is_null($teardown) ? null : new Carbon($teardown)]);
 

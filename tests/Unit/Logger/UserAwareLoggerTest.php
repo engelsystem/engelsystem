@@ -16,7 +16,7 @@ class UserAwareLoggerTest extends ServiceProviderTest
      * @covers \Engelsystem\Logger\UserAwareLogger::log
      * @covers \Engelsystem\Logger\UserAwareLogger::setAuth
      */
-    public function testLog()
+    public function testLog(): void
     {
         $user = User::factory(['id' => 1, 'name' => 'admin'])->make();
 

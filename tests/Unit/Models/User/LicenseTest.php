@@ -10,7 +10,7 @@ class LicenseTest extends ModelTest
     /**
      * @covers \Engelsystem\Models\User\License::wantsToDrive
      */
-    public function testWantsToDrive()
+    public function testWantsToDrive(): void
     {
         $license = new License();
         $this->assertFalse($license->wantsToDrive());

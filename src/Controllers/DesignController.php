@@ -26,9 +26,8 @@ class DesignController extends BaseController
     /**
      * Show the design overview page
      *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $demoUser = (new User())->forceFill([
             'id'   => 42,

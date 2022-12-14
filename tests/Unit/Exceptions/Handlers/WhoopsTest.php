@@ -23,7 +23,7 @@ class WhoopsTest extends TestCase
      * @covers \Engelsystem\Exceptions\Handlers\Whoops::getJsonResponseHandler
      * @covers \Engelsystem\Exceptions\Handlers\Whoops::getData
      */
-    public function testRender()
+    public function testRender(): void
     {
         /** @var Application|MockObject $app */
         $app = $this->createMock(Application::class);

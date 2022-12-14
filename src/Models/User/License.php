@@ -61,7 +61,6 @@ class License extends HasUserModel
     /**
      * If the user wants to drive at the event
      *
-     * @return bool
      */
     public function wantsToDrive(): bool
     {

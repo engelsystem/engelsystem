@@ -27,9 +27,6 @@ class MessageTest extends ModelTest
     /** @var Message */
     private $message3;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -62,7 +59,6 @@ class MessageTest extends ModelTest
      *
      * @covers \Engelsystem\Models\Message::__construct
      *
-     * @return void
      */
     public function testLoad(): void
     {
@@ -85,7 +81,6 @@ class MessageTest extends ModelTest
      * @covers \Engelsystem\Models\Message::user
      * @covers \Engelsystem\Models\Message::sender
      *
-     * @return void
      */
     public function testSenders(): void
     {
@@ -103,7 +98,6 @@ class MessageTest extends ModelTest
      *
      * @covers \Engelsystem\Models\Message::receiver
      *
-     * @return void
      */
     public function testReceivers(): void
     {
@@ -117,7 +111,6 @@ class MessageTest extends ModelTest
      *
      * @covers \Engelsystem\Models\User\User::messagesSent
      *
-     * @return void
      */
     public function testUserSentMessages(): void
     {
@@ -136,7 +129,6 @@ class MessageTest extends ModelTest
      *
      * @covers \Engelsystem\Models\User\User::messagesReceived
      *
-     * @return void
      */
     public function testUserReceivedMessages(): void
     {

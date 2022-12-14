@@ -15,7 +15,7 @@ class CreditsControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\CreditsController::__construct
      * @covers \Engelsystem\Controllers\CreditsController::index
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);

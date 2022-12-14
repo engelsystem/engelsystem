@@ -30,17 +30,11 @@ class Schedule
         $this->day = $days;
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): string
     {
         return $this->version;
     }
 
-    /**
-     * @return Conference
-     */
     public function getConference(): Conference
     {
         return $this->conference;
@@ -71,9 +65,6 @@ class Schedule
     }
 
 
-    /**
-     * @return Carbon|null
-     */
     public function getStartDateTime(): ?Carbon
     {
         $start = null;
@@ -89,9 +80,6 @@ class Schedule
         return $start;
     }
 
-    /**
-     * @return Carbon|null
-     */
     public function getEndDateTime(): ?Carbon
     {
         $end = null;

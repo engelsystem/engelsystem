@@ -6,7 +6,7 @@ use Engelsystem\Container\ServiceProvider;
 
 class RedirectServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->bind('redirect', Redirector::class);
     }

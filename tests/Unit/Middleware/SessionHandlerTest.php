@@ -16,7 +16,7 @@ class SessionHandlerTest extends TestCase
      * @covers \Engelsystem\Middleware\SessionHandler::__construct
      * @covers \Engelsystem\Middleware\SessionHandler::process
      */
-    public function testProcess()
+    public function testProcess(): void
     {
         /** @var NativeSessionStorage|MockObject $sessionStorage */
         $sessionStorage = $this->createMock(NativeSessionStorage::class);

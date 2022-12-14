@@ -15,7 +15,7 @@ use Symfony\Component\Mailer\Mailer as SymfonyMailer;
 
 class MailerServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');
@@ -46,9 +46,8 @@ class MailerServiceProvider extends ServiceProvider
 
     /**
      * @param array  $config
-     * @return TransportInterface
      */
-    protected function getTransport(?string $transport, array $config)
+    protected function getTransport(?string $transport, array $config): TransportInterface
     {
         switch ($transport) {
             case 'log':
@@ -65,9 +64,8 @@ class MailerServiceProvider extends ServiceProvider
 
     /**
      * @param array $config
-     * @return SmtpTransport
      */
-    protected function getSmtpTransport(array $config)
+    protected function getSmtpTransport(array $config): SmtpTransport
     {
         /** @var EsmtpTransport $transport */
         $transport = $this->app->make(EsmtpTransport::class, [

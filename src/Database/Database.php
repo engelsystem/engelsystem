@@ -21,7 +21,7 @@ class Database
      * @param array  $bindings
      * @return object[]
      */
-    public function select(string $query, array $bindings = [])
+    public function select(string $query, array $bindings = []): array
     {
         return $this->connection->select($query, $bindings);
     }
@@ -30,9 +30,8 @@ class Database
      * Run a select query and return only the first result or null if no result is found.
      *
      * @param array  $bindings
-     * @return object|null
      */
-    public function selectOne(string $query, array $bindings = [])
+    public function selectOne(string $query, array $bindings = []): ?object
     {
         return $this->connection->selectOne($query, $bindings);
     }
@@ -41,9 +40,8 @@ class Database
      * Run an insert query
      *
      * @param array  $bindings
-     * @return bool
      */
-    public function insert(string $query, array $bindings = [])
+    public function insert(string $query, array $bindings = []): bool
     {
         return $this->connection->insert($query, $bindings);
     }
@@ -52,9 +50,8 @@ class Database
      * Run an update query
      *
      * @param array  $bindings
-     * @return int
      */
-    public function update(string $query, array $bindings = [])
+    public function update(string $query, array $bindings = []): int
     {
         return $this->connection->update($query, $bindings);
     }
@@ -63,9 +60,8 @@ class Database
      * Run a delete query
      *
      * @param array  $bindings
-     * @return int
      */
-    public function delete(string $query, array $bindings = [])
+    public function delete(string $query, array $bindings = []): int
     {
         return $this->connection->delete($query, $bindings);
     }
@@ -73,17 +69,13 @@ class Database
     /**
      * Get the PDO instance
      *
-     * @return PDO
      */
-    public function getPdo()
+    public function getPdo(): PDO
     {
         return $this->connection->getPdo();
     }
 
-    /**
-     * @return DatabaseConnection
-     */
-    public function getConnection()
+    public function getConnection(): DatabaseConnection
     {
         return $this->connection;
     }

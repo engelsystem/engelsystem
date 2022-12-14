@@ -22,7 +22,6 @@ class VerifyCsrfToken implements MiddlewareInterface
     /**
      * Verify csrf tokens
      *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -36,9 +35,6 @@ class VerifyCsrfToken implements MiddlewareInterface
         throw new HttpAuthExpired('Authentication Token Mismatch');
     }
 
-    /**
-     * @return bool
-     */
     protected function isReading(ServerRequestInterface $request): bool
     {
         return in_array(
@@ -47,9 +43,6 @@ class VerifyCsrfToken implements MiddlewareInterface
         );
     }
 
-    /**
-     * @return bool
-     */
     protected function tokensMatch(ServerRequestInterface $request): bool
     {
         $token = null;

@@ -9,7 +9,7 @@ class CreateWelcomeAngelPermissionsGroup extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if (!$this->schema->hasTable('Groups')) {
             return;
@@ -38,7 +38,7 @@ class CreateWelcomeAngelPermissionsGroup extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         if (!$this->schema->hasTable('Groups')) {
             return;

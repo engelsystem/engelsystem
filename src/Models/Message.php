@@ -58,17 +58,11 @@ class Message extends BaseModel
         'read' => false,
     ];
 
-    /**
-     * @return BelongsTo
-     */
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'receiver_id');

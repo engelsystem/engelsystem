@@ -47,17 +47,11 @@ class PasswordResetController extends BaseController
         $this->session = $session;
     }
 
-    /**
-     * @return Response
-     */
     public function reset(): Response
     {
         return $this->showView('pages/password/reset');
     }
 
-    /**
-     * @return Response
-     */
     public function postReset(Request $request): Response
     {
         $data = $this->validate($request, [
@@ -88,9 +82,6 @@ class PasswordResetController extends BaseController
         return $this->showView('pages/password/reset-success', ['type' => 'email']);
     }
 
-    /**
-     * @return Response
-     */
     public function resetPassword(Request $request): Response
     {
         $this->requireToken($request);
@@ -101,9 +92,6 @@ class PasswordResetController extends BaseController
         );
     }
 
-    /**
-     * @return Response
-     */
     public function postResetPassword(Request $request): Response
     {
         $reset = $this->requireToken($request);
@@ -127,7 +115,6 @@ class PasswordResetController extends BaseController
 
     /**
      * @param array  $data
-     * @return Response
      */
     protected function showView(string $view = 'pages/password/reset', array $data = []): Response
     {
@@ -137,9 +124,6 @@ class PasswordResetController extends BaseController
         );
     }
 
-    /**
-     * @return PasswordReset
-     */
     protected function requireToken(Request $request): PasswordReset
     {
         $token = $request->getAttribute('token');

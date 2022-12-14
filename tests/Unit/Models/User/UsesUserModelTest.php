@@ -12,7 +12,7 @@ class UsesUserModelTest extends ModelTest
     /**
      * @covers \Engelsystem\Models\User\UsesUserModel::user
      */
-    public function testHasOneRelations()
+    public function testHasOneRelations(): void
     {
         /** @var UsesUserModel $contact */
         $model = new class extends BaseModel

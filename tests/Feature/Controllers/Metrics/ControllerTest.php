@@ -10,7 +10,7 @@ class ControllerTest extends ApplicationFeatureTest
     /**
      * @covers \Engelsystem\Controllers\Metrics\Controller::metrics
      */
-    public function testMetrics()
+    public function testMetrics(): void
     {
         config([
             'api_key' => null,

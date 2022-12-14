@@ -45,7 +45,6 @@ class Authenticator
     /**
      * Load the user from session
      *
-     * @return User|null
      */
     public function user(): ?User
     {
@@ -73,7 +72,6 @@ class Authenticator
     /**
      * Get the user by his api key
      *
-     * @return User|null
      */
     public function apiUser(string $parameter = 'api_key'): ?User
     {
@@ -102,7 +100,6 @@ class Authenticator
 
     /**
      * @param string[]|string $abilities
-     * @return bool
      */
     public function can(array|string $abilities): bool
     {
@@ -136,9 +133,6 @@ class Authenticator
         return true;
     }
 
-    /**
-     * @return User|null
-     */
     public function authenticate(string $login, string $password): ?User
     {
         /** @var User $user */
@@ -158,9 +152,6 @@ class Authenticator
         return $user;
     }
 
-    /**
-     * @return bool
-     */
     public function verifyPassword(User $user, string $password): bool
     {
         if (!password_verify($password, $user->password)) {
@@ -174,47 +165,38 @@ class Authenticator
         return true;
     }
 
-    public function setPassword(User $user, string $password)
+    public function setPassword(User $user, string $password): void
     {
         $user->password = password_hash($password, $this->passwordAlgorithm);
         $user->save();
     }
 
-    /**
-     * @return int|string|null
-     */
-    public function getPasswordAlgorithm()
+    public function getPasswordAlgorithm(): int|string|null
     {
         return $this->passwordAlgorithm;
     }
 
-    public function setPasswordAlgorithm(int|string|null $passwordAlgorithm)
+    public function setPasswordAlgorithm(int|string|null $passwordAlgorithm): void
     {
         $this->passwordAlgorithm = $passwordAlgorithm;
     }
 
-    /**
-     * @return int
-     */
     public function getDefaultRole(): int
     {
         return $this->defaultRole;
     }
 
-    public function setDefaultRole(int $defaultRole)
+    public function setDefaultRole(int $defaultRole): void
     {
         $this->defaultRole = $defaultRole;
     }
 
-    /**
-     * @return int
-     */
     public function getGuestRole(): int
     {
         return $this->guestRole;
     }
 
-    public function setGuestRole(int $guestRole)
+    public function setGuestRole(int $guestRole): void
     {
         $this->guestRole = $guestRole;
     }

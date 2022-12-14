@@ -134,33 +134,21 @@ class Event
             ->addSeconds($this->getDurationSeconds());
     }
 
-    /**
-     * @return string
-     */
     public function getGuid(): string
     {
         return $this->guid;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Room
-     */
     public function getRoom(): Room
     {
         return $this->room;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
@@ -171,81 +159,51 @@ class Event
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
     public function getSubtitle(): string
     {
         return $this->subtitle;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return Carbon
-     */
     public function getDate(): Carbon
     {
         return $this->date;
     }
 
-    /**
-     * @return string
-     */
     public function getStart(): string
     {
         return $this->start;
     }
 
-    /**
-     * @return string
-     */
     public function getDuration(): string
     {
         return $this->duration;
     }
 
-    /**
-     * @return int
-     */
     public function getDurationSeconds(): int
     {
         return $this->secondsFromTime($this->duration);
     }
 
-    /**
-     * @return string
-     */
     public function getAbstract(): string
     {
         return $this->abstract;
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @return string
-     */
     public function getTrack(): string
     {
         return $this->track;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLogo(): ?string
     {
         return $this->logo;
@@ -259,25 +217,16 @@ class Event
         return $this->persons;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLanguage(): ?string
     {
         return $this->language;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @return string|null
-     */
     public function getRecording(): ?string
     {
         return $this->recording;
@@ -299,25 +248,16 @@ class Event
         return $this->attachments;
     }
 
-    /**
-     * @return string|null
-     */
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * @return string|null
-     */
     public function getVideoDownloadUrl(): ?string
     {
         return $this->videoDownloadUrl;
     }
 
-    /**
-     * @return Carbon
-     */
     public function getEndDate(): Carbon
     {
         return $this->endDate;

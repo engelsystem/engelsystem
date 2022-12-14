@@ -32,7 +32,7 @@ class ErrorHandlerTest extends TestCase
      * @covers \Engelsystem\Middleware\ErrorHandler::process
      * @covers \Engelsystem\Middleware\ErrorHandler::selectView
      */
-    public function testProcess()
+    public function testProcess(): void
     {
         /** @var TwigLoader|MockObject $twigLoader */
         $twigLoader = $this->createMock(TwigLoader::class);
@@ -121,7 +121,7 @@ class ErrorHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\ErrorHandler::process
      */
-    public function testProcessHttpException()
+    public function testProcessHttpException(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->createMock(ServerRequestInterface::class);
@@ -142,7 +142,7 @@ class ErrorHandlerTest extends TestCase
 
         $returnResponseHandler->expects($this->once())
             ->method('handle')
-            ->willReturnCallback(function () {
+            ->willReturnCallback(function (): void {
                 throw new HttpException(300, 'Some response', ['lor' => 'em']);
             });
 
@@ -165,7 +165,7 @@ class ErrorHandlerTest extends TestCase
      * @covers \Engelsystem\Middleware\ErrorHandler::process
      * @covers \Engelsystem\Middleware\ErrorHandler::redirectBack
      */
-    public function testProcessValidationException()
+    public function testProcessValidationException(): void
     {
         /** @var TwigLoader|MockObject $twigLoader */
         $twigLoader = $this->createMock(TwigLoader::class);
@@ -174,7 +174,7 @@ class ErrorHandlerTest extends TestCase
 
         $handler->expects($this->exactly(2))
             ->method('handle')
-            ->willReturnCallback(function () use ($validator) {
+            ->willReturnCallback(function () use ($validator): void {
                 throw new ValidationException($validator);
             });
 
@@ -229,7 +229,7 @@ class ErrorHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\ErrorHandler::process
      */
-    public function testProcessModelNotFoundException()
+    public function testProcessModelNotFoundException(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->createMock(ServerRequestInterface::class);
@@ -251,7 +251,7 @@ class ErrorHandlerTest extends TestCase
 
         $returnResponseHandler->expects($this->once())
             ->method('handle')
-            ->willReturnCallback(function () {
+            ->willReturnCallback(function (): void {
                 throw new ModelNotFoundException('Some model could not be found');
             });
 
@@ -273,7 +273,7 @@ class ErrorHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\ErrorHandler::process
      */
-    public function testProcessContentTypeSniffer()
+    public function testProcessContentTypeSniffer(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->createMock(ServerRequestInterface::class);

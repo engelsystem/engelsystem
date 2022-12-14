@@ -31,7 +31,7 @@ class ImportInstallSql extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         foreach ($this->oldTables as $table) {
             if ($this->schema->hasTable($table)) {
@@ -47,7 +47,7 @@ class ImportInstallSql extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->getConnection()->statement('SET FOREIGN_KEY_CHECKS=0;');
 

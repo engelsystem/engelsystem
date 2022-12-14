@@ -21,9 +21,6 @@ class QuestionTest extends ModelTest
      */
     private $user2;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -86,9 +83,6 @@ class QuestionTest extends ModelTest
         $this->assertInstanceOf(Carbon::class, Question::find($question1->id)->answered_at);
     }
 
-    /**
-     * @return Question
-     */
     private function createQuestion(User $user, ?User $answerer = null): Question
     {
         $data = [

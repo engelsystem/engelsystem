@@ -48,7 +48,6 @@ class ErrorHandler implements MiddlewareInterface
      *
      * Should be added at the beginning
      *
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,
@@ -100,7 +99,6 @@ class ErrorHandler implements MiddlewareInterface
     /**
      * Select a view based on the given status code
      *
-     * @return string
      */
     protected function selectView(int $statusCode): string
     {
@@ -120,10 +118,9 @@ class ErrorHandler implements MiddlewareInterface
      * Create a new response
      *
      * @param array  $headers
-     * @return Response
      * @codeCoverageIgnore
      */
-    protected function createResponse(string $content = '', int $status = 200, array $headers = [])
+    protected function createResponse(string $content = '', int $status = 200, array $headers = []): ResponseInterface
     {
         return response($content, $status, $headers);
     }
@@ -131,9 +128,8 @@ class ErrorHandler implements MiddlewareInterface
     /**
      * Create a redirect back response
      *
-     * @return Response
      */
-    protected function redirectBack()
+    protected function redirectBack(): Response
     {
         return back();
     }

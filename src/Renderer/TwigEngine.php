@@ -21,7 +21,6 @@ class TwigEngine extends Engine
      * Render a twig template
      *
      * @param array  $data
-     * @return string
      * @throws LoaderError|RuntimeError|SyntaxError
      */
     public function get(string $path, array $data = []): string
@@ -31,9 +30,6 @@ class TwigEngine extends Engine
         return $this->twig->render($path, $data);
     }
 
-    /**
-     * @return bool
-     */
     public function canRender(string $path): bool
     {
         return $this->twig->getLoader()->exists($path);

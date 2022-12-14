@@ -21,18 +21,14 @@ class BaseModelImplementation extends BaseModel
 
     /**
      * @param array $options
-     * @return bool
      */
-    public function save(array $options = [])
+    public function save(array $options = []): bool
     {
         $this->saveCount++;
         return true;
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    public static function query()
+    public static function query(): QueryBuilder
     {
         return self::$queryBuilder;
     }

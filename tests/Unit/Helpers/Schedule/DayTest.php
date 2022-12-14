@@ -17,7 +17,7 @@ class DayTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Day::getIndex
      * @covers \Engelsystem\Helpers\Schedule\Day::getRoom
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $day = new Day(
             '2000-01-01',

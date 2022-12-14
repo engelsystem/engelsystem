@@ -20,7 +20,7 @@ class LegacyMiddlewareTest extends TestCase
      * @covers \Engelsystem\Middleware\LegacyMiddleware::__construct
      * @covers \Engelsystem\Middleware\LegacyMiddleware::process
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockForAbstractClass(ContainerInterface::class);

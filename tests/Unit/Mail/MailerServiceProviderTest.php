@@ -46,7 +46,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Mail\MailerServiceProvider::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = $this->getApplication();
 
@@ -71,7 +71,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     /**
      * @return array
      */
-    public function provideTransports()
+    public function provideTransports(): array
     {
         return [
             [LogTransport::class, ['email' => ['driver' => 'log']]],
@@ -89,7 +89,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
      * @param array  $emailConfig
      * @dataProvider provideTransports
      */
-    public function testGetTransport(string $class, array $emailConfig = [])
+    public function testGetTransport(string $class, array $emailConfig = []): void
     {
         $app = $this->getApplication($emailConfig);
 
@@ -103,7 +103,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Mail\MailerServiceProvider::getTransport
      */
-    public function testGetTransportNotFound()
+    public function testGetTransportNotFound(): void
     {
         $app = $this->getApplication(['email' => ['driver' => 'foo-bar-batz']]);
         $this->expectException(InvalidArgumentException::class);
@@ -115,7 +115,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Mail\MailerServiceProvider::getSmtpTransport
      */
-    public function testGetSmtpTransport()
+    public function testGetSmtpTransport(): void
     {
         $app = $this->getApplication($this->smtpConfig);
 
@@ -131,7 +131,6 @@ class MailerServiceProviderTest extends ServiceProviderTest
 
     /**
      * @param array $configuration
-     * @return Application
      */
     protected function getApplication(array $configuration = []): Application
     {
@@ -149,7 +148,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     /**
      * @param string[]    $abstracts
      */
-    protected function assertExistsInContainer(array $abstracts, Application $container)
+    protected function assertExistsInContainer(array $abstracts, Application $container): void
     {
         $first = array_shift($abstracts);
         $this->assertContainerHas($first, $container);
@@ -160,7 +159,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
         }
     }
 
-    protected function assertContainerHas(string $abstract, Application $container)
+    protected function assertContainerHas(string $abstract, Application $container): void
     {
         $this->assertTrue(
             $container->has($abstract) || $container->hasMethodBinding($abstract),

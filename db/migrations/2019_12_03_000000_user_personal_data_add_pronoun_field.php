@@ -14,7 +14,7 @@ class UserPersonalDataAddPronounField extends Migration
      */
     public function up(): void
     {
-        $this->schema->table('users_personal_data', function (Blueprint $table) {
+        $this->schema->table('users_personal_data', function (Blueprint $table): void {
             $table->string('pronoun', 15)
                 ->nullable()
                 ->default(null)
@@ -27,7 +27,7 @@ class UserPersonalDataAddPronounField extends Migration
      */
     public function down(): void
     {
-        $this->schema->table('users_personal_data', function (Blueprint $table) {
+        $this->schema->table('users_personal_data', function (Blueprint $table): void {
             $table->dropColumn('pronoun');
         });
     }

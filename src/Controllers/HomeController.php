@@ -25,9 +25,6 @@ class HomeController extends BaseController
         $this->redirect = $redirect;
     }
 
-    /**
-     * @return Response
-     */
     public function index(): Response
     {
         return $this->redirect->to($this->auth->user() ? $this->config->get('home_site') : 'login');
