@@ -38,6 +38,13 @@ The following instructions explain how to get, build and run the latest Engelsys
   find resources/lang/ -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
   ```
 
+## Git setup (optional, recommended)
+Ignore mass-changes like code formatting in Git blame:
+
+```bash
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+```
+
 ## Testing
 To run the unit tests use
 ```bash

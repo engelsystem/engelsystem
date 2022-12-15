@@ -1,0 +1,10 @@
+# Set native parameter types
+2b88322c0c1dcab3b0dd064ad880b0f31645da49
+# Set native return types
+aff8826c9941d3f18984dcd4f220dd25ad547f42
+# Set native property types
+b004f865b42886738d90f9915c1cccfcc3599322
+# Use constructor property promotion
+984f8038d3ab096b6018a2df084fd158644bc080
+# Add useless comment phpcs sniff
+c1d350f2b122ff7dff0c3a0ed2b3c0a515c176f6
