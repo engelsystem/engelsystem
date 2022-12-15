@@ -9,11 +9,8 @@ use Twig\Error\SyntaxError as SyntaxError;
 
 class TwigEngine extends Engine
 {
-    protected Twig $twig;
-
-    public function __construct(Twig $twig)
+    public function __construct(protected Twig $twig)
     {
-        $this->twig = $twig;
     }
 
     /**

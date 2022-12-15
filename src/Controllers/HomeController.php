@@ -9,17 +9,8 @@ use Engelsystem\Http\Response;
 
 class HomeController extends BaseController
 {
-    protected Authenticator $auth;
-
-    protected Config $config;
-
-    protected Redirector $redirect;
-
-    public function __construct(Authenticator $auth, Config $config, Redirector $redirect)
+    public function __construct(protected Authenticator $auth, protected Config $config, protected Redirector $redirect)
     {
-        $this->auth = $auth;
-        $this->config = $config;
-        $this->redirect = $redirect;
     }
 
     public function index(): Response

@@ -11,11 +11,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class VerifyCsrfToken implements MiddlewareInterface
 {
-    protected SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(protected SessionInterface $session)
     {
-        $this->session = $session;
     }
 
     /**

@@ -4,16 +4,13 @@ namespace Engelsystem\Helpers;
 
 class Assets
 {
-    protected string $assetsPath;
-
     protected string $manifestFile = 'manifest.json';
 
     /**
      * @param string $assetsPath Directory containing assets
      */
-    public function __construct(string $assetsPath)
+    public function __construct(protected string $assetsPath)
     {
-        $this->assetsPath = $assetsPath;
     }
 
     public function getAssetPath(string $asset): string

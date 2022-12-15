@@ -25,40 +25,16 @@ class OAuthController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Authenticator $auth;
-
-    protected AuthController $authController;
-
-    protected Config $config;
-
-    protected LoggerInterface $log;
-
-    protected OAuth $oauth;
-
-    protected Redirector $redirector;
-
-    protected Session $session;
-
-    protected UrlGenerator $url;
-
     public function __construct(
-        Authenticator $auth,
-        AuthController $authController,
-        Config $config,
-        LoggerInterface $log,
-        OAuth $oauth,
-        Redirector $redirector,
-        Session $session,
-        UrlGenerator $url
+        protected Authenticator $auth,
+        protected AuthController $authController,
+        protected Config $config,
+        protected LoggerInterface $log,
+        protected OAuth $oauth,
+        protected Redirector $redirector,
+        protected Session $session,
+        protected UrlGenerator $url
     ) {
-        $this->auth = $auth;
-        $this->authController = $authController;
-        $this->config = $config;
-        $this->log = $log;
-        $this->redirector = $redirector;
-        $this->oauth = $oauth;
-        $this->session = $session;
-        $this->url = $url;
     }
 
     public function index(Request $request): Response

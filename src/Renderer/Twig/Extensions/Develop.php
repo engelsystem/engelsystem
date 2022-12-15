@@ -9,13 +9,10 @@ use Twig\TwigFunction;
 
 class Develop extends TwigExtension
 {
-    protected Config $config;
-
     protected ?VarDumper $dumper = null;
 
-    public function __construct(Config $config)
+    public function __construct(protected Config $config)
     {
-        $this->config = $config;
     }
 
     /**

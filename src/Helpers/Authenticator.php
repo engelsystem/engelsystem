@@ -13,12 +13,6 @@ class Authenticator
 {
     protected ?User $user = null;
 
-    protected ServerRequestInterface $request;
-
-    protected Session $session;
-
-    protected UserRepository $userRepository;
-
     /** @var string[] */
     protected array $permissions = [];
 
@@ -28,11 +22,11 @@ class Authenticator
 
     protected int $guestRole = 10;
 
-    public function __construct(ServerRequestInterface $request, Session $session, UserRepository $userRepository)
-    {
-        $this->request = $request;
-        $this->session = $session;
-        $this->userRepository = $userRepository;
+    public function __construct(
+        protected ServerRequestInterface $request,
+        protected Session $session,
+        protected UserRepository $userRepository
+    ) {
     }
 
     /**

@@ -8,11 +8,8 @@ use Twig\TwigFunction;
 
 class Url extends TwigExtension
 {
-    protected UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(protected UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
 
     /**

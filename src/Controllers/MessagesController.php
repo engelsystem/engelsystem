@@ -16,19 +16,7 @@ use Psr\Http\Message\RequestInterface;
 
 class MessagesController extends BaseController
 {
-    protected Authenticator $auth;
-
-    protected Redirector $redirect;
-
-    protected Response $response;
-
     protected RequestInterface $request;
-
-    protected Database $db;
-
-    protected Message $message;
-
-    protected User $user;
 
     /** @var string[] */
     protected array $permissions = [
@@ -36,21 +24,15 @@ class MessagesController extends BaseController
     ];
 
     public function __construct(
-        Authenticator $auth,
-        Redirector $redirect,
-        Response $response,
+        protected Authenticator $auth,
+        protected Redirector $redirect,
+        protected Response $response,
         Request $request,
-        Database $db,
-        Message $message,
-        User $user
+        protected Database $db,
+        protected Message $message,
+        protected User $user
     ) {
-        $this->auth = $auth;
-        $this->redirect = $redirect;
-        $this->response = $response;
         $this->request = $request;
-        $this->db = $db;
-        $this->message = $message;
-        $this->user = $user;
     }
 
     public function index(): Response

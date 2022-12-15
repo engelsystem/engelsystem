@@ -12,20 +12,11 @@ use Symfony\Component\Mailer\Exception\TransportException;
 
 class News
 {
-    protected LoggerInterface $log;
-
-    protected EngelsystemMailer $mailer;
-
-    protected UserSettings $settings;
-
     public function __construct(
-        LoggerInterface $log,
-        EngelsystemMailer $mailer,
-        UserSettings $settings
+        protected LoggerInterface $log,
+        protected EngelsystemMailer $mailer,
+        protected UserSettings $settings
     ) {
-        $this->log = $log;
-        $this->mailer = $mailer;
-        $this->settings = $settings;
     }
 
     public function created(NewsModel $news): void

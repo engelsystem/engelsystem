@@ -19,10 +19,6 @@ class Migrate
     /** @var string */
     public const DOWN = 'down';
 
-    protected Application $app;
-
-    protected SchemaBuilder $schema;
-
     /** @var callable */
     protected $output;
 
@@ -32,10 +28,8 @@ class Migrate
      * Migrate constructor
      *
      */
-    public function __construct(SchemaBuilder $schema, Application $app)
+    public function __construct(protected SchemaBuilder $schema, protected Application $app)
     {
-        $this->app = $app;
-        $this->schema = $schema;
         $this->output = function (): void {
         };
     }

@@ -10,121 +10,46 @@ class Event
 {
     use CalculatesTime;
 
-    /** @var string required globally unique */
-    protected string $guid;
-
-    /** @var int required globally unique */
-    protected int $id;
-
-    /** @var Room required, string in XML */
-    protected Room $room;
-
-    /** @var string required */
-    protected string $title;
-
-    /** @var string required */
-    protected string $subtitle;
-
-    /** @var string required */
-    protected string $type;
-
-    /** @var Carbon required */
-    protected Carbon $date;
-
-    /** @var string required time (hh:mm:ss || hh:mm) */
-    protected string $start;
-
-    /** @var string required (h?h:mm:ss || h?h:mm) */
-    protected string $duration;
-
-    /** @var string required */
-    protected string $abstract;
-
-    /** @var string required globally unique */
-    protected string $slug;
-
-    /** @var string required */
-    protected string $track;
-
-    protected ?string $logo = null;
-
-    /** @var string[] id => name */
-    protected array $persons;
-
-    /** @var string|null two letter code */
-    protected ?string $language = null;
-
-    protected ?string $description = null;
-
-    /** @var string|null license (and opt out in XML, null if not recorded, empty if no license defined) */
-    protected ?string $recording = null;
-
-    /** @var array href => title */
-    protected array $links;
-
-    /** @var array href => name */
-    protected array $attachments;
-
-    protected ?string $url = null;
-
-    protected ?string $videoDownloadUrl = null;
-
     /** @var Carbon Calculated */
     protected Carbon $endDate;
 
     /**
      * Event constructor.
      *
-     * @param string[]    $persons
-     * @param string|null $recording license
-     * @param array       $links
-     * @param array       $attachments
+     * @param string      $guid globally unique
+     * @param int         $id globally unique
+     * @param string      $start time (hh:mm:ss || hh:mm)
+     * @param string      $duration (h?h:mm:ss || h?h:mm)
+     * @param string      $slug globally unique
+     * @param string[]    $persons id => name
+     * @param string|null $language two letter code
+     * @param string|null $recording license (and opt out in XML, null if not recorded, empty if no license defined)/
+     * @param array       $links href => title
+     * @param array       $attachments href => title
      */
     public function __construct(
-        string $guid,
-        int $id,
-        Room $room,
-        string $title,
-        string $subtitle,
-        string $type,
-        Carbon $date,
-        string $start,
-        string $duration,
-        string $abstract,
-        string $slug,
-        string $track,
-        ?string $logo = null,
-        array $persons = [],
-        ?string $language = null,
-        ?string $description = null,
-        string $recording = '',
-        array $links = [],
-        array $attachments = [],
-        ?string $url = null,
-        ?string $videoDownloadUrl = null
+        protected string $guid,
+        protected int $id,
+        protected Room $room,
+        protected string $title,
+        protected string $subtitle,
+        protected string $type,
+        protected Carbon $date,
+        protected string $start,
+        protected string $duration,
+        protected string $abstract,
+        protected string $slug,
+        protected string $track,
+        protected ?string $logo = null,
+        protected array $persons = [],
+        protected ?string $language = null,
+        protected ?string $description = null,
+        protected string $recording = '',
+        protected array $links = [],
+        protected array $attachments = [],
+        protected ?string $url = null,
+        protected ?string $videoDownloadUrl = null
     ) {
-        $this->guid = $guid;
-        $this->id = $id;
-        $this->room = $room;
-        $this->title = $title;
-        $this->subtitle = $subtitle;
-        $this->type = $type;
-        $this->date = $date;
-        $this->start = $start;
-        $this->duration = $duration;
-        $this->abstract = $abstract;
-        $this->slug = $slug;
-        $this->track = $track;
-        $this->logo = $logo;
-        $this->persons = $persons;
-        $this->language = $language;
-        $this->description = $description;
-        $this->recording = $recording;
-        $this->links = $links;
-        $this->attachments = $attachments;
-        $this->url = $url;
-        $this->videoDownloadUrl = $videoDownloadUrl;
-
         $this->endDate = $this->date
             ->copy()
             ->addSeconds($this->getDurationSeconds());

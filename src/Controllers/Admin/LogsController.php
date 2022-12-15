@@ -9,19 +9,13 @@ use Engelsystem\Models\LogEntry;
 
 class LogsController extends BaseController
 {
-    protected LogEntry $log;
-
-    protected Response $response;
-
     /** @var array */
     protected array $permissions = [
         'admin_log',
     ];
 
-    public function __construct(LogEntry $log, Response $response)
+    public function __construct(protected LogEntry $log, protected Response $response)
     {
-        $this->log = $log;
-        $this->response = $response;
     }
 
     public function index(Request $request): Response

@@ -16,21 +16,7 @@ class NewsController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Authenticator $auth;
-
-    protected NewsComment $comment;
-
-    protected Config $config;
-
-    protected LoggerInterface $log;
-
-    protected News $news;
-
     protected Redirector $redirect;
-
-    protected Response $response;
-
-    protected Request $request;
 
     /** @var array */
     protected array $permissions = [
@@ -41,23 +27,16 @@ class NewsController extends BaseController
     ];
 
     public function __construct(
-        Authenticator $auth,
-        NewsComment $comment,
-        Config $config,
-        LoggerInterface $log,
-        News $news,
+        protected Authenticator $auth,
+        protected NewsComment $comment,
+        protected Config $config,
+        protected LoggerInterface $log,
+        protected News $news,
         Redirector $redirector,
-        Response $response,
-        Request $request
+        protected Response $response,
+        protected Request $request
     ) {
-        $this->auth = $auth;
-        $this->comment = $comment;
-        $this->config = $config;
-        $this->log = $log;
-        $this->news = $news;
         $this->redirect = $redirector;
-        $this->response = $response;
-        $this->request = $request;
     }
 
     public function index(): Response

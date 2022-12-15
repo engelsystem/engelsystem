@@ -16,8 +16,6 @@ use Twig\Loader\LoaderInterface as TwigLoader;
 
 class ErrorHandler implements MiddlewareInterface
 {
-    protected TwigLoader $loader;
-
     protected string $viewPrefix = 'errors/';
 
     /**
@@ -36,9 +34,8 @@ class ErrorHandler implements MiddlewareInterface
         '_token',
     ];
 
-    public function __construct(TwigLoader $loader)
+    public function __construct(protected TwigLoader $loader)
     {
-        $this->loader = $loader;
     }
 
     /**

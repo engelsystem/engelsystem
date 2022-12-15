@@ -15,14 +15,6 @@ class PasswordResetController extends BaseController
 {
     use HasUserNotifications;
 
-    protected LoggerInterface $log;
-
-    protected EngelsystemMailer $mail;
-
-    protected Response $response;
-
-    protected SessionInterface $session;
-
     /** @var array */
     protected array $permissions = [
         'reset'             => 'login',
@@ -32,15 +24,11 @@ class PasswordResetController extends BaseController
     ];
 
     public function __construct(
-        Response $response,
-        SessionInterface $session,
-        EngelsystemMailer $mail,
-        LoggerInterface $log
+        protected Response $response,
+        protected SessionInterface $session,
+        protected EngelsystemMailer $mail,
+        protected LoggerInterface $log
     ) {
-        $this->log = $log;
-        $this->mail = $mail;
-        $this->response = $response;
-        $this->session = $session;
     }
 
     public function reset(): Response

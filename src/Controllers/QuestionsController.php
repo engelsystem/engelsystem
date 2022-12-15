@@ -14,33 +14,18 @@ class QuestionsController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Authenticator $auth;
-
-    protected LoggerInterface $log;
-
-    protected Question $question;
-
-    protected Redirector $redirect;
-
-    protected Response $response;
-
     /** @var string[] */
     protected array $permissions = [
         'question.add',
     ];
 
     public function __construct(
-        Authenticator $auth,
-        LoggerInterface $log,
-        Question $question,
-        Redirector $redirect,
-        Response $response
+        protected Authenticator $auth,
+        protected LoggerInterface $log,
+        protected Question $question,
+        protected Redirector $redirect,
+        protected Response $response
     ) {
-        $this->auth = $auth;
-        $this->log = $log;
-        $this->question = $question;
-        $this->redirect = $redirect;
-        $this->response = $response;
     }
 
     public function index(): Response

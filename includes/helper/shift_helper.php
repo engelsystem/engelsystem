@@ -13,22 +13,14 @@ use Symfony\Component\Mailer\Exception\TransportException;
 
 class Shift
 {
-    /** @var LoggerInterface */
-    protected LoggerInterface $log;
-
-    /** @var EngelsystemMailer */
-    protected EngelsystemMailer $mailer;
-
     /**
      * @param LoggerInterface   $log
      * @param EngelsystemMailer $mailer
      */
     public function __construct(
-        LoggerInterface $log,
-        EngelsystemMailer $mailer
+        protected LoggerInterface $log,
+        protected EngelsystemMailer $mailer
     ) {
-        $this->log = $log;
-        $this->mailer = $mailer;
     }
 
     /**

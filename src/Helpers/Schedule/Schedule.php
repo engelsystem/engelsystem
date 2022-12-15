@@ -8,10 +8,6 @@ use Carbon\Carbon;
 
 class Schedule
 {
-    protected string $version;
-
-    protected Conference $conference;
-
     /** @var Day[] */
     protected array $day;
 
@@ -19,12 +15,10 @@ class Schedule
      * @param Day[]      $days
      */
     public function __construct(
-        string $version,
-        Conference $conference,
+        protected string $version,
+        protected Conference $conference,
         array $days
     ) {
-        $this->version = $version;
-        $this->conference = $conference;
         $this->day = $days;
     }
 

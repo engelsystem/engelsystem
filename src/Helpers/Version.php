@@ -6,16 +6,10 @@ use Engelsystem\Config\Config;
 
 class Version
 {
-    protected Config $config;
-
-    protected string $storage;
-
     protected string $versionFile = 'VERSION';
 
-    public function __construct(string $storage, Config $config)
+    public function __construct(protected string $storage, protected Config $config)
     {
-        $this->storage = $storage;
-        $this->config = $config;
     }
 
     public function getVersion(): string

@@ -4,12 +4,7 @@ namespace Engelsystem\Helpers\Translation;
 
 class Translator
 {
-    /** @var string[] */
-    protected array $locales;
-
     protected string $locale;
-
-    protected string $fallbackLocale;
 
     /** @var callable */
     protected $getTranslatorCallback;
@@ -24,17 +19,15 @@ class Translator
      */
     public function __construct(
         string $locale,
-        string $fallbackLocale,
+        protected string $fallbackLocale,
         callable $getTranslatorCallback,
-        array $locales = [],
+        protected array $locales = [],
         callable $localeChangeCallback = null
     ) {
         $this->localeChangeCallback = $localeChangeCallback;
         $this->getTranslatorCallback = $getTranslatorCallback;
 
         $this->setLocale($locale);
-        $this->fallbackLocale = $fallbackLocale;
-        $this->locales = $locales;
     }
 
     /**

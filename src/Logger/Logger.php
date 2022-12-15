@@ -23,11 +23,8 @@ class Logger extends AbstractLogger
         LogLevel::WARNING,
     ];
 
-    protected LogEntry $log;
-
-    public function __construct(LogEntry $log)
+    public function __construct(protected LogEntry $log)
     {
-        $this->log = $log;
     }
 
     /**

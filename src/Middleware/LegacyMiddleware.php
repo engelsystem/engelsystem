@@ -29,14 +29,8 @@ class LegacyMiddleware implements MiddlewareInterface
         'admin_shifts_history',
     ];
 
-    protected ContainerInterface $container;
-
-    protected Authenticator $auth;
-
-    public function __construct(ContainerInterface $container, Authenticator $auth)
+    public function __construct(protected ContainerInterface $container, protected Authenticator $auth)
     {
-        $this->container = $container;
-        $this->auth = $auth;
     }
 
     /**

@@ -36,5 +36,6 @@
         <exclude-pattern>/includes</exclude-pattern>
         <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification" />
     </rule>
+    <rule ref="SlevomatCodingStandard.Classes.RequireConstructorPropertyPromotion" />
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment" />
 </ruleset>

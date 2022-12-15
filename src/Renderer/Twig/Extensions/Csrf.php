@@ -8,11 +8,8 @@ use Twig\TwigFunction;
 
 class Csrf extends TwigExtension
 {
-    protected SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(protected SessionInterface $session)
     {
-        $this->session = $session;
     }
 
     /**

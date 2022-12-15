@@ -14,13 +14,7 @@ class FaqController extends BaseController
 {
     use HasUserNotifications;
 
-    protected LoggerInterface $log;
-
-    protected Faq $faq;
-
     protected Redirector $redirect;
-
-    protected Response $response;
 
     /** @var array */
     protected array $permissions = [
@@ -29,15 +23,12 @@ class FaqController extends BaseController
     ];
 
     public function __construct(
-        LoggerInterface $log,
-        Faq $faq,
+        protected LoggerInterface $log,
+        protected Faq $faq,
         Redirector $redirector,
-        Response $response
+        protected Response $response
     ) {
-        $this->log = $log;
-        $this->faq = $faq;
         $this->redirect = $redirector;
-        $this->response = $response;
     }
 
     public function edit(Request $request): Response

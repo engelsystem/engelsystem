@@ -16,17 +16,7 @@ class UserShirtController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Authenticator $auth;
-
-    protected Config $config;
-
-    protected LoggerInterface $log;
-
     protected Redirector $redirect;
-
-    protected Response $response;
-
-    protected User $user;
 
     /** @var array */
     protected array $permissions = [
@@ -35,19 +25,14 @@ class UserShirtController extends BaseController
     ];
 
     public function __construct(
-        Authenticator $auth,
-        Config $config,
-        LoggerInterface $log,
+        protected Authenticator $auth,
+        protected Config $config,
+        protected LoggerInterface $log,
         Redirector $redirector,
-        Response $response,
-        User $user
+        protected Response $response,
+        protected User $user
     ) {
-        $this->auth = $auth;
-        $this->config = $config;
-        $this->log = $log;
         $this->redirect = $redirector;
-        $this->response = $response;
-        $this->user = $user;
     }
 
     public function editShirt(Request $request): Response

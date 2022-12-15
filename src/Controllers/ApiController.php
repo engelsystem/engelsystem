@@ -6,11 +6,8 @@ use Engelsystem\Http\Response;
 
 class ApiController extends BaseController
 {
-    protected Response $response;
-
-    public function __construct(Response $response)
+    public function __construct(protected Response $response)
     {
-        $this->response = $response;
     }
 
     public function index(): Response

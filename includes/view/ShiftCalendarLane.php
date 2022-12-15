@@ -9,15 +9,6 @@ use Exception;
  */
 class ShiftCalendarLane
 {
-    /** @var int */
-    private $firstBlockStartTime;
-
-    /** @var int */
-    private $blockCount;
-
-    /** @var string */
-    private $header;
-
     /** @var array[] */
     private $shifts = [];
 
@@ -28,11 +19,8 @@ class ShiftCalendarLane
      * @param int    $firstBlockStartTime Unix timestamp
      * @param int    $blockCount
      */
-    public function __construct($header, $firstBlockStartTime, $blockCount)
+    public function __construct(private $header, private $firstBlockStartTime, private $blockCount)
     {
-        $this->header = $header;
-        $this->firstBlockStartTime = $firstBlockStartTime;
-        $this->blockCount = $blockCount;
     }
 
     /**

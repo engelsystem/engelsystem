@@ -6,15 +6,12 @@ use Engelsystem\Application;
 
 abstract class ServiceProvider
 {
-    protected Application $app;
-
     /**
      * ServiceProvider constructor.
      *
      */
-    public function __construct(Application $app)
+    public function __construct(protected Application $app)
     {
-        $this->app = $app;
     }
 
     /**

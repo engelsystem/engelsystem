@@ -16,15 +16,7 @@ class QuestionsController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Authenticator $auth;
-
-    protected LoggerInterface $log;
-
-    protected Question $question;
-
     protected Redirector $redirect;
-
-    protected Response $response;
 
     /** @var array */
     protected array $permissions = [
@@ -33,17 +25,13 @@ class QuestionsController extends BaseController
     ];
 
     public function __construct(
-        Authenticator $auth,
-        LoggerInterface $log,
-        Question $question,
+        protected Authenticator $auth,
+        protected LoggerInterface $log,
+        protected Question $question,
         Redirector $redirector,
-        Response $response
+        protected Response $response
     ) {
-        $this->auth = $auth;
-        $this->log = $log;
-        $this->question = $question;
         $this->redirect = $redirector;
-        $this->response = $response;
     }
 
     public function index(): Response

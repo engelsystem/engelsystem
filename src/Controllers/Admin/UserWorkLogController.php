@@ -19,19 +19,7 @@ class UserWorkLogController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Authenticator $auth;
-
-    protected Config $config;
-
-    protected LoggerInterface $log;
-
-    protected Worklog $worklog;
-
     protected Redirector $redirect;
-
-    protected Response $response;
-
-    protected User $user;
 
     /** @var array */
     protected array $permissions = [
@@ -39,21 +27,15 @@ class UserWorkLogController extends BaseController
     ];
 
     public function __construct(
-        Authenticator $auth,
-        Config $config,
-        LoggerInterface $log,
-        Worklog $worklog,
+        protected Authenticator $auth,
+        protected Config $config,
+        protected LoggerInterface $log,
+        protected Worklog $worklog,
         Redirector $redirector,
-        Response $response,
-        User $user
+        protected Response $response,
+        protected User $user
     ) {
-        $this->auth = $auth;
-        $this->config = $config;
-        $this->log = $log;
-        $this->worklog = $worklog;
         $this->redirect = $redirector;
-        $this->response = $response;
-        $this->user = $user;
     }
 
     public function editWorklog(Request $request): Response

@@ -15,15 +15,7 @@ class SettingsController extends BaseController
     use HasUserNotifications;
     use ChecksArrivalsAndDepartures;
 
-    protected Authenticator $auth;
-
-    protected Config $config;
-
-    protected LoggerInterface $log;
-
     protected Redirector $redirect;
-
-    protected Response $response;
 
     /** @var string[] */
     protected array $permissions = [
@@ -31,17 +23,13 @@ class SettingsController extends BaseController
     ];
 
     public function __construct(
-        Authenticator $auth,
-        Config $config,
-        LoggerInterface $log,
+        protected Authenticator $auth,
+        protected Config $config,
+        protected LoggerInterface $log,
         Redirector $redirector,
-        Response $response
+        protected Response $response
     ) {
-        $this->auth = $auth;
-        $this->config = $config;
-        $this->log = $log;
         $this->redirect = $redirector;
-        $this->response = $response;
     }
 
     public function profile(): Response

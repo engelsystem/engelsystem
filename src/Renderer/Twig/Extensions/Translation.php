@@ -9,11 +9,8 @@ use Twig\TwigFunction;
 
 class Translation extends TwigExtension
 {
-    protected Translator $translator;
-
-    public function __construct(Translator $translator)
+    public function __construct(protected Translator $translator)
     {
-        $this->translator = $translator;
     }
 
     /**

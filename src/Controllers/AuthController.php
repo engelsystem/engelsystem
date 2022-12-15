@@ -15,16 +15,6 @@ class AuthController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Response $response;
-
-    protected SessionInterface $session;
-
-    protected Redirector $redirect;
-
-    protected Config $config;
-
-    protected Authenticator $auth;
-
     /** @var array */
     protected array $permissions = [
         'login'     => 'login',
@@ -32,17 +22,12 @@ class AuthController extends BaseController
     ];
 
     public function __construct(
-        Response $response,
-        SessionInterface $session,
-        Redirector $redirect,
-        Config $config,
-        Authenticator $auth
+        protected Response $response,
+        protected SessionInterface $session,
+        protected Redirector $redirect,
+        protected Config $config,
+        protected Authenticator $auth
     ) {
-        $this->response = $response;
-        $this->session = $session;
-        $this->redirect = $redirect;
-        $this->config = $config;
-        $this->auth = $auth;
     }
 
     public function login(): Response

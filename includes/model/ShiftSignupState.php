@@ -53,9 +53,6 @@ class ShiftSignupState
      */
     public const NOT_ARRIVED = 'NOT_ARRIVED';
 
-    /** @var string */
-    private $state;
-
     /** @var int */
     private $freeEntries;
 
@@ -65,9 +62,8 @@ class ShiftSignupState
      * @param string $state
      * @param int    $free_entries
      */
-    public function __construct($state, $free_entries)
+    public function __construct(private $state, $free_entries)
     {
-        $this->state = $state;
         $this->freeEntries = $free_entries;
     }
 

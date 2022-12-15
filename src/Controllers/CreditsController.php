@@ -8,17 +8,8 @@ use Engelsystem\Http\Response;
 
 class CreditsController extends BaseController
 {
-    protected Config $config;
-
-    protected Response $response;
-
-    protected Version $version;
-
-    public function __construct(Response $response, Config $config, Version $version)
+    public function __construct(protected Response $response, protected Config $config, protected Version $version)
     {
-        $this->config = $config;
-        $this->response = $response;
-        $this->version = $version;
     }
 
     public function index(): Response

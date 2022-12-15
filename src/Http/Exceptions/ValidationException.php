@@ -8,18 +8,15 @@ use Throwable;
 
 class ValidationException extends RuntimeException
 {
-    protected Validator $validator;
-
     /**
      * @param Throwable|null $previous
      */
     public function __construct(
-        Validator $validator,
+        protected Validator $validator,
         string $message = '',
         int $code = 0,
         Throwable $previous = null
     ) {
-        $this->validator = $validator;
         parent::__construct($message, $code, $previous);
     }
 

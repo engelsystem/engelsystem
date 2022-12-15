@@ -10,11 +10,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class AddHeaders implements MiddlewareInterface
 {
-    protected Config $config;
-
-    public function __construct(Config $config)
+    public function __construct(protected Config $config)
     {
-        $this->config = $config;
     }
 
     /**

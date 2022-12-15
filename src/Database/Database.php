@@ -7,11 +7,8 @@ use PDO;
 
 class Database
 {
-    protected DatabaseConnection $connection;
-
-    public function __construct(DatabaseConnection $connection)
+    public function __construct(protected DatabaseConnection $connection)
     {
-        $this->connection = $connection;
     }
 
     /**

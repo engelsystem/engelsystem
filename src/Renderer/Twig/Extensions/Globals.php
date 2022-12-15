@@ -11,14 +11,8 @@ use function array_key_exists;
 
 class Globals extends TwigExtension implements GlobalsInterface
 {
-    protected Authenticator $auth;
-
-    protected Request $request;
-
-    public function __construct(Authenticator $auth, Request $request)
+    public function __construct(protected Authenticator $auth, protected Request $request)
     {
-        $this->auth = $auth;
-        $this->request = $request;
     }
 
     /**

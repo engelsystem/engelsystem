@@ -10,8 +10,6 @@ use Throwable;
 
 class Handler
 {
-    protected string $environment;
-
     /** @var HandlerInterface[] */
     protected array $handler = [];
 
@@ -28,9 +26,8 @@ class Handler
      *
      * @param string $environment prod|dev
      */
-    public function __construct(string $environment = self::ENV_PRODUCTION)
+    public function __construct(protected string $environment = self::ENV_PRODUCTION)
     {
-        $this->environment = $environment;
     }
 
     /**

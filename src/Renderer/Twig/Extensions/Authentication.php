@@ -8,11 +8,8 @@ use Twig\TwigFunction;
 
 class Authentication extends TwigExtension
 {
-    protected Authenticator $auth;
-
-    public function __construct(Authenticator $auth)
+    public function __construct(protected Authenticator $auth)
     {
-        $this->auth = $auth;
     }
 
     /**

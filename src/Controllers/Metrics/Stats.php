@@ -30,11 +30,8 @@ use Illuminate\Support\Collection;
 
 class Stats
 {
-    protected Database $db;
-
-    public function __construct(Database $db)
+    public function __construct(protected Database $db)
     {
-        $this->db = $db;
     }
 
     /**

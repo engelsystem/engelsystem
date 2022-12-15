@@ -8,11 +8,8 @@ use Symfony\Component\Mailer\Transport\AbstractTransport;
 
 class LogTransport extends AbstractTransport
 {
-    protected LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(protected LoggerInterface $logger)
     {
-        $this->logger = $logger;
 
         parent::__construct();
     }
