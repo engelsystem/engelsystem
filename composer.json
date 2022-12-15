@@ -14,8 +14,15 @@
         }
     ],
     "scripts": {
-        "phpcs": "phpcs -p --cache",
-        "phpcbf": "phpcbf -p",
+        "phpcs:setup": "phpcs --config-set php_version 80100",
+        "phpcs": [
+            "composer phpcs:setup",
+            "phpcs -p --cache"
+        ],
+        "phpcbf": [
+            "composer phpcs:setup",
+            "phpcbf -p"
+        ],
         "phpstan": "phpstan"
     },
     "require": {
