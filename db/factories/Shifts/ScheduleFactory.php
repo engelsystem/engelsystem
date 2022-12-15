@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ScheduleFactory extends Factory
 {
     /** @var string */
-    protected $model = Schedule::class;
+    protected $model = Schedule::class; // phpcs:ignore
 
     /**
      * @return array

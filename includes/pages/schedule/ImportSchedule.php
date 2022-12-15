@@ -39,8 +39,7 @@ class ImportSchedule extends BaseController
     /** @var LoggerInterface */
     protected $log;
 
-    /** @var array */
-    protected $permissions = [
+    protected array $permissions = [
         'schedule.import',
     ];
 

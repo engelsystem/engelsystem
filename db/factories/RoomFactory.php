@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class RoomFactory extends Factory
 {
     /** @var string */
-    protected $model = Room::class;
+    protected $model = Room::class; // phpcs:ignore
 
     /**
      * @return array

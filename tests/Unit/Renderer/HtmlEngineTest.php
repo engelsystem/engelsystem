@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class HtmlEngineTest extends TestCase
 {
     /** @var string[] */
-    protected $tmpFileNames = [];
+    protected array $tmpFileNames = [];
 
     /**
      * @covers \Engelsystem\Renderer\HtmlEngine::get

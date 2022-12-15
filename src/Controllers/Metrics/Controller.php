@@ -13,23 +13,17 @@ use Psr\Log\LogLevel;
 
 class Controller extends BaseController
 {
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var MetricsEngine */
-    protected $engine;
+    protected MetricsEngine $engine;
 
-    /** @var Request */
-    protected $request;
+    protected Request $request;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var Stats */
-    protected $stats;
+    protected Stats $stats;
 
-    /** @var Version */
-    protected $version;
+    protected Version $version;
 
     public function __construct(
         Response $response,

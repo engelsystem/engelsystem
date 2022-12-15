@@ -9,14 +9,12 @@ use Engelsystem\Models\LogEntry;
 
 class LogsController extends BaseController
 {
-    /** @var LogEntry */
-    protected $log;
+    protected LogEntry $log;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
     /** @var array */
-    protected $permissions = [
+    protected array $permissions = [
         'admin_log',
     ];
 

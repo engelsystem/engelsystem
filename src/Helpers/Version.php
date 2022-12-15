@@ -6,14 +6,11 @@ use Engelsystem\Config\Config;
 
 class Version
 {
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @vat string */
-    protected $storage;
+    protected string $storage;
 
-    /** @var string */
-    protected $versionFile = 'VERSION';
+    protected string $versionFile = 'VERSION';
 
     public function __construct(string $storage, Config $config)
     {

@@ -16,18 +16,16 @@ use Twig\Loader\LoaderInterface as TwigLoader;
 
 class ErrorHandler implements MiddlewareInterface
 {
-    /** @var TwigLoader */
-    protected $loader;
+    protected TwigLoader $loader;
 
-    /** @var string */
-    protected $viewPrefix = 'errors/';
+    protected string $viewPrefix = 'errors/';
 
     /**
      * A list of inputs that are not saved from form input
      *
      * @var array
      */
-    protected $formIgnore = [
+    protected array $formIgnore = [
         'password',
         'password_confirmation',
         'password2',

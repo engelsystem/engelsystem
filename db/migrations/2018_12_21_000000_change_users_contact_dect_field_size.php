@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 class ChangeUsersContactDectFieldSize extends Migration
 {
     /** @var array */
-    protected $tables = [
+    protected array $tables = [
         'AngelTypes'    => 'contact_dect',
         'users_contact' => 'dect',
     ];

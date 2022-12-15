@@ -11,7 +11,7 @@ class Config extends Fluent
      *
      * @var array
      */
-    protected $attributes = [];
+    protected $attributes = []; // phpcs:ignore
 
     /**
      * @param string|array $key

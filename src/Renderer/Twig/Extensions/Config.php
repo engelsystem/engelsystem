@@ -8,8 +8,7 @@ use Twig\TwigFunction;
 
 class Config extends TwigExtension
 {
-    /** @var EngelsystemConfig */
-    protected $config;
+    protected EngelsystemConfig $config;
 
     public function __construct(EngelsystemConfig $config)
     {

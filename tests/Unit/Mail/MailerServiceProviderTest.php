@@ -19,7 +19,7 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 class MailerServiceProviderTest extends ServiceProviderTest
 {
     /** @var array */
-    protected $defaultConfig = [
+    protected array $defaultConfig = [
         'app_name' => 'Engelsystem App',
         'email'    => [
             'driver'   => 'mail',
@@ -32,7 +32,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     ];
 
     /** @var array */
-    protected $smtpConfig = [
+    protected array $smtpConfig = [
         'email' => [
             'driver'     => 'smtp',
             'host'       => 'mail.foo.bar',

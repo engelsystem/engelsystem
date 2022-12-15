@@ -13,10 +13,9 @@ use Engelsystem\Models\User\User;
 class NewsTest extends ModelTest
 {
     /** @var array */
-    private $newsData;
+    private array $newsData;
 
-    /** @var User */
-    private $user;
+    private User $user;
 
     protected function setUp(): void
     {

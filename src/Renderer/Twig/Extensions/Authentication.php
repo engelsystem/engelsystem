@@ -8,8 +8,7 @@ use Twig\TwigFunction;
 
 class Authentication extends TwigExtension
 {
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
     public function __construct(Authenticator $auth)
     {

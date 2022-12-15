@@ -21,23 +21,16 @@ class MessagesControllerTest extends ControllerTest
 {
     use HasDatabase;
 
-    /** @var MessagesController */
-    protected $controller;
+    protected MessagesController $controller;
 
-    /** @var Authenticator|MockObject */
-    protected $auth;
+    protected Authenticator|MockObject $auth;
 
-    /** @var User */
-    protected $userA;
-    /** @var User */
-    protected $userB;
+    protected User $userA;
+    protected User $userB;
 
-    /** @var Carbon */
-    protected $now;
-    /** @var Carbon */
-    protected $oneMinuteAgo;
-    /** @var Carbon */
-    protected $twoMinutesAgo;
+    protected Carbon $now;
+    protected Carbon $oneMinuteAgo;
+    protected Carbon $twoMinutesAgo;
 
     /**
      * @testdox index: underNormalConditions -> returnsCorrectViewAndData

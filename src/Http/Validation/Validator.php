@@ -10,13 +10,13 @@ use Respect\Validation\Validator as RespectValidator;
 class Validator
 {
     /** @var string[] */
-    protected $errors = [];
+    protected array $errors = [];
 
     /** @var array */
-    protected $data = [];
+    protected array $data = [];
 
     /** @var array */
-    protected $mapping = [
+    protected array $mapping = [
         'accepted' => 'TrueVal',
         'int'      => 'IntVal',
         'float'    => 'FloatVal',
@@ -24,7 +24,7 @@ class Validator
     ];
 
     /** @var array */
-    protected $nestedRules = ['optional', 'not'];
+    protected array $nestedRules = ['optional', 'not'];
 
     /**
      * @param array $data

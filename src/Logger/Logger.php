@@ -11,7 +11,8 @@ use Throwable;
 
 class Logger extends AbstractLogger
 {
-    protected $allowedLevels = [
+    /** @var array<string> */
+    protected $allowedLevels = [ // phpcs:ignore
         LogLevel::ALERT,
         LogLevel::CRITICAL,
         LogLevel::DEBUG,
@@ -22,8 +23,7 @@ class Logger extends AbstractLogger
         LogLevel::WARNING,
     ];
 
-    /** @var LogEntry */
-    protected $log;
+    protected LogEntry $log;
 
     public function __construct(LogEntry $log)
     {

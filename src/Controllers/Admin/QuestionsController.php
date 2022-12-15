@@ -16,23 +16,18 @@ class QuestionsController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
-    /** @var LoggerInterface */
-    protected $log;
+    protected LoggerInterface $log;
 
-    /** @var Question */
-    protected $question;
+    protected Question $question;
 
-    /** @var Redirector */
-    protected $redirect;
+    protected Redirector $redirect;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
     /** @var array */
-    protected $permissions = [
+    protected array $permissions = [
         'question.add',
         'question.edit',
     ];

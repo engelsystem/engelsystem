@@ -18,17 +18,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class UserWorkLogControllerTest extends ControllerTest
 {
-    /** @var Authenticator|MockObject */
-    protected $auth;
+    protected Authenticator|MockObject $auth;
 
-    /** @var Redirector|MockObject */
-    protected $redirect;
+    protected Redirector|MockObject $redirect;
 
-    /** @var User */
-    protected $user;
+    protected User $user;
 
-    /** @var UserWorkLogController */
-    protected $controller;
+    protected UserWorkLogController $controller;
 
     /**
      * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog

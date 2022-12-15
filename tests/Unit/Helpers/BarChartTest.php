@@ -31,8 +31,7 @@ class BarChartTest extends TestCase
         ],
     ];
 
-    /** @var Renderer&MockObject */
-    private $rendererMock;
+    private Renderer&MockObject $rendererMock;
 
     protected function setUp(): void
     {

@@ -18,13 +18,17 @@ class PasswordReset extends HasUserModel
     use HasFactory;
 
     /** @var bool enable timestamps for created_at */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
     /** @var null Disable updated_at */
     public const UPDATED_AT = null;
 
-    /** The attributes that are mass assignable */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'token',
     ];

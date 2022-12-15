@@ -30,10 +30,10 @@ class Room extends BaseModel
     use HasFactory;
 
     /** @var bool Enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** @var array */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'name',
         'dect',
         'map_url',

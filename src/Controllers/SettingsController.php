@@ -15,23 +15,18 @@ class SettingsController extends BaseController
     use HasUserNotifications;
     use ChecksArrivalsAndDepartures;
 
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var LoggerInterface */
-    protected $log;
+    protected LoggerInterface $log;
 
-    /** @var Redirector */
-    protected $redirect;
+    protected Redirector $redirect;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
     /** @var string[] */
-    protected $permissions = [
+    protected array $permissions = [
         'user_settings',
     ];
 

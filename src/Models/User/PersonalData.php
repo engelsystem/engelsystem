@@ -26,16 +26,20 @@ class PersonalData extends HasUserModel
     use HasFactory;
 
     /** @var string The table associated with the model */
-    protected $table = 'users_personal_data';
+    protected $table = 'users_personal_data'; // phpcs:ignore
 
-    /** @var array The attributes that should be mutated to dates */
-    protected $dates = [
+    /** @var array<string> The attributes that should be mutated to dates */
+    protected $dates = [ // phpcs:ignore
         'planned_arrival_date',
         'planned_departure_date',
     ];
 
-    /** The attributes that are mass assignable. */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'first_name',
         'last_name',

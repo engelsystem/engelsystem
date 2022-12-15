@@ -7,10 +7,10 @@ namespace Engelsystem\Helpers\Schedule;
 class Room
 {
     /** @var string required */
-    protected $name;
+    protected string $name;
 
     /** @var Event[] */
-    protected $event;
+    protected array $event;
 
     /**
      * Room constructor.

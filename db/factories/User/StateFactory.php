@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class StateFactory extends Factory
 {
     /** @var string */
-    protected $model = State::class;
+    protected $model = State::class; // phpcs:ignore
 
     /**
      * @return array

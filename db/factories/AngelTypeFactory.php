@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class AngelTypeFactory extends Factory
 {
     /** @var string */
-    protected $model = AngelType::class;
+    protected $model = AngelType::class; // phpcs:ignore
 
     /**
      * @return array

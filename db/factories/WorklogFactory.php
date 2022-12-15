@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class WorklogFactory extends Factory
 {
     /** @var string */
-    protected $model = Worklog::class;
+    protected $model = Worklog::class; // phpcs:ignore
 
     /**
      * @return array

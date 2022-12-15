@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class LicenseFactory extends Factory
 {
     /** @var string */
-    protected $model = License::class;
+    protected $model = License::class; // phpcs:ignore
 
     /**
      * @return array

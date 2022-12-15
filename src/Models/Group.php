@@ -25,7 +25,7 @@ class Group extends BaseModel
     use HasFactory;
 
     /** @var string[] */
-    protected $fillable = [
+    protected $fillable = [ // phpcs:ignore
         'name',
     ];
 

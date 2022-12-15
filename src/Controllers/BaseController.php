@@ -9,7 +9,7 @@ abstract class BaseController
     use ValidatesRequest;
 
     /** @var string[]|string[][] A list of Permissions required to access the controller or certain pages */
-    protected $permissions = [];
+    protected array $permissions = [];
 
     /**
      * Returns the list of permissions

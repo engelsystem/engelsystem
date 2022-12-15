@@ -19,17 +19,14 @@ class Migrate
     /** @var string */
     public const DOWN = 'down';
 
-    /** @var Application */
-    protected $app;
+    protected Application $app;
 
-    /** @var SchemaBuilder */
-    protected $schema;
+    protected SchemaBuilder $schema;
 
     /** @var callable */
     protected $output;
 
-    /** @var string */
-    protected $table = 'migrations';
+    protected string $table = 'migrations';
 
     /**
      * Migrate constructor

@@ -12,32 +12,26 @@ use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Psr\Http\Message\RequestInterface;
 
 class MessagesController extends BaseController
 {
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
-    /** @var Redirector */
-    protected $redirect;
+    protected Redirector $redirect;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var Response */
-    protected $request;
+    protected RequestInterface $request;
 
-    /** @var Database */
-    protected $db;
+    protected Database $db;
 
-    /** @var Message */
-    protected $message;
+    protected Message $message;
 
-    /** @var User */
-    protected $user;
+    protected User $user;
 
     /** @var string[] */
-    protected $permissions = [
+    protected array $permissions = [
         'user_messages',
     ];
 

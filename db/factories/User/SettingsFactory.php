@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class SettingsFactory extends Factory
 {
     /** @var string */
-    protected $model = Settings::class;
+    protected $model = Settings::class; // phpcs:ignore
 
     /**
      * @return array

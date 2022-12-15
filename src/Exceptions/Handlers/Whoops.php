@@ -13,8 +13,7 @@ use Whoops\Run as WhoopsRunner;
 
 class Whoops extends Legacy implements HandlerInterface
 {
-    /** @var Application */
-    protected $app;
+    protected Application $app;
 
     /**
      * Whoops constructor.

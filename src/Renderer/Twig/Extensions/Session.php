@@ -8,8 +8,7 @@ use Twig\TwigFunction;
 
 class Session extends TwigExtension
 {
-    /** @var SymfonySession */
-    protected $session;
+    protected SymfonySession $session;
 
     public function __construct(SymfonySession $session)
     {

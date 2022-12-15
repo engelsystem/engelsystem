@@ -9,19 +9,19 @@ use Carbon\Carbon;
 class Day
 {
     /** @var string required */
-    protected $date;
+    protected string $date;
 
     /** @var Carbon required */
-    protected $start;
+    protected Carbon $start;
 
     /** @var Carbon required */
-    protected $end;
+    protected Carbon $end;
 
     /** @var int required */
-    protected $index;
+    protected int $index;
 
     /** @var Room[] */
-    protected $room;
+    protected array $room;
 
     /**
      * Day constructor.

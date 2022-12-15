@@ -6,7 +6,8 @@ use Engelsystem\Database\Migration\Migration;
 
 class ImportInstallSql extends Migration
 {
-    protected $oldTables = [
+    /** @var array<string> */
+    protected array $oldTables = [
         'AngelTypes',
         'EventConfig',
         'GroupPrivileges',

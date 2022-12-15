@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PersonalDataFactory extends Factory
 {
     /** @var string */
-    protected $model = PersonalData::class;
+    protected $model = PersonalData::class; // phpcs:ignore
 
     /**
      * @return array

@@ -11,16 +11,11 @@ use Illuminate\Database\QueryException;
 class ConfigServiceProvider extends ServiceProvider
 {
     /** @var array */
-    protected $configFiles = ['app.php', 'config.default.php', 'config.php'];
+    protected array $configFiles = ['app.php', 'config.default.php', 'config.php'];
 
-    /** @var EventConfig */
-    protected $eventConfig;
-
-    public function __construct(Application $app, EventConfig $eventConfig = null)
+    public function __construct(Application $app, protected ?EventConfig $eventConfig = null)
     {
         parent::__construct($app);
-
-        $this->eventConfig = $eventConfig;
     }
 
     public function register(): void

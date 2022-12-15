@@ -19,10 +19,14 @@ class Contact extends HasUserModel
     use HasFactory;
 
     /** @var string The table associated with the model */
-    protected $table = 'users_contact';
+    protected $table = 'users_contact'; // phpcs:ignore
 
-    /** The attributes that are mass assignable */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'dect',
         'email',

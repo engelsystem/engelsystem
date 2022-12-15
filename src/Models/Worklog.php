@@ -32,22 +32,26 @@ class Worklog extends BaseModel
     use UsesUserModel;
 
     /** @var bool Enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** @var array The attributes that should be mutated to dates */
-    protected $dates = [
+    /** @var array<string> The attributes that should be mutated to dates */
+    protected $dates = [ // phpcs:ignore
         'worked_at',
     ];
 
-    /** @var string[] */
-    protected $casts = [
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
         'user_id'    => 'integer',
         'creator_id' => 'integer',
         'hours'      => 'float',
     ];
 
-    /** The attributes that are mass assignable. */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'creator_id',
         'hours',

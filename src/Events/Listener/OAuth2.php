@@ -12,13 +12,11 @@ use Psr\Log\LoggerInterface;
 
 class OAuth2
 {
-    /** @var Authenticator */
     protected Authenticator $auth;
 
     /** @var array */
     protected array $config;
 
-    /** @var LoggerInterface */
     protected LoggerInterface $log;
 
     public function __construct(Config $config, LoggerInterface $log, Authenticator $auth)

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class FaqControllerTest extends ControllerTest
 {
     /** @var array */
-    protected $data = [
+    protected array $data = [
         'question' => 'Foo?',
         'text'     => 'Bar!',
     ];

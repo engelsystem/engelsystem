@@ -10,14 +10,12 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
  */
 class BaseModelImplementation extends BaseModel
 {
-    /** @var array */
-    protected $fillable = ['foo'];
+    /** @var array<string> */
+    protected $fillable = ['foo']; // phpcs:ignore
 
-    /** @var int */
-    public $saveCount = 0;
+    public int $saveCount = 0;
 
-    /** @var QueryBuilder */
-    public static $queryBuilder = null;
+    public static QueryBuilder $queryBuilder = null;
 
     /**
      * @param array $options

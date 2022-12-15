@@ -15,22 +15,16 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
     use ResolvesMiddlewareTrait;
 
     /** @var MiddlewareInterface[]|string[] */
-    protected $stack;
+    protected array $stack;
 
-    /** @var Application */
-    protected $container;
-
-    /** @var RequestHandlerInterface */
-    protected $next;
+    protected RequestHandlerInterface $next;
 
     /**
      * @param MiddlewareInterface[]|string[] $stack
-     * @param Application|null               $container
      */
-    public function __construct(array $stack = [], Application $container = null)
+    public function __construct(array $stack = [], protected ?Application $container = null)
     {
         $this->stack = $stack;
-        $this->container = $container;
     }
 
     /**

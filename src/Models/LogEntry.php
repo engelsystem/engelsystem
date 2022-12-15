@@ -22,7 +22,7 @@ use Illuminate\Support\Collection as SupportCollection;
 class LogEntry extends BaseModel
 {
     /** @var bool enable timestamps for created_at */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
     /** @var null Disable updated_at */
     public const UPDATED_AT = null;
@@ -32,7 +32,7 @@ class LogEntry extends BaseModel
      *
      * @var array
      */
-    protected $fillable = [
+    protected $fillable = [ // phpcs:ignore
         'level',
         'message',
     ];

@@ -13,7 +13,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class LegacyMiddleware implements MiddlewareInterface
 {
-    protected $free_pages = [
+    /** @var array<string> */
+    protected array $free_pages = [
         'admin_event_config',
         'angeltypes',
         'atom',
@@ -28,11 +29,9 @@ class LegacyMiddleware implements MiddlewareInterface
         'admin_shifts_history',
     ];
 
-    /** @var ContainerInterface */
-    protected $container;
+    protected ContainerInterface $container;
 
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
     public function __construct(ContainerInterface $container, Authenticator $auth)
     {

@@ -11,70 +11,66 @@ class Event
     use CalculatesTime;
 
     /** @var string required globally unique */
-    protected $guid;
+    protected string $guid;
 
     /** @var int required globally unique */
-    protected $id;
+    protected int $id;
 
     /** @var Room required, string in XML */
-    protected $room;
+    protected Room $room;
 
     /** @var string required */
-    protected $title;
+    protected string $title;
 
     /** @var string required */
-    protected $subtitle;
+    protected string $subtitle;
 
     /** @var string required */
-    protected $type;
+    protected string $type;
 
     /** @var Carbon required */
-    protected $date;
+    protected Carbon $date;
 
     /** @var string required time (hh:mm:ss || hh:mm) */
-    protected $start;
+    protected string $start;
 
     /** @var string required (h?h:mm:ss || h?h:mm) */
-    protected $duration;
+    protected string $duration;
 
     /** @var string required */
-    protected $abstract;
+    protected string $abstract;
 
     /** @var string required globally unique */
-    protected $slug;
+    protected string $slug;
 
     /** @var string required */
-    protected $track;
+    protected string $track;
 
-    /** @var string|null */
-    protected $logo;
+    protected ?string $logo = null;
 
     /** @var string[] id => name */
-    protected $persons;
+    protected array $persons;
 
     /** @var string|null two letter code */
-    protected $language;
+    protected ?string $language = null;
 
-    /** @var string|null */
-    protected $description;
+    protected ?string $description = null;
 
     /** @var string|null license (and opt out in XML, null if not recorded, empty if no license defined) */
-    protected $recording;
+    protected ?string $recording = null;
 
     /** @var array href => title */
-    protected $links;
+    protected array $links;
 
     /** @var array href => name */
-    protected $attachments;
+    protected array $attachments;
 
-    /** @var string|null */
-    protected $url;
+    protected ?string $url = null;
 
-    /** @var string|null */
-    protected $videoDownloadUrl;
+    protected ?string $videoDownloadUrl = null;
 
     /** @var Carbon Calculated */
-    protected $endDate;
+    protected Carbon $endDate;
 
     /**
      * Event constructor.

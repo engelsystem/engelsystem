@@ -7,7 +7,7 @@ use Engelsystem\Database\Migration\Migration;
 class AddAngelSupporterPermissions extends Migration
 {
     /** @var string[] */
-    protected $data = [
+    protected array $data = [
         '2-Engel',
         'shiftentry_edit_angeltype_supporter',
     ];

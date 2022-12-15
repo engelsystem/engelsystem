@@ -16,32 +16,24 @@ class NewsController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
-    /** @var NewsComment */
-    protected $comment;
+    protected NewsComment $comment;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var LoggerInterface */
-    protected $log;
+    protected LoggerInterface $log;
 
-    /** @var News */
-    protected $news;
+    protected News $news;
 
-    /** @var Redirector */
-    protected $redirect;
+    protected Redirector $redirect;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var Request */
-    protected $request;
+    protected Request $request;
 
     /** @var array */
-    protected $permissions = [
+    protected array $permissions = [
         'news',
         'meetings'      => 'user_meetings',
         'comment'       => 'news_comments',

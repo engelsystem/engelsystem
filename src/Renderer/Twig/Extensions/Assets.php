@@ -10,11 +10,9 @@ use Twig\TwigFunction;
 
 class Assets extends TwigExtension
 {
-    /** @var AssetsProvider */
-    protected $assets;
+    protected AssetsProvider $assets;
 
-    /** @var UrlGeneratorInterface */
-    protected $urlGenerator;
+    protected UrlGeneratorInterface $urlGenerator;
 
     public function __construct(AssetsProvider $assets, UrlGeneratorInterface $urlGenerator)
     {

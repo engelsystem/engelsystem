@@ -13,8 +13,7 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 abstract class TestCase extends PHPUnitTestCase
 {
-    /** @var Application */
-    protected $app;
+    protected Application $app;
 
     /**
      * @param array           $arguments

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PasswordResetFactory extends Factory
 {
     /** @var string */
-    protected $model = PasswordReset::class;
+    protected $model = PasswordReset::class; // phpcs:ignore
 
     /**
      * @return array

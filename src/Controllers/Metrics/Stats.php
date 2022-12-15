@@ -30,8 +30,7 @@ use Illuminate\Support\Collection;
 
 class Stats
 {
-    /** @var Database */
-    protected $db;
+    protected Database $db;
 
     public function __construct(Database $db)
     {

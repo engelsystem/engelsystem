@@ -11,10 +11,8 @@ class SetAdminPassword extends Migration
 {
     use Reference;
 
-    /** @var Authenticator */
     protected Authenticator $auth;
 
-    /** @var Config */
     protected Config $config;
 
     public function __construct(SchemaBuilder $schemaBuilder, Authenticator $auth, Config $config)

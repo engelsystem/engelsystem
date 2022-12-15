@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class TranslationServiceProvider extends ServiceProvider
 {
-    /** @var GettextTranslator */
-    protected $translators = [];
+    protected GettextTranslator|array $translators = [];
 
     public function register(): void
     {

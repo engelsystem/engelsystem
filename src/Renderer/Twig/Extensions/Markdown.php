@@ -8,8 +8,7 @@ use Twig\TwigFilter;
 
 class Markdown extends TwigExtension
 {
-    /** @var Parsedown */
-    protected $renderer;
+    protected Parsedown $renderer;
 
     public function __construct(Parsedown $renderer)
     {

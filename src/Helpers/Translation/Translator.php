@@ -5,13 +5,11 @@ namespace Engelsystem\Helpers\Translation;
 class Translator
 {
     /** @var string[] */
-    protected $locales;
+    protected array $locales;
 
-    /** @var string */
-    protected $locale;
+    protected string $locale;
 
-    /** @var string */
-    protected $fallbackLocale;
+    protected string $fallbackLocale;
 
     /** @var callable */
     protected $getTranslatorCallback;

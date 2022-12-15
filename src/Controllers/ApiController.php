@@ -6,8 +6,7 @@ use Engelsystem\Http\Response;
 
 class ApiController extends BaseController
 {
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
     public function __construct(Response $response)
     {

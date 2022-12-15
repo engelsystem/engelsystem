@@ -18,14 +18,11 @@ class NewsTest extends TestCase
 {
     use HasDatabase;
 
-    /** @var TestLogger */
-    protected $log;
+    protected TestLogger $log;
 
-    /** @var EngelsystemMailer|MockObject */
-    protected $mailer;
+    protected EngelsystemMailer|MockObject $mailer;
 
-    /** @var User */
-    protected $user;
+    protected User $user;
 
     /**
      * @covers \Engelsystem\Events\Listener\News::created

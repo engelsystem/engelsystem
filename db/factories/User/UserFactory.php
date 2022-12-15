@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class UserFactory extends Factory
 {
     /** @var string */
-    protected $model = User::class;
+    protected $model = User::class; // phpcs:ignore
 
     /**
      * @return array

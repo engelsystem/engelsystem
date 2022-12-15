@@ -9,14 +9,11 @@ use InvalidArgumentException;
 
 class UserModelImplementation extends User
 {
-    /** @var User */
-    public static $user = null;
+    public static ?User $user = null;
 
-    /** @var int */
-    public static $id = null;
+    public static ?int $id = null;
 
-    /** @var int */
-    public static $apiKey = null;
+    public static ?string $apiKey = null;
 
     /**
      * @param array $columns

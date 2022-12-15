@@ -10,17 +10,14 @@ class FaqController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var Faq */
-    protected $faq;
+    protected Faq $faq;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
     /** @var string[] */
-    protected $permissions = [
+    protected array $permissions = [
         'faq.view',
     ];
 

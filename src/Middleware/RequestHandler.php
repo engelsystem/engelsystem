@@ -16,8 +16,7 @@ class RequestHandler implements MiddlewareInterface
 {
     use ResolvesMiddlewareTrait;
 
-    /** @var Application */
-    protected $container;
+    protected Application $container;
 
     public function __construct(Application $container)
     {

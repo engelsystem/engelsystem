@@ -7,14 +7,11 @@ use Symfony\Component\Mime\Email;
 
 class Mailer
 {
-    /** @var MailerInterface */
-    protected $mailer;
+    protected MailerInterface $mailer;
 
-    /** @var string */
-    protected $fromAddress = '';
+    protected string $fromAddress = '';
 
-    /** @var string */
-    protected $fromName = null;
+    protected ?string $fromName = null;
 
     public function __construct(MailerInterface $mailer)
     {

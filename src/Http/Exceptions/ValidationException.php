@@ -8,8 +8,7 @@ use Throwable;
 
 class ValidationException extends RuntimeException
 {
-    /** @var Validator */
-    protected $validator;
+    protected Validator $validator;
 
     /**
      * @param Throwable|null $previous

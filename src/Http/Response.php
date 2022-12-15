@@ -12,27 +12,13 @@ class Response extends SymfonyResponse implements ResponseInterface
 {
     use MessageTrait;
 
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    /** @var Renderer */
-    protected $renderer;
-
-    /**
-     * @param array            $headers
-     */
     public function __construct(
         string $content = '',
         int $status = 200,
         array $headers = [],
-        Renderer $renderer = null,
-        SessionInterface $session = null
+        protected ?Renderer $renderer = null,
+        protected ?SessionInterface $session = null
     ) {
-        $this->renderer = $renderer;
-        $this->session = $session;
-
         parent::__construct($content, $status, $headers);
     }
 

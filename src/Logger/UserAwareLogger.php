@@ -8,8 +8,7 @@ use Stringable;
 
 class UserAwareLogger extends Logger
 {
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
     /**
      * Logs with an arbitrary level and prepends the user

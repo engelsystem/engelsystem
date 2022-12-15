@@ -13,14 +13,12 @@ use Engelsystem\Models\User\User;
  */
 class NewsCommentsTest extends ModelTest
 {
-    /** @var User */
-    private $user;
+    private User $user;
 
-    /** @var News */
-    private $news;
+    private News $news;
 
     /** @var array */
-    private $newsCommentData;
+    private array $newsCommentData;
 
     /**
      * Sets up some test objects and test data.

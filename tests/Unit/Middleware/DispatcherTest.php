@@ -4,7 +4,7 @@ namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Application;
 use Engelsystem\Middleware\Dispatcher;
-use LogicException;
+use Error;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -122,7 +122,7 @@ class DispatcherTest extends TestCase
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->createMock(ServerRequestInterface::class);
 
-        $this->expectException(LogicException::class);
+        $this->expectException(Error::class);
 
         $dispatcher = new Dispatcher();
         $dispatcher->handle($request);

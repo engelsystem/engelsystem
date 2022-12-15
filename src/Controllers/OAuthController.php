@@ -25,29 +25,21 @@ class OAuthController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
-    /** @var AuthController */
-    protected $authController;
+    protected AuthController $authController;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var LoggerInterface */
-    protected $log;
+    protected LoggerInterface $log;
 
-    /** @var OAuth */
-    protected $oauth;
+    protected OAuth $oauth;
 
-    /** @var Redirector */
-    protected $redirector;
+    protected Redirector $redirector;
 
-    /** @var Session */
-    protected $session;
+    protected Session $session;
 
-    /** @var UrlGenerator */
-    protected $url;
+    protected UrlGenerator $url;
 
     public function __construct(
         Authenticator $auth,

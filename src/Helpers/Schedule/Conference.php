@@ -9,25 +9,20 @@ class Conference
     use CalculatesTime;
 
     /** @var string required */
-    protected $title;
+    protected string $title;
 
     /** @var string required */
-    protected $acronym;
+    protected string $acronym;
 
-    /** @var string|null */
-    protected $start;
+    protected ?string $start = null;
 
-    /** @var string|null */
-    protected $end;
+    protected ?string $end = null;
 
-    /** @var int|null */
-    protected $days;
+    protected ?int $days = null;
 
-    /** @var string|null */
-    protected $timeslotDuration;
+    protected ?string $timeslotDuration = null;
 
-    /** @var string|null */
-    protected $baseUrl;
+    protected ?string $baseUrl = null;
 
     /**
      * Event constructor.

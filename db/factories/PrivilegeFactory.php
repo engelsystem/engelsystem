@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PrivilegeFactory extends Factory
 {
     /** @var string */
-    protected $model = Privilege::class;
+    protected $model = Privilege::class; // phpcs:ignore
 
     /**
      * @return array

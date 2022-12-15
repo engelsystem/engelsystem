@@ -19,19 +19,19 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 class EventConfig extends BaseModel
 {
     /** @var string The primary key for the model */
-    protected $primaryKey = 'name';
+    protected $primaryKey = 'name'; // phpcs:ignore
 
     /** @var bool Indicates if the IDs are auto-incrementing */
-    public $incrementing = false;
+    public $incrementing = false; // phpcs:ignore
 
     /** @var string Required because it is not event_configs */
-    protected $table = 'event_config';
+    protected $table = 'event_config'; // phpcs:ignore
 
     /** @var array Values that are mass assignable */
-    protected $fillable = ['name', 'value'];
+    protected $fillable = ['name', 'value']; // phpcs:ignore
 
-    /** @var array The configuration values that should be cast to native types */
-    protected $valueCasts = [
+    /** @var array<string, string> The configuration values that should be cast to native types */
+    protected array $valueCasts = [
         'buildup_start' => 'datetime_human',
         'event_start'   => 'datetime_human',
         'event_end'     => 'datetime_human',
@@ -40,7 +40,7 @@ class EventConfig extends BaseModel
     ];
 
     /** @var bool It could be interesting to know when a value changed the last time */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
     /**
      * Value accessor

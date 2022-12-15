@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class EventDispatcher
 {
     /** @var callable[] */
-    protected $listeners;
+    protected array $listeners;
 
     public function listen(array|string $events, callable|string $listener): void
     {

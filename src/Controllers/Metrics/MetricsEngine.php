@@ -6,8 +6,7 @@ use Engelsystem\Renderer\EngineInterface;
 
 class MetricsEngine implements EngineInterface
 {
-    /** @var string */
-    protected $prefix = 'engelsystem_';
+    protected string $prefix = 'engelsystem_';
 
     /**
      * Render metrics

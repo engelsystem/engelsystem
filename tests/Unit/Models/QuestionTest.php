@@ -11,15 +11,9 @@ use Illuminate\Support\Str;
 
 class QuestionTest extends ModelTest
 {
-    /**
-     * @var User
-     */
-    private $user1;
+    private User $user1;
 
-    /**
-     * @var User
-     */
-    private $user2;
+    private User $user2;
 
     protected function setUp(): void
     {

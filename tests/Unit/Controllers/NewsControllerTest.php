@@ -19,11 +19,10 @@ class NewsControllerTest extends ControllerTest
 {
     use HasDatabase;
 
-    /** @var Authenticator|MockObject */
-    protected $auth;
+    protected Authenticator|MockObject $auth;
 
     /** @var array */
-    protected $data = [
+    protected array $data = [
         [
             'title'      => 'Foo',
             'text'       => 'foo',

@@ -25,8 +25,8 @@ class ShiftType extends BaseModel
 {
     use HasFactory;
 
-    /** @var array */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'name',
         'description',
     ];

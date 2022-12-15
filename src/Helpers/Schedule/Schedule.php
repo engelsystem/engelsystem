@@ -8,14 +8,12 @@ use Carbon\Carbon;
 
 class Schedule
 {
-    /** @var string */
-    protected $version;
+    protected string $version;
 
-    /** @var Conference */
-    protected $conference;
+    protected Conference $conference;
 
     /** @var Day[] */
-    protected $day;
+    protected array $day;
 
     /**
      * @param Day[]      $days

@@ -12,21 +12,19 @@ use Psr\Http\Server\MiddlewareInterface;
 
 class Application extends Container
 {
-    /** @var string|null */
-    protected $appPath = null;
+    protected ?string $appPath = null;
 
-    /** @var bool */
-    protected $isBootstrapped = false;
+    protected bool $isBootstrapped = false;
 
     /** @var MiddlewareInterface[]|string[] */
-    protected $middleware;
+    protected array $middleware;
 
     /**
      * Registered service providers
      *
      * @var array
      */
-    protected $serviceProviders = [];
+    protected array $serviceProviders = [];
 
     /**
      * Application constructor.

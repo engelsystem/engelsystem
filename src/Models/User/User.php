@@ -68,10 +68,14 @@ class User extends BaseModel
     use HasFactory;
 
     /** @var bool enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** The attributes that are mass assignable */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'name',
         'password',
         'email',
@@ -79,14 +83,14 @@ class User extends BaseModel
         'last_login_at',
     ];
 
-    /** @var array The attributes that should be hidden for serialization */
-    protected $hidden = [
+    /** @var array<string> The attributes that should be hidden for serialization */
+    protected $hidden = [ // phpcs:ignore
         'api_key',
         'password',
     ];
 
-    /** @var array The attributes that should be mutated to dates */
-    protected $dates = [
+    /** @var array<string> The attributes that should be mutated to dates */
+    protected $dates = [ // phpcs:ignore
         'last_login_at',
     ];
 

@@ -29,41 +29,30 @@ class OAuthControllerTest extends TestCase
 {
     use HasDatabase;
 
-    /** @var Authenticator|MockObject */
-    protected $auth;
+    protected Authenticator|MockObject $auth;
 
-    /** @var AuthController|MockObject */
-    protected $authController;
+    protected AuthController|MockObject $authController;
 
-    /** @var User */
-    protected $authenticatedUser;
+    protected User $authenticatedUser;
 
-    /** @var User */
-    protected $otherAuthenticatedUser;
+    protected User $otherAuthenticatedUser;
 
-    /** @var User */
-    protected $otherUser;
+    protected User $otherUser;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var TestLogger */
-    protected $log;
+    protected TestLogger $log;
 
-    /** @var OAuth */
-    protected $oauth;
+    protected OAuth $oauth;
 
-    /** @var Redirector|MockObject $redirect */
-    protected $redirect;
+    protected Redirector|MockObject $redirect;
 
-    /** @var Session */
-    protected $session;
+    protected Session $session;
 
-    /** @var UrlGenerator|MockObject */
-    protected $url;
+    protected UrlGenerator|MockObject $url;
 
     /** @var string[][] */
-    protected $oauthConfig = [
+    protected array $oauthConfig = [
         'testprovider' => [
             'client_id'     => 'testsystem',
             'client_secret' => 'foo-bar-baz',

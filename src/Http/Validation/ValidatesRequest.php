@@ -7,8 +7,7 @@ use Engelsystem\Http\Request;
 
 trait ValidatesRequest
 {
-    /** @var Validator */
-    protected $validator;
+    protected Validator $validator;
 
     /**
      * @param array   $rules

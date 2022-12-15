@@ -28,7 +28,7 @@ class PasswordResetControllerTest extends TestCase
     use HasDatabase;
 
     /** @var array */
-    protected $args = [];
+    protected array $args = [];
 
     /**
      * @covers \Engelsystem\Controllers\PasswordResetController::reset

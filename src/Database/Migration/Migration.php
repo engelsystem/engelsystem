@@ -6,8 +6,7 @@ use Illuminate\Database\Schema\Builder as SchemaBuilder;
 
 abstract class Migration
 {
-    /** @var SchemaBuilder */
-    protected $schema;
+    protected SchemaBuilder $schema;
 
     /**
      * Migration constructor.

@@ -4,10 +4,8 @@ namespace Engelsystem\Helpers;
 
 class Assets
 {
-    /** @var string */
     protected string $assetsPath;
 
-    /** @var string */
     protected string $manifestFile = 'manifest.json';
 
     /**

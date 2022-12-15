@@ -9,14 +9,11 @@ use Engelsystem\Http\Response;
 
 class HomeController extends BaseController
 {
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var Redirector */
-    protected $redirect;
+    protected Redirector $redirect;
 
     public function __construct(Authenticator $auth, Config $config, Redirector $redirect)
     {

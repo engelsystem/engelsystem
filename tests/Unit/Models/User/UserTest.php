@@ -31,7 +31,7 @@ class UserTest extends ModelTest
     use ArraySubsetAsserts;
 
     /** @var string[] */
-    protected $data = [
+    protected array $data = [
         'name'     => 'lorem',
         'password' => '',
         'email'    => 'foo@bar.batz',

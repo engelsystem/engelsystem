@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class UserAngelTypeFactory extends Factory
 {
     /** @var string */
-    protected $model = UserAngelType::class;
+    protected $model = UserAngelType::class; // phpcs:ignore
 
     /**
      * @return array

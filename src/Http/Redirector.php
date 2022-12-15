@@ -4,14 +4,11 @@ namespace Engelsystem\Http;
 
 class Redirector
 {
-    /** @var Request */
-    protected $request;
+    protected Request $request;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var UrlGeneratorInterface */
-    protected $url;
+    protected UrlGeneratorInterface $url;
 
     public function __construct(Request $request, Response $response, UrlGeneratorInterface $url)
     {

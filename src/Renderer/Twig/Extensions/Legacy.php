@@ -8,8 +8,7 @@ use Twig\TwigFunction;
 
 class Legacy extends TwigExtension
 {
-    /** @var Request */
-    protected $request;
+    protected Request $request;
 
     public function __construct(Request $request)
     {

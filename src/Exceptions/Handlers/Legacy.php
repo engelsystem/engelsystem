@@ -8,8 +8,7 @@ use Throwable;
 
 class Legacy implements HandlerInterface
 {
-    /** @var LoggerInterface */
-    protected $log;
+    protected ?LoggerInterface $log = null;
 
     public function render(Request $request, Throwable $e): void
     {

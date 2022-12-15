@@ -9,7 +9,7 @@ class Renderer
     use LoggerAwareTrait;
 
     /** @var EngineInterface[] */
-    protected $renderer = [];
+    protected array $renderer = [];
 
     /**
      * Render a template

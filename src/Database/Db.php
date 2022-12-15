@@ -9,8 +9,7 @@ use PDO;
 /** @deprecated */
 class Db
 {
-    /** @var CapsuleManager */
-    protected static $dbManager;
+    protected static CapsuleManager $dbManager;
 
     /**
      * Set the database connection manager

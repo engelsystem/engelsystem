@@ -12,14 +12,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class RouteDispatcher implements MiddlewareInterface
 {
-    /** @var FastRouteDispatcher */
-    protected $dispatcher;
+    protected FastRouteDispatcher $dispatcher;
 
-    /** @var ResponseInterface */
-    protected $response;
+    protected ResponseInterface $response;
 
-    /** @var MiddlewareInterface|null */
-    protected $notFound;
+    protected ?MiddlewareInterface $notFound = null;
 
     /**
      * @param ResponseInterface        $response Default response

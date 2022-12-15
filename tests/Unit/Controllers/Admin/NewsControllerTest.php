@@ -16,11 +16,10 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class NewsControllerTest extends ControllerTest
 {
-    /** @var Authenticator|MockObject */
-    protected $auth;
+    protected Authenticator|MockObject $auth;
 
     /** @var array */
-    protected $data = [
+    protected array $data = [
         [
             'title'      => 'Foo',
             'text'       => '**foo**',

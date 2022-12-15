@@ -7,11 +7,10 @@ use Throwable;
 
 class HttpException extends RuntimeException
 {
-    /** @var int */
-    protected $statusCode;
+    protected int $statusCode;
 
     /** @var array */
-    protected $headers = [];
+    protected array $headers = [];
 
     /**
      * @param array          $headers

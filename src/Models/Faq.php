@@ -24,13 +24,13 @@ class Faq extends BaseModel
     use HasFactory;
 
     /** @var bool Enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
     /** @var string The models table */
-    public $table = 'faq';
+    public $table = 'faq'; // phpcs:ignore
 
-    /** @var string[] */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'question',
         'text',
     ];

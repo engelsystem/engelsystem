@@ -11,12 +11,8 @@ class ResolvesMiddlewareTraitImplementation
 {
     use ResolvesMiddlewareTrait;
 
-    /** @var Application */
-    protected $container;
-
-    public function __construct(Application $container = null)
+    public function __construct(protected ?Application $container = null)
     {
-        $this->container = $container;
     }
 
     public function callResolveMiddleware(

@@ -21,14 +21,11 @@ class SettingsControllerTest extends ControllerTest
 {
     use HasDatabase;
 
-    /** @var Authenticator|MockObject */
-    protected $auth;
+    protected Authenticator|MockObject $auth;
 
-    /** @var User */
-    protected $user;
+    protected User $user;
 
-    /** @var SettingsController */
-    protected $controller;
+    protected SettingsController $controller;
 
     protected function setUpProfileTest(): array
     {

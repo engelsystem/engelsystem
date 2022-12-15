@@ -9,11 +9,9 @@ use Twig\TwigFunction;
 
 class Develop extends TwigExtension
 {
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var VarDumper|null */
-    protected $dumper;
+    protected ?VarDumper $dumper = null;
 
     public function __construct(Config $config)
     {

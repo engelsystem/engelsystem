@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ShiftTypeFactory extends Factory
 {
     /** @var string */
-    protected $model = ShiftType::class;
+    protected $model = ShiftType::class; // phpcs:ignore
 
     /**
      * @return array

@@ -11,28 +11,21 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class Authenticator
 {
-    /** @var User|null */
     protected ?User $user = null;
 
-    /** @var ServerRequestInterface */
     protected ServerRequestInterface $request;
 
-    /** @var Session */
     protected Session $session;
 
-    /** @var UserRepository */
     protected UserRepository $userRepository;
 
     /** @var string[] */
     protected array $permissions = [];
 
-    /** @var int|string|null */
-    protected $passwordAlgorithm = PASSWORD_DEFAULT;
+    protected int|string|null $passwordAlgorithm = PASSWORD_DEFAULT;
 
-    /** @var int */
     protected int $defaultRole = 20;
 
-    /** @var int */
     protected int $guestRole = 10;
 
     public function __construct(ServerRequestInterface $request, Session $session, UserRepository $userRepository)

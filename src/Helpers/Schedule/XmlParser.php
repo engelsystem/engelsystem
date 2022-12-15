@@ -9,22 +9,20 @@ use SimpleXMLElement;
 
 class XmlParser
 {
-    /** @var SimpleXMLElement */
-    protected $scheduleXML;
+    protected SimpleXMLElement $scheduleXML;
 
-    /** @var Schedule */
-    protected $schedule;
+    protected Schedule $schedule;
 
     public function load(string $xml): bool
     {
-        $this->scheduleXML = simplexml_load_string($xml);
+        $scheduleXML = simplexml_load_string($xml);
 
-        if (!$this->scheduleXML) {
+        if (!$scheduleXML) {
             return false;
         }
 
+        $this->scheduleXML = $scheduleXML;
         $this->parseXml();
-
         return true;
     }
 

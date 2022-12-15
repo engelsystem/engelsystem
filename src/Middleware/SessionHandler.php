@@ -11,11 +11,10 @@ use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 
 class SessionHandler implements MiddlewareInterface
 {
-    /** @var SessionStorageInterface */
-    protected $session;
+    protected SessionStorageInterface $session;
 
     /** @var string[] */
-    protected $paths = [];
+    protected array $paths = [];
 
     /**
      * @param array                   $paths

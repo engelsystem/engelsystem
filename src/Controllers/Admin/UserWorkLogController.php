@@ -19,29 +19,22 @@ class UserWorkLogController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var LoggerInterface */
-    protected $log;
+    protected LoggerInterface $log;
 
-    /** @var Worklog */
-    protected $worklog;
+    protected Worklog $worklog;
 
-    /** @var Redirector */
-    protected $redirect;
+    protected Redirector $redirect;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var User */
-    protected $user;
+    protected User $user;
 
     /** @var array */
-    protected $permissions = [
+    protected array $permissions = [
         'admin_user_worklog',
     ];
 

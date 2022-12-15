@@ -6,8 +6,7 @@ use Engelsystem\Application;
 
 abstract class ServiceProvider
 {
-    /** @var Application */
-    protected $app;
+    protected Application $app;
 
     /**
      * ServiceProvider constructor.

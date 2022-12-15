@@ -12,20 +12,15 @@ use Engelsystem\Models\User\User;
  */
 class MessageTest extends ModelTest
 {
-    /** @var User */
-    private $user1;
+    private User $user1;
 
-    /** @var User */
-    private $user2;
+    private User $user2;
 
-    /** @var Message */
-    private $message1;
+    private Message $message1;
 
-    /** @var Message */
-    private $message2;
+    private Message $message2;
 
-    /** @var Message */
-    private $message3;
+    private Message $message3;
 
     protected function setUp(): void
     {

@@ -24,7 +24,7 @@ use TwigBridge\Extension\Laravel\Model as TwigModel;
 class TwigServiceProvider extends ServiceProvider
 {
     /** @var array */
-    protected $extensions = [
+    protected array $extensions = [
         'assets'         => Assets::class,
         'authentication' => Authentication::class,
         'config'         => Config::class,

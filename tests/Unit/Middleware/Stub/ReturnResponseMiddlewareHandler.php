@@ -9,8 +9,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class ReturnResponseMiddlewareHandler implements RequestHandlerInterface
 {
-    /** @var ResponseInterface */
-    protected $response;
+    protected ResponseInterface $response;
 
     public function __construct(ResponseInterface $response)
     {

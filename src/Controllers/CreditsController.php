@@ -8,14 +8,11 @@ use Engelsystem\Http\Response;
 
 class CreditsController extends BaseController
 {
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var Version */
-    protected $version;
+    protected Version $version;
 
     public function __construct(Response $response, Config $config, Version $version)
     {

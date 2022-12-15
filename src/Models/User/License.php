@@ -25,10 +25,10 @@ class License extends HasUserModel
     use HasFactory;
 
     /** @var string The table associated with the model */
-    protected $table = 'users_licenses';
+    protected $table = 'users_licenses'; // phpcs:ignore
 
     /** @var array Default attributes */
-    protected $attributes = [
+    protected $attributes = [ // phpcs:ignore
         'has_car'        => false,
         'drive_forklift' => false,
         'drive_car'      => false,
@@ -37,8 +37,12 @@ class License extends HasUserModel
         'drive_12t'      => false,
     ];
 
-    /** The attributes that are mass assignable */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'has_car',
         'drive_forklift',
@@ -48,8 +52,8 @@ class License extends HasUserModel
         'drive_12t',
     ];
 
-    /** @var string[] */
-    protected $casts = [
+    /** @var array<string> */
+    protected $casts = [ // phpcs:ignore
         'has_car'        => 'boolean',
         'drive_forklift' => 'boolean',
         'drive_car'      => 'boolean',

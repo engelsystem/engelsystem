@@ -11,11 +11,9 @@ use Engelsystem\Models\User\User;
 
 class DesignController extends BaseController
 {
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
     public function __construct(Response $response, Config $config)
     {

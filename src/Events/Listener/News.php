@@ -12,14 +12,11 @@ use Symfony\Component\Mailer\Exception\TransportException;
 
 class News
 {
-    /** @var LoggerInterface */
-    protected $log;
+    protected LoggerInterface $log;
 
-    /** @var EngelsystemMailer */
-    protected $mailer;
+    protected EngelsystemMailer $mailer;
 
-    /** @var UserSettings */
-    protected $settings;
+    protected UserSettings $settings;
 
     public function __construct(
         LoggerInterface $log,

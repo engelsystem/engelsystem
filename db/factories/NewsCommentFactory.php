@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class NewsCommentFactory extends Factory
 {
     /** @var string */
-    protected $model = NewsComment::class;
+    protected $model = NewsComment::class; // phpcs:ignore
 
     /**
      * @return array

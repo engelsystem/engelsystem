@@ -9,14 +9,11 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class EngelsystemMailer extends Mailer
 {
-    /** @var Renderer|null */
-    protected $view;
+    protected ?Renderer $view = null;
 
-    /** @var Translator|null */
-    protected $translation;
+    protected ?Translator $translation = null;
 
-    /** @var string */
-    protected $subjectPrefix = null;
+    protected ?string $subjectPrefix = null;
 
     /**
      * @param Renderer|null   $view

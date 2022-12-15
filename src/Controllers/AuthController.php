@@ -15,23 +15,18 @@ class AuthController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var SessionInterface */
-    protected $session;
+    protected SessionInterface $session;
 
-    /** @var Redirector */
-    protected $redirect;
+    protected Redirector $redirect;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var Authenticator */
-    protected $auth;
+    protected Authenticator $auth;
 
     /** @var array */
-    protected $permissions = [
+    protected array $permissions = [
         'login'     => 'login',
         'postLogin' => 'login',
     ];

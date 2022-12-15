@@ -15,20 +15,16 @@ class PasswordResetController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var LoggerInterface */
-    protected $log;
+    protected LoggerInterface $log;
 
-    /** @var EngelsystemMailer */
-    protected $mail;
+    protected EngelsystemMailer $mail;
 
-    /** @var Response */
-    protected $response;
+    protected Response $response;
 
-    /** @var SessionInterface */
-    protected $session;
+    protected SessionInterface $session;
 
     /** @var array */
-    protected $permissions = [
+    protected array $permissions = [
         'reset'             => 'login',
         'postReset'         => 'login',
         'resetPassword'     => 'login',

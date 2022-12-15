@@ -17,11 +17,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class QuestionsControllerTest extends ControllerTest
 {
-    /** @var Authenticator|MockObject */
-    protected $auth;
+    protected Authenticator|MockObject $auth;
 
-    /** @var User */
-    protected $user;
+    protected User $user;
 
     /**
      * @covers \Engelsystem\Controllers\QuestionsController::index

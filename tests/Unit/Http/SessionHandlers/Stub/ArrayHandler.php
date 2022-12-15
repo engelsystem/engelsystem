@@ -7,7 +7,7 @@ use Engelsystem\Http\SessionHandlers\AbstractHandler;
 class ArrayHandler extends AbstractHandler
 {
     /** @var string[] */
-    protected $content = [];
+    protected array $content = [];
 
     /**
      * {@inheritdoc}

@@ -8,7 +8,7 @@ use Engelsystem\Test\Unit\TestCase;
 class EventDispatcherTest extends TestCase
 {
     /** @var array */
-    protected $firedEvents = [];
+    protected array $firedEvents = [];
 
     /**
      * @covers \Engelsystem\Events\EventDispatcher::listen

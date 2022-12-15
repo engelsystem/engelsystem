@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class GroupFactory extends Factory
 {
     /** @var string */
-    protected $model = Group::class;
+    protected $model = Group::class; // phpcs:ignore
 
     /**
      * @return array

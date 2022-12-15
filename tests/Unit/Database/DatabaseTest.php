@@ -11,8 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class DatabaseTest extends TestCase
 {
-    /** @var DatabaseConnection */
-    protected $connection;
+    protected DatabaseConnection $connection;
 
     /**
      * @covers \Engelsystem\Database\Database::__construct()

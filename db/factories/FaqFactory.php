@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class FaqFactory extends Factory
 {
     /** @var string */
-    protected $model = Faq::class;
+    protected $model = Faq::class; // phpcs:ignore
 
     /**
      * @return array

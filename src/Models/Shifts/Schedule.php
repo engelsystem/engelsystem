@@ -37,17 +37,17 @@ class Schedule extends BaseModel
     use HasFactory;
 
     /** @var bool enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** @var string[] */
-    protected $casts = [
+    /** @var array<string> */
+    protected $casts = [ // phpcs:ignore
         'shift_type'     => 'integer',
         'minutes_before' => 'integer',
         'minutes_after'  => 'integer',
     ];
 
-    /** @var array Values that are mass assignable */
-    protected $fillable = [
+    /** @var array<string> Values that are mass assignable */
+    protected $fillable = [ // phpcs:ignore
         'name',
         'url',
         'shift_type',

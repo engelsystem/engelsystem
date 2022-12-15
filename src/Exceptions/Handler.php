@@ -10,14 +10,12 @@ use Throwable;
 
 class Handler
 {
-    /** @var string */
-    protected $environment;
+    protected string $environment;
 
     /** @var HandlerInterface[] */
-    protected $handler = [];
+    protected array $handler = [];
 
-    /** @var Request */
-    protected $request;
+    protected ?Request $request = null;
 
     /** @var string */
     public const ENV_PRODUCTION = 'prod';

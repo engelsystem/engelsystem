@@ -12,8 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait HasDatabase
 {
-    /** @var Database */
-    protected $database;
+    protected Database $database;
 
     /**
      * Setup in memory database

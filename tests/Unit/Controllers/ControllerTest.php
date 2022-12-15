@@ -20,20 +20,15 @@ abstract class ControllerTest extends TestCase
 {
     use HasDatabase;
 
-    /** @var Config */
-    protected $config;
+    protected Config $config;
 
-    /** @var TestLogger */
-    protected $log;
+    protected TestLogger $log;
 
-    /** @var Response|MockObject */
-    protected $response;
+    protected Response|MockObject $response;
 
-    /** @var Request */
-    protected $request;
+    protected Request $request;
 
-    /** @var Session */
-    protected $session;
+    protected Session $session;
 
     /**
      * @param string|null $type
