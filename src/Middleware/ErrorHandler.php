@@ -21,7 +21,7 @@ class ErrorHandler implements MiddlewareInterface
     /**
      * A list of inputs that are not saved from form input
      *
-     * @var array
+     * @var array<string>
      */
     protected array $formIgnore = [
         'password',
@@ -42,7 +42,6 @@ class ErrorHandler implements MiddlewareInterface
      * Handles any error messages
      *
      * Should be added at the beginning
-     *
      */
     public function process(
         ServerRequestInterface $request,
@@ -93,7 +92,6 @@ class ErrorHandler implements MiddlewareInterface
 
     /**
      * Select a view based on the given status code
-     *
      */
     protected function selectView(int $statusCode): string
     {
@@ -112,7 +110,6 @@ class ErrorHandler implements MiddlewareInterface
     /**
      * Create a new response
      *
-     * @param array  $headers
      * @codeCoverageIgnore
      */
     protected function createResponse(string $content = '', int $status = 200, array $headers = []): ResponseInterface
@@ -122,7 +119,6 @@ class ErrorHandler implements MiddlewareInterface
 
     /**
      * Create a redirect back response
-     *
      */
     protected function redirectBack(): Response
     {

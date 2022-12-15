@@ -97,7 +97,6 @@ class EventConfigTest extends ModelTest
 
     /**
      * Init a new EventConfig class
-     *
      */
     protected function getEventConfig(): EventConfig
     {

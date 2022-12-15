@@ -72,7 +72,6 @@ class Stats
 
     /**
      * The number of not arrived users
-     *
      */
     public function newUsers(): int
     {
@@ -142,11 +141,6 @@ class Stats
         return (int)$this->vouchersQuery()->sum('got_voucher');
     }
 
-    /**
-     * @param array $buckets
-     *
-     * @return array
-     */
     public function vouchersBuckets(array $buckets): array
     {
         $return = [];
@@ -255,11 +249,9 @@ class Stats
     /**
      * The number of worked shifts
      *
-     * @param array     $buckets
      * @param bool|null $done
      * @param bool|null $freeloaded
      *
-     * @return array
      * @codeCoverageIgnore
      */
     public function workBuckets(array $buckets, bool $done = null, bool $freeloaded = null): array
@@ -274,9 +266,6 @@ class Stats
     }
 
     /**
-     * @param array        $buckets
-     *
-     * @return array
      * @codeCoverageIgnore As long as its only used for old tables
      */
     protected function getBuckets(
@@ -312,9 +301,6 @@ class Stats
     }
 
     /**
-     * @param array $buckets
-     *
-     * @return array
      * @codeCoverageIgnore
      */
     public function worklogBuckets(array $buckets): array

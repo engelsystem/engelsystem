@@ -58,8 +58,6 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @param array  $row
-     *
      * @return array[]
      */
     protected function formatHistogram(array $row, string $name): array
@@ -89,8 +87,6 @@ class MetricsEngine implements EngineInterface
 
     /**
      * Expand the value to be an array
-     *
-     * @return array
      */
     protected function expandData(mixed $data): array
     {
@@ -131,11 +127,6 @@ class MetricsEngine implements EngineInterface
         );
     }
 
-    /**
-     * @param array $labels
-     *
-     * @return mixed
-     */
     protected function renderLabels(array $labels): string
     {
         if (empty($labels)) {

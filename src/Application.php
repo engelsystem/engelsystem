@@ -21,14 +21,11 @@ class Application extends Container
 
     /**
      * Registered service providers
-     *
-     * @var array
      */
     protected array $serviceProviders = [];
 
     /**
      * Application constructor.
-     *
      */
     public function __construct(string $appPath = null)
     {

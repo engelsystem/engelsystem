@@ -29,8 +29,6 @@ class LogEntry extends BaseModel
 
     /**
      * The attributes that are mass assignable.
-     *
-     * @var array
      */
     protected $fillable = [ // phpcs:ignore
         'level',

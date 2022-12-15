@@ -8,7 +8,6 @@ abstract class ServiceProvider
 {
     /**
      * ServiceProvider constructor.
-     *
      */
     public function __construct(protected Application $app)
     {

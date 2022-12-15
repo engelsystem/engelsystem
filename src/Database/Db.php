@@ -13,7 +13,6 @@ class Db
 
     /**
      * Set the database connection manager
-     *
      */
     public static function setDbManager(CapsuleManager $dbManager): void
     {
@@ -23,7 +22,6 @@ class Db
     /**
      * Run a select query
      *
-     * @param array  $bindings
      * @return array[]
      */
     public static function select(string $query, array $bindings = []): array
@@ -41,7 +39,6 @@ class Db
     /**
      * Run a select query and return only the first result or null if no result is found.
      *
-     * @param array  $bindings
      * @return array|null
      */
     public static function selectOne(string $query, array $bindings = []): ?array
@@ -59,8 +56,6 @@ class Db
 
     /**
      * Run an insert query
-     *
-     * @param array  $bindings
      */
     public static function insert(string $query, array $bindings = []): bool
     {
@@ -69,8 +64,6 @@ class Db
 
     /**
      * Run an update query
-     *
-     * @param array  $bindings
      */
     public static function update(string $query, array $bindings = []): int
     {
@@ -79,8 +72,6 @@ class Db
 
     /**
      * Run a delete query
-     *
-     * @param array  $bindings
      */
     public static function delete(string $query, array $bindings = []): int
     {
@@ -94,7 +85,6 @@ class Db
 
     /**
      * Get the PDO instance
-     *
      */
     public static function getPdo(): PDO
     {

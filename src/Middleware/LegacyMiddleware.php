@@ -37,7 +37,6 @@ class LegacyMiddleware implements MiddlewareInterface
      * Handle the request the old way
      *
      * Should be used before a 404 is send
-     *
      */
     public function process(
         ServerRequestInterface $request,

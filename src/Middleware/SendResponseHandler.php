@@ -13,7 +13,6 @@ class SendResponseHandler implements MiddlewareInterface
      * Send the server response to the client
      *
      * This should be the first middleware
-     *
      */
     public function process(
         ServerRequestInterface $request,

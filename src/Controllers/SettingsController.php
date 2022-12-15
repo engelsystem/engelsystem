@@ -229,9 +229,6 @@ class SettingsController extends BaseController
         );
     }
 
-    /**
-     * @return array
-     */
     public function settingsMenu(): array
     {
         $menu = [

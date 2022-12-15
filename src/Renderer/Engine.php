@@ -4,7 +4,6 @@ namespace Engelsystem\Renderer;
 
 abstract class Engine implements EngineInterface
 {
-    /** @var array */
     protected array $sharedData = [];
 
     /**

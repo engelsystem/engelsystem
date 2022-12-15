@@ -15,9 +15,6 @@ class UserModelImplementation extends User
 
     public static ?string $apiKey = null;
 
-    /**
-     * @param array $columns
-     */
     public function find(mixed $id, array $columns = ['*']): ?User
     {
         if ($id != static::$id) {

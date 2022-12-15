@@ -118,9 +118,6 @@ class CallableHandlerTest extends TestCase
         $middleware->handle($request);
     }
 
-    /**
-     * @return array
-     */
     protected function getMocks(): array
     {
         /** @var ServerRequestInterface|MockObject $request */

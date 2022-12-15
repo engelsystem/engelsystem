@@ -16,7 +16,6 @@ class TwigEngine extends Engine
     /**
      * Render a twig template
      *
-     * @param array  $data
      * @throws LoaderError|RuntimeError|SyntaxError
      */
     public function get(string $path, array $data = []): string

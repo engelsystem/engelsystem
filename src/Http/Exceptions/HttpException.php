@@ -8,7 +8,6 @@ use Throwable;
 class HttpException extends RuntimeException
 {
     /**
-     * @param array          $headers
      * @param Throwable|null $previous
      */
     public function __construct(
@@ -22,9 +21,6 @@ class HttpException extends RuntimeException
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * @return array
-     */
     public function getHeaders(): array
     {
         return $this->headers;

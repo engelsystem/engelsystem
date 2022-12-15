@@ -14,7 +14,6 @@ class Database
     /**
      * Run a select query
      *
-     * @param array  $bindings
      * @return object[]
      */
     public function select(string $query, array $bindings = []): array
@@ -24,8 +23,6 @@ class Database
 
     /**
      * Run a select query and return only the first result or null if no result is found.
-     *
-     * @param array  $bindings
      */
     public function selectOne(string $query, array $bindings = []): ?object
     {
@@ -34,8 +31,6 @@ class Database
 
     /**
      * Run an insert query
-     *
-     * @param array  $bindings
      */
     public function insert(string $query, array $bindings = []): bool
     {
@@ -44,8 +39,6 @@ class Database
 
     /**
      * Run an update query
-     *
-     * @param array  $bindings
      */
     public function update(string $query, array $bindings = []): int
     {
@@ -54,8 +47,6 @@ class Database
 
     /**
      * Run a delete query
-     *
-     * @param array  $bindings
      */
     public function delete(string $query, array $bindings = []): int
     {
@@ -64,7 +55,6 @@ class Database
 
     /**
      * Get the PDO instance
-     *
      */
     public function getPdo(): PDO
     {

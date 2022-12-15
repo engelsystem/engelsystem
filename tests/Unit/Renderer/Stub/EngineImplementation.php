@@ -22,9 +22,6 @@ class EngineImplementation extends Engine
         return true;
     }
 
-    /**
-     * @return array
-     */
     public function getSharedData(): array
     {
         return $this->sharedData;

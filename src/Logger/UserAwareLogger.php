@@ -12,9 +12,6 @@ class UserAwareLogger extends Logger
 
     /**
      * Logs with an arbitrary level and prepends the user
-     *
-     * @param array             $context
-     *
      * @throws InvalidArgumentException
      */
     public function log(mixed $level, string|Stringable $message, array $context = []): void

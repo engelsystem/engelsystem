@@ -183,7 +183,6 @@ class TwigServiceProviderTest extends ServiceProviderTest
     }
 
     /**
-     * @param array               $extensions
      * @throws ReflectionException
      */
     protected function setExtensionsTo(TwigServiceProvider $serviceProvider, array $extensions): void

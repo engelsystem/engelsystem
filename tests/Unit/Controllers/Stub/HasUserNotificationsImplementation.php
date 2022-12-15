@@ -13,9 +13,6 @@ class HasUserNotificationsImplementation
         $this->addNotification($value, $type);
     }
 
-    /**
-     * @return array
-     */
     public function get(): array
     {
         return $this->getNotifications();

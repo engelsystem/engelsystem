@@ -12,9 +12,6 @@ class UserAngelTypeFactory extends Factory
     /** @var string */
     protected $model = UserAngelType::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

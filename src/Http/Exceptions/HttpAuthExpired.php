@@ -7,7 +7,6 @@ use Throwable;
 class HttpAuthExpired extends HttpException
 {
     /**
-     * @param array          $headers
      * @param Throwable|null $previous
      */
     public function __construct(

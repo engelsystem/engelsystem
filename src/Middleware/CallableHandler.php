@@ -29,7 +29,6 @@ class CallableHandler implements MiddlewareInterface, RequestHandlerInterface
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
-     *
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -38,7 +37,6 @@ class CallableHandler implements MiddlewareInterface, RequestHandlerInterface
 
     /**
      * Handle the request and return a response.
-     *
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -47,8 +45,6 @@ class CallableHandler implements MiddlewareInterface, RequestHandlerInterface
 
     /**
      * Execute the callable and return a response
-     *
-     * @param array $arguments
      */
     protected function execute(array $arguments = []): ResponseInterface
     {

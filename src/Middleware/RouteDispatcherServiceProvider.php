@@ -43,7 +43,6 @@ class RouteDispatcherServiceProvider extends ServiceProvider
     /**
      * Includes the routes.php file
      *
-     * @param array $options
      * @codeCoverageIgnore
      */
     protected function generateRouting(array $options = []): FastRouteDispatcher

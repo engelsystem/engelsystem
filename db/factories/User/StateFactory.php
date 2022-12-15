@@ -11,9 +11,6 @@ class StateFactory extends Factory
     /** @var string */
     protected $model = State::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         $arrival = $this->faker->optional()->dateTimeThisMonth();
@@ -30,7 +27,6 @@ class StateFactory extends Factory
 
     /**
      * Indicate that the user is arrived
-     *
      */
     public function arrived(): self
     {

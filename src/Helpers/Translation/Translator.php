@@ -32,8 +32,6 @@ class Translator
 
     /**
      * Get the translation for a given key
-     *
-     * @param array  $replace
      */
     public function translate(string $key, array $replace = []): string
     {
@@ -42,18 +40,12 @@ class Translator
 
     /**
      * Get the translation for a given key
-     *
-     * @param array  $replace
      */
     public function translatePlural(string $key, string $pluralKey, int $number, array $replace = []): string
     {
         return $this->translateText('ngettext', [$key, $pluralKey, $number], $replace);
     }
 
-    /**
-     * @param array  $parameters
-     * @param array  $replace
-     */
     protected function translateText(string $type, array $parameters, array $replace = []): mixed
     {
         $translated = $parameters[0];
@@ -74,8 +66,6 @@ class Translator
 
     /**
      * Replace placeholders
-     *
-     * @param array  $replace
      */
     protected function replaceText(string $key, array $replace = []): mixed
     {

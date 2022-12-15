@@ -10,9 +10,6 @@ class FaqFactory extends Factory
     /** @var string */
     protected $model = Faq::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

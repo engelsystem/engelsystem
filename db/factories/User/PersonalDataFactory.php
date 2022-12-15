@@ -11,9 +11,6 @@ class PersonalDataFactory extends Factory
     /** @var string */
     protected $model = PersonalData::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         $arrival = $this->faker->optional()->dateTimeThisMonth('2 weeks');

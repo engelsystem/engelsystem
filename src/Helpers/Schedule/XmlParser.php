@@ -76,7 +76,6 @@ class XmlParser
 
     /**
      * @param SimpleXMLElement[] $eventElements
-     * @return array
      */
     protected function parseEvents(array $eventElements, Room $room): array
     {
@@ -130,8 +129,6 @@ class XmlParser
 
     /**
      * Resolves a list from a sequence of elements
-     *
-     * @return array
      */
     protected function getListFromSequence(
         SimpleXMLElement $element,

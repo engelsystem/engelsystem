@@ -38,9 +38,6 @@ class UserTest extends ModelTest
         'api_key'  => '',
     ];
 
-    /**
-     * @return array
-     */
     public function hasOneRelationsProvider(): array
     {
         return [
@@ -133,15 +130,14 @@ class UserTest extends ModelTest
     }
 
     /**
-     * @covers       \Engelsystem\Models\User\User::contact
-     * @covers       \Engelsystem\Models\User\User::license
-     * @covers       \Engelsystem\Models\User\User::personalData
-     * @covers       \Engelsystem\Models\User\User::settings
-     * @covers       \Engelsystem\Models\User\User::state
+     * @covers \Engelsystem\Models\User\User::contact
+     * @covers \Engelsystem\Models\User\User::license
+     * @covers \Engelsystem\Models\User\User::personalData
+     * @covers \Engelsystem\Models\User\User::settings
+     * @covers \Engelsystem\Models\User\User::state
      *
      * @dataProvider hasOneRelationsProvider
      *
-     * @param array  $data
      * @throws Exception
      */
     public function testHasOneRelations(string $class, string $name, array $data): void

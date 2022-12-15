@@ -12,7 +12,6 @@ use Psr\Log\LoggerInterface;
 
 class OAuth2
 {
-    /** @var array */
     protected array $config;
 
     public function __construct(Config $config, protected LoggerInterface $log, protected Authenticator $auth)

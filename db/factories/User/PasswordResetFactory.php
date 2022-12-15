@@ -10,9 +10,6 @@ class PasswordResetFactory extends Factory
     /** @var string */
     protected $model = PasswordReset::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

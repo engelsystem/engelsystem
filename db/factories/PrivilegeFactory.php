@@ -10,9 +10,6 @@ class PrivilegeFactory extends Factory
     /** @var string */
     protected $model = Privilege::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

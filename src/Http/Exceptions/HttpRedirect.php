@@ -4,9 +4,6 @@ namespace Engelsystem\Http\Exceptions;
 
 class HttpRedirect extends HttpException
 {
-    /**
-     * @param array  $headers
-     */
     public function __construct(
         string $url,
         int $statusCode = 302,

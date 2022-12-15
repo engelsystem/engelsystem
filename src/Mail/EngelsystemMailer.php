@@ -29,7 +29,6 @@ class EngelsystemMailer extends Mailer
 
     /**
      * @param string|string[]|User $to
-     * @param array                $data
      */
     public function sendViewTranslated(
         string|array|User $to,
@@ -65,7 +64,6 @@ class EngelsystemMailer extends Mailer
      * Send a template
      *
      * @param string|string[] $to
-     * @param array           $data
      */
     public function sendView(string|array $to, string $subject, string $template, array $data = []): void
     {

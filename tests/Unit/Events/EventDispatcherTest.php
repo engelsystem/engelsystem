@@ -137,17 +137,11 @@ class EventDispatcherTest extends TestCase
         return false;
     }
 
-    /**
-     * @return array
-     */
     public function returnData(): array
     {
         return ['example' => 'data'];
     }
 
-    /**
-     * @return array
-     */
     public function handle(): array
     {
         return ['default' => 'handler'];

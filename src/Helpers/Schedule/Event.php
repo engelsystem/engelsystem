@@ -14,8 +14,6 @@ class Event
     protected Carbon $endDate;
 
     /**
-     * Event constructor.
-     *
      * @param string      $guid globally unique
      * @param int         $id globally unique
      * @param string      $start time (hh:mm:ss || hh:mm)
@@ -153,17 +151,11 @@ class Event
         return $this->recording;
     }
 
-    /**
-     * @return array
-     */
     public function getLinks(): array
     {
         return $this->links;
     }
 
-    /**
-     * @return array
-     */
     public function getAttachments(): array
     {
         return $this->attachments;

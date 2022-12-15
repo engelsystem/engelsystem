@@ -92,7 +92,6 @@ class Response extends SymfonyResponse implements ResponseInterface
      * This method retains the immutability of the message and returns
      * an instance with the updated status and headers
      *
-     * @param array               $data
      * @param string[]|string[][] $headers
      */
     public function withView(string $view, array $data = [], int $status = 200, array $headers = []): Response
@@ -117,8 +116,6 @@ class Response extends SymfonyResponse implements ResponseInterface
      *
      * This method retains the immutability of the message and returns
      * an instance with the updated status and headers
-     *
-     * @param array  $headers
      */
     public function redirectTo(string $path, int $status = 302, array $headers = []): Response
     {
@@ -134,7 +131,6 @@ class Response extends SymfonyResponse implements ResponseInterface
 
     /**
      * Set the renderer to use
-     *
      */
     public function setRenderer(Renderer $renderer): void
     {
@@ -143,7 +139,6 @@ class Response extends SymfonyResponse implements ResponseInterface
 
     /**
      * Sets a session attribute (which is mutable)
-     *
      */
     public function with(string $key, mixed $value): Response
     {
@@ -163,8 +158,6 @@ class Response extends SymfonyResponse implements ResponseInterface
 
     /**
      * Sets form data to the mutable session
-     *
-     * @param array $input
      */
     public function withInput(array $input): Response
     {

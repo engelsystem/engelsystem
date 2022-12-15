@@ -25,7 +25,6 @@ class ReturnResponseMiddlewareHandler implements RequestHandlerInterface
 
     /**
      * Set the response
-     *
      */
     public function setResponse(ResponseInterface $response): void
     {

@@ -61,7 +61,6 @@ class DumpServerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\DumpServerServiceProvider::register
      * @dataProvider notEnabledDataProvider
-     *
      */
     public function testRegisterShouldNotEnable(bool $enable, string $environment): void
     {

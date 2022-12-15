@@ -17,7 +17,6 @@ class DesignController extends BaseController
 
     /**
      * Show the design overview page
-     *
      */
     public function index(): Response
     {

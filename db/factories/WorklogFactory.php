@@ -11,9 +11,6 @@ class WorklogFactory extends Factory
     /** @var string */
     protected $model = Worklog::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

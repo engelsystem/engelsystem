@@ -99,9 +99,6 @@ class NewsControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @return array
-     */
     public function saveCreateEditProvider(): array
     {
         return [

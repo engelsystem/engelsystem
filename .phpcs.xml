@@ -38,4 +38,5 @@
     </rule>
     <rule ref="SlevomatCodingStandard.Classes.RequireConstructorPropertyPromotion" />
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment" />
+    <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment" />
 </ruleset>

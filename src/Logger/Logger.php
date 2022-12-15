@@ -29,9 +29,6 @@ class Logger extends AbstractLogger
 
     /**
      * Logs with an arbitrary level.
-     *
-     * @param array             $context
-     *
      */
     public function log(mixed $level, string|Stringable $message, array $context = []): void
     {
@@ -50,8 +47,6 @@ class Logger extends AbstractLogger
 
     /**
      * Interpolates context values into the message placeholders.
-     *
-     * @param array  $context
      */
     protected function interpolate(string $message, array $context = []): string
     {

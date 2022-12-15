@@ -12,9 +12,6 @@ class NewsCommentFactory extends Factory
     /** @var string */
     protected $model = NewsComment::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

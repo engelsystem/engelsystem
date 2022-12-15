@@ -35,7 +35,6 @@ class Renderer
 
     /**
      * Add a new renderer engine
-     *
      */
     public function addRenderer(EngineInterface $renderer): void
     {

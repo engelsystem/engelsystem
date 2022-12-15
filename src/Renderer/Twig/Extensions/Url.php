@@ -22,9 +22,6 @@ class Url extends TwigExtension
         ];
     }
 
-    /**
-     * @param array  $parameters
-     */
     public function getUrl(string $path, array $parameters = []): string
     {
         $path = str_replace('_', '-', $path);

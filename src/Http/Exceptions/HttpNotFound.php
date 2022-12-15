@@ -7,7 +7,6 @@ use Throwable;
 class HttpNotFound extends HttpException
 {
     /**
-     * @param array          $headers
      * @param Throwable|null $previous
      */
     public function __construct(

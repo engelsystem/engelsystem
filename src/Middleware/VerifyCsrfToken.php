@@ -17,7 +17,6 @@ class VerifyCsrfToken implements MiddlewareInterface
 
     /**
      * Verify csrf tokens
-     *
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

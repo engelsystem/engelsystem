@@ -168,9 +168,6 @@ class ApplicationTest extends TestCase
         $app->bootstrap($config);
     }
 
-    /**
-     * @param array       $methods
-     */
     protected function mockServiceProvider(Application $app, array $methods = []): ServiceProvider|MockObject
     {
         return $this->getMockBuilder(ServiceProvider::class)

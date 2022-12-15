@@ -18,7 +18,7 @@ class QuestionsController extends BaseController
 
     protected Redirector $redirect;
 
-    /** @var array */
+    /** @var array<string> */
     protected array $permissions = [
         'question.add',
         'question.edit',

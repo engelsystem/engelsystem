@@ -363,9 +363,6 @@ class SettingsControllerTest extends ControllerTest
         $this->assertEquals('validation.password.confirmed', $errors[0]);
     }
 
-    /**
-     * @return array
-     */
     public function savePasswordValidationProvider(): array
     {
         return [

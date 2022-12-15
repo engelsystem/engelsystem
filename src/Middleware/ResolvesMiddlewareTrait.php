@@ -11,7 +11,6 @@ trait ResolvesMiddlewareTrait
 {
     /**
      * Resolve the middleware with the container
-     *
      */
     protected function resolveMiddleware(
         string|callable|MiddlewareInterface|RequestHandlerInterface $middleware
@@ -44,7 +43,6 @@ trait ResolvesMiddlewareTrait
 
     /**
      * Checks if the given object is a middleware or middleware or request handler
-     *
      */
     protected function isMiddleware(mixed $middleware): bool
     {

@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RequestServiceProviderTest extends ServiceProviderTest
 {
-    /**
-     * @return array
-     */
     public function provideRegister(): array
     {
         return [
@@ -31,8 +28,6 @@ class RequestServiceProviderTest extends ServiceProviderTest
     /**
      * @dataProvider provideRegister
      * @covers       \Engelsystem\Http\RequestServiceProvider::register
-     *
-     * @param array        $trustedProxies
      */
     public function testRegister(string|array $configuredProxies, array $trustedProxies): void
     {

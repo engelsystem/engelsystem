@@ -28,7 +28,6 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
      * response creation to a handler.
      *
      * Could be used to group middleware
-     *
      */
     public function process(
         ServerRequestInterface $request,
@@ -43,7 +42,6 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
      * Handle the request and return a response.
      *
      * It calls all configured middleware and handles their response
-     *
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

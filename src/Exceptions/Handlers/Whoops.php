@@ -17,7 +17,6 @@ class Whoops extends Legacy implements HandlerInterface
 
     /**
      * Whoops constructor.
-     *
      */
     public function __construct(Container $app)
     {
@@ -71,8 +70,6 @@ class Whoops extends Legacy implements HandlerInterface
 
     /**
      * Aggregate application data
-     *
-     * @return array
      */
     protected function getData(): array
     {

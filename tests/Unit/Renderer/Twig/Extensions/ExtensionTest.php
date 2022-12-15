@@ -36,7 +36,6 @@ abstract class ExtensionTest extends TestCase
      * Assert that a twig function was registered
      *
      * @param TwigFunction[] $functions
-     * @param array          $options
      * @throws Exception
      */
     protected function assertExtensionExists(

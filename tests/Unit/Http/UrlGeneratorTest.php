@@ -9,9 +9,6 @@ use Engelsystem\Test\Unit\TestCase;
 
 class UrlGeneratorTest extends TestCase
 {
-    /**
-     * @return array
-     */
     public function provideLinksTo(): array
     {
         return [

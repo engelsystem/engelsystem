@@ -15,7 +15,7 @@ class AuthController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var array */
+    /** @var array<string, string> */
     protected array $permissions = [
         'login'     => 'login',
         'postLogin' => 'login',
@@ -45,7 +45,6 @@ class AuthController extends BaseController
 
     /**
      * Posted login form
-     *
      */
     public function postLogin(Request $request): Response
     {

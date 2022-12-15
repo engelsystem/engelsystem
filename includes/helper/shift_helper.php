@@ -13,26 +13,12 @@ use Symfony\Component\Mailer\Exception\TransportException;
 
 class Shift
 {
-    /**
-     * @param LoggerInterface   $log
-     * @param EngelsystemMailer $mailer
-     */
     public function __construct(
         protected LoggerInterface $log,
         protected EngelsystemMailer $mailer
     ) {
     }
 
-    /**
-     * @param User   $user
-     * @param Carbon $start
-     * @param Carbon $end
-     * @param string $name
-     * @param string $title
-     * @param string $type
-     * @param Room   $room
-     * @return void
-     */
     public function deletedEntryCreateWorklog(
         User $user,
         Carbon $start,
@@ -71,16 +57,6 @@ class Shift
         );
     }
 
-    /**
-     * @param User   $user
-     * @param Carbon $start
-     * @param Carbon $end
-     * @param string $name
-     * @param string $title
-     * @param string $type
-     * @param Room   $room
-     * @return void
-     */
     public function deletedEntrySendEmail(
         User $user,
         Carbon $start,

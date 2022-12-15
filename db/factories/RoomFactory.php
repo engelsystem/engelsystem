@@ -10,9 +10,6 @@ class RoomFactory extends Factory
     /** @var string */
     protected $model = Room::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

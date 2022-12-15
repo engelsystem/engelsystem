@@ -10,7 +10,6 @@ use Illuminate\Database\QueryException;
 
 class ConfigServiceProvider extends ServiceProvider
 {
-    /** @var array */
     protected array $configFiles = ['app.php', 'config.default.php', 'config.php'];
 
     public function __construct(Application $app, protected ?EventConfig $eventConfig = null)
@@ -74,7 +73,6 @@ class ConfigServiceProvider extends ServiceProvider
 
     /**
      * Get the config path
-     *
      */
     protected function getConfigPath(string $path = ''): string
     {

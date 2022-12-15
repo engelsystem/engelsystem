@@ -38,7 +38,6 @@ class SessionServiceProvider extends ServiceProvider
 
     /**
      * Returns the session storage
-     *
      */
     protected function getSessionStorage(): SessionStorageInterface
     {
@@ -69,7 +68,6 @@ class SessionServiceProvider extends ServiceProvider
 
     /**
      * Test if is called from cli
-     *
      */
     protected function isCli(): bool
     {

@@ -15,9 +15,6 @@ trait HasUserNotifications
         );
     }
 
-    /**
-     * @return array
-     */
     protected function getNotifications(): array
     {
         $return = [];

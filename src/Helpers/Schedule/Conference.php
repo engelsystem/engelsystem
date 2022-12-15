@@ -10,7 +10,6 @@ class Conference
 
     /**
      * Event constructor.
-     *
      */
     public function __construct(
         protected string $title,

@@ -53,7 +53,6 @@ class MessageTest extends ModelTest
      * Tests that loading Messages works.
      *
      * @covers \Engelsystem\Models\Message::__construct
-     *
      */
     public function testLoad(): void
     {
@@ -75,7 +74,6 @@ class MessageTest extends ModelTest
      *
      * @covers \Engelsystem\Models\Message::user
      * @covers \Engelsystem\Models\Message::sender
-     *
      */
     public function testSenders(): void
     {
@@ -92,7 +90,6 @@ class MessageTest extends ModelTest
      * Tests that the Messages have the correct receivers.
      *
      * @covers \Engelsystem\Models\Message::receiver
-     *
      */
     public function testReceivers(): void
     {
@@ -105,7 +102,6 @@ class MessageTest extends ModelTest
      * Tests that the Users have the correct sent Messages.
      *
      * @covers \Engelsystem\Models\User\User::messagesSent
-     *
      */
     public function testUserSentMessages(): void
     {
@@ -123,7 +119,6 @@ class MessageTest extends ModelTest
      * Tests that the Users have the correct received Messages.
      *
      * @covers \Engelsystem\Models\User\User::messagesReceived
-     *
      */
     public function testUserReceivedMessages(): void
     {

@@ -17,7 +17,7 @@ class NewsController extends BaseController
 
     protected Redirector $redirect;
 
-    /** @var array */
+    /** @var array<string> */
     protected array $permissions = [
         'admin_news',
     ];

@@ -186,11 +186,6 @@ function user_angeltype_confirm_controller(): array
     ];
 }
 
-/**
- * @param User      $user
- * @param AngelType $angeltype
- * @return void
- */
 function user_angeltype_confirm_email(User $user, AngelType $angeltype): void
 {
     if (!$user->settings->email_shiftinfo) {
@@ -216,11 +211,6 @@ function user_angeltype_confirm_email(User $user, AngelType $angeltype): void
     }
 }
 
-/**
- * @param User      $user
- * @param AngelType $angeltype
- * @return void
- */
 function user_angeltype_add_email(User $user, AngelType $angeltype): void
 {
     if (!$user->settings->email_shiftinfo || $user->id == auth()->user()->id) {

@@ -10,9 +10,6 @@ class ScheduleFactory extends Factory
     /** @var string */
     protected $model = Schedule::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

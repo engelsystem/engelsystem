@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Get the global app instance
- *
  */
 function app(string $id = null): mixed
 {
@@ -35,9 +34,6 @@ function base_path(string $path = ''): string
     return app('path') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
 }
 
-/**
- * @param array $headers
- */
 function back(int $status = 302, array $headers = []): Response
 {
     /** @var Redirector $redirect */
@@ -48,7 +44,6 @@ function back(int $status = 302, array $headers = []): Response
 
 /**
  * Get or set config values
- *
  */
 function config(string|array $key = null, mixed $default = null): mixed
 {
@@ -72,9 +67,6 @@ function config_path(string $path = ''): string
     return app('path.config') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
 }
 
-/**
- * @param array $payload
- */
 function event(string|object|null $event = null, array $payload = []): array|EventDispatcher
 {
     /** @var EventDispatcher $dispatcher */
@@ -87,9 +79,6 @@ function event(string|object|null $event = null, array $payload = []): array|Eve
     return $dispatcher;
 }
 
-/**
- * @param array  $headers
- */
 function redirect(string $path, int $status = 302, array $headers = []): Response
 {
     /** @var Redirector $redirect */
@@ -110,9 +99,6 @@ function request(string $key = null, mixed $default = null): mixed
     return $request->input($key, $default);
 }
 
-/**
- * @param array $headers
- */
 function response(mixed $content = '', int $status = 200, array $headers = []): Response
 {
     /** @var Response $response */
@@ -142,8 +128,6 @@ function session(string $key = null, mixed $default = null): mixed
 
 /**
  * Translate the given message
- *
- * @param array  $replace
  */
 function trans(string $key = null, array $replace = []): string|Translator
 {
@@ -159,8 +143,6 @@ function trans(string $key = null, array $replace = []): string|Translator
 
 /**
  * Translate the given message
- *
- * @param array  $replace
  */
 function __(string $key, array $replace = []): string
 {
@@ -172,8 +154,6 @@ function __(string $key, array $replace = []): string
 
 /**
  * Translate the given message
- *
- * @param array  $replace
  */
 function _e(string $key, string $keyPlural, int $number, array $replace = []): string
 {
@@ -183,9 +163,6 @@ function _e(string $key, string $keyPlural, int $number, array $replace = []): s
     return $translator->translatePlural($key, $keyPlural, $number, $replace);
 }
 
-/**
- * @param array  $parameters
- */
 function url(string $path = null, array $parameters = []): UrlGeneratorInterface|string
 {
     /** @var UrlGeneratorInterface $urlGenerator */

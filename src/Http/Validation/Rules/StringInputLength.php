@@ -10,7 +10,6 @@ trait StringInputLength
 {
     /**
      * Use the input length of a string
-     *
      */
     public function validate(mixed $input): bool
     {

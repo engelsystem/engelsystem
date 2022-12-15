@@ -596,8 +596,6 @@ class OAuthControllerTest extends TestCase
     }
 
     /**
-     * @param array $mockMethods
-     *
      * @return OAuthController|MockObject
      */
     protected function getMock(array $mockMethods = []): OAuthController

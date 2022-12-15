@@ -243,9 +243,6 @@ class ControllerTest extends TestCase
         $controller->stats();
     }
 
-    /**
-     * @return array
-     */
     protected function getMocks(): array
     {
         /** @var Response|MockObject $response */

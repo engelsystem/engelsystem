@@ -203,7 +203,6 @@ class Controller extends BaseController
 
     /**
      * Ensure that the if the request is authorized
-     *
      */
     protected function checkAuth(bool $isJson = false): void
     {
@@ -225,8 +224,6 @@ class Controller extends BaseController
 
     /**
      * Formats the stats collection as stats data
-     *
-     * @return array
      */
     protected function formatStats(Collection $data, string $config, string $dataField, ?string $label = null): array
     {

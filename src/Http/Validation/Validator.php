@@ -12,10 +12,8 @@ class Validator
     /** @var string[] */
     protected array $errors = [];
 
-    /** @var array */
     protected array $data = [];
 
-    /** @var array */
     protected array $mapping = [
         'accepted' => 'TrueVal',
         'int'      => 'IntVal',
@@ -23,13 +21,8 @@ class Validator
         'required' => 'NotEmpty',
     ];
 
-    /** @var array */
     protected array $nestedRules = ['optional', 'not'];
 
-    /**
-     * @param array $data
-     * @param array $rules
-     */
     public function validate(array $data, array $rules): bool
     {
         $this->errors = [];
@@ -96,9 +89,6 @@ class Validator
         return $mapping[$rule] ?? $rule;
     }
 
-    /**
-     * @return array
-     */
     public function getData(): array
     {
         return $this->data;

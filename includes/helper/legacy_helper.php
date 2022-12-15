@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 
-/**
- * @return int
- */
 function theme_id(): int
 {
     /** @var Globals $globals */
@@ -24,9 +21,6 @@ function theme(): array
     return config('themes')[$theme_id];
 }
 
-/**
- * @return string
- */
 function theme_type(): string
 {
     return theme()['type'];

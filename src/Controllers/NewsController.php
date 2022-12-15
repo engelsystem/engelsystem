@@ -18,7 +18,7 @@ class NewsController extends BaseController
 
     protected Redirector $redirect;
 
-    /** @var array */
+    /** @var array<string, string> */
     protected array $permissions = [
         'news',
         'meetings'      => 'user_meetings',
@@ -153,9 +153,6 @@ class NewsController extends BaseController
         );
     }
 
-    /**
-     * @param array $data
-     */
     protected function renderView(string $page, array $data): Response
     {
         $data += $this->getNotifications();

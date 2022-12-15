@@ -10,9 +10,6 @@ class ShiftTypeFactory extends Factory
     /** @var string */
     protected $model = ShiftType::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

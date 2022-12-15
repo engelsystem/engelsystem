@@ -23,7 +23,6 @@ class RequestHandler implements MiddlewareInterface
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
-     *
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -52,7 +51,6 @@ class RequestHandler implements MiddlewareInterface
 
     /**
      * Resolve the given class
-     *
      */
     protected function resolveRequestHandler(
         string|callable|MiddlewareInterface|RequestHandlerInterface $handler
@@ -82,7 +80,6 @@ class RequestHandler implements MiddlewareInterface
 
     /**
      * Check required page permissions
-     *
      */
     protected function checkPermissions(BaseController $controller, string $method): bool
     {

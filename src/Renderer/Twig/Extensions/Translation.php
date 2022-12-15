@@ -13,9 +13,6 @@ class Translation extends TwigExtension
     {
     }
 
-    /**
-     * @return array
-     */
     public function getFilters(): array
     {
         return [

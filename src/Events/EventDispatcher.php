@@ -29,7 +29,6 @@ class EventDispatcher
 
     /**
      * @param bool          $halt     Stop on first non-null return
-     *
      */
     public function dispatch(string|object $event, mixed $payload = [], bool $halt = false): mixed
     {

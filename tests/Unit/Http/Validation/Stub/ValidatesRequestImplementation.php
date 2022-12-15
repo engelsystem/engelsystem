@@ -7,10 +7,6 @@ use Engelsystem\Http\Request;
 
 class ValidatesRequestImplementation extends BaseController
 {
-    /**
-     * @param array   $rules
-     * @return array
-     */
     public function validateData(Request $request, array $rules): array
     {
         return $this->validate($request, $rules);

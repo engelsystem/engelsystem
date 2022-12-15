@@ -15,9 +15,6 @@ abstract class TestCase extends PHPUnitTestCase
 {
     protected Application $app;
 
-    /**
-     * @param array           $arguments
-     */
     protected function setExpects(
         MockObject $object,
         string $method,

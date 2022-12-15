@@ -9,7 +9,7 @@ use Engelsystem\Models\LogEntry;
 
 class LogsController extends BaseController
 {
-    /** @var array */
+    /** @var array<string> */
     protected array $permissions = [
         'admin_log',
     ];

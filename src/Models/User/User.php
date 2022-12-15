@@ -228,7 +228,6 @@ class User extends BaseModel
 
     /**
      * Returns a HasMany relation for all messages sent or received by the user.
-     *
      */
     public function messages(): HasMany
     {

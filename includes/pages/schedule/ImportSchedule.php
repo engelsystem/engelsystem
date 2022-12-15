@@ -58,14 +58,6 @@ class ImportSchedule extends BaseController
     /** @var GuzzleClient */
     protected $guzzle;
 
-    /**
-     * @param Response           $response
-     * @param SessionInterface   $session
-     * @param GuzzleClient       $guzzle
-     * @param XmlParser          $parser
-     * @param DatabaseConnection $db
-     * @param LoggerInterface    $log
-     */
     public function __construct(
         Response $response,
         SessionInterface $session,
@@ -82,9 +74,6 @@ class ImportSchedule extends BaseController
         $this->log = $log;
     }
 
-    /**
-     * @return Response
-     */
     public function index(): Response
     {
         return $this->response->withView(
@@ -96,11 +85,6 @@ class ImportSchedule extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function edit(Request $request): Response
     {
         $scheduleId = $request->getAttribute('schedule_id'); // optional
@@ -116,11 +100,6 @@ class ImportSchedule extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function save(Request $request): Response
     {
         $scheduleId = $request->getAttribute('schedule_id'); // optional
@@ -164,10 +143,6 @@ class ImportSchedule extends BaseController
         return redirect('/admin/schedule/load/' . $schedule->id);
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function loadSchedule(Request $request): Response
     {
         try {
@@ -213,11 +188,6 @@ class ImportSchedule extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function importSchedule(Request $request): Response
     {
         try {
@@ -282,9 +252,6 @@ class ImportSchedule extends BaseController
             ->with('messages', ['schedule.import.success']);
     }
 
-    /**
-     * @param Room $room
-     */
     protected function createRoom(Room $room): void
     {
         $roomModel = new RoomModel();
@@ -294,9 +261,6 @@ class ImportSchedule extends BaseController
         $this->log('Created schedule room "{room}"', ['room' => $room->getName()]);
     }
 
-    /**
-     * @param Event $event
-     */
     protected function fireDeleteShiftEntryEvents(Event $event): void
     {
         $shiftEntries = $this->db
@@ -327,12 +291,6 @@ class ImportSchedule extends BaseController
         }
     }
 
-    /**
-     * @param Event       $shift
-     * @param int         $shiftTypeId
-     * @param RoomModel   $room
-     * @param ScheduleUrl $scheduleUrl
-     */
     protected function createEvent(Event $shift, int $shiftTypeId, RoomModel $room, ScheduleUrl $scheduleUrl): void
     {
         $user = auth()->user();
@@ -372,11 +330,6 @@ class ImportSchedule extends BaseController
         );
     }
 
-    /**
-     * @param Event     $shift
-     * @param int       $shiftTypeId
-     * @param RoomModel $room
-     */
     protected function updateEvent(Event $shift, int $shiftTypeId, RoomModel $room): void
     {
         $user = auth()->user();
@@ -410,9 +363,6 @@ class ImportSchedule extends BaseController
         );
     }
 
-    /**
-     * @param Event $shift
-     */
     protected function deleteEvent(Event $shift): void
     {
         $this->db
@@ -557,10 +507,6 @@ class ImportSchedule extends BaseController
         return [$newEvents, $changeEvents, $deleteEvents];
     }
 
-    /**
-     * @param ScheduleShift $scheduleShift
-     * @return Event
-     */
     protected function eventFromScheduleShift(ScheduleShift $scheduleShift): Event
     {
         $shift = $this->loadShift($scheduleShift->shift_id);

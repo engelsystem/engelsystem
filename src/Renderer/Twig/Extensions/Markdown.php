@@ -12,9 +12,6 @@ class Markdown extends TwigExtension
     {
     }
 
-    /**
-     * @return array
-     */
     public function getFilters(): array
     {
         $options = ['is_safe' => ['html']];

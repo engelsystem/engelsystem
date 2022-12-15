@@ -15,7 +15,7 @@ class PasswordResetController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var array */
+    /** @var array<string, string> */
     protected array $permissions = [
         'reset'             => 'login',
         'postReset'         => 'login',
@@ -97,9 +97,6 @@ class PasswordResetController extends BaseController
         return $this->showView('pages/password/reset-success', ['type' => 'reset']);
     }
 
-    /**
-     * @param array  $data
-     */
     protected function showView(string $view = 'pages/password/reset', array $data = []): Response
     {
         return $this->response->withView(

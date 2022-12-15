@@ -31,7 +31,6 @@ class Authenticator
 
     /**
      * Load the user from session
-     *
      */
     public function user(): ?User
     {
@@ -58,7 +57,6 @@ class Authenticator
 
     /**
      * Get the user by his api key
-     *
      */
     public function apiUser(string $parameter = 'api_key'): ?User
     {

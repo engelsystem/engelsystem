@@ -11,9 +11,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 
 class SessionHandler implements MiddlewareInterface
 {
-    /**
-     * @param array                   $paths
-     */
     public function __construct(protected SessionStorageInterface $session, protected array $paths = [])
     {
     }

@@ -18,7 +18,7 @@ class UserShirtController extends BaseController
 
     protected Redirector $redirect;
 
-    /** @var array */
+    /** @var array<string, string> */
     protected array $permissions = [
         'editShirt' => 'user.edit.shirt',
         'saveShirt' => 'user.edit.shirt',

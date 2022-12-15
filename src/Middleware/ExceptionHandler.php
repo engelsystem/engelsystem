@@ -20,7 +20,6 @@ class ExceptionHandler implements MiddlewareInterface
      * Handles any exceptions that occurred inside other middleware while returning it to the default response handler
      *
      * Should be added at the beginning
-     *
      */
     public function process(
         ServerRequestInterface $request,

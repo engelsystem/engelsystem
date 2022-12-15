@@ -118,9 +118,6 @@ class RouteDispatcherTest extends TestCase
         $this->assertEquals($response, $return);
     }
 
-    /**
-     * @return array
-     */
     protected function getMocks(): array
     {
         /** @var FastRouteDispatcher|MockObject $dispatcher */

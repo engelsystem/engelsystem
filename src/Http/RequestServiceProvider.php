@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RequestServiceProvider extends ServiceProvider
 {
-    /** @var array */
     protected array $appUrl;
 
     public function register(): void
@@ -79,8 +78,6 @@ class RequestServiceProvider extends ServiceProvider
      * Set the trusted Proxies
      *
      * Required for unit tests (static methods can't be mocked)
-     *
-     * @param array   $proxies
      * @codeCoverageIgnore
      */
     protected function setTrustedProxies(

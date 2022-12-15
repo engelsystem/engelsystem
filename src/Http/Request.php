@@ -15,7 +15,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
 
     /**
      * Get POST input
-     *
      */
     public function postData(string $key, mixed $default = null): mixed
     {
@@ -24,7 +23,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
 
     /**
      * Get input data
-     *
      */
     public function input(string $key, mixed $default = null): mixed
     {
@@ -33,7 +31,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
 
     /**
      * Checks if the input exists
-     *
      */
     public function has(string $key): bool
     {
@@ -44,7 +41,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
 
     /**
      * Checks if the POST data exists
-     *
      */
     public function hasPostData(string $key): bool
     {
@@ -55,7 +51,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
 
     /**
      * Get the requested path
-     *
      */
     public function path(): string
     {
@@ -66,7 +61,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
 
     /**
      * Return the current URL
-     *
      */
     public function url(): string
     {
@@ -87,7 +81,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * If no URI is available, and no request-target has been specifically
      * provided, this method MUST return the string "/".
-     *
      */
     public function getRequestTarget(): string
     {
@@ -185,8 +178,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * Retrieves data related to the incoming request environment,
      * typically derived from PHP's $_SERVER superglobal. The data IS NOT
      * REQUIRED to originate from $_SERVER.
-     *
-     * @return array
      */
     public function getServerParams(): array
     {
@@ -200,8 +191,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * The data MUST be compatible with the structure of the $_COOKIE
      * superglobal.
-     *
-     * @return array
      */
     public function getCookieParams(): array
     {
@@ -243,8 +232,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * params. If you need to ensure you are only getting the original
      * values, you may need to parse the query string from `getUri()->getQuery()`
      * or from the `QUERY_STRING` server param.
-     *
-     * @return array
      */
     public function getQueryParams(): array
     {

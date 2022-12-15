@@ -281,10 +281,6 @@ class OAuthController extends BaseController
         throw new HttpNotFound('oauth.provider-error');
     }
 
-    /**
-     * @param array                $config
-     *
-     */
     protected function redirectRegister(
         string $providerName,
         string $providerUserIdentifier,

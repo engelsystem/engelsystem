@@ -39,9 +39,7 @@ class UrlTest extends ExtensionTest
     /**
      * @dataProvider getUrls
      *
-     * @param array  $parameters
-     *
-     * @covers       \Engelsystem\Renderer\Twig\Extensions\Url::getUrl
+     * @covers \Engelsystem\Renderer\Twig\Extensions\Url::getUrl
      */
     public function testGetUrl(string $url, string $urlTo, string $return, array $parameters = []): void
     {

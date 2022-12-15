@@ -189,9 +189,6 @@ class PasswordResetControllerTest extends TestCase
         $this->assertEmpty($session->get('errors'));
     }
 
-    /**
-     * @return array
-     */
     protected function getControllerArgs(): array
     {
         $response = new Response();
@@ -213,9 +210,6 @@ class PasswordResetControllerTest extends TestCase
         ];
     }
 
-    /**
-     * @param array  $data
-     */
     protected function getController(?string $view = null, ?array $data = null): PasswordResetController
     {
         /** @var Response $response */

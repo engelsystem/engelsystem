@@ -9,7 +9,6 @@ class Shifts
 {
     /**
      * Check if a time range is a night shift
-     *
      */
     public static function isNightShift(Carbon $start, Carbon $end): bool
     {
@@ -23,7 +22,6 @@ class Shifts
 
     /**
      * Calculate a shifts night multiplier
-     *
      */
     public static function getNightShiftMultiplier(Carbon $start, Carbon $end): float
     {

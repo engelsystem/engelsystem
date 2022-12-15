@@ -191,9 +191,6 @@ class AuthControllerTest extends TestCase
             ->create();
     }
 
-    /**
-     * @return array
-     */
     protected function getMocks(): array
     {
         $response = new Response();

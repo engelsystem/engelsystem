@@ -26,7 +26,6 @@ class Migrate
 
     /**
      * Migrate constructor
-     *
      */
     public function __construct(protected SchemaBuilder $schema, protected Application $app)
     {
@@ -107,7 +106,6 @@ class Migrate
 
     /**
      * Merge file migrations with already migrated tables
-     *
      */
     protected function mergeMigrations(Collection $migrations, Collection $migrated): Collection
     {
@@ -136,7 +134,6 @@ class Migrate
 
     /**
      * Get all migrated migrations
-     *
      */
     protected function getMigrated(): Collection
     {
@@ -216,8 +213,6 @@ class Migrate
 
     /**
      * Get a list of migration files
-     *
-     *
      */
     protected function getMigrations(string $dir): Collection
     {
@@ -239,9 +234,6 @@ class Migrate
 
     /**
      * List all migration files from the given directory
-     *
-     *
-     * @return array
      */
     protected function getMigrationFiles(string $dir): array
     {
@@ -250,7 +242,6 @@ class Migrate
 
     /**
      * Init a table query
-     *
      */
     protected function getTableQuery(): Builder
     {
@@ -259,7 +250,6 @@ class Migrate
 
     /**
      * Set the output function
-     *
      */
     public function setOutput(callable $output): void
     {

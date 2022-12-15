@@ -44,7 +44,6 @@ class EventConfig extends BaseModel
 
     /**
      * Value accessor
-     *
      */
     public function getValueAttribute(mixed $value): mixed
     {
@@ -91,7 +90,6 @@ class EventConfig extends BaseModel
 
     /**
      * Check if the value has to be casted
-     *
      */
     protected function getValueCast(string $value): ?string
     {

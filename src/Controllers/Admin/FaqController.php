@@ -16,7 +16,7 @@ class FaqController extends BaseController
 
     protected Redirector $redirect;
 
-    /** @var array */
+    /** @var array<string> */
     protected array $permissions = [
         'faq.view',
         'faq.edit',

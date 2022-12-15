@@ -18,7 +18,6 @@ class ReturnResponseMiddleware implements MiddlewareInterface
      * response creation to a handler.
      *
      * Could be used to group middleware
-     *
      */
     public function process(
         ServerRequestInterface $request,

@@ -16,7 +16,6 @@ class LogTransport extends AbstractTransport
 
     /**
      * Send the message to log
-     *
      */
     protected function doSend(SentMessage $message): void
     {

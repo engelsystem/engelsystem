@@ -9,10 +9,6 @@ trait ValidatesRequest
 {
     protected Validator $validator;
 
-    /**
-     * @param array   $rules
-     * @return array
-     */
     protected function validate(Request $request, array $rules): array
     {
         $isValid = $this->validator->validate(

@@ -10,7 +10,6 @@ abstract class Migration
 
     /**
      * Migration constructor.
-     *
      */
     public function __construct(SchemaBuilder $schemaBuilder)
     {

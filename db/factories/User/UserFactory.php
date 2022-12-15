@@ -10,9 +10,6 @@ class UserFactory extends Factory
     /** @var string */
     protected $model = User::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

@@ -10,9 +10,6 @@ class LicenseFactory extends Factory
     /** @var string */
     protected $model = License::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         $drive_car = $this->faker->boolean(.8);

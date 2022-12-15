@@ -36,10 +36,6 @@ trait ChangesReferences
         }
     }
 
-    /**
-     *
-     * @return array
-     */
     protected function getReferencingTables(string $table, string $column): array
     {
         return $this->schema

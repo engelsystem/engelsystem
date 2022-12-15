@@ -44,9 +44,6 @@ class MailerServiceProvider extends ServiceProvider
         $this->app->instance('mailer', $mailer);
     }
 
-    /**
-     * @param array  $config
-     */
     protected function getTransport(?string $transport, array $config): TransportInterface
     {
         switch ($transport) {
@@ -62,9 +59,6 @@ class MailerServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @param array $config
-     */
     protected function getSmtpTransport(array $config): SmtpTransport
     {
         /** @var EsmtpTransport $transport */

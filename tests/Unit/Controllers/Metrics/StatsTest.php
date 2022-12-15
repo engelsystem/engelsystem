@@ -427,12 +427,6 @@ class StatsTest extends TestCase
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L'], ['theme' => 4]);
     }
 
-    /**
-     * @param array $state
-     * @param array $personalData
-     * @param array $settings
-     *
-     */
     protected function addUser(
         array $state = [],
         array $personalData = [],

@@ -32,10 +32,6 @@ class LegacyDevelopment extends Legacy
         echo '</pre>';
     }
 
-    /**
-     * @param array $stackTrace
-     * @return array
-     */
     protected function formatStackTrace(array $stackTrace): array
     {
         $return = [];

@@ -68,9 +68,6 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $this->assertInstanceOf(SendmailTransport::class, $transport);
     }
 
-    /**
-     * @return array
-     */
     public function provideTransports(): array
     {
         return [
@@ -86,7 +83,6 @@ class MailerServiceProviderTest extends ServiceProviderTest
 
     /**
      * @covers       \Engelsystem\Mail\MailerServiceProvider::getTransport
-     * @param array  $emailConfig
      * @dataProvider provideTransports
      */
     public function testGetTransport(string $class, array $emailConfig = []): void
@@ -129,9 +125,6 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $this->assertEquals($this->smtpConfig['email']['password'], $transport->getPassword());
     }
 
-    /**
-     * @param array $configuration
-     */
     protected function getApplication(array $configuration = []): Application
     {
         $app = new Application();

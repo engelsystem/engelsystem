@@ -8,8 +8,6 @@ class Config extends Fluent
 {
     /**
      * The config values
-     *
-     * @var array
      */
     protected $attributes = []; // phpcs:ignore
 

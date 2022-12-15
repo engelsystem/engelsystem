@@ -208,9 +208,6 @@ class RequestHandlerTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    /**
-     * @return array
-     */
     protected function getMocks(): array
     {
         /** @var Application|MockObject $container */

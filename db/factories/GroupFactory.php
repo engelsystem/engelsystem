@@ -10,9 +10,6 @@ class GroupFactory extends Factory
     /** @var string */
     protected $model = Group::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

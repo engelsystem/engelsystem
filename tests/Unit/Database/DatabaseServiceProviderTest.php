@@ -71,9 +71,6 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
 
     /**
      * Prepare some mocks
-     *
-     * @param array $dbConfigData
-     * @return array
      */
     protected function prepare(array $dbConfigData, bool $getPdoThrowException = false): array
     {

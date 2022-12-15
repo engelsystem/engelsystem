@@ -10,9 +10,6 @@ class AngelTypeFactory extends Factory
     /** @var string */
     protected $model = AngelType::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [
