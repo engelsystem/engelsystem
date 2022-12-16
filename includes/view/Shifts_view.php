@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -195,8 +196,10 @@ function Shift_view($shift, ShiftType $shifttype, Room $room, $angeltypes_source
         $content[] = Shift_editor_info_render($shift);
     }
 
+    $start = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
+
     return page_with_title(
-        $shift['name'] . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
+        $shift['name'] . ' <small title="' . $start . '" data-countdown-ts="' . $shift['start'] . '">%c</small>',
         $content
     );
 }

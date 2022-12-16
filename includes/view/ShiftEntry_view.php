@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
@@ -89,9 +90,10 @@ function ShiftEntry_create_view_admin(
     $signup_user,
     $users_select
 ) {
+    $start = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift['start'] . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(__('Do you want to sign up the following user for this shift?'), true),
@@ -116,9 +118,10 @@ function ShiftEntry_create_view_admin(
  */
 function ShiftEntry_create_view_supporter($shift, Room $room, AngelType $angeltype, $signup_user, $users_select)
 {
+    $start = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift['start'] . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(sprintf(
@@ -144,9 +147,10 @@ function ShiftEntry_create_view_supporter($shift, Room $room, AngelType $angelty
  */
 function ShiftEntry_create_view_user($shift, Room $room, AngelType $angeltype, $comment)
 {
+    $start = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small data-countdown-ts="' . $shift['start'] . '">%c</small>',
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift['start'] . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(sprintf(__('Do you want to sign up for this shift as %s?'), AngelType_name_render($angeltype)), true),
