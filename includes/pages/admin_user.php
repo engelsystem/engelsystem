@@ -116,7 +116,7 @@ function admin_user()
 
         $html .= '</td></tr>' . "\n";
         $html .= '</table>' . "\n" . '<br />' . "\n";
-        $html .= '<input type="submit" value="' . __('form.save') . '" class="btn btn-primary">';
+        $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
         $html .= '</form>';
 
         $html .= '<hr />';
@@ -132,7 +132,7 @@ function admin_user()
         $html .= '  <tr><td>' . __('Confirm password') . '</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '<br />' . "\n";
-        $html .= '<input type="submit" value="' . __('form.save') . '" class="btn btn-primary">' . "\n";
+        $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
         $html .= '</form>';
 
         $html .= '<hr />';
@@ -168,7 +168,7 @@ function admin_user()
 
             $html .= '</div><br>';
 
-            $html .= '<input type="submit" value="' . __('form.save') . '" class="btn btn-primary">' . "\n";
+            $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
             $html .= '</form>';
 
             $html .= '<hr />';
