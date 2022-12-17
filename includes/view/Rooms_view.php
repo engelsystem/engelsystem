@@ -62,13 +62,11 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
         auth()->can('admin_rooms') ? buttons([
             button(
                 page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room->id]),
-                icon('pencil') . __('edit'),
-                'btn'
+                icon('pencil') . __('edit')
             ),
             button(
                 page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room->id]),
                 icon('trash') . __('delete'),
-                'btn'
             ),
         ]) : '',
         $dect,
