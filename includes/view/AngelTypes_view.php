@@ -188,15 +188,13 @@ function AngelType_view_buttons(
     if ($admin_angeltypes || $supporter) {
         $buttons[] = button(
             page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
-            icon('pencil') . __('edit'),
-            'edit'
+            icon('pencil') . __('edit')
         );
     }
     if ($admin_angeltypes) {
         $buttons[] = button(
             page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
-            icon('trash') . __('delete'),
-            'delete'
+            icon('trash') . __('delete')
         );
     }
 
