@@ -422,7 +422,11 @@ function admin_shifts()
             . form_spinner(
                 'angeltype_count_' . $type->id,
                 $type->name,
-                $needed_angel_types[$type->id]
+                $needed_angel_types[$type->id],
+                [
+                    'radio-name'  => 'angelmode',
+                    'radio-value' => 'manually'
+                ]
             )
             . '</div>';
     }
@@ -465,7 +469,15 @@ function admin_shifts()
                             __('Length'),
                             $request->has('length')
                                 ? $request->input('length')
-                                : '120'
+                                : '120',
+                            false,
+                            null,
+                            null,
+                            '',
+                            [
+                                'radio-name'  => 'mode',
+                                'radio-value' => 'multi'
+                            ]
                         ),
                         form_radio(
                             'mode',
@@ -478,7 +490,15 @@ function admin_shifts()
                             __('Shift change hours'),
                             $request->has('change_hours')
                                 ? $request->input('change_hours')
-                                : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
+                                : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22',
+                            false,
+                            null,
+                            null,
+                            '',
+                            [
+                                'radio-name'  => 'mode',
+                                'radio-value' => 'variable'
+                            ]
                         ),
                         form_checkbox(
                             'shift_over_midnight',

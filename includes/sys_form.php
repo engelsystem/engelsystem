@@ -21,19 +21,24 @@ function form_hidden($name, $value)
  * @param string $name
  * @param string $label
  * @param int    $value
+ * @param array  $data_attributes
  * @return string
  */
-function form_spinner(string $name, string $label, int $value)
+function form_spinner(string $name, string $label, int $value, array $data_attributes = [])
 {
     $id = 'spinner-' . $name;
+    $attr = '';
+    foreach ($data_attributes as $attr_key => $attr_value) {
+        $attr .= ' data-' . $attr_key . '="' . $attr_value . '"';
+    }
 
     return form_element($label, '
         <div class="input-group">
-            <input id="' . $id . '" class="form-control" type="number" min="0" step="1" name="' . $name . '" value="' . $value . '" />
-            <button class="btn btn-secondary spinner-down" type="button" data-input-id="' . $id . '">
+            <input id="' . $id . '" class="form-control" type="number" min="0" step="1" name="' . $name . '" value="' . $value . '"' . $attr . ' />
+            <button class="btn btn-secondary spinner-down" type="button" data-input-id="' . $id . '"' . $attr . '>
                 ' . icon('dash-lg') . '
             </button>
-            <button class="btn btn-secondary spinner-up" type="button" data-input-id="' . $id . '">
+            <button class="btn btn-secondary spinner-up" type="button" data-input-id="' . $id . '"' . $attr . '>
                 ' . icon('plus-lg') . '
             </button>
         </div>
@@ -202,19 +207,23 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
  * @param int|null    $maxlength
  * @param string|null $autocomplete
  * @param string|null $class
- *
+ * @param array       $data_attributes
  * @return string
  */
-function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null, $class = '')
+function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null, $class = '', $data_attributes = [])
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
     $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
+    $attr = '';
+    foreach ($data_attributes as $attr_key => $attr_value) {
+        $attr .= ' data-' . $attr_key . '="' . $attr_value . '"';
+    }
 
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars((string)$value) . '"' . $maxlength . $disabled . $autocomplete . '/>',
+        . '" value="' . htmlspecialchars((string)$value) . '"' . $maxlength . $disabled . $autocomplete . $attr . '/>',
         'form_' . $name,
         $class
     );
