@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpTemporaryRedirect;
-use Engelsystem\Models\BaseModel;
 use Engelsystem\ValidationResult;
-use Illuminate\Support\Collection;
 
 /**
  * Provide page/request helper functions
