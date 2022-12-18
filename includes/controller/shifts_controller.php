@@ -334,7 +334,7 @@ function shift_controller()
 }
 
 /**
- * @return array|false
+ * @return array
  */
 function shifts_controller()
 {
@@ -343,18 +343,11 @@ function shifts_controller()
         throw_redirect(page_link_to('user_shifts'));
     }
 
-    switch ($request->input('action')) {
-        case 'view':
-            return shift_controller();
-        /** @noinspection PhpMissingBreakStatementInspection */
-        case 'next':
-            shift_next_controller();
-            // fall through
-        default:
-            throw_redirect(page_link_to('/'));
-    }
-
-    return false;
+    return match ($request->input('action')) {
+        'view'  => shift_controller(),
+        'next'  => shift_next_controller(), // throw_redirect
+        default => throw_redirect(page_link_to('/')),
+    };
 }
 
 /**

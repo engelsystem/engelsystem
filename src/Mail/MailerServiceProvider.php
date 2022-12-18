@@ -46,17 +46,12 @@ class MailerServiceProvider extends ServiceProvider
 
     protected function getTransport(?string $transport, array $config): TransportInterface
     {
-        switch ($transport) {
-            case 'log':
-                return $this->app->make(LogTransport::class);
-            case 'mail':
-            case 'sendmail':
-                return $this->app->make(SendmailTransport::class, ['command' => $config['sendmail'] ?? null]);
-            case 'smtp':
-                return $this->getSmtpTransport($config);
-            default:
-                return Transport::fromDsn($transport ?? '');
-        }
+        return match ($transport) {
+            'log'              => $this->app->make(LogTransport::class),
+            'mail', 'sendmail' => $this->app->make(SendmailTransport::class, ['command' => $config['sendmail'] ?? null]),
+            'smtp'             => $this->getSmtpTransport($config),
+            default            => Transport::fromDsn($transport ?? ''),
+        };
     }
 
     protected function getSmtpTransport(array $config): SmtpTransport

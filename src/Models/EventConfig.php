@@ -51,12 +51,11 @@ class EventConfig extends BaseModel
 
         /** @see \Illuminate\Database\Eloquent\Concerns\HasAttributes::castAttribute */
         if (!empty($value)) {
-            switch ($this->getValueCast($this->name)) {
-                case 'datetime_human':
-                    return Carbon::make($value);
-                case 'datetime':
-                    return Carbon::createFromFormat(Carbon::ISO8601, $value);
-            }
+            return match ($this->getValueCast($this->name)) {
+                'datetime_human' => Carbon::make($value),
+                'datetime'       => Carbon::createFromFormat(Carbon::ISO8601, $value),
+                default          => $value,
+            };
         }
 
         return $value;
@@ -70,16 +69,13 @@ class EventConfig extends BaseModel
     public function setValueAttribute(mixed $value): static
     {
         if (!empty($value)) {
-            switch ($this->getValueCast($this->name)) {
-                case 'datetime_human':
-                    /** @var Carbon $value */
-                    $value = $value->toDateTimeString('minute');
-                    break;
-                case 'datetime':
-                    /** @var Carbon $value */
-                    $value = $value->toIso8601String();
-                    break;
-            }
+            $value = match ($this->getValueCast($this->name)) {
+                /** @var Carbon $value */
+                'datetime_human' => $value->toDateTimeString('minute'),
+                /** @var Carbon $value */
+                'datetime'       => $value->toIso8601String(),
+                default          => $value,
+            };
         }
 
         $value = $this->castAttributeAsJson('value', $value);

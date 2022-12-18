@@ -50,26 +50,7 @@ class LegacyDevelopment extends Legacy
 
             $args = [];
             foreach (($trace['args'] ?? []) as $arg) {
-                // @codeCoverageIgnoreStart
-                switch (gettype($arg)) {
-                    case 'string':
-                    case 'integer':
-                    case 'double':
-                        $args[] = $arg;
-                        break;
-                    case 'boolean':
-                        $args[] = $arg ? 'true' : 'false';
-                        break;
-                    case 'object':
-                        $args[] = get_class($arg);
-                        break;
-                    case 'resource':
-                        $args[] = get_resource_type($arg);
-                        break;
-                    default:
-                        $args[] = gettype($arg);
-                    // @codeCoverageIgnoreEnd
-                }
+                $args[] = $this->getDisplayNameOfValue($arg);
             }
 
             $return[] = [
@@ -79,5 +60,20 @@ class LegacyDevelopment extends Legacy
         }
 
         return $return;
+    }
+
+    /**
+     * @param mixed $arg
+     * @return string
+     */
+    private function getDisplayNameOfValue(mixed $arg): string
+    {
+        return match (gettype($arg)) {
+            'string', 'integer', 'double' => (string)$arg,
+            'boolean'  => $arg ? 'true' : 'false',
+            'object'   => get_class($arg),
+            'resource' => get_resource_type($arg),
+            default    => gettype($arg),
+        };
     }
 }

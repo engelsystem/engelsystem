@@ -153,15 +153,11 @@ function shifttypes_controller()
         $action = $request->input('action');
     }
 
-    switch ($action) {
-        case 'view':
-            return shifttype_controller();
-        case 'edit':
-            return shifttype_edit_controller();
-        case 'delete':
-            return shifttype_delete_controller();
-        case 'list':
-        default:
-            return shifttypes_list_controller();
-    }
+    return match ($action) {
+        'view'   => shifttype_controller(),
+        'edit'   => shifttype_edit_controller(),
+        'delete' => shifttype_delete_controller(),
+        'list'   => shifttypes_list_controller(),
+        default  => shifttypes_list_controller(),
+    };
 }

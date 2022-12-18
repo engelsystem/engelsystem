@@ -87,29 +87,14 @@ class ShiftSignupState
      */
     private function valueForState($state)
     {
-        switch ($state) {
-            case ShiftSignupState::NOT_ARRIVED:
-            case ShiftSignupState::NOT_YET:
-            case ShiftSignupState::SHIFT_ENDED:
-                return 100;
-
-            case ShiftSignupState::SIGNED_UP:
-                return 90;
-
-            case ShiftSignupState::FREE:
-                return 80;
-
-            case ShiftSignupState::ANGELTYPE:
-            case ShiftSignupState::COLLIDES:
-                return 70;
-
-            case ShiftSignupState::OCCUPIED:
-            case ShiftSignupState::ADMIN:
-                return 60;
-
-            default:
-                return 0;
-        }
+        return match ($state) {
+            ShiftSignupState::NOT_ARRIVED, ShiftSignupState::NOT_YET, ShiftSignupState::SHIFT_ENDED => 100,
+            ShiftSignupState::SIGNED_UP => 90,
+            ShiftSignupState::FREE      => 80,
+            ShiftSignupState::ANGELTYPE, ShiftSignupState::COLLIDES => 70,
+            ShiftSignupState::OCCUPIED, ShiftSignupState::ADMIN     => 60,
+            default => 0,
+        };
     }
 
     /**
@@ -119,13 +104,10 @@ class ShiftSignupState
      */
     public function isSignupAllowed()
     {
-        switch ($this->state) {
-            case ShiftSignupState::FREE:
-            case ShiftSignupState::ADMIN:
-                return true;
-        }
-
-        return false;
+        return match ($this->state) {
+            ShiftSignupState::FREE, ShiftSignupState::ADMIN => true,
+            default => false,
+        };
     }
 
     /**
