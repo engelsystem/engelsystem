@@ -19,8 +19,6 @@ class UserWorkLogController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Redirector $redirect;
-
     /** @var array<string> */
     protected array $permissions = [
         'admin_user_worklog',
@@ -31,11 +29,10 @@ class UserWorkLogController extends BaseController
         protected Config $config,
         protected LoggerInterface $log,
         protected Worklog $worklog,
-        Redirector $redirector,
+        protected Redirector $redirect,
         protected Response $response,
         protected User $user
     ) {
-        $this->redirect = $redirector;
     }
 
     public function editWorklog(Request $request): Response

@@ -31,7 +31,7 @@ class OAuthController extends BaseController
         protected Config $config,
         protected LoggerInterface $log,
         protected OAuth $oauth,
-        protected Redirector $redirector,
+        protected Redirector $redirect,
         protected Session $session,
         protected UrlGenerator $url
     ) {
@@ -59,7 +59,7 @@ class OAuthController extends BaseController
             );
             $this->session->set('oauth2_state', $provider->getState());
 
-            return $this->redirector->to($authorizationUrl);
+            return $this->redirect->to($authorizationUrl);
         }
 
         if (
@@ -188,7 +188,7 @@ class OAuthController extends BaseController
         $this->log->info('Disconnected OAuth from {provider}', ['provider' => $providerName]);
         $this->addNotification('oauth.disconnected');
 
-        return $this->redirector->back();
+        return $this->redirect->back();
     }
 
     protected function getProvider(string $name): AbstractProvider
@@ -326,6 +326,6 @@ class OAuthController extends BaseController
         $this->session->set('oauth2_enable_password', $config['enable_password']);
         $this->session->set('oauth2_allow_registration', $config['allow_registration']);
 
-        return $this->redirector->to('/register');
+        return $this->redirect->to('/register');
     }
 }

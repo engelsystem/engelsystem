@@ -16,8 +16,6 @@ class NewsController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Redirector $redirect;
-
     /** @var array<string, string> */
     protected array $permissions = [
         'news',
@@ -32,11 +30,10 @@ class NewsController extends BaseController
         protected Config $config,
         protected LoggerInterface $log,
         protected News $news,
-        Redirector $redirector,
+        protected Redirector $redirect,
         protected Response $response,
         protected Request $request
     ) {
-        $this->redirect = $redirector;
     }
 
     public function index(): Response
@@ -153,6 +150,9 @@ class NewsController extends BaseController
         );
     }
 
+    /**
+     * @param array $data
+     */
     protected function renderView(string $page, array $data): Response
     {
         $data += $this->getNotifications();

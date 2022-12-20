@@ -15,8 +15,6 @@ class SettingsController extends BaseController
     use HasUserNotifications;
     use ChecksArrivalsAndDepartures;
 
-    protected Redirector $redirect;
-
     /** @var string[] */
     protected array $permissions = [
         'user_settings',
@@ -26,10 +24,9 @@ class SettingsController extends BaseController
         protected Authenticator $auth,
         protected Config $config,
         protected LoggerInterface $log,
-        Redirector $redirector,
+        protected Redirector $redirect,
         protected Response $response
     ) {
-        $this->redirect = $redirector;
     }
 
     public function profile(): Response

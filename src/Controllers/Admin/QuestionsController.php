@@ -16,8 +16,6 @@ class QuestionsController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Redirector $redirect;
-
     /** @var array<string> */
     protected array $permissions = [
         'question.add',
@@ -28,10 +26,9 @@ class QuestionsController extends BaseController
         protected Authenticator $auth,
         protected LoggerInterface $log,
         protected Question $question,
-        Redirector $redirector,
+        protected Redirector $redirect,
         protected Response $response
     ) {
-        $this->redirect = $redirector;
     }
 
     public function index(): Response

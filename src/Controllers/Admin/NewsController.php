@@ -15,8 +15,6 @@ class NewsController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Redirector $redirect;
-
     /** @var array<string> */
     protected array $permissions = [
         'admin_news',
@@ -26,10 +24,9 @@ class NewsController extends BaseController
         protected Authenticator $auth,
         protected LoggerInterface $log,
         protected News $news,
-        Redirector $redirector,
+        protected Redirector $redirect,
         protected Response $response
     ) {
-        $this->redirect = $redirector;
     }
 
     public function edit(Request $request): Response

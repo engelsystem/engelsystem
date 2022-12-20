@@ -16,8 +16,6 @@ class UserShirtController extends BaseController
 {
     use HasUserNotifications;
 
-    protected Redirector $redirect;
-
     /** @var array<string, string> */
     protected array $permissions = [
         'editShirt' => 'user.edit.shirt',
@@ -28,11 +26,10 @@ class UserShirtController extends BaseController
         protected Authenticator $auth,
         protected Config $config,
         protected LoggerInterface $log,
-        Redirector $redirector,
+        protected Redirector $redirect,
         protected Response $response,
         protected User $user
     ) {
-        $this->redirect = $redirector;
     }
 
     public function editShirt(Request $request): Response
