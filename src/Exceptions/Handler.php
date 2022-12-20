@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Exceptions;
 
+use Engelsystem\Environment;
 use Engelsystem\Exceptions\Handlers\HandlerInterface;
 use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Http\Request;
@@ -15,18 +16,12 @@ class Handler
 
     protected ?Request $request = null;
 
-    /** @var string */
-    public const ENV_PRODUCTION = 'prod';
-
-    /** @var string */
-    public const ENV_DEVELOPMENT = 'dev';
-
     /**
      * Handler constructor.
      *
-     * @param string $environment prod|dev
+     * @param Environment $environment prod|dev
      */
-    public function __construct(protected string $environment = self::ENV_PRODUCTION)
+    public function __construct(protected Environment $environment = Environment::PRODUCTION)
     {
     }
 
@@ -51,7 +46,7 @@ class Handler
             $this->request = new Request();
         }
 
-        $handler = isset($this->handler[$this->environment]) ? $this->handler[$this->environment] : new Legacy();
+        $handler = isset($this->handler[$this->environment->value]) ? $this->handler[$this->environment->value] : new Legacy();
         $handler->report($e);
         ob_start();
         $handler->render($this->request, $e);
@@ -81,12 +76,12 @@ class Handler
         die(1);
     }
 
-    public function getEnvironment(): string
+    public function getEnvironment(): Environment
     {
         return $this->environment;
     }
 
-    public function setEnvironment(string $environment): void
+    public function setEnvironment(Environment $environment): void
     {
         $this->environment = $environment;
     }
@@ -94,18 +89,18 @@ class Handler
     /**
      * @return HandlerInterface|HandlerInterface[]
      */
-    public function getHandler(string $environment = null): HandlerInterface|array
+    public function getHandler(Environment $environment = null): HandlerInterface|array
     {
         if (!is_null($environment)) {
-            return $this->handler[$environment];
+            return $this->handler[$environment->value];
         }
 
         return $this->handler;
     }
 
-    public function setHandler(string $environment, HandlerInterface $handler): void
+    public function setHandler(Environment $environment, HandlerInterface $handler): void
     {
-        $this->handler[$environment] = $handler;
+        $this->handler[$environment->value] = $handler;
     }
 
     public function getRequest(): Request

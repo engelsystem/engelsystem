@@ -3,6 +3,7 @@
 namespace Engelsystem\Exceptions;
 
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Environment;
 use Engelsystem\Exceptions\Handlers\HandlerInterface;
 use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Exceptions\Handlers\LegacyDevelopment;
@@ -36,7 +37,7 @@ class ExceptionsServiceProvider extends ServiceProvider
     {
         $handler = $this->app->make(Legacy::class);
         $this->app->instance('error.handler.production', $handler);
-        $errorHandler->setHandler(Handler::ENV_PRODUCTION, $handler);
+        $errorHandler->setHandler(Environment::PRODUCTION, $handler);
         $this->app->bind(HandlerInterface::class, 'error.handler.production');
     }
 
@@ -49,7 +50,7 @@ class ExceptionsServiceProvider extends ServiceProvider
         }
 
         $this->app->instance('error.handler.development', $handler);
-        $errorHandler->setHandler(Handler::ENV_DEVELOPMENT, $handler);
+        $errorHandler->setHandler(Environment::DEVELOPMENT, $handler);
     }
 
     protected function addLogger(Handler $handler): void

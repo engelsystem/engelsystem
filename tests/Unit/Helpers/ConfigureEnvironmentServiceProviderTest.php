@@ -4,6 +4,7 @@ namespace Engelsystem\Test\Unit\Helpers;
 
 use Carbon\CarbonTimeZone;
 use Engelsystem\Config\Config;
+use Engelsystem\Environment;
 use Engelsystem\Exceptions\Handler;
 use Engelsystem\Helpers\ConfigureEnvironmentServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
@@ -42,10 +43,10 @@ class ConfigureEnvironmentServiceProviderTest extends ServiceProviderTest
             ->with(E_ALL);
 
         $serviceProvider->register();
-        $this->assertNotEquals(Handler::ENV_DEVELOPMENT, $handler->getEnvironment());
+        $this->assertNotEquals(Environment::DEVELOPMENT, $handler->getEnvironment());
 
         $config->set('environment', 'development');
         $serviceProvider->register();
-        $this->assertEquals(Handler::ENV_DEVELOPMENT, $handler->getEnvironment());
+        $this->assertEquals(Environment::DEVELOPMENT, $handler->getEnvironment());
     }
 }

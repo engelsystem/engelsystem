@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Exceptions;
 
+use Engelsystem\Environment;
 use Engelsystem\Exceptions\Handler;
 use Engelsystem\Exceptions\Handlers\HandlerInterface;
 use Engelsystem\Http\Request;
@@ -20,10 +21,10 @@ class HandlerTest extends TestCase
         /** @var Handler|MockObject $handler */
         $handler = new Handler();
         $this->assertInstanceOf(Handler::class, $handler);
-        $this->assertEquals(Handler::ENV_PRODUCTION, $handler->getEnvironment());
+        $this->assertEquals(Environment::PRODUCTION, $handler->getEnvironment());
 
-        $anotherHandler = new Handler(Handler::ENV_DEVELOPMENT);
-        $this->assertEquals(Handler::ENV_DEVELOPMENT, $anotherHandler->getEnvironment());
+        $anotherHandler = new Handler(Environment::DEVELOPMENT);
+        $this->assertEquals(Environment::DEVELOPMENT, $anotherHandler->getEnvironment());
     }
 
     /**
@@ -70,7 +71,7 @@ class HandlerTest extends TestCase
         $handler->expects($this->once())
             ->method('terminateApplicationImmediately');
 
-        $handler->setHandler(Handler::ENV_PRODUCTION, $handlerMock);
+        $handler->setHandler(Environment::PRODUCTION, $handlerMock);
 
         $this->expectOutputString($errorMessage);
         $handler->exceptionHandler($exception);
@@ -106,11 +107,11 @@ class HandlerTest extends TestCase
     {
         $handler = new Handler();
 
-        $handler->setEnvironment(Handler::ENV_DEVELOPMENT);
-        $this->assertEquals(Handler::ENV_DEVELOPMENT, $handler->getEnvironment());
+        $handler->setEnvironment(Environment::DEVELOPMENT);
+        $this->assertEquals(Environment::DEVELOPMENT, $handler->getEnvironment());
 
-        $handler->setEnvironment(Handler::ENV_PRODUCTION);
-        $this->assertEquals(Handler::ENV_PRODUCTION, $handler->getEnvironment());
+        $handler->setEnvironment(Environment::PRODUCTION);
+        $this->assertEquals(Environment::PRODUCTION, $handler->getEnvironment());
     }
 
     /**
@@ -125,10 +126,10 @@ class HandlerTest extends TestCase
         /** @var HandlerInterface|MockObject $prodHandler */
         $prodHandler = $this->getMockForAbstractClass(HandlerInterface::class);
 
-        $handler->setHandler(Handler::ENV_DEVELOPMENT, $devHandler);
-        $handler->setHandler(Handler::ENV_PRODUCTION, $prodHandler);
-        $this->assertEquals($devHandler, $handler->getHandler(Handler::ENV_DEVELOPMENT));
-        $this->assertEquals($prodHandler, $handler->getHandler(Handler::ENV_PRODUCTION));
+        $handler->setHandler(Environment::DEVELOPMENT, $devHandler);
+        $handler->setHandler(Environment::PRODUCTION, $prodHandler);
+        $this->assertEquals($devHandler, $handler->getHandler(Environment::DEVELOPMENT));
+        $this->assertEquals($prodHandler, $handler->getHandler(Environment::PRODUCTION));
         $this->assertCount(2, $handler->getHandler());
     }
 
