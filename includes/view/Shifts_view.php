@@ -5,6 +5,7 @@ use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Collection;
@@ -152,11 +153,11 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
 
     $content = [msg()];
 
-    if ($shift_signup_state->getState() == ShiftSignupState::COLLIDES) {
+    if ($shift_signup_state->getState() === ShiftSignupStatus::COLLIDES) {
         $content[] = info(__('This shift collides with one of your shifts.'), true);
     }
 
-    if ($shift_signup_state->getState() == ShiftSignupState::SIGNED_UP) {
+    if ($shift_signup_state->getState() === ShiftSignupStatus::SIGNED_UP) {
         $content[] = info(__('You are signed up for this shift.'), true);
     }
 
