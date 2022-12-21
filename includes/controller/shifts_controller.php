@@ -386,7 +386,7 @@ function shifts_json_export_controller()
 
     if (
         !$request->has('key')
-        || !preg_match('/^[\da-f]{32}$/', $request->input('key'))
+        || !$request->input('key')
         || !$user
     ) {
         throw new HttpForbidden('{"error":"Missing or invalid key"}', ['content-type' => 'application/json']);

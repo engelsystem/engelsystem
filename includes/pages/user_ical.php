@@ -13,7 +13,7 @@ function user_ical()
 
     if (
         !$request->has('key')
-        || !preg_match('/^[\da-f]{32}$/', $request->input('key'))
+        || !$request->input('key')
         || !$user
     ) {
         throw new HttpForbidden('Missing or invalid key', ['content-type' => 'text/text']);
