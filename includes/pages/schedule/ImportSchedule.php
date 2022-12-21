@@ -21,6 +21,7 @@ use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use ErrorException;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
@@ -445,7 +446,12 @@ class ImportSchedule extends BaseController
         /** @var ScheduleUrl $scheduleUrl */
         $scheduleUrl = ScheduleUrl::findOrFail($scheduleId);
 
-        $scheduleResponse = $this->guzzle->get($scheduleUrl->url);
+        try {
+            $scheduleResponse = $this->guzzle->get($scheduleUrl->url);
+        } catch (ConnectException $e) {
+            throw new ErrorException('schedule.import.request-error');
+        }
+
         if ($scheduleResponse->getStatusCode() != 200) {
             throw new ErrorException('schedule.import.request-error');
         }

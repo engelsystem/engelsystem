@@ -35,7 +35,7 @@
                             {% for schedule in schedules %}
                                 <tr>
                                     <td>{{ schedule.name }}</td>
-                                    <td>{{ schedule.url }}</td>
+                                    <td><a href="{{ schedule.url }}" target="_blank">{{ schedule.url }}</a></td>
                                     <td>
                                         <div class="btn-group">
                                             <a
