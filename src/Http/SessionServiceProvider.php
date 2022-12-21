@@ -49,12 +49,10 @@ class SessionServiceProvider extends ServiceProvider
         $config = $this->app->get('config');
         $sessionConfig = $config->get('session');
 
-        $handler = null;
-        switch ($sessionConfig['driver']) {
-            case 'pdo':
-                $handler = $this->app->make(DatabaseHandler::class);
-                break;
-        }
+        $handler = match ($sessionConfig['driver']) {
+            'pdo'   => $this->app->make(DatabaseHandler::class),
+            default => null,
+        };
 
         return $this->app->make(NativeSessionStorage::class, [
             'options' => [

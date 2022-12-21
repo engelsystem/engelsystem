@@ -467,22 +467,13 @@ function user_angeltypes_controller(): array
         throw_redirect(page_link_to('angeltypes'));
     }
 
-    switch ($request->input('action')) {
-        case 'delete_all':
-            return user_angeltypes_delete_all_controller();
-        case 'confirm_all':
-            return user_angeltypes_confirm_all_controller();
-        case 'confirm':
-            return user_angeltype_confirm_controller();
-        case 'delete':
-            return user_angeltype_delete_controller();
-        case 'update':
-            return user_angeltype_update_controller();
-        case 'add':
-            return user_angeltype_add_controller();
-        default:
-            throw_redirect(page_link_to('angeltypes'));
-    }
-
-    return ['', ''];
+    return match ($request->input('action')) {
+        'delete_all'  => user_angeltypes_delete_all_controller(),
+        'confirm_all' => user_angeltypes_confirm_all_controller(),
+        'confirm'     => user_angeltype_confirm_controller(),
+        'delete'      => user_angeltype_delete_controller(),
+        'update'      => user_angeltype_update_controller(),
+        'add'         => user_angeltype_add_controller(),
+        default       => throw_redirect(page_link_to('angeltyps')),
+    };
 }

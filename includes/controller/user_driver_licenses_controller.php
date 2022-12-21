@@ -45,11 +45,10 @@ function user_driver_licenses_controller()
 
     $action = strip_request_item('action', 'edit');
 
-    switch ($action) {
-        default:
-        case 'edit':
-            return user_driver_license_edit_controller();
-    }
+    return match ($action) {
+        'edit'  => user_driver_license_edit_controller(),
+        default => user_driver_license_edit_controller(),
+    };
 }
 
 /**

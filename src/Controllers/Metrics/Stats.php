@@ -90,24 +90,13 @@ class Stats
 
     public function email(string $type): int
     {
-        switch ($type) {
-            case 'system':
-                $query = Settings::whereEmailShiftinfo(true);
-                break;
-            case 'humans':
-                $query = Settings::whereEmailHuman(true);
-                break;
-            case 'goody':
-                $query = Settings::whereEmailGoody(true);
-                break;
-            case 'news':
-                $query = Settings::whereEmailNews(true);
-                break;
-            default:
-                return 0;
-        }
-
-        return $query->count();
+        return match ($type) {
+            'system' => Settings::whereEmailShiftinfo(true)->count(),
+            'humans' => Settings::whereEmailHuman(true)->count(),
+            'goody'  => Settings::whereEmailGoody(true)->count(),
+            'news'   => Settings::whereEmailNews(true)->count(),
+            default  => 0,
+        };
     }
 
     /**

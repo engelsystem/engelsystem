@@ -71,28 +71,14 @@ class ShiftCalendarShiftRenderer
      */
     private function classForSignupState(ShiftSignupState $shiftSignupState)
     {
-        switch ($shiftSignupState->getState()) {
-            case ShiftSignupState::ADMIN:
-            case ShiftSignupState::OCCUPIED:
-                return 'success';
-
-            case ShiftSignupState::SIGNED_UP:
-                return 'primary';
-
-            case ShiftSignupState::NOT_ARRIVED:
-            case ShiftSignupState::NOT_YET:
-            case ShiftSignupState::SHIFT_ENDED:
-                return 'secondary';
-
-            case ShiftSignupState::ANGELTYPE:
-            case ShiftSignupState::COLLIDES:
-                return 'warning';
-
-            case ShiftSignupState::FREE:
-                return 'danger';
-            default:
-                return 'light';
-        }
+        return match ($shiftSignupState->getState()) {
+            ShiftSignupState::ADMIN, ShiftSignupState::OCCUPIED => 'success',
+            ShiftSignupState::SIGNED_UP => 'primary',
+            ShiftSignupState::NOT_ARRIVED, ShiftSignupState::NOT_YET, ShiftSignupState::SHIFT_ENDED => 'secondary',
+            ShiftSignupState::ANGELTYPE, ShiftSignupState::COLLIDES => 'warning',
+            ShiftSignupState::FREE => 'danger',
+            default => 'light',
+        };
     }
 
     /**

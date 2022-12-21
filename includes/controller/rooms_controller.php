@@ -71,15 +71,11 @@ function rooms_controller(): array
         $action = 'list';
     }
 
-    switch ($action) {
-        case 'view':
-            return room_controller();
-        case 'list':
-        default:
-            throw_redirect(page_link_to('admin_rooms'));
-    }
-
-    return ['', ''];
+    return match ($action) {
+        'view'  => room_controller(),
+        'list'  => throw_redirect(page_link_to('admin_rooms')),
+        default => throw_redirect(page_link_to('admin_rooms')),
+    };
 }
 
 /**

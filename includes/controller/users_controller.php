@@ -27,17 +27,13 @@ function users_controller()
         $action = $request->input('action');
     }
 
-    switch ($action) {
-        case 'view':
-            return user_controller();
-        case 'delete':
-            return user_delete_controller();
-        case 'edit_vouchers':
-            return user_edit_vouchers_controller();
-        case 'list':
-        default:
-            return users_list_controller();
-    }
+    return match ($action) {
+        'view'          => user_controller(),
+        'delete'        => user_delete_controller(),
+        'edit_vouchers' => user_edit_vouchers_controller(),
+        'list'          => users_list_controller(),
+        default         => users_list_controller(),
+    };
 }
 
 /**

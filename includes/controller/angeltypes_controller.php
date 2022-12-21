@@ -27,19 +27,14 @@ function angeltypes_controller()
 {
     $action = strip_request_item('action', 'list');
 
-    switch ($action) {
-        case 'view':
-            return angeltype_controller();
-        case 'edit':
-            return angeltype_edit_controller();
-        case 'delete':
-            return angeltype_delete_controller();
-        case 'about':
-            return angeltypes_about_controller();
-        case 'list':
-        default:
-            return angeltypes_list_controller();
-    }
+    return match ($action) {
+        'view'   => angeltype_controller(),
+        'edit'   => angeltype_edit_controller(),
+        'delete' => angeltype_delete_controller(),
+        'about'  => angeltypes_about_controller(),
+        'list'   => angeltypes_list_controller(),
+        default  => angeltypes_list_controller(),
+    };
 }
 
 /**

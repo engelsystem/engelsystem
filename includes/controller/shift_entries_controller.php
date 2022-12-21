@@ -24,14 +24,11 @@ function shift_entries_controller(): array
         throw_redirect(user_link($user->id));
     }
 
-    switch ($action) {
-        case 'create':
-            return shift_entry_create_controller();
-        case 'delete':
-            return shift_entry_delete_controller();
-    }
-
-    return ['', ''];
+    return match ($action) {
+        'create' => shift_entry_create_controller(),
+        'delete' => shift_entry_delete_controller(),
+        default  => ['', ''],
+    };
 }
 
 /**

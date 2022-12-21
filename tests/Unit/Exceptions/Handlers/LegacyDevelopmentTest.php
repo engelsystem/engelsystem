@@ -11,8 +11,9 @@ use PHPUnit\Framework\TestCase;
 class LegacyDevelopmentTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::formatStackTrace()
-     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::render()
+     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::formatStackTrace
+     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::render
+     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::getDisplayNameOfValue
      */
     public function testRender(): void
     {
