@@ -42,7 +42,7 @@ trait ResolvesMiddlewareTrait
     }
 
     /**
-     * Checks if the given object is a middleware or middleware or request handler
+     * Checks if the given object is a middleware or request handler
      */
     protected function isMiddleware(mixed $middleware): bool
     {

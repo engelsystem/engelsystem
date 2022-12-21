@@ -6,7 +6,6 @@ use Engelsystem\Application;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpForbidden;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -28,6 +27,7 @@ class RequestHandler implements MiddlewareInterface
     {
         $requestHandler = $request->getAttribute('route-request-handler');
 
+        /** @var CallableHandler|MiddlewareInterface|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->resolveRequestHandler($requestHandler);
 
         if ($requestHandler instanceof CallableHandler) {
@@ -42,11 +42,11 @@ class RequestHandler implements MiddlewareInterface
             return $requestHandler->process($request, $handler);
         }
 
-        if ($requestHandler instanceof RequestHandlerInterface) {
-            return $requestHandler->handle($request);
-        }
-
-        throw new InvalidArgumentException('Unable to process request handler of type ' . gettype($requestHandler));
+        /**
+         * Is RequestHandlerInterface
+         * @see RequestHandlerInterface
+         */
+        return $requestHandler->handle($request);
     }
 
     /**

@@ -14,7 +14,7 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
 {
     use ResolvesMiddlewareTrait;
 
-    protected RequestHandlerInterface $next;
+    protected ?RequestHandlerInterface $next = null;
 
     /**
      * @param MiddlewareInterface[]|string[] $stack

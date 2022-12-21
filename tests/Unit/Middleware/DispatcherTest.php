@@ -3,8 +3,12 @@
 namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Application;
+use Engelsystem\Http\Request;
+use Engelsystem\Http\Response;
 use Engelsystem\Middleware\Dispatcher;
-use Error;
+use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
+use InvalidArgumentException;
+use LogicException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -122,7 +126,7 @@ class DispatcherTest extends TestCase
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->createMock(ServerRequestInterface::class);
 
-        $this->expectException(Error::class);
+        $this->expectException(LogicException::class);
 
         $dispatcher = new Dispatcher();
         $dispatcher->handle($request);
@@ -161,6 +165,17 @@ class DispatcherTest extends TestCase
 
         $this->expectException(TypeError::class);
         $dispatcher->handle($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\Dispatcher::handle
+     */
+    public function testHandleCallResolveInvalidTypeResolved(): void
+    {
+        $instance = new Dispatcher([new ReturnResponseMiddlewareHandler(new Response())]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $instance->handle(new Request());
     }
 
     /**
