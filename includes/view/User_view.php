@@ -189,25 +189,28 @@ function User_shift_state_render($user)
 
     $nextShift = array_shift($upcoming_shifts);
 
+    $start = Carbon::createFromTimestamp($nextShift['start'])->format(__('Y-m-d H:i'));
+
     if ($nextShift['start'] > time()) {
         if ($nextShift['start'] - time() > 3600) {
-            return '<span class="text-success" data-countdown-ts="' . $nextShift['start'] . '">'
+            return '<span class="text-success" title="' . $start . '" data-countdown-ts="' . $nextShift['start'] . '">'
                 . __('Next shift %c')
                 . '</span>';
         }
-        return '<span class="text-warning" data-countdown-ts="' . $nextShift['start'] . '">'
+        return '<span class="text-warning" title="' . $start . '" data-countdown-ts="' . $nextShift['start'] . '">'
             . __('Next shift %c')
             . '</span>';
     }
     $halfway = ($nextShift['start'] + $nextShift['end']) / 2;
 
     if (time() < $halfway) {
-        return '<span class="text-danger" data-countdown-ts="' . $nextShift['start'] . '">'
+        return '<span class="text-danger" title="' . $start . '" data-countdown-ts="' . $nextShift['start'] . '">'
             . __('Shift started %c')
             . '</span>';
     }
 
-    return '<span class="text-danger" data-countdown-ts="' . $nextShift['end'] . '">'
+    $end = Carbon::createFromTimestamp($nextShift['end'])->format(__('Y-m-d H:i'));
+    return '<span class="text-danger" title="' . $end . '" data-countdown-ts="' . $nextShift['end'] . '">'
         . __('Shift ends %c')
         . '</span>';
 }
@@ -224,7 +227,9 @@ function User_last_shift_render($user)
     }
 
     $lastShift = array_shift($last_shifts);
-    return '<span data-countdown-ts="' . $lastShift['end'] . '">'
+    $end = Carbon::createFromTimestamp($lastShift['end'])->format(__('Y-m-d H:i'));
+
+    return '<span title="' . $end . '" data-countdown-ts="' . $lastShift['end'] . '">'
         . __('Shift ended %c')
         . '</span>';
 }
