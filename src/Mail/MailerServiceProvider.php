@@ -48,7 +48,10 @@ class MailerServiceProvider extends ServiceProvider
     {
         return match ($transport) {
             'log'              => $this->app->make(LogTransport::class),
-            'mail', 'sendmail' => $this->app->make(SendmailTransport::class, ['command' => $config['sendmail'] ?? null]),
+            'mail', 'sendmail' => $this->app->make(
+                SendmailTransport::class,
+                ['command' => $config['sendmail'] ?? null]
+            ),
             'smtp'             => $this->getSmtpTransport($config),
             default            => Transport::fromDsn($transport ?? ''),
         };

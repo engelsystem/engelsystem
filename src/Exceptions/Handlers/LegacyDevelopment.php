@@ -62,10 +62,6 @@ class LegacyDevelopment extends Legacy
         return $return;
     }
 
-    /**
-     * @param mixed $arg
-     * @return string
-     */
     private function getDisplayNameOfValue(mixed $arg): string
     {
         return match (gettype($arg)) {
