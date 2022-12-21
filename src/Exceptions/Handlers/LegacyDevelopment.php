@@ -72,7 +72,7 @@ class LegacyDevelopment extends Legacy
             'string', 'integer', 'double' => (string)$arg,
             'boolean'  => $arg ? 'true' : 'false',
             'object'   => get_class($arg),
-            'resource' => get_resource_type($arg),
+            'resource' => get_resource_type($arg), // @codeCoverageIgnore
             default    => gettype($arg),
         };
     }
