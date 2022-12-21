@@ -29,7 +29,7 @@ function admin_shifts()
     $session = session();
     $start = Carbon::createTimestampFromDatetime(date('Y-m-d') . 'T00:00');
     $end = $start;
-    $mode = '';
+    $mode = 'multi';
     $angelmode = 'manually';
     $length = '';
     $change_hours = [];
