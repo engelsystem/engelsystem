@@ -43,8 +43,8 @@ class AngelType extends BaseModel
 {
     use HasFactory;
 
-    /** @var string[] */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'name',
         'description',
 
@@ -60,7 +60,7 @@ class AngelType extends BaseModel
     ];
 
     /** @var array<string, string> */
-    protected $casts = [
+    protected $casts = [ // phpcs:ignore
         'restricted'              => 'boolean',
         'requires_driver_license' => 'boolean',
         'no_self_signup'          => 'boolean',

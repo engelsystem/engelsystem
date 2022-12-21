@@ -8,12 +8,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class LicenseFactory extends Factory
 {
     /** @var string */
-    protected $model = License::class;
+    protected $model = License::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         $drive_car = $this->faker->boolean(.8);
         $drive_3_5t = $drive_car && $this->faker->boolean(.7);

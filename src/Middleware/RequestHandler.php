@@ -16,24 +16,13 @@ class RequestHandler implements MiddlewareInterface
 {
     use ResolvesMiddlewareTrait;
 
-    /** @var Application */
-    protected $container;
-
-    /**
-     * @param Application $container
-     */
-    public function __construct(Application $container)
+    public function __construct(protected Application $container)
     {
-        $this->container = $container;
     }
 
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -62,12 +51,10 @@ class RequestHandler implements MiddlewareInterface
 
     /**
      * Resolve the given class
-     *
-     * @param string|callable|MiddlewareInterface|RequestHandlerInterface $handler
-     * @return MiddlewareInterface|RequestHandlerInterface
      */
-    protected function resolveRequestHandler($handler)
-    {
+    protected function resolveRequestHandler(
+        string|callable|MiddlewareInterface|RequestHandlerInterface $handler
+    ): MiddlewareInterface|RequestHandlerInterface {
         if (is_string($handler) && mb_strpos($handler, '@') !== false) {
             list($class, $method) = explode('@', $handler, 2);
             if (!class_exists($class) && !$this->container->has($class)) {
@@ -93,10 +80,6 @@ class RequestHandler implements MiddlewareInterface
 
     /**
      * Check required page permissions
-     *
-     * @param BaseController $controller
-     * @param string         $method
-     * @return bool
      */
     protected function checkPermissions(BaseController $controller, string $method): bool
     {

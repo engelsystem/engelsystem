@@ -36,39 +36,33 @@ class Message extends BaseModel
     use UsesUserModel;
 
     /** @var bool enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** @var string[] */
-    protected $casts = [
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
         'user_id'     => 'integer',
         'receiver_id' => 'integer',
         'read'        => 'boolean',
     ];
 
-    /** @var string[] */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'receiver_id',
         'read',
         'text',
     ];
 
-    /** @var array */
-    protected $attributes = [
+    /** @var array<string, bool> */
+    protected $attributes = [ // phpcs:ignore
         'read' => false,
     ];
 
-    /**
-     * @return BelongsTo
-     */
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'receiver_id');

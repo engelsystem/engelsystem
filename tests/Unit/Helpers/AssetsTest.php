@@ -11,7 +11,7 @@ class AssetsTest extends TestCase
      * @covers \Engelsystem\Helpers\Assets::__construct
      * @covers \Engelsystem\Helpers\Assets::getAssetPath
      */
-    public function testGetAssetPath()
+    public function testGetAssetPath(): void
     {
         $assets = new Assets('/foo/bar');
         $this->assertEquals('lorem.bar', $assets->getAssetPath('lorem.bar'));

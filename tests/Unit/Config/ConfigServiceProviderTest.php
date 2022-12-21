@@ -21,7 +21,7 @@ class ConfigServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Config\ConfigServiceProvider::getConfigPath
      * @covers \Engelsystem\Config\ConfigServiceProvider::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var Application|MockObject $app */
         /** @var Config|MockObject $config */
@@ -50,7 +50,7 @@ class ConfigServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Config\ConfigServiceProvider::register
      */
-    public function testRegisterException()
+    public function testRegisterException(): void
     {
         /** @var Application|MockObject $app */
         /** @var Config|MockObject $config */
@@ -69,7 +69,7 @@ class ConfigServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Config\ConfigServiceProvider::__construct
      * @covers \Engelsystem\Config\ConfigServiceProvider::boot
      */
-    public function testBoot()
+    public function testBoot(): void
     {
         $app = $this->getApp(['get']);
 
@@ -129,10 +129,9 @@ class ConfigServiceProviderTest extends ServiceProviderTest
     }
 
     /**
-     * @param string $configPath
      * @return Application[]|Config[]
      */
-    protected function getConfiguredApp(string $configPath)
+    protected function getConfiguredApp(string $configPath): array
     {
         /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(Config::class)

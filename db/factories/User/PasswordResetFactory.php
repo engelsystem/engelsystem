@@ -8,12 +8,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PasswordResetFactory extends Factory
 {
     /** @var string */
-    protected $model = PasswordReset::class;
+    protected $model = PasswordReset::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'token' => bin2hex(random_bytes(16)),

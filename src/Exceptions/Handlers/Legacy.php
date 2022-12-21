@@ -8,22 +8,14 @@ use Throwable;
 
 class Legacy implements HandlerInterface
 {
-    /** @var LoggerInterface */
-    protected $log;
+    protected ?LoggerInterface $log = null;
 
-    /**
-     * @param Request   $request
-     * @param Throwable $e
-     */
-    public function render($request, Throwable $e)
+    public function render(Request $request, Throwable $e): void
     {
         echo 'An <del>un</del>expected error occurred. A team of untrained monkeys has been dispatched to fix it.';
     }
 
-    /**
-     * @param Throwable $e
-     */
-    public function report(Throwable $e)
+    public function report(Throwable $e): void
     {
         $previous = $e->getPrevious();
         error_log(sprintf(
@@ -46,19 +38,12 @@ class Legacy implements HandlerInterface
         }
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->log = $logger;
     }
 
-    /**
-     * @param string $path
-     * @return string
-     */
-    protected function stripBasePath($path)
+    protected function stripBasePath(string $path): string
     {
         $basePath = realpath(__DIR__ . '/../../..') . '/';
         return str_replace($basePath, '', $path);

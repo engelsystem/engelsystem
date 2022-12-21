@@ -10,7 +10,7 @@ class UuidServiceProvider extends ServiceProvider
     /**
      * Register the UUID generator to the Str class
      */
-    public function register()
+    public function register(): void
     {
         Str::createUuidsUsing([$this, 'uuid']);
     }

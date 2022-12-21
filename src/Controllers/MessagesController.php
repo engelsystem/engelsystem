@@ -12,65 +12,29 @@ use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Psr\Http\Message\RequestInterface;
 
 class MessagesController extends BaseController
 {
-    /** @var Authenticator */
-    protected $auth;
-
-    /** @var Redirector */
-    protected $redirect;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var Response */
-    protected $request;
-
-    /** @var Database */
-    protected $db;
-
-    /** @var Message */
-    protected $message;
-
-    /** @var User */
-    protected $user;
+    protected RequestInterface $request;
 
     /** @var string[] */
-    protected $permissions = [
+    protected array $permissions = [
         'user_messages',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param Redirector      $redirect
-     * @param Response        $response
-     * @param Request         $request
-     * @param Database        $db
-     * @param Message         $message
-     * @param User            $user
-     */
     public function __construct(
-        Authenticator $auth,
-        Redirector $redirect,
-        Response $response,
+        protected Authenticator $auth,
+        protected Redirector $redirect,
+        protected Response $response,
         Request $request,
-        Database $db,
-        Message $message,
-        User $user
+        protected Database $db,
+        protected Message $message,
+        protected User $user
     ) {
-        $this->auth = $auth;
-        $this->redirect = $redirect;
-        $this->response = $response;
         $this->request = $request;
-        $this->db = $db;
-        $this->message = $message;
-        $this->user = $user;
     }
 
-    /**
-     * @return Response
-     */
     public function index(): Response
     {
         return $this->listConversations();
@@ -136,11 +100,11 @@ class MessagesController extends BaseController
         $otherUser = $this->user->findOrFail($userId);
 
         $messages = $this->message
-            ->where(function ($query) use ($currentUser, $otherUser) {
+            ->where(function ($query) use ($currentUser, $otherUser): void {
                 $query->whereUserId($currentUser->id)
                     ->whereReceiverId($otherUser->id);
             })
-            ->orWhere(function ($query) use ($currentUser, $otherUser) {
+            ->orWhere(function ($query) use ($currentUser, $otherUser): void {
                 $query->whereUserId($otherUser->id)
                     ->whereReceiverId($currentUser->id);
             })
@@ -211,7 +175,7 @@ class MessagesController extends BaseController
      * The number of unread messages per conversation of the current user.
      * @return Collection of unread message amounts. Each object with key=other user, value=amount of unread messages
      */
-    protected function numberOfUnreadMessagesPerConversation($currentUser): Collection
+    protected function numberOfUnreadMessagesPerConversation(User $currentUser): Collection
     {
         return $currentUser->messagesReceived()
             ->select('user_id', $this->raw('count(*) as amount'))
@@ -228,7 +192,7 @@ class MessagesController extends BaseController
      * which were either send by or addressed to the current user.
      * @return Collection of messages
      */
-    protected function latestMessagePerConversation($currentUser): Collection
+    protected function latestMessagePerConversation(User $currentUser): Collection
     {
         /* requesting the IDs first, grouped by "conversation".
         The more complex grouping is required for associating the messages to the correct conversations.
@@ -244,18 +208,14 @@ class MessagesController extends BaseController
 
         // then getting the full message objects for each ID.
         return $this->message
-            ->joinSub($latestMessageIds, 'conversations', function ($join) {
+            ->joinSub($latestMessageIds, 'conversations', function ($join): void {
                 $join->on('messages.id', '=', 'conversations.last_id');
             })
             ->orderBy('created_at', 'DESC')
             ->get();
     }
 
-    /**
-     * @param mixed $value
-     * @return QueryExpression
-     */
-    protected function raw($value): QueryExpression
+    protected function raw(mixed $value): QueryExpression
     {
         return $this->db->getConnection()->raw($value);
     }

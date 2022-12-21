@@ -20,24 +20,21 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 class ScheduleShift extends BaseModel
 {
     /** @var string The primary key for the model */
-    protected $primaryKey = 'shift_id';
+    protected $primaryKey = 'shift_id'; // phpcs:ignore
 
     /** @var string Required because it is not schedule_shifts */
-    protected $table = 'schedule_shift';
+    protected $table = 'schedule_shift'; // phpcs:ignore
 
-    /** @var array Values that are mass assignable */
-    protected $fillable = ['shift_id', 'schedule_id', 'guid'];
+    /** @var array<string> Values that are mass assignable */
+    protected $fillable = ['shift_id', 'schedule_id', 'guid']; // phpcs:ignore
 
-    /** @var array */
-    protected $casts = [
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
         'shift_id'    => 'integer',
         'schedule_id' => 'integer',
     ];
 
-    /**
-     * @return BelongsTo
-     */
-    public function schedule()
+    public function schedule(): BelongsTo
     {
         return $this->belongsTo(Schedule::class);
     }

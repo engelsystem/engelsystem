@@ -7,7 +7,7 @@ use Engelsystem\Database\Migration\Migration;
 class AddAngelSupporterPermissions extends Migration
 {
     /** @var string[] */
-    protected $data = [
+    protected array $data = [
         '2-Engel',
         'shiftentry_edit_angeltype_supporter',
     ];
@@ -15,7 +15,7 @@ class AddAngelSupporterPermissions extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if (!$this->schema->hasTable('GroupPrivileges')) {
             return;
@@ -39,7 +39,7 @@ class AddAngelSupporterPermissions extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         if (!$this->schema->hasTable('GroupPrivileges')) {
             return;
@@ -52,11 +52,7 @@ class AddAngelSupporterPermissions extends Migration
         );
     }
 
-    /**
-     * @param string $type
-     * @return string
-     */
-    protected function getQuery($type)
+    protected function getQuery(string $type): string
     {
         return sprintf('
                 %s FROM GroupPrivileges

@@ -9,26 +9,20 @@ use SimpleXMLElement;
 
 class XmlParser
 {
-    /** @var SimpleXMLElement */
-    protected $scheduleXML;
+    protected SimpleXMLElement $scheduleXML;
 
-    /** @var Schedule */
-    protected $schedule;
+    protected Schedule $schedule;
 
-    /**
-     * @param string $xml
-     * @return bool
-     */
     public function load(string $xml): bool
     {
-        $this->scheduleXML = simplexml_load_string($xml);
+        $scheduleXML = simplexml_load_string($xml);
 
-        if (!$this->scheduleXML) {
+        if (!$scheduleXML) {
             return false;
         }
 
+        $this->scheduleXML = $scheduleXML;
         $this->parseXml();
-
         return true;
     }
 
@@ -82,8 +76,6 @@ class XmlParser
 
     /**
      * @param SimpleXMLElement[] $eventElements
-     * @param Room               $room
-     * @return array
      */
     protected function parseEvents(array $eventElements, Room $room): array
     {
@@ -128,11 +120,6 @@ class XmlParser
         return $events;
     }
 
-    /**
-     * @param string                $path
-     * @param SimpleXMLElement|null $xml
-     * @return string
-     */
     protected function getFirstXpathContent(string $path, ?SimpleXMLElement $xml = null): string
     {
         $element = ($xml ?: $this->scheduleXML)->xpath($path);
@@ -142,12 +129,6 @@ class XmlParser
 
     /**
      * Resolves a list from a sequence of elements
-     *
-     * @param SimpleXMLElement $element
-     * @param string           $firstElement
-     * @param string           $secondElement
-     * @param string           $idAttribute
-     * @return array
      */
     protected function getListFromSequence(
         SimpleXMLElement $element,
@@ -166,9 +147,6 @@ class XmlParser
         return $items;
     }
 
-    /**
-     * @return Schedule
-     */
     public function getSchedule(): Schedule
     {
         return $this->schedule;

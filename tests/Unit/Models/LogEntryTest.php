@@ -10,7 +10,7 @@ class LogEntryTest extends ModelTest
     /**
      * @covers \Engelsystem\Models\LogEntry::filter
      */
-    public function testFilter()
+    public function testFilter(): void
     {
         foreach (
             [

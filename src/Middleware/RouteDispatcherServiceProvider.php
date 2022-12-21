@@ -12,7 +12,7 @@ use function FastRoute\cachedDispatcher as FRCashedDispatcher;
 
 class RouteDispatcherServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');
@@ -43,11 +43,9 @@ class RouteDispatcherServiceProvider extends ServiceProvider
     /**
      * Includes the routes.php file
      *
-     * @param array $options
-     * @return FastRouteDispatcher
      * @codeCoverageIgnore
      */
-    protected function generateRouting(array $options = [])
+    protected function generateRouting(array $options = []): FastRouteDispatcher
     {
         $routesFile = config_path('routes.php');
         $routesCacheFile = $this->app->get('path.cache.routes');
@@ -59,7 +57,7 @@ class RouteDispatcherServiceProvider extends ServiceProvider
             unlink($routesCacheFile);
         }
 
-        return FRCashedDispatcher(function (RouteCollector $route) {
+        return FRCashedDispatcher(function (RouteCollector $route): void {
             require config_path('routes.php');
         }, $options);
     }

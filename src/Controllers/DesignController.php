@@ -11,28 +11,14 @@ use Engelsystem\Models\User\User;
 
 class DesignController extends BaseController
 {
-    /** @var Response */
-    protected $response;
-
-    /** @var Config */
-    protected $config;
-
-    /**
-     * @param Response $response
-     * @param Config   $config
-     */
-    public function __construct(Response $response, Config $config)
+    public function __construct(protected Response $response, protected Config $config)
     {
-        $this->config = $config;
-        $this->response = $response;
     }
 
     /**
      * Show the design overview page
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $demoUser = (new User())->forceFill([
             'id'   => 42,

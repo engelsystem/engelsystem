@@ -22,7 +22,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \app
      */
-    public function testApp()
+    public function testApp(): void
     {
         $class = new class
         {
@@ -37,7 +37,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \auth
      */
-    public function testAuth()
+    public function testAuth(): void
     {
         /** @var Application|MockObject $app */
         $app = $this->createMock(Container::class);
@@ -58,7 +58,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \base_path
      */
-    public function testBasePath()
+    public function testBasePath(): void
     {
         /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Container::class)
@@ -77,7 +77,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \config
      */
-    public function testConfig()
+    public function testConfig(): void
     {
         $configMock = $this->getMockBuilder(Config::class)
             ->getMock();
@@ -102,7 +102,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \back
      */
-    public function testBack()
+    public function testBack(): void
     {
         $response = new Response();
         /** @var Redirector|MockObject $redirect */
@@ -125,7 +125,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \config_path
      */
-    public function testConfigPath()
+    public function testConfigPath(): void
     {
         /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Container::class)
@@ -144,7 +144,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \event
      */
-    public function testEvent()
+    public function testEvent(): void
     {
         /** @var Application|MockObject $app */
         $app = $this->createMock(Container::class);
@@ -152,7 +152,7 @@ class HelpersTest extends TestCase
 
         /** @var EventDispatcher|MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcher::class);
-        $this->setExpects($dispatcher, 'dispatch', ['testevent', ['some' => 'thing']], ['test']);
+        $this->setExpects($dispatcher, 'dispatch', ['testevent', ['some' => 'thing']], $dispatcher);
 
         $app->expects($this->atLeastOnce())
             ->method('get')
@@ -160,13 +160,13 @@ class HelpersTest extends TestCase
             ->willReturn($dispatcher);
 
         $this->assertEquals($dispatcher, event());
-        $this->assertEquals(['test'], event('testevent', ['some' => 'thing']));
+        $this->assertEquals($dispatcher, event('testevent', ['some' => 'thing']));
     }
 
     /**
      * @covers \redirect
      */
-    public function testRedirect()
+    public function testRedirect(): void
     {
         $response = new Response();
         /** @var Redirector|MockObject $redirect */
@@ -189,7 +189,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \request
      */
-    public function testRequest()
+    public function testRequest(): void
     {
         $requestMock = $this->getMockBuilder(Request::class)
             ->getMock();
@@ -208,7 +208,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \response
      */
-    public function testResponse()
+    public function testResponse(): void
     {
         /** @var Response|MockObject $response */
         $response = $this->getMockBuilder(Response::class)->getMock();
@@ -235,7 +235,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \session
      */
-    public function testSession()
+    public function testSession(): void
     {
         $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
         $sessionMock = $this->getMockBuilder(Session::class)
@@ -256,7 +256,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \view
      */
-    public function testView()
+    public function testView(): void
     {
         $rendererMock = $this->getMockBuilder(Renderer::class)
             ->getMock();
@@ -276,7 +276,7 @@ class HelpersTest extends TestCase
      * @covers \__
      * @covers \trans
      */
-    public function testTrans()
+    public function testTrans(): void
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
@@ -298,7 +298,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \_e
      */
-    public function testTranslatePlural()
+    public function testTranslatePlural(): void
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
@@ -318,7 +318,7 @@ class HelpersTest extends TestCase
     /**
      * @covers \url
      */
-    public function testUrl()
+    public function testUrl(): void
     {
         $urlGeneratorMock = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
 
@@ -333,12 +333,7 @@ class HelpersTest extends TestCase
         $this->assertEquals('http://lorem.ipsum/foo/bar?param=value', url('foo/bar', ['param' => 'value']));
     }
 
-    /**
-     * @param string $alias
-     * @param object $object
-     * @return Application|MockObject
-     */
-    protected function getAppMock($alias, $object)
+    protected function getAppMock(string $alias, object $object): Application|MockObject
     {
         /** @var Application|MockObject $appMock */
         $appMock = $this->getMockBuilder(Container::class)

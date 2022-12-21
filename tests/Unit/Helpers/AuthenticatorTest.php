@@ -21,7 +21,7 @@ class AuthenticatorTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\Authenticator::__construct
      * @covers \Engelsystem\Helpers\Authenticator::user
      */
-    public function testUser()
+    public function testUser(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
@@ -64,7 +64,7 @@ class AuthenticatorTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\Authenticator::apiUser
      */
-    public function testApiUser()
+    public function testApiUser(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
@@ -108,7 +108,7 @@ class AuthenticatorTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\Authenticator::can
      */
-    public function testCan()
+    public function testCan(): void
     {
         $this->initDatabase();
 
@@ -160,7 +160,7 @@ class AuthenticatorTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\Authenticator::authenticate
      */
-    public function testAuthenticate()
+    public function testAuthenticate(): void
     {
         $this->initDatabase();
 
@@ -190,7 +190,7 @@ class AuthenticatorTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\Authenticator::verifyPassword
      */
-    public function testVerifyPassword()
+    public function testVerifyPassword(): void
     {
         $this->initDatabase();
         $password = password_hash('testing', PASSWORD_ARGON2I);
@@ -218,7 +218,7 @@ class AuthenticatorTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Helpers\Authenticator::setPassword
      */
-    public function testSetPassword()
+    public function testSetPassword(): void
     {
         $this->initDatabase();
         /** @var User $user */
@@ -242,7 +242,7 @@ class AuthenticatorTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\Authenticator::setPasswordAlgorithm
      * @covers \Engelsystem\Helpers\Authenticator::getPasswordAlgorithm
      */
-    public function testPasswordAlgorithm()
+    public function testPasswordAlgorithm(): void
     {
         $auth = $this->getAuthenticator();
 
@@ -254,7 +254,7 @@ class AuthenticatorTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\Authenticator::setDefaultRole
      * @covers \Engelsystem\Helpers\Authenticator::getDefaultRole
      */
-    public function testDefaultRole()
+    public function testDefaultRole(): void
     {
         $auth = $this->getAuthenticator();
 
@@ -266,7 +266,7 @@ class AuthenticatorTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\Authenticator::setGuestRole
      * @covers \Engelsystem\Helpers\Authenticator::getGuestRole
      */
-    public function testGuestRole()
+    public function testGuestRole(): void
     {
         $auth = $this->getAuthenticator();
 
@@ -274,10 +274,7 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals(42, $auth->getGuestRole());
     }
 
-    /**
-     * @return Authenticator
-     */
-    protected function getAuthenticator()
+    protected function getAuthenticator(): Authenticator
     {
         return new class extends Authenticator {
             /** @noinspection PhpMissingParentConstructorInspection */

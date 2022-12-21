@@ -15,7 +15,7 @@ class LoggerTest extends ServiceProviderTest
      * @covers \Engelsystem\Logger\Logger::__construct
      * @covers \Engelsystem\Logger\Logger::log
      */
-    public function testLog()
+    public function testLog(): void
     {
         /** @var LogEntry|MockObject $logEntry */
         $logEntry = $this->getMockBuilder(LogEntry::class)
@@ -34,7 +34,7 @@ class LoggerTest extends ServiceProviderTest
      * @covers \Engelsystem\Logger\Logger::log
      * @covers \Engelsystem\Logger\Logger::checkLevel
      */
-    public function testCheckLevel()
+    public function testCheckLevel(): void
     {
         /** @var LogEntry|MockObject $logEntry */
         $logEntry = $this->createMock(LogEntry::class);
@@ -47,7 +47,7 @@ class LoggerTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Logger\Logger::interpolate
      */
-    public function testInterpolate()
+    public function testInterpolate(): void
     {
         /** @var LogEntry|MockObject $logEntry */
         $logEntry = $this->getMockBuilder(LogEntry::class)
@@ -69,7 +69,7 @@ class LoggerTest extends ServiceProviderTest
             'user' =>
                 new class
                 {
-                    public function __toString()
+                    public function __toString(): string
                     {
                         return 'Bar';
                     }

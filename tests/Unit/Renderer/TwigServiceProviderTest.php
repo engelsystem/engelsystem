@@ -25,7 +25,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Renderer\TwigServiceProvider::register
      * @covers \Engelsystem\Renderer\TwigServiceProvider::registerTwigExtensions
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = $this->getApp(['make', 'instance', 'tag']);
         $class = $this->createMock(stdClass::class);
@@ -64,7 +64,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Renderer\TwigServiceProvider::boot
      */
-    public function testBoot()
+    public function testBoot(): void
     {
         /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);
@@ -107,7 +107,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Renderer\TwigServiceProvider::registerTwigEngine
      */
-    public function testRegisterTwigEngine()
+    public function testRegisterTwigEngine(): void
     {
         /** @var TwigEngine|MockObject $htmlEngine */
         $twigEngine = $this->createMock(TwigEngine::class);
@@ -183,11 +183,9 @@ class TwigServiceProviderTest extends ServiceProviderTest
     }
 
     /**
-     * @param TwigServiceProvider $serviceProvider
-     * @param array               $extensions
      * @throws ReflectionException
      */
-    protected function setExtensionsTo($serviceProvider, $extensions)
+    protected function setExtensionsTo(TwigServiceProvider $serviceProvider, array $extensions): void
     {
         $reflection = new Reflection(get_class($serviceProvider));
 

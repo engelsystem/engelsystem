@@ -14,7 +14,7 @@ class RoomTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Room::getEvent
      * @covers \Engelsystem\Helpers\Schedule\Room::setEvent
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $room = new Room('Test');
         $this->assertEquals('Test', $room->getName());

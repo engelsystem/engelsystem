@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 
 class SessionServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $sessionStorage = $this->getSessionStorage();
         $this->app->instance('session.storage', $sessionStorage);
@@ -38,10 +38,8 @@ class SessionServiceProvider extends ServiceProvider
 
     /**
      * Returns the session storage
-     *
-     * @return SessionStorageInterface
      */
-    protected function getSessionStorage()
+    protected function getSessionStorage(): SessionStorageInterface
     {
         if ($this->isCli()) {
             return $this->app->make(MockArraySessionStorage::class);
@@ -70,10 +68,8 @@ class SessionServiceProvider extends ServiceProvider
 
     /**
      * Test if is called from cli
-     *
-     * @return bool
      */
-    protected function isCli()
+    protected function isCli(): bool
     {
         return PHP_SAPI == 'cli' || PHP_SAPI == 'phpdbg';
     }

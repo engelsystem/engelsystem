@@ -7,11 +7,7 @@ use Illuminate\Support\Collection;
 
 trait HasUserNotifications
 {
-    /**
-     * @param string|array $value
-     * @param string $type
-     */
-    protected function addNotification($value, $type = 'messages')
+    protected function addNotification(string|array $value, string $type = 'messages'): void
     {
         session()->set(
             $type,
@@ -19,9 +15,6 @@ trait HasUserNotifications
         );
     }
 
-    /**
-     * @return array
-     */
     protected function getNotifications(): array
     {
         $return = [];

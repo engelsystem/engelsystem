@@ -10,7 +10,7 @@ class BaseControllerTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\BaseController::getPermissions
      */
-    public function testGetPermissions()
+    public function testGetPermissions(): void
     {
         $controller = new ControllerImplementation();
 

@@ -15,7 +15,7 @@ class ValidatesRequestTest extends TestCase
      * @covers \Engelsystem\Http\Validation\ValidatesRequest::validate
      * @covers \Engelsystem\Http\Validation\ValidatesRequest::setValidator
      */
-    public function testValidate()
+    public function testValidate(): void
     {
         /** @var Validator|MockObject $validator */
         $validator = $this->createMock(Validator::class);

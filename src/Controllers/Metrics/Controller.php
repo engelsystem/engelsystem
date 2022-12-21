@@ -13,52 +13,17 @@ use Psr\Log\LogLevel;
 
 class Controller extends BaseController
 {
-    /** @var Config */
-    protected $config;
-
-    /** @var MetricsEngine */
-    protected $engine;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var Stats */
-    protected $stats;
-
-    /** @var Version */
-    protected $version;
-
-    /**
-     * @param Response      $response
-     * @param MetricsEngine $engine
-     * @param Config        $config
-     * @param Request       $request
-     * @param Stats         $stats
-     * @param Version       $version
-     */
     public function __construct(
-        Response $response,
-        MetricsEngine $engine,
-        Config $config,
-        Request $request,
-        Stats $stats,
-        Version $version
+        protected Response $response,
+        protected MetricsEngine $engine,
+        protected Config $config,
+        protected Request $request,
+        protected Stats $stats,
+        protected Version $version
     ) {
-        $this->config = $config;
-        $this->engine = $engine;
-        $this->request = $request;
-        $this->response = $response;
-        $this->stats = $stats;
-        $this->version = $version;
     }
 
-    /**
-     * @return Response
-     */
-    public function metrics()
+    public function metrics(): Response
     {
         $now = microtime(true);
         $this->checkAuth();
@@ -220,10 +185,7 @@ class Controller extends BaseController
             ->withContent($this->engine->get('/metrics', $data));
     }
 
-    /**
-     * @return Response
-     */
-    public function stats()
+    public function stats(): Response
     {
         $this->checkAuth(true);
 
@@ -241,10 +203,8 @@ class Controller extends BaseController
 
     /**
      * Ensure that the if the request is authorized
-     *
-     * @param bool $isJson
      */
-    protected function checkAuth($isJson = false)
+    protected function checkAuth(bool $isJson = false): void
     {
         $apiKey = $this->config->get('api_key');
         if (empty($apiKey) || $this->request->get('api_key') == $apiKey) {
@@ -264,12 +224,6 @@ class Controller extends BaseController
 
     /**
      * Formats the stats collection as stats data
-     *
-     * @param Collection  $data
-     * @param string      $config
-     * @param string      $dataField
-     * @param string|null $label
-     * @return array
      */
     protected function formatStats(Collection $data, string $config, string $dataField, ?string $label = null): array
     {

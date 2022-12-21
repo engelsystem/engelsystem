@@ -12,28 +12,14 @@ use Psr\Log\LoggerInterface;
 
 class OAuth2
 {
-    /** @var Authenticator */
-    protected Authenticator $auth;
-
-    /** @var array */
     protected array $config;
 
-    /** @var LoggerInterface */
-    protected LoggerInterface $log;
-
-    /**
-     * @param Config          $config
-     * @param LoggerInterface $log
-     */
-    public function __construct(Config $config, LoggerInterface $log, Authenticator $auth)
+    public function __construct(Config $config, protected LoggerInterface $log, protected Authenticator $auth)
     {
-        $this->auth = $auth;
         $this->config = $config->get('oauth');
-        $this->log = $log;
     }
 
     /**
-     * @param string     $event
      * @param string     $provider OAuth provider name
      * @param Collection $data OAuth userdata
      */
@@ -69,7 +55,7 @@ class OAuth2
         return $teams;
     }
 
-    protected function syncTeams(string $providerName, User $user, array $ssoTeam)
+    protected function syncTeams(string $providerName, User $user, array $ssoTeam): void
     {
         $currentUserAngeltypes = $user->userAngelTypes;
         $angelType = AngelType::find($ssoTeam['id']);

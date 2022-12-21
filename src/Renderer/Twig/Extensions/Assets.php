@@ -10,20 +10,8 @@ use Twig\TwigFunction;
 
 class Assets extends TwigExtension
 {
-    /** @var AssetsProvider */
-    protected $assets;
-
-    /** @var UrlGeneratorInterface */
-    protected $urlGenerator;
-
-    /**
-     * @param AssetsProvider $assets
-     * @param UrlGeneratorInterface $urlGenerator
-     */
-    public function __construct(AssetsProvider $assets, UrlGeneratorInterface $urlGenerator)
+    public function __construct(protected AssetsProvider $assets, protected UrlGeneratorInterface $urlGenerator)
     {
-        $this->assets = $assets;
-        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -36,10 +24,6 @@ class Assets extends TwigExtension
         ];
     }
 
-    /**
-     * @param string $path
-     * @return string
-     */
     public function getAsset(string $path): string
     {
         $path = ltrim($path, '/');

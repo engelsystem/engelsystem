@@ -12,7 +12,7 @@ class NullHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Exceptions\Handlers\NullHandler::render
      */
-    public function testRender()
+    public function testRender(): void
     {
         $handler = new NullHandler();
         $request = new Request();

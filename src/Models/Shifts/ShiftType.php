@@ -25,15 +25,12 @@ class ShiftType extends BaseModel
 {
     use HasFactory;
 
-    /** @var array */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'name',
         'description',
     ];
 
-    /**
-     * @return HasMany
-     */
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class, 'shift_type');

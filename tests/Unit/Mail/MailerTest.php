@@ -18,7 +18,7 @@ class MailerTest extends TestCase
      * @covers \Engelsystem\Mail\Mailer::setFromAddress
      * @covers \Engelsystem\Mail\Mailer::setFromName
      */
-    public function testInitAndSettersAndGetters()
+    public function testInitAndSettersAndGetters(): void
     {
         /** @var MailerInterface|MockObject $symfonyMailer */
         $symfonyMailer = $this->createMock(MailerInterface::class);
@@ -35,13 +35,13 @@ class MailerTest extends TestCase
     /**
      * @covers \Engelsystem\Mail\Mailer::send
      */
-    public function testSend()
+    public function testSend(): void
     {
         /** @var MailerInterface|MockObject $symfonyMailer */
         $symfonyMailer = $this->createMock(MailerInterface::class);
         $symfonyMailer->expects($this->once())
             ->method('send')
-            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null) {
+            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null): void {
                 $this->assertStringContainsString('to@xam.pel', $message->toString());
                 $this->assertStringContainsString('foo@bar.baz', $message->toString());
                 $this->assertStringContainsString('Test Tester', $message->toString());

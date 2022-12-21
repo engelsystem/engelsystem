@@ -13,7 +13,7 @@ class EventsServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Events\EventsServiceProvider::register
      * @covers \Engelsystem\Events\EventsServiceProvider::registerEvents
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance(EventDispatcher::class, $dispatcher);
@@ -22,13 +22,13 @@ class EventsServiceProviderTest extends ServiceProviderTest
             ->withConsecutive(
                 ['test.event', 'someFunction'],
                 ['another.event', 'Foo\Bar@baz'],
-                ['another.event', [$this, 'someMethod']]
+                ['another.event', [$this, 'testRegister']]
             );
 
         $config = new Config([
             'event-handlers' => [
                 'test.event' => 'someFunction',
-                'another.event' => ['Foo\Bar@baz', [$this, 'someMethod']]
+                'another.event' => ['Foo\Bar@baz', [$this, 'testRegister']]
             ]
         ]);
         $this->app->instance('config', $config);

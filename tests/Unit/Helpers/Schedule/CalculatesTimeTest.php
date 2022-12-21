@@ -10,15 +10,11 @@ class CalculatesTimeTest extends TestCase
     /**
      * @covers \Engelsystem\Helpers\Schedule\CalculatesTime::secondsFromTime
      */
-    public function testSecondsFromTime()
+    public function testSecondsFromTime(): void
     {
         $calc = new class {
             use CalculatesTime;
 
-            /**
-             * @param string $time
-             * @return int
-             */
             public function calc(string $time): int
             {
                 return $this->secondsFromTime($time);

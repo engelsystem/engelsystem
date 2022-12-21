@@ -18,7 +18,7 @@ class ShiftsAddTransactionId extends Migration
             return;
         }
 
-        $this->schema->table('Shifts', function (Blueprint $table) {
+        $this->schema->table('Shifts', function (Blueprint $table): void {
             $table->uuid('transaction_id')->index()->nullable()->default(null);
         });
     }
@@ -32,7 +32,7 @@ class ShiftsAddTransactionId extends Migration
             return;
         }
 
-        $this->schema->table('Shifts', function (Blueprint $table) {
+        $this->schema->table('Shifts', function (Blueprint $table): void {
             $table->dropColumn('transaction_id');
         });
     }

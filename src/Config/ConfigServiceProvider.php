@@ -10,24 +10,14 @@ use Illuminate\Database\QueryException;
 
 class ConfigServiceProvider extends ServiceProvider
 {
-    /** @var array */
-    protected $configFiles = ['app.php', 'config.default.php', 'config.php'];
+    protected array $configFiles = ['app.php', 'config.default.php', 'config.php'];
 
-    /** @var EventConfig */
-    protected $eventConfig;
-
-    /**
-     * @param Application $app
-     * @param EventConfig $eventConfig
-     */
-    public function __construct(Application $app, EventConfig $eventConfig = null)
+    public function __construct(Application $app, protected ?EventConfig $eventConfig = null)
     {
         parent::__construct($app);
-
-        $this->eventConfig = $eventConfig;
     }
 
-    public function register()
+    public function register(): void
     {
         $config = $this->app->make(Config::class);
         $this->app->instance(Config::class, $config);
@@ -52,7 +42,7 @@ class ConfigServiceProvider extends ServiceProvider
         }
     }
 
-    public function boot()
+    public function boot(): void
     {
         if (!$this->eventConfig) {
             return;
@@ -83,11 +73,8 @@ class ConfigServiceProvider extends ServiceProvider
 
     /**
      * Get the config path
-     *
-     * @param string $path
-     * @return string
      */
-    protected function getConfigPath($path = ''): string
+    protected function getConfigPath(string $path = ''): string
     {
         return config_path($path);
     }

@@ -31,8 +31,7 @@ class BarChartTest extends TestCase
         ],
     ];
 
-    /** @var Renderer&MockObject */
-    private $rendererMock;
+    private Renderer&MockObject $rendererMock;
 
     protected function setUp(): void
     {
@@ -159,7 +158,7 @@ class BarChartTest extends TestCase
     /**
      * @covers \Engelsystem\Helpers\BarChart::generateChartDemoData
      */
-    public function testGenerateChartDemoData()
+    public function testGenerateChartDemoData(): void
     {
         $first = CarbonImmutable::now()->subDays(2)->format('Y-m-d');
         $second = CarbonImmutable::now()->subDays()->format('Y-m-d');

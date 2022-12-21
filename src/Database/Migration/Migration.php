@@ -6,16 +6,10 @@ use Illuminate\Database\Schema\Builder as SchemaBuilder;
 
 abstract class Migration
 {
-    /** @var SchemaBuilder */
-    protected $schema;
-
     /**
      * Migration constructor.
-     *
-     * @param SchemaBuilder $schemaBuilder
      */
-    public function __construct(SchemaBuilder $schemaBuilder)
+    public function __construct(protected SchemaBuilder $schema)
     {
-        $this->schema = $schemaBuilder;
     }
 }

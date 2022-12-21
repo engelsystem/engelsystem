@@ -16,7 +16,7 @@ class CreateUserLicensesTable extends Migration
      */
     public function up(): void
     {
-        $this->schema->create('users_licenses', function (Blueprint $table) {
+        $this->schema->create('users_licenses', function (Blueprint $table): void {
             $this->referencesUser($table, true);
             $table->boolean('has_car')->default(false);
             $table->boolean('drive_forklift')->default(false);
@@ -54,7 +54,7 @@ class CreateUserLicensesTable extends Migration
      */
     public function down(): void
     {
-        $this->schema->create('UserDriverLicenses', function (Blueprint $table) {
+        $this->schema->create('UserDriverLicenses', function (Blueprint $table): void {
             $this->referencesUser($table, true);
             $table->boolean('has_car');
             $table->boolean('has_license_car');

@@ -19,7 +19,7 @@ class LogsControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\Admin\LogsController::index
      * @covers \Engelsystem\Controllers\Admin\LogsController::__construct
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $log = new LogEntry();
         $alert = $log->create(['level' => LogLevel::ALERT, 'message' => 'Alert test']);

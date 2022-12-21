@@ -14,7 +14,7 @@ class TwigEngineTest extends TestCase
      * @covers \Engelsystem\Renderer\TwigEngine::__construct
      * @covers \Engelsystem\Renderer\TwigEngine::get
      */
-    public function testGet()
+    public function testGet(): void
     {
         /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);
@@ -36,7 +36,7 @@ class TwigEngineTest extends TestCase
     /**
      * @covers \Engelsystem\Renderer\TwigEngine::canRender
      */
-    public function testCanRender()
+    public function testCanRender(): void
     {
         /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);

@@ -12,7 +12,7 @@ class AddShiftsDescription extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if (!$this->schema->hasTable('Shifts')) {
             return;
@@ -20,7 +20,7 @@ class AddShiftsDescription extends Migration
 
         $this->schema->table(
             'Shifts',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->text('description')->nullable()->after('shifttype_id');
             }
         );
@@ -29,7 +29,7 @@ class AddShiftsDescription extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         if (!$this->schema->hasTable('Shifts')) {
             return;
@@ -37,7 +37,7 @@ class AddShiftsDescription extends Migration
 
         $this->schema->table(
             'Shifts',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('description');
             }
         );

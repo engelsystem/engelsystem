@@ -5,7 +5,6 @@ namespace Engelsystem\Middleware;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Request;
-use Engelsystem\Http\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,7 +13,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class LegacyMiddleware implements MiddlewareInterface
 {
-    protected $free_pages = [
+    /** @var array<string> */
+    protected array $free_pages = [
         'admin_event_config',
         'angeltypes',
         'atom',
@@ -29,30 +29,14 @@ class LegacyMiddleware implements MiddlewareInterface
         'admin_shifts_history',
     ];
 
-    /** @var ContainerInterface */
-    protected $container;
-
-    /** @var Authenticator */
-    protected $auth;
-
-    /**
-     * @param ContainerInterface $container
-     * @param Authenticator      $auth
-     */
-    public function __construct(ContainerInterface $container, Authenticator $auth)
+    public function __construct(protected ContainerInterface $container, protected Authenticator $auth)
     {
-        $this->container = $container;
-        $this->auth = $auth;
     }
 
     /**
      * Handle the request the old way
      *
      * Should be used before a 404 is send
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,
@@ -89,11 +73,10 @@ class LegacyMiddleware implements MiddlewareInterface
     /**
      * Get the legacy page content and title
      *
-     * @param string $page
      * @return array ['title', 'content']
      * @codeCoverageIgnore
      */
-    protected function loadPage($page)
+    protected function loadPage(string $page): array
     {
         switch ($page) {
             case 'ical':
@@ -182,13 +165,9 @@ class LegacyMiddleware implements MiddlewareInterface
     /**
      * Render the template
      *
-     * @param string $page
-     * @param string $title
-     * @param string $content
-     * @return Response
      * @codeCoverageIgnore
      */
-    protected function renderPage($page, $title, $content)
+    protected function renderPage(string $page, string $title, string $content): ResponseInterface
     {
         if (!empty($page) && is_int($page)) {
             return response($content, (int)$page);

@@ -14,7 +14,7 @@ class HasUserNotificationsTest extends TestCase
      * @covers \Engelsystem\Controllers\HasUserNotifications::getNotifications
      * @covers \Engelsystem\Controllers\HasUserNotifications::addNotification
      */
-    public function testNotifications()
+    public function testNotifications(): void
     {
         $session = new Session(new MockArraySessionStorage());
         $this->app->instance('session', $session);

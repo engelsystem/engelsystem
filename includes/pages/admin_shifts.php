@@ -511,9 +511,6 @@ function admin_shifts()
     );
 }
 
-/**
- * @return string
- */
 function admin_shifts_history_title(): string
 {
     return __('Shifts history');

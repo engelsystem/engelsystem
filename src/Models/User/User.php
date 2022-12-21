@@ -68,10 +68,14 @@ class User extends BaseModel
     use HasFactory;
 
     /** @var bool enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** The attributes that are mass assignable */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'name',
         'password',
         'email',
@@ -79,53 +83,41 @@ class User extends BaseModel
         'last_login_at',
     ];
 
-    /** @var array The attributes that should be hidden for serialization */
-    protected $hidden = [
+    /** @var array<string> The attributes that should be hidden for serialization */
+    protected $hidden = [ // phpcs:ignore
         'api_key',
         'password',
     ];
 
-    /** @var array The attributes that should be mutated to dates */
-    protected $dates = [
+    /** @var array<string> The attributes that should be mutated to dates */
+    protected $dates = [ // phpcs:ignore
         'last_login_at',
     ];
 
-    /**
-     * @return HasOne
-     */
-    public function contact()
+    public function contact(): HasOne
     {
         return $this
             ->hasOne(Contact::class)
             ->withDefault();
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'users_groups');
     }
 
-    /**
-     * @return HasOne
-     */
-    public function license()
+    public function license(): HasOne
     {
         return $this
             ->hasOne(License::class)
             ->withDefault();
     }
 
-    /**
-     * @return Builder
-     */
     public function privileges(): Builder
     {
         /** @var Builder $builder */
         $builder = Privilege::query()
-            ->whereIn('id', function ($query) {
+            ->whereIn('id', function ($query): void {
                 /** @var QueryBuilder $query */
                 $query->select('privilege_id')
                     ->from('group_privileges')
@@ -137,47 +129,32 @@ class User extends BaseModel
         return $builder;
     }
 
-    /**
-     * @return SupportCollection
-     */
     public function getPrivilegesAttribute(): SupportCollection
     {
         return $this->privileges()->get();
     }
 
-    /**
-     * @return HasOne
-     */
-    public function personalData()
+    public function personalData(): HasOne
     {
         return $this
             ->hasOne(PersonalData::class)
             ->withDefault();
     }
 
-    /**
-     * @return HasOne
-     */
-    public function settings()
+    public function settings(): HasOne
     {
         return $this
             ->hasOne(Settings::class)
             ->withDefault();
     }
 
-    /**
-     * @return HasOne
-     */
-    public function state()
+    public function state(): HasOne
     {
         return $this
             ->hasOne(State::class)
             ->withDefault();
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function userAngelTypes(): BelongsToMany
     {
         return $this
@@ -186,10 +163,6 @@ class User extends BaseModel
             ->withPivot(UserAngelType::getPivotAttributes());
     }
 
-    /**
-     * @param AngelType $angelType
-     * @return bool
-     */
     public function isAngelTypeSupporter(AngelType $angelType): bool
     {
         return $this->userAngelTypes()
@@ -198,67 +171,43 @@ class User extends BaseModel
             ->exists();
     }
 
-    /**
-     * @return HasMany
-     */
     public function news(): HasMany
     {
         return $this->hasMany(News::class);
     }
 
-    /**
-     * @return HasMany
-     */
     public function newsComments(): HasMany
     {
         return $this->hasMany(NewsComment::class);
     }
 
-    /**
-     * @return HasMany
-     */
     public function oauth(): HasMany
     {
         return $this->hasMany(OAuth::class);
     }
 
-    /**
-     * @return HasMany
-     */
     public function worklogs(): HasMany
     {
         return $this->hasMany(Worklog::class);
     }
 
-    /**
-     * @return HasMany
-     */
     public function worklogsCreated(): HasMany
     {
         return $this->hasMany(Worklog::class, 'creator_id');
     }
 
-    /**
-     * @return HasMany
-     */
     public function questionsAsked(): HasMany
     {
         return $this->hasMany(Question::class, 'user_id')
             ->where('user_id', $this->id);
     }
 
-    /**
-     * @return HasMany
-     */
     public function questionsAnswered(): HasMany
     {
         return $this->hasMany(Question::class, 'answerer_id')
             ->where('answerer_id', $this->id);
     }
 
-    /**
-     * @return HasMany
-     */
     public function messagesSent(): HasMany
     {
         return $this->hasMany(Message::class, 'user_id')
@@ -279,8 +228,6 @@ class User extends BaseModel
 
     /**
      * Returns a HasMany relation for all messages sent or received by the user.
-     *
-     * @return HasMany
      */
     public function messages(): HasMany
     {

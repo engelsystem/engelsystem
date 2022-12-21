@@ -19,42 +19,31 @@ class Migrate
     /** @var string */
     public const DOWN = 'down';
 
-    /** @var Application */
-    protected $app;
-
-    /** @var SchemaBuilder */
-    protected $schema;
-
     /** @var callable */
     protected $output;
 
-    /** @var string */
-    protected $table = 'migrations';
+    protected string $table = 'migrations';
 
     /**
      * Migrate constructor
-     *
-     * @param SchemaBuilder $schema
-     * @param Application   $app
      */
-    public function __construct(SchemaBuilder $schema, Application $app)
+    public function __construct(protected SchemaBuilder $schema, protected Application $app)
     {
-        $this->app = $app;
-        $this->schema = $schema;
-        $this->output = function () {
+        $this->output = function (): void {
         };
     }
 
     /**
      * Run a migration
      *
-     * @param string $path
      * @param string $type (up|down)
-     * @param bool   $oneStep
-     * @param bool   $forceMigration
      */
-    public function run($path, $type = self::UP, $oneStep = false, $forceMigration = false)
-    {
+    public function run(
+        string $path,
+        string $type = self::UP,
+        bool $oneStep = false,
+        bool $forceMigration = false
+    ): void {
         $this->initMigration();
 
         $this->lockTable($forceMigration);
@@ -103,13 +92,13 @@ class Migrate
     /**
      * Setup migration tables
      */
-    public function initMigration()
+    public function initMigration(): void
     {
         if ($this->schema->hasTable($this->table)) {
             return;
         }
 
-        $this->schema->create($this->table, function (Blueprint $table) {
+        $this->schema->create($this->table, function (Blueprint $table): void {
             $table->increments('id');
             $table->string('migration');
         });
@@ -117,12 +106,8 @@ class Migrate
 
     /**
      * Merge file migrations with already migrated tables
-     *
-     * @param Collection $migrations
-     * @param Collection $migrated
-     * @return Collection
      */
-    protected function mergeMigrations(Collection $migrations, Collection $migrated)
+    protected function mergeMigrations(Collection $migrations, Collection $migrated): Collection
     {
         $return = $migrated;
         $return->transform(function ($migration) use ($migrations) {
@@ -136,7 +121,7 @@ class Migrate
             return $migration;
         });
 
-        $migrations->each(function ($migration) use ($return) {
+        $migrations->each(function ($migration) use ($return): void {
             if ($return->contains('migration', $migration['migration'])) {
                 return;
             }
@@ -149,10 +134,8 @@ class Migrate
 
     /**
      * Get all migrated migrations
-     *
-     * @return Collection
      */
-    protected function getMigrated()
+    protected function getMigrated(): Collection
     {
         return $this->getTableQuery()
             ->orderBy('id')
@@ -163,11 +146,9 @@ class Migrate
     /**
      * Migrate a migration
      *
-     * @param string $file
-     * @param string $migration
      * @param string $type (up|down)
      */
-    protected function migrate($file, $migration, $type = self::UP)
+    protected function migrate(string $file, string $migration, string $type = self::UP): void
     {
         require_once $file;
 
@@ -183,10 +164,9 @@ class Migrate
     /**
      * Set a migration to migrated
      *
-     * @param string $migration
      * @param string $type (up|down)
      */
-    protected function setMigrated($migration, $type = self::UP)
+    protected function setMigrated(string $migration, string $type = self::UP): void
     {
         $table = $this->getTableQuery();
 
@@ -201,13 +181,12 @@ class Migrate
     /**
      * Lock the migrations table
      *
-     * @param bool $forceMigration
      *
      * @throws Throwable
      */
-    protected function lockTable($forceMigration = false)
+    protected function lockTable(bool $forceMigration = false): void
     {
-        $this->schema->getConnection()->transaction(function () use ($forceMigration) {
+        $this->schema->getConnection()->transaction(function () use ($forceMigration): void {
             $lock = $this->getTableQuery()
                 ->where('migration', 'lock')
                 ->lockForUpdate()
@@ -225,7 +204,7 @@ class Migrate
     /**
      * Unlock a previously locked table
      */
-    protected function unlockTable()
+    protected function unlockTable(): void
     {
         $this->getTableQuery()
             ->where('migration', 'lock')
@@ -234,12 +213,8 @@ class Migrate
 
     /**
      * Get a list of migration files
-     *
-     * @param string $dir
-     *
-     * @return Collection
      */
-    protected function getMigrations($dir)
+    protected function getMigrations(string $dir): Collection
     {
         $files = $this->getMigrationFiles($dir);
 
@@ -259,32 +234,24 @@ class Migrate
 
     /**
      * List all migration files from the given directory
-     *
-     * @param string $dir
-     *
-     * @return array
      */
-    protected function getMigrationFiles($dir)
+    protected function getMigrationFiles(string $dir): array
     {
         return glob($dir . '/*_*.php');
     }
 
     /**
      * Init a table query
-     *
-     * @return Builder
      */
-    protected function getTableQuery()
+    protected function getTableQuery(): Builder
     {
         return $this->schema->getConnection()->table($this->table);
     }
 
     /**
      * Set the output function
-     *
-     * @param callable $output
      */
-    public function setOutput(callable $output)
+    public function setOutput(callable $output): void
     {
         $this->output = $output;
     }

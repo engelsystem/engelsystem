@@ -8,12 +8,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class UserFactory extends Factory
 {
     /** @var string */
-    protected $model = User::class;
+    protected $model = User::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name'     => $this->faker->unique()->userName(),

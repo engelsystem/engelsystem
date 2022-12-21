@@ -25,65 +25,18 @@ class OAuthController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
-
-    /** @var AuthController */
-    protected $authController;
-
-    /** @var Config */
-    protected $config;
-
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var OAuth */
-    protected $oauth;
-
-    /** @var Redirector */
-    protected $redirector;
-
-    /** @var Session */
-    protected $session;
-
-    /** @var UrlGenerator */
-    protected $url;
-
-    /**
-     * @param Authenticator   $auth
-     * @param AuthController  $authController
-     * @param Config          $config
-     * @param LoggerInterface $log
-     * @param OAuth           $oauth
-     * @param Redirector      $redirector
-     * @param Session         $session
-     * @param UrlGenerator    $url
-     */
     public function __construct(
-        Authenticator $auth,
-        AuthController $authController,
-        Config $config,
-        LoggerInterface $log,
-        OAuth $oauth,
-        Redirector $redirector,
-        Session $session,
-        UrlGenerator $url
+        protected Authenticator $auth,
+        protected AuthController $authController,
+        protected Config $config,
+        protected LoggerInterface $log,
+        protected OAuth $oauth,
+        protected Redirector $redirect,
+        protected Session $session,
+        protected UrlGenerator $url
     ) {
-        $this->auth = $auth;
-        $this->authController = $authController;
-        $this->config = $config;
-        $this->log = $log;
-        $this->redirector = $redirector;
-        $this->oauth = $oauth;
-        $this->session = $session;
-        $this->url = $url;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function index(Request $request): Response
     {
         $providerName = $request->getAttribute('provider');
@@ -106,7 +59,7 @@ class OAuthController extends BaseController
             );
             $this->session->set('oauth2_state', $provider->getState());
 
-            return $this->redirector->to($authorizationUrl);
+            return $this->redirect->to($authorizationUrl);
         }
 
         if (
@@ -212,11 +165,6 @@ class OAuthController extends BaseController
         return $response;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function connect(Request $request): Response
     {
         $providerName = $request->getAttribute('provider');
@@ -228,11 +176,6 @@ class OAuthController extends BaseController
         return $this->index($request);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function disconnect(Request $request): Response
     {
         $providerName = $request->getAttribute('provider');
@@ -245,14 +188,9 @@ class OAuthController extends BaseController
         $this->log->info('Disconnected OAuth from {provider}', ['provider' => $providerName]);
         $this->addNotification('oauth.disconnected');
 
-        return $this->redirector->back();
+        return $this->redirect->back();
     }
 
-    /**
-     * @param string $name
-     *
-     * @return AbstractProvider
-     */
     protected function getProvider(string $name): AbstractProvider
     {
         $this->requireProvider($name);
@@ -271,12 +209,7 @@ class OAuthController extends BaseController
         );
     }
 
-    /**
-     * @param string        $providerName
-     * @param ResourceOwner $resourceOwner
-     * @return mixed
-     */
-    protected function getId(string $providerName, ResourceOwner $resourceOwner)
+    protected function getId(string $providerName, ResourceOwner $resourceOwner): mixed
     {
         $config = $this->config->get('oauth')[$providerName];
         if (empty($config['nested_info'])) {
@@ -287,9 +220,6 @@ class OAuthController extends BaseController
         return $data[$config['id']];
     }
 
-    /**
-     * @param string $provider
-     */
     protected function requireProvider(string $provider): void
     {
         if (!$this->isValidProvider($provider)) {
@@ -297,11 +227,6 @@ class OAuthController extends BaseController
         }
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     protected function isValidProvider(string $name): bool
     {
         $config = $this->config->get('oauth');
@@ -309,11 +234,6 @@ class OAuthController extends BaseController
         return isset($config[$name]);
     }
 
-    /**
-     * @param OAuth         $auth
-     * @param string        $providerName
-     * @param ResourceOwner $resourceOwner
-     */
     protected function handleArrive(
         string $providerName,
         OAuth $auth,
@@ -342,8 +262,6 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param IdentityProviderException $e
-     * @param string                    $providerName
      *
      * @throws HttpNotFound
      */
@@ -363,15 +281,6 @@ class OAuthController extends BaseController
         throw new HttpNotFound('oauth.provider-error');
     }
 
-    /**
-     * @param string               $providerName
-     * @param string               $providerUserIdentifier
-     * @param AccessTokenInterface $accessToken
-     * @param array                $config
-     * @param Collection           $userdata
-     *
-     * @return Response
-     */
     protected function redirectRegister(
         string $providerName,
         string $providerUserIdentifier,
@@ -417,6 +326,6 @@ class OAuthController extends BaseController
         $this->session->set('oauth2_enable_password', $config['enable_password']);
         $this->session->set('oauth2_allow_registration', $config['allow_registration']);
 
-        return $this->redirector->to('/register');
+        return $this->redirect->to('/register');
     }
 }

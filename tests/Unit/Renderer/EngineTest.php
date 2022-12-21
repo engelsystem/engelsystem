@@ -10,7 +10,7 @@ class EngineTest extends TestCase
     /**
      * @covers \Engelsystem\Renderer\Engine::share
      */
-    public function testShare()
+    public function testShare(): void
     {
         $engine = new EngineImplementation();
         $engine->share(['foo' => ['bar' => 'baz', 'lorem' => 'ipsum']]);

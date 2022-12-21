@@ -12,7 +12,7 @@ use Whoops\Run as WhoopsRunner;
 
 class ExceptionsServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $errorHandler = $this->app->make(Handler::class);
         $this->addProductionHandler($errorHandler);
@@ -22,7 +22,7 @@ class ExceptionsServiceProvider extends ServiceProvider
         $errorHandler->register();
     }
 
-    public function boot()
+    public function boot(): void
     {
         /** @var Handler $handler */
         $handler = $this->app->get('error.handler');
@@ -32,10 +32,7 @@ class ExceptionsServiceProvider extends ServiceProvider
         $this->addLogger($handler);
     }
 
-    /**
-     * @param Handler $errorHandler
-     */
-    protected function addProductionHandler($errorHandler)
+    protected function addProductionHandler(Handler $errorHandler): void
     {
         $handler = $this->app->make(Legacy::class);
         $this->app->instance('error.handler.production', $handler);
@@ -43,10 +40,7 @@ class ExceptionsServiceProvider extends ServiceProvider
         $this->app->bind(HandlerInterface::class, 'error.handler.production');
     }
 
-    /**
-     * @param Handler $errorHandler
-     */
-    protected function addDevelopmentHandler($errorHandler)
+    protected function addDevelopmentHandler(Handler $errorHandler): void
     {
         $handler = $this->app->make(LegacyDevelopment::class);
 
@@ -58,10 +52,7 @@ class ExceptionsServiceProvider extends ServiceProvider
         $errorHandler->setHandler(Handler::ENV_DEVELOPMENT, $handler);
     }
 
-    /**
-     * @param Handler $handler
-     */
-    protected function addLogger(Handler $handler)
+    protected function addLogger(Handler $handler): void
     {
         foreach ($handler->getHandler() as $h) {
             if (!method_exists($h, 'setLogger')) {

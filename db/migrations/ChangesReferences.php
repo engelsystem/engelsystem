@@ -7,31 +7,24 @@ use stdClass;
 
 trait ChangesReferences
 {
-    /**
-     * @param string $fromTable
-     * @param string $fromColumn
-     * @param string $targetTable
-     * @param string $targetColumn
-     * @param string $type
-     */
     protected function changeReferences(
         string $fromTable,
         string $fromColumn,
         string $targetTable,
         string $targetColumn,
         string $type = 'unsignedInteger'
-    ) {
+    ): void {
         $references = $this->getReferencingTables($fromTable, $fromColumn);
 
         foreach ($references as $reference) {
             /** @var stdClass $reference */
-            $this->schema->table($reference->table, function (Blueprint $table) use ($reference) {
+            $this->schema->table($reference->table, function (Blueprint $table) use ($reference): void {
                 $table->dropForeign($reference->constraint);
             });
 
             $this->schema->table(
                 $reference->table,
-                function (Blueprint $table) use ($reference, $targetTable, $targetColumn, $type) {
+                function (Blueprint $table) use ($reference, $targetTable, $targetColumn, $type): void {
                     $table->{$type}($reference->column)->change();
 
                     $table->foreign($reference->column)
@@ -43,12 +36,6 @@ trait ChangesReferences
         }
     }
 
-    /**
-     * @param string $table
-     * @param string $column
-     *
-     * @return array
-     */
     protected function getReferencingTables(string $table, string $column): array
     {
         return $this->schema

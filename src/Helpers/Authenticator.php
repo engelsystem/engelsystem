@@ -11,46 +11,26 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class Authenticator
 {
-    /** @var User|null */
     protected ?User $user = null;
-
-    /** @var ServerRequestInterface */
-    protected ServerRequestInterface $request;
-
-    /** @var Session */
-    protected Session $session;
-
-    /** @var UserRepository */
-    protected UserRepository $userRepository;
 
     /** @var string[] */
     protected array $permissions = [];
 
-    /** @var int|string|null */
-    protected $passwordAlgorithm = PASSWORD_DEFAULT;
+    protected int|string|null $passwordAlgorithm = PASSWORD_DEFAULT;
 
-    /** @var int */
     protected int $defaultRole = 20;
 
-    /** @var int */
     protected int $guestRole = 10;
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param Session                $session
-     * @param UserRepository         $userRepository
-     */
-    public function __construct(ServerRequestInterface $request, Session $session, UserRepository $userRepository)
-    {
-        $this->request = $request;
-        $this->session = $session;
-        $this->userRepository = $userRepository;
+    public function __construct(
+        protected ServerRequestInterface $request,
+        protected Session $session,
+        protected UserRepository $userRepository
+    ) {
     }
 
     /**
      * Load the user from session
-     *
-     * @return User|null
      */
     public function user(): ?User
     {
@@ -77,9 +57,6 @@ class Authenticator
 
     /**
      * Get the user by his api key
-     *
-     * @param string $parameter
-     * @return User|null
      */
     public function apiUser(string $parameter = 'api_key'): ?User
     {
@@ -108,9 +85,8 @@ class Authenticator
 
     /**
      * @param string[]|string $abilities
-     * @return bool
      */
-    public function can($abilities): bool
+    public function can(array|string $abilities): bool
     {
         $abilities = (array)$abilities;
 
@@ -142,11 +118,6 @@ class Authenticator
         return true;
     }
 
-    /**
-     * @param string $login
-     * @param string $password
-     * @return User|null
-     */
     public function authenticate(string $login, string $password): ?User
     {
         /** @var User $user */
@@ -166,11 +137,6 @@ class Authenticator
         return $user;
     }
 
-    /**
-     * @param User   $user
-     * @param string $password
-     * @return bool
-     */
     public function verifyPassword(User $user, string $password): bool
     {
         if (!password_verify($password, $user->password)) {
@@ -184,60 +150,38 @@ class Authenticator
         return true;
     }
 
-    /**
-     * @param User   $user
-     * @param string $password
-     */
-    public function setPassword(User $user, string $password)
+    public function setPassword(User $user, string $password): void
     {
         $user->password = password_hash($password, $this->passwordAlgorithm);
         $user->save();
     }
 
-    /**
-     * @return int|string|null
-     */
-    public function getPasswordAlgorithm()
+    public function getPasswordAlgorithm(): int|string|null
     {
         return $this->passwordAlgorithm;
     }
 
-    /**
-     * @param int|string|null $passwordAlgorithm
-     */
-    public function setPasswordAlgorithm($passwordAlgorithm)
+    public function setPasswordAlgorithm(int|string|null $passwordAlgorithm): void
     {
         $this->passwordAlgorithm = $passwordAlgorithm;
     }
 
-    /**
-     * @return int
-     */
     public function getDefaultRole(): int
     {
         return $this->defaultRole;
     }
 
-    /**
-     * @param int $defaultRole
-     */
-    public function setDefaultRole(int $defaultRole)
+    public function setDefaultRole(int $defaultRole): void
     {
         $this->defaultRole = $defaultRole;
     }
 
-    /**
-     * @return int
-     */
     public function getGuestRole(): int
     {
         return $this->guestRole;
     }
 
-    /**
-     * @param int $guestRole
-     */
-    public function setGuestRole(int $guestRole)
+    public function setGuestRole(int $guestRole): void
     {
         $this->guestRole = $guestRole;
     }

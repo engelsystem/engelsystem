@@ -7,10 +7,5 @@ namespace Engelsystem\Http;
  */
 interface UrlGeneratorInterface
 {
-    /**
-     * @param string $path
-     * @param array  $parameters
-     * @return string
-     */
     public function to(string $path, array $parameters = []): string;
 }

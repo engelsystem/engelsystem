@@ -8,6 +8,7 @@
     <file>public/index.php</file>
     <file>src</file>
     <file>tests</file>
+    <exclude-pattern>/config/config.php</exclude-pattern>
 
     <rule ref="PSR12" />
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
@@ -19,8 +20,23 @@
         <properties>
             <property name="ignoreUnusedValuesWhenOnlyKeysAreUsedInForeach" value="true" />
         </properties>
-        </rule>
-        <rule ref="Generic.Files.LineLength.TooLong">
-            <exclude-pattern>/includes</exclude-pattern>
-        </rule>
+    </rule>
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <exclude-pattern>/includes</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude-pattern>/includes</exclude-pattern>
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification" />
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <exclude-pattern>/includes</exclude-pattern>
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification" />
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude-pattern>/includes</exclude-pattern>
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification" />
+    </rule>
+    <rule ref="SlevomatCodingStandard.Classes.RequireConstructorPropertyPromotion" />
+    <rule ref="SlevomatCodingStandard.Commenting.EmptyComment" />
+    <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment" />
 </ruleset>

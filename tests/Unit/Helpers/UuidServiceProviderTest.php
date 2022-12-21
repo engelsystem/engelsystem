@@ -13,7 +13,7 @@ class UuidServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Helpers\UuidServiceProvider::register
      * @covers \Engelsystem\Helpers\UuidServiceProvider::uuid
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = new Application();
 

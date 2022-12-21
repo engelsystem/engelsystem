@@ -16,5 +16,5 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 abstract class BaseModel extends Model
 {
     /** @var bool Disable timestamps by default because of "Datensparsamkeit" */
-    public $timestamps = false;
+    public $timestamps = false; // phpcs:ignore
 }

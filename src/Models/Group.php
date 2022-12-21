@@ -25,21 +25,15 @@ class Group extends BaseModel
     use HasFactory;
 
     /** @var string[] */
-    protected $fillable = [
+    protected $fillable = [ // phpcs:ignore
         'name',
     ];
 
-    /**
-     * @return BelongsToMany
-     */
     public function privileges(): BelongsToMany
     {
         return $this->belongsToMany(Privilege::class, 'group_privileges');
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'users_groups');

@@ -7,11 +7,6 @@ use DateTime;
 
 trait ChecksArrivalsAndDepartures
 {
-    /**
-     * @param string|null $arrival
-     * @param string|null $departure
-     * @return bool
-     */
     protected function isArrivalDateValid(?string $arrival, ?string $departure): bool
     {
         $arrival_carbon = $this->toCarbon($arrival);
@@ -28,11 +23,6 @@ trait ChecksArrivalsAndDepartures
         return !$this->isBeforeBuildup($arrival_carbon) && !$this->isAfterTeardown($arrival_carbon);
     }
 
-    /**
-     * @param string|null $arrival
-     * @param string|null $departure
-     * @return bool
-     */
     protected function isDepartureDateValid(?string $arrival, ?string $departure): bool
     {
         $arrival_carbon = $this->toCarbon($arrival);

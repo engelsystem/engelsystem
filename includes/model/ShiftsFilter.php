@@ -30,9 +30,6 @@ class ShiftsFilter
     private $filled;
 
     /** @var int[] */
-    private $rooms;
-
-    /** @var int[] */
     private $types;
 
     /** @var int unix timestamp */
@@ -48,9 +45,8 @@ class ShiftsFilter
      * @param int[] $rooms
      * @param int[] $angelTypes
      */
-    public function __construct($user_shifts_admin = false, $rooms = [], $angelTypes = [])
+    public function __construct($user_shifts_admin = false, private $rooms = [], $angelTypes = [])
     {
-        $this->rooms = $rooms;
         $this->types = $angelTypes;
 
         $this->filled = [

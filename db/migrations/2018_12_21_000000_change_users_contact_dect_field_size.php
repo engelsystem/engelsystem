@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 class ChangeUsersContactDectFieldSize extends Migration
 {
     /** @var array */
-    protected $tables = [
+    protected array $tables = [
         'AngelTypes'    => 'contact_dect',
         'users_contact' => 'dect',
     ];
@@ -16,7 +16,7 @@ class ChangeUsersContactDectFieldSize extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $this->changeDectTo(40);
     }
@@ -24,22 +24,19 @@ class ChangeUsersContactDectFieldSize extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->changeDectTo(5);
     }
 
-    /**
-     * @param int $length
-     */
-    protected function changeDectTo(int $length)
+    protected function changeDectTo(int $length): void
     {
         foreach ($this->tables as $table => $column) {
             if (!$this->schema->hasTable($table)) {
                 continue;
             }
 
-            $this->schema->table($table, function (Blueprint $table) use ($column, $length) {
+            $this->schema->table($table, function (Blueprint $table) use ($column, $length): void {
                 $table->string($column, $length)->change();
             });
         }

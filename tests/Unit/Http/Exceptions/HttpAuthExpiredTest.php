@@ -10,7 +10,7 @@ class HttpAuthExpiredTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Exceptions\HttpAuthExpired::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $exception = new HttpAuthExpired();
         $this->assertEquals(419, $exception->getStatusCode());

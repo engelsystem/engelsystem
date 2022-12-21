@@ -13,24 +13,17 @@ use Whoops\Run as WhoopsRunner;
 
 class Whoops extends Legacy implements HandlerInterface
 {
-    /** @var Application */
-    protected $app;
+    protected Application $app;
 
     /**
      * Whoops constructor.
-     *
-     * @param Container $app
      */
     public function __construct(Container $app)
     {
         $this->app = $app;
     }
 
-    /**
-     * @param Request   $request
-     * @param Throwable $e
-     */
-    public function render($request, Throwable $e)
+    public function render(Request $request, Throwable $e): void
     {
         $whoops = $this->app->make(WhoopsRunner::class);
         $handler = $this->getPrettyPageHandler($e);
@@ -46,11 +39,7 @@ class Whoops extends Legacy implements HandlerInterface
         echo $whoops->handleException($e);
     }
 
-    /**
-     * @param Throwable $e
-     * @return PrettyPageHandler
-     */
-    protected function getPrettyPageHandler(Throwable $e)
+    protected function getPrettyPageHandler(Throwable $e): PrettyPageHandler
     {
         /** @var PrettyPageHandler $handler */
         $handler = $this->app->make(PrettyPageHandler::class);
@@ -70,10 +59,7 @@ class Whoops extends Legacy implements HandlerInterface
         return $handler;
     }
 
-    /**
-     * @return JsonResponseHandler
-     */
-    protected function getJsonResponseHandler()
+    protected function getJsonResponseHandler(): JsonResponseHandler
     {
         $handler = $this->app->make(JsonResponseHandler::class);
         $handler->setJsonApi(true);
@@ -84,10 +70,8 @@ class Whoops extends Legacy implements HandlerInterface
 
     /**
      * Aggregate application data
-     *
-     * @return array
      */
-    protected function getData()
+    protected function getData(): array
     {
         $data = [];
         $user = null;

@@ -9,12 +9,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class MessageFactory extends Factory
 {
     /** @var string */
-    protected $model = Message::class;
+    protected $model = Message::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id'     => User::factory(),

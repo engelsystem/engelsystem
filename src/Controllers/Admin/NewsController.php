@@ -15,52 +15,20 @@ class NewsController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
-
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var News */
-    protected $news;
-
-    /** @var Redirector */
-    protected $redirect;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var array */
-    protected $permissions = [
+    /** @var array<string> */
+    protected array $permissions = [
         'admin_news',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param LoggerInterface $log
-     * @param News            $news
-     * @param Redirector      $redirector
-     * @param Response        $response
-     */
     public function __construct(
-        Authenticator $auth,
-        LoggerInterface $log,
-        News $news,
-        Redirector $redirector,
-        Response $response
+        protected Authenticator $auth,
+        protected LoggerInterface $log,
+        protected News $news,
+        protected Redirector $redirect,
+        protected Response $response
     ) {
-        $this->auth = $auth;
-        $this->log = $log;
-        $this->news = $news;
-        $this->redirect = $redirector;
-        $this->response = $response;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function edit(Request $request): Response
     {
         $newsId = $request->getAttribute('news_id'); // optional
@@ -71,12 +39,6 @@ class NewsController extends BaseController
         return $this->showEdit($news, $isMeeting);
     }
 
-    /**
-     * @param News|null $news
-     * @param bool      $isMeetingDefault
-     *
-     * @return Response
-     */
     protected function showEdit(?News $news, bool $isMeetingDefault = false): Response
     {
         return $this->response->withView(
@@ -89,11 +51,6 @@ class NewsController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function save(Request $request): Response
     {
         $newsId = $request->getAttribute('news_id'); // optional

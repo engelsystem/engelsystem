@@ -15,56 +15,27 @@ class PasswordResetController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var EngelsystemMailer */
-    protected $mail;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var SessionInterface */
-    protected $session;
-
-    /** @var array */
-    protected $permissions = [
+    /** @var array<string, string> */
+    protected array $permissions = [
         'reset'             => 'login',
         'postReset'         => 'login',
         'resetPassword'     => 'login',
         'postResetPassword' => 'login',
     ];
 
-    /**
-     * @param Response          $response
-     * @param SessionInterface  $session
-     * @param EngelsystemMailer $mail
-     * @param LoggerInterface   $log
-     */
     public function __construct(
-        Response $response,
-        SessionInterface $session,
-        EngelsystemMailer $mail,
-        LoggerInterface $log
+        protected Response $response,
+        protected SessionInterface $session,
+        protected EngelsystemMailer $mail,
+        protected LoggerInterface $log
     ) {
-        $this->log = $log;
-        $this->mail = $mail;
-        $this->response = $response;
-        $this->session = $session;
     }
 
-    /**
-     * @return Response
-     */
     public function reset(): Response
     {
         return $this->showView('pages/password/reset');
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function postReset(Request $request): Response
     {
         $data = $this->validate($request, [
@@ -95,10 +66,6 @@ class PasswordResetController extends BaseController
         return $this->showView('pages/password/reset-success', ['type' => 'email']);
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function resetPassword(Request $request): Response
     {
         $this->requireToken($request);
@@ -109,10 +76,6 @@ class PasswordResetController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function postResetPassword(Request $request): Response
     {
         $reset = $this->requireToken($request);
@@ -134,12 +97,7 @@ class PasswordResetController extends BaseController
         return $this->showView('pages/password/reset-success', ['type' => 'reset']);
     }
 
-    /**
-     * @param string $view
-     * @param array  $data
-     * @return Response
-     */
-    protected function showView($view = 'pages/password/reset', $data = []): Response
+    protected function showView(string $view = 'pages/password/reset', array $data = []): Response
     {
         return $this->response->withView(
             $view,
@@ -147,10 +105,6 @@ class PasswordResetController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return PasswordReset
-     */
     protected function requireToken(Request $request): PasswordReset
     {
         $token = $request->getAttribute('token');

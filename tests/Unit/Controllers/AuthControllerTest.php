@@ -30,7 +30,7 @@ class AuthControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\AuthController::login
      * @covers \Engelsystem\Controllers\AuthController::showLogin
      */
-    public function testLogin()
+    public function testLogin(): void
     {
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
@@ -57,7 +57,7 @@ class AuthControllerTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\AuthController::postLogin
      */
-    public function testPostLogin()
+    public function testPostLogin(): void
     {
         $this->initDatabase();
 
@@ -127,7 +127,7 @@ class AuthControllerTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\AuthController::loginUser
      */
-    public function testLoginUser()
+    public function testLoginUser(): void
     {
         $this->initDatabase();
 
@@ -161,7 +161,7 @@ class AuthControllerTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\AuthController::logout
      */
-    public function testLogout()
+    public function testLogout(): void
     {
         /** @var Response $response */
         /** @var SessionInterface|MockObject $session */
@@ -184,9 +184,6 @@ class AuthControllerTest extends TestCase
         $this->assertEquals($response, $return);
     }
 
-    /**
-     * @return User
-     */
     protected function createUser(): User
     {
         return User::factory(['id' => 42])
@@ -194,10 +191,7 @@ class AuthControllerTest extends TestCase
             ->create();
     }
 
-    /**
-     * @return array
-     */
-    protected function getMocks()
+    protected function getMocks(): array
     {
         $response = new Response();
         /** @var SessionInterface|MockObject $session */

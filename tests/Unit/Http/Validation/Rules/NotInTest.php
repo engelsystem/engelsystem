@@ -10,7 +10,7 @@ class NotInTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Validation\Rules\NotIn::validate
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $rule = new NotIn('foo,bar');
 

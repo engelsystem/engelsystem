@@ -10,7 +10,7 @@ class FixOldTables extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $connection = $this->schema->getConnection();
 
@@ -29,7 +29,7 @@ class FixOldTables extends Migration
                 ->where($column, '<', '0001-01-01 00:00:00')
                 ->update([$column => '0001-01-01 00:00:00']);
 
-            $this->schema->table($table, function (Blueprint $table) use ($column) {
+            $this->schema->table($table, function (Blueprint $table) use ($column): void {
                 $table->dateTime($column)->default('0001-01-01 00:00:00')->change();
             });
         }
@@ -38,7 +38,7 @@ class FixOldTables extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
     }
 }

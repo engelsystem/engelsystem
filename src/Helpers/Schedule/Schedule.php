@@ -8,41 +8,25 @@ use Carbon\Carbon;
 
 class Schedule
 {
-    /** @var string */
-    protected $version;
-
-    /** @var Conference */
-    protected $conference;
-
     /** @var Day[] */
-    protected $day;
+    protected array $day;
 
     /**
-     * @param string     $version
-     * @param Conference $conference
      * @param Day[]      $days
      */
     public function __construct(
-        string $version,
-        Conference $conference,
+        protected string $version,
+        protected Conference $conference,
         array $days
     ) {
-        $this->version = $version;
-        $this->conference = $conference;
         $this->day = $days;
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): string
     {
         return $this->version;
     }
 
-    /**
-     * @return Conference
-     */
     public function getConference(): Conference
     {
         return $this->conference;
@@ -73,9 +57,6 @@ class Schedule
     }
 
 
-    /**
-     * @return Carbon|null
-     */
     public function getStartDateTime(): ?Carbon
     {
         $start = null;
@@ -91,9 +72,6 @@ class Schedule
         return $start;
     }
 
-    /**
-     * @return Carbon|null
-     */
     public function getEndDateTime(): ?Carbon
     {
         $end = null;

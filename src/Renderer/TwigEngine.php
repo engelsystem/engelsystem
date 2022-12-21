@@ -9,20 +9,13 @@ use Twig\Error\SyntaxError as SyntaxError;
 
 class TwigEngine extends Engine
 {
-    /** @var Twig */
-    protected $twig;
-
-    public function __construct(Twig $twig)
+    public function __construct(protected Twig $twig)
     {
-        $this->twig = $twig;
     }
 
     /**
      * Render a twig template
      *
-     * @param string $path
-     * @param array  $data
-     * @return string
      * @throws LoaderError|RuntimeError|SyntaxError
      */
     public function get(string $path, array $data = []): string
@@ -32,10 +25,6 @@ class TwigEngine extends Engine
         return $this->twig->render($path, $data);
     }
 
-    /**
-     * @param string $path
-     * @return bool
-     */
     public function canRender(string $path): bool
     {
         return $this->twig->getLoader()->exists($path);

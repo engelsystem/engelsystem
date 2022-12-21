@@ -15,7 +15,7 @@ class LoggerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Logger\LoggerServiceProvider::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $serviceProvider = new LoggerServiceProvider($this->app);
         $serviceProvider->register();
@@ -29,7 +29,7 @@ class LoggerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Logger\LoggerServiceProvider::boot
      */
-    public function testBoot()
+    public function testBoot(): void
     {
         /** @var Authenticator|MockObject $auth */
         $auth = $this->getMockBuilder(Authenticator::class)

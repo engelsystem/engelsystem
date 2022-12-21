@@ -65,7 +65,7 @@ class TranslationServiceProviderTest extends ServiceProviderTest
 
         $app->expects($this->once())
             ->method('singleton')
-            ->willReturnCallback(function (string $abstract, callable $callback) use ($translator) {
+            ->willReturnCallback(function (string $abstract, callable $callback) use ($translator): void {
                 $this->assertEquals(Translator::class, $abstract);
                 $this->assertEquals($translator, $callback());
             });

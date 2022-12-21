@@ -10,29 +10,20 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
  */
 class BaseModelImplementation extends BaseModel
 {
-    /** @var array */
-    protected $fillable = ['foo'];
+    /** @var array<string> */
+    protected $fillable = ['foo']; // phpcs:ignore
 
-    /** @var int */
-    public $saveCount = 0;
+    public int $saveCount = 0;
 
-    /** @var QueryBuilder */
-    public static $queryBuilder = null;
+    public static QueryBuilder $queryBuilder = null;
 
-    /**
-     * @param array $options
-     * @return bool
-     */
-    public function save(array $options = [])
+    public function save(array $options = []): bool
     {
         $this->saveCount++;
         return true;
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    public static function query()
+    public static function query(): QueryBuilder
     {
         return self::$queryBuilder;
     }

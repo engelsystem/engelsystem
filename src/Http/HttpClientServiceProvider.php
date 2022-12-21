@@ -7,7 +7,7 @@ use GuzzleHttp\Client as GuzzleClient;
 
 class HttpClientServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->when(GuzzleClient::class)
             ->needs('$config')

@@ -18,7 +18,7 @@ class CreateRoomsTable extends Migration
      */
     public function up(): void
     {
-        $this->schema->create('rooms', function (Blueprint $table) {
+        $this->schema->create('rooms', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name', 35)->unique();
             $table->string('map_url', 300)->nullable();
@@ -61,7 +61,7 @@ class CreateRoomsTable extends Migration
     {
         $connection = $this->schema->getConnection();
 
-        $this->schema->create('Room', function (Blueprint $table) {
+        $this->schema->create('Room', function (Blueprint $table): void {
             $table->increments('RID');
             $table->string('Name', 35)->unique();
             $table->string('map_url', 300)->nullable();

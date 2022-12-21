@@ -26,10 +26,10 @@ class State extends HasUserModel
     use HasFactory;
 
     /** @var string The table associated with the model */
-    protected $table = 'users_state';
+    protected $table = 'users_state'; // phpcs:ignore
 
-    /** @var array Default attributes */
-    protected $attributes = [
+    /** @var array<string, bool|int> Default attributes */
+    protected $attributes = [ // phpcs:ignore
         'arrived'      => false,
         'active'       => false,
         'force_active' => false,
@@ -37,8 +37,8 @@ class State extends HasUserModel
         'got_voucher'  => 0,
     ];
 
-    /** @var array */
-    protected $casts = [
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
         'user_id'      => 'integer',
         'arrived'      => 'boolean',
         'active'       => 'boolean',
@@ -47,13 +47,17 @@ class State extends HasUserModel
         'got_voucher'  => 'integer',
     ];
 
-    /** @var array The attributes that should be mutated to dates */
-    protected $dates = [
+    /** @var array<string> The attributes that should be mutated to dates */
+    protected $dates = [ // phpcs:ignore
         'arrival_date',
     ];
 
-    /** The attributes that are mass assignable */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'arrived',
         'arrival_date',

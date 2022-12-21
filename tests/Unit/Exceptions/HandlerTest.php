@@ -15,7 +15,7 @@ class HandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Exceptions\Handler::__construct()
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         /** @var Handler|MockObject $handler */
         $handler = new Handler();
@@ -29,7 +29,7 @@ class HandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Exceptions\Handler::errorHandler()
      */
-    public function testErrorHandler()
+    public function testErrorHandler(): void
     {
         /** @var Handler|MockObject $handler */
         $handler = $this->getMockBuilder(Handler::class)
@@ -46,7 +46,7 @@ class HandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Exceptions\Handler::exceptionHandler()
      */
-    public function testExceptionHandler()
+    public function testExceptionHandler(): void
     {
         $exception = new Exception();
         $errorMessage = 'Oh noes, an error!';
@@ -59,7 +59,7 @@ class HandlerTest extends TestCase
         $handlerMock->expects($this->atLeastOnce())
             ->method('render')
             ->with($this->isInstanceOf(Request::class), $exception)
-            ->willReturnCallback(function () use ($errorMessage) {
+            ->willReturnCallback(function () use ($errorMessage): void {
                 echo $errorMessage;
             });
 
@@ -82,7 +82,7 @@ class HandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Exceptions\Handler::register()
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var Handler|MockObject $handler */
         $handler = $this->getMockForAbstractClass(Handler::class);
@@ -102,7 +102,7 @@ class HandlerTest extends TestCase
      * @covers \Engelsystem\Exceptions\Handler::getEnvironment()
      * @covers \Engelsystem\Exceptions\Handler::setEnvironment()
      */
-    public function testEnvironment()
+    public function testEnvironment(): void
     {
         $handler = new Handler();
 
@@ -117,7 +117,7 @@ class HandlerTest extends TestCase
      * @covers \Engelsystem\Exceptions\Handler::getHandler()
      * @covers \Engelsystem\Exceptions\Handler::setHandler()
      */
-    public function testHandler()
+    public function testHandler(): void
     {
         $handler = new Handler();
         /** @var HandlerInterface|MockObject $devHandler */
@@ -136,7 +136,7 @@ class HandlerTest extends TestCase
      * @covers \Engelsystem\Exceptions\Handler::getRequest()
      * @covers \Engelsystem\Exceptions\Handler::setRequest()
      */
-    public function testRequest()
+    public function testRequest(): void
     {
         $handler = new Handler();
         /** @var Request|MockObject $request */

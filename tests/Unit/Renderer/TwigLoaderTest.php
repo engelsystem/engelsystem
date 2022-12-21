@@ -11,7 +11,7 @@ class TwigLoaderTest extends TestCase
     /**
      * @covers \Engelsystem\Renderer\TwigLoader::findTemplate
      */
-    public function testFindTemplate()
+    public function testFindTemplate(): void
     {
         $loader = new TwigLoader();
 

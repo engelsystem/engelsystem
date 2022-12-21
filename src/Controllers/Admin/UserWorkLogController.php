@@ -19,63 +19,22 @@ class UserWorkLogController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
-
-    /** @var Config */
-    protected $config;
-
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var Worklog */
-    protected $worklog;
-
-    /** @var Redirector */
-    protected $redirect;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var User */
-    protected $user;
-
-    /** @var array */
-    protected $permissions = [
+    /** @var array<string> */
+    protected array $permissions = [
         'admin_user_worklog',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param Config          $config
-     * @param LoggerInterface $log
-     * @param Worklog         $worklog
-     * @param Redirector      $redirector
-     * @param Response        $response
-     * @param User            $user
-     */
     public function __construct(
-        Authenticator $auth,
-        Config $config,
-        LoggerInterface $log,
-        Worklog $worklog,
-        Redirector $redirector,
-        Response $response,
-        User $user
+        protected Authenticator $auth,
+        protected Config $config,
+        protected LoggerInterface $log,
+        protected Worklog $worklog,
+        protected Redirector $redirect,
+        protected Response $response,
+        protected User $user
     ) {
-        $this->auth = $auth;
-        $this->config = $config;
-        $this->log = $log;
-        $this->worklog = $worklog;
-        $this->redirect = $redirector;
-        $this->response = $response;
-        $this->user = $user;
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function editWorklog(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -95,10 +54,6 @@ class UserWorkLogController extends BaseController
         }
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function saveWorklog(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -134,10 +89,6 @@ class UserWorkLogController extends BaseController
         // TODO Once User_view.php gets removed, change this to withView + getNotifications
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function showDeleteWorklog(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -156,10 +107,6 @@ class UserWorkLogController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function deleteWorklog(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -197,9 +144,6 @@ class UserWorkLogController extends BaseController
         );
     }
 
-    /**
-     * @return Carbon
-     */
     private function getWorkDateSuggestion(): Carbon
     {
         $buildup_start = config('buildup_start');

@@ -10,7 +10,7 @@ class BetweenTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Validation\Rules\Between
      */
-    public function testValidate()
+    public function testValidate(): void
     {
         $rule = new Between(3, 10);
         $this->assertFalse($rule->validate(1));

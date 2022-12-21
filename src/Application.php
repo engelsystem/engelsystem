@@ -12,28 +12,22 @@ use Psr\Http\Server\MiddlewareInterface;
 
 class Application extends Container
 {
-    /** @var string|null */
-    protected $appPath = null;
+    protected ?string $appPath = null;
 
-    /** @var bool */
-    protected $isBootstrapped = false;
+    protected bool $isBootstrapped = false;
 
     /** @var MiddlewareInterface[]|string[] */
-    protected $middleware;
+    protected array $middleware;
 
     /**
      * Registered service providers
-     *
-     * @var array
      */
-    protected $serviceProviders = [];
+    protected array $serviceProviders = [];
 
     /**
      * Application constructor.
-     *
-     * @param string $appPath
      */
-    public function __construct($appPath = null)
+    public function __construct(string $appPath = null)
     {
         if (!is_null($appPath)) {
             $this->setAppPath($appPath);
@@ -42,7 +36,7 @@ class Application extends Container
         $this->registerBaseBindings();
     }
 
-    protected function registerBaseBindings()
+    protected function registerBaseBindings(): void
     {
         static::setInstance($this);
         Container::setInstance($this);
@@ -55,11 +49,7 @@ class Application extends Container
         $this->bind(ContainerInterface::class, self::class);
     }
 
-    /**
-     * @param string|ServiceProvider $provider
-     * @return ServiceProvider
-     */
-    public function register($provider)
+    public function register(string|ServiceProvider $provider): ServiceProvider
     {
         if (is_string($provider)) {
             $provider = $this->make($provider);
@@ -81,7 +71,7 @@ class Application extends Container
      *
      * @param Config|null $config
      */
-    public function bootstrap(Config $config = null)
+    public function bootstrap(Config $config = null): void
     {
         if ($this->isBootstrapped) {
             return;
@@ -102,7 +92,7 @@ class Application extends Container
         $this->isBootstrapped = true;
     }
 
-    protected function registerPaths()
+    protected function registerPaths(): void
     {
         $appPath = $this->appPath;
 
@@ -124,10 +114,9 @@ class Application extends Container
     /**
      * Set app base path
      *
-     * @param string $appPath
      * @return static
      */
-    public function setAppPath($appPath)
+    public function setAppPath(string $appPath): static
     {
         $appPath = realpath($appPath);
         $appPath = rtrim($appPath, DIRECTORY_SEPARATOR);
@@ -139,18 +128,12 @@ class Application extends Container
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function path()
+    public function path(): ?string
     {
         return $this->appPath;
     }
 
-    /**
-     * @return bool
-     */
-    public function isBooted()
+    public function isBooted(): bool
     {
         return $this->isBootstrapped;
     }
@@ -158,7 +141,7 @@ class Application extends Container
     /**
      * @return MiddlewareInterface[]|string[]
      */
-    public function getMiddleware()
+    public function getMiddleware(): array
     {
         return $this->middleware;
     }

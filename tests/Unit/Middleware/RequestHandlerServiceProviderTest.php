@@ -12,7 +12,7 @@ class RequestHandlerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Middleware\RequestHandlerServiceProvider::register()
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var RequestHandler|MockObject $requestHandler */
         $requestHandler = $this->createMock(RequestHandler::class);

@@ -9,7 +9,7 @@ class FixUserLanguages extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $connection = $this->schema->getConnection();
         $connection
@@ -22,7 +22,7 @@ class FixUserLanguages extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $connection = $this->schema->getConnection();
         $connection

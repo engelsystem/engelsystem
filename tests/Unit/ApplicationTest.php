@@ -18,7 +18,7 @@ class ApplicationTest extends TestCase
      * @covers \Engelsystem\Application::__construct
      * @covers \Engelsystem\Application::registerBaseBindings
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $app = new Application('.');
 
@@ -38,7 +38,7 @@ class ApplicationTest extends TestCase
      * @covers \Engelsystem\Application::registerPaths
      * @covers \Engelsystem\Application::setAppPath
      */
-    public function testAppPath()
+    public function testAppPath(): void
     {
         $app = new Application();
 
@@ -68,7 +68,7 @@ class ApplicationTest extends TestCase
     /**
      * @covers \Engelsystem\Application::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = new Application();
 
@@ -91,7 +91,7 @@ class ApplicationTest extends TestCase
     /**
      * @covers \Engelsystem\Application::register
      */
-    public function testRegisterBoot()
+    public function testRegisterBoot(): void
     {
         $app = new Application();
         $app->bootstrap();
@@ -108,7 +108,7 @@ class ApplicationTest extends TestCase
     /**
      * @covers \Engelsystem\Application::register
      */
-    public function testRegisterClassName()
+    public function testRegisterClassName(): void
     {
         $app = new Application();
 
@@ -130,7 +130,7 @@ class ApplicationTest extends TestCase
      * @covers \Engelsystem\Application::getMiddleware
      * @covers \Engelsystem\Application::isBooted
      */
-    public function testBootstrap()
+    public function testBootstrap(): void
     {
         /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Application::class)
@@ -168,12 +168,7 @@ class ApplicationTest extends TestCase
         $app->bootstrap($config);
     }
 
-    /**
-     * @param Application $app
-     * @param array       $methods
-     * @return ServiceProvider|MockObject
-     */
-    protected function mockServiceProvider(Application $app, $methods = [])
+    protected function mockServiceProvider(Application $app, array $methods = []): ServiceProvider|MockObject
     {
         return $this->getMockBuilder(ServiceProvider::class)
             ->setConstructorArgs([$app])

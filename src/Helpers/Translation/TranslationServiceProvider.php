@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class TranslationServiceProvider extends ServiceProvider
 {
-    /** @var GettextTranslator */
-    protected $translators = [];
+    protected GettextTranslator|array $translators = [];
 
     public function register(): void
     {
@@ -54,7 +53,6 @@ class TranslationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param string $locale
      * @codeCoverageIgnore
      */
     public function setLocale(string $locale): void
@@ -69,10 +67,6 @@ class TranslationServiceProvider extends ServiceProvider
         setlocale(LC_NUMERIC, 'C');
     }
 
-    /**
-     * @param string $locale
-     * @return GettextTranslator
-     */
     public function getTranslator(string $locale): GettextTranslator
     {
         if (!isset($this->translators[$locale])) {
@@ -100,11 +94,6 @@ class TranslationServiceProvider extends ServiceProvider
         return $this->translators[$locale];
     }
 
-    /**
-     * @param string $locale
-     * @param string $name
-     * @return string
-     */
     protected function getFile(string $locale, string $name = 'default'): string
     {
         $filepath = $file = $this->app->get('path.lang') . '/' . $locale . '/' . $name;

@@ -6,10 +6,6 @@ namespace Engelsystem\Helpers\Schedule;
 
 trait CalculatesTime
 {
-    /**
-     * @param string $time
-     * @return int
-     */
     protected function secondsFromTime(string $time): int
     {
         $seconds = 0;

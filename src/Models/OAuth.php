@@ -28,24 +28,23 @@ class OAuth extends BaseModel
 {
     use UsesUserModel;
 
-    /** @var string */
-    public $table = 'oauth';
+    public $table = 'oauth'; // phpcs:ignore
 
     /** @var bool Enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** @var string[] */
-    protected $casts = [
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
         'user_id' => 'integer',
     ];
 
-    /** @var string[] */
-    protected $dates = [
+    /** @var array<string> */
+    protected $dates = [ // phpcs:ignore
         'expires_at',
     ];
 
-    /** @var array */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'provider',
         'identifier',
         'access_token',

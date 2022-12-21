@@ -32,7 +32,7 @@ class StatsTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\Stats::__construct
      * @covers \Engelsystem\Controllers\Metrics\Stats::newUsers
      */
-    public function testNewUsers()
+    public function testNewUsers(): void
     {
         $this->addUsers();
 
@@ -44,7 +44,7 @@ class StatsTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\Stats::vouchers
      * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersQuery
      */
-    public function testVouchers()
+    public function testVouchers(): void
     {
         $this->addUsers();
 
@@ -55,7 +55,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersBuckets
      */
-    public function testVouchersBuckets()
+    public function testVouchersBuckets(): void
     {
         $this->addUsers();
 
@@ -66,7 +66,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::tshirts
      */
-    public function testTshirts()
+    public function testTshirts(): void
     {
         $this->addUsers();
 
@@ -78,7 +78,7 @@ class StatsTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\Stats::tshirtSizes
      * @covers \Engelsystem\Controllers\Metrics\Stats::raw
      */
-    public function testTshirtSizes()
+    public function testTshirtSizes(): void
     {
         $this->addUsers();
 
@@ -94,7 +94,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::languages
      */
-    public function testLanguages()
+    public function testLanguages(): void
     {
         $this->addUsers();
 
@@ -110,7 +110,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::themes
      */
-    public function testThemes()
+    public function testThemes(): void
     {
         $this->addUsers();
 
@@ -127,7 +127,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::licenses
      */
-    public function testLicenses()
+    public function testLicenses(): void
     {
         $this->addUsers();
 
@@ -143,7 +143,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::worklogSeconds
      */
-    public function testWorklogSeconds()
+    public function testWorklogSeconds(): void
     {
         $this->addUsers();
         $worklogData = [
@@ -165,7 +165,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::rooms
      */
-    public function testRooms()
+    public function testRooms(): void
     {
         (new Room(['name' => 'Room 1']))->save();
         (new Room(['name' => 'Second room']))->save();
@@ -179,7 +179,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::announcements
      */
-    public function testAnnouncements()
+    public function testAnnouncements(): void
     {
         $this->addUsers();
         $newsData = ['title' => 'Test', 'text' => 'Foo Bar', 'user_id' => 1];
@@ -197,7 +197,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::comments
      */
-    public function testComments()
+    public function testComments(): void
     {
         $user = $this->addUser();
 
@@ -218,7 +218,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::questions
      */
-    public function testQuestions()
+    public function testQuestions(): void
     {
         $this->addUsers();
         $questionsData = ['text' => 'Lorem Ipsum', 'user_id' => 1];
@@ -236,7 +236,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::arrivedUsers
      */
-    public function testArrivedUsers()
+    public function testArrivedUsers(): void
     {
         $this->addUsers();
 
@@ -247,7 +247,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::forceActiveUsers
      */
-    public function testForceActiveUsers()
+    public function testForceActiveUsers(): void
     {
         $this->addUsers();
 
@@ -258,7 +258,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::usersPronouns
      */
-    public function testUsersPronouns()
+    public function testUsersPronouns(): void
     {
         $this->addUsers();
 
@@ -269,7 +269,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::email
      */
-    public function testEmail()
+    public function testEmail(): void
     {
         $this->addUsers();
 
@@ -284,7 +284,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::faq
      */
-    public function testFaq()
+    public function testFaq(): void
     {
         (new Faq(['question' => 'Foo?', 'text' => 'Bar!']))->save();
         (new Faq(['question' => 'Lorem??', 'text' => 'Ipsum!!!']))->save();
@@ -296,7 +296,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::messages
      */
-    public function testMessages()
+    public function testMessages(): void
     {
         $this->addUsers();
 
@@ -312,7 +312,7 @@ class StatsTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\Stats::sessions
      * @covers \Engelsystem\Controllers\Metrics\Stats::getQuery
      */
-    public function testSessions()
+    public function testSessions(): void
     {
         $this->database
             ->getConnection()
@@ -331,7 +331,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::oauth
      */
-    public function testOauth()
+    public function testOauth(): void
     {
         $this->addUsers();
         $user1 = User::find(1);
@@ -356,7 +356,7 @@ class StatsTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\Stats::databaseRead
      * @covers \Engelsystem\Controllers\Metrics\Stats::databaseWrite
      */
-    public function testDatabase()
+    public function testDatabase(): void
     {
         $stats = new Stats($this->database);
 
@@ -372,7 +372,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::logEntries
      */
-    public function testLogEntries()
+    public function testLogEntries(): void
     {
         (new LogEntry(['level' => LogLevel::INFO, 'message' => 'Some info']))->save();
         (new LogEntry(['level' => LogLevel::INFO, 'message' => 'Another info']))->save();
@@ -390,7 +390,7 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::passwordResets
      */
-    public function testPasswordResets()
+    public function testPasswordResets(): void
     {
         $this->addUsers();
 
@@ -404,7 +404,7 @@ class StatsTest extends TestCase
     /**
      * Add some example users
      */
-    protected function addUsers()
+    protected function addUsers(): void
     {
         $this->addUser();
         $this->addUser([], ['shirt_size' => 'L'], ['email_human' => true, 'email_shiftinfo' => true]);
@@ -427,15 +427,12 @@ class StatsTest extends TestCase
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L'], ['theme' => 4]);
     }
 
-    /**
-     * @param array $state
-     * @param array $personalData
-     * @param array $settings
-     *
-     * @return User
-     */
-    protected function addUser(array $state = [], $personalData = [], $settings = [], $license = []): User
-    {
+    protected function addUser(
+        array $state = [],
+        array $personalData = [],
+        array $settings = [],
+        array $license = []
+    ): User {
         $name = 'user_' . Str::random(5);
 
         $user = new User([

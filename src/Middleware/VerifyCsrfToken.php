@@ -11,23 +11,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class VerifyCsrfToken implements MiddlewareInterface
 {
-    /** @var SessionInterface */
-    protected $session;
-
-    /**
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
+    public function __construct(protected SessionInterface $session)
     {
-        $this->session = $session;
     }
 
     /**
      * Verify csrf tokens
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -41,10 +30,6 @@ class VerifyCsrfToken implements MiddlewareInterface
         throw new HttpAuthExpired('Authentication Token Mismatch');
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return bool
-     */
     protected function isReading(ServerRequestInterface $request): bool
     {
         return in_array(
@@ -53,10 +38,6 @@ class VerifyCsrfToken implements MiddlewareInterface
         );
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return bool
-     */
     protected function tokensMatch(ServerRequestInterface $request): bool
     {
         $token = null;

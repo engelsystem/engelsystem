@@ -6,18 +6,12 @@ use Engelsystem\Controllers\BaseController;
 
 class ControllerImplementation extends BaseController
 {
-    /**
-     * @param array $permissions
-     */
-    public function setPermissions(array $permissions)
+    public function setPermissions(array $permissions): void
     {
         $this->permissions = $permissions;
     }
 
-    /**
-     * @return string
-     */
-    public function actionStub()
+    public function actionStub(): string
     {
         return '';
     }

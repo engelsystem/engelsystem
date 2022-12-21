@@ -6,30 +6,24 @@ use Engelsystem\Application;
 
 abstract class ServiceProvider
 {
-    /** @var Application */
-    protected $app;
-
     /**
      * ServiceProvider constructor.
-     *
-     * @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct(protected Application $app)
     {
-        $this->app = $app;
     }
 
     /**
      * Register container bindings
      */
-    public function register()
+    public function register(): void
     {
     }
 
     /**
      * Called after other services had been registered
      */
-    public function boot()
+    public function boot(): void
     {
     }
 }

@@ -12,25 +12,14 @@ use Throwable;
 
 class ExceptionHandler implements MiddlewareInterface
 {
-    /** @var ContainerInterface */
-    protected $container;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     /**
      * Handles any exceptions that occurred inside other middleware while returning it to the default response handler
      *
      * Should be added at the beginning
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,

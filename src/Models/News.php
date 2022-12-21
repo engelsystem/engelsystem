@@ -38,23 +38,23 @@ class News extends BaseModel
     use UsesUserModel;
 
     /** @var bool Enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** @var array */
-    protected $casts = [
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
         'user_id'    => 'integer',
         'is_meeting' => 'boolean',
         'is_pinned'  => 'boolean',
     ];
 
-    /** @var array Default attributes */
-    protected $attributes = [
+    /** @var array<string, bool> Default attributes */
+    protected $attributes = [ // phpcs:ignore
         'is_meeting' => false,
         'is_pinned'  => false,
     ];
 
-    /** @var array */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'title',
         'text',
         'is_meeting',
@@ -62,19 +62,12 @@ class News extends BaseModel
         'user_id',
     ];
 
-    /**
-     * @return HasMany
-     */
     public function comments(): HasMany
     {
         return $this->hasMany(NewsComment::class)
             ->orderBy('created_at');
     }
 
-    /**
-     * @param bool $showMore
-     * @return string
-     */
     public function text(bool $showMore = true): string
     {
         if ($showMore || !Str::contains($this->text, 'more')) {

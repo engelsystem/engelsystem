@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RequestServiceProviderTest extends ServiceProviderTest
 {
-    /**
-     * @return array
-     */
     public function provideRegister(): array
     {
         return [
@@ -31,11 +28,8 @@ class RequestServiceProviderTest extends ServiceProviderTest
     /**
      * @dataProvider provideRegister
      * @covers       \Engelsystem\Http\RequestServiceProvider::register
-     *
-     * @param string|array $configuredProxies
-     * @param array        $trustedProxies
      */
-    public function testRegister($configuredProxies, array $trustedProxies)
+    public function testRegister(string|array $configuredProxies, array $trustedProxies): void
     {
         $config = new Config([
             'trusted_proxies' => $configuredProxies,
@@ -68,7 +62,7 @@ class RequestServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Http\RequestServiceProvider::register
      */
-    public function testRegisterRewritingPrefix()
+    public function testRegisterRewritingPrefix(): void
     {
         $config = new Config([
             'url' => 'https://some.app/subpath',
@@ -110,7 +104,7 @@ class RequestServiceProviderTest extends ServiceProviderTest
      * @covers       \Engelsystem\Http\RequestServiceProvider::createRequestWithoutPrefix
      * @dataProvider provideRequestPathPrefix
      */
-    public function testCreateRequestWithoutPrefix(string $requestUri, string $expected, string $url = null)
+    public function testCreateRequestWithoutPrefix(string $requestUri, string $expected, string $url = null): void
     {
         $_SERVER['REQUEST_URI'] = $requestUri;
         $config = new Config([

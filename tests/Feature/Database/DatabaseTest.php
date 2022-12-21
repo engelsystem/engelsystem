@@ -11,7 +11,7 @@ abstract class DatabaseTest extends TestCase
      *
      * @return string[]
      */
-    protected function getDbConfig()
+    protected function getDbConfig(): array
     {
         $configValues = require __DIR__ . '/../../../config/config.default.php';
         $configFile = __DIR__ . '/../../../config/config.php';

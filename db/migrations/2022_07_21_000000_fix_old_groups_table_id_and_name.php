@@ -32,7 +32,7 @@ class FixOldGroupsTableIdAndName extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $this->migrate($this->naming, $this->ids);
     }
@@ -40,7 +40,7 @@ class FixOldGroupsTableIdAndName extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->migrate(array_flip($this->naming), array_flip($this->ids));
     }
@@ -49,7 +49,7 @@ class FixOldGroupsTableIdAndName extends Migration
      * @param string[] $naming
      * @param int[] $ids
      */
-    protected function migrate(array $naming, array $ids)
+    protected function migrate(array $naming, array $ids): void
     {
         if (!$this->schema->hasTable('Groups')) {
             return;

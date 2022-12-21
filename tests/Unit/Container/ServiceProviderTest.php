@@ -13,7 +13,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      * @covers \Engelsystem\Container\ServiceProvider::register
      * @covers \Engelsystem\Container\ServiceProvider::boot
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = $this->getApp();
 

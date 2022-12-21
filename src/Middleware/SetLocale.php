@@ -12,33 +12,15 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class SetLocale implements MiddlewareInterface
 {
-    /** @var Authenticator */
-    protected $auth;
-
-    /** @var Translator */
-    protected $translator;
-
-    /** @var Session */
-    protected $session;
-
-    /**
-     * @param Translator    $translator
-     * @param Session       $session
-     * @param Authenticator $auth
-     */
-    public function __construct(Translator $translator, Session $session, Authenticator $auth)
-    {
-        $this->auth = $auth;
-        $this->translator = $translator;
-        $this->session = $session;
+    public function __construct(
+        protected Translator $translator,
+        protected Session $session,
+        protected Authenticator $auth
+    ) {
     }
 
     /**
      * Process an incoming server request and setting the locale if required
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

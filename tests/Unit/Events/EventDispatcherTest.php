@@ -8,7 +8,7 @@ use Engelsystem\Test\Unit\TestCase;
 class EventDispatcherTest extends TestCase
 {
     /** @var array */
-    protected $firedEvents = [];
+    protected array $firedEvents = [];
 
     /**
      * @covers \Engelsystem\Events\EventDispatcher::listen
@@ -114,9 +114,6 @@ class EventDispatcherTest extends TestCase
         $this->assertEquals(['default' => 'handler'], $response);
     }
 
-    /**
-     * @param string $event
-     */
     public function eventHandler(string $event): void
     {
         if (!isset($this->firedEvents[$event])) {
@@ -135,25 +132,16 @@ class EventDispatcherTest extends TestCase
         return null;
     }
 
-    /**
-     * @return bool
-     */
     public function returnFalse(): bool
     {
         return false;
     }
 
-    /**
-     * @return array
-     */
     public function returnData(): array
     {
         return ['example' => 'data'];
     }
 
-    /**
-     * @return array
-     */
     public function handle(): array
     {
         return ['default' => 'handler'];

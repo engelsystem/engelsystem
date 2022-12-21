@@ -27,10 +27,10 @@ class Settings extends HasUserModel
     use HasFactory;
 
     /** @var string The table associated with the model */
-    protected $table = 'users_settings';
+    protected $table = 'users_settings'; // phpcs:ignore
 
-    /** @var array Default attributes */
-    protected $attributes = [
+    /** @var array<string, bool> Default attributes */
+    protected $attributes = [ // phpcs:ignore
         'email_human'     => false,
         'email_goody'     => false,
         'email_shiftinfo' => false,
@@ -38,8 +38,12 @@ class Settings extends HasUserModel
         'mobile_show'     => false,
     ];
 
-    /** The attributes that are mass assignable */
-    protected $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'language',
         'theme',
@@ -51,7 +55,7 @@ class Settings extends HasUserModel
     ];
 
     /** @var string[] */
-    protected $casts = [
+    protected $casts = [ // phpcs:ignore
         'user_id'         => 'integer',
         'theme'           => 'integer',
         'email_human'     => 'boolean',

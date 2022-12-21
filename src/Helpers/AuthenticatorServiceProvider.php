@@ -7,7 +7,7 @@ use Engelsystem\Container\ServiceProvider;
 
 class AuthenticatorServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');

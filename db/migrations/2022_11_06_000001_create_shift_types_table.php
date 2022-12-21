@@ -18,7 +18,7 @@ class CreateShiftTypesTable extends Migration
     public function up(): void
     {
         $connection = $this->schema->getConnection();
-        $this->schema->create('shift_types', function (Blueprint $table) {
+        $this->schema->create('shift_types', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name')->unique();
             $table->text('description');
@@ -56,7 +56,7 @@ class CreateShiftTypesTable extends Migration
     public function down(): void
     {
         $connection = $this->schema->getConnection();
-        $this->schema->create('ShiftTypes', function (Blueprint $table) {
+        $this->schema->create('ShiftTypes', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name', 255);
             $table->mediumText('description');

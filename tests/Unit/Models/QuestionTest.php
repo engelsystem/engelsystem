@@ -11,19 +11,10 @@ use Illuminate\Support\Str;
 
 class QuestionTest extends ModelTest
 {
-    /**
-     * @var User
-     */
-    private $user1;
+    private User $user1;
 
-    /**
-     * @var User
-     */
-    private $user2;
+    private User $user2;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -86,11 +77,6 @@ class QuestionTest extends ModelTest
         $this->assertInstanceOf(Carbon::class, Question::find($question1->id)->answered_at);
     }
 
-    /**
-     * @param User      $user
-     * @param User|null $answerer
-     * @return Question
-     */
     private function createQuestion(User $user, ?User $answerer = null): Question
     {
         $data = [

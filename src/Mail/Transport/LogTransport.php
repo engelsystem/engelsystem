@@ -8,20 +8,14 @@ use Symfony\Component\Mailer\Transport\AbstractTransport;
 
 class LogTransport extends AbstractTransport
 {
-    /** @var LoggerInterface */
-    protected $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(protected LoggerInterface $logger)
     {
-        $this->logger = $logger;
 
         parent::__construct();
     }
 
     /**
      * Send the message to log
-     *
-     * @param SentMessage $message
      */
     protected function doSend(SentMessage $message): void
     {
@@ -40,9 +34,6 @@ class LogTransport extends AbstractTransport
         );
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return 'log://';

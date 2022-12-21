@@ -108,59 +108,53 @@ class CreatePrivilegesAndGroupsRelatedTables extends Migration
         $this->schema->drop('privileges_new');
     }
 
-    /**
-     * @return void
-     */
     protected function createNew(): void
     {
-        $this->schema->create('groups', function (Blueprint $table) {
+        $this->schema->create('groups', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name', 35)->unique();
         });
 
-        $this->schema->create('privileges', function (Blueprint $table) {
+        $this->schema->create('privileges', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name', 128)->unique();
             $table->string('description', 1024);
         });
 
-        $this->schema->create('users_groups', function (Blueprint $table) {
+        $this->schema->create('users_groups', function (Blueprint $table): void {
             $table->increments('id');
             $this->referencesUser($table)->index();
             $this->references($table, 'groups')->index();
         });
 
-        $this->schema->create('group_privileges', function (Blueprint $table) {
+        $this->schema->create('group_privileges', function (Blueprint $table): void {
             $table->increments('id');
             $this->references($table, 'groups')->index();
             $this->references($table, 'privileges')->index();
         });
     }
 
-    /**
-     * @return void
-     */
     protected function createOldTable(): void
     {
-        $this->schema->create('Groups', function (Blueprint $table) {
+        $this->schema->create('Groups', function (Blueprint $table): void {
             $table->string('Name', 35);
             $table->integer('UID')->primary();
         });
 
-        $this->schema->create('Privileges', function (Blueprint $table) {
+        $this->schema->create('Privileges', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name', 128)->unique();
             $table->string('desc', 1024);
         });
 
-        $this->schema->create('UserGroups', function (Blueprint $table) {
+        $this->schema->create('UserGroups', function (Blueprint $table): void {
             $table->increments('id');
             $this->references($table, 'users', 'uid');
             $this->references($table, 'Groups', 'group_id', 'UID', false, 'integer')->index();
             $table->index(['uid', 'group_id']);
         });
 
-        $this->schema->create('GroupPrivileges', function (Blueprint $table) {
+        $this->schema->create('GroupPrivileges', function (Blueprint $table): void {
             $table->increments('id');
             $this->references($table, 'Groups', 'group_id', 'UID', false, 'integer');
             $this->references($table, 'Privileges', 'privilege_id')->index();
@@ -168,9 +162,6 @@ class CreatePrivilegesAndGroupsRelatedTables extends Migration
         });
     }
 
-    /**
-     * @return void
-     */
     protected function copyOldToNew(): void
     {
         $connection = $this->schema->getConnection();
@@ -220,9 +211,6 @@ class CreatePrivilegesAndGroupsRelatedTables extends Migration
         }
     }
 
-    /**
-     * @return void
-     */
     protected function copyNewToOld(): void
     {
         $connection = $this->schema->getConnection();

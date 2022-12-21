@@ -10,9 +10,9 @@ class CreateLogEntriesTable extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->create('log_entries', function (Blueprint $table) {
+        $this->schema->create('log_entries', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('level', 20);
             $table->text('message');
@@ -32,9 +32,9 @@ class CreateLogEntriesTable extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
-        $this->schema->create('LogEntries', function (Blueprint $table) {
+        $this->schema->create('LogEntries', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('level', 20);
             $table->text('message');

@@ -9,7 +9,7 @@ class CreateQuestionsPermissions extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if ($this->schema->hasTable('Privileges')) {
             $db = $this->schema->getConnection();
@@ -36,7 +36,7 @@ class CreateQuestionsPermissions extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         if (!$this->schema->hasTable('Privileges')) {
             return;

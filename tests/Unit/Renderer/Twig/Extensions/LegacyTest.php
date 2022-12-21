@@ -11,7 +11,7 @@ class LegacyTest extends ExtensionTest
     /**
      * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::getFunctions
      */
-    public function testGetFunctions()
+    public function testGetFunctions(): void
     {
         $isSafeHtml = ['is_safe' => ['html']];
         /** @var Request|MockObject $request */
@@ -32,7 +32,7 @@ class LegacyTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::getPage
      */
-    public function testIsAuthenticated()
+    public function testIsAuthenticated(): void
     {
         /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);

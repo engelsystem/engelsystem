@@ -12,34 +12,14 @@ use Symfony\Component\Mailer\Exception\TransportException;
 
 class News
 {
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var EngelsystemMailer */
-    protected $mailer;
-
-    /** @var UserSettings */
-    protected $settings;
-
-    /**
-     * @param LoggerInterface   $log
-     * @param EngelsystemMailer $mailer
-     * @param UserSettings      $settings
-     */
     public function __construct(
-        LoggerInterface $log,
-        EngelsystemMailer $mailer,
-        UserSettings $settings
+        protected LoggerInterface $log,
+        protected EngelsystemMailer $mailer,
+        protected UserSettings $settings
     ) {
-        $this->log = $log;
-        $this->mailer = $mailer;
-        $this->settings = $settings;
     }
 
-    /**
-     * @param NewsModel $news
-     */
-    public function created(NewsModel $news)
+    public function created(NewsModel $news): void
     {
         /** @var UserSettings[]|Collection $recipients */
         $recipients = $this->settings
@@ -52,13 +32,7 @@ class News
         }
     }
 
-    /**
-     * @param NewsModel $news
-     * @param User      $user
-     * @param string    $subject
-     * @param string    $template
-     */
-    protected function sendMail(NewsModel $news, User $user, string $subject, string $template)
+    protected function sendMail(NewsModel $news, User $user, string $subject, string $template): void
     {
         try {
             $this->mailer->sendViewTranslated(

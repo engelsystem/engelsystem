@@ -7,11 +7,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class ServiceProviderTest extends TestCase
 {
-    /**
-     * @param array $methods
-     * @return Application|MockObject
-     */
-    protected function getApp($methods = ['make', 'instance'])
+    protected function getApp(array $methods = ['make', 'instance']): Application|MockObject
     {
         return $this->getMockBuilder(Application::class)
             ->onlyMethods($methods)

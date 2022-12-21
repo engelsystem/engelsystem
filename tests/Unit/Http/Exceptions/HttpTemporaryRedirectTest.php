@@ -11,7 +11,7 @@ class HttpTemporaryRedirectTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Exceptions\HttpTemporaryRedirect::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $exception = new HttpTemporaryRedirect('https://lorem.ipsum/foo/bar');
         $this->assertInstanceOf(HttpRedirect::class, $exception);

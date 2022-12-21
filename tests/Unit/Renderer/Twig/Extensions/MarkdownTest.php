@@ -10,7 +10,7 @@ class MarkdownTest extends ExtensionTest
     /**
      * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::getFilters
      */
-    public function testGeFilters()
+    public function testGeFilters(): void
     {
         $extension = new Markdown(new Parsedown());
         $filters = $extension->getFilters();
@@ -23,7 +23,7 @@ class MarkdownTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::render
      */
-    public function testRender()
+    public function testRender(): void
     {
         $extension = new Markdown(new Parsedown());
 
@@ -36,7 +36,7 @@ class MarkdownTest extends ExtensionTest
     /**
      * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::render
      */
-    public function testRenderHtml()
+    public function testRenderHtml(): void
     {
         $renderer = new Parsedown();
         $extension = new Markdown($renderer);

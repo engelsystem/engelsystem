@@ -14,23 +14,13 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
 {
     use ResolvesMiddlewareTrait;
 
-    /** @var MiddlewareInterface[]|string[] */
-    protected $stack;
-
-    /** @var Application */
-    protected $container;
-
-    /** @var RequestHandlerInterface */
-    protected $next;
+    protected RequestHandlerInterface $next;
 
     /**
      * @param MiddlewareInterface[]|string[] $stack
-     * @param Application|null               $container
      */
-    public function __construct($stack = [], Application $container = null)
+    public function __construct(protected array $stack = [], protected ?Application $container = null)
     {
-        $this->stack = $stack;
-        $this->container = $container;
     }
 
     /**
@@ -38,10 +28,6 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
      * response creation to a handler.
      *
      * Could be used to group middleware
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,
@@ -56,9 +42,6 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
      * Handle the request and return a response.
      *
      * It calls all configured middleware and handles their response
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -80,10 +63,7 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
         return $middleware->process($request, $this);
     }
 
-    /**
-     * @param Application $container
-     */
-    public function setContainer(Application $container)
+    public function setContainer(Application $container): void
     {
         $this->container = $container;
     }

@@ -10,12 +10,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class QuestionFactory extends Factory
 {
     /** @var string */
-    protected $model = Question::class;
+    protected $model = Question::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id'     => User::factory(),

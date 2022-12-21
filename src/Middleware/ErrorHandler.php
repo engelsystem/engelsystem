@@ -16,18 +16,14 @@ use Twig\Loader\LoaderInterface as TwigLoader;
 
 class ErrorHandler implements MiddlewareInterface
 {
-    /** @var TwigLoader */
-    protected $loader;
-
-    /** @var string */
-    protected $viewPrefix = 'errors/';
+    protected string $viewPrefix = 'errors/';
 
     /**
      * A list of inputs that are not saved from form input
      *
-     * @var array
+     * @var array<string>
      */
-    protected $formIgnore = [
+    protected array $formIgnore = [
         'password',
         'password_confirmation',
         'password2',
@@ -38,22 +34,14 @@ class ErrorHandler implements MiddlewareInterface
         '_token',
     ];
 
-    /**
-     * @param TwigLoader $loader
-     */
-    public function __construct(TwigLoader $loader)
+    public function __construct(protected TwigLoader $loader)
     {
-        $this->loader = $loader;
     }
 
     /**
      * Handles any error messages
      *
      * Should be added at the beginning
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,
@@ -104,9 +92,6 @@ class ErrorHandler implements MiddlewareInterface
 
     /**
      * Select a view based on the given status code
-     *
-     * @param int $statusCode
-     * @return string
      */
     protected function selectView(int $statusCode): string
     {
@@ -125,23 +110,17 @@ class ErrorHandler implements MiddlewareInterface
     /**
      * Create a new response
      *
-     * @param string $content
-     * @param int    $status
-     * @param array  $headers
-     * @return Response
      * @codeCoverageIgnore
      */
-    protected function createResponse(string $content = '', int $status = 200, array $headers = [])
+    protected function createResponse(string $content = '', int $status = 200, array $headers = []): ResponseInterface
     {
         return response($content, $status, $headers);
     }
 
     /**
      * Create a redirect back response
-     *
-     * @return Response
      */
-    protected function redirectBack()
+    protected function redirectBack(): Response
     {
         return back();
     }

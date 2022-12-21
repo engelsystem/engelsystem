@@ -7,11 +7,7 @@ use Throwable;
 
 class NullHandler extends Legacy
 {
-    /**
-     * @param Request   $request
-     * @param Throwable $e
-     */
-    public function render($request, Throwable $e)
+    public function render(Request $request, Throwable $e): void
     {
         return;
     }

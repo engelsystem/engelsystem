@@ -12,7 +12,7 @@ class ApiControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\ApiController::__construct
      * @covers \Engelsystem\Controllers\ApiController::index
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $controller = new ApiController(new Response());
 

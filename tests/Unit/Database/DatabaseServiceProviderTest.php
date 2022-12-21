@@ -20,7 +20,7 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var Application|MockObject $app */
         /** @var CapsuleManager|MockObject $dbManager */
@@ -54,7 +54,7 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Database\DatabaseServiceProvider::exitOnError()
      * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
      */
-    public function testRegisterError()
+    public function testRegisterError(): void
     {
         list($app) = $this->prepare([
             'host'     => 'localhost',
@@ -71,12 +71,8 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
 
     /**
      * Prepare some mocks
-     *
-     * @param array $dbConfigData
-     * @param bool  $getPdoThrowException
-     * @return array
      */
-    protected function prepare($dbConfigData, $getPdoThrowException = false)
+    protected function prepare(array $dbConfigData, bool $getPdoThrowException = false): array
     {
         /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(Config::class)

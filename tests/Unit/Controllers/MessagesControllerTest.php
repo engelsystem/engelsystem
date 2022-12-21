@@ -21,23 +21,16 @@ class MessagesControllerTest extends ControllerTest
 {
     use HasDatabase;
 
-    /** @var MessagesController */
-    protected $controller;
+    protected MessagesController $controller;
 
-    /** @var Authenticator|MockObject */
-    protected $auth;
+    protected Authenticator|MockObject $auth;
 
-    /** @var User */
-    protected $userA;
-    /** @var User */
-    protected $userB;
+    protected User $userA;
+    protected User $userB;
 
-    /** @var Carbon */
-    protected $now;
-    /** @var Carbon */
-    protected $oneMinuteAgo;
-    /** @var Carbon */
-    protected $twoMinutesAgo;
+    protected Carbon $now;
+    protected Carbon $oneMinuteAgo;
+    protected Carbon $twoMinutesAgo;
 
     /**
      * @testdox index: underNormalConditions -> returnsCorrectViewAndData
@@ -48,7 +41,7 @@ class MessagesControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessagesPerConversation
      * @covers \Engelsystem\Controllers\MessagesController::raw
      */
-    public function testIndexUnderNormalConditionsReturnsCorrectViewAndData()
+    public function testIndexUnderNormalConditionsReturnsCorrectViewAndData(): void
     {
         $this->response->expects($this->once())
             ->method('withView')
@@ -72,7 +65,7 @@ class MessagesControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessagesPerConversation
      * @covers \Engelsystem\Controllers\MessagesController::raw
      */
-    public function testIndexUsersExistReturnsUsersWithMeAtFirstPosition()
+    public function testIndexUsersExistReturnsUsersWithMeAtFirstPosition(): void
     {
         User::factory(['name' => '0'])->create(); // alphabetically before me ("a"), but still listed after me
 
@@ -100,7 +93,7 @@ class MessagesControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessagesPerConversation
      * @covers \Engelsystem\Controllers\MessagesController::raw
      */
-    public function testIndexWithNoConversationReturnsEmptyConversationList()
+    public function testIndexWithNoConversationReturnsEmptyConversationList(): void
     {
         $this->response->expects($this->once())
             ->method('withView')
@@ -120,7 +113,7 @@ class MessagesControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessagesPerConversation
      * @covers \Engelsystem\Controllers\MessagesController::raw
      */
-    public function testIndexWithConversationConversationContainsCorrectData()
+    public function testIndexWithConversationConversationContainsCorrectData(): void
     {
         // save messages in wrong order to ensure latest message considers creation date, not id.
         $this->createMessage($this->userA, $this->userB, 'a>b', $this->now);
@@ -161,7 +154,7 @@ class MessagesControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessagesPerConversation
      * @covers \Engelsystem\Controllers\MessagesController::raw
      */
-    public function testIndexWithConversationsOnlyContainsConversationsWithMe()
+    public function testIndexWithConversationsOnlyContainsConversationsWithMe(): void
     {
         $userC = User::factory(['name' => 'c'])->create();
 
@@ -194,7 +187,7 @@ class MessagesControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\MessagesController::numberOfUnreadMessagesPerConversation
      * @covers \Engelsystem\Controllers\MessagesController::raw
      */
-    public function testIndexWithConversationsConversationsOrderedByDate()
+    public function testIndexWithConversationsConversationsOrderedByDate(): void
     {
         $userC = User::factory(['name' => 'c'])->create();
         $userD = User::factory(['name' => 'd'])->create();
@@ -222,7 +215,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox redirectToConversation: withNoUserIdGiven -> throwsException
      * @covers \Engelsystem\Controllers\MessagesController::redirectToConversation
      */
-    public function testRedirectToConversationWithNoUserIdGivenThrowsException()
+    public function testRedirectToConversationWithNoUserIdGivenThrowsException(): void
     {
         $this->expectException(ValidationException::class);
         $this->controller->redirectToConversation($this->request);
@@ -232,7 +225,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox redirectToConversation: withUserIdGiven -> redirect
      * @covers \Engelsystem\Controllers\MessagesController::redirectToConversation
      */
-    public function testRedirectToConversationWithUserIdGivenRedirect()
+    public function testRedirectToConversationWithUserIdGivenRedirect(): void
     {
         $this->request = $this->request->withParsedBody(['user_id'  => '1']);
         $this->response->expects($this->once())
@@ -247,7 +240,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox messagesOfConversation: withNoUserIdGiven -> throwsException
      * @covers \Engelsystem\Controllers\MessagesController::messagesOfConversation
      */
-    public function testMessagesOfConversationWithNoUserIdGivenThrowsException()
+    public function testMessagesOfConversationWithNoUserIdGivenThrowsException(): void
     {
         $this->expectException(ModelNotFoundException::class);
         $this->controller->messagesOfConversation($this->request);
@@ -257,7 +250,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox messagesOfConversation: withUnknownUserIdGiven -> throwsException
      * @covers \Engelsystem\Controllers\MessagesController::messagesOfConversation
      */
-    public function testMessagesOfConversationWithUnknownUserIdGivenThrowsException()
+    public function testMessagesOfConversationWithUnknownUserIdGivenThrowsException(): void
     {
         $this->request->attributes->set('user_id', '1234');
         $this->expectException(ModelNotFoundException::class);
@@ -268,7 +261,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox messagesOfConversation: underNormalConditions -> returnsCorrectViewAndData
      * @covers \Engelsystem\Controllers\MessagesController::messagesOfConversation
      */
-    public function testMessagesOfConversationUnderNormalConditionsReturnsCorrectViewAndData()
+    public function testMessagesOfConversationUnderNormalConditionsReturnsCorrectViewAndData(): void
     {
         $this->request->attributes->set('user_id', $this->userB->id);
 
@@ -290,7 +283,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox messagesOfConversation: withNoMessages -> returnsEmptyMessageList
      * @covers \Engelsystem\Controllers\MessagesController::messagesOfConversation
      */
-    public function testMessagesOfConversationWithNoMessagesReturnsEmptyMessageList()
+    public function testMessagesOfConversationWithNoMessagesReturnsEmptyMessageList(): void
     {
         $this->request->attributes->set('user_id', $this->userB->id);
 
@@ -308,7 +301,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox messagesOfConversation: withMessages -> messagesOnlyWithThatUserOrderedByDate
      * @covers \Engelsystem\Controllers\MessagesController::messagesOfConversation
      */
-    public function testMessagesOfConversationWithMessagesMessagesOnlyWithThatUserOrderedByDate()
+    public function testMessagesOfConversationWithMessagesMessagesOnlyWithThatUserOrderedByDate(): void
     {
         $this->request->attributes->set('user_id', $this->userB->id);
 
@@ -342,7 +335,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox messagesOfConversation: withUnreadMessages -> messagesToMeWillStillBeReturnedAsUnread
      * @covers \Engelsystem\Controllers\MessagesController::messagesOfConversation
      */
-    public function testMessagesOfConversationWithUnreadMessagesMessagesToMeWillStillBeReturnedAsUnread()
+    public function testMessagesOfConversationWithUnreadMessagesMessagesToMeWillStillBeReturnedAsUnread(): void
     {
         $this->request->attributes->set('user_id', $this->userB->id);
         $this->createMessage($this->userB, $this->userA, 'b>a', $this->now);
@@ -360,7 +353,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox messagesOfConversation: withUnreadMessages -> messagesToMeWillBeMarkedAsRead
      * @covers \Engelsystem\Controllers\MessagesController::messagesOfConversation
      */
-    public function testMessagesOfConversationWithUnreadMessagesMessagesToMeWillBeMarkedAsRead()
+    public function testMessagesOfConversationWithUnreadMessagesMessagesToMeWillBeMarkedAsRead(): void
     {
         $this->request->attributes->set('user_id', $this->userB->id);
         $this->response->expects($this->once())
@@ -378,7 +371,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox messagesOfConversation: withMyUserIdGiven -> returnsMessagesFromMeToMe
      * @covers \Engelsystem\Controllers\MessagesController::messagesOfConversation
      */
-    public function testMessagesOfConversationWithMyUserIdGivenReturnsMessagesFromMeToMe()
+    public function testMessagesOfConversationWithMyUserIdGivenReturnsMessagesFromMeToMe(): void
     {
         $this->request->attributes->set('user_id', $this->userA->id); // myself
 
@@ -403,7 +396,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox send: withNoTextGiven -> throwsException
      * @covers \Engelsystem\Controllers\MessagesController::send
      */
-    public function testSendWithNoTextGivenThrowsException()
+    public function testSendWithNoTextGivenThrowsException(): void
     {
         $this->expectException(ValidationException::class);
         $this->controller->send($this->request);
@@ -413,7 +406,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox send: withNoUserIdGiven -> throwsException
      * @covers \Engelsystem\Controllers\MessagesController::send
      */
-    public function testSendWithNoUserIdGivenThrowsException()
+    public function testSendWithNoUserIdGivenThrowsException(): void
     {
         $this->request = $this->request->withParsedBody(['text' => 'a']);
         $this->expectException(ModelNotFoundException::class);
@@ -424,7 +417,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox send: withUnknownUserIdGiven -> throwsException
      * @covers \Engelsystem\Controllers\MessagesController::send
      */
-    public function testSendWithUnknownUserIdGivenThrowsException()
+    public function testSendWithUnknownUserIdGivenThrowsException(): void
     {
         $this->request = $this->request->withParsedBody(['text' => 'a']);
         $this->request->attributes->set('user_id', '1234');
@@ -436,7 +429,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox send: withUserAndTextGiven -> savesMessage
      * @covers \Engelsystem\Controllers\MessagesController::send
      */
-    public function testSendWithUserAndTextGivenSavesMessage()
+    public function testSendWithUserAndTextGivenSavesMessage(): void
     {
         $this->request = $this->request->withParsedBody(['text' => 'a']);
         $this->request->attributes->set('user_id', $this->userB->id);
@@ -458,7 +451,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox send: withMyUserIdGiven -> savesMessageAlreadyMarkedAsRead
      * @covers \Engelsystem\Controllers\MessagesController::send
      */
-    public function testSendWithMyUserIdGivenSavesMessageAlreadyMarkedAsRead()
+    public function testSendWithMyUserIdGivenSavesMessageAlreadyMarkedAsRead(): void
     {
         $this->request = $this->request->withParsedBody(['text' => 'a']);
         $this->request->attributes->set('user_id', $this->userA->id);
@@ -480,7 +473,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox delete: withNoMsgIdGiven -> throwsException
      * @covers \Engelsystem\Controllers\MessagesController::delete
      */
-    public function testDeleteWithNoMsgIdGivenThrowsException()
+    public function testDeleteWithNoMsgIdGivenThrowsException(): void
     {
         $this->expectException(ModelNotFoundException::class);
         $this->controller->delete($this->request);
@@ -490,7 +483,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox delete: tryingToDeleteSomeonesMessage -> throwsException
      * @covers \Engelsystem\Controllers\MessagesController::delete
      */
-    public function testDeleteTryingToDeleteSomeonesMessageThrowsException()
+    public function testDeleteTryingToDeleteSomeonesMessageThrowsException(): void
     {
         $msg = $this->createMessage($this->userB, $this->userA, 'a>b', $this->now);
         $this->request->attributes->set('msg_id', $msg->id);
@@ -503,7 +496,7 @@ class MessagesControllerTest extends ControllerTest
      * @testdox delete: tryingToDeleteMyMessage -> deletesItAndRedirect
      * @covers \Engelsystem\Controllers\MessagesController::delete
      */
-    public function testDeleteTryingToDeleteMyMessageDeletesItAndRedirect()
+    public function testDeleteTryingToDeleteMyMessageDeletesItAndRedirect(): void
     {
         $msg = $this->createMessage($this->userA, $this->userB, 'a>b', $this->now);
         $this->request->attributes->set('msg_id', $msg->id);
@@ -543,7 +536,7 @@ class MessagesControllerTest extends ControllerTest
         $this->controller->setValidator(new Validator());
     }
 
-    protected function assertArrayOrCollection($obj)
+    protected function assertArrayOrCollection(mixed $obj): void
     {
         $this->assertTrue(gettype($obj) == 'array' || $obj instanceof Collection);
     }

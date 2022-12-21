@@ -15,9 +15,8 @@ class LoggerTest extends ApplicationFeatureTest
 {
     /**
      * @covers \Engelsystem\Logger\Logger::__construct
-     * @return LoggerInterface
      */
-    public function getLogger()
+    public function getLogger(): LoggerInterface
     {
         $logEntry = new LogEntry();
         return new Logger($logEntry);
@@ -26,7 +25,7 @@ class LoggerTest extends ApplicationFeatureTest
     /**
      * @covers \Engelsystem\Logger\Logger::__construct
      */
-    public function testImplements()
+    public function testImplements(): void
     {
         $this->assertInstanceOf(LoggerInterface::class, $this->getLogger());
     }
@@ -34,7 +33,7 @@ class LoggerTest extends ApplicationFeatureTest
     /**
      * @return string[][]
      */
-    public function provideLogLevels()
+    public function provideLogLevels(): array
     {
         return [
             [LogLevel::ALERT],
@@ -51,9 +50,8 @@ class LoggerTest extends ApplicationFeatureTest
     /**
      * @covers       \Engelsystem\Logger\Logger::log
      * @dataProvider provideLogLevels
-     * @param string $level
      */
-    public function testAllLevels($level)
+    public function testAllLevels(string $level): void
     {
         LogEntry::query()->truncate();
         $logger = $this->getLogger();
@@ -68,7 +66,7 @@ class LoggerTest extends ApplicationFeatureTest
     /**
      * @covers \Engelsystem\Logger\Logger::log
      */
-    public function testContextReplacement()
+    public function testContextReplacement(): void
     {
         LogEntry::query()->truncate();
         $logger = $this->getLogger();
@@ -83,7 +81,7 @@ class LoggerTest extends ApplicationFeatureTest
     /**
      * @return mixed[][]
      */
-    public function provideContextReplaceValues()
+    public function provideContextReplaceValues(): array
     {
         return [
             ['Data and {context}', [], 'Data and {context}'],
@@ -98,11 +96,9 @@ class LoggerTest extends ApplicationFeatureTest
      * @covers       \Engelsystem\Logger\Logger::log
      * @dataProvider provideContextReplaceValues
      *
-     * @param string   $message
      * @param string[] $context
-     * @param string   $expected
      */
-    public function testContextReplaceValues($message, $context, $expected)
+    public function testContextReplaceValues(string $message, array $context, string $expected): void
     {
         $logger = $this->getLogger();
         $logger->log(LogLevel::INFO, $message, $context);
@@ -114,7 +110,7 @@ class LoggerTest extends ApplicationFeatureTest
     /**
      * @covers \Engelsystem\Logger\Logger::log
      */
-    public function testContextToString()
+    public function testContextToString(): void
     {
         LogEntry::query()->truncate();
         $logger = $this->getLogger();
@@ -137,7 +133,7 @@ class LoggerTest extends ApplicationFeatureTest
      * @covers \Engelsystem\Logger\Logger::checkLevel
      * @covers \Engelsystem\Logger\Logger::log
      */
-    public function testThrowExceptionOnInvalidLevel()
+    public function testThrowExceptionOnInvalidLevel(): void
     {
         $logger = $this->getLogger();
 
@@ -149,7 +145,7 @@ class LoggerTest extends ApplicationFeatureTest
      * @covers \Engelsystem\Logger\Logger::formatException
      * @covers \Engelsystem\Logger\Logger::log
      */
-    public function testWithException()
+    public function testWithException(): void
     {
         $logger = $this->getLogger();
 
@@ -165,10 +161,7 @@ class LoggerTest extends ApplicationFeatureTest
         $this->assertStringContainsString(__FUNCTION__, $entry['message']);
     }
 
-    /**
-     * @return array
-     */
-    protected function getLastEntry()
+    protected function getLastEntry(): LogEntry
     {
         return LogEntry::all()->last();
     }

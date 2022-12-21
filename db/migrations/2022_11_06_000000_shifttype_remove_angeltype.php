@@ -20,7 +20,7 @@ class ShifttypeRemoveAngeltype extends Migration
 
         $this->schema->table(
             'ShiftTypes',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropForeign('shifttypes_ibfk_1');
                 $table->dropColumn('angeltype_id');
             }
@@ -38,7 +38,7 @@ class ShifttypeRemoveAngeltype extends Migration
 
         $this->schema->table(
             'ShiftTypes',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->integer('angeltype_id')
                     ->after('name')
                     ->index()

@@ -42,12 +42,6 @@ class ShiftCalendarRenderer
     /** @var int */
     private $blocksPerSlot = null;
 
-    /** @var array[] */
-    private $needed_angeltypes;
-
-    /** @var array[] */
-    private $shift_entries;
-
     /**
      * ShiftCalendarRenderer constructor.
      *
@@ -56,14 +50,12 @@ class ShiftCalendarRenderer
      * @param array[]      $shift_entries
      * @param ShiftsFilter $shiftsFilter
      */
-    public function __construct($shifts, $needed_angeltypes, $shift_entries, ShiftsFilter $shiftsFilter)
+    public function __construct($shifts, private $needed_angeltypes, private $shift_entries, ShiftsFilter $shiftsFilter)
     {
         $this->shiftsFilter = $shiftsFilter;
         $this->firstBlockStartTime = $this->calcFirstBlockStartTime($shifts);
         $this->lastBlockEndTime = $this->calcLastBlockEndTime($shifts);
         $this->lanes = $this->assignShiftsToLanes($shifts);
-        $this->needed_angeltypes = $needed_angeltypes;
-        $this->shift_entries = $shift_entries;
     }
 
     /**

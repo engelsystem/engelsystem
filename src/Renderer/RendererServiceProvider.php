@@ -6,13 +6,13 @@ use Engelsystem\Container\ServiceProvider;
 
 class RendererServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->registerRenderer();
         $this->registerHtmlEngine();
     }
 
-    public function boot()
+    public function boot(): void
     {
         $renderer = $this->app->get('renderer');
 
@@ -21,14 +21,14 @@ class RendererServiceProvider extends ServiceProvider
         }
     }
 
-    protected function registerRenderer()
+    protected function registerRenderer(): void
     {
         $renderer = $this->app->make(Renderer::class);
         $this->app->instance(Renderer::class, $renderer);
         $this->app->instance('renderer', $renderer);
     }
 
-    protected function registerHtmlEngine()
+    protected function registerHtmlEngine(): void
     {
         $htmlEngine = $this->app->make(HtmlEngine::class);
         $this->app->instance(HtmlEngine::class, $htmlEngine);

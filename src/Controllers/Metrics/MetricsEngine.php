@@ -6,16 +6,13 @@ use Engelsystem\Renderer\EngineInterface;
 
 class MetricsEngine implements EngineInterface
 {
-    /** @var string */
-    protected $prefix = 'engelsystem_';
+    protected string $prefix = 'engelsystem_';
 
     /**
      * Render metrics
      *
-     * @param string  $path
      * @param mixed[] $data
      *
-     * @return string
      *
      * @example $data = ['foo' => [['labels' => ['foo'=>'bar'], 'value'=>42]], 'bar'=>123]
      */
@@ -61,9 +58,6 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @param array  $row
-     * @param string $name
-     *
      * @return array[]
      */
     protected function formatHistogram(array $row, string $name): array
@@ -93,12 +87,8 @@ class MetricsEngine implements EngineInterface
 
     /**
      * Expand the value to be an array
-     *
-     * @param $data
-     *
-     * @return array
      */
-    protected function expandData($data): array
+    protected function expandData(mixed $data): array
     {
         $data = is_array($data) ? $data : [$data];
         $return = ['labels' => [], 'value' => null];
@@ -124,13 +114,10 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @param string      $name
-     * @param array|mixed $row
      *
-     * @return string
      * @see https://prometheus.io/docs/instrumenting/exposition_formats/
      */
-    protected function formatData($name, $row): string
+    protected function formatData(string $name, mixed $row): string
     {
         return sprintf(
             '%s%s %s',
@@ -140,11 +127,6 @@ class MetricsEngine implements EngineInterface
         );
     }
 
-    /**
-     * @param array $labels
-     *
-     * @return mixed
-     */
     protected function renderLabels(array $labels): string
     {
         if (empty($labels)) {
@@ -158,12 +140,7 @@ class MetricsEngine implements EngineInterface
         return '{' . implode(',', $labels) . '}';
     }
 
-    /**
-     * @param array|mixed $row
-     *
-     * @return mixed
-     */
-    protected function renderValue($row)
+    protected function renderValue(mixed $row): mixed
     {
         if (is_array($row)) {
             $row = array_pop($row);
@@ -172,12 +149,7 @@ class MetricsEngine implements EngineInterface
         return $this->formatValue($row);
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    protected function formatValue($value)
+    protected function formatValue(mixed $value): mixed
     {
         if (is_bool($value)) {
             return (int)$value;
@@ -186,12 +158,7 @@ class MetricsEngine implements EngineInterface
         return $this->escape($value);
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    protected function escape($value)
+    protected function escape(mixed $value): mixed
     {
         $replace = [
             '\\' => '\\\\',
@@ -206,11 +173,6 @@ class MetricsEngine implements EngineInterface
         );
     }
 
-    /**
-     * @param string $path
-     *
-     * @return bool
-     */
     public function canRender(string $path): bool
     {
         return $path == '/metrics';
@@ -220,9 +182,8 @@ class MetricsEngine implements EngineInterface
      * Does nothing as shared data will only result in unexpected behaviour
      *
      * @param string|mixed[] $key
-     * @param mixed          $value
      */
-    public function share($key, $value = null): void
+    public function share(string|array $key, mixed $value = null): void
     {
     }
 }

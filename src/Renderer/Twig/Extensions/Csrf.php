@@ -8,15 +8,8 @@ use Twig\TwigFunction;
 
 class Csrf extends TwigExtension
 {
-    /** @var SessionInterface */
-    protected $session;
-
-    /**
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
+    public function __construct(protected SessionInterface $session)
     {
-        $this->session = $session;
     }
 
     /**
@@ -30,17 +23,11 @@ class Csrf extends TwigExtension
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getCsrfField(): string
     {
         return sprintf('<input type="hidden" name="_token" value="%s">', $this->getCsrfToken());
     }
 
-    /**
-     * @return string
-     */
     public function getCsrfToken(): string
     {
         return $this->session->get('_token');

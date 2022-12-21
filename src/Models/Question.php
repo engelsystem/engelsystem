@@ -34,15 +34,15 @@ class Question extends BaseModel
     use UsesUserModel;
 
     /** @var bool Enable timestamps */
-    public $timestamps = true;
+    public $timestamps = true; // phpcs:ignore
 
-    /** @var string[] */
-    protected $dates = [
+    /** @var array<string> */
+    protected $dates = [ // phpcs:ignore
         'answered_at'
     ];
 
-    /** @var string[] */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'text',
         'answerer_id',
@@ -50,23 +50,17 @@ class Question extends BaseModel
         'answered_at',
     ];
 
-    /** @var string[] */
-    protected $casts = [
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
         'user_id'     => 'integer',
         'answerer_id' => 'integer',
     ];
 
-    /**
-     * @return BelongsTo
-     */
     public function answerer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'answerer_id');
     }
 
-    /**
-     * @return Builder
-     */
     public static function unanswered(): Builder
     {
         return static::whereAnswererId(null);

@@ -24,15 +24,12 @@ class Privilege extends BaseModel
 {
     use HasFactory;
 
-    /** @var string[] */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'name',
         'description',
     ];
 
-    /**
-     * @return BelongsToMany
-     */
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'group_privileges');

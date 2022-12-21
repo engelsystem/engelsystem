@@ -8,20 +8,12 @@ namespace Engelsystem;
  */
 class ValidationResult
 {
-    /** @var bool */
-    private $valid;
-
-    /** @var mixed */
-    private $value;
-
     /**
      * @param boolean $valid Is the value valid?
      * @param mixed   $value The validated value
      */
-    public function __construct($valid, $value)
+    public function __construct(private $valid, private $value)
     {
-        $this->valid = $valid;
-        $this->value = $value;
     }
 
     /**

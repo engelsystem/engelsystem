@@ -12,13 +12,12 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait HasDatabase
 {
-    /** @var Database */
-    protected $database;
+    protected Database $database;
 
     /**
      * Setup in memory database
      */
-    protected function initDatabase()
+    protected function initDatabase(): void
     {
         $dbManager = new CapsuleManager();
         $dbManager->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);

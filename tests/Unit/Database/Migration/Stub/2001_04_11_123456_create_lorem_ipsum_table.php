@@ -10,9 +10,9 @@ class CreateLoremIpsumTable extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->create('lorem_ipsum', function (Blueprint $table) {
+        $this->schema->create('lorem_ipsum', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('email');
@@ -22,7 +22,7 @@ class CreateLoremIpsumTable extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->dropIfExists('lorem_ipsum');
     }

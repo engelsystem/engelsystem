@@ -19,7 +19,7 @@ class CreateWorklogsTable extends Migration
      */
     public function up(): void
     {
-        $this->schema->create('worklogs', function (Blueprint $table) {
+        $this->schema->create('worklogs', function (Blueprint $table): void {
             $table->increments('id');
             $this->referencesUser($table);
             $this->references($table, 'users', 'creator_id');
@@ -70,7 +70,7 @@ class CreateWorklogsTable extends Migration
     {
         $connection = $this->schema->getConnection();
 
-        $this->schema->create('UserWorkLog', function (Blueprint $table) {
+        $this->schema->create('UserWorkLog', function (Blueprint $table): void {
             $table->increments('id');
             $this->referencesUser($table);
             $table->integer('work_timestamp');

@@ -14,7 +14,7 @@ class LegacyDevelopmentTest extends TestCase
      * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::formatStackTrace()
      * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::render()
      */
-    public function testRender()
+    public function testRender(): void
     {
         $handler = new LegacyDevelopment();
         /** @var Request|MockObject $request */

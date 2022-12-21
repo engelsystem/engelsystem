@@ -10,9 +10,9 @@ class CreateFaqTableAndPermissions extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->create('faq', function (Blueprint $table) {
+        $this->schema->create('faq', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('question');
             $table->text('text');
@@ -46,7 +46,7 @@ class CreateFaqTableAndPermissions extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->drop('faq');
 

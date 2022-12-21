@@ -10,9 +10,9 @@ class IncreaseSessionsTablePayloadSize extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->table('sessions', function (Blueprint $table) {
+        $this->schema->table('sessions', function (Blueprint $table): void {
             $table->mediumText('payload')->change();
         });
     }
@@ -20,9 +20,9 @@ class IncreaseSessionsTablePayloadSize extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
-        $this->schema->table('sessions', function (Blueprint $table) {
+        $this->schema->table('sessions', function (Blueprint $table): void {
             $table->text('payload')->change();
         });
     }

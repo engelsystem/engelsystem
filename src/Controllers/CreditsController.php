@@ -8,31 +8,11 @@ use Engelsystem\Http\Response;
 
 class CreditsController extends BaseController
 {
-    /** @var Config */
-    protected $config;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var Version */
-    protected $version;
-
-    /**
-     * @param Response $response
-     * @param Config   $config
-     * @param Version  $version
-     */
-    public function __construct(Response $response, Config $config, Version $version)
+    public function __construct(protected Response $response, protected Config $config, protected Version $version)
     {
-        $this->config = $config;
-        $this->response = $response;
-        $this->version = $version;
     }
 
-    /**
-     * @return Response
-     */
-    public function index()
+    public function index(): Response
     {
         return $this->response->withView(
             'pages/credits.twig',

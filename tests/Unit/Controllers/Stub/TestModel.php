@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TestModel extends Model
 {
-    /** @var string[] */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'text',
         'another_text',
     ];

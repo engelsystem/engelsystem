@@ -15,7 +15,7 @@ class LegacyTest extends TestCase
     /**
      * @covers \Engelsystem\Exceptions\Handlers\Legacy::render
      */
-    public function testRender()
+    public function testRender(): void
     {
         $handler = new Legacy();
         /** @var Request|MockObject $request */
@@ -33,7 +33,7 @@ class LegacyTest extends TestCase
      * @covers \Engelsystem\Exceptions\Handlers\Legacy::setLogger
      * @covers \Engelsystem\Exceptions\Handlers\Legacy::stripBasePath
      */
-    public function testReport()
+    public function testReport(): void
     {
         $handler = new Legacy();
         $exception = new Exception('Lorem Ipsum', 4242);
@@ -44,7 +44,7 @@ class LegacyTest extends TestCase
         $logger2 = $this->createMock(TestLogger::class);
         $logger2->expects($this->once())
             ->method('critical')
-            ->willReturnCallback(function () {
+            ->willReturnCallback(function (): void {
                 throw new ErrorException();
             });
 

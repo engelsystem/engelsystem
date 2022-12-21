@@ -19,7 +19,7 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 class MailerServiceProviderTest extends ServiceProviderTest
 {
     /** @var array */
-    protected $defaultConfig = [
+    protected array $defaultConfig = [
         'app_name' => 'Engelsystem App',
         'email'    => [
             'driver'   => 'mail',
@@ -32,7 +32,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     ];
 
     /** @var array */
-    protected $smtpConfig = [
+    protected array $smtpConfig = [
         'email' => [
             'driver'     => 'smtp',
             'host'       => 'mail.foo.bar',
@@ -46,7 +46,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Mail\MailerServiceProvider::register
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = $this->getApplication();
 
@@ -68,10 +68,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $this->assertInstanceOf(SendmailTransport::class, $transport);
     }
 
-    /**
-     * @return array
-     */
-    public function provideTransports()
+    public function provideTransports(): array
     {
         return [
             [LogTransport::class, ['email' => ['driver' => 'log']]],
@@ -86,11 +83,9 @@ class MailerServiceProviderTest extends ServiceProviderTest
 
     /**
      * @covers       \Engelsystem\Mail\MailerServiceProvider::getTransport
-     * @param string $class
-     * @param array  $emailConfig
      * @dataProvider provideTransports
      */
-    public function testGetTransport($class, $emailConfig = [])
+    public function testGetTransport(string $class, array $emailConfig = []): void
     {
         $app = $this->getApplication($emailConfig);
 
@@ -104,7 +99,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Mail\MailerServiceProvider::getTransport
      */
-    public function testGetTransportNotFound()
+    public function testGetTransportNotFound(): void
     {
         $app = $this->getApplication(['email' => ['driver' => 'foo-bar-batz']]);
         $this->expectException(InvalidArgumentException::class);
@@ -116,7 +111,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Mail\MailerServiceProvider::getSmtpTransport
      */
-    public function testGetSmtpTransport()
+    public function testGetSmtpTransport(): void
     {
         $app = $this->getApplication($this->smtpConfig);
 
@@ -130,11 +125,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $this->assertEquals($this->smtpConfig['email']['password'], $transport->getPassword());
     }
 
-    /**
-     * @param array $configuration
-     * @return Application
-     */
-    protected function getApplication($configuration = []): Application
+    protected function getApplication(array $configuration = []): Application
     {
         $app = new Application();
 
@@ -149,9 +140,8 @@ class MailerServiceProviderTest extends ServiceProviderTest
 
     /**
      * @param string[]    $abstracts
-     * @param Application $container
      */
-    protected function assertExistsInContainer($abstracts, $container)
+    protected function assertExistsInContainer(array $abstracts, Application $container): void
     {
         $first = array_shift($abstracts);
         $this->assertContainerHas($first, $container);
@@ -162,11 +152,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
         }
     }
 
-    /**
-     * @param string      $abstract
-     * @param Application $container
-     */
-    protected function assertContainerHas($abstract, $container)
+    protected function assertContainerHas(string $abstract, Application $container): void
     {
         $this->assertTrue(
             $container->has($abstract) || $container->hasMethodBinding($abstract),

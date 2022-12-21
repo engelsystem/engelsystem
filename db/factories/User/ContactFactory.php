@@ -8,12 +8,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ContactFactory extends Factory
 {
     /** @var string */
-    protected $model = Contact::class;
+    protected $model = Contact::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'dect'   => $this->faker->optional()->numberBetween(1000, 9999),

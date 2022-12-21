@@ -14,47 +14,20 @@ class FaqController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var Faq */
-    protected $faq;
-
-    /** @var Redirector */
-    protected $redirect;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var array */
-    protected $permissions = [
+    /** @var array<string> */
+    protected array $permissions = [
         'faq.view',
         'faq.edit',
     ];
 
-    /**
-     * @param LoggerInterface $log
-     * @param Faq             $faq
-     * @param Redirector      $redirector
-     * @param Response        $response
-     */
     public function __construct(
-        LoggerInterface $log,
-        Faq $faq,
-        Redirector $redirector,
-        Response $response
+        protected LoggerInterface $log,
+        protected Faq $faq,
+        protected Redirector $redirect,
+        protected Response $response
     ) {
-        $this->log = $log;
-        $this->faq = $faq;
-        $this->redirect = $redirector;
-        $this->response = $response;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function edit(Request $request): Response
     {
         $faqId = $request->getAttribute('faq_id'); // optional
@@ -64,11 +37,6 @@ class FaqController extends BaseController
         return $this->showEdit($faq);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function save(Request $request): Response
     {
         $faqId = $request->getAttribute('faq_id'); // optional
@@ -109,11 +77,6 @@ class FaqController extends BaseController
         return $this->redirect->to('/faq#faq-' . $faq->id);
     }
 
-    /**
-     * @param Faq|null $faq
-     *
-     * @return Response
-     */
     protected function showEdit(?Faq $faq): Response
     {
         return $this->response->withView(

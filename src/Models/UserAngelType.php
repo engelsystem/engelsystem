@@ -34,21 +34,21 @@ class UserAngelType extends Pivot
     use UsesUserModel;
 
     /** @var bool Increment the IDs */
-    public $incrementing = true;
+    public $incrementing = true; // phpcs:ignore
 
     /** @var bool Disable timestamps */
-    public $timestamps = false;
+    public $timestamps = false; // phpcs:ignore
 
-    /** @var array */
-    protected $fillable = [
+    /** @var array<string> */
+    protected $fillable = [ // phpcs:ignore
         'user_id',
         'angel_type_id',
         'confirm_user_id',
         'supporter',
     ];
 
-    /** @var string[] */
-    protected $casts = [
+    /** @var array<string> */
+    protected $casts = [ // phpcs:ignore
         'user_id'         => 'integer',
         'angel_type_id'   => 'integer',
         'confirm_user_id' => 'integer',

@@ -7,14 +7,7 @@ use Throwable;
 
 interface HandlerInterface
 {
-    /**
-     * @param Request   $request
-     * @param Throwable $e
-     */
-    public function render($request, Throwable $e);
+    public function render(Request $request, Throwable $e): void;
 
-    /**
-     * @param Throwable $e
-     */
-    public function report(Throwable $e);
+    public function report(Throwable $e): void;
 }

@@ -23,8 +23,8 @@ use TwigBridge\Extension\Laravel\Model as TwigModel;
 
 class TwigServiceProvider extends ServiceProvider
 {
-    /** @var array */
-    protected $extensions = [
+    /** @var array<string, class-string> */
+    protected array $extensions = [
         'assets'         => Assets::class,
         'authentication' => Authentication::class,
         'config'         => Config::class,
@@ -39,7 +39,7 @@ class TwigServiceProvider extends ServiceProvider
         'url'            => Url::class,
     ];
 
-    public function register()
+    public function register(): void
     {
         $this->registerTwigEngine();
 
@@ -48,7 +48,7 @@ class TwigServiceProvider extends ServiceProvider
         }
     }
 
-    public function boot()
+    public function boot(): void
     {
         /** @var Twig $renderer */
         $renderer = $this->app->get('twig.environment');
@@ -64,7 +64,7 @@ class TwigServiceProvider extends ServiceProvider
         }
     }
 
-    protected function registerTwigEngine()
+    protected function registerTwigEngine(): void
     {
         $viewsPath = $this->app->get('path.views');
         /** @var EngelsystemConfig $config */
@@ -102,11 +102,7 @@ class TwigServiceProvider extends ServiceProvider
         $this->app->tag('renderer.twigEngine', ['renderer.engine']);
     }
 
-    /**
-     * @param string $class
-     * @param string $alias
-     */
-    protected function registerTwigExtensions(string $class, string $alias)
+    protected function registerTwigExtensions(string $class, string $alias): void
     {
         $alias = 'twig.extension.' . $alias;
 

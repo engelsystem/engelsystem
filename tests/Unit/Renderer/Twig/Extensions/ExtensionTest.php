@@ -16,11 +16,9 @@ abstract class ExtensionTest extends TestCase
     /**
      * Assert that a twig filter was registered
      *
-     * @param string         $name
-     * @param callable       $callback
      * @param TwigFunction[] $functions
      */
-    protected function assertFilterExists($name, $callback, $functions)
+    protected function assertFilterExists(string $name, callable $callback, array $functions): void
     {
         foreach ($functions as $function) {
             if ($function->getName() != $name) {
@@ -37,14 +35,15 @@ abstract class ExtensionTest extends TestCase
     /**
      * Assert that a twig function was registered
      *
-     * @param string         $name
-     * @param callable       $callback
      * @param TwigFunction[] $functions
-     * @param array          $options
      * @throws Exception
      */
-    protected function assertExtensionExists($name, $callback, $functions, $options = [])
-    {
+    protected function assertExtensionExists(
+        string $name,
+        callable $callback,
+        array $functions,
+        array $options = []
+    ): void {
         foreach ($functions as $function) {
             if ($function->getName() != $name) {
                 continue;
@@ -68,12 +67,10 @@ abstract class ExtensionTest extends TestCase
     /**
      * Assert that a global exists
      *
-     * @param string  $name
-     * @param mixed   $value
      * @param mixed[] $globals
      * @throws Exception
      */
-    protected function assertGlobalsExists($name, $value, $globals)
+    protected function assertGlobalsExists(string $name, mixed $value, array $globals): void
     {
         if (array_key_exists($name, $globals)) {
             $this->assertArraySubset([$name => $value], $globals);
@@ -82,21 +79,5 @@ abstract class ExtensionTest extends TestCase
         }
 
         $this->fail(sprintf('Global %s not found', $name));
-    }
-
-    /**
-     * Assert that a token parser was set
-     *
-     * @param $tokenParser
-     * @param $tokenParsers
-     * @throws Exception
-     */
-    protected function assertTokenParserExists($tokenParser, $tokenParsers)
-    {
-        $this->assertArraySubset(
-            [$tokenParser],
-            $tokenParsers,
-            sprintf('Token parser %s not found', get_class($tokenParser))
-        );
     }
 }

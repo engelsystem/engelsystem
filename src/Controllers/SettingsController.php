@@ -15,50 +15,20 @@ class SettingsController extends BaseController
     use HasUserNotifications;
     use ChecksArrivalsAndDepartures;
 
-    /** @var Authenticator */
-    protected $auth;
-
-    /** @var Config */
-    protected $config;
-
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var Redirector */
-    protected $redirect;
-
-    /** @var Response */
-    protected $response;
-
     /** @var string[] */
-    protected $permissions = [
+    protected array $permissions = [
         'user_settings',
     ];
 
-    /**
-     * @param Authenticator $auth
-     * @param Config $config
-     * @param LoggerInterface $log
-     * @param Redirector $redirector
-     * @param Response $response
-     */
     public function __construct(
-        Authenticator $auth,
-        Config $config,
-        LoggerInterface $log,
-        Redirector $redirector,
-        Response $response
+        protected Authenticator $auth,
+        protected Config $config,
+        protected LoggerInterface $log,
+        protected Redirector $redirect,
+        protected Response $response
     ) {
-        $this->auth = $auth;
-        $this->config = $config;
-        $this->log = $log;
-        $this->redirect = $redirector;
-        $this->response = $response;
     }
 
-    /**
-     * @return Response
-     */
     public function profile(): Response
     {
         $user = $this->auth->user();
@@ -72,10 +42,6 @@ class SettingsController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function saveProfile(Request $request): Response
     {
         $user = $this->auth->user();
@@ -136,9 +102,6 @@ class SettingsController extends BaseController
         return $this->redirect->to('/settings/profile');
     }
 
-    /**
-     * @return Response
-     */
     public function password(): Response
     {
         return $this->response->withView(
@@ -150,10 +113,6 @@ class SettingsController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function savePassword(Request $request): Response
     {
         $user = $this->auth->user();
@@ -179,9 +138,6 @@ class SettingsController extends BaseController
         return $this->redirect->to('/settings/password');
     }
 
-    /**
-     * @return Response
-     */
     public function theme(): Response
     {
         $themes = array_map(function ($theme) {
@@ -200,10 +156,6 @@ class SettingsController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function saveTheme(Request $request): Response
     {
         $user = $this->auth->user();
@@ -222,9 +174,6 @@ class SettingsController extends BaseController
         return $this->redirect->to('/settings/theme');
     }
 
-    /**
-     * @return Response
-     */
     public function language(): Response
     {
         $languages = config('locales');
@@ -241,10 +190,6 @@ class SettingsController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function saveLanguage(Request $request): Response
     {
         $user = $this->auth->user();
@@ -265,9 +210,6 @@ class SettingsController extends BaseController
         return $this->redirect->to('/settings/language');
     }
 
-    /**
-     * @return Response
-     */
     public function oauth(): Response
     {
         $providers = $this->config->get('oauth');
@@ -284,9 +226,6 @@ class SettingsController extends BaseController
         );
     }
 
-    /**
-     * @return array
-     */
     public function settingsMenu(): array
     {
         $menu = [
@@ -303,9 +242,6 @@ class SettingsController extends BaseController
         return $menu;
     }
 
-    /**
-     * @return bool
-     */
     protected function checkOauthHidden(): bool
     {
         foreach (config('oauth') as $config) {

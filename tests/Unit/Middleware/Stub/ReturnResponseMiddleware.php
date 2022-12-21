@@ -9,12 +9,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class ReturnResponseMiddleware implements MiddlewareInterface
 {
-    /** @var ResponseInterface */
-    protected $response;
-
-    public function __construct(ResponseInterface $response)
+    public function __construct(protected ResponseInterface $response)
     {
-        $this->response = $response;
     }
 
     /**
@@ -22,10 +18,6 @@ class ReturnResponseMiddleware implements MiddlewareInterface
      * response creation to a handler.
      *
      * Could be used to group middleware
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,

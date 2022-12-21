@@ -35,7 +35,7 @@ class OAuth2Test extends TestCase
      * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
      * @covers \Engelsystem\Events\Listener\OAuth2::__construct
      */
-    public function testLogin()
+    public function testLogin(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
 
@@ -64,7 +64,7 @@ class OAuth2Test extends TestCase
     /**
      * @covers \Engelsystem\Events\Listener\OAuth2::login
      */
-    public function testLoginNoProvider()
+    public function testLoginNoProvider(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
 
@@ -75,7 +75,7 @@ class OAuth2Test extends TestCase
     /**
      * @covers \Engelsystem\Events\Listener\OAuth2::login
      */
-    public function testLoginNoMatchingGroups()
+    public function testLoginNoMatchingGroups(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
 
@@ -87,7 +87,7 @@ class OAuth2Test extends TestCase
      * @covers \Engelsystem\Events\Listener\OAuth2::login
      * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
      */
-    public function testLoginNoChanges()
+    public function testLoginNoChanges(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
         $this->user->userAngelTypes()->attach($this->angelTypes['test']);
@@ -116,7 +116,7 @@ class OAuth2Test extends TestCase
      * @covers \Engelsystem\Events\Listener\OAuth2::login
      * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
      */
-    public function testLoginChangeSupport()
+    public function testLoginChangeSupport(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
         $this->user->userAngelTypes()->attach($this->angelTypes['test']);
@@ -137,7 +137,7 @@ class OAuth2Test extends TestCase
     /**
      * @covers \Engelsystem\Events\Listener\OAuth2::getSsoTeams
      */
-    public function testGetSsoTeamsNotConfigured()
+    public function testGetSsoTeamsNotConfigured(): void
     {
         $instance = new OAuth2($this->config, $this->log, $this->auth);
 
@@ -148,7 +148,7 @@ class OAuth2Test extends TestCase
     /**
      * @covers \Engelsystem\Events\Listener\OAuth2::getSsoTeams
      */
-    public function testGetSsoTeams()
+    public function testGetSsoTeams(): void
     {
         $instance = new OAuth2($this->config, $this->log, $this->auth);
 

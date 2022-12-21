@@ -12,24 +12,16 @@ use Engelsystem\Models\User\User;
  */
 class MessageTest extends ModelTest
 {
-    /** @var User */
-    private $user1;
+    private User $user1;
 
-    /** @var User */
-    private $user2;
+    private User $user2;
 
-    /** @var Message */
-    private $message1;
+    private Message $message1;
 
-    /** @var Message */
-    private $message2;
+    private Message $message2;
 
-    /** @var Message */
-    private $message3;
+    private Message $message3;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -61,8 +53,6 @@ class MessageTest extends ModelTest
      * Tests that loading Messages works.
      *
      * @covers \Engelsystem\Models\Message::__construct
-     *
-     * @return void
      */
     public function testLoad(): void
     {
@@ -84,8 +74,6 @@ class MessageTest extends ModelTest
      *
      * @covers \Engelsystem\Models\Message::user
      * @covers \Engelsystem\Models\Message::sender
-     *
-     * @return void
      */
     public function testSenders(): void
     {
@@ -102,8 +90,6 @@ class MessageTest extends ModelTest
      * Tests that the Messages have the correct receivers.
      *
      * @covers \Engelsystem\Models\Message::receiver
-     *
-     * @return void
      */
     public function testReceivers(): void
     {
@@ -116,8 +102,6 @@ class MessageTest extends ModelTest
      * Tests that the Users have the correct sent Messages.
      *
      * @covers \Engelsystem\Models\User\User::messagesSent
-     *
-     * @return void
      */
     public function testUserSentMessages(): void
     {
@@ -135,8 +119,6 @@ class MessageTest extends ModelTest
      * Tests that the Users have the correct received Messages.
      *
      * @covers \Engelsystem\Models\User\User::messagesReceived
-     *
-     * @return void
      */
     public function testUserReceivedMessages(): void
     {

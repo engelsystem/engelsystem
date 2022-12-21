@@ -23,7 +23,7 @@ class EngelsystemMailerTest extends TestCase
      * @covers \Engelsystem\Mail\EngelsystemMailer::__construct
      * @covers \Engelsystem\Mail\EngelsystemMailer::sendView
      */
-    public function testSendView()
+    public function testSendView(): void
     {
         /** @var Renderer|MockObject $view */
         $view = $this->createMock(Renderer::class);
@@ -43,7 +43,7 @@ class EngelsystemMailerTest extends TestCase
     /**
      * @covers \Engelsystem\Mail\EngelsystemMailer::sendViewTranslated
      */
-    public function testSendViewTranslated()
+    public function testSendViewTranslated(): void
     {
         $this->initDatabase();
 
@@ -87,14 +87,14 @@ class EngelsystemMailerTest extends TestCase
      * @covers \Engelsystem\Mail\EngelsystemMailer::send
      * @covers \Engelsystem\Mail\EngelsystemMailer::setSubjectPrefix
      */
-    public function testSend()
+    public function testSend(): void
     {
         /** @var MailerInterface|MockObject $symfonyMailer */
         $symfonyMailer = $this->createMock(MailerInterface::class);
 
         $symfonyMailer->expects($this->once())
             ->method('send')
-            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null) {
+            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null): void {
                 $this->assertStringContainsString('foo@bar.baz', $message->toString());
                 $this->assertStringContainsString('Foo Bar', $message->toString());
                 $this->assertStringContainsString('Mail test', $message->toString());

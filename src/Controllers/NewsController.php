@@ -16,88 +16,36 @@ class NewsController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
-
-    /** @var NewsComment */
-    protected $comment;
-
-    /** @var Config */
-    protected $config;
-
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var News */
-    protected $news;
-
-    /** @var Redirector */
-    protected $redirect;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var array */
-    protected $permissions = [
+    /** @var array<string, string> */
+    protected array $permissions = [
         'news',
         'meetings'      => 'user_meetings',
         'comment'       => 'news_comments',
         'deleteComment' => 'news_comments',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param Config          $config
-     * @param NewsComment     $comment
-     * @param LoggerInterface $log
-     * @param News            $news
-     * @param Redirector      $redirector
-     * @param Response        $response
-     * @param Request         $request
-     */
     public function __construct(
-        Authenticator $auth,
-        NewsComment $comment,
-        Config $config,
-        LoggerInterface $log,
-        News $news,
-        Redirector $redirector,
-        Response $response,
-        Request $request
+        protected Authenticator $auth,
+        protected NewsComment $comment,
+        protected Config $config,
+        protected LoggerInterface $log,
+        protected News $news,
+        protected Redirector $redirect,
+        protected Response $response,
+        protected Request $request
     ) {
-        $this->auth = $auth;
-        $this->comment = $comment;
-        $this->config = $config;
-        $this->log = $log;
-        $this->news = $news;
-        $this->redirect = $redirector;
-        $this->response = $response;
-        $this->request = $request;
     }
 
-    /**
-     * @return Response
-     */
-    public function index()
+    public function index(): Response
     {
         return $this->showOverview();
     }
 
-    /**
-     * @return Response
-     */
     public function meetings(): Response
     {
         return $this->showOverview(true);
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function show(Request $request): Response
     {
         $newsId = (int)$request->getAttribute('news_id');
@@ -110,10 +58,6 @@ class NewsController extends BaseController
         return $this->renderView('pages/news/news.twig', ['news' => $news]);
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function comment(Request $request): Response
     {
         $newsId = (int)$request->getAttribute('news_id');
@@ -143,11 +87,6 @@ class NewsController extends BaseController
         return $this->redirect->back();
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function deleteComment(Request $request): Response
     {
         $commentId = (int)$request->getAttribute('comment_id');
@@ -179,10 +118,6 @@ class NewsController extends BaseController
         return $this->redirect->to('/news/' . $comment->news->id);
     }
 
-    /**
-     * @param bool $onlyMeetings
-     * @return Response
-     */
     protected function showOverview(bool $onlyMeetings = false): Response
     {
         $query = $this->news;
@@ -216,9 +151,7 @@ class NewsController extends BaseController
     }
 
     /**
-     * @param string $page
      * @param array $data
-     * @return Response
      */
     protected function renderView(string $page, array $data): Response
     {

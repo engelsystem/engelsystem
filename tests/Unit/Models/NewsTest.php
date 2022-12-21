@@ -13,14 +13,10 @@ use Engelsystem\Models\User\User;
 class NewsTest extends ModelTest
 {
     /** @var array */
-    private $newsData;
+    private array $newsData;
 
-    /** @var User */
-    private $user;
+    private User $user;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();

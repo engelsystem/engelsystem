@@ -11,10 +11,8 @@ class StringInputLengthTest extends TestCase
      * @covers       \Engelsystem\Http\Validation\Rules\StringInputLength::validate
      * @covers       \Engelsystem\Http\Validation\Rules\StringInputLength::isDateTime
      * @dataProvider validateProvider
-     * @param mixed $input
-     * @param mixed $expectedInput
      */
-    public function testValidate($input, $expectedInput)
+    public function testValidate(mixed $input, mixed $expectedInput): void
     {
         $rule = new UsesStringInputLength();
         $rule->validate($input);
@@ -25,7 +23,7 @@ class StringInputLengthTest extends TestCase
     /**
      * @return array[]
      */
-    public function validateProvider()
+    public function validateProvider(): array
     {
         return [
             ['TEST', 4],

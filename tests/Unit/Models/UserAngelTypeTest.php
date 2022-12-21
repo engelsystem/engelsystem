@@ -11,14 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserAngelTypeTest extends ModelTest
 {
-    /** @var User|Model */
-    protected $user;
+    protected User|Model $user;
 
-    /** @var User|Model */
-    protected $confirmed;
+    protected User|Model $confirmed;
 
-    /** @var AngelType|Model */
-    protected $angeltype;
+    protected AngelType|Model $angeltype;
 
     /**
      * @covers \Engelsystem\Models\UserAngelType

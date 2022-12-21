@@ -9,7 +9,7 @@ class ImportUpdateSql extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if ($this->schema->hasTable('UserWorkLog')) {
             return;
@@ -22,7 +22,7 @@ class ImportUpdateSql extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->dropIfExists('UserWorkLog');
     }

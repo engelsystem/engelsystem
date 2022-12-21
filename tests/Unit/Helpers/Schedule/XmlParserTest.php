@@ -19,7 +19,7 @@ class XmlParserTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\XmlParser::getListFromSequence
      * @covers \Engelsystem\Helpers\Schedule\XmlParser::getSchedule
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         libxml_use_internal_errors(true);
 

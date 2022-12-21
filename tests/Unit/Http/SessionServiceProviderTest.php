@@ -20,7 +20,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
      * @covers \Engelsystem\Http\SessionServiceProvider::getSessionStorage()
      * @covers \Engelsystem\Http\SessionServiceProvider::register()
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = $this->getApp(['make', 'instance', 'bind', 'get']);
 
@@ -128,7 +128,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Http\SessionServiceProvider::isCli()
      */
-    public function testIsCli()
+    public function testIsCli(): void
     {
         $app = $this->getApp(['make', 'instance', 'bind', 'get']);
 
@@ -170,10 +170,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
         $serviceProvider->register();
     }
 
-    /**
-     * @return MockObject
-     */
-    private function getSessionMock()
+    private function getSessionMock(): MockObject
     {
         $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
         return $this->getMockBuilder(Session::class)
@@ -182,10 +179,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
             ->getMock();
     }
 
-    /**
-     * @return MockObject
-     */
-    private function getRequestMock()
+    private function getRequestMock(): MockObject
     {
         return $this->getMockBuilder(Request::class)
             ->onlyMethods(['setSession'])

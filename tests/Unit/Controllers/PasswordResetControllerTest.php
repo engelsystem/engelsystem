@@ -28,7 +28,7 @@ class PasswordResetControllerTest extends TestCase
     use HasDatabase;
 
     /** @var array */
-    protected $args = [];
+    protected array $args = [];
 
     /**
      * @covers \Engelsystem\Controllers\PasswordResetController::reset
@@ -189,9 +189,6 @@ class PasswordResetControllerTest extends TestCase
         $this->assertEmpty($session->get('errors'));
     }
 
-    /**
-     * @return array
-     */
     protected function getControllerArgs(): array
     {
         $response = new Response();
@@ -213,11 +210,6 @@ class PasswordResetControllerTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $view
-     * @param array  $data
-     * @return PasswordResetController
-     */
     protected function getController(?string $view = null, ?array $data = null): PasswordResetController
     {
         /** @var Response $response */
@@ -251,18 +243,11 @@ class PasswordResetControllerTest extends TestCase
         return $controller;
     }
 
-    /**
-     * @return User
-     */
     protected function createUser(): User
     {
         return User::factory()->create(['email' => 'foo@bar.batz']);
     }
 
-    /**
-     * @param User $user
-     * @return PasswordReset
-     */
     protected function createToken(User $user): PasswordReset
     {
         $reset = new PasswordReset(['user_id' => $user->id, 'token' => 'SomeTestToken123']);

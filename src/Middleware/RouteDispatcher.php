@@ -12,37 +12,23 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class RouteDispatcher implements MiddlewareInterface
 {
-    /** @var FastRouteDispatcher */
-    protected $dispatcher;
-
-    /** @var ResponseInterface */
-    protected $response;
-
-    /** @var MiddlewareInterface|null */
-    protected $notFound;
+    protected ?MiddlewareInterface $notFound = null;
 
     /**
-     * @param FastRouteDispatcher      $dispatcher
      * @param ResponseInterface        $response Default response
      * @param MiddlewareInterface|null $notFound Handles any requests if the route can't be found
      */
     public function __construct(
-        FastRouteDispatcher $dispatcher,
-        ResponseInterface $response,
+        protected FastRouteDispatcher $dispatcher,
+        protected ResponseInterface $response,
         MiddlewareInterface $notFound = null
     ) {
-        $this->dispatcher = $dispatcher;
-        $this->response = $response;
         $this->notFound = $notFound;
     }
 
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

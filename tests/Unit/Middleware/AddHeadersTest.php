@@ -19,7 +19,7 @@ class AddHeadersTest extends TestCase
      * @covers \Engelsystem\Middleware\AddHeaders::__construct
      * @covers \Engelsystem\Middleware\AddHeaders::process
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockForAbstractClass(ServerRequestInterface::class);

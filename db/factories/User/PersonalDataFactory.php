@@ -9,12 +9,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PersonalDataFactory extends Factory
 {
     /** @var string */
-    protected $model = PersonalData::class;
+    protected $model = PersonalData::class; // phpcs:ignore
 
-    /**
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         $arrival = $this->faker->optional()->dateTimeThisMonth('2 weeks');
         $departure = $this->faker->optional()->dateTimeThisMonth('2 weeks');

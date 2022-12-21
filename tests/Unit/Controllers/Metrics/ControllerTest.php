@@ -26,7 +26,7 @@ class ControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\Controller::metrics
      * @covers \Engelsystem\Controllers\Metrics\Controller::formatStats
      */
-    public function testMetrics()
+    public function testMetrics(): void
     {
         /** @var Response|MockObject $response */
         /** @var Request|MockObject $request */
@@ -173,7 +173,7 @@ class ControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\Metrics\Controller::checkAuth
      * @covers \Engelsystem\Controllers\Metrics\Controller::stats
      */
-    public function testStats()
+    public function testStats(): void
     {
         /** @var Response|MockObject $response */
         /** @var Request|MockObject $request */
@@ -219,7 +219,7 @@ class ControllerTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Controller::checkAuth
      */
-    public function testCheckAuth()
+    public function testCheckAuth(): void
     {
         /** @var Response|MockObject $response */
         /** @var Request|MockObject $request */
@@ -243,9 +243,6 @@ class ControllerTest extends TestCase
         $controller->stats();
     }
 
-    /**
-     * @return array
-     */
     protected function getMocks(): array
     {
         /** @var Response|MockObject $response */

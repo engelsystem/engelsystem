@@ -8,15 +8,8 @@ use Twig\TwigFunction;
 
 class Legacy extends TwigExtension
 {
-    /** @var Request */
-    protected $request;
-
-    /**
-     * @param Request $request
-     */
-    public function __construct(Request $request)
+    public function __construct(protected Request $request)
     {
-        $this->request = $request;
     }
 
     /**
@@ -35,9 +28,6 @@ class Legacy extends TwigExtension
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getPage(): string
     {
         if ($this->request->has('p')) {

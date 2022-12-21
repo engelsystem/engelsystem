@@ -11,29 +11,15 @@ class SetAdminPassword extends Migration
 {
     use Reference;
 
-    /** @var Authenticator */
-    protected Authenticator $auth;
-
-    /** @var Config */
-    protected Config $config;
-
-    /**
-     * @param SchemaBuilder $schemaBuilder
-     * @param Authenticator $auth
-     * @param Config        $config
-     */
-    public function __construct(SchemaBuilder $schemaBuilder, Authenticator $auth, Config $config)
+    public function __construct(SchemaBuilder $schemaBuilder, protected Authenticator $auth, protected Config $config)
     {
         parent::__construct($schemaBuilder);
-
-        $this->auth = $auth;
-        $this->config = $config;
     }
 
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         $admin = $this->auth->authenticate('admin', 'asdfasdf');
         $setupPassword = $this->config->get('setup_admin_password');

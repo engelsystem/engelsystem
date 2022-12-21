@@ -16,59 +16,22 @@ class UserShirtController extends BaseController
 {
     use HasUserNotifications;
 
-    /** @var Authenticator */
-    protected $auth;
-
-    /** @var Config */
-    protected $config;
-
-    /** @var LoggerInterface */
-    protected $log;
-
-    /** @var Redirector */
-    protected $redirect;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var User */
-    protected $user;
-
-    /** @var array */
-    protected $permissions = [
+    /** @var array<string, string> */
+    protected array $permissions = [
         'editShirt' => 'user.edit.shirt',
         'saveShirt' => 'user.edit.shirt',
     ];
 
-    /**
-     * @param Authenticator   $auth
-     * @param Config          $config
-     * @param LoggerInterface $log
-     * @param Redirector      $redirector
-     * @param Response        $response
-     * @param User            $user
-     */
     public function __construct(
-        Authenticator $auth,
-        Config $config,
-        LoggerInterface $log,
-        Redirector $redirector,
-        Response $response,
-        User $user
+        protected Authenticator $auth,
+        protected Config $config,
+        protected LoggerInterface $log,
+        protected Redirector $redirect,
+        protected Response $response,
+        protected User $user
     ) {
-        $this->auth = $auth;
-        $this->config = $config;
-        $this->log = $log;
-        $this->redirect = $redirector;
-        $this->response = $response;
-        $this->user = $user;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function editShirt(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');
@@ -81,11 +44,6 @@ class UserShirtController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function saveShirt(Request $request): Response
     {
         $userId = (int)$request->getAttribute('user_id');

@@ -20,7 +20,7 @@ class ExceptionHandlerTest extends TestCase
      * @covers \Engelsystem\Middleware\ExceptionHandler::__construct
      * @covers \Engelsystem\Middleware\ExceptionHandler::process
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockForAbstractClass(ContainerInterface::class);

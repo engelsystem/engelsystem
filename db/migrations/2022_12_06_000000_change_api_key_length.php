@@ -12,9 +12,9 @@ class ChangeApiKeyLength extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->table('users', function (Blueprint $table) {
+        $this->schema->table('users', function (Blueprint $table): void {
             $table->string('api_key', 64)->change();
         });
     }
@@ -22,9 +22,9 @@ class ChangeApiKeyLength extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
-        $this->schema->table('users', function (Blueprint $table) {
+        $this->schema->table('users', function (Blueprint $table): void {
             $table->string('api_key', 32)->change();
         });
     }

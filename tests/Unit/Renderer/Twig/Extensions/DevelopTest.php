@@ -13,7 +13,7 @@ class DevelopTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::getFunctions
      */
-    public function testGetGlobals()
+    public function testGetGlobals(): void
     {
         $config = new Config();
         $extension = new Develop($config);
@@ -31,11 +31,11 @@ class DevelopTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::dump
      * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::setDumper
      */
-    public function testDump()
+    public function testDump(): void
     {
         $config = new Config();
         $varDumper = new VarDumper();
-        $varDumper->setHandler(function ($var) {
+        $varDumper->setHandler(function ($var): void {
             echo $var;
         });
 
@@ -49,7 +49,7 @@ class DevelopTest extends ExtensionTest
     /**
      * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::dd
      */
-    public function testDD()
+    public function testDD(): void
     {
         /** @var Develop|MockObject $extension */
         $extension = $this->getMockBuilder(Develop::class)

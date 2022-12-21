@@ -6,29 +6,13 @@ use Engelsystem\Config\Config;
 
 class Version
 {
-    /** @var Config */
-    protected $config;
+    protected string $versionFile = 'VERSION';
 
-    /** @vat string */
-    protected $storage;
-
-    /** @var string */
-    protected $versionFile = 'VERSION';
-
-    /**
-     * @param string $storage
-     * @param Config $config
-     */
-    public function __construct(string $storage, Config $config)
+    public function __construct(protected string $storage, protected Config $config)
     {
-        $this->storage = $storage;
-        $this->config = $config;
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $file = $this->storage . DIRECTORY_SEPARATOR . $this->versionFile;
 

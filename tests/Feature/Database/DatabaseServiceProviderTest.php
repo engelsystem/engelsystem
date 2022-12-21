@@ -11,7 +11,7 @@ class DatabaseServiceProviderTest extends DatabaseTest
     /**
      * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $this->app->instance('config', new Config([
             'database' => $this->getDbConfig(),

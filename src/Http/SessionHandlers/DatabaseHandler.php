@@ -7,11 +7,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class DatabaseHandler extends AbstractHandler
 {
-    protected Database $database;
-
-    public function __construct(Database $database)
+    public function __construct(protected Database $database)
     {
-        $this->database = $database;
     }
 
     /**

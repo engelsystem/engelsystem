@@ -10,9 +10,9 @@ class CreateSessionsTable extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->create('sessions', function (Blueprint $table) {
+        $this->schema->create('sessions', function (Blueprint $table): void {
             $table->string('id')->unique();
             $table->text('payload');
             $table->dateTime('last_activity')->useCurrent();
@@ -22,7 +22,7 @@ class CreateSessionsTable extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->dropIfExists('sessions');
     }

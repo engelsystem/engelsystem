@@ -9,7 +9,7 @@ class RemoveAdminNewsHtmlPrivilege extends Migration
     /**
      * Run the migration
      */
-    public function up()
+    public function up(): void
     {
         if (!$this->schema->hasTable('GroupPrivileges')) {
             return;
@@ -27,7 +27,7 @@ class RemoveAdminNewsHtmlPrivilege extends Migration
     /**
      * Reverse the migration
      */
-    public function down()
+    public function down(): void
     {
         if (!$this->schema->hasTable('GroupPrivileges')) {
             return;

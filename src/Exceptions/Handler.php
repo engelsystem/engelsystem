@@ -10,14 +10,10 @@ use Throwable;
 
 class Handler
 {
-    /** @var string */
-    protected $environment;
-
     /** @var HandlerInterface[] */
-    protected $handler = [];
+    protected array $handler = [];
 
-    /** @var Request */
-    protected $request;
+    protected ?Request $request = null;
 
     /** @var string */
     public const ENV_PRODUCTION = 'prod';
@@ -30,38 +26,26 @@ class Handler
      *
      * @param string $environment prod|dev
      */
-    public function __construct($environment = self::ENV_PRODUCTION)
+    public function __construct(protected string $environment = self::ENV_PRODUCTION)
     {
-        $this->environment = $environment;
     }
 
     /**
      * Activate the error handler
      */
-    public function register()
+    public function register(): void
     {
         set_error_handler([$this, 'errorHandler']);
         set_exception_handler([$this, 'exceptionHandler']);
     }
 
-    /**
-     * @param int    $number
-     * @param string $message
-     * @param string $file
-     * @param int    $line
-     */
-    public function errorHandler($number, $message, $file, $line)
+    public function errorHandler(int $number, string $message, string $file, int $line): void
     {
         $exception = new ErrorException($message, 0, $number, $file, $line);
         $this->exceptionHandler($exception);
     }
 
-    /**
-     * @param Throwable $e
-     * @param bool      $return
-     * @return string
-     */
-    public function exceptionHandler($e, $return = false)
+    public function exceptionHandler(Throwable $e, bool $return = false): string
     {
         if (!$this->request instanceof Request) {
             $this->request = new Request();
@@ -90,35 +74,27 @@ class Handler
      * Exit the application
      *
      * @codeCoverageIgnore
-     * @param string $message
      */
-    protected function terminateApplicationImmediately($message = '')
+    protected function terminateApplicationImmediately(string $message = ''): void
     {
         echo $message;
         die(1);
     }
 
-    /**
-     * @return string
-     */
-    public function getEnvironment()
+    public function getEnvironment(): string
     {
         return $this->environment;
     }
 
-    /**
-     * @param string $environment
-     */
-    public function setEnvironment($environment)
+    public function setEnvironment(string $environment): void
     {
         $this->environment = $environment;
     }
 
     /**
-     * @param string $environment
      * @return HandlerInterface|HandlerInterface[]
      */
-    public function getHandler($environment = null)
+    public function getHandler(string $environment = null): HandlerInterface|array
     {
         if (!is_null($environment)) {
             return $this->handler[$environment];
@@ -127,27 +103,17 @@ class Handler
         return $this->handler;
     }
 
-    /**
-     * @param string           $environment
-     * @param HandlerInterface $handler
-     */
-    public function setHandler($environment, HandlerInterface $handler)
+    public function setHandler(string $environment, HandlerInterface $handler): void
     {
         $this->handler[$environment] = $handler;
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request)
+    public function setRequest(Request $request): void
     {
         $this->request = $request;
     }

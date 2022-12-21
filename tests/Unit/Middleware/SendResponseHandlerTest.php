@@ -14,7 +14,7 @@ class SendResponseHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\SendResponseHandler::process
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         /** @var SendResponseHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(SendResponseHandler::class)
