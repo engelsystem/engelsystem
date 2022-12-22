@@ -2,24 +2,24 @@
 
 // Variables
 // --------------------------------------------------
-@import "dark";
+@import 'dark';
 
 //== changed Colors
 
-$gray-dark:              #282828;
-$gray-light:             #888;
-$gray-lighter:           #ADAFAE;
+$gray-dark: #282828;
+$gray-light: #888;
+$gray-lighter: #adafae;
 
 $brand-primary: #ffc600;
-$primary:       $brand-primary;
+$primary: $brand-primary;
 
 $text-muted: $primary;
 
-@import "cyborg_variables.scss";
-@import "cyborg_styles.scss";
+@import 'cyborg_variables.scss';
+@import 'cyborg_styles.scss';
 
 // Specials for cccamp19 design
-@import "card-glow";
+@import 'card-glow';
 
 .navbar-brand {
   .icon-icon_angel {
@@ -29,13 +29,8 @@ $text-muted: $primary;
   strong {
     font-weight: normal;
     color: $brand-primary;
-    text-shadow:
-      0 0 10px $brand-primary,
-      0 0 20px $brand-primary,
-      0 0 30px $brand-primary,
-      0 0 40px $brand-primary,
-      0 0 70px $brand-primary,
-      0 0 80px $brand-primary;
+    text-shadow: 0 0 10px $brand-primary, 0 0 20px $brand-primary, 0 0 30px $brand-primary, 0 0 40px $brand-primary,
+      0 0 70px $brand-primary, 0 0 80px $brand-primary;
   }
 }
 
@@ -57,9 +52,20 @@ h1 {
   }
 }
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    &.bg-primary,
-    &.bg-warning {
-        color: #000;
-    }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  &.bg-primary,
+  &.bg-warning {
+    color: #000;
+  }
 }

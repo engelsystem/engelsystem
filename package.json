@@ -9,8 +9,12 @@
     "build": "NODE_ENV=production yarn build:webpack",
     "build:webpack": "webpack",
     "build:watch": "webpack --watch",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "lint:eslint": "eslint .",
+    "lint:prettier": "prettier --check resources/assets",
+    "lint:fix": "yarn lint:fix:eslint && yarn lint:fix:prettier",
+    "lint:fix:eslint": "eslint --fix .",
+    "lint:fix:prettier": "prettier --write resources/assets"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
@@ -34,6 +38,7 @@
     "mini-css-extract-plugin": "^2.7.0",
     "postcss": "^8.4.19",
     "postcss-loader": "^6.2.1",
+    "prettier": "^2.8.1",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.56.1",
     "sass-loader": "^12.6.0",

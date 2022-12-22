@@ -4,11 +4,11 @@
   $card-border: $value;
   $card-color: $value;
 
-  @if (contrast-ratio($card-background, $card-color) < $min-contrast-ratio*.7) {
+  @if (contrast-ratio($card-background, $card-color) < $min-contrast-ratio * 0.7) {
     $card-color: mix($value, color-contrast($card-background), 40%);
   }
 
-  .card.bg-#{"" + $state} .card-header {
+  .card.bg-#{'' + $state} .card-header {
     background-color: $card-background;
     border-color: $card-border;
 
@@ -16,7 +16,7 @@
       background-color: $card-color !important;
     }
 
-    .badge.text-#{"" + $state} {
+    .badge.text-#{'' + $state} {
       color: $card-background !important;
     }
 
@@ -24,7 +24,7 @@
       color: $card-color !important;
     }
 
-    .btn-#{"" + $state} {
+    .btn-#{'' + $state} {
       background-color: $card-background;
       border-color: $card-border !important;
       color: $card-color;
