@@ -12,6 +12,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
 use Engelsystem\Models\User\License;
@@ -103,8 +104,8 @@ class UserTest extends ModelTest
                         'text'       => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
                         'is_meeting' => true,
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -130,11 +131,11 @@ class UserTest extends ModelTest
     }
 
     /**
-     * @covers \Engelsystem\Models\User\User::contact
-     * @covers \Engelsystem\Models\User\User::license
-     * @covers \Engelsystem\Models\User\User::personalData
-     * @covers \Engelsystem\Models\User\User::settings
-     * @covers \Engelsystem\Models\User\User::state
+     * @covers       \Engelsystem\Models\User\User::contact
+     * @covers       \Engelsystem\Models\User\User::license
+     * @covers       \Engelsystem\Models\User\User::personalData
+     * @covers       \Engelsystem\Models\User\User::settings
+     * @covers       \Engelsystem\Models\User\User::state
      *
      * @dataProvider hasOneRelationsProvider
      *
@@ -414,5 +415,30 @@ class UserTest extends ModelTest
         $this->assertCount(2, $answers);
         $this->assertContains($question1->id, $answers);
         $this->assertContains($question2->id, $answers);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::shiftsCreated
+     * @covers \Engelsystem\Models\User\User::shiftsUpdated
+     */
+    public function testShiftsCreatedAndUpdated(): void
+    {
+        ($user1 = new User($this->data))->save();
+        ($user2 = new User(array_merge($this->data, ['name' => 'foo', 'email' => 'someone@bar.batz'])))->save();
+
+        Shift::factory()->create();
+        Shift::factory()->create(['created_by' => $user1->id]);
+        Shift::factory()->create(['created_by' => $user2->id, 'updated_by' => $user1->id]);
+        Shift::factory()->create(['created_by' => $user1->id, 'updated_by' => $user2->id]);
+        Shift::factory()->create(['created_by' => $user2->id, 'updated_by' => $user2->id]);
+        Shift::factory()->create(['created_by' => $user1->id]);
+
+        $user1 = User::find(1);
+        $this->assertCount(3, $user1->shiftsCreated);
+        $this->assertCount(1, $user1->shiftsUpdated);
+
+        $user2 = User::find(2);
+        $this->assertCount(2, $user2->shiftsCreated);
+        $this->assertCount(2, $user2->shiftsUpdated);
     }
 }

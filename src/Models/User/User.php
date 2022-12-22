@@ -12,6 +12,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Builder;
@@ -53,6 +54,8 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|Message[]          $messagesReceived
  * @property-read Collection|Message[]          $messagesSent
  * @property-read Collection|Message[]          $messages
+ * @property-read Collection|Shift[]            $shiftsCreated
+ * @property-read Collection|Shift[]            $shiftsUpdated
  *
  * @method static QueryBuilder|User[] whereId($value)
  * @method static QueryBuilder|User[] whereName($value)
@@ -215,9 +218,6 @@ class User extends BaseModel
             ->orderBy('id', 'DESC');
     }
 
-    /**
-     * @return HasMany|QueryBuilder
-     */
     public function messagesReceived(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id')
@@ -235,5 +235,15 @@ class User extends BaseModel
             ->union($this->messagesReceived())
             ->orderBy('read')
             ->orderBy('id', 'DESC');
+    }
+
+    public function shiftsCreated(): HasMany
+    {
+        return $this->hasMany(Shift::class, 'created_by');
+    }
+
+    public function shiftsUpdated(): HasMany
+    {
+        return $this->hasMany(Shift::class, 'updated_by');
     }
 }

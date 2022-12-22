@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -20,6 +21,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon                                       $created_at
  * @property Carbon                                       $updated_at
  *
+ * @property-read QueryBuilder|Collection|Shift[]         $shifts
  * @property-read QueryBuilder|Collection|ScheduleShift[] $scheduleShifts
  * @property-read QueryBuilder|ShiftType                  $shiftType
  *
@@ -58,6 +60,11 @@ class Schedule extends BaseModel
     public function scheduleShifts(): HasMany
     {
         return $this->hasMany(ScheduleShift::class);
+    }
+
+    public function shifts(): HasManyThrough
+    {
+        return $this->hasManyThrough(Shift::class, ScheduleShift::class, 'schedule_id', 'id');
     }
 
     public function shiftType(): BelongsTo

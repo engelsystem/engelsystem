@@ -4,8 +4,10 @@ namespace Engelsystem\Test\Unit\Models\Shifts;
 
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Test\Unit\Models\ModelTest;
+use Illuminate\Database\Eloquent\Collection;
 
 class ScheduleTest extends ModelTest
 {
@@ -30,6 +32,24 @@ class ScheduleTest extends ModelTest
         (new ScheduleShift(['shift_id' => 3, 'schedule_id' => $schedule->id, 'guid' => 'c']))->save();
 
         $this->assertCount(3, $schedule->scheduleShifts);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Schedule::shifts
+     */
+    public function testShifts(): void
+    {
+        $schedule = new Schedule($this->data);
+        $schedule->save();
+
+        /** @var Collection|Shift[] $shifts */
+        $shifts = Shift::factory(3)->create();
+
+        (new ScheduleShift(['shift_id' => $shifts[0]->id, 'schedule_id' => $schedule->id, 'guid' => 'a']))->save();
+        (new ScheduleShift(['shift_id' => $shifts[1]->id, 'schedule_id' => $schedule->id, 'guid' => 'b']))->save();
+        (new ScheduleShift(['shift_id' => $shifts[2]->id, 'schedule_id' => $schedule->id, 'guid' => 'c']))->save();
+
+        $this->assertCount(3, $schedule->shifts);
     }
 
     /**
