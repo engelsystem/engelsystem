@@ -1,61 +1,61 @@
 // Basic variables
-@use "sass:map";
+@use 'sass:map';
 
 // select 2 variables
 $link-decoration: none !default;
 $link-hover-decoration: underline !default;
 
-$nav-tabs-link-active-color:        #fff !default;
-$nav-tabs-link-active-bg:           $primary !default;
+$nav-tabs-link-active-color: #fff !default;
+$nav-tabs-link-active-bg: $primary !default;
 $nav-tabs-link-active-border-color: none !default;
 
 // Imports
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/maps";
-@import "~bootstrap/scss/mixins";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
 
 $custom-colors: (
-  black: #000
+  black: #000,
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 $form-label-font-weight: $font-weight-bold;
 
-@import "~bootstrap/scss/utilities";
+@import '~bootstrap/scss/utilities';
 
-@import "~bootstrap/scss/root";
-@import "~bootstrap/scss/reboot";
-@import "~bootstrap/scss/type";
-@import "~bootstrap/scss/containers";
-@import "~bootstrap/scss/grid";
-@import "~bootstrap/scss/tables";
-@import "~bootstrap/scss/forms";
-@import "~bootstrap/scss/buttons";
-@import "~bootstrap/scss/transitions";
-@import "~bootstrap/scss/dropdown";
-@import "~bootstrap/scss/button-group";
-@import "~bootstrap/scss/nav";
-@import "~bootstrap/scss/navbar";
-@import "~bootstrap/scss/card";
-@import "~bootstrap/scss/pagination";
-@import "~bootstrap/scss/badge";
-@import "~bootstrap/scss/alert";
-@import "~bootstrap/scss/progress";
-@import "~bootstrap/scss/list-group";
-@import "~bootstrap/scss/close";
-@import "~bootstrap/scss/popover";
+@import '~bootstrap/scss/root';
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/containers';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/tables';
+@import '~bootstrap/scss/forms';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/transitions';
+@import '~bootstrap/scss/dropdown';
+@import '~bootstrap/scss/button-group';
+@import '~bootstrap/scss/nav';
+@import '~bootstrap/scss/navbar';
+@import '~bootstrap/scss/card';
+@import '~bootstrap/scss/pagination';
+@import '~bootstrap/scss/badge';
+@import '~bootstrap/scss/alert';
+@import '~bootstrap/scss/progress';
+@import '~bootstrap/scss/list-group';
+@import '~bootstrap/scss/close';
+@import '~bootstrap/scss/popover';
 
-@import "~bootstrap/scss/helpers";
+@import '~bootstrap/scss/helpers';
 
-@import "~bootstrap/scss/utilities/api";
+@import '~bootstrap/scss/utilities/api';
 
-@import "~bootstrap-icons/font/bootstrap-icons";
-@import "~select2/src/scss/core";
-@import "~select2-bootstrap-5-theme/src/include-all";
-@import "error";
-@import "barchart";
+@import '~bootstrap-icons/font/bootstrap-icons';
+@import '~select2/src/scss/core';
+@import '~select2-bootstrap-5-theme/src/include-all';
+@import 'error';
+@import 'barchart';
 
 $navbar-height: 3.125rem;
 
@@ -68,11 +68,11 @@ body {
 }
 
 .text-inherit {
-    color: inherit;
+  color: inherit;
 
-    &:hover {
-        color: inherit;
-    }
+  &:hover {
+    color: inherit;
+  }
 }
 
 .icon-icon_angel {
@@ -87,11 +87,11 @@ body {
 }
 
 .text-light .icon-icon_angel {
-  background-color: map.get($theme-colors, "light");
+  background-color: map.get($theme-colors, 'light');
 }
 
 .dark .icon-icon_angel {
-  background-color: map.get($theme-colors, "dark");
+  background-color: map.get($theme-colors, 'dark');
 }
 
 a .icon-icon_angel {
@@ -108,11 +108,11 @@ table a > .icon-icon_angel {
 }
 
 .nav-item--userhints {
-    margin: -$navbar-padding-y 0;
+  margin: -$navbar-padding-y 0;
 }
 
 .popover--userhints .alert:last-of-type {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .table .form-group {
@@ -170,14 +170,14 @@ table a > .icon-icon_angel {
 
 // prevent dropdown-menu from overflowing the view
 .dropdown-menu {
-    max-height: calc(100vh - 300px); // 300px: menu offset
-    overflow: auto;
+  max-height: calc(100vh - 300px); // 300px: menu offset
+  overflow: auto;
 }
 
 @media (min-width: map-get($grid-breakpoints, 'lg')) {
-    .dropdown-menu {
-        max-height: calc(100vh - $navbar-height - 16px); // 16px extra padding
-    }
+  .dropdown-menu {
+    max-height: calc(100vh - $navbar-height - 16px); // 16px extra padding
+  }
 }
 
 .selection .checkbox {
@@ -251,7 +251,18 @@ table a > .icon-icon_angel {
   text-align: right;
 }
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   code {
     background-color: inherit;
   }
@@ -281,7 +292,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 // Reference links
-h1, h2, h3, h4, h5, h6, .card-header {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.card-header {
   a.ref-link {
     display: none;
   }
@@ -299,16 +316,16 @@ h1, h2, h3, h4, h5, h6, .card-header {
 
 // Cards
 .card-body > *:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .card-header {
   &.bg-dark {
-    color: map.get($theme-colors, "light");
+    color: map.get($theme-colors, 'light');
   }
 
   &.bg-light {
-    color: map.get($theme-colors, "dark");
+    color: map.get($theme-colors, 'dark');
   }
 }
 
@@ -329,7 +346,7 @@ code {
     transform: rotate(-5deg);
   }
   30% {
-    transform: rotate(5deg) translateY(-2px);;
+    transform: rotate(5deg) translateY(-2px);
   }
   40% {
     transform: rotate(-5deg);
@@ -358,14 +375,14 @@ code {
 
 @media print {
   a[href]:after {
-    content: "";
+    content: '';
   }
 }
 
 .conversation {
   height: 55vh;
   overflow-x: hidden;
-  overflow-y: auto
+  overflow-y: auto;
 }
 
 .message {
@@ -375,12 +392,12 @@ code {
 
 /* Hide the arrow up/down buttons rendered by the browser in the input field */
 /* Chrome, Safari, Edge, Opera */
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }

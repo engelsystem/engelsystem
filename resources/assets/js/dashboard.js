@@ -22,15 +22,13 @@ ready(() => {
   // Handle fullscreen button
   // - Remove some elements from UI
   // - Add "Public Dashboard" to title
-  document.getElementById('dashboard-fullscreen')
-    ?.addEventListener('click', (event) => {
-      event.preventDefault();
-      const removeElementsSelector = '#navbar-collapse-1,.navbar-nav,.navbar-toggler,#footer,#fullscreen-button';
-      document.querySelectorAll(removeElementsSelector).forEach((element) => {
-        element.parentNode.removeChild(element);
-      });
-
-      document.querySelector('.navbar-brand')
-        ?.appendChild(document.createTextNode('Dashboard'));
+  document.getElementById('dashboard-fullscreen')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    const removeElementsSelector = '#navbar-collapse-1,.navbar-nav,.navbar-toggler,#footer,#fullscreen-button';
+    document.querySelectorAll(removeElementsSelector).forEach((element) => {
+      element.parentNode.removeChild(element);
     });
+
+    document.querySelector('.navbar-brand')?.appendChild(document.createTextNode('Dashboard'));
+  });
 });

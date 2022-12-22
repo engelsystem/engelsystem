@@ -7,4 +7,4 @@ export const ready = (callback) => {
   } else {
     document.addEventListener('DOMContentLoaded', callback);
   }
-}
+};

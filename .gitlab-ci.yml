@@ -145,7 +145,7 @@ yarn check:
   script:
     - yarn check
 
-eslint:
+yarn lint:
   <<: *use_yarn
   image: node:alpine
   stage: validate
@@ -180,7 +180,7 @@ build-image:
     - phpstan
     - composer validate
     - yarn check
-    - eslint
+    - yarn lint
     - generate-version
   dependencies:
     - generate-version

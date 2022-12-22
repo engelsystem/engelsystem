@@ -8,7 +8,7 @@ import { ready } from './ready';
 const triggerChange = (element) => {
   const changeEvent = new Event('change');
   element.dispatchEvent(changeEvent);
-}
+};
 
 /**
  * Sets all checkboxes to the wanted state
@@ -164,7 +164,7 @@ ready(() => {
     theme: 'bootstrap-5',
     width: '100%',
   });
-})
+});
 
 /**
  * Show oauth buttons on welcome title click
@@ -198,7 +198,7 @@ ready(() => {
 });
 
 ready(() => {
-  if (typeof (localStorage) === 'undefined') {
+  if (typeof localStorage === 'undefined') {
     return;
   }
 
@@ -209,9 +209,7 @@ ready(() => {
     localStorage.setItem('collapseShiftsFilterSelect', event.type);
   };
 
-  document.getElementById('collapseShiftsFilterSelect')
-    ?.addEventListener('hidden.bs.collapse', onChange);
+  document.getElementById('collapseShiftsFilterSelect')?.addEventListener('hidden.bs.collapse', onChange);
 
-  document.getElementById('collapseShiftsFilterSelect')
-    ?.addEventListener('shown.bs.collapse', onChange);
+  document.getElementById('collapseShiftsFilterSelect')?.addEventListener('shown.bs.collapse', onChange);
 });

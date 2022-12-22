@@ -6,12 +6,11 @@
  */
 export const formatTime = (date) => {
   if (!date instanceof Date) return;
-
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
 
   return `${hours}:${minutes}`;
-}
+};
 
 /**
  * Formats a Date to YYYY-MM-DD, e.g. 2023-05-18
@@ -27,4 +26,4 @@ export const formatDay = (date) => {
   const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
-}
+};

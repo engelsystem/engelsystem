@@ -13,7 +13,7 @@
   This is done by PostCSS + Autoprefixer according to the [`.browserslistrc`](.browserslistrc).
 * Translations must be abbreviated, for example `form.save`.
   The `default.po` files contain translations that can be auto-detected using Poedit, `additional.po` contains generated messages like validations.
-* JavaScript code must pass the ESLint check `yarn lint`.
+* JavaScript code must pass the checks `yarn lint`.
   Auto-fixing is supported via `yarn lint:fix`.
 * Don't put function calls in a template-literal (template-strings).
 

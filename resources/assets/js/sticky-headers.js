@@ -9,7 +9,7 @@ const applyStyle = (elements, prop, value) => {
   elements.forEach((element) => {
     element.style[prop] = value;
   });
-}
+};
 
 /**
  * Enables the fixed headers and time lane for the shift-calendar and datatables
@@ -35,10 +35,7 @@ ready(() => {
 
     timeLane.style.left = `${left}px`;
 
-    const headersTop = Math.max(
-      0,
-      window.scrollY - top - 13 + topReference.getBoundingClientRect().top
-    );
+    const headersTop = Math.max(0, window.scrollY - top - 13 + topReference.getBoundingClientRect().top);
     applyStyle(headers, 'top', `${headersTop}px`);
   });
 });
