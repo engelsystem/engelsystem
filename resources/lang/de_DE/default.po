@@ -2706,6 +2706,53 @@ msgstr ""
 "Bitte eine DECT-Telefonnummer in den Einstellungen eingeben. Wenn du noch "
 "keine Nummer hast, bitte einfach \"-\" angeben."
 
+msgid ""
+"Here you can change the user entry. Under the item 'Arrived' the angel is marked as present, "
+"a yes at Active means that the angel was active."
+msgstr ""
+"Hier kannst du den Benutzer Eintrag ändern. Unter dem Punkt 'Angekommen' wird der Engel als anwesend markiert, "
+"ein Ja bei Aktiv bedeutet, dass der Engel aktiv war."
+
+msgid ""
+"If the angel is active, it can claim a T-shirt. If T-shirt is set to 'Yes', the angel already got their T-shirt."
+msgstr ""
+"Ist der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, bedeutet dies, "
+"dass der Engel bereits sein T-Shirt erhalten hat."
+
+msgid ""
+"If the angel was Active, this entitles him to a T-shirt. If T-shirt contains a 'Ja', "
+"it means that the angel has already received his T-shirt."
+msgstr ""
+"War der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, "
+"bedeutet dies, dass der Engel bereits sein T-Shirt erhalten hat."
+
+msgid "Please visit the angeltypes page or the users profile to manage the users angeltypes."
+msgstr "Bitte besuche die Seite Engeltypen oder das Benutzerprofil, um die Engeltypen des Benutzers zu verwalten."
+
+msgid "Here you can reset the password of this angel:"
+msgstr "Hier kannst du das Passwort für diesen Engel zurücksetzen:"
+
+msgid "Here you can define the user groups of the angel:"
+msgstr "Hier kannst du die Benutzergruppen des Engels definieren:"
+
+msgid "User groups saved."
+msgstr "Benutzergruppen gespeichert."
+
+msgid "You cannot edit angels with more rights."
+msgstr "Du kannst keine Engel mit mehr Rechten bearbeiten."
+
+msgid "You cannot edit your own rights."
+msgstr "Du kannst deine eigenen Rechte nicht bearbeiten."
+
+msgid "Changes where saved."
+msgstr "Änderung wurde gespeichert."
+
+msgid "Password reset done."
+msgstr "Passwort zurückgesetzt."
+
+msgid "The entries must match and must not be empty!"
+msgstr "Die Einträge müssen übereinstimmen und dürfen nicht leer sein!"
+
 #: src/Middleware/LegacyMiddleware.php:83
 msgid "page.404.text"
 msgstr ""
