@@ -1,0 +1,52 @@
+$choices-font-size-lg: $input-font-size-lg;
+$choices-font-size-md: $input-font-size;
+$choices-font-size-sm: $input-font-size-sm;
+
+$choices-border-radius: $input-border-radius;
+
+$choices-primary-color: $primary;
+$choices-bg-color: $input-bg;
+$choices-bg-color-dropdown: $input-bg;
+$choices-text-color: $input-color;
+
+$es-choices-highlight-color: $choices-text-color !default;
+
+@import '~choices.js/src/styles/choices.scss';
+
+.#{$choices-selector}__inner {
+  border: $input-border-width solid $input-border-color;
+  line-height: 0;
+  min-height: 0;
+  padding: $input-padding-y 1.75rem $input-padding-y $input-padding-x !important;
+}
+
+.#{$choices-selector}__list--single {
+  padding: 0;
+}
+
+.#{$choices-selector}__item {
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.#{$choices-selector}__item--selectable {
+  padding-right: 10px !important;
+}
+
+.#{$choices-selector}__item.is-selected {
+  color: $component-active-color;
+  background-color: $component-active-bg;
+}
+
+.#{$choices-selector}__item.is-highlighted {
+  color: $es-choices-highlight-color;
+}
+
+.#{$choices-selector}__input--cloned {
+  background-color: $input-bg !important;
+  border: 0;
+  box-shadow: none;
+  color: $input-color !important;
+}

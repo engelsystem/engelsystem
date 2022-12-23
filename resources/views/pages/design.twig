@@ -240,7 +240,10 @@
                         {{ f.textarea('form-input-textarea', 'Textarea', {'rows': 2, 'value': lipsum}) }}
                     </div>
                     <div class="col-md-3 col-lg-2">
-                        {{ f.select('form-input-select', {'lorem': 'Ipsum', 'dolor': 'Sit'}, 'Select', 'dolor') }}
+                        {{ f.select('form-input-select-1', {'opt1': 'Option 1', 'opt2': 'Option 2', 'opt3': 'Another option', 'opt4': 'A looooooooong item item item item'}, 'Select 1', 'opt1') }}
+                        {{ f.select('form-input-select-2', {'sh': 'Bash', 'js': 'JavaScript', 'p': 'PHP', 'py': 'Python'}, 'Select 2', 'js') }}
+                        {{ f.select('form-input-select-2', selectOptions, 'Select 3', 'Option 7') }}
+                        {{ f.select('date-select', dateSelectOptions, 'Date select') }}
                     </div>
                     <div class="col-md-3 col-lg-2">
                         <label class="form-label">Button</label>
