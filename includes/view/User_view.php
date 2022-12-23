@@ -99,8 +99,6 @@ function Users_view(
         $u['force_active'] = icon_bool($user->state->force_active);
         if (config('enable_tshirt_size')) {
             $u['got_shirt'] = icon_bool($user->state->got_shirt);
-        }
-        if (config('enable_tshirt_size')) {
             $u['shirt_size'] = $user->personalData->shirt_size;
         }
         $u['arrival_date'] = $user->personalData->planned_arrival_date
@@ -611,7 +609,7 @@ function User_view(
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . __('Shifts') . '</h2>' : '',
             $myshifts_table,
-            ($its_me && $nightShiftsConfig['enabled']) ? info(
+            ($its_me && $nightShiftsConfig['enabled'] && config('enable_tshirt_size')) ? info(
                 icon('info-circle') . sprintf(
                     __('Your night shifts between %d and %d am count twice.'),
                     $nightShiftsConfig['start'],
@@ -717,19 +715,21 @@ function User_view_state_admin($freeloader, $user_source)
             . '</span>';
     }
 
-    $voucherCount = $user_source->state->got_voucher;
-    $availableCount = $voucherCount + User_get_eligable_voucher_count($user_source);
-    $availableCount = max($voucherCount, $availableCount);
-    if ($user_source->state->got_voucher > 0) {
-        $state[] = '<span class="text-success">'
-            . icon('valentine')
-            . __('Got %s of %s vouchers', [$voucherCount, $availableCount])
-            . '</span>';
-    } elseif (config('enable_voucher')) {
-        $state[] = '<span class="text-danger">'
-            . __('Got no vouchers')
-            . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')
-            . '</span>';
+    if (config('enable_voucher')) {
+        $voucherCount = $user_source->state->got_voucher;
+        $availableCount = $voucherCount + User_get_eligable_voucher_count($user_source);
+        $availableCount = max($voucherCount, $availableCount);
+        if ($user_source->state->got_voucher > 0) {
+            $state[] = '<span class="text-success">'
+                . icon('valentine')
+                . __('Got %s of %s vouchers', [$voucherCount, $availableCount])
+                . '</span>';
+        } else {
+            $state[] = '<span class="text-danger">'
+                . __('Got no vouchers')
+                . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')
+                . '</span>';
+        }
     }
 
     return $state;

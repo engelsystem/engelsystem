@@ -504,7 +504,7 @@ function AngelTypes_render_contact_info(AngelType $angeltype)
 {
     $info = [
         __('Name')   => [$angeltype->contact_name, $angeltype->contact_name],
-        __('DECT')   => [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect],
+        __('DECT')   => config('enable_dect') ? [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect] : null,
         __('E-Mail') => [sprintf('<a href="mailto:%s">%1$s</a>', $angeltype->contact_email), $angeltype->contact_email],
     ];
     $contactInfo = [];
