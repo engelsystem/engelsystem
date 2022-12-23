@@ -35,10 +35,9 @@ function admin_user()
             throw_redirect(users_link());
         }
 
-        $html .= __('Hello,').'<br />';
-        $html .= __('here you can change the entry. Under the item \'Came\' the angel is marked as present, a yes at Active means that the angel was active.');
-        if(config('enable_tshirt_size')) {
-            $html .=  ' '.__('War der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein \'Ja\' enth&auml;lt, bedeutet dies, dass der Engel bereits sein T-Shirt erhalten hat.');
+        $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
+        if (config('enable_tshirt_size')) {
+            $html .= ' ' . __('If the angel is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the angel already got their T-shirt.');
         }
         $html .= '<br /><br />';
         $html .= '<form action="'
@@ -49,28 +48,28 @@ function admin_user()
         $html .= '<input type="hidden" name="Type" value="Normal">' . "\n";
         $html .= '<tr><td>' . "\n";
         $html .= '<table>' . "\n";
-        $html .= '  <tr><td>'.__('Nickname').'</td><td>' . '<input size="40" name="eNick" value="' . $user_source->name . '" class="form-control" maxlength="24"></td></tr>' . "\n";
-        $html .= '  <tr><td>'.__('Last Login').'</td><td><p class="help-block">'
+        $html .= '  <tr><td>' . __('Nickname') . '</td><td>' . '<input size="40" name="eNick" value="' . $user_source->name . '" class="form-control" maxlength="24"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('Last login') . '</td><td><p class="help-block">'
             . ($user_source->last_login_at ? $user_source->last_login_at->format('Y-m-d H:i') : '-')
             . '</p></td></tr>' . "\n";
         if (config('enable_user_name')) {
-            $html .= '  <tr><td>'.__('Prename').'</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
-            $html .= '  <tr><td>'.__('Last name').'</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('Prename') . '</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('Last name') . '</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
         }
-        $html .= '  <tr><td>'.__('Mobile').'</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source->contact->mobile . '" class="form-control" maxlength="40"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('Mobile') . '</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source->contact->mobile . '" class="form-control" maxlength="40"></td></tr>' . "\n";
         if (config('enable_dect')) {
-            $html .= '  <tr><td>'.__('DECT').'</td><td>' . '<input size="40" name="eDECT" value="' . $user_source->contact->dect . '" class="form-control" maxlength="40"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('DECT') . '</td><td>' . '<input size="40" name="eDECT" value="' . $user_source->contact->dect . '" class="form-control" maxlength="40"></td></tr>' . "\n";
         }
         if ($user_source->settings->email_human) {
-            $html .= "  <tr><td>".__('email')."</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
+            $html .= "  <tr><td>" . __('settings.profile.email') . "</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
         }
-        if(config('enable_tshirt_size')) {
-            $html .= '  <tr><td>'.__('user.shirt_size').'</td><td>'
+        if (config('enable_tshirt_size')) {
+            $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
                 . html_select_key(
                     'size',
                     'eSize',
                     $tshirt_sizes,
-                $user_source->personalData->shirt_size,
+                    $user_source->personalData->shirt_size,
                     __('Please select...')
                 )
                 . '</td></tr>' . "\n";
@@ -82,7 +81,7 @@ function admin_user()
         ];
 
         // Gekommen?
-        $html .= '  <tr><td>'.__('Arrived').'</td><td>' . "\n";
+        $html .= '  <tr><td>' . __('Arrived') . '</td><td>' . "\n";
         if ($user_source->state->arrived) {
             $html .= __('Yes');
         } else {
@@ -91,7 +90,7 @@ function admin_user()
         $html .= '</td></tr>' . "\n";
 
         // Aktiv?
-        $html .= '  <tr><td>'.__('user.active').'</td><td>' . "\n";
+        $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
         $html .= html_options('eAktiv', $options, $user_source->state->active) . '</td></tr>' . "\n";
 
         // Aktiv erzwingen
@@ -100,32 +99,32 @@ function admin_user()
             $html .= html_options('force_active', $options, $user_source->state->force_active) . '</td></tr>' . "\n";
         }
 
-        if(config('enable_tshirt_size')) {
+        if (config('enable_tshirt_size')) {
             // T-Shirt bekommen?
-            $html .= '  <tr><td>'.__('T-Shirt').'</td><td>' . "\n";
+            $html .= '  <tr><td>' . __('T-Shirt') . '</td><td>' . "\n";
             $html .= html_options('eTshirt', $options, $user_source->state->got_shirt) . '</td></tr>' . "\n";
         }
         $html .= '</table>' . "\n" . '</td><td></td></tr>';
 
         $html .= '</td></tr>' . "\n";
         $html .= '</table>' . "\n" . '<br />' . "\n";
-        $html .= '<input type="submit" value="'.__('form.save').'" class="btn btn-primary">';
+        $html .= '<input type="submit" value="' . __('form.save') . '" class="btn btn-primary">';
         $html .= '</form>';
 
         $html .= '<hr />';
 
-        $html .= form_info('', __('Please visit the angeltypes page or the users profile to manage users angeltypes.'));
+        $html .= form_info('', __('Please visit the angeltypes page or the users profile to manage the users angeltypes.'));
 
-        $html .= __('Here you can reset the password of this angel:').'<form action="'
+        $html .= ' ' . __('Here you can reset the password of this angel:') . '<form action="'
             . page_link_to('admin_user', ['action' => 'change_pw', 'id' => $user_id])
             . '" method="post">' . "\n";
         $html .= form_csrf();
         $html .= '<table>' . "\n";
-        $html .= '  <tr><td>'.__('Password').'</td><td>' . '<input type="password" size="40" name="new_pw" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
-        $html .= '  <tr><td>'.__('Confirm password').'</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('Password') . '</td><td>' . '<input type="password" size="40" name="new_pw" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('Confirm password') . '</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '<br />' . "\n";
-        $html .= '<input type="submit" value="'.__('form.save').'" class="btn btn-primary">' . "\n";
+        $html .= '<input type="submit" value="' . __('form.save') . '" class="btn btn-primary">' . "\n";
         $html .= '</form>';
 
         $html .= '<hr />';
@@ -145,7 +144,7 @@ function admin_user()
             ($user_id != $user->id || auth()->can('admin_groups'))
             && ($my_highest_group >= $angel_highest_group || is_null($angel_highest_group))
         ) {
-            $html .= __('Here you can define the user groups of the angel:').'<form action="'
+            $html .= __('Here you can define the user groups of the angel:') . '<form action="'
                 . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
                 . '" method="post">' . "\n";
             $html .= form_csrf();
@@ -161,15 +160,15 @@ function admin_user()
 
             $html .= '</div><br>';
 
-            $html .= '<input type="submit" value="'.__('form.save').'" class="btn btn-primary">' . "\n";
+            $html .= '<input type="submit" value="' . __('form.save') . '" class="btn btn-primary">' . "\n";
             $html .= '</form>';
 
             $html .= '<hr />';
         }
 
         $html .= buttons([
-                             button(user_delete_link($user_source->id), icon('trash') . __('delete'), 'btn-danger')
-                         ]);
+            button(user_delete_link($user_source->id), icon('trash') . __('delete'), 'btn-danger')
+        ]);
 
         $html .= "<hr />";
     } else {
@@ -259,7 +258,7 @@ function admin_user()
                     . ', force-active: ' . $user_source->state->force_active
                     . ', tshirt: ' . $user_source->state->got_shirt
                 );
-                $html .= success(__('Change was saved...') . "\n", true);
+                $html .= success(__('Changes where saved.') . "\n", true);
                 break;
 
             case 'change_pw':
