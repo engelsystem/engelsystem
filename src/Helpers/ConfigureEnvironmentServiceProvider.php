@@ -31,8 +31,9 @@ class ConfigureEnvironmentServiceProvider extends ServiceProvider
      */
     protected function setTimeZone(CarbonTimeZone $timeZone): void
     {
-        ini_set('date.timezone', (string)$timeZone);
-        date_default_timezone_set($timeZone);
+        $timeZoneString = (string)$timeZone;
+        ini_set('date.timezone', $timeZoneString);
+        date_default_timezone_set($timeZoneString);
     }
 
     /**
