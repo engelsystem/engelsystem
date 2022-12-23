@@ -220,7 +220,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
     $members_unconfirmed = [];
     foreach ($members as $member) {
         $member->name = User_Nick_render($member) . User_Pronoun_render($member);
-        if(config('enable_dect')){
+        if (config('enable_dect')) {
             $member['dect'] = $member->contact->dect;
         }
         if ($angeltype->requires_driver_license) {
@@ -334,7 +334,7 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
             'actions'                      => ''
         ];
     }
-    if(!config('enable_dect')){
+    if (!config('enable_dect')) {
         unset($headers['dect']);
     }
     return $headers;
