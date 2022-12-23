@@ -115,15 +115,23 @@ ready(() => {
  * {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled#overview}
  */
 const DISABLE_ELEMENTS = [
-  'button', 'command', 'fieldset', 'input', 'keygen', 'optgroup', 'option', 'select', 'textarea'
+  'button',
+  'command',
+  'fieldset',
+  'input',
+  'keygen',
+  'optgroup',
+  'option',
+  'select',
+  'textarea',
 ];
 ready(() => {
   // get all input-radio's and add for each an onChange event listener
   document.querySelectorAll('input[type="radio"]').forEach((radioElement) => {
     // build selector and get all corrsponding elements for this input-radio
-    const selector = DISABLE_ELEMENTS.map((tagName) => (
-      `${tagName}[data-radio-name="${radioElement.name}"][data-radio-value]`
-    )).join(',');
+    const selector = DISABLE_ELEMENTS.map(
+      (tagName) => `${tagName}[data-radio-name="${radioElement.name}"][data-radio-value]`
+    ).join(',');
     const elements = Array.from(document.querySelectorAll(selector));
 
     // set all states one time on init for each of the corresponding elements
