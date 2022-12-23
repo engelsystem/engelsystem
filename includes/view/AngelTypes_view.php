@@ -126,7 +126,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                 __('Primary contact person/desk for user questions.')
             ),
             form_text('contact_name', __('Name'), $angeltype->contact_name),
-            form_text('contact_dect', __('DECT'), $angeltype->contact_dect),
+            config('enable_dect') ? form_text('contact_dect', __('DECT'), $angeltype->contact_dect) : '',
             form_text('contact_email', __('E-Mail'), $angeltype->contact_email),
             form_submit('submit', __('Save'))
         ])
@@ -220,7 +220,9 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
     $members_unconfirmed = [];
     foreach ($members as $member) {
         $member->name = User_Nick_render($member) . User_Pronoun_render($member);
-        $member['dect'] = $member->contact->dect;
+        if (config('enable_dect')) {
+            $member['dect'] = $member->contact->dect;
+        }
         if ($angeltype->requires_driver_license) {
             $member['wants_to_drive'] = icon_bool($member->license->wantsToDrive());
             $member['has_car'] = icon_bool($member->license->has_car);
@@ -313,8 +315,13 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
  */
 function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_angeltypes)
 {
+    $headers = [
+        'name'    => __('Nick'),
+        'dect'    => __('DECT'),
+        'actions' => ''
+    ];
     if ($angeltype->requires_driver_license && ($supporter || $admin_angeltypes)) {
-        return [
+        $headers = [
             'name'                         => __('Nick'),
             'dect'                         => __('DECT'),
             'wants_to_drive'               => __('Driver'),
@@ -327,11 +334,10 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
             'actions'                      => ''
         ];
     }
-    return [
-        'name'    => __('Nick'),
-        'dect'    => __('DECT'),
-        'actions' => ''
-    ];
+    if (!config('enable_dect')) {
+        unset($headers['dect']);
+    }
+    return $headers;
 }
 
 /**
@@ -498,7 +504,7 @@ function AngelTypes_render_contact_info(AngelType $angeltype)
 {
     $info = [
         __('Name')   => [$angeltype->contact_name, $angeltype->contact_name],
-        __('DECT')   => [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect],
+        __('DECT')   => config('enable_dect') ? [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect] : null,
         __('E-Mail') => [sprintf('<a href="mailto:%s">%1$s</a>', $angeltype->contact_email), $angeltype->contact_email],
     ];
     $contactInfo = [];
