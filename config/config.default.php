@@ -285,7 +285,7 @@ return [
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
 
-    // Hide Columns in User View with the given identifier from headers array
+    // Hide columns in backend user view. Possible values are any sortable parameters of the table.
     'disabled_user_view_columns' => [],
 
     // Local timezone
