@@ -1,4 +1,4 @@
-import 'select2';
+import Choices from 'choices.js';
 import { formatDay, formatTime } from './date';
 import { ready } from './ready';
 
@@ -37,6 +37,22 @@ ready(() => {
   };
 
   /**
+   * Sets a select value and triggers a change.
+   * If the select has a Choices.js instances, it uses this instead to set the value.
+   *
+   * @param {HTMLSelectElement} element
+   * @param {*} value
+   */
+  const setSelectValue = (element, value) => {
+    if (element.choices) {
+      element.choices.setChoiceByValue(value);
+    }
+
+    element.value = value;
+    triggerChange(element);
+  };
+
+  /**
    * Sets the values of the input fields with the IDs to from/to:
    * - date portion of from → start_day
    * - time portion of from → start_time
@@ -57,12 +73,10 @@ ready(() => {
       return;
     }
 
-    fromDay.value = formatDay(from);
-    triggerChange(fromDay);
+    setSelectValue(fromDay, formatDay(from));
     fromTime.value = formatTime(from);
 
-    toDay.value = formatDay(to);
-    triggerChange(toDay);
+    setSelectValue(toDay, formatDay(to));
     toTime.value = formatTime(to);
   };
 
@@ -214,9 +228,22 @@ ready(() => {
 });
 
 ready(() => {
-  $('select').select2({
-    theme: 'bootstrap-5',
-    width: '100%',
+  document.querySelectorAll('select').forEach((element) => {
+    element.choices = new Choices(element, {
+      allowHTML: false,
+      classNames: {
+        containerInner: 'choices__inner form-control',
+      },
+      fuseOptions: {
+        distance: 0,
+        ignoreLocation: true,
+        includeScore: true,
+        threshold: 0,
+      },
+      itemSelectText: '',
+      // do not use Number.MAX_SAFE_INTEGER here, because otherwise the script gets stuck
+      searchResultLimit: 9999,
+    });
   });
 });
 

@@ -52,8 +52,7 @@ $form-label-font-weight: $font-weight-bold;
 @import '~bootstrap/scss/utilities/api';
 
 @import '~bootstrap-icons/font/bootstrap-icons';
-@import '~select2/src/scss/core';
-@import '~select2-bootstrap-5-theme/src/include-all';
+@import 'choices';
 @import 'error';
 @import 'barchart';
 
@@ -157,14 +156,6 @@ table a > .icon-icon_angel {
 
   .card-link:hover {
     opacity: 0.3;
-  }
-}
-
-.select2-dropdown {
-  background-color: $input-bg;
-
-  .select2-search__field {
-    background-color: lighten($input-bg, 10%) !important;
   }
 }
 
