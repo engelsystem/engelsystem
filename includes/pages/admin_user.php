@@ -237,18 +237,25 @@ function admin_user()
                     $user_source->name = $nickValidation->getValue();
                 }
                 $user_source->save();
+
                 if (config('enable_user_name')) {
                     $user_source->personalData->first_name = $request->postData('eVorname');
                     $user_source->personalData->last_name = $request->postData('eName');
                 }
-                $user_source->personalData->shirt_size = $request->postData('eSize');
+                if (config('enable_tshirt_size')) {
+                    $user_source->personalData->shirt_size = $request->postData('eSize');
+                }
                 $user_source->personalData->save();
+
                 $user_source->contact->mobile = $request->postData('eHandy');
                 $user_source->contact->dect = $request->postData('eDECT');
                 $user_source->contact->save();
+
+                if (config('enable_tshirt_size')) {
+                    $user_source->state->got_shirt = $request->postData('eTshirt');
+                }
                 $user_source->state->active = $request->postData('eAktiv');
                 $user_source->state->force_active = $force_active;
-                $user_source->state->got_shirt = $request->postData('eTshirt');
                 $user_source->state->save();
 
                 engelsystem_log(
