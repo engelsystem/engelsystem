@@ -207,9 +207,9 @@ function admin_shifts()
                     'description'  => $description,
                 ];
             } elseif ($mode == 'multi') {
-                $shift_start = (int)$start;
+                $shift_start = (int) $start;
                 do {
-                    $shift_end = $shift_start + (int)$length * 60;
+                    $shift_end = $shift_start + (int) $length * 60;
 
                     if ($shift_end > $end) {
                         $shift_end = $end;
@@ -571,7 +571,7 @@ function admin_shifts_history(): string
                     'title'      => $shift['title'],
                     'type'       => $type->name,
                     'room'       => $room,
-                    'freeloaded' => (bool)$entry['freeloaded'],
+                    'freeloaded' => (bool) $entry['freeloaded'],
                 ]);
             }
 

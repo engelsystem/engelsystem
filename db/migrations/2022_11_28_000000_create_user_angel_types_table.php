@@ -44,7 +44,7 @@ class CreateUserAngelTypesTable extends Migration
                 'user_id'         => $record->user_id,
                 'angel_type_id'   => $record->angeltype_id,
                 'confirm_user_id' => $record->confirm_user_id ?: null,
-                'supporter'       => (bool)$record->supporter,
+                'supporter'       => (bool) $record->supporter,
             ]);
         }
 
@@ -84,7 +84,7 @@ class CreateUserAngelTypesTable extends Migration
                 'user_id'         => $record->user_id,
                 'angeltype_id'    => $record->angel_type_id,
                 'confirm_user_id' => $record->confirm_user_id ?: null,
-                'supporter'       => (bool)$record->supporter,
+                'supporter'       => (bool) $record->supporter,
             ]);
         }
 

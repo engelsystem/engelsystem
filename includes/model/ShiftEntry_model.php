@@ -20,7 +20,7 @@ function ShiftEntries_freeloaded_count()
         return 0;
     }
 
-    return (int)array_shift($result);
+    return (int) array_shift($result);
 }
 
 /**
@@ -81,7 +81,7 @@ function ShiftEntry_create($shift_entry)
             $shift_entry['UID'],
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
-            (int)$shift_entry['freeloaded'],
+            (int) $shift_entry['freeloaded'],
         ]
     );
     engelsystem_log(
@@ -117,7 +117,7 @@ function ShiftEntry_update($shift_entry)
         [
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
-            (int)$shift_entry['freeloaded'],
+            (int) $shift_entry['freeloaded'],
             $shift_entry['id']
         ]
     );

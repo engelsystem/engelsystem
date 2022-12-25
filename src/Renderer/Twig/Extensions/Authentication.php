@@ -26,7 +26,7 @@ class Authentication extends TwigExtension
 
     public function isAuthenticated(): bool
     {
-        return (bool)$this->auth->user();
+        return (bool) $this->auth->user();
     }
 
     public function isGuest(): bool

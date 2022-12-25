@@ -151,7 +151,7 @@ class UserTest extends ModelTest
             ->associate($user)
             ->save();
 
-        $this->assertArraySubset($data, (array)$user->{$name}->attributesToArray());
+        $this->assertArraySubset($data, (array) $user->{$name}->attributesToArray());
     }
 
     /**

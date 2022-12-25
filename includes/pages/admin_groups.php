@@ -59,7 +59,7 @@ function admin_groups()
         switch ($request->input('action')) {
             case 'edit':
                 if ($request->has('id')) {
-                    $group_id = (int)$request->input('id');
+                    $group_id = (int) $request->input('id');
                 } else {
                     return error('Incomplete call, missing Groups ID.', true);
                 }
@@ -96,7 +96,7 @@ function admin_groups()
                     $request->has('id')
                     && $request->hasPostData('submit')
                 ) {
-                    $group_id = (int)$request->input('id');
+                    $group_id = (int) $request->input('id');
                 } else {
                     return error('Incomplete call, missing Groups ID.', true);
                 }

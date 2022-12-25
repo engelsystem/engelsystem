@@ -62,7 +62,7 @@ class QuestionsController extends BaseController
 
     public function edit(Request $request): Response
     {
-        $questionId = (int)$request->getAttribute('question_id');
+        $questionId = (int) $request->getAttribute('question_id');
 
         $questions = $this->question->find($questionId);
 
@@ -71,7 +71,7 @@ class QuestionsController extends BaseController
 
     public function save(Request $request): Response
     {
-        $questionId = (int)$request->getAttribute('question_id');
+        $questionId = (int) $request->getAttribute('question_id');
 
         /** @var Question $question */
         $question = $this->question->findOrNew($questionId);

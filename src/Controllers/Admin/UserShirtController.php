@@ -34,7 +34,7 @@ class UserShirtController extends BaseController
 
     public function editShirt(Request $request): Response
     {
-        $userId = (int)$request->getAttribute('user_id');
+        $userId = (int) $request->getAttribute('user_id');
 
         $user = $this->user->findOrFail($userId);
 
@@ -46,7 +46,7 @@ class UserShirtController extends BaseController
 
     public function saveShirt(Request $request): Response
     {
-        $userId = (int)$request->getAttribute('user_id');
+        $userId = (int) $request->getAttribute('user_id');
 
         /** @var User $user */
         $user = $this->user->findOrFail($userId);
@@ -64,11 +64,11 @@ class UserShirtController extends BaseController
         }
 
         if ($this->auth->can('admin_arrive')) {
-            $user->state->arrived = (bool)$data['arrived'];
+            $user->state->arrived = (bool) $data['arrived'];
         }
 
-        $user->state->active = (bool)$data['active'];
-        $user->state->got_shirt = (bool)$data['got_shirt'];
+        $user->state->active = (bool) $data['active'];
+        $user->state->got_shirt = (bool) $data['got_shirt'];
         $user->state->save();
 
         $this->log->info(

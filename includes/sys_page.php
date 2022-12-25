@@ -266,5 +266,5 @@ function check_email($email)
         $domain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
         $email = $name . '@' . $domain;
     }
-    return (bool)filter_var($email, FILTER_VALIDATE_EMAIL);
+    return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
 }

@@ -29,7 +29,7 @@ class FixMissingArrivalDates extends Migration
                 ->first();
             $state->arrival_date = $personalData->planned_arrival_date;
             $connection->table('users_state')
-                ->update((array)$state);
+                ->update((array) $state);
         }
     }
 

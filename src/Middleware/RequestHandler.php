@@ -89,7 +89,7 @@ class RequestHandler implements MiddlewareInterface
 
         // Merge action permissions
         if (isset($permissions[$method])) {
-            $permissions = array_merge($permissions, (array)$permissions[$method]);
+            $permissions = array_merge($permissions, (array) $permissions[$method]);
         }
 
         foreach ($permissions as $key => $permission) {

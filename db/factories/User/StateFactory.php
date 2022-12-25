@@ -16,7 +16,7 @@ class StateFactory extends Factory
         $arrival = $this->faker->optional()->dateTimeThisMonth();
 
         return [
-            'arrived'      => (bool)$arrival,
+            'arrived'      => (bool) $arrival,
             'arrival_date' => $arrival ? Carbon::instance($arrival) : null,
             'active'       => $this->faker->boolean(.3),
             'force_active' => $this->faker->boolean(.1),

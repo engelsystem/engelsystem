@@ -25,9 +25,9 @@ function user_atom()
         throw new HttpForbidden('Not allowed', ['content-type' => 'text/text']);
     }
 
-    $news = $request->has('meetings') ? News::whereIsMeeting((bool)$request->get('meetings', false)) : News::query();
+    $news = $request->has('meetings') ? News::whereIsMeeting((bool) $request->get('meetings', false)) : News::query();
     $news
-        ->limit((int)config('display_news'))
+        ->limit((int) config('display_news'))
         ->orderByDesc('updated_at');
     $output = make_atom_entries_from_news($news->get());
 

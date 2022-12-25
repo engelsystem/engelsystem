@@ -37,13 +37,13 @@ class UserWorkLogController extends BaseController
 
     public function editWorklog(Request $request): Response
     {
-        $userId = (int)$request->getAttribute('user_id');
+        $userId = (int) $request->getAttribute('user_id');
         $worklogId = $request->getAttribute('worklog_id'); // optional
 
         $user = $this->user->findOrFail($userId);
 
         if (isset($worklogId)) {
-            $worklog = $this->worklog->findOrFail((int)$worklogId);
+            $worklog = $this->worklog->findOrFail((int) $worklogId);
 
             if ($worklog->user->id != $userId) {
                 throw new HttpNotFound();
@@ -56,7 +56,7 @@ class UserWorkLogController extends BaseController
 
     public function saveWorklog(Request $request): Response
     {
-        $userId = (int)$request->getAttribute('user_id');
+        $userId = (int) $request->getAttribute('user_id');
         $worklogId = $request->getAttribute('worklog_id'); // optional
 
         $user = $this->user->findOrFail($userId);
@@ -68,7 +68,7 @@ class UserWorkLogController extends BaseController
         ]);
 
         if (isset($worklogId)) {
-            $worklog = $this->worklog->findOrFail((int)$worklogId);
+            $worklog = $this->worklog->findOrFail((int) $worklogId);
 
             if ($worklog->user->id != $userId) {
                 throw new HttpNotFound();
@@ -91,8 +91,8 @@ class UserWorkLogController extends BaseController
 
     public function showDeleteWorklog(Request $request): Response
     {
-        $userId = (int)$request->getAttribute('user_id');
-        $worklogId = (int)$request->getAttribute('worklog_id');
+        $userId = (int) $request->getAttribute('user_id');
+        $worklogId = (int) $request->getAttribute('worklog_id');
 
         $user = $this->user->findOrFail($userId);
         $worklog = $this->worklog->findOrFail($worklogId);
@@ -109,8 +109,8 @@ class UserWorkLogController extends BaseController
 
     public function deleteWorklog(Request $request): Response
     {
-        $userId = (int)$request->getAttribute('user_id');
-        $worklogId = (int)$request->getAttribute('worklog_id');
+        $userId = (int) $request->getAttribute('user_id');
+        $worklogId = (int) $request->getAttribute('worklog_id');
 
         $worklog = $this->worklog->findOrFail($worklogId);
 

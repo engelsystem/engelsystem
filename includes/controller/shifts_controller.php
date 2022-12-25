@@ -248,7 +248,7 @@ function shift_delete_controller()
                 'title'      => $shift['title'],
                 'type'       => $type->name,
                 'room'       => $room,
-                'freeloaded' => (bool)$entry['freeloaded'],
+                'freeloaded' => (bool) $entry['freeloaded'],
             ]);
         }
 

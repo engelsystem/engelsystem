@@ -30,7 +30,7 @@ class Db
 
         // @TODO: Remove type casting
         foreach ($return as $key => $value) {
-            $return[$key] = (array)$value;
+            $return[$key] = (array) $value;
         }
 
         return $return;
@@ -46,7 +46,7 @@ class Db
         $result = self::connection()->selectOne($query, $bindings);
 
         // @TODO: remove typecast
-        $result = (array)$result;
+        $result = (array) $result;
         if (empty($result)) {
             return null;
         }

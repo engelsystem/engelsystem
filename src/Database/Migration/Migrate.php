@@ -111,7 +111,7 @@ class Migrate
     {
         $return = $migrated;
         $return->transform(function ($migration) use ($migrations) {
-            $migration = (array)$migration;
+            $migration = (array) $migration;
             if ($migrations->contains('migration', $migration['migration'])) {
                 $migration += $migrations
                     ->where('migration', $migration['migration'])

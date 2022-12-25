@@ -48,7 +48,7 @@ class NewsController extends BaseController
 
     public function show(Request $request): Response
     {
-        $newsId = (int)$request->getAttribute('news_id');
+        $newsId = (int) $request->getAttribute('news_id');
 
         $news = $this->news
             ->with('user')
@@ -60,7 +60,7 @@ class NewsController extends BaseController
 
     public function comment(Request $request): Response
     {
-        $newsId = (int)$request->getAttribute('news_id');
+        $newsId = (int) $request->getAttribute('news_id');
 
         $data = $this->validate($request, [
             'comment' => 'required',
@@ -89,7 +89,7 @@ class NewsController extends BaseController
 
     public function deleteComment(Request $request): Response
     {
-        $commentId = (int)$request->getAttribute('comment_id');
+        $commentId = (int) $request->getAttribute('comment_id');
 
         $this->validate(
             $request,

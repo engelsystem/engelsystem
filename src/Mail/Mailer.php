@@ -23,7 +23,7 @@ class Mailer
     public function send(string|array $to, string $subject, string $body): void
     {
         $message = (new Email())
-            ->to(...(array)$to)
+            ->to(...(array) $to)
             ->from(sprintf('%s <%s>', $this->fromName, $this->fromAddress))
             ->subject($subject)
             ->text($body);

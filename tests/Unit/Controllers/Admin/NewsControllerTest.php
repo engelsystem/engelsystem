@@ -152,7 +152,7 @@ class NewsControllerTest extends ControllerTest
 
         $news = (new News())->find($id);
         $this->assertEquals($text, $news->text);
-        $this->assertEquals($isMeeting, (bool)$news->is_meeting);
+        $this->assertEquals($isMeeting, (bool) $news->is_meeting);
     }
 
     /**
