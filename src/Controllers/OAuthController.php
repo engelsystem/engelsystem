@@ -100,7 +100,7 @@ class OAuthController extends BaseController
             ->where('identifier', $resourceId)
             ->get()
             // Explicit case sensitive comparison using PHP as some DBMS collations are case sensitive and some arent
-            ->where('identifier', '===', (string)$resourceId)
+            ->where('identifier', '===', (string) $resourceId)
             ->first();
 
         $expirationTime = $accessToken->getExpires();

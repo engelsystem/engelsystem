@@ -12,7 +12,7 @@ class EventDispatcher
 
     public function listen(array|string $events, callable|string $listener): void
     {
-        foreach ((array)$events as $event) {
+        foreach ((array) $events as $event) {
             $this->listeners[$event][] = $listener;
         }
     }

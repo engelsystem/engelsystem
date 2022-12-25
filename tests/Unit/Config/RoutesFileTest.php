@@ -34,7 +34,7 @@ class RoutesFileTest extends TestCase
                 }
 
                 $this->fail(
-                    sprintf('The route "%s %s" is not cacheable', implode(',', (array)$httpMethod), $route)
+                    sprintf('The route "%s %s" is not cacheable', implode(',', (array) $httpMethod), $route)
                 );
             });
 

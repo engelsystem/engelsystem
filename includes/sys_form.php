@@ -12,7 +12,7 @@ use Carbon\Carbon;
  */
 function form_hidden($name, $value)
 {
-    return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" />';
+    return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars((string) $value) . '" />';
 }
 
 /**
@@ -65,7 +65,7 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
 
     return form_element(
         $label,
-        '<input class="form-control" id="' . $dom_id . '" type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="' . $start_date . '" max="' . $end_date . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" autocomplete="off">',
+        '<input class="form-control" id="' . $dom_id . '" type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="' . $start_date . '" max="' . $end_date . '" name="' . $name . '" value="' . htmlspecialchars((string) $value) . '" autocomplete="off">',
         $dom_id
     );
 }
@@ -128,7 +128,7 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
     }
 
     return '<div class="form-check">'
-        . '<input class="form-check-input" type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
+        . '<input class="form-check-input" type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars((string) $value) . '" '
         . ($selected ? ' checked="checked"' : '') . ' /><label class="form-check-label" for="' . $html_id . '">'
         . $label
         . '</label></div>';
@@ -145,7 +145,7 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
  */
 function form_radio($name, $label, $selected, $value)
 {
-    $value = htmlspecialchars((string)$value);
+    $value = htmlspecialchars((string) $value);
     $id = preg_replace('/\s/', '-', $name . '_' . $value);
 
     return '<div class="form-check">'
@@ -216,7 +216,7 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
 function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null, $class = '', $data_attributes = [])
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
-    $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
+    $maxlength = $maxlength ? ' maxlength=' . (int) $maxlength : '';
     $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
     $attr = '';
     foreach ($data_attributes as $attr_key => $attr_value) {
@@ -226,7 +226,7 @@ function form_text($name, $label, $value, $disabled = false, $maxlength = null, 
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars((string)$value) . '"' . $maxlength . $disabled . $autocomplete . $attr . '/>',
+        . '" value="' . htmlspecialchars((string) $value) . '"' . $maxlength . $disabled . $autocomplete . $attr . '/>',
         'form_' . $name,
         $class
     );
@@ -247,7 +247,7 @@ function form_text_placeholder($name, $placeholder, $value, $disabled = false)
     return form_element(
         '',
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars((string)$value) . '" placeholder="' . $placeholder
+        . '" value="' . htmlspecialchars((string) $value) . '" placeholder="' . $placeholder
         . '" ' . $disabled . '/>'
     );
 }
@@ -268,11 +268,11 @@ function form_email($name, $label, $value, $disabled = false, $autocomplete = nu
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
-    $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
+    $maxlength = $maxlength ? ' maxlength=' . (int) $maxlength : '';
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="'
-        . htmlspecialchars((string)$value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
+        . htmlspecialchars((string) $value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
         'form_' . $name
     );
 }
@@ -352,7 +352,7 @@ function form_textarea($name, $label, $value, $disabled = false)
     return form_element(
         $label,
         '<textarea rows="5" class="form-control" id="form_' . $name . '" name="'
-        . $name . '" ' . $disabled . '>' . htmlspecialchars((string)$value) . '</textarea>',
+        . $name . '" ' . $disabled . '>' . htmlspecialchars((string) $value) . '</textarea>',
         'form_' . $name
     );
 }

@@ -390,7 +390,7 @@ class ImportSchedule extends BaseController
      */
     protected function getScheduleData(Request $request)
     {
-        $scheduleId = (int)$request->getAttribute('schedule_id');
+        $scheduleId = (int) $request->getAttribute('schedule_id');
 
         /** @var ScheduleUrl $scheduleUrl */
         $scheduleUrl = ScheduleUrl::findOrFail($scheduleId);
@@ -405,7 +405,7 @@ class ImportSchedule extends BaseController
             throw new ErrorException('schedule.import.request-error');
         }
 
-        $scheduleData = (string)$scheduleResponse->getBody();
+        $scheduleData = (string) $scheduleResponse->getBody();
         if (!$this->parser->load($scheduleData)) {
             throw new ErrorException('schedule.import.read-error');
         }

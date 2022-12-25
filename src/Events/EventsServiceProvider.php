@@ -23,7 +23,7 @@ class EventsServiceProvider extends ServiceProvider
         $config = $this->app->get('config');
 
         foreach ($config->get('event-handlers', []) as $event => $handlers) {
-            foreach ((array)$handlers as $handler) {
+            foreach ((array) $handlers as $handler) {
                 $dispatcher->listen($event, $handler);
             }
         }

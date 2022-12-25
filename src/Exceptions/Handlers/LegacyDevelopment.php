@@ -65,7 +65,7 @@ class LegacyDevelopment extends Legacy
     private function getDisplayNameOfValue(mixed $arg): string
     {
         return match (gettype($arg)) {
-            'string', 'integer', 'double' => (string)$arg,
+            'string', 'integer', 'double' => (string) $arg,
             'boolean'  => $arg ? 'true' : 'false',
             'object'   => get_class($arg),
             'resource' => get_resource_type($arg), // @codeCoverageIgnore

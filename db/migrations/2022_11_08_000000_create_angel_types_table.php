@@ -49,9 +49,9 @@ class CreateAngelTypesTable extends Migration
                 'name'        => $record->name,
                 'description' => $record->description,
 
-                'contact_name'  => (string)$record->contact_name,
-                'contact_dect'  => (string)$record->contact_dect,
-                'contact_email' => (string)$record->contact_email,
+                'contact_name'  => (string) $record->contact_name,
+                'contact_dect'  => (string) $record->contact_dect,
+                'contact_email' => (string) $record->contact_email,
 
                 'restricted'              => $record->restricted,
                 'requires_driver_license' => $record->requires_driver_license,

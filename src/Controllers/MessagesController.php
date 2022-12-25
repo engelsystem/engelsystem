@@ -94,7 +94,7 @@ class MessagesController extends BaseController
      */
     public function messagesOfConversation(Request $request): Response
     {
-        $userId = (int)$request->getAttribute('user_id');
+        $userId = (int) $request->getAttribute('user_id');
 
         $currentUser = $this->auth->user();
         $otherUser = $this->user->findOrFail($userId);
@@ -132,7 +132,7 @@ class MessagesController extends BaseController
      */
     public function send(Request $request): Response
     {
-        $userId = (int)$request->getAttribute('user_id');
+        $userId = (int) $request->getAttribute('user_id');
 
         $currentUser = $this->auth->user();
 
@@ -156,8 +156,8 @@ class MessagesController extends BaseController
      */
     public function delete(Request $request): Response
     {
-        $otherUserId = (int)$request->getAttribute('user_id');
-        $msgId = (int)$request->getAttribute('msg_id');
+        $otherUserId = (int) $request->getAttribute('user_id');
+        $msgId = (int) $request->getAttribute('msg_id');
 
         $currentUser = $this->auth->user();
         $msg = $this->message->findOrFail($msgId);

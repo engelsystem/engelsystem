@@ -151,7 +151,7 @@ class OAuthControllerTest extends TestCase
         // Login using provider
         $controller->index($request);
         $this->assertFalse($this->session->has('oauth2_connect_provider'));
-        $this->assertFalse((bool)$this->otherUser->state->arrived);
+        $this->assertFalse((bool) $this->otherUser->state->arrived);
 
         // Tokens updated
         $oauth = $this->otherUser->oauth[0];
@@ -165,13 +165,13 @@ class OAuthControllerTest extends TestCase
         $this->config->set('oauth', $oauthConfig);
         $controller->index($request);
 
-        $this->assertTrue((bool)User::find(1)->state->arrived);
+        $this->assertTrue((bool) User::find(1)->state->arrived);
         $this->assertTrue($this->log->hasInfoThatContains('as arrived'));
         $this->log->reset();
 
         // Don't set arrived if already done
         $controller->index($request);
-        $this->assertTrue((bool)User::find(1)->state->arrived);
+        $this->assertTrue((bool) User::find(1)->state->arrived);
         $this->assertFalse($this->log->hasInfoThatContains('as arrived'));
     }
 

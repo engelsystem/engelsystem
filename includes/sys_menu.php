@@ -104,7 +104,7 @@ function make_navigation()
             continue;
         }
 
-        $title = ((array)$options)[0];
+        $title = ((array) $options)[0];
         $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
     }
 
@@ -137,7 +137,7 @@ function make_navigation()
             continue;
         }
 
-        $title = ((array)$options)[0];
+        $title = ((array) $options)[0];
         $admin_menu[] = toolbar_dropdown_item(
             page_link_to($menu_page),
             __($title),
@@ -160,7 +160,7 @@ function make_navigation()
  */
 function menu_is_allowed(string $page, $options)
 {
-    $options = (array)$options;
+    $options = (array) $options;
     $permissions = $page;
 
     if (isset($options[1])) {

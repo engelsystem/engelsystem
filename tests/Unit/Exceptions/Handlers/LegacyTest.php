@@ -63,7 +63,7 @@ class LegacyTest extends TestCase
         $this->assertStringContainsString('4242', $logContent);
         $this->assertStringContainsString('Lorem Ipsum', $logContent);
         $this->assertStringContainsString(basename(__FILE__), $logContent);
-        $this->assertStringContainsString((string)$line, $logContent);
+        $this->assertStringContainsString((string) $line, $logContent);
         $this->assertStringContainsString(__FUNCTION__, $logContent);
         $this->assertStringContainsString(json_encode(__CLASS__), $logContent);
         $this->assertStringContainsString('Test Exception', $logContent);

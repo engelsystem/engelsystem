@@ -39,6 +39,6 @@ class LogTransportTest extends TestCase
         $logger = $this->getMockForAbstractClass(LoggerInterface::class);
 
         $transport = new LogTransport($logger);
-        $this->assertEquals('log://', (string)$transport);
+        $this->assertEquals('log://', (string) $transport);
     }
 }

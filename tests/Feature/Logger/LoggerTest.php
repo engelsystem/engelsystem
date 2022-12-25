@@ -157,7 +157,7 @@ class LoggerTest extends ApplicationFeatureTest
         $this->assertStringContainsString('Oops', $entry['message']);
         $this->assertStringContainsString('42', $entry['message']);
         $this->assertStringContainsString(__FILE__, $entry['message']);
-        $this->assertStringContainsString((string)$line, $entry['message']);
+        $this->assertStringContainsString((string) $line, $entry['message']);
         $this->assertStringContainsString(__FUNCTION__, $entry['message']);
     }
 

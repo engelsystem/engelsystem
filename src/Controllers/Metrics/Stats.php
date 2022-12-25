@@ -127,7 +127,7 @@ class Stats
 
     public function vouchers(): int
     {
-        return (int)$this->vouchersQuery()->sum('got_voucher');
+        return (int) $this->vouchersQuery()->sum('got_voucher');
     }
 
     public function vouchersBuckets(array $buckets): array
@@ -232,7 +232,7 @@ class Stats
     {
         $query = $this->workSecondsQuery($done, $freeloaded);
 
-        return (int)$query->sum($this->raw('end - start'));
+        return (int) $query->sum($this->raw('end - start'));
     }
 
     /**
@@ -285,7 +285,7 @@ class Stats
      */
     public function worklogSeconds(): int
     {
-        return (int)Worklog::query()
+        return (int) Worklog::query()
             ->sum($this->raw('hours * 60 * 60'));
     }
 

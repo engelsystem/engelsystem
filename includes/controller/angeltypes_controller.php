@@ -67,7 +67,7 @@ function angeltypes_about_controller()
 
     return [
         __('Teams/Job description'),
-        AngelTypes_about_view($angeltypes, (bool)$user)
+        AngelTypes_about_view($angeltypes, (bool) $user)
     ];
 }
 

@@ -15,7 +15,7 @@ return [
     'api_key'                 => '',
 
     // Enable maintenance mode (show a static page)
-    'maintenance'             => (bool)env('MAINTENANCE', false),
+    'maintenance'             => (bool) env('MAINTENANCE', false),
 
     // Application name (not the event name)
     'app_name'                => env('APP_NAME', 'Engelsystem'),
@@ -220,13 +220,13 @@ return [
     'display_news'            => env('DISPLAY_NEWS', 10),
 
     // Users are able to sign up
-    'registration_enabled'    => (bool)env('REGISTRATION_ENABLED', true),
+    'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
 
     // Only arrived angels can sign up for shifts
-    'signup_requires_arrival' => (bool)env('SIGNUP_REQUIRES_ARRIVAL', false),
+    'signup_requires_arrival' => (bool) env('SIGNUP_REQUIRES_ARRIVAL', false),
 
     // Whether newly-registered user should automatically be marked as arrived
-    'autoarrive'              => (bool)env('ANGEL_AUTOARRIVE', false),
+    'autoarrive'              => (bool) env('ANGEL_AUTOARRIVE', false),
 
     // Only allow shift signup this number of hours in advance
     // Setting this to 0 disables the feature
@@ -256,31 +256,31 @@ return [
     // Whether the Password field should be enabled on registration.
     // This is useful when using oauth, disabling it also disables normal
     // registration without oauth.
-    'enable_password'         => (bool)env('ENABLE_PASSWORD', true),
+    'enable_password'         => (bool) env('ENABLE_PASSWORD', true),
 
     // Whether the DECT field should be enabled
-    'enable_dect'             => (bool)env('ENABLE_DECT', true),
+    'enable_dect'             => (bool) env('ENABLE_DECT', true),
 
     // Whether the mobile number can be shown to other users
-    'enable_mobile_show'      => (bool)env('ENABLE_MOBILE_SHOW', false),
+    'enable_mobile_show'      => (bool) env('ENABLE_MOBILE_SHOW', false),
 
     // Enables prename and lastname
-    'enable_user_name'        => (bool)env('ENABLE_USER_NAME', false),
+    'enable_user_name'        => (bool) env('ENABLE_USER_NAME', false),
 
     // Enable displaying the pronoun fields
-    'enable_pronoun'          => (bool)env('ENABLE_PRONOUN', true),
+    'enable_pronoun'          => (bool) env('ENABLE_PRONOUN', true),
 
     // Enables the planned arrival/leave date
-    'enable_planned_arrival'  => (bool)env('ENABLE_PLANNED_ARRIVAL', true),
+    'enable_planned_arrival'  => (bool) env('ENABLE_PLANNED_ARRIVAL', true),
 
     // Enables the T-Shirt configuration on signup and profile
-    'enable_tshirt_size'      => (bool)env('ENABLE_TSHIRT_SIZE', true),
+    'enable_tshirt_size'      => (bool) env('ENABLE_TSHIRT_SIZE', true),
 
     // Enables the goody configuration on signup and profile
-    'enable_goody'            => (bool)env('ENABLE_GOODY', false),
+    'enable_goody'            => (bool) env('ENABLE_GOODY', false),
 
     // Enables the food voucher in the user profile
-    'enable_voucher'          => (bool)env('ENABLE_VOUCHER', true),
+    'enable_voucher'          => (bool) env('ENABLE_VOUCHER', true),
 
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
@@ -293,7 +293,7 @@ return [
 
     // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
     'night_shifts'            => [
-        'enabled'    => (bool)env('NIGHT_SHIFTS', true), // Disable to weigh every shift the same
+        'enabled'    => (bool) env('NIGHT_SHIFTS', true), // Disable to weigh every shift the same
         'start'      => env('NIGHT_SHIFTS_START', 2),
         'end'        => env('NIGHT_SHIFTS_END', 6),
         'multiplier' => env('NIGHT_SHIFTS_MULTIPLIER', 2),
@@ -359,7 +359,7 @@ return [
     'trusted_proxies'         => env('TRUSTED_PROXIES', ['127.0.0.0/8', '::ffff:127.0.0.0/8', '::1/128']),
 
     // Add additional headers
-    'add_headers'             => (bool)env('ADD_HEADERS', true),
+    'add_headers'             => (bool) env('ADD_HEADERS', true),
     'headers'                 => [
         'X-Content-Type-Options'  => 'nosniff',
         'X-Frame-Options'         => 'sameorigin',

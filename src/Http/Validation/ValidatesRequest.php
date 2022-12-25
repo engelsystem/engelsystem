@@ -12,7 +12,7 @@ trait ValidatesRequest
     protected function validate(Request $request, array $rules): array
     {
         $isValid = $this->validator->validate(
-            (array)$request->getParsedBody(),
+            (array) $request->getParsedBody(),
             $rules
         );
 

@@ -114,7 +114,7 @@ class CreateEventConfigTable extends Migration
 
     protected function getConfigValue(Collection $config, string $name): mixed
     {
-        $value = $config->where('name', $name)->first('value', (object)['value' => null])->value;
+        $value = $config->where('name', $name)->first('value', (object) ['value' => null])->value;
 
         return $value ? json_decode($value, true) : null;
     }

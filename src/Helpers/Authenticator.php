@@ -88,7 +88,7 @@ class Authenticator
      */
     public function can(array|string $abilities): bool
     {
-        $abilities = (array)$abilities;
+        $abilities = (array) $abilities;
 
         if (empty($this->permissions)) {
             $user = $this->user();

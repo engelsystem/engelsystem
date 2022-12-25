@@ -152,7 +152,7 @@ class MetricsEngine implements EngineInterface
     protected function formatValue(mixed $value): mixed
     {
         if (is_bool($value)) {
-            return (int)$value;
+            return (int) $value;
         }
 
         return $this->escape($value);
