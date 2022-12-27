@@ -347,6 +347,7 @@ deploy:
   dependencies: *deploy_needs
   environment:
     name: rsync-staging
+    deployment_tier: development
   only:
     - main
   script:
@@ -369,7 +370,10 @@ deploy:
     - test
     - build-image
   before_script:
-    - &kubectl_deployment_script if [[ -z "${KUBE_INGRESS_BASE_DOMAIN}" ]]; then echo "Skipping deployment"; exit; fi
+    - &kubectl_deployment_script |-
+      if [[ -z "${KUBE_INGRESS_BASE_DOMAIN}" ]]; then echo "Skipping deployment"; exit; fi
+      if [[ -n "${KUBE_CONTEXT}" ]]; then kubectl config use-context "${KUBE_CONTEXT}"; fi
+      if [[ -z "${KUBE_NAMESPACE}" ]]; then export KUBE_NAMESPACE=${CI_PROJECT_PATH_SLUG}-${CI_ENVIRONMENT_SLUG}; fi
 
 .deploy_k8s: &deploy_k8s
   <<: *kubectl_deployment
@@ -398,20 +402,24 @@ deploy:
     - export CI_CLUSTER_ISSUER=${CI_CLUSTER_ISSUER:-letsencrypt}
     - export CI_SETUP_ADMIN_PASSWORD=${CI_SETUP_ADMIN_PASSWORD}
 
+    - echo "Generating config"
     - cp deployment.tpl.yaml deployment.yaml
     - >-
       for env in ${!CI_*}; do
         sed -i "s#<${env}>#$( echo "${!env}" | head -n1 | sed -e 's~\\~\\\\~' -e 's~#~\\#~' )#g" deployment.yaml;
       done
 
+    - echo "Checking namespace ${CI_KUBE_NAMESPACE}"
+    - kubectl get namespace "${CI_KUBE_NAMESPACE}" > /dev/null 2>&1 || kubectl create namespace "${CI_KUBE_NAMESPACE}"
+
     - echo "Deploying to ${CI_ENVIRONMENT_URL}"
-    - kubectl diff -f deployment.yaml || true
-    - kubectl apply -f deployment.yaml
+    - kubectl -n "${CI_KUBE_NAMESPACE}" diff -f deployment.yaml || true
+    - kubectl -n "${CI_KUBE_NAMESPACE}" apply -f deployment.yaml
     - >-
-      kubectl -n $CI_KUBE_NAMESPACE wait --for=condition=Ready pods --timeout=${CI_WAIT_TIMEOUT:-5}m
+      kubectl -n "${CI_KUBE_NAMESPACE}" wait --for=condition=Ready pods --timeout=${CI_WAIT_TIMEOUT:-5}m
       -l app=$CI_PROJECT_PATH_SLUG -l tier=database
     - >-
-      kubectl -n $CI_KUBE_NAMESPACE wait --for=condition=Ready pods --timeout=${CI_WAIT_TIMEOUT:-5}m
+      kubectl -n "${CI_KUBE_NAMESPACE}" wait --for=condition=Ready pods --timeout=${CI_WAIT_TIMEOUT:-5}m
       -l app=$CI_PROJECT_PATH_SLUG -l tier=application -l commit=$CI_COMMIT_SHORT_SHA
 
 .deploy_k8s_stop: &deploy_k8s_stop
@@ -431,6 +439,7 @@ deploy-k8s-review:
     on_stop: stop-k8s-review
     auto_stop_in: 1 week
     url: https://${CI_PROJECT_PATH_SLUG}-review.${KUBE_INGRESS_BASE_DOMAIN}/${CI_COMMIT_REF_SLUG}
+    deployment_tier: development
   variables:
     CI_REPLICAS_REVIEW: 1
     CI_APP_NAME: review/${CI_COMMIT_REF_NAME}
@@ -444,6 +453,7 @@ stop-k8s-review:
   environment:
     name: review/${CI_COMMIT_REF_NAME}
     action: stop
+    deployment_tier: development
 
 #
 # Deploy production
@@ -463,6 +473,7 @@ deploy-production:
     - generate-assets
   environment:
     name: rsync-production
+    deployment_tier: production
   when: manual
   only:
     - main
