@@ -134,7 +134,7 @@ function shift_edit_controller()
         foreach ($needed_angel_types as $needed_angeltype_id => $count) {
             $needed_angel_types[$needed_angeltype_id] = 0;
 
-            $queryKey = 'type_' . $needed_angeltype_id;
+            $queryKey = 'angeltype_count_' . $needed_angeltype_id;
             if ($request->has($queryKey)) {
                 if (test_request_int($queryKey)) {
                     $needed_angel_types[$needed_angeltype_id] = trim($request->input($queryKey));
