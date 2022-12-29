@@ -54,39 +54,6 @@ function current_page()
 }
 
 /**
- * @return array
- */
-function make_user_submenu()
-{
-    $page = current_page();
-    $user_submenu = make_language_select();
-
-    if (auth()->can('user_settings') || auth()->can('logout')) {
-        $user_submenu[] = toolbar_dropdown_item_divider();
-    }
-
-    if (auth()->can('user_settings')) {
-        $user_submenu[] = toolbar_dropdown_item(
-            page_link_to('settings/profile'),
-            __('Settings'),
-            $page == 'settings/profile',
-            'person-fill-gear'
-        );
-    }
-
-    if (auth()->can('logout')) {
-        $user_submenu[] = toolbar_dropdown_item(
-            page_link_to('logout'),
-            __('Logout'),
-            $page == 'logout',
-            'box-arrow-left',
-        );
-    }
-
-    return $user_submenu;
-}
-
-/**
  * @return string
  */
 function make_navigation()
