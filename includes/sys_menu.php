@@ -214,7 +214,7 @@ function make_language_select()
 
     $items = [];
     foreach (config('locales') as $locale => $name) {
-        $url = url($request->getPathInfo(), ['set-locale' => $locale]);
+        $url = url($request->getPathInfo(), [...$request->getQueryParams(), 'set-locale' => $locale]);
 
         $items[] = toolbar_dropdown_item(
             htmlspecialchars($url),
