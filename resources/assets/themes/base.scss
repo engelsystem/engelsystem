@@ -191,6 +191,9 @@ table a > .icon-icon_angel {
     flex-shrink: 1;
 
     .header {
+      position: sticky;
+      top: calc(40px + $navbar-padding-y * 2 + var(--#{$prefix}border-width));
+      z-index: $zindex-sticky;
       border-bottom: 1px solid $table-border-color;
       height: 30px;
       padding: 5px 5px 5px 16px;
@@ -215,6 +218,9 @@ table a > .icon-icon_angel {
   }
 
   .lane.time {
+    position: sticky;
+    left: 0;
+    z-index: $zindex-sticky + 1;
     border-right: 1px solid $table-border-color;
     flex-grow: 0;
     min-width: 50px;

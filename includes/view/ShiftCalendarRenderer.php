@@ -212,22 +212,23 @@ class ShiftCalendarRenderer
      */
     private function renderTick($time, $label = false)
     {
+        $class = $label ? 'tick bg-' . theme_type() : 'tick ';
         if ($time % (24 * 60 * 60) == 23 * 60 * 60) {
             if (!$label) {
-                return div('tick day');
+                return div($class . ' day');
             }
-            return div('tick day', [
+            return div($class . ' day', [
                 date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time)
             ]);
         } elseif ($time % (60 * 60) == 0) {
             if (!$label) {
-                return div('tick hour');
+                return div($class . ' hour');
             }
-            return div('tick hour', [
+            return div($class . ' hour', [
                 date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time)
             ]);
         }
-        return div('tick');
+        return div($class);
     }
 
     /**
@@ -237,10 +238,7 @@ class ShiftCalendarRenderer
      */
     private function renderTimeLane()
     {
-        $bg = '';
-        if (theme_type() === 'light') {
-            $bg = 'bg-light';
-        }
+        $bg = 'bg-' . theme_type();
 
         $time_slot = [
             div('header ' . $bg, [
