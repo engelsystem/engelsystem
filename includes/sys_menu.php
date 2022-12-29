@@ -23,9 +23,9 @@ function header_render_hints()
 {
     $user = auth()->user();
 
-    $hints_renderer = new UserHintsRenderer();
-
     if ($user) {
+        $hints_renderer = new UserHintsRenderer();
+
         $hints_renderer->addHint(admin_new_questions());
         $hints_renderer->addHint(user_angeltypes_unconfirmed_hint());
         $hints_renderer->addHint(render_user_departure_date_hint());
@@ -36,9 +36,11 @@ function header_render_hints()
         $hints_renderer->addHint(render_user_arrived_hint(), true);
         $hints_renderer->addHint(render_user_tshirt_hint(), true);
         $hints_renderer->addHint(render_user_dect_hint(), true);
+
+        return $hints_renderer->render();
     }
 
-    return $hints_renderer->render();
+    return '';
 }
 
 /**
