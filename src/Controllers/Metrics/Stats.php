@@ -45,27 +45,25 @@ class Stats
         $query = State::whereArrived(true);
 
         if (!is_null($working)) {
-            // @codeCoverageIgnoreStart
             $query
                 ->leftJoin('worklogs', 'worklogs.user_id', '=', 'users_state.user_id')
-                ->leftJoin('ShiftEntry', 'ShiftEntry.UID', '=', 'users_state.user_id')
+                ->leftJoin('shift_entries', 'shift_entries.user_id', '=', 'users_state.user_id')
                 ->distinct();
 
             $query->where(function ($query) use ($working): void {
                 /** @var QueryBuilder $query */
                 if ($working) {
                     $query
-                        ->whereNotNull('ShiftEntry.SID')
+                        ->whereNotNull('shift_entries.shift_id')
                         ->orWhereNotNull('worklogs.hours');
 
                     return;
                 }
 
                 $query
-                    ->whereNull('ShiftEntry.SID')
+                    ->whereNull('shift_entries.shift_id')
                     ->whereNull('worklogs.hours');
             });
-            // @codeCoverageIgnoreEnd
         }
 
         return $query->count('users_state.user_id');
@@ -104,18 +102,17 @@ class Stats
      * The number of currently working users
      *
      * @param bool|null $freeloaded
-     * @codeCoverageIgnore
      */
     public function currentlyWorkingUsers(bool $freeloaded = null): int
     {
         $query = User::query()
-            ->join('ShiftEntry', 'ShiftEntry.UID', '=', 'users.id')
-            ->join('shifts', 'shifts.id', '=', 'ShiftEntry.SID')
+            ->join('shift_entries', 'shift_entries.user_id', '=', 'users.id')
+            ->join('shifts', 'shifts.id', '=', 'shift_entries.shift_id')
             ->where('shifts.start', '<=', Carbon::now())
             ->where('shifts.end', '>', Carbon::now());
 
         if (!is_null($freeloaded)) {
-            $query->where('ShiftEntry.freeloaded', '=', $freeloaded);
+            $query->where('shift_entries.freeloaded', '=', $freeloaded);
         }
 
         return $query->count();
@@ -202,13 +199,13 @@ class Stats
      * @param bool|null $done
      * @param bool|null $freeloaded
      *
-     * @codeCoverageIgnore
+     * @codeCoverageIgnore because it is only used in functions that use TIMESTAMPDIFF
      */
     protected function workSecondsQuery(bool $done = null, bool $freeloaded = null): QueryBuilder
     {
         $query = $this
-            ->getQuery('ShiftEntry')
-            ->join('shifts', 'shifts.id', '=', 'ShiftEntry.SID');
+            ->getQuery('shift_entries')
+            ->join('shifts', 'shifts.id', '=', 'shift_entries.shift_id');
 
         if (!is_null($freeloaded)) {
             $query->where('freeloaded', '=', $freeloaded);
@@ -227,13 +224,13 @@ class Stats
      * @param bool|null $done
      * @param bool|null $freeloaded
      *
-     * @codeCoverageIgnore
+     * @codeCoverageIgnore as TIMESTAMPDIFF is not implemented in SQLite
      */
     public function workSeconds(bool $done = null, bool $freeloaded = null): int
     {
         $query = $this->workSecondsQuery($done, $freeloaded);
 
-        return (int) $query->sum($this->raw('end - start'));
+        return (int) $query->sum($this->raw('TIMESTAMPDIFF(MINUTE, start, end) * 60'));
     }
 
     /**
@@ -242,22 +239,19 @@ class Stats
      * @param bool|null $done
      * @param bool|null $freeloaded
      *
-     * @codeCoverageIgnore
+     * @codeCoverageIgnore as TIMESTAMPDIFF is not implemented in SQLite
      */
     public function workBuckets(array $buckets, bool $done = null, bool $freeloaded = null): array
     {
         return $this->getBuckets(
             $buckets,
             $this->workSecondsQuery($done, $freeloaded),
-            'UID',
-            'SUM(end - start)',
-            'SUM(end - start)'
+            'user_id',
+            'SUM(TIMESTAMPDIFF(MINUTE, start, end) * 60)',
+            'SUM(TIMESTAMPDIFF(MINUTE, start, end) * 60)'
         );
     }
 
-    /**
-     * @codeCoverageIgnore As long as its only used for old tables
-     */
     protected function getBuckets(
         array $buckets,
         BuilderContract $basicQuery,
@@ -281,18 +275,12 @@ class Stats
         return $return;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function worklogSeconds(): int
     {
         return (int) Worklog::query()
             ->sum($this->raw('hours * 60 * 60'));
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function worklogBuckets(array $buckets): array
     {
         return $this->getBuckets(

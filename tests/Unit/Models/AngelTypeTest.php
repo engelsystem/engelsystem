@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 
@@ -59,6 +60,19 @@ class AngelTypeTest extends ModelTest
 
         $angeltypes = $angelType->userAngelTypes;
         $this->assertCount(2, $angeltypes);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\AngelType::shiftEntries
+     */
+    public function testShiftEntries(): void
+    {
+        $angelType = new AngelType(['name' => 'test type']);
+        $angelType->save();
+
+        ShiftEntry::factory(3)->create(['angel_type_id' => $angelType->id]);
+
+        $this->assertCount(3, $angelType->shiftEntries);
     }
 
     /**

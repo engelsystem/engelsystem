@@ -13,6 +13,7 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
@@ -164,6 +165,35 @@ class StatsTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::worklogBuckets
+     * @covers \Engelsystem\Controllers\Metrics\Stats::getBuckets
+     */
+    public function testWorklogBuckets(): void
+    {
+        Worklog::factory()->create(['hours' => 1.2, 'worked_at' => Carbon::now()->subDay()]);
+        Worklog::factory()->create(['hours' => 1.9, 'worked_at' => Carbon::now()->subDay()]);
+        Worklog::factory()->create(['hours' => 3, 'worked_at' => Carbon::now()->subDay()]);
+        Worklog::factory()->create(['hours' => 10, 'worked_at' => Carbon::now()->subDay()]);
+
+        $stats = new Stats($this->database);
+        $buckets = $stats->worklogBuckets([
+            1 * 60 * 60,
+            2 * 60 * 60,
+            3 * 60 * 60,
+            4 * 60 * 60,
+            '+Inf'
+        ]);
+
+        $this->assertEquals([
+            3600   => 0,
+            7200   => 2,
+            10800  => 3,
+            14400  => 3,
+            '+Inf' => 4,
+        ], $buckets);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::rooms
      */
     public function testRooms(): void
@@ -251,9 +281,13 @@ class StatsTest extends TestCase
     public function testArrivedUsers(): void
     {
         $this->addUsers();
+        ShiftEntry::factory()->create(['user_id' => 3]);
+        ShiftEntry::factory()->create(['user_id' => 4]);
 
         $stats = new Stats($this->database);
         $this->assertEquals(7, $stats->arrivedUsers());
+        $this->assertEquals(5, $stats->arrivedUsers(false));
+        $this->assertEquals(2, $stats->arrivedUsers(true));
     }
 
     /**
@@ -291,6 +325,25 @@ class StatsTest extends TestCase
         $this->assertEquals(3, $stats->email('humans'));
         $this->assertEquals(1, $stats->email('goody'));
         $this->assertEquals(1, $stats->email('news'));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::currentlyWorkingUsers
+     */
+    public function testCurrentlyWorkingUsers(): void
+    {
+        $this->addUsers();
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create(['start' => Carbon::now()->subHour(), 'end' => Carbon::now()->addHour()]);
+
+        ShiftEntry::factory()->create(['shift_id' => $shift->id]);
+        ShiftEntry::factory()->create(['shift_id' => $shift->id]);
+        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeloaded' => true]);
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(3, $stats->currentlyWorkingUsers());
+        $this->assertEquals(2, $stats->currentlyWorkingUsers(false));
+        $this->assertEquals(1, $stats->currentlyWorkingUsers(true));
     }
 
     /**

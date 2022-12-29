@@ -13,6 +13,7 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
 use Engelsystem\Models\User\License;
@@ -332,6 +333,19 @@ class UserTest extends ModelTest
         $oauth = $user->oauth;
 
         $this->assertCount(1, $oauth);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::shiftEntries
+     */
+    public function testShiftEntries(): void
+    {
+        $user = new User($this->data);
+        $user->save();
+
+        ShiftEntry::factory(2)->create(['user_id' => $user->id]);
+
+        $this->assertCount(2, $user->shiftEntries);
     }
 
     /**

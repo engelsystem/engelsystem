@@ -10,6 +10,7 @@ use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
@@ -41,6 +42,7 @@ class FactoriesTest extends TestCase
             [Question::class],
             [Room::class],
             [Schedule::class],
+            [ShiftEntry::class],
             [Settings::class],
             [Shift::class],
             [State::class],

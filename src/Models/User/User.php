@@ -13,6 +13,7 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,6 +48,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read SupportCollection|Privilege[] $privileges
  * @property-read Collection|AngelType[]        $userAngelTypes
  * @property-read UserAngelType                 $pivot
+ * @property-read Collection|ShiftEntry[]       $shiftEntries
  * @property-read Collection|Worklog[]          $worklogs
  * @property-read Collection|Worklog[]          $worklogsCreated
  * @property-read Collection|Question[]         $questionsAsked
@@ -187,6 +189,11 @@ class User extends BaseModel
     public function oauth(): HasMany
     {
         return $this->hasMany(OAuth::class);
+    }
+
+    public function shiftEntries(): HasMany
+    {
+        return $this->hasMany(ShiftEntry::class);
     }
 
     public function worklogs(): HasMany
