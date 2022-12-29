@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\User;
 
 /**
@@ -56,14 +57,12 @@ function user_myshifts()
                     `ShiftEntry`.`Comment`,
                     `ShiftEntry`.`UID`,
                     `shift_types`.`name`,
-                    `Shifts`.*,
-                    `rooms`.`name` as room_name,
+                    `shifts`.*,
                     `angel_types`.`name` AS `angel_type`
                 FROM `ShiftEntry`
                 JOIN `angel_types` ON (`ShiftEntry`.`TID` = `angel_types`.`id`)
-                JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
-                JOIN `shift_types` ON (`shift_types`.`id` = `Shifts`.`shifttype_id`)
-                JOIN `rooms` ON (`Shifts`.`RID` = `rooms`.`id`)
+                JOIN `shifts` ON (`ShiftEntry`.`SID` = `shifts`.`id`)
+                JOIN `shift_types` ON (`shift_types`.`id` = `shifts`.`shift_type_id`)
                 WHERE `ShiftEntry`.`id`=?
                 AND `UID`=?
                 LIMIT 1
@@ -74,8 +73,11 @@ function user_myshifts()
             ]
         );
         if (!empty($shift)) {
-            $freeloaded = $shift['freeloaded'];
-            $freeload_comment = $shift['freeload_comment'];
+            /** @var Shift $shift */
+            $shift = (new Shift())->forceFill($shift);
+
+            $freeloaded = $shift->freeloaded;
+            $freeload_comment = $shift->freeloaded_comment;
 
             if ($request->hasPostData('submit')) {
                 $valid = true;
@@ -88,8 +90,8 @@ function user_myshifts()
                     }
                 }
 
-                $comment = $shift['Comment'];
-                $user_source = User::find($shift['UID']);
+                $comment = $shift->Comment;
+                $user_source = User::find($shift->UID);
                 if (auth()->user()->id == $user_source->id) {
                     $comment = strip_request_item_nl('comment');
                 }
@@ -103,9 +105,10 @@ function user_myshifts()
                     ]);
 
                     engelsystem_log(
-                        'Updated ' . User_Nick_render($user_source, true) . '\'s shift ' . $shift['name']
-                        . ' from ' . date('Y-m-d H:i', $shift['start'])
-                        . ' to ' . date('Y-m-d H:i', $shift['end'])
+                        'Updated ' . User_Nick_render($user_source, true) . '\'s shift '
+                        . $shift->title . ' / ' . $shift->shiftType->name
+                        . ' from ' . $shift->start->format('Y-m-d H:i')
+                        . ' to ' . $shift->end->format('Y-m-d H:i')
                         . ' with comment ' . $comment
                         . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeload_comment : 'NO')
                     );
@@ -116,13 +119,13 @@ function user_myshifts()
 
             return ShiftEntry_edit_view(
                 $shifts_user,
-                date('Y-m-d H:i', $shift['start']) . ', ' . shift_length($shift),
-                $shift['room_name'],
-                $shift['name'],
-                $shift['angel_type'],
-                $shift['Comment'],
-                $shift['freeloaded'],
-                $shift['freeload_comment'],
+                $shift->start->format('Y-m-d H:i') . ', ' . shift_length($shift),
+                $shift->room->name,
+                $shift->shiftType->name,
+                $shift->angel_type,
+                $shift->Comment,
+                $shift->freeloaded,
+                $shift->freeload_comment,
                 auth()->can('user_shifts_admin')
             );
         } else {

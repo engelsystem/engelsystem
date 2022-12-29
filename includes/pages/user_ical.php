@@ -1,7 +1,8 @@
 <?php
 
-use Carbon\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Engelsystem\Models\Shifts\Shift;
+use Illuminate\Support\Collection;
 
 /**
  * Controller for ical output of users own shifts or any user_shifts filter.
@@ -31,7 +32,7 @@ function user_ical()
 /**
  * Renders an ical calendar from given shifts array.
  *
- * @param array $shifts Shift
+ * @param Shift[]|Collection $shifts Shift
  */
 function send_ical_from_shifts($shifts)
 {
@@ -50,25 +51,22 @@ function send_ical_from_shifts($shifts)
 /**
  * Renders an ical vevent from given shift.
  *
- * @param array $shift
+ * @param Shift $shift
  * @return string
  */
-function make_ical_entry_from_shift($shift)
+function make_ical_entry_from_shift(Shift $shift)
 {
-    $start = Carbon::createFromTimestamp($shift['start']);
-    $end = Carbon::createFromTimestamp($shift['end']);
-
     $output = "BEGIN:VEVENT\r\n";
-    $output .= 'UID:' . md5($shift['start'] . $shift['end'] . $shift['name']) . "\r\n";
-    $output .= 'SUMMARY:' . str_replace("\n", "\\n", $shift['name'])
-        . ' (' . str_replace("\n", "\\n", $shift['title']) . ")\r\n";
-    if (isset($shift['Comment'])) {
-        $output .= 'DESCRIPTION:' . str_replace("\n", "\\n", $shift['Comment']) . "\r\n";
+    $output .= 'UID:' . md5($shift->start->timestamp . $shift->end->timestamp . $shift->shiftType->name) . "\r\n";
+    $output .= 'SUMMARY:' . str_replace("\n", "\\n", $shift->shiftType->name)
+        . ' (' . str_replace("\n", "\\n", $shift->title) . ")\r\n";
+    if (isset($shift->Comment)) {
+        $output .= 'DESCRIPTION:' . str_replace("\n", "\\n", $shift->Comment) . "\r\n";
     }
-    $output .= 'DTSTAMP:' . $start->utc()->format('Ymd\THis\Z') . "\r\n";
-    $output .= 'DTSTART:' . $start->utc()->format('Ymd\THis\Z') . "\r\n";
-    $output .= 'DTEND:' . $end->utc()->format('Ymd\THis\Z') . "\r\n";
-    $output .= 'LOCATION:' . $shift['Name'] . "\r\n";
+    $output .= 'DTSTAMP:' . $shift->start->utc()->format('Ymd\THis\Z') . "\r\n";
+    $output .= 'DTSTART:' . $shift->start->utc()->format('Ymd\THis\Z') . "\r\n";
+    $output .= 'DTEND:' . $shift->end->utc()->format('Ymd\THis\Z') . "\r\n";
+    $output .= 'LOCATION:' . $shift->room->name . "\r\n";
     $output .= "END:VEVENT\r\n";
     return $output;
 }

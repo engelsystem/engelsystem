@@ -1,8 +1,7 @@
 <?php
 
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
-use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\ShiftsFilter;
 
 /**
@@ -49,6 +48,7 @@ function public_dashboard_controller()
     $free_shifts_source = Shifts_free(time(), time() + 12 * 60 * 60, $filter);
     $free_shifts = [];
     foreach ($free_shifts_source as $shift) {
+        $shift = Shift($shift);
         $free_shift = public_dashboard_controller_free_shift($shift, $filter);
         if (count($free_shift['needed_angels']) > 0) {
             $free_shifts[] = $free_shift;
@@ -64,32 +64,30 @@ function public_dashboard_controller()
 /**
  * Gathers information for free shifts to display.
  *
- * @param array             $shift
+ * @param Shift             $shift
  * @param ShiftsFilter|null $filter
  *
  * @return array
  */
-function public_dashboard_controller_free_shift($shift, ShiftsFilter $filter = null)
+function public_dashboard_controller_free_shift(Shift $shift, ShiftsFilter $filter = null)
 {
-    $shifttype = ShiftType::find($shift['shifttype_id']);
-    $room = Room::find($shift['RID']);
-
+    // ToDo move to model and return one
     $free_shift = [
-        'SID'            => $shift['SID'],
+        'id'             => $shift->id,
         'style'          => 'default',
-        'start'          => date('H:i', $shift['start']),
-        'end'            => date('H:i', $shift['end']),
-        'duration'       => round(($shift['end'] - $shift['start']) / 3600),
-        'shifttype_name' => $shifttype->name,
-        'title'          => $shift['title'],
-        'room_name'      => $room->name,
-        'needed_angels'  => public_dashboard_needed_angels($shift['NeedAngels'], $filter),
+        'start'          => $shift->start->format('H:i'),
+        'end'            => $shift->end->format('H:i'),
+        'duration'       => round(($shift->end->timestamp - $shift->start->timestamp) / 3600),
+        'shifttype_name' => $shift->shiftType->name,
+        'title'          => $shift->title,
+        'room_name'      => $shift->room->name,
+        'needed_angels'  => public_dashboard_needed_angels($shift->neededAngels, $filter),
     ];
 
-    if (time() + 3 * 60 * 60 > $shift['start']) {
+    if (time() + 3 * 60 * 60 > $shift->start->timestamp) {
         $free_shift['style'] = 'warning';
     }
-    if (time() > $shift['start']) {
+    if (time() > $shift->start->timestamp) {
         $free_shift['style'] = 'danger';
     }
 

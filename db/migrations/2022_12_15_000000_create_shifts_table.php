@@ -29,8 +29,8 @@ class CreateShiftsTable extends Migration
         $this->schema->create('shifts', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title');
-            $table->text('description');
-            $table->string('url');
+            $table->text('description')->default('');
+            $table->string('url')->default('');
             $table->dateTime('start')->index();
             $table->dateTime('end');
 

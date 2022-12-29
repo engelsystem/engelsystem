@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Illuminate\Support\Collection;
@@ -196,35 +196,39 @@ function User_shift_state_render($user)
         return '';
     }
 
-    $upcoming_shifts = ShiftEntries_upcoming_for_user($user->id);
+    $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
     if (empty($upcoming_shifts)) {
         return '<span class="text-success">' . __('Free') . '</span>';
     }
 
     $nextShift = array_shift($upcoming_shifts);
 
-    $start = Carbon::createFromTimestamp($nextShift['start'])->format(__('Y-m-d H:i'));
+    $start = Carbon::make($nextShift['start']);
+    $end = Carbon::make($nextShift['end']);
+    $startFormat = $start->format(__('Y-m-d H:i'));
+    $endFormat = $end->format(__('Y-m-d H:i'));
+    $startTimestamp = $start->timestamp;
+    $endTimestamp = $end->timestamp;
 
-    if ($nextShift['start'] > time()) {
-        if ($nextShift['start'] - time() > 3600) {
-            return '<span class="text-success" title="' . $start . '" data-countdown-ts="' . $nextShift['start'] . '">'
+    if ($startTimestamp > time()) {
+        if ($startTimestamp - time() > 3600) {
+            return '<span class="text-success" title="' . $startFormat . '" data-countdown-ts="' . $startTimestamp . '">'
                 . __('Next shift %c')
                 . '</span>';
         }
-        return '<span class="text-warning" title="' . $start . '" data-countdown-ts="' . $nextShift['start'] . '">'
+        return '<span class="text-warning" title="' . $startFormat . '" data-countdown-ts="' . $startTimestamp . '">'
             . __('Next shift %c')
             . '</span>';
     }
-    $halfway = ($nextShift['start'] + $nextShift['end']) / 2;
 
+    $halfway = ($startTimestamp + $endTimestamp) / 2;
     if (time() < $halfway) {
-        return '<span class="text-danger" title="' . $start . '" data-countdown-ts="' . $nextShift['start'] . '">'
+        return '<span class="text-danger" title="' . $startFormat . '" data-countdown-ts="' . $startTimestamp . '">'
             . __('Shift started %c')
             . '</span>';
     }
 
-    $end = Carbon::createFromTimestamp($nextShift['end'])->format(__('Y-m-d H:i'));
-    return '<span class="text-danger" title="' . $end . '" data-countdown-ts="' . $nextShift['end'] . '">'
+    return '<span class="text-danger" title="' . $endFormat . '" data-countdown-ts="' . $endTimestamp . '">'
         . __('Shift ends %c')
         . '</span>';
 }
@@ -235,15 +239,15 @@ function User_last_shift_render($user)
         return '';
     }
 
-    $last_shifts = ShiftEntries_finished_by_user($user->id);
+    $last_shifts = ShiftEntries_finished_by_user($user);
     if (empty($last_shifts)) {
         return '';
     }
 
     $lastShift = array_shift($last_shifts);
-    $end = Carbon::createFromTimestamp($lastShift['end'])->format(__('Y-m-d H:i'));
+    $end = Carbon::make($lastShift['end']);
 
-    return '<span title="' . $end . '" data-countdown-ts="' . $lastShift['end'] . '">'
+    return '<span title="' . $end->format(__('Y-m-d H:i')) . '" data-countdown-ts="' . $end->timestamp . '">'
         . __('Shift ended %c')
         . '</span>';
 }
@@ -275,44 +279,44 @@ function User_view_shiftentries($needed_angel_type)
 /**
  * Helper that renders a shift line for user view
  *
- * @param array $shift
+ * @param Shift $shift
  * @param User  $user_source
  * @param bool  $its_me
  * @return array
  */
-function User_view_myshift($shift, $user_source, $its_me)
+function User_view_myshift(Shift $shift, $user_source, $its_me)
 {
-    $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
-    if ($shift['title']) {
-        $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . $shift['title'] . '</a>';
+    $shift_info = '<a href="' . shift_link($shift) . '">' . $shift->shiftType->name . '</a>';
+    if ($shift->title) {
+        $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . $shift->title . '</a>';
     }
-    foreach ($shift['needed_angeltypes'] as $needed_angel_type) {
+    foreach ($shift->needed_angeltypes as $needed_angel_type) {
         $shift_info .= User_view_shiftentries($needed_angel_type);
     }
 
     $myshift = [
         'date'       => icon('calendar-event')
-            . date('Y-m-d', $shift['start']) . '<br>'
-            . icon('clock-history') . date('H:i', $shift['start'])
+            . $shift->start->format('Y-m-d') . '<br>'
+            . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
-            . date('H:i', $shift['end']),
-        'duration'   => sprintf('%.2f', ($shift['end'] - $shift['start']) / 3600) . '&nbsp;h',
-        'room'       => Room_name_render(Room::find($shift['RID'])),
+            . $shift->end->format('H:i'),
+        'duration'   => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
+        'room'       => Room_name_render($shift->room),
         'shift_info' => $shift_info,
         'comment'    => ''
     ];
 
     if ($its_me) {
-        $myshift['comment'] = $shift['Comment'];
+        $myshift['comment'] = $shift->Comment;
     }
 
-    if ($shift['freeloaded']) {
+    if ($shift->freeloaded) {
         $myshift['duration'] = '<p class="text-danger">'
-            . sprintf('%.2f', -($shift['end'] - $shift['start']) / 3600 * 2) . '&nbsp;h'
+            . sprintf('%.2f', -($shift->end->timestamp - $shift->start->timestamp) / 3600 * 2) . '&nbsp;h'
             . '</p>';
         if (auth()->can('user_shifts_admin')) {
             $myshift['comment'] .= '<br />'
-                . '<p class="text-danger">' . __('Freeloaded') . ': ' . $shift['freeload_comment'] . '</p>';
+                . '<p class="text-danger">' . __('Freeloaded') . ': ' . $shift->freeload_comment . '</p>';
         } else {
             $myshift['comment'] .= '<br /><p class="text-danger">' . __('Freeloaded') . '</p>';
         }
@@ -323,12 +327,12 @@ function User_view_myshift($shift, $user_source, $its_me)
     ];
     if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
-            page_link_to('user_myshifts', ['edit' => $shift['id'], 'id' => $user_source->id]),
+            page_link_to('user_myshifts', ['edit' => $shift->shift_entry_id, 'id' => $user_source->id]),
             icon('pencil') . __('edit'),
             'btn-sm'
         );
     }
-    if (Shift_signout_allowed($shift, (new AngelType())->forceFill(['id' => $shift['TID']]), $user_source->id)) {
+    if (Shift_signout_allowed($shift, (new AngelType())->forceFill(['id' => $shift->TID]), $user_source->id)) {
         $myshift['actions'][] = button(
             shift_entry_delete_link($shift),
             icon('trash') . __('sign off'),
@@ -343,7 +347,7 @@ function User_view_myshift($shift, $user_source, $its_me)
 /**
  * Helper that prepares the shift table for user view
  *
- * @param array[]              $shifts
+ * @param Shift[]|Collection   $shifts
  * @param User                 $user_source
  * @param bool                 $its_me
  * @param int                  $tshirt_score
@@ -365,11 +369,11 @@ function User_view_myshifts(
     $myshifts_table = [];
     $timeSum = 0;
     foreach ($shifts as $shift) {
-        $key = $shift['start'] . '-shift-' . $shift['SID'] . '-' . $shift['id'];
+        $key = $shift->start->timestamp . '-shift-' . $shift->shift_entry_id . $shift->id;
         $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me);
 
-        if (!$shift['freeloaded']) {
-            $timeSum += ($shift['end'] - $shift['start']);
+        if (!$shift->freeloaded) {
+            $timeSum += ($shift->end->timestamp - $shift->start->timestamp);
         }
     }
 
@@ -453,7 +457,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
  * @param bool                 $freeloader
  * @param AngelType[]          $user_angeltypes
  * @param Group[]              $user_groups
- * @param array[]              $shifts
+ * @param Shift[]|Collection   $shifts
  * @param bool                 $its_me
  * @param int                  $tshirt_score
  * @param bool                 $tshirt_admin

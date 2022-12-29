@@ -101,8 +101,8 @@ function NeededAngelTypes_by_shift($shiftId)
         SELECT `NeededAngelTypes`.*, `angel_types`.`name`, `angel_types`.`restricted`
         FROM `NeededAngelTypes`
         JOIN `angel_types` ON `angel_types`.`id` = `NeededAngelTypes`.`angel_type_id`
-        JOIN `Shifts` ON `Shifts`.`RID` = `NeededAngelTypes`.`room_id`
-        WHERE `Shifts`.`SID` = ?
+        JOIN `shifts` ON `shifts`.`room_id` = `NeededAngelTypes`.`room_id`
+        WHERE `shifts`.`id` = ?
         AND `count` > 0
         ORDER BY `room_id` DESC
         ', [$shiftId]);

@@ -131,8 +131,8 @@ function load_days()
 {
     $days = (new Collection(Db::select(
         '
-                SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
-                FROM `Shifts`
+                SELECT DISTINCT DATE(`start`) AS `id`, DATE(`start`) AS `name`
+                FROM `shifts`
                 ORDER BY `id`, `name`
             '
     )))
@@ -253,10 +253,10 @@ function view_user_shifts()
             'name' => __('free')
         ]
     ];
-    $start_day = date('Y-m-d', $shiftsFilter->getStartTime());
-    $start_time = date('H:i', $shiftsFilter->getStartTime());
-    $end_day = date('Y-m-d', $shiftsFilter->getEndTime());
-    $end_time = date('H:i', $shiftsFilter->getEndTime());
+    $start_day = $shiftsFilter->getStart()->format('Y-m-d');
+    $start_time = $shiftsFilter->getStart()->format('H:i');
+    $end_day = $shiftsFilter->getEnd()->format('Y-m-d');
+    $end_time = $shiftsFilter->getEnd()->format('H:i');
 
     if (config('signup_requires_arrival') && !$user->state->arrived) {
         info(render_user_arrived_hint());

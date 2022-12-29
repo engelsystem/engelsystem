@@ -1,44 +1,46 @@
 <?php
 
+use Carbon\CarbonTimeZone;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ScheduleShift;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
+use Illuminate\Support\Collection;
 
 /**
- * @param array $shift
+ * @param array|Shift $shift
  * @return string
  */
 function shift_link($shift)
 {
     $parameters = ['action' => 'view'];
-    if (isset($shift['SID'])) {
-        $parameters['shift_id'] = $shift['SID'];
+    if (isset($shift['shift_id']) || isset($shift['id'])) {
+        $parameters['shift_id'] = $shift['shift_id'] ?? $shift['id'];
     }
 
     return page_link_to('shifts', $parameters);
 }
 
 /**
- * @param array $shift
+ * @param Shift $shift
  * @return string
  */
-function shift_delete_link($shift)
+function shift_delete_link(Shift $shift)
 {
-    return page_link_to('user_shifts', ['delete_shift' => $shift['SID']]);
+    return page_link_to('user_shifts', ['delete_shift' => $shift->id]);
 }
 
 /**
- * @param array $shift
+ * @param Shift $shift
  * @return string
  */
-function shift_edit_link($shift)
+function shift_edit_link(Shift $shift)
 {
-    return page_link_to('user_shifts', ['edit_shift' => $shift['SID']]);
+    return page_link_to('user_shifts', ['edit_shift' => $shift->id]);
 }
 
 /**
@@ -61,7 +63,7 @@ function shift_edit_controller()
     $shift_id = $request->input('edit_shift');
 
     $shift = Shift($shift_id);
-    if (ScheduleShift::whereShiftId($shift['SID'])->first()) {
+    if (ScheduleShift::whereShiftId($shift->id)->first()) {
         warning(__(
             'This shift was imported from a schedule so some changes will be overwritten with the next import.'
         ));
@@ -81,12 +83,12 @@ function shift_edit_controller()
         }
     }
 
-    $shifttype_id = $shift['shifttype_id'];
-    $title = $shift['title'];
-    $description = $shift['description'];
-    $rid = $shift['RID'];
-    $start = $shift['start'];
-    $end = $shift['end'];
+    $shifttype_id = $shift->shift_type_id;
+    $title = $shift->title;
+    $description = $shift->description;
+    $rid = $shift->room_id;
+    $start = $shift->start;
+    $end = $shift->end;
 
     if ($request->hasPostData('submit')) {
         // Name/Bezeichnung der Schicht, darf leer sein
@@ -112,14 +114,14 @@ function shift_edit_controller()
             error(__('Please select a shifttype.'), true);
         }
 
-        if ($request->has('start') && $tmp = parse_date('Y-m-d H:i', $request->input('start'))) {
+        if ($request->has('start') && $tmp = Carbon::createFromFormat('Y-m-d H:i', $request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
             error(__('Please enter a valid starting time for the shifts.'), true);
         }
 
-        if ($request->has('end') && $tmp = parse_date('Y-m-d H:i', $request->input('end'))) {
+        if ($request->has('end') && $tmp = Carbon::createFromFormat('Y-m-d H:i', $request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
@@ -149,14 +151,22 @@ function shift_edit_controller()
         }
 
         if ($valid) {
-            $shift['shifttype_id'] = $shifttype_id;
-            $shift['title'] = $title;
-            $shift['description'] = $description;
-            $shift['RID'] = $rid;
-            $shift['start'] = $start;
-            $shift['end'] = $end;
+            $shift->shift_type_id = $shifttype_id;
+            $shift->title = $title;
+            $shift->description = $description;
+            $shift->room_id = $rid;
+            $shift->start = $start;
+            $shift->end = $end;
+            $shift->updatedBy()->associate(auth()->user());
 
-            Shift_update($shift);
+            mail_shift_change(Shift($shift->id), $shift);
+
+            // Remove merged data as it is not really part of the model and thus can't be saved
+            unset($shift->shiftEntry);
+            unset($shift->neededAngels);
+
+            $shift->save();
+
             NeededAngelTypes_delete_by_shift($shift_id);
             $needed_angel_types_info = [];
             foreach ($needed_angel_types as $type_id => $count) {
@@ -168,16 +178,14 @@ function shift_edit_controller()
 
             engelsystem_log(
                 'Updated shift \'' . $shifttypes[$shifttype_id] . ', ' . $title
-                . '\' from ' . date('Y-m-d H:i', $start)
-                . ' to ' . date('Y-m-d H:i', $end)
+                . '\' from ' . $start->format('Y-m-d H:i')
+                . ' to ' . $end->format('Y-m-d H:i')
                 . ' with angel types ' . join(', ', $needed_angel_types_info)
                 . ' and description ' . $description
             );
             success(__('Shift updated.'));
 
-            throw_redirect(shift_link([
-                'SID' => $shift_id
-            ]));
+            throw_redirect(shift_link($shift));
         }
     }
 
@@ -201,8 +209,8 @@ function shift_edit_controller()
                 form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
                 form_text('title', __('Title'), $title),
                 form_select('rid', __('Room:'), $rooms, $rid),
-                form_text('start', __('Start:'), date('Y-m-d H:i', $start)),
-                form_text('end', __('End:'), date('Y-m-d H:i', $end)),
+                form_text('start', __('Start:'), $start->format('Y-m-d H:i')),
+                form_text('end', __('End:'), $end->format('Y-m-d H:i')),
                 form_textarea('description', __('Additional description'), $description),
                 form_info('', __('This description is for single shifts, otherwise please use the description in shift type.')),
                 '<h2>' . __('Needed angels') . '</h2>',
@@ -237,27 +245,26 @@ function shift_delete_controller()
 
     // Schicht löschen bestätigt
     if ($request->hasPostData('delete')) {
-        $room = Room::find($shift['RID']);
-        foreach ($shift['ShiftEntry'] as $entry) {
+        foreach ($shift->shiftEntry as $entry) {
             $type = AngelType::find($entry['TID']);
             event('shift.entry.deleting', [
                 'user'       => User::find($entry['user_id']),
-                'start'      => Carbon::createFromTimestamp($shift['start']),
-                'end'        => Carbon::createFromTimestamp($shift['end']),
-                'name'       => $shift['name'],
-                'title'      => $shift['title'],
+                'start'      => $shift->start,
+                'end'        => $shift->end,
+                'name'       => $shift->shiftType->name,
+                'title'      => $shift->title,
                 'type'       => $type->name,
-                'room'       => $room,
+                'room'       => $shift->room,
                 'freeloaded' => (bool) $entry['freeloaded'],
             ]);
         }
 
-        Shift_delete($shift_id);
+        $shift->delete();
 
         engelsystem_log(
-            'Deleted shift ' . $shift['name']
-            . ' from ' . date('Y-m-d H:i', $shift['start'])
-            . ' to ' . date('Y-m-d H:i', $shift['end'])
+            'Deleted shift ' . $shift->title . ': ' .  $shift->shiftType->name
+            . ' from ' . $shift->start->format('Y-m-d H:i')
+            . ' to ' . $shift->end->format('Y-m-d H:i')
         );
         success(__('Shift deleted.'));
         throw_redirect(page_link_to('user_shifts'));
@@ -266,12 +273,12 @@ function shift_delete_controller()
     return page_with_title(shifts_title(), [
         error(sprintf(
             __('Do you want to delete the shift %s from %s to %s?'),
-            $shift['name'],
-            date('Y-m-d H:i', $shift['start']),
-            date('H:i', $shift['end'])
+            $shift->shiftType->name,
+            $shift->start->format('Y-m-d H:i'),
+            $shift->end->format('H:i')
         ), true),
         form([
-            form_hidden('delete_shift', $shift_id),
+            form_hidden('delete_shift', $shift->id),
             form_submit('delete', __('delete')),
         ]),
     ]);
@@ -299,8 +306,9 @@ function shift_controller()
         throw_redirect(page_link_to('user_shifts'));
     }
 
-    $shifttype = ShiftType::find($shift['shifttype_id']);
-    $room = Room::find($shift['RID']);
+    $shifttype = $shift->shiftType;
+    $room = $shift->room;
+    /** @var AngelType[] $angeltypes */
     $angeltypes = AngelType::all();
     $user_shifts = Shifts_by_user($user->id);
 
@@ -311,7 +319,7 @@ function shift_controller()
             continue;
         }
 
-        $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype->id);
+        $shift_entries = ShiftEntries_by_shift_and_angeltype($shift->id, $angeltype->id);
         $needed_angeltype = (new AngelType())->forceFill($needed_angeltype);
 
         $angeltype_signup_state = Shift_signup_allowed(
@@ -328,7 +336,7 @@ function shift_controller()
     }
 
     return [
-        $shift['name'],
+        $shift->shiftType->name,
         Shift_view($shift, $shifttype, $room, $angeltypes, $shift_signup_state)
     ];
 }
@@ -345,7 +353,7 @@ function shifts_controller()
 
     return match ($request->input('action')) {
         'view'  => shift_controller(),
-        'next'  => shift_next_controller(), // throw_redirect
+        'next'  => shift_next_controller(), // throws redirect
         default => throw_redirect(page_link_to('/')),
     };
 }
@@ -359,7 +367,7 @@ function shift_next_controller()
         throw_redirect(page_link_to('/'));
     }
 
-    $upcoming_shifts = ShiftEntries_upcoming_for_user(auth()->user()->id);
+    $upcoming_shifts = ShiftEntries_upcoming_for_user(auth()->user());
 
     if (!empty($upcoming_shifts)) {
         throw_redirect(shift_link($upcoming_shifts[0]));
@@ -390,19 +398,74 @@ function shifts_json_export_controller()
     }
 
     $shifts = load_ical_shifts();
-    foreach ($shifts as $row => $shift) {
-        $shifts[$row]['start_date'] = Carbon::createFromTimestamp($shift['start'])->toRfc3339String();
-        $shifts[$row]['end_date'] = Carbon::createFromTimestamp($shift['end'])->toRfc3339String();
+    $shifts->sortBy('start_date');
+    $timeZone = CarbonTimeZone::create(config('timezone'));
+
+    $shiftsData = [];
+    foreach ($shifts as $shift) {
+        // Data required for the Fahrplan app integration https://github.com/johnjohndoe/engelsystem
+        // See engelsystem-base/src/main/kotlin/info/metadude/kotlin/library/engelsystem/models/Shift.kt
+        $data = [
+            // Name of the shift (type)
+            'name' => $shift->shiftType->name,
+            // Shift / Talk title
+            'title' => $shift->title,
+            // Shift description
+            'description' => $shift->description,
+
+            // Users comment
+            'Comment' => $shift->Comment,
+
+            // Shift id
+            'SID' => $shift->id,
+            // Shift type id
+            'shifttype_id' => $shift->shift_type_id,
+            // Talk URL
+            'URL' => $shift->url,
+
+            // Room name
+            'Name' => $shift->room->name,
+            // Location map url
+            'map_url' => $shift->room->map_url,
+
+            // Start timestamp
+            /** @deprecated  */
+            'start' => $shift->start->timestamp,
+            // Start date
+            'start_date' => $shift->start->toRfc3339String(),
+            // End timestamp
+            /** @deprecated  */
+            'end' => $shift->end->timestamp,
+            // End date
+            'end_date' => $shift->end->toRfc3339String(),
+
+            // Timezone offset like "+01:00", should be retrieved from start_date or end_date
+            /** @deprecated  */
+            'timezone' => $timeZone->toOffsetName(),
+            // The events timezone like "Europe/Berlin"
+            'event_timezone' => $timeZone->getName(),
+        ];
+
+        $shiftsData[] = [
+            // Model data
+            ...$shift->toArray(),
+
+            // legacy fields (ignoring created / updated (at/by) data)
+            'RID' => $shift->room_id,
+
+            // Fahrplan app required data
+            ...$data
+        ];
     }
 
     header('Content-Type: application/json; charset=utf-8');
-    raw_output(json_encode($shifts));
+    raw_output(json_encode($shiftsData));
 }
 
 /**
  * Returns users shifts to export.
  *
- * @return array
+ * @return Shift[]|Collection
  */
 function load_ical_shifts()
 {

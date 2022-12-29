@@ -26,13 +26,12 @@ function User_tshirt_score($userId)
     $result_shifts = Db::selectOne(sprintf('
         SELECT ROUND((%s) / 3600, 2) AS `tshirt_score`
         FROM `users` LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
-        LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID`
+        LEFT JOIN `shifts` ON `ShiftEntry`.`SID` = `shifts`.`id`
         WHERE `users`.`id` = ?
-        AND `Shifts`.`end` < ?
+        AND `shifts`.`end` < NOW()
         GROUP BY `users`.`id`
     ', $shift_sum_formula), [
-        $userId,
-        time()
+        $userId
     ]);
     if (!isset($result_shifts['tshirt_score'])) {
         $result_shifts = ['tshirt_score' => 0];
@@ -197,7 +196,7 @@ function User_get_eligable_voucher_count($user)
         ? Carbon::createFromFormat('Y-m-d', $voucher_settings['voucher_start'])->setTime(0, 0)
         : null;
 
-    $shifts = ShiftEntries_finished_by_user($user->id, $start);
+    $shifts = ShiftEntries_finished_by_user($user, $start);
     $worklog = UserWorkLogsForUser($user->id, $start);
     $shifts_done =
         count($shifts)
@@ -205,7 +204,7 @@ function User_get_eligable_voucher_count($user)
 
     $shiftsTime = 0;
     foreach ($shifts as $shift) {
-        $shiftsTime += ($shift['end'] - $shift['start']) / 60 / 60;
+        $shiftsTime += (Carbon::make($shift['end'])->timestamp - Carbon::make($shift['start'])->timestamp) / 60 / 60;
     }
     foreach ($worklog as $entry) {
         $shiftsTime += $entry->hours;
@@ -237,18 +236,18 @@ function User_get_shifts_sum_query()
 {
     $nightShifts = config('night_shifts');
     if (!$nightShifts['enabled']) {
-        return 'COALESCE(SUM(`end` - `start`), 0)';
+        return 'COALESCE(SUM(UNIX_TIMESTAMP(shifts.end) - UNIX_TIMESTAMP(shifts.start)), 0)';
     }
 
     return sprintf(
         '
             COALESCE(SUM(
                 (1 + (
-                    (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < %2$d)
-                    OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < %2$d)
-                    OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= %2$d)
+                    (HOUR(shifts.end) > %1$d AND HOUR(shifts.end) < %2$d)
+                    OR (HOUR(shifts.start) > %1$d AND HOUR(shifts.start) < %2$d)
+                    OR (HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d)
                 ))
-                * (`Shifts`.`end` - `Shifts`.`start`)
+                * (UNIX_TIMESTAMP(shifts.end) - UNIX_TIMESTAMP(shifts.start))
                 * (1 - (%3$d + 1) * `ShiftEntry`.`freeloaded`)
             ), 0)
         ',

@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
@@ -237,7 +238,7 @@ function angeltype_controller_shiftsFilterDays(AngelType $angeltype)
     $all_shifts = Shifts_by_angeltype($angeltype);
     $days = [];
     foreach ($all_shifts as $shift) {
-        $day = date('Y-m-d', $shift['start']);
+        $day = Carbon::make($shift['start'])->format('Y-m-d');
         if (!in_array($day, $days)) {
             $days[] = $day;
         }

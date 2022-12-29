@@ -204,9 +204,9 @@ function user_controller()
     }
 
     $shifts = Shifts_by_user($user_source->id, auth()->can('user_shifts_admin'));
-    foreach ($shifts as &$shift) {
+    foreach ($shifts as $shift) {
         // TODO: Move queries to model
-        $shift['needed_angeltypes'] = Db::select(
+        $shift->needed_angeltypes = Db::select(
             '
             SELECT DISTINCT `angel_types`.*
             FROM `ShiftEntry`
@@ -214,9 +214,10 @@ function user_controller()
             WHERE `ShiftEntry`.`SID` = ?
             ORDER BY `angel_types`.`name`
             ',
-            [$shift['SID']]
+            [$shift->shift_entry_id]
         );
-        foreach ($shift['needed_angeltypes'] as &$needed_angeltype) {
+        $neededAngeltypes = $shift->needed_angeltypes;
+        foreach ($neededAngeltypes as &$needed_angeltype) {
             $needed_angeltype['users'] = Db::select(
                 '
                     SELECT `ShiftEntry`.`freeloaded`, `users`.*
@@ -225,9 +226,10 @@ function user_controller()
                     WHERE `ShiftEntry`.`SID` = ?
                     AND `ShiftEntry`.`TID` = ?
                 ',
-                [$shift['SID'], $needed_angeltype['id']]
+                [$shift->shift_entry_id, $needed_angeltype['id']]
             );
         }
+        $shift->needed_angeltypes = $neededAngeltypes;
     }
 
     if (empty($user_source->api_key)) {
@@ -360,8 +362,8 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     $needed_angeltypes = [];
     $shift_entries = [];
     foreach ($shifts as $shift) {
-        $needed_angeltypes[$shift['SID']] = [];
-        $shift_entries[$shift['SID']] = [];
+        $needed_angeltypes[$shift->id] = [];
+        $shift_entries[$shift->id] = [];
     }
 
     foreach ($shift_entries_source as $shift_entry) {
@@ -371,8 +373,8 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     }
 
     foreach ($needed_angeltypes_source as $needed_angeltype) {
-        if (isset($needed_angeltypes[$needed_angeltype['SID']])) {
-            $needed_angeltypes[$needed_angeltype['SID']][] = $needed_angeltype;
+        if (isset($needed_angeltypes[$needed_angeltype['shift_id']])) {
+            $needed_angeltypes[$needed_angeltype['shift_id']][] = $needed_angeltype;
         }
     }
 
@@ -389,7 +391,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     $filtered_shifts = [];
     foreach ($shifts as $shift) {
         $needed_angels_count = 0;
-        foreach ($needed_angeltypes[$shift['SID']] as $needed_angeltype) {
+        foreach ($needed_angeltypes[$shift->id] as $needed_angeltype) {
             $taken = 0;
 
             if (
@@ -399,7 +401,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
                 continue;
             }
 
-            foreach ($shift_entries[$shift['SID']] as $shift_entry) {
+            foreach ($shift_entries[$shift->id] as $shift_entry) {
                 if (
                     $needed_angeltype['angel_type_id'] == $shift_entry['TID']
                     && $shift_entry['freeloaded'] == 0

@@ -5,6 +5,7 @@ use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Str;
@@ -27,7 +28,7 @@ function admin_shifts()
     $valid = true;
     $request = request();
     $session = session();
-    $start = Carbon::createTimestampFromDatetime(date('Y-m-d') . 'T00:00');
+    $start = Carbon::createFromDateTime(date('Y-m-d') . 'T00:00');
     $end = $start;
     $mode = 'multi';
     $angelmode = 'manually';
@@ -46,7 +47,7 @@ function admin_shifts()
         $room_array[$room->id] = $room->name;
     }
 
-    // Engeltypen laden
+    // Load angeltypes
     $types = AngelType::all();
     $needed_angel_types = [];
     foreach ($types as $type) {
@@ -93,14 +94,14 @@ function admin_shifts()
             error(__('Please select a location.'));
         }
 
-        if ($request->has('start') && $tmp = Carbon::createTimestampFromDatetime($request->input('start'))) {
+        if ($request->has('start') && $tmp = Carbon::createFromDateTime($request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
             error(__('Please select a start time.'));
         }
 
-        if ($request->has('end') && $tmp = Carbon::createTimestampFromDatetime($request->input('end'))) {
+        if ($request->has('end') && $tmp = Carbon::createFromDateTime($request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
@@ -199,17 +200,17 @@ function admin_shifts()
             $shifts = [];
             if ($mode == 'single') {
                 $shifts[] = [
-                    'start'        => $start,
-                    'end'          => $end,
-                    'RID'          => $rid,
-                    'title'        => $title,
-                    'shifttype_id' => $shifttype_id,
-                    'description'  => $description,
+                    'start'         => $start,
+                    'end'           => $end,
+                    'room_id'       => $rid,
+                    'title'         => $title,
+                    'shift_type_id' => $shifttype_id,
+                    'description'   => $description,
                 ];
             } elseif ($mode == 'multi') {
-                $shift_start = (int) $start;
+                $shift_start =  $start;
                 do {
-                    $shift_end = $shift_start + (int) $length * 60;
+                    $shift_end = (clone $shift_start)->addSeconds((int) $length * 60);
 
                     if ($shift_end > $end) {
                         $shift_end = $end;
@@ -219,12 +220,12 @@ function admin_shifts()
                     }
 
                     $shifts[] = [
-                        'start'        => $shift_start,
-                        'end'          => $shift_end,
-                        'RID'          => $rid,
-                        'title'        => $title,
-                        'shifttype_id' => $shifttype_id,
-                        'description'  => $description,
+                        'start'         => $shift_start,
+                        'end'           => $shift_end,
+                        'room_id'       => $rid,
+                        'title'         => $title,
+                        'shift_type_id' => $shifttype_id,
+                        'description'   => $description,
                     ];
 
                     $shift_start = $shift_end;
@@ -238,8 +239,8 @@ function admin_shifts()
                 });
 
                 // Alle Tage durchgehen
-                $end_day = Carbon::createTimestampFromDatetime(date('Y-m-d', $end) . ' 00:00');
-                $day = Carbon::createTimestampFromDatetime(date('Y-m-d', $start) . ' 00:00');
+                $end_day = Carbon::createFromDatetime($end->format('Y-m-d') . ' 00:00');
+                $day = Carbon::createFromDatetime($start->format('Y-m-d') . ' 00:00');
                 do {
                     // Alle Schichtwechselstunden durchgehen
                     for ($i = 0; $i < count($change_hours); $i++) {
@@ -248,20 +249,21 @@ function admin_shifts()
                             // Normales Intervall zwischen zwei Schichtwechselstunden
                             $end_hour = $change_hours[$i + 1];
                         } elseif ($shift_over_midnight) {
-                            // Letzte Schichtwechselstunde: Wenn eine 24h Abdeckung gewünscht ist, hier die erste Schichtwechselstunde als Ende ensetzen
+                            // Letzte Schichtwechselstunde: Wenn eine 24h Abdeckung gewünscht ist,
+                            // hier die erste Schichtwechselstunde als Ende einsetzen
                             $end_hour = $change_hours[0];
                         } else {
                             // Letzte Schichtwechselstunde: Keine Schicht erstellen
                             break;
                         }
 
-                        $interval_start = Carbon::createTimestampFromDatetime(date('Y-m-d', $day) . ' ' . $start_hour);
+                        $interval_start = Carbon::createFromDatetime($day->format('Y-m-d') . ' ' . $start_hour);
                         if (str_replace(':', '', $end_hour) < str_replace(':', '', $start_hour)) {
                             // Endstunde kleiner Startstunde? Dann sind wir im nächsten Tag gelandet
-                            $interval_end = Carbon::createTimestampFromDatetime(date('Y-m-d', $day + 36 * 60 * 60) . ' ' . $end_hour);
+                            $interval_end = Carbon::createFromDatetime(date('Y-m-d', $day->timestamp + 36 * 60 * 60) . ' ' . $end_hour);
                         } else {
                             // Endstunde ist noch im selben Tag
-                            $interval_end = Carbon::createTimestampFromDatetime(date('Y-m-d', $day) . ' ' . $end_hour);
+                            $interval_end = Carbon::createFromDatetime($day->format('Y-m-d', $day) . ' ' . $end_hour);
                         }
 
                         // Liegt das Intervall vor dem Startzeitpunkt -> Überspringen
@@ -286,16 +288,16 @@ function admin_shifts()
 
                         // Intervall für Schicht hinzufügen
                         $shifts[] = [
-                            'start'        => $interval_start,
-                            'end'          => $interval_end,
-                            'RID'          => $rid,
-                            'title'        => $title,
-                            'shifttype_id' => $shifttype_id,
-                            'description'  => $description
+                            'start'         => $interval_start,
+                            'end'           => $interval_end,
+                            'room_id'       => $rid,
+                            'title'         => $title,
+                            'shift_type_id' => $shifttype_id,
+                            'description'   => $description
                         ];
                     }
 
-                    $day = Carbon::createTimestampFromDatetime(date('Y-m-d', $day + 36 * 60 * 60) . ' 00:00');
+                    $day = Carbon::createFromDatetime(date('Y-m-d', $day->timestamp + 36 * 60 * 60) . ' 00:00');
                 } while ($day <= $end_day);
 
                 usort($shifts, function ($a, $b) {
@@ -308,11 +310,11 @@ function admin_shifts()
                 $shifts_table_entry = [
                     'timeslot'      =>
                         icon('clock-history') . ' '
-                        . date('Y-m-d H:i', $shift['start'])
+                        . $shift['start']->format('Y-m-d H:i')
                         . ' - '
-                        . date('H:i', $shift['end'])
+                        . $shift['end']->format('H:i')
                         . '<br />'
-                        . Room_name_render(Room::find($shift['RID'])),
+                        . Room_name_render(Room::find($shift['room_id'])),
                     'title'         =>
                         ShiftType_name_render(ShiftType::find($shifttype_id))
                         . ($shift['title'] ? '<br />' . $shift['title'] : ''),
@@ -342,8 +344,8 @@ function admin_shifts()
                     form_hidden('description', $description),
                     form_hidden('title', $title),
                     form_hidden('rid', $rid),
-                    form_hidden('start', date('Y-m-d H:i', $start)),
-                    form_hidden('end', date('Y-m-d H:i', $end)),
+                    form_hidden('start', $start->format('Y-m-d H:i')),
+                    form_hidden('end', $end->format('Y-m-d H:i')),
                     form_hidden('mode', $mode),
                     form_hidden('length', $length),
                     form_hidden('change_hours', implode(', ', $change_hours)),
@@ -369,15 +371,19 @@ function admin_shifts()
 
         $transactionId = Str::uuid();
         foreach ($session->get('admin_shifts_shifts', []) as $shift) {
-            $shift['URL'] = null;
-            $shift_id = Shift_create($shift, $transactionId);
+            $shift = new Shift($shift);
+            $shift->url = '';
+            $shift->transaction_id = $transactionId;
+            $shift->createdBy()->associate(auth()->user());
+            $shift->save();
+            $shift_id = $shift->id;
 
             engelsystem_log(
-                'Shift created: ' . $shifttypes[$shift['shifttype_id']]
-                . ' with title ' . $shift['title']
-                . ' with description ' . $shift['description']
-                . ' from ' . date('Y-m-d H:i', $shift['start'])
-                . ' to ' . date('Y-m-d H:i', $shift['end'])
+                'Shift created: ' . $shifttypes[$shift->shift_type_id]
+                . ' with title ' . $shift->title
+                . ' with description ' . $shift->description
+                . ' from ' . $shift->start->format('Y-m-d H:i')
+                . ' to ' . $shift->end->format('Y-m-d H:i')
                 . ', transaction: ' . $transactionId
             );
 
@@ -405,7 +411,7 @@ function admin_shifts()
             engelsystem_log('Shift needs following angel types: ' . join(', ', $needed_angel_types_info));
         }
 
-        success('Schichten angelegt.');
+        success('Shifts created.');
         throw_redirect(page_link_to('admin_shifts'));
     } else {
         $session->remove('admin_shifts_shifts');
@@ -550,37 +556,32 @@ function admin_shifts_history(): string
     $request = request();
     $transactionId = $request->postData('transaction_id');
     if ($request->hasPostData('delete') && $transactionId) {
-        $shifts = Db::select('
-            SELECT SID
-            FROM Shifts
-            WHERE transaction_id = ?
-        ', [$transactionId]);
+        $shifts = Shift::whereTransactionId($transactionId);
 
         engelsystem_log('Deleting ' . count($shifts) . ' shifts (transaction id ' . $transactionId . ')');
 
         foreach ($shifts as $shift) {
-            $shift = Shift($shift['SID']);
-            $room = Room::find($shift['RID']);
-            foreach ($shift['ShiftEntry'] as $entry) {
+            $shift = Shift($shift);
+            foreach ($shift->shiftEntry as $entry) {
                 $type = AngelType::find($entry['TID']);
                 event('shift.entry.deleting', [
                     'user'       => User::find($entry['user_id']),
-                    'start'      => Carbon::createFromTimestamp($shift['start']),
-                    'end'        => Carbon::createFromTimestamp($shift['end']),
-                    'name'       => $shift['name'],
-                    'title'      => $shift['title'],
+                    'start'      => $shift->start,
+                    'end'        => $shift->end,
+                    'name'       => $shift->shiftType->name,
+                    'title'      => $shift->title,
                     'type'       => $type->name,
-                    'room'       => $room,
+                    'room'       => $shift->room,
                     'freeloaded' => (bool) $entry['freeloaded'],
                 ]);
             }
 
-            shift_delete($shift['SID']);
+            $shift->delete();
 
             engelsystem_log(
-                'Deleted shift ' . $shift['name']
-                . ' from ' . date('Y-m-d H:i', $shift['start'])
-                . ' to ' . date('Y-m-d H:i', $shift['end'])
+                'Deleted shift ' . $shift->title . ' / ' . $shift->shiftType->name
+                . ' from ' . $shift->start->format('Y-m-d H:i')
+                . ' to ' . $shift->end->format('Y-m-d H:i')
             );
         }
 
@@ -588,28 +589,28 @@ function admin_shifts_history(): string
         throw_redirect(page_link_to('admin_shifts_history'));
     }
 
-    $shifts = Db::select('
+    $shiftsData = Db::select('
         SELECT
             transaction_id,
             title,
-            COUNT(SID) AS count,
+            COUNT(id) AS count,
             MIN(start) AS start,
             MAX(end) AS end,
-            created_by_user_id AS user_id,
-            created_at_timestamp AS created_at
-        FROM Shifts
+            created_by AS user_id,
+            MAX(created_at) AS created_at
+        FROM shifts
         WHERE transaction_id IS NOT NULL
         GROUP BY transaction_id
-        ORDER BY transaction_id DESC
+        ORDER BY created_at DESC
     ');
 
-    foreach ($shifts as &$shift) {
-        $shift['user'] = User_Nick_render(User::find($shift['user_id']));
-        $shift['start'] = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
-        $shift['end'] = Carbon::createFromTimestamp($shift['end'])->format(__('Y-m-d H:i'));
-        $shift['created_at'] = Carbon::createFromTimestamp($shift['created_at'])->format(__('Y-m-d H:i'));
-        $shift['actions'] = form([
-            form_hidden('transaction_id', $shift['transaction_id']),
+    foreach ($shiftsData as &$shiftData) {
+        $shiftData['user'] = User_Nick_render(User::find($shiftData['user_id']));
+        $shiftData['start'] = Carbon::make($shiftData['start'])->format(__('Y-m-d H:i'));
+        $shiftData['end'] = Carbon::make($shiftData['end'])->format(__('Y-m-d H:i'));
+        $shiftData['created_at'] = Carbon::make($shiftData['created_at'])->format(__('Y-m-d H:i'));
+        $shiftData['actions'] = form([
+            form_hidden('transaction_id', $shiftData['transaction_id']),
             form_submit('delete', icon('trash') . __('delete all'), 'btn-sm', true, 'danger'),
         ]);
     }
@@ -625,6 +626,6 @@ function admin_shifts_history(): string
             'user'           => __('User'),
             'created_at'     => __('Created'),
             'actions'        => ''
-        ], $shifts)
+        ], $shiftsData)
     ], true);
 }

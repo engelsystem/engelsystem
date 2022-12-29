@@ -12,6 +12,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
@@ -174,6 +175,17 @@ class StatsTest extends TestCase
 
         $stats = new Stats($this->database);
         $this->assertEquals(4, $stats->rooms());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::shifts
+     */
+    public function testShifts(): void
+    {
+        Shift::factory(5)->create();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(5, $stats->shifts());
     }
 
     /**

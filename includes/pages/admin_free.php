@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\JoinClause;
@@ -41,14 +42,14 @@ function admin_free()
             ->select('users.*')
             ->leftJoin('ShiftEntry', 'users.id', 'ShiftEntry.UID')
             ->leftJoin('users_state', 'users.id', 'users_state.user_id')
-            ->leftJoin('Shifts', function ($join) {
+            ->leftJoin('shifts', function ($join) {
                 /** @var JoinClause $join */
-                $join->on('ShiftEntry.SID', '=', 'Shifts.SID')
-                    ->where('Shifts.start', '<', time())
-                    ->where('Shifts.end', '>', time());
+                $join->on('ShiftEntry.SID', '=', 'shifts.id')
+                    ->where('shifts.start', '<', Carbon::now())
+                    ->where('shifts.end', '>', Carbon::now());
             })
             ->where('users_state.arrived', '=', 1)
-            ->whereNull('Shifts.SID')
+            ->whereNull('shifts.id')
             ->orderBy('users.name')
             ->groupBy('users.id');
 
