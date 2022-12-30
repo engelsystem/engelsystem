@@ -213,20 +213,19 @@ function toolbar_dropdown_item_divider(): string
 }
 
 /**
- * @param string $icon
  * @param string $label
  * @param array  $submenu
- * @param string $class
+ * @param bool   $active
  * @return string
  */
-function toolbar_dropdown($icon, $label, $submenu, $class = ''): string
+function toolbar_dropdown($label, $submenu, $active = false): string
 {
     $template = <<<EOT
 <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle {class}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        {icon} {label}
+    <a class="nav-link dropdown-toggle{class}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {label}
     </a>
-    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <ul class="dropdown-menu">
         {submenu}
     </ul>
 </li>
@@ -235,9 +234,8 @@ EOT;
     return strtr(
         $template,
         [
-            '{class}'   => $class,
+            '{class}'   => $active ? ' active' : '',
             '{label}'   => $label,
-            '{icon}'    => empty($icon) ? '' : '<i class="bi ' . $icon . '"></i>',
             '{submenu}' => join("\n", $submenu)
         ]
     );

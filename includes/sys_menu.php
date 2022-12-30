@@ -115,7 +115,7 @@ function make_navigation()
     }
 
     if (count($admin_menu) > 0) {
-        $menu[] = toolbar_dropdown('', __('Admin'), $admin_menu);
+        $menu[] = toolbar_dropdown(__('Admin'), $admin_menu);
     }
 
     return '<ul class="navbar-nav mb-2 mb-lg-0">' . join("\n", $menu) . '</ul>';
@@ -164,7 +164,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'pin-map-fill');
     }
     if (count($room_menu) > 0) {
-        $menu[] = toolbar_dropdown('map-marker', __('Rooms'), $room_menu);
+        $menu[] = toolbar_dropdown(__('Rooms'), $room_menu);
     }
     return $menu;
 }
