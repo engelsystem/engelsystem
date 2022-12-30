@@ -1,8 +1,13 @@
 {% import 'macros/base.twig' as m %}
 
-{% macro toolbar_item(label, link, active_page, icon) %}
+{% macro toolbar_item(label, link, active_page, icon, title) %}
     <li class="nav-item">
-        <a class="nav-link{% if page() == active_page %} active{% endif %}"{% if page() == active_page %} aria-current="page"{% endif %} href="{{ link }}">
+        <a
+            class="nav-link{% if page() == active_page %} active{% endif %}"
+            {% if page() == active_page %}aria-current="page"{% endif %}
+            {% if title %}title="{{ title }}"{% endif %}
+            href="{{ link }}"
+        >
             {% if icon %}{{ m.icon(icon) }}{% endif %}
             {{ label|raw }}
         </a>
@@ -52,7 +57,7 @@
                 {% endif %}
 
                 {% if is_user() %}
-                    {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'clock') }}
+                    {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'clock', __('Next shift')) }}
 
                     {% if has_permission_to('user_messages') %}
                         {{ _self.toolbar_item(
