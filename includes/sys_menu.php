@@ -118,7 +118,7 @@ function make_navigation()
         $menu[] = toolbar_dropdown(__('Admin'), $admin_menu);
     }
 
-    return '<ul class="navbar-nav mb-2 mb-lg-0">' . join("\n", $menu) . '</ul>';
+    return join("\n", $menu);
 }
 
 /**

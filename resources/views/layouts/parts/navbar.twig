@@ -32,7 +32,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            {{ menu() }}
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                {{ menu() }}
+            </ul>
 
             {% if config('header_items') %}
                 <ul class="navbar-nav mb-2 mb-lg-0">
