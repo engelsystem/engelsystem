@@ -2,7 +2,7 @@
 
 {% macro toolbar_item(label, link, active_page, icon) %}
     <li class="nav-item">
-        <a class="nav-link{% if page() == active_page %} active{% endif %}" href="{{ link }}">
+        <a class="nav-link{% if page() == active_page %} active{% endif %}"{% if page() == active_page %} aria-current="page"{% endif %} href="{{ link }}">
             {% if icon %}{{ m.icon(icon) }}{% endif %}
             {{ label|raw }}
         </a>
@@ -11,7 +11,7 @@
 
 {% macro dropdown_item(label, link, active_page, icon) %}
     <li>
-        <a class="dropdown-item{% if page() == active_page %} active{% endif %}" href="{{ link }}">
+        <a class="dropdown-item{% if page() == active_page %} active{% endif %}"{% if page() == active_page %} aria-current="page"{% endif %} href="{{ link }}">
             {{ icon }} {{ label }}
         </a>
     </li>

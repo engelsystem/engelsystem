@@ -186,7 +186,7 @@ function toolbar_pills($items)
 function toolbar_item_link($href, $icon, $label, $active = false)
 {
     return '<li class="nav-item">'
-        . '<a class="nav-link ' . ($active ? 'active' : '') . '" href="' . $href . '">'
+        . '<a class="nav-link ' . ($active ? 'active" aria-current="page"' : '"') . ' href="' . $href . '">'
         . ($icon != '' ? '<span class="bi bi-' . $icon . '"></span> ' : '')
         . $label
         . '</a>'
@@ -196,12 +196,13 @@ function toolbar_item_link($href, $icon, $label, $active = false)
 function toolbar_dropdown_item(string $href, string $label, bool $active, string $icon = null): string
 {
     return strtr(
-        '<li><a class="dropdown-item{active}" href="{href}">{icon} {label}</a></li>',
+        '<li><a class="dropdown-item{active}"{aria} href="{href}">{icon} {label}</a></li>',
         [
             '{href}'   => $href,
             '{icon}'   => $icon === null ? '' : '<i class="bi bi-' . $icon . '"></i>',
             '{label}'  => $label,
-            '{active}' => $active ? ' active' : ''
+            '{active}' => $active ? ' active' : '',
+            '{aria}' => $active ? ' aria-current="page"' : ''
         ]
     );
 }
