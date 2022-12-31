@@ -7,7 +7,7 @@
 {% endmacro %}
 
 {% macro alert(message, type, raw) %}
-    <div class="alert alert-{{ type|default('info') }}">
+    <div class="alert alert-{{ type|default('info') }}" role="alert">
         {%- if raw|default(false) -%}
             {{ message|raw }}
         {%- else -%}

@@ -100,7 +100,7 @@ function alert($class, $msg, $immediately = false)
     }
 
     if ($immediately) {
-        return '<div class="alert alert-' . $class . '">' . $msg . '</div>';
+        return '<div class="alert alert-' . $class . '" role="alert">' . $msg . '</div>';
     }
 
     $session = session();
