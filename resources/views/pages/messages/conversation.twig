@@ -19,9 +19,11 @@
                         {% set own_message = msg.user_id == user.id %}
                         <div class="col-12"{% if loop.last %} id="newest"{% endif %}>
                             <div class="d-flex{% if own_message %} justify-content-end{% endif %}">
-                                <div class="alert {% if own_message %}alert-primary{% else %}alert-secondary{% endif %}">
-                                    <p>{{ msg.text | nl2br }}</p>
-                                    <div class="d-flex justify-content-end align-items-center fw-light">
+                                <div class="card {% if own_message %}text-bg-primary{% else %}text-bg-secondary{% endif %} mb-3">
+                                    <div class="card-body">
+                                        <p class="card-text">{{ msg.text | nl2br }}</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-end align-items-center fw-light">
                                         <small class="opacity-75">{{ msg.created_at.format(__('Y-m-d H:i')) }}</small>
                                         {% if own_message %}
                                             <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ msg.id) }}"
