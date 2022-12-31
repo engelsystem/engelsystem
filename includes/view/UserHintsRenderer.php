@@ -37,22 +37,24 @@ class UserHintsRenderer
         if (count($this->hints) > 0) {
             $class_hint = $this->important ? 'danger' : 'info';
             $icon = $this->important ? 'exclamation-triangle' : 'info-circle';
-            $dom_id = md5(microtime() . $icon);
+            $data_bs_attributes = [
+                'toggle'       => 'popover',
+                'container'    => 'body',
+                'placement'    => 'bottom',
+                'custom-class' => 'popover--userhints',
+                'html'         => 'true',
+                'content'      => htmlspecialchars(join('', $this->hints)),
+            ];
+            $attr = '';
+            foreach ($data_bs_attributes as $attr_key => $attr_value) {
+                $attr .= ' data-bs-' . $attr_key . '="' . $attr_value . '"';
+            }
 
             return '<li class="nav-item nav-item--userhints d-flex align-items-center bg-' . $class_hint . '">'
-                . '<a id="' . $dom_id . '" href="#" tabindex="0" class="nav-link">'
-                . icon($icon . ' text-white')
-                . '<small class="bi bi-caret-down-fill"></small>'
+                . '<a class="nav-link dropdown-toggle text-light" href="#" role="button"' . $attr . '>'
+                . icon($icon)
                 . '</a>'
-                . '<script type="text/javascript">
-                        new bootstrap.Popover(document.getElementById(\'' . $dom_id . '\'), {
-                            container: \'body\',
-                            html: true,
-                            content: \'' . addslashes(join('', $this->hints)) . '\',
-                            placement: \'bottom\',
-                            customClass: \'popover--userhints\'
-                        })
-                    </script></li>';
+                . '</li>';
         }
 
         return '';
