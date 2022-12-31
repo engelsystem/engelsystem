@@ -145,6 +145,9 @@ msgstr "Title"
 msgid "schedule.import.shift.room"
 msgstr "Room"
 
+msgid "shifts_history.schedule"
+msgstr "Schedule: %s"
+
 msgid "news.title"
 msgstr "News"
 

@@ -2868,6 +2868,9 @@ msgstr "Titel"
 msgid "schedule.import.shift.room"
 msgstr "Raum"
 
+msgid "shifts_history.schedule"
+msgstr "Programm: %s"
+
 msgid "news.title"
 msgstr "News"
 

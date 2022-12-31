@@ -5,6 +5,7 @@ use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
@@ -208,7 +209,7 @@ function admin_shifts()
                     'description'   => $description,
                 ];
             } elseif ($mode == 'multi') {
-                $shift_start =  $start;
+                $shift_start = $start;
                 do {
                     $shift_end = (clone $shift_start)->addSeconds((int) $length * 60);
 
@@ -589,22 +590,26 @@ function admin_shifts_history(): string
         throw_redirect(page_link_to('admin_shifts_history'));
     }
 
+    $schedules = Schedule::all()->pluck('name', 'id')->toArray();
     $shiftsData = Db::select('
         SELECT
-            transaction_id,
-            title,
-            COUNT(id) AS count,
-            MIN(start) AS start,
-            MAX(end) AS end,
-            created_by AS user_id,
-            MAX(created_at) AS created_at
-        FROM shifts
-        WHERE transaction_id IS NOT NULL
-        GROUP BY transaction_id
+            s.transaction_id,
+            s.title,
+            schedule_shift.schedule_id,
+            COUNT(s.id) AS count,
+            MIN(s.start) AS start,
+            MAX(s.end) AS end,
+            s.created_by AS user_id,
+            MAX(s.created_at) AS created_at
+        FROM shifts AS s
+        LEFT JOIN schedule_shift on schedule_shift.shift_id = s.id
+        WHERE s.transaction_id IS NOT NULL
+        GROUP BY s.transaction_id
         ORDER BY created_at DESC
     ');
 
     foreach ($shiftsData as &$shiftData) {
+        $shiftData['title'] = $shiftData['schedule_id'] ? __('shifts_history.schedule', [$schedules[$shiftData['schedule_id']]]) : $shiftData['title'];
         $shiftData['user'] = User_Nick_render(User::find($shiftData['user_id']));
         $shiftData['start'] = Carbon::make($shiftData['start'])->format(__('Y-m-d H:i'));
         $shiftData['end'] = Carbon::make($shiftData['end'])->format(__('Y-m-d H:i'));

@@ -12,6 +12,7 @@ use Engelsystem\Helpers\Schedule\Event;
 use Engelsystem\Helpers\Schedule\Room;
 use Engelsystem\Helpers\Schedule\Schedule;
 use Engelsystem\Helpers\Schedule\XmlParser;
+use Engelsystem\Helpers\Uuid;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Room as RoomModel;
@@ -304,6 +305,7 @@ class ImportSchedule extends BaseController
         $shift->end = $event->getEndDate()->copy()->timezone($eventTimeZone);
         $shift->room()->associate($room);
         $shift->url = $event->getUrl() ?? '';
+        $shift->transaction_id = Uuid::uuidBy($scheduleUrl->id, '5c4ed01e');
         $shift->createdBy()->associate($user);
         $shift->save();
 
