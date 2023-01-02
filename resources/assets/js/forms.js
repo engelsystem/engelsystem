@@ -3,14 +3,6 @@ import { formatDay, formatTime } from './date';
 import { ready } from './ready';
 
 /**
- * @param {HTMLElement} element
- */
-const triggerChange = (element) => {
-  const changeEvent = new Event('change');
-  element.dispatchEvent(changeEvent);
-};
-
-/**
  * Sets all checkboxes to the wanted state
  *
  * @param {string} id Id of the element containing all the checkboxes
@@ -25,77 +17,99 @@ global.checkAll = (id, checked) => {
 /**
  * Sets the checkboxes according to the given type
  *
- * @param {string} id The elements ID
+ * @param {string} id The Id of the element containing all the checkboxes
  * @param {int[]} shiftsList A list of numbers
  */
 global.checkOwnTypes = (id, shiftsList) => {
   document.querySelectorAll(`#${id} input[type="checkbox"]`).forEach((element) => {
-    const value = parseInt(element.value, 10);
+    const value = Number(element.value);
     element.checked = shiftsList.includes(value);
   });
 };
 
-/**
- * Sets the values of the input fields with the IDs to from/to:
- * - date portion of from → start_day
- * - time portion of from → start_time
- * - date portion of to → end_day
- * - time portion of to → end_time
- *
- * @param {Date} from
- * @param {Date} to
- */
-global.setInput = (from, to) => {
-  const fromDay = document.getElementById('start_day');
-  const fromTime = document.getElementById('start_time');
-  const toDay = document.getElementById('end_day');
-  const toTime = document.getElementById('end_time');
-
-  if (!fromDay || !fromTime || !toDay || !toTime) {
-    console.warn('cannot set input date because of missing field');
-    return;
+ready(() => {
+  /**
+   * @param {HTMLElement} element
+   */
+  const triggerChange = (element) => {
+    const changeEvent = new Event('change');
+    element.dispatchEvent(changeEvent);
   }
 
-  fromDay.value = formatDay(from);
-  triggerChange(fromDay);
-  fromTime.value = formatTime(from);
+  /**
+   * Sets the values of the input fields with the IDs to from/to:
+   * - date portion of from → start_day
+   * - time portion of from → start_time
+   * - date portion of to → end_day
+   * - time portion of to → end_time
+   *
+   * @param {Date} from
+   * @param {Date} to
+   */
+  const setInput = (from, to) => {
+    const fromDay = document.getElementById('start_day');
+    const fromTime = document.getElementById('start_time');
+    const toDay = document.getElementById('end_day');
+    const toTime = document.getElementById('end_time');
 
-  toDay.value = formatDay(to);
-  triggerChange(toDay);
-  toTime.value = formatTime(to);
-};
+    if (!fromDay || !fromTime || !toDay || !toTime) {
+      console.warn('cannot set input date because of missing field');
+      return;
+    }
 
-global.setDay = (days) => {
-  days = days || 0;
+    fromDay.value = formatDay(from);
+    triggerChange(fromDay);
+    fromTime.value = formatTime(from);
 
-  const from = new Date();
-  from.setHours(0, 0, 0, 0);
+    toDay.value = formatDay(to);
+    triggerChange(toDay);
+    toTime.value = formatTime(to);
+  };
 
-  // add days, Date handles the overflow
-  from.setDate(from.getDate() + days);
+  /**
+   * @param {MouseEvent} event
+   */
+  const onClickDate = (event) => {
+    const days = Number(event.currentTarget.dataset.days);
 
-  const to = new Date(from);
-  to.setHours(23, 59);
+    const from = new Date();
+    from.setHours(0, 0, 0, 0);
 
-  setInput(from, to);
-};
+    // add days, Date handles the overflow
+    from.setDate(from.getDate() + days);
 
-global.setHours = (hours) => {
-  hours = hours || 1;
+    const to = new Date(from);
+    to.setHours(23, 59);
 
-  const from = new Date();
-  const to = new Date(from);
+    setInput(from, to);
+  };
 
-  // convert hours to add to milliseconds (60 minutes * 60 seconds * 1000 for milliseconds)
-  const msToAdd = hours * 60 * 60 * 1000;
-  to.setTime(to.getTime() + msToAdd, 'h');
-  if (to < from) {
-    setInput(to, from);
-    return;
-  }
+  /**
+   * @param {MouseEvent} event
+   */
+  const onClickTime = (event) => {
+    const hours = Number(event.currentTarget.dataset.hours);
 
-  setInput(from, to);
-};
+    const from = new Date();
+    const to = new Date(from);
+
+    // add hours, Date handles the overflow
+    to.setHours(to.getHours() + hours);
+
+    if (to < from) {
+      setInput(to, from);
+    } else{
+      setInput(from, to);
+    }
+  };
+
+  document.querySelectorAll('.set-date').forEach((element) => {
+    element.addEventListener('click', onClickDate);
+  });
+  document.querySelectorAll('.set-time').forEach((element) => {
+    element.addEventListener('click', onClickTime);
+  });
+});
 
 ready(() => {
   /**

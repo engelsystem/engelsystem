@@ -380,7 +380,6 @@ function get_ids_from_array($array)
 function make_select($items, $selected, $name, $title = null, $additionalButtons = [])
 {
     $html = '';
-    $htmlItems = [];
     if (isset($title)) {
         $html .= '<h4>' . $title . '</h4>' . "\n";
     }
@@ -391,7 +390,9 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
     $buttons = array_merge($buttons, $additionalButtons);
 
     $html .= buttons($buttons);
+    $html .= '<div id="selection_' . $name . '" class="mb-3 selection ' . $name . '">' . "\n";
 
+    $htmlItems = [];
     foreach ($items as $i) {
         $id = $name . '_' . $i['id'];
         $htmlItems[] = '<div class="form-check">'
@@ -401,11 +402,10 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
             . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('mortarboard-fill'))
             . '</div>';
     }
-    $html .= '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
     $html .= implode("\n", $htmlItems);
 
+    $html .= '</div>' . "\n";
     $html .= buttons($buttons);
 
-    $html .= '</div>' . "\n";
     return $html;
 }
