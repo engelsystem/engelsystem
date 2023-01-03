@@ -1,6 +1,5 @@
 <?php
 
-use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\User;
 
