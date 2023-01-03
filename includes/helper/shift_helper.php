@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Events\Listener;
 
-use Engelsystem\Helpers\Carbon;
+use Carbon\Carbon;
 use Engelsystem\Helpers\Shifts;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\Room;

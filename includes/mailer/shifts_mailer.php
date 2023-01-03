@@ -8,7 +8,7 @@ function mail_shift_change(Shift $old_shift, Shift $new_shift)
 {
     $users = ShiftEntries_by_shift($old_shift->id);
     $old_room = $old_shift->room;
-    $new_room = Room::find($new_shift->room_id);
+    $new_room = $new_shift->room;
 
     $noticeable_changes = false;
 

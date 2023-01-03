@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\CarbonTimeZone;
-use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\ScheduleShift;
@@ -62,7 +61,7 @@ function shift_edit_controller()
     }
     $shift_id = $request->input('edit_shift');
 
-    $shift = Shift($shift_id);
+    $shift = Shift(Shift::findOrFail($shift_id));
     if (ScheduleShift::whereShiftId($shift->id)->first()) {
         warning(__(
             'This shift was imported from a schedule so some changes will be overwritten with the next import.'
@@ -104,33 +103,33 @@ function shift_edit_controller()
             $rid = $request->input('rid');
         } else {
             $valid = false;
-            error(__('Please select a room.'), true);
+            error(__('Please select a room.'));
         }
 
         if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
             $shifttype_id = $request->input('shifttype_id');
         } else {
             $valid = false;
-            error(__('Please select a shifttype.'), true);
+            error(__('Please select a shifttype.'));
         }
 
-        if ($request->has('start') && $tmp = Carbon::createFromFormat('Y-m-d H:i', $request->input('start'))) {
+        if ($request->has('start') && $tmp = DateTime::createFromFormat('Y-m-d H:i', $request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
-            error(__('Please enter a valid starting time for the shifts.'), true);
+            error(__('Please enter a valid starting time for the shifts.'));
         }
 
-        if ($request->has('end') && $tmp = Carbon::createFromFormat('Y-m-d H:i', $request->input('end'))) {
+        if ($request->has('end') && $tmp = DateTime::createFromFormat('Y-m-d H:i', $request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
-            error(__('Please enter a valid ending time for the shifts.'), true);
+            error(__('Please enter a valid ending time for the shifts.'));
         }
 
         if ($start >= $end) {
             $valid = false;
-            error(__('The ending time has to be after the starting time.'), true);
+            error(__('The ending time has to be after the starting time.'));
         }
 
         foreach ($needed_angel_types as $needed_angeltype_id => $count) {
@@ -145,7 +144,7 @@ function shift_edit_controller()
                     error(sprintf(
                         __('Please check your input for needed angels of type %s.'),
                         $angeltypes[$needed_angeltype_id]
-                    ), true);
+                    ));
                 }
             }
         }
@@ -159,13 +158,13 @@ function shift_edit_controller()
             $shift->end = $end;
             $shift->updatedBy()->associate(auth()->user());
 
-            mail_shift_change(Shift($shift->id), $shift);
-
             // Remove merged data as it is not really part of the model and thus can't be saved
             unset($shift->shiftEntry);
             unset($shift->neededAngels);
 
             $shift->save();
+
+            mail_shift_change(Shift($shift->id), $shift);
 
             NeededAngelTypes_delete_by_shift($shift_id);
             $needed_angel_types_info = [];
@@ -429,18 +428,18 @@ function shifts_json_export_controller()
             'map_url' => $shift->room->map_url,
 
             // Start timestamp
-            /** @deprecated  */
+            /** @deprecated start_date should be used */
             'start' => $shift->start->timestamp,
             // Start date
             'start_date' => $shift->start->toRfc3339String(),
             // End timestamp
-            /** @deprecated  */
+            /** @deprecated end_date should be used */
             'end' => $shift->end->timestamp,
             // End date
             'end_date' => $shift->end->toRfc3339String(),
 
-            // Timezone offset like "+01:00", should be retrieved from start_date or end_date
-            /** @deprecated  */
+            // Timezone offset like "+01:00"
+            /** @deprecated should be retrieved from start_date or end_date */
             'timezone' => $timeZone->toOffsetName(),
             // The events timezone like "Europe/Berlin"
             'event_timezone' => $timeZone->getName(),

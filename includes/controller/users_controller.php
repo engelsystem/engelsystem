@@ -214,7 +214,7 @@ function user_controller()
             WHERE `ShiftEntry`.`SID` = ?
             ORDER BY `angel_types`.`name`
             ',
-            [$shift->shift_entry_id]
+            [$shift->id]
         );
         $neededAngeltypes = $shift->needed_angeltypes;
         foreach ($neededAngeltypes as &$needed_angeltype) {
@@ -226,7 +226,7 @@ function user_controller()
                     WHERE `ShiftEntry`.`SID` = ?
                     AND `ShiftEntry`.`TID` = ?
                 ',
-                [$shift->shift_entry_id, $needed_angeltype['id']]
+                [$shift->id, $needed_angeltype['id']]
             );
         }
         $shift->needed_angeltypes = $neededAngeltypes;

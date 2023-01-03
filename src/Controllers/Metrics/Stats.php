@@ -312,8 +312,7 @@ class Stats
 
     public function shifts(): int
     {
-        return Shift::query()
-            ->count();
+        return Shift::count();
     }
 
     /**

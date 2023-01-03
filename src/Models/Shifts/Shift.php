@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Models\Shifts;
 
 use Carbon\Carbon;
@@ -22,9 +24,9 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property int                         $room_id
  * @property string                      $transaction_id
  * @property int                         $created_by
- * @property int                         $updated_by
- * @property Carbon                      $created_at
- * @property Carbon                      $updated_at
+ * @property int|null                    $updated_by
+ * @property Carbon|null                 $created_at
+ * @property Carbon|null                 $updated_at
  *
  * @property-read QueryBuilder|Schedule  $schedule
  * @property-read QueryBuilder|ShiftType $shiftType
@@ -53,7 +55,7 @@ class Shift extends BaseModel
     /** @var bool enable timestamps */
     public $timestamps = true; // phpcs:ignore
 
-    /** @var array<string> */
+    /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
         'shift_type_id' => 'integer',
         'room_id'       => 'integer',
