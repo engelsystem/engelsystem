@@ -1,28 +1,28 @@
 <?php
 
-use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\User;
 
 /**
  * Sign off from a user from a shift with admin permissions, asking for ack.
  *
- * @param array $shift
+ * @param Shift $shift
  * @param AngelType $angeltype
  * @param User  $signoff_user
  *
  * @return string HTML
  */
-function ShiftEntry_delete_view_admin($shift, AngelType $angeltype, $signoff_user)
+function ShiftEntry_delete_view_admin(Shift $shift, AngelType $angeltype, User $signoff_user)
 {
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
             __('Do you want to sign off %s from shift %s from %s to %s as %s?'),
             User_Nick_render($signoff_user),
-            $shift['name'],
-            date('Y-m-d H:i', $shift['start']),
-            date('Y-m-d H:i', $shift['end']),
+            $shift->shiftType->name,
+            $shift->start->format('Y-m-d H:i'),
+            $shift->end->format('Y-m-d H:i'),
             $angeltype->name
         ), true),
         form([
@@ -37,20 +37,20 @@ function ShiftEntry_delete_view_admin($shift, AngelType $angeltype, $signoff_use
 /**
  * Sign off from a shift, asking for ack.
  *
- * @param array $shift
+ * @param Shift $shift
  * @param AngelType $angeltype
  * @param int   $signoff_user_id
  *
  * @return string HTML
  */
-function ShiftEntry_delete_view($shift, AngelType $angeltype, $signoff_user_id)
+function ShiftEntry_delete_view(Shift $shift, AngelType $angeltype, $signoff_user_id)
 {
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
             __('Do you want to sign off from your shift %s from %s to %s as %s?'),
-            $shift['name'],
-            date('Y-m-d H:i', $shift['start']),
-            date('Y-m-d H:i', $shift['end']),
+            $shift->shiftType->name,
+            $shift->start->format('Y-m-d H:i'),
+            $shift->end->format('Y-m-d H:i'),
             $angeltype->name
         ), true),
 
@@ -74,7 +74,7 @@ function ShiftEntry_delete_title()
 /**
  * Admin puts user into shift.
  *
- * @param array     $shift
+ * @param Shift     $shift
  * @param Room      $room
  * @param AngelType $angeltype
  * @param array     $angeltypes_select
@@ -83,17 +83,17 @@ function ShiftEntry_delete_title()
  * @return string
  */
 function ShiftEntry_create_view_admin(
-    $shift,
+    Shift $shift,
     Room $room,
     AngelType $angeltype,
     $angeltypes_select,
     $signup_user,
     $users_select
 ) {
-    $start = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
+    $start = $shift->start->format(__('Y-m-d H:i'));
     return page_with_title(
-        ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small title="' . $start . '" data-countdown-ts="' . $shift['start'] . '">%c</small>',
+        ShiftEntry_create_title() . ': ' . $shift->shiftType->name
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(__('Do you want to sign up the following user for this shift?'), true),
@@ -109,19 +109,19 @@ function ShiftEntry_create_view_admin(
 /**
  * Supporter puts user into shift.
  *
- * @param array $shift
+ * @param Shift $shift
  * @param Room  $room
  * @param AngelType $angeltype
  * @param User  $signup_user
  * @param array $users_select
  * @return string
  */
-function ShiftEntry_create_view_supporter($shift, Room $room, AngelType $angeltype, $signup_user, $users_select)
+function ShiftEntry_create_view_supporter(Shift $shift, Room $room, AngelType $angeltype, $signup_user, $users_select)
 {
-    $start = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
+    $start = $shift->start->format(__('Y-m-d H:i'));
     return page_with_title(
-        ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small title="' . $start . '" data-countdown-ts="' . $shift['start'] . '">%c</small>',
+        ShiftEntry_create_title() . ': ' . $shift->shiftType->name
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(sprintf(
@@ -139,18 +139,18 @@ function ShiftEntry_create_view_supporter($shift, Room $room, AngelType $angelty
 /**
  * User joining a shift.
  *
- * @param array  $shift
+ * @param Shift  $shift
  * @param Room   $room
  * @param AngelType  $angeltype
  * @param string $comment
  * @return string
  */
-function ShiftEntry_create_view_user($shift, Room $room, AngelType $angeltype, $comment)
+function ShiftEntry_create_view_user(Shift $shift, Room $room, AngelType $angeltype, $comment)
 {
-    $start = Carbon::createFromTimestamp($shift['start'])->format(__('Y-m-d H:i'));
+    $start = $shift->start->format(__('Y-m-d H:i'));
     return page_with_title(
-        ShiftEntry_create_title() . ': ' . $shift['name']
-        . ' <small title="' . $start . '" data-countdown-ts="' . $shift['start'] . '">%c</small>',
+        ShiftEntry_create_title() . ': ' . $shift->shiftType->name
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
             Shift_view_header($shift, $room),
             info(sprintf(__('Do you want to sign up for this shift as %s?'), AngelType_name_render($angeltype)), true),

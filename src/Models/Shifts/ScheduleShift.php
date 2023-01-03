@@ -12,6 +12,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string                     $guid
  *
  * @property-read QueryBuilder|Schedule $schedule
+ * @property-read QueryBuilder|Shift    $shift
  *
  * @method static QueryBuilder|ScheduleShift[] whereShiftId($value)
  * @method static QueryBuilder|ScheduleShift[] whereScheduleId($value)
@@ -37,5 +38,10 @@ class ScheduleShift extends BaseModel
     public function schedule(): BelongsTo
     {
         return $this->belongsTo(Schedule::class);
+    }
+
+    public function shift(): BelongsTo
+    {
+        return $this->belongsTo(Shift::class);
     }
 }

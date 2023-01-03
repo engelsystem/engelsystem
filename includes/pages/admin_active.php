@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Builder;
@@ -70,7 +71,7 @@ function admin_active()
                     )
                 )
                 ->leftJoin('ShiftEntry', 'users.id', '=', 'ShiftEntry.UID')
-                ->leftJoin('Shifts', 'ShiftEntry.SID', '=', 'Shifts.SID')
+                ->leftJoin('shifts', 'ShiftEntry.SID', '=', 'shifts.id')
                 ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
                 ->where('users_state.arrived', '=', true)
                 ->groupBy('users.id')
@@ -162,14 +163,14 @@ function admin_active()
             )
         )
         ->leftJoin('ShiftEntry', 'users.id', '=', 'ShiftEntry.UID')
-        ->leftJoin('Shifts', function ($join) use ($show_all_shifts) {
+        ->leftJoin('shifts', function ($join) use ($show_all_shifts) {
             /** @var JoinClause $join */
-            $join->on('ShiftEntry.SID', '=', 'Shifts.SID');
+            $join->on('ShiftEntry.SID', '=', 'shifts.id');
             if (!$show_all_shifts) {
                 $join->where(function ($query) {
                     /** @var Builder $query */
-                    $query->where('Shifts.end', '<', time())
-                        ->orWhereNull('Shifts.end');
+                    $query->where('shifts.end', '<', Carbon::now())
+                        ->orWhereNull('shifts.end');
                 });
             }
         })

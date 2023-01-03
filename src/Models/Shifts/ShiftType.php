@@ -16,6 +16,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string                     $description
  *
  * @property-read Collection|Schedule[] $schedules
+ * @property-read Collection|Shift[]    $shifts
  *
  * @method static QueryBuilder|ShiftType[] whereId($value)
  * @method static QueryBuilder|ShiftType[] whereName($value)
@@ -34,5 +35,10 @@ class ShiftType extends BaseModel
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class, 'shift_type');
+    }
+
+    public function shifts(): HasMany
+    {
+        return $this->hasMany(Shift::class);
     }
 }

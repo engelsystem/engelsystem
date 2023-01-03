@@ -2,7 +2,7 @@
 
 namespace Engelsystem;
 
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\Shift;
 
 class ShiftCalendarRenderer
 {
@@ -45,7 +45,7 @@ class ShiftCalendarRenderer
     /**
      * ShiftCalendarRenderer constructor.
      *
-     * @param array[]      $shifts
+     * @param Shift[]      $shifts
      * @param array[]      $needed_angeltypes
      * @param array[]      $shift_entries
      * @param ShiftsFilter $shiftsFilter
@@ -61,7 +61,7 @@ class ShiftCalendarRenderer
     /**
      * Assigns the shifts to different lanes per room if they collide
      *
-     * @param array[] $shifts The shifts to assign
+     * @param Shift[] $shifts The shifts to assign
      * @return array Returns an array that assigns a room_id to an array of ShiftCalendarLane containing the shifts
      */
     private function assignShiftsToLanes($shifts)
@@ -70,20 +70,17 @@ class ShiftCalendarRenderer
         $lanes = [];
 
         foreach ($shifts as $shift) {
-            $room_id = $shift['RID'];
-            $room = new Room();
-            $room->name = $shift['room_name'];
-            $room->setAttribute('id', $room_id);
+            $room = $shift->room;
             $header = Room_name_render($room);
-            if (!isset($lanes[$room_id])) {
+            if (!isset($lanes[$room->id])) {
                 // initialize room with one lane
-                $lanes[$room_id] = [
-                    new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot())
+                $lanes[$room->id] = [
+                    new ShiftCalendarLane($header)
                 ];
             }
             // Try to add the shift to the existing lanes for this room
             $shift_added = false;
-            foreach ($lanes[$room_id] as $lane) {
+            foreach ($lanes[$room->id] as $lane) {
                 /** @var ShiftCalendarLane $lane */
                 if ($lane->shiftFits($shift)) {
                     $lane->addShift($shift);
@@ -93,9 +90,9 @@ class ShiftCalendarRenderer
             }
             // If all lanes for this room are busy, create a new lane and add shift to it
             if (!$shift_added) {
-                $newLane = new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
+                $newLane = new ShiftCalendarLane($header);
                 $newLane->addShift($shift);
-                $lanes[$room_id][] = $newLane;
+                $lanes[$room->id][] = $newLane;
             }
         }
 
@@ -176,15 +173,15 @@ class ShiftCalendarRenderer
         $rendered_until = $this->getFirstBlockStartTime();
 
         foreach ($lane->getShifts() as $shift) {
-            while ($rendered_until + ShiftCalendarRenderer::SECONDS_PER_ROW <= $shift['start']) {
+            while ($rendered_until + ShiftCalendarRenderer::SECONDS_PER_ROW <= $shift->start->timestamp) {
                 $html .= $this->renderTick($rendered_until);
                 $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
             }
 
             list ($shift_height, $shift_html) = $shift_renderer->render(
                 $shift,
-                $this->needed_angeltypes[$shift['SID']],
-                $this->shift_entries[$shift['SID']],
+                $this->needed_angeltypes[$shift->id],
+                $this->shift_entries[$shift->id],
                 auth()->user()
             );
             $html .= $shift_html;
@@ -256,15 +253,15 @@ class ShiftCalendarRenderer
     }
 
     /**
-     * @param array[] $shifts
+     * @param Shift[] $shifts
      * @return int
      */
     private function calcFirstBlockStartTime($shifts)
     {
         $start_time = $this->shiftsFilter->getEndTime();
         foreach ($shifts as $shift) {
-            if ($shift['start'] < $start_time) {
-                $start_time = $shift['start'];
+            if ($shift->start->timestamp < $start_time) {
+                $start_time = $shift->start->timestamp;
             }
         }
         return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(
@@ -274,15 +271,15 @@ class ShiftCalendarRenderer
     }
 
     /**
-     * @param array[] $shifts
+     * @param Shift[] $shifts
      * @return int
      */
     private function calcLastBlockEndTime($shifts)
     {
         $end_time = $this->shiftsFilter->getStartTime();
         foreach ($shifts as $shift) {
-            if ($shift['end'] > $end_time) {
-                $end_time = $shift['end'];
+            if ($shift->end->timestamp > $end_time) {
+                $end_time = $shift->end->timestamp;
             }
         }
 

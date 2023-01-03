@@ -1,6 +1,5 @@
 <?php
 
-use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
@@ -187,17 +186,17 @@ function admin_rooms()
         } elseif ($request->input('show') == 'delete') {
             if ($request->hasPostData('ack')) {
                 $room = Room::find($room_id);
-                $shifts = Shifts_by_room($room);
+                $shifts = $room->shifts;
                 foreach ($shifts as $shift) {
-                    $shift = Shift($shift['SID']);
-                    foreach ($shift['ShiftEntry'] as $entry) {
+                    $shift = Shift($shift);
+                    foreach ($shift->shiftEntry as $entry) {
                         $type = AngelType::find($entry['TID']);
                         event('shift.entry.deleting', [
                             'user'       => User::find($entry['user_id']),
-                            'start'      => Carbon::createFromTimestamp($shift['start']),
-                            'end'        => Carbon::createFromTimestamp($shift['end']),
-                            'name'       => $shift['name'],
-                            'title'      => $shift['title'],
+                            'start'      => $shift->start,
+                            'end'        => $shift->end,
+                            'name'       => $shift->shiftType->name,
+                            'title'      => $shift->title,
                             'type'       => $type->name,
                             'room'       => $room,
                             'freeloaded' => (bool) $entry['freeloaded'],

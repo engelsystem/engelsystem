@@ -1,7 +1,7 @@
 <?php
 
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftSignupState;
@@ -71,11 +71,11 @@ function shift_entry_create_controller(): array
  * Sign up for a shift.
  * Case: Admin
  *
- * @param array          $shift
+ * @param Shift          $shift
  * @param AngelType|null $angeltype
  * @return array
  */
-function shift_entry_create_controller_admin($shift, ?AngelType $angeltype): array
+function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype): array
 {
     $signup_user = auth()->user();
     $request = request();
@@ -100,7 +100,7 @@ function shift_entry_create_controller_admin($shift, ?AngelType $angeltype): arr
 
     if ($request->hasPostData('submit')) {
         ShiftEntry_create([
-            'SID'              => $shift['SID'],
+            'SID'              => $shift->id,
             'TID'              => $angeltype->id,
             'UID'              => $signup_user->id,
             'Comment'          => '',
@@ -120,7 +120,7 @@ function shift_entry_create_controller_admin($shift, ?AngelType $angeltype): arr
     }
 
     $angeltypes_select = $angeltypes->pluck('name', 'id')->toArray();
-    $room = Room::find($shift['RID']);
+    $room = $shift->room;
     return [
         ShiftEntry_create_title(),
         ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_select, $signup_user, $users_select)
@@ -131,11 +131,11 @@ function shift_entry_create_controller_admin($shift, ?AngelType $angeltype): arr
  * Sign up for a shift.
  * Case: Supporter
  *
- * @param array     $shift
+ * @param Shift     $shift
  * @param AngelType $angeltype
  * @return array
  */
-function shift_entry_create_controller_supporter($shift, AngelType $angeltype): array
+function shift_entry_create_controller_supporter(Shift $shift, AngelType $angeltype): array
 {
     $request = request();
     $signup_user = auth()->user();
@@ -151,7 +151,7 @@ function shift_entry_create_controller_supporter($shift, AngelType $angeltype): 
 
     if ($request->hasPostData('submit')) {
         ShiftEntry_create([
-            'SID'              => $shift['SID'],
+            'SID'              => $shift->id,
             'TID'              => $angeltype->id,
             'UID'              => $signup_user->id,
             'Comment'          => '',
@@ -169,7 +169,7 @@ function shift_entry_create_controller_supporter($shift, AngelType $angeltype): 
         $users_select[$u->id] = $u->name;
     }
 
-    $room = Room::find($shift['RID']);
+    $room = $shift->room;
     return [
         ShiftEntry_create_title(),
         ShiftEntry_create_view_supporter($shift, $room, $angeltype, $signup_user, $users_select)
@@ -204,17 +204,17 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
  * Sign up for a shift.
  * Case: User
  *
- * @param array     $shift
+ * @param Shift     $shift
  * @param AngelType $angeltype
  * @return array
  */
-function shift_entry_create_controller_user($shift, AngelType $angeltype): array
+function shift_entry_create_controller_user(Shift $shift, AngelType $angeltype): array
 {
     $request = request();
 
     $signup_user = auth()->user();
     $needed_angeltype = (new AngelType())->forceFill(NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype));
-    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype->id);
+    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift->id, $angeltype->id);
     $shift_signup_state = Shift_signup_allowed(
         $signup_user,
         $shift,
@@ -233,7 +233,7 @@ function shift_entry_create_controller_user($shift, AngelType $angeltype): array
     if ($request->hasPostData('submit')) {
         $comment = strip_request_item_nl('comment');
         ShiftEntry_create([
-            'SID'              => $shift['SID'],
+            'SID'              => $shift->id,
             'TID'              => $angeltype->id,
             'UID'              => $signup_user->id,
             'Comment'          => $comment,
@@ -255,7 +255,7 @@ function shift_entry_create_controller_user($shift, AngelType $angeltype): array
         throw_redirect(shift_link($shift));
     }
 
-    $room = Room::find($shift['RID']);
+    $room = $shift->room;
     return [
         ShiftEntry_create_title(),
         ShiftEntry_create_view_user($shift, $room, $angeltype, $comment)
@@ -265,16 +265,16 @@ function shift_entry_create_controller_user($shift, AngelType $angeltype): array
 /**
  * Link to create a shift entry.
  *
- * @param array     $shift
+ * @param Shift     $shift
  * @param AngelType $angeltype
  * @param array     $params
  * @return string URL
  */
-function shift_entry_create_link($shift, AngelType $angeltype, $params = [])
+function shift_entry_create_link(Shift $shift, AngelType $angeltype, $params = [])
 {
     $params = array_merge([
         'action'       => 'create',
-        'shift_id'     => $shift['SID'],
+        'shift_id'     => $shift->id,
         'angeltype_id' => $angeltype->id
     ], $params);
     return page_link_to('shift_entries', $params);
@@ -283,15 +283,15 @@ function shift_entry_create_link($shift, AngelType $angeltype, $params = [])
 /**
  * Link to create a shift entry as admin.
  *
- * @param array $shift
+ * @param Shift $shift
  * @param array $params
  * @return string URL
  */
-function shift_entry_create_link_admin($shift, $params = [])
+function shift_entry_create_link_admin(Shift $shift, $params = [])
 {
     $params = array_merge([
         'action'   => 'create',
-        'shift_id' => $shift['SID']
+        'shift_id' => $shift->id
     ], $params);
     return page_link_to('shift_entries', $params);
 }
@@ -360,7 +360,7 @@ function shift_entry_delete_controller()
 /**
  * Link to delete a shift entry.
  *
- * @param array $shiftEntry
+ * @param array|Shift $shiftEntry
  * @param array $params
  * @return string URL
  */
@@ -368,7 +368,7 @@ function shift_entry_delete_link($shiftEntry, $params = [])
 {
     $params = array_merge([
         'action'         => 'delete',
-        'shift_entry_id' => $shiftEntry['id']
+        'shift_entry_id' => $shiftEntry['shift_entry_id'] ?? $shiftEntry['id']
     ], $params);
     return page_link_to('shift_entries', $params);
 }

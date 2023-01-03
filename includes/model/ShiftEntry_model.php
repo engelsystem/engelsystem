@@ -3,8 +3,6 @@
 use Carbon\Carbon;
 use Engelsystem\Database\Db;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
-use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 
 /**
@@ -60,8 +58,8 @@ function ShiftEntry_create($shift_entry)
 {
     $user = User::find($shift_entry['UID']);
     $shift = Shift($shift_entry['SID']);
-    $shifttype = ShiftType::find($shift['shifttype_id']);
-    $room = Room::find($shift['RID']);
+    $shifttype = $shift->shiftType;
+    $room = $shift->room;
     $angeltype = AngelType::find($shift_entry['TID']);
     $result = Db::insert(
         '
@@ -86,11 +84,11 @@ function ShiftEntry_create($shift_entry)
     );
     engelsystem_log(
         'User ' . User_Nick_render($user, true)
-        . ' signed up for shift ' . $shift['name']
+        . ' signed up for shift ' . $shift->title
         . ' (' . $shifttype->name . ')'
         . ' at ' . $room->name
-        . ' from ' . date('Y-m-d H:i', $shift['start'])
-        . ' to ' . date('Y-m-d H:i', $shift['end'])
+        . ' from ' . $shift->start->format('Y-m-d H:i')
+        . ' to ' . $shift->end->format('Y-m-d H:i')
         . ' as ' . $angeltype->name
     );
     mail_shift_assign($user, $shift);
@@ -147,44 +145,43 @@ function ShiftEntry_delete($shiftEntry)
 
     $signout_user = User::find($shiftEntry['UID']);
     $shift = Shift($shiftEntry['SID']);
-    $shifttype = ShiftType::find($shift['shifttype_id']);
-    $room = Room::find($shift['RID']);
+    $shifttype = $shift->shiftType;
+    $room = $shift->room;
     $angeltype = AngelType::find($shiftEntry['TID']);
 
     engelsystem_log(
         'Shift signout: ' . User_Nick_render($signout_user, true)
-        . ' from shift ' . $shift['name']
+        . ' from shift ' . $shift->title
         . ' (' . $shifttype->name . ')'
         . ' at ' . $room->name
-        . ' from ' . date('Y-m-d H:i', $shift['start'])
-        . ' to ' . date('Y-m-d H:i', $shift['end'])
+        . ' from ' . $shift->start->format('Y-m-d H:i')
+        . ' to ' . $shift->end->format('Y-m-d H:i')
         . ' as ' . $angeltype->name
     );
 
-    mail_shift_removed(User::find($shiftEntry['UID']), Shift($shiftEntry['SID']));
+    mail_shift_removed(User::find($shiftEntry['UID']), $shift);
 }
 
 /**
  * Returns next (or current) shifts of given user.
  *
- * @param int $userId
+ * @param User $user
  * @return array
  */
-function ShiftEntries_upcoming_for_user($userId)
+function ShiftEntries_upcoming_for_user(User $user)
 {
     return Db::select(
         '
-        SELECT *
+        SELECT *, shifts.id as shift_id
         FROM `ShiftEntry`
-        JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
-        JOIN `shift_types` ON `shift_types`.`id` = `Shifts`.`shifttype_id`
+        JOIN `shifts` ON (`shifts`.`id` = `ShiftEntry`.`SID`)
+        JOIN `shift_types` ON `shift_types`.`id` = `shifts`.`shift_type_id`
         WHERE `ShiftEntry`.`UID` = ?
-        AND `Shifts`.`end` > ?
-        ORDER BY `Shifts`.`end`
+        AND `shifts`.`end` > NOW()
+        ORDER BY `shifts`.`end`
         ',
         [
-            $userId,
-            time(),
+            $user->id
         ]
     );
 }
@@ -192,27 +189,26 @@ function ShiftEntries_upcoming_for_user($userId)
 /**
  * Returns shifts completed by the given user.
  *
- * @param int         $userId
+ * @param User $user
  * @param Carbon|null $sinceTime
  * @return array
  */
-function ShiftEntries_finished_by_user($userId, Carbon $sinceTime = null)
+function ShiftEntries_finished_by_user(User $user, Carbon $sinceTime = null)
 {
     return Db::select(
         '
             SELECT *
             FROM `ShiftEntry`
-            JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
-            JOIN `shift_types` ON `shift_types`.`id` = `Shifts`.`shifttype_id`
+            JOIN `shifts` ON (`shifts`.`id` = `ShiftEntry`.`SID`)
+            JOIN `shift_types` ON `shift_types`.`id` = `shifts`.`shift_type_id`
             WHERE `ShiftEntry`.`UID` = ?
-            AND `Shifts`.`end` < ?
+            AND `shifts`.`end` < NOW()
             AND `ShiftEntry`.`freeloaded` = 0
-            ' . ($sinceTime ? 'AND Shifts.start >= ' . $sinceTime->getTimestamp() : '') . '
-            ORDER BY `Shifts`.`end` desc
+            ' . ($sinceTime ? 'AND shifts.start >= "' . $sinceTime->toString() . '"' : '') . '
+            ORDER BY `shifts`.`end` desc
         ',
         [
-            $userId,
-            time(),
+            $user->id,
         ]
     );
 }

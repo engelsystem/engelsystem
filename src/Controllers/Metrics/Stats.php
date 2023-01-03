@@ -15,6 +15,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
@@ -109,9 +110,9 @@ class Stats
     {
         $query = User::query()
             ->join('ShiftEntry', 'ShiftEntry.UID', '=', 'users.id')
-            ->join('Shifts', 'Shifts.SID', '=', 'ShiftEntry.SID')
-            ->where('Shifts.start', '<=', time())
-            ->where('Shifts.end', '>', time());
+            ->join('shifts', 'shifts.id', '=', 'ShiftEntry.SID')
+            ->where('shifts.start', '<=', Carbon::now())
+            ->where('shifts.end', '>', Carbon::now());
 
         if (!is_null($freeloaded)) {
             $query->where('ShiftEntry.freeloaded', '=', $freeloaded);
@@ -207,14 +208,14 @@ class Stats
     {
         $query = $this
             ->getQuery('ShiftEntry')
-            ->join('Shifts', 'Shifts.SID', '=', 'ShiftEntry.SID');
+            ->join('shifts', 'shifts.id', '=', 'ShiftEntry.SID');
 
         if (!is_null($freeloaded)) {
             $query->where('freeloaded', '=', $freeloaded);
         }
 
         if (!is_null($done)) {
-            $query->where('end', ($done == true ? '<' : '>='), time());
+            $query->where('end', ($done ? '<' : '>='), Carbon::now());
         }
 
         return $query;
@@ -309,14 +310,9 @@ class Stats
             ->count();
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function shifts(): int
     {
-        return $this
-            ->getQuery('Shifts')
-            ->count();
+        return Shift::count();
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Engelsystem;
 
+use Engelsystem\Helpers\Carbon;
+
 /**
  * BO Class that stores all parameters used to filter shifts for users.
  *
@@ -87,6 +89,14 @@ class ShiftsFilter
     }
 
     /**
+     * @return Carbon
+     */
+    public function getStart()
+    {
+        return Carbon::createFromTimestamp($this->startTime);
+    }
+
+    /**
      * @return int unix timestamp
      */
     public function getStartTime()
@@ -100,6 +110,14 @@ class ShiftsFilter
     public function setStartTime($startTime)
     {
         $this->startTime = $startTime;
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getEnd()
+    {
+        return Carbon::createFromTimestamp($this->endTime);
     }
 
     /**

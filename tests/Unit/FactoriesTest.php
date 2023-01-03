@@ -9,6 +9,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Schedule;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
@@ -23,52 +24,59 @@ class FactoriesTest extends TestCase
 {
     use HasDatabase;
 
-    /** @var string[] */
-    protected array $models = [
-        Contact::class,
-        Faq::class,
-        License::class,
-        Message::class,
-        News::class,
-        NewsComment::class,
-        PasswordReset::class,
-        PersonalData::class,
-        Question::class,
-        Room::class,
-        Schedule::class,
-        Settings::class,
-        State::class,
-        User::class,
-        Worklog::class,
-    ];
+    /**
+     * @return string[][]
+     */
+    public function factoriesProvider(): array
+    {
+        return [
+            [Contact::class],
+            [Faq::class],
+            [License::class],
+            [Message::class],
+            [News::class],
+            [NewsComment::class],
+            [PasswordReset::class],
+            [PersonalData::class],
+            [Question::class],
+            [Room::class],
+            [Schedule::class],
+            [Settings::class],
+            [Shift::class],
+            [State::class],
+            [User::class],
+            [Worklog::class],
+        ];
+    }
 
     /**
-     * Test all existing model factories
+     * Test all model factories
      *
-     * @covers \Database\Factories\Engelsystem\Models\User\ContactFactory
-     * @covers \Database\Factories\Engelsystem\Models\FaqFactory
-     * @covers \Database\Factories\Engelsystem\Models\User\LicenseFactory
-     * @covers \Database\Factories\Engelsystem\Models\MessageFactory
-     * @covers \Database\Factories\Engelsystem\Models\NewsFactory
-     * @covers \Database\Factories\Engelsystem\Models\NewsCommentFactory
-     * @covers \Database\Factories\Engelsystem\Models\User\PasswordResetFactory
-     * @covers \Database\Factories\Engelsystem\Models\User\PersonalDataFactory
-     * @covers \Database\Factories\Engelsystem\Models\QuestionFactory
-     * @covers \Database\Factories\Engelsystem\Models\RoomFactory
-     * @covers \Database\Factories\Engelsystem\Models\Shifts\ScheduleFactory
-     * @covers \Database\Factories\Engelsystem\Models\User\SettingsFactory
-     * @covers \Database\Factories\Engelsystem\Models\User\StateFactory
-     * @covers \Database\Factories\Engelsystem\Models\User\UserFactory
-     * @covers \Database\Factories\Engelsystem\Models\WorklogFactory
+     * @covers       \Database\Factories\Engelsystem\Models\User\ContactFactory
+     * @covers       \Database\Factories\Engelsystem\Models\FaqFactory
+     * @covers       \Database\Factories\Engelsystem\Models\User\LicenseFactory
+     * @covers       \Database\Factories\Engelsystem\Models\MessageFactory
+     * @covers       \Database\Factories\Engelsystem\Models\NewsFactory
+     * @covers       \Database\Factories\Engelsystem\Models\NewsCommentFactory
+     * @covers       \Database\Factories\Engelsystem\Models\User\PasswordResetFactory
+     * @covers       \Database\Factories\Engelsystem\Models\User\PersonalDataFactory
+     * @covers       \Database\Factories\Engelsystem\Models\QuestionFactory
+     * @covers       \Database\Factories\Engelsystem\Models\RoomFactory
+     * @covers       \Database\Factories\Engelsystem\Models\Shifts\ScheduleFactory
+     * @covers       \Database\Factories\Engelsystem\Models\User\SettingsFactory
+     * @covers       \Database\Factories\Engelsystem\Models\Shifts\ShiftFactory
+     * @covers       \Database\Factories\Engelsystem\Models\User\StateFactory
+     * @covers       \Database\Factories\Engelsystem\Models\User\UserFactory
+     * @covers       \Database\Factories\Engelsystem\Models\WorklogFactory
+     *
+     * @dataProvider factoriesProvider
      */
-    public function testFactories(): void
+    public function testFactories(string $model): void
     {
         $this->initDatabase();
 
-        foreach ($this->models as $model) {
-            $instance = (new $model())->factory()->create();
-            $this->assertInstanceOf(Model::class, $instance);
-        }
+        $instance = (new $model())->factory()->create();
+        $this->assertInstanceOf(Model::class, $instance);
     }
 
     /**

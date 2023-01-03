@@ -17,6 +17,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Models\Room as RoomModel;
 use Engelsystem\Models\Shifts\Schedule as ScheduleUrl;
 use Engelsystem\Models\Shifts\ScheduleShift;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use ErrorException;
@@ -27,7 +28,6 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
-use stdClass;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ImportSchedule extends BaseController
@@ -267,22 +267,22 @@ class ImportSchedule extends BaseController
         $shiftEntries = $this->db
             ->table('ShiftEntry')
             ->select([
-                'shift_types.name', 'Shifts.title', 'angel_types.name AS type', 'rooms.id AS room_id',
-                'Shifts.start', 'Shifts.end', 'ShiftEntry.UID as user_id', 'ShiftEntry.freeloaded'
+                'shift_types.name', 'shifts.title', 'angel_types.name AS type', 'rooms.id AS room_id',
+                'shifts.start', 'shifts.end', 'ShiftEntry.UID as user_id', 'ShiftEntry.freeloaded'
             ])
-            ->join('Shifts', 'Shifts.SID', 'ShiftEntry.SID')
-            ->join('schedule_shift', 'Shifts.SID', 'schedule_shift.shift_id')
-            ->join('rooms', 'rooms.id', 'Shifts.RID')
+            ->join('shifts', 'shifts.id', 'ShiftEntry.SID')
+            ->join('schedule_shift', 'shifts.id', 'schedule_shift.shift_id')
+            ->join('rooms', 'rooms.id', 'shifts.room_id')
             ->join('angel_types', 'angel_types.id', 'ShiftEntry.TID')
-            ->join('shift_types', 'shift_types.id', 'Shifts.shifttype_id')
+            ->join('shift_types', 'shift_types.id', 'shifts.shift_type_id')
             ->where('schedule_shift.guid', $event->getGuid())
             ->get();
 
         foreach ($shiftEntries as $shiftEntry) {
             event('shift.entry.deleting', [
                 'user'       => User::find($shiftEntry->user_id),
-                'start'      => Carbon::createFromTimestamp($shiftEntry->start),
-                'end'        => Carbon::createFromTimestamp($shiftEntry->end),
+                'start'      => Carbon::make($shiftEntry->start),
+                'end'        => Carbon::make($shiftEntry->end),
                 'name'       => $shiftEntry->name,
                 'title'      => $shiftEntry->title,
                 'type'       => $shiftEntry->type,
@@ -292,93 +292,82 @@ class ImportSchedule extends BaseController
         }
     }
 
-    protected function createEvent(Event $shift, int $shiftTypeId, RoomModel $room, ScheduleUrl $scheduleUrl): void
+    protected function createEvent(Event $event, int $shiftTypeId, RoomModel $room, ScheduleUrl $scheduleUrl): void
     {
         $user = auth()->user();
+        $eventTimeZone = Carbon::now()->timezone;
 
-        $this->db
-            ->table('Shifts')
-            ->insert(
-                [
-                    'title'                => $shift->getTitle(),
-                    'shifttype_id'         => $shiftTypeId,
-                    'start'                => $shift->getDate()->unix(),
-                    'end'                  => $shift->getEndDate()->unix(),
-                    'RID'                  => $room->id,
-                    'URL'                  => $shift->getUrl(),
-                    'created_by_user_id'   => $user->id,
-                    'created_at_timestamp' => time(),
-                    'edited_by_user_id'    => null,
-                    'edited_at_timestamp'  => 0,
-                ]
-            );
+        $shift = new Shift();
+        $shift->title = $event->getTitle();
+        $shift->shift_type_id = $shiftTypeId;
+        $shift->start = $event->getDate()->copy()->timezone($eventTimeZone);
+        $shift->end = $event->getEndDate()->copy()->timezone($eventTimeZone);
+        $shift->room()->associate($room);
+        $shift->url = $event->getUrl() ?? '';
+        $shift->createdBy()->associate($user);
+        $shift->save();
 
-        $shiftId = $this->db->getDoctrineConnection()->lastInsertId();
-
-        $scheduleShift = new ScheduleShift(['shift_id' => $shiftId, 'guid' => $shift->getGuid()]);
+        $scheduleShift = new ScheduleShift(['guid' => $event->getGuid()]);
         $scheduleShift->schedule()->associate($scheduleUrl);
+        $scheduleShift->shift()->associate($shift);
         $scheduleShift->save();
 
         $this->log(
             'Created schedule shift "{shift}" in "{room}" ({from} {to}, {guid})',
             [
-                'shift' => $shift->getTitle(),
-                'room'  => $room->name,
-                'from'  => $shift->getDate()->format(DateTimeInterface::RFC3339),
-                'to'    => $shift->getEndDate()->format(DateTimeInterface::RFC3339),
-                'guid'  => $shift->getGuid(),
+                'shift' => $shift->title,
+                'room'  => $shift->room->name,
+                'from'  => $shift->start->format(DateTimeInterface::RFC3339),
+                'to'    => $shift->end->format(DateTimeInterface::RFC3339),
+                'guid'  => $scheduleShift->guid,
             ]
         );
     }
 
-    protected function updateEvent(Event $shift, int $shiftTypeId, RoomModel $room): void
+    protected function updateEvent(Event $event, int $shiftTypeId, RoomModel $room): void
     {
         $user = auth()->user();
+        $eventTimeZone = Carbon::now()->timezone;
 
-        $this->db
-            ->table('Shifts')
-            ->join('schedule_shift', 'Shifts.SID', 'schedule_shift.shift_id')
-            ->where('schedule_shift.guid', $shift->getGuid())
-            ->update(
-                [
-                    'title'               => $shift->getTitle(),
-                    'shifttype_id'        => $shiftTypeId,
-                    'start'               => $shift->getDate()->unix(),
-                    'end'                 => $shift->getEndDate()->unix(),
-                    'RID'                 => $room->id,
-                    'URL'                 => $shift->getUrl(),
-                    'edited_by_user_id'   => $user->id,
-                    'edited_at_timestamp' => time(),
-                ]
-            );
+        /** @var ScheduleShift $scheduleShift */
+        $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->first();
+        $shift = $scheduleShift->shift;
+        $shift->title = $event->getTitle();
+        $shift->shift_type_id = $shiftTypeId;
+        $shift->start = $event->getDate()->copy()->timezone($eventTimeZone);
+        $shift->end = $event->getEndDate()->copy()->timezone($eventTimeZone);
+        $shift->room()->associate($room);
+        $shift->url = $event->getUrl() ?? '';
+        $shift->updatedBy()->associate($user);
+        $shift->save();
 
         $this->log(
             'Updated schedule shift "{shift}" in "{room}" ({from} {to}, {guid})',
             [
-                'shift' => $shift->getTitle(),
-                'room'  => $room->name,
-                'from'  => $shift->getDate()->format(DateTimeInterface::RFC3339),
-                'to'    => $shift->getEndDate()->format(DateTimeInterface::RFC3339),
-                'guid'  => $shift->getGuid(),
+                'shift' => $shift->title,
+                'room'  => $shift->room->name,
+                'from'  => $shift->start->format(DateTimeInterface::RFC3339),
+                'to'    => $shift->end->format(DateTimeInterface::RFC3339),
+                'guid'  => $scheduleShift->guid,
             ]
         );
     }
 
-    protected function deleteEvent(Event $shift): void
+    protected function deleteEvent(Event $event): void
     {
-        $this->db
-            ->table('Shifts')
-            ->join('schedule_shift', 'Shifts.SID', 'schedule_shift.shift_id')
-            ->where('schedule_shift.guid', $shift->getGuid())
-            ->delete();
+        /** @var ScheduleShift $scheduleShift */
+        $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->first();
+        $shift = $scheduleShift->shift;
+        $shift->delete();
 
         $this->log(
-            'Deleted schedule shift "{shift}" ({from} {to}, {guid})',
+            'Deleted schedule shift "{shift}" in {room} ({from} {to}, {guid})',
             [
-                'shift' => $shift->getTitle(),
-                'from'  => $shift->getDate()->format(DateTimeInterface::RFC3339),
-                'to'    => $shift->getEndDate()->format(DateTimeInterface::RFC3339),
-                'guid'  => $shift->getGuid(),
+                'shift' => $shift->title,
+                'room'  => $shift->room->name,
+                'from'  => $shift->start->format(DateTimeInterface::RFC3339),
+                'to'    => $shift->end->format(DateTimeInterface::RFC3339),
+                'guid'  => $scheduleShift->guid,
             ]
         );
     }
@@ -465,15 +454,20 @@ class ImportSchedule extends BaseController
         /** @var Event[] $deleteEvents */
         $deleteEvents = [];
         $rooms = $this->getAllRooms();
+        $eventTimeZone = Carbon::now()->timezone;
 
         foreach ($schedule->getDay() as $day) {
             foreach ($day->getRoom() as $room) {
                 foreach ($room->getEvent() as $event) {
                     $scheduleEvents[$event->getGuid()] = $event;
 
-                    $event->getDate()->subMinutes($minutesBefore);
-                    $event->getEndDate()->addMinutes($minutesAfter);
-                    $event->setTitle(sprintf('%s [%s]', $event->getTitle(), $event->getLanguage()));
+                    $event->getDate()->timezone($eventTimeZone)->subMinutes($minutesBefore);
+                    $event->getEndDate()->timezone($eventTimeZone)->addMinutes($minutesAfter);
+                    $event->setTitle(
+                        $event->getLanguage()
+                            ? sprintf('%s [%s]', $event->getTitle(), $event->getLanguage())
+                            : $event->getTitle()
+                    );
                 }
             }
         }
@@ -482,17 +476,18 @@ class ImportSchedule extends BaseController
         $existingShifts = $this->getScheduleShiftsByGuid($scheduleUrl, $scheduleEventsGuidList);
         foreach ($existingShifts as $shift) {
             $guid = $shift->guid;
-            $shift = $this->loadShift($shift->shift_id);
+            /** @var Shift $shift */
+            $shift = Shift::with('room')->find($shift->shift_id);
             $event = $scheduleEvents[$guid];
             $room = $rooms->where('name', $event->getRoom()->getName())->first();
 
             if (
                 $shift->title != $event->getTitle()
                 || $shift->shift_type_id != $shiftType
-                || Carbon::createFromTimestamp($shift->start) != $event->getDate()
-                || Carbon::createFromTimestamp($shift->end) != $event->getEndDate()
+                || $shift->start != $event->getDate()
+                || $shift->end != $event->getEndDate()
                 || $shift->room_id != ($room->id ?? '')
-                || $shift->url != $event->getUrl()
+                || $shift->url != ($event->getUrl() ?? '')
             ) {
                 $changeEvents[$guid] = $event;
             }
@@ -515,20 +510,19 @@ class ImportSchedule extends BaseController
 
     protected function eventFromScheduleShift(ScheduleShift $scheduleShift): Event
     {
-        $shift = $this->loadShift($scheduleShift->shift_id);
-        $start = Carbon::createFromTimestamp($shift->start);
-        $end = Carbon::createFromTimestamp($shift->end);
-        $duration = $start->diff($end);
+        /** @var Shift $shift */
+        $shift = Shift::with('room')->find($scheduleShift->shift_id);
+        $duration = $shift->start->diff($shift->end);
 
         return new Event(
             $scheduleShift->guid,
             0,
-            new Room($shift->room_name),
+            new Room($shift->room->name),
             $shift->title,
             '',
             'n/a',
-            Carbon::createFromTimestamp($shift->start),
-            $start->format('H:i'),
+            $shift->start,
+            $shift->start->format('H:i'),
             $duration->format('%H:%I'),
             '',
             '',
@@ -568,31 +562,6 @@ class ImportSchedule extends BaseController
             ->whereNotIn('guid', $events)
             ->where('schedule_id', $scheduleUrl->id)
             ->get();
-    }
-
-    /**
-     * @param $id
-     * @return stdClass|null
-     */
-    protected function loadShift($id): ?stdClass
-    {
-        return $this->db->selectOne(
-            '
-            SELECT
-                s.SID AS id,
-                s.title,
-                s.start,
-                s.end,
-                s.shifttype_id AS shift_type_id,
-                s.RID AS room_id,
-                r.Name AS room_name,
-                s.URL as url
-            FROM Shifts AS s
-            LEFT JOIN rooms r on s.RID = r.id
-            WHERE SID = ?
-            ',
-            [$id]
-        );
     }
 
     /**
