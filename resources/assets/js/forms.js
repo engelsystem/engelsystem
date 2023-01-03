@@ -34,7 +34,7 @@ ready(() => {
   const triggerChange = (element) => {
     const changeEvent = new Event('change');
     element.dispatchEvent(changeEvent);
-  }
+  };
 
   /**
    * Sets the values of the input fields with the IDs to from/to:
@@ -98,7 +98,7 @@ ready(() => {
 
     if (to < from) {
       setInput(to, from);
-    } else{
+    } else {
       setInput(from, to);
     }
   };
