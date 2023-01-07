@@ -38,12 +38,22 @@ The following instructions explain how to get, build and run the latest Engelsys
   find resources/lang/ -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
   ```
 
-## Git setup (optional, recommended)
-Ignore mass-changes like code formatting in Git blame:
+## Pre-commit hooks
+You should set up the pre-commit hook to check the code style and run tests on commit:
 
-```bash
-git config blame.ignoreRevsFile .git-blame-ignore-revs
+Docker (recommended):
+
+```sh
+echo "docker exec engelsystem_dev-es_workspace-1 bin/pre-commit" > .git/hooks/pre-commit
+chmod u+x .git/hooks/pre-commit
 ```
+
+Host machine:
+
+```sh
+ln -s ../../bin/pre-commit .git/hooks/pre-commit
+```
+
 
 ## Testing
 To run the unit tests use
