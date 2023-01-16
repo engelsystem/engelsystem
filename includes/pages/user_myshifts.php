@@ -1,7 +1,6 @@
 <?php
 
-use Engelsystem\Database\Db;
-use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 
 /**
@@ -49,60 +48,38 @@ function user_myshifts()
         ]);
     } elseif ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
         $shift_entry_id = $request->input('edit');
-        $shift = Db::selectOne(
-            '
-                SELECT
-                    `ShiftEntry`.`freeloaded`,
-                    `ShiftEntry`.`freeload_comment`,
-                    `ShiftEntry`.`Comment`,
-                    `ShiftEntry`.`UID`,
-                    `shift_types`.`name`,
-                    `shifts`.*,
-                    `angel_types`.`name` AS `angel_type`
-                FROM `ShiftEntry`
-                JOIN `angel_types` ON (`ShiftEntry`.`TID` = `angel_types`.`id`)
-                JOIN `shifts` ON (`ShiftEntry`.`SID` = `shifts`.`id`)
-                JOIN `shift_types` ON (`shift_types`.`id` = `shifts`.`shift_type_id`)
-                WHERE `ShiftEntry`.`id`=?
-                AND `UID`=?
-                LIMIT 1
-            ',
-            [
-                $shift_entry_id,
-                $shifts_user->id,
-            ]
-        );
-        if (!empty($shift)) {
-            /** @var Shift $shift */
-            $shift = (new Shift())->forceFill($shift);
-
-            $freeloaded = $shift->freeloaded;
-            $freeload_comment = $shift->freeloaded_comment;
+        /** @var ShiftEntry $shiftEntry */
+        $shiftEntry = ShiftEntry::where('id', $shift_entry_id)
+            ->where('user_id', $shifts_user->id)
+            ->with(['shift', 'shift.shiftType', 'shift.room', 'user'])
+            ->first();
+        if (!empty($shiftEntry)) {
+            $shift = $shiftEntry->shift;
+            $freeloaded = $shiftEntry->freeloaded;
+            $freeloaded_comment = $shiftEntry->freeloaded_comment;
 
             if ($request->hasPostData('submit')) {
                 $valid = true;
                 if (auth()->can('user_shifts_admin')) {
                     $freeloaded = $request->has('freeloaded');
-                    $freeload_comment = strip_request_item_nl('freeload_comment');
-                    if ($freeloaded && $freeload_comment == '') {
+                    $freeloaded_comment = strip_request_item_nl('freeloaded_comment');
+                    if ($freeloaded && $freeloaded_comment == '') {
                         $valid = false;
                         error(__('Please enter a freeload comment!'));
                     }
                 }
 
-                $comment = $shift->Comment;
-                $user_source = User::find($shift->UID);
+                $comment = $shiftEntry->user_comment;
+                $user_source = $shiftEntry->user;
                 if (auth()->user()->id == $user_source->id) {
                     $comment = strip_request_item_nl('comment');
                 }
 
                 if ($valid) {
-                    ShiftEntry_update([
-                        'id'               => $shift_entry_id,
-                        'Comment'          => $comment,
-                        'freeloaded'       => $freeloaded,
-                        'freeload_comment' => $freeload_comment
-                    ]);
+                    $shiftEntry->user_comment = $comment;
+                    $shiftEntry->freeloaded = $freeloaded;
+                    $shiftEntry->freeloaded_comment = $freeloaded_comment;
+                    $shiftEntry->save();
 
                     engelsystem_log(
                         'Updated ' . User_Nick_render($user_source, true) . '\'s shift '
@@ -110,7 +87,7 @@ function user_myshifts()
                         . ' from ' . $shift->start->format('Y-m-d H:i')
                         . ' to ' . $shift->end->format('Y-m-d H:i')
                         . ' with comment ' . $comment
-                        . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeload_comment : 'NO')
+                        . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeloaded_comment : 'NO')
                     );
                     success(__('Shift saved.'));
                     throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
@@ -122,10 +99,10 @@ function user_myshifts()
                 $shift->start->format('Y-m-d H:i') . ', ' . shift_length($shift),
                 $shift->room->name,
                 $shift->shiftType->name,
-                $shift->angel_type,
-                $shift->Comment,
-                $shift->freeloaded,
-                $shift->freeload_comment,
+                $shiftEntry->angelType->name,
+                $shiftEntry->user_comment,
+                $shiftEntry->freeloaded,
+                $shiftEntry->freeloaded_comment,
                 auth()->can('user_shifts_admin')
             );
         } else {

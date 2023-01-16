@@ -111,6 +111,14 @@ class User extends BaseModel
         return $this->belongsToMany(Group::class, 'users_groups');
     }
 
+    public function isFreeloader(): bool
+    {
+        return $this->shiftEntries()
+                ->where('freeloaded', true)
+                ->count()
+            >= config('max_freeloadable_shifts');
+    }
+
     public function license(): HasOne
     {
         return $this

@@ -1,11 +1,16 @@
 <?php
 
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\Collection;
 
 function mail_shift_change(Shift $old_shift, Shift $new_shift)
 {
-    $users = ShiftEntries_by_shift($old_shift->id);
+    /** @var ShiftEntry[]|Collection $shiftEntries */
+    $shiftEntries = $old_shift->shiftEntries()
+        ->with(['user', 'user.settings'])
+        ->get();
     $old_room = $old_shift->room;
     $new_room = $new_shift->room;
 
@@ -65,8 +70,8 @@ function mail_shift_change(Shift $old_shift, Shift $new_shift)
     $message .= $new_room->name . "\n\n";
     $message .= url('/shifts', ['action' => 'view', 'shift_id' => $new_shift->id]) . "\n";
 
-    foreach ($users as $user) {
-        $user = (new User())->forceFill($user);
+    foreach ($shiftEntries as $shiftEntry) {
+        $user = $shiftEntry->user;
         if ($user->settings->email_shiftinfo) {
             engelsystem_email_to_user(
                 $user,

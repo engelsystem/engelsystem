@@ -60,8 +60,8 @@ function make_ical_entry_from_shift(Shift $shift)
     $output .= 'UID:' . md5($shift->start->timestamp . $shift->end->timestamp . $shift->shiftType->name) . "\r\n";
     $output .= 'SUMMARY:' . str_replace("\n", "\\n", $shift->shiftType->name)
         . ' (' . str_replace("\n", "\\n", $shift->title) . ")\r\n";
-    if (isset($shift->Comment)) {
-        $output .= 'DESCRIPTION:' . str_replace("\n", "\\n", $shift->Comment) . "\r\n";
+    if (isset($shift->user_comment)) {
+        $output .= 'DESCRIPTION:' . str_replace("\n", "\\n", $shift->user_comment) . "\r\n";
     }
     $output .= 'DTSTAMP:' . $shift->start->utc()->format('Ymd\THis\Z') . "\r\n";
     $output .= 'DTSTART:' . $shift->start->utc()->format('Ymd\THis\Z') . "\r\n";

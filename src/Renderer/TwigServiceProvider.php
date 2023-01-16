@@ -76,8 +76,10 @@ class TwigServiceProvider extends ServiceProvider
         $this->app->instance('twig.loader', $twigLoader);
 
         $cache = $this->app->get('path.cache.views');
+        $twigDebug = false;
         if ($config->get('environment') == 'development') {
             $cache = false;
+            $twigDebug = true;
         }
 
         $twig = $this->app->make(
@@ -86,7 +88,8 @@ class TwigServiceProvider extends ServiceProvider
                 'options' => [
                     'cache'            => $cache,
                     'auto_reload'      => true,
-                    'strict_variables' => ($config->get('environment') == 'development'),
+                    'debug'            => $twigDebug,
+                    'strict_variables' => $twigDebug,
                 ],
             ]
         );

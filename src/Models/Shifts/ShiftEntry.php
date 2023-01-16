@@ -44,7 +44,7 @@ class ShiftEntry extends BaseModel
         'freeloaded_comment',
     ];
 
-    /** @var array<string, string> default attributes */
+    /** @var array<string, string|bool> default attributes */
     protected $attributes = [ // phpcs:ignore
         'user_comment'       => '',
         'freeloaded'         => false,

@@ -40,11 +40,11 @@ function admin_free()
     if ($request->has('submit')) {
         $query = User::with('personalData')
             ->select('users.*')
-            ->leftJoin('ShiftEntry', 'users.id', 'ShiftEntry.UID')
+            ->leftJoin('shift_entries', 'users.id', 'shift_entries.user_id')
             ->leftJoin('users_state', 'users.id', 'users_state.user_id')
             ->leftJoin('shifts', function ($join) {
                 /** @var JoinClause $join */
-                $join->on('ShiftEntry.SID', '=', 'shifts.id')
+                $join->on('shift_entries.shift_id', '=', 'shifts.id')
                     ->where('shifts.start', '<', Carbon::now())
                     ->where('shifts.end', '>', Carbon::now());
             })

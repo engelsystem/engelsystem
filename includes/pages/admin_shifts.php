@@ -563,17 +563,16 @@ function admin_shifts_history(): string
 
         foreach ($shifts as $shift) {
             $shift = Shift($shift);
-            foreach ($shift->shiftEntry as $entry) {
-                $type = AngelType::find($entry['TID']);
+            foreach ($shift->shiftEntries as $entry) {
                 event('shift.entry.deleting', [
-                    'user'       => User::find($entry['user_id']),
+                    'user'       => $entry->user,
                     'start'      => $shift->start,
                     'end'        => $shift->end,
                     'name'       => $shift->shiftType->name,
                     'title'      => $shift->title,
-                    'type'       => $type->name,
+                    'type'       => $entry->angelType->name,
                     'room'       => $shift->room,
-                    'freeloaded' => (bool) $entry['freeloaded'],
+                    'freeloaded' => $entry->freeloaded,
                 ]);
             }
 

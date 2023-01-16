@@ -107,8 +107,8 @@ function public_dashboard_needed_angels($needed_angels, ShiftsFilter $filter = n
     $result = [];
     foreach ($needed_angels as $needed_angel) {
         $need = $needed_angel['count'] - $needed_angel['taken'];
-        if ($need > 0 && (!$filter || in_array($needed_angel['TID'], $filter->getTypes()))) {
-            $angeltype = AngelType::find($needed_angel['TID']);
+        if ($need > 0 && (!$filter || in_array($needed_angel['angel_type_id'], $filter->getTypes()))) {
+            $angeltype = AngelType::find($needed_angel['angel_type_id']);
             if ($angeltype->show_on_dashboard) {
                 $result[] = [
                     'need'           => $need,

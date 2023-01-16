@@ -25,8 +25,8 @@ function User_tshirt_score($userId)
     $shift_sum_formula = User_get_shifts_sum_query();
     $result_shifts = Db::selectOne(sprintf('
         SELECT ROUND((%s) / 3600, 2) AS `tshirt_score`
-        FROM `users` LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
-        LEFT JOIN `shifts` ON `ShiftEntry`.`SID` = `shifts`.`id`
+        FROM `users` LEFT JOIN `shift_entries` ON `users`.`id` = `shift_entries`.`user_id`
+        LEFT JOIN `shifts` ON `shift_entries`.`shift_id` = `shifts`.`id`
         WHERE `users`.`id` = ?
         AND `shifts`.`end` < NOW()
         GROUP BY `users`.`id`
@@ -43,17 +43,6 @@ function User_tshirt_score($userId)
         ->sum('hours');
 
     return $result_shifts['tshirt_score'] + $worklogHours;
-}
-
-/**
- * Returns true if user is freeloader
- *
- * @param User $user
- * @return bool
- */
-function User_is_freeloader($user)
-{
-    return count(ShiftEntries_freeloaded_by_user($user->id)) >= config('max_freeloadable_shifts');
 }
 
 /**
@@ -196,15 +185,15 @@ function User_get_eligable_voucher_count($user)
         ? Carbon::createFromFormat('Y-m-d', $voucher_settings['voucher_start'])->setTime(0, 0)
         : null;
 
-    $shifts = ShiftEntries_finished_by_user($user, $start);
+    $shiftEntries = ShiftEntries_finished_by_user($user, $start);
     $worklog = UserWorkLogsForUser($user->id, $start);
     $shifts_done =
-        count($shifts)
+        count($shiftEntries)
         + $worklog->count();
 
     $shiftsTime = 0;
-    foreach ($shifts as $shift) {
-        $shiftsTime += (Carbon::make($shift['end'])->timestamp - Carbon::make($shift['start'])->timestamp) / 60 / 60;
+    foreach ($shiftEntries as $shiftEntry) {
+        $shiftsTime += ($shiftEntry->shift->end->timestamp - $shiftEntry->shift->start->timestamp) / 60 / 60;
     }
     foreach ($worklog as $entry) {
         $shiftsTime += $entry->hours;
@@ -248,7 +237,7 @@ function User_get_shifts_sum_query()
                     OR (HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d)
                 ))
                 * (UNIX_TIMESTAMP(shifts.end) - UNIX_TIMESTAMP(shifts.start))
-                * (1 - (%3$d + 1) * `ShiftEntry`.`freeloaded`)
+                * (1 - (%3$d + 1) * `shift_entries`.`freeloaded`)
             ), 0)
         ',
         $nightShifts['start'],

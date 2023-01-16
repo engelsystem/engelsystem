@@ -3,6 +3,8 @@
 namespace Engelsystem;
 
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
+use Illuminate\Support\Collection;
 
 class ShiftCalendarRenderer
 {
@@ -45,10 +47,10 @@ class ShiftCalendarRenderer
     /**
      * ShiftCalendarRenderer constructor.
      *
-     * @param Shift[]      $shifts
-     * @param array[]      $needed_angeltypes
-     * @param array[]      $shift_entries
-     * @param ShiftsFilter $shiftsFilter
+     * @param Shift[]                 $shifts
+     * @param array[]                 $needed_angeltypes
+     * @param ShiftEntry[][]|Collection $shift_entries
+     * @param ShiftsFilter            $shiftsFilter
      */
     public function __construct($shifts, private $needed_angeltypes, private $shift_entries, ShiftsFilter $shiftsFilter)
     {
@@ -204,7 +206,7 @@ class ShiftCalendarRenderer
     /**
      * Renders a tick/block for given time
      *
-     * @param int     $time  unix timestamp
+     * @param int     $time unix timestamp
      * @param boolean $label Should time labels be generated?
      * @return string rendered tick html
      */

@@ -31,7 +31,7 @@ function user_shifts()
 {
     $request = request();
 
-    if (User_is_freeloader(auth()->user())) {
+    if (auth()->user()->isFreeloader()) {
         throw_redirect(page_link_to('user_myshifts'));
     }
 

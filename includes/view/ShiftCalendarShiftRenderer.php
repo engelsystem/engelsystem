@@ -4,7 +4,9 @@ namespace Engelsystem;
 
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
+use Illuminate\Support\Collection;
 
 use function theme_type;
 
@@ -16,10 +18,10 @@ class ShiftCalendarShiftRenderer
     /**
      * Renders a shift
      *
-     * @param Shift   $shift The shift to render
-     * @param array[] $needed_angeltypes
-     * @param array   $shift_entries
-     * @param User    $user The user who is viewing the shift calendar
+     * @param Shift                   $shift The shift to render
+     * @param array[]                 $needed_angeltypes
+     * @param ShiftEntry[]|Collection $shift_entries
+     * @param User                    $user The user who is viewing the shift calendar
      * @return array
      */
     public function render(Shift $shift, $needed_angeltypes, $shift_entries, $user)
@@ -80,10 +82,10 @@ class ShiftCalendarShiftRenderer
     }
 
     /**
-     * @param Shift   $shift
-     * @param array[] $needed_angeltypes
-     * @param array[] $shift_entries
-     * @param User    $user
+     * @param Shift                   $shift
+     * @param array[]                 $needed_angeltypes
+     * @param ShiftEntry[]|Collection $shift_entries
+     * @param User                    $user
      * @return array
      */
     private function renderShiftNeededAngeltypes(Shift $shift, $needed_angeltypes, $shift_entries, $user)
@@ -93,7 +95,7 @@ class ShiftCalendarShiftRenderer
             $shift_entries_filtered[$needed_angeltype['id']] = [];
         }
         foreach ($shift_entries as $shift_entry) {
-            $shift_entries_filtered[$shift_entry['TID']][] = $shift_entry;
+            $shift_entries_filtered[$shift_entry->angel_type_id][] = $shift_entry;
         }
 
         $html = '';
@@ -144,11 +146,11 @@ class ShiftCalendarShiftRenderer
     /**
      * Renders a list entry containing the needed angels for an angeltype
      *
-     * @param Shift   $shift The shift which is rendered
-     * @param array[] $shift_entries
-     * @param array   $angeltype The angeltype, containing information about needed angeltypes
+     * @param Shift                   $shift The shift which is rendered
+     * @param ShiftEntry[]|Collection $shift_entries
+     * @param array                   $angeltype The angeltype, containing information about needed angeltypes
      *                           and already signed up angels
-     * @param User    $user The user who is viewing the shift calendar
+     * @param User                    $user The user who is viewing the shift calendar
      * @return array
      */
     private function renderShiftNeededAngeltype(Shift $shift, $shift_entries, $angeltype, $user)
@@ -156,8 +158,8 @@ class ShiftCalendarShiftRenderer
         $angeltype = (new AngelType())->forceFill($angeltype);
         $entry_list = [];
         foreach ($shift_entries as $entry) {
-            $class = $entry['freeloaded'] ? 'text-decoration-line-through' : '';
-            $entry_list[] = '<span class="text-nowrap ' . $class . '">' . User_Nick_render($entry) . '</span>';
+            $class = $entry->freeloaded ? 'text-decoration-line-through' : '';
+            $entry_list[] = '<span class="text-nowrap ' . $class . '">' . User_Nick_render($entry->user) . '</span>';
         }
         $shift_signup_state = Shift_signup_allowed(
             $user,
