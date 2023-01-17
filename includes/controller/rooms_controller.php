@@ -41,7 +41,7 @@ function room_controller(): array
     if (!empty($days) && !in_array($selected_day, $days)) {
         $selected_day = $days[0];
     }
-    if ($request->has('shifts_filter_day')) {
+    if ($request->input('shifts_filter_day')) {
         $selected_day = $request->input('shifts_filter_day');
     }
     $shiftsFilter->setStartTime(parse_date('Y-m-d H:i', $selected_day . ' 00:00'));
