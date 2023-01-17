@@ -16,26 +16,27 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property int                                       $id
- * @property string                                    $title
- * @property string                                    $description
- * @property string                                    $url
- * @property Carbon                                    $start
- * @property Carbon                                    $end
- * @property int                                       $shift_type_id
- * @property int                                       $room_id
- * @property string                                    $transaction_id
- * @property int                                       $created_by
- * @property int|null                                  $updated_by
- * @property Carbon|null                               $created_at
- * @property Carbon|null                               $updated_at
+ * @property int                               $id
+ * @property string                            $title
+ * @property string                            $description
+ * @property string                            $url
+ * @property Carbon                            $start
+ * @property Carbon                            $end
+ * @property int                               $shift_type_id
+ * @property int                               $room_id
+ * @property string                            $transaction_id
+ * @property int                               $created_by
+ * @property int|null                          $updated_by
+ * @property Carbon|null                       $created_at
+ * @property Carbon|null                       $updated_at
  *
- * @property-read QueryBuilder|Schedule                $schedule
- * @property-read QueryBuilder|Collection|ShiftEntry[] $shiftEntries
- * @property-read QueryBuilder|ShiftType               $shiftType
- * @property-read QueryBuilder|Room                    $room
- * @property-read QueryBuilder|User                    $createdBy
- * @property-read QueryBuilder|User|null               $updatedBy
+ * @property-read Collection|NeededAngelType[] $neededAngelTypes
+ * @property-read Schedule                     $schedule
+ * @property-read Collection|ShiftEntry[]      $shiftEntries
+ * @property-read ShiftType                    $shiftType
+ * @property-read Room                         $room
+ * @property-read User                         $createdBy
+ * @property-read User|null                    $updatedBy
  *
  * @method static QueryBuilder|Shift[] whereId($value)
  * @method static QueryBuilder|Shift[] whereTitle($value)
@@ -85,6 +86,11 @@ class Shift extends BaseModel
         'start',
         'end',
     ];
+
+    public function neededAngelTypes(): HasMany
+    {
+        return $this->hasMany(NeededAngelType::class);
+    }
 
     public function schedule(): HasOneThrough
     {

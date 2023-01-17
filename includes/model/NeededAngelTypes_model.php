@@ -5,75 +5,6 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Entity needed angeltypes describes how many angels of given type are needed for a shift or in a room.
- */
-
-/**
- * Insert a new needed angel type.
- *
- * @param int|null $shift_id     The shift. Can be null, but then a room_id must be given.
- * @param int      $angeltype_id The angeltype
- * @param int|null $room_id      The room. Can be null, but then a shift_id must be given.
- * @param int      $count        How many angels are needed?
- *
- * @return int|false
- */
-function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
-{
-    Db::insert(
-        '
-            INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`)
-            VALUES (?, ?, ?, ?)
-        ',
-        [
-            $shift_id,
-            $angeltype_id,
-            $room_id,
-            $count,
-        ]
-    );
-
-    return Db::getPdo()->lastInsertId();
-}
-
-/**
- * Deletes all needed angel types from given shift.
- *
- * @param int $shift_id id of the shift
- */
-function NeededAngelTypes_delete_by_shift($shift_id)
-{
-    Db::delete('DELETE FROM `NeededAngelTypes` WHERE `shift_id` = ?', [$shift_id]);
-}
-
-/**
- * Deletes all needed angel types from given room.
- *
- * @param int $room_id id of the room
- */
-function NeededAngelTypes_delete_by_room($room_id)
-{
-    Db::delete(
-        'DELETE FROM `NeededAngelTypes` WHERE `room_id` = ?',
-        [$room_id]
-    );
-}
-
-/**
- * Returns all needed angeltypes by room.
- *
- * @param int $room_id
- * @return array
- */
-function NeededAngelTypes_by_room($room_id)
-{
-    return Db::select(
-        'SELECT `angel_type_id`, `count` FROM `NeededAngelTypes` WHERE `room_id`=?',
-        [$room_id]
-    );
-}
-
-/**
  * Returns all needed angeltypes and already taken needs.
  *
  * @param int $shiftId id of shift
@@ -84,13 +15,13 @@ function NeededAngelTypes_by_shift($shiftId)
     $needed_angeltypes_source = Db::select(
         '
         SELECT
-            `NeededAngelTypes`.*,
+            `needed_angel_types`.*,
             `angel_types`.`id`,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
             `angel_types`.`no_self_signup`
-        FROM `NeededAngelTypes`
-        JOIN `angel_types` ON `angel_types`.`id` = `NeededAngelTypes`.`angel_type_id`
+        FROM `needed_angel_types`
+        JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
         WHERE `shift_id` = ?
         AND `count` > 0
         ORDER BY `room_id` DESC',
@@ -100,12 +31,12 @@ function NeededAngelTypes_by_shift($shiftId)
     // Use settings from room
     if (count($needed_angeltypes_source) == 0) {
         $needed_angeltypes_source = Db::select('
-        SELECT `NeededAngelTypes`.*, `angel_types`.`name`, `angel_types`.`restricted`
-        FROM `NeededAngelTypes`
-        JOIN `angel_types` ON `angel_types`.`id` = `NeededAngelTypes`.`angel_type_id`
-        JOIN `shifts` ON `shifts`.`room_id` = `NeededAngelTypes`.`room_id`
+        SELECT `needed_angel_types`.*, `angel_types`.`name`, `angel_types`.`restricted`
+        FROM `needed_angel_types`
+        JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
+        JOIN `shifts` ON `shifts`.`room_id` = `needed_angel_types`.`room_id`
         WHERE `shifts`.`id` = ?
-        AND `count` > 0
+        AND needed_angel_types.`count` > 0
         ORDER BY `room_id` DESC
         ', [$shiftId]);
     }

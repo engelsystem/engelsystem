@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Models\Shifts;
 
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
@@ -54,6 +55,28 @@ class ShiftTest extends ModelTest
         $this->assertEquals($room->id, $model->room->id);
         $this->assertEquals($user1->id, $model->createdBy->id);
         $this->assertEquals($user2->id, $model->updatedBy->id);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::neededAngelTypes
+     */
+    public function testNeededAngelTypes(): void
+    {
+        /** @var Collection|Shift[] $shifts */
+        $shifts = Shift::factory(3)->create();
+
+        $this->assertCount(0, Shift::find(1)->neededAngelTypes);
+
+        (NeededAngelType::factory()->make(['shift_id' => $shifts[0]->id, 'room_id' => null]))->save();
+        (NeededAngelType::factory()->make(['shift_id' => $shifts[0]->id, 'room_id' => null]))->save();
+        (NeededAngelType::factory()->make(['shift_id' => $shifts[1]->id, 'room_id' => null]))->save();
+        (NeededAngelType::factory()->make(['shift_id' => $shifts[2]->id, 'room_id' => null]))->save();
+
+        $this->assertCount(2, Shift::find(1)->neededAngelTypes);
+        $this->assertEquals(1, Shift::find(1)->neededAngelTypes[0]->id);
+        $this->assertEquals(2, Shift::find(1)->neededAngelTypes[1]->id);
+        $this->assertEquals(3, Shift::find(2)->neededAngelTypes->first()->id);
+        $this->assertEquals(4, Shift::find(3)->neededAngelTypes->first()->id);
     }
 
     /**
