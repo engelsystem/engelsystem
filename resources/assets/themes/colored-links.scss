@@ -3,7 +3,11 @@
   @each $color, $value in $theme-colors {
     a:hover > .text-#{'' + $color},
     a:focus > .text-#{'' + $color} {
-      color: if(color-contrast($value) == $color-contrast-light, shade-color($value, $link-shade-percentage), tint-color($value, $link-shade-percentage)) !important; // stylelint-disable-line declaration-no-important
+      color: if(
+        color-contrast($value) == $color-contrast-light,
+        shade-color($value, $link-shade-percentage),
+        tint-color($value, $link-shade-percentage)
+      ) !important; // stylelint-disable-line declaration-no-important
     }
   }
 }

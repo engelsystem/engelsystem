@@ -210,9 +210,7 @@ ready(() => {
  * Init Bootstrap Popover
  */
 ready(() => {
-  document.querySelectorAll('[data-bs-toggle="popover"]').forEach((element) => (
-    new bootstrap.Popover(element)
-  ));
+  document.querySelectorAll('[data-bs-toggle="popover"]').forEach((element) => new bootstrap.Popover(element));
 });
 
 /**
