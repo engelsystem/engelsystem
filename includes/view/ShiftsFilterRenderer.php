@@ -63,6 +63,13 @@ class ShiftsFilterRenderer
                     icon('speedometer2') . __('Dashboard')
                 );
             }
+            if (!request('showFilledShifts') && !auth()->can('user_shifts_admin')) {
+                $toolbar[] = sprintf(
+                    '<li role="presentation"><a class="nav-link" href="%s">%s</a></li>',
+                    $page_link . '&showFilledShifts=1&showShiftsTab=1&shifts_filter_day=' . request('shifts_filter_day', $selected_day),
+                    icon('eye') . __('All')
+                );
+            }
         }
         return div('mb-3', [
             toolbar_pills($toolbar)

@@ -196,6 +196,9 @@ function angeltype_controller()
 
     $days = angeltype_controller_shiftsFilterDays($angeltype);
     $shiftsFilter = angeltype_controller_shiftsFilter($angeltype, $days);
+    if (request()->input('showFilledShifts')) {
+        $shiftsFilter->setFilled([ShiftsFilter::FILLED_FREE, ShiftsFilter::FILLED_FILLED]);
+    }
 
     $shiftsFilterRenderer = new ShiftsFilterRenderer($shiftsFilter);
     $shiftsFilterRenderer->enableDaySelection($days);
@@ -204,7 +207,7 @@ function angeltype_controller()
     $request = request();
     $tab = 0;
 
-    if ($request->has('shifts_filter_day')) {
+    if ($request->has('shifts_filter_day') || $request->has('showShiftsTab')) {
         $tab = 1;
     }
 
@@ -266,7 +269,7 @@ function angeltype_controller_shiftsFilter(AngelType $angeltype, $days)
     if (!empty($days) && !in_array($selected_day, $days)) {
         $selected_day = $days[0];
     }
-    if ($request->has('shifts_filter_day')) {
+    if ($request->input('shifts_filter_day')) {
         $selected_day = $request->input('shifts_filter_day');
     }
     $shiftsFilter->setStartTime(parse_date('Y-m-d H:i', $selected_day . ' 00:00'));
