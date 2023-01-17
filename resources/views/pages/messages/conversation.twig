@@ -13,19 +13,21 @@
         </div>
 
         <div class="row">
-            <div class="col-12 col-lg-8 offset-lg-2">
-                <div class="row conversation">
+            <div class="col-12 col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
+                <div class="row conversation mb-2">
                     {% for msg in messages %}
                         {% set own_message = msg.user_id == user.id %}
                         <div class="col-12"{% if loop.last %} id="newest"{% endif %}>
                             <div class="d-flex{% if own_message %} justify-content-end{% endif %}">
-                                <div class="message alert {% if own_message %}alert-primary{% else %}alert-secondary{% endif %}">
-                                    <p>{{ msg.text | nl2br }}</p>
-                                    <div class="text-end">
+                                <div class="card {% if own_message %}text-bg-primary{% else %}text-bg-secondary{% endif %} mb-3">
+                                    <div class="card-body">
+                                        <p class="card-text">{{ msg.text | nl2br }}</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-end align-items-center fw-light">
                                         <small class="opacity-75">{{ msg.created_at.format(__('Y-m-d H:i')) }}</small>
                                         {% if own_message %}
                                             <form action="{{ url('/messages/' ~ other_user.id ~ '/' ~ msg.id) }}"
-                                                enctype="multipart/form-data" method="post" class="float-end"
+                                                enctype="multipart/form-data" method="post" class="ms-2"
                                             >
                                                 {{ csrf() }}
                                                 {{ f.submit(m.icon('trash'), {'btn_type': 'primary', 'size': 'sm'}) }}

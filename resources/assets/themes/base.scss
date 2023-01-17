@@ -357,14 +357,14 @@ code {
 }
 
 .conversation {
+  align-content: flex-start;
   height: 55vh;
   overflow-x: hidden;
   overflow-y: auto;
-}
 
-.message {
-  max-width: 75%;
-  display: inline-block;
+  .alert {
+    max-width: 75%;
+  }
 }
 
 /* Hide the arrow up/down buttons rendered by the browser in the input field */
