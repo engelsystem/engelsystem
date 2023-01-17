@@ -35,6 +35,12 @@ class CreateNeededAngelTypesTable extends Migration
             return;
         }
 
+        // Delete old entries which don't need angels
+        $connection
+            ->table('NeededAngelTypes')
+            ->where('count', 0)
+            ->delete();
+
         /** @var stdClass[] $records */
         $records = $connection
             ->table('NeededAngelTypes')

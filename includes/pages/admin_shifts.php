@@ -382,16 +382,14 @@ function admin_shifts()
             $needed_angel_types_info = [];
             foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
                 $angel_type_source = AngelType::find($type_id);
-                if (!empty($angel_type_source)) {
+                if (!empty($angel_type_source) && $count > 0) {
                     $neededAngelType = new NeededAngelType();
                     $neededAngelType->shift()->associate($shift);
                     $neededAngelType->angelType()->associate($angel_type_source);
                     $neededAngelType->count = $count;
                     $neededAngelType->save();
 
-                    if ($count > 0) {
-                        $needed_angel_types_info[] = $angel_type_source->name . ': ' . $count;
-                    }
+                    $needed_angel_types_info[] = $angel_type_source->name . ': ' . $count;
                 }
             }
             engelsystem_log('Shift needs following angel types: ' . join(', ', $needed_angel_types_info));

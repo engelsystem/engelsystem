@@ -23,7 +23,6 @@ function NeededAngelTypes_by_shift($shiftId)
         FROM `needed_angel_types`
         JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
         WHERE `shift_id` = ?
-        AND `count` > 0
         ORDER BY `room_id` DESC',
         [$shiftId]
     );
@@ -36,7 +35,6 @@ function NeededAngelTypes_by_shift($shiftId)
         JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
         JOIN `shifts` ON `shifts`.`room_id` = `needed_angel_types`.`room_id`
         WHERE `shifts`.`id` = ?
-        AND needed_angel_types.`count` > 0
         ORDER BY `room_id` DESC
         ', [$shiftId]);
     }

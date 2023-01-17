@@ -166,13 +166,14 @@ function shift_edit_controller()
             NeededAngelType::whereShiftId($shift_id)->delete();
             $needed_angel_types_info = [];
             foreach ($needed_angel_types as $type_id => $count) {
-                $neededAngelType = new NeededAngelType();
-                $neededAngelType->shift()->associate($shift);
-                $neededAngelType->angel_type_id = $type_id;
-                $neededAngelType->count = $count;
-                $neededAngelType->save();
+                $angeltype = AngelType::find($type_id);
+                if (!empty($angeltype) && $count > 0) {
+                    $neededAngelType = new NeededAngelType();
+                    $neededAngelType->shift()->associate($shift);
+                    $neededAngelType->angel_type_id = $type_id;
+                    $neededAngelType->count = $count;
+                    $neededAngelType->save();
 
-                if ($count > 0) {
                     $needed_angel_types_info[] = $angeltypes[$type_id] . ': ' . $count;
                 }
             }

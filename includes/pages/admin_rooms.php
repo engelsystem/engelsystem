@@ -132,16 +132,14 @@ function admin_rooms()
                     $needed_angeltype_info = [];
                     foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
                         $angeltype = AngelType::find($angeltype_id);
-                        if (!empty($angeltype)) {
+                        if (!empty($angeltype) && $angeltype_count > 0) {
                             $neededAngelType = new NeededAngelType();
                             $neededAngelType->room_id = $room_id;
                             $neededAngelType->angelType()->associate($angeltype);
                             $neededAngelType->count = $angeltype_count;
                             $neededAngelType->save();
 
-                            if ($angeltype_count > 0) {
-                                $needed_angeltype_info[] = $angeltype->name . ': ' . $angeltype_count;
-                            }
+                            $needed_angeltype_info[] = $angeltype->name . ': ' . $angeltype_count;
                         }
                     }
 
