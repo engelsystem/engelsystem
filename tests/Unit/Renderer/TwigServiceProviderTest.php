@@ -136,7 +136,12 @@ class TwigServiceProviderTest extends ServiceProviderTest
             ->method('make')
             ->withConsecutive(
                 [TwigLoader::class, ['paths' => $viewsPath]],
-                [Twig::class, ['options' => ['cache' => false, 'auto_reload' => true, 'strict_variables' => true]]],
+                [Twig::class, ['options' => [
+                    'cache'            => false,
+                    'auto_reload'      => true,
+                    'strict_variables' => true,
+                    'debug'            => true,
+                ]]],
                 [TwigEngine::class]
             )->willReturnOnConsecutiveCalls(
                 $twigLoader,
@@ -162,10 +167,10 @@ class TwigServiceProviderTest extends ServiceProviderTest
 
         $this->setExpects($app, 'tag', ['renderer.twigEngine', ['renderer.engine']]);
 
-        $config->expects($this->exactly(3))
+        $config->expects($this->exactly(2))
             ->method('get')
-            ->withConsecutive(['environment'], ['environment'], ['timezone'])
-            ->willReturnOnConsecutiveCalls('development', 'development', 'The/World');
+            ->withConsecutive(['environment'], ['timezone'])
+            ->willReturnOnConsecutiveCalls('development', 'The/World');
 
         $twig->expects($this->once())
             ->method('getExtension')

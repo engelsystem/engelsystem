@@ -4,11 +4,13 @@ use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftSignupState;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
 /**
  * @param AngelType $angeltype
@@ -57,7 +59,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
             WHERE (`end` > ? AND `start` < ?)
             AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`shifts`.`id`' . ($filter ? ' AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
-            > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`shifts`.`id` AND `freeloaded`=0' . ($filter ? ' AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+            > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND shift_entries.`freeloaded`=0' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND s.shift_id IS NULL
             ' . ($filter ? 'AND shifts.room_id IN (' . implode(',', $filter->getRooms()) . ')' : '') . '
 
@@ -68,7 +70,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
             WHERE (`end` > ? AND `start` < ?)
             AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`shifts`.`room_id`' . ($filter ? ' AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
-            > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`shifts`.`id` AND `freeloaded`=0' . ($filter ? ' AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+            > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND `freeloaded`=0' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND NOT s.shift_id IS NULL
             ' . ($filter ? 'AND shifts.room_id IN (' . implode(',', $filter->getRooms()) . ')' : '') . '
         ) AS `tmp`
@@ -246,41 +248,21 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
 
 /**
  * @param ShiftsFilter $shiftsFilter
- * @return array[]
+ * @return ShiftEntry[]|Collection
  */
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    $sql = sprintf(
-        '
-            SELECT
-                users.*,
-                `ShiftEntry`.`UID`,
-                `ShiftEntry`.`TID`,
-                `ShiftEntry`.`SID`,
-                `ShiftEntry`.`Comment`,
-                `ShiftEntry`.`freeloaded`
-            FROM `shifts`
-            JOIN `ShiftEntry` ON `ShiftEntry`.`SID`=`shifts`.`id`
-            JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
-            WHERE `shifts`.`room_id` IN (%s)
-            AND `start` BETWEEN ? AND ?
-            ORDER BY `shifts`.`start`
-        ',
-        implode(',', $shiftsFilter->getRooms())
-    );
-    return Db::select(
-        $sql,
-        [
-            $shiftsFilter->getStart(),
-            $shiftsFilter->getEnd(),
-        ]
-    );
+    return ShiftEntry::with('user')
+        ->join('shifts', 'shifts.id', 'shift_entries.shift_id')
+        ->whereIn('shifts.room_id', $shiftsFilter->getRooms())
+        ->whereBetween('start', [$shiftsFilter->getStart(), $shiftsFilter->getEnd()])
+        ->get();
 }
 
 /**
  * Check if a shift collides with other shifts (in time).
  *
- * @param Shift $shift
+ * @param Shift              $shift
  * @param Shift[]|Collection $shifts
  * @return bool
  */
@@ -290,8 +272,8 @@ function Shift_collides(Shift $shift, $shifts)
         if ($shift->id != $other_shift->id) {
             if (
                 !(
-                $shift->start->timestamp >= $other_shift->end->timestamp
-                || $shift->end->timestamp <= $other_shift->start->timestamp
+                    $shift->start->timestamp >= $other_shift->end->timestamp
+                    || $shift->end->timestamp <= $other_shift->start->timestamp
                 )
             ) {
                 return true;
@@ -304,15 +286,15 @@ function Shift_collides(Shift $shift, $shifts)
 /**
  * Returns the number of needed angels/free shift entries for an angeltype.
  *
- * @param AngelType $needed_angeltype
- * @param array[]   $shift_entries
+ * @param AngelType               $needed_angeltype
+ * @param ShiftEntry[]|Collection $shift_entries
  * @return int
  */
 function Shift_free_entries(AngelType $needed_angeltype, $shift_entries)
 {
     $taken = 0;
     foreach ($shift_entries as $shift_entry) {
-        if ($shift_entry['freeloaded'] == 0) {
+        if (!$shift_entry->freeloaded) {
             $taken++;
         }
     }
@@ -330,7 +312,7 @@ function Shift_free_entries(AngelType $needed_angeltype, $shift_entries)
  * @param array|null              $user_angeltype
  * @param SHift[]|Collection|null $user_shifts List of the users shifts
  * @param AngelType               $needed_angeltype
- * @param array[]                 $shift_entries
+ * @param ShiftEntry[]|Collection $shift_entries
  * @return ShiftSignupState
  */
 function Shift_signup_allowed_angel(
@@ -410,8 +392,8 @@ function Shift_signup_allowed_angel(
 /**
  * Check if an angeltype supporter can sign up a user to a shift.
  *
- * @param AngelType $needed_angeltype
- * @param array[]   $shift_entries
+ * @param AngelType               $needed_angeltype
+ * @param ShiftEntry[]|Collection $shift_entries
  * @return ShiftSignupState
  */
 function Shift_signup_allowed_angeltype_supporter(AngelType $needed_angeltype, $shift_entries)
@@ -427,8 +409,8 @@ function Shift_signup_allowed_angeltype_supporter(AngelType $needed_angeltype, $
 /**
  * Check if an admin can sign up a user to a shift.
  *
- * @param AngelType $needed_angeltype
- * @param array[]   $shift_entries
+ * @param AngelType               $needed_angeltype
+ * @param ShiftEntry[]|Collection $shift_entries
  * @return ShiftSignupState
  */
 function Shift_signup_allowed_admin(AngelType $needed_angeltype, $shift_entries)
@@ -484,7 +466,7 @@ function Shift_signout_allowed(Shift $shift, AngelType $angeltype, $signout_user
  * @param array|null              $user_angeltype
  * @param Shift[]|Collection|null $user_shifts List of the users shifts
  * @param AngelType               $needed_angeltype
- * @param array[]                 $shift_entries
+ * @param ShiftEntry[]|Collection $shift_entries
  * @return ShiftSignupState
  */
 function Shift_signup_allowed(
@@ -522,10 +504,10 @@ function Shift_signup_allowed(
  * Return users shifts.
  *
  * @param int  $userId
- * @param bool $include_freeload_comments
- * @return Collection|Shift[]
+ * @param bool $include_freeloaded_comments
+ * @return SupportCollection|Shift[]
  */
-function Shifts_by_user($userId, $include_freeload_comments = false)
+function Shifts_by_user($userId, $include_freeloaded_comments = false)
 {
     $shiftsData = Db::select(
         '
@@ -534,19 +516,19 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
             `rooms`.name AS Name,
             `shift_types`.`id` AS `shifttype_id`,
             `shift_types`.`name`,
-            `ShiftEntry`.`id` as shift_entry_id,
-            `ShiftEntry`.`SID`,
-            `ShiftEntry`.`TID`,
-            `ShiftEntry`.`UID`,
-            `ShiftEntry`.`freeloaded`,
-            `ShiftEntry`.`Comment`,
-            ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
+            `shift_entries`.`id` as shift_entry_id,
+            `shift_entries`.`shift_id`,
+            `shift_entries`.`angel_type_id`,
+            `shift_entries`.`user_id`,
+            `shift_entries`.`freeloaded`,
+            `shift_entries`.`user_comment`,
+            ' . ($include_freeloaded_comments ? '`shift_entries`.`freeloaded_comment`, ' : '') . '
             `shifts`.*
-        FROM `ShiftEntry`
-        JOIN `shifts` ON (`ShiftEntry`.`SID` = `shifts`.`id`)
+        FROM `shift_entries`
+        JOIN `shifts` ON (`shift_entries`.`shift_id` = `shifts`.`id`)
         JOIN `shift_types` ON (`shift_types`.`id` = `shifts`.`shift_type_id`)
         JOIN `rooms` ON (`shifts`.`room_id` = `rooms`.`id`)
-        WHERE ShiftEntry.`UID` = ?
+        WHERE shift_entries.`user_id` = ?
         ORDER BY `start`
         ',
         [
@@ -578,22 +560,14 @@ function Shift($shift)
         return null;
     }
 
-    $shift->shiftEntry = Db::select('
-        SELECT
-            `ShiftEntry`.`id`, `ShiftEntry`.`TID` , `ShiftEntry`.`UID` , `ShiftEntry`.`freeloaded`,
-            `users`.`name` AS `username`, `users`.`id` AS `user_id`
-        FROM `ShiftEntry`
-        LEFT JOIN `users` ON (`users`.`id` = `ShiftEntry`.`UID`)
-        WHERE `SID`=?', [$shift->id]);
-
     $neededAngels = [];
     $angelTypes = NeededAngelTypes_by_shift($shift->id);
     foreach ($angelTypes as $type) {
         $neededAngels[] = [
-            'TID'        => $type['angel_type_id'],
-            'count'      => $type['count'],
-            'restricted' => $type['restricted'],
-            'taken'      => $type['taken']
+            'angel_type_id' => $type['angel_type_id'],
+            'count'         => $type['count'],
+            'restricted'    => $type['restricted'],
+            'taken'         => $type['taken']
         ];
     }
     $shift->neededAngels = $neededAngels;

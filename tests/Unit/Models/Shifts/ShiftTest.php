@@ -9,6 +9,7 @@ use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Models\ModelTest;
@@ -72,5 +73,19 @@ class ShiftTest extends ModelTest
         $this->assertEquals(1, Shift::find(1)->schedule->id);
         $this->assertEquals(1, Shift::find(2)->schedule->id);
         $this->assertEquals(1, Shift::find(3)->schedule->id);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::shiftEntries
+     */
+    public function testShiftEntries(): void
+    {
+        /** @var Shift $shift */
+        $shift = Shift::factory()->make();
+        $shift->save();
+
+        ShiftEntry::factory(5)->create(['shift_id' => $shift->id]);
+
+        $this->assertCount(5, $shift->shiftEntries);
     }
 }

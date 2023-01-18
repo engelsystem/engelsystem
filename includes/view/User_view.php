@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Illuminate\Support\Collection;
@@ -197,14 +198,15 @@ function User_shift_state_render($user)
     }
 
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
-    if (empty($upcoming_shifts)) {
+    if ($upcoming_shifts->isEmpty()) {
         return '<span class="text-success">' . __('Free') . '</span>';
     }
 
-    $nextShift = array_shift($upcoming_shifts);
+    /** @var ShiftEntry $nextShiftEntry */
+    $nextShiftEntry = $upcoming_shifts->first();
 
-    $start = Carbon::make($nextShift['start']);
-    $end = Carbon::make($nextShift['end']);
+    $start = $nextShiftEntry->shift->start;
+    $end = $nextShiftEntry->shift->end;
     $startFormat = $start->format(__('Y-m-d H:i'));
     $endFormat = $end->format(__('Y-m-d H:i'));
     $startTimestamp = $start->timestamp;
@@ -244,8 +246,9 @@ function User_last_shift_render($user)
         return '';
     }
 
-    $lastShift = array_shift($last_shifts);
-    $end = Carbon::make($lastShift['end']);
+    /** @var ShiftEntry $lastShiftEntry */
+    $lastShiftEntry = $last_shifts->first();
+    $end = $lastShiftEntry->shift->end;
 
     return '<span title="' . $end->format(__('Y-m-d H:i')) . '" data-countdown-ts="' . $end->timestamp . '">'
         . __('Shift ended %c')
@@ -307,7 +310,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     ];
 
     if ($its_me) {
-        $myshift['comment'] = $shift->Comment;
+        $myshift['comment'] = $shift->user_comment;
     }
 
     if ($shift->freeloaded) {
@@ -316,7 +319,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
             . '</p>';
         if (auth()->can('user_shifts_admin')) {
             $myshift['comment'] .= '<br />'
-                . '<p class="text-danger">' . __('Freeloaded') . ': ' . $shift->freeload_comment . '</p>';
+                . '<p class="text-danger">' . __('Freeloaded') . ': ' . $shift->freeloaded_comment . '</p>';
         } else {
             $myshift['comment'] .= '<br /><p class="text-danger">' . __('Freeloaded') . '</p>';
         }
@@ -332,7 +335,8 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
             'btn-sm'
         );
     }
-    if (Shift_signout_allowed($shift, (new AngelType())->forceFill(['id' => $shift->TID]), $user_source->id)) {
+
+    if (Shift_signout_allowed($shift, (new AngelType())->forceFill(['id' => $shift->angel_type_id]), $user_source->id)) {
         $myshift['actions'][] = button(
             shift_entry_delete_link($shift),
             icon('trash') . __('sign off'),
@@ -517,7 +521,7 @@ function User_view(
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
         . (
-            (config('enable_pronoun') && $user_source->personalData->pronoun)
+        (config('enable_pronoun') && $user_source->personalData->pronoun)
             ? '<small>' . htmlspecialchars($user_source->personalData->pronoun) . '</small> '
             : ''
         )
@@ -554,7 +558,7 @@ function User_view(
                                 ),
                                 icon('valentine') . __('Vouchers')
                             )
-                        : '',
+                            : '',
                         $admin_user_worklog_privilege ? button(
                             url('/admin/user/' . $user_source->id . '/worklog'),
                             icon('clock-history') . __('worklog.add')
@@ -572,13 +576,13 @@ function User_view(
                             icon('braces') . __('JSON Export')
                         ) : '',
                         ($its_me && (
-                            $auth->can('shifts_json_export')
-                            || $auth->can('ical')
-                            || $auth->can('atom')
-                        )) ? button(
-                            page_link_to('user_myshifts', ['reset' => 1]),
-                            icon('arrow-repeat') . __('Reset API key')
-                        ) : ''
+                                $auth->can('shifts_json_export')
+                                || $auth->can('ical')
+                                || $auth->can('atom')
+                            )) ? button(
+                                page_link_to('user_myshifts', ['reset' => 1]),
+                                icon('arrow-repeat') . __('Reset API key')
+                            ) : ''
                     ])
                 ])
             ]),
@@ -591,7 +595,7 @@ function User_view(
                             . $user_source->contact->dect
                             . '</a>'
                         )
-                    : '' ,
+                        : '',
                     config('enable_mobile_show') && $user_source->contact->mobile ?
                         $user_source->settings->mobile_show ?
                             heading(
@@ -600,15 +604,15 @@ function User_view(
                                 . $user_source->contact->mobile
                                 . '</a>'
                             )
-                        : ''
-                    : '' ,
+                            : ''
+                        : '',
                     $auth->can('user_messages') ?
                         heading(
                             '<a href="' . page_link_to('/messages/' . $user_source->id) . '">'
                             . icon('envelope')
                             . '</a>'
                         )
-                    : '' ,
+                        : '',
                 ]),
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),
@@ -794,8 +798,8 @@ function User_oauth_render(User $user)
     foreach ($user->oauth as $oauth) {
         $output[] = __(
             isset($config[$oauth->provider]['name'])
-            ? $config[$oauth->provider]['name']
-            : Str::ucfirst($oauth->provider)
+                ? $config[$oauth->provider]['name']
+                : Str::ucfirst($oauth->provider)
         );
     }
 
@@ -887,7 +891,7 @@ function render_user_departure_date_hint()
  */
 function render_user_freeloader_hint()
 {
-    if (User_is_freeloader(auth()->user())) {
+    if (auth()->user()->isFreeloader()) {
         return sprintf(
             __('You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again.'),
             config('max_freeloadable_shifts')

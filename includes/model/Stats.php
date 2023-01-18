@@ -16,10 +16,10 @@ function stats_currently_working(ShiftsFilter $filter = null)
         '
         SELECT SUM((
                 SELECT COUNT(*)
-                FROM `ShiftEntry`
-                WHERE `ShiftEntry`.`SID`=`shifts`.`id`
+                FROM `shift_entries`
+                WHERE `shift_entries`.`shift_id`=`shifts`.`id`
                 AND `freeloaded`=0
-                ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
             )) AS `count`
         FROM `shifts`
         WHERE (`end` >=  NOW() AND `start` <=  NOW())
@@ -89,12 +89,12 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                         AND `NeededAngelTypes`.`shift_id`=`shifts`.`id`
                         ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
-                    SELECT COUNT(*) FROM `ShiftEntry`
-                    JOIN `angel_types` ON `angel_types`.`id`=`ShiftEntry`.`TID`
+                    SELECT COUNT(*) FROM `shift_entries`
+                    JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
-                        AND `ShiftEntry`.`SID`=`shifts`.`id`
+                        AND `shift_entries`.`shift_id`=`shifts`.`id`
                         AND `freeloaded`=0
-                        ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                        ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
                 AS `count`
@@ -116,12 +116,13 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                         AND `NeededAngelTypes`.`room_id`=`shifts`.`room_id`
                         ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
-                    SELECT COUNT(*) FROM `ShiftEntry`
-                    JOIN `angel_types` ON `angel_types`.`id`=`ShiftEntry`.`TID`
+                    SELECT COUNT(*)
+                    FROM `shift_entries`
+                    JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
-                        AND `ShiftEntry`.`SID`=`shifts`.`id`
+                        AND `shift_entries`.`shift_id`=`shifts`.`id`
                         AND `freeloaded`=0
-                        ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                        ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
                 AS `count`
@@ -168,12 +169,12 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
                         AND `NeededAngelTypes`.`shift_id`=`shifts`.`id`
                         ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
-                    SELECT COUNT(*) FROM `ShiftEntry`
-                    JOIN `angel_types` ON `angel_types`.`id`=`ShiftEntry`.`TID`
+                    SELECT COUNT(*) FROM `shift_entries`
+                    JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
-                        AND `ShiftEntry`.`SID`=`shifts`.`id`
-                        AND `freeloaded`=0
-                        ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                        AND `shift_entries`.`shift_id`=`shifts`.`id`
+                        AND shift_entries.`freeloaded`=0
+                        ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
                 AS `count`
@@ -195,12 +196,12 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
                         AND `NeededAngelTypes`.`room_id`=`shifts`.`room_id`
                         ' . ($filter ? 'AND angel_types.id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
-                    SELECT COUNT(*) FROM `ShiftEntry`
-                    JOIN `angel_types` ON `angel_types`.`id`=`ShiftEntry`.`TID`
+                    SELECT COUNT(*) FROM `shift_entries`
+                    JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
-                        AND `ShiftEntry`.`SID`=`shifts`.`id`
+                        AND `shift_entries`.`shift_id`=`shifts`.`id`
                         AND `freeloaded`=0
-                        ' . ($filter ? 'AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                        ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
                 AS `count`

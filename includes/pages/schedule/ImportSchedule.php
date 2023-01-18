@@ -266,15 +266,15 @@ class ImportSchedule extends BaseController
     protected function fireDeleteShiftEntryEvents(Event $event): void
     {
         $shiftEntries = $this->db
-            ->table('ShiftEntry')
+            ->table('shift_entries')
             ->select([
                 'shift_types.name', 'shifts.title', 'angel_types.name AS type', 'rooms.id AS room_id',
-                'shifts.start', 'shifts.end', 'ShiftEntry.UID as user_id', 'ShiftEntry.freeloaded'
+                'shifts.start', 'shifts.end', 'shift_entries.user_id', 'shift_entries.freeloaded'
             ])
-            ->join('shifts', 'shifts.id', 'ShiftEntry.SID')
+            ->join('shifts', 'shifts.id', 'shift_entries.shift_id')
             ->join('schedule_shift', 'shifts.id', 'schedule_shift.shift_id')
             ->join('rooms', 'rooms.id', 'shifts.room_id')
-            ->join('angel_types', 'angel_types.id', 'ShiftEntry.TID')
+            ->join('angel_types', 'angel_types.id', 'shift_entries.angel_type_id')
             ->join('shift_types', 'shift_types.id', 'shifts.shift_type_id')
             ->where('schedule_shift.guid', $event->getGuid())
             ->get();

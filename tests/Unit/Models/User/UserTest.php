@@ -4,6 +4,7 @@ namespace Engelsystem\Test\Unit\Models\User;
 
 use Carbon\Carbon;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Engelsystem\Config\Config;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Group;
@@ -13,6 +14,7 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
 use Engelsystem\Models\User\License;
@@ -210,6 +212,30 @@ class UserTest extends ModelTest
     }
 
     /**
+     * @covers \Engelsystem\Models\User\User::isFreeloader
+     */
+    public function testIsFreeloader(): void
+    {
+        $this->app->instance('config', new Config([
+            'max_freeloadable_shifts' => 2,
+        ]));
+
+        $user = new User($this->data);
+        $user->save();
+        $this->assertFalse($user->isFreeloader());
+
+        ShiftEntry::factory()->create(['user_id' => $user->id]);
+        ShiftEntry::factory()->create(['user_id' => $user->id, 'freeloaded' => true]);
+        $this->assertFalse($user->isFreeloader());
+
+        ShiftEntry::factory()->create(['user_id' => $user->id, 'freeloaded' => true]);
+        $this->assertTrue($user->isFreeloader());
+
+        ShiftEntry::factory()->create(['user_id' => $user->id, 'freeloaded' => true]);
+        $this->assertTrue($user->isFreeloader());
+    }
+
+    /**
      * @covers \Engelsystem\Models\User\User::userAngelTypes
      */
     public function testUserAngelTypes(): void
@@ -332,6 +358,19 @@ class UserTest extends ModelTest
         $oauth = $user->oauth;
 
         $this->assertCount(1, $oauth);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::shiftEntries
+     */
+    public function testShiftEntries(): void
+    {
+        $user = new User($this->data);
+        $user->save();
+
+        ShiftEntry::factory(2)->create(['user_id' => $user->id]);
+
+        $this->assertCount(2, $user->shiftEntries);
     }
 
     /**

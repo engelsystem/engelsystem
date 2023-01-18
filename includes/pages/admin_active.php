@@ -60,7 +60,7 @@ function admin_active()
                     sprintf(
                         '
                             users.*,
-                            COUNT(ShiftEntry.id) AS shift_count,
+                            COUNT(shift_entries.id) AS shift_count,
                                 (%s + (
                                     SELECT COALESCE(SUM(`hours`) * 3600, 0)
                                     FROM `worklogs` WHERE `user_id`=`users`.`id`
@@ -70,8 +70,8 @@ function admin_active()
                         $shift_sum_formula
                     )
                 )
-                ->leftJoin('ShiftEntry', 'users.id', '=', 'ShiftEntry.UID')
-                ->leftJoin('shifts', 'ShiftEntry.SID', '=', 'shifts.id')
+                ->leftJoin('shift_entries', 'users.id', '=', 'shift_entries.user_id')
+                ->leftJoin('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
                 ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
                 ->where('users_state.arrived', '=', true)
                 ->groupBy('users.id')
@@ -152,7 +152,7 @@ function admin_active()
             sprintf(
                 '
                     users.*,
-                    COUNT(ShiftEntry.id) AS shift_count,
+                    COUNT(shift_entries.id) AS shift_count,
                         (%s + (
                             SELECT COALESCE(SUM(`hours`) * 3600, 0)
                             FROM `worklogs` WHERE `user_id`=`users`.`id`
@@ -162,10 +162,10 @@ function admin_active()
                 $shift_sum_formula
             )
         )
-        ->leftJoin('ShiftEntry', 'users.id', '=', 'ShiftEntry.UID')
+        ->leftJoin('shift_entries', 'users.id', '=', 'shift_entries.user_id')
         ->leftJoin('shifts', function ($join) use ($show_all_shifts) {
             /** @var JoinClause $join */
-            $join->on('ShiftEntry.SID', '=', 'shifts.id');
+            $join->on('shift_entries.shift_id', '=', 'shifts.id');
             if (!$show_all_shifts) {
                 $join->where(function ($query) {
                     /** @var Builder $query */

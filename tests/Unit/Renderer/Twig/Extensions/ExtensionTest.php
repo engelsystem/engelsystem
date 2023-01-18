@@ -40,7 +40,7 @@ abstract class ExtensionTest extends TestCase
      */
     protected function assertExtensionExists(
         string $name,
-        callable $callback,
+        mixed $callback,
         array $functions,
         array $options = []
     ): void {

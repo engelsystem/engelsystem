@@ -6,7 +6,6 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
-use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Collection;
 
@@ -159,7 +158,6 @@ function shift_edit_controller()
             $shift->updatedBy()->associate(auth()->user());
 
             // Remove merged data as it is not really part of the model and thus can't be saved
-            unset($shift->shiftEntry);
             unset($shift->neededAngels);
 
             $shift->save();
@@ -244,24 +242,23 @@ function shift_delete_controller()
 
     // Schicht löschen bestätigt
     if ($request->hasPostData('delete')) {
-        foreach ($shift->shiftEntry as $entry) {
-            $type = AngelType::find($entry['TID']);
+        foreach ($shift->shiftEntries as $entry) {
             event('shift.entry.deleting', [
-                'user'       => User::find($entry['user_id']),
+                'user'       => $entry->user,
                 'start'      => $shift->start,
                 'end'        => $shift->end,
                 'name'       => $shift->shiftType->name,
                 'title'      => $shift->title,
-                'type'       => $type->name,
+                'type'       => $entry->angelType->name,
                 'room'       => $shift->room,
-                'freeloaded' => (bool) $entry['freeloaded'],
+                'freeloaded' => $entry->freeloaded,
             ]);
         }
 
         $shift->delete();
 
         engelsystem_log(
-            'Deleted shift ' . $shift->title . ': ' .  $shift->shiftType->name
+            'Deleted shift ' . $shift->title . ': ' . $shift->shiftType->name
             . ' from ' . $shift->start->format('Y-m-d H:i')
             . ' to ' . $shift->end->format('Y-m-d H:i')
         );
@@ -318,7 +315,9 @@ function shift_controller()
             continue;
         }
 
-        $shift_entries = ShiftEntries_by_shift_and_angeltype($shift->id, $angeltype->id);
+        $shift_entries = $shift->shiftEntries()
+            ->where('angel_type_id', $angeltype->id)
+            ->get();
         $needed_angeltype = (new AngelType())->forceFill($needed_angeltype);
 
         $angeltype_signup_state = Shift_signup_allowed(
@@ -351,8 +350,8 @@ function shifts_controller()
     }
 
     return match ($request->input('action')) {
-        'view'  => shift_controller(),
-        'next'  => shift_next_controller(), // throws redirect
+        'view' => shift_controller(),
+        'next' => shift_next_controller(), // throws redirect
         default => throw_redirect(page_link_to('/')),
     };
 }
@@ -368,8 +367,8 @@ function shift_next_controller()
 
     $upcoming_shifts = ShiftEntries_upcoming_for_user(auth()->user());
 
-    if (!empty($upcoming_shifts)) {
-        throw_redirect(shift_link($upcoming_shifts[0]));
+    if (!$upcoming_shifts->isEmpty()) {
+        throw_redirect(shift_link($upcoming_shifts[0]->shift));
     }
 
     throw_redirect(page_link_to('user_shifts'));
@@ -406,41 +405,41 @@ function shifts_json_export_controller()
         // See engelsystem-base/src/main/kotlin/info/metadude/kotlin/library/engelsystem/models/Shift.kt
         $data = [
             // Name of the shift (type)
-            'name' => $shift->shiftType->name,
+            'name'           => $shift->shiftType->name,
             // Shift / Talk title
-            'title' => $shift->title,
+            'title'          => $shift->title,
             // Shift description
-            'description' => $shift->description,
+            'description'    => $shift->description,
 
             // Users comment
-            'Comment' => $shift->Comment,
+            'Comment'        => $shift->user_comment,
 
             // Shift id
-            'SID' => $shift->id,
+            'SID'            => $shift->id,
             // Shift type id
-            'shifttype_id' => $shift->shift_type_id,
+            'shifttype_id'   => $shift->shift_type_id,
             // Talk URL
-            'URL' => $shift->url,
+            'URL'            => $shift->url,
 
             // Room name
-            'Name' => $shift->room->name,
+            'Name'           => $shift->room->name,
             // Location map url
-            'map_url' => $shift->room->map_url,
+            'map_url'        => $shift->room->map_url,
 
             // Start timestamp
             /** @deprecated start_date should be used */
-            'start' => $shift->start->timestamp,
+            'start'          => $shift->start->timestamp,
             // Start date
-            'start_date' => $shift->start->toRfc3339String(),
+            'start_date'     => $shift->start->toRfc3339String(),
             // End timestamp
             /** @deprecated end_date should be used */
-            'end' => $shift->end->timestamp,
+            'end'            => $shift->end->timestamp,
             // End date
-            'end_date' => $shift->end->toRfc3339String(),
+            'end_date'       => $shift->end->toRfc3339String(),
 
             // Timezone offset like "+01:00"
             /** @deprecated should be retrieved from start_date or end_date */
-            'timezone' => $timeZone->toOffsetName(),
+            'timezone'       => $timeZone->toOffsetName(),
             // The events timezone like "Europe/Berlin"
             'event_timezone' => $timeZone->getName(),
         ];

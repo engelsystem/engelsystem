@@ -39,11 +39,11 @@ function ShiftEntry_delete_view_admin(Shift $shift, AngelType $angeltype, User $
  *
  * @param Shift $shift
  * @param AngelType $angeltype
- * @param int   $signoff_user_id
+ * @param User $signoff_user
  *
  * @return string HTML
  */
-function ShiftEntry_delete_view(Shift $shift, AngelType $angeltype, $signoff_user_id)
+function ShiftEntry_delete_view(Shift $shift, AngelType $angeltype, User $signoff_user)
 {
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
@@ -56,7 +56,7 @@ function ShiftEntry_delete_view(Shift $shift, AngelType $angeltype, $signoff_use
 
         form([
             buttons([
-                button(user_link($signoff_user_id), icon('x-lg') . __('cancel')),
+                button(user_link($signoff_user->id), icon('x-lg') . __('cancel')),
                 form_submit('delete', icon('trash') . __('delete'), 'btn-danger', false),
             ]),
         ]),
@@ -180,7 +180,7 @@ function ShiftEntry_create_title()
  * @param string $type
  * @param string $comment
  * @param bool   $freeloaded
- * @param string $freeload_comment
+ * @param string $freeloaded_comment
  * @param bool   $user_admin_shifts
  * @return string
  */
@@ -192,7 +192,7 @@ function ShiftEntry_edit_view(
     $type,
     $comment,
     $freeloaded,
-    $freeload_comment,
+    $freeloaded_comment,
     $user_admin_shifts = false
 ) {
     $freeload_form = [];
@@ -200,9 +200,9 @@ function ShiftEntry_edit_view(
         $freeload_form = [
             form_checkbox('freeloaded', __('Freeloaded'), $freeloaded),
             form_textarea(
-                'freeload_comment',
+                'freeloaded_comment',
                 __('Freeload comment (Only for shift coordination):'),
-                $freeload_comment
+                $freeloaded_comment
             )
         ];
     }

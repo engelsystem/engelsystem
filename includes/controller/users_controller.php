@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
@@ -209,9 +210,9 @@ function user_controller()
         $shift->needed_angeltypes = Db::select(
             '
             SELECT DISTINCT `angel_types`.*
-            FROM `ShiftEntry`
-            JOIN `angel_types` ON `ShiftEntry`.`TID`=`angel_types`.`id`
-            WHERE `ShiftEntry`.`SID` = ?
+            FROM `shift_entries`
+            JOIN `angel_types` ON `shift_entries`.`angel_type_id`=`angel_types`.`id`
+            WHERE `shift_entries`.`shift_id` = ?
             ORDER BY `angel_types`.`name`
             ',
             [$shift->id]
@@ -220,11 +221,11 @@ function user_controller()
         foreach ($neededAngeltypes as &$needed_angeltype) {
             $needed_angeltype['users'] = Db::select(
                 '
-                    SELECT `ShiftEntry`.`freeloaded`, `users`.*
-                    FROM `ShiftEntry`
-                    JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
-                    WHERE `ShiftEntry`.`SID` = ?
-                    AND `ShiftEntry`.`TID` = ?
+                    SELECT `shift_entries`.`freeloaded`, `users`.*
+                    FROM `shift_entries`
+                    JOIN `users` ON `shift_entries`.`user_id`=`users`.`id`
+                    WHERE `shift_entries`.`shift_id` = ?
+                    AND `shift_entries`.`angel_type_id` = ?
                 ',
                 [$shift->id, $needed_angeltype['id']]
             );
@@ -247,7 +248,7 @@ function user_controller()
         User_view(
             $user_source,
             auth()->can('admin_user'),
-            User_is_freeloader($user_source),
+            $user_source->isFreeloader(),
             $user_source->userAngelTypes,
             $user_source->groups,
             $shifts,
@@ -300,7 +301,12 @@ function users_list_controller()
         ->orderBy('name')
         ->get();
     foreach ($users as $user) {
-        $user->setAttribute('freeloads', count(ShiftEntries_freeloaded_by_user($user->id)));
+        $user->setAttribute(
+            'freeloads',
+            $user->shiftEntries()
+                ->where('freeloaded', true)
+                ->count()
+        );
     }
 
     $users = $users->sortBy(function (User $user) use ($order_by) {
@@ -321,7 +327,7 @@ function users_list_controller()
             State::whereArrived(true)->count(),
             State::whereActive(true)->count(),
             State::whereForceActive(true)->count(),
-            ShiftEntries_freeloaded_count(),
+            ShiftEntry::whereFreeloaded(true)->count(),
             State::whereGotShirt(true)->count(),
             State::query()->sum('got_voucher')
         )
@@ -360,6 +366,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     $shift_entries_source = ShiftEntries_by_ShiftsFilter($shiftsFilter);
 
     $needed_angeltypes = [];
+    /** @var ShiftEntry[][] $shift_entries */
     $shift_entries = [];
     foreach ($shifts as $shift) {
         $needed_angeltypes[$shift->id] = [];
@@ -367,8 +374,8 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     }
 
     foreach ($shift_entries_source as $shift_entry) {
-        if (isset($shift_entries[$shift_entry['SID']])) {
-            $shift_entries[$shift_entry['SID']][] = $shift_entry;
+        if (isset($shift_entries[$shift_entry->shift_id])) {
+            $shift_entries[$shift_entry->shift_id][] = $shift_entry;
         }
     }
 
@@ -403,8 +410,8 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
 
             foreach ($shift_entries[$shift->id] as $shift_entry) {
                 if (
-                    $needed_angeltype['angel_type_id'] == $shift_entry['TID']
-                    && $shift_entry['freeloaded'] == 0
+                    $needed_angeltype['angel_type_id'] == $shift_entry->angel_type_id
+                    && !$shift_entry->freeloaded
                 ) {
                     $taken++;
                 }
