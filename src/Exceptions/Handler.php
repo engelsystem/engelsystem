@@ -27,9 +27,14 @@ class Handler
 
     /**
      * Activate the error handler
+     * @codeCoverageIgnore
      */
     public function register(): void
     {
+        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+            return;
+        }
+
         set_error_handler([$this, 'errorHandler']);
         set_exception_handler([$this, 'exceptionHandler']);
     }

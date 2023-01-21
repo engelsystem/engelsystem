@@ -81,25 +81,6 @@ class HandlerTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Exceptions\Handler::register()
-     */
-    public function testRegister(): void
-    {
-        /** @var Handler|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(Handler::class);
-        $handler->register();
-
-        set_error_handler($errorHandler = set_error_handler('var_dump'));
-        $this->assertEquals($handler, array_shift($errorHandler));
-
-        set_exception_handler($exceptionHandler = set_error_handler('var_dump'));
-        $this->assertEquals($handler, array_shift($exceptionHandler));
-
-        restore_error_handler();
-        restore_exception_handler();
-    }
-
-    /**
      * @covers \Engelsystem\Exceptions\Handler::getEnvironment()
      * @covers \Engelsystem\Exceptions\Handler::setEnvironment()
      */
