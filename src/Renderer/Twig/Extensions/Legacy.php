@@ -22,7 +22,7 @@ class Legacy extends TwigExtension
             new TwigFunction('menu', 'make_navigation', $isSafeHtml),
             new TwigFunction('menuUserShiftState', 'User_shift_state_render', $isSafeHtml),
             new TwigFunction('menuUserHints', 'header_render_hints', $isSafeHtml),
-            new TwigFunction('menuUserSubmenu', 'make_user_submenu', $isSafeHtml),
+            new TwigFunction('menuLanguages', 'make_language_select', $isSafeHtml),
             new TwigFunction('page', [$this, 'getPage']),
             new TwigFunction('msg', 'msg', $isSafeHtml),
         ];

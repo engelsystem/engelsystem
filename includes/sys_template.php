@@ -186,7 +186,7 @@ function toolbar_pills($items)
 function toolbar_item_link($href, $icon, $label, $active = false)
 {
     return '<li class="nav-item">'
-        . '<a class="nav-link ' . ($active ? 'active' : '') . '" href="' . $href . '">'
+        . '<a class="nav-link ' . ($active ? 'active" aria-current="page"' : '"') . ' href="' . $href . '">'
         . ($icon != '' ? '<span class="bi bi-' . $icon . '"></span> ' : '')
         . $label
         . '</a>'
@@ -196,12 +196,13 @@ function toolbar_item_link($href, $icon, $label, $active = false)
 function toolbar_dropdown_item(string $href, string $label, bool $active, string $icon = null): string
 {
     return strtr(
-        '<li><a class="dropdown-item{active}" href="{href}">{icon} {label}</a></li>',
+        '<li><a class="dropdown-item{active}"{aria} href="{href}">{icon} {label}</a></li>',
         [
             '{href}'   => $href,
             '{icon}'   => $icon === null ? '' : '<i class="bi bi-' . $icon . '"></i>',
             '{label}'  => $label,
-            '{active}' => $active ? ' active' : ''
+            '{active}' => $active ? ' active' : '',
+            '{aria}' => $active ? ' aria-current="page"' : ''
         ]
     );
 }
@@ -212,20 +213,19 @@ function toolbar_dropdown_item_divider(): string
 }
 
 /**
- * @param string $icon
  * @param string $label
  * @param array  $submenu
- * @param string $class
+ * @param bool   $active
  * @return string
  */
-function toolbar_dropdown($icon, $label, $submenu, $class = ''): string
+function toolbar_dropdown($label, $submenu, $active = false): string
 {
     $template = <<<EOT
 <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle {class}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        {icon} {label}
+    <a class="nav-link dropdown-toggle{class}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {label}
     </a>
-    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <ul class="dropdown-menu">
         {submenu}
     </ul>
 </li>
@@ -234,40 +234,11 @@ EOT;
     return strtr(
         $template,
         [
-            '{class}'   => $class,
+            '{class}'   => $active ? ' active' : '',
             '{label}'   => $label,
-            '{icon}'    => empty($icon) ? '' : '<i class="bi ' . $icon . '"></i>',
             '{submenu}' => join("\n", $submenu)
         ]
     );
-}
-
-/**
- * @param string   $icon
- * @param string   $label
- * @param string[] $content
- * @param string   $class
- *
- * @return string
- */
-function toolbar_popover($icon, $label, $content, $class = '')
-{
-    $dom_id = md5(microtime() . $icon . $label);
-    return '<li class="nav-item nav-item--userhints d-flex align-items-center ' . $class . '">'
-        . '<a id="' . $dom_id . '" href="#" tabindex="0" class="nav-link">'
-        . ($icon ? icon($icon) : '')
-        . $label
-        . '<small class="bi bi-caret-down-fill"></small>'
-        . '</a>'
-        . '<script type="text/javascript">
-                new bootstrap.Popover(document.getElementById(\'' . $dom_id . '\'), {
-                    container: \'body\',
-                    html: true,
-                    content: \'' . addslashes(join('', $content)) . '\',
-                    placement: \'bottom\',
-                    customClass: \'popover--userhints\'
-                })
-            </script></li>';
 }
 
 /**

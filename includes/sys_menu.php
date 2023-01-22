@@ -23,9 +23,9 @@ function header_render_hints()
 {
     $user = auth()->user();
 
-    $hints_renderer = new UserHintsRenderer();
-
     if ($user) {
+        $hints_renderer = new UserHintsRenderer();
+
         $hints_renderer->addHint(admin_new_questions());
         $hints_renderer->addHint(user_angeltypes_unconfirmed_hint());
         $hints_renderer->addHint(render_user_departure_date_hint());
@@ -36,9 +36,11 @@ function header_render_hints()
         $hints_renderer->addHint(render_user_arrived_hint(), true);
         $hints_renderer->addHint(render_user_tshirt_hint(), true);
         $hints_renderer->addHint(render_user_dect_hint(), true);
+
+        return $hints_renderer->render();
     }
 
-    return $hints_renderer->render();
+    return '';
 }
 
 /**
@@ -49,39 +51,6 @@ function header_render_hints()
 function current_page()
 {
     return request()->query->get('p') ?: str_replace('-', '_', request()->path());
-}
-
-/**
- * @return array
- */
-function make_user_submenu()
-{
-    $page = current_page();
-    $user_submenu = make_language_select();
-
-    if (auth()->can('user_settings') || auth()->can('logout')) {
-        $user_submenu[] = toolbar_dropdown_item_divider();
-    }
-
-    if (auth()->can('user_settings')) {
-        $user_submenu[] = toolbar_dropdown_item(
-            page_link_to('settings/profile'),
-            __('Settings'),
-            $page == 'settings/profile',
-            'person-fill-gear'
-        );
-    }
-
-    if (auth()->can('logout')) {
-        $user_submenu[] = toolbar_dropdown_item(
-            page_link_to('logout'),
-            __('Logout'),
-            $page == 'logout',
-            'box-arrow-left',
-        );
-    }
-
-    return $user_submenu;
 }
 
 /**
@@ -146,10 +115,10 @@ function make_navigation()
     }
 
     if (count($admin_menu) > 0) {
-        $menu[] = toolbar_dropdown('', __('Admin'), $admin_menu);
+        $menu[] = toolbar_dropdown(__('Admin'), $admin_menu);
     }
 
-    return '<ul class="navbar-nav mb-2 mb-lg-0">' . join("\n", $menu) . '</ul>';
+    return join("\n", $menu);
 }
 
 /**
@@ -195,7 +164,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'pin-map-fill');
     }
     if (count($room_menu) > 0) {
-        $menu[] = toolbar_dropdown('map-marker', __('Rooms'), $room_menu);
+        $menu[] = toolbar_dropdown(__('Rooms'), $room_menu);
     }
     return $menu;
 }
@@ -212,7 +181,7 @@ function make_language_select()
 
     $items = [];
     foreach (config('locales') as $locale => $name) {
-        $url = url($request->getPathInfo(), ['set-locale' => $locale]);
+        $url = url($request->getPathInfo(), [...$request->getQueryParams(), 'set-locale' => $locale]);
 
         $items[] = toolbar_dropdown_item(
             htmlspecialchars($url),

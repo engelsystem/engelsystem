@@ -10,28 +10,6 @@ class UserHintsRenderer
     private $important = false;
 
     /**
-     * Render the added hints to a popover for the toolbar.
-     *
-     * @return string
-     */
-    public function render()
-    {
-        if (count($this->hints) > 0) {
-            $hint_class = $this->important ? 'danger' : 'info';
-            $icon = $this->important ? 'exclamation-triangle' : 'info-circle';
-
-            return toolbar_popover(
-                $icon . ' text-white',
-                '',
-                $this->hints,
-                'bg-' . $hint_class
-            );
-        }
-
-        return '';
-    }
-
-    /**
      * Add a hint to the list, if its not null and a not empty string.
      *
      * @param string  $hint      The hint
@@ -50,22 +28,35 @@ class UserHintsRenderer
     }
 
     /**
-     * Get all hints.
+     * Render the added hints to a popover for the toolbar.
      *
-     * @return string[]
+     * @return string
      */
-    public function getHints()
+    public function render()
     {
-        return $this->hints;
-    }
+        if (count($this->hints) > 0) {
+            $class_hint = $this->important ? 'danger' : 'info';
+            $icon = $this->important ? 'exclamation-triangle' : 'info-circle';
+            $data_bs_attributes = [
+                'toggle'       => 'popover',
+                'container'    => 'body',
+                'placement'    => 'bottom',
+                'custom-class' => 'popover--userhints',
+                'html'         => 'true',
+                'content'      => htmlspecialchars(join('', $this->hints)),
+            ];
+            $attr = '';
+            foreach ($data_bs_attributes as $attr_key => $attr_value) {
+                $attr .= ' data-bs-' . $attr_key . '="' . $attr_value . '"';
+            }
 
-    /**
-     * Are there important hints? This leads to a more intensive icon.
-     *
-     * @return bool
-     */
-    public function isImportant()
-    {
-        return $this->important;
+            return '<li class="nav-item nav-item--userhints d-flex align-items-center bg-' . $class_hint . '">'
+                . '<a class="nav-link dropdown-toggle text-light" href="#" role="button"' . $attr . '>'
+                . icon($icon)
+                . '</a>'
+                . '</li>';
+        }
+
+        return '';
     }
 }

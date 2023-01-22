@@ -54,7 +54,7 @@ class ShiftsFilterRenderer
                 $link = $page_link . '&shifts_filter_day=' . $day;
                 $day_dropdown_items[] = toolbar_item_link($link, '', $day);
             }
-            $toolbar[] = toolbar_dropdown('', $selected_day, $day_dropdown_items, 'active');
+            $toolbar[] = toolbar_dropdown($selected_day, $day_dropdown_items, true);
 
             if ($dashboardFilter) {
                 $toolbar[] = sprintf(

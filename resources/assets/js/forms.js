@@ -248,6 +248,13 @@ ready(() => {
 });
 
 /**
+ * Init Bootstrap Popover
+ */
+ready(() => {
+  document.querySelectorAll('[data-bs-toggle="popover"]').forEach((element) => new bootstrap.Popover(element));
+});
+
+/**
  * Show oauth buttons on welcome title click
  */
 ready(() => {
