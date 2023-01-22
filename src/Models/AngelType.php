@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Models;
 
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Illuminate\Database\Eloquent\Builder;
 use Engelsystem\Models\User\User;
@@ -14,21 +15,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property int                          $id
- * @property string                       $name
- * @property string                       $description
- * @property string                       $contact_name
- * @property string                       $contact_dect
- * @property string                       $contact_email
- * @property boolean                      $restricted # If users need an introduction
- * @property boolean                      $requires_driver_license # If users must have a driver license
- * @property boolean                      $no_self_signup # Users can sign up for shifts
- * @property boolean                      $show_on_dashboard # Show on public dashboard
- * @property boolean                      $hide_register # Hide from registration page
+ * @property int                               $id
+ * @property string                            $name
+ * @property string                            $description
+ * @property string                            $contact_name
+ * @property string                            $contact_dect
+ * @property string                            $contact_email
+ * @property boolean                           $restricted # If users need an introduction
+ * @property boolean                           $requires_driver_license # If users must have a driver license
+ * @property boolean                           $no_self_signup # Users can sign up for shifts
+ * @property boolean                           $show_on_dashboard # Show on public dashboard
+ * @property boolean                           $hide_register # Hide from registration page
  *
- * @property-read UserAngelType           $pivot
- * @property-read Collection|ShiftEntry[] $shiftEntries
- * @property-read Collection|User[]       $userAngelTypes
+ * @property-read Collection|NeededAngelType[] $neededBy
+ * @property-read UserAngelType                $pivot
+ * @property-read Collection|ShiftEntry[]      $shiftEntries
+ * @property-read Collection|User[]            $userAngelTypes
  *
  * @method static QueryBuilder|AngelType[] whereId($value)
  * @method static QueryBuilder|AngelType[] whereName($value)
@@ -70,6 +72,11 @@ class AngelType extends BaseModel
         'show_on_dashboard'       => 'boolean',
         'hide_register'           => 'boolean',
     ];
+
+    public function neededBy(): HasMany
+    {
+        return $this->hasMany(NeededAngelType::class);
+    }
 
     public function shiftEntries(): HasMany
     {

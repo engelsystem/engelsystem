@@ -2,6 +2,7 @@
 
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\User\User;
 
 /**
@@ -23,10 +24,10 @@ function admin_rooms()
 
     foreach ($rooms_source as $room) {
         $rooms[] = [
-            'name'      => Room_name_render($room),
-            'dect'      => icon_bool($room->dect),
-            'map_url'   => icon_bool($room->map_url),
-            'actions'   => table_buttons([
+            'name'    => Room_name_render($room),
+            'dect'    => icon_bool($room->dect),
+            'map_url' => icon_bool($room->map_url),
+            'actions' => table_buttons([
                 button(
                     page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room->id]),
                     icon('pencil') . __('edit'),
@@ -70,12 +71,10 @@ function admin_rooms()
             $description = $room->description;
             $dect = $room->dect;
 
-            $needed_angeltypes = NeededAngelTypes_by_room($room_id);
-            foreach ($needed_angeltypes as $needed_angeltype) {
-                $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
-            }
+            $angeltypes_count = NeededAngelType::whereRoomId($room_id)
+                    ->pluck('count', 'angel_type_id')
+                    ->toArray() + $angeltypes_count;
         }
-
         if ($request->input('show') == 'edit') {
             if ($request->hasPostData('submit')) {
                 $valid = true;
@@ -129,15 +128,18 @@ function admin_rooms()
                         Room_update($room_id, $name, $map_url, $description, $dect);
                     }
 
-                    NeededAngelTypes_delete_by_room($room_id);
+                    NeededAngelType::whereRoomId($room_id)->delete();
                     $needed_angeltype_info = [];
                     foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
                         $angeltype = AngelType::find($angeltype_id);
-                        if (!empty($angeltype)) {
-                            NeededAngelType_add(null, $angeltype_id, $room_id, $angeltype_count);
-                            if ($angeltype_count > 0) {
-                                $needed_angeltype_info[] = $angeltype->name . ': ' . $angeltype_count;
-                            }
+                        if (!empty($angeltype) && $angeltype_count > 0) {
+                            $neededAngelType = new NeededAngelType();
+                            $neededAngelType->room_id = $room_id;
+                            $neededAngelType->angelType()->associate($angeltype);
+                            $neededAngelType->count = $angeltype_count;
+                            $neededAngelType->save();
+
+                            $needed_angeltype_info[] = $angeltype->name . ': ' . $angeltype_count;
                         }
                     }
 
@@ -227,10 +229,10 @@ function admin_rooms()
         ]),
         msg(),
         table([
-            'name'      => __('Name'),
-            'dect'      => __('DECT'),
-            'map_url'   => __('Map'),
-            'actions'   => ''
+            'name'    => __('Name'),
+            'dect'    => __('DECT'),
+            'map_url' => __('Map'),
+            'actions' => ''
         ], $rooms)
     ], true);
 }

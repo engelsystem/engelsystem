@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
@@ -70,7 +71,23 @@ class AngelTypeTest extends ModelTest
 
         ShiftEntry::factory(3)->create(['angel_type_id' => $angelType->id]);
 
+        $angelType = AngelType::find(1);
         $this->assertCount(3, $angelType->shiftEntries);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\AngelType::neededBy
+     */
+    public function testNeededBy(): void
+    {
+        $angelType = AngelType::create(['name' => 'test type']);
+
+        $this->assertCount(0, $angelType->neededBy);
+
+        NeededAngelType::factory(4)->create(['angel_type_id' => $angelType->id]);
+
+        $angelType = AngelType::find(1);
+        $this->assertCount(4, $angelType->neededBy);
     }
 
     /**

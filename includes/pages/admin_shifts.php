@@ -5,6 +5,7 @@ use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -184,18 +185,9 @@ function admin_shifts()
         // Alle Eingaben in Ordnung
         if ($valid) {
             if ($angelmode == 'location') {
-                $needed_angel_types = [];
-                $needed_angel_types_location = Db::select(
-                    '
-                        SELECT `angel_type_id`, `count`
-                        FROM `NeededAngelTypes`
-                        WHERE `room_id`=?
-                    ',
-                    [$rid]
-                );
-                foreach ($needed_angel_types_location as $type) {
-                    $needed_angel_types[$type['angel_type_id']] = $type['count'];
-                }
+                $needed_angel_types = NeededAngelType::whereRoomId($rid)
+                        ->pluck('count', 'angel_type_id')
+                        ->toArray() + $needed_angel_types;
             }
 
             $shifts = [];
@@ -377,7 +369,6 @@ function admin_shifts()
             $shift->transaction_id = $transactionId;
             $shift->createdBy()->associate(auth()->user());
             $shift->save();
-            $shift_id = $shift->id;
 
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift->shift_type_id]
@@ -391,22 +382,14 @@ function admin_shifts()
             $needed_angel_types_info = [];
             foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
                 $angel_type_source = AngelType::find($type_id);
-                if (!empty($angel_type_source)) {
-                    Db::insert(
-                        '
-                        INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`)
-                        VALUES (?, ?, ?)
-                        ',
-                        [
-                            $shift_id,
-                            $type_id,
-                            $count
-                        ]
-                    );
+                if (!empty($angel_type_source) && $count > 0) {
+                    $neededAngelType = new NeededAngelType();
+                    $neededAngelType->shift()->associate($shift);
+                    $neededAngelType->angelType()->associate($angel_type_source);
+                    $neededAngelType->count = $count;
+                    $neededAngelType->save();
 
-                    if ($count > 0) {
-                        $needed_angel_types_info[] = $angel_type_source->name . ': ' . $count;
-                    }
+                    $needed_angel_types_info[] = $angel_type_source->name . ': ' . $count;
                 }
             }
             engelsystem_log('Shift needs following angel types: ' . join(', ', $needed_angel_types_info));

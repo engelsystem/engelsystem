@@ -42,7 +42,7 @@ function stats_hours_to_work(ShiftsFilter $filter = null)
         '
         SELECT ROUND(SUM(`count`)) AS `count` FROM (
             SELECT
-                (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`shifts`.`id`' . ($filter ? ' AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+                (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`shift_id`=`shifts`.`id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
                 * TIMESTAMPDIFF(MINUTE, `shifts`.`start`, `shifts`.`end`) / 60 AS `count`
             FROM `shifts`
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
@@ -53,7 +53,7 @@ function stats_hours_to_work(ShiftsFilter $filter = null)
             UNION ALL
 
             SELECT
-                (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`shifts`.`room_id`' . ($filter ? ' AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+                (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`room_id`=`shifts`.`room_id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
                 * TIMESTAMPDIFF(MINUTE, `shifts`.`start`, `shifts`.`end`) / 60 AS `count`
             FROM `shifts`
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
@@ -82,12 +82,12 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
             SELECT
                 GREATEST(0,
                     (
-                    SELECT SUM(`count`)
-                    FROM `NeededAngelTypes`
-                    JOIN `angel_types` ON `angel_types`.`id`=`NeededAngelTypes`.`angel_type_id`
+                    SELECT SUM(needed_angel_types.`count`)
+                    FROM `needed_angel_types`
+                    JOIN `angel_types` ON `angel_types`.`id`=`needed_angel_types`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
-                        AND `NeededAngelTypes`.`shift_id`=`shifts`.`id`
-                        ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                        AND `needed_angel_types`.`shift_id`=`shifts`.`id`
+                        ' . ($filter ? 'AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
                     SELECT COUNT(*) FROM `shift_entries`
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
@@ -109,12 +109,12 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
             SELECT
                 GREATEST(0,
                     (
-                    SELECT SUM(`count`)
-                    FROM `NeededAngelTypes`
-                    JOIN `angel_types` ON `angel_types`.`id`=`NeededAngelTypes`.`angel_type_id`
+                    SELECT SUM(needed_angel_types.`count`)
+                    FROM `needed_angel_types`
+                    JOIN `angel_types` ON `angel_types`.`id`=`needed_angel_types`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
-                        AND `NeededAngelTypes`.`room_id`=`shifts`.`room_id`
-                        ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                        AND `needed_angel_types`.`room_id`=`shifts`.`room_id`
+                        ' . ($filter ? 'AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
                     SELECT COUNT(*)
                     FROM `shift_entries`
@@ -162,12 +162,12 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
             SELECT
                 GREATEST(0,
                     (
-                    SELECT SUM(`count`)
-                    FROM `NeededAngelTypes`
-                    JOIN `angel_types` ON `angel_types`.`id`=`NeededAngelTypes`.`angel_type_id`
+                    SELECT SUM(needed_angel_types.`count`)
+                    FROM `needed_angel_types`
+                    JOIN `angel_types` ON `angel_types`.`id`=`needed_angel_types`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
-                        AND `NeededAngelTypes`.`shift_id`=`shifts`.`id`
-                        ' . ($filter ? 'AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                        AND `needed_angel_types`.`shift_id`=`shifts`.`id`
+                        ' . ($filter ? 'AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
                     SELECT COUNT(*) FROM `shift_entries`
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
@@ -189,11 +189,11 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
             SELECT
                 GREATEST(0,
                     (
-                    SELECT SUM(`count`)
-                    FROM `NeededAngelTypes`
-                    JOIN `angel_types` ON `angel_types`.`id`=`NeededAngelTypes`.`angel_type_id`
+                    SELECT SUM(needed_angel_types.`count`)
+                    FROM `needed_angel_types`
+                    JOIN `angel_types` ON `angel_types`.`id`=`needed_angel_types`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
-                        AND `NeededAngelTypes`.`room_id`=`shifts`.`room_id`
+                        AND `needed_angel_types`.`room_id`=`shifts`.`room_id`
                         ' . ($filter ? 'AND angel_types.id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
                     SELECT COUNT(*) FROM `shift_entries`

@@ -3,6 +3,7 @@
 use Carbon\CarbonTimeZone;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -60,7 +61,7 @@ function shift_edit_controller()
     }
     $shift_id = $request->input('edit_shift');
 
-    $shift = Shift(Shift::findOrFail($shift_id));
+    $shift = Shift::findOrFail($shift_id);
     if (ScheduleShift::whereShiftId($shift->id)->first()) {
         warning(__(
             'This shift was imported from a schedule so some changes will be overwritten with the next import.'
@@ -149,6 +150,8 @@ function shift_edit_controller()
         }
 
         if ($valid) {
+            $oldShift = Shift::find($shift->id);
+
             $shift->shift_type_id = $shifttype_id;
             $shift->title = $title;
             $shift->description = $description;
@@ -156,19 +159,21 @@ function shift_edit_controller()
             $shift->start = $start;
             $shift->end = $end;
             $shift->updatedBy()->associate(auth()->user());
-
-            // Remove merged data as it is not really part of the model and thus can't be saved
-            unset($shift->neededAngels);
-
             $shift->save();
 
-            mail_shift_change(Shift($shift->id), $shift);
+            mail_shift_change($oldShift, $shift);
 
-            NeededAngelTypes_delete_by_shift($shift_id);
+            NeededAngelType::whereShiftId($shift_id)->delete();
             $needed_angel_types_info = [];
             foreach ($needed_angel_types as $type_id => $count) {
-                NeededAngelType_add($shift_id, $type_id, null, $count);
-                if ($count > 0) {
+                $angeltype = AngelType::find($type_id);
+                if (!empty($angeltype) && $count > 0) {
+                    $neededAngelType = new NeededAngelType();
+                    $neededAngelType->shift()->associate($shift);
+                    $neededAngelType->angel_type_id = $type_id;
+                    $neededAngelType->count = $count;
+                    $neededAngelType->save();
+
                     $needed_angel_types_info[] = $angeltypes[$type_id] . ': ' . $count;
                 }
             }
