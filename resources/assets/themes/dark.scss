@@ -6,3 +6,10 @@ $secondary: #222;
 $table-striped-bg: rgba(#fff, 0.05);
 
 $es-choices-highlight-color: #000;
+
+$invert-color-value: 1 !default;
+
+/* Invert the clock icon color for Chrome */
+input[type='time']::-webkit-calendar-picker-indicator {
+  filter: invert($invert-color-value);
+}
