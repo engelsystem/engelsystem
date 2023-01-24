@@ -330,6 +330,14 @@ function admin_shifts()
             foreach ($needed_angel_types as $type_id => $count) {
                 $hidden_types .= form_hidden('angeltype_count_' . $type_id, $count);
             }
+
+            // Number of Shifts that will be created (if over 100 its danger-red)
+            $shiftsCount = count($shifts_table);
+            $shiftsCreationHint = __('Number of shifts: %s', [$shiftsCount]);
+            if ($shiftsCount >= 100) {
+                $shiftsCreationHint = '<span class="text-danger">' . $shiftsCreationHint . '</span>';
+            }
+
             return page_with_title(__('Preview'), [
                 form([
                     $hidden_types,
@@ -345,6 +353,7 @@ function admin_shifts()
                     form_hidden('angelmode', $angelmode),
                     form_hidden('shift_over_midnight', $shift_over_midnight ? 'true' : 'false'),
                     form_submit('back', icon('chevron-left') . __('back')),
+                    $shiftsCreationHint,
                     table([
                         'timeslot'      => __('Time and location'),
                         'title'         => __('Type and title'),

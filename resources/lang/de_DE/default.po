@@ -3147,3 +3147,6 @@ msgstr "Arbeitseinsatz löschen"
 
 msgid "worklog.delete.info"
 msgstr "Möchtest du den Arbeitseinsatz von %s wirklich löschen?"
+
+msgid "Number of shifts: %s"
+msgstr "Anzahl an Schichten: %s"
