@@ -549,7 +549,7 @@ function admin_shifts_history(): string
     $request = request();
     $transactionId = $request->postData('transaction_id');
     if ($request->hasPostData('delete') && $transactionId) {
-        $shifts = Shift::whereTransactionId($transactionId);
+        $shifts = Shift::whereTransactionId($transactionId)->get();
 
         engelsystem_log('Deleting ' . count($shifts) . ' shifts (transaction id ' . $transactionId . ')');
 
