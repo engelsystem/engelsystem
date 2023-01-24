@@ -5,6 +5,7 @@ namespace Engelsystem;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Collection;
 
@@ -72,11 +73,11 @@ class ShiftCalendarShiftRenderer
     private function classForSignupState(ShiftSignupState $shiftSignupState)
     {
         return match ($shiftSignupState->getState()) {
-            ShiftSignupState::ADMIN, ShiftSignupState::OCCUPIED => 'success',
-            ShiftSignupState::SIGNED_UP => 'primary',
-            ShiftSignupState::NOT_ARRIVED, ShiftSignupState::NOT_YET, ShiftSignupState::SHIFT_ENDED => 'secondary',
-            ShiftSignupState::ANGELTYPE, ShiftSignupState::COLLIDES => 'warning',
-            ShiftSignupState::FREE => 'danger',
+            ShiftSignupStatus::ADMIN, ShiftSignupStatus::OCCUPIED => 'success',
+            ShiftSignupStatus::SIGNED_UP => 'primary',
+            ShiftSignupStatus::NOT_ARRIVED, ShiftSignupStatus::NOT_YET, ShiftSignupStatus::SHIFT_ENDED => 'secondary',
+            ShiftSignupStatus::ANGELTYPE, ShiftSignupStatus::COLLIDES => 'warning',
+            ShiftSignupStatus::FREE => 'danger',
             default => 'light',
         };
     }
@@ -118,7 +119,7 @@ class ShiftCalendarShiftRenderer
             }
         }
         if (is_null($shift_signup_state)) {
-            $shift_signup_state = new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, 0);
+            $shift_signup_state = new ShiftSignupState(ShiftSignupStatus::SHIFT_ENDED, 0);
         }
 
         if (auth()->can('user_shifts_admin')) {
@@ -173,63 +174,42 @@ class ShiftCalendarShiftRenderer
         $freeEntriesCount = $shift_signup_state->getFreeEntries();
         $inner_text = _e('%d helper needed', '%d helpers needed', $freeEntriesCount, [$freeEntriesCount]);
 
-        switch ($shift_signup_state->getState()) {
-            case ShiftSignupState::ADMIN:
-            case ShiftSignupState::FREE:
-                // When admin or free display a link + button for sign up
-                $entry_list[] = '<a class="me-1 text-nowrap" href="'
-                    . shift_entry_create_link($shift, $angeltype)
-                    . '">'
-                    . $inner_text
-                    . '</a> '
+        $entry = match ($shift_signup_state->getState()) {
+            // When admin or free display a link + button for sign up
+            ShiftSignupStatus::ADMIN, ShiftSignupStatus::FREE =>
+                '<a class="me-1 text-nowrap" href="'
+                . shift_entry_create_link($shift, $angeltype)
+                . '">'
+                . $inner_text
+                . '</a> '
+                . button(
+                    shift_entry_create_link($shift, $angeltype),
+                    __('Sign up'),
+                    'btn-sm btn-primary text-nowrap d-print-none'
+                ),
+            // No link and add a text hint, when the shift ended
+            ShiftSignupStatus::SHIFT_ENDED => $inner_text . ' (' . __('ended') . ')',
+            // No link and add a text hint, when the shift ended
+            ShiftSignupStatus::NOT_ARRIVED => $inner_text . ' (' . __('please arrive for signup') . ')',
+            ShiftSignupStatus::NOT_YET => $inner_text . ' (' . __('not yet') . ')',
+            ShiftSignupStatus::ANGELTYPE => $angeltype->restricted
+                // User has to be confirmed on the angeltype first
+                ? $inner_text . icon('mortarboard-fill')
+                // Add link to join the angeltype first
+                : $inner_text . '<br />'
                     . button(
-                        shift_entry_create_link($shift, $angeltype),
-                        __('Sign up'),
-                        'btn-sm btn-primary text-nowrap d-print-none'
-                    );
-                break;
-
-            case ShiftSignupState::SHIFT_ENDED:
-                // No link and add a text hint, when the shift ended
-                $entry_list[] = $inner_text . ' (' . __('ended') . ')';
-                break;
-
-            case ShiftSignupState::NOT_ARRIVED:
-                // No link and add a text hint, when the shift ended
-                $entry_list[] = $inner_text . ' (' . __('please arrive for signup') . ')';
-                break;
-
-            case ShiftSignupState::NOT_YET:
-                $entry_list[] = $inner_text . ' (' . __('not yet') . ')';
-                break;
-
-            case ShiftSignupState::ANGELTYPE:
-                if ($angeltype->restricted) {
-                    // User has to be confirmed on the angeltype first
-                    $entry_list[] = $inner_text . icon('mortarboard-fill');
-                } else {
-                    // Add link to join the angeltype first
-                    $entry_list[] = $inner_text . '<br />'
-                        . button(
-                            page_link_to(
-                                'user_angeltypes',
-                                ['action' => 'add', 'angeltype_id' => $angeltype->id]
-                            ),
-                            sprintf(__('Become %s'), $angeltype->name),
-                            'btn-sm'
-                        );
-                }
-                break;
-
-            case ShiftSignupState::COLLIDES:
-            case ShiftSignupState::SIGNED_UP:
-                // Shift collides or user is already signed up: No signup allowed
-                $entry_list[] = $inner_text;
-                break;
-
-            case ShiftSignupState::OCCUPIED:
-                // Shift is full
-                break;
+                        page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
+                        sprintf(__('Become %s'), $angeltype->name),
+                        'btn-sm'
+                    ),
+            // Shift collides or user is already signed up: No signup allowed
+            ShiftSignupStatus::COLLIDES, ShiftSignupStatus::SIGNED_UP => $inner_text,
+            // Shift is full
+            ShiftSignupStatus::OCCUPIED => null,
+            default => null,
+        };
+        if (!is_null($entry)) {
+            $entry_list[] = $entry;
         }
 
         $shifts_row = '<li class="list-group-item d-flex flex-wrap align-items-center ' . $this->classBg() . '">';

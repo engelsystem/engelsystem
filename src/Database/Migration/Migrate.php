@@ -13,12 +13,6 @@ use Throwable;
 
 class Migrate
 {
-    /** @var string */
-    public const UP = 'up';
-
-    /** @var string */
-    public const DOWN = 'down';
-
     /** @var callable */
     protected $output;
 
@@ -35,12 +29,10 @@ class Migrate
 
     /**
      * Run a migration
-     *
-     * @param string $type (up|down)
      */
     public function run(
         string $path,
-        string $type = self::UP,
+        Direction $direction = Direction::UP,
         bool $oneStep = false,
         bool $forceMigration = false
     ): void {
@@ -52,7 +44,7 @@ class Migrate
             $this->getMigrated()
         );
 
-        if ($type == self::DOWN) {
+        if ($direction === Direction::DOWN) {
             $migrations = $migrations->reverse();
         }
 
@@ -62,19 +54,19 @@ class Migrate
                 $name = $migration['migration'];
 
                 if (
-                    ($type == self::UP && isset($migration['id']))
-                    || ($type == self::DOWN && !isset($migration['id']))
+                    ($direction === Direction::UP && isset($migration['id']))
+                    || ($direction === Direction::DOWN && !isset($migration['id']))
                 ) {
                     ($this->output)('Skipping ' . $name);
                     continue;
                 }
 
-                ($this->output)('Migrating ' . $name . ' (' . $type . ')');
+                ($this->output)('Migrating ' . $name . ' (' . $direction->value . ')');
 
                 if (isset($migration['path'])) {
-                    $this->migrate($migration['path'], $name, $type);
+                    $this->migrate($migration['path'], $name, $direction);
                 }
-                $this->setMigrated($name, $type);
+                $this->setMigrated($name, $direction);
 
                 if ($oneStep) {
                     break;
@@ -145,10 +137,8 @@ class Migrate
 
     /**
      * Migrate a migration
-     *
-     * @param string $type (up|down)
      */
-    protected function migrate(string $file, string $migration, string $type = self::UP): void
+    protected function migrate(string $file, string $migration, Direction $direction = Direction::UP): void
     {
         require_once $file;
 
@@ -156,21 +146,19 @@ class Migrate
         /** @var Migration $class */
         $class = $this->app->make('Engelsystem\\Migrations\\' . $className);
 
-        if (method_exists($class, $type)) {
-            $class->{$type}();
+        if (method_exists($class, $direction->value)) {
+            $class->{$direction->value}();
         }
     }
 
     /**
      * Set a migration to migrated
-     *
-     * @param string $type (up|down)
      */
-    protected function setMigrated(string $migration, string $type = self::UP): void
+    protected function setMigrated(string $migration, Direction $direction = Direction::UP): void
     {
         $table = $this->getTableQuery();
 
-        if ($type == self::DOWN) {
+        if ($direction === Direction::DOWN) {
             $table->where(['migration' => $migration])->delete();
             return;
         }

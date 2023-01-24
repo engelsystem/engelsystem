@@ -3,6 +3,7 @@
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftSignupState;
@@ -180,21 +181,16 @@ function shift_entry_create_controller_supporter(Shift $shift, AngelType $angelt
  */
 function shift_entry_error_message(ShiftSignupState $shift_signup_state)
 {
-    if ($shift_signup_state->getState() == ShiftSignupState::ANGELTYPE) {
-        error(__('You need be accepted member of the angeltype.'));
-    } elseif ($shift_signup_state->getState() == ShiftSignupState::COLLIDES) {
-        error(__('This shift collides with one of your shifts.'));
-    } elseif ($shift_signup_state->getState() == ShiftSignupState::OCCUPIED) {
-        error(__('This shift is already occupied.'));
-    } elseif ($shift_signup_state->getState() == ShiftSignupState::SHIFT_ENDED) {
-        error(__('This shift ended already.'));
-    } elseif ($shift_signup_state->getState() == ShiftSignupState::NOT_ARRIVED) {
-        error(__('You are not marked as arrived.'));
-    } elseif ($shift_signup_state->getState() == ShiftSignupState::NOT_YET) {
-        error(__('You are not allowed to sign up yet.'));
-    } elseif ($shift_signup_state->getState() == ShiftSignupState::SIGNED_UP) {
-        error(__('You are signed up for this shift.'));
-    }
+    match ($shift_signup_state->getState()) {
+        ShiftSignupStatus::ANGELTYPE   => error(__('You need be accepted member of the angeltype.')),
+        ShiftSignupStatus::COLLIDES    => error(__('This shift collides with one of your shifts.')),
+        ShiftSignupStatus::OCCUPIED    => error(__('This shift is already occupied.')),
+        ShiftSignupStatus::SHIFT_ENDED => error(__('This shift ended already.')),
+        ShiftSignupStatus::NOT_ARRIVED => error(__('You are not marked as arrived.')),
+        ShiftSignupStatus::NOT_YET     => error(__('You are not allowed to sign up yet.')),
+        ShiftSignupStatus::SIGNED_UP   => error(__('You are signed up for this shift.')),
+        default => null, // ShiftSignupStatus::FREE|ShiftSignupStatus::ADMIN
+    };
 }
 
 /**

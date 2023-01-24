@@ -7,6 +7,7 @@ use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Collection;
 
@@ -313,7 +314,7 @@ function shift_controller()
     $angeltypes = AngelType::all();
     $user_shifts = Shifts_by_user($user->id);
 
-    $shift_signup_state = new ShiftSignupState(ShiftSignupState::OCCUPIED, 0);
+    $shift_signup_state = new ShiftSignupState(ShiftSignupStatus::OCCUPIED, 0);
     foreach ($angeltypes as $angeltype) {
         $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
         if (empty($needed_angeltype)) {

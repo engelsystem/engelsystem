@@ -4,6 +4,7 @@ namespace Engelsystem\Test\Unit\Database\Migration;
 
 use Engelsystem\Application;
 use Engelsystem\Database\Migration\Migrate;
+use Engelsystem\Database\Migration\Direction;
 use Engelsystem\Test\Unit\TestCase;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
@@ -61,34 +62,34 @@ class MigrateTest extends TestCase
         $migration->expects($this->atLeastOnce())
             ->method('migrate')
             ->withConsecutive(
-                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Migrate::UP],
-                ['foo/9999_99_99_999999_another_foo.php', '9999_99_99_999999_another_foo', Migrate::UP],
-                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Migrate::UP],
-                ['foo/9999_99_99_999999_another_foo.php', '9999_99_99_999999_another_foo', Migrate::UP],
-                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Migrate::UP],
-                ['foo/4567_11_01_000000_do_stuff.php', '4567_11_01_000000_do_stuff', Migrate::DOWN]
+                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Direction::UP],
+                ['foo/9999_99_99_999999_another_foo.php', '9999_99_99_999999_another_foo', Direction::UP],
+                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Direction::UP],
+                ['foo/9999_99_99_999999_another_foo.php', '9999_99_99_999999_another_foo', Direction::UP],
+                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Direction::UP],
+                ['foo/4567_11_01_000000_do_stuff.php', '4567_11_01_000000_do_stuff', Direction::DOWN]
             );
         $migration->expects($this->atLeastOnce())
             ->method('setMigrated')
             ->withConsecutive(
-                ['9876_03_22_210000_random_hack', Migrate::UP],
-                ['9999_99_99_999999_another_foo', Migrate::UP],
-                ['9876_03_22_210000_random_hack', Migrate::UP],
-                ['9999_99_99_999999_another_foo', Migrate::UP],
-                ['9876_03_22_210000_random_hack', Migrate::UP],
-                ['4567_11_01_000000_do_stuff', Migrate::DOWN]
+                ['9876_03_22_210000_random_hack', Direction::UP],
+                ['9999_99_99_999999_another_foo', Direction::UP],
+                ['9876_03_22_210000_random_hack', Direction::UP],
+                ['9999_99_99_999999_another_foo', Direction::UP],
+                ['9876_03_22_210000_random_hack', Direction::UP],
+                ['4567_11_01_000000_do_stuff', Direction::DOWN]
             );
         $this->setExpects($migration, 'lockTable', null, null, $this->atLeastOnce());
         $this->setExpects($migration, 'unlockTable', null, null, $this->atLeastOnce());
 
-        $migration->run('foo', Migrate::UP);
+        $migration->run('foo', Direction::UP);
 
         $messages = [];
         $migration->setOutput(function ($text) use (&$messages): void {
             $messages[] = $text;
         });
 
-        $migration->run('foo', Migrate::UP);
+        $migration->run('foo', Direction::UP);
 
         $this->assertCount(4, $messages);
         foreach (
@@ -113,10 +114,10 @@ class MigrateTest extends TestCase
         }
 
         $messages = [];
-        $migration->run('foo', Migrate::UP, true);
+        $migration->run('foo', Direction::UP, true);
         $this->assertCount(3, $messages);
 
-        $migration->run('foo', Migrate::DOWN, true);
+        $migration->run('foo', Direction::DOWN, true);
     }
 
     /**
@@ -192,7 +193,7 @@ class MigrateTest extends TestCase
             $messages[] = $msg;
         });
 
-        $migration->run(__DIR__ . '/Stub', Migrate::UP);
+        $migration->run(__DIR__ . '/Stub', Direction::UP);
 
         $this->assertTrue($schema->hasTable('migrations'));
 
@@ -206,12 +207,12 @@ class MigrateTest extends TestCase
 
         $this->assertTrue($schema->hasTable('lorem_ipsum'));
 
-        $migration->run(__DIR__ . '/Stub', Migrate::DOWN, true);
+        $migration->run(__DIR__ . '/Stub', Direction::DOWN, true);
 
         $migrations = $db->table('migrations')->get();
         $this->assertCount(2, $migrations);
 
-        $migration->run(__DIR__ . '/Stub', Migrate::DOWN);
+        $migration->run(__DIR__ . '/Stub', Direction::DOWN);
 
         $migrations = $db->table('migrations')->get();
         $this->assertCount(0, $migrations);
@@ -220,6 +221,6 @@ class MigrateTest extends TestCase
 
         $db->table('migrations')->insert(['migration' => 'lock']);
         $this->expectException(Exception::class);
-        $migration->run(__DIR__ . '/Stub', Migrate::UP);
+        $migration->run(__DIR__ . '/Stub', Direction::UP);
     }
 }

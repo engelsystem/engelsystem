@@ -5,6 +5,7 @@ use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
@@ -323,11 +324,11 @@ function Shift_signup_allowed_angel(
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
 
     if (config('signup_requires_arrival') && !$user->state->arrived) {
-        return new ShiftSignupState(ShiftSignupState::NOT_ARRIVED, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::NOT_ARRIVED, $free_entries);
     }
 
     if (config('signup_advance_hours') && $shift->start->timestamp > time() + config('signup_advance_hours') * 3600) {
-        return new ShiftSignupState(ShiftSignupState::NOT_YET, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::NOT_YET, $free_entries);
     }
 
     if (empty($user_shifts)) {
@@ -344,7 +345,7 @@ function Shift_signup_allowed_angel(
 
     if ($signed_up) {
         // you cannot join if you already signed up for this shift
-        return new ShiftSignupState(ShiftSignupState::SIGNED_UP, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::SIGNED_UP, $free_entries);
     }
 
     $shift_post_signup_total_allowed_seconds =
@@ -353,11 +354,11 @@ function Shift_signup_allowed_angel(
 
     if (time() > $shift->start->timestamp + $shift_post_signup_total_allowed_seconds) {
         // you can only join if the shift is in future
-        return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::SHIFT_ENDED, $free_entries);
     }
     if ($free_entries == 0) {
         // you cannot join if shift is full
-        return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::OCCUPIED, $free_entries);
     }
 
     if (empty($user_angeltype)) {
@@ -373,16 +374,16 @@ function Shift_signup_allowed_angel(
         // you cannot join if you are not confirmed
         // you cannot join if angeltype has no self signup
 
-        return new ShiftSignupState(ShiftSignupState::ANGELTYPE, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::ANGELTYPE, $free_entries);
     }
 
     if (Shift_collides($shift, $user_shifts)) {
         // you cannot join if user already joined a parallel of this shift
-        return new ShiftSignupState(ShiftSignupState::COLLIDES, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::COLLIDES, $free_entries);
     }
 
     // Hooray, shift is free for you!
-    return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
+    return new ShiftSignupState(ShiftSignupStatus::FREE, $free_entries);
 }
 
 /**
@@ -396,10 +397,10 @@ function Shift_signup_allowed_angeltype_supporter(AngelType $needed_angeltype, $
 {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
     if ($free_entries == 0) {
-        return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::OCCUPIED, $free_entries);
     }
 
-    return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
+    return new ShiftSignupState(ShiftSignupStatus::FREE, $free_entries);
 }
 
 /**
@@ -415,10 +416,10 @@ function Shift_signup_allowed_admin(AngelType $needed_angeltype, $shift_entries)
 
     if ($free_entries == 0) {
         // User shift admins may join anybody in every shift
-        return new ShiftSignupState(ShiftSignupState::ADMIN, $free_entries);
+        return new ShiftSignupState(ShiftSignupStatus::ADMIN, $free_entries);
     }
 
-    return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
+    return new ShiftSignupState(ShiftSignupStatus::FREE, $free_entries);
 }
 
 /**

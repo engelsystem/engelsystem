@@ -5,6 +5,7 @@ namespace Engelsystem\Helpers;
 use Carbon\CarbonTimeZone;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Environment;
 use Engelsystem\Exceptions\Handler;
 use Engelsystem\Exceptions\Handlers\HandlerInterface;
 
@@ -58,7 +59,7 @@ class ConfigureEnvironmentServiceProvider extends ServiceProvider
     {
         /** @var Handler $errorHandler */
         $errorHandler = $this->app->get('error.handler');
-        $errorHandler->setEnvironment(Handler::ENV_DEVELOPMENT);
+        $errorHandler->setEnvironment(Environment::DEVELOPMENT);
         $this->app->bind(HandlerInterface::class, 'error.handler.development');
     }
 }

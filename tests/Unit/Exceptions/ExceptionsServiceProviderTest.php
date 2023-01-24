@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Exceptions;
 
+use Engelsystem\Environment;
 use Engelsystem\Exceptions\ExceptionsServiceProvider;
 use Engelsystem\Exceptions\Handler;
 use Engelsystem\Exceptions\Handlers\HandlerInterface;
@@ -69,8 +70,8 @@ class ExceptionsServiceProviderTest extends ServiceProviderTest
         $handler->expects($this->exactly(2))
             ->method('setHandler')
             ->withConsecutive(
-                [Handler::ENV_PRODUCTION, $legacyHandler],
-                [Handler::ENV_DEVELOPMENT, $whoopsHandler]
+                [Environment::PRODUCTION, $legacyHandler],
+                [Environment::DEVELOPMENT, $whoopsHandler]
             );
 
         $serviceProvider = new ExceptionsServiceProvider($app);
