@@ -320,7 +320,7 @@ function Shift_signup_allowed_angel(
     $user_shifts,
     AngelType $needed_angeltype,
     $shift_entries
-) {
+): ShiftSignupState {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
 
     if (config('signup_requires_arrival') && !$user->state->arrived) {
@@ -356,7 +356,7 @@ function Shift_signup_allowed_angel(
         // you can only join if the shift is in future
         return new ShiftSignupState(ShiftSignupStatus::SHIFT_ENDED, $free_entries);
     }
-    if ($free_entries == 0) {
+    if ($free_entries === 0) {
         // you cannot join if shift is full
         return new ShiftSignupState(ShiftSignupStatus::OCCUPIED, $free_entries);
     }
@@ -393,14 +393,12 @@ function Shift_signup_allowed_angel(
  * @param ShiftEntry[]|Collection $shift_entries
  * @return ShiftSignupState
  */
-function Shift_signup_allowed_angeltype_supporter(AngelType $needed_angeltype, $shift_entries)
+function Shift_signup_allowed_angeltype_supporter(AngelType $needed_angeltype, $shift_entries): ShiftSignupState
 {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
-    if ($free_entries == 0) {
-        return new ShiftSignupState(ShiftSignupStatus::OCCUPIED, $free_entries);
-    }
+    $status = ($free_entries === 0) ? ShiftSignupStatus::OCCUPIED : ShiftSignupStatus::FREE;
 
-    return new ShiftSignupState(ShiftSignupStatus::FREE, $free_entries);
+    return new ShiftSignupState($status, $free_entries);
 }
 
 /**
@@ -410,16 +408,12 @@ function Shift_signup_allowed_angeltype_supporter(AngelType $needed_angeltype, $
  * @param ShiftEntry[]|Collection $shift_entries
  * @return ShiftSignupState
  */
-function Shift_signup_allowed_admin(AngelType $needed_angeltype, $shift_entries)
+function Shift_signup_allowed_admin(AngelType $needed_angeltype, $shift_entries): ShiftSignupState
 {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
+    $status = ($free_entries === 0) ? ShiftSignupStatus::ADMIN : ShiftSignupStatus::FREE;
 
-    if ($free_entries == 0) {
-        // User shift admins may join anybody in every shift
-        return new ShiftSignupState(ShiftSignupStatus::ADMIN, $free_entries);
-    }
-
-    return new ShiftSignupState(ShiftSignupStatus::FREE, $free_entries);
+    return new ShiftSignupState($status, $free_entries);
 }
 
 /**
