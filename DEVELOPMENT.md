@@ -49,39 +49,39 @@ Run this once
 
 ```bash
 cd docker/dev
-docker-compose up
+docker compose up
 ```
 
 Run these commands once initially and then as required after changes
 
 ```bash
 # Install composer dependencies
-docker-compose exec es_workspace composer i
+docker compose exec es_workspace composer i
 
 # Install node packages
-docker-compose exec es_workspace yarn install
+docker compose exec es_workspace yarn install
 
 # Run a full front-end build
-docker-compose exec es_workspace yarn build
+docker compose exec es_workspace yarn build
 
 # Or run a front-end build for specific themes only, e.g.
-docker-compose exec -e THEMES=0,1 es_workspace yarn build
+docker compose exec -e THEMES=0,1 es_workspace yarn build
 
 # Update the translation files
-docker-compose exec es_workspace find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+docker compose exec es_workspace find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
 
 # Run the migrations
-docker-compose exec es_workspace bin/migrate
+docker compose exec es_workspace bin/migrate
 ```
 
 While developing you may use the watch mode to rebuild the system on changes
 
 ```bash
 # Run a front-end build and update on change
-docker-compose exec es_workspace yarn build:watch
+docker compose exec es_workspace yarn build:watch
 
 # Or run a front-end build and update on change for specific themes only, e.g.
-docker-compose exec -e THEMES=0,1 es_workspace yarn build:watch
+docker compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
 
 ## Localhost
@@ -153,7 +153,7 @@ To view the output of `dump` call the following commands:
 ```bash
 vendor/bin/var-dump-server
 # or for running in docker
-docker-compose exec es_server vendor/bin/var-dump-server
+docker compose exec es_server vendor/bin/var-dump-server
 ```
 
 For more information check out the Var Dump Server documentation: [Symfony VarDumper](https://symfony.com/components/VarDumper)

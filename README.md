@@ -55,7 +55,7 @@ The Engelsystem can now be used.
 To build the `es_server` container:
 ```bash
 cd docker
-docker-compose build
+docker compose build
 ```
 
 or to build the container by its own:
@@ -67,14 +67,14 @@ docker build -f docker/Dockerfile . -t es_server
 Start the Engelsystem
 ```bash
 cd docker
-docker-compose up -d
+docker compose up -d
 ```
 
 #### Migrate
 Import database changes to migrate it to the newest version
 ```bash
 cd docker
-docker-compose exec es_server bin/migrate
+docker compose exec es_server bin/migrate
 ```
 
 ### Scripts
