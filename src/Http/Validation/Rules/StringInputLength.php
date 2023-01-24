@@ -2,9 +2,9 @@
 
 namespace Engelsystem\Http\Validation\Rules;
 
-use Engelsystem\Helpers\Carbon;
+use DateTime;
+use Exception;
 use Illuminate\Support\Str;
-use Throwable;
 
 trait StringInputLength
 {
@@ -27,11 +27,13 @@ trait StringInputLength
     protected function isDateTime(mixed $input): bool
     {
         try {
-            $date = Carbon::make($input);
-        } catch (Throwable $e) {
-            return false;
+            $input = new DateTime($input);
+            // Min 1s diff to exclude any not auto-detected dates / times like ...
+            return abs((new DateTime())->diff($input)->format('%s')) > 1;
+        } catch (Exception $e) {
+            // Ignore it
         }
 
-        return !is_null($date);
+        return false;
     }
 }

@@ -28,6 +28,7 @@ class StringInputLengthTest extends TestCase
         return [
             ['TEST', 4],
             ['?', 1],
+            ['', 0],
             ['2042-01-01 00:00', '2042-01-01 00:00'],
             ['2042-01-01', '2042-01-01'],
             ['12:42', '12:42'],
@@ -35,6 +36,11 @@ class StringInputLengthTest extends TestCase
             ['...', 3],
             ['Test Tester', 11],
             ['com', 3],
+            ['Test', 4],
+            ['H', 1],
+            ['3', 3],
+            [42, 42],
+            [99.3, 99.3],
         ];
     }
 }
