@@ -10,26 +10,17 @@ use Engelsystem\Models\Shifts\ShiftSignupStatus;
  */
 class ShiftSignupState
 {
-    /** @var int */
-    private $freeEntries;
-
     /**
      * ShiftSignupState constructor.
-     *
-     * @param ShiftSignupStatus $state
-     * @param int               $free_entries
      */
-    public function __construct(private ShiftSignupStatus $state, $free_entries)
+    public function __construct(private ShiftSignupStatus $state, private int $freeEntries)
     {
-        $this->freeEntries = $free_entries;
     }
 
     /**
      * Combine this state with another state from the same shift.
-     *
-     * @param ShiftSignupState $shiftSignupState The other state to combine
      */
-    public function combineWith(ShiftSignupState $shiftSignupState)
+    public function combineWith(ShiftSignupState $shiftSignupState): void
     {
         $this->freeEntries += $shiftSignupState->getFreeEntries();
 
@@ -38,11 +29,7 @@ class ShiftSignupState
         }
     }
 
-    /**
-     * @param ShiftSignupStatus $state
-     * @return int
-     */
-    private function valueForState(ShiftSignupStatus $state)
+    private function valueForState(ShiftSignupStatus $state): int
     {
         return match ($state) {
             ShiftSignupStatus::NOT_ARRIVED, ShiftSignupStatus::NOT_YET, ShiftSignupStatus::SHIFT_ENDED => 100,
@@ -56,10 +43,8 @@ class ShiftSignupState
 
     /**
      * Returns true, if signup is allowed
-     *
-     * @return bool
      */
-    public function isSignupAllowed()
+    public function isSignupAllowed(): bool
     {
         return match ($this->state) {
             ShiftSignupStatus::FREE, ShiftSignupStatus::ADMIN => true,
@@ -69,8 +54,6 @@ class ShiftSignupState
 
     /**
      * Return the shift signup state
-     *
-     * @return ShiftSignupStatus
      */
     public function getState(): ShiftSignupStatus
     {
@@ -79,10 +62,8 @@ class ShiftSignupState
 
     /**
      * How many places are free in this shift for the angeltype?
-     *
-     * @return int
      */
-    public function getFreeEntries()
+    public function getFreeEntries(): int
     {
         return $this->freeEntries;
     }
