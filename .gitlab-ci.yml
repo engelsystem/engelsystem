@@ -152,12 +152,6 @@ yarn lint:
   script:
     - yarn lint
 
-check-editorconfig:
-  image: mstruebing/editorconfig-checker
-  stage: validate
-  script:
-    - ec -v
-
 #
 # Build
 #
@@ -175,7 +169,6 @@ build-image:
   <<: *container_definition
   stage: build
   needs:
-    - check-editorconfig
     - phpcs
     - phpstan
     - composer validate

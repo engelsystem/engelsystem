@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# immediate exit after an error
+set -e
+
+yarn check
+yarn lint
+
+composer validate
+composer phpcs
+composer phpstan
+./vendor/bin/phpunit

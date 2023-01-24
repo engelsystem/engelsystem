@@ -1762,6 +1762,11 @@ domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
+editorconfig-checker@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/editorconfig-checker/-/editorconfig-checker-5.0.1.tgz#cb4bf7a9b80f1b63b141b8897d7cc326fce0d3ae"
+  integrity sha512-6hXq9VVDkyCxVYKdGtIj+yhVR1fi/6W6Ykz/+kItLPARulJvr2/VXgWZ5OGWx1UYm2RD6XOzWyx1JF6DLgQ/8Q==
+
 editorconfig@^0.15.0:
   version "0.15.3"
   resolved "https://registry.yarnpkg.com/editorconfig/-/editorconfig-0.15.3.tgz#bef84c4e75fb8dcb0ce5cee8efd51c15999befc5"
