@@ -307,7 +307,7 @@ function Shift_free_entries(AngelType $needed_angeltype, $shift_entries)
  * @param Shift                   $shift The shift
  * @param AngelType               $angeltype The angeltype to which the user wants to sign up
  * @param array|null              $user_angeltype
- * @param SHift[]|Collection|null $user_shifts List of the users shifts
+ * @param Shift[]|Collection|null $user_shifts List of the users shifts
  * @param AngelType               $needed_angeltype
  * @param ShiftEntry[]|Collection $shift_entries
  * @return ShiftSignupState
@@ -331,7 +331,7 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupStatus::NOT_YET, $free_entries);
     }
 
-    if (empty($user_shifts)) {
+    if (is_null($user_shifts) || $user_shifts->isEmpty()) {
         $user_shifts = Shifts_by_user($user->id);
     }
 

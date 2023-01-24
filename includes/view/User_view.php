@@ -242,7 +242,7 @@ function User_last_shift_render($user)
     }
 
     $last_shifts = ShiftEntries_finished_by_user($user);
-    if (empty($last_shifts)) {
+    if ($last_shifts->isEmpty()) {
         return '';
     }
 
