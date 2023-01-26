@@ -86,22 +86,16 @@ msgid "Y-m-d"
 msgstr "d.m.Y"
 
 #: resources/views/layouts/parts/footer.twig:7
-#, fuzzy
-#| msgid "%s, from %s to %s"
 msgid "%1$s, from %2$s to %3$s"
-msgstr "%s, vom %s bis %s"
+msgstr "%1$s, vom %2$s bis %3$s"
 
 #: resources/views/layouts/parts/footer.twig:13
-#, fuzzy
-#| msgid "%s, starting %s"
 msgid "%1$s, starting %2$s"
-msgstr "%s, ab dem %s"
+msgstr "%1$s, ab dem %2$s"
 
 #: resources/views/layouts/parts/footer.twig:21
-#, fuzzy
-#| msgid "Event from %s to %s"
 msgid "Event from %1$s to %2$s"
-msgstr "Event von %s bis %s"
+msgstr "Event von %1$s bis %2$s"
 
 #: resources/views/layouts/parts/footer.twig:34
 msgid "Bugs / Features"
@@ -136,7 +130,6 @@ msgid "form.submit"
 msgstr "Absenden"
 
 #: resources/views/pages/credits.twig:17
-#, fuzzy
 msgid "Source code"
 msgstr "Quellcode"
 
