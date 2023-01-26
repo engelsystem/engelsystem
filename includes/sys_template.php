@@ -374,16 +374,17 @@ function button($href, $label, $class = '', $id = '')
 }
 
 /**
- * Rendert einen Knopf mit JavaScript onclick Handler
+ * Renders a button to select corresponding checkboxes
  *
- * @param string $javascript
+ * @param string $name
  * @param string $label
- * @param string $class
+ * @param string $value
  * @return string
  */
-function button_js($javascript, $label, $class = '')
+function button_checkbox_selection($name, $label, $value)
 {
-    return '<a onclick="' . $javascript . '" href="#" class="btn btn-secondary ' . $class . '">' . $label . '</a>';
+    return '<button type="button" class="btn btn-secondary d-print-none checkbox-selection" '
+        . 'data-id="selection_' . $name . '" data-value="' . $value . '">' . $label . '</button>';
 }
 
 /**

@@ -4,28 +4,24 @@ import { ready } from './ready';
 
 /**
  * Sets all checkboxes to the wanted state
- *
- * @param {string} id Id of the element containing all the checkboxes
- * @param {boolean} checked True if the checkboxes should be checked
  */
-global.checkAll = (id, checked) => {
-  document.querySelectorAll(`#${id} input[type="checkbox"]`).forEach((element) => {
-    element.checked = checked;
+ready(() => {
+  document.querySelectorAll('button.checkbox-selection').forEach((buttonElement) => {
+    buttonElement.addEventListener('click', () => {
+      document.querySelectorAll(`#${buttonElement.dataset.id} input[type="checkbox"]`).forEach((checkboxElement) => {
+        /**
+         * @type {boolean|int[]}
+         */
+        const value = JSON.parse(buttonElement.dataset.value);
+        if (typeof value === 'boolean') {
+          checkboxElement.checked = value;
+        } else {
+          checkboxElement.checked = value.includes(Number(checkboxElement.value));
+        }
+      });
+    });
   });
-};
-
-/**
- * Sets the checkboxes according to the given type
- *
- * @param {string} id The Id of the element containing all the checkboxes
- * @param {int[]} shiftsList A list of numbers
- */
-global.checkOwnTypes = (id, shiftsList) => {
-  document.querySelectorAll(`#${id} input[type="checkbox"]`).forEach((element) => {
-    const value = Number(element.value);
-    element.checked = shiftsList.includes(value);
-  });
-};
+});
 
 ready(() => {
   /**
