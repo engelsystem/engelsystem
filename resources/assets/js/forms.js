@@ -284,27 +284,20 @@ ready(() => {
  * Uses DOMContentLoaded to prevent flickering
  */
 ready(() => {
-  const filter = document.getElementById('collapseShiftsFilterSelect');
-  if (!filter || localStorage.getItem('collapseShiftsFilterSelect') !== 'hidden.bs.collapse') {
-    return;
+  const collapseElement = document.getElementById('collapseShiftsFilterSelect');
+  if (collapseElement) {
+    if (localStorage.getItem('collapseShiftsFilterSelect') === 'hidden.bs.collapse') {
+      collapseElement.classList.remove('show');
+    }
+
+    /**
+     * @param {Event} event
+     */
+    const onChange = (event) => {
+      localStorage.setItem('collapseShiftsFilterSelect', event.type);
+    };
+
+    collapseElement.addEventListener('hidden.bs.collapse', onChange);
+    collapseElement.addEventListener('shown.bs.collapse', onChange);
   }
-
-  filter.classList.remove('show');
-});
-
-ready(() => {
-  if (typeof localStorage === 'undefined') {
-    return;
-  }
-
-  /**
-   * @param {Event} event
-   */
-  const onChange = (event) => {
-    localStorage.setItem('collapseShiftsFilterSelect', event.type);
-  };
-
-  document.getElementById('collapseShiftsFilterSelect')?.addEventListener('hidden.bs.collapse', onChange);
-
-  document.getElementById('collapseShiftsFilterSelect')?.addEventListener('shown.bs.collapse', onChange);
 });

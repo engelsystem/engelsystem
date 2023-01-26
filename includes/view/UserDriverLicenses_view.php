@@ -53,18 +53,14 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
         ]),
         '
         <script>
+            const checkboxElement = document.getElementById("wants_to_drive");
             const drivingLicenseElement = document.getElementById("driving_license");
 
-            if (drivingLicenseElement) {
-                const checkbox = document.getElementById("wants_to_drive");
-                drivingLicenseElement.style.display = checkbox?.checked
-                    ? ""
-                    : "none";
+            if (checkboxElement && drivingLicenseElement) {
+                drivingLicenseElement.hidden = !checkboxElement.checked;
 
-                checkbox.addEventListener("click", () => {
-                    drivingLicenseElement.style.display = document.getElementById("wants_to_drive")?.checked
-                        ? ""
-                        : "none";
+                checkboxElement.addEventListener("click", () => {
+                    drivingLicenseElement.hidden = !checkboxElement.checked;
                 });
             }
         </script>

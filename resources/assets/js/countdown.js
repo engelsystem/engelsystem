@@ -6,7 +6,7 @@ import { ready } from './ready';
 ready(() => {
   const lang = document.documentElement.getAttribute('lang');
 
-  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat(lang ?? [], { numeric: 'auto' });
 
   const timeFrames = [
     [60 * 60 * 24 * 365, 'year'],
