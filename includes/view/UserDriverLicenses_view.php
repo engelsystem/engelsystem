@@ -50,20 +50,6 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
                     ),
             ], 'driving_license'),
             form_submit('submit', __('Save')),
-        ]),
-        '
-        <script>
-            const checkboxElement = document.getElementById("wants_to_drive");
-            const drivingLicenseElement = document.getElementById("driving_license");
-
-            if (checkboxElement && drivingLicenseElement) {
-                drivingLicenseElement.hidden = !checkboxElement.checked;
-
-                checkboxElement.addEventListener("click", () => {
-                    drivingLicenseElement.hidden = !checkboxElement.checked;
-                });
-            }
-        </script>
-        ',
+        ])
     ], true);
 }
