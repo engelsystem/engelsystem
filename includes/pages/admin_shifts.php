@@ -12,6 +12,19 @@ use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Str;
 
+enum ShiftCreationMode: string
+{
+    case SINGLE = 'single';
+    case MULTI = 'multi';
+    case VARIABLE = 'variable';
+}
+
+enum NeededAngelCreationMode: string
+{
+    case MANUALLY = 'manually';
+    case LOCATION = 'location';
+}
+
 /**
  * @return string
  */
@@ -32,8 +45,8 @@ function admin_shifts()
     $session = session();
     $start = Carbon::createFromDateTime(date('Y-m-d') . 'T00:00');
     $end = $start;
-    $shiftCreationMode = 'multi';
-    $neededAngelCreationMode = 'manually';
+    $shiftCreationMode = ShiftCreationMode::MULTI;
+    $neededAngelCreationMode = NeededAngelCreationMode::MANUALLY;
     $shiftLength = '';
     $change_hours = [];
     $title = '';
@@ -117,17 +130,17 @@ function admin_shifts()
         }
 
         if ($request->has('shift_creation_mode')) {
-            if ($request->input('shift_creation_mode') === 'single') {
-                $shiftCreationMode = 'single';
-            } elseif ($request->input('shift_creation_mode') === 'multi') {
+            $shiftCreationMode = ShiftCreationMode::tryFrom($request->input('shift_creation_mode'));
+            if ($shiftCreationMode === ShiftCreationMode::SINGLE) {
+                // do nothing
+            } elseif ($shiftCreationMode === ShiftCreationMode::MULTI) {
                 if ($request->has('shift_length') && preg_match('/^\d+$/', trim($request->input('shift_length')))) {
-                    $shiftCreationMode = 'multi';
                     $shiftLength = trim($request->input('shift_length'));
                 } else {
                     $valid = false;
                     error(__('Please enter a shift duration in minutes.'));
                 }
-            } elseif ($request->input('shift_creation_mode') === 'variable') {
+            } elseif ($shiftCreationMode === ShiftCreationMode::VARIABLE) {
                 if (
                     $request->has('change_hours')
                     && preg_match(
@@ -135,7 +148,6 @@ function admin_shifts()
                         trim(str_replace(' ', '', $request->input('change_hours')))
                     )
                 ) {
-                    $shiftCreationMode = 'variable';
                     $change_hours = array_map(
                         'trim',
                         explode(',', $request->input('change_hours'))
@@ -146,6 +158,10 @@ function admin_shifts()
                 }
                 $shift_over_midnight = $request->has('shift_over_midnight')
                     && $request->input('shift_over_midnight') === 'checked';
+            } else {
+                $shiftCreationMode = ShiftCreationMode::MULTI;
+                $valid = false;
+                error(__('Please select a mode.'));
             }
         } else {
             $valid = false;
@@ -153,9 +169,10 @@ function admin_shifts()
         }
 
         if ($request->has('needed_angel_creation_mode')) {
-            if ($request->input('needed_angel_creation_mode') === 'location') {
-                $neededAngelCreationMode = 'location';
-            } elseif ($request->input('needed_angel_creation_mode') === 'manually') {
+            $neededAngelCreationMode = NeededAngelCreationMode::tryFrom($request->input('needed_angel_creation_mode'));
+            if ($neededAngelCreationMode === NeededAngelCreationMode::LOCATION) {
+                // do nothing
+            } elseif ($neededAngelCreationMode === NeededAngelCreationMode::MANUALLY) {
                 foreach ($types as $type) {
                     if (preg_match('/^\d+$/', trim($request->input('angeltype_count_' . $type->id, 0)))) {
                         $needed_angel_types[$type->id] = trim($request->input('angeltype_count_' . $type->id, 0));
@@ -170,6 +187,7 @@ function admin_shifts()
                     error(__('There are 0 angels needed. Please enter the amounts of needed angels.'));
                 }
             } else {
+                $neededAngelCreationMode = NeededAngelCreationMode::MANUALLY;
                 $valid = false;
                 error(__('Please select a mode for needed angels.'));
             }
@@ -185,14 +203,14 @@ function admin_shifts()
 
         // Alle Eingaben in Ordnung
         if ($valid) {
-            if ($neededAngelCreationMode === 'location') {
+            if ($neededAngelCreationMode === NeededAngelCreationMode::LOCATION) {
                 $needed_angel_types = NeededAngelType::whereRoomId($rid)
                         ->pluck('count', 'angel_type_id')
                         ->toArray() + $needed_angel_types;
             }
 
             $shifts = [];
-            if ($shiftCreationMode === 'single') {
+            if ($shiftCreationMode === ShiftCreationMode::SINGLE) {
                 $shifts[] = [
                     'start'         => $start,
                     'end'           => $end,
@@ -201,7 +219,7 @@ function admin_shifts()
                     'shift_type_id' => $shifttype_id,
                     'description'   => $description,
                 ];
-            } elseif ($shiftCreationMode === 'multi') {
+            } elseif ($shiftCreationMode === ShiftCreationMode::MULTI) {
                 $shift_start = $start;
                 do {
                     $shift_end = (clone $shift_start)->addSeconds((int) $shiftLength * 60);
@@ -224,7 +242,7 @@ function admin_shifts()
 
                     $shift_start = $shift_end;
                 } while ($shift_end < $end);
-            } elseif ($shiftCreationMode === 'variable') {
+            } elseif ($shiftCreationMode === ShiftCreationMode::VARIABLE) {
                 // Fehlende Minutenangaben ergänzen
                 array_walk($change_hours, function (&$value) {
                     if (!preg_match('/^\d{1,2}:\d{2}$/', $value)) {
@@ -348,10 +366,10 @@ function admin_shifts()
                     form_hidden('rid', $rid),
                     form_hidden('start', $start->format('Y-m-d H:i')),
                     form_hidden('end', $end->format('Y-m-d H:i')),
-                    form_hidden('shift_creation_mode', $shiftCreationMode),
+                    form_hidden('shift_creation_mode', $shiftCreationMode->value),
                     form_hidden('shift_length', $shiftLength),
                     form_hidden('change_hours', implode(', ', $change_hours)),
-                    form_hidden('needed_angel_creation_mode', $neededAngelCreationMode),
+                    form_hidden('needed_angel_creation_mode', $neededAngelCreationMode->value),
                     form_hidden('shift_over_midnight', $shift_over_midnight ? 'true' : 'false'),
                     form_submit('back', icon('chevron-left') . __('back')),
                     $shiftsCreationHint,
@@ -425,7 +443,7 @@ function admin_shifts()
                 $needed_angel_types[$type->id],
                 [
                     'radio-name'  => 'needed_angel_creation_mode',
-                    'radio-value' => 'manually',
+                    'radio-value' => NeededAngelCreationMode::MANUALLY->value,
                 ]
             )
             . '</div>';
@@ -462,8 +480,18 @@ function admin_shifts()
                             ]),
                         ]),
                         form_info(__('Mode')),
-                        form_radio('shift_creation_mode', __('Create one shift'), $shiftCreationMode === 'single', 'single'),
-                        form_radio('shift_creation_mode', __('Create multiple shifts'), $shiftCreationMode === 'multi', 'multi'),
+                        form_radio(
+                            'shift_creation_mode',
+                            __('Create one shift'),
+                            $shiftCreationMode === ShiftCreationMode::SINGLE,
+                            ShiftCreationMode::SINGLE->value
+                        ),
+                        form_radio(
+                            'shift_creation_mode',
+                            __('Create multiple shifts'),
+                            $shiftCreationMode === ShiftCreationMode::MULTI,
+                            ShiftCreationMode::MULTI->value
+                        ),
                         form_text(
                             'shift_length',
                             __('Length'),
@@ -476,14 +504,14 @@ function admin_shifts()
                             '',
                             [
                                 'radio-name'  => 'shift_creation_mode',
-                                'radio-value' => 'multi',
+                                'radio-value' => ShiftCreationMode::MULTI->value,
                             ]
                         ),
                         form_radio(
                             'shift_creation_mode',
                             __('Create multiple shifts with variable length'),
-                            $shiftCreationMode === 'variable',
-                            'variable'
+                            $shiftCreationMode === ShiftCreationMode::VARIABLE,
+                            ShiftCreationMode::VARIABLE->value
                         ),
                         form_text(
                             'change_hours',
@@ -497,7 +525,7 @@ function admin_shifts()
                             '',
                             [
                                 'radio-name'  => 'shift_creation_mode',
-                                'radio-value' => 'variable',
+                                'radio-value' => ShiftCreationMode::VARIABLE->value,
                             ]
                         ),
                         form_checkbox(
@@ -511,14 +539,14 @@ function admin_shifts()
                         form_radio(
                             'needed_angel_creation_mode',
                             __('Take needed angels from room settings'),
-                            $neededAngelCreationMode === 'location',
-                            'location'
+                            $neededAngelCreationMode === NeededAngelCreationMode::LOCATION,
+                            NeededAngelCreationMode::LOCATION->value
                         ),
                         form_radio(
                             'needed_angel_creation_mode',
                             __('The following angels are needed'),
-                            $neededAngelCreationMode === 'manually',
-                            'manually'
+                            $neededAngelCreationMode === NeededAngelCreationMode::MANUALLY,
+                            NeededAngelCreationMode::MANUALLY->value
                         ),
                         div('row', [
                             $angel_types,
