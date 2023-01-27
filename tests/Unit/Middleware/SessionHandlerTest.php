@@ -39,9 +39,14 @@ class SessionHandlerTest extends TestCase
         $request->expects($this->exactly(2))
             ->method('getAttribute')
             ->with('route-request-path')
-            ->willReturn('/foo');
+            ->willReturnOnConsecutiveCalls('/foo', '/lorem');
 
-        $sessionStorage->expects($this->exactly(2))
+        $request->expects($this->exactly(2))
+            ->method('withAttribute')
+            ->withConsecutive(['route-api', true], ['route-api', false])
+            ->willReturn($request);
+
+        $sessionStorage->expects($this->once())
             ->method('getName')
             ->willReturn('SESSION');
 

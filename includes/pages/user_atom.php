@@ -11,14 +11,10 @@ use Illuminate\Support\Collection as SupportCollection;
 function user_atom()
 {
     $request = request();
-    $user = auth()->apiUser('key');
+    $user = auth()->userFromApi();
 
-    if (
-        !$request->has('key')
-        || !$request->input('key')
-        || empty($user)
-    ) {
-        throw new HttpForbidden('Missing or invalid key', ['content-type' => 'text/text']);
+    if (!$user) {
+        throw new HttpForbidden('Missing or invalid ?key=', ['content-type' => 'text/text']);
     }
 
     if (!auth()->can('atom')) {

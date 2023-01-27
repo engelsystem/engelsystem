@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Get the global app instance
+ * @return mixed|Application
+ * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation
  */
 function app(string $id = null): mixed
 {
@@ -44,6 +46,8 @@ function back(int $status = 302, array $headers = []): Response
 
 /**
  * Get or set config values
+ * @return mixed|Config
+ * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation
  */
 function config(string|array $key = null, mixed $default = null): mixed
 {
@@ -87,6 +91,10 @@ function redirect(string $path, int $status = 302, array $headers = []): Respons
     return $redirect->to($path, $status, $headers);
 }
 
+/**
+ * @return mixed|Request
+ * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation
+ */
 function request(string $key = null, mixed $default = null): mixed
 {
     /** @var Request $request */
@@ -114,6 +122,10 @@ function response(mixed $content = '', int $status = 200, array $headers = []): 
     return $response;
 }
 
+/**
+ * @return mixed|SessionInterface
+ * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation
+ */
 function session(string $key = null, mixed $default = null): mixed
 {
     /** @var SessionInterface $session */
@@ -175,9 +187,6 @@ function url(string $path = null, array $parameters = []): UrlGeneratorInterface
     return $urlGenerator->to($path, $parameters);
 }
 
-/**
- * @param mixed[] $data
- */
 function view(string $template = null, array $data = []): Renderer|string
 {
     /** @var Renderer $renderer */

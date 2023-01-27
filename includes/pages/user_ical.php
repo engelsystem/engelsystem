@@ -9,15 +9,10 @@ use Illuminate\Support\Collection;
  */
 function user_ical()
 {
-    $request = request();
-    $user = auth()->apiUser('key');
+    $user = auth()->userFromApi();
 
-    if (
-        !$request->has('key')
-        || !$request->input('key')
-        || !$user
-    ) {
-        throw new HttpForbidden('Missing or invalid key', ['content-type' => 'text/text']);
+    if (!$user) {
+        throw new HttpForbidden('Missing or invalid ?key=', ['content-type' => 'text/text']);
     }
 
     if (!auth()->can('ical')) {
