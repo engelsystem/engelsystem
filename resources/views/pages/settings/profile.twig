@@ -9,21 +9,24 @@
         {{ csrf() }}
 
         <div class="row g-4">
-            <div class="col-md-12">
+            <div class="col-12">
                 <strong class="help-block">
                     {{ f.entry_required() }} = {{ __('settings.profile.entry_required') }}
                 </strong>
             </div>
-
-            <div class="col-md-12">
+            <div class="col-12">
                 {{ m.info(__('settings.profile.user_details.info')) }}
+            </div>
+            <div class="col-lg-6">
                 {{ f.input(
                     'nick',
                     __('settings.profile.nick'),
                     'text',
                     {'value': user.name, 'disabled': true}
                 ) }}
-                {% if config('enable_pronoun') %}
+            </div>
+            {% if config('enable_pronoun') %}
+                <div class="col-lg-6">
                     {{ f.input(
                         'pronoun',
                         __('settings.profile.pronoun'),
@@ -31,25 +34,29 @@
                         {'value': user.personalData.pronoun ,'max_length': 15}
                     ) }}
                     {{ m.info(__('settings.profile.pronoun.info')) }}
-                {% endif %}
-                {% if config('enable_user_name') %}
+                </div>
+            {% endif %}
+            {% if config('enable_user_name') %}
+                <div class="col-sm-6">
                     {{ f.input(
                         'first_name',
                         __('settings.profile.firstname'),
                         'text',
                         {'value': user.personalData.first_name, 'max_length': 64}
                     ) }}
+                </div>
+                <div class="col-sm-6">
                     {{ f.input(
                         'last_name',
                         __('settings.profile.lastname'),
                         'text',
                         {'value': user.personalData.last_name, 'max_length': 64}
                     ) }}
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
 
             {% if config('enable_planned_arrival') %}
-                <div class="col-md-12">
+                <div class="col-sm-6">
                     {{ f.input(
                         'planned_arrival_date',
                         __('settings.profile.planned_arrival_date'),
@@ -62,6 +69,8 @@
                             'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
                         }
                     ) }}
+                </div>
+                <div class="col-sm-6">
                     {% set planned_departure_date = user.personalData.planned_departure_date %}
                     {{ f.input(
                         'planned_departure_date',
@@ -76,15 +85,17 @@
                 </div>
             {% endif %}
 
-            <div class="col-md-12">
-                {% if config('enable_dect') %}
+            {% if config('enable_dect') %}
+                <div class="col-md-6">
                     {{ f.input(
                         'dect',
                         __('settings.profile.dect'),
                         'text',
                         {'value': user.contact.dect, 'max_length': 40}
                     ) }}
-                {% endif %}
+                </div>
+            {% endif %}
+            <div class="col-md-6">
                 {{ f.input(
                     'mobile',
                     __('settings.profile.mobile'),
@@ -98,6 +109,8 @@
                         user.settings.mobile_show
                     ) }}
                 {% endif %}
+            </div>
+            <div class="col-md-6">
                 {{ f.input(
                     'email',
                     __('settings.profile.email'),
@@ -106,7 +119,7 @@
                 ) }}
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-6">
                 {{ f.checkbox(
                     'email_shiftinfo',
                     __('settings.profile.email_shiftinfo', [config('app_name')]),
@@ -144,7 +157,7 @@
             </div>
 
             {% if goodie_tshirt %}
-                <div class="col-md-12">
+                <div class="col-12">
                     {{ f.select(
                         'shirt_size',
                         config('tshirt_sizes'),
@@ -155,11 +168,11 @@
                 </div>
             {% endif %}
 
-            <div class="col-md-12">
+            <div class="col-12">
                 {{ m.info(__('settings.profile.angeltypes.info', [url('/angeltypes')]), true) }}
             </div>
 
-            <div class="col-md-12">
+            <div class="col-12">
                 {{ f.submit(__('form.save')) }}
             </div>
         </div>
