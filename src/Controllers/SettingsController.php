@@ -88,7 +88,11 @@ class SettingsController extends BaseController
             $user->settings->email_goody = $data['email_goody'] ?: false;
         }
 
-        if (config('enable_tshirt_size') && isset(config('tshirt_sizes')[$data['shirt_size']])) {
+        if (
+            (config('enable_tshirt_size')
+            && !config('other_goodie'))
+            && isset(config('tshirt_sizes')[$data['shirt_size']])
+        ) {
             $user->personalData->shirt_size = $data['shirt_size'];
         }
 
@@ -275,7 +279,7 @@ class SettingsController extends BaseController
             $rules['planned_arrival_date'] = 'required|date:Y-m-d';
             $rules['planned_departure_date'] = 'optional|date:Y-m-d';
         }
-        if (config('enable_tshirt_size')) {
+        if (config('enable_tshirt_size') && !config('other_goodie')) {
             $rules['shirt_size'] = 'required';
         }
         return $rules;

@@ -100,7 +100,9 @@ function Users_view(
         $u['force_active'] = icon_bool($user->state->force_active);
         if (config('enable_tshirt_size')) {
             $u['got_shirt'] = icon_bool($user->state->got_shirt);
-            $u['shirt_size'] = $user->personalData->shirt_size;
+            if (!config('other_goodie')) {
+                $u['shirt_size'] = $user->personalData->shirt_size;
+            }
         }
         $u['arrival_date'] = $user->personalData->planned_arrival_date
             ? $user->personalData->planned_arrival_date->format(__('Y-m-d')) : '';
@@ -141,9 +143,13 @@ function Users_view(
     $user_table_headers['active'] = Users_table_header_link('active', __('Active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
     if (config('enable_tshirt_size')) {
-        $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
+        if (config('other_goodie')) {
+            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('Goodie'), $order_by);
+        } else {
+            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
+        }
     }
-    if (config('enable_tshirt_size')) {
+    if (config('enable_tshirt_size') && !config('other_goodie')) {
         $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
     }
     $user_table_headers['arrival_date'] = Users_table_header_link(
@@ -401,7 +407,7 @@ function User_view_myshifts(
         ];
         if (config('enable_tshirt_size', false) && ($its_me || $tshirt_admin)) {
             $myshifts_table[] = [
-                'date'       => '<b>' . __('Your t-shirt score') . '&trade;:</b>',
+                'date'       => '<b>' . (config('other_goodie') ? __('Your goodie score') : __('Your t-shirt score')) . '&trade;:</b>',
                 'duration'   => '<b>' . $tshirt_score . '</b>',
                 'room'       => '',
                 'shift_info' => '',
@@ -532,9 +538,9 @@ function User_view(
             div('row', [
                 div('col-md-12', [
                     buttons([
-                        $auth->can('user.edit.shirt') && config('enable_tshirt_size') ? button(
+                        $auth->can('user.edit.shirt') && (config('enable_tshirt_size')) ? button(
                             url('/admin/user/' . $user_source->id . '/shirt'),
-                            icon('person') . __('Shirt')
+                            icon('person') . (config('other_goodie') ? __('Goodie') : __('Shirt'))
                         ) : '',
                         $admin_user_privilege ? button(
                             page_link_to('admin_user', ['id' => $user_source->id]),
@@ -924,7 +930,7 @@ function render_user_arrived_hint()
  */
 function render_user_tshirt_hint()
 {
-    if (config('enable_tshirt_size') && !auth()->user()->personalData->shirt_size) {
+    if ((config('enable_tshirt_size') && !config('other_goodie')) && !auth()->user()->personalData->shirt_size) {
         $text = __('You need to specify a tshirt size in your settings!');
         return render_profile_link($text, null, 'text-danger');
     }
