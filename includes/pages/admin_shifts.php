@@ -454,10 +454,10 @@ function admin_shifts()
                 div('row', [
                     div('col-md-6 col-xl-5', [
                         div('row', [
-                            div('col-lg-6', [
+                            div('col-sm-6 col-md-12 col-lg-6', [
                                 form_datetime('start', __('Start'), $start),
                             ]),
-                            div('col-lg-6', [
+                            div('col-sm-6 col-md-12 col-lg-6', [
                                 form_datetime('end', __('End'), $end),
                             ]),
                         ]),
