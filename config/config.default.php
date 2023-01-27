@@ -276,6 +276,9 @@ return [
     // Enables the T-Shirt configuration on signup and profile
     'enable_tshirt_size'      => (bool) env('ENABLE_TSHIRT_SIZE', true),
 
+    // When true changes everything from shirts to goodies and disables shirt size
+    'other_goodie'            => (bool) env('OTHER_GOODIE', false),
+
     // Enables the goody configuration on signup and profile
     'enable_goody'            => (bool) env('ENABLE_GOODY', false),
 

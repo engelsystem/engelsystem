@@ -961,11 +961,11 @@ msgstr "entferne aktiv"
 
 #: includes/pages/admin_active.php:261
 msgid "got t-shirt"
-msgstr "hat t-shirt"
+msgstr "T-Shirt bekommen"
 
 #: includes/pages/admin_active.php:274
 msgid "remove t-shirt"
-msgstr "entferne t-shirt"
+msgstr "entferne T-Shirt"
 
 #: includes/pages/admin_active.php:299 includes/pages/admin_arrive.php:202
 #: includes/pages/admin_arrive.php:217 includes/pages/admin_arrive.php:232
@@ -1031,7 +1031,7 @@ msgid "T-shirt?"
 msgstr "T-Shirt?"
 
 #: includes/pages/admin_active.php:324
-msgid "Shirt statistics"
+msgid "Shirt statistic"
 msgstr "T-Shirt Statistik"
 
 #: includes/pages/admin_active.php:327
@@ -2753,6 +2753,40 @@ msgstr "Passwort zurückgesetzt."
 msgid "The entries must match and must not be empty!"
 msgstr "Die Einträge müssen übereinstimmen und dürfen nicht leer sein!"
 
+msgid "Number of shifts: %s"
+msgstr "Anzahl an Schichten: %s"
+
+msgid "If the angel is active, it can claim a goodie. If goodie is set to 'Yes', the angel already got their goodie."
+msgstr "Ist der Engel Aktiv, hat er damit Anspruch auf ein Goodie. Wenn Goodie ein 'Ja' enthält, bedeutet dies, "
+"dass der Engel bereits sein Goodie erhalten hat."
+
+msgid "Goodie"
+msgstr "Goodie"
+
+msgid "Your goodie score"
+msgstr "Dein Goodie Score"
+
+msgid "Given goodies"
+msgstr "Ausgegebene Goodies"
+
+msgid "Goodie statistic"
+msgstr "Goodie Statistik"
+
+msgid "remove goodie"
+msgstr "entferne Goodie"
+
+msgid "got goodie"
+msgstr "Goodie bekommen"
+
+msgid "Goodie?"
+msgstr "Goodie?"
+
+msgid "Angel has got a goodie."
+msgstr "Engel hat ein Goodie bekommen."
+
+msgid "Angel has got no goodie."
+msgstr "Engel hat kein Goodie bekommen."
+
 #: src/Middleware/LegacyMiddleware.php:83
 msgid "page.404.text"
 msgstr ""
@@ -3091,6 +3125,9 @@ msgstr "Antwort"
 msgid "user.edit.shirt"
 msgstr "Shirt bearbeiten"
 
+msgid "user.edit.goodie"
+msgstr "Goodie bearbeiten"
+
 msgid "form.shirt"
 msgstr "Shirt"
 
@@ -3108,6 +3145,9 @@ msgstr "Angekommen"
 
 msgid "user.got_shirt"
 msgstr "Shirt bekommen"
+
+msgid "user.got_goodie"
+msgstr "Goodie bekommen"
 
 msgid "message.title"
 msgstr "Nachrichten"
@@ -3147,6 +3187,3 @@ msgstr "Arbeitseinsatz löschen"
 
 msgid "worklog.delete.info"
 msgstr "Möchtest du den Arbeitseinsatz von %s wirklich löschen?"
-
-msgid "Number of shifts: %s"
-msgstr "Anzahl an Schichten: %s"

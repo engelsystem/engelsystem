@@ -37,7 +37,11 @@ function admin_user()
 
         $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
         if (config('enable_tshirt_size')) {
-            $html .= ' ' . __('If the angel is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the angel already got their T-shirt.');
+            if (config('other_goodie')) {
+                $html .= ' ' . __('If the angel is active, it can claim a goodie. If goodie is set to \'Yes\', the angel already got their goodie.');
+            } else {
+                $html .= ' ' . __('If the angel is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the angel already got their T-shirt.');
+            }
         }
         $html .= '<br /><br />';
         $html .= '<form action="'
@@ -63,7 +67,7 @@ function admin_user()
         if ($user_source->settings->email_human) {
             $html .= "  <tr><td>" . __('settings.profile.email') . "</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
         }
-        if (config('enable_tshirt_size')) {
+        if (config('enable_tshirt_size') && !config('other_goodie')) {
             $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
                 . html_select_key(
                     'size',
@@ -101,7 +105,11 @@ function admin_user()
 
         if (config('enable_tshirt_size')) {
             // T-Shirt bekommen?
-            $html .= '  <tr><td>' . __('T-Shirt') . '</td><td>' . "\n";
+            if (config('other_goodie')) {
+                $html .= '  <tr><td>' . __('Goodie') . '</td><td>' . "\n";
+            } else {
+                $html .= '  <tr><td>' . __('T-Shirt') . '</td><td>' . "\n";
+            }
             $html .= html_options('eTshirt', $options, $user_source->state->got_shirt) . '</td></tr>' . "\n";
         }
         $html .= '</table>' . "\n" . '</td><td></td></tr>';
@@ -242,7 +250,7 @@ function admin_user()
                     $user_source->personalData->first_name = $request->postData('eVorname');
                     $user_source->personalData->last_name = $request->postData('eName');
                 }
-                if (config('enable_tshirt_size')) {
+                if (config('enable_tshirt_size') && !config('other_goodie')) {
                     $user_source->personalData->shirt_size = $request->postData('eSize');
                 }
                 $user_source->personalData->save();
@@ -260,10 +268,10 @@ function admin_user()
 
                 engelsystem_log(
                     'Updated user: ' . $user_source->name . ' (' . $user_source->id . ')'
-                    . ', t-shirt: ' . $user_source->personalData->shirt_size
+                    . (config('other_goodie') ? '' : ', t-shirt: ' . $user_source->personalData->shirt_size)
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
-                    . ', tshirt: ' . $user_source->state->got_shirt
+                    . (config('other_goodie') ? ', goodie: ' : ', tshirt: ' . $user_source->state->got_shirt)
                 );
                 $html .= success(__('Changes where saved.') . "\n", true);
                 break;

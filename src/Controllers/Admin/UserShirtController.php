@@ -47,18 +47,19 @@ class UserShirtController extends BaseController
     public function saveShirt(Request $request): Response
     {
         $userId = (int) $request->getAttribute('user_id');
+        $shirtEnabled = !$this->config->get('other_goodie');
 
         /** @var User $user */
         $user = $this->user->findOrFail($userId);
 
         $data = $this->validate($request, [
-            'shirt_size' => 'required',
+            'shirt_size' => $shirtEnabled ? 'required' : 'optional',
             'arrived'    => 'optional|checked',
             'active'     => 'optional|checked',
             'got_shirt'  => 'optional|checked',
         ]);
 
-        if (isset($this->config->get('tshirt_sizes')[$data['shirt_size']])) {
+        if ($shirtEnabled && isset($this->config->get('tshirt_sizes')[$data['shirt_size']])) {
             $user->personalData->shirt_size = $data['shirt_size'];
             $user->personalData->save();
         }

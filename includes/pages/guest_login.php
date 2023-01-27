@@ -31,6 +31,7 @@ function guest_register()
     $authUser = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
+    $other_goodie = config('other_goodie');
     $enable_user_name = config('enable_user_name');
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
@@ -162,7 +163,7 @@ function guest_register()
             $email_goody = true;
         }
 
-        if ($enable_tshirt_size) {
+        if ($enable_tshirt_size && !$other_goodie) {
             if ($request->has('tshirt_size') && isset($tshirt_sizes[$request->input('tshirt_size')])) {
                 $tshirt_size = $request->input('tshirt_size');
             } else {
@@ -483,7 +484,7 @@ function guest_register()
                 ]) : '',
 
                 div('col', [
-                    $enable_tshirt_size ? form_select(
+                    $enable_tshirt_size && !$other_goodie ? form_select(
                         'tshirt_size',
                         __('Shirt size') . ' ' . entry_required(),
                         $tshirt_sizes,

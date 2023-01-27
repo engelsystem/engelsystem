@@ -68,7 +68,7 @@ class UserShirtControllerTest extends ControllerTest
             ]);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        $this->config->set('tshirt_sizes', ['S' => 'Small']);
+        $this->config->set('tshirt_sizes', ['S' => 'Small', 'XS' => 'Extra Small']);
         /** @var Redirector|MockObject $redirector */
         $redirector = $this->createMock(Redirector::class);
         User::factory()
@@ -77,11 +77,11 @@ class UserShirtControllerTest extends ControllerTest
             ->create();
 
         $auth
-            ->expects($this->exactly(4))
+            ->expects($this->exactly(5))
             ->method('can')
             ->with('admin_arrive')
-            ->willReturnOnConsecutiveCalls(true, true, true, false);
-        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(4));
+            ->willReturnOnConsecutiveCalls(true, true, true, false, true);
+        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(5));
 
         $controller = new UserShirtController(
             $auth,
@@ -142,6 +142,17 @@ class UserShirtControllerTest extends ControllerTest
         $controller->saveShirt($request);
         $user = User::find(1);
         $this->assertFalse($user->state->arrived);
+
+        // Shirt disabled
+        $this->config->set('other_goodie');
+        $request = $request
+            ->withParsedBody([
+                'shirt_size' => 'XS',
+            ]);
+
+        $controller->saveShirt($request);
+        $user = User::find(1);
+        $this->assertEquals('XS', $user->personalData->shirt_size);
     }
 
     /**
