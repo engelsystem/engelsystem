@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\User as UserRepository;
+use Illuminate\Support\Str;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -30,9 +31,26 @@ class Authenticator
     }
 
     /**
-     * Load the user from session
+     * Load the user from session or api auth
      */
     public function user(): ?User
+    {
+        if ($this->user) {
+            return $this->user;
+        }
+
+        $this->user = $this->userFromSession();
+        if (!$this->user && request()->getAttribute('route-api', false)) {
+            $this->user = $this->userFromApi();
+        }
+
+        return $this->user;
+    }
+
+    /**
+     * Load the user from session
+     */
+    public function userFromSession(): ?User
     {
         if ($this->user) {
             return $this->user;
@@ -43,42 +61,28 @@ class Authenticator
             return null;
         }
 
-        $user = $this
+        $this->user = $this
             ->userRepository
             ->find($userId);
-        if (!$user) {
-            return null;
-        }
-
-        $this->user = $user;
 
         return $this->user;
     }
 
     /**
-     * Get the user by his api key
+     * Get the user by its api key
      */
-    public function apiUser(string $parameter = 'api_key'): ?User
+    public function userFromApi(): ?User
     {
         if ($this->user) {
             return $this->user;
         }
 
-        $params = $this->request->getQueryParams();
-        if (!isset($params[$parameter])) {
-            return null;
+        $this->user = $this->userByHeaders();
+        if ($this->user) {
+            return $this->user;
         }
 
-        /** @var User|null $user */
-        $user = $this
-            ->userRepository
-            ->whereApiKey($params[$parameter])
-            ->first();
-        if (!$user) {
-            return $this->user();
-        }
-
-        $this->user = $user;
+        $this->user = $this->userByQueryParam();
 
         return $this->user;
     }
@@ -148,6 +152,50 @@ class Authenticator
         }
 
         return true;
+    }
+
+    /**
+     * Get the user by authorization bearer or x-api-key headers
+     */
+    protected function userByHeaders(): ?User
+    {
+        $header = $this->request->getHeader('authorization');
+        if (!empty($header) && Str::startsWith(Str::lower($header[0]), 'bearer ')) {
+            return $this->userByApiKey(Str::substr($header[0], 7));
+        }
+
+        $header = $this->request->getHeader('x-api-key');
+        if (!empty($header)) {
+            return $this->userByApiKey($header[0]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the user by query parameters
+     */
+    protected function userByQueryParam(): ?User
+    {
+        $params = $this->request->getQueryParams();
+        if (!empty($params['key'])) {
+            $this->user = $this->userByApiKey($params['key']);
+        }
+
+        return $this->user;
+    }
+
+    /**
+     * Get the user by its api key
+     */
+    protected function userByApiKey(string $key): ?User
+    {
+        $this->user = $this
+            ->userRepository
+            ->whereApiKey($key)
+            ->first();
+
+        return $this->user;
     }
 
     public function setPassword(User $user, string $password): void

@@ -386,15 +386,10 @@ function shift_next_controller()
  */
 function shifts_json_export_controller()
 {
-    $request = request();
-    $user = auth()->apiUser('key');
+    $user = auth()->userFromApi();
 
-    if (
-        !$request->has('key')
-        || !$request->input('key')
-        || !$user
-    ) {
-        throw new HttpForbidden('{"error":"Missing or invalid key"}', ['content-type' => 'application/json']);
+    if (!$user) {
+        throw new HttpForbidden('{"error":"Missing or invalid ?key="}', ['content-type' => 'application/json']);
     }
 
     if (!auth()->can('shifts_json_export')) {

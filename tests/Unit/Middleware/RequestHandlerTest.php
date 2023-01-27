@@ -130,6 +130,9 @@ class RequestHandlerTest extends TestCase
             ->method('make')
             ->with($className)
             ->willReturn($middlewareInterface);
+        $container->expects($this->exactly(2))
+            ->method('instance')
+            ->withConsecutive([ServerRequestInterface::class, $request], ['request', $request]);
 
         $return = $middleware->process($request, $handler);
         $this->assertEquals($return, $response);

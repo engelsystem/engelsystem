@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Helpers;
 
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Request;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\User\User;
@@ -12,97 +13,164 @@ use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class AuthenticatorTest extends ServiceProviderTest
 {
     use HasDatabase;
 
     /**
-     * @covers \Engelsystem\Helpers\Authenticator::__construct
      * @covers \Engelsystem\Helpers\Authenticator::user
+     * @covers \Engelsystem\Helpers\Authenticator::__construct
      */
-    public function testUser(): void
+    public function testUserNotAuthorized(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var Session|MockObject $session */
-        $session = $this->createMock(Session::class);
+        $request = new Request();
+        $session = new Session(new MockArraySessionStorage());
         /** @var UserModelImplementation|MockObject $userRepository */
         $userRepository = new UserModelImplementation();
-        /** @var User|MockObject $user */
-        $user = $this->createMock(User::class);
-
-        $session->expects($this->exactly(3))
-            ->method('get')
-            ->with('user_id')
-            ->willReturnOnConsecutiveCalls(
-                null,
-                42,
-                1337
-            );
+        $this->app->instance('request', $request);
 
         $auth = new Authenticator($request, $session, $userRepository);
+        $user = $auth->user();
 
-        // Not in session
-        $this->assertNull($auth->user());
-
-        // Unknown user
-        UserModelImplementation::$id = 42;
-        $this->assertNull($auth->user());
-
-        // User found
-        UserModelImplementation::$id = 1337;
-        UserModelImplementation::$user = $user;
-        $this->assertEquals($user, $auth->user());
-
-        // User cached
-        UserModelImplementation::$id = null;
-        UserModelImplementation::$user = null;
-        $this->assertEquals($user, $auth->user());
+        $this->assertNull($user);
     }
 
     /**
-     * @covers \Engelsystem\Helpers\Authenticator::apiUser
+     * @covers \Engelsystem\Helpers\Authenticator::user
+     * @covers \Engelsystem\Helpers\Authenticator::userFromSession
      */
-    public function testApiUser(): void
+    public function testUserViaFromSession(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var Session|MockObject $session */
-        $session = $this->createMock(Session::class);
-        /** @var UserModelImplementation|MockObject $userRepository */
-        $userRepository = new UserModelImplementation();
-        /** @var User|MockObject $user */
-        $user = $this->createMock(User::class);
+        $this->initDatabase();
 
-        $request->expects($this->exactly(3))
-            ->method('getQueryParams')
-            ->with()
-            ->willReturnOnConsecutiveCalls(
-                [],
-                ['api_key' => 'iMaNot3xiSt1nGAp1Key!'],
-                ['foo_key' => 'SomeSecretApiKey']
-            );
+        $request = new Request();
+        $session = new Session(new MockArraySessionStorage());
 
-        /** @var Authenticator|MockObject $auth */
-        $auth = new Authenticator($request, $session, $userRepository);
+        $session->set('user_id', 42);
+        User::factory()->create(['id' => 42]);
 
-        // No key
-        $this->assertNull($auth->apiUser());
+        $auth = new Authenticator($request, $session, new User());
+        $user = $auth->user();
 
-        // Unknown user
-        UserModelImplementation::$apiKey = 'iMaNot3xiSt1nGAp1Key!';
-        $this->assertNull($auth->apiUser());
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals(42, $user->id);
 
-        // User found
-        UserModelImplementation::$apiKey = 'SomeSecretApiKey';
-        UserModelImplementation::$user = $user;
-        $this->assertEquals($user, $auth->apiUser('foo_key'));
+        // Cached in user()
+        $user2 = $auth->user();
+        $this->assertEquals($user, $user2);
 
-        // User cached
-        UserModelImplementation::$apiKey = null;
-        UserModelImplementation::$user = null;
-        $this->assertEquals($user, $auth->apiUser());
+        // Cached in userFromSession()
+        $user3 = $auth->userFromSession();
+        $this->assertEquals($user, $user3);
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::user
+     * @covers \Engelsystem\Helpers\Authenticator::userFromApi
+     * @covers \Engelsystem\Helpers\Authenticator::userByHeaders
+     */
+    public function testUserViaFromApi(): void
+    {
+        $this->initDatabase();
+
+        $request = new Request();
+        $session = new Session(new MockArraySessionStorage());
+
+        $request = $request->withHeader('Authorization', 'Bearer F00Bar');
+        $request = $request->withAttribute('route-api', true);
+        $this->app->instance('request', $request);
+        User::factory()->create(['api_key' => 'F00Bar']);
+
+        $auth = new Authenticator($request, $session, new User());
+        $user = $auth->user();
+
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals('F00Bar', $user->api_key);
+
+        // Cached in userFromApi()
+        $user2 = $auth->userFromApi();
+        $this->assertEquals($user, $user2);
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::userFromSession
+     */
+    public function testUserFromSessionNotFound(): void
+    {
+        $this->initDatabase();
+
+        $request = new Request();
+        $session = new Session(new MockArraySessionStorage());
+
+        $auth = new Authenticator($request, $session, new User());
+
+        $user = $auth->userFromSession();
+        $this->assertNull($user);
+
+        $session->set('user_id', 42);
+        $user2 = $auth->userFromSession();
+        $this->assertNull($user2);
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::userFromApi
+     * @covers \Engelsystem\Helpers\Authenticator::userByQueryParam
+     * @covers \Engelsystem\Helpers\Authenticator::userByApiKey
+     */
+    public function testUserFromApiByQueryParam(): void
+    {
+        $this->initDatabase();
+
+        $request = new Request();
+        $session = new Session(new MockArraySessionStorage());
+
+        $request = $request->withQueryParams(['key' => 'F00Bar']);
+
+        $auth = new Authenticator($request, $session, new User());
+
+        // User not found
+        $user = $auth->userFromApi();
+        $this->assertNull($user);
+
+        // User exists
+        User::factory()->create(['api_key' => 'F00Bar']);
+        $user2 = $auth->userFromApi();
+        $this->assertInstanceOf(User::class, $user2);
+        $this->assertEquals('F00Bar', $user2->api_key);
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::userByHeaders
+     */
+    public function testUserByHeaders(): void
+    {
+        $this->initDatabase();
+
+        $request = new Request();
+        $request = $request->withAttribute('route-api', true);
+        $session = new Session(new MockArraySessionStorage());
+        $this->app->instance('request', $request);
+
+        $auth = new Authenticator($request, $session, new User());
+
+        // Header not set
+        $user = $auth->userFromApi();
+        $this->assertNull($user);
+
+        // User not found
+        $request = $request->withHeader('x-api-key', 'SomeWrongKey');
+        $auth = new Authenticator($request, $session, new User());
+        $user = $auth->userFromApi();
+        $this->assertNull($user);
+
+        $request = $request->withHeader('x-api-key', 'F00Bar');
+        $auth = new Authenticator($request, $session, new User());
+        User::factory()->create(['api_key' => 'F00Bar']);
+        $user = $auth->user();
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals('F00Bar', $user->api_key);
     }
 
     /**
