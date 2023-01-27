@@ -145,7 +145,7 @@ function admin_shifts()
                     error(__('Please split the shift-change hours by colons.'));
                 }
                 $shift_over_midnight = $request->has('shift_over_midnight')
-                    && $request->input('shift_over_midnight') != 'false';
+                    && $request->input('shift_over_midnight') === 'checked';
             }
         } else {
             $valid = false;
