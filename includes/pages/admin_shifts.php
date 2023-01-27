@@ -117,9 +117,9 @@ function admin_shifts()
         }
 
         if ($request->has('mode')) {
-            if ($request->input('mode') == 'single') {
+            if ($request->input('mode') === 'single') {
                 $mode = 'single';
-            } elseif ($request->input('mode') == 'multi') {
+            } elseif ($request->input('mode') === 'multi') {
                 if ($request->has('length') && preg_match('/^\d+$/', trim($request->input('length')))) {
                     $mode = 'multi';
                     $length = trim($request->input('length'));
@@ -127,7 +127,7 @@ function admin_shifts()
                     $valid = false;
                     error(__('Please enter a shift duration in minutes.'));
                 }
-            } elseif ($request->input('mode') == 'variable') {
+            } elseif ($request->input('mode') === 'variable') {
                 if (
                     $request->has('change_hours')
                     && preg_match(
@@ -153,9 +153,9 @@ function admin_shifts()
         }
 
         if ($request->has('angelmode')) {
-            if ($request->input('angelmode') == 'location') {
+            if ($request->input('angelmode') === 'location') {
                 $angelmode = 'location';
-            } elseif ($request->input('angelmode') == 'manually') {
+            } elseif ($request->input('angelmode') === 'manually') {
                 foreach ($types as $type) {
                     if (preg_match('/^\d+$/', trim($request->input('angeltype_count_' . $type->id, 0)))) {
                         $needed_angel_types[$type->id] = trim($request->input('angeltype_count_' . $type->id, 0));
@@ -165,7 +165,7 @@ function admin_shifts()
                     }
                 }
 
-                if (array_sum($needed_angel_types) == 0) {
+                if (array_sum($needed_angel_types) === 0) {
                     $valid = false;
                     error(__('There are 0 angels needed. Please enter the amounts of needed angels.'));
                 }
@@ -185,14 +185,14 @@ function admin_shifts()
 
         // Alle Eingaben in Ordnung
         if ($valid) {
-            if ($angelmode == 'location') {
+            if ($angelmode === 'location') {
                 $needed_angel_types = NeededAngelType::whereRoomId($rid)
                         ->pluck('count', 'angel_type_id')
                         ->toArray() + $needed_angel_types;
             }
 
             $shifts = [];
-            if ($mode == 'single') {
+            if ($mode === 'single') {
                 $shifts[] = [
                     'start'         => $start,
                     'end'           => $end,
@@ -201,7 +201,7 @@ function admin_shifts()
                     'shift_type_id' => $shifttype_id,
                     'description'   => $description,
                 ];
-            } elseif ($mode == 'multi') {
+            } elseif ($mode === 'multi') {
                 $shift_start = $start;
                 do {
                     $shift_end = (clone $shift_start)->addSeconds((int) $length * 60);
@@ -224,7 +224,7 @@ function admin_shifts()
 
                     $shift_start = $shift_end;
                 } while ($shift_end < $end);
-            } elseif ($mode == 'variable') {
+            } elseif ($mode === 'variable') {
                 // Fehlende Minutenangaben ergänzen
                 array_walk($change_hours, function (&$value) {
                     if (!preg_match('/^\d{1,2}:\d{2}$/', $value)) {
@@ -462,8 +462,8 @@ function admin_shifts()
                             ]),
                         ]),
                         form_info(__('Mode')),
-                        form_radio('mode', __('Create one shift'), $mode == 'single', 'single'),
-                        form_radio('mode', __('Create multiple shifts'), $mode == 'multi', 'multi'),
+                        form_radio('mode', __('Create one shift'), $mode === 'single', 'single'),
+                        form_radio('mode', __('Create multiple shifts'), $mode === 'multi', 'multi'),
                         form_text(
                             'length',
                             __('Length'),
@@ -482,7 +482,7 @@ function admin_shifts()
                         form_radio(
                             'mode',
                             __('Create multiple shifts with variable length'),
-                            $mode == 'variable',
+                            $mode === 'variable',
                             'variable'
                         ),
                         form_text(
@@ -511,13 +511,13 @@ function admin_shifts()
                         form_radio(
                             'angelmode',
                             __('Take needed angels from room settings'),
-                            $angelmode == 'location',
+                            $angelmode === 'location',
                             'location'
                         ),
                         form_radio(
                             'angelmode',
                             __('The following angels are needed'),
-                            $angelmode == 'manually',
+                            $angelmode === 'manually',
                             'manually'
                         ),
                         div('row', [
