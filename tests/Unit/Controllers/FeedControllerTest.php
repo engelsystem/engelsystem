@@ -3,19 +3,27 @@
 namespace Engelsystem\Test\Unit\Controllers;
 
 use Engelsystem\Controllers\FeedController;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\News;
+use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\User\User;
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class FeedControllerTest extends ControllerTest
 {
+    protected Authenticator|MockObject $auth;
+
     /**
      * @covers \Engelsystem\Controllers\FeedController::__construct
      * @covers \Engelsystem\Controllers\FeedController::atom
      */
     public function testAtom(): void
     {
-        $controller = new FeedController($this->request, $this->response);
+        $controller = new FeedController($this->auth, $this->request, $this->response);
 
         $this->setExpects(
             $this->response,
@@ -40,7 +48,7 @@ class FeedControllerTest extends ControllerTest
      */
     public function testRss(): void
     {
-        $controller = new FeedController($this->request, $this->response);
+        $controller = new FeedController($this->auth, $this->request, $this->response);
 
         $this->setExpects(
             $this->response,
@@ -59,6 +67,50 @@ class FeedControllerTest extends ControllerTest
         $controller->rss();
     }
 
+    /**
+     * @covers \Engelsystem\Controllers\FeedController::ical
+     * @covers \Engelsystem\Controllers\FeedController::getShifts
+     */
+    public function testIcal(): void
+    {
+        $this->request = $this->request->withQueryParams(['key' => 'fo0']);
+        $this->auth = new Authenticator(
+            $this->request,
+            new Session(new MockArraySessionStorage()),
+            new User(),
+        );
+        $controller = new FeedController($this->auth, $this->request, $this->response);
+
+        /** @var User $user */
+        $user = User::factory()->create(['api_key' => 'fo0']);
+        ShiftEntry::factory(3)->create(['user_id' => $user->id]);
+
+        $this->response->expects($this->exactly(2))
+            ->method('withHeader')
+            ->withConsecutive(
+                ['content-type', 'text/calendar; charset=utf-8'],
+                ['content-disposition', 'attachment; filename=shifts.ics']
+            )
+            ->willReturn($this->response);
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertEquals('api/ical', $view);
+                $this->assertArrayHasKey('shiftEntries', $data);
+
+                /** @var ShiftEntry[]|Collection $shiftEntries */
+                $shiftEntries = $data['shiftEntries'];
+                $this->assertCount(3, $shiftEntries);
+
+                $this->assertTrue($shiftEntries[0]->shift->start < $shiftEntries[1]->shift->start);
+
+                return $this->response;
+            });
+        $controller->ical();
+    }
+
+
     public function getNewsMeetingsDataProvider(): array
     {
         return [
@@ -73,7 +125,7 @@ class FeedControllerTest extends ControllerTest
      */
     public function testGetNewsMeetings(bool $isMeeting): void
     {
-        $controller = new FeedController($this->request, $this->response);
+        $controller = new FeedController($this->auth, $this->request, $this->response);
 
         $this->request->attributes->set('meetings', $isMeeting);
         $this->setExpects($this->response, 'withHeader', null, $this->response);
@@ -100,7 +152,7 @@ class FeedControllerTest extends ControllerTest
     public function testGetNewsLimit(): void
     {
         News::query()->where('id', '<>', 1)->update(['updated_at' => Carbon::now()->subHour()]);
-        $controller = new FeedController($this->request, $this->response);
+        $controller = new FeedController($this->auth, $this->request, $this->response);
 
         $this->setExpects($this->response, 'withHeader', null, $this->response);
         $this->response->expects($this->once())
@@ -125,6 +177,7 @@ class FeedControllerTest extends ControllerTest
         parent::setUp();
 
         $this->config->set('display_news', 10);
+        $this->auth = $this->createMock(Authenticator::class);
 
         News::factory(7)->create(['is_meeting' => false]);
         News::factory(5)->create(['is_meeting' => true]);
