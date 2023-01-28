@@ -9,7 +9,6 @@ use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\ShiftSignupState;
-use Illuminate\Support\Collection;
 
 /**
  * @param array|Shift $shift
@@ -382,7 +381,7 @@ function shift_next_controller()
 
 /**
  * Export filtered shifts via JSON.
- * (Like iCal Export or shifts view)
+ * (Like shifts view)
  */
 function shifts_json_export_controller()
 {
@@ -396,7 +395,7 @@ function shifts_json_export_controller()
         throw new HttpForbidden('{"error":"Not allowed"}', ['content-type' => 'application/json']);
     }
 
-    $shifts = load_ical_shifts();
+    $shifts = Shifts_by_user(auth()->user()->id);
     $shifts->sortBy('start_date');
     $timeZone = CarbonTimeZone::create(config('timezone'));
 
@@ -459,14 +458,4 @@ function shifts_json_export_controller()
 
     header('Content-Type: application/json; charset=utf-8');
     raw_output(json_encode($shiftsData));
-}
-
-/**
- * Returns users shifts to export.
- *
- * @return Shift[]|Collection
- */
-function load_ical_shifts()
-{
-    return Shifts_by_user(auth()->user()->id);
 }

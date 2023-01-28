@@ -17,7 +17,6 @@ class LegacyMiddleware implements MiddlewareInterface
     protected array $free_pages = [
         'admin_event_config',
         'angeltypes',
-        'ical',
         'public_dashboard',
         'rooms',
         'shift_entries',
@@ -78,10 +77,6 @@ class LegacyMiddleware implements MiddlewareInterface
     protected function loadPage(string $page): array
     {
         switch ($page) {
-            case 'ical':
-                require_once realpath(__DIR__ . '/../../includes/pages/user_ical.php');
-                user_ical();
-                break;
             case 'shifts_json_export':
                 require_once realpath(__DIR__ . '/../../includes/controller/shifts_controller.php');
                 shifts_json_export_controller();
