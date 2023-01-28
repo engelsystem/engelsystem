@@ -41,7 +41,7 @@ function user_myshifts()
         }
         return page_with_title(__('Reset API key'), [
             error(
-                __('If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports.'),
+                __('If you reset the key, the url to your iCal- and JSON-export and your atom/rss feed changes! You have to update it in every application using one of these exports.'),
                 true
             ),
             button(page_link_to('user_myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger')

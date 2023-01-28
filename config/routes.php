@@ -96,6 +96,10 @@ $route->addGroup(
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
 
+// Feeds
+$route->get('/atom', 'FeedController@atom');
+$route->get('/rss', 'FeedController@rss');
+
 // Design
 $route->get('/design', 'DesignController@index');
 

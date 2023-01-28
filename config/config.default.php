@@ -216,7 +216,7 @@ return [
     // Must be one of news, meetings, user_shifts, angeltypes, questions
     'home_site'               => env('HOME_SITE', 'news'),
 
-    // Number of News shown on one site
+    // Number of News shown on one site and for feed readers
     'display_news'            => env('DISPLAY_NEWS', 10),
 
     // Users are able to sign up

@@ -15,6 +15,7 @@ class SessionHandlerServiceProvider extends ServiceProvider
                 return [
                     '/api',
                     '/atom',
+                    '/rss',
                     '/health',
                     '/ical',
                     '/metrics',

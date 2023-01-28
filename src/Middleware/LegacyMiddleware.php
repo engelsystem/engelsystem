@@ -17,7 +17,6 @@ class LegacyMiddleware implements MiddlewareInterface
     protected array $free_pages = [
         'admin_event_config',
         'angeltypes',
-        'atom',
         'ical',
         'public_dashboard',
         'rooms',
@@ -82,10 +81,6 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'ical':
                 require_once realpath(__DIR__ . '/../../includes/pages/user_ical.php');
                 user_ical();
-                break;
-            case 'atom':
-                require_once realpath(__DIR__ . '/../../includes/pages/user_atom.php');
-                user_atom();
                 break;
             case 'shifts_json_export':
                 require_once realpath(__DIR__ . '/../../includes/controller/shifts_controller.php');

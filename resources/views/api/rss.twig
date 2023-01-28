@@ -1,0 +1,28 @@
+{% set dateFormat = 'D, d M Y H:i:s O' %}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+
+        <title>{{ config('app_name') }}</title>
+        <link>{{ url('/') }}</link>
+        <description></description>
+        <atom:link href="{{ url('/atom', {'key': request.get('key') }) }}" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>{% if not news.isEmpty() %}{{ news[0].updated_at.format(dateFormat) }}{% else %}Fri, 31 Dec 00 00:00:00 +0000{% endif %}</lastBuildDate>
+
+        {% for news in news %}
+
+            <item>
+                <title>{% if news.is_meeting %}{{ __('news.is_meeting') }} {% endif %}{{ news.title }}</title>
+                <link>{{ url('/news/' ~ news.id) }}</link>
+                <guid isPermaLink="false">{{ uuidBy(news.id, '113115') }}</guid>
+                <pubDate>{{ news.created_at.format(dateFormat) }}</pubDate>
+                <author>{{ news.user.name }}</author>
+                <description>
+                    {{ news.text }}
+                </description>
+            </item>
+
+        {% endfor %}
+
+    </channel>
+</rss>
