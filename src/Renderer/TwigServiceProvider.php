@@ -15,6 +15,7 @@ use Engelsystem\Renderer\Twig\Extensions\Markdown;
 use Engelsystem\Renderer\Twig\Extensions\Session;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use Engelsystem\Renderer\Twig\Extensions\Url;
+use Engelsystem\Renderer\Twig\Extensions\Uuid;
 use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as Twig;
 use Twig\Extension\CoreExtension as TwigCore;
@@ -37,6 +38,7 @@ class TwigServiceProvider extends ServiceProvider
         'markdown'       => Markdown::class,
         'translation'    => Translation::class,
         'url'            => Url::class,
+        'uuid'           => Uuid::class,
     ];
 
     public function register(): void
