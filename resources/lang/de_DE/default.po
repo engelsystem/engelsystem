@@ -1733,12 +1733,12 @@ msgstr "API-Key zurücksetzen"
 
 #: includes/pages/user_myshifts.php:44
 msgid ""
-"If you reset the key, the url to your iCal- and JSON-export and your atom "
+"If you reset the key, the url to your iCal- and JSON-export and your atom/rss "
 "feed changes! You have to update it in every application using one of these "
 "exports."
 msgstr ""
 "Wenn du den API-Key zurücksetzt, ändert sich die URL zu deinem iCal-, JSON-"
-"Export und Atom Feed! Du musst diesen überall ändern, wo er in Benutzung ist."
+"Export und Atom/RSS Feed! Du musst diesen überall ändern, wo er in Benutzung ist."
 
 #: includes/pages/user_myshifts.php:47
 msgid "Continue"

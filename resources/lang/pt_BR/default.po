@@ -1500,13 +1500,13 @@ msgstr "Resetar a chave API"
 
 #: includes/pages/user_myshifts.php:27
 msgid ""
-"If you reset the key, the url to your iCal- and JSON-export and your atom "
+"If you reset the key, the url to your iCal- and JSON-export and your atom/rss "
 "feed changes! You have to update it in every application using one of these "
 "exports."
 msgstr ""
 "Se você reconfigurar a chave, as urls para seu iCal, a exportação em formato "
 "JSON \n"
-"e seu feed atom será alterada! Você precisará atualizá-las em todas as "
+"e seu feed atom/rss será alterada! Você precisará atualizá-las em todas as "
 "aplicações que estiverem \n"
 "usando uma delas."
 
