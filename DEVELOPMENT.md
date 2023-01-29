@@ -8,7 +8,86 @@ Please also read the [CONTRIBUTING.md](CONTRIBUTING.md).
  * Yarn (Development/Building only)
  * PHP Composer (Development/Building only)
 
-## Local build
+## Code style
+Please ensure that your pull requests follow the [PSR-12](https://www.php-fig.org/psr/psr-12/) coding style guide.
+You can check that by running
+```bash
+composer run phpcs
+```
+You may auto fix reported issues by running
+```bash
+composer run phpcbf
+```
+
+## Pre-commit hooks
+You should set up the pre-commit hook to check the code style and run tests on commit:
+
+Docker (recommended):
+
+```sh
+echo "docker exec engelsystem_dev-es_workspace-1 bin/pre-commit" > .git/hooks/pre-commit
+chmod u+x .git/hooks/pre-commit
+```
+
+Host machine:
+
+```sh
+ln -s ../../bin/pre-commit .git/hooks/pre-commit
+```
+
+## Docker
+
+We suggest using Docker for the Development local build.
+
+If unspecific issues appear try using Docker version >= 20.10.14.
+
+This repo [ships a docker setup](docker/dev) for a quick development start.
+
+If you use another uid/gid than 1000 on your machine you have to adjust it in [docker/dev/.env](docker/dev/.env).
+
+Run this once
+
+```bash
+cd docker/dev
+docker-compose up
+```
+
+Run these commands once initially and then as required after changes
+
+```bash
+# Install composer dependencies
+docker-compose exec es_workspace composer i
+
+# Install node packages
+docker-compose exec es_workspace yarn install
+
+# Run a full front-end build
+docker-compose exec es_workspace yarn build
+
+# Or run a front-end build for specific themes only, e.g.
+docker-compose exec -e THEMES=0,1 es_workspace yarn build
+
+# Update the translation files
+docker-compose exec es_workspace find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+
+# Run the migrations
+docker-compose exec es_workspace bin/migrate
+```
+
+While developing you may use the watch mode to rebuild the system on changes
+
+```bash
+# Run a front-end build and update on change
+docker-compose exec es_workspace yarn build:watch
+
+# Or run a front-end build and update on change for specific themes only, e.g.
+docker-compose exec -e THEMES=0,1 es_workspace yarn build:watch
+```
+
+## Localhost
+You can find yout local Engelsystem on [http://localhost:5080](http://localhost:5080).
+
+## Local build without Docker
 The following instructions explain how to get, build and run the latest Engelsystem version directly from the git main branch (may be unstable!).
 
 * Clone the main branch: `git clone https://github.com/engelsystem/engelsystem.git`
@@ -37,23 +116,6 @@ The following instructions explain how to get, build and run the latest Engelsys
   ```bash
   find resources/lang/ -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
   ```
-
-## Pre-commit hooks
-You should set up the pre-commit hook to check the code style and run tests on commit:
-
-Docker (recommended):
-
-```sh
-echo "docker exec engelsystem_dev-es_workspace-1 bin/pre-commit" > .git/hooks/pre-commit
-chmod u+x .git/hooks/pre-commit
-```
-
-Host machine:
-
-```sh
-ln -s ../../bin/pre-commit .git/hooks/pre-commit
-```
-
 
 ## Testing
 To run the unit tests use
@@ -100,16 +162,6 @@ For more information check out the Var Dump Server documentation: [Symfony VarDu
 We use gettext. You may use POEdit to extract new texts from the sourcecode.
 Please config POEdit to extract also the twig template files using the following settings: https://gist.github.com/jlambe/a868d9b63d70902a12254ce47069d0e6
 
-## Code style
-Please ensure that your pull requests follow the [PSR-12](https://www.php-fig.org/psr/psr-12/) coding style guide.
-You can check that by running
-```bash
-composer run phpcs
-```
-You may auto fix reported issues by running
-```bash
-composer run phpcbf
-```
 
 ## CI & Build Pipeline
 
@@ -131,53 +183,6 @@ You can run a static code analysis with this command:
 
 ```bash
 composer phpstan
-```
-
-## Docker
-
-If unspecific issues appear try using Docker version >= 20.10.14.
-
-This repo [ships a docker setup](docker/dev) for a quick development start.
-
-If you use another uid/gid than 1000 on your machine you have to adjust it in [docker/dev/.env](docker/dev/.env).
-
-Run this once
-
-```bash
-cd docker/dev
-docker-compose up
-```
-
-Run these commands once initially and then as required after changes
-
-```bash
-# Install composer dependencies
-docker-compose exec es_workspace composer i
-
-# Install node packages
-docker-compose exec es_workspace yarn install
-
-# Run a full front-end build
-docker-compose exec es_workspace yarn build
-
-# Or run a front-end build for specific themes only, e.g.
-docker-compose exec -e THEMES=0,1 es_workspace yarn build
-
-# Update the translation files
-docker-compose exec es_workspace find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
-
-# Run the migrations
-docker-compose exec es_workspace bin/migrate
-```
-
-While developing you may use the watch mode to rebuild the system on changes
-
-```bash
-# Run a front-end build and update on change
-docker-compose exec es_workspace yarn build:watch
-
-# Or run a front-end build and update on change for specific themes only, e.g.
-docker-compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
 
 **Hint for using Xdebug with *PhpStorm***
