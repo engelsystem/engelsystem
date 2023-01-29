@@ -21,7 +21,6 @@ class LegacyMiddleware implements MiddlewareInterface
         'rooms',
         'shift_entries',
         'shifts',
-        'shifts_json_export',
         'users',
         'user_driver_licenses',
         'admin_shifts_history',
@@ -77,10 +76,6 @@ class LegacyMiddleware implements MiddlewareInterface
     protected function loadPage(string $page): array
     {
         switch ($page) {
-            case 'shifts_json_export':
-                require_once realpath(__DIR__ . '/../../includes/controller/shifts_controller.php');
-                shifts_json_export_controller();
-                break;
             case 'public_dashboard':
                 return public_dashboard_controller();
             case 'angeltypes':
