@@ -41,3 +41,4 @@ _vimrc_local.vim
 /public/assets
 /package-lock.json
 /yarn-error.log
+/.yarn-cache
