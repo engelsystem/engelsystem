@@ -20,7 +20,7 @@ services:
       APP_NAME: Engelsystem DEV
     env_file: deployment.env
     ports:
-      - "5000:80"
+      - "5080:80"
     networks:
       - database
       - internet
