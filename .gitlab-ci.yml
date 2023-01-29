@@ -150,6 +150,9 @@ yarn lint:
   image: node:alpine
   stage: validate
   script:
+    # Install git, so that tools can use .gitignore.
+    # Not done in before_script because of <<: *use_yarn.
+    - apk add --no-cache git
     - yarn lint
 
 #

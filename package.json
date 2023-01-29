@@ -12,7 +12,7 @@
     "lint": "yarn lint:eslint && yarn lint:prettier && yarn lint:ec",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check resources/assets",
-    "lint:ec": "ec --exclude \"node_modules|vendor|public/assets|.git\"",
+    "lint:ec": "ec",
     "lint:fix": "yarn lint:fix:eslint && yarn lint:fix:prettier",
     "lint:fix:eslint": "eslint --fix .",
     "lint:fix:prettier": "prettier --write resources/assets"
