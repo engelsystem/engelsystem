@@ -51,6 +51,16 @@ class ShiftEntry extends BaseModel
         'freeloaded_comment' => '',
     ];
 
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
+        'freeloaded' => 'bool',
+    ];
+
+    /** @var array<string> Attributes which should not be serialized */
+    protected $hidden = [ // phpcs:ignore
+        'freeloaded_comment',
+    ];
+
     public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class);

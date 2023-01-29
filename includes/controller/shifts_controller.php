@@ -1,7 +1,5 @@
 <?php
 
-use Carbon\CarbonTimeZone;
-use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\ScheduleShift;
@@ -377,85 +375,4 @@ function shift_next_controller()
     }
 
     throw_redirect(page_link_to('user_shifts'));
-}
-
-/**
- * Export filtered shifts via JSON.
- * (Like shifts view)
- */
-function shifts_json_export_controller()
-{
-    $user = auth()->userFromApi();
-
-    if (!$user) {
-        throw new HttpForbidden('{"error":"Missing or invalid ?key="}', ['content-type' => 'application/json']);
-    }
-
-    if (!auth()->can('shifts_json_export')) {
-        throw new HttpForbidden('{"error":"Not allowed"}', ['content-type' => 'application/json']);
-    }
-
-    $shifts = Shifts_by_user(auth()->user()->id);
-    $shifts->sortBy('start_date');
-    $timeZone = CarbonTimeZone::create(config('timezone'));
-
-    $shiftsData = [];
-    foreach ($shifts as $shift) {
-        // Data required for the Fahrplan app integration https://github.com/johnjohndoe/engelsystem
-        // See engelsystem-base/src/main/kotlin/info/metadude/kotlin/library/engelsystem/models/Shift.kt
-        $data = [
-            // Name of the shift (type)
-            'name'           => $shift->shiftType->name,
-            // Shift / Talk title
-            'title'          => $shift->title,
-            // Shift description
-            'description'    => $shift->description,
-
-            // Users comment
-            'Comment'        => $shift->user_comment,
-
-            // Shift id
-            'SID'            => $shift->id,
-            // Shift type id
-            'shifttype_id'   => $shift->shift_type_id,
-            // Talk URL
-            'URL'            => $shift->url,
-
-            // Room name
-            'Name'           => $shift->room->name,
-            // Location map url
-            'map_url'        => $shift->room->map_url,
-
-            // Start timestamp
-            /** @deprecated start_date should be used */
-            'start'          => $shift->start->timestamp,
-            // Start date
-            'start_date'     => $shift->start->toRfc3339String(),
-            // End timestamp
-            /** @deprecated end_date should be used */
-            'end'            => $shift->end->timestamp,
-            // End date
-            'end_date'       => $shift->end->toRfc3339String(),
-
-            // Timezone offset like "+01:00"
-            /** @deprecated should be retrieved from start_date or end_date */
-            'timezone'       => $timeZone->toOffsetName(),
-            // The events timezone like "Europe/Berlin"
-            'event_timezone' => $timeZone->getName(),
-        ];
-
-        $shiftsData[] = [
-            // Model data
-            ...$shift->toArray(),
-
-            // legacy fields (ignoring created / updated (at/by) data)
-            'RID' => $shift->room_id,
-
-            // Fahrplan app required data
-            ...$data
-        ];
-    }
-
-    header('Content-Type: application/json; charset=utf-8');
-    raw_output(json_encode($shiftsData));
 }

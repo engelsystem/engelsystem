@@ -100,6 +100,7 @@ $route->get('/api[/{resource:.+}]', 'ApiController@index');
 $route->get('/atom', 'FeedController@atom');
 $route->get('/ical', 'FeedController@ical');
 $route->get('/rss', 'FeedController@rss');
+$route->get('/shifts-json-export', 'FeedController@shifts');
 
 // Design
 $route->get('/design', 'DesignController@index');

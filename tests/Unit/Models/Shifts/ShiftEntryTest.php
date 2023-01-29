@@ -33,5 +33,7 @@ class ShiftEntryTest extends ModelTest
         $this->assertEquals($shift->id, $model->shift->id);
         $this->assertEquals($angelType->id, $model->angelType->id);
         $this->assertEquals($user->id, $model->user->id);
+
+        $this->assertArrayNotHasKey('freeloaded_comment', $model->toArray());
     }
 }

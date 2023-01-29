@@ -110,6 +110,59 @@ class FeedControllerTest extends ControllerTest
         $controller->ical();
     }
 
+    /**
+     * @covers \Engelsystem\Controllers\FeedController::shifts
+     * @covers \Engelsystem\Controllers\FeedController::getShifts
+     */
+    public function testShifts(): void
+    {
+        $this->request = $this->request->withQueryParams(['key' => 'fo0']);
+        $this->auth = new Authenticator(
+            $this->request,
+            new Session(new MockArraySessionStorage()),
+            new User(),
+        );
+        $controller = new FeedController($this->auth, $this->request, $this->response);
+
+        /** @var User $user */
+        $user = User::factory()->create(['api_key' => 'fo0']);
+        ShiftEntry::factory(3)->create(['user_id' => $user->id]);
+
+        $this->setExpects(
+            $this->response,
+            'withAddedHeader',
+            ['content-type', 'application/json; charset=utf-8'],
+            $this->response
+        );
+
+        $this->response->expects($this->once())
+            ->method('withContent')
+            ->willReturnCallback(function ($jsonData) {
+                $data = json_decode($jsonData, true);
+                $this->assertIsArray($data);
+
+                $this->assertCount(3, $data);
+                $this->assertTrue($data[0]['start'] < $data[1]['start']);
+
+                // Ensure dates exist used by Fahrplan app
+                foreach (
+                    [
+                        'name', 'title', 'description',
+                        'Comment',
+                        'SID', 'shifttype_id', 'URL',
+                        'RID', 'Name', 'map_url',
+                        'start', 'start_date', 'end', 'end_date',
+                        'timezone', 'event_timezone',
+                    ] as $requiredAttribute
+                ) {
+                    $this->assertArrayHasKey($requiredAttribute, $data[0]);
+                }
+
+                return $this->response;
+            });
+        $controller->shifts();
+    }
+
 
     public function getNewsMeetingsDataProvider(): array
     {
