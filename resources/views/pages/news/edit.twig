@@ -43,6 +43,7 @@
                 <div class="col-md-6">
                     {{ f.checkbox('is_meeting', __('news.edit.is_meeting'), is_meeting) }}
                     {{ f.checkbox('is_pinned', __('news.edit.is_pinned'), is_pinned) }}
+                    {% if has_permission_to('news.important') %} {{ f.checkbox('is_important', __('news.edit.is_important'), is_important) }}{% endif %}
                 </div>
             </div>
 
@@ -67,7 +68,7 @@
                     <div class="col-md-12">
                         <h2>{{ __('form.preview') }}</h2>
 
-                        <div class="card {% if news.is_meeting %}bg-info{% else %}{% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %}{% endif %} mb-4">
+                        <div class="card {% if news.is_important %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
                             <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
                                 {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                                 {{ news.title }}

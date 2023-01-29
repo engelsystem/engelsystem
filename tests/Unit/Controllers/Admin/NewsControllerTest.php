@@ -158,11 +158,12 @@ class NewsControllerTest extends ControllerTest
     {
         $this->request->attributes->set('news_id', 1);
         $this->request = $this->request->withParsedBody([
-            'title'      => 'New title',
-            'text'       => 'New text',
-            'is_meeting' => '1',
-            'is_pinned'  => '1',
-            'preview'    => '1',
+            'title'        => 'New title',
+            'text'         => 'New text',
+            'is_meeting'   => '1',
+            'is_pinned'    => '1',
+            'is_important' => '1',
+            'preview'      => '1',
         ]);
         $this->response->expects($this->once())
             ->method('withView')
@@ -174,6 +175,7 @@ class NewsControllerTest extends ControllerTest
                 // Contains new text
                 $this->assertTrue($news->is_meeting);
                 $this->assertTrue($news->is_pinned);
+                $this->assertTrue($news->is_important);
                 $this->assertEquals('New title', $news->title);
                 $this->assertEquals('New text', $news->text);
 
@@ -192,6 +194,7 @@ class NewsControllerTest extends ControllerTest
         $this->assertEquals('**foo**', $news->text);
         $this->assertFalse($news->is_meeting);
         $this->assertFalse($news->is_pinned);
+        $this->assertFalse($news->is_important);
     }
 
     /**

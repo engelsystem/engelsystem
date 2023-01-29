@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
  * @property string                        $text
  * @property bool                          $is_meeting
  * @property bool                          $is_pinned
+ * @property bool                          $is_important
  * @property Carbon|null                   $created_at
  * @property Carbon|null                   $updated_at
  *
@@ -42,15 +43,17 @@ class News extends BaseModel
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
-        'user_id'    => 'integer',
-        'is_meeting' => 'boolean',
-        'is_pinned'  => 'boolean',
+        'user_id'      => 'integer',
+        'is_meeting'   => 'boolean',
+        'is_pinned'    => 'boolean',
+        'is_important' => 'boolean',
     ];
 
     /** @var array<string, bool> Default attributes */
     protected $attributes = [ // phpcs:ignore
-        'is_meeting' => false,
-        'is_pinned'  => false,
+        'is_meeting'   => false,
+        'is_pinned'    => false,
+        'is_important' => false,
     ];
 
     /** @var array<string> */
@@ -59,6 +62,7 @@ class News extends BaseModel
         'text',
         'is_meeting',
         'is_pinned',
+        'is_important',
         'user_id',
     ];
 
