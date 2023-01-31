@@ -27,8 +27,9 @@ _vimrc_local.vim
 # Project files
 /config/config.php
 /config/lang/
-/test/coverage
+/public/*.xml
 /public/coverage
+/test/coverage
 /coverage
 /unittests.xml
 /resources/lang/*/*.mo
