@@ -1296,8 +1296,8 @@ msgstr "Logout"
 
 #: includes/pages/guest_login.php:56
 #, php-format
-msgid "Your nick &quot;%s&quot; already exists."
-msgstr "Seu apelido &quot;%s&quot; já existe."
+msgid "Your nick \"%s\" already exists."
+msgstr "Seu apelido \"%s\" já existe."
 
 #: includes/pages/guest_login.php:60
 #, php-format

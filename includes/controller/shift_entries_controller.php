@@ -108,7 +108,7 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
         $shiftEntry->save();
         ShiftEntry_onCreate($shiftEntry);
 
-        success(sprintf(__('%s has been subscribed to the shift.'), User_Nick_render($signup_user)));
+        success(sprintf(__('%s has been subscribed to the shift.'), $signup_user->name));
         throw_redirect(shift_link($shift));
     }
 
@@ -157,7 +157,7 @@ function shift_entry_create_controller_supporter(Shift $shift, AngelType $angelt
         $shiftEntry->save();
         ShiftEntry_onCreate($shiftEntry);
 
-        success(sprintf(__('%s has been subscribed to the shift.'), User_Nick_render($signup_user)));
+        success(sprintf(__('%s has been subscribed to the shift.'), $signup_user->name));
         throw_redirect(shift_link($shift));
     }
 

@@ -142,7 +142,7 @@ class UserWorkLogController extends BaseController
                 'work_hours' => $work_hours,
                 'comment' => $comment,
                 'is_edit' => $is_edit,
-            ] + $this->getNotifications()
+            ]
         );
     }
 

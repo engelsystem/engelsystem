@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Engelsystem\Controllers\Admin\FaqController;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\Faq;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
-use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class FaqControllerTest extends ControllerTest
 {
@@ -33,10 +32,7 @@ class FaqControllerTest extends ControllerTest
             ->willReturnCallback(function ($view, $data) {
                 $this->assertEquals('pages/faq/edit.twig', $view);
 
-                /** @var Collection $warnings */
-                $warnings = $data['messages'];
                 $this->assertNotEmpty($data['faq']);
-                $this->assertTrue($warnings->isEmpty());
 
                 return $this->response;
             });
@@ -45,6 +41,7 @@ class FaqControllerTest extends ControllerTest
         $controller = $this->app->make(FaqController::class);
 
         $controller->edit($this->request);
+        $this->assertHasNoNotifications(NotificationType::WARNING);
     }
 
     /**
@@ -82,14 +79,10 @@ class FaqControllerTest extends ControllerTest
 
         $this->assertTrue($this->log->hasInfoThatContains('Updated'));
 
-        /** @var Session $session */
-        $session = $this->app->get('session');
-        $messages = $session->get('messages');
-        $this->assertEquals('faq.edit.success', $messages[0]);
-
         $faq = (new Faq())->find(2);
         $this->assertEquals('Foo?', $faq->question);
         $this->assertEquals('Bar!', $faq->text);
+        $this->assertHasNotification('faq.edit.success');
     }
 
     /**
@@ -153,10 +146,7 @@ class FaqControllerTest extends ControllerTest
 
         $this->assertTrue($this->log->hasInfoThatContains('Deleted'));
 
-        /** @var Session $session */
-        $session = $this->app->get('session');
-        $messages = $session->get('messages');
-        $this->assertEquals('faq.delete.success', $messages[0]);
+        $this->assertHasNotification('faq.delete.success');
     }
 
     /**

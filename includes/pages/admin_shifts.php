@@ -50,6 +50,7 @@ function admin_shifts()
     }
 
     // Load angeltypes
+    /** @var AngelType[] $types */
     $types = AngelType::all();
     $needed_angel_types = [];
     foreach ($types as $type) {

@@ -49,7 +49,7 @@ class NewsController extends BaseController
                 'news'       => $news,
                 'is_meeting' => $news ? $news->is_meeting : $isMeetingDefault,
                 'is_pinned'  => $news ? $news->is_pinned : false,
-            ] + $this->getNotifications(),
+            ],
         );
     }
 

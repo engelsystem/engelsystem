@@ -40,7 +40,7 @@ class QuestionsController extends BaseController
 
         return $this->response->withView(
             'pages/questions/overview.twig',
-            ['questions' => $questions] + $this->getNotifications()
+            ['questions' => $questions]
         );
     }
 
@@ -48,7 +48,7 @@ class QuestionsController extends BaseController
     {
         return $this->response->withView(
             'pages/questions/edit.twig',
-            ['question' => null] + $this->getNotifications()
+            ['question' => null]
         );
     }
 

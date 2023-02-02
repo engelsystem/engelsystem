@@ -14,6 +14,7 @@ use Engelsystem\Renderer\Twig\Extensions\Develop;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Renderer\Twig\Extensions\Legacy;
 use Engelsystem\Renderer\Twig\Extensions\Markdown;
+use Engelsystem\Renderer\Twig\Extensions\Notification;
 use Engelsystem\Renderer\Twig\Extensions\Session;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use Engelsystem\Renderer\Twig\Extensions\Url;
@@ -34,6 +35,7 @@ class TwigServiceProvider extends ServiceProvider
         'csrf'           => Csrf::class,
         'develop'        => Develop::class,
         'globals'        => Globals::class,
+        'notification'   => Notification::class,
         'twigmodel'      => TwigModel::class,
         'session'        => Session::class,
         'legacy'         => Legacy::class,

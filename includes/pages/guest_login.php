@@ -121,7 +121,7 @@ function guest_register()
             }
             if (User::whereName($nick)->count() > 0) {
                 $valid = false;
-                $msg .= error(sprintf(__('Your nick &quot;%s&quot; already exists.'), $nick), true);
+                $msg .= error(sprintf(__('Your nick "%s" already exists.'), htmlspecialchars($nick)), true);
             }
         } else {
             $valid = false;
@@ -330,8 +330,8 @@ function guest_register()
             }
 
             // If a welcome message is present, display it on the next page
-            if ($message = $config->get('welcome_msg')) {
-                info((new Parsedown())->text($message));
+            if ($config->get('welcome_msg')) {
+                $session->set('show_welcome', true);
             }
 
             // Login the user

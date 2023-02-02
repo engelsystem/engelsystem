@@ -1545,8 +1545,8 @@ msgstr ""
 
 #: includes/pages/guest_login.php:82
 #, php-format
-msgid "Your nick &quot;%s&quot; already exists."
-msgstr "Der Nick &quot;%s&quot; existiert schon."
+msgid "Your nick \"%s\" already exists."
+msgstr "Der Nick \"%s\" existiert bereits."
 
 #: includes/pages/guest_login.php:86
 msgid "Please enter a nickname."

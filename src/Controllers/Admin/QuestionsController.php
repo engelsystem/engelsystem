@@ -42,7 +42,7 @@ class QuestionsController extends BaseController
 
         return $this->response->withView(
             'pages/questions/overview.twig',
-            ['questions' => $questions, 'is_admin' => true] + $this->getNotifications()
+            ['questions' => $questions, 'is_admin' => true]
         );
     }
 
@@ -120,7 +120,7 @@ class QuestionsController extends BaseController
     {
         return $this->response->withView(
             'pages/questions/edit.twig',
-            ['question' => $question, 'is_admin' => true] + $this->getNotifications()
+            ['question' => $question, 'is_admin' => true]
         );
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Psr7ServiceProvider;
@@ -185,7 +186,10 @@ class ErrorHandlerTest extends TestCase
             ->willReturn(['foo' => ['validation.foo.numeric']]);
 
         $session = new Session(new MockArraySessionStorage());
-        $session->set('errors', ['validation' => ['foo' => ['validation.foo.required']]]);
+        $session->set(
+            'messages.' . NotificationType::ERROR->value,
+            ['validation' => ['foo' => ['validation.foo.required']]]
+        );
         $request = Request::create(
             '/foo/bar',
             'POST',
@@ -208,7 +212,7 @@ class ErrorHandlerTest extends TestCase
         $this->assertEquals(302, $return->getStatusCode());
         $this->assertEquals('http://localhost/', $return->getHeaderLine('location'));
         $this->assertEquals([
-            'errors'    => [
+            'messages.' . NotificationType::ERROR->value => [
                 'validation' => [
                     'foo' => [
                         'validation.foo.required',

@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 
 use Carbon\Carbon;
 use Engelsystem\Config\Config;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
@@ -133,7 +134,7 @@ class SettingsControllerTest extends ControllerTest
         $this->setUpProfileTest();
         config(['buildup_start' => new Carbon('2022-01-02')]); // arrival before buildup
         $this->controller->saveProfile($this->request);
-        $this->assertHasNotification('settings.profile.planned_arrival_date.invalid', 'errors');
+        $this->assertHasNotification('settings.profile.planned_arrival_date.invalid', NotificationType::ERROR);
     }
 
     /**
@@ -144,7 +145,7 @@ class SettingsControllerTest extends ControllerTest
         $this->setUpProfileTest();
         config(['teardown_end' => new Carbon('2022-01-01')]); // departure after teardown
         $this->controller->saveProfile($this->request);
-        $this->assertHasNotification('settings.profile.planned_departure_date.invalid', 'errors');
+        $this->assertHasNotification('settings.profile.planned_departure_date.invalid', NotificationType::ERROR);
     }
 
     /**
@@ -272,7 +273,7 @@ class SettingsControllerTest extends ControllerTest
 
         /** @var Session $session */
         $session = $this->app->get('session');
-        $messages = $session->get('messages');
+        $messages = $session->get('messages.' . NotificationType::MESSAGE->value);
         $this->assertEquals('settings.password.success', $messages[0]);
     }
 
@@ -328,10 +329,7 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->savePassword($this->request);
 
-        /** @var Session $session */
-        $session = $this->app->get('session');
-        $errors = $session->get('errors');
-        $this->assertEquals('auth.password.error', $errors[0]);
+        $this->assertHasNotification('auth.password.error', NotificationType::ERROR);
     }
 
     /**
@@ -359,10 +357,7 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->savePassword($this->request);
 
-        /** @var Session $session */
-        $session = $this->app->get('session');
-        $errors = $session->get('errors');
-        $this->assertEquals('validation.password.confirmed', $errors[0]);
+        $this->assertHasNotification('validation.password.confirmed', NotificationType::ERROR);
     }
 
     public function savePasswordValidationProvider(): array
@@ -558,7 +553,6 @@ class SettingsControllerTest extends ControllerTest
             ->method('withView')
             ->willReturnCallback(function ($view, $data) use ($providers) {
                 $this->assertEquals('pages/settings/oauth', $view);
-                $this->assertArrayHasKey('information', $data);
                 $this->assertArrayHasKey('providers', $data);
                 $this->assertEquals($providers, $data['providers']);
 

@@ -48,7 +48,7 @@ function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe
     $translator->setLocale($locale);
 
     if (!$status) {
-        error(sprintf(__('User %s could not be notified by email due to an error.'), User_Nick_render($recipientUser)));
+        error(sprintf(__('User %s could not be notified by email due to an error.'), $recipientUser->name));
         engelsystem_log(sprintf('User %s could not be notified by email due to an error.', $recipientUser->name));
     }
 

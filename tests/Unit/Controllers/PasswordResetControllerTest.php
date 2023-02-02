@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\PasswordResetController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpNotFound;
@@ -18,13 +19,12 @@ use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class PasswordResetControllerTest extends TestCase
+class PasswordResetControllerTest extends ControllerTest
 {
     use ArraySubsetAsserts;
     use HasDatabase;
@@ -55,7 +55,7 @@ class PasswordResetControllerTest extends TestCase
 
         $controller = $this->getController(
             'pages/password/reset-success',
-            ['type' => 'email', 'errors' => collect()]
+            ['type' => 'email']
         );
         /** @var TestLogger $log */
         $log = $this->args['log'];
@@ -67,6 +67,7 @@ class PasswordResetControllerTest extends TestCase
 
         $this->assertNotEmpty((new PasswordReset())->find($user->id)->first());
         $this->assertTrue($log->hasInfoThatContains($user->name));
+        $this->assertHasNoNotifications();
     }
 
     /**
@@ -92,10 +93,11 @@ class PasswordResetControllerTest extends TestCase
 
         $controller = $this->getController(
             'pages/password/reset-success',
-            ['type' => 'email', 'errors' => collect()]
+            ['type' => 'email']
         );
 
         $controller->postReset($request);
+        $this->assertHasNoNotifications();
     }
 
     /**
@@ -148,7 +150,7 @@ class PasswordResetControllerTest extends TestCase
 
         $controller = $this->getController(
             'pages/password/reset-success',
-            ['type' => 'reset', 'errors' => collect()]
+            ['type' => 'reset']
         );
 
         $auth = new Authenticator($request, $this->args['session'], $user);
@@ -159,6 +161,7 @@ class PasswordResetControllerTest extends TestCase
 
         $this->assertEmpty((new PasswordReset())->find($user->id));
         $this->assertNotNull(auth()->authenticate($user->name, $password));
+        $this->assertHasNoNotifications();
     }
 
     /**
@@ -179,16 +182,10 @@ class PasswordResetControllerTest extends TestCase
             ['token' => $token->token]
         );
 
-        $controller = $this->getController(
-            'pages/password/reset-form',
-            ['errors' => collect(['some.other.error', 'validation.password.confirmed'])]
-        );
-        /** @var Session $session */
-        $session = $this->args['session'];
-        $session->set('errors', ['foo' => ['bar' => 'some.other.error']]);
+        $controller = $this->getController('pages/password/reset-form');
 
         $controller->postResetPassword($request);
-        $this->assertEmpty($session->get('errors'));
+        $this->assertHasNotification('validation.password.confirmed', NotificationType::ERROR);
     }
 
     protected function getControllerArgs(): array
@@ -202,6 +199,10 @@ class PasswordResetControllerTest extends TestCase
         $response->setRenderer($renderer);
 
         $this->app->instance('session', $session);
+
+        $this->session = $session;
+        $this->response = $response;
+        $this->log = $log;
 
         return $this->args = [
             'response' => $response,

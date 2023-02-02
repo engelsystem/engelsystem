@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Admin\Schedule;
 
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Helpers\Carbon;
 use DateTimeInterface;
 use Engelsystem\Controllers\BaseController;
@@ -83,7 +84,7 @@ class ImportSchedule extends BaseController
             [
                 'is_index'  => true,
                 'schedules' => ScheduleUrl::all(),
-            ] + $this->getNotifications()
+            ]
         );
     }
 
@@ -98,7 +99,7 @@ class ImportSchedule extends BaseController
             [
                 'schedule'    => $schedule,
                 'shift_types' => ShiftType::all()->pluck('name', 'id'),
-            ] + $this->getNotifications()
+            ]
         );
     }
 
@@ -169,7 +170,7 @@ class ImportSchedule extends BaseController
                 $schedule
                 ) = $this->getScheduleData($request);
         } catch (ErrorException $e) {
-            $this->addNotification($e->getMessage(), 'errors');
+            $this->addNotification($e->getMessage(), NotificationType::ERROR);
             return back();
         }
 
@@ -186,7 +187,7 @@ class ImportSchedule extends BaseController
                     'update' => $changeEvents,
                     'delete' => $deleteEvents,
                 ],
-            ] + $this->getNotifications()
+            ]
         );
     }
 
@@ -210,7 +211,7 @@ class ImportSchedule extends BaseController
                 $scheduleUrl
                 ) = $this->getScheduleData($request);
         } catch (ErrorException $e) {
-            $this->addNotification($e->getMessage(), 'errors');
+            $this->addNotification($e->getMessage(), NotificationType::ERROR);
             return back();
         }
 
@@ -250,8 +251,8 @@ class ImportSchedule extends BaseController
         $scheduleUrl->touch();
         $this->log('Ended schedule "{name}" import', ['name' => $scheduleUrl->name]);
 
-        return redirect($this->url, 303)
-            ->with('messages', ['schedule.import.success']);
+        $this->addNotification('schedule.import.success');
+        return redirect($this->url, 303);
     }
 
     protected function createRoom(Room $room): void

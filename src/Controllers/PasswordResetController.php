@@ -88,7 +88,7 @@ class PasswordResetController extends BaseController
         ]);
 
         if ($data['password'] !== $data['password_confirmation']) {
-            $this->addNotification('validation.password.confirmed', 'errors');
+            $this->addNotification('validation.password.confirmed', NotificationType::ERROR);
 
             return $this->showView('pages/password/reset-form');
         }
@@ -101,10 +101,7 @@ class PasswordResetController extends BaseController
 
     protected function showView(string $view = 'pages/password/reset', array $data = []): Response
     {
-        return $this->response->withView(
-            $view,
-            array_merge_recursive($this->getNotifications(), $data)
-        );
+        return $this->response->withView($view, $data);
     }
 
     protected function requireToken(Request $request): PasswordReset

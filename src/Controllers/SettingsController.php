@@ -40,7 +40,7 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'user' => $user,
-            ] + $this->getNotifications()
+            ]
         );
     }
 
@@ -60,10 +60,10 @@ class SettingsController extends BaseController
 
         if (config('enable_planned_arrival')) {
             if (!$this->isArrivalDateValid($data['planned_arrival_date'], $data['planned_departure_date'])) {
-                $this->addNotification('settings.profile.planned_arrival_date.invalid', 'errors');
+                $this->addNotification('settings.profile.planned_arrival_date.invalid', NotificationType::ERROR);
                 return $this->redirect->to('/settings/profile');
             } elseif (!$this->isDepartureDateValid($data['planned_arrival_date'], $data['planned_departure_date'])) {
-                $this->addNotification('settings.profile.planned_departure_date.invalid', 'errors');
+                $this->addNotification('settings.profile.planned_departure_date.invalid', NotificationType::ERROR);
                 return $this->redirect->to('/settings/profile');
             } else {
                 $user->personalData->planned_arrival_date = $data['planned_arrival_date'];
@@ -115,7 +115,7 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'min_length'    => config('min_password_length'),
-            ] + $this->getNotifications()
+            ]
         );
     }
 
@@ -131,9 +131,9 @@ class SettingsController extends BaseController
         ]);
 
         if (!empty($user->password) && !$this->auth->verifyPassword($user, $data['password'])) {
-            $this->addNotification('auth.password.error', 'errors');
+            $this->addNotification('auth.password.error', NotificationType::ERROR);
         } elseif ($data['new_password'] != $data['new_password2']) {
-            $this->addNotification('validation.password.confirmed', 'errors');
+            $this->addNotification('validation.password.confirmed', NotificationType::ERROR);
         } else {
             $this->auth->setPassword($user, $data['new_password']);
 
@@ -158,7 +158,7 @@ class SettingsController extends BaseController
                 'settings_menu' => $this->settingsMenu(),
                 'themes'        => $themes,
                 'current_theme' => $currentTheme,
-            ] + $this->getNotifications()
+            ]
         );
     }
 
@@ -192,7 +192,7 @@ class SettingsController extends BaseController
                 'settings_menu'    => $this->settingsMenu(),
                 'languages'        => $languages,
                 'current_language' => $currentLanguage,
-            ] + $this->getNotifications()
+            ]
         );
     }
 
@@ -228,7 +228,7 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'providers'     => $providers,
-            ] + $this->getNotifications(),
+            ],
         );
     }
 

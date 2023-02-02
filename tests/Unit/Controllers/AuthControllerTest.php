@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\AuthController;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
@@ -16,13 +17,12 @@ use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class AuthControllerTest extends TestCase
+class AuthControllerTest extends ControllerTest
 {
     use ArraySubsetAsserts;
     use HasDatabase;
@@ -42,11 +42,6 @@ class AuthControllerTest extends TestCase
         /** @var Authenticator|MockObject $auth */
         list(, $session, $redirect, $config, $auth) = $this->getMocks();
 
-        $session->expects($this->atLeastOnce())
-            ->method('get')
-            ->willReturnCallback(function ($type) {
-                return $type == 'errors' ? ['foo' => 'bar'] : [];
-            });
         $response->expects($this->once())
             ->method('withView')
             ->with('pages/login')
@@ -70,11 +65,10 @@ class AuthControllerTest extends TestCase
         /** @var Config $config */
         /** @var Authenticator|MockObject $auth */
         list(, , $redirect, $config, $auth) = $this->getMocks();
-        $session = new Session(new MockArraySessionStorage());
+        $this->session = new Session(new MockArraySessionStorage());
+        $this->app->instance('session', $this->session);
         /** @var Validator|MockObject $validator */
         $validator = new Validator();
-        $session->set('errors', [['bar' => 'some.bar.error']]);
-        $this->app->instance('session', $session);
         $user = $this->createUser();
 
         $auth->expects($this->exactly(2))
@@ -86,13 +80,12 @@ class AuthControllerTest extends TestCase
             ->method('withView')
             ->willReturnCallback(function ($view, $data = []) use ($response) {
                 $this->assertEquals('pages/login', $view);
-                $this->assertArraySubset(['errors' => collect(['some.bar.error', 'auth.not-found'])], $data);
                 return $response;
             });
 
         /** @var AuthController|MockObject $controller */
         $controller = $this->getMockBuilder(AuthController::class)
-            ->setConstructorArgs([$response, $session, $redirect, $config, $auth])
+            ->setConstructorArgs([$response, $this->session, $redirect, $config, $auth])
             ->onlyMethods(['loginUser'])
             ->getMock();
         $controller->setValidator($validator);
@@ -120,7 +113,7 @@ class AuthControllerTest extends TestCase
         // No user found
         $request = new Request([], ['login' => 'foo', 'password' => 'bar']);
         $controller->postLogin($request);
-        $this->assertEquals([], $session->all());
+        $this->assertHasNotification('auth.not-found', NotificationType::ERROR);
 
         // Authenticated user
         $controller->postLogin($request);

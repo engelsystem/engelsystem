@@ -20,7 +20,7 @@ function UserAngelType_update_view(UserAngelType $user_angeltype, User $user, An
                 ? __('Do you really want to add supporter rights for %s to %s?')
                 : __('Do you really want to remove supporter rights for %s from %s?'),
             $angeltype->name,
-            User_Nick_render($user)
+            $user->name
         ), true),
         form([
             buttons([
@@ -92,7 +92,7 @@ function UserAngelType_confirm_view(UserAngelType $user_angeltype, User $user, A
         msg(),
         info(sprintf(
             __('Do you really want to confirm %s for %s?'),
-            User_Nick_render($user),
+            $user->name,
             $angeltype->name
         ), true),
         form([
@@ -116,7 +116,7 @@ function UserAngelType_delete_view(UserAngelType $user_angeltype, User $user, An
         msg(),
         info(sprintf(
             __('Do you really want to delete %s from %s?'),
-            User_Nick_render($user),
+            $user->name,
             $angeltype->name
         ), true),
         form([
@@ -170,7 +170,7 @@ function UserAngelType_join_view($user, AngelType $angeltype)
         msg(),
         info(sprintf(
             __('Do you really want to add %s to %s?'),
-            User_Nick_render($user),
+            $user->name,
             $angeltype->name
         ), true),
         form([

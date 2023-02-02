@@ -27,7 +27,6 @@ class LegacyTest extends ExtensionTest
         $this->assertExtensionExists('menuUserHints', 'header_render_hints', $functions, $isSafeHtml);
         $this->assertExtensionExists('menuLanguages', 'make_language_select', $functions, $isSafeHtml);
         $this->assertExtensionExists('page', [$extension, 'getPage'], $functions);
-        $this->assertExtensionExists('msg', 'msg', $functions, $isSafeHtml);
     }
 
     /**

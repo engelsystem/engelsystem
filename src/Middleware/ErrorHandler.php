@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Middleware;
 
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
@@ -55,7 +56,10 @@ class ErrorHandler implements MiddlewareInterface
             $response = $this->createResponse($e->getMessage(), $e->getStatusCode(), $e->getHeaders());
         } catch (ValidationException $e) {
             $response = $this->redirectBack();
-            $response->with('errors', ['validation' => $e->getValidator()->getErrors()]);
+            $response->with(
+                'messages.' . NotificationType::ERROR->value,
+                ['validation' => $e->getValidator()->getErrors()]
+            );
 
             if ($request instanceof Request) {
                 $response->withInput(Arr::except($request->request->all(), $this->formIgnore));

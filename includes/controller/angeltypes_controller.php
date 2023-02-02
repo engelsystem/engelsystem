@@ -88,7 +88,7 @@ function angeltype_delete_controller()
     if (request()->hasPostData('delete')) {
         $angeltype->delete();
         engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype, true));
-        success(sprintf(__('Angeltype %s deleted.'), AngelType_name_render($angeltype)));
+        success(sprintf(__('Angeltype %s deleted.'), $angeltype->name));
         throw_redirect(page_link_to('angeltypes'));
     }
 

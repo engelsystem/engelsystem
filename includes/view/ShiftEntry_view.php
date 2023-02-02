@@ -126,7 +126,7 @@ function ShiftEntry_create_view_supporter(Shift $shift, Room $room, AngelType $a
             Shift_view_header($shift, $room),
             info(sprintf(
                 __('Do you want to sign up the following user for this shift as %s?'),
-                AngelType_name_render($angeltype)
+                $angeltype->name
             ), true),
             form([
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
@@ -153,7 +153,7 @@ function ShiftEntry_create_view_user(Shift $shift, Room $room, AngelType $angelt
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
             Shift_view_header($shift, $room),
-            info(sprintf(__('Do you want to sign up for this shift as %s?'), AngelType_name_render($angeltype)), true),
+            info(sprintf(__('Do you want to sign up for this shift as %s?'), $angeltype->name), true),
             form([
                 form_textarea('comment', __('Comment (for your eyes only):'), $comment),
                 form_submit('submit', icon('check-lg') . __('Save')),

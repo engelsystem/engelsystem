@@ -157,8 +157,6 @@ class NewsController extends BaseController
      */
     protected function renderView(string $page, array $data): Response
     {
-        $data += $this->getNotifications();
-
         return $this->response->withView($page, $data);
     }
 }

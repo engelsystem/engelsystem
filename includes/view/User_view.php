@@ -534,7 +534,7 @@ function User_view(
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
         [
-            msg(true),
+            msg(),
             div('row', [
                 div('col-md-12', [
                     buttons([

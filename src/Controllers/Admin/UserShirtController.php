@@ -42,7 +42,7 @@ class UserShirtController extends BaseController
 
         return $this->response->withView(
             'admin/user/edit-shirt.twig',
-            ['userdata' => $user] + $this->getNotifications()
+            ['userdata' => $user]
         );
     }
 

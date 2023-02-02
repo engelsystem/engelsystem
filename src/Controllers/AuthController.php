@@ -39,10 +39,7 @@ class AuthController extends BaseController
 
     protected function showLogin(): Response
     {
-        return $this->response->withView(
-            'pages/login',
-            $this->getNotifications()
-        );
+        return $this->response->withView('pages/login');
     }
 
     /**
@@ -58,7 +55,7 @@ class AuthController extends BaseController
         $user = $this->auth->authenticate($data['login'], $data['password']);
 
         if (!$user instanceof User) {
-            $this->addNotification('auth.not-found', 'errors');
+            $this->addNotification('auth.not-found', NotificationType::ERROR);
 
             return $this->showLogin();
         }

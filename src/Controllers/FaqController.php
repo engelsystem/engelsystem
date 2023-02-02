@@ -32,7 +32,7 @@ class FaqController extends BaseController
 
         return $this->response->withView(
             'pages/faq/overview.twig',
-            ['text' => $text, 'items' => $faq] + $this->getNotifications()
+            ['text' => $text, 'items' => $faq]
         );
     }
 }

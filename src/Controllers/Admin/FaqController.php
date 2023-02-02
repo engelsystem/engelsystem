@@ -83,7 +83,7 @@ class FaqController extends BaseController
     {
         return $this->response->withView(
             'pages/faq/edit.twig',
-            ['faq' => $faq] + $this->getNotifications()
+            ['faq' => $faq]
         );
     }
 }

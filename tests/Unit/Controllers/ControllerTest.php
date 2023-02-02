@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
@@ -33,12 +34,26 @@ abstract class ControllerTest extends TestCase
     protected Session $session;
 
     /**
-     * @param string|null $type
+     * @param string|string[] $value
      */
-    protected function assertHasNotification(string $value, string $type = 'messages'): void
+    protected function setNotification(string|array $value, NotificationType $type = NotificationType::MESSAGE): void
     {
-        $messages = $this->session->get($type, []);
-        $this->assertTrue(in_array($value, $messages));
+        $this->session->set(
+            'messages.' . $type->value,
+            array_merge($this->session->get('messages.' . $type->value, []), (array) $value)
+        );
+    }
+
+    protected function assertHasNotification(string $value, NotificationType $type = NotificationType::MESSAGE): void
+    {
+        $messages = $this->session->get('messages.' . $type->value, []);
+        $this->assertTrue(in_array($value, $messages), 'Has ' . $type->value . ' notification: ' . $value);
+    }
+
+    protected function assertHasNoNotifications(NotificationType $type = null): void
+    {
+        $messages = $this->session->get('messages' . ($type ? '.' . $type->value : ''), []);
+        $this->assertEmpty($messages, 'Has no' . ($type ? ' ' . $type->value : '') . ' notification.');
     }
 
     /**

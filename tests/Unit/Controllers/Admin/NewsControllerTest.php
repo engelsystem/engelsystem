@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Engelsystem\Controllers\Admin\NewsController;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -12,9 +13,7 @@ use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\News;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
-use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class NewsControllerTest extends ControllerTest
 {
@@ -42,10 +41,7 @@ class NewsControllerTest extends ControllerTest
             ->willReturnCallback(function ($view, $data) {
                 $this->assertEquals('pages/news/edit.twig', $view);
 
-                /** @var Collection $warnings */
-                $warnings = $data['warnings'];
                 $this->assertNotEmpty($data['news']);
-                $this->assertTrue($warnings->isEmpty());
 
                 return $this->response;
             });
@@ -54,6 +50,7 @@ class NewsControllerTest extends ControllerTest
         $controller = $this->app->make(NewsController::class);
 
         $controller->edit($this->request);
+        $this->assertHasNoNotifications(NotificationType::WARNING);
     }
 
     /**
@@ -147,10 +144,7 @@ class NewsControllerTest extends ControllerTest
 
         $this->assertTrue($this->log->hasInfoThatContains('Updated'));
 
-        /** @var Session $session */
-        $session = $this->app->get('session');
-        $messages = $session->get('messages');
-        $this->assertEquals('news.edit.success', $messages[0]);
+        $this->assertHasNotification('news.edit.success');
 
         $news = (new News())->find($id);
         $this->assertEquals($text, $news->text);
@@ -224,10 +218,7 @@ class NewsControllerTest extends ControllerTest
 
         $this->assertTrue($this->log->hasInfoThatContains('Deleted'));
 
-        /** @var Session $session */
-        $session = $this->app->get('session');
-        $messages = $session->get('messages');
-        $this->assertEquals('news.delete.success', $messages[0]);
+        $this->assertHasNotification('news.delete.success');
     }
 
     /**

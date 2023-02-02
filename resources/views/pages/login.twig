@@ -34,6 +34,10 @@
                     <div class="card-body">
                         {% include 'layouts/parts/messages.twig' %}
 
+                        {% if session_get('show_welcome', false) %}
+                            {{ m.alert(config('welcome_msg') | md, null, true) }}
+                        {% endif %}
+
                         <form action="" enctype="multipart/form-data" method="post">
                             {{ csrf() }}
                             <div class="mb-3">
