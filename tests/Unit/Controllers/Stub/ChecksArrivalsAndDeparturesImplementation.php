@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Test\Unit\Controllers\Stub;
 
 use Engelsystem\Controllers\ChecksArrivalsAndDepartures;

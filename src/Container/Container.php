@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Container;
 
 use Illuminate\Container\Container as IlluminateContainer;

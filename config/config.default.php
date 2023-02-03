@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // To change settings create a config.php
 
 return [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Test\Feature\Model;
 
 use Engelsystem\Models\LogEntry;

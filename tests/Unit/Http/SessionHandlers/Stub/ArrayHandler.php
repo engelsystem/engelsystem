@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Test\Unit\Http\SessionHandlers\Stub;
 
 use Engelsystem\Http\SessionHandlers\AbstractHandler;

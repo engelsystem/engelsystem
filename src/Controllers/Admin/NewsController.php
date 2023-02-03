@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Controllers\BaseController;

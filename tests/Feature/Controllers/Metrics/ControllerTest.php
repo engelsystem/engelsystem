@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Test\Feature\Controllers\Metrics;
 
 use Engelsystem\Controllers\Metrics\Controller;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Events\Listener;
 
 use Engelsystem\Config\Config;

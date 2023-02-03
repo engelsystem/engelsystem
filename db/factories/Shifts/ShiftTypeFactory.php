@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories\Engelsystem\Models\Shifts;
 
 use Engelsystem\Models\Shifts\ShiftType;
