@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Http\Request;

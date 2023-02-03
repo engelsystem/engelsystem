@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Test\Unit\Http\Validation\Stub;
 
 use Engelsystem\Controllers\BaseController;

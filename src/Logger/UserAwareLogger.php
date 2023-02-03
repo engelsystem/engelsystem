@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Logger;
 
 use Engelsystem\Helpers\Authenticator;

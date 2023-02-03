@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Http\Exceptions;
 
 use Engelsystem\Http\Validation\Validator;

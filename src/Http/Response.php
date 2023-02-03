@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Http;
 
 use Engelsystem\Renderer\Renderer;

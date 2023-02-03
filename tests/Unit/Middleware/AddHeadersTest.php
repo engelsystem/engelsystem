@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Test\Unit\Middleware;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;

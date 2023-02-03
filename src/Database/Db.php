@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Database;
 
 use Illuminate\Database\Capsule\Manager as CapsuleManager;

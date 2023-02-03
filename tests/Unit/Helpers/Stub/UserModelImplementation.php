@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Test\Unit\Helpers\Stub;
 
 use Engelsystem\Models\User\User;

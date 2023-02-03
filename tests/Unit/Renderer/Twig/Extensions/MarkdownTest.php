@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Renderer\Twig\Extensions\Markdown;

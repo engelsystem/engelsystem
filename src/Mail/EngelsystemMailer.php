@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Mail;
 
 use Engelsystem\Helpers\Translation\Translator;

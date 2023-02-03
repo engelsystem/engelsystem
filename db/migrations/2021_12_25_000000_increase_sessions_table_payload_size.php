@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;

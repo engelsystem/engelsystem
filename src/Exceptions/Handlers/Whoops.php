@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Exceptions\Handlers;
 
 use Engelsystem\Application;

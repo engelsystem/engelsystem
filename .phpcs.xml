@@ -40,4 +40,10 @@
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment" />
     <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment" />
     <rule ref="Generic.Formatting.SpaceAfterCast" />
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <exclude-pattern>/includes</exclude-pattern>
+        <properties>
+            <property name="spacesCountAroundEqualsSign" value="0" />
+        </properties>
+    </rule>
 </ruleset>
