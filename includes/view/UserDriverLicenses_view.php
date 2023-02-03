@@ -52,7 +52,7 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
             form_submit('submit', __('Save')),
         ]),
         '
-        <script type="text/javascript">
+        <script>
             const drivingLicenseElement = document.getElementById("driving_license");
 
             if (drivingLicenseElement) {
