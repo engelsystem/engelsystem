@@ -338,8 +338,8 @@ class StatsTest extends TestCase
         /** @var Shift $shift */
         $shift = Shift::factory()->create(['start' => Carbon::now()->subHour(), 'end' => Carbon::now()->addHour()]);
 
-        ShiftEntry::factory()->create(['shift_id' => $shift->id]);
-        ShiftEntry::factory()->create(['shift_id' => $shift->id]);
+        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeloaded' => false]);
+        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeloaded' => false]);
         ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeloaded' => true]);
 
         $stats = new Stats($this->database);
