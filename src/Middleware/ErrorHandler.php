@@ -65,7 +65,7 @@ class ErrorHandler implements MiddlewareInterface
         $statusCode = $response->getStatusCode();
         $contentType = $response->getHeader('content-type');
         $contentType = array_shift($contentType);
-        if (!$contentType && strpos($response->getBody() ?? '', '<html') !== false) {
+        if (!$contentType && strpos($response->getBody()?->getContents() ?? '', '<html') !== false) {
             $contentType = 'text/html';
         }
 
@@ -100,7 +100,7 @@ class ErrorHandler implements MiddlewareInterface
         $viewsList = [$statusCode, $hundreds, $hundreds * 100];
         foreach ($viewsList as $view) {
             if ($this->loader->exists($this->viewPrefix . $view)) {
-                return $view;
+                return (string) $view;
             }
         }
 

@@ -15,7 +15,7 @@ class BaseModelImplementation extends BaseModel
 
     public int $saveCount = 0;
 
-    public static QueryBuilder $queryBuilder = null;
+    public static ?QueryBuilder $queryBuilder = null;
 
     public function save(array $options = []): bool
     {

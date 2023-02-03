@@ -55,7 +55,7 @@ class LegacyMiddlewareTest extends TestCase
             ->method('renderPage')
             ->withConsecutive(
                 ['users', 'title', 'content'],
-                ['404', 'Page not found', 'It\'s not available!']
+                [404, 'Page not found', 'It\'s not available!']
             )
             ->willReturn($response);
 
