@@ -10,7 +10,7 @@
 
         <link rel="icon" href="{{ asset('assets/angel.svg') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme' ~ themeId ~ '.css') }}"/>
-        <script type="text/javascript" src="{{ asset('assets/vendor.js') }}"></script>
+        <script src="{{ asset('assets/vendor.js') }}"></script>
 
         {% if page() in ['news', 'meetings'] and is_user() and has_permission_to('atom') -%}
             {% set parameters = {'key': user.api_key} -%}
