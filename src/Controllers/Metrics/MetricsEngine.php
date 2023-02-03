@@ -169,7 +169,7 @@ class MetricsEngine implements EngineInterface
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $value
+            (string) $value
         );
     }
 

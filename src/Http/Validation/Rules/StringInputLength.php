@@ -29,7 +29,7 @@ trait StringInputLength
         try {
             $input = new DateTime($input);
             // Min 1s diff to exclude any not auto-detected dates / times like ...
-            return abs((new DateTime())->diff($input)->format('%s')) > 1;
+            return abs((int) (new DateTime())->diff($input)->format('%s')) > 1;
         } catch (Exception $e) {
             // Ignore it
         }

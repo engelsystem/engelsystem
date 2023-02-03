@@ -34,7 +34,7 @@ class NewsController extends BaseController
         $newsId = $request->getAttribute('news_id'); // optional
 
         $news = $this->news->find($newsId);
-        $isMeeting = $request->get('meeting', false);
+        $isMeeting = (bool) $request->get('meeting', false);
 
         return $this->showEdit($news, $isMeeting);
     }

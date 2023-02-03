@@ -164,7 +164,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      */
     public function withUri(UriInterface $uri, mixed $preserveHost = false): static
     {
-        $new = $this->create($uri);
+        $new = $this->create((string) $uri);
         if ($preserveHost) {
             $new->headers->set('HOST', $this->getHost());
         }

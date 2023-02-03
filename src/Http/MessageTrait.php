@@ -213,7 +213,7 @@ trait MessageTrait
      */
     public function getBody(): StreamInterface
     {
-        $stream = Stream::create($this->getContent());
+        $stream = Stream::create((string) $this->getContent());
         $stream->rewind();
 
         return $stream;
@@ -237,7 +237,7 @@ trait MessageTrait
         $new = clone $this;
 
         if (method_exists($new, 'setContent')) {
-            $new->setContent($body);
+            $new->setContent((string) $body);
         } else {
             $new->content = $body;
         }

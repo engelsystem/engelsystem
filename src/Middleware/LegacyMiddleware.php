@@ -152,10 +152,10 @@ class LegacyMiddleware implements MiddlewareInterface
      *
      * @codeCoverageIgnore
      */
-    protected function renderPage(string $page, string $title, string $content): ResponseInterface
+    protected function renderPage(string | int $page, string $title, string $content): ResponseInterface
     {
         if (!empty($page) && is_int($page)) {
-            return response($content, (int) $page);
+            return response($content, $page);
         }
 
         if (strpos((string) $content, '<html') !== false) {
