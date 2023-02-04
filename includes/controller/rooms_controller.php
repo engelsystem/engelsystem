@@ -27,8 +27,8 @@ function room_controller(): array
     $days = [];
     foreach ($all_shifts as $shift) {
         $day = $shift->start->format('Y-m-d');
-        if (!in_array($day, $days)) {
-            $days[] = $day;
+        if (!isset($days[$day])) {
+            $days[$day] = $shift->start->format(__('Y-m-d'));
         }
     }
 
@@ -38,8 +38,8 @@ function room_controller(): array
         AngelType::query()->get('id')->pluck('id')->toArray()
     );
     $selected_day = date('Y-m-d');
-    if (!empty($days) && !in_array($selected_day, $days)) {
-        $selected_day = $days[0];
+    if (!empty($days) && !isset($days[$selected_day])) {
+        $selected_day = array_key_first($days);
     }
     if ($request->input('shifts_filter_day')) {
         $selected_day = $request->input('shifts_filter_day');

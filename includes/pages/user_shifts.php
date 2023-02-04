@@ -262,6 +262,10 @@ function view_user_shifts()
         info(render_user_arrived_hint());
     }
 
+    $formattedDays = collect($days)->map(function ($value) {
+        return Carbon::make($value)->format(__('Y-m-d'));
+    })->toArray();
+
     return page([
         div('col-md-12', [
             msg(),
@@ -276,14 +280,14 @@ function view_user_shifts()
                 'start_select'  => html_select_key(
                     'start_day',
                     'start_day',
-                    array_combine($days, $days),
+                    array_combine($days, $formattedDays),
                     $start_day
                 ),
                 'start_time'    => $start_time,
                 'end_select'    => html_select_key(
                     'end_day',
                     'end_day',
-                    array_combine($days, $days),
+                    array_combine($days, $formattedDays),
                     $end_day
                 ),
                 'end_time'      => $end_time,

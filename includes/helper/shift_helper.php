@@ -41,13 +41,13 @@ class Shift
             (($end->timestamp - $start->timestamp) / 60 / 60)
             * Shifts::getNightShiftMultiplier($start, $end);
         $workLog->comment = sprintf(
-            '%s (%s as %s) in %s, %s - %s',
+            __('%s (%s as %s) in %s, %s - %s'),
             $name,
             $title,
             $type,
             $room->name,
-            $start->format('Y-m-d H:i'),
-            $end->format('Y-m-d H:i')
+            $start->format(__('Y-m-d H:i')),
+            $end->format(__('Y-m-d H:i'))
         );
         $workLog->save();
 

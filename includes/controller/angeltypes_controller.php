@@ -220,11 +220,12 @@ function angeltype_controller_shiftsFilterDays(AngelType $angeltype)
     $days = [];
     foreach ($all_shifts as $shift) {
         $day = Carbon::make($shift['start'])->format('Y-m-d');
-        if (!in_array($day, $days)) {
-            $days[] = $day;
+        $dayFormatted = Carbon::make($shift['start'])->format(__('Y-m-d'));
+        if (!isset($days[$day])) {
+            $days[$day] = $dayFormatted;
         }
     }
-    sort($days);
+    ksort($days);
     return $days;
 }
 
@@ -244,8 +245,8 @@ function angeltype_controller_shiftsFilter(AngelType $angeltype, $days)
         [$angeltype->id]
     );
     $selected_day = date('Y-m-d');
-    if (!empty($days) && !in_array($selected_day, $days)) {
-        $selected_day = $days[0];
+    if (!empty($days) && !isset($days[$selected_day])) {
+        $selected_day = array_key_first($days);
     }
     if ($request->input('shifts_filter_day')) {
         $selected_day = $request->input('shifts_filter_day');

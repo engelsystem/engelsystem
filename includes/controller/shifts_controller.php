@@ -273,8 +273,8 @@ function shift_delete_controller()
         error(sprintf(
             __('Do you want to delete the shift %s from %s to %s?'),
             $shift->shiftType->name,
-            $shift->start->format('Y-m-d H:i'),
-            $shift->end->format('H:i')
+            $shift->start->format(__('Y-m-d H:i')),
+            $shift->end->format(__('H:i'))
         ), true),
         form([
             form_hidden('delete_shift', $shift->id),
