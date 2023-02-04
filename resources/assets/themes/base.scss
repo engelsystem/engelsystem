@@ -168,6 +168,9 @@ table a > .icon-icon_angel {
 .dropdown-menu {
   max-height: calc(100vh - 300px); // 300px: menu offset
   overflow: auto;
+
+  // Show above shifts headers
+  z-index: $zindex-sticky + 2;
 }
 
 @media (min-width: map-get($grid-breakpoints, 'lg')) {
