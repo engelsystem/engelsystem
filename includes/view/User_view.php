@@ -305,10 +305,10 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
 
     $myshift = [
         'date'       => icon('calendar-event')
-            . $shift->start->format('Y-m-d') . '<br>'
+            . $shift->start->format(__('Y-m-d')) . '<br>'
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
-            . $shift->end->format('H:i'),
+            . $shift->end->format(__('H:i')),
         'duration'   => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
         'room'       => Room_name_render($shift->room),
         'shift_info' => $shift_info,
@@ -445,7 +445,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     }
 
     return [
-        'date'       => icon('calendar-event') . date('Y-m-d', $worklog->worked_at->timestamp),
+        'date'       => icon('calendar-event') . date(__('Y-m-d'), $worklog->worked_at->timestamp),
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
         'room'       => '',
         'shift_info' => __('Work log entry'),
@@ -453,7 +453,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
             . sprintf(
                 __('Added by %s at %s'),
                 User_Nick_render($worklog->creator),
-                $worklog->created_at->format('Y-m-d H:i')
+                $worklog->created_at->format(__('Y-m-d H:i'))
             ),
         'actions'    => $actions,
     ];
@@ -711,7 +711,7 @@ function User_view_state_admin($freeloader, $user_source)
         $state[] = '<span class="text-success">' . icon('house')
             . sprintf(
                 __('Arrived at %s'),
-                $user_source->state->arrival_date ? $user_source->state->arrival_date->format('Y-m-d') : ''
+                $user_source->state->arrival_date ? $user_source->state->arrival_date->format(__('Y-m-d')) : ''
             )
             . '</span>';
 
@@ -728,7 +728,7 @@ function User_view_state_admin($freeloader, $user_source)
         $state[] = '<span class="text-danger">'
             . ($arrivalDate ? sprintf(
                 __('Not arrived (Planned: %s)'),
-                $arrivalDate->format('Y-m-d')
+                $arrivalDate->format(__('Y-m-d'))
             ) : __('Not arrived'))
             . '</span>';
     }

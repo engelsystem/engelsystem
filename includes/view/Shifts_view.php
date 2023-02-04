@@ -61,14 +61,14 @@ function Shift_editor_info_render(Shift $shift)
     if (!empty($shift->created_by)) {
         $info[] = sprintf(
             icon('plus-lg') . __('created at %s by %s'),
-            $shift->created_at->format('Y-m-d H:i'),
+            $shift->created_at->format(__('Y-m-d H:i')),
             User_Nick_render($shift->createdBy)
         );
     }
     if (!empty($shift->updated_by)) {
         $info[] = sprintf(
             icon('pencil') . __('edited at %s by %s'),
-            $shift->updated_at->format('Y-m-d H:i'),
+            $shift->updated_at->format(__('Y-m-d H:i')),
             User_Nick_render($shift->updatedBy)
         );
     }
@@ -164,7 +164,7 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
     if (config('signup_advance_hours') && $shift->start->timestamp > time() + config('signup_advance_hours') * 3600) {
         $content[] = info(sprintf(
             __('This shift is in the far future and becomes available for signup at %s.'),
-            date(__('Y-m-d') . ' H:i', $shift->start->timestamp - config('signup_advance_hours') * 3600)
+            date(__('Y-m-d H:i'), $shift->start->timestamp - config('signup_advance_hours') * 3600)
         ), true);
     }
 

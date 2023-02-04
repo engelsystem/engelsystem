@@ -797,6 +797,9 @@ msgid "User %s could not be notified by email due to an error."
 msgstr ""
 "Aufgrund eines Fehlers konnte dem User %s keine E-Mail gesendet werden."
 
+msgid "%s (%s as %s) in %s, %s - %s"
+msgstr "%s (%s als %s) in %s, %s - %s"
+
 #: includes/mailer/shifts_mailer.php:17
 msgid "A Shift you are registered on has changed:"
 msgstr "Eine deiner Schichten hat sich geändert:"

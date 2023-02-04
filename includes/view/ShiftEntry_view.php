@@ -21,8 +21,8 @@ function ShiftEntry_delete_view_admin(Shift $shift, AngelType $angeltype, User $
             __('Do you want to sign off %s from shift %s from %s to %s as %s?'),
             User_Nick_render($signoff_user),
             $shift->shiftType->name,
-            $shift->start->format('Y-m-d H:i'),
-            $shift->end->format('Y-m-d H:i'),
+            $shift->start->format(__('Y-m-d H:i')),
+            $shift->end->format(__('Y-m-d H:i')),
             $angeltype->name
         ), true),
         form([
@@ -49,8 +49,8 @@ function ShiftEntry_delete_view(Shift $shift, AngelType $angeltype, User $signof
         info(sprintf(
             __('Do you want to sign off from your shift %s from %s to %s as %s?'),
             $shift->shiftType->name,
-            $shift->start->format('Y-m-d H:i'),
-            $shift->end->format('Y-m-d H:i'),
+            $shift->start->format(__('Y-m-d H:i')),
+            $shift->end->format(__('Y-m-d H:i')),
             $angeltype->name
         ), true),
 

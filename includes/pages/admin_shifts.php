@@ -304,9 +304,9 @@ function admin_shifts()
                 $shifts_table_entry = [
                     'timeslot'      =>
                         icon('clock-history') . ' '
-                        . $shift['start']->format('Y-m-d H:i')
+                        . $shift['start']->format(__('Y-m-d H:i'))
                         . ' - '
-                        . $shift['end']->format('H:i')
+                        . $shift['end']->format(__('H:i'))
                         . '<br />'
                         . Room_name_render(Room::find($shift['room_id'])),
                     'title'         =>

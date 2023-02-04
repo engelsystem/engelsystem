@@ -54,7 +54,7 @@ function admin_user()
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>' . __('Nickname') . '</td><td>' . '<input size="40" name="eNick" value="' . $user_source->name . '" class="form-control" maxlength="24"></td></tr>' . "\n";
         $html .= '  <tr><td>' . __('Last login') . '</td><td><p class="help-block">'
-            . ($user_source->last_login_at ? $user_source->last_login_at->format('Y-m-d H:i') : '-')
+            . ($user_source->last_login_at ? $user_source->last_login_at->format(__('Y-m-d H:i')) : '-')
             . '</p></td></tr>' . "\n";
         if (config('enable_user_name')) {
             $html .= '  <tr><td>' . __('Prename') . '</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";

@@ -115,7 +115,7 @@ function admin_arrive()
         ]);
 
         if ($usr->state->arrival_date) {
-            $day = $usr->state->arrival_date->format('Y-m-d');
+            $day = $usr->state->arrival_date->format(__('Y-m-d'));
             if (!isset($arrival_count_at_day[$day])) {
                 $arrival_count_at_day[$day] = 0;
             }
@@ -123,7 +123,7 @@ function admin_arrive()
         }
 
         if ($usr->personalData->planned_arrival_date) {
-            $day = $usr->personalData->planned_arrival_date->format('Y-m-d');
+            $day = $usr->personalData->planned_arrival_date->format(__('Y-m-d'));
             if (!isset($planned_arrival_count_at_day[$day])) {
                 $planned_arrival_count_at_day[$day] = 0;
             }
@@ -131,7 +131,7 @@ function admin_arrive()
         }
 
         if ($usr->personalData->planned_departure_date && $usr->state->arrived) {
-            $day = $usr->personalData->planned_departure_date->format('Y-m-d');
+            $day = $usr->personalData->planned_departure_date->format(__('Y-m-d'));
             if (!isset($planned_departure_count_at_day[$day])) {
                 $planned_departure_count_at_day[$day] = 0;
             }
