@@ -85,7 +85,7 @@ docker compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
 
 ## Localhost
-You can find yout local Engelsystem on [http://localhost:5080](http://localhost:5080).
+You can find your local Engelsystem on [http://localhost:5080](http://localhost:5080).
 
 ## Local build without Docker
 The following instructions explain how to get, build and run the latest Engelsystem version directly from the git main branch (may be unstable!).
@@ -118,7 +118,7 @@ The following instructions explain how to get, build and run the latest Engelsys
   ```
 
 ## Testing
-To run the unit tests use
+To run only unit tests (tests that should not change the Engelsystem state) use
 ```bash
 vendor/bin/phpunit --testsuite Unit
 ```
@@ -127,18 +127,24 @@ If a database is configured and the Engelsystem is allowed to mess around with s
 The tests can potentially delete some database entries, so they should never be run on a production system!
 ```bash
 vendor/bin/phpunit --testsuite Feature
-# or for unit- and feature tests:
+```
+
+When you want to run unit and feature tests at once:
+```bash
 vendor/bin/phpunit
 ```
 
-To run code coverage reports its highly recommended to use [`pcov`](https://github.com/krakjoe/pcov) or
+To generate code coverage reports it's highly recommended to use [`pcov`](https://github.com/krakjoe/pcov) or
 at least `phpdbg -qrr`(which has problems with switch case statements) as using Xdebug slows down execution.
 ```bash
-php -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit --testsuite Unit --coverage-text
+php -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit --coverage-text
 ```
 
-If using the Docker-based development environment
-you can run the following script to retrieve a coverage report.
+For better debug output, adding `-vvv` might be helpful.
+Adding `--coverage-html public/coverage/` exports the coverage reports to the `public/` dir which then can be viewed at [localhost:5080/coverage/index.html](http://localhost:5080/coverage/index.html).
+
+### Docker
+If using the Docker-based development environment  you can run the following script to retrieve a coverage report.
 ```sh
 docker compose exec es_workspace composer phpunit:coverage
 ```
@@ -148,7 +154,7 @@ A browsable HTML version is available at http://localhost:5080/coverage/index.ht
 
 ### Var Dump server
 Symfony Var Dump server is configured to allow for easier debugging. It is not meant as a replacement for xdebug but can actually be used together with xdebug.
-This Var Dump Server is especially useful for when you want to debug a request without messing up the output e.g API calls ot HTML layout.
+The Var Dump Server is especially useful if you want to debug a request without messing up the output e.g. of API calls or the HTML layout.
 
 To use simply call the method `dump` and pass the arguments in exactly the same way you would when using `var_dump`.
 
