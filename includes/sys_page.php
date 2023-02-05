@@ -249,7 +249,7 @@ function strip_request_item_nl($name, $default_value = null)
 function strip_item($item)
 {
     // Only allow letters, symbols, punctuation, separators and numbers without html tags
-    return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+]+)/ui", '', strip_tags($item));
+    return preg_replace('/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+]+)/ui', '', strip_tags($item));
 }
 
 /**

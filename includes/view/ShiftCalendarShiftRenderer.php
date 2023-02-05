@@ -197,11 +197,11 @@ class ShiftCalendarShiftRenderer
                 ? $inner_text . icon('mortarboard-fill')
                 // Add link to join the angeltype first
                 : $inner_text . '<br />'
-                    . button(
-                        page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
-                        sprintf(__('Become %s'), $angeltype->name),
-                        'btn-sm'
-                    ),
+                . button(
+                    page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
+                    sprintf(__('Become %s'), $angeltype->name),
+                    'btn-sm'
+                ),
             // Shift collides or user is already signed up: No signup allowed
             ShiftSignupStatus::COLLIDES, ShiftSignupStatus::SIGNED_UP => $inner_text,
             // Shift is full
@@ -251,12 +251,12 @@ class ShiftCalendarShiftRenderer
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift->id]),
                         icon('pencil'),
-                        "btn-$class btn-sm border-light text-white"
+                        'btn-' . $class . ' btn-sm border-light text-white'
                     ),
                     button(
                         page_link_to('user_shifts', ['delete_shift' => $shift->id]),
                         icon('trash'),
-                        "btn-$class btn-sm border-light text-white"
+                        'btn-' . $class . ' btn-sm border-light text-white'
                     )
                 ]) . '</div>';
         }

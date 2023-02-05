@@ -53,7 +53,7 @@ class DesignController extends BaseController
         $date = CarbonImmutable::now();
 
         for ($i = 1; $i <= 600; $i++) {
-            $formattedDate = $date->format("Y-m-d");
+            $formattedDate = $date->format('Y-m-d');
             $dateSelectOptions[$formattedDate] = $formattedDate;
             $date = $date->addDay();
         }
