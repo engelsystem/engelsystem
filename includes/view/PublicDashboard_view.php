@@ -12,7 +12,7 @@ function public_dashboard_view($stats, $free_shifts)
     $needed_angels = '';
     if (count($free_shifts) > 0) {
         $shift_panels = [
-            '<div class="row">'
+            '<div class="row">',
         ];
         foreach ($free_shifts as $i => $shift) {
             $shift_panels[] = public_dashboard_shift_render($shift);
@@ -23,11 +23,11 @@ function public_dashboard_view($stats, $free_shifts)
         $shift_panels[] = '</div>';
         $needed_angels = div('first', [
             div('col-md-12', [
-                heading(__('Needed angels:'))
+                heading(__('Needed angels:')),
             ]),
             div('container-fluid', [
-                join($shift_panels)
-            ])
+                join($shift_panels),
+            ]),
         ]);
     }
 
@@ -42,7 +42,7 @@ function public_dashboard_view($stats, $free_shifts)
                     stats(__('Angels currently working'), $stats['angels-working'], 'default'),
                     stats(__('Hours to be worked'), $stats['hours-to-work'], 'default'),
                 ], 'statistics'),
-                $needed_angels
+                $needed_angels,
             ], 'public-dashboard'),
         ]),
         div('first col-md-12 text-center', [buttons([
@@ -55,7 +55,7 @@ function public_dashboard_view($stats, $free_shifts)
             auth()->user() ? button(
                 public_dashboard_link($isFiltered ? [] : ['filtered' => 1] + $filter),
                 icon('filter') . ($isFiltered ? __('All') : __('Filtered'))
-            ) : ''
+            ) : '',
         ])], 'fullscreen-button'),
     ]);
 }
@@ -94,8 +94,8 @@ function public_dashboard_shift_render($shift)
         div('dashboard-card card border-' . $shift['style'] . ' ' . $type, [
             div('card-body', [
                 '<a class="card-link" href="' . shift_link($shift) . '"></a>',
-                $panel_body
-            ])
-        ])
+                $panel_body,
+            ]),
+        ]),
     ]);
 }

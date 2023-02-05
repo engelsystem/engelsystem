@@ -31,20 +31,20 @@ function EventConfig_edit_view(
                     form_info(
                         '',
                         __('Welcome message is shown after successful registration. You can use markdown.')
-                    )
+                    ),
                 ]),
                 div('col-md-3 col-xs-6', [
                     form_datetime('buildup_start_date', __('Buildup date'), $buildup_start_date),
                     form_datetime('event_start_date', __('Event start date'), $event_start_date),
                     form_datetime('event_end_date', __('Event end date'), $event_end_date),
                     form_datetime('teardown_end_date', __('Teardown end date'), $teardown_end_date),
-                ])
+                ]),
             ]),
             div('row', [
                 div('col-md-6', [
-                    form_submit('submit', __('Save'))
-                ])
-            ])
-        ])
+                    form_submit('submit', __('Save')),
+                ]),
+            ]),
+        ]),
     ]);
 }

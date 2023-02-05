@@ -68,7 +68,7 @@ function angeltypes_about_controller()
 
     return [
         __('Teams/Job description'),
-        AngelTypes_about_view($angeltypes, (bool) $user)
+        AngelTypes_about_view($angeltypes, (bool) $user),
     ];
 }
 
@@ -94,7 +94,7 @@ function angeltype_delete_controller()
 
     return [
         sprintf(__('Delete angeltype %s'), $angeltype->name),
-        AngelType_delete_view($angeltype)
+        AngelType_delete_view($angeltype),
     ];
 }
 
@@ -172,7 +172,7 @@ function angeltype_edit_controller()
 
     return [
         sprintf(__('Edit %s'), $angeltype->name),
-        AngelType_edit_view($angeltype, $supporter_mode)
+        AngelType_edit_view($angeltype, $supporter_mode),
     ];
 }
 
@@ -226,7 +226,7 @@ function angeltype_controller()
             $shiftsFilterRenderer,
             $shiftCalendarRenderer,
             $tab
-        )
+        ),
     ];
 }
 
@@ -298,7 +298,7 @@ function angeltypes_list_controller()
                 page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
                 icon('eye') . __('view'),
                 'btn-sm'
-            )
+            ),
         ];
 
         if (auth()->can('admin_angel_types')) {
@@ -346,7 +346,7 @@ function angeltypes_list_controller()
 
     return [
         angeltypes_title(),
-        AngelTypes_list_view($angeltypes, auth()->can('admin_angel_types'))
+        AngelTypes_list_view($angeltypes, auth()->can('admin_angel_types')),
     ];
 }
 

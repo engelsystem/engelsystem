@@ -25,7 +25,7 @@ class NewsTest extends ModelTest
         $this->newsData = [
             'title'   => 'test title',
             'text'    => 'test text',
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ];
     }
 

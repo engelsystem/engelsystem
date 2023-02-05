@@ -58,7 +58,7 @@ class AddNameMinutesAndTimestampsToSchedules extends Migration
 
             $connection->table('schedules')
                 ->update([
-                    'shift_type' => $connection->raw('(' . $query->toSql() . ')')
+                    'shift_type' => $connection->raw('(' . $query->toSql() . ')'),
                 ]);
 
             $this->schema->table(

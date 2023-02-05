@@ -75,7 +75,7 @@ class LoggerTest extends ServiceProviderTest
                     {
                         return 'Bar';
                     }
-                }
+                },
         ]);
     }
 }

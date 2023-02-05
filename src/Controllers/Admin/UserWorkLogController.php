@@ -105,7 +105,7 @@ class UserWorkLogController extends BaseController
 
         return $this->response->withView(
             'admin/user/delete-worklog.twig',
-            [ 'user' => $user ]
+            ['user' => $user]
         );
     }
 

@@ -83,7 +83,7 @@ class UserShirtController extends BaseController
                 'size'      => $user->personalData->shirt_size,
                 'arrived'   => $user->state->arrived ? 'yes' : 'no',
                 'active'    => $user->state->active ? 'yes' : 'no',
-                'got_shirt' => $user->state->got_shirt ? 'yes' : 'no'
+                'got_shirt' => $user->state->got_shirt ? 'yes' : 'no',
             ]
         );
 

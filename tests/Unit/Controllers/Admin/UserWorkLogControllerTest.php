@@ -110,7 +110,7 @@ class UserWorkLogControllerTest extends ControllerTest
             'user_id' => $this->user->id,
             'worked_at' => new Carbon('2022-01-01'),
             'hours' => 3.14,
-            'comment' => 'a comment'
+            'comment' => 'a comment',
         ])->create();
 
         $request = $this->request

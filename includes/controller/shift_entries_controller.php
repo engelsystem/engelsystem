@@ -123,7 +123,7 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
     $room = $shift->room;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_select, $signup_user, $users_select)
+        ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_select, $signup_user, $users_select),
     ];
 }
 
@@ -170,7 +170,7 @@ function shift_entry_create_controller_supporter(Shift $shift, AngelType $angelt
     $room = $shift->room;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_supporter($shift, $room, $angeltype, $signup_user, $users_select)
+        ShiftEntry_create_view_supporter($shift, $room, $angeltype, $signup_user, $users_select),
     ];
 }
 
@@ -253,7 +253,7 @@ function shift_entry_create_controller_user(Shift $shift, AngelType $angeltype):
     $room = $shift->room;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_user($shift, $room, $angeltype, $comment)
+        ShiftEntry_create_view_user($shift, $room, $angeltype, $comment),
     ];
 }
 
@@ -270,7 +270,7 @@ function shift_entry_create_link(Shift $shift, AngelType $angeltype, $params = [
     $params = array_merge([
         'action'       => 'create',
         'shift_id'     => $shift->id,
-        'angeltype_id' => $angeltype->id
+        'angeltype_id' => $angeltype->id,
     ], $params);
     return page_link_to('shift_entries', $params);
 }
@@ -286,7 +286,7 @@ function shift_entry_create_link_admin(Shift $shift, $params = [])
 {
     $params = array_merge([
         'action'   => 'create',
-        'shift_id' => $shift->id
+        'shift_id' => $shift->id,
     ], $params);
     return page_link_to('shift_entries', $params);
 }
@@ -339,13 +339,13 @@ function shift_entry_delete_controller()
     if ($user->id == $signout_user->id) {
         return [
             ShiftEntry_delete_title(),
-            ShiftEntry_delete_view($shift, $angeltype, $signout_user)
+            ShiftEntry_delete_view($shift, $angeltype, $signout_user),
         ];
     }
 
     return [
         ShiftEntry_delete_title(),
-        ShiftEntry_delete_view_admin($shift, $angeltype, $signout_user)
+        ShiftEntry_delete_view_admin($shift, $angeltype, $signout_user),
     ];
 }
 
@@ -360,7 +360,7 @@ function shift_entry_delete_link($shiftEntry, $params = [])
 {
     $params = array_merge([
         'action'         => 'delete',
-        'shift_entry_id' => $shiftEntry['shift_entry_id'] ?? $shiftEntry['id']
+        'shift_entry_id' => $shiftEntry['shift_entry_id'] ?? $shiftEntry['id'],
     ], $params);
     return page_link_to('shift_entries', $params);
 }

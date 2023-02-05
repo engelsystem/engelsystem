@@ -92,7 +92,7 @@ function user_delete_controller()
 
     return [
         sprintf(__('Delete %s'), $user_source->name),
-        User_delete_view($user_source)
+        User_delete_view($user_source),
     ];
 }
 
@@ -183,7 +183,7 @@ function user_edit_vouchers_controller()
 
     return [
         sprintf(__('%s\'s vouchers'), $user_source->name),
-        User_edit_vouchers_view($user_source)
+        User_edit_vouchers_view($user_source),
     ];
 }
 
@@ -257,7 +257,7 @@ function user_controller()
             auth()->can('admin_active'),
             auth()->can('admin_user_worklog'),
             UserWorkLogsForUser($user_source->id)
-        )
+        ),
     ];
 }
 
@@ -330,7 +330,7 @@ function users_list_controller()
             ShiftEntry::whereFreeloaded(true)->count(),
             State::whereGotShirt(true)->count(),
             State::query()->sum('got_voucher')
-        )
+        ),
     ];
 }
 

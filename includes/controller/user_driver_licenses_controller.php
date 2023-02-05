@@ -138,6 +138,6 @@ function user_driver_license_edit_controller()
 
     return [
         sprintf(__('Edit %s driving license information'), $user_source->name),
-        UserDriverLicense_edit_view($user_source, $driverLicense)
+        UserDriverLicense_edit_view($user_source, $driverLicense),
     ];
 }

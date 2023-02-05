@@ -76,7 +76,7 @@ class NewsController extends BaseController
                 'Deleted {type} "{news}"',
                 [
                     'type' => $news->is_meeting ? 'meeting' : 'news',
-                    'news' => $news->title
+                    'news' => $news->title,
                 ]
             );
 

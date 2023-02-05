@@ -34,7 +34,7 @@ function shifttype_delete_controller()
 
     return [
         sprintf(__('Delete shifttype %s'), $shifttype->name),
-        ShiftType_delete_view($shifttype)
+        ShiftType_delete_view($shifttype),
     ];
 }
 
@@ -94,7 +94,7 @@ function shifttype_edit_controller()
 
     return [
         shifttypes_title(),
-        ShiftType_edit_view($name, $description, $shifttype_id)
+        ShiftType_edit_view($name, $description, $shifttype_id),
     ];
 }
 
@@ -111,7 +111,7 @@ function shifttype_controller()
 
     return [
         $shifttype->name,
-        ShiftType_view($shifttype)
+        ShiftType_view($shifttype),
     ];
 }
 
@@ -126,7 +126,7 @@ function shifttypes_list_controller()
 
     return [
         shifttypes_title(),
-        ShiftTypes_list_view($shifttypes)
+        ShiftTypes_list_view($shifttypes),
     ];
 }
 

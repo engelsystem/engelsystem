@@ -68,7 +68,7 @@ class MessagesController extends BaseController
         $users = $this->user->orderBy('name')->get()
             ->except($currentUser->id)
             ->mapWithKeys(function ($u) {
-                return [ $u->id => $u->name ];
+                return [$u->id => $u->name];
             });
         $users->prepend($currentUser->name, $currentUser->id);
 
@@ -76,7 +76,7 @@ class MessagesController extends BaseController
             'pages/messages/overview.twig',
             [
                 'conversations' => $conversations,
-                'users' => $users
+                'users' => $users,
             ]
         );
     }
@@ -185,7 +185,7 @@ class MessagesController extends BaseController
             ->groupBy('user_id')
             ->get(['user_id', 'amount'])
             ->mapWithKeys(function ($unread) {
-                return [ $unread->user_id => $unread->amount ];
+                return [$unread->user_id => $unread->amount];
             });
     }
 

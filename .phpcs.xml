@@ -40,6 +40,8 @@
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment" />
     <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment" />
     <rule ref="Generic.Formatting.SpaceAfterCast" />
+    <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
+    <rule ref="SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace"/>
     <rule ref="Squiz.Strings.DoubleQuoteUsage" />
     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <exclude-pattern>/includes</exclude-pattern>

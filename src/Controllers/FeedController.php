@@ -117,7 +117,7 @@ class FeedController extends BaseController
                 ...$entry->toArray(),
 
                 // Fahrplan app required data
-                ...$data
+                ...$data,
             ];
         }
 

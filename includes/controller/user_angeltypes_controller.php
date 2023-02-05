@@ -88,7 +88,7 @@ function user_angeltypes_delete_all_controller(): array
 
     return [
         __('Deny all users'),
-        UserAngelTypes_delete_all_view($angeltype)
+        UserAngelTypes_delete_all_view($angeltype),
     ];
 }
 
@@ -132,7 +132,7 @@ function user_angeltypes_confirm_all_controller(): array
 
     return [
         __('Confirm all users'),
-        UserAngelTypes_confirm_all_view($angeltype)
+        UserAngelTypes_confirm_all_view($angeltype),
     ];
 }
 
@@ -182,7 +182,7 @@ function user_angeltype_confirm_controller(): array
 
     return [
         __('Confirm angeltype for user'),
-        UserAngelType_confirm_view($user_angeltype, $user_source, $angeltype)
+        UserAngelType_confirm_view($user_angeltype, $user_source, $angeltype),
     ];
 }
 
@@ -275,7 +275,7 @@ function user_angeltype_delete_controller(): array
 
     return [
         __('Remove angeltype'),
-        UserAngelType_delete_view($user_angeltype, $user_source, $angeltype)
+        UserAngelType_delete_view($user_angeltype, $user_source, $angeltype),
     ];
 }
 
@@ -334,7 +334,7 @@ function user_angeltype_update_controller(): array
 
     return [
         $supporter ? __('Add supporter rights') : __('Remove supporter rights'),
-        UserAngelType_update_view($user_angeltype, $user_source, $angeltype, $supporter)
+        UserAngelType_update_view($user_angeltype, $user_source, $angeltype, $supporter),
     ];
 }
 
@@ -400,7 +400,7 @@ function user_angeltype_add_controller(): array
 
     return [
         __('Add user to angeltype'),
-        UserAngelType_add_view($angeltype, $users_source, $user_source->id)
+        UserAngelType_add_view($angeltype, $users_source, $user_source->id),
     ];
 }
 
@@ -451,7 +451,7 @@ function user_angeltype_join_controller(AngelType $angeltype)
 
     return [
         sprintf(__('Become a %s'), $angeltype->name),
-        UserAngelType_join_view($user, $angeltype)
+        UserAngelType_join_view($user, $angeltype),
     ];
 }
 

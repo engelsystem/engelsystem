@@ -23,8 +23,8 @@ function stats($label, $number, $style = null)
     return div('col stats text-' . $style, [
         $label,
         div('number', [
-            $number
-        ])
+            $number,
+        ]),
     ]);
 }
 
@@ -68,7 +68,7 @@ function tabs($tabs, $selected = 0)
     }
     return div('', [
         '<ul class="nav nav-tabs mb-3" role="tablist">' . join($tab_header) . '</ul>',
-        '<div class="tab-content">' . join($tab_content) . '</div>'
+        '<div class="tab-content">' . join($tab_content) . '</div>',
     ]);
 }
 
@@ -202,7 +202,7 @@ function toolbar_dropdown_item(string $href, string $label, bool $active, string
             '{icon}'   => $icon === null ? '' : '<i class="bi bi-' . $icon . '"></i>',
             '{label}'  => $label,
             '{active}' => $active ? ' active' : '',
-            '{aria}' => $active ? ' aria-current="page"' : ''
+            '{aria}' => $active ? ' aria-current="page"' : '',
         ]
     );
 }
@@ -236,7 +236,7 @@ EOT;
         [
             '{class}'   => $active ? ' active' : '',
             '{label}'   => $label,
-            '{submenu}' => join("\n", $submenu)
+            '{submenu}' => join("\n", $submenu),
         ]
     );
 }
@@ -304,11 +304,11 @@ function table($columns, $rows_raw, $data = true)
         $rows = [];
         foreach ($rows_raw as $row) {
             $rows[] = [
-                'col' => $row
+                'col' => $row,
             ];
         }
         return render_table([
-            'col' => $columns
+            'col' => $columns,
         ], $rows, $data);
     }
 

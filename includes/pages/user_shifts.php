@@ -246,12 +246,12 @@ function view_user_shifts()
     $filled = [
         [
             'id'   => '1',
-            'name' => __('occupied')
+            'name' => __('occupied'),
         ],
         [
             'id'   => '0',
-            'name' => __('free')
-        ]
+            'name' => __('free'),
+        ],
     ];
     $start_day = $shiftsFilter->getStart()->format('Y-m-d');
     $start_time = $shiftsFilter->getStart()->format('H:i');
@@ -326,9 +326,9 @@ function view_user_shifts()
                 'buttons'       => button(
                     public_dashboard_link(),
                     icon('speedometer2') . __('Public Dashboard')
-                )
-            ])
-        ])
+                ),
+            ]),
+        ]),
     ]);
 }
 

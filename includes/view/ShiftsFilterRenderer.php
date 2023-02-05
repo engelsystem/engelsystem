@@ -72,7 +72,7 @@ class ShiftsFilterRenderer
             }
         }
         return div('mb-3', [
-            toolbar_pills($toolbar)
+            toolbar_pills($toolbar),
         ]);
     }
 

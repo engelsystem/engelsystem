@@ -131,6 +131,6 @@ function event_config_edit_controller()
             $event_start_date,
             $event_end_date,
             $teardown_end_date
-        )
+        ),
     ];
 }

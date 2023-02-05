@@ -17,7 +17,7 @@ class FixUserLanguages extends Migration
         $connection
             ->table('users_settings')
             ->update([
-                'language' => $connection->raw('REPLACE(language, ".UTF-8", "")')
+                'language' => $connection->raw('REPLACE(language, ".UTF-8", "")'),
             ]);
     }
 
@@ -30,7 +30,7 @@ class FixUserLanguages extends Migration
         $connection
             ->table('users_settings')
             ->update([
-                'language' => $connection->raw('CONCAT(language, ".UTF-8")')
+                'language' => $connection->raw('CONCAT(language, ".UTF-8")'),
             ]);
     }
 }

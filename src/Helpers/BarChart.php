@@ -160,7 +160,7 @@ class BarChart
             [
 
                 'count' => '#090',
-                'sum'   => '#888'
+                'sum'   => '#888',
             ],
             $demoData,
         ];

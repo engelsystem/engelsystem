@@ -48,14 +48,14 @@ function ShiftType_edit_view($name, $description, $shifttype_id)
     return page_with_title($shifttype_id ? __('Edit shifttype') : __('Create shifttype'), [
         msg(),
         buttons([
-            button(page_link_to('shifttypes'), shifttypes_title(), 'back')
+            button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
         ]),
         form([
             form_text('name', __('Name'), $name),
             form_textarea('description', __('Description'), $description),
             form_info('', __('Please use markdown for the description.')),
-            form_submit('submit', __('Save'))
-        ])
+            form_submit('submit', __('Save')),
+        ]),
     ], true);
 }
 
@@ -80,10 +80,10 @@ function ShiftType_view(ShiftType $shifttype)
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
                 icon('trash') . __('delete'),
                 'delete'
-            )
+            ),
         ]),
         heading(__('Description'), 2),
-        $parsedown->parse($shifttype->description)
+        $parsedown->parse($shifttype->description),
     ], true);
 }
 
@@ -112,18 +112,18 @@ function ShiftTypes_list_view($shifttypes)
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
                 icon('trash') . __('delete'),
                 'btn-sm'
-            )
+            ),
         ]);
     }
 
     return page_with_title(shifttypes_title(), [
         msg(),
         buttons([
-            button(page_link_to('shifttypes', ['action' => 'edit']), __('New shifttype'), 'add')
+            button(page_link_to('shifttypes', ['action' => 'edit']), __('New shifttype'), 'add'),
         ]),
         table([
             'name'    => __('Name'),
-            'actions' => ''
-        ], $shifttypes)
+            'actions' => '',
+        ], $shifttypes),
     ], true);
 }

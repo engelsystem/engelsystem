@@ -114,7 +114,7 @@ class SettingsController extends BaseController
             'pages/settings/password',
             [
                 'settings_menu' => $this->settingsMenu(),
-                'min_length'    => config('min_password_length')
+                'min_length'    => config('min_password_length'),
             ] + $this->getNotifications()
         );
     }
@@ -157,7 +157,7 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'themes'        => $themes,
-                'current_theme' => $currentTheme
+                'current_theme' => $currentTheme,
             ] + $this->getNotifications()
         );
     }
@@ -191,7 +191,7 @@ class SettingsController extends BaseController
             [
                 'settings_menu'    => $this->settingsMenu(),
                 'languages'        => $languages,
-                'current_language' => $currentLanguage
+                'current_language' => $currentLanguage,
             ] + $this->getNotifications()
         );
     }
@@ -238,7 +238,7 @@ class SettingsController extends BaseController
             url('/settings/profile')  => 'settings.profile',
             url('/settings/password') => 'settings.password',
             url('/settings/language') => 'settings.language',
-            url('/settings/theme')    => 'settings.theme'
+            url('/settings/theme')    => 'settings.theme',
         ];
 
         if (!empty(config('oauth'))) {

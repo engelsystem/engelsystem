@@ -171,7 +171,7 @@ class OAuth2Test extends TestCase
                 'groups' => 'groups_key',
                 'teams'  => [
                     '/test'  => 21,
-                    '/lorem' => ['id' => 42, 'supporter' => true]
+                    '/lorem' => ['id' => 42, 'supporter' => true],
                 ],
             ],
         ]]);

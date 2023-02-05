@@ -44,7 +44,7 @@ function user_myshifts()
                 __('If you reset the key, the url to your iCal- and JSON-export and your atom/rss feed changes! You have to update it in every application using one of these exports.'),
                 true
             ),
-            button(page_link_to('user_myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger')
+            button(page_link_to('user_myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger'),
         ]);
     } elseif ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
         $shift_entry_id = $request->input('edit');

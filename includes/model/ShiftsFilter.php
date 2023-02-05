@@ -52,7 +52,7 @@ class ShiftsFilter
         $this->types = $angelTypes;
 
         $this->filled = [
-            ShiftsFilter::FILLED_FREE
+            ShiftsFilter::FILLED_FREE,
         ];
 
         if ($user_shifts_admin) {

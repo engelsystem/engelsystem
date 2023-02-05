@@ -26,7 +26,7 @@ class NewsControllerTest extends ControllerTest
             'title'      => 'Foo',
             'text'       => '**foo**',
             'user_id'    => 1,
-        ]
+        ],
     ];
 
     /**

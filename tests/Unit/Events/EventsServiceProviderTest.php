@@ -30,8 +30,8 @@ class EventsServiceProviderTest extends ServiceProviderTest
         $config = new Config([
             'event-handlers' => [
                 'test.event' => 'someFunction',
-                'another.event' => ['Foo\Bar@baz', [$this, 'testRegister']]
-            ]
+                'another.event' => ['Foo\Bar@baz', [$this, 'testRegister']],
+            ],
         ]);
         $this->app->instance('config', $config);
 

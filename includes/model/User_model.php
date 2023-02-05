@@ -31,7 +31,7 @@ function User_tshirt_score($userId)
         AND `shifts`.`end` < NOW()
         GROUP BY `users`.`id`
     ', $shift_sum_formula), [
-        $userId
+        $userId,
     ]);
     if (!isset($result_shifts['tshirt_score'])) {
         $result_shifts = ['tshirt_score' => 0];
