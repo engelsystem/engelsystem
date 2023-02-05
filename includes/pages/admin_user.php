@@ -65,7 +65,7 @@ function admin_user()
             $html .= '  <tr><td>' . __('DECT') . '</td><td>' . '<input size="40" name="eDECT" value="' . $user_source->contact->dect . '" class="form-control" maxlength="40"></td></tr>' . "\n";
         }
         if ($user_source->settings->email_human) {
-            $html .= "  <tr><td>" . __('settings.profile.email') . "</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('settings.profile.email') . '</td><td>' . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
         }
         if (config('enable_tshirt_size') && !config('other_goodie')) {
             $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
@@ -178,7 +178,7 @@ function admin_user()
             button(user_delete_link($user_source->id), icon('trash') . __('delete'), 'btn-danger')
         ]);
 
-        $html .= "<hr />";
+        $html .= '<hr>';
     } else {
         switch ($request->input('action')) {
             case 'save_groups':

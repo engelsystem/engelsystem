@@ -340,7 +340,7 @@ function render_table($columns, $rows, $data = true)
     foreach ($rows as $row) {
         $html .= '<tr>';
         foreach ($columns as $key => $column) {
-            $value = "&nbsp;";
+            $value = '&nbsp;';
             if (isset($row[$key])) {
                 $value = $row[$key];
             }
