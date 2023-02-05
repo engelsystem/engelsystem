@@ -394,21 +394,21 @@ function guest_register()
                     form_info(
                         '',
                         __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.')
-                    )
+                    ),
                 ]),
 
                 $enable_pronoun ? div('col', [
-                    form_text('pronoun', __('Pronoun'), $pronoun, false, 15)
+                    form_text('pronoun', __('Pronoun'), $pronoun, false, 15),
                 ]) : '',
             ]),
 
             $enable_user_name ? div('row', [
                 div('col', [
-                    form_text('prename', __('First name'), $preName, false, 64, 'given-name')
+                    form_text('prename', __('First name'), $preName, false, 64, 'given-name'),
                 ]),
                 div('col', [
-                    form_text('lastname', __('Last name'), $lastName, false, 64, 'family-name')
-                ])
+                    form_text('lastname', __('Last name'), $lastName, false, 64, 'family-name'),
+                ]),
             ]) : '',
 
             div('row', [
@@ -449,7 +449,7 @@ function guest_register()
                 ]),
 
                 $enable_dect ? div('col', [
-                    form_text('dect', __('DECT'), $dect, false, 40, 'tel-local')
+                    form_text('dect', __('DECT'), $dect, false, 40, 'tel-local'),
                 ]) : '',
 
                 div('col', [
@@ -458,13 +458,13 @@ function guest_register()
                         'mobile_show',
                         __('Show mobile number to other users to contact me'),
                         $mobile_show
-                    ) : ''
-                ])
+                    ) : '',
+                ]),
             ]),
 
             div('row', [
                 $enable_password ? div('col', [
-                    form_password('password', __('Password') . ' ' . entry_required(), 'new-password')
+                    form_password('password', __('Password') . ' ' . entry_required(), 'new-password'),
                 ]) : '',
 
                 $enable_planned_arrival ? div('col', [
@@ -474,13 +474,13 @@ function guest_register()
                         $planned_arrival_date,
                         $buildup_start_date,
                         $teardown_end_date
-                    )
+                    ),
                 ]) : '',
             ]),
 
             div('row', [
                 $enable_password ? div('col', [
-                    form_password('password2', __('Confirm password') . ' ' . entry_required(), 'new-password')
+                    form_password('password2', __('Confirm password') . ' ' . entry_required(), 'new-password'),
                 ]) : '',
 
                 div('col', [
@@ -490,7 +490,7 @@ function guest_register()
                         $tshirt_sizes,
                         $tshirt_size,
                         __('Please select...')
-                    ) : ''
+                    ) : '',
                 ]),
             ]),
 
@@ -509,12 +509,12 @@ function guest_register()
                     form_info(
                         '',
                         __('Some angel types have to be confirmed later by a supporter at an introduction meeting. You can change your selection in the options section.')
-                    )
-                ])
+                    ),
+                ]),
             ]),
 
-            form_submit('submit', __('Register'))
-        ])
+            form_submit('submit', __('Register')),
+        ]),
     ]);
 }
 

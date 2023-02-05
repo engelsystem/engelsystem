@@ -251,7 +251,7 @@ class SettingsControllerTest extends ControllerTest
         $body = [
             'password' => 'password',
             'new_password' => 'newpassword',
-            'new_password2' => 'newpassword'
+            'new_password2' => 'newpassword',
         ];
         $this->request = $this->request->withParsedBody($body);
 
@@ -286,7 +286,7 @@ class SettingsControllerTest extends ControllerTest
 
         $body = [
             'new_password'  => 'anotherpassword',
-            'new_password2' => 'anotherpassword'
+            'new_password2' => 'anotherpassword',
         ];
         $this->request = $this->request->withParsedBody($body);
 
@@ -311,7 +311,7 @@ class SettingsControllerTest extends ControllerTest
         $body = [
             'password' => 'wrongpassword',
             'new_password' => 'newpassword',
-            'new_password2' => 'newpassword'
+            'new_password2' => 'newpassword',
         ];
         $this->request = $this->request->withParsedBody($body);
 
@@ -342,7 +342,7 @@ class SettingsControllerTest extends ControllerTest
         $body = [
             'password' => 'password',
             'new_password' => 'newpassword',
-            'new_password2' => 'wrongpassword'
+            'new_password2' => 'wrongpassword',
         ];
         $this->request = $this->request->withParsedBody($body);
 
@@ -371,7 +371,7 @@ class SettingsControllerTest extends ControllerTest
             [null, 'newpassword', 'newpassword'],
             ['password', null, 'newpassword'],
             ['password', 'newpassword', null],
-            ['password', 'short', 'short']
+            ['password', 'short', 'short'],
         ];
     }
 
@@ -389,7 +389,7 @@ class SettingsControllerTest extends ControllerTest
         $body = [
             'password' => $password,
             'new_password' => $newPassword,
-            'new_password2' => $newPassword2
+            'new_password2' => $newPassword2,
         ];
         $this->request = $this->request->withParsedBody($body);
 
@@ -594,7 +594,7 @@ class SettingsControllerTest extends ControllerTest
             'http://localhost/settings/password' => 'settings.password',
             'http://localhost/settings/language' => 'settings.language',
             'http://localhost/settings/theme' => 'settings.theme',
-            'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => false]
+            'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => false],
         ], $this->controller->settingsMenu());
 
         config(['oauth' => $providersHidden]);
@@ -603,7 +603,7 @@ class SettingsControllerTest extends ControllerTest
             'http://localhost/settings/password' => 'settings.password',
             'http://localhost/settings/language' => 'settings.language',
             'http://localhost/settings/theme' => 'settings.theme',
-            'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => true]
+            'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => true],
         ], $this->controller->settingsMenu());
     }
 
@@ -618,7 +618,7 @@ class SettingsControllerTest extends ControllerTest
             'http://localhost/settings/profile' => 'settings.profile',
             'http://localhost/settings/password' => 'settings.password',
             'http://localhost/settings/language' => 'settings.language',
-            'http://localhost/settings/theme' => 'settings.theme'
+            'http://localhost/settings/theme' => 'settings.theme',
         ], $this->controller->settingsMenu());
     }
 
@@ -631,18 +631,18 @@ class SettingsControllerTest extends ControllerTest
 
         $themes = [
             0 => ['name' => 'Engelsystem light'],
-            1 => ['name' => 'Engelsystem dark']
+            1 => ['name' => 'Engelsystem dark'],
         ];
         $languages = [
             'en_US' => 'English',
-            'de_DE' => 'Deutsch'
+            'de_DE' => 'Deutsch',
         ];
         $tshirt_sizes = ['S' => 'Small'];
         $this->config = new Config([
             'min_password_length' => 6,
             'themes' => $themes,
             'locales' => $languages,
-            'tshirt_sizes' => $tshirt_sizes
+            'tshirt_sizes' => $tshirt_sizes,
         ]);
         $this->app->instance('config', $this->config);
         $this->app->instance(Config::class, $this->config);

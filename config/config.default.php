@@ -357,7 +357,7 @@ return [
         'name'   => env('SESSION_NAME', 'session'),
 
         // Lifetime in days
-        'lifetime' => env('SESSION_LIFETIME', 30)
+        'lifetime' => env('SESSION_LIFETIME', 30),
     ],
 
     // IP addresses of reverse proxies that are trusted, can be an array or a comma separated list
@@ -380,7 +380,7 @@ return [
     'credits'                 => [
         'Contribution' => 'Please visit [engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
             . 'you want to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
-            . 'or need help.'
+            . 'or need help.',
     ],
 
     // var dump server

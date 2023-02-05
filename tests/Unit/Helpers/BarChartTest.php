@@ -77,7 +77,7 @@ class BarChartTest extends TestCase
                 'rowLabels' => self::ROW_LABELS,
                 'barChartClass' => '',
                 'yLabels' => $yLabels,
-            ]
+            ],
         ];
         yield 'non-empty data' => [
             self::DATA,

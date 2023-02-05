@@ -37,8 +37,8 @@ function admin_rooms()
                     page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room->id]),
                     icon('trash') . __('delete'),
                     'btn-sm'
-                )
-            ])
+                ),
+            ]),
         ];
     }
 
@@ -154,13 +154,13 @@ function admin_rooms()
             $angeltypes_count_form = [];
             foreach ($angeltypes as $angeltype_id => $angeltypeName) {
                 $angeltypes_count_form[] = div('col-lg-4 col-md-6 col-xs-6', [
-                    form_spinner('angeltype_count_' . $angeltype_id, $angeltypeName, $angeltypes_count[$angeltype_id])
+                    form_spinner('angeltype_count_' . $angeltype_id, $angeltypeName, $angeltypes_count[$angeltype_id]),
                 ]);
             }
 
             return page_with_title(admin_rooms_title(), [
                 buttons([
-                    button(page_link_to('admin_rooms'), __('back'), 'back')
+                    button(page_link_to('admin_rooms'), __('back'), 'back'),
                 ]),
                 $msg,
                 form([
@@ -176,14 +176,14 @@ function admin_rooms()
                         div('col-md-6', [
                             div('row', [
                                 div('col-md-12', [
-                                    form_info(__('Needed angels:'))
+                                    form_info(__('Needed angels:')),
                                 ]),
-                                join($angeltypes_count_form)
-                            ])
-                        ])
+                                join($angeltypes_count_form),
+                            ]),
+                        ]),
                     ]),
-                    form_submit('submit', __('Save'))
-                ])
+                    form_submit('submit', __('Save')),
+                ]),
             ], true);
         } elseif ($request->input('show') == 'delete') {
             if ($request->hasPostData('ack')) {
@@ -213,7 +213,7 @@ function admin_rooms()
 
             return page_with_title(admin_rooms_title(), [
                 buttons([
-                    button(page_link_to('admin_rooms'), __('back'), 'back')
+                    button(page_link_to('admin_rooms'), __('back'), 'back'),
                 ]),
                 sprintf(__('Do you want to delete room %s?'), $name),
                 form([
@@ -225,14 +225,14 @@ function admin_rooms()
 
     return page_with_title(admin_rooms_title(), [
         buttons([
-            button(page_link_to('admin_rooms', ['show' => 'edit']), __('add'))
+            button(page_link_to('admin_rooms', ['show' => 'edit']), __('add')),
         ]),
         msg(),
         table([
             'name'    => __('Name'),
             'dect'    => __('DECT'),
             'map_url' => __('Map'),
-            'actions' => ''
-        ], $rooms)
+            'actions' => '',
+        ], $rooms),
     ], true);
 }

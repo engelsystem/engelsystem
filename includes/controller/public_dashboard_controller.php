@@ -42,7 +42,7 @@ function public_dashboard_controller()
         'needed-3-hours' => stats_angels_needed_three_hours($filter),
         'needed-night'   => stats_angels_needed_for_nightshifts($filter),
         'angels-working' => stats_currently_working($filter),
-        'hours-to-work'  => stats_hours_to_work($filter)
+        'hours-to-work'  => stats_hours_to_work($filter),
     ];
 
     $free_shifts_source = Shifts_free(time(), time() + 12 * 60 * 60, $filter);
@@ -57,7 +57,7 @@ function public_dashboard_controller()
 
     return [
         __('Public Dashboard'),
-        public_dashboard_view($stats, $free_shifts)
+        public_dashboard_view($stats, $free_shifts),
     ];
 }
 
@@ -112,7 +112,7 @@ function public_dashboard_needed_angels($needed_angels, ShiftsFilter $filter = n
             if ($angeltype->show_on_dashboard) {
                 $result[] = [
                     'need'           => $need,
-                    'angeltype_name' => $angeltype->name
+                    'angeltype_name' => $angeltype->name,
                 ];
             }
         }

@@ -56,7 +56,7 @@ class OAuthController extends BaseController
                 [
                     // Leauge separates scopes by comma, which is wrong, so we do it
                     // here properly by spaces. See https://www.rfc-editor.org/rfc/rfc6749#section-3.3
-                    'scope' => join(' ', $config['scope'] ?? [])
+                    'scope' => join(' ', $config['scope'] ?? []),
                 ]
             );
             $this->session->set('oauth2_state', $provider->getState());
@@ -80,7 +80,7 @@ class OAuthController extends BaseController
             $accessToken = $provider->getAccessToken(
                 'authorization_code',
                 [
-                    'code' => $request->get('code')
+                    'code' => $request->get('code'),
                 ]
             );
         } catch (IdentityProviderException $e) {
@@ -258,7 +258,7 @@ class OAuthController extends BaseController
                 'provider' => $providerName,
                 'user'     => $this->getId($providerName, $resourceOwner),
                 'name'     => $user->name,
-                'id'       => $user->id
+                'id'       => $user->id,
             ]
         );
     }

@@ -29,7 +29,7 @@ class UuidTest extends TestCase
             ['42', 'a1d0c6e8-3f02-4327-9846-1063f4ac58a6'],
             [1.23, '579c4c7f-58e4-45e8-8cfc-73e08903a08c'],
             ['1.23', '579c4c7f-58e4-45e8-8cfc-73e08903a08c'],
-            ['test', '098f6bcd-4621-4373-8ade-4e832627b4f6']
+            ['test', '098f6bcd-4621-4373-8ade-4e832627b4f6'],
         ];
     }
 

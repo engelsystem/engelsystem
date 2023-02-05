@@ -14,7 +14,7 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
 {
     return page_with_title(sprintf(__('Edit %s driving license information'), User_Nick_render($user_source)), [
         buttons([
-            button(user_link($user_source->id), __('Back to profile'), 'back')
+            button(user_link($user_source->id), __('Back to profile'), 'back'),
         ]),
         msg(),
         form([
@@ -47,9 +47,9 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
                         'has_license_forklift',
                         __('Forklift'),
                         $user_driver_license->drive_forklift
-                    )
+                    ),
             ], 'driving_license'),
-            form_submit('submit', __('Save'))
+            form_submit('submit', __('Save')),
         ]),
         '
         <script type="text/javascript">
@@ -68,6 +68,6 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
                 });
             }
         </script>
-        '
+        ',
     ], true);
 }

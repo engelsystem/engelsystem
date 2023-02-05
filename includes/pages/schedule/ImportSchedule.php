@@ -269,7 +269,7 @@ class ImportSchedule extends BaseController
             ->table('shift_entries')
             ->select([
                 'shift_types.name', 'shifts.title', 'angel_types.name AS type', 'rooms.id AS room_id',
-                'shifts.start', 'shifts.end', 'shift_entries.user_id', 'shift_entries.freeloaded'
+                'shifts.start', 'shifts.end', 'shift_entries.user_id', 'shift_entries.freeloaded',
             ])
             ->join('shifts', 'shifts.id', 'shift_entries.shift_id')
             ->join('schedule_shift', 'shifts.id', 'schedule_shift.shift_id')

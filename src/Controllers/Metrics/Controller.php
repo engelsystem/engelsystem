@@ -126,7 +126,7 @@ class Controller extends BaseController
             'tshirts_issued'       => ['type' => 'counter', 'help' => 'Issued T-Shirts', $this->stats->tshirts()],
             'tshirt_sizes'         => [
                 'type' => 'gauge',
-                'help' => 'The sizes users have configured'
+                'help' => 'The sizes users have configured',
             ] + $userTshirtSizes,
             'locales'              => ['type' => 'gauge', 'help' => 'The locales users have configured'] + $userLocales,
             'themes'               => ['type' => 'gauge', 'help' => 'The themes users have configured'] + $userThemes,

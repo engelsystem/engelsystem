@@ -128,9 +128,9 @@ class UserTest extends ModelTest
                     ],
                     [
                         'name' => 'Ipsum',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
     }
 

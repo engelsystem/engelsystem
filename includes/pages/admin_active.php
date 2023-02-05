@@ -305,7 +305,7 @@ function admin_active()
                 ->count();
             $shirt_statistics[] = [
                 'size'  => $size,
-                'given' => $gc
+                'given' => $gc,
             ];
         }
     }
@@ -319,11 +319,11 @@ function admin_active()
         form([
             form_text('search', __('Search angel:'), $search),
             form_checkbox('show_all_shifts', __('Show all shifts'), $show_all_shifts),
-            form_submit('submit', __('Search'))
+            form_submit('submit', __('Search')),
         ], page_link_to('admin_active')),
         $set_active == '' ? form([
             form_text('count', __('How much angels should be active?'), $count ?: $forced_count),
-            form_submit('set_active', __('Preview'))
+            form_submit('set_active', __('Preview')),
         ]) : $set_active,
         $msg . msg(),
         table(
@@ -339,7 +339,7 @@ function admin_active()
                     'active'       => __('Active?'),
                     'force_active' => __('Forced'),
                     'tshirt'       => ($other_goodie ? __('Goodie?') : __('T-shirt?')),
-                    'actions'      => ''
+                    'actions'      => '',
                 ]
             ),
             $matched_users
@@ -348,6 +348,6 @@ function admin_active()
         table(array_merge(
             (!$other_goodie ? ['size'  => __('Size')] : []),
             ['given' => $other_goodie ? __('Given goodies') : __('Given shirts') ]
-        ), $shirt_statistics)
+        ), $shirt_statistics),
     ]);
 }

@@ -54,7 +54,7 @@ function room_controller(): array
 
     return [
         $room->name,
-        Room_view($room, $shiftsFilterRenderer, $shiftCalendarRenderer)
+        Room_view($room, $shiftsFilterRenderer, $shiftCalendarRenderer),
     ];
 }
 

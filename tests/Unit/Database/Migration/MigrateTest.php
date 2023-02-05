@@ -152,7 +152,7 @@ class MigrateTest extends TestCase
         $this->setExpects($migration, 'lockTable');
         $this->setExpects($migration, 'unlockTable');
         $this->setExpects($migration, 'getMigrations', null, collect([
-            ['migration' => '1234_01_23_123456_init_foo', 'path' => '/foo']
+            ['migration' => '1234_01_23_123456_init_foo', 'path' => '/foo'],
         ]));
         $this->setExpects($migration, 'getMigrated', null, collect([]));
         $migration->expects($this->once())

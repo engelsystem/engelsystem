@@ -28,7 +28,7 @@ function ShiftEntry_delete_view_admin(Shift $shift, AngelType $angeltype, User $
         form([
             buttons([
                 button(user_link($signoff_user->id), icon('x-lg') . __('cancel')),
-                form_submit('delete', icon('trash') . __('sign off'), 'btn-danger', false)
+                form_submit('delete', icon('trash') . __('sign off'), 'btn-danger', false),
             ]),
         ]),
     ]);
@@ -100,8 +100,8 @@ function ShiftEntry_create_view_admin(
             form([
                 form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype->id),
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
-                form_submit('submit', icon('check-lg') . __('Save'))
-            ])
+                form_submit('submit', icon('check-lg') . __('Save')),
+            ]),
         ]
     );
 }
@@ -130,8 +130,8 @@ function ShiftEntry_create_view_supporter(Shift $shift, Room $room, AngelType $a
             ), true),
             form([
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
-                form_submit('submit', icon('check-lg') . __('Save'))
-            ])
+                form_submit('submit', icon('check-lg') . __('Save')),
+            ]),
         ]
     );
 }
@@ -156,8 +156,8 @@ function ShiftEntry_create_view_user(Shift $shift, Room $room, AngelType $angelt
             info(sprintf(__('Do you want to sign up for this shift as %s?'), AngelType_name_render($angeltype)), true),
             form([
                 form_textarea('comment', __('Comment (for your eyes only):'), $comment),
-                form_submit('submit', icon('check-lg') . __('Save'))
-            ])
+                form_submit('submit', icon('check-lg') . __('Save')),
+            ]),
         ]
     );
 }
@@ -203,7 +203,7 @@ function ShiftEntry_edit_view(
                 'freeloaded_comment',
                 __('Freeload comment (Only for shift coordination):'),
                 $freeloaded_comment
-            )
+            ),
         ];
     }
 
@@ -223,7 +223,7 @@ function ShiftEntry_edit_view(
             form_info(__('Type:'), $type),
             $comment,
             join('', $freeload_form),
-            form_submit('submit', __('Save'))
-        ])
+            form_submit('submit', __('Save')),
+        ]),
     ]);
 }

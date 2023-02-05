@@ -286,7 +286,7 @@ function admin_shifts()
                             'room_id'       => $rid,
                             'title'         => $title,
                             'shift_type_id' => $shifttype_id,
-                            'description'   => $description
+                            'description'   => $description,
                         ];
                     }
 
@@ -311,7 +311,7 @@ function admin_shifts()
                     'title'         =>
                         ShiftType_name_render(ShiftType::find($shifttype_id))
                         . ($shift['title'] ? '<br />' . $shift['title'] : ''),
-                    'needed_angels' => ''
+                    'needed_angels' => '',
                 ];
                 foreach ($types as $type) {
                     if (isset($needed_angel_types[$type->id]) && $needed_angel_types[$type->id] > 0) {
@@ -357,10 +357,10 @@ function admin_shifts()
                     table([
                         'timeslot'      => __('Time and location'),
                         'title'         => __('Type and title'),
-                        'needed_angels' => __('Needed angels')
+                        'needed_angels' => __('Needed angels'),
                     ], $shifts_table),
-                    form_submit('submit', icon('save') . __('Save'))
-                ])
+                    form_submit('submit', icon('save') . __('Save')),
+                ]),
             ]);
         }
     } elseif ($request->hasPostData('submit')) {
@@ -424,7 +424,7 @@ function admin_shifts()
                 $needed_angel_types[$type->id],
                 [
                     'radio-name'  => 'angelmode',
-                    'radio-value' => 'manually'
+                    'radio-value' => 'manually',
                 ]
             )
             . '</div>';
@@ -454,10 +454,10 @@ function admin_shifts()
                     div('col-md-6 col-xl-5', [
                         div('row', [
                             div('col-lg-6', [
-                                form_datetime('start', __('Start'), $start)
+                                form_datetime('start', __('Start'), $start),
                             ]),
                             div('col-lg-6', [
-                                form_datetime('end', __('End'), $end)
+                                form_datetime('end', __('End'), $end),
                             ]),
                         ]),
                         form_info(__('Mode')),
@@ -475,7 +475,7 @@ function admin_shifts()
                             '',
                             [
                                 'radio-name'  => 'mode',
-                                'radio-value' => 'multi'
+                                'radio-value' => 'multi',
                             ]
                         ),
                         form_radio(
@@ -496,14 +496,14 @@ function admin_shifts()
                             '',
                             [
                                 'radio-name'  => 'mode',
-                                'radio-value' => 'variable'
+                                'radio-value' => 'variable',
                             ]
                         ),
                         form_checkbox(
                             'shift_over_midnight',
                             __('Create a shift over midnight.'),
                             $shift_over_midnight
-                        )
+                        ),
                     ]),
                     div('col-md-6 col-xl-7', [
                         form_info(__('Needed angels')),
@@ -520,12 +520,12 @@ function admin_shifts()
                             'manually'
                         ),
                         div('row', [
-                            $angel_types
-                        ])
-                    ])
+                            $angel_types,
+                        ]),
+                    ]),
                 ]),
-                form_submit('preview', icon('search') . __('Preview'))
-            ])
+                form_submit('preview', icon('search') . __('Preview')),
+            ]),
         ]
     );
 }
@@ -621,7 +621,7 @@ function admin_shifts_history(): string
             'end'            => __('End'),
             'user'           => __('User'),
             'created_at'     => __('Created'),
-            'actions'        => ''
-        ], $shiftsData)
+            'actions'        => '',
+        ], $shiftsData),
     ], true);
 }

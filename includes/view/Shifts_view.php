@@ -26,7 +26,7 @@ function Shift_view_header(Shift $shift, Room $room)
             . ($shift->url != ''
                 ? '<a href="' . $shift->url . '">' . $shift->title . '</a>'
                 : $shift->title)
-            . '</p>'
+            . '</p>',
         ]),
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('Start') . '</h4>',
@@ -34,7 +34,7 @@ function Shift_view_header(Shift $shift, Room $room)
             icon('calendar-event') . $shift->start->format(__('Y-m-d')),
             '<br />',
             icon('clock') . $shift->start->format('H:i'),
-            '</p>'
+            '</p>',
         ]),
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('End') . '</h4>',
@@ -42,12 +42,12 @@ function Shift_view_header(Shift $shift, Room $room)
             icon('calendar-event') . $shift->end->format(__('Y-m-d')),
             '<br />',
             icon('clock') . $shift->end->format('H:i'),
-            '</p>'
+            '</p>',
         ]),
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('Location') . '</h4>',
-            '<p class="lead">' . Room_name_render($room) . '</p>'
-        ])
+            '<p class="lead">' . Room_name_render($room) . '</p>',
+        ]),
     ]);
 }
 
@@ -184,13 +184,13 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
     $content[] = div('row', [
         div('col-sm-6', [
             '<h2>' . __('Needed angels') . '</h2>',
-            '<div class="list-group">' . $needed_angels . '</div>'
+            '<div class="list-group">' . $needed_angels . '</div>',
         ]),
         div('col-sm-6', [
             '<h2>' . __('Description') . '</h2>',
             $parsedown->parse($shifttype->description),
             $parsedown->parse($shift->description),
-        ])
+        ]),
     ]);
 
     if ($shift_admin) {

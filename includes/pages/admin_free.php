@@ -27,7 +27,7 @@ function admin_free()
 
     $angel_types_source = AngelType::all(['id', 'name']);
     $angel_types = [
-        '' => __('All')
+        '' => __('All'),
     ];
     foreach ($angel_types_source as $angel_type) {
         $angel_types[$angel_type->id] = $angel_type->name;
@@ -105,7 +105,7 @@ function admin_free()
             'actions'     =>
                 auth()->can('admin_user')
                     ? button(page_link_to('admin_user', ['id' => $usr->id]), icon('pencil') . __('edit'), 'btn-sm')
-                    : ''
+                    : '',
         ];
     }
     return page_with_title(admin_free_title(), [
@@ -115,7 +115,7 @@ function admin_free()
                     div('row', [
                         form_text('search', __('Search'), $search, null, null, null, 'col'),
                         form_select('angeltype', __('Angeltype'), $angel_types, $angelType, '', 'col'),
-                        form_submit('submit', __('Search'))
+                        form_submit('submit', __('Search')),
                     ]),
                 ]),
             ]),
@@ -126,7 +126,7 @@ function admin_free()
             'last_shift'  => __('Last shift'),
             'dect'        => __('DECT'),
             'email'       => __('E-Mail'),
-            'actions'     => ''
+            'actions'     => '',
         ], $free_users_table),
     ]);
 }

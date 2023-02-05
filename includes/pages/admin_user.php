@@ -81,7 +81,7 @@ function admin_user()
 
         $options = [
             '1' => __('Yes'),
-            '0' => __('No')
+            '0' => __('No'),
         ];
 
         // Gekommen?
@@ -175,7 +175,7 @@ function admin_user()
         }
 
         $html .= buttons([
-            button(user_delete_link($user_source->id), icon('trash') . __('delete'), 'btn-danger')
+            button(user_delete_link($user_source->id), icon('trash') . __('delete'), 'btn-danger'),
         ]);
 
         $html .= '<hr>';
@@ -296,7 +296,7 @@ function admin_user()
     }
 
     return page_with_title(__('Edit user'), [
-        $html
+        $html,
     ]);
 }
 
@@ -317,6 +317,6 @@ function changeableGroups($myHighestGroup, $angelId): Collection
         ->orderBy('name')
         ->get([
             'groups.*',
-            'users_groups.group_id as selected'
+            'users_groups.group_id as selected',
         ]);
 }

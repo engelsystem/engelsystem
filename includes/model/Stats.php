@@ -133,7 +133,7 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
             ' . ($filter ? 'AND shifts.room_id IN (' . implode(',', $filter->getRooms()) . ')' : '') . '
         ) AS `tmp`', [
         $in3hours,
-        $in3hours
+        $in3hours,
     ]);
 
     return $result['count'] ?: '-';
@@ -214,7 +214,7 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
         $night_start,
         $night_end,
         $night_start,
-        $night_end
+        $night_end,
     ]);
 
     return $result['count'] ?: '-';

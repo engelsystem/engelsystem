@@ -57,12 +57,12 @@ class ShiftCalendarShiftRenderer
                         $this->renderShiftHead($shift, $class, $shift_signup_state->getFreeEntries()),
                         div('card-body ' . $this->classBg(), [
                             $info_text,
-                            Room_name_render($room)
+                            Room_name_render($room),
                         ]),
-                        $shifts_row
+                        $shifts_row,
                     ]
                 )
-            )
+            ),
         ];
     }
 
@@ -134,13 +134,13 @@ class ShiftCalendarShiftRenderer
         if ($html != '') {
             return [
                 $shift_signup_state,
-                '<ul class="list-group list-group-flush">' . $html . '</ul>'
+                '<ul class="list-group list-group-flush">' . $html . '</ul>',
             ];
         }
 
         return [
             $shift_signup_state,
-            ''
+            '',
         ];
     }
 
@@ -218,7 +218,7 @@ class ShiftCalendarShiftRenderer
         $shifts_row .= '</li>';
         return [
             $shift_signup_state,
-            $shifts_row
+            $shifts_row,
         ];
     }
 
@@ -257,7 +257,7 @@ class ShiftCalendarShiftRenderer
                         page_link_to('user_shifts', ['delete_shift' => $shift->id]),
                         icon('trash'),
                         'btn-' . $class . ' btn-sm border-light text-white'
-                    )
+                    ),
                 ]) . '</div>';
         }
         $shift_heading = $shift->start->format('H:i') . ' &dash; '
@@ -270,7 +270,7 @@ class ShiftCalendarShiftRenderer
 
         return div('card-header d-flex align-items-center', [
             '<a class="d-flex align-items-center text-white" href="' . shift_link($shift) . '">' . $shift_heading . '</a>',
-            $header_buttons
+            $header_buttons,
         ]);
     }
 }

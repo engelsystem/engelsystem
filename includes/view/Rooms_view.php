@@ -46,9 +46,9 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
     $tabs[__('Shifts')] = div('first', [
         $shiftsFilterRenderer->render(page_link_to('rooms', [
             'action'  => 'view',
-            'room_id' => $room->id
+            'room_id' => $room->id,
         ]), ['rooms' => [$room->id]]),
-        $shiftCalendarRenderer->render()
+        $shiftCalendarRenderer->render(),
     ]);
 
     $selected_tab = 0;
@@ -69,7 +69,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
                 page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room->id]),
                 icon('trash') . __('delete'),
                 'btn'
-            )
+            ),
         ]) : '',
         $dect,
         $description,

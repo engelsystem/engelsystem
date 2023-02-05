@@ -77,7 +77,7 @@ class ShiftCalendarRenderer
             if (!isset($lanes[$room->id])) {
                 // initialize room with one lane
                 $lanes[$room->id] = [
-                    new ShiftCalendarLane($header)
+                    new ShiftCalendarLane($header),
                 ];
             }
             // Try to add the shift to the existing lanes for this room
@@ -141,7 +141,7 @@ class ShiftCalendarRenderer
 
         return div('shift-calendar table-responsive', [
                 $this->renderTimeLane(),
-                $this->renderShiftLanes()
+                $this->renderShiftLanes(),
             ]) . $this->renderLegend();
     }
 
@@ -199,7 +199,7 @@ class ShiftCalendarRenderer
 
         return div('lane', [
             div('header ' . $bg, $lane->getHeader()),
-            $html
+            $html,
         ]);
     }
 
@@ -218,14 +218,14 @@ class ShiftCalendarRenderer
                 return div($class . ' day');
             }
             return div($class . ' day', [
-                date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time)
+                date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time),
             ]);
         } elseif ($time % (60 * 60) == 0) {
             if (!$label) {
                 return div($class . ' hour');
             }
             return div($class . ' hour', [
-                date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time)
+                date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time),
             ]);
         }
         return div($class);
@@ -242,8 +242,8 @@ class ShiftCalendarRenderer
 
         $time_slot = [
             div('header ' . $bg, [
-                __('Time')
-            ])
+                __('Time'),
+            ]),
         ];
         for ($block = 0; $block < $this->getBlocksPerSlot(); $block++) {
             $thistime = $this->getFirstBlockStartTime() + ($block * ShiftCalendarRenderer::SECONDS_PER_ROW);
@@ -312,7 +312,7 @@ class ShiftCalendarRenderer
             badge(__('Help needed'), 'danger'),
             badge(__('Other angeltype needed / collides with my shifts'), 'warning'),
             badge(__('Shift is full'), 'success'),
-            badge(__('Shift running/ended or user not arrived/allowed'), 'secondary')
+            badge(__('Shift running/ended or user not arrived/allowed'), 'secondary'),
         ]);
     }
 }

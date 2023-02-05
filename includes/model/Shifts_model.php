@@ -78,7 +78,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
         $start,
         $end,
         $start,
-        $end
+        $end,
     ]);
 
     $shifts = collect($shifts);
@@ -238,7 +238,7 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
             $shift->id,
             $angeltype->id,
             $shift->id,
-            $angeltype->id
+            $angeltype->id,
         ]
     );
 }
@@ -564,7 +564,7 @@ function Shift($shift)
             'angel_type_id' => $type['angel_type_id'],
             'count'         => $type['count'],
             'restricted'    => $type['restricted'],
-            'taken'         => $type['taken']
+            'taken'         => $type['taken'],
         ];
     }
     $shift->neededAngels = $neededAngels;
