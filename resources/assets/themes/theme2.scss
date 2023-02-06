@@ -30,7 +30,7 @@ $state-danger-text: #694374;
 $state-danger-bg: lighten($brand-danger, 50%);
 $state-danger-border: $brand-danger;
 
-@import 'base.scss';
+@import 'base';
 
 h1,
 h2,
