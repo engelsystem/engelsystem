@@ -104,7 +104,7 @@ class Response extends SymfonyResponse implements ResponseInterface
 
         $new = clone $this;
         $new->setContent($this->renderer->render($view, $data));
-        $new->setStatusCode($status, ($status == $this->getStatusCode() ? $this->statusText : null));
+        $new->setStatusCode($status, ($status === $this->getStatusCode() ? $this->statusText : null));
 
         foreach ($headers as $key => $values) {
             $new = $new->withAddedHeader($key, $values);

@@ -19,7 +19,7 @@ class UserModelImplementation extends User
 
     public function find(mixed $id, array $columns = ['*']): ?User
     {
-        if ($id != static::$id) {
+        if ($id !== static::$id) {
             throw new InvalidArgumentException('Wrong user ID searched');
         }
 
@@ -31,7 +31,7 @@ class UserModelImplementation extends User
      */
     public static function whereApiKey(string $apiKey): array|Collection|QueryBuilder
     {
-        if ($apiKey != static::$apiKey) {
+        if ($apiKey !== static::$apiKey) {
             throw new InvalidArgumentException('Wrong api key searched');
         }
 

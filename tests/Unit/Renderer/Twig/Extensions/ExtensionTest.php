@@ -23,7 +23,7 @@ abstract class ExtensionTest extends TestCase
     protected function assertFilterExists(string $name, callable $callback, array $functions): void
     {
         foreach ($functions as $function) {
-            if ($function->getName() != $name) {
+            if ($function->getName() !== $name) {
                 continue;
             }
 
@@ -47,7 +47,7 @@ abstract class ExtensionTest extends TestCase
         array $options = []
     ): void {
         foreach ($functions as $function) {
-            if ($function->getName() != $name) {
+            if ($function->getName() !== $name) {
                 continue;
             }
 

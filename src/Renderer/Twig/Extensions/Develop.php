@@ -22,7 +22,7 @@ class Develop extends TwigExtension
      */
     public function getFunctions(): array
     {
-        if ($this->config->get('environment') != 'development') {
+        if ($this->config->get('environment') !== 'development') {
             return [];
         }
 

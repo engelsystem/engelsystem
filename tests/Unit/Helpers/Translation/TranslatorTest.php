@@ -114,7 +114,7 @@ class TranslatorTest extends ServiceProviderTest
             ->method('gettext')
             ->willReturnCallback(function () use (&$i) {
                 $i++;
-                if ($i != 4) {
+                if ($i !== 4) {
                     throw new TranslationNotFound();
                 }
 

@@ -32,7 +32,7 @@ class CreateEventConfigTable extends Migration
                     $table->timestamps();
                 });
             } catch (QueryException $e) {
-                if ($type != 'json') {
+                if ($type !== 'json') {
                     throw $e;
                 }
 

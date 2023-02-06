@@ -55,7 +55,7 @@ class MessagesController extends BaseController
 
         $conversations = [];
         foreach ($latestMessages as $msg) {
-            $otherUser = $msg->user_id == $currentUser->id ? $msg->receiver : $msg->sender;
+            $otherUser = $msg->user_id === $currentUser->id ? $msg->receiver : $msg->sender;
             $unreadMessages = $numberOfUnreadMessages[$otherUser->id] ?? 0;
 
             $conversations[] = [
@@ -114,7 +114,7 @@ class MessagesController extends BaseController
             ->get();
 
         $unreadMessages = $messages->filter(function ($m) use ($otherUser) {
-            return $m->user_id == $otherUser->id && !$m->read;
+            return $m->user_id === $otherUser->id && !$m->read;
         });
 
         foreach ($unreadMessages as $msg) {
@@ -146,7 +146,7 @@ class MessagesController extends BaseController
         $newMessage->sender()->associate($currentUser);
         $newMessage->receiver()->associate($otherUser);
         $newMessage->text = $data['text'];
-        $newMessage->read = $otherUser->id == $currentUser->id; // if its to myself, I obviously read it.
+        $newMessage->read = $otherUser->id === $currentUser->id; // if its to myself, I obviously read it.
         $newMessage->save();
 
         return $this->redirect->to('/messages/' . $otherUser->id . '#newest');
@@ -164,7 +164,7 @@ class MessagesController extends BaseController
         $currentUser = $this->auth->user();
         $msg = $this->message->findOrFail($msgId);
 
-        if ($msg->user_id == $currentUser->id) {
+        if ($msg->user_id === $currentUser->id) {
             $msg->delete();
         } else {
             throw new HttpForbidden('You can not delete a message you haven\'t send');

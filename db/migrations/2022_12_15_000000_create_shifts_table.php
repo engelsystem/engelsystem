@@ -55,7 +55,7 @@ class CreateShiftsTable extends Migration
             ->get();
         foreach ($records as $record) {
             $isUpdated = !empty($record->edited_at_timestamp)
-                && $record->edited_at_timestamp != $record->created_at_timestamp;
+                && $record->edited_at_timestamp !== $record->created_at_timestamp;
 
             $connection->table('shifts')->insert([
                 'id'             => $record->SID,
