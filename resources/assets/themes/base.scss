@@ -77,8 +77,14 @@ $form-label-font-weight: $font-weight-bold;
 
 $navbar-height: 3.125rem;
 
+:root {
+  --navbar-content-height: 40px; // calc(#{$navbar-brand-font-size} * var(--#{$prefix}body-line-height) + #{$navbar-brand-padding-y} * 2);
+  --navbar-height: calc(var(--navbar-content-height) + #{$navbar-padding-y} * 2 + var(--#{$prefix}border-width));
+  --content-padding-top: calc(var(--navbar-height) + 1rem * 0.75);
+}
+
 body {
-  padding-top: 70px;
+  padding-top: var(--content-padding-top);
 }
 
 .footer a {
@@ -327,7 +333,8 @@ h6,
 }
 
 .ref-id[id] {
-  padding-top: 3em;
+  padding-top: var(--content-padding-top);
+  font-size: 0;
 }
 
 // Cards
