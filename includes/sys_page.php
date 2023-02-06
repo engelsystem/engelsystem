@@ -66,7 +66,7 @@ function throw_redirect($url)
 /**
  * Echoes given output and dies.
  *
- * @param String $output String to display
+ * @param string $output String to display
  */
 function raw_output($output = '')
 {

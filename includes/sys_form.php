@@ -235,10 +235,10 @@ function form_text($name, $label, $value, $disabled = false, $maxlength = null, 
 /**
  * Renders a text input with placeholder instead of label.
  *
- * @param String  $name        Input name
- * @param String  $placeholder Placeholder
- * @param String  $value       The value
- * @param Boolean $disabled    Is the field enabled?
+ * @param string  $name        Input name
+ * @param string  $placeholder Placeholder
+ * @param string  $value       The value
+ * @param boolean $disabled    Is the field enabled?
  * @return string
  */
 function form_text_placeholder($name, $placeholder, $value, $disabled = false)
@@ -429,7 +429,7 @@ function form_csrf()
 
 /**
  * @param string   $name
- * @param String[] $options
+ * @param string[] $options
  * @param string   $selected
  * @return string
  */
