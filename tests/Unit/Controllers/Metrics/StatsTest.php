@@ -155,7 +155,7 @@ class StatsTest extends TestCase
             'creator_id' => 1,
             'hours'      => 2.4,
             'comment'    => '',
-            'worked_at'  => new Carbon()
+            'worked_at'  => new Carbon(),
         ];
         (new Worklog($worklogData))->save();
         (new Worklog(['hours' => 1.2, 'user_id' => 3] + $worklogData))->save();
@@ -183,7 +183,7 @@ class StatsTest extends TestCase
             2 * 60 * 60,
             3 * 60 * 60,
             4 * 60 * 60,
-            '+Inf'
+            '+Inf',
         ]);
 
         $this->assertEquals([

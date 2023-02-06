@@ -46,4 +46,7 @@
             <property name="spacesCountAroundEqualsSign" value="0" />
         </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma">
+        <exclude-pattern>/includes</exclude-pattern>
+    </rule>
 </ruleset>

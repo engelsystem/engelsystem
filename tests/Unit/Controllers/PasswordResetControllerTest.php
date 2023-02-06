@@ -208,7 +208,7 @@ class PasswordResetControllerTest extends TestCase
             'session'  => $session,
             'mailer'   => $mailer,
             'log'      => $log,
-            'renderer' => $renderer
+            'renderer' => $renderer,
         ];
     }
 

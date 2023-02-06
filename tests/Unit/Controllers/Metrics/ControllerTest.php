@@ -71,7 +71,7 @@ class ControllerTest extends TestCase
                 $this->assertArraySubset(['tshirt_sizes' => [
                     'type' => 'gauge',
                     ['labels' => ['size' => 'L'], 2],
-                    ['labels' => ['size' => 'XL'], 0]
+                    ['labels' => ['size' => 'XL'], 0],
                 ]], $data);
 
                 return 'metrics return';

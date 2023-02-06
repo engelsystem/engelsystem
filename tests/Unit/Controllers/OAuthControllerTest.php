@@ -387,7 +387,7 @@ class OAuthControllerTest extends TestCase
             ['unsupported_response_type'],
             ['invalid_scope'],
             ['server_error'],
-            ['temporarily_unavailable']
+            ['temporarily_unavailable'],
         ];
     }
 
@@ -612,7 +612,7 @@ class OAuthControllerTest extends TestCase
                 $this->oauth,
                 $this->redirect,
                 $this->session,
-                $this->url
+                $this->url,
             ])
             ->onlyMethods($mockMethods)
             ->getMock();

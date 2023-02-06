@@ -25,7 +25,7 @@ class DumpServerServiceProviderTest extends ServiceProviderTest
         $varDumpServerConfig = [
             'host' => 'localhost',
             'port' => 80,
-            'enable' => true
+            'enable' => true,
         ];
 
         $config = new Config();
@@ -69,7 +69,7 @@ class DumpServerServiceProviderTest extends ServiceProviderTest
         $varDumpServerConfig = [
             'host' => 'localhost',
             'port' => 80,
-            'enable' => $enable
+            'enable' => $enable,
         ];
 
         $config = new Config();

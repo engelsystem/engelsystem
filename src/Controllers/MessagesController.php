@@ -76,7 +76,7 @@ class MessagesController extends BaseController
             'pages/messages/overview.twig',
             [
                 'conversations' => $conversations,
-                'users' => $users
+                'users' => $users,
             ]
         );
     }

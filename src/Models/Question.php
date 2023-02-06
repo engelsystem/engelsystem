@@ -38,7 +38,7 @@ class Question extends BaseModel
 
     /** @var array<string> */
     protected $dates = [ // phpcs:ignore
-        'answered_at'
+        'answered_at',
     ];
 
     /** @var array<string> */

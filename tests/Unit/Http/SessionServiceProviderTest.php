@@ -60,7 +60,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
                     [
                         // 2 days
                         'options' => ['cookie_httponly' => true, 'name' => 'session', 'cookie_lifetime' => 172800],
-                        'handler' => null
+                        'handler' => null,
                     ],
                 ],
                 [Session::class],
@@ -70,7 +70,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
                     [
                         // 5 days
                         'options' => ['cookie_httponly' => true, 'name' => 'foobar', 'cookie_lifetime' => 432000],
-                        'handler' => $databaseHandler
+                        'handler' => $databaseHandler,
                     ],
                 ],
                 [Session::class]

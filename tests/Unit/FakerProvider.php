@@ -22,7 +22,7 @@ class FakerProvider extends Base
         've',
         'xe',
         'ze',
-        'zie'
+        'zie',
     ];
 
     /** @var string[] */
