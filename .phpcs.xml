@@ -49,4 +49,7 @@
             <property name="spacesCountAroundEqualsSign" value="0" />
         </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators">
+        <exclude-pattern>/includes</exclude-pattern>
+    </rule>
 </ruleset>
