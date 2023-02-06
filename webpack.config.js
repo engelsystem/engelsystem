@@ -1,16 +1,17 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+
 const nodeEnv = (process.env.NODE_ENV || 'development').trim();
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
-const fs = require('fs');
 
 // eslint-disable-next-line
 const __DEV__ = nodeEnv !== 'production';
 
-const devtool = __DEV__ ? 'source-map' : undefined
+const devtool = __DEV__ ? 'source-map' : undefined;
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -45,7 +46,7 @@ module.exports = {
   mode: __DEV__ ? 'development' : 'production',
   context: __dirname,
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js'],
   },
   entry: {
     ...themeEntries,
@@ -63,7 +64,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.js$/,
         exclude: /(node_modules)/,
         loader: 'babel-loader',
       },
@@ -78,7 +79,7 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [ [ 'autoprefixer', ], ],
+                plugins: [['autoprefixer']],
               },
             },
           },
@@ -90,12 +91,12 @@ module.exports = {
             options: {
               sourceMap: true,
               sassOptions: {
-                quietDeps: true
-              }
-            }
+                quietDeps: true,
+              },
+            },
           },
-        ]
-      }
+        ],
+      },
     ],
   },
   plugins,
