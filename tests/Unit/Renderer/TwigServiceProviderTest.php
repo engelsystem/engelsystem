@@ -111,7 +111,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
      */
     public function testRegisterTwigEngine(): void
     {
-        /** @var TwigEngine|MockObject $htmlEngine */
+        /** @var TwigEngine|MockObject $twigEngine */
         $twigEngine = $this->createMock(TwigEngine::class);
         /** @var TwigLoader|MockObject $twigLoader */
         $twigLoader = $this->createMock(TwigLoader::class);

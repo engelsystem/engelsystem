@@ -32,7 +32,7 @@ class ShiftsTest extends TestCase
     }
 
     /**
-     * @return array[][]
+     * @return array{0: Carbon, 1: Carbon, 2: boolean}[]
      */
     public function nightShiftData(): array
     {

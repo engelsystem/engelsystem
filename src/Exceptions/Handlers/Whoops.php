@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Engelsystem\Exceptions\Handlers;
 
 use Engelsystem\Application;
-use Engelsystem\Container\Container;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Throwable;
@@ -15,14 +14,11 @@ use Whoops\Run as WhoopsRunner;
 
 class Whoops extends Legacy implements HandlerInterface
 {
-    protected Application $app;
-
     /**
      * Whoops constructor.
      */
-    public function __construct(Container $app)
+    public function __construct(protected Application $app)
     {
-        $this->app = $app;
     }
 
     public function render(Request $request, Throwable $e): void
