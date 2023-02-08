@@ -1,55 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Maintenance - %APP_NAME%</title>
-    <link rel="stylesheet" type="text/css" href="%ASSETS_PATH%/assets/theme0.css"/>
-    <script src="%ASSETS_PATH%/assets/vendor.js"></script>
+    <title>%APP_NAME% - Maintenance</title>
 </head>
+
+<style>
+    body {
+        font-family: sans-serif;
+        color: #222;
+        background-color: #eee;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: .7em;
+    }
+
+    ul li::before {
+        content: "\2026\20";
+    }
+
+    .container {
+        margin: 1em;
+    }
+
+    @media screen and (min-width: 1024px) {
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+</style>
+
 <body>
-<div class="navbar navbar-light bg-light fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <span class="icon-icon_angel"></span> <strong class="visible-lg-inline">%APP_NAME%</strong>
-        </a>
-    </div>
-</div>
-<div class="container-fluid">
-    <div class="container text-center">
-        <h1 class="mb-4">
-            <span class="bi bi-scissors"></span>
-            <span class="bi bi-wrench"></span>
-            <span class="bi bi-cloud-lightning-rain"></span>
+
+<div class="container">
+
+    <div>
+        <h1>
+            The <strong>%APP_NAME%</strong> is in maintenance mode
         </h1>
-        <div class="row">
-            <div class="col-xl-6">
-                <h2>
-                    The <span class="icon-icon_angel"></span> <strong>%APP_NAME%</strong> is in maintenance mode.
-                </h2>
-                <p>This may be due to...</p>
-                <p>
-                    ...archangels closing the gates of heaven. <br>
-                    ...somebody's stolen the power chord and now the battery is empty. <br>
-                    ...DHCP decided to give me another ip address.
-                </p>
-            </div>
-            <div class="col-xl-6">
-                <iframe width="560" height="315"
-                        src="https://www.youtube.com/embed/0aV_vHcunSQ?rel=0"
-                        frameborder="0" allowfullscreen>
-                </iframe>
-            </div>
-        </div>
+
+        <p>This may be due to</p>
+
+        <ul>
+            <li>Archangels closing the gates of heaven.</li>
+            <li>Someone tried to do a simple maintenance task which did not go as planned.</li>
+            <li>DHCP decided to give me another ip address.</li>
+            <li>Somebody's stolen the power chord and now the battery is empty.</li>
+            <li>It might be a good time to take a nap.</li>
+        </ul>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="text-center footer my-5">
-                <a href="https://github.com/engelsystem/engelsystem/issues">Bugs / Features</a>
-                · <a href="https://github.com/engelsystem/engelsystem/">Development Platform</a>
-            </div>
-        </div>
+
+
+    <div>
+        <iframe width="480" height="320"
+                src="https://www.youtube-nocookie.com/embed/0aV_vHcunSQ"
+                allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>
+    </div>
+
+    <div>
+        <a href="https://github.com/engelsystem/engelsystem/issues">Bugs / Features</a>
+        · <a href="https://github.com/engelsystem/engelsystem/">Development Platform</a>
     </div>
 </div>
+
 </body>
 </html>
