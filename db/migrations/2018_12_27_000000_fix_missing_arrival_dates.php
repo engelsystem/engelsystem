@@ -34,11 +34,4 @@ class FixMissingArrivalDates extends Migration
                 ->update((array) $state);
         }
     }
-
-    /**
-     * Down is not possible and not needed since this is a bugfix.
-     */
-    public function down(): void
-    {
-    }
 }

@@ -108,7 +108,7 @@ class CreatePrivilegesAndGroupsRelatedTables extends Migration
         $this->schema->drop('privileges_new');
     }
 
-    protected function createNew(): void
+    private function createNew(): void
     {
         $this->schema->create('groups', function (Blueprint $table): void {
             $table->increments('id');
@@ -134,7 +134,7 @@ class CreatePrivilegesAndGroupsRelatedTables extends Migration
         });
     }
 
-    protected function createOldTable(): void
+    private function createOldTable(): void
     {
         $this->schema->create('Groups', function (Blueprint $table): void {
             $table->string('Name', 35);
@@ -162,7 +162,7 @@ class CreatePrivilegesAndGroupsRelatedTables extends Migration
         });
     }
 
-    protected function copyOldToNew(): void
+    private function copyOldToNew(): void
     {
         $connection = $this->schema->getConnection();
 
@@ -211,7 +211,7 @@ class CreatePrivilegesAndGroupsRelatedTables extends Migration
         }
     }
 
-    protected function copyNewToOld(): void
+    private function copyNewToOld(): void
     {
         $connection = $this->schema->getConnection();
 

@@ -103,8 +103,7 @@ class CreateNewsTable extends Migration
         $this->schema->create('News', function (Blueprint $table): void {
             $table->increments('ID');
             $table->integer('Datum');
-            $table->string('Betreff', 150)
-                ->default('');
+            $table->string('Betreff', 150)->default('');
             $table->text('Text');
             $this->references($table, 'users', 'UID');
             $table->boolean('Treffen')->default(false);

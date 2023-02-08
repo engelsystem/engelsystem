@@ -14,12 +14,9 @@ class AddMobileShowToUsersSettings extends Migration
      */
     public function up(): void
     {
-        $this->schema->table(
-            'users_settings',
-            function (Blueprint $table): void {
-                $table->boolean('mobile_show')->default(false)->after('email_news');
-            }
-        );
+        $this->schema->table('users_settings', function (Blueprint $table): void {
+            $table->boolean('mobile_show')->default(false)->after('email_news');
+        });
     }
 
     /**
@@ -27,11 +24,8 @@ class AddMobileShowToUsersSettings extends Migration
      */
     public function down(): void
     {
-        $this->schema->table(
-            'users_settings',
-            function (Blueprint $table): void {
-                $table->dropColumn('mobile_show');
-            }
-        );
+        $this->schema->table('users_settings', function (Blueprint $table): void {
+            $table->dropColumn('mobile_show');
+        });
     }
 }

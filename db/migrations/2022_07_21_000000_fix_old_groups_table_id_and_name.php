@@ -51,7 +51,7 @@ class FixOldGroupsTableIdAndName extends Migration
      * @param string[] $naming
      * @param int[] $ids
      */
-    protected function migrate(array $naming, array $ids): void
+    private function migrate(array $naming, array $ids): void
     {
         if (!$this->schema->hasTable('Groups')) {
             return;

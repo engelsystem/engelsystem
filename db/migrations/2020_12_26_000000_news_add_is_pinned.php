@@ -16,12 +16,9 @@ class NewsAddIsPinned extends Migration
      */
     public function up(): void
     {
-        $this->schema->table(
-            'news',
-            function (Blueprint $table): void {
-                $table->boolean('is_pinned')->default(false)->after('is_meeting');
-            }
-        );
+        $this->schema->table('news', function (Blueprint $table): void {
+            $table->boolean('is_pinned')->default(false)->after('is_meeting');
+        });
     }
 
     /**
@@ -29,11 +26,8 @@ class NewsAddIsPinned extends Migration
      */
     public function down(): void
     {
-        $this->schema->table(
-            'news',
-            function (Blueprint $table): void {
-                $table->dropColumn('is_pinned');
-            }
-        );
+        $this->schema->table('news', function (Blueprint $table): void {
+            $table->dropColumn('is_pinned');
+        });
     }
 }

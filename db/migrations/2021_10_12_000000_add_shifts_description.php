@@ -20,12 +20,9 @@ class AddShiftsDescription extends Migration
             return;
         }
 
-        $this->schema->table(
-            'Shifts',
-            function (Blueprint $table): void {
-                $table->text('description')->nullable()->after('shifttype_id');
-            }
-        );
+        $this->schema->table('Shifts', function (Blueprint $table): void {
+            $table->text('description')->nullable()->after('shifttype_id');
+        });
     }
 
     /**
@@ -37,11 +34,8 @@ class AddShiftsDescription extends Migration
             return;
         }
 
-        $this->schema->table(
-            'Shifts',
-            function (Blueprint $table): void {
-                $table->dropColumn('description');
-            }
-        );
+        $this->schema->table('Shifts', function (Blueprint $table): void {
+            $table->dropColumn('description');
+        });
     }
 }

@@ -18,12 +18,9 @@ class AddHideRegisterToAngeltypes extends Migration
             return;
         }
 
-        $this->schema->table(
-            'AngelTypes',
-            function (Blueprint $table): void {
-                $table->boolean('hide_register')->default(false)->after('show_on_dashboard');
-            }
-        );
+        $this->schema->table('AngelTypes', function (Blueprint $table): void {
+            $table->boolean('hide_register')->default(false)->after('show_on_dashboard');
+        });
     }
 
     /**
@@ -35,11 +32,8 @@ class AddHideRegisterToAngeltypes extends Migration
             return;
         }
 
-        $this->schema->table(
-            'AngelTypes',
-            function (Blueprint $table): void {
-                $table->dropColumn('hide_register');
-            }
-        );
+        $this->schema->table('AngelTypes', function (Blueprint $table): void {
+            $table->dropColumn('hide_register');
+        });
     }
 }

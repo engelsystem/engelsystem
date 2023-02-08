@@ -31,7 +31,7 @@ class ChangeUsersContactDectFieldSize extends Migration
         $this->changeDectTo(5);
     }
 
-    protected function changeDectTo(int $length): void
+    private function changeDectTo(int $length): void
     {
         foreach ($this->tables as $table => $column) {
             if (!$this->schema->hasTable($table)) {
