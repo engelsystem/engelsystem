@@ -23,10 +23,10 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read AngelType $angelType
  * @property-read User      $confirmUser
  *
- * @method static QueryBuilder|AngelType[] whereId($value)
- * @method static QueryBuilder|AngelType[] whereAngelTypeId($value)
- * @method static QueryBuilder|AngelType[] whereConfirmUserId($value)
- * @method static QueryBuilder|AngelType[] whereSupporter($value)
+ * @method static QueryBuilder|UserAngelType[] whereId($value)
+ * @method static QueryBuilder|UserAngelType[] whereAngelTypeId($value)
+ * @method static QueryBuilder|UserAngelType[] whereConfirmUserId($value)
+ * @method static QueryBuilder|UserAngelType[] whereSupporter($value)
  */
 class UserAngelType extends Pivot
 {

@@ -1,15 +1,27 @@
 <?php
 
+use Engelsystem\Models\News;
+use Illuminate\Support\Collection;
+
 /**
  * Public dashboard (formerly known as angel news hub)
  *
  * @param array   $stats
  * @param array[] $free_shifts
+ * @param News[]|Collection $important_news
  * @return string
  */
-function public_dashboard_view($stats, $free_shifts)
+function public_dashboard_view($stats, $free_shifts, $important_news)
 {
     $needed_angels = '';
+    $news = '';
+    if ($important_news->isNotEmpty()) {
+        $first_news = $important_news->first();
+        $news = div('alert alert-warning text-center', [
+            '<a class="text-body" href="' . url('/news/' . $first_news->id) . '"><strong>' . $first_news->title . '</strong></a>',
+        ]);
+    }
+
     if (count($free_shifts) > 0) {
         $shift_panels = [
             '<div class="row">',
@@ -34,11 +46,6 @@ function public_dashboard_view($stats, $free_shifts)
     $isFiltered = request()->get('filtered');
     $filter = collect(session()->get('shifts-filter'))->only(['rooms', 'types'])->toArray();
     return page(array_merge(
-        ( important_news ? : [
-            div('', [
-
-            ], ''),
-        ]),
         [
         div('wrapper', [
             div('public-dashboard', [
@@ -48,10 +55,11 @@ function public_dashboard_view($stats, $free_shifts)
                     stats(__('Angels currently working'), $stats['angels-working'], 'default'),
                     stats(__('Hours to be worked'), $stats['hours-to-work'], 'default'),
                 ], 'statistics'),
+                $news,
                 $needed_angels,
             ], 'public-dashboard'),
-        ]),
-        div('first col-md-12 text-center', [buttons([
+        ]),],
+        [div('first col-md-12 text-center', [buttons([
             button(
                 '#',
                 icon('fullscreen') . __('Fullscreen'),

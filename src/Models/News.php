@@ -25,13 +25,14 @@ use Illuminate\Support\Str;
  * @property-read Collection|NewsComment[] $comments
  * @property-read int|null                 $comments_count
  *
- * @method static QueryBuilder|LogEntry[] whereId($value)
- * @method static QueryBuilder|LogEntry[] whereTitle($value)
- * @method static QueryBuilder|LogEntry[] whereText($value)
- * @method static QueryBuilder|LogEntry[] whereIsMeeting($value)
- * @method static QueryBuilder|LogEntry[] whereIsPinned($value)
- * @method static QueryBuilder|LogEntry[] whereCreatedAt($value)
- * @method static QueryBuilder|LogEntry[] whereUpdatedAt($value)
+ * @method static QueryBuilder|News[] whereId($value)
+ * @method static QueryBuilder|News[] whereTitle($value)
+ * @method static QueryBuilder|News[] whereText($value)
+ * @method static QueryBuilder|News[] whereIsMeeting($value)
+ * @method static QueryBuilder|News[] whereIsPinned($value)
+ * @method static QueryBuilder|News[] whereIsImportant($value)
+ * @method static QueryBuilder|News[] whereCreatedAt($value)
+ * @method static QueryBuilder|News[] whereUpdatedAt($value)
  */
 class News extends BaseModel
 {
