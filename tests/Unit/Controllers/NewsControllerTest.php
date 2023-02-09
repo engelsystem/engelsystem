@@ -98,7 +98,7 @@ class NewsControllerTest extends ControllerTest
                             $this->assertEquals(3, $data['pages']);
                             $this->assertEquals(2, $data['page']);
                             $this->assertTrue($news[0]->is_pinned);
-                            $this->assertEquals('Ipsum', $news[0]->title);
+                            $this->assertEquals('Bar', $news[0]->title);
                             break;
                         case 2:
                             // Show meetings

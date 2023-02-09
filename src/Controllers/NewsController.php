@@ -136,6 +136,7 @@ class NewsController extends BaseController
             ->orderByDesc('is_pinned')
             ->orderByDesc('is_important')
             ->orderByDesc('updated_at')
+            ->orderByDesc('id')
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
