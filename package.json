@@ -11,11 +11,11 @@
     "build:watch": "webpack --watch",
     "lint": "yarn lint:eslint && yarn lint:prettier && yarn lint:ec",
     "lint:eslint": "eslint .",
-    "lint:prettier": "prettier --check resources/assets",
+    "lint:prettier": "prettier --check resources/assets webpack.config.js",
     "lint:ec": "ec",
     "lint:fix": "yarn lint:fix:eslint && yarn lint:fix:prettier",
     "lint:fix:eslint": "eslint --fix .",
-    "lint:fix:prettier": "prettier --write resources/assets"
+    "lint:fix:prettier": "prettier --write resources/assets webpack.config.js"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
