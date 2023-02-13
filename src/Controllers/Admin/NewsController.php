@@ -94,7 +94,10 @@ class NewsController extends BaseController
         $news->text = $data['text'];
         $news->is_meeting = !is_null($data['is_meeting']);
         $news->is_pinned = !is_null($data['is_pinned']);
-        $news->is_important = !is_null($data['is_important']);
+
+        if ($this->auth->can('news.important')) {
+            $news->is_important = !is_null($data['is_important']);
+        }
 
         if (!is_null($data['preview'])) {
             return $this->showEdit($news);

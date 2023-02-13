@@ -181,6 +181,10 @@ class NewsControllerTest extends ControllerTest
 
                 return $this->response;
             });
+        $this->auth->expects($this->atLeastOnce())
+            ->method('can')
+            ->with('news.important')
+            ->willReturn(true);
 
         /** @var NewsController $controller */
         $controller = $this->app->make(NewsController::class);
