@@ -46,9 +46,10 @@ class NewsController extends BaseController
         return $this->response->withView(
             'pages/news/edit.twig',
             [
-                'news'       => $news,
-                'is_meeting' => $news ? $news->is_meeting : $isMeetingDefault,
-                'is_pinned'  => $news ? $news->is_pinned : false,
+                'news'         => $news,
+                'is_meeting'   => $news ? $news->is_meeting : $isMeetingDefault,
+                'is_pinned'    => $news ? $news->is_pinned : false,
+                'is_important' => $news ? $news->is_important : false,
             ],
         );
     }
@@ -61,12 +62,13 @@ class NewsController extends BaseController
         $news = $this->news->findOrNew($newsId);
 
         $data = $this->validate($request, [
-            'title'      => 'required',
-            'text'       => 'required',
-            'is_meeting' => 'optional|checked',
-            'is_pinned'  => 'optional|checked',
-            'delete'     => 'optional|checked',
-            'preview'    => 'optional|checked',
+            'title'        => 'required',
+            'text'         => 'required',
+            'is_meeting'   => 'optional|checked',
+            'is_pinned'    => 'optional|checked',
+            'is_important' => 'optional|checked',
+            'delete'       => 'optional|checked',
+            'preview'      => 'optional|checked',
         ]);
 
         if (!is_null($data['delete'])) {
@@ -93,6 +95,10 @@ class NewsController extends BaseController
         $news->is_meeting = !is_null($data['is_meeting']);
         $news->is_pinned = !is_null($data['is_pinned']);
 
+        if ($this->auth->can('news.important')) {
+            $news->is_important = !is_null($data['is_important']);
+        }
+
         if (!is_null($data['preview'])) {
             return $this->showEdit($news);
         }
@@ -107,10 +113,11 @@ class NewsController extends BaseController
         $this->log->info(
             'Updated {pinned}{type} "{news}": {text}',
             [
-                'pinned' => $news->is_pinned ? 'pinned ' : '',
-                'type'   => $news->is_meeting ? 'meeting' : 'news',
-                'news'   => $news->title,
-                'text'   => $news->text,
+                'pinned'    => $news->is_pinned ? 'pinned ' : '',
+                'important' => $news->is_important ? 'important ' : '',
+                'type'      => $news->is_meeting ? 'meeting' : 'news',
+                'news'      => $news->title,
+                'text'      => $news->text,
             ]
         );
 

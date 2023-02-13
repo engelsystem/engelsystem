@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\News;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\ShiftsFilter;
 
@@ -55,9 +56,14 @@ function public_dashboard_controller()
         }
     }
 
+    $important_news = News::whereIsImportant(true)
+        ->orderBy('updated_at')
+        ->limit(1)
+        ->get();
+
     return [
         __('Public Dashboard'),
-        public_dashboard_view($stats, $free_shifts),
+        public_dashboard_view($stats, $free_shifts, $important_news),
     ];
 }
 

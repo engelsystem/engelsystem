@@ -28,7 +28,7 @@ class PrivilegeTest extends ModelTest
         $model->groups()->attach($group2);
 
         /** @var Privilege $savedModel */
-        $savedModel = Privilege::first();
+        $savedModel = Privilege::whereName('Some Privilege')->first();
         $this->assertEquals('Some Privilege', $savedModel->name);
         $this->assertEquals('Some long description', $savedModel->description);
         $this->assertEquals($group1->name, $savedModel->groups[0]->name);
