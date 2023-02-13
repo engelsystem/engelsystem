@@ -197,12 +197,6 @@ msgid "Please read about the jobs you can do to help us."
 msgstr ""
 "Bitte informiere Dich über die Tätigkeiten bei denen Du uns helfen kannst."
 
-#: resources/views/pages/login.twig:99
-#: includes/controller/angeltypes_controller.php:69
-#: includes/view/AngelTypes_view.php:501 includes/view/AngelTypes_view.php:598
-msgid "Teams/Job description"
-msgstr "Team-/Aufgabenbeschreibung"
-
 #: resources/views/pages/login.twig:105
 msgid "Please note: You have to activate cookies!"
 msgstr "Hinweis: Cookies müssen aktiviert sein!"
@@ -2071,25 +2065,9 @@ msgstr "Selbst-Eintragen erlaubt"
 msgid "Membership"
 msgstr "Mitgliedschaft"
 
-#: includes/view/AngelTypes_view.php:551
-msgid ""
-"This angeltype requires the attendance at an introduction meeting. "
-"You might find additional information in the description."
-msgstr ""
-"Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen."
-"Weitere Informationen findest du möglicherweise in der Beschreibung."
-
 #: includes/view/AngelTypes_view.php:586
 msgid "FAQ"
 msgstr "FAQ"
-
-#: includes/view/AngelTypes_view.php:591
-msgid ""
-"Here is the list of teams and their tasks. If you have questions, read the "
-"FAQ."
-msgstr ""
-"Hier ist die Liste der Teams und ihrer Aufgaben. Wenn Du Fragen hast, schaue "
-"im FAQ nach."
 
 #: includes/view/EventConfig_view.php:91
 msgid "Event Name"
@@ -3180,3 +3158,28 @@ msgstr "Arbeitseinsatz löschen"
 
 msgid "worklog.delete.info"
 msgstr "Möchtest du den Arbeitseinsatz von %s wirklich löschen?"
+
+msgid "angeltypes.angeltypes"
+msgstr "Engeltypen"
+
+msgid "angeltypes.about"
+msgstr "Teams-/Aufgabenbeschreibung"
+
+msgid "angeltypes.about.text"
+msgstr "Hier findest Du die Liste der Teams und ihrer Aufgaben. Wenn Du weitere Fragen hast, schaue in den FAQ nach."
+
+msgid "angeltypes.restricted.hint"
+msgstr "Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen. "
+"Weitere Informationen findest du möglicherweise in der Beschreibung."
+
+msgid "angeltypes.name"
+msgstr "Name"
+
+msgid "angeltypes.dect"
+msgstr "DECT"
+
+msgid "angeltypes.email"
+msgstr "E-Mail"
+
+msgid "registration.register"
+msgstr "Registrieren"

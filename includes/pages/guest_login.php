@@ -500,7 +500,7 @@ function guest_register()
                         'angel_types',
                         __('What do you want to do?') . sprintf(
                             ' (<a href="%s">%s</a>)',
-                            page_link_to('angeltypes', ['action' => 'about']),
+                            url('/angeltypes/about'),
                             __('Description of job types')
                         ),
                         $angel_types,

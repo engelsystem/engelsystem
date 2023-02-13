@@ -424,3 +424,28 @@ msgstr "Delete work log"
 
 msgid "worklog.delete.info"
 msgstr "Do you really want to delete the work log for %s?"
+
+msgid "angeltypes.angeltypes"
+msgstr "Angeltypes"
+
+msgid "angeltypes.about"
+msgstr "Teams-/Job description"
+
+msgid "angeltypes.about.text"
+msgstr "Here you can find the list of teams and their tasks. If you have further questions, have a look at the FAQ."
+
+msgid "angeltypes.restricted.hint"
+msgstr "This angeltype requires the attendance at an introduction meeting. "
+"You might find additional information in the description."
+
+msgid "angeltypes.name"
+msgstr "Name"
+
+msgid "angeltypes.dect"
+msgstr "DECT"
+
+msgid "angeltypes.email"
+msgstr "E-Mail"
+
+msgid "registration.register"
+msgstr "Register"
