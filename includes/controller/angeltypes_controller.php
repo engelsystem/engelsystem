@@ -32,7 +32,6 @@ function angeltypes_controller()
         'view'   => angeltype_controller(),
         'edit'   => angeltype_edit_controller(),
         'delete' => angeltype_delete_controller(),
-        'about'  => angeltypes_about_controller(),
         'list'   => angeltypes_list_controller(),
         default  => angeltypes_list_controller(),
     };
@@ -49,27 +48,6 @@ function angeltype_link($angeltype_id, $params = [])
 {
     $params = array_merge(['action' => 'view', 'angeltype_id' => $angeltype_id], $params);
     return page_link_to('angeltypes', $params);
-}
-
-/**
- * Job description for all angeltypes (public to everyone)
- *
- * @return array
- */
-function angeltypes_about_controller()
-{
-    $user = auth()->user();
-
-    if ($user) {
-        $angeltypes = AngelTypes_with_user($user->id);
-    } else {
-        $angeltypes = AngelType::all();
-    }
-
-    return [
-        __('Teams/Job description'),
-        AngelTypes_about_view($angeltypes, (bool) $user),
-    ];
 }
 
 /**

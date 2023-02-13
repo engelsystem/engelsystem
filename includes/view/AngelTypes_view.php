@@ -7,7 +7,6 @@ use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilterRenderer;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 /**
  * AngelTypes
@@ -532,7 +531,7 @@ function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
             $admin_angeltypes
                 ? button(page_link_to('angeltypes', ['action' => 'edit']), __('New angeltype'), 'add')
                 : '',
-            button(page_link_to('angeltypes', ['action' => 'about']), __('Teams/Job description')),
+            button(url('/angeltypes/about'), __('angeltypes.about')),
         ]),
         table([
             'name'                   => __('Name'),
@@ -542,96 +541,4 @@ function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
             'actions'                => '',
         ], $angeltypes),
     ], true);
-}
-
-/**
- * Renders the about-info for an angeltype.
- *
- * @param AngelType $angeltype
- * @return string
- */
-function AngelTypes_about_view_angeltype(AngelType $angeltype)
-{
-    $parsedown = new Parsedown();
-
-    $html = '<h2>' . $angeltype->name . '</h2>';
-
-    if ($angeltype->hasContactInfo()) {
-        $html .= AngelTypes_render_contact_info($angeltype);
-    }
-
-    if (isset($angeltype->user_angel_type_id)) {
-        $buttons = [];
-        if (!empty($angeltype->user_angel_type_id)) {
-            $buttons[] = button(
-                page_link_to(
-                    'user_angeltypes',
-                    ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angel_type_id]
-                ),
-                icon('box-arrow-right') . __('leave')
-            );
-        } else {
-            $buttons[] = button(
-                page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
-                icon('box-arrow-in-right') . __('join'),
-                'add'
-            );
-        }
-        $html .= buttons($buttons);
-    }
-
-    if ($angeltype->restricted) {
-        $html .= info(
-            __('This angeltype requires the attendance at an introduction meeting. You might find additional information in the description.'),
-            true
-        );
-    }
-    if ($angeltype->description != '') {
-        $html .= $parsedown->parse($angeltype->description);
-    }
-    $html .= '<hr />';
-
-    return $html;
-}
-
-/**
- * Renders a site that contains every angeltype and its description, basically as an overview of the needed help types.
- *
- * @param Collection|AngelType[] $angeltypes
- * @param bool                   $user_logged_in
- * @return string
- */
-function AngelTypes_about_view($angeltypes, $user_logged_in)
-{
-    $buttons = [];
-
-    if ($user_logged_in) {
-        $buttons[] = button(page_link_to('angeltypes'), angeltypes_title(), 'back');
-    } else {
-        if (auth()->can('register') && config('registration_enabled')) {
-            $buttons[] = button(page_link_to('register'), register_title());
-        }
-
-        $buttons[] = button(page_link_to('login'), __('login.login'));
-    }
-
-    $footerConfig = config('footer_items');
-    if (!empty($footerConfig['FAQ'])) {
-        $buttons[] = button(
-            Str::startsWith($footerConfig['FAQ'], '/') ? url($footerConfig['FAQ']) : $footerConfig['FAQ'],
-            __('FAQ'),
-            'btn-primary'
-        );
-    }
-
-    $content = [
-        buttons($buttons),
-        '<p>' . __('Here is the list of teams and their tasks. If you have questions, read the FAQ.') . '</p>',
-        '<hr />',
-    ];
-    foreach ($angeltypes as $angeltype) {
-        $content[] = AngelTypes_about_view_angeltype($angeltype);
-    }
-
-    return page_with_title(__('Teams/Job description'), $content, true);
 }

@@ -309,7 +309,7 @@ function view_user_shifts()
                 'task_notice'   =>
                     '<sup>1</sup>'
                     . __('The tasks shown here are influenced by the angeltypes you joined already!')
-                    . ' <a href="' . page_link_to('angeltypes', ['action' => 'about']) . '">'
+                    . ' <a href="' . url('/angeltypes/about') . '">'
                     . __('Description of the jobs.')
                     . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),

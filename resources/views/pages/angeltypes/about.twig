@@ -1,0 +1,114 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __('angeltypes.about') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ block('title') }}</h1>
+
+        <div class="col-md-12">
+            <div class="btn-group mb-3" role="group">
+                {% if is_user() %}
+                    <a href="{{ url('/angeltypes') }}" class="btn btn-secondary back">
+                        {{ __('angeltypes.angeltypes') }}
+                    </a>
+                {% else %}
+                    {% if has_permission_to('register') and config('registration_enabled') %}
+                        <a href="{{ url('/register') }}" class="btn btn-secondary back">
+                            {{ __('registration.register') }}
+                        </a>
+                    {% endif %}
+                    <a href="{{ url('/login') }}" class="btn btn-secondary back">
+                        {{ __('login.login') }}
+                    </a>
+                {% endif %}
+
+                {% set footerItems = config('footer_items') %}
+                {% if footerItems.FAQ is defined %}
+                    {% set url = footerItems.FAQ %}
+                    {% if footerItems.FAQ starts with '/' %}
+                        {% set url = url(footerItems.FAQ) %}
+                    {% endif %}
+                    <a href="{{ url }}" class="btn btn-primary">{{ __('faq.faq') }}</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <p>{{ __('angeltypes.about.text') }}</p>
+        </div>
+
+        <div class="row">
+            {% for angeltype in angeltypes %}
+
+            <div class="col-md-6">
+                <div class="card border-info {{ m.type_bg_class() }} mb-3">
+
+                    <h4 class="card-header bg-info">
+                        {{ angeltype.name }}
+
+                        {% if is_user() %}
+                            <a href="{{ url('angeltypes', {'action': 'view', 'angeltype_id': angeltype.id}) }}"
+                                class="btn btn-secondary float-end">
+                                {{ m.icon('arrow-right') }}
+                            </a>
+                        {% endif %}
+
+                        {% if angeltype.restricted %}
+                            <button type="button" class="btn btn-info float-end"
+                                data-bs-toggle="popover" data-bs-title="{{ angeltype.name | e('html_attr') }}"
+                                data-bs-content="{{ __('angeltypes.restricted.hint') | e('html_attr') }}"
+                            >
+                                {{ m.icon('info-circle-fill') }}
+                            </button>
+                        {% endif %}
+                    </h4>
+
+                    <div class="card-body row">
+
+                        <div class="card-text">
+                            {{ angeltype.description | md }}
+                        </div>
+
+                        {% if angeltype.hasContactInfo() %}
+                            <dl class="row card-text">
+                                {% for type, info in {
+                                    'contact_name': {'name': __('angeltypes.name')},
+                                    'contact_dect': {'name': __('angeltypes.dect'), 'url': 'tel'},
+                                    'contact_email': {'name': __('angeltypes.email'), 'url': 'email'},
+                                } %}
+                                    {% if angeltype[type] and (type != 'contact_dect' or config('enable_dect')) %}
+
+                                        <dt class="col-sm-3">{{ info.name }}</dt>
+
+                                        <dd class="col-sm-9">
+                                            {% if info.url is defined %}
+                                                <a href="{{ info['url'] }}:{{ angeltype[type] | e('html_attr') }}">
+                                                    {{ angeltype[type] }}
+                                                </a>
+                                            {% else %}
+                                                {{ angeltype[type] }}
+                                            {% endif %}
+                                        </dd>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </dl>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+
+            {% if loop.index0 % 2 %}
+        </div>
+        <div class="row">
+            {% endif %}
+
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}
