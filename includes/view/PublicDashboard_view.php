@@ -6,8 +6,8 @@ use Illuminate\Support\Collection;
 /**
  * Public dashboard (formerly known as angel news hub)
  *
- * @param array   $stats
- * @param array[] $free_shifts
+ * @param array             $stats
+ * @param array[]           $free_shifts
  * @param News[]|Collection $important_news
  * @return string
  */
@@ -45,8 +45,7 @@ function public_dashboard_view($stats, $free_shifts, $important_news)
 
     $isFiltered = request()->get('filtered');
     $filter = collect(session()->get('shifts-filter'))->only(['rooms', 'types'])->toArray();
-    return page(array_merge(
-        [
+    return page([
         div('wrapper', [
             div('public-dashboard', [
                 div('first row', [
@@ -58,8 +57,8 @@ function public_dashboard_view($stats, $free_shifts, $important_news)
                 $news,
                 $needed_angels,
             ], 'public-dashboard'),
-        ]),],
-        [div('first col-md-12 text-center', [buttons([
+        ]),
+        div('first col-md-12 text-center', [buttons([
             button(
                 '#',
                 icon('fullscreen') . __('Fullscreen'),
@@ -71,8 +70,7 @@ function public_dashboard_view($stats, $free_shifts, $important_news)
                 icon('filter') . ($isFiltered ? __('All') : __('Filtered'))
             ) : '',
         ])], 'fullscreen-button'),
-        ]
-    ));
+    ]);
 }
 
 /**

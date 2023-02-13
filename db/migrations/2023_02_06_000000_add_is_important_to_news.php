@@ -14,12 +14,9 @@ class AddIsImportantToNews extends Migration
      */
     public function up(): void
     {
-        $this->schema->table(
-            'news',
-            function (Blueprint $table): void {
-                $table->boolean('is_important')->default(false)->after('is_pinned');
-            }
-        );
+        $this->schema->table('news', function (Blueprint $table): void {
+            $table->boolean('is_important')->default(false)->after('is_pinned');
+        });
     }
 
     /**
@@ -27,11 +24,8 @@ class AddIsImportantToNews extends Migration
      */
     public function down(): void
     {
-        $this->schema->table(
-            'news',
-            function (Blueprint $table): void {
-                $table->dropColumn('is_important');
-            }
-        );
+        $this->schema->table('news', function (Blueprint $table): void {
+            $table->dropColumn('is_important');
+        });
     }
 }

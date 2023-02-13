@@ -17,12 +17,12 @@ class AddSetNewsFlagImportantPermissions extends Migration
         $db->table('privileges')
             ->insert(['name' => 'news.important', 'description' => 'Make News Important']);
 
-        $buerocrat = 80;
-
         $newsImportant = $db->table('privileges')
             ->where('name', 'news.important')
-            ->get(['id'])->first();
+            ->get(['id'])
+            ->first();
 
+        $buerocrat = 80;
         $db->table('group_privileges')
             ->insertOrIgnore([
                 ['group_id' => $buerocrat, 'privilege_id' => $newsImportant->id],
