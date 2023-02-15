@@ -23,7 +23,9 @@
             "composer phpcs:setup",
             "phpcbf -p"
         ],
-        "phpstan": "phpstan"
+        "phpstan": "phpstan",
+        "phpunit": "phpunit",
+        "phpunit:coverage": "phpunit --coverage-text --coverage-html ./public/coverage/"
     },
     "require": {
         "php": ">=8.1.0",

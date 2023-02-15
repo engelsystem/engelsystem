@@ -137,6 +137,15 @@ at least `phpdbg -qrr`(which has problems with switch case statements) as using 
 php -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit --testsuite Unit --coverage-text
 ```
 
+If using the Docker-based development environment
+you can run the following script to retrieve a coverage report.
+```sh
+docker compose exec es_workspace composer phpunit:coverage
+```
+
+A browsable HTML version is available at http://localhost:5080/coverage/index.html .
+
+
 ### Var Dump server
 Symfony Var Dump server is configured to allow for easier debugging. It is not meant as a replacement for xdebug but can actually be used together with xdebug.
 This Var Dump Server is especially useful for when you want to debug a request without messing up the output e.g API calls ot HTML layout.
