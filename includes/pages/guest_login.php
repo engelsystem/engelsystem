@@ -30,8 +30,7 @@ function guest_register()
 {
     $authUser = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
-    $enable_tshirt_size = config('enable_tshirt_size');
-    $other_goodie = config('other_goodie');
+    $goodie_tshirt = config('goodie_tshirt');
     $enable_user_name = config('enable_user_name');
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
@@ -163,7 +162,7 @@ function guest_register()
             $email_goody = true;
         }
 
-        if ($enable_tshirt_size && !$other_goodie) {
+        if ($goodie_tshirt) {
             if ($request->has('tshirt_size') && isset($tshirt_sizes[$request->input('tshirt_size')])) {
                 $tshirt_size = $request->input('tshirt_size');
             } else {
@@ -439,7 +438,7 @@ function guest_register()
                         __('Allow heaven angels to contact you by e-mail.'),
                         $email_by_human_allowed
                     ),
-                    config('enable_goody') ?
+                    config('goodie') ?
                         form_checkbox(
                             'email_goody',
                             __('To receive vouchers, give consent that nick, email address, worked hours and shirt size will be stored until the next similar event.')
@@ -484,7 +483,7 @@ function guest_register()
                 ]) : '',
 
                 div('col', [
-                    $enable_tshirt_size && !$other_goodie ? form_select(
+                    $goodie_tshirt ? form_select(
                         'tshirt_size',
                         __('Shirt size') . ' ' . entry_required(),
                         $tshirt_sizes,

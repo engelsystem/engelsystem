@@ -63,8 +63,8 @@ class SettingsControllerTest extends ControllerTest
             'enable_planned_arrival' => true,
             'enable_dect'            => true,
             'enable_mobile_show'     => true,
-            'enable_goody'           => true,
-            'enable_tshirt_size'     => true,
+            'goodie'                 => true,
+            'goodie_tshirt'          => true,
         ]);
 
         $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
@@ -211,7 +211,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveProfileIgnoresEmailGoodyIfDisabled(): void
     {
         $this->setUpProfileTest();
-        config(['enable_goody' => false]);
+        config(['goodie' => false]);
         $this->controller->saveProfile($this->request);
         $this->assertFalse($this->user->settings->email_goody);
     }
@@ -222,7 +222,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveProfileIgnoresTShirtSizeIfDisabled(): void
     {
         $this->setUpProfileTest();
-        config(['enable_tshirt_size' => false]);
+        config(['goodie_tshirt' => false]);
         $this->controller->saveProfile($this->request);
         $this->assertEquals('', $this->user->personalData->shirt_size);
     }

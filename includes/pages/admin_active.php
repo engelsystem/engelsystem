@@ -22,7 +22,8 @@ function admin_active()
     $tshirt_sizes = config('tshirt_sizes');
     $shift_sum_formula = User_get_shifts_sum_query();
     $request = request();
-    $other_goodie = config('other_goodie');
+    $goodie_tshirt = config('goodie_tshirt');
+    $goodie = config('goodie');
 
     $msg = '';
     $search = '';
@@ -130,7 +131,7 @@ function admin_active()
                 $user_source->state->got_shirt = true;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has tshirt now.');
-                $msg = success(($other_goodie ? __('Angel has got a goodie.') : __('Angel has got a t-shirt.')), true);
+                $msg = success(($goodie_tshirt ? __('Angel has got a t-shirt.') : __('Angel has got a goodie.')), true);
             } else {
                 $msg = error('Angel not found.', true);
             }
@@ -141,7 +142,7 @@ function admin_active()
                 $user_source->state->got_shirt = false;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO tshirt.');
-                $msg = success(($other_goodie ? __('Angel has got no goodie.') : __('Angel has got no t-shirt.')), true);
+                $msg = success(($goodie_tshirt ? __('Angel has got no t-shirt.') : __('Angel has got no goodie.')), true);
             } else {
                 $msg = error(__('Angel not found.'), true);
             }
@@ -213,7 +214,7 @@ function admin_active()
         $userData = [];
         $userData['no'] = count($matched_users) + 1;
         $userData['nick'] = User_Nick_render($usr) . User_Pronoun_render($usr);
-        if (!$other_goodie) {
+        if ($goodie_tshirt) {
             $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '');
         }
         $userData['work_time'] = round($usr['shift_length'] / 60)
@@ -262,12 +263,15 @@ function admin_active()
             if ($show_all_shifts) {
                 $parametersShirt['show_all_shifts'] = 1;
             }
-            $actions[] = form(
-                [form_submit('submit', ($other_goodie ? __('got goodie') : __('got t-shirt')), 'btn-sm', false, 'secondary')],
-                page_link_to('admin_active', $parametersShirt),
-                false,
-                true
-            );
+
+            if ($goodie) {
+                $actions[] = form(
+                    [form_submit('submit', ($goodie_tshirt ? __('got t-shirt') : __('got goodie')), 'btn-sm', false, 'secondary')],
+                    page_link_to('admin_active', $parametersShirt),
+                    false,
+                    true
+                );
+            }
         }
         if ($usr->state->got_shirt) {
             $parameters = [
@@ -277,15 +281,18 @@ function admin_active()
             if ($show_all_shifts) {
                 $parameters['show_all_shifts'] = 1;
             }
-            $actions[] = form(
-                [form_submit('submit', ($other_goodie ? __('remove goodie') : __('remove t-shirt')), 'btn-sm', false, 'secondary')],
-                page_link_to('admin_active', $parameters),
-                false,
-                true
-            );
+
+            if ($goodie) {
+                $actions[] = form(
+                    [form_submit('submit', ($goodie_tshirt ? __('remove t-shirt') : __('remove goodie')), 'btn-sm', false, 'secondary')],
+                    page_link_to('admin_active', $parameters),
+                    false,
+                    true
+                );
+            }
         }
 
-        if (!$other_goodie) {
+        if ($goodie_tshirt) {
             $actions[] = button(url('/admin/user/' . $usr->id . '/shirt'), __('form.edit'), 'btn-secondary btn-sm');
         }
 
@@ -294,8 +301,8 @@ function admin_active()
         $matched_users[] = $userData;
     }
 
-    $shirt_statistics = [];
-    if (!$other_goodie) {
+    $goodie_statistics = [];
+    if ($goodie_tshirt) {
         foreach (array_keys($tshirt_sizes) as $size) {
             $gc = State::query()
                 ->leftJoin('users_settings', 'users_state.user_id', '=', 'users_settings.user_id')
@@ -303,15 +310,15 @@ function admin_active()
                 ->where('users_state.got_shirt', '=', true)
                 ->where('users_personal_data.shirt_size', '=', $size)
                 ->count();
-            $shirt_statistics[] = [
+            $goodie_statistics[] = [
                 'size'  => $size,
                 'given' => $gc,
             ];
         }
     }
 
-    $shirt_statistics[] = array_merge(
-        (!$other_goodie ? ['size'  => '<b>' . __('Sum') . '</b>'] : []),
+    $goodie_statistics[] = array_merge(
+        ($goodie_tshirt ? ['size'  => '<b>' . __('Sum') . '</b>'] : []),
         ['given' => '<b>' . State::whereGotShirt(true)->count() . '</b>']
     );
 
@@ -332,22 +339,22 @@ function admin_active()
                     'no'           => __('No.'),
                     'nick'         => __('Nickname'),
                 ],
-                (!$other_goodie ? ['shirt_size'   => __('Size')] : []),
+                ($goodie_tshirt ? ['shirt_size'   => __('Size')] : []),
                 [
                     'shift_count'  => __('Shifts'),
                     'work_time'    => __('Length'),
                     'active'       => __('Active?'),
                     'force_active' => __('Forced'),
-                    'tshirt'       => ($other_goodie ? __('Goodie?') : __('T-shirt?')),
+                    'tshirt'       => ($goodie_tshirt ? __('T-shirt?') : __('Goodie?')),
                     'actions'      => '',
                 ]
             ),
             $matched_users
         ),
-        '<h2>' . ($other_goodie ? __('Goodie statistic') : __('Shirt statistic')) . '</h2>',
-        table(array_merge(
-            (!$other_goodie ? ['size'  => __('Size')] : []),
-            ['given' => $other_goodie ? __('Given goodies') : __('Given shirts') ]
-        ), $shirt_statistics),
+        $goodie ? '<h2>' . ($goodie_tshirt ? __('Shirt statistic') : __('Goodie statistic')) . '</h2>' : '',
+        $goodie ? table(array_merge(
+            ($goodie_tshirt ? ['size'  => __('Size')] : []),
+            ['given' => $goodie_tshirt ? __('Given shirts') : __('Given goodies') ]
+        ), $goodie_statistics) : '',
     ]);
 }

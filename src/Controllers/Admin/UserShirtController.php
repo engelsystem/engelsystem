@@ -49,7 +49,7 @@ class UserShirtController extends BaseController
     public function saveShirt(Request $request): Response
     {
         $userId = (int) $request->getAttribute('user_id');
-        $shirtEnabled = !$this->config->get('other_goodie');
+        $shirtEnabled = $this->config->get('goodie_tshirt') && $this->config->get('goodie');
 
         /** @var User $user */
         $user = $this->user->findOrFail($userId);

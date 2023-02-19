@@ -3,10 +3,10 @@
 {% import 'macros/form.twig' as f %}
 
 {% block title %}
-    {% if config('other_goodie') %}
-        {{ __('user.edit.goodie') }}
-    {% else %}
+    {% if config('goodie_tshirt') %}
         {{ __('user.edit.shirt') }}
+    {% else %}
+        {{ __('user.edit.goodie') }}
     {% endif %}
 {% endblock %}
 
@@ -20,7 +20,7 @@
             {{ csrf() }}
 
             <div class="row">
-                {% if not config('other_goodie') %}
+                {% if config('goodie_tshirt') %}
                     <div class="col-md-6">
                         {{ f.select('shirt_size', config('tshirt_sizes'), __('user.shirt_size'), userdata.personalData.shirt_size) }}
                     </div>
@@ -34,10 +34,10 @@
 
                     {{ f.switch('active', __('user.active'), userdata.state.active) }}
 
-                    {% if config('other_goodie') %}
-                        {{ f.switch('got_shirt', __('user.got_goodie'), userdata.state.got_shirt) }}
-                    {% else %}
+                    {% if config('goodie_tshirt') %}
                         {{ f.switch('got_shirt', __('user.got_shirt'), userdata.state.got_shirt) }}
+                    {% else %}
+                        {{ f.switch('got_shirt', __('user.got_goodie'), userdata.state.got_shirt) }}
                     {% endif %}
                 </div>
                 <div class="col-md-12">

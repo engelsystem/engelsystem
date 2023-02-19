@@ -122,7 +122,7 @@
                     __('settings.profile.email_by_human_allowed'),
                     user.settings.email_human
                 ) }}
-                {% if config('enable_goody') %}
+                {% if config('goodie') %}
                     {% set privacy_email = config('privacy_email') %}
                     {% set email_goody_label = __('settings.profile.email_goody') ~
                         (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
@@ -138,7 +138,7 @@
                 {% endif %}
             </div>
 
-            {% if config('enable_tshirt_size') and not config('other_goodie') %}
+            {% if config('goodie_tshirt') %}
                 <div class="col-md-12">
                     {{ f.select(
                         'shirt_size',

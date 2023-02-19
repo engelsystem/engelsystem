@@ -275,14 +275,11 @@ return [
     // Enables the planned arrival/leave date
     'enable_planned_arrival'  => (bool) env('ENABLE_PLANNED_ARRIVAL', true),
 
-    // Enables the T-Shirt configuration on signup and profile
-    'enable_tshirt_size'      => (bool) env('ENABLE_TSHIRT_SIZE', true),
+    // Enables the goodie
+    'goodie' => (bool) env('GOODIE', true),
 
-    // When true changes everything from shirts to goodies and disables shirt size
-    'other_goodie'            => (bool) env('OTHER_GOODIE', false),
-
-    // Enables the goody configuration on signup and profile
-    'enable_goody'            => (bool) env('ENABLE_GOODY', false),
+    // Cheanges the goodie to t-shirt and enables the shirt size
+    'goodie_tshirt' => (bool) env('GOODIE_TSHIRT', true),
 
     // Enables the food voucher in the user profile
     'enable_voucher'          => (bool) env('ENABLE_VOUCHER', true),

@@ -71,6 +71,8 @@ class UserShirtControllerTest extends ControllerTest
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->config->set('tshirt_sizes', ['S' => 'Small', 'XS' => 'Extra Small']);
+        $this->config->set('goodie', true);
+        $this->config->set('goodie_tshirt', true);
         /** @var Redirector|MockObject $redirector */
         $redirector = $this->createMock(Redirector::class);
         User::factory()
@@ -146,7 +148,7 @@ class UserShirtControllerTest extends ControllerTest
         $this->assertFalse($user->state->arrived);
 
         // Shirt disabled
-        $this->config->set('other_goodie');
+        $this->config->unset('goodie_tshirt');
         $request = $request
             ->withParsedBody([
                 'shirt_size' => 'XS',
