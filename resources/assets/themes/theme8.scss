@@ -14,8 +14,7 @@ $primary: #0076ba;
 
 $text-muted: $primary;
 
-@import 'cyborg_variables.scss';
-@import 'cyborg_styles.scss';
+@import 'cyborg';
 
 // Specials for cccamp19 design
 @import 'card-glow';

@@ -136,8 +136,7 @@ $alert-bg-scale: 0%;
 $alert-border-scale: 0;
 $alert-color-scale: 0;
 
-@import 'cyborg_variables.scss';
-@import 'cyborg_styles.scss';
+@import 'cyborg';
 
 .messages .text-danger {
   color: $gray-darker;
