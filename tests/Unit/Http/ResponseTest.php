@@ -159,10 +159,10 @@ class ResponseTest extends TestCase
         $response = new Response('', 200, [], null, $session);
 
         $response->withInput(['some' => 'value']);
-        $this->assertEquals(['some' => 'value'], $session->get('form-data'));
+        $this->assertEquals('value', $session->get('form-data-some'));
 
         $response->withInput(['lorem' => 'ipsum']);
-        $this->assertEquals(['lorem' => 'ipsum'], $session->get('form-data'));
+        $this->assertEquals('ipsum', $session->get('form-data-lorem'));
     }
 
     /**

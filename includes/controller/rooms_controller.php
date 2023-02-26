@@ -73,8 +73,8 @@ function rooms_controller(): array
 
     return match ($action) {
         'view'  => room_controller(),
-        'list'  => throw_redirect(page_link_to('admin_rooms')),
-        default => throw_redirect(page_link_to('admin_rooms')),
+        'list'  => throw_redirect(page_link_to('admin/rooms')),
+        default => throw_redirect(page_link_to('admin/rooms')),
     };
 }
 

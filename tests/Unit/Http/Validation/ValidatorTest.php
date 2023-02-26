@@ -171,4 +171,19 @@ class ValidatorTest extends TestCase
             ['foo' => 'optional|int']
         ));
     }
+
+    /**
+     * @covers \Engelsystem\Http\Validation\Validator::addErrors
+     */
+    public function testAddErrors(): void
+    {
+        $val = new Validator();
+        $val->addErrors(['bar' => ['Lorem']]);
+        $val->addErrors(['foo' => ['Foo value is definitely wrong!']]);
+
+        $this->assertEquals([
+            'bar' => ['Lorem'],
+            'foo' => ['Foo value is definitely wrong!'],
+        ], $val->getErrors());
+    }
 }

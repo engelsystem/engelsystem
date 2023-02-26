@@ -1,5 +1,9 @@
 {% macro entry_required() %}
-    <span class="bi bi-exclamation-triangle text-info"></span>
+    <span class="text-info" title="{{ __('form.required') }}">*</span>
+{%- endmacro %}
+
+{% macro info(text) %}
+    <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="{{ text | e('html_attr') }}"></span>
 {%- endmacro %}
 
 {% macro input(name, label, type, opt) %}
@@ -9,6 +13,9 @@
                 {{ label }}
                 {% if opt.entry_required_icon|default(false) %}
                     {{ _self.entry_required() }}
+                {% endif %}
+                {% if opt.info is defined %}
+                    {{ _self.info(opt.info) }}
                 {% endif %}
             </label>
         {%- endif %}
@@ -35,10 +42,58 @@
     </div>
 {%- endmacro %}
 
+{% macro number(name, label, opt) %}
+    <div class="mb-3">
+        {% if label -%}
+            <label class="form-label" for="{{ name }}">{{ label }}</label>
+            {% if opt.entry_required_icon|default(false) %}
+                {{ _self.entry_required() }}
+            {% endif %}
+            {% if opt.info is defined %}
+                {{ _self.info(opt.info) }}
+            {% endif %}
+        {%- endif %}
+
+        <div class="input-group">
+            <input
+                type="number" class="form-control"
+                id="{{ name }}" name="{{ name }}"
+                value="{{ opt.value|default('')|escape('html_attr') }}"
+                {%- if opt.min is defined %} min="{{ opt.min }}"{% endif %}
+                {%- if opt.max is defined %} max="{{ opt.max }}"{% endif %}
+                {%- if opt.step is defined %} step="{{ opt.step }}"{% endif %}
+                {%- if opt.required|default(false) %}
+                    required
+                {%- endif -%}
+                {%- if opt.disabled|default(false) %}
+                    disabled
+                {%- endif -%}
+                {%- if opt.readonly|default(false) %}
+                    readonly
+                {%- endif -%}
+            >
+
+            <button class="btn btn-secondary spinner-down" type="button" data-input-id="{{ name }}">
+                <span class="bi bi-dash-lg"></span>
+            </button>
+
+            <button class="btn btn-secondary spinner-up" type="button" data-input-id="{{ name }}">
+                <span class="bi bi-plus-lg"></span>
+            </button>
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro textarea(name, label, opt) %}
     <div class="mb-3">
         {% if label -%}
             <label class="form-label" for="{{ name }}">{{ label }}</label>
+            {% if opt.entry_required_icon|default(false) %}
+                {{ _self.entry_required() }}
+            {% endif %}
+            {% if opt.info is defined %}
+                {{ _self.info(opt.info) }}
+            {% endif %}
         {%- endif %}
         <textarea class="form-control" id="{{ name }}" name="{{ name }}"
             {%- if opt.required|default(false) %}
@@ -59,11 +114,14 @@
                 {% if opt.entry_required_icon|default(false) %}
                     {{ _self.entry_required() }}
                 {% endif %}
+                {% if opt.info is defined %}
+                    {{ _self.info(opt.info) }}
+                {% endif %}
             </label>
         {% endif %}
         <select id="{{ name }}" name="{{ name }}"
-                class="form-control {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
-                {%- if opt.required|default(false) %}required{%- endif -%}>
+            class="form-control {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
+            {%- if opt.required|default(false) %}required{%- endif -%}>
             {%- if opt.default_option is defined %}
                 <option value="">{{ opt.default_option }}</option>
             {% endif %}
@@ -74,18 +132,22 @@
     </div>
 {%- endmacro %}
 
-{% macro checkbox(name, label, checked, value, disabled, raw_label) %}
+{% macro checkbox(name, label, checked, value, disabled, raw_label, opt) %}
     <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}"
+        <input class="form-check-input" type="checkbox" id="{{ name }}" name="{{ name }}"
+            value="{{ value|default('1') }}"
             {%- if checked|default(false) %} checked{% endif %}
             {%- if disabled|default(false) %} disabled{% endif %}
-        />
+        >
         <label class="form-check-label" for="{{ name }}">
             {%- if raw_label|default(false) -%}
                 {{ label|raw }}
             {%- else -%}
                 {{ label }}
             {%- endif -%}
+            {% if opt.info is defined %}
+                {{ _self.info(opt.info) }}
+            {% endif %}
         </label>
     </div>
 {%- endmacro %}
@@ -103,7 +165,9 @@
         {%- if opt.title is defined %} title="{{ opt.title }}"{% endif %}
         {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}
     >
+        {%- if opt.icon_left is defined %}<span class="bi bi-{{ opt.icon_left }}"></span>{% endif %}
         {{ label }}
+        {%- if opt.icon_right is defined %}<span class="bi bi-{{ opt.icon_right }}"></span>{% endif %}
     </button>
 {%- endmacro %}
 
@@ -113,10 +177,15 @@
 
 {% macro switch(name, label, checked, opt) %}
     <div class="form-check form-switch mb-3">
-        <input class="form-check-input" type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ opt.value|default('1') }}"
+        <input class="form-check-input" type="checkbox" id="{{ name }}" name="{{ name }}"
+            value="{{ opt.value|default('1') }}"
             {%- if checked|default(false) %} checked{% endif %}
             {%- if opt.disabled|default(false) %} disabled{% endif %}
         >
         <label class="form-check-label" for="{{ name }}">{{ label }}</label>
     </div>
+{%- endmacro %}
+
+{% macro formData(name, default) -%}
+    {{ session_pop('form-data-' ~ name, default) }}
 {%- endmacro %}

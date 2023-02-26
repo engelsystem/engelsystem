@@ -67,7 +67,7 @@ function shift_edit_controller()
     }
 
     $rooms = [];
-    foreach (Rooms() as $room) {
+    foreach (Room::orderBy('name')->get() as $room) {
         $rooms[$room->id] = $room->name;
     }
     $angeltypes = AngelType::all()->pluck('name', 'id')->toArray();

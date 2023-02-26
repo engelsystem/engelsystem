@@ -103,4 +103,11 @@ class Validator
     {
         return $this->errors;
     }
+
+    public function addErrors(array $errors): self
+    {
+        $this->errors = array_merge($this->errors, $errors);
+
+        return $this;
+    }
 }

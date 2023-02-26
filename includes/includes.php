@@ -12,7 +12,6 @@ $includeFiles = [
     __DIR__ . '/../includes/sys_template.php',
 
     __DIR__ . '/../includes/model/NeededAngelTypes_model.php',
-    __DIR__ . '/../includes/model/Room_model.php',
     __DIR__ . '/../includes/model/ShiftEntry_model.php',
     __DIR__ . '/../includes/model/Shifts_model.php',
     __DIR__ . '/../includes/model/ShiftsFilter.php',
@@ -61,7 +60,6 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/admin_arrive.php',
     __DIR__ . '/../includes/pages/admin_free.php',
     __DIR__ . '/../includes/pages/admin_groups.php',
-    __DIR__ . '/../includes/pages/admin_rooms.php',
     __DIR__ . '/../includes/pages/admin_shifts.php',
     __DIR__ . '/../includes/pages/admin_user.php',
     __DIR__ . '/../includes/pages/guest_login.php',

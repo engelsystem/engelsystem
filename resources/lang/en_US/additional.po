@@ -208,3 +208,12 @@ msgstr "Work log successfully updated."
 
 msgid "worklog.delete.success"
 msgstr "Work log successfully deleted."
+
+msgid "room.edit.success"
+msgstr "Room edited successfully."
+
+msgid "room.delete.success"
+msgstr "Room successfully deleted."
+
+msgid "validation.name.exists"
+msgstr "The name is already used."

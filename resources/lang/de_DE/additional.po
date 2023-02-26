@@ -209,3 +209,12 @@ msgstr "Arbeitseinsatz erfolgreich bearbeitet."
 
 msgid "worklog.delete.success"
 msgstr "Arbeitseinsatz erfolgreich gelöscht."
+
+msgid "room.edit.success"
+msgstr "Raum erfolgreich bearbeitet."
+
+msgid "room.delete.success"
+msgstr "Raum erfolgreich gelöscht."
+
+msgid "validation.name.exists"
+msgstr "Der Name wird bereits verwendet."

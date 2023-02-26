@@ -43,11 +43,8 @@ function admin_shifts()
     $shift_over_midnight = true;
 
     // Locations laden
-    $rooms = Rooms();
-    $room_array = [];
-    foreach ($rooms as $room) {
-        $room_array[$room->id] = $room->name;
-    }
+    $rooms = Room::orderBy('name')->get();
+    $room_array = $rooms->pluck('name', 'id')->toArray();
 
     // Load angeltypes
     /** @var AngelType[] $types */

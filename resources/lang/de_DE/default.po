@@ -2812,6 +2812,12 @@ msgstr "Aktualisiert"
 msgid "form.cancel"
 msgstr "Abbrechen"
 
+msgid "form.markdown"
+msgstr "Du kannst hier Markdown verwenden"
+
+msgid "form.required"
+msgstr "Pflichtfeld"
+
 msgid "schedule.import"
 msgstr "Programm importieren"
 
@@ -3189,3 +3195,30 @@ msgstr "E-Mail"
 
 msgid "registration.register"
 msgstr "Registrieren"
+
+msgid "room.rooms"
+msgstr "Räume"
+
+msgid "room.name"
+msgstr "Name"
+
+msgid "room.dect"
+msgstr "DECT"
+
+msgid "room.map_url"
+msgstr "Karte"
+
+msgid "room.description"
+msgstr "Beschreibung"
+
+msgid "room.required_angels"
+msgstr "Benötigte Engel"
+
+msgid "room.map_url.info"
+msgstr "Die Karte wird auf der Raum-Seite als iframe eingebettet."
+
+msgid "room.create.title"
+msgstr "Raum erstellen"
+
+msgid "room.edit.title"
+msgstr "Raum bearbeiten"

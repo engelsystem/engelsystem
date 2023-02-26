@@ -220,9 +220,7 @@ class ErrorHandlerTest extends TestCase
                     ],
                 ],
             ],
-            'form-data' => [
-                'foo' => 'bar',
-            ],
+            'form-data-foo' => 'bar',
         ], $session->all());
 
         $request = $request->withAddedHeader('referer', '/foo/batz');
