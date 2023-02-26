@@ -255,6 +255,13 @@ ready(() => {
 });
 
 /**
+ * Init Bootstrap Tooltips
+ */
+ready(() => {
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => new bootstrap.Tooltip(element));
+});
+
+/**
  * Show oauth buttons on welcome title click
  */
 ready(() => {

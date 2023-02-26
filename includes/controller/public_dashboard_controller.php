@@ -2,6 +2,7 @@
 
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\News;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\ShiftsFilter;
 
@@ -24,7 +25,7 @@ function public_dashboard_controller()
         }
 
         $angelTypes = collect(unrestricted_angeltypes());
-        $rooms = $requestRooms ?: Rooms()->pluck('id')->toArray();
+        $rooms = $requestRooms ?: Room::orderBy('name')->get()->pluck('id')->toArray();
         $angelTypes = $requestAngelTypes ?: $angelTypes->pluck('id')->toArray();
         $filterValues = [
             'userShiftsAdmin' => false,

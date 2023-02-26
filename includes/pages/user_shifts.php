@@ -115,7 +115,7 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
  */
 function load_rooms()
 {
-    $rooms = Rooms();
+    $rooms = Room::orderBy('name')->get();
     if ($rooms->isEmpty()) {
         error(__('The administration has not configured any rooms yet.'));
         throw_redirect(page_link_to('/'));

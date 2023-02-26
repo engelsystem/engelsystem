@@ -157,6 +157,17 @@ $route->addGroup(
             }
         );
 
+        // Rooms
+        $route->addGroup(
+            '/rooms',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\RoomsController@index');
+                $route->post('', 'Admin\\RoomsController@delete');
+                $route->get('/edit[/{room_id:\d+}]', 'Admin\\RoomsController@edit');
+                $route->post('/edit[/{room_id:\d+}]', 'Admin\\RoomsController@save');
+            }
+        );
+
         // User
         $route->addGroup(
             '/user/{user_id:\d+}',

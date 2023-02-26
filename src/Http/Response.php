@@ -167,7 +167,9 @@ class Response extends SymfonyResponse implements ResponseInterface
             throw new InvalidArgumentException('Session not defined');
         }
 
-        $this->session->set('form-data', $input);
+        foreach ($input as $name => $value) {
+            $this->session->set('form-data-' . $name, $value);
+        }
 
         return $this;
     }

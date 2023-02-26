@@ -128,10 +128,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = admin_free_title();
                 $content = admin_free();
                 return [$title, $content];
-            case 'admin_rooms':
-                $title = admin_rooms_title();
-                $content = admin_rooms();
-                return [$title, $content];
             case 'admin_groups':
                 $title = admin_groups_title();
                 $content = admin_groups();

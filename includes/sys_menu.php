@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Room;
 use Engelsystem\UserHintsRenderer;
 
 /**
@@ -90,7 +91,7 @@ function make_navigation()
         'admin/questions'    => ['Answer questions', 'question.edit'],
         'shifttypes'         => 'Shifttypes',
         'admin_shifts'       => 'Create shifts',
-        'admin_rooms'        => 'Rooms',
+        'admin/rooms'        => ['room.rooms', 'admin_rooms'],
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
@@ -152,10 +153,10 @@ function make_room_navigation($menu)
     }
 
     // Get a list of all rooms
-    $rooms = Rooms();
+    $rooms = Room::orderBy('name')->get();
     $room_menu = [];
     if (auth()->can('admin_rooms')) {
-        $room_menu[] = toolbar_dropdown_item(page_link_to('admin_rooms'), __('Manage rooms'), false, 'list');
+        $room_menu[] = toolbar_dropdown_item(page_link_to('admin/rooms'), __('Manage rooms'), false, 'list');
     }
     if (count($room_menu) > 0) {
         $room_menu[] = toolbar_dropdown_item_divider();

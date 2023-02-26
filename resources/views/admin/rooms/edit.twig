@@ -1,0 +1,66 @@
+{% extends 'admin/rooms/index.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ room ? __('room.edit.title') : __('room.create.title') }}{% endblock %}
+
+{% block row_content %}
+    <form method="post">
+        {{ csrf() }}
+        {{ f.hidden('id', room ? room.id : '') }}
+
+        <div class="row">
+            <div class="col-lg-6">
+                {{ f.input(
+                    'name',
+                    __('room.name'),
+                    null,
+                    {'required': true, 'entry_required_icon': true, 'value': f.formData('room', room ? room.name : '')}
+                ) }}
+
+                {{ f.input('dect', __('room.dect'), null, {'value': f.formData('dect', room ? room.dect : '')}) }}
+                {{ f.input(
+                    'map_url',
+                    __('room.map_url'),
+                    'url',
+                    {'value': f.formData('map_url', room ? room.map_url : ''), 'info': __('room.map_url.info')}
+                ) }}
+
+                {{ f.textarea(
+                    'description',
+                    __('room.description'),
+                    {'value': f.formData('description', room ? room.description : ''), 'rows': 5, 'info': __('form.markdown')}
+                ) }}
+            </div>
+
+            <div class="col-lg-6">
+                <h4>{{ __('room.required_angels') }}</h4>
+                {% for types in angel_types.chunk(3) %}
+                    <div class="row">
+                        {% for angel_type in types %}
+                            {% set needed = needed_angel_types ? needed_angel_types.where('angel_type_id', angel_type.id).first() : null %}
+                            {% set name = 'angel_type_' ~ angel_type.id %}
+                            <div class="col-md-4">
+                                {{ f.number(
+                                    name,
+                                    angel_type.name,
+                                    {'value': f.formData(name, needed ? needed.count : 0), 'min': 0, 'step': 1}
+                                ) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="btn-group">
+                {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+                {% if room %}
+                    {{ f.submit(__('form.delete'), {'name': 'delete', 'btn_type': 'danger', 'icon_left': 'trash'}) }}
+                {% endif %}
+            </div>
+        </div>
+
+    </form>
+{% endblock %}

@@ -79,6 +79,12 @@ msgstr "Updated"
 msgid "form.cancel"
 msgstr "Cancel"
 
+msgid "form.required"
+msgstr "Required"
+
+msgid "form.markdown"
+msgstr "You can use Markdown here"
+
 msgid "schedule.import"
 msgstr "Import schedule"
 
@@ -452,3 +458,30 @@ msgstr "E-Mail"
 
 msgid "registration.register"
 msgstr "Register"
+
+msgid "room.rooms"
+msgstr "Rooms"
+
+msgid "room.name"
+msgstr "Name"
+
+msgid "room.dect"
+msgstr "DECT"
+
+msgid "room.map_url"
+msgstr "Map"
+
+msgid "room.description"
+msgstr "Description"
+
+msgid "room.required_angels"
+msgstr "Required angels"
+
+msgid "room.map_url.info"
+msgstr "The map will be embedded on the room page as an iframe."
+
+msgid "room.create.title"
+msgstr "Create room"
+
+msgid "room.edit.title"
+msgstr "Edit room"
