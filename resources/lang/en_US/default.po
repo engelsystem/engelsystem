@@ -262,6 +262,9 @@ msgstr "The %s is allowed to send me an e-mail (e.g. when my shifts change)."
 msgid "settings.profile.email_news"
 msgstr "Notify me of new news."
 
+msgid "settings.profile.email_messages"
+msgstr "Notify me on new private messages."
+
 msgid "settings.profile.email_by_human_allowed"
 msgstr "Allow heaven angels to contact you by e-mail."
 

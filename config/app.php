@@ -69,6 +69,9 @@ return [
         //      callable like [$instance, 'method'] or 'function'
         //      or $function
         // ]
+
+        'message.created' => \Engelsystem\Events\Listener\Messages::class . '@created',
+
         'news.created' => \Engelsystem\Events\Listener\News::class . '@created',
 
         'oauth2.login' => \Engelsystem\Events\Listener\OAuth2::class . '@login',

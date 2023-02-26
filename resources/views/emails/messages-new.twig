@@ -1,0 +1,8 @@
+{% extends "emails/mail.twig" %}
+
+{% block introduction %}
+{% endblock %}
+
+{% block message %}
+{{ __('notification.messages.new.text', [sender, url('/messages/' ~ send_message.sender.id)]) }}
+{% endblock %}

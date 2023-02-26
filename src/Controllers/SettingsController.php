@@ -85,6 +85,7 @@ class SettingsController extends BaseController
         $user->settings->email_shiftinfo = $data['email_shiftinfo'] ?: false;
         $user->settings->email_news = $data['email_news'] ?: false;
         $user->settings->email_human = $data['email_human'] ?: false;
+        $user->settings->email_messages = $data['email_messages'] ?: false;
 
         if (config('enable_goody')) {
             $user->settings->email_goody = $data['email_goody'] ?: false;
@@ -275,6 +276,7 @@ class SettingsController extends BaseController
             'email_shiftinfo' => 'optional|checked',
             'email_news' => 'optional|checked',
             'email_human' => 'optional|checked',
+            'email_messages' => 'optional|checked',
             'email_goody' => 'optional|checked',
         ];
         if (config('enable_planned_arrival')) {

@@ -45,6 +45,7 @@ class SettingsControllerTest extends ControllerTest
             'email_shiftinfo'        => true,
             'email_news'             => true,
             'email_human'            => true,
+            'email_messages'         => true,
             'email_goody'            => true,
             'shirt_size'             => 'S',
         ];
@@ -122,6 +123,7 @@ class SettingsControllerTest extends ControllerTest
         $this->assertEquals($body['email_shiftinfo'], $this->user->settings->email_shiftinfo);
         $this->assertEquals($body['email_news'], $this->user->settings->email_news);
         $this->assertEquals($body['email_human'], $this->user->settings->email_human);
+        $this->assertEquals($body['email_messages'], $this->user->settings->email_messages);
         $this->assertEquals($body['email_goody'], $this->user->settings->email_goody);
         $this->assertEquals($body['shirt_size'], $this->user->personalData->shirt_size);
     }

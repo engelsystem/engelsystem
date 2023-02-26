@@ -149,6 +149,8 @@ class MessagesController extends BaseController
         $newMessage->read = $otherUser->id == $currentUser->id; // if its to myself, I obviously read it.
         $newMessage->save();
 
+        event('message.created', ['message' => $newMessage]);
+
         return $this->redirect->to('/messages/' . $otherUser->id . '#newest');
     }
 

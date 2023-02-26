@@ -165,6 +165,12 @@ msgstr "A new news is available: %1$s"
 msgid "notification.news.new.text"
 msgstr "You can watch it at %3$s"
 
+msgid "notification.messages.new"
+msgstr "New private message from %s"
+
+msgid "notification.messages.new.text"
+msgstr "you've got a new private message from %s. You can view it under %s"
+
 msgid "notification.angeltype.confirmed"
 msgstr "You have been confirmed as an %s"
 

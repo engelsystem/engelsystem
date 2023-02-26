@@ -2990,6 +2990,9 @@ msgstr "Das %s darf mir E-Mails senden (z.B. wenn sich meine Schichten ändern).
 msgid "settings.profile.email_news"
 msgstr "Benachrichtige mich bei neuen News."
 
+msgid "settings.profile.email_messages"
+msgstr "Benachrichtige mich bei neuen privaten Nachrichten."
+
 msgid "settings.profile.email_by_human_allowed"
 msgstr "Erlaube Himmel-Engeln dich per Mail zu kontaktieren."
 

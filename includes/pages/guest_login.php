@@ -57,6 +57,7 @@ function guest_register()
     $pronoun = '';
     $email_shiftinfo = false;
     $email_by_human_allowed = false;
+    $email_messages = false;
     $email_news = false;
     $email_goody = false;
     $tshirt_size = '';
@@ -153,6 +154,10 @@ function guest_register()
 
         if ($request->has('email_by_human_allowed')) {
             $email_by_human_allowed = true;
+        }
+
+        if ($request->has('email_messages')) {
+            $email_messages = true;
         }
 
         if ($request->has('email_news')) {
@@ -263,6 +268,7 @@ function guest_register()
                 'language'        => $session->get('locale'),
                 'theme'           => config('theme'),
                 'email_human'     => $email_by_human_allowed,
+                'email_messages'  => $email_messages,
                 'email_goody'     => $email_goody,
                 'email_shiftinfo' => $email_shiftinfo,
                 'email_news'      => $email_news,
@@ -433,6 +439,11 @@ function guest_register()
                         'email_news',
                         __('Notify me of new news'),
                         $email_news
+                    ),
+                    form_checkbox(
+                        'email_messages',
+                        __('settings.profile.email_messages'),
+                        $email_messages
                     ),
                     form_checkbox(
                         'email_by_human_allowed',

@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\MessagesController;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -33,6 +34,8 @@ class MessagesControllerTest extends ControllerTest
     protected Carbon $now;
     protected Carbon $oneMinuteAgo;
     protected Carbon $twoMinutesAgo;
+
+    protected EventDispatcher $events;
 
     /**
      * @testdox index: underNormalConditions -> returnsCorrectViewAndData
@@ -229,7 +232,7 @@ class MessagesControllerTest extends ControllerTest
      */
     public function testRedirectToConversationWithUserIdGivenRedirect(): void
     {
-        $this->request = $this->request->withParsedBody(['user_id'  => '1']);
+        $this->request = $this->request->withParsedBody(['user_id' => '1']);
         $this->response->expects($this->once())
             ->method('redirectTo')
             ->with('http://localhost/messages/1#newest')
@@ -441,6 +444,8 @@ class MessagesControllerTest extends ControllerTest
             ->with('http://localhost/messages/' . $this->userB->id . '#newest')
             ->willReturn($this->response);
 
+        $this->setExpects($this->events, 'dispatch', ['message.created'], []);
+
         $this->controller->send($this->request);
 
         $msg = Message::whereText('a')->first();
@@ -462,6 +467,8 @@ class MessagesControllerTest extends ControllerTest
             ->method('redirectTo')
             ->with('http://localhost/messages/' . $this->userA->id . '#newest')
             ->willReturn($this->response);
+
+        $this->setExpects($this->events, 'dispatch', ['message.created'], []);
 
         $this->controller->send($this->request);
 
@@ -536,6 +543,9 @@ class MessagesControllerTest extends ControllerTest
 
         $this->controller = $this->app->get(MessagesController::class);
         $this->controller->setValidator(new Validator());
+
+        $this->events = $this->createMock(EventDispatcher::class);
+        $this->app->instance('events.dispatcher', $this->events);
     }
 
     protected function assertArrayOrCollection(mixed $obj): void
@@ -547,11 +557,11 @@ class MessagesControllerTest extends ControllerTest
     {
         Message::unguard(); // unguard temporarily to save custom creation dates.
         $msg = new Message([
-            'user_id' => $from->id,
+            'user_id'     => $from->id,
             'receiver_id' => $to->id,
-            'text' => $text,
-            'created_at' => $at,
-            'updated_at' => $at,
+            'text'        => $text,
+            'created_at'  => $at,
+            'updated_at'  => $at,
         ]);
         $msg->save();
         Message::reguard();
