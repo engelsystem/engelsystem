@@ -17,6 +17,7 @@ class VersionServiceProviderTest extends ServiceProviderTest
     public function testRegister(): void
     {
         $app = new Application();
+        $app->instance('path', '/tmp');
         $app->instance('path.storage.app', '/tmp');
 
         $serviceProvider = new VersionServiceProvider($app);
