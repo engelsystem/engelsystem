@@ -171,8 +171,8 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
     $buttons = [];
     if ($shift_admin || $admin_shifttypes || $admin_rooms) {
         $buttons = [
-            $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
-            $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
+            $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('form.edit')) : '',
+            $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('form.delete')) : '',
             $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype->name) : '',
             $admin_rooms ? button(room_link($room), icon('pin-map-fill') . $room->name) : '',
         ];

@@ -42,7 +42,7 @@ function admin_groups()
                         'admin_groups',
                         ['action' => 'edit', 'id' => $group->id]
                     ),
-                    icon('pencil') . __('edit'),
+                    icon('pencil') . __('form.edit'),
                     'btn-sm'
                 ),
             ];
@@ -79,8 +79,8 @@ function admin_groups()
                         );
                     }
 
-                    $privileges_form[] = form_submit('submit', __('Save'));
-                    $html .= page_with_title(__('Edit group') . ' ' . $group->name, [
+                    $privileges_form[] = form_submit('submit', __('form.save'));
+                    $html .= page_with_title(__('admin_groups.edit') . ' ' . $group->name, [
                         form(
                             $privileges_form,
                             page_link_to('admin_groups', ['action' => 'save', 'id' => $group->id])

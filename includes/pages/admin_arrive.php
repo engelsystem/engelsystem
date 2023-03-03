@@ -107,7 +107,7 @@ function admin_arrive()
             form_hidden('user', $usr->id),
             form_submit(
                 'submit',
-                $usr->state->arrived ? __('reset') : __('arrived'),
+                $usr->state->arrived ? __('reset') : __('user.arrived'),
                 'btn-sm',
                 true,
                 $usr->state->arrived ? 'secondary' : 'primary'
@@ -187,7 +187,7 @@ function admin_arrive()
         table([
             'name'                            => __('Name'),
             'rendered_planned_arrival_date'   => __('Planned arrival'),
-            'arrived'                         => __('Arrived?'),
+            'arrived'                         => __('user.arrived?'),
             'rendered_arrival_date'           => __('Arrival date'),
             'rendered_planned_departure_date' => __('Planned departure'),
             'actions'                         => '',
@@ -196,7 +196,7 @@ function admin_arrive()
             div('col-md-4', [
                 heading(__('Planned arrival statistics'), 3),
                 BarChart::render([
-                    'count' => __('arrived'),
+                    'count' => __('user.arrived'),
                     'sum'   => __('arrived sum'),
                 ], [
                     'count' => '#090',
@@ -211,7 +211,7 @@ function admin_arrive()
             div('col-md-4', [
                 heading(__('Arrival statistics'), 3),
                 BarChart::render([
-                    'count' => __('arrived'),
+                    'count' => __('user.arrived'),
                     'sum'   => __('arrived sum'),
                 ], [
                     'count' => '#090',
@@ -226,7 +226,7 @@ function admin_arrive()
             div('col-md-4', [
                 heading(__('Planned departure statistics'), 3),
                 BarChart::render([
-                    'count' => __('arrived'),
+                    'count' => __('user.arrived'),
                     'sum'   => __('arrived sum'),
                 ], [
                     'count' => '#090',

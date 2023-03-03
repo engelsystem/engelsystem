@@ -90,7 +90,7 @@ function admin_user()
         ];
 
         // Gekommen?
-        $html .= '  <tr><td>' . __('Arrived') . '</td><td>' . "\n";
+        $html .= '  <tr><td>' . __('user.arrived') . '</td><td>' . "\n";
         if ($user_source->state->arrived) {
             $html .= __('Yes');
         } else {
@@ -104,7 +104,7 @@ function admin_user()
 
         // Aktiv erzwingen
         if (auth()->can('admin_active')) {
-            $html .= '  <tr><td>' . __('Force active') . '</td><td>' . "\n";
+            $html .= '  <tr><td>' . __('user.force_active') . '</td><td>' . "\n";
             $html .= html_options('force_active', $options, $user_source->state->force_active) . '</td></tr>' . "\n";
         }
 
@@ -180,7 +180,7 @@ function admin_user()
         }
 
         $html .= buttons([
-            button(user_delete_link($user_source->id), icon('trash') . __('delete'), 'btn-danger'),
+            button(user_delete_link($user_source->id), icon('trash') . __('form.delete'), 'btn-danger'),
         ]);
 
         $html .= '<hr>';

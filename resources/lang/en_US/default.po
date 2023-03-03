@@ -491,3 +491,6 @@ msgstr "Create room"
 
 msgid "room.edit.title"
 msgstr "Edit room"
+
+msgid "admin_groups.edit"
+msgstr "Edit group"

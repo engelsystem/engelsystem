@@ -154,7 +154,7 @@ class BarChart
 
         return [
             [
-                'count' => __('arrived'),
+                'count' => __('user.arrived'),
                 'sum'   => __('arrived sum'),
             ],
             [

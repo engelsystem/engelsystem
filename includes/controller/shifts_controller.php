@@ -216,7 +216,7 @@ function shift_edit_controller()
                 form_info('', __('This description is for single shifts, otherwise please use the description in shift type.')),
                 '<h2>' . __('Needed angels') . '</h2>',
                 $angel_types_spinner,
-                form_submit('submit', __('Save')),
+                form_submit('submit', __('form.save')),
             ]),
         ]
     );
@@ -279,7 +279,7 @@ function shift_delete_controller()
         ), true),
         form([
             form_hidden('delete_shift', $shift->id),
-            form_submit('delete', __('delete')),
+            form_submit('delete', __('form.delete')),
         ]),
     ]);
 }

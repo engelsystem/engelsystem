@@ -25,10 +25,10 @@ function ShiftType_delete_view(ShiftType $shifttype)
         info(sprintf(__('Do you want to delete shifttype %s?'), $shifttype->name), true),
         form([
             buttons([
-                button(page_link_to('shifttypes'), icon('x-lg') . __('cancel')),
+                button(page_link_to('shifttypes'), icon('x-lg') . __('form.cancel')),
                 form_submit(
                     'delete',
-                    icon('trash') . __('delete'),
+                    icon('trash') . __('form.delete'),
                     'btn-danger',
                     false
                 ),
@@ -54,7 +54,7 @@ function ShiftType_edit_view($name, $description, $shifttype_id)
             form_text('name', __('Name'), $name),
             form_textarea('description', __('Description'), $description),
             form_info('', __('Please use markdown for the description.')),
-            form_submit('submit', __('Save')),
+            form_submit('submit', __('form.save')),
         ]),
     ], true);
 }
@@ -73,11 +73,13 @@ function ShiftType_view(ShiftType $shifttype)
             button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
             button(
                 page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype->id]),
-                icon('pencil') . __('edit')
+                icon('pencil') . __('form.edit'),
+                'edit'
             ),
             button(
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
-                icon('trash') . __('delete'),
+                icon('trash') . __('form.delete'),
+                'delete'
             ),
         ]),
         heading(__('Description'), 2),
@@ -103,12 +105,12 @@ function ShiftTypes_list_view($shifttypes)
                     'shifttypes',
                     ['action' => 'edit', 'shifttype_id' => $shifttype->id]
                 ),
-                icon('pencil') . __('edit'),
+                icon('pencil') . __('form.edit'),
                 'btn-sm'
             ),
             button(
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
-                icon('trash') . __('delete'),
+                icon('trash') . __('form.delete'),
                 'btn-sm'
             ),
         ]);

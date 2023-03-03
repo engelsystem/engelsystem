@@ -388,7 +388,7 @@ function guest_register()
 
     return page_with_title(register_title(), [
         __('By completing this form you\'re registering as a Chaos-Angel. This script will create you an account in the angel task scheduler.'),
-        form_info(entry_required() . ' = ' . __('Entry required!')),
+        form_info(entry_required() . ' = ' . __('form.required')),
         $msg,
         msg(),
         form([

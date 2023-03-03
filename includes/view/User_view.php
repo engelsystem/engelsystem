@@ -30,7 +30,7 @@ function User_delete_view($user)
         ),
         form([
             form_password('password', __('Your password'), 'current-password'),
-            form_submit('submit', __('Delete')),
+            form_submit('submit', __('form.delete')),
         ]),
     ]);
 }
@@ -57,7 +57,7 @@ function User_edit_vouchers_view($user)
         form(
             [
                 form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
-                form_submit('submit', __('Save')),
+                form_submit('submit', __('form.save')),
             ],
             page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
         ),
@@ -141,12 +141,12 @@ function Users_view(
     if (config('enable_dect')) {
         $user_table_headers['dect'] = Users_table_header_link('dect', __('DECT'), $order_by);
     }
-    $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
+    $user_table_headers['arrived'] = Users_table_header_link('arrived', __('user.arrived'), $order_by);
     if (config('enable_voucher')) {
         $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
     }
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
-    $user_table_headers['active'] = Users_table_header_link('active', __('Active'), $order_by);
+    $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
     if ($goodie_enabled) {
         if ($goodie_tshirt) {
@@ -341,7 +341,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
             page_link_to('user_myshifts', ['edit' => $shift->shift_entry_id, 'id' => $user_source->id]),
-            icon('pencil') . __('edit'),
+            icon('pencil') . __('form.edit'),
             'btn-sm'
         );
     }
@@ -440,12 +440,12 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
         $actions = table_buttons([
             button(
                 url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id),
-                icon('pencil') . __('edit'),
+                icon('pencil') . __('form.edit'),
                 'btn-sm'
             ),
             button(
                 url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id . '/delete'),
-                icon('trash') . __('delete'),
+                icon('trash') . __('form.delete'),
                 'btn-sm'
             ),
         ]);
@@ -554,7 +554,7 @@ function User_view(
                         ) : '',
                         $admin_user_privilege ? button(
                             page_link_to('admin_user', ['id' => $user_source->id]),
-                            icon('pencil') . __('edit')
+                            icon('pencil') . __('form.edit')
                         ) : '',
                         $admin_user_privilege || ($its_me && $needs_drivers_license) ? button(
                             user_driver_license_edit_link($user_source),
@@ -564,7 +564,7 @@ function User_view(
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
-                                form_submit('submit', __('arrived'), '', false),
+                                form_submit('submit', __('user.arrived'), '', false),
                             ], page_link_to('admin_arrive'), true) : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(
@@ -693,7 +693,7 @@ function User_view_state_user($user_source)
     ];
 
     if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . icon('house') . __('Arrived') . '</span>';
+        $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
     } else {
         $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
     }
@@ -733,7 +733,7 @@ function User_view_state_admin($freeloader, $user_source)
         if ($user_source->state->force_active) {
             $state[] = '<span class="text-success">' . __('Active (forced)') . '</span>';
         } elseif ($user_source->state->active) {
-            $state[] = '<span class="text-success">' . __('Active') . '</span>';
+            $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
         if ($user_source->state->got_shirt && $goodie_enabled) {
             $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-Shirt') : __('Goodie')) . '</span>';

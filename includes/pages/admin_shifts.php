@@ -359,7 +359,7 @@ function admin_shifts()
                         'title'         => __('Type and title'),
                         'needed_angels' => __('Needed angels'),
                     ], $shifts_table),
-                    form_submit('submit', icon('save') . __('Save')),
+                    form_submit('submit', icon('save') . __('form.save')),
                 ]),
             ]);
         }

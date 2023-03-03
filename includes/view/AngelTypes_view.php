@@ -64,8 +64,8 @@ function AngelType_delete_view(AngelType $angeltype)
         info(sprintf(__('Do you want to delete angeltype %s?'), $angeltype->name), true),
         form([
             buttons([
-                button(page_link_to('angeltypes'), icon('x-lg') . __('cancel')),
-                form_submit('delete', icon('trash') . __('delete'), 'btn-danger', false),
+                button(page_link_to('angeltypes'), icon('x-lg') . __('form.cancel')),
+                form_submit('delete', icon('trash') . __('form.delete'), 'btn-danger', false),
             ]),
         ]),
     ], true);
@@ -127,7 +127,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
             form_text('contact_name', __('Name'), $angeltype->contact_name),
             config('enable_dect') ? form_text('contact_dect', __('DECT'), $angeltype->contact_dect) : '',
             form_text('contact_email', __('E-Mail'), $angeltype->contact_email),
-            form_submit('submit', __('Save')),
+            form_submit('submit', __('form.save')),
         ]),
     ]);
 }
@@ -188,13 +188,15 @@ function AngelType_view_buttons(
     if ($admin_angeltypes || $supporter) {
         $buttons[] = button(
             page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
-            icon('pencil') . __('edit')
+            icon('pencil') . __('form.edit'),
+            'edit'
         );
     }
     if ($admin_angeltypes) {
         $buttons[] = button(
             page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
-            icon('trash') . __('delete')
+            icon('trash') . __('form.delete'),
+            'delete'
         );
     }
 

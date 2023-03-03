@@ -211,21 +211,6 @@ msgstr "Passwort"
 msgid "Confirm password"
 msgstr "Passwort wiederholen"
 
-#: resources/views/pages/password/reset-form.twig:14
-#: includes/controller/shifts_controller.php:194
-#: includes/pages/admin_questions.php:55 includes/pages/admin_rooms.php:177
-#: includes/pages/admin_shifts.php:339 includes/pages/user_messages.php:78
-#: includes/view/AngelTypes_view.php:120 includes/view/EventConfig_view.php:110
-#: includes/view/Questions_view.php:43 includes/view/ShiftEntry_view.php:93
-#: includes/view/ShiftEntry_view.php:118 includes/view/ShiftEntry_view.php:141
-#: includes/view/ShiftEntry_view.php:207 includes/view/ShiftTypes_view.php:64
-#: includes/view/UserDriverLicenses_view.php:54
-#: includes/view/User_view.php:84
-#: includes/view/User_view.php:93 includes/view/User_view.php:98
-#: includes/view/User_view.php:103 includes/view/User_view.php:154
-msgid "Save"
-msgstr "Speichern"
-
 #: resources/views/pages/password/reset-success.twig:7
 msgid "We sent you an email containing your password recovery link."
 msgstr ""
@@ -298,28 +283,6 @@ msgstr "Team %s"
 #: includes/view/User_view.php:397
 msgid "view"
 msgstr "ansehen"
-
-#: includes/controller/angeltypes_controller.php:295
-#: includes/pages/admin_free.php:97 includes/pages/admin_groups.php:44
-#: includes/pages/admin_rooms.php:27 includes/view/AngelTypes_view.php:175
-#: includes/view/ShiftTypes_view.php:91 includes/view/ShiftTypes_view.php:123
-#: includes/view/Shifts_view.php:155 includes/view/User_view.php:402
-#: includes/view/User_view.php:496 includes/view/User_view.php:591
-msgid "edit"
-msgstr "bearbeiten"
-
-#: includes/controller/angeltypes_controller.php:300
-#: includes/controller/shifts_controller.php:245
-#: includes/pages/admin_questions.php:58 includes/pages/admin_questions.php:74
-#: includes/pages/admin_rooms.php:32 includes/pages/admin_user.php:181
-#: includes/view/AngelTypes_view.php:64 includes/view/AngelTypes_view.php:182
-#: includes/view/Questions_view.php:13 includes/view/Questions_view.php:22
-#: includes/view/ShiftEntry_view.php:28 includes/view/ShiftEntry_view.php:57
-#: includes/view/ShiftTypes_view.php:28 includes/view/ShiftTypes_view.php:96
-#: includes/view/ShiftTypes_view.php:128 includes/view/Shifts_view.php:156
-#: includes/view/User_view.php:501
-msgid "delete"
-msgstr "löschen"
 
 #: includes/controller/angeltypes_controller.php:311
 #: includes/view/AngelTypes_view.php:168 includes/view/AngelTypes_view.php:537
@@ -1148,7 +1111,7 @@ msgid "Privileges"
 msgstr "Privilegien"
 
 #: includes/pages/admin_groups.php:102
-msgid "Edit group"
+msgid "admin_groups.edit"
 msgstr "Gruppe bearbeiten"
 
 #: includes/pages/admin_import.php:8 includes/pages/admin_rooms.php:162
@@ -1201,12 +1164,6 @@ msgstr "Datei hochladen"
 #: includes/pages/admin_import.php:294
 msgid "Validation"
 msgstr "Überprüfen"
-
-#: includes/pages/admin_import.php:115 includes/pages/admin_import.php:127
-#: includes/pages/admin_import.php:176 includes/pages/admin_import.php:218
-#: includes/pages/admin_import.php:296
-msgid "Import"
-msgstr "Importieren"
 
 #: includes/pages/admin_import.php:121
 msgid ""
@@ -1647,10 +1604,6 @@ msgstr "Vorname"
 msgid "Last name"
 msgstr "Nachname"
 
-#: includes/pages/guest_login.php:350 includes/view/User_view.php:38
-msgid "Entry required!"
-msgstr "Pflichtfeld!"
-
 #: includes/pages/user_messages.php:49
 msgid "Select recipient..."
 msgstr "Empfänger auswählen..."
@@ -1737,14 +1690,6 @@ msgstr "Gib bitte einen Schwänz-Kommentar ein!"
 #: includes/pages/user_myshifts.php:111
 msgid "Shift saved."
 msgstr "Schicht gespeichert."
-
-#: includes/sys_menu.php:94
-msgid "News"
-msgstr "News"
-
-#: includes/sys_menu.php:95
-msgid "Meetings"
-msgstr "Treffen"
 
 #: includes/pages/user_questions.php:11 includes/sys_menu.php:98
 #: includes/view/Questions_view.php:40
@@ -1919,17 +1864,6 @@ msgstr "Mitglied"
 #, php-format
 msgid "Do you want to delete angeltype %s?"
 msgstr "Möchtest Du den Engeltypen %s löschen?"
-
-#: includes/view/AngelTypes_view.php:63 includes/view/ShiftEntry_view.php:27
-#: includes/view/ShiftEntry_view.php:56 includes/view/ShiftTypes_view.php:25
-#: includes/view/UserAngelTypes_view.php:27
-#: includes/view/UserAngelTypes_view.php:55
-#: includes/view/UserAngelTypes_view.php:74
-#: includes/view/UserAngelTypes_view.php:98
-#: includes/view/UserAngelTypes_view.php:122
-#: includes/view/UserAngelTypes_view.php:175
-msgid "cancel"
-msgstr "abbrechen"
 
 #: includes/view/AngelTypes_view.php:89 includes/view/AngelTypes_view.php:90
 #: includes/view/AngelTypes_view.php:505
@@ -2366,10 +2300,6 @@ msgstr "Benutzer bestätigen"
 
 msgid "Hide at Registration"
 msgstr "Ausblenden bei Registrierung"
-
-#: includes/view/UserAngelTypes_view.php:176
-msgid "save"
-msgstr "Speichern"
 
 #: includes/view/UserDriverLicenses_view.php:17
 msgid "Back to profile"

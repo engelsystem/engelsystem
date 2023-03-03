@@ -288,12 +288,12 @@ function angeltypes_list_controller()
         if (auth()->can('admin_angel_types')) {
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
-                icon('pencil') . __('edit'),
+                icon('pencil') . __('form.edit'),
                 'btn-sm'
             );
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
-                icon('trash') . __('delete'),
+                icon('trash') . __('form.delete'),
                 'btn-sm'
             );
         }
