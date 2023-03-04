@@ -295,7 +295,7 @@ function admin_active()
         }
 
         if ($goodie_tshirt) {
-            $actions[] = button(url('/admin/user/' . $usr->id . '/shirt'), __('form.edit'), 'btn-secondary btn-sm');
+            $actions[] = button(url('/admin/user/' . $usr->id . '/goodie'), __('form.edit'), 'btn-secondary btn-sm');
         }
 
         $userData['actions'] = buttons($actions);

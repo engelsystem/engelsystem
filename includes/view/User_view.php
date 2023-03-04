@@ -547,7 +547,7 @@ function User_view(
                 div('col-md-12', [
                     buttons([
                         $auth->can('user.edit.shirt') && $goodie_enabled ? button(
-                            url('/admin/user/' . $user_source->id . '/shirt'),
+                            url('/admin/user/' . $user_source->id . '/goodie'),
                             icon('person') . ($goodie_tshirt ? __('Shirt') : __('Goodie'))
                         ) : '',
                         $admin_user_privilege ? button(
