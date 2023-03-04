@@ -85,8 +85,9 @@ function Users_view(
     $tshirts_count,
     $voucher_count
 ) {
-    $goodie_tshirt = config('goodie_type') === GoodieType::Tshirt->value;
-    $goodie_enabled = config('goodie_type') !== GoodieType::None->value;
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $usersList = [];
     foreach ($users as $user) {
         $u = [];
@@ -377,8 +378,9 @@ function User_view_myshifts(
     $user_worklogs,
     $admin_user_worklog_privilege
 ) {
-    $goodie_tshirt = config('goodie_type') === GoodieType::Tshirt->value;
-    $goodie_enabled = config('goodie_type') !== GoodieType::None->value;
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $myshifts_table = [];
     $timeSum = 0;
     foreach ($shifts as $shift) {
@@ -492,8 +494,9 @@ function User_view(
     $admin_user_worklog_privilege,
     $user_worklogs
 ) {
-    $goodie_tshirt = config('goodie_type') === GoodieType::Tshirt->value;
-    $goodie_enabled = config('goodie_type') !== GoodieType::None->value;
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $auth = auth();
     $nightShiftsConfig = config('night_shifts');
     $user_name = htmlspecialchars(
@@ -705,8 +708,9 @@ function User_view_state_user($user_source)
 function User_view_state_admin($freeloader, $user_source)
 {
     $state = [];
-    $goodie_tshirt = config('goodie_type') === GoodieType::Tshirt->value;
-    $goodie_enabled = config('goodie_type') !== GoodieType::None->value;
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
     if ($freeloader) {
         $state[] = '<span class="text-danger">' . icon('exclamation-circle') . __('Freeloader') . '</span>';
@@ -937,7 +941,8 @@ function render_user_arrived_hint()
  */
 function render_user_tshirt_hint()
 {
-    $goodie_tshirt = config('goodie_type') === GoodieType::Tshirt->value;
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
     if ($goodie_tshirt && !auth()->user()->personalData->shirt_size) {
         $text = __('You need to specify a tshirt size in your settings!');
         return render_profile_link($text, null, 'text-danger');

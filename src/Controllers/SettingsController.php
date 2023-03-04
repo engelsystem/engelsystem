@@ -51,8 +51,9 @@ class SettingsController extends BaseController
     {
         $user = $this->auth->user();
         $data = $this->validate($request, $this->getSaveProfileRules());
-        $goodie_tshirt = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
-        $goodie_enabled = $this->config->get('goodie_type') !== GoodieType::None->value;
+        $goodie = GoodieType::from(config('goodie_type'));
+        $goodie_enabled = $goodie !== GoodieType::None;
+        $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
         if (config('enable_pronoun')) {
             $user->personalData->pronoun = $data['pronoun'];

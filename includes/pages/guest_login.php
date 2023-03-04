@@ -31,7 +31,9 @@ function guest_register()
 {
     $authUser = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
-    $goodie_tshirt = config('goodie_type') === GoodieType::Tshirt->value;
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $enable_user_name = config('enable_user_name');
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
@@ -450,7 +452,7 @@ function guest_register()
                         __('Allow heaven angels to contact you by e-mail.'),
                         $email_by_human_allowed
                     ),
-                    config('goodie_type') !== GoodieType::None->value ?
+                    $goodie_enabled ?
                         form_checkbox(
                             'email_goody',
                             __('To receive vouchers, give consent that nick, email address, worked hours and shirt size will be stored until the next similar event.')

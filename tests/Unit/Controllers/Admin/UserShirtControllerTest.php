@@ -81,11 +81,11 @@ class UserShirtControllerTest extends ControllerTest
             ->create();
 
         $auth
-            ->expects($this->exactly(5))
+            ->expects($this->exactly(6))
             ->method('can')
             ->with('admin_arrive')
-            ->willReturnOnConsecutiveCalls(true, true, true, false, true);
-        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(5));
+            ->willReturnOnConsecutiveCalls(true, true, true, false, false, true);
+        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(6));
 
         $controller = new UserShirtController(
             $auth,
@@ -148,7 +148,7 @@ class UserShirtControllerTest extends ControllerTest
         $this->assertFalse($user->state->arrived);
 
         // Shirt disabled
-        $this->config->set('goodie_type', GoodieType::Goodie->value);
+        $this->config->set('goodie_type', GoodieType::None->value);
         $request = $request
             ->withParsedBody([
                 'shirt_size' => 'XS',
@@ -157,6 +157,17 @@ class UserShirtControllerTest extends ControllerTest
         $controller->saveShirt($request);
         $user = User::find(1);
         $this->assertEquals('S', $user->personalData->shirt_size);
+
+        // Shirt enabled
+        $this->config->set('goodie_type', GoodieType::Tshirt->value);
+        $request = $request
+            ->withParsedBody([
+                'shirt_size' => 'XS',
+            ]);
+
+        $controller->saveShirt($request);
+        $user = User::find(1);
+        $this->assertEquals('XS', $user->personalData->shirt_size);
     }
 
     /**

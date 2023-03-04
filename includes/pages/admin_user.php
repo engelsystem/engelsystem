@@ -23,8 +23,9 @@ function admin_user()
     $tshirt_sizes = config('tshirt_sizes');
     $request = request();
     $html = '';
-    $goodie_tshirt = config('goodie_type') === GoodieType::Tshirt->value;
-    $goodie_enabled = config('goodie_type') !== GoodieType::None->value;
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
     if (!$request->has('id')) {
         throw_redirect(users_link());

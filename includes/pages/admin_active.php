@@ -23,8 +23,9 @@ function admin_active()
     $tshirt_sizes = config('tshirt_sizes');
     $shift_sum_formula = User_get_shifts_sum_query();
     $request = request();
-    $goodie_tshirt = config('goodie_type') === GoodieType::Tshirt->value;
-    $goodie_enabled = config('goodie_type') !== GoodieType::None->value;
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
     $msg = '';
     $search = '';
@@ -346,7 +347,9 @@ function admin_active()
                     'work_time'    => __('Length'),
                     'active'       => __('Active?'),
                     'force_active' => __('Forced'),
-                    'tshirt'       => ($goodie_tshirt ? __('T-shirt?') : __('Goodie?')),
+                ],
+                ($goodie_enabled ? ['tshirt' => ($goodie_tshirt ? __('T-shirt?') : __('Goodie?'))] : []),
+                [
                     'actions'      => '',
                 ]
             ),
