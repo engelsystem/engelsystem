@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
+use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\Admin\UserShirtController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Redirector;
@@ -63,6 +64,7 @@ class UserShirtControllerTest extends ControllerTest
      */
     public function testSaveShirt(): void
     {
+        $this->config->set('goodie_type', GoodieType::Tshirt->value);
         $request = $this->request
             ->withAttribute('user_id', 1)
             ->withParsedBody([
@@ -79,11 +81,11 @@ class UserShirtControllerTest extends ControllerTest
             ->create();
 
         $auth
-            ->expects($this->exactly(5))
+            ->expects($this->exactly(6))
             ->method('can')
             ->with('admin_arrive')
-            ->willReturnOnConsecutiveCalls(true, true, true, false, true);
-        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(5));
+            ->willReturnOnConsecutiveCalls(true, true, true, false, false, true);
+        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(6));
 
         $controller = new UserShirtController(
             $auth,
@@ -146,7 +148,18 @@ class UserShirtControllerTest extends ControllerTest
         $this->assertFalse($user->state->arrived);
 
         // Shirt disabled
-        $this->config->set('other_goodie');
+        $this->config->set('goodie_type', GoodieType::None->value);
+        $request = $request
+            ->withParsedBody([
+                'shirt_size' => 'XS',
+            ]);
+
+        $controller->saveShirt($request);
+        $user = User::find(1);
+        $this->assertEquals('S', $user->personalData->shirt_size);
+
+        // Shirt enabled
+        $this->config->set('goodie_type', GoodieType::Tshirt->value);
         $request = $request
             ->withParsedBody([
                 'shirt_size' => 'XS',

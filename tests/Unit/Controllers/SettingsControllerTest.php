@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 
 use Carbon\Carbon;
 use Engelsystem\Config\Config;
+use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
@@ -64,8 +65,7 @@ class SettingsControllerTest extends ControllerTest
             'enable_planned_arrival' => true,
             'enable_dect'            => true,
             'enable_mobile_show'     => true,
-            'enable_goody'           => true,
-            'enable_tshirt_size'     => true,
+            'goodie_type'            => GoodieType::Tshirt->value,
         ]);
 
         $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
@@ -213,7 +213,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveProfileIgnoresEmailGoodyIfDisabled(): void
     {
         $this->setUpProfileTest();
-        config(['enable_goody' => false]);
+        $this->config->set('goodie_type', GoodieType::None->value);
         $this->controller->saveProfile($this->request);
         $this->assertFalse($this->user->settings->email_goody);
     }
@@ -224,7 +224,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveProfileIgnoresTShirtSizeIfDisabled(): void
     {
         $this->setUpProfileTest();
-        config(['enable_tshirt_size' => false]);
+        $this->config->set('goodie_type', GoodieType::None->value);
         $this->controller->saveProfile($this->request);
         $this->assertEquals('', $this->user->personalData->shirt_size);
     }
@@ -639,6 +639,7 @@ class SettingsControllerTest extends ControllerTest
             'themes' => $themes,
             'locales' => $languages,
             'tshirt_sizes' => $tshirt_sizes,
+            'goodie_type' => GoodieType::Goodie->value,
         ]);
         $this->app->instance('config', $this->config);
         $this->app->instance(Config::class, $this->config);

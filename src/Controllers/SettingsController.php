@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Config\GoodieType;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\Redirector;
@@ -40,6 +41,8 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'user' => $user,
+                'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
+                'goodie_enabled' => $this->config->get('goodie_type') !== GoodieType::None->value,
             ]
         );
     }
@@ -48,6 +51,9 @@ class SettingsController extends BaseController
     {
         $user = $this->auth->user();
         $data = $this->validate($request, $this->getSaveProfileRules());
+        $goodie = GoodieType::from(config('goodie_type'));
+        $goodie_enabled = $goodie !== GoodieType::None;
+        $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
         if (config('enable_pronoun')) {
             $user->personalData->pronoun = $data['pronoun'];
@@ -87,13 +93,12 @@ class SettingsController extends BaseController
         $user->settings->email_human = $data['email_human'] ?: false;
         $user->settings->email_messages = $data['email_messages'] ?: false;
 
-        if (config('enable_goody')) {
+        if ($goodie_enabled) {
             $user->settings->email_goody = $data['email_goody'] ?: false;
         }
 
         if (
-            (config('enable_tshirt_size')
-            && !config('other_goodie'))
+            $goodie_tshirt
             && isset(config('tshirt_sizes')[$data['shirt_size']])
         ) {
             $user->personalData->shirt_size = $data['shirt_size'];
@@ -265,6 +270,7 @@ class SettingsController extends BaseController
      */
     private function getSaveProfileRules(): array
     {
+        $goodie_tshirt = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
         $rules = [
             'pronoun' => 'optional|max:15',
             'first_name' => 'optional|max:64',
@@ -283,7 +289,7 @@ class SettingsController extends BaseController
             $rules['planned_arrival_date'] = 'required|date:Y-m-d';
             $rules['planned_departure_date'] = 'optional|date:Y-m-d';
         }
-        if (config('enable_tshirt_size') && !config('other_goodie')) {
+        if ($goodie_tshirt) {
             $rules['shirt_size'] = 'required';
         }
         return $rules;

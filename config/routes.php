@@ -174,7 +174,7 @@ $route->addGroup(
             function (RouteCollector $route): void {
                 // Shirts
                 $route->addGroup(
-                    '/shirt',
+                    '/goodie',
                     function (RouteCollector $route): void {
                         $route->get('', 'Admin\\UserShirtController@editShirt');
                         $route->post('', 'Admin\\UserShirtController@saveShirt');

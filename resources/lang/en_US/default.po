@@ -380,6 +380,9 @@ msgstr "Answer"
 msgid "user.edit.shirt"
 msgstr "Edit shirt"
 
+msgid "user.edit.goodie"
+msgstr "Edit goodie"
+
 msgid "form.shirt"
 msgstr "Shirt"
 
@@ -397,6 +400,9 @@ msgstr "Arrived"
 
 msgid "user.got_shirt"
 msgstr "Got shirt"
+
+msgid "user.got_goodie"
+msgstr "Got goodie"
 
 msgid "message.title"
 msgstr "Messages"
