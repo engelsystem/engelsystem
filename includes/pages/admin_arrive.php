@@ -185,7 +185,7 @@ function admin_arrive()
             form_submit('submit', __('Search')),
         ], page_link_to('admin_arrive')),
         table([
-            'name'                            => __('Name'),
+            'name'                            => __('global.nick'),
             'rendered_planned_arrival_date'   => __('Planned arrival'),
             'arrived'                         => __('user.arrived?'),
             'rendered_arrival_date'           => __('Arrival date'),

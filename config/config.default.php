@@ -96,7 +96,7 @@ return [
             'id' => 'uuid',
             // The following fields are used for registration
             // Info username field (optional)
-            'username' => 'nickname',
+            'username' => 'nick',
             // Info email field (optional)
             'email' => 'email',
             // Info first name field (optional)

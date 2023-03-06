@@ -121,7 +121,7 @@ function guest_register()
             if (!$nickValid) {
                 $valid = false;
                 $msg .= error(sprintf(
-                    __('Please enter a valid nick.') . ' ' . __('Use up to 24 letters, numbers or connecting punctuations for your nickname.'),
+                    __('Please enter a valid nick.') . ' ' . __('Use up to 24 letters, numbers or connecting punctuations for your nick.'),
                     $nick
                 ), true);
             }
@@ -131,7 +131,7 @@ function guest_register()
             }
         } else {
             $valid = false;
-            $msg .= error(__('Please enter a nickname.'), true);
+            $msg .= error(__('Please enter a nick.'), true);
         }
 
         if ($request->has('mobile_show') && $enable_mobile_show) {
@@ -396,29 +396,29 @@ function guest_register()
                 div('col', [
                     form_text(
                         'username',
-                        __('Nick') . ' ' . entry_required(),
+                        __('global.nick') . ' ' . entry_required(),
                         $nick,
                         false,
                         24,
-                        'nickname'
+                        'nick'
                     ),
                     form_info(
                         '',
-                        __('Use up to 24 letters, numbers or connecting punctuations for your nickname.')
+                        __('Use up to 24 letters, numbers or connecting punctuations for your nick.')
                     ),
                 ]),
 
                 $enable_pronoun ? div('col', [
-                    form_text('pronoun', __('Pronoun'), $pronoun, false, 15),
+                    form_text('pronoun', __('global.pronoun'), $pronoun, false, 15),
                 ]) : '',
             ]),
 
             $enable_user_name ? div('row', [
                 div('col', [
-                    form_text('prename', __('First name'), $preName, false, 64, 'given-name'),
+                    form_text('prename', __('global.firstname'), $preName, false, 64, 'given-name'),
                 ]),
                 div('col', [
-                    form_text('lastname', __('Last name'), $lastName, false, 64, 'family-name'),
+                    form_text('lastname', __('global.lastname'), $lastName, false, 64, 'family-name'),
                 ]),
             ]) : '',
 
@@ -426,7 +426,7 @@ function guest_register()
                 div('col', [
                     form_email(
                         'email',
-                        __('E-Mail') . ' ' . entry_required(),
+                        __('global.email') . ' ' . entry_required(),
                         $email,
                         false,
                         'email',
@@ -465,11 +465,11 @@ function guest_register()
                 ]),
 
                 $enable_dect ? div('col', [
-                    form_text('dect', __('DECT'), $dect, false, 40, 'tel-local'),
+                    form_text('dect', __('global.dect'), $dect, false, 40, 'tel-local'),
                 ]) : '',
 
                 div('col', [
-                    form_text('mobile', __('Mobile'), $mobile, false, 40, 'tel-national'),
+                    form_text('mobile', __('global.mobile'), $mobile, false, 40, 'tel-national'),
                     $enable_mobile_show ? form_checkbox(
                         'mobile_show',
                         __('Show mobile number to other users to contact me'),
@@ -480,13 +480,13 @@ function guest_register()
 
             div('row', [
                 $enable_password ? div('col', [
-                    form_password('password', __('Password') . ' ' . entry_required(), 'new-password'),
+                    form_password('password', __('settings.password') . ' ' . entry_required(), 'new-password'),
                 ]) : '',
 
                 $enable_planned_arrival ? div('col', [
                     form_date(
                         'planned_arrival_date',
-                        __('Planned date of arrival') . ' ' . entry_required(),
+                        __('global.planned_arrival_date') . ' ' . entry_required(),
                         $planned_arrival_date,
                         $buildup_start_date,
                         $teardown_end_date
@@ -496,7 +496,7 @@ function guest_register()
 
             div('row', [
                 $enable_password ? div('col', [
-                    form_password('password2', __('Confirm password') . ' ' . entry_required(), 'new-password'),
+                    form_password('password2', __('settings.password.new_password2') . ' ' . entry_required(), 'new-password'),
                 ]) : '',
 
                 div('col', [

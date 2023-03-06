@@ -18,14 +18,14 @@
 
         <div class="row g-4">
             <div class="col-lg-6">
-                {{ f.input('nick', __('settings.profile.nick'), {
+                {{ f.input('nick', __('global.nick'), {
                     'value': user.name,
                     'disabled': true,
                 }) }}
             </div>
             {% if config('enable_pronoun') %}
                 <div class="col-lg-6">
-                    {{ f.input('pronoun', __('settings.profile.pronoun'), {
+                    {{ f.input('pronoun', __('global.pronoun'), {
                         'value': user.personalData.pronoun,
                         'max_length': 15,
                     }) }}
@@ -37,13 +37,13 @@
         {% if config('enable_user_name') %}
             <div class="row g-4">
                 <div class="col-sm-6">
-                    {{ f.input('first_name', __('settings.profile.firstname'), {
+                    {{ f.input('first_name', __('global.firstname'), {
                         'value': user.personalData.first_name,
                         'max_length': 64,
                     }) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ f.input('last_name', __('settings.profile.lastname'), {
+                    {{ f.input('last_name', __('global.lastname'), {
                         'value': user.personalData.last_name,
                         'max_length': 64,
                     }) }}
@@ -54,7 +54,7 @@
         {% if config('enable_planned_arrival') %}
             <div class="row g-4">
                 <div class="col-sm-6">
-                    {{ f.input('planned_arrival_date', __('settings.profile.planned_arrival_date'), {
+                    {{ f.input('planned_arrival_date', __('global.planned_arrival_date'), {
                         'type': 'date',
                         'value': user.personalData.planned_arrival_date.format('Y-m-d'),
                         'required': true,
@@ -78,14 +78,14 @@
         <div class="row g-4">
             {% if config('enable_dect') %}
                 <div class="col-md-6">
-                    {{ f.input('dect', __('settings.profile.dect'), {
+                    {{ f.input('dect', __('global.dect'), {
                         'value': user.contact.dect,
                         'max_length': 40,
                     }) }}
                 </div>
             {% endif %}
             <div class="col-md-6">
-                {{ f.input('mobile', __('settings.profile.mobile'), {
+                {{ f.input('mobile', __('global.mobile'), {
                     'value': user.contact.mobile,
                     'max_length': 40,
                 }) }}
@@ -99,7 +99,7 @@
 
         <div class="row g-4">
             <div class="col-md-6">
-                {{ f.input('email', __('settings.profile.email'), {
+                {{ f.input('email', __('global.email'), {
                     'type': 'email',
                     'value': user.email,
                     'max_length': 254,

@@ -74,9 +74,9 @@
                         {% if angeltype.hasContactInfo() %}
                             <dl class="row card-text">
                                 {% for type, info in {
-                                    'contact_name': {'name': __('angeltypes.name')},
-                                    'contact_dect': {'name': __('angeltypes.dect'), 'url': 'tel'},
-                                    'contact_email': {'name': __('angeltypes.email'), 'url': 'mailto'},
+                                    'contact_name': {'name': __('global.name')},
+                                    'contact_dect': {'name': __('global.dect'), 'url': 'tel'},
+                                    'contact_email': {'name': __('global.email'), 'url': 'mailto'},
                                 } %}
                                     {% if angeltype[type] and (type != 'contact_dect' or config('enable_dect')) %}
 

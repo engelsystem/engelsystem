@@ -16,8 +16,8 @@ msgstr ""
 "Language: en_US\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#~ msgid "auth.no-nickname"
-#~ msgstr "Please enter a nickname."
+#~ msgid "auth.no-nick"
+#~ msgstr "Please enter a nick."
 
 #~ msgid "auth.no-password"
 #~ msgstr "Please enter a password."

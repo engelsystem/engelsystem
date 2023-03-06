@@ -129,17 +129,15 @@ function Users_view(
         'actions'      => '<strong>' . count($usersList) . '</strong>',
     ];
 
-    $user_table_headers = [];
-
-    if (!config('display_full_name')) {
-        $user_table_headers['name'] = Users_table_header_link('name', __('Nick'), $order_by);
-    }
+    $user_table_headers = [
+        'name' => Users_table_header_link('name', __('global.nick'), $order_by),
+    ];
     if (config('enable_user_name')) {
-        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('Prename'), $order_by);
+        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('global.firstname'), $order_by);
         $user_table_headers['last_name'] = Users_table_header_link('last_name', __('Name'), $order_by);
     }
     if (config('enable_dect')) {
-        $user_table_headers['dect'] = Users_table_header_link('dect', __('DECT'), $order_by);
+        $user_table_headers['dect'] = Users_table_header_link('dect', __('global.dect'), $order_by);
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('user.arrived'), $order_by);
     if (config('enable_voucher')) {
@@ -148,12 +146,11 @@ function Users_view(
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
-    if ($goodie_enabled) {
-        if ($goodie_tshirt) {
-            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
-            $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
-        } else {
+    if (config('enable_tshirt_size')) {
+        if (config('other_goodie')) {
             $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('Goodie'), $order_by);
+        } else {
+            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('form.shirt'), $order_by);
         }
     }
     $user_table_headers['arrival_date'] = Users_table_header_link(
@@ -583,7 +580,7 @@ function User_view(
                     $its_me ? table_buttons([
                         button(
                             page_link_to('settings/profile'),
-                            icon('person-fill-gear') . __('Settings')
+                            icon('person-fill-gear') . __('settings.settings')
                         ),
                         $auth->can('ical') ? button(
                             page_link_to('ical', ['key' => $user_source->api_key]),
@@ -731,12 +728,12 @@ function User_view_state_admin($freeloader, $user_source)
             . '</span>';
 
         if ($user_source->state->force_active) {
-            $state[] = '<span class="text-success">' . __('Active (forced)') . '</span>';
+            $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
         } elseif ($user_source->state->active) {
             $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
-        if ($user_source->state->got_shirt && $goodie_enabled) {
-            $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-Shirt') : __('Goodie')) . '</span>';
+        if ($user_source->state->got_shirt) {
+            $state[] = '<span class="text-success">' . __('form.shirt') . '</span>';
         }
     } else {
         $arrivalDate = $user_source->personalData->planned_arrival_date;
@@ -835,7 +832,7 @@ function User_oauth_render(User $user)
 }
 
 /**
- * Render a user nickname.
+ * Render a user nick.
  *
  * @param array|User $user
  * @param bool       $plain

@@ -740,7 +740,7 @@ msgid "Preview"
 msgstr "Pré-visualizar"
 
 #: includes/pages/admin_active.php:185 includes/pages/admin_arrive.php:145
-msgid "Nickname"
+msgid "Nick"
 msgstr "Apelido"
 
 #: includes/pages/admin_active.php:186 includes/pages/admin_active.php:196
@@ -1422,7 +1422,7 @@ msgstr ""
 "Se você continuar com problemas, pergunte a um Dispatcher."
 
 #: includes/pages/guest_login.php:327
-msgid "auth.no-nickname"
+msgid "auth.no-nick"
 msgstr "Por favor digite um apelido."
 
 #: includes/pages/guest_login.php:358 includes/view/User_view.php:101

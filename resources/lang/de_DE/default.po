@@ -143,12 +143,6 @@ msgstr ""
 msgid "Please note: You have to activate cookies!"
 msgstr "Hinweis: Cookies müssen aktiviert sein!"
 
-msgid "Password"
-msgstr "Passwort"
-
-msgid "Confirm password"
-msgstr "Passwort wiederholen"
-
 msgid "We sent you an email containing your password recovery link."
 msgstr ""
 "Wir haben dir eine eMail mit einem Link zum Passwort-zurücksetzen geschickt."
@@ -166,9 +160,6 @@ msgstr ""
 "Wir werden eine eMail mit einem Link schicken, mit dem du das Passwort "
 "zurücksetzen kannst. Bitte benutze die Mailadresse, die du bei der Anmeldung "
 "verwendet hast."
-
-msgid "E-Mail"
-msgstr "E-Mail"
 
 msgid "Recover"
 msgstr "Wiederherstellen"
@@ -642,9 +633,6 @@ msgstr "Wie viele Engel sollten aktiv sein?"
 msgid "Preview"
 msgstr "Vorschau"
 
-msgid "Nickname"
-msgstr "Nick"
-
 msgid "Size"
 msgstr "Größe"
 
@@ -684,11 +672,8 @@ msgstr "Engel wurde als angekommen markiert."
 msgid "reset"
 msgstr "zurücksetzen"
 
-msgid "arrived"
-msgstr "angekommen"
-
 msgid "Planned arrival"
-msgstr "Geplanter Ankunftstag"
+msgstr "Geplante Ankunft"
 
 msgid "Arrived?"
 msgstr "Angekommen?"
@@ -726,7 +711,7 @@ msgstr "All"
 msgid "Angeltype"
 msgstr "Engeltyp"
 
-msgid "Nick"
+msgid "global.nick"
 msgstr "Nick"
 
 msgid "Next shift"
@@ -735,14 +720,8 @@ msgstr "Nächste Schicht"
 msgid "Last shift"
 msgstr "Letzte Schicht"
 
-msgid "DECT"
-msgstr "DECT"
-
 msgid "Grouprights"
 msgstr "Gruppenrechte"
-
-msgid "Name"
-msgstr "Name"
 
 msgid "Privileges"
 msgstr "Privilegien"
@@ -1011,13 +990,13 @@ msgstr "User bearbeiten"
 msgid "Please enter a valid nick."
 msgstr "Gib bitte einen erlaubten Nick an."
 
-msgid "Use up to 24 letters, numbers or connecting punctuations for your nickname."
+msgid "Use up to 24 letters, numbers or connecting punctuations for your nick."
 msgstr "Verwende bis zu 24 Buchstaben, Zahlen oder verbindende Schriftzeichen (.-_) für deinen Nick."
 
 msgid "Your nick \"%s\" already exists."
 msgstr "Der Nick \"%s\" existiert bereits."
 
-msgid "Please enter a nickname."
+msgid "Please enter a nick."
 msgstr "Gib bitte einen Nick an."
 
 msgid "E-mail address is not correct."
@@ -1073,9 +1052,6 @@ msgstr "Um Voucher zu erhalten, stimme zu, dass Nick, E-Mail-Adresse, geleistete
 msgid "To withdraw your approval, send an email to <a href=\"mailto:%s\">%1$s</a>."
 msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
 
-msgid "Planned date of arrival"
-msgstr "Geplanter Ankunftstag"
-
 msgid "Shirt size"
 msgstr "T-Shirt Größe"
 
@@ -1091,15 +1067,6 @@ msgid ""
 msgstr ""
 "Engeltypen welche eine Einführung benötigen, werden bei einem Einführungstreffen von "
 "einem Supporter freigeschaltet. Du kannst Deine Auswahl später in den Einstellungen ändern."
-
-msgid "Mobile"
-msgstr "Handy"
-
-msgid "First name"
-msgstr "Vorname"
-
-msgid "Last name"
-msgstr "Nachname"
 
 msgid "Select recipient..."
 msgstr "Empfänger auswählen..."
@@ -1118,9 +1085,6 @@ msgstr "Nachricht löschen"
 
 msgid "Hello %s, here can you leave messages for other angels"
 msgstr "Hallo %s, hier kannst Du anderen Engeln Nachrichten schreiben."
-
-msgid "New"
-msgstr "Neu"
 
 msgid "Transmitted"
 msgstr "Gesendet"
@@ -1180,9 +1144,6 @@ msgstr "Unvollständiger Aufruf, fehlende Fragen ID."
 
 msgid "No question found."
 msgstr "Keine Frage gefunden."
-
-msgid "Settings"
-msgstr "Einstellungen"
 
 msgid ""
 "Please enter your planned date of departure. It should be after your planned "
@@ -1647,17 +1608,11 @@ msgstr "Möchtest du den Arbeitseinsatz von %s wirklich löschen?"
 msgid "Comment"
 msgstr "Kommentar"
 
-msgid "Pronoun"
-msgstr "Pronomen"
-
 msgid "Will be shown on your profile page and in angel lists."
 msgstr "Wird auf deiner Profilseite und in Engellisten angezeigt."
 
 msgid "Here you can change your user details."
 msgstr "Hier kannst Du Deine Details ändern."
-
-msgid "Planned date of departure"
-msgstr "Geplanter Abreisetag"
 
 msgid "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
 msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
@@ -1681,23 +1636,11 @@ msgstr "Engel kann noch %d Gutscheine bekommen und ist FA."
 msgid "Number of vouchers given out"
 msgstr "Anzahl Gutscheine bekommen"
 
-msgid "Prename"
-msgstr "Vorname"
-
-msgid "Arrived"
-msgstr "Angekommen"
-
 msgid "Voucher"
 msgstr "Gutschein"
 
 msgid "Freeloads"
 msgstr "Schwänzereien"
-
-msgid "Active"
-msgstr "Aktiv"
-
-msgid "T-Shirt"
-msgstr "T-Shirt"
 
 msgid "Last login"
 msgstr "Letzter Login"
@@ -1783,9 +1726,6 @@ msgstr "Schwänzer"
 
 msgid "Arrived at %s"
 msgstr "Angekommen am %s"
-
-msgid "Active (forced)"
-msgstr "Aktiv (erzwungen)"
 
 msgid "Not arrived (Planned: %s)"
 msgstr "Nicht angekommen (Geplant: %s)"
@@ -1922,13 +1862,6 @@ msgstr ""
 "Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um "
 "Zugriff zu erhalten!"
 
-
-
-
-
-
-
-
 msgid "form.load_schedule"
 msgstr "Programm laden"
 
@@ -2007,9 +1940,6 @@ msgstr "Zu aktualisierende Schichten"
 
 msgid "schedule.import.shifts.delete"
 msgstr "Zu löschende Schichten"
-
-msgid "schedule.import.rooms.name"
-msgstr "Name"
 
 msgid "schedule.import.shift.dates"
 msgstr "Zeit"
@@ -2098,37 +2028,31 @@ msgstr "Einstellungen"
 msgid "settings.profile.entry_required"
 msgstr "Pflichtfeld"
 
-msgid "settings.profile.nick"
-msgstr "Nick"
-
-msgid "settings.profile.pronoun"
+msgid "global.pronoun"
 msgstr "Pronomen"
 
 msgid "settings.profile.pronoun.info"
 msgstr "Wird auf deiner Profilseite und in Engellisten angezeigt."
 
-msgid "settings.profile.firstname"
+msgid "global.firstname"
 msgstr "Vorname"
 
-msgid "settings.profile.lastname"
+msgid "global.lastname"
 msgstr "Nachname"
 
-msgid "settings.profile.planned_arrival_date"
+msgid "global.planned_arrival_date"
 msgstr "Geplanter Ankunftstag"
 
 msgid "settings.profile.planned_departure_date"
 msgstr "Geplanter Abreisetag"
 
-msgid "settings.profile.dect"
-msgstr "DECT"
-
-msgid "settings.profile.mobile"
+msgid "global.mobile"
 msgstr "Handy"
 
 msgid "settings.profile.mobile_show"
 msgstr "Mache meine Handynummer für andere Benutzer sichtbar."
 
-msgid "settings.profile.email"
+msgid "global.email"
 msgstr "E-Mail"
 
 msgid "settings.profile.email_shiftinfo"
@@ -2325,26 +2249,17 @@ msgid "angeltypes.restricted.hint"
 msgstr "Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen. "
 "Weitere Informationen findest du möglicherweise in der Beschreibung."
 
-msgid "angeltypes.name"
+msgid "global.name"
 msgstr "Name"
 
-msgid "angeltypes.dect"
+msgid "global.dect"
 msgstr "DECT"
-
-msgid "angeltypes.email"
-msgstr "E-Mail"
 
 msgid "registration.register"
 msgstr "Registrieren"
 
 msgid "room.rooms"
 msgstr "Räume"
-
-msgid "room.name"
-msgstr "Name"
-
-msgid "room.dect"
-msgstr "DECT"
 
 msgid "room.map_url"
 msgstr "Karte"

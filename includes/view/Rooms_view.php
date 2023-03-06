@@ -30,7 +30,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
     $dect = '';
     if (config('enable_dect') && $room->dect) {
         $dect = heading(__('Contact'), 3)
-            . description([__('DECT') => sprintf('<a href="tel:%s">%1$s</a>', $room->dect)]);
+            . description([__('global.dect') => sprintf('<a href="tel:%s">%1$s</a>', $room->dect)]);
     }
 
     $tabs = [];

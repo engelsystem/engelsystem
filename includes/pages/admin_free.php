@@ -123,11 +123,11 @@ function admin_free()
             ]),
         ]),
         table([
-            'name'        => __('Name'),
+            'name'        => __('global.nick'),
             'shift_state' => __('Next shift'),
             'last_shift'  => __('Last shift'),
-            'dect'        => __('DECT'),
-            'email'       => __('E-Mail'),
+            'dect'        => __('global.dect'),
+            'email'       => __('global.email'),
             'actions'     => '',
         ], $free_users_table),
     ]);
