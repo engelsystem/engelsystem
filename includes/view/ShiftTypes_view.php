@@ -73,13 +73,11 @@ function ShiftType_view(ShiftType $shifttype)
             button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
             button(
                 page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype->id]),
-                icon('pencil') . __('edit'),
-                'edit'
+                icon('pencil') . __('edit')
             ),
             button(
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
                 icon('trash') . __('delete'),
-                'delete'
             ),
         ]),
         heading(__('Description'), 2),
