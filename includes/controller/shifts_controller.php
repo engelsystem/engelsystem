@@ -2,6 +2,7 @@
 
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\NeededAngelType;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
