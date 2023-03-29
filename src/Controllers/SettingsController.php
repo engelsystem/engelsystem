@@ -243,9 +243,15 @@ class SettingsController extends BaseController
         $menu = [
             url('/settings/profile')  => 'settings.profile',
             url('/settings/password') => 'settings.password',
-            url('/settings/language') => 'settings.language',
-            url('/settings/theme')    => 'settings.theme',
         ];
+
+        if (count(config('locales')) > 1) {
+            $menu[url('/settings/language')] = 'settings.language';
+        }
+
+        if (count(config('themes')) > 1) {
+            $menu[url('/settings/theme')] = 'settings.theme';
+        }
 
         if (!empty(config('oauth'))) {
             $menu[url('/settings/oauth')] = ['title' => 'settings.oauth', 'hidden' => $this->checkOauthHidden()];

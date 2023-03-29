@@ -92,14 +92,16 @@
                     </li>
                 {% endif %}
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ m.icon('translate') }}
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        {{ menuLanguages()|join(" ")|raw }}
-                    </ul>
-                </li>
+                {% if config('locales')|length > 1 %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ m.icon('translate') }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            {{ menuLanguages()|join(" ")|raw }}
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
