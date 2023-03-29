@@ -50,6 +50,6 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
                     ),
             ], 'driving_license'),
             form_submit('submit', __('Save')),
-        ])
+        ]),
     ], true);
 }

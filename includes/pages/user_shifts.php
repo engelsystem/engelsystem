@@ -384,7 +384,7 @@ function make_select($items, $selected, $name, $title = null, $ownSelect = [])
 
     $buttons = [
         button_checkbox_selection($name, __('All'), 'true'),
-        button_checkbox_selection($name, __('None'), 'false')
+        button_checkbox_selection($name, __('None'), 'false'),
     ];
     if (count($ownSelect) > 0) {
         $buttons[] = button_checkbox_selection($name, __('Own'), json_encode($ownSelect));
