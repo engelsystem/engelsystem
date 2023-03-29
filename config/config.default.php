@@ -218,7 +218,7 @@ return [
     // Must be one of news, meetings, user_shifts, angeltypes, questions
     'home_site'               => env('HOME_SITE', 'news'),
 
-    // Number of News shown on one site and for feed readers
+    // Number of News shown on one site and for feed readers (minimum 1)
     'display_news'            => env('DISPLAY_NEWS', 10),
 
     // Users are able to sign up
@@ -270,7 +270,7 @@ return [
     'enable_user_name'        => (bool) env('ENABLE_USER_NAME', false),
 
     // Show a users first name and last name instead of username
-    'display_full_name'  => env('display_full_name', false)
+    'display_full_name'  => env('DISPLAY_FULL_NAME', false)
         && env('ENABLE_USER_NAME', false),
 
     // Enable displaying the pronoun fields
