@@ -7,6 +7,7 @@
 * Code must pass PHPStan checks (`composer phpstan`)
 * Order the composer/npm dependencies alphabetically.
 * Do not use code from the [includes](includes) directory anywhere else.
+* Don't refactor [includes](includes) code just for the sake of change, it is legacy code that must only be replaced.
 * Please cover your code by unit tests, our goal is to stay at 100% line coverage.
   Code under `includes` does not require tests as it's mostly not testable and needs to be rewritten.
 * Do not use vendor prefixes like `-webkit` in styles.
