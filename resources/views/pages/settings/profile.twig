@@ -109,6 +109,7 @@
             </div>
 
             <div class="col-md-6">
+                <label class="form-label">{{ __('settings.profile.email-preferences') }}</label>
                 {{ f.checkbox('email_shiftinfo', __('settings.profile.email_shiftinfo', [config('app_name')]), {
                     'checked': user.settings.email_shiftinfo,
                 }) }}

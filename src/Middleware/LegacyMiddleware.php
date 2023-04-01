@@ -108,10 +108,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = shifts_title();
                 $content = user_shifts();
                 return [$title, $content];
-            case 'register':
-                $title = register_title();
-                $content = guest_register();
-                return [$title, $content];
             case 'admin_user':
                 $title = admin_user_title();
                 $content = admin_user();

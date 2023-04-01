@@ -150,6 +150,9 @@ $input-border-focus: #66afe9 !default;
 //** Placeholder text color
 $input-color-placeholder: $gray-light !default;
 
+$form-check-input-border: 1px solid $input-border-color !default;
+$list-group-form-check-input-border-color: $input-border-color !default;
+
 $legend-color: $text-color !default;
 $legend-border-color: $gray-dark !default;
 
@@ -513,10 +516,11 @@ $progress-bar-info-bg: $info !default;
 //
 //##
 
+$list-group-color: $input-color !default;
 //** Background color on `.list-group-item`
 $list-group-bg: $gray-darker !default;
 //** `.list-group-item` border color
-$list-group-border: $gray-dark !default;
+$list-group-border-color: $input-border-color !default;
 //** List group border radius
 $list-group-border-radius: $border-radius-base !default;
 

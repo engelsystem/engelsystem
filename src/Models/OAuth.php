@@ -6,6 +6,7 @@ namespace Engelsystem\Models;
 
 use Carbon\Carbon;
 use Engelsystem\Models\User\UsesUserModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -26,6 +27,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class OAuth extends BaseModel
 {
+    use HasFactory;
     use UsesUserModel;
 
     public $table = 'oauth'; // phpcs:ignore

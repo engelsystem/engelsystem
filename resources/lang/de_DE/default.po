@@ -1020,15 +1020,6 @@ msgstr ""
 msgid "Edit user"
 msgstr "User bearbeiten"
 
-msgid "Please enter a valid nick."
-msgstr "Gib bitte einen erlaubten Nick an."
-
-msgid "Use up to 24 letters, numbers or connecting punctuations for your nickname."
-msgstr "Verwende bis zu 24 Buchstaben, Zahlen oder verbindende Schriftzeichen (.-_) für deinen Nick."
-
-msgid "Your nick \"%s\" already exists."
-msgstr "Der Nick \"%s\" existiert bereits."
-
 msgid "Please enter a nickname."
 msgstr "Gib bitte einen Nick an."
 
@@ -1067,9 +1058,6 @@ msgstr ""
 "Mit diesem Formular registrierst Du Dich als Engel. Du bekommst ein Konto in "
 "der Engel-Aufgabenverwaltung."
 
-msgid "Notify me of new news"
-msgstr "Benachrichtige mich bei neuen News"
-
 msgid "Allow heaven angels to contact you by e-mail."
 msgstr "Erlaube Himmel-Engeln dich per Mail zu kontaktieren."
 
@@ -1081,25 +1069,6 @@ msgstr "Um Voucher zu erhalten, stimme zu, dass Nick, E-Mail-Adresse, geleistete
 
 msgid "To withdraw your approval, send an email to <a href=\"mailto:%s\">%1$s</a>."
 msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
-
-msgid "Planned date of arrival"
-msgstr "Geplanter Ankunftstag"
-
-msgid "Shirt size"
-msgstr "T-Shirt Größe"
-
-msgid "What do you want to do?"
-msgstr "Was möchtest Du machen?"
-
-msgid "Description of job types"
-msgstr "Beschreibung der Aufgaben"
-
-msgid ""
-"Some angel types have to be confirmed later by a supporter at an "
-"introduction meeting. You can change your selection in the options section."
-msgstr ""
-"Engeltypen welche eine Einführung benötigen, werden bei einem Einführungstreffen von "
-"einem Supporter freigeschaltet. Du kannst Deine Auswahl später in den Einstellungen ändern."
 
 msgid "Mobile"
 msgstr "Handy"
@@ -2134,6 +2103,9 @@ msgstr "Pflichtfeld"
 msgid "settings.profile.nick"
 msgstr "Nick"
 
+msgid "settings.profile.nick.already-taken"
+msgstr "Der Nick ist bereits vergeben."
+
 msgid "settings.profile.pronoun"
 msgstr "Pronomen"
 
@@ -2161,8 +2133,14 @@ msgstr "Handy"
 msgid "settings.profile.mobile_show"
 msgstr "Mache meine Handynummer für andere Benutzer sichtbar."
 
+msgid "settings.profile.email-preferences"
+msgstr "E-Mail Einstellungen"
+
 msgid "settings.profile.email"
 msgstr "E-Mail"
+
+msgid "settings.profile.email.already-taken"
+msgstr "Die E-Mail-Adresse ist bereits vergeben."
 
 msgid "settings.profile.email_shiftinfo"
 msgstr "Das %s darf mir E-Mails senden (z.B. wenn sich meine Schichten ändern)."
@@ -2194,6 +2172,9 @@ msgstr "Passwort"
 
 msgid "settings.password.info"
 msgstr "Hier kannst Du Dein Passwort ändern."
+
+msgid "settings.password.confirmation-does-not-match"
+msgstr "Passwort und Passwortwiederholung stimmen nicht überein."
 
 msgid "settings.password.password"
 msgstr "Altes Passwort"
@@ -2412,6 +2393,9 @@ msgid "angeltypes.restricted.hint"
 msgstr "Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen. "
 "Weitere Informationen findest du möglicherweise in der Beschreibung."
 
+msgid "angeltypes.can-change-later"
+msgstr "Du kannst Deine Auswahl später in den Einstellungen ändern."
+
 msgid "angeltypes.name"
 msgstr "Name"
 
@@ -2456,3 +2440,27 @@ msgstr "Tag %1$d"
 
 msgid "dashboard.day"
 msgstr "Tag"
+
+msgid "page.sign-up.title"
+msgstr "Engelregistrierung"
+
+msgid "page.sign-up.login-data"
+msgstr "Anmeldedaten"
+
+msgid "page.sign-up.name"
+msgstr "Name"
+
+msgid "page.sign-up.event-data"
+msgstr "Eventdaten"
+
+msgid "page.sign-up.what-do-you-want-to-do"
+msgstr "Was möchtest Du machen?"
+
+msgid "page.sign-up.sign-up"
+msgstr "Registrieren"
+
+msgid "pages.sign-up.disabled"
+msgstr "Die Engelregistrierung ist deaktiviert"
+
+msgid "pages.sign-up.successful"
+msgstr "Engelregistrierung erfolgreich! Du kannst dich jetzt anmelden!"
