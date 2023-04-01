@@ -1,0 +1,310 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('page.sign-up.title') }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="mb-5">
+        <h1>{{ __('page.sign-up.title') }}</h1>
+    </div>
+
+    {% include 'layouts/parts/messages.twig' %}
+
+    <form method="post" action="{{ url('/sign-up') }}" novalidate class="mb-5">
+        {{ csrf() }}
+
+        <div class="mb-5">
+            <h2>{{ __('page.sign-up.login-data') }}</h2>
+            <div class="row">
+                {% if isPronounEnabled %}
+                    <div class="col-md-6">
+                        {{ f.input(
+                            'pronoun',
+                            __('settings.profile.pronoun'),
+                            {
+                                'max_length': 15,
+                                'value': f.formData('pronoun', ''),
+                            }
+                        ) }}
+                    </div>
+                {% endif %}
+
+                <div class="col-md-6">
+                    {{ f.input(
+                        'username',
+                        __('settings.profile.nick'),
+                        {
+                            'autocomplete': 'nickname',
+                            'max_length': 24,
+                            'required': true,
+                            'required_icon': true,
+                            'value': f.formData('username', ''),
+                        }
+                    ) }}
+                </div>
+
+                {% if not isPronounEnabled %}
+                    {# Insert an empty row to keep password / email in line #}
+                    <div class="col-md-6"></div>
+                {% endif %}
+
+                {% if isPasswordEnabled %}
+                    <div class="col-md-6">
+                        {{ f.input(
+                            'password',
+                            __('settings.password'),
+                            {
+                                'type': 'password',
+                                'autocomplete': 'new-password',
+                                'required': true,
+                                'required_icon': true,
+                            }
+                        ) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ f.input(
+                            "password_confirmation",
+                            __('settings.password.new_password2'),
+                            {
+                                'type': 'password',
+                                'autocomplete': 'new-password',
+                                'required': true,
+                                'required_icon': true,
+                            }
+                        ) }}
+                    </div>
+                {% endif %}
+
+                <div class="col-md-6">
+                    {{ f.input(
+                        'email',
+                        __('settings.profile.email'),
+                        {
+                            'type': 'email',
+                            'max_length': 254,
+                            'required': true,
+                            'required_icon': true,
+                            'value': f.formData('email', ''),
+                        }
+                    ) }}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{{ __('settings.profile.email-preferences') }}</label>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            {# Empty class to prevent the default bottom margin #}
+                            {{ f.checkbox(
+                                'email_shiftinfo',
+                                __(
+                                    'settings.profile.email_shiftinfo',
+                                    [config('app_name')]
+                                ),
+                                {
+                                    'class': '',
+                                    'checked': f.formData('email_shiftinfo', false),
+                                },
+                            ) }}
+                        </li>
+                        <li class="list-group-item">
+                            {# Empty class to prevent the default bottom margin #}
+                            {{ f.checkbox(
+                                'email_news',
+                                __('settings.profile.email_news'),
+                                {
+                                    'class': '',
+                                    'checked': f.formData('email_news', false),
+                                },
+                            ) }}
+                        </li>
+                        <li class="list-group-item">
+                            {# Empty class to prevent the default bottom margin #}
+                            {{ f.checkbox(
+                                'email_messages',
+                                __('settings.profile.email_messages'),
+                                {
+                                    'class': '',
+                                    'checked': f.formData('email_messages', false),
+                                },
+                            ) }}
+                        </li>
+                        <li class="list-group-item">
+                            {# Empty class to prevent the default bottom margin #}
+                            {{ f.checkbox(
+                                'email_by_human_allowed',
+                                __('settings.profile.email_by_human_allowed'),
+                                {
+                                    'class': '',
+                                    'checked': f.formData('email_by_human_allowed', false),
+                                },
+                            ) }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {% if isFullNameEnabled %}
+            <div class="mb-5">
+                <h2>{{ __('page.sign-up.name') }}</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ f.input(
+                            'firstname',
+                            __('settings.profile.firstname'),
+                            {
+                                'autocomplete': 'given-name',
+                                'max_length': 64,
+                                'value': f.formData('firstname', ''),
+                            }
+                        ) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ f.input(
+                            'lastname',
+                            __('settings.profile.lastname'),
+                            {
+                                'autocomplete': 'family-name',
+                                'max_length': 64,
+                                'value': f.formData('lastname', ''),
+                            }
+                        ) }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="mb-5">
+            <h2>{{ __('page.sign-up.event-data') }}</h2>
+            <div class="row">
+                {% if isGoodieEnabled %}
+                    <div class="col-md-6">
+                        {% set privacy_email = config('privacy_email') %}
+                        {% set email_goody_label = __('settings.profile.email_goody') ~
+                            (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
+                        %}
+                        {{ f.checkbox(
+                            'email_goody',
+                            email_goody_label,
+                            {
+                                'raw_label': true,
+                                'checked': f.formData('email_goody', false),
+                            },
+                        ) }}
+                    </div>
+                    <div class="col-md-6"></div>
+                {% endif %}
+
+                {% if isPlannedArrivalDateEnabled %}
+                    <div class="col-md-6">
+                        {{ f.input(
+                            'planned_arrival_date',
+                            __('settings.profile.planned_arrival_date'),
+                            {
+                                'type': 'date',
+                                'min': buildUpStartDate,
+                                'max': tearDownEndDate,
+                                'required': true,
+                                'required_icon': true,
+                                'value': f.formData('planned_arrival_date', buildUpStartDate),
+                            }
+                        ) }}
+                    </div>
+                {% endif %}
+
+                {% if isGoodieTShirt %}
+                    <div class="col-md-6">
+                        {{ f.select(
+                            'tshirt_size',
+                            __('settings.profile.shirt_size'),
+                            tShirtSizes,
+                            {
+                                'default_option': __('form.select_placeholder'),
+                                'required': true,
+                                'required_icon': true,
+                                'selected': f.formData('tshirt_size', ''),
+                            }
+                        ) }}
+                    </div>
+                {% endif %}
+
+                <div class="col-md-6">
+                    {{ f.input(
+                        'mobile',
+                        __('settings.profile.mobile'),
+                        {
+                            'type': 'tel-national',
+                            'max_length': 40,
+                            'value': f.formData('mobile', ''),
+                        }
+                    ) }}
+                    {% if isShowMobileEnabled %}
+                        {{ f.checkbox(
+                            'mobile_show',
+                            __('settings.profile.mobile_show'),
+                            {
+                                'raw_label': true,
+                                'checked': f.formData('mobile_show', false),
+                            },
+                        ) }}
+                    {% endif %}
+                </div>
+
+                {% if isDECTEnabled %}
+                    <div class="col-md-6">
+                        {{ f.input(
+                            "dect",
+                            __("settings.profile.dect"),
+                            {
+                                'type': 'tel-local',
+                                'max_length': 40,
+                                'value': f.formData('dect', ''),
+                            }
+                        ) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <h2>{{ __('page.sign-up.what-do-you-want-to-do') }}</h2>
+            <div class="row mb-3">
+                {% for angelType in angelTypes %}
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        {{ f.checkbox(
+                            'angel_types_' ~ angelType.id,
+                            angelType.name ~ (angelType.restricted ? ' ' ~ m.icon('mortarboard-fill', 'text-body') : ''),
+                            {
+                                'value': angelType.id,
+                                'raw_label': true,
+                                'checked': preselectedAngelTypes['angel_types_' ~ angelType.id] ?? false,
+                            }
+                        ) }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-2">
+                        {{ m.icon('mortarboard-fill', 'text-body') }}
+                        {{ __('angeltypes.restricted.hint') }}
+                    </div>
+                    <div>
+                        {{ m.icon('info-circle', 'text-body') }}
+                        {{ __('angeltypes.can-change-later') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {#
+            By assigning a name here, some magic™ will create a session var
+            "form-data-register-submit" with the value 1 on submit.
+        #}
+        {{ f.submit(__('page.sign-up.sign-up'), {
+            'name': 'register-submit',
+        }) }}
+    </form>
+</div>
+{% endblock %}

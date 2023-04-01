@@ -214,9 +214,10 @@ Renders a Bootstrap checkbox element with mb-3.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {bool} [opt.raw_label=false] - Whether to use the raw label value (=do not escape). Defaults to false.
 @param {string} [opt.info] - If set an additional info icon will be added to the label with the text as tooltip.
+@param {string} [opt.class="mb-3"] - CSS classes for the checkbox element. Defaults to "mb-3".
 #}
 {% macro checkbox(name, label, opt) %}
-    <div class="form-check mb-3">
+    <div class="form-check {{ opt.class is defined ? opt.class : 'mb-3' }}">
         <input class="form-check-input" type="checkbox" id="{{ name }}" name="{{ name }}"
             value="{{ opt.value|default('1') }}"
             {%- if opt.checked|default(false) %} checked{% endif %}

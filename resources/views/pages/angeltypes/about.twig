@@ -15,7 +15,7 @@
                     </a>
                 {% else %}
                     {% if has_permission_to('register') and config('registration_enabled') %}
-                        <a href="{{ url('/register') }}" class="btn btn-secondary back">
+                        <a href="{{ url('/sign-up') }}" class="btn btn-secondary back">
                             {{ __('registration.register') }}
                         </a>
                     {% endif %}

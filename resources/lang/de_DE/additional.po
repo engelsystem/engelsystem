@@ -17,8 +17,34 @@ msgstr ""
 msgid "validation.password.required"
 msgstr "Bitte gib ein Passwort an."
 
+msgid "validation.password.length"
+msgstr "Das angegebene Passwort ist zu kurz."
+
 msgid "validation.login.required"
 msgstr "Bitte gib einen Loginnamen an."
+
+msgid "validation.pronoun.optional"
+msgstr "Das Pronomen, das Du eingegeben hast, ist zu lang. Verwende maximal 15 Zeichen."
+
+msgid "validation.firstname.optional"
+msgstr "Der von dir eingegebene Vorname ist zu lang. Verwende maximal 64 Zeichen."
+
+msgid "validation.lastname.optional"
+msgstr "Der von dir eingegebene Vorname ist zu lang. Verwende maximal 64 Zeichen."
+
+msgid "validation.mobile.optional"
+msgstr "Der von dir eingegebene Handynummer ist zu lang. Verwende maximal 40 Zeichen."
+
+msgid "validation.dect.optional"
+msgstr "Der von dir eingegebene DECT-Nummer ist zu lang. Verwende maximal 40 Zeichen."
+
+msgid "validation.username.required"
+msgstr "Bitte gebe deinen Nick an."
+
+msgid "validation.username.username"
+msgstr ""
+"Bitte gebe einen gültigen Nick ein: "
+"Verwende bis zu 24 Buchstaben, Zahlen oder verbindende Schriftzeichen (.-_) für deinen Nick."
 
 msgid "validation.email.required"
 msgstr "Bitte gib eine E-Mail-Adresse an."
@@ -26,10 +52,10 @@ msgstr "Bitte gib eine E-Mail-Adresse an."
 msgid "validation.email.email"
 msgstr "Die E-Mail-Adresse ist nicht gültig."
 
-msgid "validation.password.min"
+msgid "validation.password.length"
 msgstr "Dein neues Passwort ist zu kurz."
 
-msgid "validation.new_password.min"
+msgid "validation.new_password.length"
 msgstr "Dein neues Passwort ist zu kurz."
 
 msgid "validation.password.confirmed"
@@ -37,6 +63,21 @@ msgstr "Deine Passwörter stimmen nicht überein."
 
 msgid "validation.password_confirmation.required"
 msgstr "Du musst dein Passwort bestätigen."
+
+msgid "validation.tshirt_size.required"
+msgstr "Bitte wähle deine T-Shirt-Größe aus."
+
+msgid "validation.tshirt_size.shirtSize"
+msgstr "Bitte wähle eine gültige T-Shirt-Größe aus."
+
+msgid "validation.planned_arrival_date.required"
+msgstr "Bitte gebe dein geplantes Ankunftsdatum an."
+
+msgid "validation.planned_arrival_date.min"
+msgstr "Das geplante Ankunftsdatum darf nicht vor Aufbaubeginn liegen."
+
+msgid "validation.planned_arrival_date.between"
+msgstr "Das geplante Ankunftsdatum muss zwischen Aufbaubeginn und Abbauende liegen."
 
 msgid "schedule.edit.success"
 msgstr "Das Programm wurde erfolgreich konfiguriert."

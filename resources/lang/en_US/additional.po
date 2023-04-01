@@ -15,8 +15,34 @@ msgstr "No user was found or password is wrong. Please try again. If you are sti
 msgid "validation.password.required"
 msgstr "The password is required."
 
+msgid "validation.password.length"
+msgstr "The password entered is too short."
+
 msgid "validation.login.required"
 msgstr "The login name is required."
+
+msgid "validation.pronoun.length"
+msgstr "The pronoun you have entered is too long. Use a maximum of 15 characters."
+
+msgid "validation.firstname.length"
+msgstr "The first name you have entered is too long. Use a maximum of 64 characters."
+
+msgid "validation.lastname.length"
+msgstr "The last name you have entered is too long. Use a maximum of 64 characters."
+
+msgid "validation.mobile.optional"
+msgstr "The mobile number you have entered is too long. Use a maximum of 40 characters."
+
+msgid "validation.dect.optional"
+msgstr "The DECT number you have entered is too long. Use a maximum of 40 characters."
+
+msgid "validation.username.required"
+msgstr "Please enter your nick."
+
+msgid "validation.username.username"
+msgstr ""
+"Please enter a valid nick:"
+"Use up to 24 letters, numbers or connecting punctuations (.-_) for your nickname."
 
 msgid "validation.email.required"
 msgstr "The email address is required."
@@ -24,10 +50,10 @@ msgstr "The email address is required."
 msgid "validation.email.email"
 msgstr "This email address is not valid."
 
-msgid "validation.password.min"
+msgid "validation.password.length"
 msgstr "Your new password is too short."
 
-msgid "validation.new_password.min"
+msgid "validation.new_password.length"
 msgstr "Your new password is too short."
 
 msgid "validation.password.confirmed"
@@ -35,6 +61,21 @@ msgstr "Your passwords are not equal."
 
 msgid "validation.password_confirmation.required"
 msgstr "You have to confirm your password."
+
+msgid "validation.tshirt_size.required"
+msgstr "Please choose your t-shirt size."
+
+msgid "validation.tshirt_size.shirtSize"
+msgstr "Please choose a valid t-shirt size."
+
+msgid "validation.planned_arrival_date.required"
+msgstr "Please enter your planned date of arrival."
+
+msgid "validation.planned_arrival_date.min"
+msgstr "The planned date of arrival must not be before the buil-up start date."
+
+msgid "validation.planned_arrival_date.between"
+msgstr "The planned date of arrival must be between the build-up and tear-down date."
 
 msgid "schedule.edit.success"
 msgstr "The schedule was configured successfully."

@@ -17,6 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 abstract class ControllerTest extends TestCase
@@ -78,6 +79,7 @@ abstract class ControllerTest extends TestCase
         $this->session = new Session(new MockArraySessionStorage());
         $this->app->instance('session', $this->session);
         $this->app->instance(Session::class, $this->session);
+        $this->app->instance(SessionInterface::class, $this->session);
 
         $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
 

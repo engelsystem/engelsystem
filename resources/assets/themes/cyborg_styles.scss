@@ -107,6 +107,10 @@ table,
   }
 }
 
+.list-group .form-check-input {
+  border-color: $list-group-form-check-input-border-color;
+}
+
 // Navs =======================================================================
 
 .nav-tabs,

@@ -62,7 +62,6 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/admin_groups.php',
     __DIR__ . '/../includes/pages/admin_shifts.php',
     __DIR__ . '/../includes/pages/admin_user.php',
-    __DIR__ . '/../includes/pages/guest_login.php',
     __DIR__ . '/../includes/pages/user_myshifts.php',
     __DIR__ . '/../includes/pages/user_shifts.php',
 
