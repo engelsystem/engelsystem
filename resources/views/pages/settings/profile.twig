@@ -14,9 +14,9 @@
                     {{ f.entry_required() }} = {{ __('settings.profile.entry_required') }}
                 </strong>
             </div>
-            <div class="col-12">
-                {{ m.info(__('settings.profile.user_details.info')) }}
-            </div>
+        </div>
+
+        <div class="row g-4">
             <div class="col-lg-6">
                 {{ f.input(
                     'nick',
@@ -36,7 +36,10 @@
                     {{ m.info(__('settings.profile.pronoun.info')) }}
                 </div>
             {% endif %}
-            {% if config('enable_user_name') %}
+        </div>
+
+        {% if config('enable_user_name') %}
+            <div class="row g-4">
                 <div class="col-sm-6">
                     {{ f.input(
                         'first_name',
@@ -53,9 +56,11 @@
                         {'value': user.personalData.last_name, 'max_length': 64}
                     ) }}
                 </div>
-            {% endif %}
+            </div>
+        {% endif %}
 
-            {% if config('enable_planned_arrival') %}
+        {% if config('enable_planned_arrival') %}
+            <div class="row g-4">
                 <div class="col-sm-6">
                     {{ f.input(
                         'planned_arrival_date',
@@ -83,8 +88,10 @@
                         }
                     ) }}
                 </div>
-            {% endif %}
+            </div>
+        {% endif %}
 
+        <div class="row g-4">
             {% if config('enable_dect') %}
                 <div class="col-md-6">
                     {{ f.input(
@@ -110,6 +117,9 @@
                     ) }}
                 {% endif %}
             </div>
+        </div>
+
+        <div class="row g-4">
             <div class="col-md-6">
                 {{ f.input(
                     'email',
@@ -155,7 +165,9 @@
                     ) }}
                 {% endif %}
             </div>
+        </div>
 
+        <div class="row g-4">
             {% if goodie_tshirt %}
                 <div class="col-12">
                     {{ f.select(
