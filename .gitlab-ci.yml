@@ -184,6 +184,7 @@ build-image:
     - /kaniko/executor --context ${CI_PROJECT_DIR}
       --dockerfile ${CI_PROJECT_DIR}/docker/Dockerfile
       --destination "${TEST_IMAGE}"
+      --cache=true
 
 #
 # Test
@@ -270,7 +271,11 @@ release-image:
     - test
   dependencies: [ ]
   script:
-    - echo -e "FROM ${TEST_IMAGE}" | /kaniko/executor --dockerfile /dev/stdin --destination "${RELEASE_IMAGE}"
+    - echo -e "FROM ${TEST_IMAGE}"
+      | /kaniko/executor
+      --dockerfile /dev/stdin
+      --destination "${RELEASE_IMAGE}"
+      --cache=true
   only:
     - main
 
