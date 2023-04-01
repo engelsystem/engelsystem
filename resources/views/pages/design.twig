@@ -263,15 +263,15 @@
                         {{ f.checkbox('form-input-checkbox-2', 'Checkbox 2', false, '2') }}
                         {{ f.checkbox('form-input-checkbox-3', 'Checkbox 3', false, '3') }}
                         <div class="d-grid gap-2">
-                            <div id="select-all-checkboxes" class="btn btn-sm btn-block btn-primary">
+                            <button type="button" class="btn btn-secondary d-print-none checkbox-selection" data-id="checkboxes" data-value="true">
                                 Select all
-                            </div>
-                            <div id="select-23-checkboxes" class="btn btn-sm btn-block btn-primary">
+                            </button>
+                            <button type="button" class="btn btn-secondary d-print-none checkbox-selection" data-id="checkboxes" data-value="[2,3]">
                                 Select 2, 3
-                            </div>
-                            <div id="unselect-all-checkboxes" class="btn btn-sm btn-block btn-danger">
+                            </button>
+                            <button type="button" class="btn btn-secondary d-print-none checkbox-selection" data-id="checkboxes" data-value="false">
                                 Unselect all
-                            </div>
+                            </button>
                         </div>
                     </div>
                     <div class="col-md-3 col-lg-2 checkbox-inline">
@@ -432,18 +432,6 @@
     </div>
     </div>
     <script>
-        document.getElementById('select-all-checkboxes').addEventListener('click', () => {
-            checkAll('checkboxes', true);
-        });
-
-        document.getElementById('unselect-all-checkboxes').addEventListener('click', () => {
-            checkAll('checkboxes', false);
-        });
-
-        document.getElementById('select-23-checkboxes').addEventListener('click', () => {
-            checkOwnTypes('checkboxes', [2, 3]);
-        });
-
         document.getElementById('form').addEventListener('submit', (e) => {
             e.preventDefault();
             return false;

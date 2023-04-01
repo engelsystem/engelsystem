@@ -212,7 +212,7 @@ function view_user_shifts()
     $days = load_days();
     $rooms = load_rooms();
     $types = load_types();
-    $ownTypes = [];
+    $ownAngelTypes = [];
 
     /** @var EloquentCollection|UserAngelType[] $userAngelTypes */
     $userAngelTypes = UserAngelType::whereUserId($user->id)
@@ -223,12 +223,12 @@ function view_user_shifts()
         })
         ->get();
     foreach ($userAngelTypes as $type) {
-        $ownTypes[] = $type->angel_type_id;
+        $ownAngelTypes[] = $type->angel_type_id;
     }
 
     if (!$session->has('shifts-filter')) {
         $room_ids = $rooms->pluck('id')->toArray();
-        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $room_ids, $ownTypes);
+        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $room_ids, $ownAngelTypes);
         $session->set('shifts-filter', $shiftsFilter->sessionExport());
     }
 
@@ -296,13 +296,7 @@ function view_user_shifts()
                     $shiftsFilter->getTypes(),
                     'types',
                     icon('person-lines-fill') . __('Angeltypes') . '<sup>1</sup>',
-                    [
-                        button(
-                            'javascript:checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
-                            __('Own'),
-                            'd-print-none'
-                        ),
-                    ]
+                    $ownAngelTypes
                 ),
                 'filled_select' => make_select(
                     $filled,
@@ -378,20 +372,23 @@ function get_ids_from_array($array)
  * @param array  $selected
  * @param string $name
  * @param string $title
- * @param array  $additionalButtons
+ * @param int[]  $ownSelect
  * @return string
  */
-function make_select($items, $selected, $name, $title = null, $additionalButtons = [])
+function make_select($items, $selected, $name, $title = null, $ownSelect = [])
 {
     $html = '';
     if (isset($title)) {
         $html .= '<h4>' . $title . '</h4>' . "\n";
     }
 
-    $buttons = [];
-    $buttons[] = button('javascript:checkAll(\'selection_' . $name . '\', true)', __('All'), 'd-print-none');
-    $buttons[] = button('javascript:checkAll(\'selection_' . $name . '\', false)', __('None'), 'd-print-none');
-    $buttons = array_merge($buttons, $additionalButtons);
+    $buttons = [
+        button_checkbox_selection($name, __('All'), 'true'),
+        button_checkbox_selection($name, __('None'), 'false'),
+    ];
+    if (count($ownSelect) > 0) {
+        $buttons[] = button_checkbox_selection($name, __('Own'), json_encode($ownSelect));
+    }
 
     $html .= buttons($buttons);
     $html .= '<div id="selection_' . $name . '" class="mb-3 selection ' . $name . '">' . "\n";

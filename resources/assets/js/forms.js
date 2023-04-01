@@ -4,28 +4,24 @@ import { ready } from './ready';
 
 /**
  * Sets all checkboxes to the wanted state
- *
- * @param {string} id Id of the element containing all the checkboxes
- * @param {boolean} checked True if the checkboxes should be checked
  */
-global.checkAll = (id, checked) => {
-  document.querySelectorAll(`#${id} input[type="checkbox"]`).forEach((element) => {
-    element.checked = checked;
+ready(() => {
+  document.querySelectorAll('button.checkbox-selection').forEach((buttonElement) => {
+    buttonElement.addEventListener('click', () => {
+      document.querySelectorAll(`#${buttonElement.dataset.id} input[type="checkbox"]`).forEach((checkboxElement) => {
+        /**
+         * @type {boolean|int[]}
+         */
+        const value = JSON.parse(buttonElement.dataset.value);
+        if (typeof value === 'boolean') {
+          checkboxElement.checked = value;
+        } else {
+          checkboxElement.checked = value.includes(Number(checkboxElement.value));
+        }
+      });
+    });
   });
-};
-
-/**
- * Sets the checkboxes according to the given type
- *
- * @param {string} id The Id of the element containing all the checkboxes
- * @param {int[]} shiftsList A list of numbers
- */
-global.checkOwnTypes = (id, shiftsList) => {
-  document.querySelectorAll(`#${id} input[type="checkbox"]`).forEach((element) => {
-    const value = Number(element.value);
-    element.checked = shiftsList.includes(value);
-  });
-};
+});
 
 ready(() => {
   /**
@@ -284,27 +280,36 @@ ready(() => {
  * Uses DOMContentLoaded to prevent flickering
  */
 ready(() => {
-  const filter = document.getElementById('collapseShiftsFilterSelect');
-  if (!filter || localStorage.getItem('collapseShiftsFilterSelect') !== 'hidden.bs.collapse') {
-    return;
-  }
+  const collapseElement = document.getElementById('collapseShiftsFilterSelect');
+  if (collapseElement) {
+    if (localStorage.getItem('collapseShiftsFilterSelect') === 'hidden.bs.collapse') {
+      collapseElement.classList.remove('show');
+    }
 
-  filter.classList.remove('show');
+    /**
+     * @param {Event} event
+     */
+    const onChange = (event) => {
+      localStorage.setItem('collapseShiftsFilterSelect', event.type);
+    };
+
+    collapseElement.addEventListener('hidden.bs.collapse', onChange);
+    collapseElement.addEventListener('shown.bs.collapse', onChange);
+  }
 });
 
+/**
+ * Show/hide checkboxes for User Driver-Licenses
+ */
 ready(() => {
-  if (typeof localStorage === 'undefined') {
-    return;
+  const checkboxElement = document.getElementById('wants_to_drive');
+  const drivingLicenseElement = document.getElementById('driving_license');
+
+  if (checkboxElement && drivingLicenseElement) {
+    drivingLicenseElement.hidden = !checkboxElement.checked;
+
+    checkboxElement.addEventListener('click', () => {
+      drivingLicenseElement.hidden = !checkboxElement.checked;
+    });
   }
-
-  /**
-   * @param {Event} event
-   */
-  const onChange = (event) => {
-    localStorage.setItem('collapseShiftsFilterSelect', event.type);
-  };
-
-  document.getElementById('collapseShiftsFilterSelect')?.addEventListener('hidden.bs.collapse', onChange);
-
-  document.getElementById('collapseShiftsFilterSelect')?.addEventListener('shown.bs.collapse', onChange);
 });
