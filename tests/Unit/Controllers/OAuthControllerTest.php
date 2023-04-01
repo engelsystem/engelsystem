@@ -116,7 +116,7 @@ class OAuthControllerTest extends TestCase
         );
         $this->setExpects($provider, 'getResourceOwner', [$accessToken], $resourceOwner, $this->atLeastOnce());
 
-        /** @var EventDispatcher|MockObject $event */
+        /** @var EventDispatcher|MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance('events.dispatcher', $dispatcher);
         $this->setExpects($dispatcher, 'dispatch', ['oauth2.login'], $dispatcher, 4);

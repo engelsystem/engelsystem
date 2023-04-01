@@ -8,7 +8,7 @@ use Engelsystem\Controllers\BaseController;
 
 class ControllerImplementation extends BaseController
 {
-    /** @var array */
+    /** @var string[]|string[][] */
     protected array $permissions = [
         'foo',
         'lorem' => [

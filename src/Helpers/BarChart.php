@@ -89,7 +89,7 @@ class BarChart
 
     /**
      * @param int $max Max Y value
-     * @return array<array{label: string, bottom: string}>
+     * @return array<int, array{label: string, bottom: string}>
      */
     private static function calculateYLabels(int $max): array
     {
@@ -98,7 +98,7 @@ class BarChart
 
         for ($y = 0; $y <= $max; $y += $step) {
             $yLabels[] = [
-                'label' => $y,
+                'label' => (string) $y,
                 'bottom' => $max === 0 ? '0%' : ($y / $max * 100) . '%',
             ];
         }
@@ -148,7 +148,7 @@ class BarChart
                 'count' => $step,
                 'sum' => $step * $count,
             ];
-            $current = $current->addDay(1);
+            $current = $current->addDay();
             $count++;
         }
 

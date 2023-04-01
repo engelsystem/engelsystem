@@ -60,7 +60,7 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * @return array[]
+     * @return string[]
      */
     protected function formatHistogram(array $row, string $name): array
     {

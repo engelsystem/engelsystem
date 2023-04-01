@@ -42,7 +42,7 @@ class Event
         protected array $persons = [],
         protected ?string $language = null,
         protected ?string $description = null,
-        protected string $recording = '',
+        protected ?string $recording = '',
         protected array $links = [],
         protected array $attachments = [],
         protected ?string $url = null,

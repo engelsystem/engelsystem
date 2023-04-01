@@ -174,9 +174,6 @@ class Stats
             ->get();
     }
 
-    /**
-     * @param string|null $vehicle
-     */
     public function licenses(string $vehicle): int
     {
         $mapping = [

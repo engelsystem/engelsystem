@@ -12,7 +12,7 @@ trait CalculatesTime
         $duration = explode(':', $time);
 
         foreach (array_slice($duration, 0, 2) as $key => $times) {
-            $seconds += [60 * 60, 60][$key] * $times;
+            $seconds += [60 * 60, 60][$key] * (int) $times;
         }
 
         return $seconds;
