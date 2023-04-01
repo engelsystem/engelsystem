@@ -223,11 +223,8 @@ msgstr "Message"
 msgid "settings.settings"
 msgstr "Settings"
 
-msgid "settings.profile.user_details.info"
-msgstr "Here you can change your user details."
-
 msgid "settings.profile.entry_required"
-msgstr "Entry required!"
+msgstr "Entry required"
 
 msgid "settings.profile.nick"
 msgstr "Nick"

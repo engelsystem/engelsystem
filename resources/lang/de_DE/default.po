@@ -2954,11 +2954,8 @@ msgstr "Nachricht"
 msgid "settings.settings"
 msgstr "Einstellungen"
 
-msgid "settings.profile.user_details.info"
-msgstr "Hier kannst Du Deine Details ändern."
-
 msgid "settings.profile.entry_required"
-msgstr "Pflichtfeld!"
+msgstr "Pflichtfeld"
 
 msgid "settings.profile.nick"
 msgstr "Nick"
