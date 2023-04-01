@@ -34,7 +34,7 @@ class RouteDispatcher implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $path = (new Uri($request->getUri()))->getPath();
+        $path = (new Uri((string) $request->getUri()))->getPath();
         if ($request instanceof Request) {
             $path = $request->getPathInfo();
         }
