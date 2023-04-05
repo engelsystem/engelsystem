@@ -321,6 +321,10 @@ h6,
 }
 
 // Cards
+.card > .card-body:first-child {
+  border-top-left-radius: var(--bs-card-border-radius);
+  border-top-right-radius: var(--bs-card-border-radius);
+}
 .card-body > *:last-child {
   margin-bottom: 0;
 }
