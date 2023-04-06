@@ -1533,12 +1533,8 @@ msgstr "Gib bitte einen erlaubten Nick an."
 
 #: includes/pages/guest_login.php:77 includes/pages/guest_login.php:277
 #: includes/view/User_view.php:42
-msgid ""
-"Use up to 24 letters, numbers, connecting punctuations or spaces for your "
-"nickname."
-msgstr ""
-"Verwende bis zu 24 Buchstaben, Zahlen, verbindende Schriftzeichen (.-_) oder "
-"Leerzeichen für deinen Nick."
+msgid "Use up to 24 letters, numbers or connecting punctuations for your nickname."
+msgstr "Verwende bis zu 24 Buchstaben, Zahlen oder verbindende Schriftzeichen (.-_) für deinen Nick."
 
 #: includes/pages/guest_login.php:82
 #, php-format

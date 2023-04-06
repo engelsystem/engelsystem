@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Http\Validation\Rules\Username;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\JoinClause;
@@ -244,9 +245,12 @@ function admin_user()
                 if ($user_source->settings->email_human) {
                     $user_source->email = $request->postData('eemail');
                 }
-                $nickValidation = User_validate_Nick($request->postData('eNick'));
-                if ($nickValidation->isValid()) {
-                    $user_source->name = $nickValidation->getValue();
+
+                $nick = trim($request->get('eNick'));
+                $nickValid = (new Username())->validate($nick);
+
+                if ($nickValid) {
+                    $user_source->name = $nick;
                 }
                 $user_source->save();
 

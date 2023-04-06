@@ -68,27 +68,6 @@ function Users_by_angeltype_inverted(AngelType $angeltype)
 }
 
 /**
- * Strip unwanted characters from a users nick. Allowed are letters, numbers, connecting punctuation and simple space.
- * Nick is trimmed.
- *
- * @param string $nick
- * @return ValidationResult
- */
-function User_validate_Nick($nick)
-{
-    $nick = trim($nick);
-
-    if (strlen($nick) == 0 || strlen($nick) > 24) {
-        return new ValidationResult(false, $nick);
-    }
-    if (preg_match(config('username_regex', '/([^\p{L}\p{N}\-_. ]+)/ui'), $nick)) {
-        return new ValidationResult(false, $nick);
-    }
-
-    return new ValidationResult(true, $nick);
-}
-
-/**
  * Validate the planned arrival date
  *
  * @param int $planned_arrival_date Unix timestamp
