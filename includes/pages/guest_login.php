@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Http\Validation\Rules\Username;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\OAuth;
@@ -114,13 +115,13 @@ function guest_register()
         $valid = true;
 
         if ($request->has('username')) {
-            $nickValidation = User_validate_Nick($request->input('username'));
-            $nick = $nickValidation->getValue();
+            $nick = trim($request->get('username'));
+            $nickValid = (new Username())->validate($nick);
 
-            if (!$nickValidation->isValid()) {
+            if (!$nickValid) {
                 $valid = false;
                 $msg .= error(sprintf(
-                    __('Please enter a valid nick.') . ' ' . __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.'),
+                    __('Please enter a valid nick.') . ' ' . __('Use up to 24 letters, numbers or connecting punctuations for your nickname.'),
                     $nick
                 ), true);
             }
@@ -403,7 +404,7 @@ function guest_register()
                     ),
                     form_info(
                         '',
-                        __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.')
+                        __('Use up to 24 letters, numbers or connecting punctuations for your nickname.')
                     ),
                 ]),
 

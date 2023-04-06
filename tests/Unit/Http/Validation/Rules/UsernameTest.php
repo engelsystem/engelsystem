@@ -1,0 +1,71 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Engelsystem\Test\Unit\Http\Validation\Rules;
+
+use Engelsystem\Application;
+use Engelsystem\Config\Config;
+use Engelsystem\Http\Validation\Rules\Username;
+use Engelsystem\Test\Unit\ServiceProviderTest;
+use RuntimeException;
+
+class UsernameTest extends ServiceProviderTest
+{
+    private Username $subject;
+
+    private Config $config;
+
+    public function setUp(): void
+    {
+        $this->subject = new Username();
+
+        $app = $this->getApp([]);
+        $this->config = new Config([]);
+        $app->instance('config', $this->config);
+        $app->get('config');
+        Application::setInstance($app);
+
+        // load "username_regex" from the default config
+        $defaultConfig = include __DIR__ . '/../../../../../config/config.default.php';
+        $this->config->set('username_regex', $defaultConfig['username_regex']);
+    }
+
+    /**
+     * @return array<string,array{string,bool}>
+     */
+    public function provideValidateWithDefaultConfigTestData(): array
+    {
+        return [
+            'empty string' => ['', false],
+            'max length exceeded' => [str_repeat('1', 25), false],
+            'invalid char !' => ['abc!!!', false],
+            'space' => ['ab c', false],
+            'valid Greek letters' => ['λουκάνικο', true],
+            'min length valid' => ['a', true],
+            'valid with all chars' => ['abc123_-.jkl', true],
+            'valid with accents' => ['café', true],
+            'max length valid' => [str_repeat('a', 24), true],
+        ];
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Validation\Rules\Username::validate
+     * @dataProvider provideValidateWithDefaultConfigTestData
+     */
+    public function testValidateWithDefaultConfig(mixed $value, bool $expectedValid): void
+    {
+        self::assertSame($expectedValid, $this->subject->validate($value));
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Validation\Rules\Username::validate
+     */
+    public function testMissingConfigRaisesException(): void
+    {
+        $this->config->set('username_regex', null);
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('username_regex not set in config');
+        $this->subject->validate('test');
+    }
+}

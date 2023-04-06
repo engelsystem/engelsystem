@@ -266,6 +266,10 @@ return [
     // Whether the mobile number can be shown to other users
     'enable_mobile_show'      => (bool) env('ENABLE_MOBILE_SHOW', false),
 
+    // Regular expression describing a FALSE username.
+    // Per default usernames must only contain alphanumeric chars, "-", "_" or ".".
+    'username_regex' => (string) env('USERNAME_REGEX', '/([^\p{L}\p{N}\-_.]+)/ui'),
+
     // Enables first name and last name
     'enable_user_name'        => (bool) env('ENABLE_USER_NAME', false),
 
