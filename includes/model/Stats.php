@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\ShiftsFilter;
 
 /**
@@ -76,7 +77,7 @@ function stats_hours_to_work(ShiftsFilter $filter = null)
  */
 function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
 {
-    $in3hours = time() + 3 * 60 * 60;
+    $in3hours = Carbon::now()->addHours(3)->toDateTimeString();
     $result = Db::selectOne('
         SELECT SUM(`count`) AS `count` FROM (
             SELECT
@@ -157,6 +158,8 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
         date('Y-m-d', time() + 12 * 60 * 60) . ' ' . $nightStartTime . ':00'
     );
     $night_end = $night_start + ($nightEndTime - $nightStartTime) * 60 * 60;
+    $night_start = Carbon::createFromTimestamp($night_start)->toDateTimeString();
+    $night_end = Carbon::createFromTimestamp($night_end)->toDateTimeString();
     $result = Db::selectOne('
         SELECT SUM(`count`) AS `count` FROM (
             SELECT

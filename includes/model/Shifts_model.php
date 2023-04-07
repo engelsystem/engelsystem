@@ -85,6 +85,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
 
     return Shift::query()
         ->whereIn('id', $shifts->pluck('id')->toArray())
+        ->orderBy('shifts.start')
         ->get();
 }
 
