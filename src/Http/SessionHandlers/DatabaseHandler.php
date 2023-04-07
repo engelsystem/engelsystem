@@ -71,6 +71,7 @@ class DatabaseHandler extends AbstractHandler
      */
     public function gc(int $max_lifetime): int|false
     {
+        $max_lifetime = config('session.lifetime') * 24 * 60 * 60;
         $timestamp = $this->getCurrentTimestamp(-$max_lifetime);
 
         return $this->getQuery()

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Http\SessionHandlers;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Http\SessionHandlers\DatabaseHandler;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
@@ -73,12 +74,16 @@ class DatabaseHandlerTest extends TestCase
      */
     public function testGc(): void
     {
+        $this->app->instance('config', new Config());
+
         $this->database->insert("INSERT INTO sessions VALUES ('foo', 'Lorem Ipsum', '2000-01-01 01:00')");
         $this->database->insert("INSERT INTO sessions VALUES ('bar', 'Dolor Sit', '3000-01-01 01:00')");
+        config(['session.lifetime' => 1]); // 1 day
 
         $handler = new DatabaseHandler($this->database);
 
-        $this->assertEquals(1, $handler->gc(60 * 60));
+        // Max lifetime gets overwritten by settings
+        $this->assertEquals(1, $handler->gc(0));
 
         $return = $this->database->select('SELECT * FROM sessions');
         $this->assertCount(1, $return);
