@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Http\SessionHandlers;
 
 use Engelsystem\Database\Database;
+use Engelsystem\Helpers\Carbon;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class DatabaseHandler extends AbstractHandler
@@ -32,7 +33,7 @@ class DatabaseHandler extends AbstractHandler
     {
         $values = [
             'payload'       => $data,
-            'last_activity' => $this->getCurrentTimestamp(),
+            'last_activity' => Carbon::now(),
         ];
 
         $session = $this->getQuery()
@@ -71,11 +72,11 @@ class DatabaseHandler extends AbstractHandler
      */
     public function gc(int $max_lifetime): int|false
     {
-        $max_lifetime = config('session.lifetime') * 24 * 60 * 60;
-        $timestamp = $this->getCurrentTimestamp(-$max_lifetime);
+        $sessionDays = config('session')['lifetime'];
+        $deleteBefore = Carbon::now()->subDays($sessionDays);
 
         return $this->getQuery()
-            ->where('last_activity', '<', $timestamp)
+            ->where('last_activity', '<', $deleteBefore)
             ->delete();
     }
 
@@ -84,13 +85,5 @@ class DatabaseHandler extends AbstractHandler
         return $this->database
             ->getConnection()
             ->table('sessions');
-    }
-
-    /**
-     * Format the SQL timestamp
-     */
-    protected function getCurrentTimestamp(int $diff = 0): string
-    {
-        return date('Y-m-d H:i:s', strtotime(sprintf('%+d seconds', $diff)));
     }
 }

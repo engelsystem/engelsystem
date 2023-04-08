@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Http\SessionHandlers;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\SessionHandlers\DatabaseHandler;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
@@ -23,12 +24,15 @@ class DatabaseHandlerTest extends TestCase
         $handler = new DatabaseHandler($this->database);
         $this->assertEquals('', $handler->read('foo'));
 
-        $this->database->insert("INSERT INTO sessions VALUES ('foo', 'Lorem Ipsum', CURRENT_TIMESTAMP)");
-        $this->assertEquals('Lorem Ipsum', $handler->read('foo'));
+        $this->database->getConnection()
+            ->table('sessions')
+            ->insert([
+                ['id' => 'id-foo', 'payload' => 'Lorem Ipsum', 'last_activity' => Carbon::now()],
+            ]);
+        $this->assertEquals('Lorem Ipsum', $handler->read('id-foo'));
     }
 
     /**
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::getCurrentTimestamp
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::write
      */
     public function testWrite(): void
@@ -36,12 +40,14 @@ class DatabaseHandlerTest extends TestCase
         $handler = new DatabaseHandler($this->database);
 
         foreach (['Lorem Ipsum', 'Dolor Sit!'] as $data) {
-            $this->assertTrue($handler->write('foo', $data));
+            $this->assertTrue($handler->write('id-foo', $data));
 
-            $return = $this->database->select('SELECT * FROM sessions WHERE id = :id', ['id' => 'foo']);
+            $return = $this->database->getConnection()->table('sessions')
+                ->where('id', 'id-foo')
+                ->get();
             $this->assertCount(1, $return);
 
-            $return = array_shift($return);
+            $return = $return->first();
             $this->assertEquals($data, $return->payload);
         }
     }
@@ -51,22 +57,26 @@ class DatabaseHandlerTest extends TestCase
      */
     public function testDestroy(): void
     {
-        $this->database->insert("INSERT INTO sessions VALUES ('foo', 'Lorem Ipsum', CURRENT_TIMESTAMP)");
-        $this->database->insert("INSERT INTO sessions VALUES ('bar', 'Dolor Sit', CURRENT_TIMESTAMP)");
+        $table = $this->database->getConnection()->table('sessions');
+        $table
+            ->insert([
+                ['id' => 'id-foo', 'payload' => 'Lorem Ipsum', 'last_activity' => Carbon::now()->subHours(25)],
+                ['id' => 'id-bar', 'payload' => 'Dolor Sit', 'last_activity' => Carbon::now()],
+            ]);
 
         $handler = new DatabaseHandler($this->database);
-        $this->assertTrue($handler->destroy('batz'));
+        $this->assertTrue($handler->destroy('id-baz'));
 
-        $return = $this->database->select('SELECT * FROM sessions');
+        $return = $table->get();
         $this->assertCount(2, $return);
 
-        $this->assertTrue($handler->destroy('bar'));
+        $this->assertTrue($handler->destroy('id-bar'));
 
-        $return = $this->database->select('SELECT * FROM sessions');
+        $return = $table->get();
         $this->assertCount(1, $return);
 
-        $return = array_shift($return);
-        $this->assertEquals('foo', $return->id);
+        $return = $return->first();
+        $this->assertEquals('id-foo', $return->id);
     }
 
     /**
@@ -74,22 +84,25 @@ class DatabaseHandlerTest extends TestCase
      */
     public function testGc(): void
     {
-        $this->app->instance('config', new Config());
+        $this->app->instance('config', new Config(['session' => ['lifetime' => 2]])); // 2 days
 
-        $this->database->insert("INSERT INTO sessions VALUES ('foo', 'Lorem Ipsum', '2000-01-01 01:00')");
-        $this->database->insert("INSERT INTO sessions VALUES ('bar', 'Dolor Sit', '3000-01-01 01:00')");
-        config(['session.lifetime' => 1]); // 1 day
+        $table = $this->database->getConnection()->table('sessions');
+        $table
+            ->insert([
+                ['id' => 'id-foo', 'payload' => 'Lorem Ipsum', 'last_activity' => Carbon::now()->subHours(48 + 1)],
+                ['id' => 'id-bar', 'payload' => 'Dolor Sit', 'last_activity' => Carbon::now()],
+            ]);
 
         $handler = new DatabaseHandler($this->database);
 
-        // Max lifetime gets overwritten by settings
-        $this->assertEquals(1, $handler->gc(0));
+        // Max lifetime gets overwritten by settings anyway
+        $this->assertEquals(1, $handler->gc(42));
 
-        $return = $this->database->select('SELECT * FROM sessions');
+        $return = $table->get();
         $this->assertCount(1, $return);
 
-        $return = array_shift($return);
-        $this->assertEquals('bar', $return->id);
+        $return = $return->first();
+        $this->assertEquals('id-bar', $return->id);
     }
 
     /**
