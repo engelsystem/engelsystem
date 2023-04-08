@@ -8,9 +8,9 @@ use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\News as NewsModel;
 use Engelsystem\Models\User\Settings as UserSettings;
 use Engelsystem\Models\User\User;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\Exception\TransportException;
 
 class News
 {
@@ -43,7 +43,7 @@ class News
                 $template,
                 ['title' => $news->title, 'news' => $news, 'username' => $user->displayName]
             );
-        } catch (TransportException $e) {
+        } catch (Exception $e) {
             $this->log->error(
                 'Unable to send email "{title}" to user {user} with {exception}',
                 ['title' => $subject, 'user' => $user->name, 'exception' => $e]
