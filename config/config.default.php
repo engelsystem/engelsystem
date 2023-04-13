@@ -13,8 +13,8 @@ return [
         'password' => env('MYSQL_PASSWORD', ''),
     ],
 
-    // For accessing stats
-    'api_key'                 => '',
+    // For accessing /metrics (and /stats)
+    'api_key'                 => env('API_KEY', ''),
 
     // Enable maintenance mode (show a static page)
     'maintenance'             => (bool) env('MAINTENANCE', false),
@@ -25,7 +25,7 @@ return [
     // Set to development to enable debugging messages
     'environment'             => env('ENVIRONMENT', 'production'),
 
-    // Application URL and base path to use instead of the auto detected one
+    // Application URL and base path to use instead of the auto-detected one
     'url'                     => env('APP_URL', null),
 
     // Header links
@@ -47,7 +47,7 @@ return [
     'faq_text'                => env('FAQ_TEXT', null),
 
     // Link to documentation/help
-    'documentation_url'       => 'https://engelsystem.de/doc/',
+    'documentation_url'       => env('DOCUMENTATION_URL', 'https://engelsystem.de/doc/'),
 
     // Email config
     'email'                   => [
@@ -69,7 +69,7 @@ return [
     ],
 
     # Your privacy@ contact address
-    'privacy_email' => '',
+    'privacy_email' => env('PRIVACY_EMAIL', null),
 
     // Initial admin password
     'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),
@@ -250,7 +250,7 @@ return [
     // Define the algorithm to use for `password_verify()`
     // If the user uses an old algorithm the password will be converted to the new format
     // See https://secure.php.net/manual/en/password.constants.php for a complete list
-    'password_algorithm'      => PASSWORD_DEFAULT,
+    'password_algorithm'      => env('PASSWORD_ALGORITHM', PASSWORD_DEFAULT),
 
     // The minimum length for passwords
     'min_password_length'     => env('PASSWORD_MINIMUM_LENGTH', 8),
