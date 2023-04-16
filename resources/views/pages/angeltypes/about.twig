@@ -76,7 +76,7 @@
                                 {% for type, info in {
                                     'contact_name': {'name': __('angeltypes.name')},
                                     'contact_dect': {'name': __('angeltypes.dect'), 'url': 'tel'},
-                                    'contact_email': {'name': __('angeltypes.email'), 'url': 'email'},
+                                    'contact_email': {'name': __('angeltypes.email'), 'url': 'mailto'},
                                 } %}
                                     {% if angeltype[type] and (type != 'contact_dect' or config('enable_dect')) %}
 
