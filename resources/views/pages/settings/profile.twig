@@ -18,21 +18,17 @@
 
         <div class="row g-4">
             <div class="col-lg-6">
-                {{ f.input(
-                    'nick',
-                    __('settings.profile.nick'),
-                    'text',
-                    {'value': user.name, 'disabled': true}
-                ) }}
+                {{ f.input('nick', __('settings.profile.nick'), {
+                    'value': user.name,
+                    'disabled': true,
+                }) }}
             </div>
             {% if config('enable_pronoun') %}
                 <div class="col-lg-6">
-                    {{ f.input(
-                        'pronoun',
-                        __('settings.profile.pronoun'),
-                        'text',
-                        {'value': user.personalData.pronoun ,'max_length': 15}
-                    ) }}
+                    {{ f.input('pronoun', __('settings.profile.pronoun'), {
+                        'value': user.personalData.pronoun,
+                        'max_length': 15,
+                    }) }}
                     {{ m.info(__('settings.profile.pronoun.info')) }}
                 </div>
             {% endif %}
@@ -41,20 +37,16 @@
         {% if config('enable_user_name') %}
             <div class="row g-4">
                 <div class="col-sm-6">
-                    {{ f.input(
-                        'first_name',
-                        __('settings.profile.firstname'),
-                        'text',
-                        {'value': user.personalData.first_name, 'max_length': 64}
-                    ) }}
+                    {{ f.input('first_name', __('settings.profile.firstname'), {
+                        'value': user.personalData.first_name,
+                        'max_length': 64,
+                    }) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ f.input(
-                        'last_name',
-                        __('settings.profile.lastname'),
-                        'text',
-                        {'value': user.personalData.last_name, 'max_length': 64}
-                    ) }}
+                    {{ f.input('last_name', __('settings.profile.lastname'), {
+                        'value': user.personalData.last_name,
+                        'max_length': 64,
+                    }) }}
                 </div>
             </div>
         {% endif %}
@@ -62,31 +54,23 @@
         {% if config('enable_planned_arrival') %}
             <div class="row g-4">
                 <div class="col-sm-6">
-                    {{ f.input(
-                        'planned_arrival_date',
-                        __('settings.profile.planned_arrival_date'),
-                        'date',
-                        {
-                            'value': user.personalData.planned_arrival_date.format('Y-m-d'),
-                            'required': true,
-                            'entry_required_icon': true,
-                            'min': config('buildup_start') ? config('buildup_start').format('Y-m-d') : '',
-                            'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
-                        }
-                    ) }}
+                    {{ f.input('planned_arrival_date', __('settings.profile.planned_arrival_date'), {
+                        'type': 'date',
+                        'value': user.personalData.planned_arrival_date.format('Y-m-d'),
+                        'required': true,
+                        'required_icon': true,
+                        'min': config('buildup_start') ? config('buildup_start').format('Y-m-d') : '',
+                        'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
+                    }) }}
                 </div>
                 <div class="col-sm-6">
                     {% set planned_departure_date = user.personalData.planned_departure_date %}
-                    {{ f.input(
-                        'planned_departure_date',
-                        __('settings.profile.planned_departure_date'),
-                        'date',
-                        {
-                            'value': planned_departure_date ? planned_departure_date.format('Y-m-d') : '',
-                            'min': config('buildup_start') ? config('buildup_start').format('Y-m-d') : '',
-                            'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
-                        }
-                    ) }}
+                    {{ f.input('planned_departure_date', __('settings.profile.planned_departure_date'), {
+                        'type': 'date',
+                        'value': planned_departure_date ? planned_departure_date.format('Y-m-d') : '',
+                        'min': config('buildup_start') ? config('buildup_start').format('Y-m-d') : '',
+                        'max': config('teardown_end') ? config('teardown_end').format('Y-m-d') : '',
+                    }) }}
                 </div>
             </div>
         {% endif %}
@@ -94,75 +78,60 @@
         <div class="row g-4">
             {% if config('enable_dect') %}
                 <div class="col-md-6">
-                    {{ f.input(
-                        'dect',
-                        __('settings.profile.dect'),
-                        'text',
-                        {'value': user.contact.dect, 'max_length': 40}
-                    ) }}
+                    {{ f.input('dect', __('settings.profile.dect'), {
+                        'value': user.contact.dect,
+                        'max_length': 40,
+                    }) }}
                 </div>
             {% endif %}
             <div class="col-md-6">
-                {{ f.input(
-                    'mobile',
-                    __('settings.profile.mobile'),
-                    'text',
-                    {'value': user.contact.mobile, 'max_length': 40}
-                ) }}
+                {{ f.input('mobile', __('settings.profile.mobile'), {
+                    'value': user.contact.mobile,
+                    'max_length': 40,
+                }) }}
                 {% if config('enable_mobile_show') %}
-                    {{ f.checkbox(
-                        'mobile_show',
-                        __('settings.profile.mobile_show'),
-                        user.settings.mobile_show
-                    ) }}
+                    {{ f.checkbox('mobile_show', __('settings.profile.mobile_show'), {
+                        'checked': user.settings.mobile_show,
+                    }) }}
                 {% endif %}
             </div>
         </div>
 
         <div class="row g-4">
             <div class="col-md-6">
-                {{ f.input(
-                    'email',
-                    __('settings.profile.email'),
-                    'email',
-                    {'value': user.email, 'max_length': 254, 'required': true, 'entry_required_icon': true}
-                ) }}
+                {{ f.input('email', __('settings.profile.email'), {
+                    'type': 'email',
+                    'value': user.email,
+                    'max_length': 254,
+                    'required': true,
+                    'required_icon': true,
+                }) }}
             </div>
 
             <div class="col-md-6">
-                {{ f.checkbox(
-                    'email_shiftinfo',
-                    __('settings.profile.email_shiftinfo', [config('app_name')]),
-                    user.settings.email_shiftinfo
-                ) }}
-                {{ f.checkbox(
-                    'email_news',
-                    __('settings.profile.email_news'),
-                    user.settings.email_news
-                ) }}
-                {{ f.checkbox(
-                    'email_messages',
-                    __('settings.profile.email_messages'),
-                    user.settings.email_messages
-                ) }}
-                {{ f.checkbox(
-                    'email_human',
-                    __('settings.profile.email_by_human_allowed'),
-                    user.settings.email_human
-                ) }}
+                {{ f.checkbox('email_shiftinfo', __('settings.profile.email_shiftinfo'), {
+                    'checked': [config('app_name')],
+                    'value': user.settings.email_shiftinfo,
+                }) }}
+                {{ f.checkbox('email_news', __('settings.profile.email_news'), {
+                    'checked': user.settings.email_news,
+                }) }}
+                {{ f.checkbox('email_messages', __('settings.profile.email_messages'), {
+                    'checked': user.settings.email_messages,
+                }) }}
+                {{ f.checkbox('email_human', __('settings.profile.email_by_human_allowed'), {
+                    'checked': user.settings.email_human,
+                }) }}
                 {% if goodie_enabled %}
                     {% set privacy_email = config('privacy_email') %}
                     {% set email_goody_label = __('settings.profile.email_goody') ~
                         (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
                     %}
-                    {{ f.checkbox(
-                        'email_goody',
-                        email_goody_label,
-                        user.settings.email_goody,
-                        user.settings.email_goody,
-                        false,
-                        true
-                    ) }}
+                    {{ f.checkbox('email_goody', email_goody_label, {
+                        'checked': user.settings.email_goody,
+                        'value': user.settings.email_goody,
+                        'raw_label': true,
+                    }) }}
                 {% endif %}
             </div>
         </div>
@@ -170,13 +139,11 @@
         <div class="row g-4">
             {% if goodie_tshirt %}
                 <div class="col-12">
-                    {{ f.select(
-                        'shirt_size',
-                        config('tshirt_sizes'),
-                        __('settings.profile.shirt_size'),
-                        user.personalData.shirt_size,
-                        {'required': true, 'entry_required_icon': true}
-                    ) }}
+                    {{ f.select('shirt_size', __('settings.profile.shirt_size'), config('tshirt_sizes'), {
+                        'selected': user.personalData.shirt_size,
+                        'required': true,
+                        'required_icon': true,
+                    }) }}
                 </div>
             {% endif %}
 

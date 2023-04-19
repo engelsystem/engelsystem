@@ -31,10 +31,17 @@
 
             <div class="row mb-4">
                 <div class="col-md-12">
-                    {{ f.input('question', __('faq.question'), null, {'required': true, 'value': faq ? faq.question : ''}) }}
+                    {{ f.input('question', __('faq.question'), {
+                        'required': true,
+                        'value': faq ? faq.question : '',
+                    }) }}
                 </div>
                 <div class="col-md-12">
-                    {{ f.textarea('text', __('faq.message'), {'required': true, 'rows': 10, 'value': faq ? faq.text : ''}) }}
+                    {{ f.textarea('text', __('faq.message'), {
+                        'required': true,
+                        'rows': 10,
+                        'value': faq ? faq.text : '',
+                    }) }}
 
                     {{ f.submit() }}
 

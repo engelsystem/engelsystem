@@ -36,20 +36,34 @@
                     {{ f.input(
                         'title',
                         __('news.edit.subject'),
-                        null,
-                        {'required': true, 'value': news ? news.title : ''}
+                        {
+                            'required': true,
+                            'value': news ? news.title : '',
+                        }
                     ) }}
                 </div>
                 <div class="col-md-6">
-                    {{ f.checkbox('is_meeting', __('news.edit.is_meeting'), is_meeting) }}
-                    {{ f.checkbox('is_pinned', __('news.edit.is_pinned'), is_pinned) }}
-                    {% if has_permission_to('news.important') %} {{ f.checkbox('is_important', __('news.edit.is_important'), is_important) }}{% endif %}
+                    {{ f.checkbox('is_meeting', __('news.edit.is_meeting'), {
+                        'checked': is_meeting,
+                    }) }}
+                    {{ f.checkbox('is_pinned', __('news.edit.is_pinned'), {
+                        'checked': is_pinned,
+                    }) }}
+                    {% if has_permission_to('news.important') %}
+                        {{ f.checkbox('is_important', __('news.edit.is_important'), {
+                            'checked': is_important,
+                        }) }}
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row mb-4">
                 <div class="col-md-12">
-                    {{ f.textarea('text', __('news.edit.message'), {'required': true, 'rows': 10, 'value': news ? news.text : ''}) }}
+                    {{ f.textarea('text', __('news.edit.message'), {
+                        'required': true,
+                        'rows': 10,
+                        'value': news ? news.text : '',
+                    }) }}
 
                     <p>{{ m.info(__('news.edit.hint')) }}</p>
 

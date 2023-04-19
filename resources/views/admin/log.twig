@@ -14,7 +14,10 @@
                     <form method="post" action="{{ url('/admin/logs') }}" class="form-inline">
                         {{ csrf() }}
 
-                        {{ f.input('search', __('form.search'), 'text', {'value': search, 'hide_label': true}) }}
+                        {{ f.input('search', __('form.search'), {
+                            'value': search,
+                            'hide_label': true,
+                        }) }}
 
                         {{ f.submit(__('form.search')) }}
                     </form>

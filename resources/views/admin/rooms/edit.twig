@@ -11,26 +11,26 @@
 
         <div class="row">
             <div class="col-lg-6">
-                {{ f.input(
-                    'name',
-                    __('room.name'),
-                    null,
-                    {'required': true, 'entry_required_icon': true, 'value': f.formData('room', room ? room.name : '')}
-                ) }}
+                {{ f.input('name', __('room.name'), {
+                    'required': true,
+                    'required_icon': true,
+                    'value': f.formData('room', room ? room.name : ''),
+                }) }}
 
-                {{ f.input('dect', __('room.dect'), null, {'value': f.formData('dect', room ? room.dect : '')}) }}
-                {{ f.input(
-                    'map_url',
-                    __('room.map_url'),
-                    'url',
-                    {'value': f.formData('map_url', room ? room.map_url : ''), 'info': __('room.map_url.info')}
-                ) }}
+                {{ f.input('dect', __('room.dect'), {
+                    'value': f.formData('dect', room ? room.dect : ''),
+                }) }}
+                {{ f.input('map_url', __('room.map_url'), {
+                    'type': 'url',
+                    'value': f.formData('map_url', room ? room.map_url : ''),
+                    'info': __('room.map_url.info'),
+                }) }}
 
-                {{ f.textarea(
-                    'description',
-                    __('room.description'),
-                    {'value': f.formData('description', room ? room.description : ''), 'rows': 5, 'info': __('form.markdown')}
-                ) }}
+                {{ f.textarea('description', __('room.description'), {
+                    'value': f.formData('description', room ? room.description : ''),
+                    'rows': 5,
+                    'info': __('form.markdown')
+                }) }}
             </div>
 
             <div class="col-lg-6">
@@ -41,11 +41,11 @@
                             {% set needed = needed_angel_types ? needed_angel_types.where('angel_type_id', angel_type.id).first() : null %}
                             {% set name = 'angel_type_' ~ angel_type.id %}
                             <div class="col-md-4">
-                                {{ f.number(
-                                    name,
-                                    angel_type.name,
-                                    {'value': f.formData(name, needed ? needed.count : 0), 'min': 0, 'step': 1}
-                                ) }}
+                                {{ f.number(name, angel_type.name, {
+                                    'value': f.formData(name, needed ? needed.count : 0),
+                                    'min': 0,
+                                    'step': 1,
+                                }) }}
                             </div>
                         {% endfor %}
                     </div>

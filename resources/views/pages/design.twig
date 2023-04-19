@@ -217,51 +217,147 @@
 
                 <div class="row">
                     <div class="col-md-3 col-lg-2">
-                        {{ f.input('form-input-text', 'Text', 'text', {'value': 'Value'}) }}
+                        <h5>Text</h5>
+                        <code>f.input(id, label, opt)</code>
+                        {{ f.input('form-input-text', 'Text field', {
+                            'value': 'Value',
+                        }) }}
+                        {{ f.input('form-input-text-label-icons', 'Text field with required and info icon', {
+                            'value': 'Value',
+                            'required_icon': true,
+                            'info': 'Very important field info!',
+                        }) }}
+                        {{ f.input('form-input-text-hidden-label', 'Hidden label', {
+                            'value': 'Hidden label',
+                            'hide_label': true,
+                        }) }}
+                        {{ f.input('form-input-text-disabled', 'Disabled', {
+                            'disabled': true,
+                            'value': 'Value',
+                        }) }}
+                        {{ f.input('form-input-text-readonly', null, {
+                            'type': 'Readonly',
+                            'readonly': true,
+                            'value': 'w/o label',
+                        }) }}
                     </div>
+
                     <div class="col-md-3 col-lg-2">
-                        {{ f.input('form-input-text-hidden-label', 'Hidden label', 'text', {'value': 'Hidden label', 'hide_label': true}) }}
+                        <h5>Password</h5>
+                        <code>f.password(id, label, opt)</code>
+                        {{ f.input('form-input-password', 'Password', {
+                            'type': 'password',
+                            'value': 'Value',
+                        }) }}
                     </div>
+
                     <div class="col-md-3 col-lg-2">
-                        {{ f.input('form-input-text-disabled', 'Disabled', 'text', {'disabled': true, 'value': 'Value'}) }}
+                        <h5>Number</h5>
+                        <code>f.number(id, label, opt)</code>
+                        {{ f.number('form-input-number', 'Number field', {
+                            'type': 'number',
+                            'value': 42,
+                        }) }}
+                        {{ f.number('form-input-number-label-icons', 'Number field with required and info icon', {
+                            'type': 'number',
+                            'value': 42,
+                            'required_icon': true,
+                            'info': 'Very important field info!',
+                        }) }}
+                        {{ f.number('form-input-number-disabled', 'Disabled', {
+                            'disabled': true,
+                            'value': 42,
+                        }) }}
+                        {{ f.number('form-input-number-readonly', 'Readonly', {
+                            'readonly': true,
+                            'value': 42,
+                        }) }}
+                        {{ f.number('form-input-number-wo-label', null, {
+                            'type': 'number',
+                            'value': 42,
+                        }) }}
                     </div>
+
                     <div class="col-md-3 col-lg-2">
-                        {{ f.input('form-input-text-readonly', 'Readonly', 'text', {'readonly': true, 'value': 'Value'}) }}
+                        <h5>Textarea</h5>
+                        <code>f.textarea(id, label, opt)</code>
+                        {{ f.textarea('form-input-textarea', 'Textarea', {
+                            'rows': 2,
+                            'value': lipsum,
+                        }) }}
+                        {{ f.textarea('form-input-textarea-label-icons', 'Textarea with required and info icon', {
+                            'required_icon': true,
+                            'info': 'Very important field info!',
+                            'rows': 2,
+                            'value': lipsum,
+                        }) }}
+                        {{ f.textarea('form-input-textarea-wo-label', null, {
+                            'required_icon': true,
+                            'rows': 2,
+                            'value': 'w/o label',
+                        }) }}
                     </div>
+
                     <div class="col-md-3 col-lg-2">
-                        {{ f.input('form-input-password', 'Password', 'password', {'value': 'Value'}) }}
+                        <h5>Select</h5>
+                        <code>f.textarea(id, label, data, opt)</code>
+                        {{ f.select('form-input-select-1', 'Select 1', {
+                                'opt1': 'Option 1',
+                                'opt2': 'Option 2',
+                                'opt3': 'Another option',
+                                'opt4': 'A looooooooong item item item item',
+                        }) }}
+                        {{ f.select(
+                            'form-input-select-2',
+                            'Select 2',
+                            {
+                                'sh': 'Bash',
+                                'js': 'JavaScript',
+                                'p': 'PHP',
+                                'py': 'Python',
+                            },
+                            {
+                                'selected': 'js',
+                            },
+                        ) }}
+                        {{ f.select('form-input-select-2', 'Select 3', selectOptions, {
+                            'selected': 'option_7',
+                        }) }}
+                        {{ f.select('date-select', 'Date select', dateSelectOptions) }}
                     </div>
+
                     <div class="col-md-3 col-lg-2">
-                        {{ f.input('form-input-number', 'Number', 'number', {'value': 42}) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-lg-2">
-                        {{ f.textarea('form-input-textarea', 'Textarea', {'rows': 2, 'value': lipsum}) }}
-                    </div>
-                    <div class="col-md-3 col-lg-2">
-                        {{ f.select('form-input-select-1', {'opt1': 'Option 1', 'opt2': 'Option 2', 'opt3': 'Another option', 'opt4': 'A looooooooong item item item item'}, 'Select 1', 'opt1') }}
-                        {{ f.select('form-input-select-2', {'sh': 'Bash', 'js': 'JavaScript', 'p': 'PHP', 'py': 'Python'}, 'Select 2', 'js') }}
-                        {{ f.select('form-input-select-2', selectOptions, 'Select 3', 'Option 7') }}
-                        {{ f.select('date-select', dateSelectOptions, 'Date select') }}
-                    </div>
-                    <div class="col-md-3 col-lg-2">
-                        <label class="form-label">Button</label>
-                        <div>
+                        <h5>Buttons</h5>
+                        <code>f.button(label, opt)</code>
+                        <div class="mb-3">
                             {{ f.button('Button') }}
                         </div>
-                    </div>
-                    <div class="col-md-3 col-lg-2">
-                        Form submit
+                        <div class="mb-3">
+                            {{ f.button('Small button with icons', {
+                                'size': 'sm',
+                                'icon_left': 'check',
+                                'icon_right': 'info',
+                                'title': 'Click me!',
+                            }) }}
+                        </div>
+                        <code>f.submit(label)</code>
                         <form id="form">
-                            {{ f.submit() }}
+                            {{ f.submit('Go!') }}
                         </form>
                     </div>
+
                     <div id="checkboxes" class="col-md-3 col-lg-2">
-                        Checkbox<br>
-                        {{ f.checkbox('form-input-checkbox', 'Checkbox 1', true, '1') }}
-                        {{ f.checkbox('form-input-checkbox-2', 'Checkbox 2', false, '2') }}
-                        {{ f.checkbox('form-input-checkbox-3', 'Checkbox 3', false, '3') }}
+                        <h5>Checkbox</h5>
+                        <code>f.checkbox(id, label, opt)</code>
+                        {{ f.checkbox('form-input-checkbox', 'Checkbox 1', {
+                            'checked': true, 'value': '1',
+                        }) }}
+                        {{ f.checkbox('form-input-checkbox-2', 'Checkbox 2', {
+                            'checked': false, 'value': '2',
+                        }) }}
+                        {{ f.checkbox('form-input-checkbox-3', 'Checkbox 3', {
+                            'checked': false, 'value': '3',
+                        }) }}
                         <div class="d-grid gap-2">
                             <button type="button" class="btn btn-secondary d-print-none checkbox-selection" data-id="checkboxes" data-value="true">
                                 Select all
@@ -273,9 +369,37 @@
                                 Unselect all
                             </button>
                         </div>
+                        <hr>
+                        {{ f.checkbox('form-input-checkbox-disabled', 'Disabled', {
+                            'disabled': true,
+                        }) }}
+                        {{ f.checkbox('form-input-checkbox-raw-label', '<i>Raw label</i>', {
+                            'raw_label': true,
+                        }) }}
                     </div>
+
+                    <div id="checkboxes" class="col-md-3 col-lg-2">
+                        <h5>Switch</h5>
+                        <code>f.switch(id, label, opt)</code>
+                        {{ f.switch('form-switch', 'Switch') }}
+                        {{ f.switch('form-switch-checked', 'Switch (checked)', {
+                            'checked': true,
+                        }) }}
+                        {{ f.switch('form-switch-disabled', 'Switch (disabled)', {
+                            'disabled': true,
+                        }) }}
+                    </div>
+
+                    <div class="col-md-3 col-lg-2">
+                        <h5>Hidden</h5>
+                        <code>hidden(name, value)</code>
+                        <p>
+                        {{ f.hidden('hidden-name', 'hidden value') | escape }}
+                        </p>
+                    </div>
+
                     <div class="col-md-3 col-lg-2 checkbox-inline">
-                        Radio<br>
+                        <h5>Radio</h5>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="yey" checked="checked" name="form-input-radio" value="1">
                             <label class="form-check-label" for="yey">Yey</label>
@@ -285,19 +409,21 @@
                             <label class="form-check-label" for="nay">Nay</label>
                         </div>
                     </div>
-                </div>
-                <div class="row">
+
                     <div class="col-md-3 col-lg-2">
-                        <label class="form-label" for="input_date">Date</label>
-                        <input id="input_date" type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="design-date" class="form-control" value="2021-09-15">
-                    </div>
-                    <div class="col-md-3 col-lg-2">
-                        <label class="form-label" for="input_datetime_local">Datetime</label>
-                        <input id="input_datetime_local" type="datetime-local" placeholder="YYYY-MM-DD HH:MM" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} ([01][0-9]|2[0-3]):[0-5][0-9]" name="design-datetime" class="form-control" value="2021-09-15T13:37">
-                    </div>
-                    <div class="col-md-3 col-lg-2">
-                        <label class="form-label" for="input_time">Time</label>
-                        <input type="time" class="form-control" id="input_time" name="input_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="13:37">
+                        <h5>Date / time</h5>
+                        <div class="mb-3">
+                            <label class="form-label" for="input_date">Date</label>
+                            <input id="input_date" type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="design-date" class="form-control" value="2021-09-15">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="input_datetime_local">Datetime</label>
+                            <input id="input_datetime_local" type="datetime-local" placeholder="YYYY-MM-DD HH:MM" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} ([01][0-9]|2[0-3]):[0-5][0-9]" name="design-datetime" class="form-control" value="2021-09-15T13:37">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="input_time">Time</label>
+                            <input type="time" class="form-control" id="input_time" name="input_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="13:37">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -377,52 +503,6 @@
             <div class="col-md-3">
                 <h4><code>button(label, url, type, size)</code></h4>
                 <p>{{ m.button('Label', '#', 'info', 'sm') }}</p>
-            </div>
-        </div>
-
-        <h3>form.twig</h3>
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <h4><code>input(name, label, type, opt)</code></h4>
-                <p>{{ f.input('input-name', 'Label', 'text', {'required': true, 'value': 'Value'}) }}</p>
-            </div>
-
-            <div class="col-md-3">
-                <h4><code>textarea(name, label, opt)</code></h4>
-                <p>{{ f.textarea('textarea-name', 'Label', {'required': true, 'rows': 2, 'value': lipsum}) }}</p>
-            </div>
-
-            <div class="col-md-3">
-                <h4><code>select(name, data, label, selected)</code></h4>
-                <p>{{ f.select('select-name', {'foo': 'Foo', 'bar': 'Bar'}, 'Label', 'bar') }}</p>
-            </div>
-
-            <div class="col-md-3">
-                <h4><code>checkbox(name, label, checked, value)</code></h4>
-                <p>
-                    {{ f.checkbox('checkbox-name', 'Label', false) }}<br>
-                    {{ f.checkbox('checkbox-name', 'Label', true, 'on') }}
-                </p>
-            </div>
-            <div class="col-md-3">
-                <h4><code>hidden(name, value)</code></h4>
-                <p>
-                    {{ f.hidden('hidden-name', 'hidden value') | escape }}
-                </p>
-            </div>
-
-            <div class="col-md-3">
-                <h4><code>button(label, opt)</code></h4>
-                <p>
-                    {{ f.button('Label', {'name': 'button-name', 'value': 'buton-value'}) }}
-                </p>
-            </div>
-
-            <div class="col-md-3">
-                <h4><code>submit(label, opt)</code></h4>
-                <p>
-                    {{ f.submit() }}
-                </p>
             </div>
         </div>
 
