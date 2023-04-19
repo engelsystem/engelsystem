@@ -22,7 +22,14 @@
     </li>
 {% endmacro %}
 
-<nav class="navbar fixed-top navbar-expand-xxl border-bottom {{ theme['navbar_classes'] }}">
+
+{% if is_guest() %}
+    {% set navbar_expand_class = 'navbar-expand-md' %}
+{% else %}
+    {% set navbar_expand_class = 'navbar-expand-xxl' %}
+{% endif %}
+
+<nav class="navbar fixed-top {{ navbar_expand_class }} border-bottom {{ theme['navbar_classes'] }}">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ m.angel() }}
