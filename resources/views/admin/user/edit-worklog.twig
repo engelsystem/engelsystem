@@ -23,24 +23,23 @@
                     {{ m.user(user, {'pronoun': true}) }}
                 </div>
                 <div class="col-12">
-                    {{ f.input(
-                        'work_date',
-                        __('worklog.date'),
-                        'date',
-                        {'value': work_date.format('Y-m-d'), 'required': true}
-                    ) }}
-                    {{ f.input(
-                        'work_hours',
-                        __('worklog.hours'),
-                        'number',
-                        {'value': work_hours, 'required': true, 'step': '0.01', 'min': 0}
-                    ) }}
-                    {{ f.input(
-                        'comment',
-                        __('worklog.comment'),
-                        'text',
-                        {'value': comment, 'required': true, 'max_length': 200}
-                    ) }}
+                    {{ f.input('work_date', __('worklog.date'), {
+                        'type': 'date',
+                        'value': work_date.format('Y-m-d'),
+                        'required': true,
+                    }) }}
+                    {{ f.input('work_hours', __('worklog.hours'), {
+                        'type': 'number',
+                        'value': work_hours,
+                        'required': true,
+                        'step': '0.01',
+                        'min': 0,
+                    }) }}
+                    {{ f.input('comment', __('worklog.comment'), {
+                        'value': comment,
+                        'required': true,
+                        'max_length': 200,
+                    }) }}
                     {{ f.submit(__('form.save')) }}
                 </div>
             </div>

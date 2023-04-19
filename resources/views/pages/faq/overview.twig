@@ -71,7 +71,10 @@
                         {{ csrf() }}
                         <div class="col-md-12">
                             <h4>{{ __('question.add') }}</h4>
-                            {{ f.textarea('text', __('question.question'), {'required': true, 'rows': 5}) }}
+                            {{ f.textarea('text', __('question.question'), {
+                                'required': true,
+                                'rows': 5,
+                            }) }}
                             {{ f.submit() }}
                         </div>
                     </form>

@@ -11,7 +11,9 @@
         <div class="row">
             <div class="col-md-12">
                 {{ m.info(__('settings.language.info')) }}
-                {{ f.select('select_language', languages, __('settings.language'), current_language) }}
+                {{ f.select('select_language', __('settings.language'), languages, {
+                    'selected': current_language,
+                }) }}
                 {{ f.submit(__('form.save')) }}
             </div>
         </div>

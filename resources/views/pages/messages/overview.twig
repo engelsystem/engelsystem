@@ -15,8 +15,11 @@
             {{ csrf() }}
             <div class="row gx-2 mb-3">
                 <div class="col-auto">
-                    {{ f.select('user_id', users, null, null,
-                        { 'class': 'pe-5', 'required': true, 'default_option': __('message.choose_angel') }) }}
+                    {{ f.select('user_id', null, users, {
+                        'class': 'pe-5',
+                        'required': true,
+                        'default_option': __('message.choose_angel'),
+                    }) }}
                 </div>
                 <div class="col">
                     {{ f.submit(__('message.to_conversation'), {'btn_type': 'secondary'}) }}

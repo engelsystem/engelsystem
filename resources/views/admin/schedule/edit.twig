@@ -15,13 +15,30 @@
         {{ csrf() }}
 
         <div class="col-lg-12">
-            {{ f.input('name', __('schedule.name'), null, {'required': true, 'value': schedule ? schedule.name : ''}) }}
-            {{ f.input('url', __('schedule.url'), 'url', {'required': true, 'value': schedule ? schedule.url : ''}) }}
+            {{ f.input('name', __('schedule.name'), {
+                'required': true,
+                'value': schedule ? schedule.name : '',
+            }) }}
+            {{ f.input('url', __('schedule.url'), {
+                'type': 'url',
+                'required': true,
+                'value': schedule ? schedule.url : ''
+            }) }}
 
-            {{ f.select('shift_type', shift_types|default([]), __('schedule.shift-type'), schedule ? schedule.shift_type : '') }}
+            {{ f.select('shift_type', __('schedule.shift-type'), shift_types|default([]), {
+                'selected': schedule ? schedule.shift_type : '',
+            }) }}
 
-            {{ f.input('minutes_before', __('schedule.minutes-before'), 'number', {'required': true, 'value': schedule ? schedule.minutes_before : 15}) }}
-            {{ f.input('minutes_after', __('schedule.minutes-after'), 'number', {'required': true, 'value': schedule ? schedule.minutes_after : 15}) }}
+            {{ f.input('minutes_before', __('schedule.minutes-before'), {
+                'type': 'number',
+                'required': true,
+                'value': schedule ? schedule.minutes_before : 15
+            }) }}
+            {{ f.input('minutes_after', __('schedule.minutes-after'), {
+                'type': 'number',
+                'required': true,
+                'value': schedule ? schedule.minutes_after : 15
+            }) }}
 
             {{ f.submit(__('form.save')) }}
         </div>

@@ -47,7 +47,9 @@
 
             <form action="" enctype="multipart/form-data" method="post">
                 {{ csrf() }}
-                {{ f.textarea('comment', __('news.comments.message'), {'required': true}) }}
+                {{ f.textarea('comment', __('news.comments.message'), {
+                    'required': true,
+                }) }}
                 {{ f.submit() }}
             </form>
         </div>
