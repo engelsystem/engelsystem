@@ -427,7 +427,7 @@ function buttons($buttons = [])
  * @param array $buttons
  * @return string
  */
-function table_buttons($buttons = [])
+function table_buttons($buttons = [], $additionalClass = '')
 {
-    return '<div class="btn-group" role="group">' . join('', $buttons) . '</div>';
+    return '<div class="btn-group ' . $additionalClass . '" role="group">' . join('', $buttons) . '</div>';
 }
