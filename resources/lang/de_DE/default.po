@@ -2159,10 +2159,8 @@ msgid "Shift is full"
 msgstr "Schicht ist voll"
 
 #: includes/view/ShiftCalendarRenderer.php:316
-msgid "Shift running/ended or user not arrived/allowed"
-msgstr ""
-"Schicht läuft/vorbei oder du bist noch nicht angekommen/darfst dich noch "
-"nicht anmelden"
+msgid "Shift running/ended or you have not arrived"
+msgstr "Schicht läuft/vorbei oder du bist noch nicht angekommen"
 
 #: includes/view/ShiftCalendarShiftRenderer.php:135
 msgid "Add more angels"
