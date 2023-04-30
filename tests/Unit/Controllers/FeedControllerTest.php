@@ -22,6 +22,7 @@ class FeedControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\FeedController::__construct
      * @covers \Engelsystem\Controllers\FeedController::atom
+     * @covers \Engelsystem\Controllers\FeedController::withEtag
      */
     public function testAtom(): void
     {
@@ -33,6 +34,12 @@ class FeedControllerTest extends ControllerTest
             ['content-type', 'application/atom+xml; charset=utf-8'],
             $this->response
         );
+        $this->response->expects($this->once())
+            ->method('setEtag')
+            ->willReturnCallback(function ($etag) {
+                $this->assertNotEmpty($etag);
+                return $this->response;
+            });
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
@@ -58,6 +65,7 @@ class FeedControllerTest extends ControllerTest
             ['content-type', 'application/rss+xml; charset=utf-8'],
             $this->response
         );
+        $this->setExpects($this->response, 'setEtag', null, $this->response);
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
@@ -66,6 +74,7 @@ class FeedControllerTest extends ControllerTest
 
                 return $this->response;
             });
+
         $controller->rss();
     }
 
@@ -95,6 +104,8 @@ class FeedControllerTest extends ControllerTest
             )
             ->willReturn($this->response);
 
+        $this->setExpects($this->response, 'setEtag', null, $this->response);
+
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
@@ -109,6 +120,7 @@ class FeedControllerTest extends ControllerTest
 
                 return $this->response;
             });
+
         $controller->ical();
     }
 
@@ -137,6 +149,8 @@ class FeedControllerTest extends ControllerTest
             $this->response
         );
 
+        $this->setExpects($this->response, 'setEtag', null, $this->response);
+
         $this->response->expects($this->once())
             ->method('withContent')
             ->willReturnCallback(function ($jsonData) {
@@ -162,6 +176,7 @@ class FeedControllerTest extends ControllerTest
 
                 return $this->response;
             });
+
         $controller->shifts();
     }
 
@@ -184,6 +199,7 @@ class FeedControllerTest extends ControllerTest
 
         $this->request->attributes->set('meetings', $isMeeting);
         $this->setExpects($this->response, 'withHeader', null, $this->response);
+        $this->setExpects($this->response, 'setEtag', null, $this->response);
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) use ($isMeeting) {
@@ -210,6 +226,7 @@ class FeedControllerTest extends ControllerTest
         $controller = new FeedController($this->auth, $this->request, $this->response);
 
         $this->setExpects($this->response, 'withHeader', null, $this->response);
+        $this->setExpects($this->response, 'setEtag', null, $this->response);
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
