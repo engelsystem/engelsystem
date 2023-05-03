@@ -296,7 +296,7 @@ class SettingsController extends BaseController
             $rules['planned_departure_date'] = 'optional|date:Y-m-d';
         }
         if ($goodie_tshirt) {
-            $rules['shirt_size'] = 'required';
+            $rules['shirt_size'] = 'required|shirt_size';
         }
         return $rules;
     }

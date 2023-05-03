@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
-use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Validation\Rules\Username;
 use Engelsystem\Test\Unit\ServiceProviderTest;
@@ -20,11 +19,8 @@ class UsernameTest extends ServiceProviderTest
     {
         $this->subject = new Username();
 
-        $app = $this->getApp([]);
-        $this->config = new Config([]);
-        $app->instance('config', $this->config);
-        $app->get('config');
-        Application::setInstance($app);
+        $app = $this->createAndSetUpAppWithConfig([]);
+        $this->config = $app->get('config');
 
         // load "username_regex" from the default config
         $defaultConfig = include __DIR__ . '/../../../../../config/config.default.php';

@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Controllers\Admin;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\Admin\UserShirtController;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\User\PersonalData;
@@ -60,6 +61,7 @@ class UserShirtControllerTest extends ControllerTest
     }
 
     /**
+     * @todo Factor out separate tests. Isolated User, Config and permissions per test.
      * @covers \Engelsystem\Controllers\Admin\UserShirtController::saveShirt
      */
     public function testSaveShirt(): void
@@ -81,11 +83,11 @@ class UserShirtControllerTest extends ControllerTest
             ->create();
 
         $auth
-            ->expects($this->exactly(6))
+            ->expects($this->exactly(5))
             ->method('can')
             ->with('admin_arrive')
-            ->willReturnOnConsecutiveCalls(true, true, true, false, false, true);
-        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(6));
+            ->willReturnOnConsecutiveCalls(true, true, false, false, true);
+        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(5));
 
         $controller = new UserShirtController(
             $auth,
@@ -131,7 +133,12 @@ class UserShirtControllerTest extends ControllerTest
                 'shirt_size' => 'L',
             ]);
 
-        $controller->saveShirt($request);
+        try {
+            $controller->saveShirt($request);
+            self::fail('Expected exception was not raised');
+        } catch (ValidationException $e) {
+            // ignore
+        }
         $user = User::find(1);
         $this->assertEquals('S', $user->personalData->shirt_size);
 
@@ -142,6 +149,8 @@ class UserShirtControllerTest extends ControllerTest
                 'arrived'    => '1',
             ]);
 
+        $user->state->arrived = false;
+        $user->state->save();
         $this->assertFalse($user->state->arrived);
         $controller->saveShirt($request);
         $user = User::find(1);
