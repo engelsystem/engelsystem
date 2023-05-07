@@ -793,14 +793,6 @@ msgstr "Reset realizado. Anjo não chegou."
 msgid "Angel has been marked as arrived."
 msgstr "Chegada do anjo registrada."
 
-#: includes/pages/admin_arrive.php:71 includes/view/UserAngelTypes_view.php:9
-#: includes/view/UserAngelTypes_view.php:20
-#: includes/view/UserAngelTypes_view.php:31
-#: includes/view/UserAngelTypes_view.php:42
-#: includes/view/UserAngelTypes_view.php:53
-msgid "yes"
-msgstr "sim"
-
 #: includes/pages/admin_arrive.php:72
 msgid "reset"
 msgstr "resetar"
@@ -1251,12 +1243,12 @@ msgstr "Esse usuário não existe."
 
 #: includes/pages/admin_user.php:46 includes/view/AngelTypes_view.php:67
 #: includes/view/AngelTypes_view.php:68 includes/view/AngelTypes_view.php:69
-msgid "Yes"
+msgid "form.yes"
 msgstr "Sim"
 
 #: includes/pages/admin_user.php:47 includes/view/AngelTypes_view.php:67
 #: includes/view/AngelTypes_view.php:68 includes/view/AngelTypes_view.php:69
-msgid "No"
+msgid "form.no"
 msgstr "Não"
 
 #: includes/pages/admin_user.php:60

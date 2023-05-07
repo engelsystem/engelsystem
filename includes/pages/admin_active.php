@@ -339,7 +339,7 @@ function admin_active()
             array_merge(
                 [
                     'no'           => __('No.'),
-                    'nick'         => __('global.nick'),
+                    'nick'         => __('user.nick'),
                 ],
                 ($goodie_tshirt ? ['shirt_size'   => __('Size')] : []),
                 [

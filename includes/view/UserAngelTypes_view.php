@@ -28,7 +28,7 @@ function UserAngelType_update_view(UserAngelType $user_angeltype, User $user, An
                     page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
                     icon('x-lg') . __('form.cancel')
                 ),
-                form_submit('submit', icon('check-lg') . __('Yes'), 'btn-primary', false),
+                form_submit('submit', icon('check-lg') . __('form.yes'), 'btn-primary', false),
             ]),
         ], page_link_to('user_angeltypes', [
             'action'            => 'update',
@@ -56,7 +56,7 @@ function UserAngelTypes_delete_all_view(AngelType $angeltype)
                     ),
                     icon('x-lg') . __('form.cancel')
                 ),
-                form_submit('deny_all', icon('check-lg') . __('Yes'), 'btn-primary', false),
+                form_submit('deny_all', icon('check-lg') . __('form.yes'), 'btn-primary', false),
             ]),
         ], page_link_to('user_angeltypes', ['action' => 'delete_all', 'angeltype_id' => $angeltype->id])),
     ]);
@@ -74,7 +74,7 @@ function UserAngelTypes_confirm_all_view(AngelType $angeltype)
         form([
             buttons([
                 button(angeltype_link($angeltype->id), icon('x-lg') . __('form.cancel')),
-                form_submit('confirm_all', icon('check-lg') . __('Yes'), 'btn-primary', false),
+                form_submit('confirm_all', icon('check-lg') . __('form.yes'), 'btn-primary', false),
             ]),
         ], page_link_to('user_angeltypes', ['action' => 'confirm_all', 'angeltype_id' => $angeltype->id])),
     ]);
@@ -98,7 +98,7 @@ function UserAngelType_confirm_view(UserAngelType $user_angeltype, User $user, A
         form([
             buttons([
                 button(angeltype_link($angeltype->id), icon('x-lg') . __('form.cancel')),
-                form_submit('confirm_user', icon('check-lg') . __('Yes'), 'btn-primary', false),
+                form_submit('confirm_user', icon('check-lg') . __('form.yes'), 'btn-primary', false),
             ]),
         ], page_link_to('user_angeltypes', ['action' => 'confirm', 'user_angeltype_id' => $user_angeltype->id])),
     ]);
@@ -122,7 +122,7 @@ function UserAngelType_delete_view(UserAngelType $user_angeltype, User $user, An
         form([
             buttons([
                 button(angeltype_link($angeltype->id), icon('x-lg') . __('form.cancel')),
-                form_submit('delete', icon('check-lg') . __('Yes'), 'btn-primary', false),
+                form_submit('delete', icon('check-lg') . __('form.yes'), 'btn-primary', false),
             ]),
         ], page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype->id])),
     ], true);

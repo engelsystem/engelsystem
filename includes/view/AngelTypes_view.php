@@ -90,21 +90,21 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                 ? form_info(__('Name'), $angeltype->name)
                 : form_text('name', __('Name'), $angeltype->name),
             $supporter_mode
-                ? form_info(__('Requires introduction'), $angeltype->restricted ? __('Yes') : __('No'))
+                ? form_info(__('Requires introduction'), $angeltype->restricted ? __('form.yes') : __('form.no'))
                 : form_checkbox('restricted', __('Requires introduction'), $angeltype->restricted),
             form_info(
                 '',
                 __('Angel types which require introduction can only be used by an angel if enabled by a supporter (double opt-in).')
             ),
             $supporter_mode
-                ? form_info(__('No Self Sign Up allowed'), $angeltype->no_self_signup ? __('Yes') : __('No'))
+                ? form_info(__('No Self Sign Up allowed'), $angeltype->no_self_signup ? __('form.yes') : __('form.no'))
                 : form_checkbox('no_self_signup', __('No Self Sign Up allowed'), $angeltype->no_self_signup),
             $supporter_mode ?
                 form_info(
                     __('Requires driver license'),
                     $angeltype->requires_driver_license
-                        ? __('Yes')
-                        : __('No')
+                        ? __('form.yes')
+                        : __('form.no')
                 ) :
                 form_checkbox(
                     'requires_driver_license',
@@ -112,10 +112,10 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                     $angeltype->requires_driver_license
                 ),
             $supporter_mode
-                ? form_info(__('Show on dashboard'), $angeltype->show_on_dashboard ? __('Yes') : __('No'))
+                ? form_info(__('Show on dashboard'), $angeltype->show_on_dashboard ? __('form.yes') : __('form.no'))
                 : form_checkbox('show_on_dashboard', __('Show on dashboard'), $angeltype->show_on_dashboard),
             $supporter_mode
-                ? form_info(__('Hide at Registration'), $angeltype->hide_register ? __('Yes') : __('No'))
+                ? form_info(__('Hide at Registration'), $angeltype->hide_register ? __('form.yes') : __('form.no'))
                 : form_checkbox('hide_register', __('Hide at Registration'), $angeltype->hide_register),
             form_textarea('description', __('Description'), $angeltype->description),
             form_info('', __('Please use markdown for the description.')),
@@ -315,13 +315,13 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
 function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_angeltypes)
 {
     $headers = [
-        'name'    => __('global.nick'),
+        'name'    => __('user.nick'),
         'dect'    => __('global.dect'),
         'actions' => '',
     ];
     if ($angeltype->requires_driver_license && ($supporter || $admin_angeltypes)) {
         $headers = [
-            'name'                         => __('global.nick'),
+            'name'                         => __('user.nick'),
             'dect'                         => __('global.dect'),
             'wants_to_drive'               => __('Driver'),
             'has_car'                      => __('Has car'),

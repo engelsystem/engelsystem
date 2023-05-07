@@ -57,13 +57,13 @@ function admin_user()
         $html .= '<input type="hidden" name="Type" value="Normal">' . "\n";
         $html .= '<tr><td>' . "\n";
         $html .= '<table>' . "\n";
-        $html .= '  <tr><td>' . __('global.nick') . '</td><td>' . '<input size="40" name="eNick" value="' . $user_source->name . '" class="form-control" maxlength="24"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('user.nick') . '</td><td>' . '<input size="40" name="eNick" value="' . $user_source->name . '" class="form-control" maxlength="24"></td></tr>' . "\n";
         $html .= '  <tr><td>' . __('Last login') . '</td><td><p class="help-block">'
             . ($user_source->last_login_at ? $user_source->last_login_at->format(__('Y-m-d H:i')) : '-')
             . '</p></td></tr>' . "\n";
         if (config('enable_user_name')) {
-            $html .= '  <tr><td>' . __('global.firstname') . '</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
-            $html .= '  <tr><td>' . __('global.lastname') . '</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('user.firstname') . '</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('user.lastnamee') . '</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
         }
         $html .= '  <tr><td>' . __('global.mobile') . '</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source->contact->mobile . '" class="form-control" maxlength="40"></td></tr>' . "\n";
         if (config('enable_dect')) {
@@ -85,16 +85,16 @@ function admin_user()
         }
 
         $options = [
-            '1' => __('Yes'),
-            '0' => __('No'),
+            '1' => __('form.yes'),
+            '0' => __('form.no'),
         ];
 
         // Gekommen?
         $html .= '  <tr><td>' . __('user.arrived') . '</td><td>' . "\n";
         if ($user_source->state->arrived) {
-            $html .= __('Yes');
+            $html .= __('form.yes');
         } else {
-            $html .= __('No');
+            $html .= __('form.no');
         }
         $html .= '</td></tr>' . "\n";
 
@@ -134,7 +134,7 @@ function admin_user()
         $html .= form_csrf();
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>' . __('settings.password') . '</td><td>' . '<input type="password" size="40" name="new_pw" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
-        $html .= '  <tr><td>' . __('settings.password.new_password2') . '</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('settings.password_confirmation') . '</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '<br />' . "\n";
         $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";

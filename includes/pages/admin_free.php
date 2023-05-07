@@ -123,7 +123,7 @@ function admin_free()
             ]),
         ]),
         table([
-            'name'        => __('global.nick'),
+            'name'        => __('user.nick'),
             'shift_state' => __('Next shift'),
             'last_shift'  => __('Last shift'),
             'dect'        => __('global.dect'),

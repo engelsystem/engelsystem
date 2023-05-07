@@ -711,7 +711,7 @@ msgstr "All"
 msgid "Angeltype"
 msgstr "Engeltyp"
 
-msgid "global.nick"
+msgid "user.nick"
 msgstr "Nick"
 
 msgid "Next shift"
@@ -726,7 +726,7 @@ msgstr "Gruppenrechte"
 msgid "Privileges"
 msgstr "Privilegien"
 
-msgid "admin_groups.edit"
+msgid "groups.edit"
 msgstr "Gruppe bearbeiten"
 
 msgid "Frab import"
@@ -969,10 +969,10 @@ msgstr "Benutzer existiert nicht."
 msgid "Please select..."
 msgstr "Bitte auswählen..."
 
-msgid "Yes"
+msgid "form.yes"
 msgstr "Ja"
 
-msgid "No"
+msgid "form.no"
 msgstr "Nein"
 
 msgid "Force active"
@@ -1546,9 +1546,6 @@ msgstr "Sollen %s %s als neuen Supporter bekommen?"
 msgid "Do you really want to remove supporter rights for %s from %s?"
 msgstr "Möchtest Du wirklich %s von %s als Supporter befreien?"
 
-msgid "yes"
-msgstr "Ja"
-
 msgid "Do you really want to deny all users for %s?"
 msgstr "Möchtest Du wirklich alle Benutzer als %s ablehnen?"
 
@@ -1959,7 +1956,7 @@ msgstr "Programm: %s"
 msgid "news.title"
 msgstr "News"
 
-msgid "news.title.meetings"
+msgid "news.title_meeting"
 msgstr "Treffen"
 
 msgid "news.add"
@@ -2028,16 +2025,16 @@ msgstr "Einstellungen"
 msgid "settings.profile.entry_required"
 msgstr "Pflichtfeld"
 
-msgid "global.pronoun"
+msgid "user.pronoun"
 msgstr "Pronomen"
 
 msgid "settings.profile.pronoun.info"
 msgstr "Wird auf deiner Profilseite und in Engellisten angezeigt."
 
-msgid "global.firstname"
+msgid "user.firstname"
 msgstr "Vorname"
 
-msgid "global.lastname"
+msgid "user.lastnamee"
 msgstr "Nachname"
 
 msgid "global.planned_arrival_date"
@@ -2092,7 +2089,7 @@ msgstr "Altes Passwort"
 msgid "settings.password.new_password"
 msgstr "Neues Passwort"
 
-msgid "settings.password.new_password2"
+msgid "settings.password_confirmation"
 msgstr "Passwort wiederholen"
 
 msgid "settings.password.success"

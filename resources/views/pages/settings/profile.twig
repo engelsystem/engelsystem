@@ -18,14 +18,14 @@
 
         <div class="row g-4">
             <div class="col-lg-6">
-                {{ f.input('nick', __('global.nick'), {
+                {{ f.input('nick', __('user.nick'), {
                     'value': user.name,
                     'disabled': true,
                 }) }}
             </div>
             {% if config('enable_pronoun') %}
                 <div class="col-lg-6">
-                    {{ f.input('pronoun', __('global.pronoun'), {
+                    {{ f.input('pronoun', __('user.pronoun'), {
                         'value': user.personalData.pronoun,
                         'max_length': 15,
                     }) }}
@@ -37,13 +37,13 @@
         {% if config('enable_user_name') %}
             <div class="row g-4">
                 <div class="col-sm-6">
-                    {{ f.input('first_name', __('global.firstname'), {
+                    {{ f.input('first_name', __('user.firstname'), {
                         'value': user.personalData.first_name,
                         'max_length': 64,
                     }) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ f.input('last_name', __('global.lastname'), {
+                    {{ f.input('last_name', __('user.lastnamee'), {
                         'value': user.personalData.last_name,
                         'max_length': 64,
                     }) }}

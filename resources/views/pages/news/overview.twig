@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 
 {% set only_meetings = only_meetings|default(false) %}
-{% block title %}{{ not only_meetings ? __('news.title') : __('news.title.meetings') }}{% endblock %}
+{% block title %}{{ not only_meetings ? __('news.title') : __('news.title_meeting') }}{% endblock %}
 
 {% block content %}
     <div class="container">

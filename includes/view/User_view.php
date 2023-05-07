@@ -129,11 +129,12 @@ function Users_view(
         'actions'      => '<strong>' . count($usersList) . '</strong>',
     ];
 
-    $user_table_headers = [
-        'name' => Users_table_header_link('name', __('global.nick'), $order_by),
-    ];
+    $user_table_headers = [];
+    if (!config('display_full_name')) {
+        $user_table_headers['name'] = Users_table_header_link('name', __('user.nick'), $order_by);
+    }
     if (config('enable_user_name')) {
-        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('global.firstname'), $order_by);
+        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('user.firstname'), $order_by);
         $user_table_headers['last_name'] = Users_table_header_link('last_name', __('Name'), $order_by);
     }
     if (config('enable_dect')) {
@@ -146,11 +147,12 @@ function Users_view(
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
-    if (config('enable_tshirt_size')) {
-        if (config('other_goodie')) {
-            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('Goodie'), $order_by);
-        } else {
+    if ($goodie_enabled) {
+        if ($goodie_tshirt) {
             $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('form.shirt'), $order_by);
+            $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
+        } else {
+            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('Goodie'), $order_by);
         }
     }
     $user_table_headers['arrival_date'] = Users_table_header_link(
@@ -732,8 +734,8 @@ function User_view_state_admin($freeloader, $user_source)
         } elseif ($user_source->state->active) {
             $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
-        if ($user_source->state->got_shirt) {
-            $state[] = '<span class="text-success">' . __('form.shirt') . '</span>';
+        if ($user_source->state->got_shirt && $goodie_enabled) {
+            $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('form.shirt') : __('Goodie') ) . '</span>';
         }
     } else {
         $arrivalDate = $user_source->personalData->planned_arrival_date;

@@ -16,17 +16,17 @@ msgstr ""
 "Language: en_US\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#~ msgid "auth.no-nick"
-#~ msgstr "Please enter a nick."
-
-#~ msgid "auth.no-password"
-#~ msgstr "Please enter a password."
-
 msgid "auth.password.error"
 msgstr "Your password is incorrect. Please try it again."
 
 msgid "form.submit"
 msgstr "Submit"
+
+msgid "form.yes"
+msgstr "Yes"
+
+msgid "form.no"
+msgstr "No"
 
 msgid "login.login"
 msgstr "Login"
@@ -157,7 +157,7 @@ msgstr "Schedule: %s"
 msgid "news.title"
 msgstr "News"
 
-msgid "news.title.meetings"
+msgid "news.title_meeting"
 msgstr "Meetings"
 
 msgid "news.add"
@@ -296,7 +296,7 @@ msgstr "Old password"
 msgid "settings.password.new_password"
 msgstr "New passwort"
 
-msgid "settings.password.new_password2"
+msgid "settings.password_confirmation"
 msgstr "Password confirmation"
 
 msgid "settings.password.success"
@@ -492,5 +492,5 @@ msgstr "Create room"
 msgid "room.edit.title"
 msgstr "Edit room"
 
-msgid "admin_groups.edit"
+msgid "groups.edit"
 msgstr "Edit group"

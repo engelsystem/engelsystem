@@ -396,11 +396,11 @@ function guest_register()
                 div('col', [
                     form_text(
                         'username',
-                        __('global.nick') . ' ' . entry_required(),
+                        __('user.nick') . ' ' . entry_required(),
                         $nick,
                         false,
                         24,
-                        'nick'
+                        'nickname'
                     ),
                     form_info(
                         '',
@@ -409,16 +409,16 @@ function guest_register()
                 ]),
 
                 $enable_pronoun ? div('col', [
-                    form_text('pronoun', __('global.pronoun'), $pronoun, false, 15),
+                    form_text('pronoun', __('user.pronoun'), $pronoun, false, 15),
                 ]) : '',
             ]),
 
             $enable_user_name ? div('row', [
                 div('col', [
-                    form_text('prename', __('global.firstname'), $preName, false, 64, 'given-name'),
+                    form_text('prename', __('user.firstname'), $preName, false, 64, 'given-name'),
                 ]),
                 div('col', [
-                    form_text('lastname', __('global.lastname'), $lastName, false, 64, 'family-name'),
+                    form_text('lastname', __('user.lastnamee'), $lastName, false, 64, 'family-name'),
                 ]),
             ]) : '',
 
@@ -496,7 +496,7 @@ function guest_register()
 
             div('row', [
                 $enable_password ? div('col', [
-                    form_password('password2', __('settings.password.new_password2') . ' ' . entry_required(), 'new-password'),
+                    form_password('password2', __('settings.password_confirmation') . ' ' . entry_required(), 'new-password'),
                 ]) : '',
 
                 div('col', [
