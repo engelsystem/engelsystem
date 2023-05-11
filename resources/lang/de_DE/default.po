@@ -1067,9 +1067,6 @@ msgstr ""
 "Mit diesem Formular registrierst Du Dich als Engel. Du bekommst ein Konto in "
 "der Engel-Aufgabenverwaltung."
 
-msgid "The %s is allowed to send me an email (e.g. when my shifts change)"
-msgstr "Das %s darf mir E-Mails senden (z.B. wenn sich meine Schichten ändern)"
-
 msgid "Notify me of new news"
 msgstr "Benachrichtige mich bei neuen News"
 

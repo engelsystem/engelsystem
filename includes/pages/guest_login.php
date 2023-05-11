@@ -435,7 +435,7 @@ function guest_register()
                     form_checkbox(
                         'email_shiftinfo',
                         __(
-                            'The %s is allowed to send me an email (e.g. when my shifts change)',
+                            'settings.profile.email_shiftinfo',
                             [config('app_name')]
                         ),
                         $email_shiftinfo

@@ -109,9 +109,8 @@
             </div>
 
             <div class="col-md-6">
-                {{ f.checkbox('email_shiftinfo', __('settings.profile.email_shiftinfo'), {
-                    'checked': [config('app_name')],
-                    'value': user.settings.email_shiftinfo,
+                {{ f.checkbox('email_shiftinfo', __('settings.profile.email_shiftinfo', [config('app_name')]), {
+                    'checked': user.settings.email_shiftinfo,
                 }) }}
                 {{ f.checkbox('email_news', __('settings.profile.email_news'), {
                     'checked': user.settings.email_news,
@@ -129,7 +128,6 @@
                     %}
                     {{ f.checkbox('email_goody', email_goody_label, {
                         'checked': user.settings.email_goody,
-                        'value': user.settings.email_goody,
                         'raw_label': true,
                     }) }}
                 {% endif %}
