@@ -176,21 +176,29 @@ ready(() => {
 });
 
 ready(() => {
-  document.querySelectorAll('.spinner-down').forEach((element) => {
-    const inputElement = document.getElementById(element.dataset.inputId);
-    if (inputElement) {
-      element.addEventListener('click', () => {
-        inputElement.stepDown();
-      });
-    }
+  const addClickHandler = (selector, onClick) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      const inputElement = document.getElementById(element.dataset.inputId);
+
+      if (!inputElement || !inputElement.stepUp || !inputElement.stepDown) return;
+
+      if (inputElement.disabled || inputElement.readOnly) {
+        // The input element is disabled or read-only → disable the +/- button as well.
+        // Note that changing the "disabled" or "readonly" attributes during runtime is not yet supported.
+        element.setAttribute('disabled', 'disabled');
+        return;
+      }
+
+      element.addEventListener('click', () => onClick(inputElement));
+    });
+  };
+
+  addClickHandler('.spinner-up', (inputElement) => {
+    inputElement.stepUp();
   });
-  document.querySelectorAll('.spinner-up').forEach((element) => {
-    const inputElement = document.getElementById(element.dataset.inputId);
-    if (inputElement) {
-      element.addEventListener('click', () => {
-        inputElement.stepUp();
-      });
-    }
+
+  addClickHandler('.spinner-down', (inputElement) => {
+    inputElement.stepDown();
   });
 });
 
