@@ -87,7 +87,7 @@ Also adds buttons to increment / decrement the value.
 #}
 {% macro number(name, label, opt) %}
     <div class="mb-3">
-        {% if label is defined -%}
+        {% if label -%}
             <label class="form-label" for="{{ name }}">{{ label }}</label>
             {% if opt.required_icon|default(false) %}
                 {{ _self.entry_required() }}
@@ -142,7 +142,7 @@ Also adds buttons to increment / decrement the value.
 #}
 {% macro textarea(name, label, opt) %}
     <div class="mb-3">
-        {% if label is defined  -%}
+        {% if label  -%}
             <label class="form-label" for="{{ name }}">{{ label }}</label>
             {% if opt.required_icon|default(false) %}
                 {{ _self.entry_required() }}
@@ -180,7 +180,7 @@ Renders a select element wrapped in a DIV with mb-3.
 #}
 {% macro select(name, label, data, opt) %}
     <div class="mb-3">
-        {% if label is defined -%}
+        {% if label -%}
             <label class="form-label" for="{{ name }}">
                 {{ label }}
                 {% if opt.required_icon|default(false) %}

@@ -36,9 +36,9 @@
 
 {% macro button(label, url, type, size, title, icon_left, icon_right) %}
     <a href="{{ url }}" class="btn btn-{{ type|default('secondary') }}{% if size %} btn-{{ size }}{% endif %}"{% if title %} title="{{ title }}"{% endif %}>
-        {%- if icon_left is defined %}{{ _self.icon(icon_left) }}{% endif %}
+        {%- if icon_left %}{{ _self.icon(icon_left) }}{% endif %}
         {{ label }}
-        {%- if icon_right is defined %}{{ _self.icon(icon_right) }}{% endif %}
+        {%- if icon_right %}{{ _self.icon(icon_right) }}{% endif %}
     </a>
 {% endmacro %}
 
