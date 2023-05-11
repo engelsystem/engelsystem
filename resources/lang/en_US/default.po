@@ -49,6 +49,9 @@ msgstr ""
 "[contributors list on GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
 " for a complete list."
 
+msgid "form.select_placeholder"
+msgstr "Please select..."
+
 msgid "form.load_schedule"
 msgstr "Load schedule"
 

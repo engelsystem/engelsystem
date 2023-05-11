@@ -999,9 +999,6 @@ msgstr "Alle Engel"
 msgid "This user does not exist."
 msgstr "Benutzer existiert nicht."
 
-msgid "Please select..."
-msgstr "Bitte auswählen..."
-
 msgid "Yes"
 msgstr "Ja"
 
@@ -1952,6 +1949,9 @@ msgstr ""
 
 
 
+
+msgid "form.select_placeholder"
+msgstr "Bitte auswählen..."
 
 msgid "form.load_schedule"
 msgstr "Programm laden"
