@@ -505,7 +505,7 @@ function guest_register()
                         __('Shirt size') . ' ' . entry_required(),
                         $tshirt_sizes,
                         $tshirt_size,
-                        __('Please select...')
+                        __('form.select_placeholder')
                     ) : '',
                 ]),
             ]),

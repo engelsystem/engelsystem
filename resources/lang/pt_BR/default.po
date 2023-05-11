@@ -2168,7 +2168,7 @@ msgid "Truck 12t"
 msgstr "Caminhão 12t"
 
 #: includes/view/User_view.php:7
-msgid "Please select..."
+msgid "form.select_placeholder"
 msgstr "Por favor selecione..."
 
 #: includes/view/User_view.php:38

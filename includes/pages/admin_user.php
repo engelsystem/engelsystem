@@ -79,7 +79,7 @@ function admin_user()
                     'eSize',
                     $tshirt_sizes,
                     $user_source->personalData->shirt_size,
-                    __('Please select...')
+                    __('form.select_placeholder')
                 )
                 . '</td></tr>' . "\n";
         }
