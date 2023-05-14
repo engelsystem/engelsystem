@@ -994,7 +994,7 @@ msgid "The following angels are needed"
 msgstr "Die folgenden Engel werden benötigt"
 
 msgid "All Angels"
-msgstr "Engelliste"
+msgstr "Alle Engel"
 
 msgid "This user does not exist."
 msgstr "Benutzer existiert nicht."
