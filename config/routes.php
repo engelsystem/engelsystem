@@ -108,7 +108,29 @@ $route->addGroup(
 );
 
 // API
-$route->get('/api[/{resource:.+}]', 'ApiController@index');
+$route->addGroup(
+    '/api',
+    function (RouteCollector $route): void {
+        $route->get('/', 'ApiController@index');
+
+        $route->addGroup(
+            '/v0-beta',
+            function (RouteCollector $route): void {
+                $route->addRoute(['OPTIONS'], '[/{resource:.+}]', 'ApiController@options');
+                $route->get('/', 'ApiController@indexV0');
+
+                $route->get('/news', 'ApiController@news');
+
+                $route->addRoute(
+                    ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
+                    '[/{resource:.+}]',
+                    'ApiController@notImplemented'
+                );
+            }
+        );
+        $route->get('[/{resource:.+}]', 'ApiController@notImplemented');
+    }
+);
 
 // Feeds
 $route->get('/atom', 'FeedController@atom');
