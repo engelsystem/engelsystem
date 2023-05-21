@@ -15,7 +15,6 @@ class SessionHandlerServiceProvider extends ServiceProvider
             ->needs('$paths')
             ->give(function () {
                 return [
-                    '/api',
                     '/atom',
                     '/rss',
                     '/health',
@@ -25,5 +24,9 @@ class SessionHandlerServiceProvider extends ServiceProvider
                     '/stats',
                 ];
             });
+        $this->app
+            ->when(SessionHandler::class)
+            ->needs('$apiPrefix')
+            ->give('/api');
     }
 }

@@ -1,0 +1,96 @@
+openapi: 3.0.3
+
+info:
+  version: 0.0.1-beta
+  title: Engelsystem
+  description: |
+    This API description is as stable as a **beta** version might be.
+    It could burst into flames and morph into a monster at any second!
+    (But we try to keep it somewhat consistent, at least during events).
+  contact:
+    name: GitHub Issues
+    url: https://github.com/engelsystem/engelsystem/issues
+  license:
+    name: GPL 2.0
+    # identifier: GPL-2.0
+
+servers:
+  - url: /api/v0-beta
+    description: This server
+  - url: http://localhost:5080/api/v0-beta
+    description: Your local dev instance
+
+tags:
+  - name: news
+    description: News and Meeting announcements
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API key from settings
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+    ForbiddenError:
+      description: The client is not allowed to acces
+
+  schemas:
+    News:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        title:
+          type: string
+          example: First helper introduction
+        text:
+          type: string
+          example: |
+            The first introduction meeting takes place at the **Foo Hall** at 13:37.
+            Please bring your own seating as it might take some time.
+        is_meeting:
+          type: boolean
+          example: true
+          description: Whether or not the news announces a meeting
+        is_pinned:
+          type: boolean
+          example: false
+          description: True if the news is pinned to the top
+        is_highlighted:
+          type: boolean
+          example: false
+          description: True if the news should be highlightet and shown on the dashboard
+        created_at:
+          type: string
+          example: 2023-05-13T13:37:42.000000Z
+        updated_at:
+          type: string
+          nullable: true
+          example: 2023-05-13T23:00:00.000000Z
+
+security:
+  - bearerAuth: [ ]
+
+paths:
+  /news:
+    get:
+      tags:
+        - news
+      summary: Get a list of all news
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/News'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
