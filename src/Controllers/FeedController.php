@@ -152,6 +152,6 @@ class FeedController extends BaseController
             ->leftJoin('shifts', 'shifts.id', 'shift_entries.shift_id')
             ->orderBy('shifts.start')
             ->with(['shift', 'shift.room', 'shift.shiftType'])
-            ->get();
+            ->get(['*', 'shift_entries.id']);
     }
 }

@@ -1,8 +1,8 @@
 {% set dateFormat = 'Ymd\\THis\\Z' %}
-{% set replacement = {'\n': '\\n'} %}
+{% set replacement = {'\\': '\\\\', ';': '\\;', ',': '\\,', '\n': '\\n'} %}
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//-/{{ config('app_name') }}//DE
+PRODID:-//-/{{ config('app_name') | replace(replacement) | raw }}//DE
 CALSCALE:GREGORIAN
 {% for entry in shiftEntries %}
 BEGIN:VEVENT
@@ -12,12 +12,14 @@ DTSTART:{{ entry.shift.start.utc().format(dateFormat) }}
 DTEND:{{ entry.shift.end.utc().format(dateFormat) }}
 STATUS:CONFIRMED
 TRANSP:OPAQUE
-SUMMARY:{{ entry.shift.shiftType.name ~ ' (' ~ entry.shift.title ~ ')' | replace(replacement) | raw }}
+SUMMARY:{{ (entry.shift.shiftType.name ~ ' (' ~ entry.shift.title ~ ')') | replace(replacement) | raw }}
 LOCATION:{{ entry.shift.room.name | replace(replacement) | raw }}
 DESCRIPTION:{{
-    entry.shift.shiftType.description
-    ~ '\\n' ~ entry.shift.description
-    ~ '\\n' ~ entry.user_comment
+    (
+        entry.shift.shiftType.description
+        ~ '\n' ~ entry.shift.description
+        ~ '\n' ~ entry.user_comment
+    )
     | replace(replacement) | raw
 }}
 URL:{{ url('/shifts', {'action': 'view', 'shift_id': entry.shift.id}) | raw }}
