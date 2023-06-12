@@ -50,6 +50,7 @@ return [
         \Engelsystem\Middleware\SetLocale::class,
         \Engelsystem\Middleware\ETagHandler::class,
         \Engelsystem\Middleware\AddHeaders::class,
+        \Engelsystem\Middleware\TrimInput::class,
 
         // The application code
         \Engelsystem\Middleware\ErrorHandler::class,
