@@ -1,0 +1,17 @@
+{
+    "dockerComposeFile": "docker/dev/docker-compose.yml",
+	"service": "es_workspace",
+    "runServices": [
+        "es_database",
+        "es_server"
+    ],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"DEVSENSE.phptools-vscode",
+                "mblode.twig-language"
+			]
+		}
+	},
+    "workspaceFolder": "/var/www"
+}
