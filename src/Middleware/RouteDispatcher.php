@@ -14,18 +14,15 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class RouteDispatcher implements MiddlewareInterface
 {
-    protected ?MiddlewareInterface $notFound = null;
-
     /**
-     * @param ResponseInterface        $response Default response
+     * @param ResponseInterface $response Default response
      * @param MiddlewareInterface|null $notFound Handles any requests if the route can't be found
      */
     public function __construct(
         protected FastRouteDispatcher $dispatcher,
         protected ResponseInterface $response,
-        MiddlewareInterface $notFound = null
+        protected ?MiddlewareInterface $notFound = null
     ) {
-        $this->notFound = $notFound;
     }
 
     /**

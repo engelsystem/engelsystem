@@ -9,7 +9,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Models\News;
 use League\OpenAPIValidation\PSR7\OperationAddress as OpenApiAddress;
 use League\OpenAPIValidation\PSR7\ResponseValidator as OpenApiResponseValidator;
-use League\OpenAPIValidation\PSR7\ValidatorBuilder;
+use League\OpenAPIValidation\PSR7\ValidatorBuilder as OpenApiValidatorBuilder;
 
 class ApiControllerTest extends ControllerTest
 {
@@ -106,7 +106,7 @@ class ApiControllerTest extends ControllerTest
         parent::setUp();
 
         $openApiDefinition = $this->app->get('path.resources.api') . '/openapi.yml';
-        $this->validator = (new ValidatorBuilder())
+        $this->validator = (new OpenApiValidatorBuilder())
             ->fromYamlFile($openApiDefinition)
             ->getResponseValidator();
     }
