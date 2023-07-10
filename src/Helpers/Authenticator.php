@@ -42,7 +42,7 @@ class Authenticator
         }
 
         $this->user = $this->userFromSession();
-        if (!$this->user && request()->getAttribute('route-api', false)) {
+        if (!$this->user && request()->getAttribute('route-api-accessible', false)) {
             $this->user = $this->userFromApi();
         }
 

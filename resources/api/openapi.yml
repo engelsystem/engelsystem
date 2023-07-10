@@ -32,12 +32,31 @@ components:
       bearerFormat: API key from settings
 
   responses:
-    UnauthorizedError:
+    UnauthorizedError: # 401
       description: Access token is missing or invalid
-    ForbiddenError:
-      description: The client is not allowed to acces
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ForbiddenError: # 403
+      description: The client is not allowed to access
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotImplementedError: # 501
+      description: This endpoint or method is not implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
 
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
     News:
       type: object
       properties:

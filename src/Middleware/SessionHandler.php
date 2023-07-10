@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Middleware;
 
-use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -14,26 +13,21 @@ use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 
 class SessionHandler implements MiddlewareInterface
 {
-    public function __construct(
-        protected SessionStorageInterface $session,
-        protected array $paths = [],
-        protected ?string $apiPrefix = null
-    ) {
+    public function __construct(protected SessionStorageInterface $session)
+    {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $requestPath = $request->getAttribute('route-request-path');
-        $isApi = in_array($requestPath, $this->paths)
-            || ($this->apiPrefix && Str::startsWith($requestPath, $this->apiPrefix));
-        $request = $request->withAttribute('route-api', $isApi);
-
         $return = $handler->handle($request);
 
         $cookies = $request->getCookieParams();
         if (
-            $isApi
+            // Is api (accessible) path
+            $request->getAttribute('route-api-accessible')
+            // Uses native PHP session
             && $this->session instanceof NativeSessionStorage
+            // No session cookie was sent on request
             && !isset($cookies[$this->session->getName()])
         ) {
             $this->destroyNative();

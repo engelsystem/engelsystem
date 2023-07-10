@@ -28,7 +28,6 @@ return [
         \Engelsystem\Renderer\TwigServiceProvider::class,
         \Engelsystem\Middleware\RouteDispatcherServiceProvider::class,
         \Engelsystem\Middleware\RequestHandlerServiceProvider::class,
-        \Engelsystem\Middleware\SessionHandlerServiceProvider::class,
         \Engelsystem\Http\Validation\ValidationServiceProvider::class,
         \Engelsystem\Http\RedirectServiceProvider::class,
 
@@ -54,6 +53,7 @@ return [
 
         // The application code
         \Engelsystem\Middleware\ErrorHandler::class,
+        \Engelsystem\Middleware\ApiRouteHandler::class,
         \Engelsystem\Middleware\VerifyCsrfToken::class,
         \Engelsystem\Middleware\RouteDispatcher::class,
         \Engelsystem\Middleware\SessionHandler::class,

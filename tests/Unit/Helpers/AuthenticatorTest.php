@@ -90,7 +90,7 @@ class AuthenticatorTest extends ServiceProviderTest
         $session = new Session(new MockArraySessionStorage());
 
         $request = $request->withHeader('Authorization', 'Bearer F00Bar');
-        $request = $request->withAttribute('route-api', true);
+        $request = $request->withAttribute('route-api-accessible', true);
         $this->app->instance('request', $request);
         User::factory()->create(['api_key' => 'F00Bar']);
 
@@ -160,7 +160,7 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->initDatabase();
 
         $request = new Request();
-        $request = $request->withAttribute('route-api', true);
+        $request = $request->withAttribute('route-api-accessible', true);
         $session = new Session(new MockArraySessionStorage());
         $this->app->instance('request', $request);
 
