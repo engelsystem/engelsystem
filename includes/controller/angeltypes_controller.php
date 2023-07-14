@@ -92,7 +92,7 @@ function angeltype_edit_controller()
         // Edit existing angeltype
         $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
 
-        if (!auth()->user()->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
+        if (!auth()->user()?->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
             throw_redirect(page_link_to('angeltypes'));
         }
     } else {
