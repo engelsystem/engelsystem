@@ -13,9 +13,9 @@ $gray-light: lighten($gray, 15%);
 $gray-lighter: lighten($gray-light, 15%);
 $dark: $gray-dark;
 
-$primary: #FB48C4;
+$primary: #fb48c4;
 $secondary: #231f20;
-$success: #3FFF21;
+$success: #3fff21;
 $info: #3dbddf;
 $warning: #f6b345;
 $danger: #e93a44;
@@ -28,8 +28,7 @@ $btn-link-disabled-color: $gray-light;
 
 @font-face {
   font-family: 'Questrial';
-  src: url('theme16/Questrial-Regular.woff2') format('woff2'),
-      url('theme16/Questrial-Regular.woff') format('woff');
+  src: url('theme16/Questrial-Regular.woff2') format('woff2'), url('theme16/Questrial-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -37,13 +36,11 @@ $btn-link-disabled-color: $gray-light;
 
 @font-face {
   font-family: 'Beon';
-  src: url('theme16/Beon-Regular.woff2') format('woff2'),
-      url('theme16/Beon-Regular.woff') format('woff');
+  src: url('theme16/Beon-Regular.woff2') format('woff2'), url('theme16/Beon-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
-
 
 $font-family-sans-serif: 'Questrial', Helvetica Neue, Helvetica, Arial, sans-serif;
 $font-family-serif: 'Beon', Georgia, 'Times New Roman', Times, serif;
