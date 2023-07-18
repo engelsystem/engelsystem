@@ -132,6 +132,11 @@ return [
     'theme'                   => env('THEME', 1),
 
     'themes' => [
+        16 => [
+            'name' => 'Engelsystem cccamp23 (2023)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark',
+        ],
         15 => [
             'name' => 'Engelsystem rC3 (2021)',
             'type' => 'dark',

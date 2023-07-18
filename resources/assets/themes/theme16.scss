@@ -1,0 +1,169 @@
+// cccamp23
+
+// Variables
+// --------------------------------------------------
+
+@import 'dark';
+
+//== changed Colors
+$gray-dark: #231f20;
+$gray-darker: darken($gray-dark, 15%);
+$gray: lighten($gray-dark, 15%);
+$gray-light: lighten($gray, 15%);
+$gray-lighter: lighten($gray-light, 15%);
+$dark: $gray-dark;
+
+$primary: #FB48C4;
+$secondary: #231f20;
+$success: #3FFF21;
+$info: #3dbddf;
+$warning: #f6b345;
+$danger: #e93a44;
+
+$text-muted: $gray-light;
+
+$btn-link-disabled-color: $gray-light;
+
+//== Typography
+
+@font-face {
+  font-family: 'Questrial';
+  src: url('theme16/Questrial-Regular.woff2') format('woff2'),
+      url('theme16/Questrial-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Beon';
+  src: url('theme16/Beon-Regular.woff2') format('woff2'),
+      url('theme16/Beon-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+$font-family-sans-serif: 'Questrial', Helvetica Neue, Helvetica, Arial, sans-serif;
+$font-family-serif: 'Beon', Georgia, 'Times New Roman', Times, serif;
+$headings-font-family: $font-family-serif;
+
+//== changed Forms
+
+$input-bg: $gray-darker;
+$input-bg-disabled: lighten($gray-lighter, 15%);
+$input-group-addon-bg: $gray-lighter;
+
+//== changed Pagination
+
+$pagination-hover-color: $gray-lighter;
+$pagination-active-color: $gray-lighter;
+
+//== changed Form states and alerts
+
+$state-success-text: #fff;
+$state-success-bg: $success;
+$state-success-border: darken($state-success-bg, 5%);
+
+$state-info-text: #fff;
+$state-info-bg: $info;
+$state-info-border: darken($state-info-bg, 7%);
+
+$state-warning-text: #fff;
+$state-warning-bg: $warning;
+$state-warning-border: darken($state-warning-bg, 3%);
+
+$state-danger-text: #fff;
+$state-danger-bg: $danger;
+$state-danger-border: darken($state-danger-bg, 3%);
+
+$headings-small-color: $gray-light;
+
+code {
+  background-color: $state-info-bg;
+  color: $state-info-text;
+}
+
+$alert-bg-scale: 0%;
+$alert-border-scale: 0%;
+$alert-color-scale: 0%;
+
+// Navs =======================================================================
+
+$nav-tabs-link-active-border-color: $gray-dark;
+
+$nav-tabs-link-active-color: $gray-darker;
+$nav-pills-link-active-color: $gray-darker;
+
+//== Pagination
+//
+//##
+
+$pagination-color: $gray-lighter;
+$pagination-border-color: $gray-dark;
+
+$pagination-hover-color: #000;
+$pagination-hover-border-color: $gray-dark;
+
+$pagination-active-color: #000;
+$pagination-active-border-color: $gray-dark;
+
+$pagination-disabled-color: $gray-light;
+$pagination-disabled-border-color: $gray-dark;
+
+// dark
+@import 'cyborg_variables';
+@import 'cyborg_styles';
+
+// Specials ===================================================================
+
+.navbar {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.navbar-brand {
+  color: $primary;
+  font-family: $headings-font-family;
+}
+
+.nav-tabs,
+.nav-pills,
+.pager {
+  a {
+    color: $gray-lighter;
+  }
+}
+
+.alert a {
+  color: $gray-darker;
+}
+
+h1,
+h3,
+h5,
+.h1,
+.h3,
+.h5 {
+  color: $primary;
+
+  &.bg-warning,
+  &.bg-info {
+    color: $primary;
+  }
+}
+
+h2,
+h4,
+h6,
+.h2,
+.h4,
+.h6 {
+  color: $success;
+
+  &.bg-warning,
+  &.bg-info {
+    color: $success;
+  }
+}
