@@ -22,7 +22,9 @@ servers:
 
 tags:
   - name: news
-    description: News and Meeting announcements
+    description: News and meeting announcements
+  - name: shift
+    description: Event shifts and location
 
 components:
   securitySchemes:
@@ -52,6 +54,15 @@ components:
             $ref: '#/components/schemas/Error'
 
   schemas:
+    AngelType:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        name:
+          type: string
+          example: Angel
     Error:
       type: object
       properties:
@@ -90,11 +101,124 @@ components:
           type: string
           nullable: true
           example: 2023-05-13T23:00:00.000000Z
+    Room:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        name:
+          type: string
+          example: Heaven
+    Shift:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        title:
+          type: string
+          example: Cleanup the venue
+        description:
+          type: string
+          example: You clean up the venue after the event, its fun, we promise!
+        start:
+          type: string
+          example: 2023-05-13T14:00:00.000000Z
+        end:
+          type: string
+          example: 2023-05-13T16:00:00.000000Z23
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShiftEntry'
+        room:
+          $ref: '#/components/schemas/Room'
+        shift_type:
+          $ref: '#/components/schemas/ShiftType'
+        created_at:
+          type: string
+          nullable: true
+          example: 2023-05-13T13:37:42.000000Z
+        updated_at:
+          type: string
+          nullable: true
+          example: 2023-05-13T23:00:00.000000Z
+    ShiftEntry:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        type:
+          $ref: '#/components/schemas/AngelType'
+    ShiftType:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        name:
+          type: string
+          example: Build-Up
+        description:
+          type: string
+          example: This is a generic build-up shift, mostly involving heavy lifting.
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        name:
+          type: string
+          example: HelpfulUser
+        first_name:
+          type: string
+          nullable: true
+          example: Helpful
+        last_name:
+          type: string
+          nullable: true
+          example: User
+        pronoun:
+          type: string
+          nullable: true
+          example: They/Them
+        contact:
+          type: object
+          properties:
+            dect:
+              type: string
+              nullable: true
+              example: 4242
+            mobile:
+              type: string
+              nullable: true
+              example: 1234567890
 
 security:
   - bearerAuth: [ ]
 
 paths:
+  /angeltypes:
+    get:
+      tags:
+        - shift
+      summary: Get a list of angeltypes
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AngelType'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
   /news:
     get:
       tags:
@@ -109,6 +233,52 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/News'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /rooms:
+    get:
+      tags:
+        - shift
+      summary: Get a list of rooms
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /rooms/{id}/shifts:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: the room identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - shift
+      summary: Get all shifts in the room
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shift'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
