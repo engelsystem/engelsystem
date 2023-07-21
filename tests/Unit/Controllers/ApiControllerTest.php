@@ -98,7 +98,8 @@ class ApiControllerTest extends ControllerTest
         $this->assertJson($response->getContent());
 
         $data = json_decode($response->getContent(), true);
-        $this->assertCount(3, $data);
+        $this->assertArrayHasKey('data', $data);
+        $this->assertCount(3, $data['data']);
     }
 
     public function setUp(): void
