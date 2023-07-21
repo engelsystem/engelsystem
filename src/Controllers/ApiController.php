@@ -64,7 +64,8 @@ class ApiController extends BaseController
             ->orderByDesc('created_at')
             ->get(['id', 'title', 'text', 'is_meeting', 'is_pinned', 'is_highlighted', 'created_at', 'updated_at']);
 
+        $data = ['data' => $news];
         return $this->response
-            ->withContent(json_encode($news));
+            ->withContent(json_encode($data));
     }
 }

@@ -96,10 +96,14 @@ components:
           description: True if the news should be highlightet and shown on the dashboard
         created_at:
           type: string
+          format: date-time
+          description: DateTime in ISO-8601 format
           example: 2023-05-13T13:37:42.000000Z
         updated_at:
           type: string
           nullable: true
+          format: date-time
+          description: DateTime in ISO-8601 format
           example: 2023-05-13T23:00:00.000000Z
     Room:
       type: object
@@ -124,9 +128,13 @@ components:
           example: You clean up the venue after the event, its fun, we promise!
         start:
           type: string
+          format: date-time
+          description: DateTime in ISO-8601 format
           example: 2023-05-13T14:00:00.000000Z
         end:
           type: string
+          format: date-time
+          description: DateTime in ISO-8601 format
           example: 2023-05-13T16:00:00.000000Z23
         entries:
           type: array
@@ -139,10 +147,14 @@ components:
         created_at:
           type: string
           nullable: true
+          format: date-time
+          description: DateTime in ISO-8601 format
           example: 2023-05-13T13:37:42.000000Z
         updated_at:
           type: string
           nullable: true
+          format: date-time
+          description: DateTime in ISO-8601 format
           example: 2023-05-13T23:00:00.000000Z
     ShiftEntry:
       type: object
@@ -211,9 +223,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AngelType'
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AngelType'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -230,9 +245,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/News'
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/News'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -249,9 +267,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Room'
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Room'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -276,9 +297,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Shift'
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shift'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
