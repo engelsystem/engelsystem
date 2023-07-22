@@ -111,24 +111,24 @@ $route->addGroup(
 $route->addGroup(
     '/api',
     function (RouteCollector $route): void {
-        $route->get('/', 'ApiController@index');
+        $route->get('', 'Api\IndexController@index');
 
         $route->addGroup(
             '/v0-beta',
             function (RouteCollector $route): void {
-                $route->addRoute(['OPTIONS'], '[/{resource:.+}]', 'ApiController@options');
-                $route->get('/', 'ApiController@indexV0');
+                $route->addRoute(['OPTIONS'], '[/{resource:.+}]', 'Api\IndexController@options');
+                $route->get('', 'Api\IndexController@indexV0');
 
-                $route->get('/news', 'ApiController@news');
+                $route->get('/news', 'Api\NewsController@index');
 
                 $route->addRoute(
                     ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
-                    '[/{resource:.+}]',
-                    'ApiController@notImplemented'
+                    '/[{resource:.+}]',
+                    'Api\IndexController@notImplemented'
                 );
             }
         );
-        $route->get('[/{resource:.+}]', 'ApiController@notImplemented');
+        $route->get('/[{resource:.+}]', 'Api\IndexController@notImplemented');
     }
 );
 
