@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers\Api;
 
 use Engelsystem\Http\Response;
+use League\OpenAPIValidation\PSR7\ValidatorBuilder as OpenApiValidatorBuilder;
 
 class IndexController extends ApiController
 {
@@ -25,13 +26,22 @@ class IndexController extends ApiController
 
     public function indexV0(): Response
     {
+        $openApiDefinition = app()->get('path.resources.api') . '/openapi.yml';
+        $schema = (new OpenApiValidatorBuilder())
+            ->fromYamlFile($openApiDefinition)
+            ->getResponseValidator()
+            ->getSchema();
+        $info = $schema->info;
+        $paths = [];
+        foreach ($schema->paths->getIterator() as $path => $item) {
+            $paths[] = $path;
+        }
+
         return $this->response
             ->withContent(json_encode([
-                'version' => '0.0.1-beta',
-                'description' => 'Beta API, might break any second.',
-                'paths' => [
-                    '/news',
-                ],
+                'version' => $info->version,
+                'description' => $info->description,
+                'paths' => $paths,
             ]));
     }
 

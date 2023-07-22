@@ -4,7 +4,7 @@ info:
   version: 0.0.1-beta
   title: Engelsystem
   description: |
-    This API description is as stable as a **beta** version might be.
+    This API is as stable as a **beta** version might be.
     It could burst into flames and morph into a monster at any second!
     (But we try to keep it somewhat consistent, at least during events).
   contact:
