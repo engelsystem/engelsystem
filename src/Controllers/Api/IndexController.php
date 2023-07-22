@@ -2,23 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Engelsystem\Controllers;
+namespace Engelsystem\Controllers\Api;
 
 use Engelsystem\Http\Response;
-use Engelsystem\Models\News;
 
-class ApiController extends BaseController
+class IndexController extends ApiController
 {
     public array $permissions = [
-        'api',
+        'index' => 'api',
+        'indexV0' => 'api',
     ];
-
-    public function __construct(protected Response $response)
-    {
-        $this->response = $this->response
-            ->withHeader('content-type', 'application/json')
-            ->withHeader('Access-Control-Allow-Origin', '*');
-    }
 
     public function index(): Response
     {
@@ -44,10 +37,11 @@ class ApiController extends BaseController
 
     public function options(): Response
     {
+        // Respond to browser preflight options requests
         return $this->response
             ->setStatusCode(204)
-            ->withHeader('Allow', 'OPTIONS, HEAD, GET')
-            ->withHeader('Access-Control-Allow-Headers', 'Authorization');
+            ->withHeader('allow', 'OPTIONS, HEAD, GET')
+            ->withHeader('access-control-allow-headers', 'Authorization');
     }
 
     public function notImplemented(): Response
@@ -55,17 +49,5 @@ class ApiController extends BaseController
         return $this->response
             ->setStatusCode(501)
             ->withContent(json_encode(['error' => 'Not implemented']));
-    }
-
-    public function news(): Response
-    {
-        $news = News::query()
-            ->orderByDesc('updated_at')
-            ->orderByDesc('created_at')
-            ->get(['id', 'title', 'text', 'is_meeting', 'is_pinned', 'is_highlighted', 'created_at', 'updated_at']);
-
-        $data = ['data' => $news];
-        return $this->response
-            ->withContent(json_encode($data));
     }
 }
