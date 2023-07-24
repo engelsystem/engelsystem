@@ -115,27 +115,36 @@ function admin_arrive()
         ]);
 
         if ($usr->state->arrival_date) {
-            $day = $usr->state->arrival_date->format(__('Y-m-d'));
+            $day = $usr->state->arrival_date->format('Y-m-d');
             if (!isset($arrival_count_at_day[$day])) {
-                $arrival_count_at_day[$day] = 0;
+                $arrival_count_at_day[$day] = [
+                    'day'   => $usr->state->arrival_date,
+                    'count' => 0,
+                ];
             }
-            $arrival_count_at_day[$day]++;
+            $arrival_count_at_day[$day]['count']++;
         }
 
         if ($usr->personalData->planned_arrival_date) {
-            $day = $usr->personalData->planned_arrival_date->format(__('Y-m-d'));
+            $day = $usr->personalData->planned_arrival_date->format('Y-m-d');
             if (!isset($planned_arrival_count_at_day[$day])) {
-                $planned_arrival_count_at_day[$day] = 0;
+                $planned_arrival_count_at_day[$day] = [
+                    'day'   => $usr->personalData->planned_arrival_date,
+                    'count' => 0,
+                ];
             }
-            $planned_arrival_count_at_day[$day]++;
+            $planned_arrival_count_at_day[$day]['count']++;
         }
 
         if ($usr->personalData->planned_departure_date && $usr->state->arrived) {
-            $day = $usr->personalData->planned_departure_date->format(__('Y-m-d'));
+            $day = $usr->personalData->planned_departure_date->format('Y-m-d');
             if (!isset($planned_departure_count_at_day[$day])) {
-                $planned_departure_count_at_day[$day] = 0;
+                $planned_departure_count_at_day[$day] = [
+                    'day'   => $usr->personalData->planned_departure_date,
+                    'count' => 0,
+                ];
             }
-            $planned_departure_count_at_day[$day]++;
+            $planned_departure_count_at_day[$day]['count']++;
         }
 
         $users_matched[] = $usr;
@@ -147,33 +156,33 @@ function admin_arrive()
 
     $arrival_at_day = [];
     $arrival_sum = 0;
-    foreach ($arrival_count_at_day as $day => $count) {
-        $arrival_sum += $count;
+    foreach ($arrival_count_at_day as $day => $entry) {
+        $arrival_sum += $entry['count'];
         $arrival_at_day[$day] = [
-            'day'   => $day,
-            'count' => $count,
+            'day'   => $entry['day']->format(__('Y-m-d')),
+            'count' => $entry['count'],
             'sum'   => $arrival_sum,
         ];
     }
 
     $planned_arrival_at_day = [];
     $planned_arrival_sum = 0;
-    foreach ($planned_arrival_count_at_day as $day => $count) {
-        $planned_arrival_sum += $count;
+    foreach ($planned_arrival_count_at_day as $day => $entry) {
+        $planned_arrival_sum += $entry['count'];
         $planned_arrival_at_day[$day] = [
-            'day'   => $day,
-            'count' => $count,
+            'day'   => $entry['day']->format(__('Y-m-d')),
+            'count' => $entry['count'],
             'sum'   => $planned_arrival_sum,
         ];
     }
 
     $planned_departure_at_day = [];
     $planned_departure_sum = 0;
-    foreach ($planned_departure_count_at_day as $day => $count) {
-        $planned_departure_sum += $count;
+    foreach ($planned_departure_count_at_day as $day => $entry) {
+        $planned_departure_sum += $entry['count'];
         $planned_departure_at_day[$day] = [
-            'day'   => $day,
-            'count' => $count,
+            'day'   => $entry['day']->format(__('Y-m-d')),
+            'count' => $entry['count'],
             'sum'   => $planned_departure_sum,
         ];
     }

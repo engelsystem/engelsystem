@@ -16,16 +16,6 @@
     'dark'
 ]
 %}
-{% set types_color=[
-    ['primary', 'light'],
-    ['secondary', 'light'],
-    ['success', 'light'],
-    ['danger', 'light'],
-    ['warning', 'dark'],
-    ['info', 'dark'],
-    ['light', 'dark'],
-    ['dark', 'light'],
-] %}
 {% set types_buttons=['link']|merge(types) %}
 {% set shortsum='Lorem ipsum dolor…' %}
 {% set lipsum='Lorem ipsum dolor sit amet, consectetur adipisici elit…' %}
@@ -154,8 +144,8 @@
                 <span id="badges" class="ref-id"></span>
                 <h3>Badges <a href="#badges" class="ref-link">{{ m.icon('link') }}</a></h3>
                 <p>
-                    {% for type in types_color %}
-                        <span class="badge bg-{{ type[0] }} text-{{ type[1] }}">{{ type[0]|capitalize }}</span>
+                    {% for type in types %}
+                        <span class="badge bg-{{ type }}">{{ type|capitalize }}</span>
                     {% endfor %}
                 </p>
             </div>

@@ -52,6 +52,8 @@ $input-bg: $gray-darker;
 $input-bg-disabled: lighten($gray-lighter, 15%);
 $input-group-addon-bg: $gray-lighter;
 
+$form-check-input-border: 1px solid $gray;
+
 //== changed Pagination
 
 $pagination-hover-color: $gray-lighter;
@@ -114,6 +116,15 @@ $pagination-disabled-border-color: $gray-dark;
 @import 'cyborg_styles';
 
 // Specials ===================================================================
+
+.bg-primary,
+.bg-success,
+.bg-danger,
+.bg-warning,
+.bg-info,
+.bg-light {
+  color: $gray-darker;
+}
 
 .navbar {
   background: rgba(0, 0, 0, 0.7);
