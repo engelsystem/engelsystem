@@ -54,7 +54,7 @@ class OAuthController extends BaseController
         if (!$request->has('code')) {
             $authorizationUrl = $provider->getAuthorizationUrl(
                 [
-                    // Leauge separates scopes by comma, which is wrong, so we do it
+                    // League oauth separates scopes by comma, which is wrong, so we do it
                     // here properly by spaces. See https://www.rfc-editor.org/rfc/rfc6749#section-3.3
                     'scope' => join(' ', $config['scope'] ?? []),
                 ]
@@ -101,7 +101,7 @@ class OAuthController extends BaseController
             ->where('provider', $providerName)
             ->where('identifier', $resourceId)
             ->get()
-            // Explicit case sensitive comparison using PHP as some DBMS collations are case sensitive and some arent
+            // Explicit case-sensitive comparison using PHP as some DBMS collations are case-sensitive and some aren't
             ->where('identifier', '===', (string) $resourceId)
             ->first();
 
@@ -150,7 +150,7 @@ class OAuthController extends BaseController
         if (!$oauth) {
             return $this->redirectRegister(
                 $providerName,
-                $resourceId,
+                (string) $resourceId,
                 $accessToken,
                 $config,
                 $userdata

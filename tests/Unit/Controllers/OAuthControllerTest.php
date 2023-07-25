@@ -408,7 +408,7 @@ class OAuthControllerTest extends TestCase
             $resourceOwner,
             'getId',
             null,
-            'ProVIdeR-User-IdenTifIer', // Case sensitive variation of existing entry
+            'ProVIdeR-User-IdenTifIer', // case-sensitive variation of existing entry
             $this->atLeastOnce()
         );
         $this->setExpects(
@@ -508,7 +508,7 @@ class OAuthControllerTest extends TestCase
             null,
             [
                 'nested' => [
-                    'id'    => 'new-provider-user-identifier',
+                    'id'    => 42, // new provider user identifier
                     'name'  => 'testuser',
                     'email' => 'foo.bar@localhost',
                     'first' => 'Test',
@@ -621,7 +621,7 @@ class OAuthControllerTest extends TestCase
     }
 
     /**
-     * Setup the DB
+     * Set up the DB
      */
     public function setUp(): void
     {
