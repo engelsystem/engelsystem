@@ -71,10 +71,10 @@
                                 {% if question.answer %}
                                     <div class="col-md-11 offset-md-1 mt-3">
                                         <div class="card bg-info">
-                                            <div class="card-body bg-body">
+                                            <div class="card-body bg-body {{ m.type_text_class() }}">
                                                 {{ question.answer|markdown }}
                                             </div>
-                                            <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} d-flex align-items-center">
+                                            <div class="card-footer bg-dark d-flex align-items-center {{ m.type_text_class() }}">
                                                 <div class="me-3">
                                                     {{ m.icon('clock') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
                                                 </div>
