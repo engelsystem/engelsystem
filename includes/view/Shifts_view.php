@@ -88,12 +88,9 @@ function Shift_signup_button_render(Shift $shift, AngelType $angeltype)
         ->first();
 
     if (
-        isset($angeltype->shift_signup_state)
-        && (
-            $angeltype->shift_signup_state->isSignupAllowed()
-            || auth()->user()->isAngelTypeSupporter($angeltype)
-            || auth()->can('admin_user_angeltypes')
-        )
+        $angeltype->shift_signup_state?->isSignupAllowed()
+        || auth()->user()->isAngelTypeSupporter($angeltype)
+        || auth()->can('admin_user_angeltypes')
     ) {
         return button(shift_entry_create_link($shift, $angeltype), __('Sign up'));
     } elseif (empty($user_angeltype)) {
