@@ -11,12 +11,16 @@ class NewsController extends ApiController
 {
     public function index(): Response
     {
-        $news = News::query()
+        $models = News::query()
             ->orderByDesc('updated_at')
             ->orderByDesc('created_at')
             ->get(['id', 'title', 'text', 'is_meeting', 'is_pinned', 'is_highlighted', 'created_at', 'updated_at']);
 
-        $data = ['data' => $news];
+        $models->map(function (News $model): void {
+            $model->url = $this->url->to('/news/' . $model->id);
+        });
+
+        $data = ['data' => $models];
         return $this->response
             ->withContent(json_encode($data));
     }

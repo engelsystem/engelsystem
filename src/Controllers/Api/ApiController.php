@@ -6,6 +6,7 @@ namespace Engelsystem\Controllers\Api;
 
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Http\Response;
+use Engelsystem\Http\UrlGeneratorInterface;
 
 abstract class ApiController extends BaseController
 {
@@ -13,7 +14,7 @@ abstract class ApiController extends BaseController
         'api',
     ];
 
-    public function __construct(protected Response $response)
+    public function __construct(protected Response $response, protected UrlGeneratorInterface $url)
     {
         $this->response = $this->response
             ->withHeader('content-type', 'application/json')

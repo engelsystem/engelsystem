@@ -11,11 +11,15 @@ class AngelTypeController extends ApiController
 {
     public function index(): Response
     {
-        $news = AngelType::query()
+        $models = AngelType::query()
             ->orderBy('name')
-            ->get(['id', 'name']);
+            ->get(['id', 'name', 'description']);
 
-        $data = ['data' => $news];
+        $models->map(function (AngelType $model): void {
+            $model->url = $this->url->to('/angeltypes', ['action' => 'view', 'angeltype_id' => $model->id]);
+        });
+
+        $data = ['data' => $models];
         return $this->response
             ->withContent(json_encode($data));
     }
