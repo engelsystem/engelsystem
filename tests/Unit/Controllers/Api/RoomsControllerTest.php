@@ -18,7 +18,7 @@ class RoomsControllerTest extends ApiBaseControllerTest
         $this->initDatabase();
         Room::factory(3)->create();
 
-        $controller = new RoomsController(new Response());
+        $controller = new RoomsController(new Response(), $this->url);
 
         $response = $controller->index();
         $this->validateApiResponse('/rooms', 'get', $response);

@@ -11,11 +11,15 @@ class RoomsController extends ApiController
 {
     public function index(): Response
     {
-        $news = Room::query()
+        $models = Room::query()
             ->orderBy('name')
             ->get(['id', 'name']);
 
-        $data = ['data' => $news];
+        $models->map(function (Room $model): void {
+            $model->url = $this->url->to('/rooms', ['action' => 'view', 'room_id' => $model->id]);
+        });
+
+        $data = ['data' => $models];
         return $this->response
             ->withContent(json_encode($data));
     }

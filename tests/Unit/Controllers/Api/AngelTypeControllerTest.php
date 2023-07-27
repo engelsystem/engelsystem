@@ -18,7 +18,7 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         $this->initDatabase();
         AngelType::factory(3)->create();
 
-        $controller = new AngelTypeController(new Response());
+        $controller = new AngelTypeController(new Response(), $this->url);
 
         $response = $controller->index();
         $this->validateApiResponse('/angeltypes', 'get', $response);

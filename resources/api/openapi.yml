@@ -63,6 +63,17 @@ components:
         name:
           type: string
           example: Angel
+        description:
+          type: string
+          example: Meta-Group of all registered Angels
+        url:
+          type: string
+          example: https://example.com/news/42
+      required:
+        - id
+        - name
+        - description
+        - url
     Error:
       type: object
       properties:
@@ -105,6 +116,19 @@ components:
           format: date-time
           description: DateTime in ISO-8601 format
           example: 2023-05-13T23:00:00.000000Z
+        url:
+          type: string
+          example: https://example.com/news/42
+      required:
+        - id
+        - title
+        - text
+        - is_meeting
+        - is_pinned
+        - is_highlighted
+        - created_at
+        - updated_at
+        - url
     Room:
       type: object
       properties:
@@ -114,6 +138,13 @@ components:
         name:
           type: string
           example: Heaven
+        url:
+          type: string
+          example: https://example.com/rooms/42
+      required:
+        - id
+        - name
+        - url
     Shift:
       type: object
       properties:
@@ -156,6 +187,21 @@ components:
           format: date-time
           description: DateTime in ISO-8601 format
           example: 2023-05-13T23:00:00.000000Z
+        url:
+          type: string
+          example: https://example.com/shifts/42
+      required:
+        - id
+        - title
+        - description
+        - start
+        - end
+        - entries
+        - room
+        - shift_type
+        - created_at
+        - updated_at
+        - url
     ShiftEntry:
       type: object
       properties:
@@ -163,6 +209,9 @@ components:
           $ref: '#/components/schemas/User'
         type:
           $ref: '#/components/schemas/AngelType'
+      required:
+        - user
+        - type
     ShiftType:
       type: object
       properties:
@@ -175,6 +224,10 @@ components:
         description:
           type: string
           example: This is a generic build-up shift, mostly involving heavy lifting.
+      required:
+        - id
+        - name
+        - description
     User:
       type: object
       properties:
@@ -207,6 +260,17 @@ components:
               type: string
               nullable: true
               example: 1234567890
+        url:
+          type: string
+          example: https://example.com/users/42
+      required:
+        - id
+        - name
+        - first_name
+        - last_name
+        - pronoun
+        - contact
+        - url
 
 security:
   - bearerAuth: [ ]

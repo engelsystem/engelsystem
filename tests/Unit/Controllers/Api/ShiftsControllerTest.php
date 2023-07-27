@@ -40,10 +40,10 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $request = new Request();
         $request = $request->withAttribute('room_id', $room->id);
 
-        $controller = new ShiftsController(new Response());
+        $controller = new ShiftsController(new Response(), $this->url);
 
         $response = $controller->entriesByRoom($request);
-        $this->validateApiResponse('/rooms', 'get', $response);
+        $this->validateApiResponse('/rooms/{id}/shifts', 'get', $response);
 
         $this->assertEquals(['application/json'], $response->getHeader('content-type'));
         $this->assertJson($response->getContent());
