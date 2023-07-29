@@ -167,10 +167,6 @@ components:
           format: date-time
           description: DateTime in ISO-8601 format
           example: 2023-05-13T16:00:00.000000Z23
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShiftEntry'
         room:
           $ref: '#/components/schemas/Room'
         shift_type:
@@ -187,6 +183,11 @@ components:
           format: date-time
           description: DateTime in ISO-8601 format
           example: 2023-05-13T23:00:00.000000Z
+        entries:
+          type: array
+          description: Can be empty (for example on Schedule import of unused room)
+          items:
+            $ref: '#/components/schemas/ShiftEntry'
         url:
           type: string
           example: https://example.com/shifts/42
@@ -196,22 +197,31 @@ components:
         - description
         - start
         - end
-        - entries
         - room
         - shift_type
         - created_at
         - updated_at
+        - entries
         - url
     ShiftEntry:
       type: object
       properties:
-        user:
-          $ref: '#/components/schemas/User'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
         type:
           $ref: '#/components/schemas/AngelType'
+        needs:
+          type: integer
+          description: |
+            Number of users needed for the shift.
+            Can be more than users count when not full, less when overbooked or 0 when additional users have been added.
+          example: 3
       required:
-        - user
+        - users
         - type
+        - needs
     ShiftType:
       type: object
       properties:
