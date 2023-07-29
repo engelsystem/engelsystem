@@ -46,6 +46,7 @@ trait HasDatabase
             ->insert(
                 [
                     // Migrations that can be skipped as they only use legacy tables
+                    // or only change data not available/relevant in migrations
                     ['migration' => '2018_01_01_000001_import_install_sql'],
                     ['migration' => '2018_01_01_000002_import_update_sql'],
                     ['migration' => '2018_01_01_000003_fix_old_tables'],
@@ -66,6 +67,7 @@ trait HasDatabase
                     ['migration' => '2022_07_21_000000_fix_old_groups_table_id_and_name'],
                     ['migration' => '2022_10_21_000000_add_hide_register_to_angeltypes'],
                     ['migration' => '2022_11_06_000000_shifttype_remove_angeltype'],
+                    ['migration' => '2023_05_21_000001_cleanup_short_api_keys'],
                 ]
             );
 
