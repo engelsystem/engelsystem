@@ -49,15 +49,23 @@ class IndexController extends ApiController
     {
         // Respond to browser preflight options requests
         return $this->response
-            ->setStatusCode(204)
+            ->setStatusCode(200)
             ->withHeader('allow', 'OPTIONS, HEAD, GET')
             ->withHeader('access-control-allow-headers', 'Authorization');
+    }
+
+    public function notFound(): Response
+    {
+        return $this->response
+            ->setStatusCode(404)
+            ->withContent(json_encode(['message' => 'Not implemented']));
     }
 
     public function notImplemented(): Response
     {
         return $this->response
-            ->setStatusCode(501)
-            ->withContent(json_encode(['error' => 'Not implemented']));
+            ->setStatusCode(405)
+            ->withHeader('allow', 'GET')
+            ->withContent(json_encode(['message' => 'Method not implemented']));
     }
 }

@@ -125,13 +125,14 @@ $route->addGroup(
                 $route->get('/rooms/{room_id:\d+}/shifts', 'Api\ShiftsController@entriesByRoom');
 
                 $route->addRoute(
-                    ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
+                    ['POST', 'PUT', 'DELETE', 'PATCH'],
                     '/[{resource:.+}]',
                     'Api\IndexController@notImplemented'
                 );
+                $route->get('/[{resource:.+}]', 'Api\IndexController@notFound');
             }
         );
-        $route->get('/[{resource:.+}]', 'Api\IndexController@notImplemented');
+        $route->get('/[{resource:.+}]', 'Api\IndexController@notFound');
     }
 );
 
