@@ -70,14 +70,14 @@
             {% if news.updated_at != news.created_at and not is_overview %}
                 <div class="d-flex align-items-center">
                     <div class="me-3">
-                        {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
                     </div>
                     {{ __('news.updated') }}
                 </div>
             {% endif %}
             <div class="d-flex align-items-center">
                 <div class="me-3">
-                    {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+                    {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
                 </div>
 
                 <div class="me-3">
