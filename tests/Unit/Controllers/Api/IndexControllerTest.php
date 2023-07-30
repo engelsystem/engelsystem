@@ -51,9 +51,22 @@ class IndexControllerTest extends ApiBaseControllerTest
         $controller = new IndexController(new Response(), $this->url);
         $response = $controller->options();
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
         $this->assertNotEmpty($response->getHeader('allow'));
         $this->assertNotEmpty($response->getHeader('access-control-allow-headers'));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\IndexController::notFound
+     */
+    public function testNotFound(): void
+    {
+        $controller = new IndexController(new Response(), $this->url);
+        $response = $controller->notFound();
+
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(['application/json'], $response->getHeader('content-type'));
+        $this->assertJson($response->getContent());
     }
 
     /**
@@ -64,7 +77,8 @@ class IndexControllerTest extends ApiBaseControllerTest
         $controller = new IndexController(new Response(), $this->url);
         $response = $controller->notImplemented();
 
-        $this->assertEquals(501, $response->getStatusCode());
+        $this->assertEquals(405, $response->getStatusCode());
+        $this->assertEquals(['GET'], $response->getHeader('allow'));
         $this->assertEquals(['application/json'], $response->getHeader('content-type'));
         $this->assertJson($response->getContent());
     }

@@ -46,7 +46,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotImplementedError: # 501
+    NotFoundError: # 404
+      description: This resource can not be found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotImplementedError: # 405
       description: This endpoint or method is not implemented
       content:
         application/json:
@@ -68,7 +74,8 @@ components:
           example: Meta-Group of all registered Angels
         url:
           type: string
-          example: https://example.com/news/42
+          example: https://example.com/angeltype/42
+          description: Link to the page of the given angeltype.
       required:
         - id
         - name
@@ -93,6 +100,9 @@ components:
           example: |
             The first introduction meeting takes place at the **Foo Hall** at 13:37.
             Please bring your own seating as it might take some time.
+          description: |
+            The complete news text with markdown formatting.
+            Might include a `[more]` tag to be used as a separator which must be removed from the text when shown.
         is_meeting:
           type: boolean
           example: true
@@ -119,6 +129,7 @@ components:
         url:
           type: string
           example: https://example.com/news/42
+          description: Direct link to the news page
       required:
         - id
         - title
@@ -141,6 +152,7 @@ components:
         url:
           type: string
           example: https://example.com/rooms/42
+          description: Link of the room start page
       required:
         - id
         - name
@@ -157,6 +169,9 @@ components:
         description:
           type: string
           example: You clean up the venue after the event, its fun, we promise!
+          description: |
+            Shift description, should be added to the shift type description as it might be empty.
+            Normally contains additional information for a specific shift / task.
         start:
           type: string
           format: date-time
@@ -191,6 +206,7 @@ components:
         url:
           type: string
           example: https://example.com/shifts/42
+          description: Direct link of the shift
       required:
         - id
         - title
@@ -259,6 +275,7 @@ components:
           type: string
           nullable: true
           example: They/Them
+          description: Should be displayed where possible to allow users to be addressed properly
         contact:
           type: object
           properties:
@@ -266,6 +283,7 @@ components:
               type: string
               nullable: true
               example: 4242
+              description: The DECT number is a short internal number where users can be easily reached
             mobile:
               type: string
               nullable: true
@@ -273,6 +291,7 @@ components:
         url:
           type: string
           example: https://example.com/users/42
+          description: Links to the users profile page
       required:
         - id
         - name
@@ -357,14 +376,14 @@ paths:
       - name: id
         in: path
         required: true
-        description: the room identifier
+        description: The rooms identifier
         example: 42
         schema:
           type: integer
     get:
       tags:
         - shift
-      summary: Get all shifts in the room
+      summary: Get all shifts in the requested room
       responses:
         '200':
           description: Ok
@@ -381,3 +400,5 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
