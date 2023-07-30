@@ -85,9 +85,6 @@ msgstr "Das Programm konnte nicht abgerufen werden."
 msgid "schedule.import.read-error"
 msgstr "Das Programm konnte nicht gelesen werden."
 
-msgid "schedule.import.invalid-shift-type"
-msgstr "Der Schichttyp konnte nicht gefunden werden."
-
 msgid "schedule.import.success"
 msgstr "Das Programm wurde erfolgreich importiert."
 
