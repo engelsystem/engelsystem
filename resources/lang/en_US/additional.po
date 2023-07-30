@@ -83,9 +83,6 @@ msgstr "The schedule could not be requested."
 msgid "schedule.import.read-error"
 msgstr "Unable to parse schedule."
 
-msgid "schedule.import.invalid-shift-type"
-msgstr "The shift type can't not be found."
-
 msgid "schedule.import.success"
 msgstr "Schedule import successful."
 

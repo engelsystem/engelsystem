@@ -52,7 +52,7 @@ class ScheduleController extends BaseController
     public function index(): Response
     {
         return $this->response->withView(
-            'admin/schedule/index.twig',
+            'admin/schedule/index',
             [
                 'is_index' => true,
                 'schedules' => ScheduleModel::all(),
@@ -63,10 +63,10 @@ class ScheduleController extends BaseController
     public function edit(Request $request): Response
     {
         $scheduleId = $request->getAttribute('schedule_id'); // optional
-        $schedule = ScheduleModel::find($scheduleId);
+        $schedule = ScheduleModel::findOrNew($scheduleId);
 
         return $this->response->withView(
-            'admin/schedule/edit.twig',
+            'admin/schedule/edit',
             [
                 'schedule' => $schedule,
                 'shift_types' => ShiftType::all()->sortBy('name')->pluck('name', 'id'),
@@ -75,9 +75,6 @@ class ScheduleController extends BaseController
         );
     }
 
-    /**
-     * @throws ErrorException
-     */
     public function save(Request $request): Response
     {
         $scheduleId = $request->getAttribute('schedule_id'); // optional
@@ -103,10 +100,7 @@ class ScheduleController extends BaseController
             'minutes_before' => 'int',
             'minutes_after' => 'int',
         ] + $locationsValidation);
-
-        if (!ShiftType::find($data['shift_type'])) {
-            throw new ErrorException('schedule.import.invalid-shift-type');
-        }
+        ShiftType::findOrFail($data['shift_type']);
 
         $schedule->name = $data['name'];
         $schedule->url = $data['url'];
@@ -205,7 +199,7 @@ class ScheduleController extends BaseController
         }
 
         return $this->response->withView(
-            'admin/schedule/load.twig',
+            'admin/schedule/load',
             [
                 'schedule_id' => $scheduleModel->id,
                 'schedule' => $schedule,
@@ -294,7 +288,7 @@ class ScheduleController extends BaseController
         $this->log->info('Created schedule location "{location}"', ['location' => $room->getName()]);
     }
 
-    protected function fireDeleteShiftEntryEvents(Event $event, ScheduleUrl $schedule): void
+    protected function fireDeleteShiftEntryEvents(Event $event, ScheduleModel $schedule): void
     {
         $shiftEntries = $this->db
             ->table('shift_entries')
@@ -325,7 +319,7 @@ class ScheduleController extends BaseController
         }
     }
 
-    protected function createEvent(Event $event, int $shiftTypeId, Location $location, ScheduleModel $scheduleUrl): void
+    protected function createEvent(Event $event, int $shiftTypeId, Location $location, ScheduleModel $schedule): void
     {
         $user = auth()->user();
         $eventTimeZone = Carbon::now()->timezone;
@@ -337,17 +331,17 @@ class ScheduleController extends BaseController
         $shift->end = $event->getEndDate()->copy()->timezone($eventTimeZone);
         $shift->location()->associate($location);
         $shift->url = $event->getUrl() ?? '';
-        $shift->transaction_id = Uuid::uuidBy($scheduleUrl->id, '5c4ed01e');
+        $shift->transaction_id = Uuid::uuidBy($schedule->id, '5c4ed01e');
         $shift->createdBy()->associate($user);
         $shift->save();
 
         $scheduleShift = new ScheduleShift(['guid' => $event->getGuid()]);
-        $scheduleShift->schedule()->associate($scheduleUrl);
+        $scheduleShift->schedule()->associate($schedule);
         $scheduleShift->shift()->associate($shift);
         $scheduleShift->save();
 
         $this->log->info(
-            'Created schedule shift "{shift}" in "{location}" ({from} {to}, {guid})',
+            'Created schedule shift "{shift}" in "{location}" ({from} - {to}, {guid})',
             [
                 'shift' => $shift->title,
                 'location' => $shift->location->name,
@@ -358,7 +352,7 @@ class ScheduleController extends BaseController
         );
     }
 
-    protected function updateEvent(Event $event, int $shiftTypeId, Location $location, ScheduleUrl $schedule): void
+    protected function updateEvent(Event $event, int $shiftTypeId, Location $location, ScheduleModel $schedule): void
     {
         $user = auth()->user();
         $eventTimeZone = Carbon::now()->timezone;
@@ -390,15 +384,15 @@ class ScheduleController extends BaseController
         );
     }
 
-    protected function deleteEvent(Event $event, ScheduleUrl $schedule): void
+    protected function deleteEvent(Event $event, ScheduleModel $schedule): void
     {
         /** @var ScheduleShift $scheduleShift */
         $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->where('schedule_id', $schedule->id)->first();
         $shift = $scheduleShift->shift;
-        $shift->delete();
-        $scheduleShift->delete();
 
         $this->fireDeleteShiftEntryEvents($event, $schedule);
+        $shift->delete();
+        $scheduleShift->delete();
 
         $this->log->info(
             'Deleted schedule shift "{shift}" in {location} ({from} {to}, {guid})',
@@ -428,32 +422,38 @@ class ScheduleController extends BaseController
     {
         $scheduleId = (int) $request->getAttribute('schedule_id');
 
-        /** @var ScheduleModel $scheduleUrl */
-        $scheduleUrl = ScheduleModel::findOrFail($scheduleId);
+        /** @var ScheduleModel $scheduleModel */
+        $scheduleModel = ScheduleModel::findOrFail($scheduleId);
 
         try {
-            $scheduleResponse = $this->guzzle->get($scheduleUrl->url);
-        } catch (ConnectException | GuzzleException) {
+            $scheduleResponse = $this->guzzle->get($scheduleModel->url);
+        } catch (ConnectException | GuzzleException $e) {
+            $this->log->error('Exception during schedule request', ['exception' => $e]);
             throw new ErrorException('schedule.import.request-error');
         }
 
         if ($scheduleResponse->getStatusCode() != 200) {
+            $this->log->warning(
+                'Problem during schedule request, got code {code}',
+                ['code' => $scheduleResponse->getStatusCode()]
+            );
             throw new ErrorException('schedule.import.request-error');
         }
 
         $scheduleData = (string) $scheduleResponse->getBody();
         if (!$this->parser->load($scheduleData)) {
+            $this->log->warning('Problem during schedule parsing');
             throw new ErrorException('schedule.import.read-error');
         }
 
-        $shiftType = $scheduleUrl->shift_type;
+        $shiftType = $scheduleModel->shift_type;
         $schedule = $this->parser->getSchedule();
-        $minutesBefore = $scheduleUrl->minutes_before;
-        $minutesAfter = $scheduleUrl->minutes_after;
+        $minutesBefore = $scheduleModel->minutes_before;
+        $minutesAfter = $scheduleModel->minutes_after;
         $newRooms = $this->newRooms($schedule->getRooms());
         return array_merge(
-            $this->shiftsDiff($schedule, $scheduleUrl, $shiftType, $minutesBefore, $minutesAfter),
-            [$newRooms, $shiftType, $scheduleUrl, $schedule, $minutesBefore, $minutesAfter]
+            $this->shiftsDiff($schedule, $scheduleModel, $shiftType, $minutesBefore, $minutesAfter),
+            [$newRooms, $shiftType, $scheduleModel, $schedule, $minutesBefore, $minutesAfter]
         );
     }
 
@@ -482,7 +482,7 @@ class ScheduleController extends BaseController
      */
     protected function shiftsDiff(
         Schedule $schedule,
-        ScheduleModel $scheduleUrl,
+        ScheduleModel $scheduleModel,
         int $shiftType,
         int $minutesBefore,
         int $minutesAfter
@@ -500,7 +500,7 @@ class ScheduleController extends BaseController
 
         foreach ($schedule->getDay() as $day) {
             foreach ($day->getRoom() as $room) {
-                if (!$scheduleUrl->activeLocations->where('name', $room->getName())->count()) {
+                if (!$scheduleModel->activeLocations->where('name', $room->getName())->count()) {
                     continue;
                 }
 
@@ -519,7 +519,7 @@ class ScheduleController extends BaseController
         }
 
         $scheduleEventsGuidList = array_keys($scheduleEvents);
-        $existingShifts = $this->getScheduleShiftsByGuid($scheduleUrl, $scheduleEventsGuidList);
+        $existingShifts = $this->getScheduleShiftsByGuid($scheduleModel, $scheduleEventsGuidList);
         foreach ($existingShifts as $scheduleShift) {
             $guid = $scheduleShift->guid;
             $shift = $scheduleShift->shift;
@@ -545,7 +545,7 @@ class ScheduleController extends BaseController
             $newEvents[$scheduleEvent->getGuid()] = $scheduleEvent;
         }
 
-        $scheduleShifts = $this->getScheduleShiftsWhereNotGuid($scheduleUrl, $scheduleEventsGuidList);
+        $scheduleShifts = $this->getScheduleShiftsWhereNotGuid($scheduleModel, $scheduleEventsGuidList);
         foreach ($scheduleShifts as $scheduleShift) {
             $event = $this->eventFromScheduleShift($scheduleShift);
             $deleteEvents[$event->getGuid()] = $event;
@@ -588,11 +588,11 @@ class ScheduleController extends BaseController
      *
      * @return Collection|ScheduleShift[]
      */
-    protected function getScheduleShiftsByGuid(ScheduleModel $scheduleUrl, array $events): Collection | array
+    protected function getScheduleShiftsByGuid(ScheduleModel $schedule, array $events): Collection | array
     {
         return ScheduleShift::with('shift.location')
             ->whereIn('guid', $events)
-            ->where('schedule_id', $scheduleUrl->id)
+            ->where('schedule_id', $schedule->id)
             ->get();
     }
 
@@ -600,11 +600,11 @@ class ScheduleController extends BaseController
      * @param string[] $events
      * @return Collection|ScheduleShift[]
      */
-    protected function getScheduleShiftsWhereNotGuid(ScheduleModel $scheduleUrl, array $events): Collection | array
+    protected function getScheduleShiftsWhereNotGuid(ScheduleModel $schedule, array $events): Collection | array
     {
         return ScheduleShift::with('shift.location')
             ->whereNotIn('guid', $events)
-            ->where('schedule_id', $scheduleUrl->id)
+            ->where('schedule_id', $schedule->id)
             ->get();
     }
 }

@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<schedule
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://c3voc.de/schedule/schema.xsd"
+>
+    <version>4.2-frickel</version>
+    <conference>
+        <title>Some Bigger Test Event</title>
+        <acronym>test-4</acronym>
+        <start>2042-10-01</start>
+        <end>2042-10-02</end>
+        <days>2</days>
+        <timeslot_duration>00:30</timeslot_duration>
+    </conference>
+    <day index='1' date='2042-10-01' start='2042-10-01T10:00:00+02:00' end='2042-10-01T22:59:00+02:00'>
+        <room name='Example Room'>
+            <event guid='3e896c59-0d90-4817-8f74-af7fbb758f32' id='1'>
+                <date>2042-10-02T10:00:00+00:00</date>
+                <title>First event</title>
+                <subtitle>With a subtitle</subtitle>
+                <start>10:00</start>
+                <duration>01:30</duration>
+                <room>Example Room</room>
+                <slug>first-1-event</slug>
+                <track>Testing</track>
+                <type>Talk</type>
+                <abstract>A minimal description</abstract>
+                <url>https://example.com/first-1-event</url>
+                <language>DE</language>
+            </event>
+        </room>
+        <room name='Another Room'>
+            <event guid='bf675f51-2a3d-4fa9-a5b2-390d5e5bdff2' id='2'>
+                <date>2042-10-02T13:30:00+00:00</date>
+                <title>Second event</title>
+                <subtitle>With a subtitle</subtitle>
+                <start>13:30</start>
+                <duration>00:30</duration>
+                <room>Another Room</room>
+                <slug>second-2-event</slug>
+                <track>Tinkering</track>
+                <type>Talk</type>
+                <abstract>A minimal description</abstract>
+            </event>
+        </room>
+    </day>
+    <day index='2' date='2042-10-02' start='2042-10-02T10:00:00+02:00' end='2042-10-02T22:59:00+02:00'>
+        <room name='Another Room'>
+            <event guid='6e662ec5-d18d-417d-8719-360a416bb153' id='3'>
+                <date>2042-10-02T11:00:00+00:00</date>
+                <title>Third event</title>
+                <subtitle>With a subtitle</subtitle>
+                <start>11:00</start>
+                <duration>00:30</duration>
+                <room>Another Room</room>
+                <slug>third-3-event</slug>
+                <track>Testing</track>
+                <type>Talk</type>
+                <abstract>A minimal description</abstract>
+                <url>https://example.com/third-3-event</url>
+            </event>
+            <event guid='c6999865-5329-43f2-8aca-85ae39932d09' id='42'>
+                <date>2042-10-02T11:45:00+00:00</date>
+                <title>Fourth event</title>
+                <subtitle>With a subtitle</subtitle>
+                <start>11:45</start>
+                <duration>00:30</duration>
+                <room>Another Room</room>
+                <slug>fourth-42-event</slug>
+                <track>Testing</track>
+                <type>Talk</type>
+                <abstract>A minimal description</abstract>
+            </event>
+        </room>
+        <room name='Third Room'>
+            <event guid='1248925b-f608-4ebc-8d37-7a22fadc51a4' id='55'>
+                <date>2042-10-02T10:00:00+00:00</date>
+                <title>Fifth event</title>
+                <subtitle>Will be ignored</subtitle>
+                <start>10:00</start>
+                <duration>01:00</duration>
+                <room>Third Room</room>
+                <slug>fifth-55-event</slug>
+                <track>Testing</track>
+                <type>Talk</type>
+                <abstract/>
+            </event>
+        </room>
+    </day>
+</schedule>
