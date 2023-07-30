@@ -2,7 +2,7 @@
     <version>0.0.1</version>
     <conference>
         <title>Some Test Event</title>
-        <acronym>Test1</acronym>
+        <acronym>test-1</acronym>
     </conference>
     <day index='1' date='2042-01-02' start='2042-01-02T00:00:00+00:00' end='2042-01-02T22:59:00+00:00'>
         <room name='Random Room'>
@@ -13,7 +13,7 @@
                 <start>13:30</start>
                 <duration>00:30</duration>
                 <room>Rooming</room>
-                <slug>minimum-setup-test</slug>
+                <slug>minimum-1-setup</slug>
                 <track>Testing</track>
                 <type>Talk</type>
                 <abstract>A minimal description</abstract>

@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <schedule
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/voc/voctosched/master/schema/basic.xsd"
+    xsi:noNamespaceSchemaLocation="https://c3voc.de/schedule/schema.xsd"
 >
     <version>dolor</version>
     <conference>
         <title>Basic Test Event</title>
-        <acronym>Test2</acronym>
+        <acronym>test-2</acronym>
         <start>2042-01-03</start>
         <end>2042-01-03</end>
         <days>1</days>
@@ -21,7 +21,7 @@
                 <start>14:15</start>
                 <duration>00:45</duration>
                 <room>Some Room</room>
-                <slug>lorem/ipsum</slug>
+                <slug>lorem-42-ipsum</slug>
                 <recording>
                     <license>WTFPL</license>
                     <optout>true</optout>

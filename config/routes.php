@@ -187,11 +187,11 @@ $route->addGroup(
         $route->addGroup(
             '/schedule',
             function (RouteCollector $route): void {
-                $route->get('', 'Admin\\Schedule\\ImportSchedule@index');
-                $route->get('/edit[/{schedule_id:\d+}]', 'Admin\\Schedule\\ImportSchedule@edit');
-                $route->post('/edit[/{schedule_id:\d+}]', 'Admin\\Schedule\\ImportSchedule@save');
-                $route->get('/load/{schedule_id:\d+}', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
-                $route->post('/import/{schedule_id:\d+}', 'Admin\\Schedule\\ImportSchedule@importSchedule');
+                $route->get('', 'Admin\\ScheduleController@index');
+                $route->get('/edit[/{schedule_id:\d+}]', 'Admin\\ScheduleController@edit');
+                $route->post('/edit[/{schedule_id:\d+}]', 'Admin\\ScheduleController@save');
+                $route->get('/load/{schedule_id:\d+}', 'Admin\\ScheduleController@loadSchedule');
+                $route->post('/import/{schedule_id:\d+}', 'Admin\\ScheduleController@importSchedule');
             }
         );
 

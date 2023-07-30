@@ -59,8 +59,6 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/admin_user.php',
     __DIR__ . '/../includes/pages/user_myshifts.php',
     __DIR__ . '/../includes/pages/user_shifts.php',
-
-    __DIR__ . '/../includes/pages/schedule/ImportSchedule.php',
 ];
 
 foreach ($includeFiles as $file) {
