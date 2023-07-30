@@ -1,20 +1,22 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <schedule
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/voc/voctosched/master/schema/extended.xsd"
+    xsi:noNamespaceSchemaLocation="https://c3voc.de/schedule/schema.xsd"
 >
+    <generator name="Engelsystem" version="1.2.3"/>
     <version>Some version string</version>
     <conference>
         <title>Test Event</title>
-        <acronym>Test3</acronym>
-        <start>2042-01-01</start>
-        <end>2042-01-01</end>
+        <acronym>test-3</acronym>
+        <start>2042-01-01T01:00:00+02:00</start>
+        <end>2042-01-01T22:59:00+02:00</end>
         <days>1</days>
         <timeslot_duration>00:15</timeslot_duration>
         <base_url>https://foo.bar/baz/schedule/</base_url>
+        <time_zone_name>Europe/Berlin</time_zone_name>
     </conference>
     <day index='1' date='2042-01-01' start='2042-01-01T01:00:00+02:00' end='2042-01-01T22:59:00+02:00'>
-        <room name='Rooming'>
+        <room name='Rooming' guid="bf5f1132-82bd-4da2-bbe0-1abbf8daf4ab">
             <event guid='e427cfa9-9ba1-4b14-a99f-bce83ffe5a1c' id='1337'>
                 <date>2042-01-01T12:30:00+02:00</date>
                 <title>Foo Bar Test</title>
@@ -22,10 +24,12 @@
                 <start>12:30</start>
                 <duration>00:30</duration>
                 <room>Rooming</room>
-                <slug>foo-bar-test</slug>
+                <slug>some-3-test</slug>
                 <recording>
                     <license>WTFPL</license>
                     <optout>false</optout>
+                    <url>https://recorder.test/some-3-test/recorded</url>
+                    <link>https://recorder.test/some-3-test</link>
                 </recording>
                 <video_download_url>https://foo.bar/baz/schedule/ipsum/recording.mp4</video_download_url>
                 <track>Testing</track>
