@@ -15,7 +15,7 @@ class NewsControllerTest extends ApiBaseControllerTest
      */
     public function testIndex(): void
     {
-        News::factory(3)->create();
+        $items = News::factory(3)->create();
 
         $controller = new NewsController(new Response(), $this->url);
 
@@ -28,5 +28,9 @@ class NewsControllerTest extends ApiBaseControllerTest
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('data', $data);
         $this->assertCount(3, $data['data']);
+
+        $this->assertCount(1, collect($data['data'])->filter(function ($item) use ($items) {
+            return $item['title'] == $items->first()->getAttribute('title');
+        }));
     }
 }

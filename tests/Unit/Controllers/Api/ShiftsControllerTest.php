@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
 use Engelsystem\Controllers\Api\ShiftsController;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Room;
@@ -14,7 +15,6 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\User;
-use Illuminate\Database\Eloquent\Collection;
 
 class ShiftsControllerTest extends ApiBaseControllerTest
 {
@@ -30,10 +30,14 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $room = Room::factory()->create();
 
         // Shifts
-        /** @var Collection|Shift[] $shifts */
-        $shifts = Shift::factory(2)
-            ->create(['room_id' => $room->id]);
-        $shiftA = $shifts[0];
+        /** @var Shift $shiftA */
+        $shiftA = Shift::factory(1)
+            ->create(['room_id' => $room->id, 'start' => Carbon::now()->subHour()])
+            ->first();
+        /** @var Shift $shiftB */
+        $shiftB = Shift::factory(1)
+            ->create(['room_id' => $room->id, 'start' => Carbon::now()->addHour()])
+            ->first();
 
         // "Empty" entry to be skipped
         NeededAngelType::factory(1)->create(['room_id' => null, 'shift_id' => $shiftA->id, 'count' => 0]);
@@ -87,5 +91,32 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('data', $data);
         $this->assertCount(2, $data['data']);
+
+        // First shift
+        $shiftAData = $data['data'][0];
+        $this->assertEquals($shiftA->title, $shiftAData['title'], 'Title is equal');
+        $this->assertEquals($room->id, $shiftAData['room']['id'], 'Same room');
+        $this->assertEquals($shiftA->shiftType->id, $shiftAData['shift_type']['id'], 'Shift type equals');
+        $this->assertCount(4, $shiftAData['entries']);
+        // Has users
+        $entriesA = collect($shiftAData['entries'])->sortBy('type.id');
+        $entry = $entriesA[0];
+        $this->assertCount(2, $entry['users']);
+        $this->assertEquals(5, $entry['needs']);
+        $user = $entry['users'][0];
+        $this->assertEquals('/users?action=view&user_id=' . $user['id'], $user['url']);
+        $this->assertCount(0, $entriesA[1]['users']);
+        $this->assertCount(1, $entriesA[2]['users']);
+        $this->assertCount(1, $entriesA[3]['users']);
+
+        // Second (empty) shift
+        $shiftBData = $data['data'][1];
+        $this->assertEquals($shiftB->title, $shiftBData['title'], 'Title is equal');
+        $this->assertEquals($room->id, $shiftBData['room']['id'], 'Same room');
+        $this->assertEquals($shiftB->shiftType->id, $shiftBData['shift_type']['id'], 'Shift type equals');
+        $this->assertCount(2, $shiftBData['entries']);
+        // No users
+        $entriesB = collect($shiftBData['entries'])->sortBy('type.id');
+        $this->assertCount(0, $entriesB[0]['users']);
     }
 }
