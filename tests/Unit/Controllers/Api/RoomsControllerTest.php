@@ -16,7 +16,7 @@ class RoomsControllerTest extends ApiBaseControllerTest
     public function testIndex(): void
     {
         $this->initDatabase();
-        Room::factory(3)->create();
+        $items = Room::factory(3)->create();
 
         $controller = new RoomsController(new Response(), $this->url);
 
@@ -29,5 +29,8 @@ class RoomsControllerTest extends ApiBaseControllerTest
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('data', $data);
         $this->assertCount(3, $data['data']);
+        $this->assertCount(1, collect($data['data'])->filter(function ($item) use ($items) {
+            return $item['name'] == $items->first()->getAttribute('name');
+        }));
     }
 }

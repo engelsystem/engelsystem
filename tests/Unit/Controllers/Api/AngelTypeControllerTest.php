@@ -16,7 +16,7 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
     public function testIndex(): void
     {
         $this->initDatabase();
-        AngelType::factory(3)->create();
+        $items = AngelType::factory(3)->create();
 
         $controller = new AngelTypeController(new Response(), $this->url);
 
@@ -29,5 +29,8 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('data', $data);
         $this->assertCount(3, $data['data']);
+        $this->assertCount(1, collect($data['data'])->filter(function ($item) use ($items) {
+            return $item['name'] == $items->first()->getAttribute('name');
+        }));
     }
 }
