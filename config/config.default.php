@@ -256,6 +256,9 @@ return [
     // Users are able to sign up
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
 
+    // URL to external registration page, used on login page
+    'external_registration_url'   => env('EXTERNAL_REGISTRATION_URL'),
+
     // Required user fields
     'required_user_fields' => [
         'pronoun'            => (bool) env('PRONOUN_REQUIRED', false),
@@ -300,9 +303,8 @@ return [
     // The minimum length for passwords
     'min_password_length'     => env('PASSWORD_MINIMUM_LENGTH', 8),
 
-    // Whether the Password field should be enabled on registration.
-    // This is useful when using oauth, disabling it also disables normal
-    // registration without oauth.
+    // Whether the login and registration via password should be enabled (login will be hidden)
+    // This is useful when using oauth, disabling it also disables normal registration without oauth
     'enable_password'         => (bool) env('ENABLE_PASSWORD', true),
 
     // Whether the DECT field should be enabled
