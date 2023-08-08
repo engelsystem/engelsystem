@@ -1,0 +1,24 @@
+{% extends 'pages/settings/settings.twig' %}
+{% import 'macros/form.twig' as f %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __('settings.certificates') }}{% endblock %}
+
+{% block row_content %}
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ csrf() }}
+
+        <div class="row">
+            <div class="col-md-12">
+                {{ m.info(__('settings.certificates.info')) }}
+                {{ f.checkbox('ifsg_certificate', __('settings.ifsg'), {
+                        'checked': ifsg_certificate,
+                }) }}
+                {{ f.checkbox('ifsg_certificate_full', __('settings.ifsg_full'), {
+                        'checked': ifsg_certificate_full,
+                }) }}
+                {{ f.submit(__('form.save')) }}
+            </div>
+        </div>
+    </form>
+{% endblock %}
