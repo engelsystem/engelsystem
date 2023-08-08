@@ -2207,6 +2207,21 @@ msgstr "Hier kannst Du Dein Theme ändern."
 msgid "settings.theme.success"
 msgstr "Theme wurde erfolgreich geändert."
 
+msgid settings.certificates
+msgstr "Zertifikate"
+
+msgid settings.certificates.info
+msgstr "Hier kannst du deine gemachte Gesundheitsbelehrung eintragen"
+
+msgid settings.ifsg
+msgstr "Kleines Frikadellendiplom ()"
+
+msgid settings.ifsg_full
+msgstr "Großes Frikadellendiplom ()"
+
+msgid settings.certificates.success
+msgstr "Gesundheitsbelehrung wurde erfolgreich geändert."
+
 msgid "settings.language"
 msgstr "Sprache"
 

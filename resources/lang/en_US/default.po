@@ -308,6 +308,18 @@ msgstr "Here you can change your theme."
 msgid "settings.theme.success"
 msgstr "Theme was changed successfully."
 
+msgid settings.certificates
+msgstr "Certificates"
+
+msgid settings.certificates.info
+
+msgid settings.ifsg
+
+msgid settings.ifsg_full
+
+msgid settings.certificates.success
+msgstr "IfSG certificate was changed successfully."
+
 msgid "settings.language"
 msgstr "Language"
 

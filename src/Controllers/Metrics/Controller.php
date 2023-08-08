@@ -83,6 +83,8 @@ class Controller extends BaseController
                 ['labels' => ['type' => '3.5t'], 'value' => $this->stats->licenses('3.5t')],
                 ['labels' => ['type' => '7.5t'], 'value' => $this->stats->licenses('7.5t')],
                 ['labels' => ['type' => '12t'], 'value' => $this->stats->licenses('12t')],
+                ['labels' => ['type' => 'ifsg'], 'value' => $this->stats->licenses('ifsg')],
+                ['labels' => ['type' => 'ifsg_full'], 'value' => $this->stats->licenses('ifsg_full')],
             ],
             'users_email'          => [
                 'type' => 'gauge',
