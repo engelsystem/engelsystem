@@ -225,7 +225,7 @@ class SettingsController extends BaseController
     public function ifsgCertificate(): Response
     {
         $user = $this->auth->user();
-        if (config('ifsg_enabled')) {
+        if (!config('ifsg_enabled')) {
             throw new HttpNotFound('ifsg.disabled');
         }
         return $this->response->withView(
@@ -246,7 +246,7 @@ class SettingsController extends BaseController
             'ifsg_certificate_full' => 'optional|checked'
         ]);
 
-        if (config('ifsg_enabled')) {
+        if (!config('ifsg_enabled')) {
             throw new HttpNotFound('ifsg.disabled');
         }
 

@@ -123,6 +123,7 @@ function angeltype_edit_controller()
             $angeltype->hide_register = $request->has('hide_register');
 
             $angeltype->requires_driver_license = $request->has('requires_driver_license');
+            $angeltype->requires_ifsg_certificate = $request->has('requires_ifsg_certificate');
         }
 
         $angeltype->description = strip_request_item_nl('description', $angeltype->description);
@@ -139,6 +140,7 @@ function angeltype_edit_controller()
                 'Saved angeltype: ' . $angeltype->name . ($angeltype->restricted ? ', restricted' : '')
                 . ($angeltype->no_self_signup ? ', no_self_signup' : '')
                 . ($angeltype->requires_driver_license ? ', requires driver license' : '') . ', '
+                . ($angeltype->requires_ifsg_certificate ? ', requires ifsg certificate' : '') . ', '
                 . $angeltype->contact_name . ', '
                 . $angeltype->contact_dect . ', '
                 . $angeltype->contact_email . ', '

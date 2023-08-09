@@ -111,6 +111,18 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                     __('Requires driver license'),
                     $angeltype->requires_driver_license
                 ),
+            $supporter_mode && config('ifsg_enabled')?
+                form_info(
+                    __('requires IfSG certificate'),
+                    $angeltype->requires_ifsg_certificate
+                        ? __('Yes')
+                        : __('No')
+                ) :
+                form_checkbox(
+                    'requires_ifsg_certificate',
+                    __('requires IfSG certificate'),
+                    $angeltype->requires_ifsg_certificate
+                ),
             $supporter_mode
                 ? form_info(__('Show on dashboard'), $angeltype->show_on_dashboard ? __('Yes') : __('No'))
                 : form_checkbox('show_on_dashboard', __('Show on dashboard'), $angeltype->show_on_dashboard),
@@ -161,6 +173,12 @@ function AngelType_view_buttons(
             icon('person-vcard') . __('my driving license')
         );
     }
+    if ($angeltype->requires_ifsg_certificate) {
+        $buttons[] = button(
+            user_driver_license_edit_link($user),
+            icon('card-checklist') . __('my ifsg certificate')
+        );
+    }
 
     if (is_null($user_angeltype)) {
         $buttons[] = button(
@@ -171,6 +189,10 @@ function AngelType_view_buttons(
     } else {
         if ($angeltype->requires_driver_license && !$user_driver_license->wantsToDrive()) {
             error(__('This angeltype requires a driver license. Please enter your driver license information!'));
+        }
+
+        if ($angeltype->requires_ifsg_certificate && !$user->license->ifsg_certificate) {
+            error(__('This angeltype requires an ifsg certificate. Please enter your ifsg certificate information!'));
         }
 
         if ($angeltype->restricted && !$user_angeltype->confirm_user_id) {

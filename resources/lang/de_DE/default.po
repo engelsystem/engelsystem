@@ -2207,20 +2207,32 @@ msgstr "Hier kannst Du Dein Theme ändern."
 msgid "settings.theme.success"
 msgstr "Theme wurde erfolgreich geändert."
 
-msgid settings.certificates
+msgid "settings.certificates"
 msgstr "Zertifikate"
 
-msgid settings.certificates.info
+msgid "settings.certificates.info"
 msgstr "Hier kannst du deine gemachte Gesundheitsbelehrung eintragen"
 
-msgid settings.ifsg
-msgstr "Kleines Frikadellendiplom ()"
+msgid "settings.ifsg"
+msgstr "Frikadellendiplom light: Du wurdest von c3gelb vor Ort nach ISfG §43 belehrt."
 
-msgid settings.ifsg_full
-msgstr "Großes Frikadellendiplom ()"
+msgid "settings.ifsg_full"
+msgstr "Frikadellendiplom: Du hast eine Belehrung nach §43 ISfG bei deinem Gesundheitsamt erhalten und innerhalb von 3 Monaten die Zweitbelehrung durch uns oder deinen Arbeitgeber/Koch/Verein bekommen. Zusätzlich ist die Zweibelehrung nicht älter als zwei Jahre."
 
-msgid settings.certificates.success
+msgid "settings.certificates.success"
 msgstr "Gesundheitsbelehrung wurde erfolgreich geändert."
+
+msgid "requires IfSG certificate"
+msgstr "benötigt eine Gesundheitsbelehrung"
+
+msgid "ifsg certificate"
+msgstr "Gesundheitsbelehrung"
+
+msgid "my ifsg certificate"
+msgstr "Meine Gesundheitsbelehrung"
+
+msgid "This angeltype requires an ifsg certificate. Please enter your ifsg certificate information!"
+msgstr "Dieser Engeltyp benötigt eine Gesundheitsbelehrung. Bitte trage deine Gesundheitsbelehrung ein!"
 
 msgid "settings.language"
 msgstr "Sprache"
