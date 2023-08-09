@@ -534,6 +534,11 @@ function User_view(
         $needs_drivers_license = $needs_drivers_license || $angeltype->requires_driver_license;
     }
 
+    $needs_ifsg_certificate = false;
+    foreach ($user_angeltypes as $angeltype) {
+        $needs_ifsg_certificate = $needs_ifsg_certificate || $angeltype->requires_ifsg_certificate;
+    }
+
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
         . (
@@ -559,6 +564,10 @@ function User_view(
                         $admin_user_privilege || ($its_me && $needs_drivers_license) ? button(
                             user_driver_license_edit_link($user_source),
                             icon('person-vcard') . __('driving license')
+                        ) : '',
+                        config('ifsg_enabled') && ($admin_user_privilege || ($its_me && $needs_drivers_license)) ? button(
+                            page_link_to('settings/certificates'),
+                            icon('card-checklist') . __('ifsg certificate')
                         ) : '',
                         (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
                             form([

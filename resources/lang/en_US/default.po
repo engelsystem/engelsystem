@@ -311,14 +311,29 @@ msgstr "Theme was changed successfully."
 msgid settings.certificates
 msgstr "Certificates"
 
-msgid settings.certificates.info
+msgid "settings.certificates.info"
+msgstr "Here you can enter your health instruction"
 
-msgid settings.ifsg
+msgid "settings.ifsg"
+msgstr "Frikadellendiplom light: You were instructed from c3gelb about ISfG §43 on site."
 
-msgid settings.ifsg_full
+msgid "settings.ifsg_full"
+msgstr "Frikadellendiplom: You have gotten the instruction about §43 ISfG from your Health Department and a second instruction from us or your employer/chef/assosiation within 3 months. Additionally your second instruction is not older than 2 years."
 
-msgid settings.certificates.success
-msgstr "IfSG certificate was changed successfully."
+msgid "settings.certificates.success"
+msgstr "Health instruction was changed successfully."
+
+msgid "requires IfSG certificate"
+msgstr "requires health instruction"
+
+msgid "ifsg certificate"
+msgstr "health instruction"
+
+msgid "my ifsg certificate"
+msgstr "my health instruction"
+
+msgid "This angeltype requires an ifsg certificate. Please enter your ifsg certificate information!"
+msgstr ""This angeltype requires a health instruction. Please enter your health instruction information!""
 
 msgid "settings.language"
 msgstr "Language"
