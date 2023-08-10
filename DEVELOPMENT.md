@@ -13,10 +13,14 @@ Please ensure that your pull requests follow the [PSR-12](https://www.php-fig.or
 You can check that by running
 ```bash
 composer run phpcs
+# with docker
+docker exec engelsystem_dev-es_workspace-1 composer run phpcs
 ```
 You may auto fix reported issues by running
 ```bash
 composer run phpcbf
+# with docker
+docker exec engelsystem_dev-es_workspace-1 composer run phpcbf
 ```
 
 ## Pre-commit hooks

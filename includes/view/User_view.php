@@ -567,7 +567,7 @@ function User_view(
                         ) : '',
                         config('ifsg_enabled') && ($admin_user_privilege || ($its_me && $needs_drivers_license)) ? button(
                             page_link_to('settings/certificates'),
-                            icon('card-checklist') . __('ifsg certificate')
+                            icon('card-checklist') . __('ifsg.certificate')
                         ) : '',
                         (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
                             form([

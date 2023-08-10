@@ -174,22 +174,22 @@ class Stats
             ->get();
     }
 
-    public function licenses(string $lisence): int
+    public function licenses(string $license): int
     {
         $mapping = [
-            'has_car'           => 'has_car',
-            'forklift'          => 'drive_forklift',
-            'car'               => 'drive_car',
-            '3.5t'              => 'drive_3_5t',
-            '7.5t'              => 'drive_7_5t',
-            '12t'               => 'drive_12t',
-            'ifsg'              => 'ifsg_certificate',
-            'ifsg_full'         => 'ifsg_certificate_full',
+            'has_car'   => 'has_car',
+            'forklift'  => 'drive_forklift',
+            'car'       => 'drive_car',
+            '3.5t'      => 'drive_3_5t',
+            '7.5t'      => 'drive_7_5t',
+            '12t'       => 'drive_12t',
+            'ifsg'      => 'ifsg_certificate',
+            'ifsg_full' => 'ifsg_certificate_full',
         ];
 
         $query = (new License())
             ->getQuery()
-            ->where($mapping[$lisence], true);
+            ->where($mapping[$license], true);
 
         return $query->count();
     }

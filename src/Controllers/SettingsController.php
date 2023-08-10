@@ -225,9 +225,11 @@ class SettingsController extends BaseController
     public function ifsgCertificate(): Response
     {
         $user = $this->auth->user();
+
         if (!config('ifsg_enabled')) {
             throw new HttpNotFound('ifsg.disabled');
         }
+
         return $this->response->withView(
             'pages/settings/certificates',
             [
@@ -243,7 +245,7 @@ class SettingsController extends BaseController
         $user = $this->auth->user();
         $data = $this->validate($request, [
             'ifsg_certificate' => 'optional|checked',
-            'ifsg_certificate_full' => 'optional|checked'
+            'ifsg_certificate_full' => 'optional|checked',
         ]);
 
         if (!config('ifsg_enabled')) {
@@ -251,7 +253,7 @@ class SettingsController extends BaseController
         }
 
         $user->license->ifsg_certificate = $data['ifsg_certificate'] || $data['ifsg_certificate_full'];
-        $user->license->ifsg_certificate_full = (bool)$data['ifsg_certificate_full'];
+        $user->license->ifsg_certificate_full = (bool) $data['ifsg_certificate_full'];
         $user->license->save();
 
         $this->addNotification('settings.certificates.success');
@@ -290,7 +292,7 @@ class SettingsController extends BaseController
             $menu[url('/settings/theme')] = 'settings.theme';
         }
 
-        if (!config('ifsg_disable')) {
+        if (config('ifsg_enable')) {
             $menu[url('/settings/certificates')] = 'settings.certificates';
         }
 
