@@ -54,9 +54,10 @@
         {% if config('enable_planned_arrival') %}
             <div class="row g-4">
                 <div class="col-sm-6">
+                    {% set planned_arrival_date = user.personalData.planned_arrival_date %}
                     {{ f.input('planned_arrival_date', __('settings.profile.planned_arrival_date'), {
                         'type': 'date',
-                        'value': user.personalData.planned_arrival_date.format('Y-m-d'),
+                        'value': planned_arrival_date ? planned_arrival_date.format('Y-m-d') : '',
                         'required': true,
                         'required_icon': true,
                         'min': config('buildup_start') ? config('buildup_start').format('Y-m-d') : '',

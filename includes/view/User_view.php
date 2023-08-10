@@ -499,9 +499,8 @@ function User_view(
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $auth = auth();
     $nightShiftsConfig = config('night_shifts');
-    $user_name = htmlspecialchars(
-        $user_source->personalData->first_name
-    ) . ' ' . htmlspecialchars($user_source->personalData->last_name);
+    $user_name = htmlspecialchars((string) $user_source->personalData->first_name) . ' '
+        . htmlspecialchars((string) $user_source->personalData->last_name);
     $myshifts_table = '';
     if ($its_me || $admin_user_privilege || $tshirt_admin) {
         $my_shifts = User_view_myshifts(
