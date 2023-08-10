@@ -111,16 +111,16 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                     __('Requires driver license'),
                     $angeltype->requires_driver_license
                 ),
-            $supporter_mode && config('ifsg_enabled')?
+            $supporter_mode && config('ifsg_enabled') ?
                 form_info(
-                    __('requires IfSG certificate'),
+                    __('angeltype.ifsg.required'),
                     $angeltype->requires_ifsg_certificate
                         ? __('Yes')
                         : __('No')
                 ) :
                 form_checkbox(
                     'requires_ifsg_certificate',
-                    __('requires IfSG certificate'),
+                    __('angeltype.ifsg.required'),
                     $angeltype->requires_ifsg_certificate
                 ),
             $supporter_mode
@@ -175,8 +175,8 @@ function AngelType_view_buttons(
     }
     if ($angeltype->requires_ifsg_certificate) {
         $buttons[] = button(
-            user_driver_license_edit_link($user),
-            icon('card-checklist') . __('my ifsg certificate')
+            url('/settings/certificates'),
+            icon('card-checklist') . __('angeltype.ifsg.own')
         );
     }
 
@@ -192,7 +192,7 @@ function AngelType_view_buttons(
         }
 
         if ($angeltype->requires_ifsg_certificate && !$user->license->ifsg_certificate) {
-            error(__('This angeltype requires an ifsg certificate. Please enter your ifsg certificate information!'));
+            error(__('angeltype.ifsg.required.info'));
         }
 
         if ($angeltype->restricted && !$user_angeltype->confirm_user_id) {

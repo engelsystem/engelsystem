@@ -324,7 +324,7 @@ return [
     ],
 
     # Instruction in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)
-    'ifsg_enabled'           => (bool) env('IFSG_ENABLED', true),
+    'ifsg_enabled'           => (bool) env('IFSG_ENABLED', false),
 
     // Available locales in /resources/lang/
     'locales'                 => [

@@ -31,14 +31,14 @@ class License extends HasUserModel
 
     /** @var array Default attributes */
     protected $attributes = [ // phpcs:ignore
-        'has_car'                   => false,
-        'drive_forklift'            => false,
-        'drive_car'                 => false,
-        'drive_3_5t'                => false,
-        'drive_7_5t'                => false,
-        'drive_12t'                 => false,
-        'ifsg_certificate'          => false,
-        'ifsg_certificate_full'     => false,
+        'has_car'               => false,
+        'drive_forklift'        => false,
+        'drive_car'             => false,
+        'drive_3_5t'            => false,
+        'drive_7_5t'            => false,
+        'drive_12t'             => false,
+        'ifsg_certificate'      => false,
+        'ifsg_certificate_full' => false,
     ];
 
     /**
@@ -60,14 +60,14 @@ class License extends HasUserModel
 
     /** @var array<string> */
     protected $casts = [ // phpcs:ignore
-        'has_car'                   => 'boolean',
-        'drive_forklift'            => 'boolean',
-        'drive_car'                 => 'boolean',
-        'drive_3_5t'                => 'boolean',
-        'drive_7_5t'                => 'boolean',
-        'drive_12t'                 => 'boolean',
-        'ifsg_certificate'          => 'boolean',
-        'ifsg_certificate_full'     => 'boolean',
+        'has_car'               => 'boolean',
+        'drive_forklift'        => 'boolean',
+        'drive_car'             => 'boolean',
+        'drive_3_5t'            => 'boolean',
+        'drive_7_5t'            => 'boolean',
+        'drive_12t'             => 'boolean',
+        'ifsg_certificate'      => 'boolean',
+        'ifsg_certificate_full' => 'boolean',
     ];
 
     /**

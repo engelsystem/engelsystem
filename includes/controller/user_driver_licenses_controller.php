@@ -30,6 +30,28 @@ function user_driver_license_required_hint()
     return null;
 }
 
+function user_ifsg_certificate_required_hint()
+{
+    $user = auth()->user();
+
+    // User has already entered data, no hint needed.
+    if ($user->license->ifsg) {
+        return null;
+    }
+
+    $angeltypes = $user->userAngelTypes;
+    foreach ($angeltypes as $angeltype) {
+        if ($angeltype->requires_ifsg_certificate) {
+            return sprintf(
+                __('angeltype.ifsg.required.info.here'),
+                '<a href="' . url('/settings/certificates') . '" class="text-info">' . __('ifsg.info') . '</a>'
+            );
+        }
+    }
+
+    return null;
+}
+
 /**
  * Route user driver licenses actions.
  *
