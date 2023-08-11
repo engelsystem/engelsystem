@@ -958,7 +958,7 @@ function render_user_tshirt_hint()
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     if ($goodie_tshirt && !auth()->user()->personalData->shirt_size) {
         $text = __('You need to specify a tshirt size in your settings!');
-        return render_profile_link($text, null, 'text-danger');
+        return render_profile_link($text);
     }
 
     return null;
@@ -972,7 +972,7 @@ function render_user_dect_hint()
     $user = auth()->user();
     if ($user->state->arrived && config('enable_dect') && !$user->contact->dect) {
         $text = __('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
-        return render_profile_link($text, null, 'text-danger');
+        return render_profile_link($text);
     }
 
     return null;
