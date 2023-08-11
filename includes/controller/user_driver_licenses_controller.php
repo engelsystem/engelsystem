@@ -22,7 +22,7 @@ function user_driver_license_required_hint()
         if ($angeltype->requires_driver_license) {
             return sprintf(
                 __('You joined an angeltype which requires a driving license. Please edit your driving license information here: %s.'),
-                '<a href="' . user_driver_license_edit_link() . '" class="text-info">' . __('driving license information') . '</a>'
+                '<a href="' . user_driver_license_edit_link() . '">' . __('driving license information') . '</a>'
             );
         }
     }
@@ -44,7 +44,7 @@ function user_ifsg_certificate_required_hint()
         if ($angeltype->requires_ifsg_certificate) {
             return sprintf(
                 __('angeltype.ifsg.required.info.here'),
-                '<a href="' . url('/settings/certificates') . '" class="text-info">' . __('ifsg.info') . '</a>'
+                '<a href="' . url('/settings/certificates') . '">' . __('ifsg.info') . '</a>'
             );
         }
     }

@@ -37,7 +37,7 @@ function user_angeltypes_unconfirmed_hint()
 
     $unconfirmed_links = [];
     foreach ($unconfirmed_user_angeltypes as $user_angeltype) {
-        $unconfirmed_links[] = '<a class="text-info" href="'
+        $unconfirmed_links[] = '<a href="'
             . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $user_angeltype->angel_type_id])
             . '">' . $user_angeltype->angelType->name
             . ' (+' . $user_angeltype->count . ')'
