@@ -88,7 +88,7 @@ class ControllerTest extends TestCase
 
         $stats->expects($this->exactly(8))
             ->method('licenses')
-            ->withConsecutive(['has_car'], ['forklift'], ['car'], ['3.5t'], ['7.5t'], ['12t'], ['ifsg'], ['ifsg_full'])
+            ->withConsecutive(['has_car'], ['forklift'], ['car'], ['3.5t'], ['7.5t'], ['12t'], ['ifsg_light'], ['ifsg'])
             ->willReturnOnConsecutiveCalls(6, 3, 15, 9, 7, 1, 5, 4);
         $stats->expects($this->exactly(2))
             ->method('arrivedUsers')

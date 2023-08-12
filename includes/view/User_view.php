@@ -565,7 +565,7 @@ function User_view(
                             user_driver_license_edit_link($user_source),
                             icon('person-vcard') . __('driving license')
                         ) : '',
-                        config('ifsg_enabled') && ($admin_user_privilege || ($its_me && $needs_drivers_license)) ? button(
+                        config('ifsg_enabled') && ($admin_user_privilege || ($its_me && $needs_ifsg_certificate)) ? button(
                             page_link_to('settings/certificates'),
                             icon('card-checklist') . __('ifsg.certificate')
                         ) : '',

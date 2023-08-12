@@ -17,8 +17,8 @@ class AddIfsgCerificatesToUsersLicenses extends Migration
     public function up(): void
     {
         $this->schema->table('users_licenses', function (Blueprint $table): void {
-            $table->boolean('ifsg_certificate')->default(false)->after('drive_12t');
-            $table->boolean('ifsg_certificate_full')->default(false)->after('ifsg_certificate');
+            $table->boolean('ifsg_certificate_light')->default(false)->after('drive_12t');
+            $table->boolean('ifsg_certificate')->default(false)->after('ifsg_certificate_light');
         });
     }
 
@@ -28,8 +28,8 @@ class AddIfsgCerificatesToUsersLicenses extends Migration
     public function down(): void
     {
         $this->schema->table('users_licenses', function (Blueprint $table): void {
+            $table->dropColumn('ifsg_certificate_light');
             $table->dropColumn('ifsg_certificate');
-            $table->dropColumn('ifsg_certificate_full');
         });
     }
 }
