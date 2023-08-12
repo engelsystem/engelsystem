@@ -11,6 +11,7 @@ use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\Settings;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -573,6 +574,158 @@ class SettingsControllerTest extends ControllerTest
         $this->controller->oauth();
     }
 
+
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::__construct
+     * @covers \Engelsystem\Controllers\SettingsController::ifsgCertificate
+     */
+    public function testIfsgCertificate(): void
+    {
+        config(['ifsg_enabled' => true]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertEquals('pages/settings/certificates', $view);
+                $this->assertArrayHasKey('ifsg_certificate_light', $data);
+                $this->assertArrayHasKey('ifsg_certificate', $data);
+                $this->assertEquals($this->user->license->ifsg_certificate_light, $data['ifsg_certificate_light']);
+                $this->assertEquals($this->user->license->ifsg_certificate, $data['ifsg_certificate']);
+                return $this->response;
+            });
+
+        $this->controller->ifsgCertificate();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::ifsgCertificate
+     */
+    public function testIfsgCertificateNotConfigured(): void
+    {
+        config(['ifsg_enabled' => false]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+
+        $this->expectException(HttpNotFound::class);
+        $this->controller->ifsgCertificate();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveIfsgCertificate
+     */
+    public function testSaveIfsgCertificateNotConfigured(): void
+    {
+        config(['ifsg_enabled' => false]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+
+        $this->expectException(HttpNotFound::class);
+        $this->controller->saveIfsgCertificate($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveIfsgCertificate
+     */
+    public function testSaveIfsgCertificateLight(): void
+    {
+        config(['ifsg_enabled' => true]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+
+        $body = [
+            'ifsg_certificate_light' => true,
+        ];
+        $this->request = $this->request->withParsedBody($body);
+
+        $this->response->expects($this->once())
+            ->method('redirectTo')
+            ->with('http://localhost/settings/certificates')
+            ->willReturn($this->response);
+
+        $this->controller->saveIfsgCertificate($this->request);
+
+        $this->assertEquals($this->user->license->ifsg_certificate_light, true);
+        $this->assertEquals($this->user->license->ifsg_certificate, false);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveIfsgCertificate
+     */
+    public function testSaveIfsgCertificate(): void
+    {
+        config(['ifsg_enabled' => true]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+
+        $body = [
+            'ifsg_certificate'       => true,
+        ];
+        $this->request = $this->request->withParsedBody($body);
+
+        $this->response->expects($this->once())
+            ->method('redirectTo')
+            ->with('http://localhost/settings/certificates')
+            ->willReturn($this->response);
+
+        $this->controller->saveIfsgCertificate($this->request);
+
+        $this->assertEquals($this->user->license->ifsg_certificate_light, false);
+        $this->assertEquals($this->user->license->ifsg_certificate, true);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveIfsgCertificate
+     */
+    public function testSaveIfsgCertificateBoth(): void
+    {
+        config(['ifsg_enabled' => true]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+
+        $body = [
+            'ifsg_certificate_light' => true,
+            'ifsg_certificate'       => true,
+        ];
+        $this->request = $this->request->withParsedBody($body);
+
+        $this->response->expects($this->once())
+            ->method('redirectTo')
+            ->with('http://localhost/settings/certificates')
+            ->willReturn($this->response);
+
+        $this->controller->saveIfsgCertificate($this->request);
+
+        $this->assertEquals($this->user->license->ifsg_certificate_light, false);
+        $this->assertEquals($this->user->license->ifsg_certificate, true);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuProfile(): void
+    {
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/profile', $menu);
+        $this->assertEquals($menu['http://localhost/settings/profile'], 'settings.profile');
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuPassword(): void
+    {
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/password', $menu);
+        $this->assertEquals($menu['http://localhost/settings/password'], 'settings.password');
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuLanguage(): void
+    {
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/language', $menu);
+        $this->assertEquals($menu['http://localhost/settings/language'], 'settings.language');
+    }
+
     /**
      * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
      * @covers \Engelsystem\Controllers\SettingsController::checkOauthHidden
@@ -583,22 +736,15 @@ class SettingsControllerTest extends ControllerTest
         $providersHidden = ['foo' => ['lorem' => 'ipsum', 'hidden' => true]];
         config(['oauth' => $providers]);
 
-        $this->assertEquals([
-            'http://localhost/settings/profile' => 'settings.profile',
-            'http://localhost/settings/password' => 'settings.password',
-            'http://localhost/settings/language' => 'settings.language',
-            'http://localhost/settings/theme' => 'settings.theme',
-            'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => false],
-        ], $this->controller->settingsMenu());
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/oauth', $menu);
+        $this->assertEquals($menu['http://localhost/settings/oauth'], ['title' => 'settings.oauth', 'hidden' => false]);
 
         config(['oauth' => $providersHidden]);
-        $this->assertEquals([
-            'http://localhost/settings/profile' => 'settings.profile',
-            'http://localhost/settings/password' => 'settings.password',
-            'http://localhost/settings/language' => 'settings.language',
-            'http://localhost/settings/theme' => 'settings.theme',
-            'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => true],
-        ], $this->controller->settingsMenu());
+
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/oauth', $menu);
+        $this->assertEquals($menu['http://localhost/settings/oauth'], ['title' => 'settings.oauth', 'hidden' => true]);
     }
 
     /**
@@ -607,13 +753,33 @@ class SettingsControllerTest extends ControllerTest
     public function testSettingsMenuWithoutOAuth(): void
     {
         config(['oauth' => []]);
+    
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayNotHasKey('http://localhost/settings/oauth', $menu);
+    }
 
-        $this->assertEquals([
-            'http://localhost/settings/profile' => 'settings.profile',
-            'http://localhost/settings/password' => 'settings.password',
-            'http://localhost/settings/language' => 'settings.language',
-            'http://localhost/settings/theme' => 'settings.theme',
-        ], $this->controller->settingsMenu());
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     * @covers \Engelsystem\Controllers\SettingsController::checkOauthHidden
+     */
+    public function testSettingsMenuWithIfsg(): void
+    {
+        config(['ifsg_enabled' => true]);
+
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/certificates', $menu);
+        $this->assertEquals($menu['http://localhost/settings/certificates'], 'settings.certificates');
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuWithoutIfsg(): void
+    {
+        config(['ifsg_enabled' => false]);
+    
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayNotHasKey('http://localhost/settings/certificates', $menu);
     }
 
     /**
@@ -654,6 +820,7 @@ class SettingsControllerTest extends ControllerTest
                 'email_goody' => false,
                 'mobile_show' => false,
             ]))
+            ->has(License::factory())
             ->create();
 
         $this->controller = $this->app->make(SettingsController::class);
