@@ -81,6 +81,12 @@ $headings-small-color: $gray-lighter;
   color: lighten($brand-danger, 10%);
 }
 
+// Alerts =================================================================
+
+.alert a {
+  color: #fff;
+}
+
 // Forms ======================================================================
 
 .legend {

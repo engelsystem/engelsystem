@@ -170,6 +170,10 @@ $pagination-disabled-border-color: $gray-dark;
   color: $gray-darker;
 }
 
+.alert.alert-danger, .alert.alert-danger a {
+  color: $gray-lighter;
+}
+
 h1,
 h3,
 h5,

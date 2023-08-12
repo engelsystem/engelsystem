@@ -45,6 +45,13 @@ $navbar-default-brand-color: #fff;
 $navbar-default-brand-hover-color: $brand-primary;
 $navbar-default-brand-hover-bg: #000;
 
+// Alerts =================================================================
+
+.alert a {
+  color: #000;
+  text-decoration: underline;
+}
+
 .navbar {
   .bg-info {
     background-color: darken($brand-info, 30%);

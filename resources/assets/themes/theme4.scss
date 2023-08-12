@@ -126,3 +126,13 @@ h6,
     color: #000;
   }
 }
+
+// Alerts =================================================================
+
+.alert a {
+  color: #fff;
+}
+
+.alert.alert-success a, .alert.alert-warning a {
+  color: #000;
+}
