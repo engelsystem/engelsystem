@@ -142,8 +142,8 @@ class StatsTest extends TestCase
         $this->assertEquals(0, $stats->licenses('3.5t'));
         $this->assertEquals(0, $stats->licenses('7.5t'));
         $this->assertEquals(1, $stats->licenses('12t'));
+        $this->assertEquals(0, $stats->licenses('ifsg_light'));
         $this->assertEquals(0, $stats->licenses('ifsg'));
-        $this->assertEquals(0, $stats->licenses('ifsg_full'));
     }
 
     /**

@@ -173,7 +173,7 @@ function AngelType_view_buttons(
             icon('person-vcard') . __('my driving license')
         );
     }
-    if ($angeltype->requires_ifsg_certificate) {
+    if (config('isfg_enabled') && $angeltype->requires_ifsg_certificate) {
         $buttons[] = button(
             url('/settings/certificates'),
             icon('card-checklist') . __('angeltype.ifsg.own')
@@ -191,7 +191,7 @@ function AngelType_view_buttons(
             error(__('This angeltype requires a driver license. Please enter your driver license information!'));
         }
 
-        if ($angeltype->requires_ifsg_certificate && !$user->license->ifsg_certificate) {
+        if (config('ifsg_enabled') && $angeltype->requires_ifsg_certificate && (!$user->license->ifsg_certificate_light || !$user->license->ifsg_certificate)) {
             error(__('angeltype.ifsg.required.info'));
         }
 

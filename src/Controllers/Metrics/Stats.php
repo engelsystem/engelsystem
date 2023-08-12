@@ -183,8 +183,8 @@ class Stats
             '3.5t'      => 'drive_3_5t',
             '7.5t'      => 'drive_7_5t',
             '12t'       => 'drive_12t',
-            'ifsg'      => 'ifsg_certificate',
-            'ifsg_full' => 'ifsg_certificate_full',
+            'ifsg_light'      => 'ifsg_certificate_light',
+            'ifsg' => 'ifsg_certificate',
         ];
 
         $query = (new License())

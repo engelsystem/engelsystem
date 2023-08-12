@@ -234,8 +234,8 @@ class SettingsController extends BaseController
             'pages/settings/certificates',
             [
                 'settings_menu'    => $this->settingsMenu(),
+                'ifsg_certificate_light' => $user->license->ifsg_certificate_light,
                 'ifsg_certificate' => $user->license->ifsg_certificate,
-                'ifsg_certificate_full' => $user->license->ifsg_certificate_full,
             ]
         );
     }
@@ -244,16 +244,16 @@ class SettingsController extends BaseController
     {
         $user = $this->auth->user();
         $data = $this->validate($request, [
+            'ifsg_certificate_light' => 'optional|checked',
             'ifsg_certificate' => 'optional|checked',
-            'ifsg_certificate_full' => 'optional|checked',
         ]);
 
         if (!config('ifsg_enabled')) {
             throw new HttpNotFound('ifsg.disabled');
         }
 
-        $user->license->ifsg_certificate = $data['ifsg_certificate'] || $data['ifsg_certificate_full'];
-        $user->license->ifsg_certificate_full = (bool) $data['ifsg_certificate_full'];
+        $user->license->ifsg_certificate_light = !$data['ifsg_certificate'] && $data['ifsg_certificate_light'];
+        $user->license->ifsg_certificate = (bool) $data['ifsg_certificate'];
         $user->license->save();
 
         $this->addNotification('settings.certificates.success');
@@ -292,7 +292,7 @@ class SettingsController extends BaseController
             $menu[url('/settings/theme')] = 'settings.theme';
         }
 
-        if (config('ifsg_enable')) {
+        if (config('ifsg_enabled')) {
             $menu[url('/settings/certificates')] = 'settings.certificates';
         }
 

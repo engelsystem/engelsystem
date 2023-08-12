@@ -35,7 +35,7 @@ function user_ifsg_certificate_required_hint()
     $user = auth()->user();
 
     // User has already entered data, no hint needed.
-    if ($user->license->ifsg) {
+    if (!config('ifsg_enabled') || $user->license->ifsg_light || $user->license->ifsg) {
         return null;
     }
 

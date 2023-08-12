@@ -2213,10 +2213,10 @@ msgstr "Zertifikate"
 msgid "settings.certificates.info"
 msgstr "Hier kannst du deine gemachte Gesundheitsbelehrung eintragen"
 
-msgid "settings.ifsg"
+msgid "settings.ifsg_light"
 msgstr "Ich wurde vor Ort nach IfSG §43 (Frikadellendiplom light) belehrt."
 
-msgid "settings.ifsg_full"
+msgid "settings.ifsg"
 msgstr "Ich habe eine Belehrung nach §43 IfSG (Frikadellendiplom) bei meinem Gesundheitsamt "
 "erhalten und innerhalb von 3 Monaten die Zweitbelehrung durch uns oder meinen Arbeitgeber/Koch/Verein bekommen. "
 "Zusätzlich ist die Zweitbelehrung nicht älter als zwei Jahre."
