@@ -12,10 +12,10 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
-use Symfony\Component\Mailer\Exception\TransportException;
 
 class NewsTest extends TestCase
 {
@@ -48,7 +48,7 @@ class NewsTest extends TestCase
                 $this->assertEquals('Foo', array_values($data)[0]);
 
                 if ($i++ > 0) { // On second run
-                    throw new TransportException('Oops');
+                    throw new Exception('Oops');
                 }
             });
 
