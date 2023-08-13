@@ -189,7 +189,7 @@ table a > .icon-icon_angel {
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: stretch;
-  width: 100%;
+  width: max-content;
 
   .lane {
     background: $table-striped-bg;
