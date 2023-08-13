@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Request;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
@@ -16,6 +17,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 class GlobalsTest extends ExtensionTest
 {
     use HasDatabase;
+
+    public static function setUpBeforeClass(): void
+    {
+        Carbon::setTestNow(Carbon::createFromFormat('Y-m-d', '2023-08-15'));
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        Carbon::setTestNow();
+    }
 
     /**
      * @covers \Engelsystem\Renderer\Twig\Extensions\Globals::__construct
@@ -35,7 +46,17 @@ class GlobalsTest extends ExtensionTest
         $user = User::factory()
             ->has(Settings::factory(['theme' => 42]))
             ->create();
-        $config = new Config(['theme' => 23, 'themes' => [42 => $theme, 23 => $theme2, 1337 => $theme3]]);
+        $config = new Config(
+            [
+                'event_start' => Carbon::createFromFormat('Y-m-d', '2023-08-13'),
+                'theme'  => 23,
+                'themes' => [
+                    42   => $theme,
+                    23   => $theme2,
+                    1337 => $theme3,
+                ],
+            ]
+        );
 
         $auth->expects($this->exactly(4))
             ->method('user')
@@ -49,9 +70,11 @@ class GlobalsTest extends ExtensionTest
         $this->app->instance('config', $config);
 
         $extension = new Globals($auth, $request);
+        $globals = $extension->getGlobals();
+
+        $this->assertGlobalsExists('day_of_event', -2, $globals);
 
         // No user
-        $globals = $extension->getGlobals();
         $this->assertGlobalsExists('user', [], $globals);
         $this->assertGlobalsExists('user_messages', null, $globals);
         $this->assertGlobalsExists('request', $request, $globals);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\DayOfEvent;
 use Engelsystem\Http\Request;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Twig\Extension\GlobalsInterface as GlobalsInterface;
@@ -53,6 +54,7 @@ class Globals extends TwigExtension implements GlobalsInterface
             'request'       => $this->request,
             'themeId'       => $themeId,
             'theme'         => $theme,
+            'day_of_event'  => DayOfEvent::get(),
         ];
     }
 }

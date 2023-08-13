@@ -350,6 +350,12 @@ return [
         '4XL'  => '4XLarge Straight-Cut',
     ],
 
+    // Whether to show the current day of the event (-2, -1, 0, 1, 2…) in footer and on the dashboard.
+    // The event start date has to be set for it to appear.
+    'enable_show_day_of_event' => false,
+    // If true there will be a day 0 (-1, 0, 1…). If false there won't (-1, 1…)
+    'event_has_day0' => true,
+
     'metrics'                 => [
         // User work buckets in seconds
         'work'    => [1 * 60 * 60, 1.5 * 60 * 60, 2 * 60 * 60, 3 * 60 * 60, 5 * 60 * 60, 10 * 60 * 60, 20 * 60 * 60],
