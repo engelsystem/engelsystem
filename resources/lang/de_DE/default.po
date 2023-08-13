@@ -2426,3 +2426,9 @@ msgstr "Raum erstellen"
 
 msgid "room.edit.title"
 msgstr "Raum bearbeiten"
+
+msgid "event.day"
+msgstr "Tag %1$d"
+
+msgid "dashboard.day"
+msgstr "Tag"

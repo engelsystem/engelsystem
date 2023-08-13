@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\DayOfEvent;
 use Engelsystem\Models\News;
 use Illuminate\Support\Collection;
 
@@ -43,17 +44,25 @@ function public_dashboard_view($stats, $free_shifts, $important_news)
         ]);
     }
 
+    $stats =  [
+        stats(__('Angels needed in the next 3 hrs'), $stats['needed-3-hours']),
+        stats(__('Angels needed for nightshifts'), $stats['needed-night']),
+        stats(__('Angels currently working'), $stats['angels-working'], 'default'),
+        stats(__('Hours to be worked'), $stats['hours-to-work'], 'default'),
+    ];
+
+    $dayOfEvent = DayOfEvent::get();
+
+    if (config('enable_show_day_of_event') && $dayOfEvent !== null) {
+        $stats[] = stats(__('dashboard.day'), $dayOfEvent, 'default');
+    }
+
     $isFiltered = request()->get('filtered');
     $filter = collect(session()->get('shifts-filter'))->only(['rooms', 'types'])->toArray();
     return page([
         div('wrapper', [
             div('public-dashboard', [
-                div('first row', [
-                    stats(__('Angels needed in the next 3 hrs'), $stats['needed-3-hours']),
-                    stats(__('Angels needed for nightshifts'), $stats['needed-night']),
-                    stats(__('Angels currently working'), $stats['angels-working'], 'default'),
-                    stats(__('Hours to be worked'), $stats['hours-to-work'], 'default'),
-                ], 'statistics'),
+                div('first row', $stats, 'statistics'),
                 $news,
                 $needed_angels,
             ], 'public-dashboard'),

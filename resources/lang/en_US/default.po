@@ -524,3 +524,9 @@ msgstr "Create room"
 
 msgid "room.edit.title"
 msgstr "Edit room"
+
+msgid "event.day"
+msgstr "Day %1$d"
+
+msgid "dashboard.day"
+msgstr "Day"

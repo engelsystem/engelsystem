@@ -11,11 +11,17 @@
                         config('event_start').format(__('Y-m-d')),
                         config('event_end').format(__('Y-m-d'))
                     ]) }}
+                    {%- if config('enable_show_day_of_event') and day_of_event is defined -%}
+                        , {{ __('event.day', [day_of_event]) }}
+                    {% endif %}
                 {% elseif config('event_start') %}
                     {{ __('%1$s, starting %2$s', [
                         config('name'),
                         config('event_start').format(__('Y-m-d'))
                     ]) }}
+                    {%- if config('enable_show_day_of_event') and day_of_event is defined -%}
+                        , {{ __('event.day', [day_of_event]) }}
+                    {% endif %}
                 {% else %}
                     {{ config('name') }}
                 {% endif %} <br>
@@ -23,7 +29,10 @@
                 {{ __('Event from %1$s to %2$s', [
                     config('event_start').format(__('Y-m-d')),
                     config('event_end').format(__('Y-m-d'))
-                ]) }} <br>
+                ]) }}
+                {%- if config('enable_show_day_of_event') and day_of_event is defined -%}
+                    , {{ __('event.day', [day_of_event]) }}
+                {% endif %} <br>
             {% endif %}
         {% endblock %}
 
