@@ -1898,7 +1898,7 @@ msgstr "Du kannst keine Engel mit mehr Rechten bearbeiten."
 msgid "You cannot edit your own rights."
 msgstr "Du kannst deine eigenen Rechte nicht bearbeiten."
 
-msgid "Changes where saved."
+msgid "Changes were saved."
 msgstr "Änderung wurde gespeichert."
 
 msgid "Password reset done."

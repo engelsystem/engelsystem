@@ -281,7 +281,7 @@ function admin_user()
                     . ', force-active: ' . $user_source->state->force_active
                     . ($goodie_tshirt ? ', tshirt: ' : ', goodie: ' . $user_source->state->got_shirt)
                 );
-                $html .= success(__('Changes where saved.') . "\n", true);
+                $html .= success(__('Changes were saved.') . "\n", true);
                 break;
 
             case 'change_pw':
