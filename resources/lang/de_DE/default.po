@@ -945,6 +945,9 @@ msgstr "Die Endzeit muss nach der Startzeit liegen."
 msgid "Please enter a shift duration in minutes."
 msgstr "Gib bitte eine Schichtlänge in Minuten ein."
 
+msgid "Please validate the change hour %s. It should be between 00:00 and 24:00."
+msgstr "Bitte korrigiere die Schichtwechselstunde %s. Sie sollte zwischen 00:00 und 24:00 Uhr liegen."
+
 msgid "Please split the shift-change hours by colons."
 msgstr "Trenne die Schichtwechselstunden mit einem Komma."
 

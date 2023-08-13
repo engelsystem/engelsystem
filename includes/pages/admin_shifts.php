@@ -139,6 +139,23 @@ function admin_shifts()
                         'trim',
                         explode(',', $request->input('change_hours'))
                     );
+                    // Fehlende Minutenangaben ergänzen, 24 Uhr -> 00 Uhr
+                    array_walk($change_hours, function (&$value) use ($valid) {
+                        if (!preg_match('/^(\d{1,2}):\d{2}$/', $value)) {
+                            $value .= ':00';
+                        }
+                        if ($value == '24:00') {
+                            $value = '00:00';
+                        }
+                    });
+                    // Ensure valid time in change hours
+                    foreach ($change_hours as $change_hour) {
+                        if (!preg_match('/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/', $change_hour)) {
+                            $valid = false;
+                            error(sprintf(__('Please validate the change hour %s. It should be between 00:00 and 24:00.'), $change_hour));
+                        }
+                    }
+                    $change_hours = array_unique($change_hours);
                 } else {
                     $valid = false;
                     error(__('Please split the shift-change hours by colons.'));
@@ -224,13 +241,6 @@ function admin_shifts()
                     $shift_start = $shift_end;
                 } while ($shift_end < $end);
             } elseif ($mode == 'variable') {
-                // Fehlende Minutenangaben ergänzen
-                array_walk($change_hours, function (&$value) {
-                    if (!preg_match('/^\d{1,2}:\d{2}$/', $value)) {
-                        $value .= ':00';
-                    }
-                });
-
                 // Alle Tage durchgehen
                 $end_day = Carbon::createFromDatetime($end->format('Y-m-d') . ' 00:00');
                 $day = Carbon::createFromDatetime($start->format('Y-m-d') . ' 00:00');
@@ -488,7 +498,7 @@ function admin_shifts()
                             'change_hours',
                             __('Shift change hours'),
                             $request->has('change_hours')
-                                ? $request->input('change_hours')
+                                ? ($change_hours ? implode(', ', $change_hours) : $request->input('change_hours'))
                                 : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22',
                             false,
                             null,
