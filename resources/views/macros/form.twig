@@ -46,7 +46,7 @@ Renders an input field wrapped in a DIV with mb-3.
         <input
             type="{{ opt.type|default('text') }}" class="form-control"
             id="{{ name }}" name="{{ name }}"
-            value="{{ opt.value|default('')|escape('html_attr') }}"
+            value="{{ opt.value|default('') }}"
             {%- if opt.min_length is defined %} minlength="{{ opt.min_length }}"{% endif %}
             {%- if opt.max_length is defined %} maxlength="{{ opt.max_length }}"{% endif %}
             {%- if opt.min is defined %} min="{{ opt.min }}"{% endif %}
