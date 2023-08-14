@@ -130,6 +130,10 @@ class NewsController extends BaseController
             $query = $query->where('is_meeting', true);
         }
 
+        $count = $query->count();
+        $pagesCount = max(1, ceil($count / $perPage));
+        $page = max(1, min($page, $pagesCount));
+
         $news = $query
             ->with('user')
             ->withCount('comments')
@@ -140,14 +144,13 @@ class NewsController extends BaseController
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
-        $pagesCount = ceil($query->count() / $perPage);
 
         return $this->renderView(
             'pages/news/overview.twig',
             [
                 'news'          => $news,
-                'pages'         => max(1, $pagesCount),
-                'page'          => max(1, min($page, $pagesCount)),
+                'pages'         => $pagesCount,
+                'page'          => $page,
                 'only_meetings' => $onlyMeetings,
                 'is_overview'   => true,
             ]
