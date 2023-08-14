@@ -14,7 +14,7 @@
             {{ csrf() }}
             <div class="row g-2">
                 <div class="col-12">
-                    {{ m.button(__('back'), url('/users?action=view&user_id=' ~ user.id)) }}
+                    {{ m.button(__('back'), url('/users', {action: 'view', user_id: user.id})) }}
                 </div>
                 <div class="col-12">
                     <div>
