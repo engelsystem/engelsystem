@@ -104,8 +104,8 @@ class NewsControllerTest extends ControllerTest
                             // Show meetings
                             $this->assertTrue($data['only_meetings']);
                             $this->assertTrue($news->isNotEmpty());
-                            $this->assertEquals(1, $data['pages']);
-                            $this->assertEquals(1, $data['page']);
+                            $this->assertEquals(2, $data['pages']);
+                            $this->assertEquals(2, $data['page']);
                             break;
                         default:
                             // No news found

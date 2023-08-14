@@ -59,7 +59,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
                     NativeSessionStorage::class,
                     [
                         // 2 days
-                        'options' => ['cookie_httponly' => true, 'name' => 'session', 'cookie_lifetime' => 172800],
+                        'options' => ['cookie_secure' => true, 'cookie_httponly' => true, 'name' => 'session', 'cookie_lifetime' => 172800],
                         'handler' => null,
                     ],
                 ],
@@ -69,7 +69,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
                     NativeSessionStorage::class,
                     [
                         // 5 days
-                        'options' => ['cookie_httponly' => true, 'name' => 'foobar', 'cookie_lifetime' => 432000],
+                        'options' => ['cookie_secure' => true, 'cookie_httponly' => true, 'name' => 'foobar', 'cookie_lifetime' => 432000],
                         'handler' => $databaseHandler,
                     ],
                 ],
