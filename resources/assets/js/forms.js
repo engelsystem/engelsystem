@@ -234,7 +234,7 @@ ready(() => {
 ready(() => {
   document.querySelectorAll('select').forEach((element) => {
     element.choices = new Choices(element, {
-      allowHTML: false,
+      allowHTML: true,
       classNames: {
         containerInner: 'choices__inner form-control',
       },
