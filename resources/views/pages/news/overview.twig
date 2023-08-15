@@ -66,34 +66,35 @@
             {% endif %}
         </div>
 
-        <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} text-muted">
-            {% if news.updated_at != news.created_at and not is_overview %}
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
+        <div class="card-footer text-nowrap {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} text-muted">
+            <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
+                {% if news.updated_at != news.created_at and not is_overview %}
+                    <div>
                         {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ __('news.updated') }}
                     </div>
-                    {{ __('news.updated') }}
-                </div>
-            {% endif %}
-            <div class="d-flex align-items-center">
-                <div class="me-3">
+                {% endif %}
+
+                <div>
                     {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
                 </div>
 
-                <div class="me-3">
+                <div class="text-truncate">
                     {{ m.user(news.user) }}
                 </div>
 
                 {% if show_comments_link|default(false) %}
-                    <a href="{{ url('news/' ~ news.id) }}" class="me-1">
-                        {{ m.icon('chat-left-text') }} {{ __('news.comments') }}
-                    </a>
-                    <span class="badge bg-primary">{{ news.comments.count() }}</span>
-                    {{ m.icon('chevron-double-right', 'primary') }}
+                    <div>
+                        <a href="{{ url('news/' ~ news.id) }}" class="me-1">
+                            {{ m.icon('chat-left-text') }} {{ __('news.comments') }}
+                        </a>
+                        <span class="badge bg-primary">{{ news.comments.count() }}</span>
+                        {{ m.icon('chevron-double-right', 'primary') }}
+                    </div>
                 {% endif %}
 
                 {% if has_permission_to('admin_news') %}
-                    <div class="ms-auto">
+                    <div>
                         {{ m.button(m.icon('pencil'), url('admin/news/' ~ news.id), 'secondary', 'sm') }}
                     </div>
                 {% endif %}
