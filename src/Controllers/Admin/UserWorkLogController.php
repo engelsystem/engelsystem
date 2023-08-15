@@ -52,7 +52,7 @@ class UserWorkLogController extends BaseController
             }
             return $this->showEditWorklog($user, $worklog->worked_at, $worklog->hours, $worklog->comment, true);
         } else {
-            return $this->showEditWorklog($user, $this->getWorkDateSuggestion());
+            return $this->showEditWorklog($user, Carbon::today());
         }
     }
 
@@ -144,17 +144,5 @@ class UserWorkLogController extends BaseController
                 'is_edit' => $is_edit,
             ]
         );
-    }
-
-    private function getWorkDateSuggestion(): Carbon
-    {
-        $buildup_start = config('buildup_start');
-        $event_start = config('event_start');
-
-        $work_date_suggestion = Carbon::today();
-        if (!empty($buildup_start) && (empty($event_start) || $event_start->lessThan(Carbon::now()))) {
-            $work_date_suggestion = $buildup_start->startOfDay();
-        }
-        return $work_date_suggestion;
     }
 }

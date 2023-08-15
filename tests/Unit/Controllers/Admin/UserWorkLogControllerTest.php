@@ -62,29 +62,6 @@ class UserWorkLogControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::getWorkDateSuggestion
-     *
-     * @dataProvider buildupConfigsAndWorkDates
-     */
-    public function testShowAddWorklogWithSuggestedWorkDate(
-        Carbon|null $buildup_start,
-        Carbon|null $event_start,
-        Carbon $suggested_work_date
-    ): void {
-        $request = $this->request->withAttribute('user_id', $this->user->id);
-        config(['buildup_start' => $buildup_start]);
-        config(['event_start' => $event_start]);
-        $this->response->expects($this->once())
-            ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) use ($suggested_work_date) {
-                $this->assertEquals($suggested_work_date, $data['work_date']);
-                return $this->response;
-            });
-        $this->controller->editWorklog($request);
-    }
-
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog
      */
     public function testShowEditWorklogWithWorkLogNotAssociatedToUserThrows(): void
     {
