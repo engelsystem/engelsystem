@@ -753,7 +753,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSettingsMenuWithoutOAuth(): void
     {
         config(['oauth' => []]);
-    
+
         $menu = $this->controller->settingsMenu();
         $this->assertArrayNotHasKey('http://localhost/settings/oauth', $menu);
     }
@@ -777,7 +777,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSettingsMenuWithoutIfsg(): void
     {
         config(['ifsg_enabled' => false]);
-    
+
         $menu = $this->controller->settingsMenu();
         $this->assertArrayNotHasKey('http://localhost/settings/certificates', $menu);
     }
