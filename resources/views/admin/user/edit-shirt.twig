@@ -4,11 +4,11 @@
 
 {% block title %}
     {{ is_tshirt ? __('user.edit.shirt') : __('user.edit.goodie') }}
-{% endblock %}
+{%- endblock %}
 
 {% block content %}
     <div class="container">
-        <h1>{{ block('title') }}</h1>
+        <h1>{{ block('title') }}: <small>{{ m.user(userdata) }}</small></h1>
 
         {% include 'layouts/parts/messages.twig' %}
 
