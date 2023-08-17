@@ -308,7 +308,7 @@ msgstr "Here you can change your theme."
 msgid "settings.theme.success"
 msgstr "Theme was changed successfully."
 
-msgid settings.certificates
+msgid "settings.certificates"
 msgstr "Certificates"
 
 msgid "settings.certificates.info"
