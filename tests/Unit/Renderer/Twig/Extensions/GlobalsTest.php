@@ -72,7 +72,7 @@ class GlobalsTest extends ExtensionTest
         $extension = new Globals($auth, $request);
         $globals = $extension->getGlobals();
 
-        $this->assertGlobalsExists('day_of_event', -2, $globals);
+        $this->assertGlobalsExists('day_of_event', 3, $globals);
 
         // No user
         $this->assertGlobalsExists('user', [], $globals);
