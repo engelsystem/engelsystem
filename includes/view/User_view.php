@@ -394,12 +394,10 @@ function User_view_myshifts(
         }
     }
 
-    if ($its_me || $admin_user_worklog_privilege) {
-        foreach ($user_worklogs as $worklog) {
-            $key = $worklog->worked_at->timestamp . '-worklog-' . $worklog->id;
-            $myshifts_table[$key] = User_view_worklog($worklog, $admin_user_worklog_privilege);
-            $timeSum += $worklog->hours * 3600;
-        }
+    foreach ($user_worklogs as $worklog) {
+        $key = $worklog->worked_at->timestamp . '-worklog-' . $worklog->id;
+        $myshifts_table[$key] = User_view_worklog($worklog, $admin_user_worklog_privilege);
+        $timeSum += $worklog->hours * 3600;
     }
 
     if (count($myshifts_table) > 0) {
@@ -505,7 +503,7 @@ function User_view(
         $user_source->personalData->first_name
     ) . ' ' . htmlspecialchars($user_source->personalData->last_name);
     $myshifts_table = '';
-    if ($its_me || $admin_user_privilege) {
+    if ($its_me || $admin_user_privilege || $tshirt_admin) {
         $my_shifts = User_view_myshifts(
             $shifts,
             $user_source,
