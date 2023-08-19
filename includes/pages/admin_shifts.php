@@ -310,13 +310,20 @@ function admin_shifts()
 
             $shifts_table = [];
             foreach ($shifts as $shift) {
+                /** @var Carbon $start */
+                $start = $shift['start'];
+                /** @var Carbon $end */
+                $end = $shift['end'];
                 $shifts_table_entry = [
                     'timeslot'      =>
                         icon('clock-history') . ' '
-                        . $shift['start']->format(__('Y-m-d H:i'))
+                        . $start->format(__('Y-m-d H:i'))
                         . ' - '
-                        . $shift['end']->format(__('H:i'))
-                        . '<br />'
+                        . '<span title="' . $end->format(__('Y-m-d')) . '">'
+                        . $end->format(__('H:i'))
+                        . '</span>'
+                        . ', ' . round($end->copy()->diffInMinutes($start) / 60, 2) . 'h'
+                        . '<br>'
                         . Room_name_render(Room::find($shift['room_id'])),
                     'title'         =>
                         ShiftType_name_render(ShiftType::find($shifttype_id))
