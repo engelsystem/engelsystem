@@ -109,7 +109,7 @@ class UserWorkLogControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
      */
-    public function testSaveWorklogWithUnkownUserIdThrows(): void
+    public function testSaveWorklogWithUnknownUserIdThrows(): void
     {
         $request = $this->request->withAttribute('user_id', 1234)->withParsedBody([]);
         $this->expectException(ModelNotFoundException::class);
@@ -147,6 +147,8 @@ class UserWorkLogControllerTest extends ControllerTest
         $this->controller->saveWorklog($request);
 
         $this->assertHasNotification('worklog.add.success');
+        $this->assertTrue($this->log->hasInfoThatContains('Added worklog for'));
+
         $this->assertEquals(1, $this->user->worklogs->count());
         $new_worklog = $this->user->worklogs[0];
         $this->assertEquals($this->user->id, $new_worklog->user->id);
