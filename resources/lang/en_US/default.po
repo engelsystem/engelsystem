@@ -331,6 +331,9 @@ msgstr "Requires health instruction"
 msgid "ifsg.certificate"
 msgstr "health instruction"
 
+msgid "ifsg.certificate_light"
+msgstr "health instruction on site"
+
 msgid "angeltype.ifsg.own"
 msgstr "my health instruction"
 

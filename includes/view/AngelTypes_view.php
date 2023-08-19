@@ -191,7 +191,11 @@ function AngelType_view_buttons(
             error(__('This angeltype requires a driver license. Please enter your driver license information!'));
         }
 
-        if (config('ifsg_enabled') && $angeltype->requires_ifsg_certificate && (!$user->license->ifsg_certificate_light || !$user->license->ifsg_certificate)) {
+        if (
+            config('ifsg_enabled') && $angeltype->requires_ifsg_certificate && !(
+            $user->license->ifsg_certificate_light || $user->license->ifsg_certificate
+            )
+        ) {
             error(__('angeltype.ifsg.required.info'));
         }
 
@@ -250,6 +254,10 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
             $member['has_license_7_5t_truck'] = icon_bool($member->license->drive_7_5t);
             $member['has_license_12t_truck'] = icon_bool($member->license->drive_12t);
             $member['has_license_forklift'] = icon_bool($member->license->drive_forklift);
+        }
+        if ($angeltype->requires_ifsg_certificate) {
+            $member['ifsg_certificate'] = icon_bool($member->license->ifsg_certificate);
+            $member['ifsg_certificate_light'] = icon_bool($member->license->ifsg_certificate_light);
         }
 
         if ($angeltype->restricted && empty($member->pivot->confirm_user_id)) {
@@ -336,13 +344,14 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
 {
     $headers = [
         'name'    => __('Nick'),
-        'dect'    => __('DECT'),
-        'actions' => '',
     ];
+
+    if (config('enable_dect')) {
+        $headers['dect'] = __('DECT');
+    }
+
     if ($angeltype->requires_driver_license && ($supporter || $admin_angeltypes)) {
-        $headers = [
-            'name'                         => __('Nick'),
-            'dect'                         => __('DECT'),
+        $headers = array_merge($headers, [
             'wants_to_drive'               => __('Driver'),
             'has_car'                      => __('Has car'),
             'has_license_car'              => __('Car'),
@@ -350,12 +359,16 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
             'has_license_7_5t_truck'       => __('7,5t Truck'),
             'has_license_12t_truck'        => __('12t Truck'),
             'has_license_forklift'         => __('Forklift'),
-            'actions'                      => '',
-        ];
+        ]);
     }
-    if (!config('enable_dect')) {
-        unset($headers['dect']);
+
+    if (config('ifsg_enabled') && $angeltype->requires_ifsg_certificate && ($supporter || $admin_angeltypes)) {
+        $headers['ifsg_certificate_light'] = __('ifsg.certificate_light');
+        $headers['ifsg_certificate'] = __('ifsg.certificate');
     }
+
+    $headers['actions'] = '';
+
     return $headers;
 }
 

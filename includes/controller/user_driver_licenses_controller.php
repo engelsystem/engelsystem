@@ -41,7 +41,11 @@ function user_ifsg_certificate_required_hint()
 
     $angeltypes = $user->userAngelTypes;
     foreach ($angeltypes as $angeltype) {
-        if ($angeltype->requires_ifsg_certificate) {
+        if (
+            $angeltype->requires_ifsg_certificate && !(
+                $user->license->ifsg_certificate || $user->license->ifsg_certificate_light
+            )
+        ) {
             return sprintf(
                 __('angeltype.ifsg.required.info.here'),
                 '<a href="' . url('/settings/certificates') . '">' . __('ifsg.info') . '</a>'
