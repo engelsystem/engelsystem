@@ -64,9 +64,9 @@ class UserWorkLogController extends BaseController
         $user = $this->user->findOrFail($userId);
 
         $data = $this->validate($request, [
-            'work_date'  => 'required|date:Y-m-d',
+            'work_date' => 'required|date:Y-m-d',
             'work_hours' => 'float|min:0',
-            'comment'    => 'required|max:200',
+            'comment' => 'required|max:200',
         ]);
 
         if (isset($worklogId)) {
@@ -85,6 +85,16 @@ class UserWorkLogController extends BaseController
         $worklog->comment = $data['comment'];
         $worklog->save();
 
+        $this->log->info(
+            'Added worklog for {name} ({id}) at {time} about {hours}h: {text}',
+            [
+                'name' => $user->name,
+                'id' => $user->id,
+                'time' => $worklog->worked_at,
+                'hours' => $worklog->hours,
+                'text' => $worklog->comment,
+            ]
+        );
         $this->addNotification(isset($worklogId) ? 'worklog.edit.success' : 'worklog.add.success');
 
         return $this->redirect->to('/users?action=view&user_id=' . $userId);
