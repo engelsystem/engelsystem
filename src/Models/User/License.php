@@ -14,6 +14,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property bool $drive_3_5t
  * @property bool $drive_7_5t
  * @property bool $drive_12t
+ * @property bool $ifsg_certificate_light
+ * @property bool $ifsg_certificate
  *
  * @method static QueryBuilder|License[] whereHasCar($value)
  * @method static QueryBuilder|License[] whereDriveForklift($value)
@@ -21,6 +23,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|License[] whereDrive35T($value)
  * @method static QueryBuilder|License[] whereDrive75T($value)
  * @method static QueryBuilder|License[] whereDrive12T($value)
+ * @method static QueryBuilder|License[] whereIfsgCertificateLight($value)
+ * @method static QueryBuilder|License[] whereIfsgCertificate($value)
  */
 class License extends HasUserModel
 {

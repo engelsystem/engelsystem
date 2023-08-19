@@ -2233,6 +2233,9 @@ msgstr "Benötigt eine Gesundheitsbelehrung"
 msgid "ifsg.certificate"
 msgstr "Gesundheitsbelehrung"
 
+msgid "ifsg.certificate_light"
+msgstr "Gesundheitsbelehrung vor Ort"
+
 msgid "angeltype.ifsg.own"
 msgstr "Meine Gesundheitsbelehrung"
 
