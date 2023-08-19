@@ -122,7 +122,7 @@ function shifttype_controller()
  */
 function shifttypes_list_controller()
 {
-    $shifttypes = ShiftType::all();
+    $shifttypes = ShiftType::all()->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE);
 
     return [
         shifttypes_title(),
