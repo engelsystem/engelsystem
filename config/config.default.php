@@ -326,6 +326,10 @@ return [
     # Instruction in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)
     'ifsg_enabled'           => (bool) env('IFSG_ENABLED', false),
 
+    # Instruction only onsite in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)
+    'ifsg_light_enabled'           => (bool) env('IFSG_LIGHT_ENABLED', false)
+        && env('IFSG_ENABLED', false),
+
     // Available locales in /resources/lang/
     'locales'                 => [
         'de_DE' => 'Deutsch',
