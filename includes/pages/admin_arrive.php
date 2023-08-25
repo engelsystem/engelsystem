@@ -78,7 +78,13 @@ function admin_arrive()
     foreach ($users as $usr) {
         if (count($tokens) > 0) {
             $match = false;
-            $index = join(' ', $usr->attributesToArray());
+            $data = collect($usr->toArray())->flatten()->filter(function ($value) {
+                // Remove empty values
+                return !empty($value) &&
+                    // Skip datetime
+                    !preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}Z$/', (string) $value);
+            });
+            $index = join(' ', $data->toArray());
             foreach ($tokens as $token) {
                 $token = trim($token);
                 if (!empty($token) && stristr($index, $token)) {
