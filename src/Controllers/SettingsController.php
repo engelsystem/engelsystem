@@ -233,9 +233,9 @@ class SettingsController extends BaseController
         return $this->response->withView(
             'pages/settings/certificates',
             [
-                'settings_menu'    => $this->settingsMenu(),
+                'settings_menu'          => $this->settingsMenu(),
                 'ifsg_certificate_light' => $user->license->ifsg_certificate_light,
-                'ifsg_certificate' => $user->license->ifsg_certificate,
+                'ifsg_certificate'       => $user->license->ifsg_certificate,
             ]
         );
     }
@@ -252,7 +252,9 @@ class SettingsController extends BaseController
             throw new HttpNotFound('ifsg.disabled');
         }
 
-        $user->license->ifsg_certificate_light = !$data['ifsg_certificate'] && $data['ifsg_certificate_light'];
+        if (config('ifsg_light_enabled')) {
+            $user->license->ifsg_certificate_light = !$data['ifsg_certificate'] && $data['ifsg_certificate_light'];
+        }
         $user->license->ifsg_certificate = (bool) $data['ifsg_certificate'];
         $user->license->save();
 

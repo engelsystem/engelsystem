@@ -583,6 +583,7 @@ class SettingsControllerTest extends ControllerTest
     public function testIfsgCertificate(): void
     {
         config(['ifsg_enabled' => true]);
+        config(['ifsg_light_enabled' => true]);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
 
         $this->response->expects($this->once())
@@ -629,6 +630,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveIfsgCertificateLight(): void
     {
         config(['ifsg_enabled' => true]);
+        config(['ifsg_light_enabled' => true]);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
 
         $body = [
