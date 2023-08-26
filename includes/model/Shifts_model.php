@@ -156,7 +156,7 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
             `angel_types`.`id`,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`no_self_signup`
+            `angel_types`.`shift_self_signup`
         FROM `shifts`
         JOIN `needed_angel_types` ON `needed_angel_types`.`shift_id`=`shifts`.`id`
         JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -173,7 +173,7 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
             `angel_types`.`id`,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`no_self_signup`
+            `angel_types`.`shift_self_signup`
         FROM `shifts`
         JOIN `needed_angel_types` ON `needed_angel_types`.`room_id`=`shifts`.`room_id`
         JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -209,7 +209,7 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
                 `angel_types`.`id`,
                 `angel_types`.`name`,
                 `angel_types`.`restricted`,
-                `angel_types`.`no_self_signup`
+                `angel_types`.`shift_self_signup`
             FROM `shifts`
             JOIN `needed_angel_types` ON `needed_angel_types`.`shift_id`=`shifts`.`id`
             JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -226,7 +226,7 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
                 `angel_types`.`id`,
                 `angel_types`.`name`,
                 `angel_types`.`restricted`,
-                `angel_types`.`no_self_signup`
+                `angel_types`.`shift_self_signup`
             FROM `shifts`
             JOIN `needed_angel_types` ON `needed_angel_types`.`room_id`=`shifts`.`room_id`
             JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -368,12 +368,12 @@ function Shift_signup_allowed_angel(
 
     if (
         empty($user_angeltype)
-        || $angeltype->no_self_signup == 1
-        || ($angeltype->restricted == 1 && !isset($user_angeltype['confirm_user_id']))
+        || !$angeltype->shift_self_signup
+        || ($angeltype->restricted && !isset($user_angeltype['confirm_user_id']))
     ) {
         // you cannot join if user is not of this angel type
+        // you cannot join if angeltype has shift self signup disabled
         // you cannot join if you are not confirmed
-        // you cannot join if angeltype has no self signup
 
         return new ShiftSignupState(ShiftSignupStatus::ANGELTYPE, $free_entries);
     }

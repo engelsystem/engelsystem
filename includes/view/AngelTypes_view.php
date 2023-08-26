@@ -97,8 +97,14 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                 __('Angel types which require introduction can only be used by an angel if enabled by a supporter (double opt-in).')
             ),
             $supporter_mode
-                ? form_info(__('No Self Sign Up allowed'), $angeltype->no_self_signup ? __('Yes') : __('No'))
-                : form_checkbox('no_self_signup', __('No Self Sign Up allowed'), $angeltype->no_self_signup),
+                ? form_info(__('shift.self_signup'), $angeltype->shift_self_signup ? __('Yes') : __('No'))
+                : form_checkbox(
+                    'shift_self_signup',
+                    __('shift.self_signup') .
+                    ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                    __('angeltypes.shift.self_signup.info') . '"></span>',
+                    $angeltype->shift_self_signup
+                ),
             $supporter_mode ?
                 form_info(
                     __('Requires driver license'),
@@ -571,11 +577,11 @@ function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
             button(url('/angeltypes/about'), __('angeltypes.about')),
         ]),
         table([
-            'name'                   => __('Name'),
-            'is_restricted'          => icon('mortarboard-fill') . __('Requires introduction'),
-            'no_self_signup_allowed' => icon('pencil-square') . __('Self Sign Up Allowed'),
-            'membership'             => __('Membership'),
-            'actions'                => '',
+            'name'                      => __('Name'),
+            'is_restricted'             => icon('mortarboard-fill') . __('Requires introduction'),
+            'shift_self_signup_allowed' => icon('pencil-square') . __('shift.self_signup.allowed'),
+            'membership'                => __('Membership'),
+            'actions'                   => '',
         ], $angeltypes),
     ], true);
 }
