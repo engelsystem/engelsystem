@@ -19,7 +19,7 @@ function NeededAngelTypes_by_shift($shiftId)
             `angel_types`.`id`,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`no_self_signup`
+            `angel_types`.`shift_self_signup`
         FROM `needed_angel_types`
         JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
         WHERE `shift_id` = ?

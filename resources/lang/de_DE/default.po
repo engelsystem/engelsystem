@@ -1303,8 +1303,18 @@ msgstr ""
 "Engeltypen, welche eine Einführung benötigen, müssen von einem Supporter freigeschaltet werden "
 "(double-opt-in)."
 
-msgid "No Self Sign Up allowed"
-msgstr "Kein Selbst-Eintragen erlaubt"
+msgid "shift.self_signup"
+msgstr "Schichten selbst eintragen"
+
+msgid "shift.self_signup.allowed"
+msgstr "Schichten selbst eintragen erlaubt"
+
+msgid "angeltypes.shift.self_signup.info"
+msgstr "Engeltypen, welche Schichten selbst eintragen erlaubt haben, "
+"erlauben Engeln sich selbst in ihre Schichten einzutragen, "
+"ist Schichten selbst eintragen nicht erlaubt können nur Supporter "
+"oder Admins Engel in die Schichten des Engeltyps eintragen."
+
 
 msgid "Requires driver license"
 msgstr "Benötigt Führerschein"

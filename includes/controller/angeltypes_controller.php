@@ -118,7 +118,7 @@ function angeltype_edit_controller()
             }
 
             $angeltype->restricted = $request->has('restricted');
-            $angeltype->no_self_signup = $request->has('no_self_signup');
+            $angeltype->shift_self_signup = $request->has('shift_self_signup');
             $angeltype->show_on_dashboard = $request->has('show_on_dashboard');
             $angeltype->hide_register = $request->has('hide_register');
 
@@ -138,7 +138,7 @@ function angeltype_edit_controller()
             success('Angel type saved.');
             engelsystem_log(
                 'Saved angeltype: ' . $angeltype->name . ($angeltype->restricted ? ', restricted' : '')
-                . ($angeltype->no_self_signup ? ', no_self_signup' : '')
+                . ($angeltype->shift_self_signup ? ', shift_self_signup' : '')
                 . ($angeltype->requires_driver_license ? ', requires driver license' : '') . ', '
                 . ($angeltype->requires_ifsg_certificate ? ', requires ifsg certificate' : '') . ', '
                 . $angeltype->contact_name . ', '
@@ -318,7 +318,7 @@ function angeltypes_list_controller()
         }
 
         $angeltype->is_restricted = $angeltype->restricted ? icon('mortarboard-fill') : '';
-        $angeltype->no_self_signup_allowed = $angeltype->no_self_signup ? '' : icon('pencil-square');
+        $angeltype->shift_self_signup_allowed = $angeltype->shift_self_signup ? icon('pencil-square') : '';
 
         $angeltype->name = '<a href="'
             . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])

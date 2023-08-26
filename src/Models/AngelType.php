@@ -24,7 +24,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property boolean                           $restricted # If users need an introduction
  * @property boolean                           $requires_driver_license # If users must have a driver license
  * @property boolean                           $requires_ifsg_certificate # If users must have a ifsg certificate
- * @property boolean                           $no_self_signup # Users can sign up for shifts
+ * @property boolean                           $shift_self_signup # Users can sign up for shifts
  * @property boolean                           $show_on_dashboard # Show on public dashboard
  * @property boolean                           $hide_register # Hide from registration page
  *
@@ -49,7 +49,21 @@ class AngelType extends BaseModel
 {
     use HasFactory;
 
-    /** @var array<string> */
+    /** @var array Default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'restricted'                => false,
+        'requires_driver_license'   => false,
+        'requires_ifsg_certificate' => false,
+        'shift_self_signup'         => true,
+        'show_on_dashboard'         => false,
+        'hide_register'             => false,
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
     protected $fillable = [ // phpcs:ignore
         'name',
         'description',
@@ -61,7 +75,7 @@ class AngelType extends BaseModel
         'restricted',
         'requires_driver_license',
         'requires_ifsg_certificate',
-        'no_self_signup',
+        'shift_self_signup',
         'show_on_dashboard',
         'hide_register',
     ];
@@ -71,7 +85,7 @@ class AngelType extends BaseModel
         'restricted'                => 'boolean',
         'requires_driver_license'   => 'boolean',
         'requires_ifsg_certificate' => 'boolean',
-        'no_self_signup'            => 'boolean',
+        'shift_self_signup'         => 'boolean',
         'show_on_dashboard'         => 'boolean',
         'hide_register'             => 'boolean',
     ];
