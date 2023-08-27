@@ -80,6 +80,9 @@ msgstr "Kommentar gespeichert."
 msgid "news.comment-delete.success"
 msgstr "Kommentar erfolgreich gelöscht."
 
+msgid "news.edit.duplicate"
+msgstr "Diese News wurde bereits erstellt."
+
 msgid "news.edit.success"
 msgstr "News erfolgreich aktualisiert."
 

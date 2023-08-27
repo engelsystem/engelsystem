@@ -229,6 +229,29 @@ class NewsControllerTest extends ControllerTest
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Admin\NewsController::save
+     */
+    public function testSaveDuplicated(): void
+    {
+        $previousNews = News::first();
+        $this->request = $this->request->withParsedBody([
+            'title'  => $previousNews->title,
+            'text'   => $previousNews->text,
+        ]);
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturn($this->response);
+
+        /** @var NewsController $controller */
+        $controller = $this->app->make(NewsController::class);
+        $controller->setValidator(new Validator());
+
+        $controller->save($this->request);
+
+        $this->assertHasNotification('news.edit.duplicate', NotificationType::ERROR);
+    }
+
+    /**
      * Creates a new user
      */
     protected function addUser(): void
