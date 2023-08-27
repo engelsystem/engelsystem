@@ -2,6 +2,7 @@
 
 namespace Engelsystem;
 
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Illuminate\Support\Collection;
@@ -212,20 +213,21 @@ class ShiftCalendarRenderer
      */
     private function renderTick($time, $label = false)
     {
+        $time = Carbon::createFromTimestamp($time);
         $class = $label ? 'tick bg-' . theme_type() : 'tick ';
-        if ($time % (24 * 60 * 60) == 23 * 60 * 60) {
+        if ($time->isStartOfDay()) {
             if (!$label) {
                 return div($class . ' day');
             }
             return div($class . ' day', [
-                date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time),
+                $time->format(__('m-d')) . '<br>' . $time->format(__('H:i')),
             ]);
-        } elseif ($time % (60 * 60) == 0) {
+        } elseif ($time->isStartOfHour()) {
             if (!$label) {
                 return div($class . ' hour');
             }
             return div($class . ' hour', [
-                date(__('m-d'), $time) . '<br>' . date(__('H:i'), $time),
+                $time->format(__('m-d')) . '<br>' . $time->format(__('H:i')),
             ]);
         }
         return div($class);
