@@ -27,6 +27,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property boolean                           $shift_self_signup # Users can sign up for shifts
  * @property boolean                           $show_on_dashboard # Show on public dashboard
  * @property boolean                           $hide_register # Hide from registration page
+ * @property boolean                           $hide_on_shift_view # Hide from shift page
  *
  * @property-read Collection|NeededAngelType[] $neededBy
  * @property-read UserAngelType                $pivot
@@ -78,6 +79,7 @@ class AngelType extends BaseModel
         'shift_self_signup',
         'show_on_dashboard',
         'hide_register',
+        'hide_on_shift_view',
     ];
 
     /** @var array<string, string> */
@@ -88,6 +90,7 @@ class AngelType extends BaseModel
         'shift_self_signup'         => 'boolean',
         'show_on_dashboard'         => 'boolean',
         'hide_register'             => 'boolean',
+        'hide_on_shift_view'        => 'boolean',
     ];
 
     public function neededBy(): HasMany

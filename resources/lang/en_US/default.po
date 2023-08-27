@@ -515,6 +515,13 @@ msgstr "Teams-/Job description"
 msgid "angeltypes.about.text"
 msgstr "Here you can find the list of teams and their tasks. If you have further questions, have a look at the FAQ."
 
+msgid "angeltypes.restricted"
+msgstr "Requires introduction"
+
+msgid "angeltypes.restricted.info"
+msgstr "Angel types which require introduction can only be used by an angel "
+"if enabled by a supporter (double opt-in)."
+
 msgid "angeltypes.restricted.hint"
 msgstr "This angeltype requires the attendance at an introduction meeting. "
 "You might find additional information in the description."
@@ -540,6 +547,13 @@ msgstr "Shift self signup"
 
 msgid "shift.self_signup.allowed"
 msgstr "Shift self signup allowed"
+
+msgid "angeltypes.hide.on.shift.view"
+msgstr "Hide on shift view"
+
+msgid "angeltypes.hide.on.shift.view.info"
+msgstr "If checked only admins and members of the angeltype "
+"can see the filter option for this angeltype on the shifts page"
 
 msgid "registration.register"
 msgstr "Register"

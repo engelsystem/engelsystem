@@ -27,6 +27,7 @@ class AngelTypeFactory extends Factory
             'shift_self_signup'       => $this->faker->boolean(),
             'show_on_dashboard'       => $this->faker->boolean(),
             'hide_register'           => $this->faker->boolean(),
+            'hide_on_shift_view'      => $this->faker->boolean(),
         ];
     }
 }

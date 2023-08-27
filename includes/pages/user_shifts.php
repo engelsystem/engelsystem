@@ -174,6 +174,7 @@ function load_days()
 function load_types()
 {
     $user = auth()->user();
+    $isShico = auth()->can('admin_shifts');
 
     if (!AngelType::count()) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
@@ -197,8 +198,11 @@ function load_types()
                 ON (
                     `user_angel_type`.`angel_type_id`=`angel_types`.`id`
                     AND `user_angel_type`.`user_id`=?
-                )
-            ORDER BY `angel_types`.`name`
+                )'
+            . ($isShico ? '' :
+            'WHERE angel_types.hide_on_shift_view = 0
+            OR user_angel_type.user_id IS NOT NULL ') .
+            'ORDER BY `angel_types`.`name`
         ',
         [
             $user->id,

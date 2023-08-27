@@ -90,12 +90,14 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                 ? form_info(__('Name'), $angeltype->name)
                 : form_text('name', __('Name'), $angeltype->name),
             $supporter_mode
-                ? form_info(__('Requires introduction'), $angeltype->restricted ? __('Yes') : __('No'))
-                : form_checkbox('restricted', __('Requires introduction'), $angeltype->restricted),
-            form_info(
-                '',
-                __('Angel types which require introduction can only be used by an angel if enabled by a supporter (double opt-in).')
-            ),
+                ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
+                : form_checkbox(
+                    'restricted',
+                    __('angeltypes.restricted') .
+                    ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                    __('angeltypes.restricted.info') . '"></span>',
+                    $angeltype->restricted
+                ),
             $supporter_mode
                 ? form_info(__('shift.self_signup'), $angeltype->shift_self_signup ? __('Yes') : __('No'))
                 : form_checkbox(
@@ -135,6 +137,15 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
             $supporter_mode
                 ? form_info(__('Hide at Registration'), $angeltype->hide_register ? __('Yes') : __('No'))
                 : form_checkbox('hide_register', __('Hide at Registration'), $angeltype->hide_register),
+            $supporter_mode
+                ? form_info(__('angeltypes.hide.on.shift.view'), $angeltype->hide_on_shift_view ? __('Yes') : __('No'))
+                : form_checkbox(
+                    'hide_on_shift_view',
+                    __('angeltypes.hide.on.shift.view') .
+                    ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                    __('angeltypes.hide.on.shift.view.info') . '"></span>',
+                    $angeltype->hide_on_shift_view
+                ),
             form_textarea('description', __('Description'), $angeltype->description),
             form_info('', __('Please use markdown for the description.')),
             heading(__('Contact'), 3),
@@ -578,7 +589,7 @@ function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
         ]),
         table([
             'name'                      => __('Name'),
-            'is_restricted'             => icon('mortarboard-fill') . __('Requires introduction'),
+            'is_restricted'             => icon('mortarboard-fill') . __('angeltypes.restricted'),
             'shift_self_signup_allowed' => icon('pencil-square') . __('shift.self_signup.allowed'),
             'membership'                => __('Membership'),
             'actions'                   => '',
