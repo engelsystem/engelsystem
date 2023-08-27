@@ -30,11 +30,13 @@ return [
 
     // Header links
     // Available link placeholders: %lang%
+    // To disable a header_item in the config.php, you can set its value to null
     'header_items'            => [
         //'Foo' => 'https://foo.bar/batz-%lang%.html',
     ],
 
     // Footer links
+    // To disable a footer item in the config.php, you can set its value to null
     'footer_items'            => [
         // URL to the angel faq and job description
         'FAQ'     => env('FAQ_URL', '/faq'),
@@ -131,6 +133,8 @@ return [
     // Default theme, 1=style1.css
     'theme'                   => env('THEME', 1),
 
+    // Supported themes
+    // To disable a theme in the config.php, you can set its value to null
     'themes' => [
         15 => [
             'name' => 'Engelsystem rC3 (2021)',
@@ -319,6 +323,7 @@ return [
     ],
 
     // Available locales in /resources/lang/
+    // To disable a locale in the config.php, you can set its value to null
     'locales'                 => [
         'de_DE' => 'Deutsch',
         'en_US' => 'English',
@@ -327,7 +332,8 @@ return [
     // The default locale to use
     'default_locale'          => env('DEFAULT_LOCALE', 'en_US'),
 
-    // Available T-Shirt sizes, set value to null if not available
+    // Available T-Shirt sizes
+    // To disable a t-shirt size in the config.php, you can set its value to null
     'tshirt_sizes'            => [
         'S'    => 'Small Straight-Cut',
         'S-G'  => 'Small Fitted-Cut',
@@ -370,6 +376,8 @@ return [
 
     // Add additional headers
     'add_headers'             => (bool) env('ADD_HEADERS', true),
+    // Predefined headers
+    // To disable a header in the config.php, you can set its value to null
     'headers'                 => [
         'X-Content-Type-Options'  => 'nosniff',
         'X-Frame-Options'         => 'sameorigin',
