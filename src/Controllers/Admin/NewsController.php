@@ -6,6 +6,7 @@ namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -104,6 +105,10 @@ class NewsController extends BaseController
         }
 
         $isNewNews = !$news->id;
+        if ($isNewNews && News::where('title', $news->title)->where('text', $news->text)->count()) {
+            $this->addNotification('news.edit.duplicate', NotificationType::ERROR);
+            return $this->showEdit($news);
+        }
         $news->save();
 
         if ($isNewNews) {
