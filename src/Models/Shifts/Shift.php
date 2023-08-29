@@ -56,6 +56,14 @@ class Shift extends BaseModel
 {
     use HasFactory;
 
+    /** @var array<string, string|null> default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'description'    => '',
+        'url'            => '',
+        'transaction_id' => null,
+        'updated_by'     => null,
+    ];
+
     /** @var bool enable timestamps */
     public $timestamps = true; // phpcs:ignore
 

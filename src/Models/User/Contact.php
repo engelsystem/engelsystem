@@ -20,6 +20,13 @@ class Contact extends HasUserModel
 {
     use HasFactory;
 
+    /** @var array<string, null> default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'dect'   => null,
+        'mobile' => null,
+        'email'  => null,
+    ];
+
     /** @var string The table associated with the model */
     protected $table = 'users_contact'; // phpcs:ignore
 

@@ -30,9 +30,10 @@ class State extends HasUserModel
     /** @var string The table associated with the model */
     protected $table = 'users_state'; // phpcs:ignore
 
-    /** @var array<string, bool|int> Default attributes */
+    /** @var array<string, bool|int|null> Default attributes */
     protected $attributes = [ // phpcs:ignore
         'arrived'      => false,
+        'arrival_date' => null,
         'active'       => false,
         'force_active' => false,
         'got_shirt'    => false,

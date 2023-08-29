@@ -32,18 +32,18 @@ class NeededAngelType extends BaseModel
 {
     use HasFactory;
 
+    /** @var array<string, null> default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'room_id'  => null,
+        'shift_id' => null,
+    ];
+
     /** @var array<string> */
     protected $fillable = [ // phpcs:ignore
         'room_id',
         'shift_id',
         'angel_type_id',
         'count',
-    ];
-
-    /** @var array<string, null> default attributes */
-    protected $attributes = [ // phpcs:ignore
-        'room_id'  => null,
-        'shift_id' => null,
     ];
 
     public function room(): BelongsTo

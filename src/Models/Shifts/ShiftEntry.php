@@ -34,6 +34,13 @@ class ShiftEntry extends BaseModel
     use HasFactory;
     use UsesUserModel;
 
+    /** @var array<string, string|bool> default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'user_comment'       => '',
+        'freeloaded'         => false,
+        'freeloaded_comment' => '',
+    ];
+
     /** @var array<string> */
     protected $fillable = [ // phpcs:ignore
         'shift_id',
@@ -42,13 +49,6 @@ class ShiftEntry extends BaseModel
         'user_comment',
         'freeloaded',
         'freeloaded_comment',
-    ];
-
-    /** @var array<string, string|bool> default attributes */
-    protected $attributes = [ // phpcs:ignore
-        'user_comment'       => '',
-        'freeloaded'         => false,
-        'freeloaded_comment' => '',
     ];
 
     /** @var array<string, string> */
