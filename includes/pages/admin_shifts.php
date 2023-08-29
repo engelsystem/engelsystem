@@ -141,9 +141,15 @@ function admin_shifts()
                     );
                     // Fehlende Minutenangaben ergänzen, 24 Uhr -> 00 Uhr
                     array_walk($change_hours, function (&$value) use ($valid) {
+                        // Add minutes
                         if (!preg_match('/^(\d{1,2}):\d{2}$/', $value)) {
                             $value .= ':00';
                         }
+                        // Add 0 before low hours
+                        if (preg_match('/^\d:\d{2}$/', $value)) {
+                            $value = '0' . $value;
+                        }
+                        // Fix 24:00
                         if ($value == '24:00') {
                             $value = '00:00';
                         }
@@ -248,10 +254,10 @@ function admin_shifts()
                     // Alle Schichtwechselstunden durchgehen
                     for ($i = 0; $i < count($change_hours); $i++) {
                         $start_hour = $change_hours[$i];
-                        if ($i < count($change_hours) - 1) {
+                        if (isset($change_hours[$i+1])) {
                             // Normales Intervall zwischen zwei Schichtwechselstunden
                             $end_hour = $change_hours[$i + 1];
-                        } elseif ($shift_over_midnight) {
+                        } elseif ($shift_over_midnight && $day != $end_day) {
                             // Letzte Schichtwechselstunde: Wenn eine 24h Abdeckung gewünscht ist,
                             // hier die erste Schichtwechselstunde als Ende einsetzen
                             $end_hour = $change_hours[0];
