@@ -39,6 +39,12 @@ class UserAngelType extends Pivot
     /** @var bool Disable timestamps */
     public $timestamps = false; // phpcs:ignore
 
+    /** @var array<string, null|bool> default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'confirm_user_id' => null,
+        'supporter'       => false,
+    ];
+
     /** @var array<string> */
     protected $fillable = [ // phpcs:ignore
         'user_id',

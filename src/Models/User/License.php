@@ -29,7 +29,7 @@ class License extends HasUserModel
     /** @var string The table associated with the model */
     protected $table = 'users_licenses'; // phpcs:ignore
 
-    /** @var array Default attributes */
+    /** @var array<string, bool> Default attributes */
     protected $attributes = [ // phpcs:ignore
         'has_car'                => false,
         'drive_forklift'         => false,

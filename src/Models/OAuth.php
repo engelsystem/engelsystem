@@ -30,6 +30,13 @@ class OAuth extends BaseModel
 
     public $table = 'oauth'; // phpcs:ignore
 
+    /** @var array<string, null> default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'access_token'  => null,
+        'refresh_token' => null,
+        'expires_at'    => null,
+    ];
+
     /** @var bool Enable timestamps */
     public $timestamps = true; // phpcs:ignore
 

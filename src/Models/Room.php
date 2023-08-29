@@ -39,6 +39,13 @@ class Room extends BaseModel
     /** @var bool Enable timestamps */
     public $timestamps = true; // phpcs:ignore
 
+    /** @var array<string, null> default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'map_url'     => null,
+        'description' => null,
+        'dect'        => null,
+    ];
+
     /** @var array<string> */
     protected $fillable = [ // phpcs:ignore
         'name',

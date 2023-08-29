@@ -78,6 +78,11 @@ class User extends BaseModel
     /** @var bool enable timestamps */
     public $timestamps = true; // phpcs:ignore
 
+    /** @var array<string, null> default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'last_login_at' => null,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
