@@ -582,8 +582,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testIfsgCertificate(): void
     {
-        config(['ifsg_enabled' => true]);
-        config(['ifsg_light_enabled' => true]);
+        config(['ifsg_enabled' => true, 'ifsg_light_enabled' => true]);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
 
         $this->response->expects($this->once())
@@ -629,8 +628,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testSaveIfsgCertificateLight(): void
     {
-        config(['ifsg_enabled' => true]);
-        config(['ifsg_light_enabled' => true]);
+        config(['ifsg_enabled' => true, 'ifsg_light_enabled' => true]);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
 
         $body = [
@@ -646,6 +644,32 @@ class SettingsControllerTest extends ControllerTest
         $this->controller->saveIfsgCertificate($this->request);
 
         $this->assertEquals($this->user->license->ifsg_certificate_light, true);
+        $this->assertEquals($this->user->license->ifsg_certificate, false);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveIfsgCertificate
+     */
+    public function testSaveIfsgCertificateLightWhileDisabled(): void
+    {
+        config(['ifsg_enabled' => true, 'ifsg_light_enabled' => false]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->user->license->ifsg_certificate_light = false;
+        $this->user->license->save();
+
+        $body = [
+            'ifsg_certificate_light' => true,
+        ];
+        $this->request = $this->request->withParsedBody($body);
+
+        $this->response->expects($this->once())
+            ->method('redirectTo')
+            ->with('http://localhost/settings/certificates')
+            ->willReturn($this->response);
+
+        $this->controller->saveIfsgCertificate($this->request);
+
+        $this->assertEquals($this->user->license->ifsg_certificate_light, false);
         $this->assertEquals($this->user->license->ifsg_certificate, false);
     }
 
