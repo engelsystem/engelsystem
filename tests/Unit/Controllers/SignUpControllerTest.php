@@ -88,6 +88,26 @@ final class SignUpControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\SignUpController
      */
+    public function testSaveAlreadyLoggedIn(): void
+    {
+        $this->setPasswordRegistrationEnabledConfig();
+        $request = $this->request->withParsedBody(['user' => 'data']);
+
+        // Fake logged in user
+        $this->authenticator->method('user')->willReturn(new EngelsystemUser());
+
+        // Assert that the user is redirected to /sign-up again
+        $this->response
+            ->expects(self::once())
+            ->method('redirectTo')
+            ->with('http://localhost/sign-up', 302);
+
+        $this->subject->save($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SignUpController
+     */
     public function testSaveOAuth(): void
     {
         $this->setPasswordRegistrationEnabledConfig();
