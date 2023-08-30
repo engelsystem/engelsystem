@@ -368,8 +368,8 @@ function admin_shifts()
                     form_hidden('description', $description),
                     form_hidden('title', $title),
                     form_hidden('rid', $rid),
-                    form_hidden('start', $start->format('Y-m-d H:i')),
-                    form_hidden('end', $end->format('Y-m-d H:i')),
+                    form_hidden('start', $request->input('start')),
+                    form_hidden('end', $request->input('end')),
                     form_hidden('mode', $mode),
                     form_hidden('length', $length),
                     form_hidden('change_hours', implode(', ', $change_hours)),
@@ -477,10 +477,22 @@ function admin_shifts()
                     div('col-md-6 col-xl-5', [
                         div('row', [
                             div('col-lg-6', [
-                                form_datetime('start', __('Start'), $start),
+                                form_datetime(
+                                    'start',
+                                    __('Start'),
+                                    $request->has('start')
+                                        ? Carbon::createFromDatetime($request->input('start'))
+                                        : $start
+                                ),
                             ]),
                             div('col-lg-6', [
-                                form_datetime('end', __('End'), $end),
+                                form_datetime(
+                                    'end',
+                                    __('End'),
+                                    $request->has('end')
+                                        ? Carbon::createFromDatetime($request->input('end'))
+                                        : $end
+                                ),
                             ]),
                         ]),
                         form_info(__('Mode')),
