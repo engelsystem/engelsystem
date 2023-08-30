@@ -255,9 +255,11 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
             $member['has_license_12t_truck'] = icon_bool($member->license->drive_12t);
             $member['has_license_forklift'] = icon_bool($member->license->drive_forklift);
         }
-        if ($angeltype->requires_ifsg_certificate) {
+        if ($angeltype->requires_ifsg_certificate && config('ifsg_enabled')) {
             $member['ifsg_certificate'] = icon_bool($member->license->ifsg_certificate);
-            $member['ifsg_certificate_light'] = icon_bool($member->license->ifsg_certificate_light);
+            if (config('ifsg_light_enabled')) {
+                $member['ifsg_certificate_light'] = icon_bool($member->license->ifsg_certificate_light);
+            }
         }
 
         if ($angeltype->restricted && empty($member->pivot->confirm_user_id)) {
@@ -363,7 +365,9 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
     }
 
     if (config('ifsg_enabled') && $angeltype->requires_ifsg_certificate && ($supporter || $admin_angeltypes)) {
-        $headers['ifsg_certificate_light'] = __('ifsg.certificate_light');
+        if (config('ifsg_light_enabled')) {
+            $headers['ifsg_certificate_light'] = __('ifsg.certificate_light');
+        }
         $headers['ifsg_certificate'] = __('ifsg.certificate');
     }
 
