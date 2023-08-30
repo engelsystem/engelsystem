@@ -254,7 +254,7 @@ function admin_shifts()
                     // Alle Schichtwechselstunden durchgehen
                     for ($i = 0; $i < count($change_hours); $i++) {
                         $start_hour = $change_hours[$i];
-                        if (isset($change_hours[$i+1])) {
+                        if (isset($change_hours[$i + 1])) {
                             // Normales Intervall zwischen zwei Schichtwechselstunden
                             $end_hour = $change_hours[$i + 1];
                         } elseif ($shift_over_midnight && $day != $end_day) {
