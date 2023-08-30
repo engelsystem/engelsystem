@@ -61,6 +61,11 @@ class SignUpController extends BaseController
             return $this->redirect->to('/oauth/' . $provider->provider);
         }
 
+        if ($this->auth->user()) {
+            // User is already logged in - that means a supporter has registered an angel. Return to register page.
+            return $this->redirect->to('/sign-up');
+        }
+
         return $this->redirect->to('/');
     }
 
