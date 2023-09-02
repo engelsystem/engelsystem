@@ -936,7 +936,7 @@ function render_user_freeloader_hint()
  */
 function render_user_arrived_hint()
 {
-    if (!auth()->user()->state->arrived) {
+    if (config('signup_requires_arrival') && !auth()->user()->state->arrived) {
         /** @var Carbon $buildup */
         $buildup = config('buildup_start');
         if (!empty($buildup) && $buildup->lessThan(new Carbon())) {
