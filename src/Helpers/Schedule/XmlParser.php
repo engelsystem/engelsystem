@@ -88,7 +88,7 @@ class XmlParser
 
             $recording = '';
             $recordingElement = $event->xpath('recording');
-            if ($recordingElement && $this->getFirstXpathContent('optout', $recordingElement[0]) == 'false') {
+            if ($recordingElement && $this->getFirstXpathContent('optout', $recordingElement[0]) === 'false') {
                 $recording = $this->getFirstXpathContent('license', $recordingElement[0]);
             }
 

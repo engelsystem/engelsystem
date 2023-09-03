@@ -63,7 +63,7 @@ class QuestionsController extends BaseController
         );
 
         $question = $this->question->findOrFail($data['id']);
-        if ($question->user->id != $this->auth->user()->id) {
+        if ($question->user->id !== $this->auth->user()->id) {
             throw new HttpForbidden();
         }
 

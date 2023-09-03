@@ -116,13 +116,13 @@ class OAuthController extends BaseController
         }
 
         $user = $this->auth->user();
-        if ($oauth && $user && $user->id != $oauth->user_id) {
+        if ($oauth && $user && $user->id !== $oauth->user_id) {
             throw new HttpNotFound('oauth.already-connected');
         }
 
         $connectProvider = $this->session->get('oauth2_connect_provider');
         $this->session->remove('oauth2_connect_provider');
-        if (!$oauth && $user && $connectProvider && $connectProvider == $providerName) {
+        if (!$oauth && $user && $connectProvider && $connectProvider === $providerName) {
             $oauth = new OAuth([
                 'provider'      => $providerName,
                 'identifier'    => $resourceId,

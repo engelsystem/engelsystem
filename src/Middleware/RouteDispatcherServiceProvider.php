@@ -23,7 +23,7 @@ class RouteDispatcherServiceProvider extends ServiceProvider
             'cacheFile' => $this->app->get('path.cache.routes'),
         ];
 
-        if ($config->get('environment') == 'development') {
+        if ($config->get('environment') === 'development') {
             $options['cacheDisabled'] = true;
         }
 

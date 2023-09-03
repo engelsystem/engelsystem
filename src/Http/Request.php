@@ -58,7 +58,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     {
         $pattern = trim($this->getPathInfo(), '/');
 
-        return $pattern == '' ? '/' : $pattern;
+        return $pattern === '' ? '/' : $pattern;
     }
 
     /**

@@ -22,7 +22,7 @@ class ConfigureEnvironmentServiceProvider extends ServiceProvider
         $this->setTimeZone($timezone);
 
         $this->displayErrors(false);
-        if ($config->get('environment') == 'development') {
+        if ($config->get('environment') === 'development') {
             $this->displayErrors(true);
             $this->errorReporting(E_ALL);
             $this->setupDevErrorHandler();

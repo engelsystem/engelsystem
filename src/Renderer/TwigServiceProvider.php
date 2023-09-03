@@ -83,7 +83,7 @@ class TwigServiceProvider extends ServiceProvider
 
         $cache = $this->app->get('path.cache.views');
         $twigDebug = false;
-        if ($config->get('environment') == 'development') {
+        if ($config->get('environment') === 'development') {
             $cache = false;
             $twigDebug = true;
         }

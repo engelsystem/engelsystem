@@ -58,7 +58,7 @@ class RouteDispatcherServiceProviderTest extends ServiceProviderTest
                     $subject();
                 }
 
-                return is_callable($subject) || $subject == LegacyMiddleware::class;
+                return is_callable($subject) || $subject === LegacyMiddleware::class;
             }));
 
         /** @var RouteDispatcherServiceProvider|MockObject $serviceProvider */

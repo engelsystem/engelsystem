@@ -47,7 +47,7 @@ class UserWorkLogController extends BaseController
         if (isset($worklogId)) {
             $worklog = $this->worklog->findOrFail((int) $worklogId);
 
-            if ($worklog->user->id != $userId) {
+            if ($worklog->user->id !== $userId) {
                 throw new HttpNotFound();
             }
             return $this->showEditWorklog($user, $worklog->worked_at, $worklog->hours, $worklog->comment, true);
@@ -72,7 +72,7 @@ class UserWorkLogController extends BaseController
         if (isset($worklogId)) {
             $worklog = $this->worklog->findOrFail((int) $worklogId);
 
-            if ($worklog->user->id != $userId) {
+            if ($worklog->user->id !== $userId) {
                 throw new HttpNotFound();
             }
         } else {
@@ -109,7 +109,7 @@ class UserWorkLogController extends BaseController
         $user = $this->user->findOrFail($userId);
         $worklog = $this->worklog->findOrFail($worklogId);
 
-        if ($worklog->user->id != $userId) {
+        if ($worklog->user->id !== $userId) {
             throw new HttpNotFound();
         }
 
@@ -126,7 +126,7 @@ class UserWorkLogController extends BaseController
 
         $worklog = $this->worklog->findOrFail($worklogId);
 
-        if ($worklog->user->id != $userId) {
+        if ($worklog->user->id !== $userId) {
             throw new HttpNotFound();
         }
         $worklog->delete();

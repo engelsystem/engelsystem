@@ -86,7 +86,7 @@ class OAuth2
             return;
         }
 
-        if ($userAngeltype->pivot->supporter != $supporter) {
+        if ($userAngeltype->pivot->supporter !== $supporter) {
             $userAngeltype->pivot->supporter = $supporter;
             $userAngeltype->pivot->save();
 

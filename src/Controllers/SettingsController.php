@@ -138,7 +138,7 @@ class SettingsController extends BaseController
 
         if (!empty($user->password) && !$this->auth->verifyPassword($user, $data['password'])) {
             $this->addNotification('auth.password.error', NotificationType::ERROR);
-        } elseif ($data['new_password'] != $data['new_password2']) {
+        } elseif ($data['new_password'] !== $data['new_password2']) {
             $this->addNotification('validation.password.confirmed', NotificationType::ERROR);
         } else {
             $this->auth->setPassword($user, $data['new_password']);

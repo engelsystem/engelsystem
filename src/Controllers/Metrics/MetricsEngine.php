@@ -46,7 +46,7 @@ class MetricsEngine implements EngineInterface
             foreach ($list as $row) {
                 $row = $this->expandData($row);
 
-                if ($type == 'histogram') {
+                if ($type === 'histogram') {
                     $return = array_merge($return, $this->formatHistogram($row, $name));
 
                     continue;
@@ -177,7 +177,7 @@ class MetricsEngine implements EngineInterface
 
     public function canRender(string $path): bool
     {
-        return $path == '/metrics';
+        return $path === '/metrics';
     }
 
     /**

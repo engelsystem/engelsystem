@@ -43,7 +43,7 @@ class RouteDispatcher implements MiddlewareInterface
         $route = $this->dispatcher->dispatch($request->getMethod(), $path);
 
         $status = $route[0];
-        if ($status == FastRouteDispatcher::NOT_FOUND) {
+        if ($status === FastRouteDispatcher::NOT_FOUND) {
             if ($this->notFound instanceof MiddlewareInterface) {
                 return $this->notFound->process($request, $handler);
             }
@@ -51,7 +51,7 @@ class RouteDispatcher implements MiddlewareInterface
             return $this->response->withStatus(404);
         }
 
-        if ($status == FastRouteDispatcher::METHOD_NOT_ALLOWED) {
+        if ($status === FastRouteDispatcher::METHOD_NOT_ALLOWED) {
             $methods = $route[1];
             return $this->response
                 ->withStatus(405)

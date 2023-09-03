@@ -198,7 +198,7 @@ class MessagesControllerTest extends ControllerTest
                 $this->assertEquals(2, count($conversations));
                 $msg0 = $conversations[0]['latest_message']->text;
                 $msg1 = $conversations[1]['latest_message']->text;
-                $this->assertTrue(($msg0 == 'a>b' && $msg1 == 'c>a') || ($msg1 == 'c>a' && $msg0 == 'a>b'));
+                $this->assertTrue(($msg0 === 'a>b' && $msg1 === 'c>a') || ($msg1 === 'c>a' && $msg0 === 'a>b'));
 
                 return $this->response;
             });
@@ -572,7 +572,7 @@ class MessagesControllerTest extends ControllerTest
 
     protected function assertArrayOrCollection(mixed $obj): void
     {
-        $this->assertTrue(gettype($obj) == 'array' || $obj instanceof Collection);
+        $this->assertTrue(gettype($obj) === 'array' || $obj instanceof Collection);
     }
 
     protected function createMessage(User $from, User $to, string $text, Carbon $at): Message
