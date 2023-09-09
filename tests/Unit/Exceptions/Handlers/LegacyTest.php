@@ -19,14 +19,23 @@ class LegacyTest extends TestCase
      */
     public function testRender(): void
     {
-        $handler = new Legacy();
+        /** @var Legacy|MockObject $handler */
+        $handler = $this->getMockBuilder(Legacy::class)
+            ->onlyMethods(['isCli'])
+            ->getMock();
         /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
         /** @var Exception|MockObject $exception */
         $exception = $this->createMock(Exception::class);
 
-        $this->expectOutputRegex('/.*error occurred.*/i');
+        $handler->expects($this->exactly(2))
+            ->method('isCli')
+            ->willReturnOnConsecutiveCalls(false, true);
 
+        $this->expectOutputRegex('/.*error occurred.*/i');
+        $handler->render($request, $exception);
+
+        // As CLI
         $handler->render($request, $exception);
     }
 
