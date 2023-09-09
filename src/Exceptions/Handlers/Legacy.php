@@ -14,6 +14,10 @@ class Legacy implements HandlerInterface
 
     public function render(Request $request, Throwable $e): void
     {
+        if ($this->isCli()) {
+            return;
+        }
+
         echo 'An <del>un</del>expected error occurred. A team of untrained monkeys has been dispatched to fix it.';
     }
 
@@ -27,7 +31,7 @@ class Legacy implements HandlerInterface
             $this->stripBasePath($e->getFile()),
             $e->getLine(),
             $previous ? $previous->getMessage() : 'None',
-            json_encode($e->getTrace(), PHP_SAPI == 'cli' ? JSON_PRETTY_PRINT : 0)
+            json_encode($e->getTrace())
         ));
 
         if (is_null($this->log)) {
@@ -49,5 +53,14 @@ class Legacy implements HandlerInterface
     {
         $basePath = realpath(__DIR__ . '/../../..') . '/';
         return str_replace($basePath, '', $path);
+    }
+
+    /**
+     * Test if is called from cli
+     * @codeCoverageIgnore
+     */
+    protected function isCli(): bool
+    {
+        return PHP_SAPI == 'cli' || PHP_SAPI == 'phpdbg';
     }
 }
