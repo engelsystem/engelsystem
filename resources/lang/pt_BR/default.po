@@ -156,7 +156,7 @@ msgstr "Você já está inscrito. Obrigado!"
 
 #: includes/controller/shift_entries_controller.php:103
 #: includes/pages/user_myshifts.php:4
-msgid "My shifts"
+msgid "profile.my-shifts"
 msgstr "Meus turnos"
 
 #: includes/controller/shift_entries_controller.php:111

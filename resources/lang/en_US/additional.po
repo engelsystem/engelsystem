@@ -130,6 +130,9 @@ msgid "oauth.temporarily_unavailable"
 msgstr "The OAuth-Provider is currently unable to handle the request "
 "due to a temporary overloading or maintenance of the server."
 
+msgid "profile.my-shifts"
+msgstr "My shifts"
+
 msgid "settings.profile"
 msgstr "Profile"
 

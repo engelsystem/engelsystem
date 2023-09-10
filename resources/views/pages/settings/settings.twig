@@ -18,6 +18,7 @@
                     {% for url,title in settings_menu %}
                         <li class="nav-item{% if title.hidden ?? false and url != request.url() %} d-none{% endif %}">
                             <a class="nav-link {% if url == request.url() %}active{% endif %}" href="{{ url }}">
+                                {{ m.icon(title.icon ?? 'gear-fill') }}
                                 {{ __(title.title ?? title) }}
                             </a>
                         </li>

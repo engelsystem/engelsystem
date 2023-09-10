@@ -88,7 +88,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             {% if has_permission_to('user_myshifts') %}
-                                {{ _self.dropdown_item(__('My shifts'), url('users', {'action': 'view'}), 'users', m.icon('calendar-range')) }}
+                                {{ _self.dropdown_item(__('profile.my-shifts'), url('users', {'action': 'view'}), 'users', m.icon('calendar-range')) }}
                             {% endif %}
 
                             {% if has_permission_to('user_settings') %}

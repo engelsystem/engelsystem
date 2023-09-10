@@ -282,12 +282,13 @@ class SettingsController extends BaseController
     public function settingsMenu(): array
     {
         $menu = [
+            url('/users', ['action' => 'view']) => ['title' => 'profile.my-shifts', 'icon' => 'chevron-left'],
             url('/settings/profile')  => 'settings.profile',
-            url('/settings/password') => 'settings.password',
+            url('/settings/password') => ['title' => 'settings.password', 'icon' => 'key-fill'],
         ];
 
         if (count(config('locales')) > 1) {
-            $menu[url('/settings/language')] = 'settings.language';
+            $menu[url('/settings/language')] = ['title' => 'settings.language', 'icon' => 'translate'];
         }
 
         if (count(config('themes')) > 1) {
@@ -295,7 +296,7 @@ class SettingsController extends BaseController
         }
 
         if (config('ifsg_enabled')) {
-            $menu[url('/settings/certificates')] = 'settings.certificates';
+            $menu[url('/settings/certificates')] = ['title' => 'settings.certificates', 'icon' => 'card-checklist'];
         }
 
         if (!empty(config('oauth'))) {

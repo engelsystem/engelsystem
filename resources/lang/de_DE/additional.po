@@ -131,6 +131,9 @@ msgstr "Der OAuth-Provider ist aufgrund eines unerwarteten Fehlers nicht in der 
 msgid "oauth.temporarily_unavailable"
 msgstr "Der OAuth-Provider ist aufgrund Überlastung oder Wartung temporär nicht in der Lage, die Anfrage zu erfüllen"
 
+msgid "profile.my-shifts"
+msgstr "Meine Schichten"
+
 msgid "settings.profile"
 msgstr "Profil"
 

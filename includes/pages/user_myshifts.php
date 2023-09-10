@@ -8,7 +8,7 @@ use Engelsystem\Models\User\User;
  */
 function myshifts_title()
 {
-    return __('My shifts');
+    return __('profile.my-shifts');
 }
 
 /**

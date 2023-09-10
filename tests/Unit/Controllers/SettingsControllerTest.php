@@ -739,7 +739,10 @@ class SettingsControllerTest extends ControllerTest
     {
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/password', $menu);
-        $this->assertEquals('settings.password', $menu['http://localhost/settings/password']);
+        $this->assertEquals(
+            ['title' => 'settings.password', 'icon' => 'key-fill'],
+            $menu['http://localhost/settings/password']
+        );
     }
 
     /**
@@ -749,7 +752,10 @@ class SettingsControllerTest extends ControllerTest
     {
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/language', $menu);
-        $this->assertEquals('settings.language', $menu['http://localhost/settings/language']);
+        $this->assertEquals(
+            ['title' => 'settings.language', 'icon' => 'translate'],
+            $menu['http://localhost/settings/language']
+        );
     }
 
     /**
@@ -794,7 +800,10 @@ class SettingsControllerTest extends ControllerTest
 
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/certificates', $menu);
-        $this->assertEquals('settings.certificates', $menu['http://localhost/settings/certificates']);
+        $this->assertEquals(
+            ['title' => 'settings.certificates', 'icon' => 'card-checklist'],
+            $menu['http://localhost/settings/certificates']
+        );
     }
 
     /**
