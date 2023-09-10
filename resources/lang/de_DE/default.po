@@ -1092,9 +1092,6 @@ msgstr "Übertragung wurde mit einem Fehler abgebrochen."
 msgid "Wrong action."
 msgstr "Falsche Aktion."
 
-msgid "My shifts"
-msgstr "Meine Schichten"
-
 msgid "Key changed."
 msgstr "Key geändert."
 
