@@ -643,8 +643,8 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->saveIfsgCertificate($this->request);
 
-        $this->assertEquals($this->user->license->ifsg_certificate_light, true);
-        $this->assertEquals($this->user->license->ifsg_certificate, false);
+        $this->assertEquals(true, $this->user->license->ifsg_certificate_light);
+        $this->assertEquals(false, $this->user->license->ifsg_certificate);
     }
 
     /**
@@ -669,8 +669,8 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->saveIfsgCertificate($this->request);
 
-        $this->assertEquals($this->user->license->ifsg_certificate_light, false);
-        $this->assertEquals($this->user->license->ifsg_certificate, false);
+        $this->assertEquals(false, $this->user->license->ifsg_certificate_light);
+        $this->assertEquals(false, $this->user->license->ifsg_certificate);
     }
 
     /**
@@ -693,8 +693,8 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->saveIfsgCertificate($this->request);
 
-        $this->assertEquals($this->user->license->ifsg_certificate_light, false);
-        $this->assertEquals($this->user->license->ifsg_certificate, true);
+        $this->assertEquals(false, $this->user->license->ifsg_certificate_light);
+        $this->assertEquals(true, $this->user->license->ifsg_certificate);
     }
 
     /**
@@ -718,8 +718,8 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->saveIfsgCertificate($this->request);
 
-        $this->assertEquals($this->user->license->ifsg_certificate_light, false);
-        $this->assertEquals($this->user->license->ifsg_certificate, true);
+        $this->assertEquals(false, $this->user->license->ifsg_certificate_light);
+        $this->assertEquals(true, $this->user->license->ifsg_certificate);
     }
 
     /**
@@ -729,7 +729,7 @@ class SettingsControllerTest extends ControllerTest
     {
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/profile', $menu);
-        $this->assertEquals($menu['http://localhost/settings/profile'], 'settings.profile');
+        $this->assertEquals('settings.profile', $menu['http://localhost/settings/profile']);
     }
 
     /**
@@ -739,7 +739,7 @@ class SettingsControllerTest extends ControllerTest
     {
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/password', $menu);
-        $this->assertEquals($menu['http://localhost/settings/password'], 'settings.password');
+        $this->assertEquals('settings.password', $menu['http://localhost/settings/password']);
     }
 
     /**
@@ -749,7 +749,7 @@ class SettingsControllerTest extends ControllerTest
     {
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/language', $menu);
-        $this->assertEquals($menu['http://localhost/settings/language'], 'settings.language');
+        $this->assertEquals('settings.language', $menu['http://localhost/settings/language']);
     }
 
     /**
@@ -764,13 +764,13 @@ class SettingsControllerTest extends ControllerTest
 
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/oauth', $menu);
-        $this->assertEquals($menu['http://localhost/settings/oauth'], ['title' => 'settings.oauth', 'hidden' => false]);
+        $this->assertEquals(['title' => 'settings.oauth', 'hidden' => false], $menu['http://localhost/settings/oauth']);
 
         config(['oauth' => $providersHidden]);
 
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/oauth', $menu);
-        $this->assertEquals($menu['http://localhost/settings/oauth'], ['title' => 'settings.oauth', 'hidden' => true]);
+        $this->assertEquals(['title' => 'settings.oauth', 'hidden' => true], $menu['http://localhost/settings/oauth']);
     }
 
     /**
@@ -794,7 +794,7 @@ class SettingsControllerTest extends ControllerTest
 
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/certificates', $menu);
-        $this->assertEquals($menu['http://localhost/settings/certificates'], 'settings.certificates');
+        $this->assertEquals('settings.certificates', $menu['http://localhost/settings/certificates']);
     }
 
     /**
