@@ -15,6 +15,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Session;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\Contact;
@@ -373,6 +374,22 @@ class UserTest extends ModelTest
         ShiftEntry::factory(2)->create(['user_id' => $user->id]);
 
         $this->assertCount(2, $user->shiftEntries);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::sessions
+     */
+    public function testSessions(): void
+    {
+        $user = new User($this->data);
+        $user->save();
+
+        Session::factory(2)->create();
+        Session::factory(3)->create(['user_id' => $user->id]);
+        Session::factory(2)->create();
+        Session::factory(4)->create(['user_id' => $user->id]);
+
+        $this->assertCount(7, $user->sessions);
     }
 
     /**

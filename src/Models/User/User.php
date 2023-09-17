@@ -14,6 +14,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Session;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\UserAngelType;
@@ -52,6 +53,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|AngelType[]        $userAngelTypes
  * @property-read UserAngelType                 $pivot
  * @property-read Collection|ShiftEntry[]       $shiftEntries
+ * @property-read Collection|Session[]          $sessions
  * @property-read Collection|Worklog[]          $worklogs
  * @property-read Collection|Worklog[]          $worklogsCreated
  * @property-read Collection|Question[]         $questionsAsked
@@ -220,6 +222,11 @@ class User extends BaseModel
     public function worklogsCreated(): HasMany
     {
         return $this->hasMany(Worklog::class, 'creator_id');
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
     }
 
     public function questionsAsked(): HasMany
