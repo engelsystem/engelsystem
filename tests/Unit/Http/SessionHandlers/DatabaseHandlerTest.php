@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Http\SessionHandlers;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\SessionHandlers\DatabaseHandler;
+use Engelsystem\Models\Session;
+use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 
@@ -36,16 +39,34 @@ class DatabaseHandlerTest extends TestCase
      */
     public function testWrite(): void
     {
+        $user = User::factory()->create();
+        $auth = $this->createMock(Authenticator::class);
+        $auth->expects($this->exactly(2))
+            ->method('user')
+            ->willReturnOnConsecutiveCalls(null, $user);
+        $this->app->instance('authenticator', $auth);
+
         $handler = new DatabaseHandler($this->database);
 
+        $userExists = false;
         foreach (['Lorem Ipsum', 'Dolor Sit!'] as $data) {
             $this->assertTrue($handler->write('id-foo', $data));
 
             $return = Session::whereId('id-foo')->get();
             $this->assertCount(1, $return);
 
-            $return = $return->first();
-            $this->assertEquals($data, $return->payload);
+            /** @var Session $session */
+            $session = $return->first();
+            $this->assertEquals($data, $session->payload);
+
+            if ($userExists) {
+                $this->assertNotNull($session->user);
+                $this->assertEquals($user->id, $session->user->id);
+            } else {
+                $this->assertNull($session->user);
+            }
+
+            $userExists = true;
         }
     }
 
