@@ -96,6 +96,8 @@ class PasswordResetController extends BaseController
         auth()->setPassword($reset->user, $data['password']);
         $reset->delete();
 
+        $reset->user->sessions()->getQuery()->delete();
+
         return $this->showView('pages/password/reset-success', ['type' => 'reset']);
     }
 

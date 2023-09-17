@@ -15,6 +15,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Mail\EngelsystemMailer;
+use Engelsystem\Models\Session as SessionModel;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Renderer;
@@ -147,6 +148,8 @@ class PasswordResetControllerTest extends ControllerTest
             ['password' => $password, 'password_confirmation' => $password],
             ['token' => $token->token]
         );
+        SessionModel::factory()->create(); // Some other session
+        SessionModel::factory(3)->create(['user_id' => $user->id]);
 
         $controller = $this->getController(
             'pages/password/reset-success',
@@ -162,6 +165,12 @@ class PasswordResetControllerTest extends ControllerTest
         $this->assertEmpty((new PasswordReset())->find($user->id));
         $this->assertNotNull(auth()->authenticate($user->name, $password));
         $this->assertHasNoNotifications();
+
+        $this->assertEmpty(
+            SessionModel::whereUserId($user->id)->get(),
+            'All user sessions should be deleted after successful password reset'
+        );
+        $this->assertCount(1, SessionModel::all()); // Another session should be still there
     }
 
     /**
