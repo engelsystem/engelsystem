@@ -279,6 +279,38 @@ class SettingsController extends BaseController
         );
     }
 
+    public function sessions(): Response
+    {
+        $sessions = $this->auth->user()->sessions->sortByDesc('last_activity');
+
+        return $this->response->withView(
+            'pages/settings/sessions',
+            [
+                'settings_menu' => $this->settingsMenu(),
+                'sessions' => $sessions,
+                'current_session' => session()->getId(),
+            ],
+        );
+    }
+
+    public function sessionsDelete(Request $request): Response
+    {
+        $id = $request->postData('id');
+        $query = $this->auth->user()
+            ->sessions()
+            ->getQuery()
+            ->where('id', '!=', session()->getId());
+
+        if ($id != 'all') {
+            $query = $query->where('id', $id);
+        }
+
+        $query->delete();
+        $this->addNotification('settings.sessions.delete_success');
+
+        return $this->redirect->to('/settings/sessions');
+    }
+
     public function settingsMenu(): array
     {
         $menu = [
@@ -297,6 +329,8 @@ class SettingsController extends BaseController
         if (config('ifsg_enabled')) {
             $menu[url('/settings/certificates')] = 'settings.certificates';
         }
+
+        $menu[url('/settings/sessions')] = 'settings.sessions';
 
         if (!empty(config('oauth'))) {
             $menu[url('/settings/oauth')] = ['title' => 'settings.oauth', 'hidden' => $this->checkOauthHidden()];
