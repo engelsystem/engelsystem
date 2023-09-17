@@ -16,7 +16,6 @@ class DatabaseHandlerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::__construct
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::getQuery
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::read
      */
     public function testRead(): void
@@ -42,9 +41,7 @@ class DatabaseHandlerTest extends TestCase
         foreach (['Lorem Ipsum', 'Dolor Sit!'] as $data) {
             $this->assertTrue($handler->write('id-foo', $data));
 
-            $return = $this->database->getConnection()->table('sessions')
-                ->where('id', 'id-foo')
-                ->get();
+            $return = Session::whereId('id-foo')->get();
             $this->assertCount(1, $return);
 
             $return = $return->first();

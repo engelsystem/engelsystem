@@ -6,7 +6,7 @@ namespace Engelsystem\Http\SessionHandlers;
 
 use Engelsystem\Database\Database;
 use Engelsystem\Helpers\Carbon;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Engelsystem\Models\Session;
 
 class DatabaseHandler extends AbstractHandler
 {
@@ -19,9 +19,7 @@ class DatabaseHandler extends AbstractHandler
      */
     public function read(string $id): string
     {
-        $session = $this->getQuery()
-            ->where('id', '=', $id)
-            ->first();
+        $session = Session::whereId($id)->first();
 
         return $session ? $session->payload : '';
     }
@@ -31,27 +29,13 @@ class DatabaseHandler extends AbstractHandler
      */
     public function write(string $id, string $data): bool
     {
-        $values = [
-            'payload'       => $data,
-            'last_activity' => Carbon::now(),
-        ];
+        $session = Session::findOrNew($id);
+        $session->id = $id;
+        $session->payload = $data;
+        $session->last_activity = Carbon::now();
+        $session->save();
 
-        $session = $this->getQuery()
-            ->where('id', '=', $id)
-            ->first();
-
-        if (!$session) {
-            return $this->getQuery()
-                ->insert($values + [
-                        'id' => $id,
-                    ]);
-        }
-
-        $this->getQuery()
-            ->where('id', '=', $id)
-            ->update($values);
-
-        // The update return can't be used directly because it won't change if the second call is in the same second
+        // The save return can't be used directly as it won't change if the second call is in the same second
         return true;
     }
 
@@ -60,9 +44,7 @@ class DatabaseHandler extends AbstractHandler
      */
     public function destroy(string $id): bool
     {
-        $this->getQuery()
-            ->where('id', '=', $id)
-            ->delete();
+        Session::whereId($id)->delete();
 
         return true;
     }
@@ -75,15 +57,7 @@ class DatabaseHandler extends AbstractHandler
         $sessionDays = config('session')['lifetime'];
         $deleteBefore = Carbon::now()->subDays($sessionDays);
 
-        return $this->getQuery()
-            ->where('last_activity', '<', $deleteBefore)
+        return Session::where('last_activity', '<', $deleteBefore)
             ->delete();
-    }
-
-    protected function getQuery(): QueryBuilder
-    {
-        return $this->database
-            ->getConnection()
-            ->table('sessions');
     }
 }
