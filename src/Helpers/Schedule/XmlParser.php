@@ -15,8 +15,7 @@ class XmlParser
 
     public function load(string $xml): bool
     {
-        $scheduleXML = simplexml_load_string($xml);
-
+        $scheduleXML = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOWARNING | LIBXML_NOERROR);
         if (!$scheduleXML) {
             return false;
         }

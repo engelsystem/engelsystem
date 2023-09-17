@@ -23,12 +23,13 @@ class XmlParserTest extends TestCase
      */
     public function testLoad(): void
     {
-        libxml_use_internal_errors(true);
-
         $parser = new XmlParser();
 
         // Invalid XML
         $this->assertFalse($parser->load('foo'));
+        // Invalid schedule
+        $this->assertFalse($parser->load(file_get_contents(__DIR__ . '/Assets/schedule-invalid.html')));
+
         // Minimal import
         $this->assertTrue($parser->load(file_get_contents(__DIR__ . '/Assets/schedule-minimal.xml')));
         // Basic import
