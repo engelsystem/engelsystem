@@ -283,6 +283,13 @@ class SettingsControllerTest extends ControllerTest
         $session = $this->app->get('session');
         $messages = $session->get('messages.' . NotificationType::MESSAGE->value);
         $this->assertEquals('settings.password.success', $messages[0]);
+
+        $this->assertCount(
+            1,
+            SessionModel::whereUserId($this->user->id)->get(),
+            'All other user sessions should be deleted after setting a new password'
+        );
+        $this->assertCount(2, SessionModel::all()); // Current session and another one should be still there
     }
 
     /**

@@ -145,6 +145,11 @@ class SettingsController extends BaseController
 
             $this->addNotification('settings.password.success');
             $this->log->info('User set new password.');
+
+            $user->sessions()
+                ->getQuery()
+                ->where('id', '!=', session()->getId())
+                ->delete();
         }
 
         return $this->redirect->to('/settings/password');
