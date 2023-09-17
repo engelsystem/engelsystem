@@ -70,6 +70,9 @@ msgstr "Preview"
 msgid "form.delete"
 msgstr "Delete"
 
+msgid "form.delete_all"
+msgstr "Delete all"
+
 msgid "form.updated"
 msgstr "Updated"
 
@@ -298,6 +301,21 @@ msgstr "Password confirmation"
 
 msgid "settings.password.success"
 msgstr "Password was changed successfully."
+
+msgid "settings.sessions"
+msgstr "Sessions"
+
+msgid "settings.sessions.info"
+msgstr "Here you can see and delete your browser sessions."
+
+msgid "settings.sessions.current"
+msgstr "Current session"
+
+msgid "settings.sessions.id"
+msgstr "Session ID"
+
+msgid "settings.sessions.last_activity"
+msgstr "Last activity"
 
 msgid "settings.theme"
 msgstr "Theme"

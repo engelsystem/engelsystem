@@ -144,6 +144,9 @@ msgstr "Please enter your planned date of departure. "
 msgid "settings.profile.success"
 msgstr "Settings saved."
 
+msgid "settings.sessions.delete_success"
+msgstr "Session deleted successfully."
+
 msgid "faq.delete.success"
 msgstr "FAQ entry successfully deleted."
 

@@ -145,6 +145,9 @@ msgstr "Bitte gib Dein geplantes Abreisedatum an, damit wir ein Gefühl für die
 msgid "settings.profile.success"
 msgstr "Einstellungen gespeichert."
 
+msgid "settings.sessions.delete_success"
+msgstr "Sitzung erfolgreich gelöscht."
+
 msgid "faq.delete.success"
 msgstr "FAQ Eintrag erfolgreich gelöscht."
 

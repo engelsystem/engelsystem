@@ -41,6 +41,8 @@ $route->addGroup(
         $route->get('/certificates', 'SettingsController@ifsgCertificate');
         $route->post('/certificates', 'SettingsController@saveIfsgCertificate');
         $route->get('/oauth', 'SettingsController@oauth');
+        $route->get('/sessions', 'SettingsController@sessions');
+        $route->post('/sessions', 'SettingsController@sessionsDelete');
     }
 );
 

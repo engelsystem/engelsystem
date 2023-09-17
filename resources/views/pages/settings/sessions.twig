@@ -1,0 +1,61 @@
+{% extends 'pages/settings/settings.twig' %}
+{% import 'macros/form.twig' as f %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __('settings.sessions') }}{% endblock %}
+
+{% block row_content %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ m.info(__('settings.sessions.info')) }}
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{ __('settings.sessions.id') }}</th>
+                        <th>{{ __('settings.sessions.last_activity') }}</th>
+                        <th>
+                            {% if sessions|length > 1 %}
+                                <form action="" enctype="multipart/form-data" method="post">
+                                    {{ csrf() }}
+                                    {{ f.hidden('id', 'all') }}
+                                    {{ f.submit(
+                                        __('form.delete_all'),
+                                        {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'icon_left': 'trash'}
+                                    ) }}
+                                </form>
+                            {% endif %}
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for session in sessions %}
+                        <tr>
+                            <td>
+                                <pre>{{ session['id'] }}</pre>
+                            </td>
+                            <td>{{ session.last_activity.format(__('Y-m-d H:i:s')) }}</td>
+                            <td>
+                                {% if session.id != current_session %}
+                                    <form action="" enctype="multipart/form-data" method="post">
+                                        {{ csrf() }}
+                                        {{ f.hidden('id', session.id) }}
+                                        {{ f.submit(
+                                            __('form.delete'),
+                                            {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'icon_left': 'trash'}
+                                        ) }}
+                                    </form>
+                                {% else %}
+                                    {{ __('settings.sessions.current') }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

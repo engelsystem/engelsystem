@@ -11,6 +11,7 @@ use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\Session as SessionModel;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\Settings;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -31,6 +32,10 @@ class SettingsControllerTest extends ControllerTest
     protected User $user;
 
     protected SettingsController $controller;
+
+    protected SessionModel $currentSession;
+    protected SessionModel $secondSession;
+    protected SessionModel $otherSession;
 
     protected function setUpProfileTest(): array
     {
@@ -574,7 +579,95 @@ class SettingsControllerTest extends ControllerTest
         $this->controller->oauth();
     }
 
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::sessions
+     */
+    public function testSessions(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
 
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data)  {
+                $this->assertEquals('pages/settings/sessions', $view);
+
+                $this->assertArrayHasKey('sessions', $data);
+                $this->assertCount(3, $data['sessions']);
+
+                $this->assertArrayHasKey('current_session', $data);
+                $this->assertEquals($this->currentSession->id, $data['current_session']);
+
+                return $this->response;
+            });
+
+        $this->controller->sessions();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::sessionsDelete
+     */
+    public function testSessionsDelete(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->response, 'redirectTo', ['http://localhost/settings/sessions'], $this->response);
+
+        // Delete old user session
+        $this->request = $this->request->withParsedBody(['id' => $this->secondSession->id]);
+        $this->controller->sessionsDelete($this->request);
+
+        $this->assertHasNotification('settings.sessions.delete_success');
+        $this->assertCount(3, SessionModel::all());
+        $this->assertNull(SessionModel::find($this->secondSession->id));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::sessionsDelete
+     */
+    public function testSessionsDeleteActiveSession(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->response, 'redirectTo', null, $this->response);
+
+        // Delete active user session
+        $this->request = $this->request->withParsedBody(['id' => $this->currentSession->id]);
+        $this->controller->sessionsDelete($this->request);
+
+        $this->assertCount(4, SessionModel::all()); // None got deleted
+        $this->assertNotNull(SessionModel::find($this->currentSession->id));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::sessionsDelete
+     */
+    public function testSessionsDeleteOtherUsersSession(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->response, 'redirectTo', null, $this->response);
+
+        // Delete another users session
+        $this->request = $this->request->withParsedBody(['id' => $this->otherSession->id]);
+        $this->controller->sessionsDelete($this->request);
+
+        $this->assertCount(4, SessionModel::all()); // None got deleted
+        $this->assertNotNull(SessionModel::find($this->otherSession->id));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::sessionsDelete
+     */
+    public function testSessionsDeleteAllSessions(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->response, 'redirectTo', null, $this->response);
+
+        // Delete all other user sessions
+        $this->request = $this->request->withParsedBody(['id' => 'all']);
+        $this->controller->sessionsDelete($this->request);
+
+        $this->assertCount(2, SessionModel::all()); // Two got deleted
+        $this->assertNotNull(SessionModel::find($this->currentSession->id));
+        $this->assertNull(SessionModel::find($this->secondSession->id));
+    }
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::__construct
@@ -848,6 +941,13 @@ class SettingsControllerTest extends ControllerTest
             ]))
             ->has(License::factory())
             ->create();
+
+        // Create 4 sessions, 3 for the active user
+        $this->otherSession = SessionModel::factory()->create()->first(); // Other users sessions
+        $sessions = SessionModel::factory(3)->create(['user_id' => $this->user->id]);
+        $this->currentSession = $sessions->first();
+        $this->secondSession = $sessions->last();
+        $this->session->setId($this->currentSession->id);
 
         $this->controller = $this->app->make(SettingsController::class);
         $this->controller->setValidator(new Validator());

@@ -1122,6 +1122,9 @@ msgstr "Senden"
 msgid "Y-m-d H:i"
 msgstr "d.m.Y H:i"
 
+msgid "Y-m-d H:i:s"
+msgstr "d.m.Y H:i:s"
+
 msgid "mark as read"
 msgstr "als gelesen markieren"
 
@@ -1974,6 +1977,9 @@ msgstr "Vorschau"
 msgid "form.delete"
 msgstr "Löschen"
 
+msgid "form.delete_all"
+msgstr "Alle löschen"
+
 msgid "form.updated"
 msgstr "Aktualisiert"
 
@@ -2200,6 +2206,21 @@ msgstr "Passwort wiederholen"
 
 msgid "settings.password.success"
 msgstr "Passwort wurde erfolgreich geändert."
+
+msgid "settings.sessions"
+msgstr "Sitzungen"
+
+msgid "settings.sessions.info"
+msgstr "Hier kannst Du deine Bowser-Sitzungen sehen und löschen."
+
+msgid "settings.sessions.current"
+msgstr "Aktuelle Sitzung"
+
+msgid "settings.sessions.id"
+msgstr "Sitzungs-ID"
+
+msgid "settings.sessions.last_activity"
+msgstr "Zuletzt verwendet"
 
 msgid "settings.theme"
 msgstr "Theme"
