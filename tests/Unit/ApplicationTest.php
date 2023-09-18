@@ -114,7 +114,8 @@ class ApplicationTest extends TestCase
     {
         $app = new Application();
 
-        $mockClassName = $this->getMockClass(ServiceProvider::class);
+        $mock = $this->createMock(ServiceProvider::class);
+        $mockClassName = get_class($mock);
         $serviceProvider = $this->getMockBuilder($mockClassName)
             ->setConstructorArgs([$app])
             ->onlyMethods(['register'])
