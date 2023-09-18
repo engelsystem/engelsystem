@@ -14,6 +14,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Models\Session as SessionModel;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\Settings;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Engelsystem\Helpers\Authenticator;
@@ -595,7 +596,7 @@ class SettingsControllerTest extends ControllerTest
 
         $this->response->expects($this->once())
             ->method('withView')
-            ->willReturnCallback(function ($view, $data)  {
+            ->willReturnCallback(function ($view, $data) {
                 $this->assertEquals('pages/settings/sessions', $view);
 
                 $this->assertArrayHasKey('sessions', $data);
@@ -619,7 +620,7 @@ class SettingsControllerTest extends ControllerTest
         $this->setExpects($this->response, 'redirectTo', ['http://localhost/settings/sessions'], $this->response);
 
         // Delete old user session
-        $this->request = $this->request->withParsedBody(['id' => $this->secondSession->id]);
+        $this->request = $this->request->withParsedBody(['id' => Str::substr($this->secondSession->id, 0, 15)]);
         $this->controller->sessionsDelete($this->request);
 
         $this->assertHasNotification('settings.sessions.delete_success');
@@ -636,7 +637,7 @@ class SettingsControllerTest extends ControllerTest
         $this->setExpects($this->response, 'redirectTo', null, $this->response);
 
         // Delete active user session
-        $this->request = $this->request->withParsedBody(['id' => $this->currentSession->id]);
+        $this->request = $this->request->withParsedBody(['id' => Str::substr($this->currentSession->id, 0, 15)]);
         $this->controller->sessionsDelete($this->request);
 
         $this->assertCount(4, SessionModel::all()); // None got deleted
@@ -652,7 +653,7 @@ class SettingsControllerTest extends ControllerTest
         $this->setExpects($this->response, 'redirectTo', null, $this->response);
 
         // Delete another users session
-        $this->request = $this->request->withParsedBody(['id' => $this->otherSession->id]);
+        $this->request = $this->request->withParsedBody(['id' => Str::substr($this->otherSession->id, 0, 15)]);
         $this->controller->sessionsDelete($this->request);
 
         $this->assertCount(4, SessionModel::all()); // None got deleted

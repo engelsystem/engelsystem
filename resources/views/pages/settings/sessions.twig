@@ -34,14 +34,14 @@
                     {% for session in sessions %}
                         <tr>
                             <td>
-                                <pre>{{ session['id'] }}</pre>
+                                <pre>{{ session.id[:15] }}&hellip;</pre>
                             </td>
                             <td>{{ session.last_activity.format(__('Y-m-d H:i:s')) }}</td>
                             <td>
                                 {% if session.id != current_session %}
                                     <form action="" enctype="multipart/form-data" method="post">
                                         {{ csrf() }}
-                                        {{ f.hidden('id', session.id) }}
+                                        {{ f.hidden('id', session.id[:15]) }}
                                         {{ f.submit(
                                             __('form.delete'),
                                             {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'icon_left': 'trash'}

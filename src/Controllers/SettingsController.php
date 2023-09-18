@@ -307,7 +307,10 @@ class SettingsController extends BaseController
             ->where('id', '!=', session()->getId());
 
         if ($id != 'all') {
-            $query = $query->where('id', $id);
+            $this->validate($request, [
+                'id' => 'required|alnum|length:15:15',
+            ]);
+            $query = $query->where('id', 'LIKE', $id . '%');
         }
 
         $query->delete();
