@@ -2040,8 +2040,8 @@ msgstr "+"
 msgid "news.is_meeting"
 msgstr "[Treffen]"
 
-msgid "news.edit.is_important"
-msgstr "Wichtig"
+msgid "news.edit.is_highlighted"
+msgstr "Hervorgehoben"
 
 msgid "news.read_more"
 msgstr "Weiterlesen"

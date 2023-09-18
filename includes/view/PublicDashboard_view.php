@@ -9,15 +9,15 @@ use Illuminate\Support\Collection;
  *
  * @param array             $stats
  * @param array[]           $free_shifts
- * @param News[]|Collection $important_news
+ * @param News[]|Collection $highlighted_news
  * @return string
  */
-function public_dashboard_view($stats, $free_shifts, $important_news)
+function public_dashboard_view($stats, $free_shifts, $highlighted_news)
 {
     $needed_angels = '';
     $news = '';
-    if ($important_news->isNotEmpty()) {
-        $first_news = $important_news->first();
+    if ($highlighted_news->isNotEmpty()) {
+        $first_news = $highlighted_news->first();
         $news = div('alert alert-warning text-center', [
             '<a href="' . url('/news/' . $first_news->id) . '"><strong>' . $first_news->title . '</strong></a>',
         ]);

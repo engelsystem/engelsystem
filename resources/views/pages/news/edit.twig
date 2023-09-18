@@ -49,9 +49,9 @@
                     {{ f.checkbox('is_pinned', __('news.edit.is_pinned'), {
                         'checked': is_pinned,
                     }) }}
-                    {% if has_permission_to('news.important') %}
-                        {{ f.checkbox('is_important', __('news.edit.is_important'), {
-                            'checked': is_important,
+                    {% if has_permission_to('news.highlight') %}
+                        {{ f.checkbox('is_highlighted', __('news.edit.is_highlighted'), {
+                            'checked': is_highlighted,
                         }) }}
                     {% endif %}
                 </div>
@@ -82,7 +82,7 @@
                     <div class="col-md-12">
                         <h2>{{ __('form.preview') }}</h2>
 
-                        <div class="card {% if news.is_important %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
+                        <div class="card {% if news.is_highlighted %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
                             <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
                                 {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                                 {{ news.title }}
