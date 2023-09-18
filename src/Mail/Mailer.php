@@ -24,7 +24,6 @@ class Mailer
      */
     public function send(string|array $to, string $subject, string $body): void
     {
-        dd($body);
         $message = (new Email())
             ->to(...(array) $to)
             ->from(sprintf('%s <%s>', $this->fromName, $this->fromAddress))
