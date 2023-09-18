@@ -12,6 +12,7 @@ class RoutesFileTest extends TestCase
 {
     /**
      * @doesNotPerformAssertions
+     * @coversNothing
      */
     public function testLoadRoutes(): void
     {
