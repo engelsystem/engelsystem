@@ -100,7 +100,7 @@ class ConfigServiceProviderTest extends ServiceProviderTest
                 }
 
                 if (is_null($returnValue)) {
-                    throw new QueryException('', [], new Exception());
+                    throw new QueryException('', '', [], new Exception());
                 }
 
                 return null;

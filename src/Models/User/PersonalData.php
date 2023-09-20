@@ -40,10 +40,10 @@ class PersonalData extends HasUserModel
         'planned_departure_date' => null,
     ];
 
-    /** @var array<string> The attributes that should be mutated to dates */
-    protected $dates = [ // phpcs:ignore
-        'planned_arrival_date',
-        'planned_departure_date',
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
+        'planned_arrival_date'   => 'datetime',
+        'planned_departure_date' => 'datetime',
     ];
 
     /**

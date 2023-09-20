@@ -104,9 +104,9 @@ class User extends BaseModel
         'password',
     ];
 
-    /** @var array<string> The attributes that should be mutated to dates */
-    protected $dates = [ // phpcs:ignore
-        'last_login_at',
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
+        'last_login_at' => 'datetime',
     ];
 
     public function contact(): HasOne
