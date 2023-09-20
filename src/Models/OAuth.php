@@ -45,11 +45,7 @@ class OAuth extends BaseModel
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
         'user_id' => 'integer',
-    ];
-
-    /** @var array<string> */
-    protected $dates = [ // phpcs:ignore
-        'expires_at',
+        'expires_at' => 'datetime',
     ];
 
     /** @var array<string> */

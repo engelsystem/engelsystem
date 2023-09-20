@@ -36,16 +36,12 @@ class Worklog extends BaseModel
     /** @var bool Enable timestamps */
     public $timestamps = true; // phpcs:ignore
 
-    /** @var array<string> The attributes that should be mutated to dates */
-    protected $dates = [ // phpcs:ignore
-        'worked_at',
-    ];
-
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
         'user_id'    => 'integer',
         'creator_id' => 'integer',
         'hours'      => 'float',
+        'worked_at'  => 'datetime',
     ];
 
     /**

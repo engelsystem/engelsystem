@@ -40,9 +40,9 @@
         "gettext/gettext": "^5.7",
         "gettext/translator": "^1.1",
         "guzzlehttp/guzzle": "^7.8",
-        "illuminate/container": "^9.52",
-        "illuminate/database": "^9.52",
-        "illuminate/support": "^9.52",
+        "illuminate/container": "^10.23",
+        "illuminate/database": "^10.23",
+        "illuminate/support": "^10.23",
         "league/oauth2-client": "^2.7",
         "nikic/fast-route": "^1.3",
         "nyholm/psr7": "^1.8",
@@ -59,7 +59,7 @@
         "vlucas/phpdotenv": "^5.5"
     },
     "require-dev": {
-        "dms/phpunit-arraysubset-asserts": "^0.4",
+        "dms/phpunit-arraysubset-asserts": "^0.5",
         "fakerphp/faker": "^1.23",
         "fig/log-test": "^1.1",
         "filp/whoops": "^2.15",

@@ -48,11 +48,7 @@ class State extends HasUserModel
         'force_active' => 'boolean',
         'got_shirt'    => 'boolean',
         'got_voucher'  => 'integer',
-    ];
-
-    /** @var array<string> The attributes that should be mutated to dates */
-    protected $dates = [ // phpcs:ignore
-        'arrival_date',
+        'arrival_date' => 'datetime',
     ];
 
     /**

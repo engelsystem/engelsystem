@@ -44,11 +44,6 @@ class Question extends BaseModel
     ];
 
     /** @var array<string> */
-    protected $dates = [ // phpcs:ignore
-        'answered_at',
-    ];
-
-    /** @var array<string> */
     protected $fillable = [ // phpcs:ignore
         'user_id',
         'text',
@@ -61,6 +56,7 @@ class Question extends BaseModel
     protected $casts = [ // phpcs:ignore
         'user_id'     => 'integer',
         'answerer_id' => 'integer',
+        'answered_at' => 'datetime',
     ];
 
     public function answerer(): BelongsTo

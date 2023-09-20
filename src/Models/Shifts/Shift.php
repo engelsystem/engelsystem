@@ -73,6 +73,8 @@ class Shift extends BaseModel
         'room_id'       => 'integer',
         'created_by'    => 'integer',
         'updated_by'    => 'integer',
+        'start'         => 'datetime',
+        'end'           => 'datetime',
     ];
 
     /** @var array<string> Values that are mass assignable */
@@ -87,12 +89,6 @@ class Shift extends BaseModel
         'transaction_id',
         'created_by',
         'updated_by',
-    ];
-
-    /** @var array<string> Values that are DateTimes */
-    protected $dates = [ // phpcs:ignore
-        'start',
-        'end',
     ];
 
     public function neededAngelTypes(): HasMany

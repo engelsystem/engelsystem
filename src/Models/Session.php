@@ -38,11 +38,6 @@ class Session extends BaseModel
     ];
 
     /** @var array<string> */
-    protected $dates = [ // phpcs:ignore
-        'last_activity',
-    ];
-
-    /** @var array<string> */
     protected $fillable = [ // phpcs:ignore
         'id',
         'payload',
@@ -52,5 +47,6 @@ class Session extends BaseModel
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
         'user_id' => 'integer',
+        'last_activity' => 'datetime',
     ];
 }
