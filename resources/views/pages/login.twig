@@ -40,6 +40,7 @@
 
                         <form action="" enctype="multipart/form-data" method="post">
                             {{ csrf() }}
+                            {% if config('enable_password') or request.get('password') %}
                             <div class="mb-3">
                                 <div class="input-group input-group-lg">
                                     <span class="input-group-text {{ m.type_text_class() }}">
@@ -73,6 +74,11 @@
                                     {{ __('login.login') }}
                                 </button>
                             </div>
+                            {% else %}
+                            <div class="mb-3 text-center">
+                                <a href="{{ url(request.url(), {'password':1}) }}">…</a>
+                            </div>
+                            {% endif %}
 
                             {%  if config('oauth') is not empty %}
                                 <div class="row">
@@ -89,11 +95,13 @@
                                 </div>
                             {% endif %}
 
+                            {% if config('enable_password') or request.get('password') %}
                             <div class="text-center">
                                 <a href="{{ url('/password/reset') }}" class="">
                                     {{ __('I forgot my password') }}
                                 </a>
                             </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -107,11 +115,17 @@
                     {% if config('enable_password') %}
                         <p>{{ __('Please sign up, if you want to help us!') }}</p>
                         <a href="{{ url('register') }}" class="btn btn-primary">{{ __('Register') }} &raquo;</a>
+                    {% elseif config('external_register_url') %}
+                        <a href="{{ config('external_register_url') }}" class="btn btn-primary">{{ __('Register') }} &raquo;</a>
                     {% else %}
                         <p>{{ __('Registration is only available via external login.') }}</p>
                     {% endif %}
                 {% else %}
-                    {{ m.alert(__('Registration is disabled.'), 'danger') }}
+                    {% if config('external_register_url') %}
+                        <a href="{{ config('external_register_url') }}" class="btn btn-primary">{{ __('Register') }} &raquo;</a>
+                    {% else %}
+                        {{ m.alert(__('Registration is disabled.'), 'danger') }}
+                    {% endif %}
                 {% endif %}
             </div>
 

@@ -229,6 +229,9 @@ return [
     // Users are able to sign up
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
 
+    // URL to external register page
+    'external_register_url'   => env('EXTERNAL_REGISTER_URL', false),
+
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => (bool) env('SIGNUP_REQUIRES_ARRIVAL', false),
 
