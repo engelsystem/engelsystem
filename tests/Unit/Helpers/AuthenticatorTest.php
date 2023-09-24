@@ -21,6 +21,14 @@ class AuthenticatorTest extends ServiceProviderTest
 {
     use HasDatabase;
 
+    protected static ?string $passwordHashTesting = null;
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        self::$passwordHashTesting = password_hash('testing', PASSWORD_ARGON2I, ['memory_cost' => 100]);
+    }
+
     /**
      * @covers \Engelsystem\Helpers\Authenticator::user
      * @covers \Engelsystem\Helpers\Authenticator::__construct
@@ -242,7 +250,7 @@ class AuthenticatorTest extends ServiceProviderTest
 
         User::factory([
             'name'     => 'lorem',
-            'password' => password_hash('testing', PASSWORD_DEFAULT),
+            'password' => self::$passwordHashTesting,
             'email'    => 'lorem@foo.bar',
         ])->create();
         User::factory([
@@ -263,7 +271,8 @@ class AuthenticatorTest extends ServiceProviderTest
     public function testVerifyPassword(): void
     {
         $this->initDatabase();
-        $password = password_hash('testing', PASSWORD_ARGON2I);
+        $password = self::$passwordHashTesting;
+
         /** @var User $user */
         $user = User::factory([
             'name'     => 'lorem',
@@ -299,13 +308,13 @@ class AuthenticatorTest extends ServiceProviderTest
         $user->save();
 
         $auth = $this->getAuthenticator();
-        $auth->setPasswordAlgorithm(PASSWORD_ARGON2I);
+        $auth->setPasswordAlgorithm(PASSWORD_BCRYPT);
 
         $auth->setPassword($user, 'FooBar');
         $this->assertTrue($user->isClean());
 
         $this->assertTrue(password_verify('FooBar', $user->password));
-        $this->assertFalse(password_needs_rehash($user->password, PASSWORD_ARGON2I));
+        $this->assertFalse(password_needs_rehash($user->password, PASSWORD_BCRYPT));
     }
 
     /**
