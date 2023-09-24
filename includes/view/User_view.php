@@ -176,7 +176,7 @@ function Users_view(
     return page_with_title(__('All users'), [
         msg(),
         buttons([
-            button(page_link_to('register'), icon('plus-lg') . __('New user')),
+            button(page_link_to('sign-up'), icon('plus-lg') . __('New user')),
         ]),
         table($user_table_headers, $usersList),
     ]);
