@@ -19,6 +19,9 @@ class ConfigServiceProviderTest extends ServiceProviderTest
 {
     use ArraySubsetAsserts;
 
+    private array $configVarsWhereNullIsPruned =
+        ['themes', 'tshirt_sizes', 'headers', 'header_items', 'footer_items', 'locales'];
+
     /**
      * @covers \Engelsystem\Config\ConfigServiceProvider::getConfigPath
      * @covers \Engelsystem\Config\ConfigServiceProvider::register
@@ -29,11 +32,40 @@ class ConfigServiceProviderTest extends ServiceProviderTest
         /** @var Config|MockObject $config */
         list($app, $config) = $this->getConfiguredApp(__DIR__ . '/../../../config');
 
-        $this->setExpects($config, 'set', null, null, $this->exactly(3));
-        $config->expects($this->exactly(4))
+        $config
+            ->expects($this->exactly(4 + sizeof($this->configVarsWhereNullIsPruned)))
             ->method('get')
-            ->with(null)
-            ->willReturnOnConsecutiveCalls([], [], [], ['lor' => 'em']);
+            ->with($this->callback(function (mixed $arg) {
+                return is_null($arg) || in_array($arg, $this->configVarsWhereNullIsPruned);
+            }))
+            ->will($this->returnCallback(function (mixed $arg) {
+                if (in_array($arg, $this->configVarsWhereNullIsPruned)) {
+                    return [$arg . '_foo' => $arg . '_bar', $arg . '_willBePruned' => null];
+                } elseif (is_null($arg)) {
+                    return ['some' => 'value'];
+                } else {
+                    throw new Exception('Unexpected arg: ' . $arg);
+                }
+            }));
+
+        $config
+            ->expects($this->exactly(3 + sizeof($this->configVarsWhereNullIsPruned)))
+            ->method('set')
+            //With does not support a callback funtion with multiple args ...
+            //Therefore, we misuse will
+            ->will($this->returnCallback(function (mixed $key, mixed $value = null) {
+                if (is_array($key)) {
+                    return null;
+                }
+                if (in_array($key, $this->configVarsWhereNullIsPruned)) {
+                    if ($value == [$key . '_foo' => $key . '_bar']) {
+                        return null;
+                    }
+                    throw new Exception('Value for key ' . print_r($key, true) .
+                                        'is not as expected: ' . print_r($value, true));
+                }
+                throw new Exception('Unexpected key: ' . print_r($key, true));
+            }));
 
         $configFile = __DIR__ . '/../../../config/config.php';
         $configExists = file_exists($configFile);

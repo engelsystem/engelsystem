@@ -14,6 +14,10 @@ class ConfigServiceProvider extends ServiceProvider
 {
     protected array $configFiles = ['app.php', 'config.default.php', 'config.php'];
 
+    # remember to update ConfigServiceProviderTest, config.default.php, and README.md
+    protected array $configVarsToPruneNulls
+        = ['themes', 'tshirt_sizes', 'headers', 'header_items', 'footer_items', 'locales'];
+
     public function __construct(Application $app, protected ?EventConfig $eventConfig = null)
     {
         parent::__construct($app);
@@ -41,6 +45,12 @@ class ConfigServiceProvider extends ServiceProvider
 
         if (empty($config->get(null))) {
             throw new Exception('Configuration not found');
+        }
+
+        foreach ($this->configVarsToPruneNulls as $key) {
+            $config->set($key, array_filter($config->get($key), function ($v) {
+                return !is_null($v);
+            }));
         }
     }
 

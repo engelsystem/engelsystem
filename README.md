@@ -40,7 +40,7 @@ The Engelsystem may be installed manually or by using the provided [docker setup
  * Recommended: Directory Listing should be disabled.
  * There must be a MySQL database set up with a user who has full rights to that database.
  * If necessary, create a `config/config.php` to override values from `config/config.default.php`.
-   * To edit values from the `footer_items`, `themes`, `locales`, `tshirt_sizes` or `headers` lists, directly modify the `config/config.default.php` file or rename it to `config/config.php`.
+   * To disable/remove values from the `themes`, `tshirt_sizes`, `headers`, `header_items`, `footer_items`, or `locales` lists, set the value of the entry to `null`.
  * To import the database, the `bin/migrate` script has to be run. If you can't execute scripts, you can use the `initial-install.sql` file from the release zip.
  * In the browser, login with credentials `admin` : `asdfasdf` and change the password.
 
