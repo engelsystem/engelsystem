@@ -148,4 +148,11 @@ class EventDispatcherTest extends TestCase
     {
         return ['default' => 'handler'];
     }
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->firedEvents = [];
+    }
 }
