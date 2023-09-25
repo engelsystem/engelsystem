@@ -2413,10 +2413,10 @@ msgstr "DECT"
 msgid "angeltypes.email"
 msgstr "E-Mail"
 
-msgid "angeltypes.hide.on.shift.view"
-msgstr "Auf Schicht Ansicht ausblenden"
+msgid "angeltypes.hide_on_shift_view"
+msgstr "Auf Schicht-Ansicht ausblenden"
 
-msgid "angeltypes.hide.on.shift.view.info"
+msgid "angeltypes.hide_on_shift_view.info"
 msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
 "Schicht Seite die Filteroption für diesen Engeltyp sehen."
 

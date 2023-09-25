@@ -138,12 +138,12 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                 ? form_info(__('Hide at Registration'), $angeltype->hide_register ? __('Yes') : __('No'))
                 : form_checkbox('hide_register', __('Hide at Registration'), $angeltype->hide_register),
             $supporter_mode
-                ? form_info(__('angeltypes.hide.on.shift.view'), $angeltype->hide_on_shift_view ? __('Yes') : __('No'))
+                ? form_info(__('angeltypes.hide_on_shift_view'), $angeltype->hide_on_shift_view ? __('Yes') : __('No'))
                 : form_checkbox(
                     'hide_on_shift_view',
-                    __('angeltypes.hide.on.shift.view') .
+                    __('angeltypes.hide_on_shift_view') .
                     ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                    __('angeltypes.hide.on.shift.view.info') . '"></span>',
+                    __('angeltypes.hide_on_shift_view.info') . '"></span>',
                     $angeltype->hide_on_shift_view
                 ),
             form_textarea('description', __('Description'), $angeltype->description),

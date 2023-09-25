@@ -548,10 +548,10 @@ msgstr "Shift self signup"
 msgid "shift.self_signup.allowed"
 msgstr "Shift self signup allowed"
 
-msgid "angeltypes.hide.on.shift.view"
+msgid "angeltypes.hide_on_shift_view"
 msgstr "Hide on shift view"
 
-msgid "angeltypes.hide.on.shift.view.info"
+msgid "angeltypes.hide_on_shift_view.info"
 msgstr "If checked only admins and members of the angeltype "
 "can see the filter option for this angeltype on the shifts page"
 
