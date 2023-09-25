@@ -40,6 +40,7 @@ class StringInputLengthTest extends TestCase
             ['com', 3],
             ['Test', 4],
             ['H', 1],
+            ['Europe/Berlin', 13],
             ['3', 3],
             [42, 42],
             [99.3, 99.3],

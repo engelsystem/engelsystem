@@ -29,10 +29,14 @@ trait StringInputLength
     protected function isDateTime(mixed $input): bool
     {
         try {
-            $input = new DateTime($input);
+            $inputDateTime = new DateTime($input);
+            $now = new DateTime();
+
             // Min 1s diff to exclude any not auto-detected dates / times like ...
-            return abs((int) (new DateTime())->diff($input)->format('%s')) > 1;
-        } catch (Exception $e) {
+            return abs($inputDateTime->getTimestamp() - $now->getTimestamp()) > 1
+                // Different timezone to prevent interpreting the value as a timezone which happens with H
+                && $inputDateTime->getTimezone()->getName() != $input;
+        } catch (Exception) {
             // Ignore it
         }
 
