@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class PermissionsRenameNewsImportantToNewsHighlight extends Migration
+class NewsRenameImportantToHighlight extends Migration
 {
     /**
      * Run the migration
@@ -17,6 +18,10 @@ class PermissionsRenameNewsImportantToNewsHighlight extends Migration
         $db->table('privileges')
             ->where('name', 'news.important')
             ->update(['name' => 'news.highlight', 'description' => 'Highlight News']);
+
+        $this->schema->table('news', function (Blueprint $table): void {
+            $table->renameColumn('is_important', 'is_highlighted');
+        });
     }
 
     /**
@@ -28,5 +33,9 @@ class PermissionsRenameNewsImportantToNewsHighlight extends Migration
         $db->table('privileges')
             ->where('name', 'news.highlight')
             ->update(['name' => 'news.important', 'description' => 'Make News Important']);
+
+        $this->schema->table('news', function (Blueprint $table): void {
+            $table->renameColumn('is_highlighted', 'is_important');
+        });
     }
 }

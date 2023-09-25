@@ -16,9 +16,9 @@ use Illuminate\Support\Str;
  * @property int                           $id
  * @property string                        $title
  * @property string                        $text
+ * @property bool                          $is_highlighted
  * @property bool                          $is_meeting
  * @property bool                          $is_pinned
- * @property bool                          $is_highlighted
  * @property Carbon|null                   $created_at
  * @property Carbon|null                   $updated_at
  *
