@@ -50,6 +50,7 @@ class NewsControllerTest extends ControllerTest
             'title'      => 'Lorem',
             'text'       => 'lorem',
             'is_meeting' => false,
+            'is_pinned'  => false,
             'user_id'    => 1,
         ],
         [
@@ -63,6 +64,7 @@ class NewsControllerTest extends ControllerTest
             'title'      => 'Dolor',
             'text'       => 'test',
             'is_meeting' => true,
+            'is_pinned'  => false,
             'user_id'    => 1,
         ],
     ];
