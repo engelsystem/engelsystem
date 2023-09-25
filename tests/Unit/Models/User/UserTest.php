@@ -227,7 +227,7 @@ class UserTest extends ModelTest
         $user->save();
         $this->assertFalse($user->isFreeloader());
 
-        ShiftEntry::factory()->create(['user_id' => $user->id]);
+        ShiftEntry::factory()->create(['user_id' => $user->id, 'freeloaded' => false]);
         ShiftEntry::factory()->create(['user_id' => $user->id, 'freeloaded' => true]);
         $this->assertFalse($user->isFreeloader());
 
