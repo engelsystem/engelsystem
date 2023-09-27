@@ -14,14 +14,14 @@ class NewsRenameImportantToHighlight extends Migration
      */
     public function up(): void
     {
-        $db = $this->schema->getConnection();
-        $db->table('privileges')
-            ->where('name', 'news.important')
-            ->update(['name' => 'news.highlight', 'description' => 'Highlight News']);
-
         $this->schema->table('news', function (Blueprint $table): void {
             $table->renameColumn('is_important', 'is_highlighted');
         });
+
+        $this->schema->getConnection()
+            ->table('privileges')
+            ->where('name', 'news.important')
+            ->update(['name' => 'news.highlight', 'description' => 'Highlight News']);
     }
 
     /**
@@ -29,13 +29,13 @@ class NewsRenameImportantToHighlight extends Migration
      */
     public function down(): void
     {
-        $db = $this->schema->getConnection();
-        $db->table('privileges')
-            ->where('name', 'news.highlight')
-            ->update(['name' => 'news.important', 'description' => 'Make News Important']);
-
         $this->schema->table('news', function (Blueprint $table): void {
             $table->renameColumn('is_highlighted', 'is_important');
         });
+
+        $this->schema->getConnection()
+            ->table('privileges')
+            ->where('name', 'news.highlight')
+            ->update(['name' => 'news.important', 'description' => 'Make News Important']);
     }
 }
