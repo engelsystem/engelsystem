@@ -138,7 +138,7 @@ class NewsController extends BaseController
             ->with('user')
             ->withCount('comments')
             ->orderByDesc('is_pinned')
-            ->orderByDesc('is_important')
+            ->orderByDesc('is_highlighted')
             ->orderByDesc('updated_at')
             ->orderByDesc('id')
             ->limit($perPage)

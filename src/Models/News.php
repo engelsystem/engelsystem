@@ -16,9 +16,9 @@ use Illuminate\Support\Str;
  * @property int                           $id
  * @property string                        $title
  * @property string                        $text
+ * @property bool                          $is_highlighted
  * @property bool                          $is_meeting
  * @property bool                          $is_pinned
- * @property bool                          $is_important
  * @property Carbon|null                   $created_at
  * @property Carbon|null                   $updated_at
  *
@@ -30,7 +30,7 @@ use Illuminate\Support\Str;
  * @method static QueryBuilder|News[] whereText($value)
  * @method static QueryBuilder|News[] whereIsMeeting($value)
  * @method static QueryBuilder|News[] whereIsPinned($value)
- * @method static QueryBuilder|News[] whereIsImportant($value)
+ * @method static QueryBuilder|News[] whereIsHighlighted($value)
  * @method static QueryBuilder|News[] whereCreatedAt($value)
  * @method static QueryBuilder|News[] whereUpdatedAt($value)
  */
@@ -44,17 +44,17 @@ class News extends BaseModel
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
-        'user_id'      => 'integer',
-        'is_meeting'   => 'boolean',
-        'is_pinned'    => 'boolean',
-        'is_important' => 'boolean',
+        'user_id'        => 'integer',
+        'is_meeting'     => 'boolean',
+        'is_pinned'      => 'boolean',
+        'is_highlighted' => 'boolean',
     ];
 
     /** @var array<string, bool> Default attributes */
     protected $attributes = [ // phpcs:ignore
-        'is_meeting'   => false,
-        'is_pinned'    => false,
-        'is_important' => false,
+        'is_meeting'     => false,
+        'is_pinned'      => false,
+        'is_highlighted' => false,
     ];
 
     /** @var array<string> */
@@ -63,7 +63,7 @@ class News extends BaseModel
         'text',
         'is_meeting',
         'is_pinned',
-        'is_important',
+        'is_highlighted',
         'user_id',
     ];
 

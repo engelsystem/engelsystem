@@ -57,14 +57,14 @@ function public_dashboard_controller()
         }
     }
 
-    $important_news = News::whereIsImportant(true)
+    $highlighted_news = News::whereIsHighlighted(true)
         ->orderBy('updated_at')
         ->limit(1)
         ->get();
 
     return [
         __('Public Dashboard'),
-        public_dashboard_view($stats, $free_shifts, $important_news),
+        public_dashboard_view($stats, $free_shifts, $highlighted_news),
     ];
 }
 

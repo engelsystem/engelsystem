@@ -39,12 +39,12 @@ class NewsControllerTest extends ControllerTest
             'user_id'    => 1,
         ],
         [
-            'title'        => 'baz',
-            'text'         => 'baz',
-            'is_meeting'   => true,
-            'is_pinned'    => true,
-            'is_important' => true,
-            'user_id'      => 1,
+            'title'          => 'baz',
+            'text'           => 'baz',
+            'is_meeting'     => true,
+            'is_pinned'      => true,
+            'is_highlighted' => true,
+            'user_id'        => 1,
         ],
         [
             'title'      => 'Lorem',
