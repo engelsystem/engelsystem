@@ -121,6 +121,7 @@ function angeltype_edit_controller()
             $angeltype->shift_self_signup = $request->has('shift_self_signup');
             $angeltype->show_on_dashboard = $request->has('show_on_dashboard');
             $angeltype->hide_register = $request->has('hide_register');
+            $angeltype->hide_on_shift_view = $request->has('hide_on_shift_view');
 
             $angeltype->requires_driver_license = $request->has('requires_driver_license');
             $angeltype->requires_ifsg_certificate = $request->has('requires_ifsg_certificate');
@@ -145,7 +146,8 @@ function angeltype_edit_controller()
                 . $angeltype->contact_dect . ', '
                 . $angeltype->contact_email . ', '
                 . $angeltype->show_on_dashboard . ', '
-                . $angeltype->hide_register
+                . $angeltype->hide_register . ', '
+                . $angeltype->hide_on_shift_view
             );
             throw_redirect(angeltype_link($angeltype->id));
         }

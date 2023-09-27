@@ -1293,12 +1293,10 @@ msgstr "Möchtest Du den Engeltypen %s löschen?"
 msgid "cancel"
 msgstr "abbrechen"
 
-msgid "Requires introduction"
+msgid "angeltypes.restricted"
 msgstr "Benötigt Einführung"
 
-msgid ""
-"Angel types which require introduction can only be used by an angel if "
-"enabled by a supporter (double opt-in)."
+msgid "angeltypes.restricted.info"
 msgstr ""
 "Engeltypen, welche eine Einführung benötigen, müssen von einem Supporter freigeschaltet werden "
 "(double-opt-in)."
@@ -2414,6 +2412,13 @@ msgstr "DECT"
 
 msgid "angeltypes.email"
 msgstr "E-Mail"
+
+msgid "angeltypes.hide_on_shift_view"
+msgstr "Auf Schicht-Ansicht ausblenden"
+
+msgid "angeltypes.hide_on_shift_view.info"
+msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
+"Schicht Seite die Filteroption für diesen Engeltyp sehen."
 
 msgid "registration.register"
 msgstr "Registrieren"
