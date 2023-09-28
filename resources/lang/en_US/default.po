@@ -344,6 +344,16 @@ msgstr "To withdraw your approval, send an e-mail to <a href=\"mailto:%s\">%1$s<
 msgid "settings.profile.shirt_size"
 msgstr "T-shirt size"
 
+msgid "settings.profile.shirt_size.hint"
+msgstr "A straight-cut shirt has wide shoulders and a body which is almost square. "
+"A fitted-cut t-shirt has a curved side seam which comes in at the waist "
+"and goes out at the upper and lower ends. "
+"Normally fitted-cut shirts are smaller then same size straight-cut shirts, "
+"and sizes differ between brands."
+
+msgid "settings.profile.shirt.link"
+msgstr "More information"
+
 msgid "settings.profile.angeltypes.info"
 msgstr "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
 

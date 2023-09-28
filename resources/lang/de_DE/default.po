@@ -1625,6 +1625,16 @@ msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> 
 msgid "settings.profile.shirt_size"
 msgstr "T-Shirt-Größe"
 
+msgid "settings.profile.shirt_size.hint"
+msgstr "Ein straight-cut T-Shirt hat breite Schultern und einen fast quadratischen Körper. "
+"Ein fitted-cut (tailliertes) T-Shirt hat eine geschwungene Seitennaht, die an der Taille schmaler "
+"ist und einen größeren Brust- sowie Hüft-Umfang hat. "
+"Normalerweise fallen fitted-cut (taillierte) T-Shirts kleiner aus als straight-cut T-Shirts in der gleichen Größe, "
+"außerdem sind die Größen von Marke zu Marke unterscheiden."
+
+msgid "settings.profile.shirt.link"
+msgstr "Mehr Informationen"
+
 msgid "settings.profile.angeltypes.info"
 msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
 

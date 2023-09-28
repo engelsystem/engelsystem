@@ -383,6 +383,9 @@ return [
         '4XL'  => '4XLarge Straight-Cut',
     ],
 
+    // T-shirt Size-Guide link
+    'tshirt_link' => env('TSHIRT_LINK', null),
+
     // Whether to show the current day of the event (-2, -1, 0, 1, 2…) in footer and on the dashboard.
     // The event start date has to be set for it to appear.
     'enable_show_day_of_event' => false,
