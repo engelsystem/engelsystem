@@ -91,6 +91,7 @@ class RegistrationController extends BaseController
             [
                 'minPasswordLength' => $this->config->get('min_password_length'),
                 'tShirtSizes' => $this->config->get('tshirt_sizes'),
+                'tShirtLink' => $this->config->get('tshirt_link'),
                 'angelTypes' => AngelType::whereHideRegister(false)->get(),
                 'preselectedAngelTypes' => $preselectedAngelTypes,
                 'buildUpStartDate' => $this->userFactory->determineBuildUpStartDate()->format('Y-m-d'),

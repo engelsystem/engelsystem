@@ -239,6 +239,14 @@
                                 'required': isTShirtSizeRequired,
                                 'required_icon': isTShirtSizeRequired,
                                 'selected': f.formData('tshirt_size', ''),
+                                'info': __('settings.profile.shirt_size.hint'),
+                                'raw_form_text': true,
+                                'form_text': (tShirtLink ? m.icon('info-circle')
+                                    ~ ' <a href="'
+                                    ~ tShirtLink|escape('html_attr')
+                                    ~ '" target="_blank" rel="noopener">'
+                                    ~ __('settings.profile.shirt.link')|e
+                                    ~ '</a>' : ''),
                             }
                         ) }}
                     </div>

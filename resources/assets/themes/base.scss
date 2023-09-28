@@ -23,6 +23,8 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 $form-label-font-weight: $font-weight-bold;
 
+$choices-guttering: auto;
+
 @import '~bootstrap/scss/utilities';
 
 @import '~bootstrap/scss/root';

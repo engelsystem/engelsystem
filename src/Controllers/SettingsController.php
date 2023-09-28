@@ -46,8 +46,9 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'user' => $user,
-                'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
                 'goodie_enabled' => $this->config->get('goodie_type') !== GoodieType::None->value,
+                'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
+                'tShirtLink' => $this->config->get('tshirt_link'),
                 'isPronounRequired' => $requiredFields['pronoun'],
                 'isFirstnameRequired' => $requiredFields['firstname'],
                 'isLastnameRequired' => $requiredFields['lastname'],

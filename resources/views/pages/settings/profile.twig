@@ -155,6 +155,14 @@
                         'required_icon': isTShirtSizeRequired,
                         'default_option': __('form.select_placeholder'),
                         'disabled': user.state.got_shirt,
+                        'info': __('settings.profile.shirt_size.hint'),
+                        'raw_form_text': true,
+                        'form_text': (tShirtLink ? m.icon('info-circle')
+                            ~ ' <a href="'
+                            ~ tShirtLink|escape('html_attr')
+                            ~ '">'
+                            ~ __('settings.profile.shirt.link')|e
+                            ~ '</a>' : ''),
                     }) }}
                 </div>
             {% endif %}
