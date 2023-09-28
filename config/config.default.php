@@ -233,6 +233,17 @@ return [
     // Users are able to sign up
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
 
+    // Required fields on sign-up page
+    'signup_required_fields'   => [
+        'pronoun'              => (bool) env('PRONOUN_REQUIRED', false),
+        'firstname'            => (bool) env('FIRSTNAME_REQUIRED', false),
+        'lastname'             => (bool) env('LASTNAME_REQUIRED', false),
+        'planned_arrival_date' => (bool) env('PLANNED_ARRIVAL_DATE_REQUIRED', true),
+        'tshirt_size'          => (bool) env('TSHIRT_SIZE_REQUIRED', true),
+        'mobile'               => (bool) env('MOBILE_REQUIRED', false),
+        'dect'                 => (bool) env('DECT_REQUIRED', false),
+    ],
+
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => (bool) env('SIGNUP_REQUIRES_ARRIVAL', false),
 

@@ -25,6 +25,8 @@
                             __('settings.profile.pronoun'),
                             {
                                 'max_length': 15,
+                                'required': isPronounRequired,
+                                'required_icon': isPronounRequired,
                                 'value': f.formData('pronoun', ''),
                             }
                         ) }}
@@ -156,6 +158,8 @@
                             {
                                 'autocomplete': 'given-name',
                                 'max_length': 64,
+                                'required': isFirstnameRequired,
+                                'required_icon': isFirstnameRequired,
                                 'value': f.formData('firstname', ''),
                             }
                         ) }}
@@ -167,6 +171,8 @@
                             {
                                 'autocomplete': 'family-name',
                                 'max_length': 64,
+                                'required': isLastnameRequired,
+                                'required_icon': isLastnameRequired,
                                 'value': f.formData('lastname', ''),
                             }
                         ) }}
@@ -205,8 +211,8 @@
                                 'type': 'date',
                                 'min': buildUpStartDate,
                                 'max': tearDownEndDate,
-                                'required': true,
-                                'required_icon': true,
+                                'required': isPlannedArrivalDateRequired,
+                                'required_icon': isPlannedArrivalDateRequired,
                                 'value': f.formData('planned_arrival_date', buildUpStartDate),
                             }
                         ) }}
@@ -221,8 +227,8 @@
                             tShirtSizes,
                             {
                                 'default_option': __('form.select_placeholder'),
-                                'required': true,
-                                'required_icon': true,
+                                'required': isTShirtSizeRequired,
+                                'required_icon': isTShirtSizeRequired,
                                 'selected': f.formData('tshirt_size', ''),
                             }
                         ) }}
@@ -236,6 +242,8 @@
                         {
                             'type': 'tel-national',
                             'max_length': 40,
+                            'required': isMobileRequired,
+                            'required_icon': isMobileRequired,
                             'value': f.formData('mobile', ''),
                         }
                     ) }}
@@ -259,6 +267,8 @@
                             {
                                 'type': 'tel-local',
                                 'max_length': 40,
+                                'required': isDectRequired,
+                                'required_icon': isDectRequired,
                                 'value': f.formData('dect', ''),
                             }
                         ) }}

@@ -79,6 +79,7 @@ class SignUpController extends BaseController
     {
         $goodieType = GoodieType::from($this->config->get('goodie_type'));
         $preselectedAngelTypes = $this->determinePreselectedAngelTypes();
+        $requiredFields = $this->config->get('signup_required_fields');
 
         // form-data-register-submit is a marker, that the form was submitted.
         // It will be used for instance to use the default angel types or the user selected ones.
@@ -101,6 +102,13 @@ class SignUpController extends BaseController
                 'isPronounEnabled' => $this->config->get('enable_pronoun'),
                 'isFullNameEnabled' => $this->config->get('enable_user_name'),
                 'isPlannedArrivalDateEnabled' => $this->config->get('enable_planned_arrival'),
+                'isPronounRequired' => $requiredFields['pronoun'],
+                'isFirstnameRequired' => $requiredFields['firstname'],
+                'isLastnameRequired' => $requiredFields['lastname'],
+                'isPlannedArrivalDateRequired' => $requiredFields['planned_arrival_date'],
+                'isTShirtSizeRequired' => $requiredFields['tshirt_size'],
+                'isMobileRequired' => $requiredFields['mobile'],
+                'isDectRequired' => $requiredFields['dect'],
             ],
         );
     }
