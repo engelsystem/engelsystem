@@ -21,20 +21,20 @@ msgstr "The password entered is too short."
 msgid "validation.login.required"
 msgstr "The login name is required."
 
-msgid "validation.pronoun.length"
-msgstr "The pronoun you have entered is too long. Use a maximum of 15 characters."
+msgid "validation.pronoun.required"
+msgstr "Please enter your pronoun."
 
-msgid "validation.firstname.length"
-msgstr "The first name you have entered is too long. Use a maximum of 64 characters."
+msgid "validation.firstname.required"
+msgstr "Please enter your first name."
 
-msgid "validation.lastname.length"
-msgstr "The last name you have entered is too long. Use a maximum of 64 characters."
+msgid "validation.lastname.required"
+msgstr "Please enter your last name."
 
-msgid "validation.mobile.optional"
-msgstr "The mobile number you have entered is too long. Use a maximum of 40 characters."
+msgid "validation.mobile.required"
+msgstr "Please enter your mobile number."
 
-msgid "validation.dect.optional"
-msgstr "The DECT number you have entered is too long. Use a maximum of 40 characters."
+msgid "validation.dect.required"
+msgstr "Please enter your DECT number."
 
 msgid "validation.username.required"
 msgstr "Please enter your nick."
