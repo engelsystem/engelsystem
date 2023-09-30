@@ -15,7 +15,6 @@ final class SignUpConfig
         $requiredFields['pronoun'] = false;
         $requiredFields['firstname'] = false;
         $requiredFields['lastname'] = false;
-        $requiredFields['planned_arrival_date'] = true;
         $requiredFields['tshirt_size'] = true;
         $requiredFields['mobile'] = false;
         $requiredFields['dect'] = false;
@@ -44,7 +43,6 @@ final class SignUpConfig
         $requiredFields['pronoun'] = false;
         $requiredFields['firstname'] = false;
         $requiredFields['lastname'] = false;
-        $requiredFields['planned_arrival_date'] = true;
         $requiredFields['tshirt_size'] = true;
         $requiredFields['mobile'] = false;
         $requiredFields['dect'] = false;

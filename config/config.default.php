@@ -238,7 +238,6 @@ return [
         'pronoun'              => (bool) env('PRONOUN_REQUIRED', false),
         'firstname'            => (bool) env('FIRSTNAME_REQUIRED', false),
         'lastname'             => (bool) env('LASTNAME_REQUIRED', false),
-        'planned_arrival_date' => (bool) env('PLANNED_ARRIVAL_DATE_REQUIRED', true),
         'tshirt_size'          => (bool) env('TSHIRT_SIZE_REQUIRED', true),
         'mobile'               => (bool) env('MOBILE_REQUIRED', false),
         'dect'                 => (bool) env('DECT_REQUIRED', false),

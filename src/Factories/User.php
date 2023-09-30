@@ -131,13 +131,13 @@ class User
 
             if ($tearDownEndDate) {
                 $validationRules['planned_arrival_date'] = sprintf(
-                    $this->required('planned_arrival_date') . '|date|between:%s:%s',
+                    'required|date|between:%s:%s',
                     $isoBuildUpStartDate->format('Y-m-d'),
                     $tearDownEndDate->format('Y-m-d')
                 );
             } else {
                 $validationRules['planned_arrival_date'] = sprintf(
-                    $this->required('planned_arrival_date') . '|date|min:%s',
+                    'required|date|min:%s',
                     $isoBuildUpStartDate->format('Y-m-d'),
                 );
             }

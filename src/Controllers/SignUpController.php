@@ -105,7 +105,6 @@ class SignUpController extends BaseController
                 'isPronounRequired' => $requiredFields['pronoun'],
                 'isFirstnameRequired' => $requiredFields['firstname'],
                 'isLastnameRequired' => $requiredFields['lastname'],
-                'isPlannedArrivalDateRequired' => $requiredFields['planned_arrival_date'],
                 'isTShirtSizeRequired' => $requiredFields['tshirt_size'],
                 'isMobileRequired' => $requiredFields['mobile'],
                 'isDectRequired' => $requiredFields['dect'],
