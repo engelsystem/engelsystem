@@ -14,7 +14,6 @@ use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\Test\TestLogger;
-use Symfony\Component\Mailer\Exception\TransportException;
 
 class MessagesTest extends TestCase
 {
@@ -46,13 +45,14 @@ class MessagesTest extends TestCase
                 string $subject,
                 string $template,
                 array $data
-            ) use ($user): void {
+            ) use ($user): bool {
                 $this->assertEquals($user->id, $receiver->id);
                 $this->assertEquals('notification.messages.new', $subject);
                 $this->assertEquals('emails/messages-new', $template);
                 $this->assertArrayHasKey('username', $data);
                 $this->assertArrayHasKey('sender', $data);
                 $this->assertArrayHasKey('send_message', $data);
+                return true;
             });
 
         $handler = new Messages($this->log, $mailer);
@@ -77,32 +77,6 @@ class MessagesTest extends TestCase
 
         $handler = new Messages($this->log, $mailer);
         $handler->created($message);
-    }
-
-    /**
-     * @covers \Engelsystem\Events\Listener\Messages::sendMail
-     */
-    public function testSendMailExceptionHandling(): void
-    {
-        /** @var EngelsystemMailer|MockObject $mailer */
-        $mailer = $this->createMock(EngelsystemMailer::class);
-        /** @var User $user */
-        $user = User::factory()
-            ->has(Settings::factory([
-                'email_messages' => true,
-            ]))
-            ->create();
-        $message = Message::factory()->create(['receiver_id' => $user->id]);
-        $mailer->expects($this->once())
-            ->method('sendViewTranslated')
-            ->willReturnCallback(function (): void {
-                throw new TransportException();
-            });
-
-        $handler = new Messages($this->log, $mailer);
-
-        $handler->created($message);
-        $this->assertTrue($this->log->hasErrorThatContains('Unable to send email'));
     }
 
     protected function setUp(): void

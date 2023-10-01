@@ -9,7 +9,6 @@ use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\Exception\TransportException;
 
 class Shift
 {
@@ -71,27 +70,19 @@ class Shift
             return;
         }
 
-        $subject = 'notification.shift.deleted';
-        try {
-            $this->mailer->sendViewTranslated(
-                $user,
-                $subject,
-                'emails/worklog-from-shift',
-                [
-                    'name'       => $name,
-                    'title'      => $title,
-                    'start'      => $start,
-                    'end'        => $end,
-                    'room'       => $room,
-                    'freeloaded' => $freeloaded,
-                    'username'   => $user->displayName,
-                ]
-            );
-        } catch (TransportException $e) {
-            $this->log->error(
-                'Unable to send email "{title}" to user {user} with {exception}',
-                ['title' => $subject, 'user' => $user->name, 'exception' => $e]
-            );
-        }
+        $this->mailer->sendViewTranslated(
+            $user,
+            'notification.shift.deleted',
+            'emails/worklog-from-shift',
+            [
+                'name'       => $name,
+                'title'      => $title,
+                'start'      => $start,
+                'end'        => $end,
+                'room'       => $room,
+                'freeloaded' => $freeloaded,
+                'username'   => $user->displayName,
+            ]
+        );
     }
 }

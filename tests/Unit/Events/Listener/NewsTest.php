@@ -12,7 +12,6 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
@@ -38,29 +37,20 @@ class NewsTest extends TestCase
         /** @var NewsModel $news */
         $news = NewsModel::factory(['title' => 'Foo'])->create();
 
-        $i = 0;
-        $this->mailer->expects($this->exactly(2))
+        $this->mailer->expects($this->once())
             ->method('sendViewTranslated')
-            ->willReturnCallback(function (User $user, string $subject, string $template, array $data) use (&$i): void {
+            ->willReturnCallback(function (User $user, string $subject, string $template, array $data): bool {
                 $this->assertEquals(1, $user->id);
                 $this->assertEquals('notification.news.new', $subject);
                 $this->assertEquals('emails/news-new', $template);
                 $this->assertEquals('Foo', array_values($data)[0]);
 
-                if ($i++ > 0) { // On second run
-                    throw new Exception('Oops');
-                }
+                return true;
             });
 
         /** @var News $listener */
         $listener = $this->app->make(News::class);
-        $error = 'Unable to send email';
-
         $listener->created($news);
-        $this->assertFalse($this->log->hasErrorThatContains($error));
-
-        $listener->created($news);
-        $this->assertTrue($this->log->hasErrorThatContains($error));
     }
 
     protected function setUp(): void

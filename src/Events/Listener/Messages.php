@@ -8,7 +8,6 @@ use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\Exception\TransportException;
 
 class Messages
 {
@@ -29,22 +28,15 @@ class Messages
 
     private function sendMail(Message $message, User $user, string $subject, string $template): void
     {
-        try {
-            $this->mailer->sendViewTranslated(
-                $user,
-                $subject,
-                $template,
-                [
-                    'sender'       => $message->sender->displayName,
-                    'send_message' => $message,
-                    'username'     => $user->displayName,
-                ]
-            );
-        } catch (TransportException $e) {
-            $this->log->error(
-                'Unable to send email "{title}" to user {user} with {exception}',
-                ['title' => $subject, 'user' => $user->name, 'exception' => $e]
-            );
-        }
+        $this->mailer->sendViewTranslated(
+            $user,
+            $subject,
+            $template,
+            [
+                'sender'       => $message->sender->displayName,
+                'send_message' => $message,
+                'username'     => $user->displayName,
+            ]
+        );
     }
 }

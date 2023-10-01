@@ -10,7 +10,6 @@ use Engelsystem\Models\User\Settings as UserSettings;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Log\LoggerInterface;
-use Throwable;
 
 class News
 {
@@ -36,18 +35,11 @@ class News
 
     protected function sendMail(NewsModel $news, User $user, string $subject, string $template): void
     {
-        try {
-            $this->mailer->sendViewTranslated(
-                $user,
-                $subject,
-                $template,
-                ['title' => $news->title, 'news' => $news, 'username' => $user->displayName]
-            );
-        } catch (Throwable $e) {
-            $this->log->error(
-                'Unable to send email "{title}" to user {user} with {exception}',
-                ['title' => $subject, 'user' => $user->name, 'exception' => $e]
-            );
-        }
+        $this->mailer->sendViewTranslated(
+            $user,
+            $subject,
+            $template,
+            ['title' => $news->title, 'news' => $news, 'username' => $user->displayName]
+        );
     }
 }

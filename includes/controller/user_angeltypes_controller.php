@@ -5,8 +5,6 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Illuminate\Database\Eloquent\Collection;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\Exception\TransportException;
 
 /**
  * Display a hint for team/angeltype supporters if there are unconfirmed users for his angeltype.
@@ -188,23 +186,14 @@ function user_angeltype_confirm_email(User $user, AngelType $angeltype): void
         return;
     }
 
-    try {
-        /** @var EngelsystemMailer $mailer */
-        $mailer = app(EngelsystemMailer::class);
-        $mailer->sendViewTranslated(
-            $user,
-            'notification.angeltype.confirmed',
-            'emails/angeltype-confirmed',
-            ['name' => $angeltype->name, 'angeltype' => $angeltype, 'username' => $user->displayName]
-        );
-    } catch (TransportException $e) {
-        /** @var LoggerInterface $logger */
-        $logger = app('logger');
-        $logger->error(
-            'Unable to send email "{title}" to user {user} with {exception}',
-            ['title' => __('notification.angeltype.confirmed'), 'user' => $user->name, 'exception' => $e]
-        );
-    }
+    /** @var EngelsystemMailer $mailer */
+    $mailer = app(EngelsystemMailer::class);
+    $mailer->sendViewTranslated(
+        $user,
+        'notification.angeltype.confirmed',
+        'emails/angeltype-confirmed',
+        ['name' => $angeltype->name, 'angeltype' => $angeltype, 'username' => $user->displayName]
+    );
 }
 
 function user_angeltype_add_email(User $user, AngelType $angeltype): void
@@ -213,23 +202,14 @@ function user_angeltype_add_email(User $user, AngelType $angeltype): void
         return;
     }
 
-    try {
-        /** @var EngelsystemMailer $mailer */
-        $mailer = app(EngelsystemMailer::class);
-        $mailer->sendViewTranslated(
-            $user,
-            'notification.angeltype.added',
-            'emails/angeltype-added',
-            ['name' => $angeltype->name, 'angeltype' => $angeltype, 'username' => $user->displayName]
-        );
-    } catch (TransportException $e) {
-        /** @var LoggerInterface $logger */
-        $logger = app('logger');
-        $logger->error(
-            'Unable to send email "{title}" to user {user} with {exception}',
-            ['title' => __('notification.angeltype.added'), 'user' => $user->name, 'exception' => $e]
-        );
-    }
+    /** @var EngelsystemMailer $mailer */
+    $mailer = app(EngelsystemMailer::class);
+    $mailer->sendViewTranslated(
+        $user,
+        'notification.angeltype.added',
+        'emails/angeltype-added',
+        ['name' => $angeltype->name, 'angeltype' => $angeltype, 'username' => $user->displayName]
+    );
 }
 
 /**

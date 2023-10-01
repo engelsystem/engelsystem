@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Mail;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Throwable;
 
 class Mailer
 {
@@ -13,7 +15,7 @@ class Mailer
 
     protected ?string $fromName = null;
 
-    public function __construct(protected MailerInterface $mailer)
+    public function __construct(protected LoggerInterface $log, protected MailerInterface $mailer)
     {
     }
 
@@ -22,7 +24,7 @@ class Mailer
      *
      * @param string|string[] $to
      */
-    public function send(string|array $to, string $subject, string $body): void
+    public function send(string|array $to, string $subject, string $body): bool
     {
         $message = (new Email())
             ->to(...(array) $to)
@@ -30,7 +32,25 @@ class Mailer
             ->subject($subject)
             ->text($body);
 
-        $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+        } catch (Throwable $e) {
+            $this->log->error(
+                'Unable to send e-mail "{subject}" to {to} in {file}:{line}: {type}: {message}',
+                [
+                    'subject' => $subject,
+                    'to' => $to,
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'type' => get_class($e),
+                    'message' => $e->getMessage(),
+                ]
+            );
+
+            return false;
+        }
+
+        return true;
     }
 
     public function getFromAddress(): string
