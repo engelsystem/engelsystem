@@ -7,7 +7,10 @@ namespace Engelsystem\Test\Unit\Mail;
 use Engelsystem\Mail\Mailer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\RawMessage;
 
@@ -22,10 +25,11 @@ class MailerTest extends TestCase
      */
     public function testInitAndSettersAndGetters(): void
     {
+        $log = new NullLogger();
         /** @var MailerInterface|MockObject $symfonyMailer */
         $symfonyMailer = $this->createMock(MailerInterface::class);
 
-        $mailer = new Mailer($symfonyMailer);
+        $mailer = new Mailer($log, $symfonyMailer);
 
         $mailer->setFromName('From Name');
         $this->assertEquals('From Name', $mailer->getFromName());
@@ -39,6 +43,7 @@ class MailerTest extends TestCase
      */
     public function testSend(): void
     {
+        $log = new NullLogger();
         /** @var MailerInterface|MockObject $symfonyMailer */
         $symfonyMailer = $this->createMock(MailerInterface::class);
         $symfonyMailer->expects($this->once())
@@ -51,10 +56,36 @@ class MailerTest extends TestCase
                 $this->assertStringContainsString('Lorem Ipsum!', $message->toString());
             });
 
-        $mailer = new Mailer($symfonyMailer);
+        $mailer = new Mailer($log, $symfonyMailer);
         $mailer->setFromAddress('foo@bar.baz');
         $mailer->setFromName('Test Tester');
 
-        $mailer->send('to@xam.pel', 'Foo Bar', 'Lorem Ipsum!');
+        $status = $mailer->send('to@xam.pel', 'Foo Bar', 'Lorem Ipsum!');
+        $this->assertTrue($status);
+    }
+
+
+    /**
+     * @covers \Engelsystem\Mail\Mailer::send
+     */
+    public function testSendException(): void
+    {
+        $log = new TestLogger();
+        /** @var MailerInterface|MockObject $symfonyMailer */
+        $symfonyMailer = $this->createMock(MailerInterface::class);
+        $symfonyMailer->expects($this->once())
+            ->method('send')
+            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null): void {
+                throw new TransportException('Unable to connect to port 42');
+            });
+
+        $mailer = new Mailer($log, $symfonyMailer);
+        $mailer->setFromAddress('foo@bar.baz');
+        $mailer->setFromName('Test Tester');
+
+        $status = $mailer->send('to@xam.pel', 'Foo Bar', 'Lorem Ipsum!');
+        $this->assertFalse($status);
+
+        $this->assertTrue($log->hasErrorThatContains('Unable to send e-mail'));
     }
 }
