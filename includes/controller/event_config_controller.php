@@ -117,7 +117,7 @@ function event_config_edit_controller()
                     $teardown_end_date ? $teardown_end_date->format('Y-m-d H:i') : ''
                 )
             );
-            success(__('Settings saved.'));
+            success(__('settings.success'));
             throw_redirect(page_link_to('admin_event_config'));
         }
     }

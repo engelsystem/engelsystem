@@ -47,7 +47,7 @@ msgid "No sleep found"
 msgstr "No sleep found"
 
 msgid "405: Method not allowed"
-msgstr ""
+msgstr "405: Method not allowed"
 
 msgid "Authentication expired"
 msgstr "Autorisierung ist abgelaufen"
@@ -143,14 +143,8 @@ msgstr ""
 msgid "Please note: You have to activate cookies!"
 msgstr "Hinweis: Cookies müssen aktiviert sein!"
 
-msgid "Password"
-msgstr "Passwort"
-
 msgid "Confirm password"
 msgstr "Passwort wiederholen"
-
-msgid "Save"
-msgstr "Speichern"
 
 msgid "We sent you an email containing your password recovery link."
 msgstr ""
@@ -170,14 +164,8 @@ msgstr ""
 "zurücksetzen kannst. Bitte benutze die Mailadresse, die du bei der Anmeldung "
 "verwendet hast."
 
-msgid "E-Mail"
-msgstr "E-Mail"
-
 msgid "Recover"
 msgstr "Wiederherstellen"
-
-msgid "Angeltypes"
-msgstr "Engeltypen"
 
 msgid "Angeltype %s deleted."
 msgstr "Engeltyp %s gelöscht."
@@ -209,9 +197,6 @@ msgstr "verlassen"
 msgid "join"
 msgstr "mitmachen"
 
-msgid "Angeltype doesn't exist . "
-msgstr "Engeltyp existiert nicht."
-
 msgid "Event config"
 msgstr "Event Einstellungen"
 
@@ -238,9 +223,6 @@ msgstr "Das Event Ende Datum muss vor dem Abbau Ende Datum liegen."
 
 msgid "The buildup start date has to be before the teardown end date."
 msgstr "Das Aufbau Start Datum muss vor dem Abbau Ende Datum liegen."
-
-msgid "Settings saved."
-msgstr "Einstellungen gespeichert."
 
 msgid "Public Dashboard"
 msgstr "Öffentliches Dashboard"
@@ -274,9 +256,6 @@ msgstr "Du bist für diese Schicht eingetragen."
 
 msgid "You are subscribed. Thank you!"
 msgstr "Du bist eingetragen. Danke!"
-
-msgid "Shift entry not found."
-msgstr "Schichteintrag nicht gefunden."
 
 msgid ""
 "You are not allowed to remove this shift entry. If necessary, ask your "
@@ -320,7 +299,7 @@ msgstr "Diese Seite ist mit JavaScript viel komfortabler."
 msgid "Shifttype"
 msgstr "Schichttyp"
 
-msgid "Title"
+msgid "title.title"
 msgstr "Titel"
 
 msgid "Location:"
@@ -362,9 +341,6 @@ msgstr "Schichttyp %s gelöscht."
 msgid "Delete shifttype %s"
 msgstr "Lösche Schichttyp %s"
 
-msgid "Shifttype not found."
-msgstr "Schichttyp nicht gefunden."
-
 msgid "Please enter a name."
 msgstr "Gib bitte einen Namen an."
 
@@ -385,9 +361,6 @@ msgstr[1] "Es gibt %d nicht freigeschaltete Engeltypen!"
 msgid "Angel types which need approvals:"
 msgstr "Engeltypen die bestätigt werden müssen:"
 
-msgid "Angeltype doesn't exist."
-msgstr "Engeltyp existiert nicht."
-
 msgid "You are not allowed to delete all users for this angeltype."
 msgstr "Du darfst nicht alle Benutzer von diesem Engeltyp entfernen."
 
@@ -406,14 +379,8 @@ msgstr "Alle Benutzer für Engeltyp %s freigeschaltet."
 msgid "Confirm all users"
 msgstr "Alle Benutzer bestätigen"
 
-msgid "User angeltype doesn't exist."
-msgstr "Benutzer-Engeltype existiert nicht."
-
 msgid "You are not allowed to confirm this users angeltype."
 msgstr "Du darfst diesen Benutzer nicht für diesen Engeltyp freischalten."
-
-msgid "User doesn't exist."
-msgstr "Benutzer existiert nicht."
 
 msgid "%s confirmed for angeltype %s."
 msgstr "%s für Engeltyp %s freigeschaltet."
@@ -1991,9 +1958,6 @@ msgstr "Zeit"
 
 msgid "schedule.import.shift.type"
 msgstr "Typ"
-
-msgid "schedule.import.shift.title"
-msgstr "Titel"
 
 msgid "schedule.import.shift.room"
 msgstr "Ort"

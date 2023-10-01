@@ -54,7 +54,7 @@ function ShiftType_edit_view($name, $description, $shifttype_id)
             form_text('name', __('Name'), $name),
             form_textarea('description', __('Description'), $description),
             form_info('', __('Please use markdown for the description.')),
-            form_submit('submit', __('Save')),
+            form_submit('submit', __('form.save')),
         ]),
     ], true);
 }

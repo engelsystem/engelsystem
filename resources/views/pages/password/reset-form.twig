@@ -7,7 +7,7 @@
         <form action="" enctype="multipart/form-data" method="post">
             {{ csrf() }}
 
-            {{ f.input('password', __('Password'), {
+            {{ f.input('password', __('settings.password'), {
                 'type': 'password',
                 'min_length': min_length,
                 'required': true,
@@ -18,7 +18,7 @@
                 'required': true,
             }) }}
 
-            {{ f.submit(__('Save')) }}
+            {{ f.submit(__('form.save')) }}
         </form>
     </div>
 {% endblock %}

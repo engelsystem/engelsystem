@@ -318,7 +318,7 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    icon('person-lines-fill') . __('Angeltypes') . '<sup>1</sup>',
+                    icon('person-lines-fill') . __('angeltypes.angeltypes') . '<sup>1</sup>',
                     $ownAngelTypes
                 ),
                 'filled_select' => make_select(

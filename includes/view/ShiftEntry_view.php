@@ -100,7 +100,7 @@ function ShiftEntry_create_view_admin(
             form([
                 form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype->id),
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
-                form_submit('submit', icon('check-lg') . __('Save')),
+                form_submit('submit', icon('check-lg') . __('form.save')),
             ]),
         ]
     );
@@ -130,7 +130,7 @@ function ShiftEntry_create_view_supporter(Shift $shift, Room $room, AngelType $a
             ), true),
             form([
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
-                form_submit('submit', icon('check-lg') . __('Save')),
+                form_submit('submit', icon('check-lg') . __('form.save')),
             ]),
         ]
     );
@@ -156,7 +156,7 @@ function ShiftEntry_create_view_user(Shift $shift, Room $room, AngelType $angelt
             info(sprintf(__('Do you want to sign up for this shift as %s?'), $angeltype->name), true),
             form([
                 form_textarea('comment', __('Comment (for your eyes only):'), $comment),
-                form_submit('submit', icon('check-lg') . __('Save')),
+                form_submit('submit', icon('check-lg') . __('form.save')),
             ]),
         ]
     );
@@ -223,7 +223,7 @@ function ShiftEntry_edit_view(
             form_info(__('Type:'), $type),
             $comment,
             join('', $freeload_form),
-            form_submit('submit', __('Save')),
+            form_submit('submit', __('form.save')),
         ]),
     ]);
 }

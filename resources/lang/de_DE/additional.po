@@ -186,7 +186,7 @@ msgid "settings.profile.planned_departure_date.invalid"
 msgstr "Bitte gib Dein geplantes Abreisedatum an, damit wir ein Gefühl für die Abbauplanung bekommen. "
 "Es sollte nach dem Aufbaubeginn und vor dem Abbauende liegen."
 
-msgid "settings.profile.success"
+msgid "settings.success"
 msgstr "Einstellungen gespeichert."
 
 msgid "settings.sessions.delete_success"

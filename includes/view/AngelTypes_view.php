@@ -82,7 +82,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
 {
     return page_with_title(sprintf(__('Edit %s'), $angeltype->name), [
         buttons([
-            button(page_link_to('angeltypes'), icon('person-lines-fill') . __('Angeltypes'), 'back'),
+            button(page_link_to('angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
         ]),
         msg(),
         form([
@@ -155,8 +155,8 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
             ),
             form_text('contact_name', __('Name'), $angeltype->contact_name),
             config('enable_dect') ? form_text('contact_dect', __('DECT'), $angeltype->contact_dect) : '',
-            form_text('contact_email', __('E-Mail'), $angeltype->contact_email),
-            form_submit('submit', __('Save')),
+            form_text('contact_email', __('settings.profile.email'), $angeltype->contact_email),
+            form_submit('submit', __('form.save')),
         ]),
     ]);
 }
@@ -181,7 +181,7 @@ function AngelType_view_buttons(
     $user
 ) {
     $buttons = [
-        button(page_link_to('angeltypes'), icon('person-lines-fill') . __('Angeltypes'), 'back'),
+        button(page_link_to('angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
     ];
 
     if ($angeltype->requires_driver_license) {
@@ -558,7 +558,7 @@ function AngelTypes_render_contact_info(AngelType $angeltype)
     $info = [
         __('Name')   => [$angeltype->contact_name, $angeltype->contact_name],
         __('DECT')   => config('enable_dect') ? [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect] : null,
-        __('E-Mail') => [sprintf('<a href="mailto:%s">%1$s</a>', $angeltype->contact_email), $angeltype->contact_email],
+        __('settings.profile.email') => [sprintf('<a href="mailto:%s">%1$s</a>', $angeltype->contact_email), $angeltype->contact_email],
     ];
     $contactInfo = [];
     foreach ($info as $name => $data) {

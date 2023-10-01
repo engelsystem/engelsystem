@@ -79,7 +79,7 @@ function admin_groups()
                         );
                     }
 
-                    $privileges_form[] = form_submit('submit', __('Save'));
+                    $privileges_form[] = form_submit('submit', __('form.save'));
                     $html .= page_with_title(__('Edit group') . ' ' . $group->name, [
                         form(
                             $privileges_form,

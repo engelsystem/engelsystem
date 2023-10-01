@@ -208,7 +208,7 @@ function shift_edit_controller()
             . '</noscript>',
             form([
                 form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
-                form_text('title', __('Title'), $title),
+                form_text('title', __('title.title'), $title),
                 form_select('rid', __('Location:'), $rooms, $rid),
                 form_text('start', __('Start:'), $start->format('Y-m-d H:i')),
                 form_text('end', __('End:'), $end->format('Y-m-d H:i')),
@@ -216,7 +216,7 @@ function shift_edit_controller()
                 form_info('', __('This description is for single shifts, otherwise please use the description in shift type.')),
                 '<h2>' . __('Needed angels') . '</h2>',
                 $angel_types_spinner,
-                form_submit('submit', __('Save')),
+                form_submit('submit', __('form.save')),
             ]),
         ]
     );
