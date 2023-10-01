@@ -136,7 +136,7 @@ function load_rooms(bool $onlyWithActiveShifts = false)
     $rooms = $rooms->get();
 
     if ($rooms->isEmpty()) {
-        error(__('The administration has not configured any rooms yet.'));
+        error(__('The administration has not configured any locations yet.'));
         throw_redirect(page_link_to('/'));
     }
 
@@ -298,7 +298,7 @@ function view_user_shifts()
                     $rooms,
                     $shiftsFilter->getRooms(),
                     'rooms',
-                    icon('pin-map-fill') . __('Rooms')
+                    icon('pin-map-fill') . __('Locations')
                 ),
                 'start_select'  => html_select_key(
                     'start_day',

@@ -293,8 +293,8 @@ msgstr ""
 "Diese Schicht wurde aus einem Fahrplan importiert. "
 "Dadurch werden einige Änderungen beim nächsten Import überschrieben."
 
-msgid "Please select a room."
-msgstr "Bitte einen Raum auswählen."
+msgid "Please select a location."
+msgstr "Bitte einen Ort auswählen."
 
 msgid "Please select a shifttype."
 msgstr "Bitte einen Schichttyp wählen."
@@ -323,8 +323,8 @@ msgstr "Schichttyp"
 msgid "Title"
 msgstr "Titel"
 
-msgid "Room:"
-msgstr "Raum:"
+msgid "Location:"
+msgstr "Ort:"
 
 msgid "Start:"
 msgstr "Start:"
@@ -796,13 +796,6 @@ msgstr "Überprüfen"
 msgid "Import"
 msgstr "Importieren"
 
-msgid ""
-"This import will create/update/delete rooms and shifts by given FRAB-export "
-"file. The needed file format is xcal."
-msgstr ""
-"Dieser Import erzeugt, ändert und löscht Räume und Schichten anhand einer "
-"FRAB-Export Datei. Das benötigte Format ist xcal."
-
 msgid "Add minutes to start"
 msgstr "Minuten vor Talk-Beginn hinzufügen"
 
@@ -814,12 +807,6 @@ msgstr "xcal-Datei (.xcal)"
 
 msgid "Missing import file."
 msgstr "Import-Datei nicht vorhanden."
-
-msgid "Rooms to create"
-msgstr "Anzulegende Räume"
-
-msgid "Rooms to delete"
-msgstr "Zu löschende Räume"
 
 msgid "Shifts to create"
 msgstr "Anzulegende Schichten"
@@ -836,8 +823,8 @@ msgstr "Ende"
 msgid "Shift type"
 msgstr "Schichttyp"
 
-msgid "Room"
-msgstr "Raum"
+msgid "Location"
+msgstr "Ort"
 
 msgid "Shifts to update"
 msgstr "Zu aktualisierende Schichten"
@@ -881,24 +868,14 @@ msgstr "Beantwortet am"
 msgid "Asked at"
 msgstr "Gefragt am"
 
-msgid "Rooms"
-msgstr "Räume"
+msgid "Locations"
+msgstr "Orte"
 
 msgid "This name is already in use."
 msgstr "Dieser Name ist bereits vergeben."
 
 msgid "Please enter needed angels for type %s."
 msgstr "Bitte gib die Anzahl der benötigten Engel vom Typ %s an."
-
-msgid "Room saved."
-msgstr "Raum gespeichert."
-
-msgid "Map URL"
-msgstr "Karten URL"
-
-msgid "The map url is used to display an iframe on the room page."
-msgstr ""
-"Die Karten URL wird benutzt um auf der Raum-Seite ein iframe anzuzeigen."
 
 msgid "Description"
 msgstr "Beschreibung"
@@ -908,12 +885,6 @@ msgstr "Bitte benutze Markdown für die Beschreibung."
 
 msgid "Needed angels:"
 msgstr "Benötigte Engel:"
-
-msgid "Room %s deleted."
-msgstr "Raum %s gelöscht."
-
-msgid "Do you want to delete room %s?"
-msgstr "Möchest Du den Raum %s wirklich löschen?"
 
 msgid "add"
 msgstr "Neu"
@@ -929,9 +900,6 @@ msgstr "Zusätzliche Beschreibung"
 
 msgid "This description is for single shifts, otherwise please use the description in shift type."
 msgstr "Diese Beschreibung ist für einzelne Schichten, ansonsten nutze bitte die Beschreibung im Schichttyp."
-
-msgid "Please select a location."
-msgstr "Bitte einen Ort auswählen."
 
 msgid "Please select a start time."
 msgstr "Bitte eine Startzeit auswählen."
@@ -990,8 +958,8 @@ msgstr "Schichtwechsel-Stunden"
 msgid "Create a shift over midnight."
 msgstr ""
 
-msgid "Take needed angels from room settings"
-msgstr "Übernehme benötigte Engel von den Raum-Einstellungen"
+msgid "Take needed angels from location settings"
+msgstr "Übernehme benötigte Engel von den Ort-Einstellungen"
 
 msgid "The following angels are needed"
 msgstr "Die folgenden Engel werden benötigt"
@@ -1187,8 +1155,8 @@ msgstr "-> Nicht OK. Bitte erneut versuchen."
 msgid "Your password is to short (please use at least 6 characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
 
-msgid "The administration has not configured any rooms yet."
-msgstr "Die Administratoren habe noch keine Räume eingerichtet."
+msgid "The administration has not configured any locations yet."
+msgstr "Die Administratoren habe noch keine Orte eingerichtet."
 
 msgid "The administration has not configured any shifts yet."
 msgstr "Die Administratoren haben noch keine Schichten angelegt."
@@ -1272,8 +1240,8 @@ msgstr "Logout"
 msgid "Admin"
 msgstr "Admin"
 
-msgid "Manage rooms"
-msgstr "Verwalte Räume"
+msgid "Manage locations"
+msgstr "Orte verwalten"
 
 msgid "No data found."
 msgstr "Nichts gefunden."
@@ -1983,7 +1951,7 @@ msgstr "Aktualisiert am: %s"
 
 msgid "schedule.import.text"
 msgstr ""
-"Importe erstellen Räume und erstellen, aktualisieren und löschen Schichten anhand eines schedule.xml exportes."
+"Importe erstellen Orte und erstellen, aktualisieren und löschen Schichten anhand eines schedule.xml exportes."
 
 msgid "schedule.import.load.title"
 msgstr "Programm importieren: Vorschau"
@@ -2007,7 +1975,7 @@ msgid "schedule.minutes-after"
 msgstr "Minuten nach Talk ende hinzufügen"
 
 msgid "schedule.import.rooms.add"
-msgstr "Neue Räume"
+msgstr "Neue Orte"
 
 msgid "schedule.import.shifts.add"
 msgstr "Neue Schichten"
@@ -2031,7 +1999,7 @@ msgid "schedule.import.shift.title"
 msgstr "Titel"
 
 msgid "schedule.import.shift.room"
-msgstr "Raum"
+msgstr "Ort"
 
 msgid "shifts_history.schedule"
 msgstr "Programm: %s"
@@ -2424,7 +2392,7 @@ msgid "registration.register"
 msgstr "Registrieren"
 
 msgid "room.rooms"
-msgstr "Räume"
+msgstr "Orte"
 
 msgid "room.name"
 msgstr "Name"
@@ -2442,13 +2410,13 @@ msgid "room.required_angels"
 msgstr "Benötigte Engel"
 
 msgid "room.map_url.info"
-msgstr "Die Karte wird auf der Raum-Seite als iframe eingebettet."
+msgstr "Die Karte wird auf der Ort-Seite als iframe eingebettet."
 
 msgid "room.create.title"
-msgstr "Raum erstellen"
+msgstr "Ort erstellen"
 
 msgid "room.edit.title"
-msgstr "Raum bearbeiten"
+msgstr "Ort bearbeiten"
 
 msgid "event.day"
 msgstr "Tag %1$d"

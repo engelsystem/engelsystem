@@ -157,7 +157,7 @@ function make_room_navigation($menu)
     $rooms = Room::orderBy('name')->get();
     $room_menu = [];
     if (auth()->can('admin_rooms')) {
-        $room_menu[] = toolbar_dropdown_item(page_link_to('admin/rooms'), __('Manage rooms'), false, 'list');
+        $room_menu[] = toolbar_dropdown_item(page_link_to('admin/rooms'), __('Manage locations'), false, 'list');
     }
     if (count($room_menu) > 0) {
         $room_menu[] = toolbar_dropdown_item_divider();
@@ -166,7 +166,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'pin-map-fill');
     }
     if (count($room_menu) > 0) {
-        $menu[] = toolbar_dropdown(__('Rooms'), $room_menu);
+        $menu[] = toolbar_dropdown(__('Locations'), $room_menu);
     }
     return $menu;
 }

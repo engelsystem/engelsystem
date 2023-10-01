@@ -119,7 +119,7 @@ class RoomsControllerTest extends ControllerTest
 
         $controller->save($this->request);
 
-        $this->assertTrue($this->log->hasInfoThatContains('Updated room'));
+        $this->assertTrue($this->log->hasInfoThatContains('Updated location'));
         $this->assertHasNotification('room.edit.success');
         $this->assertCount(1, Room::whereName('Testroom')->get());
 
@@ -206,7 +206,7 @@ class RoomsControllerTest extends ControllerTest
         $controller->delete($this->request);
 
         $this->assertNull(Room::find($room->id));
-        $this->assertTrue($this->log->hasInfoThatContains('Deleted room'));
+        $this->assertTrue($this->log->hasInfoThatContains('Deleted location'));
         $this->assertHasNotification('room.delete.success');
     }
 

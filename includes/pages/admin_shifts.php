@@ -466,7 +466,7 @@ function admin_shifts()
                     div('col-md-6 col-xl-5', [
                         form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
                         form_text('title', __('Title'), $title),
-                        form_select('rid', __('Room'), $room_array, $rid),
+                        form_select('rid', __('Location'), $room_array, $rid),
                     ]),
                     div('col-md-6 col-xl-7', [
                         form_textarea('description', __('Additional description'), $description),
@@ -544,7 +544,7 @@ function admin_shifts()
                         form_info(__('Needed angels')),
                         form_radio(
                             'angelmode',
-                            __('Take needed angels from room settings'),
+                            __('Take needed angels from location settings'),
                             $angelmode == 'location',
                             'location'
                         ),
