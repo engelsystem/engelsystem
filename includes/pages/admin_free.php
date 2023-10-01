@@ -127,7 +127,7 @@ function admin_free()
             'shift_state' => __('Next shift'),
             'last_shift'  => __('Last shift'),
             'dect'        => __('DECT'),
-            'email'       => __('E-Mail'),
+            'email'       => __('settings.profile.email'),
             'actions'     => '',
         ], $free_users_table),
     ]);

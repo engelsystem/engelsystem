@@ -49,7 +49,7 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
                         $user_driver_license->drive_forklift
                     ),
             ], 'driving_license'),
-            form_submit('submit', __('Save')),
+            form_submit('submit', __('form.save')),
         ]),
     ], true);
 }

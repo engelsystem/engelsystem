@@ -21,7 +21,7 @@ function Shift_view_header(Shift $shift, Room $room)
 {
     return div('row', [
         div('col-sm-3 col-xs-6', [
-            '<h4>' . __('Title') . '</h4>',
+            '<h4>' . __('title.title') . '</h4>',
             '<p class="lead">'
             . ($shift->url != ''
                 ? '<a href="' . $shift->url . '">' . $shift->title . '</a>'

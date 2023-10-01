@@ -109,7 +109,7 @@ class SettingsController extends BaseController
         $user->settings->save();
         $user->save();
 
-        $this->addNotification('settings.profile.success');
+        $this->addNotification('settings.success');
 
         return $this->redirect->to('/settings/profile');
     }

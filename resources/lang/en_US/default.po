@@ -145,7 +145,7 @@ msgstr "Times"
 msgid "schedule.import.shift.type"
 msgstr "Type"
 
-msgid "schedule.import.shift.title"
+msgid "title.title"
 msgstr "Title"
 
 msgid "schedule.import.shift.room"

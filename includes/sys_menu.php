@@ -66,7 +66,7 @@ function make_navigation()
         'news'           => __('News'),
         'meetings'       => [__('Meetings'), 'user_meetings'],
         'user_shifts'    => __('Shifts'),
-        'angeltypes'     => __('Angeltypes'),
+        'angeltypes'     => __('angeltypes.angeltypes'),
         'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];
 

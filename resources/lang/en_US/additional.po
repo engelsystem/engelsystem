@@ -185,7 +185,7 @@ msgid "settings.profile.planned_departure_date.invalid"
 msgstr "Please enter your planned date of departure. "
 "It should be after your planned arrival date and after buildup start date and before teardown end date."
 
-msgid "settings.profile.success"
+msgid "settings.success"
 msgstr "Settings saved."
 
 msgid "settings.sessions.delete_success"

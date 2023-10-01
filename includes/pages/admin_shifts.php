@@ -382,7 +382,7 @@ function admin_shifts()
                         'title'         => __('Type and title'),
                         'needed_angels' => __('Needed angels'),
                     ], $shifts_table),
-                    form_submit('submit', icon('save') . __('Save')),
+                    form_submit('submit', icon('save') . __('form.save')),
                 ]),
             ]);
         }
@@ -465,7 +465,7 @@ function admin_shifts()
                 div('row', [
                     div('col-md-6 col-xl-5', [
                         form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
-                        form_text('title', __('Title'), $title),
+                        form_text('title', __('title.title'), $title),
                         form_select('rid', __('Location'), $room_array, $rid),
                     ]),
                     div('col-md-6 col-xl-7', [
@@ -650,7 +650,7 @@ function admin_shifts_history(): string
         msg(),
         table([
             'transaction_id' => __('ID'),
-            'title'          => __('Title'),
+            'title'          => __('title.title'),
             'count'          => __('Count'),
             'start'          => __('Start'),
             'end'            => __('End'),

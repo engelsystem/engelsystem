@@ -57,7 +57,7 @@ function User_edit_vouchers_view($user)
         form(
             [
                 form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
-                form_submit('submit', __('Save')),
+                form_submit('submit', __('form.save')),
             ],
             page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
         ),
@@ -791,7 +791,7 @@ function User_angeltypes_render($user_angeltypes)
             . '</a>';
     }
     return div('col-md-2', [
-        heading(__('Angeltypes'), 4),
+        heading(__('angeltypes.angeltypes'), 4),
         join('<br>', $output),
     ]);
 }
