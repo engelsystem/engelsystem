@@ -67,14 +67,10 @@ class User
         return $this->config->get('buildup_start') ?? CarbonImmutable::now();
     }
 
-    private function required(string $key): string
+    private function isRequired(string $key): string
     {
         $requiredFields = $this->config->get('signup_required_fields');
-        $isRequired = 'optional';
-        if ($requiredFields[$key]) {
-            $isRequired = 'required';
-        }
-        return $isRequired;
+        return $requiredFields[$key] ? 'required' : 'optional';
     }
 
     /**
@@ -92,7 +88,7 @@ class User
             'email_news' => 'optional|checked',
             'email_goody' => 'optional|checked',
             // Using length here, because min/max would validate dect/mobile as numbers.
-            'mobile' => $this->required('mobile') . '|length:0:40',
+            'mobile' => $this->isRequired('mobile') . '|length:0:40',
         ];
 
         $isPasswordEnabled = $this->determineIsPasswordEnabled();
@@ -106,14 +102,14 @@ class User
         $isFullNameEnabled = $this->config->get('enable_user_name');
 
         if ($isFullNameEnabled) {
-            $validationRules['firstname'] = $this->required('firstname') . '|length:0:64';
-            $validationRules['lastname'] = $this->required('lastname') . '|length:0:64';
+            $validationRules['firstname'] = $this->isRequired('firstname') . '|length:0:64';
+            $validationRules['lastname'] = $this->isRequired('lastname') . '|length:0:64';
         }
 
         $isPronounEnabled = $this->config->get('enable_pronoun');
 
         if ($isPronounEnabled) {
-            $validationRules['pronoun'] = $this->required('pronoun') . '|max:15';
+            $validationRules['pronoun'] = $this->isRequired('pronoun') . '|max:15';
         }
 
         $isShowMobileEnabled = $this->config->get('enable_mobile_show');
@@ -147,14 +143,14 @@ class User
 
         if ($isDECTEnabled) {
             // Using length here, because min/max would validate dect/mobile as numbers.
-            $validationRules['dect'] = $this->required('dect') . '|length:0:40';
+            $validationRules['dect'] = $this->isRequired('dect') . '|length:0:40';
         }
 
         $goodieType = GoodieType::from($this->config->get('goodie_type'));
         $isGoodieTShirt = $goodieType === GoodieType::Tshirt;
 
         if ($isGoodieTShirt) {
-            $validationRules['tshirt_size'] = $this->required('tshirt_size') . '|shirt-size';
+            $validationRules['tshirt_size'] = $this->isRequired('tshirt_size') . '|shirt-size';
         }
 
         $data = $this->validate($rawData, $validationRules);

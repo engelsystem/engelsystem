@@ -234,13 +234,13 @@ return [
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
 
     // Required fields on sign-up page
-    'signup_required_fields'   => [
-        'pronoun'              => (bool) env('PRONOUN_REQUIRED', false),
-        'firstname'            => (bool) env('FIRSTNAME_REQUIRED', false),
-        'lastname'             => (bool) env('LASTNAME_REQUIRED', false),
-        'tshirt_size'          => (bool) env('TSHIRT_SIZE_REQUIRED', true),
-        'mobile'               => (bool) env('MOBILE_REQUIRED', false),
-        'dect'                 => (bool) env('DECT_REQUIRED', false),
+    'signup_required_fields' => [
+        'pronoun'            => (bool) env('PRONOUN_REQUIRED', false),
+        'firstname'          => (bool) env('FIRSTNAME_REQUIRED', false),
+        'lastname'           => (bool) env('LASTNAME_REQUIRED', false),
+        'tshirt_size'        => (bool) env('TSHIRT_SIZE_REQUIRED', true),
+        'mobile'             => (bool) env('MOBILE_REQUIRED', false),
+        'dect'               => (bool) env('DECT_REQUIRED', false),
     ],
 
     // Only arrived angels can sign up for shifts
