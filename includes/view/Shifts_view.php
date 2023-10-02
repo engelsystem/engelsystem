@@ -187,7 +187,7 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
             '<div class="list-group">' . $needed_angels . '</div>',
         ]),
         div('col-sm-6', [
-            '<h2>' . __('Description') . '</h2>',
+            '<h2>' . __('general.description') . '</h2>',
             $parsedown->parse($shifttype->description),
             $parsedown->parse($shift->description),
         ]),

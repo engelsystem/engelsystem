@@ -24,8 +24,8 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>{{ __('room.name') }}</th>
-                                <th>{{ __('room.dect') }}</th>
+                                <th>{{ __('general.name') }}</th>
+                                <th>{{ __('general.dect') }}</th>
                                 <th>{{ __('room.map_url') }}</th>
                                 <th></th>
                             </tr>
@@ -37,7 +37,7 @@
                                     <td>
                                         {{ m.icon('pin-map-fill') }}
                                         <a href="{{ url('/rooms', {'action': 'view', 'room_id': room.id}) }}">
-                                            {{ room.name }}
+                                            {{ general.name }}
                                         </a>
                                     </td>
 

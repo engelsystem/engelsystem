@@ -20,7 +20,7 @@
                         </a>
                     {% endif %}
                     <a href="{{ url('/login') }}" class="btn btn-secondary back">
-                        {{ __('login.login') }}
+                        {{ __('general.login') }}
                     </a>
                 {% endif %}
 
@@ -74,8 +74,8 @@
                         {% if angeltype.hasContactInfo() %}
                             <dl class="row card-text">
                                 {% for type, info in {
-                                    'contact_name': {'name': __('angeltypes.name')},
-                                    'contact_dect': {'name': __('angeltypes.dect'), 'url': 'tel'},
+                                    'contact_name': {'name': __('general.name')},
+                                    'contact_dect': {'name': __('general.dect'), 'url': 'tel'},
                                     'contact_email': {'name': __('angeltypes.email'), 'url': 'mailto'},
                                 } %}
                                     {% if angeltype[type] and (type != 'contact_dect' or config('enable_dect')) %}

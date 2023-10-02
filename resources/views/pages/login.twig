@@ -1,7 +1,7 @@
 {% extends "layouts/app.twig" %}
 {% import 'macros/base.twig' as m %}
 
-{% block title %}{{ __('login.login') }}{% endblock %}
+{% block title %}{{ __('general.login') }}{% endblock %}
 
 {% block content %}
     <div class="col-md-12">
@@ -51,7 +51,7 @@
                                         type="text"
                                         name="login"
                                         value=""
-                                        placeholder="{{ __('Nick') }}"
+                                        placeholder="{{ __('nick.nick') }}"
                                         autofocus>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
 
                             <div class="mb-3 text-center">
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" name="submit">
-                                    {{ __('login.login') }}
+                                    {{ __('general.login') }}
                                 </button>
                             </div>
 

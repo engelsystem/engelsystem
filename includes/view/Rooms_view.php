@@ -22,7 +22,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
 
     $description = '';
     if ($room->description) {
-        $description = '<h3>' . __('Description') . '</h3>';
+        $description = '<h3>' . __('general.description') . '</h3>';
         $parsedown = new Parsedown();
         $description .= $parsedown->parse($room->description);
     }
@@ -30,12 +30,12 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
     $dect = '';
     if (config('enable_dect') && $room->dect) {
         $dect = heading(__('Contact'), 3)
-            . description([__('DECT') => sprintf('<a href="tel:%s">%1$s</a>', $room->dect)]);
+            . description([__('general.dect') => sprintf('<a href="tel:%s">%1$s</a>', $room->dect)]);
     }
 
     $tabs = [];
     if ($room->map_url) {
-        $tabs[__('Map')] = sprintf(
+        $tabs[__('room.map_url')] = sprintf(
             '<div class="map">'
             . '<iframe style="width: 100%%; min-height: 400px; border: 0 none;" src="%s"></iframe>'
             . '</div>',

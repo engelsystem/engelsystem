@@ -22,8 +22,17 @@ msgstr "Your password is incorrect. Please try it again."
 msgid "form.submit"
 msgstr "Submit"
 
-msgid "login.login"
+msgid "general.login"
 msgstr "Login"
+
+msgid "general.dect"
+msgstr "DECT"
+
+msgid "general.name"
+msgstr "Name"
+
+msgid "general.description"
+msgstr "Description"
 
 msgid "page.403.login"
 msgstr "Please log in."
@@ -136,9 +145,6 @@ msgstr "Shifts to update"
 msgid "schedule.import.shifts.delete"
 msgstr "Shifts to delete"
 
-msgid "schedule.import.rooms.name"
-msgstr "Name"
-
 msgid "schedule.import.shift.dates"
 msgstr "Times"
 
@@ -226,7 +232,7 @@ msgstr "Settings"
 msgid "settings.profile.entry_required"
 msgstr "Entry required"
 
-msgid "settings.profile.nick"
+msgid "nick.nick"
 msgstr "Nick"
 
 msgid "settings.profile.nick.already-taken"
@@ -249,9 +255,6 @@ msgstr "Planned date of arrival"
 
 msgid "settings.profile.planned_departure_date"
 msgstr "Planned date of departure"
-
-msgid "settings.profile.dect"
-msgstr "DECT"
 
 msgid "settings.profile.mobile"
 msgstr "Mobile"
@@ -482,9 +485,6 @@ msgstr "Message"
 msgid "angel"
 msgstr "Angel"
 
-msgid "date"
-msgstr "Date"
-
 msgid "worklog.add"
 msgstr "Add work log"
 
@@ -529,12 +529,6 @@ msgstr "This angeltype requires the attendance at an introduction meeting. "
 msgid "angeltypes.can-change-later"
 msgstr "You can change your selection later in the settings."
 
-msgid "angeltypes.name"
-msgstr "Name"
-
-msgid "angeltypes.dect"
-msgstr "DECT"
-
 msgid "angeltypes.email"
 msgstr "E-Mail"
 
@@ -561,17 +555,8 @@ msgstr "Register"
 msgid "room.rooms"
 msgstr "Locations"
 
-msgid "room.name"
-msgstr "Name"
-
-msgid "room.dect"
-msgstr "DECT"
-
 msgid "room.map_url"
 msgstr "Map"
-
-msgid "room.description"
-msgstr "Description"
 
 msgid "room.required_angels"
 msgstr "Required angels"
@@ -596,9 +581,6 @@ msgstr "Angel sign-up"
 
 msgid "page.sign-up.login-data"
 msgstr "Login data"
-
-msgid "page.sign-up.name"
-msgstr "Name"
 
 msgid "page.sign-up.event-data"
 msgstr "Event data"

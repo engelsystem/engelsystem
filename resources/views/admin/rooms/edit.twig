@@ -11,13 +11,13 @@
 
         <div class="row">
             <div class="col-lg-6">
-                {{ f.input('name', __('room.name'), {
+                {{ f.input('name', __('general.name'), {
                     'required': true,
                     'required_icon': true,
-                    'value': f.formData('room', room ? room.name : ''),
+                    'value': f.formData('room', room ? general.name : ''),
                 }) }}
 
-                {{ f.input('dect', __('room.dect'), {
+                {{ f.input('dect', __('general.dect'), {
                     'value': f.formData('dect', room ? room.dect : ''),
                 }) }}
                 {{ f.input('map_url', __('room.map_url'), {
@@ -26,7 +26,7 @@
                     'info': __('room.map_url.info'),
                 }) }}
 
-                {{ f.textarea('description', __('room.description'), {
+                {{ f.textarea('description', __('general.description'), {
                     'value': f.formData('description', room ? room.description : ''),
                     'rows': 5,
                     'info': __('form.markdown')

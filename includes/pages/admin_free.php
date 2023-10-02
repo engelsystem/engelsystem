@@ -115,18 +115,18 @@ function admin_free()
             div('row', [
                 div('col-md-12 form-inline', [
                     div('row', [
-                        form_text('search', __('Search'), $search, null, null, null, 'col'),
+                        form_text('search', __('form.search'), $search, null, null, null, 'col'),
                         form_select('angeltype', __('Angeltype'), $angel_types, $angelType, '', 'col'),
-                        form_submit('submit', __('Search')),
+                        form_submit('submit', __('form.search')),
                     ]),
                 ]),
             ]),
         ]),
         table([
-            'name'        => __('Name'),
+            'name'        => __('general.name'),
             'shift_state' => __('Next shift'),
             'last_shift'  => __('Last shift'),
-            'dect'        => __('DECT'),
+            'dect'        => __('general.dect'),
             'email'       => __('settings.profile.email'),
             'actions'     => '',
         ], $free_users_table),
