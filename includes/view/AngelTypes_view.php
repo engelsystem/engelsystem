@@ -87,8 +87,8 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
         msg(),
         form([
             $supporter_mode
-                ? form_info(__('Name'), $angeltype->name)
-                : form_text('name', __('Name'), $angeltype->name),
+                ? form_info(__('general.name'), $angeltype->name)
+                : form_text('name', __('general.name'), $angeltype->name),
             $supporter_mode
                 ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
                 : form_checkbox(
@@ -146,15 +146,15 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                     __('angeltypes.hide_on_shift_view.info') . '"></span>',
                     $angeltype->hide_on_shift_view
                 ),
-            form_textarea('description', __('Description'), $angeltype->description),
+            form_textarea('description', __('general.description'), $angeltype->description),
             form_info('', __('Please use markdown for the description.')),
             heading(__('Contact'), 3),
             form_info(
                 '',
                 __('Primary contact person/desk for user questions.')
             ),
-            form_text('contact_name', __('Name'), $angeltype->contact_name),
-            config('enable_dect') ? form_text('contact_dect', __('DECT'), $angeltype->contact_dect) : '',
+            form_text('contact_name', __('general.name'), $angeltype->contact_name),
+            config('enable_dect') ? form_text('contact_dect', __('general.dect'), $angeltype->contact_dect) : '',
             form_text('contact_email', __('settings.profile.email'), $angeltype->contact_email),
             form_submit('submit', __('form.save')),
         ]),
@@ -362,11 +362,11 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
 function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_angeltypes)
 {
     $headers = [
-        'name'    => __('Nick'),
+        'name'    => __('nick.nick'),
     ];
 
     if (config('enable_dect')) {
-        $headers['dect'] = __('DECT');
+        $headers['dect'] = __('general.dect');
     }
 
     if ($angeltype->requires_driver_license && ($supporter || $admin_angeltypes)) {
@@ -479,7 +479,7 @@ function AngelType_view_info(
         $info[] = AngelTypes_render_contact_info($angeltype);
     }
 
-    $info[] = '<h3>' . __('Description') . '</h3>';
+    $info[] = '<h3>' . __('general.description') . '</h3>';
     $parsedown = new Parsedown();
     if ($angeltype->description != '') {
         $info[] = $parsedown->parse($angeltype->description);
@@ -556,8 +556,8 @@ function AngelType_view_info(
 function AngelTypes_render_contact_info(AngelType $angeltype)
 {
     $info = [
-        __('Name')   => [$angeltype->contact_name, $angeltype->contact_name],
-        __('DECT')   => config('enable_dect') ? [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect] : null,
+        __('general.name')   => [$angeltype->contact_name, $angeltype->contact_name],
+        __('general.dect')   => config('enable_dect') ? [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect] : null,
         __('settings.profile.email') => [sprintf('<a href="mailto:%s">%1$s</a>', $angeltype->contact_email), $angeltype->contact_email],
     ];
     $contactInfo = [];
@@ -588,7 +588,7 @@ function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
             button(url('/angeltypes/about'), __('angeltypes.about')),
         ]),
         table([
-            'name'                      => __('Name'),
+            'name'                      => __('general.name'),
             'is_restricted'             => icon('mortarboard-fill') . __('angeltypes.restricted'),
             'shift_self_signup_allowed' => icon('pencil-square') . __('shift.self_signup.allowed'),
             'membership'                => __('Membership'),

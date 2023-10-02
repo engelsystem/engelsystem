@@ -132,14 +132,14 @@ function Users_view(
     $user_table_headers = [];
 
     if (!config('display_full_name')) {
-        $user_table_headers['name'] = Users_table_header_link('name', __('Nick'), $order_by);
+        $user_table_headers['name'] = Users_table_header_link('name', __('nick.nick'), $order_by);
     }
     if (config('enable_user_name')) {
         $user_table_headers['first_name'] = Users_table_header_link('first_name', __('Prename'), $order_by);
-        $user_table_headers['last_name'] = Users_table_header_link('last_name', __('Name'), $order_by);
+        $user_table_headers['last_name'] = Users_table_header_link('last_name', __('general.name'), $order_by);
     }
     if (config('enable_dect')) {
-        $user_table_headers['dect'] = Users_table_header_link('dect', __('DECT'), $order_by);
+        $user_table_headers['dect'] = Users_table_header_link('dect', __('general.dect'), $order_by);
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
     if (config('enable_voucher')) {
@@ -570,7 +570,7 @@ function User_view(
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
-                                form_submit('submit', __('arrived'), '', false),
+                                form_submit('submit', __('user.arrived'), '', false),
                             ], page_link_to('admin_arrive'), true) : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(

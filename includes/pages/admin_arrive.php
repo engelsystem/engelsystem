@@ -113,7 +113,7 @@ function admin_arrive()
             form_hidden('user', $usr->id),
             form_submit(
                 'submit',
-                $usr->state->arrived ? __('reset') : __('arrived'),
+                $usr->state->arrived ? __('reset') : __('user.arrived'),
                 'btn-sm',
                 true,
                 $usr->state->arrived ? 'secondary' : 'primary'
@@ -196,11 +196,11 @@ function admin_arrive()
     return page_with_title(admin_arrive_title(), [
         $msg . msg(),
         form([
-            form_text('search', __('Search'), $search),
-            form_submit('submit', __('Search')),
+            form_text('search', __('form.search'), $search),
+            form_submit('submit', __('form.search')),
         ], page_link_to('admin_arrive')),
         table([
-            'name'                            => __('Name'),
+            'name'                            => __('general.name'),
             'rendered_planned_arrival_date'   => __('Planned arrival'),
             'arrived'                         => __('Arrived?'),
             'rendered_arrival_date'           => __('Arrival date'),
@@ -211,7 +211,7 @@ function admin_arrive()
             div('col-md-4', [
                 heading(__('Planned arrival statistics'), 3),
                 BarChart::render([
-                    'count' => __('arrived'),
+                    'count' => __('user.arrived'),
                     'sum'   => __('arrived sum'),
                 ], [
                     'count' => '#090',
@@ -226,7 +226,7 @@ function admin_arrive()
             div('col-md-4', [
                 heading(__('Arrival statistics'), 3),
                 BarChart::render([
-                    'count' => __('arrived'),
+                    'count' => __('user.arrived'),
                     'sum'   => __('arrived sum'),
                 ], [
                     'count' => '#090',
@@ -241,7 +241,7 @@ function admin_arrive()
             div('col-md-4', [
                 heading(__('Planned departure statistics'), 3),
                 BarChart::render([
-                    'count' => __('arrived'),
+                    'count' => __('user.arrived'),
                     'sum'   => __('arrived sum'),
                 ], [
                     'count' => '#090',

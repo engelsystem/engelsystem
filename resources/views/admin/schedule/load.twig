@@ -33,14 +33,14 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{{ __('schedule.import.rooms.name') }}</th>
+                <th>{{ __('general.name') }}</th>
             </tr>
             </thead>
 
             <tbody>
             {% for room in rooms %}
                 <tr>
-                    <td>{{ room.name }}</td>
+                    <td>{{ general.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -66,7 +66,7 @@
                     <td>{{ shift.date.format(__('Y-m-d H:i')) }} - {{ shift.endDate.format(__('H:i')) }}</td>
                     <td>{{ shift.type }}</td>
                     <td>{{ shift.title }}{% if shift.subtitle %}<br><small>{{ shift.subtitle }}</small>{% endif %}</td>
-                    <td>{{ shift.room.name }}</td>
+                    <td>{{ shift.general.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>

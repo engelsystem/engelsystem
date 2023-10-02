@@ -361,7 +361,7 @@ function admin_shifts()
                 $shiftsCreationHint = '<span class="text-danger">' . $shiftsCreationHint . '</span>';
             }
 
-            return page_with_title(__('Preview'), [
+            return page_with_title(__('form.preview'), [
                 form([
                     $hidden_types,
                     form_hidden('shifttype_id', $shifttype_id),
@@ -559,7 +559,7 @@ function admin_shifts()
                         ]),
                     ]),
                 ]),
-                form_submit('preview', icon('search') . __('Preview')),
+                form_submit('preview', icon('search') . __('form.preview')),
             ]),
         ]
     );

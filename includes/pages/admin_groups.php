@@ -50,7 +50,7 @@ function admin_groups()
 
         return page_with_title(admin_groups_title(), [
             table([
-                'name'       => __('Name'),
+                'name'       => __('general.name'),
                 'privileges' => __('Privileges'),
                 'actions'    => '',
             ], $groups_table),

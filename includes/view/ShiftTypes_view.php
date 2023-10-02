@@ -51,8 +51,8 @@ function ShiftType_edit_view($name, $description, $shifttype_id)
             button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
         ]),
         form([
-            form_text('name', __('Name'), $name),
-            form_textarea('description', __('Description'), $description),
+            form_text('name', __('general.name'), $name),
+            form_textarea('description', __('general.description'), $description),
             form_info('', __('Please use markdown for the description.')),
             form_submit('submit', __('form.save')),
         ]),
@@ -80,7 +80,7 @@ function ShiftType_view(ShiftType $shifttype)
                 icon('trash') . __('delete'),
             ),
         ]),
-        heading(__('Description'), 2),
+        heading(__('general.description'), 2),
         $parsedown->parse($shifttype->description),
     ], true);
 }
@@ -120,7 +120,7 @@ function ShiftTypes_list_view($shifttypes)
             button(page_link_to('shifttypes', ['action' => 'edit']), __('New shifttype'), 'add'),
         ]),
         table([
-            'name'    => __('Name'),
+            'name'    => __('general.name'),
             'actions' => '',
         ], $shifttypes),
     ], true);

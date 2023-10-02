@@ -328,18 +328,18 @@ function admin_active()
         form([
             form_text('search', __('Search angel:'), $search),
             form_checkbox('show_all_shifts', __('Show all shifts'), $show_all_shifts),
-            form_submit('submit', __('Search')),
+            form_submit('submit', __('form.search')),
         ], page_link_to('admin_active')),
         $set_active == '' ? form([
             form_text('count', __('How much angels should be active?'), $count ?: $forced_count),
-            form_submit('set_active', __('Preview')),
+            form_submit('set_active', __('form.preview')),
         ]) : $set_active,
         $msg . msg(),
         table(
             array_merge(
                 [
                     'no'           => __('No.'),
-                    'nick'         => __('Name'),
+                    'nick'         => __('general.name'),
                 ],
                 ($goodie_tshirt ? ['shirt_size'   => __('Size')] : []),
                 [
