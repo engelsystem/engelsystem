@@ -812,112 +812,14 @@ msgstr "Nein"
 msgid "Force active"
 msgstr "Aktiv erzwingen"
 
-msgid ""
-"Please visit the angeltypes page or the users profile to manage users "
-"angeltypes."
-msgstr ""
-"Bitte benutze die Engeltypen-Seite um die Engeltypen des Users zu verwalten."
-
 msgid "Edit user"
 msgstr "User bearbeiten"
-
-msgid "Please enter a nickname."
-msgstr "Gib bitte einen Nick an."
-
-msgid "E-mail address is not correct."
-msgstr "Die E-Mail Adresse ist nicht in Ordnung."
-
-msgid "E-mail address is already used by another user."
-msgstr "Die E-Mail Adresse wurde bereits von einem anderen User benutzt."
-
-msgid "Please enter your e-mail."
-msgstr "Bitte gib Deine E-Mail-Adresse ein."
-
-msgid "Please select your shirt size."
-msgstr "Bitte wähle Deine T-Shirt Größe."
-
-msgid "Your password is too short (please use at least %s characters)."
-msgstr "Dein Passwort ist zu kurz (Bitte mindestens %s Zeichen nutzen)."
-
-msgid ""
-"Please enter your planned date of arrival. It should be after the buildup "
-"start date and before teardown end date."
-msgstr ""
-"Bitte gib Dein geplantes Ankunftsdatum an. Es sollte nach dem Aufbaubeginn "
-"und vor dem Abbauende liegen."
-
-msgid "For dect numbers are only 40 digits allowed."
-msgstr "Die DECT Nummer darf nur 40 Zeichen lang sein."
-
-msgid "Angel registration successful!"
-msgstr "Engel-Registrierung erfolgreich!"
-
-msgid ""
-"By completing this form you're registering as a Chaos-Angel. This script "
-"will create you an account in the angel task scheduler."
-msgstr ""
-"Mit diesem Formular registrierst Du Dich als Engel. Du bekommst ein Konto in "
-"der Engel-Aufgabenverwaltung."
-
-msgid "Allow heaven angels to contact you by e-mail."
-msgstr "Erlaube Himmel-Engeln dich per Mail zu kontaktieren."
-
-msgid "To withdraw your approval, send an email to <a href=\"mailto:%s\">%1$s</a>."
-msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
-
-msgid "Mobile"
-msgstr "Handy"
-
-msgid "First name"
-msgstr "Vorname"
-
-msgid "Last name"
-msgstr "Nachname"
-
-msgid "Entry required!"
-msgstr "Pflichtfeld!"
-
-msgid "Select recipient..."
-msgstr "Empfänger auswählen..."
-
-msgid "Send"
-msgstr "Senden"
 
 msgid "Y-m-d H:i"
 msgstr "d.m.Y H:i"
 
 msgid "Y-m-d H:i:s"
 msgstr "d.m.Y H:i:s"
-
-msgid "mark as read"
-msgstr "als gelesen markieren"
-
-msgid "delete message"
-msgstr "Nachricht löschen"
-
-msgid "Hello %s, here can you leave messages for other angels"
-msgstr "Hallo %s, hier kannst Du anderen Engeln Nachrichten schreiben."
-
-msgid "New"
-msgstr "Neu"
-
-msgid "Transmitted"
-msgstr "Gesendet"
-
-msgid "Recipient"
-msgstr "Empfänger"
-
-msgid "Incomplete call, missing Message ID."
-msgstr "Unvollständiger Aufruf, fehlende Nachrichten ID."
-
-msgid "No Message found."
-msgstr "Keine Nachricht gefunden."
-
-msgid "Transmitting was terminated with an Error."
-msgstr "Übertragung wurde mit einem Fehler abgebrochen."
-
-msgid "Wrong action."
-msgstr "Falsche Aktion."
 
 msgid "Key changed."
 msgstr "Key geändert."
@@ -942,42 +844,8 @@ msgstr "Gib bitte einen Schwänz-Kommentar ein!"
 msgid "Shift saved."
 msgstr "Schicht gespeichert."
 
-msgid "News"
-msgstr "News"
-
-msgid "Meetings"
-msgstr "Treffen"
-
 msgid "Ask the Heaven"
 msgstr "Frag den Himmel"
-
-msgid "You question was saved."
-msgstr "Frage gespeichert."
-
-msgid "Please enter a question!"
-msgstr "Gib eine Frage ein!"
-
-msgid "Incomplete call, missing Question ID."
-msgstr "Unvollständiger Aufruf, fehlende Fragen ID."
-
-msgid "No question found."
-msgstr "Keine Frage gefunden."
-
-msgid "Settings"
-msgstr "Einstellungen"
-
-msgid ""
-"Please enter your planned date of departure. It should be after your planned "
-"arrival date and after buildup start date and before teardown end date."
-msgstr ""
-"Bitte gibt dein geplantes Abreisedatum an. Es sollte nach Deinem "
-"Anreisedatum, nach dem Aufbaubeginn und vor dem Abbauende liegen."
-
-msgid "-> not OK. Please try again."
-msgstr "-> Nicht OK. Bitte erneut versuchen."
-
-msgid "Your password is to short (please use at least 6 characters)."
-msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
 
 msgid "The administration has not configured any locations yet."
 msgstr "Die Administratoren habe noch keine Orte eingerichtet."
@@ -1040,15 +908,6 @@ msgstr "nächste 8h"
 msgid "iCal export and API"
 msgstr "iCal Export und API"
 
-msgid ""
-"Export your own shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
-"\">JSON format</a> available (please keep secret, otherwise <a href=\"%s"
-"\">reset the api key</a>)."
-msgstr ""
-"Exportiere Deine Schichten. <a href=\"%s\">iCal Format</a> oder <a href=\"%s"
-"\">JSON Format</a> verfügbar (Link bitte geheimhalten, sonst <a href=\"%s"
-"\">API-Key zurücksetzen</a>)."
-
 msgid "Show API Key"
 msgstr "API Key anzeigen"
 
@@ -1059,7 +918,7 @@ msgid "None"
 msgstr "Keine"
 
 msgid "Logout"
-msgstr "Logout"
+msgstr "Abmelden"
 
 msgid "Admin"
 msgstr "Admin"
@@ -1081,9 +940,6 @@ msgstr "Mitglied"
 
 msgid "Do you want to delete angeltype %s?"
 msgstr "Möchtest Du den Engeltypen %s löschen?"
-
-msgid "cancel"
-msgstr "abbrechen"
 
 msgid "angeltypes.restricted"
 msgstr "Benötigt Einführung"
@@ -1153,10 +1009,10 @@ msgstr "Hat Auto"
 msgid "Car"
 msgstr "Auto"
 
-msgid "3,5t Transporter"
+msgid "3.5t Transporter"
 msgstr "3,5t Transporter"
 
-msgid "7,5t Truck"
+msgid "7.5t Truck"
 msgstr "7,5t LKW"
 
 msgid "12t Truck"
@@ -1186,14 +1042,8 @@ msgstr "Alle ablehnen"
 msgid "New angeltype"
 msgstr "Neuer Engeltyp"
 
-msgid "Self Sign Up Allowed"
-msgstr "Selbst-Eintragen erlaubt"
-
 msgid "Membership"
 msgstr "Mitgliedschaft"
-
-msgid "FAQ"
-msgstr "FAQ"
 
 msgid "Event Name"
 msgstr "Event Name"
@@ -1240,17 +1090,8 @@ msgstr "Vollbild"
 msgid "Filtered"
 msgstr "Filtern"
 
-msgid "Open questions"
-msgstr "Offene Fragen"
-
-msgid "Your Question:"
-msgstr "Deine Frage:"
-
 msgid "No shifts found."
 msgstr "Keine Schichten gefunden."
-
-msgid "Time"
-msgstr "Zeit"
 
 msgid "Your shift"
 msgstr "Meine Schicht"
@@ -1264,11 +1105,11 @@ msgstr "Andere Engeltypen benötigt / kollidiert mit meinen Schichten"
 msgid "Shift is full"
 msgstr "Schicht ist voll"
 
-msgid "Shift running/ended or you have not arrived"
+msgid "Shift is running/ended or you have not arrived"
 msgstr "Schicht läuft/vorbei oder du bist noch nicht angekommen"
 
 msgid "Add more angels"
-msgstr "Neue Engel hinzufügen"
+msgstr "Mehr Engel hinzufügen"
 
 msgid "%d helper needed"
 msgid_plural "%d helpers needed"
@@ -1427,9 +1268,6 @@ msgstr ""
 
 msgid "Driver license"
 msgstr "Führerschein"
-
-msgid "Transporter 3,5t"
-msgstr "3,5t Transporter"
 
 msgid "Truck 7,5t"
 msgstr "7,5t LKW"
@@ -1894,7 +1732,7 @@ msgstr "Einstellungen"
 msgid "settings.profile.entry_required"
 msgstr "Pflichtfeld"
 
-msgid "nick.nick"
+msgid "general.nick"
 msgstr "Nick"
 
 msgid "settings.profile.nick.already-taken"

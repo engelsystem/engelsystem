@@ -232,7 +232,7 @@ msgstr "Settings"
 msgid "settings.profile.entry_required"
 msgstr "Entry required"
 
-msgid "nick.nick"
+msgid "general.nick"
 msgstr "Nick"
 
 msgid "settings.profile.nick.already-taken"
