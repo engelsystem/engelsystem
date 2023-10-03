@@ -25,7 +25,7 @@ function ShiftType_delete_view(ShiftType $shifttype)
         info(sprintf(__('Do you want to delete shifttype %s?'), $shifttype->name), true),
         form([
             buttons([
-                button(page_link_to('shifttypes'), icon('x-lg') . __('cancel')),
+                button(page_link_to('shifttypes'), icon('x-lg') . __('form.cancel')),
                 form_submit(
                     'delete',
                     icon('trash') . __('delete'),

@@ -244,7 +244,7 @@ class ShiftCalendarRenderer
 
         $time_slot = [
             div('header ' . $bg, [
-                __('Time'),
+                __('log.time'),
             ]),
         ];
         for ($block = 0; $block < $this->getBlocksPerSlot(); $block++) {
@@ -314,7 +314,7 @@ class ShiftCalendarRenderer
             badge(__('Help needed'), 'danger'),
             badge(__('Other angeltype needed / collides with my shifts'), 'warning'),
             badge(__('Shift is full'), 'success'),
-            badge(__('Shift running/ended or you have not arrived'), 'secondary'),
+            badge(__('Shift is running/ended or you have not arrived'), 'secondary'),
         ]);
     }
 }

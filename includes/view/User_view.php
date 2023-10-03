@@ -132,7 +132,7 @@ function Users_view(
     $user_table_headers = [];
 
     if (!config('display_full_name')) {
-        $user_table_headers['name'] = Users_table_header_link('name', __('nick.nick'), $order_by);
+        $user_table_headers['name'] = Users_table_header_link('name', __('general.nick'), $order_by);
     }
     if (config('enable_user_name')) {
         $user_table_headers['first_name'] = Users_table_header_link('first_name', __('Prename'), $order_by);
@@ -589,7 +589,7 @@ function User_view(
                     $its_me ? table_buttons([
                         button(
                             page_link_to('settings/profile'),
-                            icon('person-fill-gear') . __('Settings')
+                            icon('person-fill-gear') . __('settings.settings')
                         ),
                         $auth->can('ical') ? button(
                             page_link_to('ical', ['key' => $user_source->api_key]),

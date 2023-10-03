@@ -64,7 +64,7 @@ function AngelType_delete_view(AngelType $angeltype)
         info(sprintf(__('Do you want to delete angeltype %s?'), $angeltype->name), true),
         form([
             buttons([
-                button(page_link_to('angeltypes'), icon('x-lg') . __('cancel')),
+                button(page_link_to('angeltypes'), icon('x-lg') . __('form.cancel')),
                 form_submit('delete', icon('trash') . __('delete'), 'btn-danger', false),
             ]),
         ]),
@@ -362,7 +362,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
 function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_angeltypes)
 {
     $headers = [
-        'name'    => __('nick.nick'),
+        'name'    => __('general.nick'),
     ];
 
     if (config('enable_dect')) {
@@ -374,8 +374,8 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
             'wants_to_drive'               => __('Driver'),
             'has_car'                      => __('Has car'),
             'has_license_car'              => __('Car'),
-            'has_license_3_5t_transporter' => __('3,5t Transporter'),
-            'has_license_7_5t_truck'       => __('7,5t Truck'),
+            'has_license_3_5t_transporter' => __('3.5t Transporter'),
+            'has_license_7_5t_truck'       => __('7.5t Truck'),
             'has_license_12t_truck'        => __('12t Truck'),
             'has_license_forklift'         => __('Forklift'),
         ]);

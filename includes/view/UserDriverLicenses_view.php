@@ -30,7 +30,7 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
                     form_checkbox('has_license_car', __('Car'), $user_driver_license->drive_car),
                     form_checkbox(
                         'has_license_3_5t_transporter',
-                        __('Transporter 3,5t'),
+                        __('3.5t Transporter'),
                         $user_driver_license->drive_3_5t
                     ),
                     form_checkbox(
