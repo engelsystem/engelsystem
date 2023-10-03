@@ -265,7 +265,7 @@ msgstr "Show mobile number to other users to contact me."
 msgid "settings.profile.email-preferences"
 msgstr "E-Mail preferences"
 
-msgid "settings.profile.email"
+msgid "general.email"
 msgstr "E-Mail"
 
 msgid "settings.profile.email.already-taken"
