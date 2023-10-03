@@ -18,7 +18,7 @@
 
         <div class="row g-4">
             <div class="col-lg-6">
-                {{ f.input('nick', __('settings.profile.nick'), {
+                {{ f.input('nick', __('general.nick'), {
                     'value': user.name,
                     'disabled': true,
                 }) }}
@@ -100,7 +100,7 @@
 
         <div class="row g-4">
             <div class="col-md-6">
-                {{ f.input('email', __('settings.profile.email'), {
+                {{ f.input('email', __('general.email'), {
                     'type': 'email',
                     'value': user.email,
                     'max_length': 254,

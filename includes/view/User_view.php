@@ -135,8 +135,8 @@ function Users_view(
         $user_table_headers['name'] = Users_table_header_link('name', __('general.nick'), $order_by);
     }
     if (config('enable_user_name')) {
-        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('Prename'), $order_by);
-        $user_table_headers['last_name'] = Users_table_header_link('last_name', __('general.name'), $order_by);
+        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('settings.profile.firstname'), $order_by);
+        $user_table_headers['last_name'] = Users_table_header_link('last_name', __('settings.profile.lastname'), $order_by);
     }
     if (config('enable_dect')) {
         $user_table_headers['dect'] = Users_table_header_link('dect', __('general.dect'), $order_by);
@@ -146,7 +146,7 @@ function Users_view(
         $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
     }
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
-    $user_table_headers['active'] = Users_table_header_link('active', __('Active'), $order_by);
+    $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
     if ($goodie_enabled) {
         if ($goodie_tshirt) {
@@ -209,7 +209,7 @@ function User_shift_state_render($user)
 
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
     if ($upcoming_shifts->isEmpty()) {
-        return '<span class="text-success">' . __('Free') . '</span>';
+        return '<span class="text-success">' . __('free') . '</span>';
     }
 
     /** @var ShiftEntry $nextShiftEntry */
@@ -514,11 +514,11 @@ function User_view(
         );
         if (count($my_shifts) > 0) {
             $myshifts_table = div('table-responsive', table([
-                'date'       => __('Day &amp; time'),
+                'date'       => __('Day & Time'),
                 'duration'   => __('Duration'),
                 'room'       => __('Location'),
-                'shift_info' => __('Name &amp; workmates'),
-                'comment'    => __('Comment'),
+                'shift_info' => __('Name & Workmates'),
+                'comment'    => __('worklog.comment'),
                 'actions'    => __('Action'),
             ], $my_shifts));
         } elseif ($user_source->state->force_active) {
@@ -699,7 +699,7 @@ function User_view_state_user($user_source)
     ];
 
     if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . icon('house') . __('Arrived') . '</span>';
+        $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
     } else {
         $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
     }
@@ -737,9 +737,9 @@ function User_view_state_admin($freeloader, $user_source)
             . '</span>';
 
         if ($user_source->state->force_active) {
-            $state[] = '<span class="text-success">' . __('Active (forced)') . '</span>';
+            $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
         } elseif ($user_source->state->active) {
-            $state[] = '<span class="text-success">' . __('Active') . '</span>';
+            $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
         if ($user_source->state->got_shirt && $goodie_enabled) {
             $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-Shirt') : __('Goodie')) . '</span>';

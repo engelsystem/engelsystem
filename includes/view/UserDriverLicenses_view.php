@@ -26,7 +26,7 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
                         __('I have my own car with me and am willing to use it for the event (You\'ll get reimbursed for fuel)'),
                         $user_driver_license->has_car
                     ),
-                    heading(__('Driver license'), 3),
+                    heading(__('driving license'), 3),
                     form_checkbox('has_license_car', __('Car'), $user_driver_license->drive_car),
                     form_checkbox(
                         'has_license_3_5t_transporter',
@@ -35,12 +35,12 @@ function UserDriverLicense_edit_view($user_source, $user_driver_license)
                     ),
                     form_checkbox(
                         'has_license_7_5t_truck',
-                        __('Truck 7,5t'),
+                        __('7.5t Truck'),
                         $user_driver_license->drive_7_5t
                     ),
                     form_checkbox(
                         'has_license_12t_truck',
-                        __('Truck 12t'),
+                        __('12t Truck'),
                         $user_driver_license->drive_12t
                     ),
                     form_checkbox(

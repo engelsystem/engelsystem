@@ -62,7 +62,7 @@ function admin_user()
             . ($user_source->last_login_at ? $user_source->last_login_at->format(__('Y-m-d H:i')) : '-')
             . '</p></td></tr>' . "\n";
         if (config('enable_user_name')) {
-            $html .= '  <tr><td>' . __('Prename') . '</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('settings.profile.firstname') . '</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
             $html .= '  <tr><td>' . __('settings.profile.lastname') . '</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
         }
         $html .= '  <tr><td>' . __('settings.profile.mobile') . '</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source->contact->mobile . '" class="form-control" maxlength="40"></td></tr>' . "\n";
@@ -70,7 +70,7 @@ function admin_user()
             $html .= '  <tr><td>' . __('general.dect') . '</td><td>' . '<input size="40" name="eDECT" value="' . $user_source->contact->dect . '" class="form-control" maxlength="40"></td></tr>' . "\n";
         }
         if ($user_source->settings->email_human) {
-            $html .= '  <tr><td>' . __('settings.profile.email') . '</td><td>' . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('general.email') . '</td><td>' . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
         }
         if ($goodie_tshirt) {
             $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
@@ -90,7 +90,7 @@ function admin_user()
         ];
 
         // Gekommen?
-        $html .= '  <tr><td>' . __('Arrived') . '</td><td>' . "\n";
+        $html .= '  <tr><td>' . __('user.arrived') . '</td><td>' . "\n";
         if ($user_source->state->arrived) {
             $html .= __('Yes');
         } else {

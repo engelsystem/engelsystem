@@ -908,6 +908,15 @@ msgstr "nächste 8h"
 msgid "iCal export and API"
 msgstr "iCal Export und API"
 
+msgid ""
+"Export your own shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
+"\">JSON format</a> available (please keep secret, otherwise <a href=\"%s"
+"\">reset the api key</a>)."
+msgstr ""
+"Exportiere Deine Schichten. <a href=\"%s\">iCal Format</a> oder <a href=\"%s"
+"\">JSON Format</a> verfügbar (Link bitte geheimhalten, sonst <a href=\"%s"
+"\">API-Key zurücksetzen</a>)."
+
 msgid "Show API Key"
 msgstr "API Key anzeigen"
 
@@ -1194,9 +1203,6 @@ msgstr "Schichttyp bearbeiten"
 msgid "Create shifttype"
 msgstr "Schichttyp erstellen"
 
-msgid "for team %s"
-msgstr "für Team %s"
-
 msgid "New shifttype"
 msgstr "Neuer Schichttyp"
 
@@ -1219,9 +1225,6 @@ msgstr "Sollen %s %s als neuen Supporter bekommen?"
 msgid "Do you really want to remove supporter rights for %s from %s?"
 msgstr "Möchtest Du wirklich %s von %s als Supporter befreien?"
 
-msgid "yes"
-msgstr "Ja"
-
 msgid "Do you really want to deny all users for %s?"
 msgstr "Möchtest Du wirklich alle Benutzer als %s ablehnen?"
 
@@ -1243,9 +1246,6 @@ msgstr "Benutzer bestätigen"
 msgid "Hide at Registration"
 msgstr "Ausblenden bei Registrierung"
 
-msgid "save"
-msgstr "Speichern"
-
 msgid "Back to profile"
 msgstr "Zurück zum Profil"
 
@@ -1266,36 +1266,6 @@ msgstr ""
 "Ich habe mein eigenes Auto dabei und möchte es zum Fahren für das Event "
 "verwenden (Du wirst für Spritkosten entschädigt)"
 
-msgid "Driver license"
-msgstr "Führerschein"
-
-msgid "Truck 7,5t"
-msgstr "7,5t LKW"
-
-msgid "Truck 12t"
-msgstr "12t LKW"
-
-msgid "Do you want to delete the worklog entry for %s?"
-msgstr "Möchtest du den Arbeitseinsatz von %s wirklich löschen?"
-
-msgid "Comment"
-msgstr "Kommentar"
-
-msgid "Pronoun"
-msgstr "Pronomen"
-
-msgid "Will be shown on your profile page and in angel lists."
-msgstr "Wird auf deiner Profilseite und in Engellisten angezeigt."
-
-msgid "Here you can change your user details."
-msgstr "Hier kannst Du Deine Details ändern."
-
-msgid "Planned date of departure"
-msgstr "Geplanter Abreisetag"
-
-msgid "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
-msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
-
 msgid ""
 "Do you really want to delete the user including all his shifts and every "
 "other piece of his data?"
@@ -1315,20 +1285,11 @@ msgstr "Engel kann noch %d Gutscheine bekommen und ist FA."
 msgid "Number of vouchers given out"
 msgstr "Anzahl Gutscheine bekommen"
 
-msgid "Prename"
-msgstr "Vorname"
-
-msgid "Arrived"
-msgstr "Angekommen"
-
 msgid "Voucher"
 msgstr "Gutschein"
 
 msgid "Freeloads"
 msgstr "Schwänzereien"
-
-msgid "Active"
-msgstr "Aktiv"
 
 msgid "T-Shirt"
 msgstr "T-Shirt"
@@ -1338,9 +1299,6 @@ msgstr "Letzter Login"
 
 msgid "New user"
 msgstr "Neuer User"
-
-msgid "Free"
-msgstr "Frei"
 
 msgid "Next shift %c"
 msgstr "Nächste Schicht %c"
@@ -1369,14 +1327,14 @@ msgstr "Arbeitseinsatz"
 msgid "Added by %s at %s"
 msgstr "Erstellt von %s am %s"
 
-msgid "Day &amp; time"
-msgstr "Tag &amp; Zeit"
+msgid "Day & Time"
+msgstr "Tag & Zeit"
 
 msgid "Duration"
 msgstr "Dauer"
 
-msgid "Name &amp; workmates"
-msgstr "Name &amp; Kollegen"
+msgid "Name & Workmates"
+msgstr "Name & Kollegen"
 
 msgid "Action"
 msgstr "Aktion"
@@ -1418,9 +1376,6 @@ msgstr "Schwänzer"
 msgid "Arrived at %s"
 msgstr "Angekommen am %s"
 
-msgid "Active (forced)"
-msgstr "Aktiv (erzwungen)"
-
 msgid "Not arrived (Planned: %s)"
 msgstr "Nicht angekommen (Geplant: %s)"
 
@@ -1433,11 +1388,15 @@ msgstr "Keine Gutscheine bekommen"
 msgid "out of %s"
 msgstr "von %s"
 
-msgid "Show mobile number to other users to contact me"
-msgstr "Mache meine Handynummer für andere Benutzer sichtbar"
-
 msgid "Rights"
 msgstr "Rechte"
+
+msgid ""
+"You are not marked as arrived. Please go to heaven's desk, get your angel "
+"badge and/or tell them that you arrived already."
+msgstr ""
+"Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
+"hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
 
 msgid ""
 "Please enter your planned date of departure on your settings page to give us "
@@ -1452,13 +1411,6 @@ msgid ""
 msgstr ""
 "Du hast mindestens %s Schichten geschwänzt. Schicht-Registrierung ist "
 "gesperrt. Bitte gehe zum Himmelsschreibtisch um wieder entsperrt zu werden."
-
-msgid ""
-"You are not marked as arrived. Please go to heaven's desk, get your angel "
-"badge and/or tell them that you arrived already."
-msgstr ""
-"Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
-"hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
 
 msgid "You need to specify a tshirt size in your settings!"
 msgstr "Bitte eine T-Shirt-Größe auswählen"
@@ -1482,13 +1434,6 @@ msgid ""
 msgstr ""
 "Ist der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, bedeutet dies, "
 "dass der Engel bereits sein T-Shirt erhalten hat."
-
-msgid ""
-"If the angel was Active, this entitles him to a T-shirt. If T-shirt contains a 'Ja', "
-"it means that the angel has already received his T-shirt."
-msgstr ""
-"War der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, "
-"bedeutet dies, dass der Engel bereits sein T-Shirt erhalten hat."
 
 msgid "Please visit the angeltypes page or the users profile to manage the users angeltypes."
 msgstr "Bitte besuche die Seite Engeltypen oder das Benutzerprofil, um die Engeltypen des Benutzers zu verwalten."
@@ -1555,13 +1500,6 @@ msgid "page.404.text"
 msgstr ""
 "Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um "
 "Zugriff zu erhalten!"
-
-
-
-
-
-
-
 
 msgid "form.select_placeholder"
 msgstr "Bitte auswählen..."
@@ -1765,7 +1703,7 @@ msgstr "Mache meine Handynummer für andere Benutzer sichtbar."
 msgid "settings.profile.email-preferences"
 msgstr "E-Mail Einstellungen"
 
-msgid "settings.profile.email"
+msgid "general.email"
 msgstr "E-Mail"
 
 msgid "settings.profile.email.already-taken"
