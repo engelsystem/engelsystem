@@ -16,7 +16,7 @@ class RoomTest extends ModelTest
      */
     public function testShifts(): void
     {
-        $room = new Room(['name' => 'Test room']);
+        $room = new Room(['name' => 'Test location']);
         $room->save();
 
         /** @var Shift $shift */
