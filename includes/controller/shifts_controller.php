@@ -102,7 +102,7 @@ function shift_edit_controller()
             $rid = $request->input('rid');
         } else {
             $valid = false;
-            error(__('Please select a room.'));
+            error(__('Please select a location.'));
         }
 
         if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
@@ -209,7 +209,7 @@ function shift_edit_controller()
             form([
                 form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
                 form_text('title', __('Title'), $title),
-                form_select('rid', __('Room:'), $rooms, $rid),
+                form_select('rid', __('Location:'), $rooms, $rid),
                 form_text('start', __('Start:'), $start->format('Y-m-d H:i')),
                 form_text('end', __('End:'), $end->format('Y-m-d H:i')),
                 form_textarea('description', __('Additional description'), $description),

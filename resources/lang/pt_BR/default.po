@@ -1234,7 +1234,7 @@ msgid "Shift change hours"
 msgstr "Mudança de horário do turno"
 
 #: includes/pages/admin_shifts.php:335
-msgid "Take needed angels from room settings"
+msgid "Take needed angels from location settings"
 msgstr "Pegar os anjos necessários a partir das configurações das salas"
 
 #: includes/pages/admin_shifts.php:336

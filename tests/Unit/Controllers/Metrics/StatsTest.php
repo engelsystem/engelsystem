@@ -202,10 +202,10 @@ class StatsTest extends TestCase
      */
     public function testRooms(): void
     {
-        (new Room(['name' => 'Room 1']))->save();
-        (new Room(['name' => 'Second room']))->save();
-        (new Room(['name' => 'Another room']))->save();
-        (new Room(['name' => 'Old room']))->save();
+        (new Room(['name' => 'Location 1']))->save();
+        (new Room(['name' => 'Second location']))->save();
+        (new Room(['name' => 'Another location']))->save();
+        (new Room(['name' => 'Old location']))->save();
 
         $stats = new Stats($this->database);
         $this->assertEquals(4, $stats->rooms());

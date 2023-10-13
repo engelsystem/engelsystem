@@ -114,7 +114,7 @@ class RoomsController extends BaseController
         }
 
         $this->log->info(
-            'Updated room "{name}": {description} {dect} {map_url} {angels}',
+            'Updated location "{name}": {description} {dect} {map_url} {angels}',
             [
                 'name'        => $room->name,
                 'description' => $room->description,
@@ -155,7 +155,7 @@ class RoomsController extends BaseController
         }
         $room->delete();
 
-        $this->log->info('Deleted room {room}', ['room' => $room->name]);
+        $this->log->info('Deleted location {location}', ['location' => $room->name]);
         $this->addNotification('room.delete.success');
 
         return $this->redirect->to('/admin/rooms');

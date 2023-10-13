@@ -109,7 +109,7 @@ class RoomsControllerTest extends ControllerTest
         $this->setExpects($this->redirect, 'to', ['/admin/rooms']);
 
         $this->request = $this->request->withParsedBody([
-            'name'         => 'Testroom',
+            'name'         => 'Testlocation',
             'description'  => 'Something',
             'dect'         => 'DECTNR',
             'map_url'      => 'https://osm.url/#map=h/x/y',
@@ -119,9 +119,9 @@ class RoomsControllerTest extends ControllerTest
 
         $controller->save($this->request);
 
-        $this->assertTrue($this->log->hasInfoThatContains('Updated room'));
+        $this->assertTrue($this->log->hasInfoThatContains('Updated location'));
         $this->assertHasNotification('room.edit.success');
-        $this->assertCount(1, Room::whereName('Testroom')->get());
+        $this->assertCount(1, Room::whereName('Testlocation')->get());
 
         $neededAngelType = NeededAngelType::whereRoomId(1)
             ->where('angel_type_id', 2)
@@ -138,10 +138,10 @@ class RoomsControllerTest extends ControllerTest
         /** @var RoomsController $controller */
         $controller = $this->app->make(RoomsController::class);
         $controller->setValidator(new Validator());
-        Room::factory()->create(['name' => 'Testroom']);
+        Room::factory()->create(['name' => 'Testlocation']);
 
         $this->request = $this->request->withParsedBody([
-            'name' => 'Testroom',
+            'name' => 'Testlocation',
         ]);
 
         $this->expectException(ValidationException::class);
@@ -206,7 +206,7 @@ class RoomsControllerTest extends ControllerTest
         $controller->delete($this->request);
 
         $this->assertNull(Room::find($room->id));
-        $this->assertTrue($this->log->hasInfoThatContains('Deleted room'));
+        $this->assertTrue($this->log->hasInfoThatContains('Deleted location'));
         $this->assertHasNotification('room.delete.success');
     }
 

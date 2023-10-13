@@ -261,7 +261,7 @@ class ImportSchedule extends BaseController
         $roomModel->name = $room->getName();
         $roomModel->save();
 
-        $this->log('Created schedule room "{room}"', ['room' => $room->getName()]);
+        $this->log('Created schedule location "{location}"', ['location' => $room->getName()]);
     }
 
     protected function fireDeleteShiftEntryEvents(Event $event): void
@@ -316,13 +316,13 @@ class ImportSchedule extends BaseController
         $scheduleShift->save();
 
         $this->log(
-            'Created schedule shift "{shift}" in "{room}" ({from} {to}, {guid})',
+            'Created schedule shift "{shift}" in "{location}" ({from} {to}, {guid})',
             [
-                'shift' => $shift->title,
-                'room'  => $shift->room->name,
-                'from'  => $shift->start->format(DateTimeInterface::RFC3339),
-                'to'    => $shift->end->format(DateTimeInterface::RFC3339),
-                'guid'  => $scheduleShift->guid,
+                'shift'    => $shift->title,
+                'location' => $shift->room->name,
+                'from'     => $shift->start->format(DateTimeInterface::RFC3339),
+                'to'       => $shift->end->format(DateTimeInterface::RFC3339),
+                'guid'     => $scheduleShift->guid,
             ]
         );
     }
@@ -345,13 +345,13 @@ class ImportSchedule extends BaseController
         $shift->save();
 
         $this->log(
-            'Updated schedule shift "{shift}" in "{room}" ({from} {to}, {guid})',
+            'Updated schedule shift "{shift}" in "{location}" ({from} {to}, {guid})',
             [
-                'shift' => $shift->title,
-                'room'  => $shift->room->name,
-                'from'  => $shift->start->format(DateTimeInterface::RFC3339),
-                'to'    => $shift->end->format(DateTimeInterface::RFC3339),
-                'guid'  => $scheduleShift->guid,
+                'shift'    => $shift->title,
+                'location' => $shift->room->name,
+                'from'     => $shift->start->format(DateTimeInterface::RFC3339),
+                'to'       => $shift->end->format(DateTimeInterface::RFC3339),
+                'guid'     => $scheduleShift->guid,
             ]
         );
     }
@@ -364,13 +364,13 @@ class ImportSchedule extends BaseController
         $shift->delete();
 
         $this->log(
-            'Deleted schedule shift "{shift}" in {room} ({from} {to}, {guid})',
+            'Deleted schedule shift "{shift}" in {location} ({from} {to}, {guid})',
             [
-                'shift' => $shift->title,
-                'room'  => $shift->room->name,
-                'from'  => $shift->start->format(DateTimeInterface::RFC3339),
-                'to'    => $shift->end->format(DateTimeInterface::RFC3339),
-                'guid'  => $scheduleShift->guid,
+                'shift'    => $shift->title,
+                'location' => $shift->room->name,
+                'from'     => $shift->start->format(DateTimeInterface::RFC3339),
+                'to'       => $shift->end->format(DateTimeInterface::RFC3339),
+                'guid'     => $scheduleShift->guid,
             ]
         );
     }

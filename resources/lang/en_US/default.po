@@ -98,7 +98,7 @@ msgid "schedule.last_update"
 msgstr "Last updated: %s"
 
 msgid "schedule.import.text"
-msgstr "Imports create rooms and create, update and delete shifts according to a schedule.xml export."
+msgstr "Imports create locations and create, update and delete shifts according to a schedule.xml export."
 
 msgid "schedule.import.load.title"
 msgstr "Import schedule: Preview"
@@ -125,7 +125,7 @@ msgid "schedule.import.request_error"
 msgstr "Unable to load schedule."
 
 msgid "schedule.import.rooms.add"
-msgstr "Rooms to create"
+msgstr "Locations to create"
 
 msgid "schedule.import.shifts.add"
 msgstr "Shifts to create"
@@ -149,7 +149,7 @@ msgid "schedule.import.shift.title"
 msgstr "Title"
 
 msgid "schedule.import.shift.room"
-msgstr "Room"
+msgstr "Location"
 
 msgid "shifts_history.schedule"
 msgstr "Schedule: %s"
@@ -559,7 +559,7 @@ msgid "registration.register"
 msgstr "Register"
 
 msgid "room.rooms"
-msgstr "Rooms"
+msgstr "Locations"
 
 msgid "room.name"
 msgstr "Name"
@@ -577,13 +577,13 @@ msgid "room.required_angels"
 msgstr "Required angels"
 
 msgid "room.map_url.info"
-msgstr "The map will be embedded on the room page as an iframe."
+msgstr "The map will be embedded on the location page as an iframe."
 
 msgid "room.create.title"
-msgstr "Create room"
+msgstr "Create location"
 
 msgid "room.edit.title"
-msgstr "Edit room"
+msgstr "Edit location"
 
 msgid "event.day"
 msgstr "Day %1$d"

@@ -263,10 +263,10 @@ msgid "worklog.delete.success"
 msgstr "Work log successfully deleted."
 
 msgid "room.edit.success"
-msgstr "Room edited successfully."
+msgstr "Location edited successfully."
 
 msgid "room.delete.success"
-msgstr "Room successfully deleted."
+msgstr "Location successfully deleted."
 
 msgid "validation.name.exists"
 msgstr "The name is already used."
