@@ -13,7 +13,7 @@ use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\License;
@@ -198,17 +198,17 @@ class StatsTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::rooms
+     * @covers \Engelsystem\Controllers\Metrics\Stats::locations
      */
-    public function testRooms(): void
+    public function testLocations(): void
     {
-        (new Room(['name' => 'Location 1']))->save();
-        (new Room(['name' => 'Second location']))->save();
-        (new Room(['name' => 'Another location']))->save();
-        (new Room(['name' => 'Old location']))->save();
+        (new Location(['name' => 'Location 1']))->save();
+        (new Location(['name' => 'Second location']))->save();
+        (new Location(['name' => 'Another location']))->save();
+        (new Location(['name' => 'Old location']))->save();
 
         $stats = new Stats($this->database);
-        $this->assertEquals(4, $stats->rooms());
+        $this->assertEquals(4, $stats->locations());
     }
 
     /**

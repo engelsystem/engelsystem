@@ -1,8 +1,8 @@
 <?php
 
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
-use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -67,9 +67,9 @@ function shift_edit_controller()
         ));
     }
 
-    $rooms = [];
-    foreach (Room::orderBy('name')->get() as $room) {
-        $rooms[$room->id] = $room->name;
+    $locations = [];
+    foreach (Location::orderBy('name')->get() as $location) {
+        $locations[$location->id] = $location->name;
     }
     $angeltypes = AngelType::all()->pluck('name', 'id')->toArray();
     $shifttypes = ShiftType::all()->pluck('name', 'id')->toArray();
@@ -84,7 +84,7 @@ function shift_edit_controller()
     $shifttype_id = $shift->shift_type_id;
     $title = $shift->title;
     $description = $shift->description;
-    $rid = $shift->room_id;
+    $rid = $shift->location_id;
     $start = $shift->start;
     $end = $shift->end;
 
@@ -97,7 +97,7 @@ function shift_edit_controller()
         if (
             $request->has('rid')
             && preg_match('/^\d+$/', $request->input('rid'))
-            && isset($rooms[$request->input('rid')])
+            && isset($locations[$request->input('rid')])
         ) {
             $rid = $request->input('rid');
         } else {
@@ -154,7 +154,7 @@ function shift_edit_controller()
             $shift->shift_type_id = $shifttype_id;
             $shift->title = $title;
             $shift->description = $description;
-            $shift->room_id = $rid;
+            $shift->location_id = $rid;
             $shift->start = $start;
             $shift->end = $end;
             $shift->updatedBy()->associate(auth()->user());
@@ -210,7 +210,7 @@ function shift_edit_controller()
             form([
                 form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
                 form_text('title', __('title.title'), $title),
-                form_select('rid', __('Location:'), $rooms, $rid),
+                form_select('rid', __('Location:'), $locations, $rid),
                 form_text('start', __('Start:'), $start->format('Y-m-d H:i')),
                 form_text('end', __('End:'), $end->format('Y-m-d H:i')),
                 form_textarea('description', __('Additional description'), $description),
@@ -255,7 +255,7 @@ function shift_delete_controller()
                 'name'       => $shift->shiftType->name,
                 'title'      => $shift->title,
                 'type'       => $entry->angelType->name,
-                'room'       => $shift->room,
+                'location'   => $shift->location,
                 'freeloaded' => $entry->freeloaded,
             ]);
         }
@@ -312,7 +312,7 @@ function shift_controller()
     }
 
     $shifttype = $shift->shiftType;
-    $room = $shift->room;
+    $location = $shift->location;
     /** @var AngelType[] $angeltypes */
     $angeltypes = AngelType::all();
     $user_shifts = Shifts_by_user($user->id);
@@ -344,7 +344,7 @@ function shift_controller()
 
     return [
         $shift->shiftType->name,
-        Shift_view($shift, $shifttype, $room, $angeltypes, $shift_signup_state),
+        Shift_view($shift, $shifttype, $location, $angeltypes, $shift_signup_state),
     ];
 }
 

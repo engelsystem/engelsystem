@@ -14,7 +14,7 @@ use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
@@ -291,9 +291,9 @@ class Stats
         );
     }
 
-    public function rooms(): int
+    public function locations(): int
     {
-        return Room::query()
+        return Location::query()
             ->count();
     }
 

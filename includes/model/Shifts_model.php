@@ -29,7 +29,7 @@ function Shifts_by_angeltype(AngelType $angeltype)
         UNION
 
         SELECT DISTINCT `shifts`.* FROM `shifts`
-        JOIN `needed_angel_types` ON `needed_angel_types`.`room_id` = `shifts`.`room_id`
+        JOIN `needed_angel_types` ON `needed_angel_types`.`location_id` = `shifts`.`location_id`
         LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
         WHERE `needed_angel_types`.`angel_type_id` = ?
         AND NOT s.shift_id IS NULL
@@ -60,7 +60,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
             AND (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`shift_id`=`shifts`.`id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND shift_entries.`freeloaded`=0' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND s.shift_id IS NULL
-            ' . ($filter ? 'AND shifts.room_id IN (' . implode(',', $filter->getRooms()) . ')' : '') . '
+            ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
 
             UNION
 
@@ -68,10 +68,10 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
             FROM `shifts`
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
             WHERE (`end` > ? AND `start` < ?)
-            AND (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`room_id`=`shifts`.`room_id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+            AND (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`location_id`=`shifts`.`location_id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND `freeloaded`=0' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND NOT s.shift_id IS NULL
-            ' . ($filter ? 'AND shifts.room_id IN (' . implode(',', $filter->getRooms()) . ')' : '') . '
+            ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
         ) AS `tmp`
         ORDER BY `tmp`.`start`
         ', [
@@ -97,32 +97,32 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     $sql = '
     SELECT * FROM (
-        SELECT DISTINCT `shifts`.*, `shift_types`.`name`, `rooms`.`name` AS `room_name`
+        SELECT DISTINCT `shifts`.*, `shift_types`.`name`, `locations`.`name` AS `location_name`
         FROM `shifts`
-        JOIN `rooms` ON `shifts`.`room_id` = `rooms`.`id`
+        JOIN `locations` ON `shifts`.`location_id` = `locations`.`id`
         JOIN `shift_types` ON `shift_types`.`id` = `shifts`.`shift_type_id`
         JOIN `needed_angel_types` ON `needed_angel_types`.`shift_id` = `shifts`.`id`
         LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-        WHERE `shifts`.`room_id` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
+        WHERE `shifts`.`location_id` IN (' . implode(',', $shiftsFilter->getLocations()) . ')
             AND `start` BETWEEN ? AND ?
             AND `needed_angel_types`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
             AND s.shift_id IS NULL
 
         UNION
 
-        SELECT DISTINCT `shifts`.*, `shift_types`.`name`, `rooms`.`name` AS `room_name`
+        SELECT DISTINCT `shifts`.*, `shift_types`.`name`, `locations`.`name` AS `location_name`
         FROM `shifts`
-        JOIN `rooms` ON `shifts`.`room_id` = `rooms`.`id`
+        JOIN `locations` ON `shifts`.`location_id` = `locations`.`id`
         JOIN `shift_types` ON `shift_types`.`id` = `shifts`.`shift_type_id`
-        JOIN `needed_angel_types` ON `needed_angel_types`.`room_id`=`shifts`.`room_id`
+        JOIN `needed_angel_types` ON `needed_angel_types`.`location_id`=`shifts`.`location_id`
         LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-        WHERE `shifts`.`room_id` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
+        WHERE `shifts`.`location_id` IN (' . implode(',', $shiftsFilter->getLocations()) . ')
             AND `start` BETWEEN ? AND ?
             AND `needed_angel_types`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
             AND NOT s.shift_id IS NULL
     ) AS tmp_shifts
 
-    ORDER BY `room_name`, `start`
+    ORDER BY `location_name`, `start`
     ';
 
     $shiftsData = Db::select(
@@ -161,7 +161,7 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
         JOIN `needed_angel_types` ON `needed_angel_types`.`shift_id`=`shifts`.`id`
         JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
         LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-        WHERE `shifts`.`room_id` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
+        WHERE `shifts`.`location_id` IN (' . implode(',', $shiftsFilter->getLocations()) . ')
         AND shifts.`start` BETWEEN ? AND ?
         AND s.shift_id IS NULL
 
@@ -175,10 +175,10 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
             `angel_types`.`restricted`,
             `angel_types`.`shift_self_signup`
         FROM `shifts`
-        JOIN `needed_angel_types` ON `needed_angel_types`.`room_id`=`shifts`.`room_id`
+        JOIN `needed_angel_types` ON `needed_angel_types`.`location_id`=`shifts`.`location_id`
         JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
         LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-        WHERE `shifts`.`room_id` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
+        WHERE `shifts`.`location_id` IN (' . implode(',', $shiftsFilter->getLocations()) . ')
         AND shifts.`start` BETWEEN ? AND ?
         AND NOT s.shift_id IS NULL
     ';
@@ -228,7 +228,7 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
                 `angel_types`.`restricted`,
                 `angel_types`.`shift_self_signup`
             FROM `shifts`
-            JOIN `needed_angel_types` ON `needed_angel_types`.`room_id`=`shifts`.`room_id`
+            JOIN `needed_angel_types` ON `needed_angel_types`.`location_id`=`shifts`.`location_id`
             JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
             WHERE `shifts`.`id`=?
@@ -252,7 +252,7 @@ function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     return ShiftEntry::with('user')
         ->join('shifts', 'shifts.id', 'shift_entries.shift_id')
-        ->whereIn('shifts.room_id', $shiftsFilter->getRooms())
+        ->whereIn('shifts.location_id', $shiftsFilter->getLocations())
         ->whereBetween('start', [$shiftsFilter->getStart(), $shiftsFilter->getEnd()])
         ->get();
 }
@@ -510,8 +510,8 @@ function Shifts_by_user($userId, $include_freeloaded_comments = false)
     $shiftsData = Db::select(
         '
         SELECT
-            `rooms`.*,
-            `rooms`.name AS Name,
+            `locations`.*,
+            `locations`.name AS Name,
             `shift_types`.`id` AS `shifttype_id`,
             `shift_types`.`name`,
             `shift_entries`.`id` as shift_entry_id,
@@ -525,7 +525,7 @@ function Shifts_by_user($userId, $include_freeloaded_comments = false)
         FROM `shift_entries`
         JOIN `shifts` ON (`shift_entries`.`shift_id` = `shifts`.`id`)
         JOIN `shift_types` ON (`shift_types`.`id` = `shifts`.`shift_type_id`)
-        JOIN `rooms` ON (`shifts`.`room_id` = `rooms`.`id`)
+        JOIN `locations` ON (`shifts`.`location_id` = `locations`.`id`)
         WHERE shift_entries.`user_id` = ?
         ORDER BY `start`
         ',

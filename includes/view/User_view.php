@@ -313,7 +313,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
             . ' - '
             . $shift->end->format(__('H:i')),
         'duration'   => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
-        'room'       => Room_name_render($shift->room),
+        'location'   => location_name_render($shift->location),
         'shift_info' => $shift_info,
         'comment'    => '',
     ];
@@ -404,7 +404,7 @@ function User_view_myshifts(
         $myshifts_table[] = [
             'date'       => '<b>' . __('Sum:') . '</b>',
             'duration'   => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
-            'room'       => '',
+            'location'   => '',
             'shift_info' => '',
             'comment'    => '',
             'actions'    => '',
@@ -413,7 +413,7 @@ function User_view_myshifts(
             $myshifts_table[] = [
                 'date'       => '<b>' . ($goodie_tshirt ? __('Your t-shirt score') : __('Your goodie score')) . '&trade;:</b>',
                 'duration'   => '<b>' . $tshirt_score . '</b>',
-                'room'       => '',
+                'location'   => '',
                 'shift_info' => '',
                 'comment'    => '',
                 'actions'    => '',
@@ -451,7 +451,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     return [
         'date'       => icon('calendar-event') . date(__('Y-m-d'), $worklog->worked_at->timestamp),
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
-        'room'       => '',
+        'location'   => '',
         'shift_info' => __('Work log entry'),
         'comment'    => $worklog->comment . '<br>'
             . sprintf(
@@ -515,7 +515,7 @@ function User_view(
             $myshifts_table = div('table-responsive', table([
                 'date'       => __('Day & Time'),
                 'duration'   => __('Duration'),
-                'room'       => __('Location'),
+                'location'   => __('Location'),
                 'shift_info' => __('Name & Workmates'),
                 'comment'    => __('worklog.comment'),
                 'actions'    => __('Action'),

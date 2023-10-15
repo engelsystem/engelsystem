@@ -23,19 +23,19 @@ function NeededAngelTypes_by_shift($shiftId)
         FROM `needed_angel_types`
         JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
         WHERE `shift_id` = ?
-        ORDER BY `room_id` DESC',
+        ORDER BY `location_id` DESC',
         [$shiftId]
     );
 
-    // Use settings from room
+    // Use settings from location
     if (count($needed_angeltypes_source) == 0) {
         $needed_angeltypes_source = Db::select('
         SELECT `needed_angel_types`.*, `angel_types`.`name`, `angel_types`.`restricted`
         FROM `needed_angel_types`
         JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
-        JOIN `shifts` ON `shifts`.`room_id` = `needed_angel_types`.`room_id`
+        JOIN `shifts` ON `shifts`.`location_id` = `needed_angel_types`.`location_id`
         WHERE `shifts`.`id` = ?
-        ORDER BY `room_id` DESC
+        ORDER BY `location_id` DESC
         ', [$shiftId]);
     }
 

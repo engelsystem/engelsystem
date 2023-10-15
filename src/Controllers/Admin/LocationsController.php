@@ -12,23 +12,23 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Log\LoggerInterface;
 
-class RoomsController extends BaseController
+class LocationsController extends BaseController
 {
     use HasUserNotifications;
 
     /** @var array<string> */
     protected array $permissions = [
-        'admin_rooms',
+        'admin_locations',
     ];
 
     public function __construct(
         protected LoggerInterface $log,
-        protected Room $room,
+        protected Location $location,
         protected Redirector $redirect,
         protected Response $response
     ) {
@@ -36,31 +36,31 @@ class RoomsController extends BaseController
 
     public function index(): Response
     {
-        $rooms = $this->room
+        $locations = $this->location
             ->orderBy('name')
             ->get();
 
         return $this->response->withView(
-            'admin/rooms/index',
-            ['rooms' => $rooms, 'is_index' => true]
+            'admin/locations/index',
+            ['locations' => $locations, 'is_index' => true]
         );
     }
 
     public function edit(Request $request): Response
     {
-        $roomId = (int) $request->getAttribute('room_id');
+        $locationId = (int) $request->getAttribute('location_id');
 
-        $room = $this->room->find($roomId);
+        $location = $this->location->find($locationId);
 
-        return $this->showEdit($room);
+        return $this->showEdit($location);
     }
 
     public function save(Request $request): Response
     {
-        $roomId = (int) $request->getAttribute('room_id');
+        $locationId = (int) $request->getAttribute('location_id');
 
-        /** @var Room $room */
-        $room = $this->room->findOrNew($roomId);
+        /** @var Location $location */
+        $location = $this->location->findOrNew($locationId);
         /** @var Collection|AngelType[] $angelTypes */
         $angelTypes = AngelType::all();
         $validation = [];
@@ -82,17 +82,17 @@ class RoomsController extends BaseController
             ] + $validation
         );
 
-        if (Room::whereName($data['name'])->where('id', '!=', $room->id)->exists()) {
+        if (Location::whereName($data['name'])->where('id', '!=', $location->id)->exists()) {
             throw new ValidationException((new Validator())->addErrors(['name' => ['validation.name.exists']]));
         }
 
-        $room->name = $data['name'];
-        $room->description = $data['description'];
-        $room->dect = $data['dect'];
-        $room->map_url = $data['map_url'];
+        $location->name = $data['name'];
+        $location->description = $data['description'];
+        $location->dect = $data['dect'];
+        $location->map_url = $data['map_url'];
 
-        $room->save();
-        $room->neededAngelTypes()->getQuery()->delete();
+        $location->save();
+        $location->neededAngelTypes()->getQuery()->delete();
         $angelsInfo = '';
 
         foreach ($angelTypes as $angelType) {
@@ -103,7 +103,7 @@ class RoomsController extends BaseController
 
             $neededAngelType = new NeededAngelType();
 
-            $neededAngelType->room()->associate($room);
+            $neededAngelType->location()->associate($location);
             $neededAngelType->angelType()->associate($angelType);
 
             $neededAngelType->count = $data['angel_type_' . $angelType->id];
@@ -116,17 +116,17 @@ class RoomsController extends BaseController
         $this->log->info(
             'Updated location "{name}": {description} {dect} {map_url} {angels}',
             [
-                'name'        => $room->name,
-                'description' => $room->description,
-                'dect'        => $room->dect,
-                'map_url'     => $room->map_url,
+                'name'        => $location->name,
+                'description' => $location->description,
+                'dect'        => $location->dect,
+                'map_url'     => $location->map_url,
                 'angels'      => $angelsInfo,
             ]
         );
 
-        $this->addNotification('room.edit.success');
+        $this->addNotification('location.edit.success');
 
-        return $this->redirect->to('/admin/rooms');
+        return $this->redirect->to('/admin/locations');
     }
 
     public function delete(Request $request): Response
@@ -136,9 +136,9 @@ class RoomsController extends BaseController
             'delete' => 'checked',
         ]);
 
-        $room = $this->room->findOrFail($data['id']);
+        $location = $this->location->findOrFail($data['id']);
 
-        $shifts = $room->shifts;
+        $shifts = $location->shifts;
         foreach ($shifts as $shift) {
             foreach ($shift->shiftEntries as $entry) {
                 event('shift.entry.deleting', [
@@ -148,27 +148,31 @@ class RoomsController extends BaseController
                     'name'       => $shift->shiftType->name,
                     'title'      => $shift->title,
                     'type'       => $entry->angelType->name,
-                    'room'       => $room,
+                    'location'   => $location,
                     'freeloaded' => $entry->freeloaded,
                 ]);
             }
         }
-        $room->delete();
+        $location->delete();
 
-        $this->log->info('Deleted location {location}', ['location' => $room->name]);
-        $this->addNotification('room.delete.success');
+        $this->log->info('Deleted location {location}', ['location' => $location->name]);
+        $this->addNotification('location.delete.success');
 
-        return $this->redirect->to('/admin/rooms');
+        return $this->redirect->to('/admin/locations');
     }
 
-    protected function showEdit(?Room $room): Response
+    protected function showEdit(?Location $location): Response
     {
         $angeltypes = AngelType::all()
             ->sortBy('name');
 
         return $this->response->withView(
-            'admin/rooms/edit',
-            ['room' => $room, 'angel_types' => $angeltypes, 'needed_angel_types' => $room?->neededAngelTypes]
+            'admin/locations/edit',
+            [
+                'location' => $location,
+                'angel_types' => $angeltypes,
+                'needed_angel_types' => $location?->neededAngelTypes,
+            ]
         );
     }
 }

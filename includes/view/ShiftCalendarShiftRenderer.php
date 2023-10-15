@@ -43,8 +43,6 @@ class ShiftCalendarShiftRenderer
         $blocks = ceil(($shift->end->timestamp - $shift->start->timestamp) / ShiftCalendarRenderer::SECONDS_PER_ROW);
         $blocks = max(1, $blocks);
 
-        $room = $shift->room;
-
         return [
             $blocks,
             div(
@@ -57,7 +55,7 @@ class ShiftCalendarShiftRenderer
                         $this->renderShiftHead($shift, $class, $shift_signup_state->getFreeEntries()),
                         div('card-body ' . $this->classBg(), [
                             $info_text,
-                            Room_name_render($room),
+                            location_name_render($shift->location),
                         ]),
                         $shifts_row,
                     ]

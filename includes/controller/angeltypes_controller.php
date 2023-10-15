@@ -2,7 +2,7 @@
 
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftsFilterRenderer;
@@ -243,13 +243,13 @@ function angeltype_controller_shiftsFilterDays(AngelType $angeltype)
 function angeltype_controller_shiftsFilter(AngelType $angeltype, $days)
 {
     $request = request();
-    $roomIds = Room::query()
+    $locationIds = Location::query()
         ->select('id')
         ->pluck('id')
         ->toArray();
     $shiftsFilter = new ShiftsFilter(
         auth()->can('user_shifts_admin'),
-        $roomIds,
+        $locationIds,
         [$angeltype->id]
     );
     $selected_day = date('Y-m-d');

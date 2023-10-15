@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories\Engelsystem\Models\Shifts;
 
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -17,11 +17,11 @@ class NeededAngelTypeFactory extends Factory
 
     public function definition(): array
     {
-        $forRoom = $this->faker->boolean();
+        $forLocation = $this->faker->boolean();
 
         return [
-            'room_id'       => $forRoom ? Room::factory() : null,
-            'shift_id'      => $forRoom ? null : Shift::factory(),
+            'location_id'   => $forLocation ? Location::factory() : null,
+            'shift_id'      => $forLocation ? null : Shift::factory(),
             'angel_type_id' => AngelType::factory(),
             'count'         => $this->faker->numberBetween(1, 5),
         ];

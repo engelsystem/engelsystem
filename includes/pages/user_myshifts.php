@@ -51,7 +51,7 @@ function user_myshifts()
         /** @var ShiftEntry $shiftEntry */
         $shiftEntry = ShiftEntry::where('id', $shift_entry_id)
             ->where('user_id', $shifts_user->id)
-            ->with(['shift', 'shift.shiftType', 'shift.room', 'user'])
+            ->with(['shift', 'shift.shiftType', 'shift.location', 'user'])
             ->first();
         if (!empty($shiftEntry)) {
             $shift = $shiftEntry->shift;
@@ -97,7 +97,7 @@ function user_myshifts()
             return ShiftEntry_edit_view(
                 $shifts_user,
                 $shift->start->format(__('Y-m-d H:i')) . ', ' . shift_length($shift),
-                $shift->room->name,
+                $shift->location->name,
                 $shift->shiftType->name,
                 $shiftEntry->angelType->name,
                 $shiftEntry->user_comment,

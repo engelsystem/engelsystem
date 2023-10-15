@@ -265,10 +265,10 @@ msgstr "Work log successfully updated."
 msgid "worklog.delete.success"
 msgstr "Work log successfully deleted."
 
-msgid "room.edit.success"
+msgid "location.edit.success"
 msgstr "Location edited successfully."
 
-msgid "room.delete.success"
+msgid "location.delete.success"
 msgstr "Location successfully deleted."
 
 msgid "validation.name.exists"

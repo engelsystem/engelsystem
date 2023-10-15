@@ -4,7 +4,7 @@ use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
@@ -44,8 +44,8 @@ function admin_shifts()
     $shift_over_midnight = true;
 
     // Locations laden
-    $rooms = Room::orderBy('name')->get();
-    $room_array = $rooms->pluck('name', 'id')->toArray();
+    $locations = Location::orderBy('name')->get();
+    $location_array = $locations->pluck('name', 'id')->toArray();
 
     // Load angeltypes
     /** @var AngelType[] $types */
@@ -85,14 +85,14 @@ function admin_shifts()
 
         // Auswahl der sichtbaren Locations für die Schichten
         if (
-            $request->has('rid')
-            && preg_match('/^\d+$/', $request->input('rid'))
-            && isset($room_array[$request->input('rid')])
+            $request->has('lid')
+            && preg_match('/^\d+$/', $request->input('lid'))
+            && isset($location_array[$request->input('lid')])
         ) {
-            $rid = $request->input('rid');
+            $lid = $request->input('lid');
         } else {
             $valid = false;
-            $rid = $rooms->first()->id;
+            $lid = $locations->first()->id;
             error(__('Please select a location.'));
         }
 
@@ -208,7 +208,7 @@ function admin_shifts()
         // Alle Eingaben in Ordnung
         if ($valid) {
             if ($angelmode == 'location') {
-                $needed_angel_types = NeededAngelType::whereRoomId($rid)
+                $needed_angel_types = NeededAngelType::whereLocationId($lid)
                         ->pluck('count', 'angel_type_id')
                         ->toArray() + $needed_angel_types;
             }
@@ -218,7 +218,7 @@ function admin_shifts()
                 $shifts[] = [
                     'start'         => $start,
                     'end'           => $end,
-                    'room_id'       => $rid,
+                    'location_id'   => $lid,
                     'title'         => $title,
                     'shift_type_id' => $shifttype_id,
                     'description'   => $description,
@@ -238,7 +238,7 @@ function admin_shifts()
                     $shifts[] = [
                         'start'         => $shift_start,
                         'end'           => $shift_end,
-                        'room_id'       => $rid,
+                        'location_id'   => $lid,
                         'title'         => $title,
                         'shift_type_id' => $shifttype_id,
                         'description'   => $description,
@@ -299,7 +299,7 @@ function admin_shifts()
                         $shifts[] = [
                             'start'         => $interval_start,
                             'end'           => $interval_end,
-                            'room_id'       => $rid,
+                            'location_id'   => $lid,
                             'title'         => $title,
                             'shift_type_id' => $shifttype_id,
                             'description'   => $description,
@@ -330,7 +330,7 @@ function admin_shifts()
                         . '</span>'
                         . ', ' . round($end->copy()->diffInMinutes($start) / 60, 2) . 'h'
                         . '<br>'
-                        . Room_name_render(Room::find($shift['room_id'])),
+                        . location_name_render(Location::find($shift['location_id'])),
                     'title'         =>
                         ShiftType_name_render(ShiftType::find($shifttype_id))
                         . ($shift['title'] ? '<br />' . $shift['title'] : ''),
@@ -367,7 +367,7 @@ function admin_shifts()
                     form_hidden('shifttype_id', $shifttype_id),
                     form_hidden('description', $description),
                     form_hidden('title', $title),
-                    form_hidden('rid', $rid),
+                    form_hidden('lid', $lid),
                     form_hidden('start', $request->input('start')),
                     form_hidden('end', $request->input('end')),
                     form_hidden('mode', $mode),
@@ -434,9 +434,9 @@ function admin_shifts()
         $session->remove('admin_shifts_types');
     }
 
-    $rid = null;
-    if ($request->has('rid')) {
-        $rid = $request->input('rid');
+    $lid = null;
+    if ($request->has('lid')) {
+        $lid = $request->input('lid');
     }
     $angel_types = '';
     foreach ($types as $type) {
@@ -467,7 +467,7 @@ function admin_shifts()
                     div('col-md-6 col-xl-5', [
                         form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
                         form_text('title', __('title.title'), $title),
-                        form_select('rid', __('Location'), $room_array, $rid),
+                        form_select('lid', __('Location'), $location_array, $lid),
                     ]),
                     div('col-md-6 col-xl-7', [
                         form_textarea('description', __('Additional description'), $description),
@@ -599,7 +599,7 @@ function admin_shifts_history(): string
                     'name'       => $shift->shiftType->name,
                     'title'      => $shift->title,
                     'type'       => $entry->angelType->name,
-                    'room'       => $shift->room,
+                    'location'   => $shift->location,
                     'freeloaded' => $entry->freeloaded,
                 ]);
             }

@@ -1,7 +1,7 @@
 <?php
 
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\User;
 
@@ -75,7 +75,7 @@ function ShiftEntry_delete_title()
  * Admin puts user into shift.
  *
  * @param Shift     $shift
- * @param Room      $room
+ * @param Location  $location
  * @param AngelType $angeltype
  * @param array     $angeltypes_select
  * @param User      $signup_user
@@ -84,7 +84,7 @@ function ShiftEntry_delete_title()
  */
 function ShiftEntry_create_view_admin(
     Shift $shift,
-    Room $room,
+    Location $location,
     AngelType $angeltype,
     $angeltypes_select,
     $signup_user,
@@ -95,7 +95,7 @@ function ShiftEntry_create_view_admin(
         ShiftEntry_create_title() . ': ' . $shift->shiftType->name
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
-            Shift_view_header($shift, $room),
+            Shift_view_header($shift, $location),
             info(__('Do you want to sign up the following user for this shift?'), true),
             form([
                 form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype->id),
@@ -110,20 +110,25 @@ function ShiftEntry_create_view_admin(
  * Supporter puts user into shift.
  *
  * @param Shift $shift
- * @param Room  $room
+ * @param Location $location
  * @param AngelType $angeltype
  * @param User  $signup_user
  * @param array $users_select
  * @return string
  */
-function ShiftEntry_create_view_supporter(Shift $shift, Room $room, AngelType $angeltype, $signup_user, $users_select)
-{
+function ShiftEntry_create_view_supporter(
+    Shift $shift,
+    Location $location,
+    AngelType $angeltype,
+    $signup_user,
+    $users_select
+) {
     $start = $shift->start->format(__('Y-m-d H:i'));
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift->shiftType->name
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
-            Shift_view_header($shift, $room),
+            Shift_view_header($shift, $location),
             info(sprintf(
                 __('Do you want to sign up the following user for this shift as %s?'),
                 $angeltype->name
@@ -140,19 +145,19 @@ function ShiftEntry_create_view_supporter(Shift $shift, Room $room, AngelType $a
  * User joining a shift.
  *
  * @param Shift  $shift
- * @param Room   $room
+ * @param Location $location
  * @param AngelType  $angeltype
  * @param string $comment
  * @return string
  */
-function ShiftEntry_create_view_user(Shift $shift, Room $room, AngelType $angeltype, $comment)
+function ShiftEntry_create_view_user(Shift $shift, Location $location, AngelType $angeltype, $comment)
 {
     $start = $shift->start->format(__('Y-m-d H:i'));
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift->shiftType->name
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
-            Shift_view_header($shift, $room),
+            Shift_view_header($shift, $location),
             info(sprintf(__('Do you want to sign up for this shift as %s?'), $angeltype->name), true),
             form([
                 form_textarea('comment', __('Comment (for your eyes only):'), $comment),

@@ -14,8 +14,8 @@
         <div class="col-lg-12">
             <p>{{ __('schedule.import.load.info', [schedule.conference.title, schedule.version]) }}</p>
 
-            <h2>{{ __('schedule.import.rooms.add') }}</h2>
-            {{ _self.roomsTable(rooms.add) }}
+            <h2>{{ __('schedule.import.locations.add') }}</h2>
+            {{ _self.locationsTable(locations.add) }}
 
             <h2>{{ __('schedule.import.shifts.add') }}</h2>
             {{ _self.shiftsTable(shifts.add) }}
@@ -32,7 +32,7 @@
 {% endblock %}
 
 
-{% macro roomsTable(rooms) %}
+{% macro locationsTable(locations) %}
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -42,9 +42,9 @@
             </thead>
 
             <tbody>
-            {% for room in rooms %}
+            {% for location in locations %}
                 <tr>
-                    <td>{{ room.name }}</td>
+                    <td>{{ location.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -60,7 +60,7 @@
                 <th>{{ __('schedule.import.shift.dates') }}</th>
                 <th>{{ __('schedule.import.shift.type') }}</th>
                 <th>{{ __('title.title') }}</th>
-                <th>{{ __('schedule.import.shift.room') }}</th>
+                <th>{{ __('schedule.import.shift.location') }}</th>
             </tr>
             </thead>
 

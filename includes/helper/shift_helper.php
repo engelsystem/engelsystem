@@ -5,7 +5,7 @@ namespace Engelsystem\Events\Listener;
 use Carbon\Carbon;
 use Engelsystem\Helpers\Shifts;
 use Engelsystem\Mail\EngelsystemMailer;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Psr\Log\LoggerInterface;
@@ -25,7 +25,7 @@ class Shift
         string $name,
         string $title,
         string $type,
-        Room $room,
+        Location $location,
         bool $freeloaded
     ): void {
         if ($freeloaded || $start > Carbon::now()) {
@@ -44,7 +44,7 @@ class Shift
             $name,
             $title,
             $type,
-            $room->name,
+            $location->name,
             $start->format(__('Y-m-d H:i')),
             $end->format(__('Y-m-d H:i'))
         );
@@ -63,7 +63,7 @@ class Shift
         string $name,
         string $title,
         string $type,
-        Room $room,
+        Location $location,
         bool $freeloaded
     ): void {
         if (!$user->settings->email_shiftinfo) {
@@ -79,7 +79,7 @@ class Shift
                 'title'      => $title,
                 'start'      => $start,
                 'end'        => $end,
-                'room'       => $room,
+                'location'   => $location,
                 'freeloaded' => $freeloaded,
                 'username'   => $user->displayName,
             ]

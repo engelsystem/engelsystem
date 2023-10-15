@@ -1565,7 +1565,7 @@ msgstr "Minuten vor Talk beginn hinzufügen"
 msgid "schedule.minutes-after"
 msgstr "Minuten nach Talk ende hinzufügen"
 
-msgid "schedule.import.rooms.add"
+msgid "schedule.import.locations.add"
 msgstr "Neue Orte"
 
 msgid "schedule.import.shifts.add"
@@ -1583,7 +1583,7 @@ msgstr "Zeit"
 msgid "schedule.import.shift.type"
 msgstr "Typ"
 
-msgid "schedule.import.shift.room"
+msgid "schedule.import.shift.location"
 msgstr "Ort"
 
 msgid "shifts_history.schedule"
@@ -1964,22 +1964,22 @@ msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf de
 msgid "registration.register"
 msgstr "Registrieren"
 
-msgid "room.rooms"
+msgid "location.locations"
 msgstr "Orte"
 
-msgid "room.map_url"
+msgid "location.map_url"
 msgstr "Karte"
 
-msgid "room.required_angels"
+msgid "location.required_angels"
 msgstr "Benötigte Engel"
 
-msgid "room.map_url.info"
+msgid "location.map_url.info"
 msgstr "Die Karte wird auf der Ort-Seite als iframe eingebettet."
 
-msgid "room.create.title"
+msgid "location.create.title"
 msgstr "Ort erstellen"
 
-msgid "room.edit.title"
+msgid "location.edit.title"
 msgstr "Ort bearbeiten"
 
 msgid "event.day"

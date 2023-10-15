@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Models\Shifts;
 
 use Engelsystem\Helpers\Carbon;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
@@ -20,7 +20,7 @@ class ShiftTest extends ModelTest
 {
     /**
      * @covers \Engelsystem\Models\Shifts\Shift::shiftType
-     * @covers \Engelsystem\Models\Shifts\Shift::room
+     * @covers \Engelsystem\Models\Shifts\Shift::location
      * @covers \Engelsystem\Models\Shifts\Shift::createdBy
      * @covers \Engelsystem\Models\Shifts\Shift::updatedBy
      */
@@ -32,8 +32,8 @@ class ShiftTest extends ModelTest
         $user2 = User::factory()->create();
         /** @var ShiftType $shiftType */
         $shiftType = ShiftType::factory()->create();
-        /** @var Room $room */
-        $room = Room::factory()->create();
+        /** @var Location $location */
+        $location = Location::factory()->create();
 
         $model = new Shift([
             'title'          => 'Test shift',
@@ -42,7 +42,7 @@ class ShiftTest extends ModelTest
             'start'          => Carbon::now(),
             'end'            => Carbon::now(),
             'shift_type_id'  => $shiftType->id,
-            'room_id'        => $room->id,
+            'location_id'    => $location->id,
             'transaction_id' => '',
             'created_by'     => $user1->id,
             'updated_by'     => $user2->id,
@@ -52,7 +52,7 @@ class ShiftTest extends ModelTest
         $model = Shift::find(1);
 
         $this->assertEquals($shiftType->id, $model->shiftType->id);
-        $this->assertEquals($room->id, $model->room->id);
+        $this->assertEquals($location->id, $model->location->id);
         $this->assertEquals($user1->id, $model->createdBy->id);
         $this->assertEquals($user2->id, $model->updatedBy->id);
     }
@@ -67,10 +67,10 @@ class ShiftTest extends ModelTest
 
         $this->assertCount(0, Shift::find(1)->neededAngelTypes);
 
-        (NeededAngelType::factory()->make(['shift_id' => $shifts[0]->id, 'room_id' => null]))->save();
-        (NeededAngelType::factory()->make(['shift_id' => $shifts[0]->id, 'room_id' => null]))->save();
-        (NeededAngelType::factory()->make(['shift_id' => $shifts[1]->id, 'room_id' => null]))->save();
-        (NeededAngelType::factory()->make(['shift_id' => $shifts[2]->id, 'room_id' => null]))->save();
+        (NeededAngelType::factory()->make(['shift_id' => $shifts[0]->id, 'location_id' => null]))->save();
+        (NeededAngelType::factory()->make(['shift_id' => $shifts[0]->id, 'location_id' => null]))->save();
+        (NeededAngelType::factory()->make(['shift_id' => $shifts[1]->id, 'location_id' => null]))->save();
+        (NeededAngelType::factory()->make(['shift_id' => $shifts[2]->id, 'location_id' => null]))->save();
 
         $this->assertCount(2, Shift::find(1)->neededAngelTypes);
         $this->assertEquals(1, Shift::find(1)->neededAngelTypes[0]->id);

@@ -1,8 +1,8 @@
 <?php
 
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\News;
-use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\ShiftsFilter;
 
@@ -15,22 +15,22 @@ function public_dashboard_controller()
 {
     $filter = null;
     if (request()->get('filtered')) {
-        $requestRooms = check_request_int_array('rooms');
+        $requestLocations = check_request_int_array('locations');
         $requestAngelTypes = check_request_int_array('types');
 
-        if (!$requestRooms && !$requestAngelTypes) {
+        if (!$requestLocations && !$requestAngelTypes) {
             $sessionFilter = collect(session()->get('shifts-filter', []));
-            $requestRooms = $sessionFilter->get('rooms', []);
+            $requestLocations = $sessionFilter->get('locations', []);
             $requestAngelTypes = $sessionFilter->get('types', []);
         }
 
         $angelTypes = collect(unrestricted_angeltypes());
-        $rooms = $requestRooms ?: Room::orderBy('name')->get()->pluck('id')->toArray();
+        $locations = $requestLocations ?: Location::orderBy('name')->get()->pluck('id')->toArray();
         $angelTypes = $requestAngelTypes ?: $angelTypes->pluck('id')->toArray();
         $filterValues = [
             'userShiftsAdmin' => false,
             'filled'          => [],
-            'rooms'           => $rooms,
+            'locations'       => $locations,
             'types'           => $angelTypes,
             'startTime'       => null,
             'endTime'         => null,
@@ -87,7 +87,7 @@ function public_dashboard_controller_free_shift(Shift $shift, ShiftsFilter $filt
         'duration'       => round(($shift->end->timestamp - $shift->start->timestamp) / 3600),
         'shifttype_name' => $shift->shiftType->name,
         'title'          => $shift->title,
-        'room_name'      => $shift->room->name,
+        'location_name'  => $shift->location->name,
         'needed_angels'  => public_dashboard_needed_angels($shift->neededAngels, $filter),
     ];
 
