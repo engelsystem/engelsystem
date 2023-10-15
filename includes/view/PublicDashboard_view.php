@@ -58,7 +58,7 @@ function public_dashboard_view($stats, $free_shifts, $highlighted_news)
     }
 
     $isFiltered = request()->get('filtered');
-    $filter = collect(session()->get('shifts-filter'))->only(['rooms', 'types'])->toArray();
+    $filter = collect(session()->get('shifts-filter'))->only(['locations', 'types'])->toArray();
     return page([
         div('wrapper', [
             div('public-dashboard', [
@@ -98,7 +98,7 @@ function public_dashboard_shift_render($shift)
         $panel_body .= ' (' . $shift['title'] . ')';
     }
 
-    $panel_body .= '<br>' . icon('pin-map-fill') . $shift['room_name'];
+    $panel_body .= '<br>' . icon('pin-map-fill') . $shift['location_name'];
 
     foreach ($shift['needed_angels'] as $needed_angels) {
         $panel_body .= '<br>' . icon('person')

@@ -3,7 +3,7 @@
 use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\UserAngelType;
@@ -107,40 +107,40 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
 {
     $shiftsFilter->setUserShiftsAdmin($user_shifts_admin);
     $shiftsFilter->setFilled(check_request_int_array('filled', $shiftsFilter->getFilled()));
-    $shiftsFilter->setRooms(check_request_int_array('rooms', $shiftsFilter->getRooms()));
+    $shiftsFilter->setLocations(check_request_int_array('locations', $shiftsFilter->getLocations()));
     $shiftsFilter->setTypes(check_request_int_array('types', $shiftsFilter->getTypes()));
     update_ShiftsFilter_timerange($shiftsFilter, $days);
 }
 
 /**
- * @return Room[]|Collection
+ * @return Location[]|Collection
  */
-function load_rooms(bool $onlyWithActiveShifts = false)
+function load_locations(bool $onlyWithActiveShifts = false)
 {
-    $rooms = Room::orderBy('name');
+    $locations = Location::orderBy('name');
 
     if ($onlyWithActiveShifts) {
-        $roomIdsFromAngelType = NeededAngelType::query()
-            ->whereNotNull('room_id')
-            ->select('room_id');
+        $locationIdsFromAngelType = NeededAngelType::query()
+            ->whereNotNull('location_id')
+            ->select('location_id');
 
-        $roomIdsFromShift = Shift::query()
+        $locationIdsFromShift = Shift::query()
             ->leftJoin('needed_angel_types', 'shifts.id', 'needed_angel_types.shift_id')
             ->whereNotNull('needed_angel_types.shift_id')
-            ->select('shifts.room_id');
+            ->select('shifts.location_id');
 
-        $rooms->whereIn('id', $roomIdsFromAngelType)
-            ->orWhereIn('id', $roomIdsFromShift);
+        $locations->whereIn('id', $locationIdsFromAngelType)
+            ->orWhereIn('id', $locationIdsFromShift);
     }
 
-    $rooms = $rooms->get();
+    $locations = $locations->get();
 
-    if ($rooms->isEmpty()) {
+    if ($locations->isEmpty()) {
         error(__('The administration has not configured any locations yet.'));
         throw_redirect(page_link_to('/'));
     }
 
-    return $rooms;
+    return $locations;
 }
 
 /**
@@ -233,7 +233,7 @@ function view_user_shifts()
 
     $session = session();
     $days = load_days();
-    $rooms = load_rooms(true);
+    $locations = load_locations(true);
     $types = load_types();
     $ownAngelTypes = [];
 
@@ -250,8 +250,8 @@ function view_user_shifts()
     }
 
     if (!$session->has('shifts-filter')) {
-        $room_ids = $rooms->pluck('id')->toArray();
-        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $room_ids, $ownAngelTypes);
+        $location_ids = $locations->pluck('id')->toArray();
+        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $location_ids, $ownAngelTypes);
         $session->set('shifts-filter', $shiftsFilter->sessionExport());
     }
 
@@ -297,10 +297,10 @@ function view_user_shifts()
             view(__DIR__ . '/../../resources/views/pages/user-shifts.html', [
                 'title'         => shifts_title(),
                 'add_link'      => auth()->can('admin_shifts') ? $link : '',
-                'room_select'   => make_select(
-                    $rooms,
-                    $shiftsFilter->getRooms(),
-                    'rooms',
+                'location_select' => make_select(
+                    $locations,
+                    $shiftsFilter->getLocations(),
+                    'locations',
                     icon('pin-map-fill') . __('Locations')
                 ),
                 'start_select'  => html_select_key(

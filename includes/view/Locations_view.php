@@ -1,17 +1,17 @@
 <?php
 
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilterRenderer;
 
 /**
  *
- * @param Room                  $room
+ * @param Location              $location
  * @param ShiftsFilterRenderer  $shiftsFilterRenderer
  * @param ShiftCalendarRenderer $shiftCalendarRenderer
  * @return string
  */
-function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalendarRenderer $shiftCalendarRenderer)
+function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalendarRenderer $shiftCalendarRenderer)
 {
     $user = auth()->user();
 
@@ -21,33 +21,33 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
     }
 
     $description = '';
-    if ($room->description) {
+    if ($location->description) {
         $description = '<h3>' . __('general.description') . '</h3>';
         $parsedown = new Parsedown();
-        $description .= $parsedown->parse($room->description);
+        $description .= $parsedown->parse($location->description);
     }
 
     $dect = '';
-    if (config('enable_dect') && $room->dect) {
+    if (config('enable_dect') && $location->dect) {
         $dect = heading(__('Contact'), 3)
-            . description([__('general.dect') => sprintf('<a href="tel:%s">%1$s</a>', $room->dect)]);
+            . description([__('general.dect') => sprintf('<a href="tel:%s">%1$s</a>', $location->dect)]);
     }
 
     $tabs = [];
-    if ($room->map_url) {
-        $tabs[__('room.map_url')] = sprintf(
+    if ($location->map_url) {
+        $tabs[__('location.map_url')] = sprintf(
             '<div class="map">'
             . '<iframe style="width: 100%%; min-height: 400px; border: 0 none;" src="%s"></iframe>'
             . '</div>',
-            $room->map_url
+            $location->map_url
         );
     }
 
     $tabs[__('Shifts')] = div('first', [
-        $shiftsFilterRenderer->render(page_link_to('rooms', [
+        $shiftsFilterRenderer->render(page_link_to('locations', [
             'action'  => 'view',
-            'room_id' => $room->id,
-        ]), ['rooms' => [$room->id]]),
+            'location_id' => $location->id,
+        ]), ['locations' => [$location->id]]),
         $shiftCalendarRenderer->render(),
     ]);
 
@@ -57,15 +57,15 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
         $selected_tab = count($tabs) - 1;
     }
 
-    $link = button(page_link_to('admin/rooms'), icon('chevron-left'), 'btn-sm');
+    $link = button(page_link_to('admin/locations'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        (auth()->can('admin_rooms') ? $link . ' ' : '') .
-        icon('pin-map-fill') . $room->name,
+        (auth()->can('admin_locations') ? $link . ' ' : '') .
+        icon('pin-map-fill') . $location->name,
         [
         $assignNotice,
-        auth()->can('admin_rooms') ? buttons([
+        auth()->can('admin_locations') ? buttons([
             button(
-                page_link_to('admin/rooms/edit/' . $room->id),
+                page_link_to('admin/locations/edit/' . $location->id),
                 icon('pencil') . __('edit')
             ),
         ]) : '',
@@ -79,14 +79,14 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
 
 /**
  *
- * @param Room $room
+ * @param Location $location
  * @return string
  */
-function Room_name_render(Room $room)
+function location_name_render(Location $location)
 {
-    if (auth()->can('view_rooms')) {
-        return '<a href="' . room_link($room) . '">' . icon('pin-map-fill') . $room->name . '</a>';
+    if (auth()->can('view_locations')) {
+        return '<a href="' . location_link($location) . '">' . icon('pin-map-fill') . $location->name . '</a>';
     }
 
-    return icon('pin-map-fill') . $room->name;
+    return icon('pin-map-fill') . $location->name;
 }

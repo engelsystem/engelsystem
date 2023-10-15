@@ -1,7 +1,7 @@
 <?php
 
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Question;
-use Engelsystem\Models\Room;
 use Engelsystem\UserHintsRenderer;
 
 /**
@@ -79,7 +79,7 @@ function make_navigation()
         $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
     }
 
-    $menu = make_room_navigation($menu);
+    $menu = make_location_navigation($menu);
 
     $admin_menu = [];
     $admin_pages = [
@@ -92,7 +92,7 @@ function make_navigation()
         'admin/questions'    => ['Answer questions', 'question.edit'],
         'shifttypes'         => 'Shifttypes',
         'admin_shifts'       => 'Create shifts',
-        'admin/rooms'        => ['room.rooms', 'admin_rooms'],
+        'admin/locations'    => ['location.locations', 'admin_locations'],
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
@@ -142,31 +142,36 @@ function menu_is_allowed(string $page, $options)
 }
 
 /**
- * Adds room navigation to the given menu.
+ * Adds location navigation to the given menu.
  *
  * @param string[] $menu Rendered menu
  * @return string[]
  */
-function make_room_navigation($menu)
+function make_location_navigation($menu)
 {
-    if (!auth()->can('view_rooms')) {
+    if (!auth()->can('view_locations')) {
         return $menu;
     }
 
-    // Get a list of all rooms
-    $rooms = Room::orderBy('name')->get();
-    $room_menu = [];
-    if (auth()->can('admin_rooms')) {
-        $room_menu[] = toolbar_dropdown_item(page_link_to('admin/rooms'), __('Manage locations'), false, 'list');
+    // Get a list of all locations
+    $locations = Location::orderBy('name')->get();
+    $location_menu = [];
+    if (auth()->can('admin_locations')) {
+        $location_menu[] = toolbar_dropdown_item(
+            page_link_to('admin/locations'),
+            __('Manage locations'),
+            false,
+            'list'
+        );
     }
-    if (count($room_menu) > 0) {
-        $room_menu[] = toolbar_dropdown_item_divider();
+    if (count($location_menu) > 0) {
+        $location_menu[] = toolbar_dropdown_item_divider();
     }
-    foreach ($rooms as $room) {
-        $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'pin-map-fill');
+    foreach ($locations as $location) {
+        $location_menu[] = toolbar_dropdown_item(location_link($location), $location->name, false, 'pin-map-fill');
     }
-    if (count($room_menu) > 0) {
-        $menu[] = toolbar_dropdown(__('Locations'), $room_menu);
+    if (count($location_menu) > 0) {
+        $menu[] = toolbar_dropdown(__('Locations'), $location_menu);
     }
     return $menu;
 }

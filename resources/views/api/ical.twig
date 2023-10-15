@@ -13,7 +13,7 @@ DTEND:{{ entry.shift.end.utc().format(dateFormat) }}
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 SUMMARY:{{ (entry.shift.shiftType.name ~ ' (' ~ entry.shift.title ~ ')') | replace(replacement) | raw }}
-LOCATION:{{ entry.shift.room.name | replace(replacement) | raw }}
+LOCATION:{{ entry.shift.location.name | replace(replacement) | raw }}
 DESCRIPTION:{{
     (
         entry.shift.shiftType.description

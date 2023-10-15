@@ -133,7 +133,7 @@ msgstr "Add minutes after talk ends"
 msgid "schedule.import.request_error"
 msgstr "Unable to load schedule."
 
-msgid "schedule.import.rooms.add"
+msgid "schedule.import.locations.add"
 msgstr "Locations to create"
 
 msgid "schedule.import.shifts.add"
@@ -154,7 +154,7 @@ msgstr "Type"
 msgid "title.title"
 msgstr "Title"
 
-msgid "schedule.import.shift.room"
+msgid "schedule.import.shift.location"
 msgstr "Location"
 
 msgid "shifts_history.schedule"
@@ -552,22 +552,22 @@ msgstr "If checked only admins and members of the angeltype "
 msgid "registration.register"
 msgstr "Register"
 
-msgid "room.rooms"
+msgid "location.locations"
 msgstr "Locations"
 
-msgid "room.map_url"
+msgid "location.map_url"
 msgstr "Map"
 
-msgid "room.required_angels"
+msgid "location.required_angels"
 msgstr "Required angels"
 
-msgid "room.map_url.info"
+msgid "location.map_url.info"
 msgstr "The map will be embedded on the location page as an iframe."
 
-msgid "room.create.title"
+msgid "location.create.title"
 msgstr "Create location"
 
-msgid "room.edit.title"
+msgid "location.edit.title"
 msgstr "Edit location"
 
 msgid "event.day"

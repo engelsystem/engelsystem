@@ -20,7 +20,7 @@ class LegacyMiddleware implements MiddlewareInterface
         'admin_event_config',
         'angeltypes',
         'public_dashboard',
-        'rooms',
+        'locations',
         'shift_entries',
         'shifts',
         'users',
@@ -98,8 +98,8 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'admin_event_config':
                 list($title, $content) = event_config_edit_controller();
                 return [$title, $content];
-            case 'rooms':
-                return rooms_controller();
+            case 'locations':
+                return locations_controller();
             case 'user_myshifts':
                 $title = myshifts_title();
                 $content = user_myshifts();

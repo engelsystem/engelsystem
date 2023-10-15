@@ -132,7 +132,7 @@ class Controller extends BaseController
             ] + $userTshirtSizes,
             'locales'              => ['type' => 'gauge', 'help' => 'The locales users have configured'] + $userLocales,
             'themes'               => ['type' => 'gauge', 'help' => 'The themes users have configured'] + $userThemes,
-            'rooms'                => ['type' => 'gauge', $this->stats->rooms()],
+            'locations'            => ['type' => 'gauge', $this->stats->locations()],
             'shifts'               => ['type' => 'gauge', $this->stats->shifts()],
             'announcements'        => [
                 'type' => 'gauge',

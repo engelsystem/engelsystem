@@ -163,14 +163,14 @@ $route->addGroup(
             }
         );
 
-        // Rooms
+        // Locations
         $route->addGroup(
-            '/rooms',
+            '/locations',
             function (RouteCollector $route): void {
-                $route->get('', 'Admin\\RoomsController@index');
-                $route->post('', 'Admin\\RoomsController@delete');
-                $route->get('/edit[/{room_id:\d+}]', 'Admin\\RoomsController@edit');
-                $route->post('/edit[/{room_id:\d+}]', 'Admin\\RoomsController@save');
+                $route->get('', 'Admin\\LocationsController@index');
+                $route->post('', 'Admin\\LocationsController@delete');
+                $route->get('/edit[/{location_id:\d+}]', 'Admin\\LocationsController@edit');
+                $route->post('/edit[/{location_id:\d+}]', 'Admin\\LocationsController@save');
             }
         );
 

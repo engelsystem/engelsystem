@@ -1,29 +1,29 @@
 <?php
 
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftsFilterRenderer;
 
 /**
- * Room controllers for managing everything room related.
+ * Location controllers for managing everything location related.
  */
 
 /**
- * View a room with its shifts.
+ * View a location with its shifts.
  *
  * @return array
  */
-function room_controller(): array
+function location_controller(): array
 {
-    if (!auth()->can('view_rooms')) {
+    if (!auth()->can('view_locations')) {
         throw_redirect(page_link_to());
     }
 
     $request = request();
-    $room = load_room();
+    $location = load_location();
 
-    $all_shifts = $room->shifts->sortBy('start');
+    $all_shifts = $location->shifts->sortBy('start');
     $days = [];
     foreach ($all_shifts as $shift) {
         $day = $shift->start->format('Y-m-d');
@@ -34,7 +34,7 @@ function room_controller(): array
 
     $shiftsFilter = new ShiftsFilter(
         true,
-        [$room->id],
+        [$location->id],
         AngelType::query()->get('id')->pluck('id')->toArray()
     );
     $selected_day = date('Y-m-d');
@@ -53,17 +53,17 @@ function room_controller(): array
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
     return [
-        $room->name,
-        Room_view($room, $shiftsFilterRenderer, $shiftCalendarRenderer),
+        $location->name,
+        location_view($location, $shiftsFilterRenderer, $shiftCalendarRenderer),
     ];
 }
 
 /**
- * Dispatch different room actions.
+ * Dispatch different location actions.
  *
  * @return array
  */
-function rooms_controller(): array
+function locations_controller(): array
 {
     $request = request();
     $action = $request->input('action');
@@ -72,36 +72,36 @@ function rooms_controller(): array
     }
 
     return match ($action) {
-        'view'  => room_controller(),
-        'list'  => throw_redirect(page_link_to('admin/rooms')),
-        default => throw_redirect(page_link_to('admin/rooms')),
+        'view'  => location_controller(),
+        'list'  => throw_redirect(page_link_to('admin/locations')),
+        default => throw_redirect(page_link_to('admin/locations')),
     };
 }
 
 /**
- * @param Room $room
+ * @param Location $location
  * @return string
  */
-function room_link(Room $room)
+function location_link(Location $location)
 {
-    return page_link_to('rooms', ['action' => 'view', 'room_id' => $room->id]);
+    return page_link_to('locations', ['action' => 'view', 'location_id' => $location->id]);
 }
 
 /**
- * Loads room by request param room_id
+ * Loads location by request param location_id
  *
- * @return Room
+ * @return Location
  */
-function load_room()
+function load_location()
 {
-    if (!test_request_int('room_id')) {
+    if (!test_request_int('location_id')) {
         throw_redirect(page_link_to());
     }
 
-    $room = Room::find(request()->input('room_id'));
-    if (!$room) {
+    $location = Location::find(request()->input('location_id'));
+    if (!$location) {
         throw_redirect(page_link_to());
     }
 
-    return $room;
+    return $location;
 }

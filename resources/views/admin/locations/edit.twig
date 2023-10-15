@@ -1,40 +1,40 @@
-{% extends 'admin/rooms/index.twig' %}
+{% extends 'admin/locations/index.twig' %}
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ room ? __('room.edit.title') : __('room.create.title') }}{% endblock %}
+{% block title %}{{ location ? __('location.edit.title') : __('location.create.title') }}{% endblock %}
 
 {% block row_content %}
     <form method="post">
         {{ csrf() }}
-        {{ f.hidden('id', room ? room.id : '') }}
+        {{ f.hidden('id', location ? location.id : '') }}
 
         <div class="row">
             <div class="col-lg-6">
                 {{ f.input('name', __('general.name'), {
                     'required': true,
                     'required_icon': true,
-                    'value': f.formData('room', room ? room.name : ''),
+                    'value': f.formData('location', location ? location.name : ''),
                 }) }}
 
                 {{ f.input('dect', __('general.dect'), {
-                    'value': f.formData('dect', room ? room.dect : ''),
+                    'value': f.formData('dect', location ? location.dect : ''),
                 }) }}
-                {{ f.input('map_url', __('room.map_url'), {
+                {{ f.input('map_url', __('location.map_url'), {
                     'type': 'url',
-                    'value': f.formData('map_url', room ? room.map_url : ''),
-                    'info': __('room.map_url.info'),
+                    'value': f.formData('map_url', location ? location.map_url : ''),
+                    'info': __('location.map_url.info'),
                 }) }}
 
                 {{ f.textarea('description', __('general.description'), {
-                    'value': f.formData('description', room ? room.description : ''),
+                    'value': f.formData('description', location ? location.description : ''),
                     'rows': 5,
                     'info': __('form.markdown')
                 }) }}
             </div>
 
             <div class="col-lg-6">
-                <h4>{{ __('room.required_angels') }}</h4>
+                <h4>{{ __('location.required_angels') }}</h4>
                 {% for types in angel_types.chunk(3) %}
                     <div class="row">
                         {% for angel_type in types %}
@@ -56,7 +56,7 @@
         <div class="col-md-12">
             <div class="btn-group">
                 {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
-                {% if room %}
+                {% if location %}
                     {{ f.submit(__('form.delete'), {'name': 'delete', 'btn_type': 'danger', 'icon_left': 'trash'}) }}
                 {% endif %}
             </div>

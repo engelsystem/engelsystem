@@ -24,15 +24,15 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read Collection|NeededAngelType[] $neededAngelTypes
  * @property-read Collection|Shift[]           $shifts
  *
- * @method static QueryBuilder|Room[] whereId($value)
- * @method static QueryBuilder|Room[] whereName($value)
- * @method static QueryBuilder|Room[] whereMapUrl($value)
- * @method static QueryBuilder|Room[] whereDect($value)
- * @method static QueryBuilder|Room[] whereDescription($value)
- * @method static QueryBuilder|Room[] whereCreatedAt($value)
- * @method static QueryBuilder|Room[] whereUpdatedAt($value)
+ * @method static QueryBuilder|Location[] whereId($value)
+ * @method static QueryBuilder|Location[] whereName($value)
+ * @method static QueryBuilder|Location[] whereMapUrl($value)
+ * @method static QueryBuilder|Location[] whereDect($value)
+ * @method static QueryBuilder|Location[] whereDescription($value)
+ * @method static QueryBuilder|Location[] whereCreatedAt($value)
+ * @method static QueryBuilder|Location[] whereUpdatedAt($value)
  */
-class Room extends BaseModel
+class Location extends BaseModel
 {
     use HasFactory;
 

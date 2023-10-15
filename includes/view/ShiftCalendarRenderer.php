@@ -62,28 +62,28 @@ class ShiftCalendarRenderer
     }
 
     /**
-     * Assigns the shifts to different lanes per room if they collide
+     * Assigns the shifts to different lanes per location if they collide
      *
      * @param Shift[] $shifts The shifts to assign
-     * @return array Returns an array that assigns a room_id to an array of ShiftCalendarLane containing the shifts
+     * @return array Returns an array that assigns a location_id to an array of ShiftCalendarLane containing the shifts
      */
     private function assignShiftsToLanes($shifts)
     {
-        // array that assigns a room id to a list of lanes (per room)
+        // array that assigns a location id to a list of lanes (per location)
         $lanes = [];
 
         foreach ($shifts as $shift) {
-            $room = $shift->room;
-            $header = Room_name_render($room);
-            if (!isset($lanes[$room->id])) {
-                // initialize room with one lane
-                $lanes[$room->id] = [
+            $location = $shift->location;
+            $header = location_name_render($location);
+            if (!isset($lanes[$location->id])) {
+                // initialize location with one lane
+                $lanes[$location->id] = [
                     new ShiftCalendarLane($header),
                 ];
             }
-            // Try to add the shift to the existing lanes for this room
+            // Try to add the shift to the existing lanes for this location
             $shift_added = false;
-            foreach ($lanes[$room->id] as $lane) {
+            foreach ($lanes[$location->id] as $lane) {
                 /** @var ShiftCalendarLane $lane */
                 if ($lane->shiftFits($shift)) {
                     $lane->addShift($shift);
@@ -91,11 +91,11 @@ class ShiftCalendarRenderer
                     break;
                 }
             }
-            // If all lanes for this room are busy, create a new lane and add shift to it
+            // If all lanes for this location are busy, create a new lane and add shift to it
             if (!$shift_added) {
                 $newLane = new ShiftCalendarLane($header);
                 $newLane->addShift($shift);
-                $lanes[$room->id][] = $newLane;
+                $lanes[$location->id][] = $newLane;
             }
         }
 
@@ -154,8 +154,8 @@ class ShiftCalendarRenderer
     private function renderShiftLanes()
     {
         $html = '';
-        foreach ($this->lanes as $room_lanes) {
-            foreach ($room_lanes as $lane) {
+        foreach ($this->lanes as $location_lanes) {
+            foreach ($location_lanes as $lane) {
                 $html .= $this->renderLane($lane);
             }
         }

@@ -6,7 +6,7 @@ namespace Engelsystem\Models\Shifts;
 
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +23,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon                            $start
  * @property Carbon                            $end
  * @property int                               $shift_type_id
- * @property int                               $room_id
+ * @property int                               $location_id
  * @property string                            $transaction_id
  * @property int                               $created_by
  * @property int|null                          $updated_by
@@ -34,7 +34,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read Schedule                     $schedule
  * @property-read Collection|ShiftEntry[]      $shiftEntries
  * @property-read ShiftType                    $shiftType
- * @property-read Room                         $room
+ * @property-read Location                     $location
  * @property-read User                         $createdBy
  * @property-read User|null                    $updatedBy
  *
@@ -45,7 +45,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Shift[] whereStart($value)
  * @method static QueryBuilder|Shift[] whereEnd($value)
  * @method static QueryBuilder|Shift[] whereShiftTypeId($value)
- * @method static QueryBuilder|Shift[] whereRoomId($value)
+ * @method static QueryBuilder|Shift[] whereLocationId($value)
  * @method static QueryBuilder|Shift[] whereTransactionId($value)
  * @method static QueryBuilder|Shift[] whereCreatedBy($value)
  * @method static QueryBuilder|Shift[] whereUpdatedBy($value)
@@ -70,7 +70,7 @@ class Shift extends BaseModel
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
         'shift_type_id' => 'integer',
-        'room_id'       => 'integer',
+        'location_id'   => 'integer',
         'created_by'    => 'integer',
         'updated_by'    => 'integer',
         'start'         => 'datetime',
@@ -85,7 +85,7 @@ class Shift extends BaseModel
         'start',
         'end',
         'shift_type_id',
-        'room_id',
+        'location_id',
         'transaction_id',
         'created_by',
         'updated_by',
@@ -111,9 +111,9 @@ class Shift extends BaseModel
         return $this->belongsTo(ShiftType::class);
     }
 
-    public function room(): BelongsTo
+    public function location(): BelongsTo
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Location::class);
     }
 
     public function createdBy(): BelongsTo

@@ -11,8 +11,8 @@ function mail_shift_change(Shift $old_shift, Shift $new_shift)
     $shiftEntries = $old_shift->shiftEntries()
         ->with(['user', 'user.settings'])
         ->get();
-    $old_room = $old_shift->room;
-    $new_room = $new_shift->room;
+    $old_location = $old_shift->location;
+    $new_location = $new_shift->location;
 
     $noticeable_changes = false;
 
@@ -51,8 +51,8 @@ function mail_shift_change(Shift $old_shift, Shift $new_shift)
         $noticeable_changes = true;
     }
 
-    if ($old_shift->room_id != $new_shift->room_id) {
-        $message .= sprintf(__('* Shift Location changed from %s to %s'), $old_room->name, $new_room->name) . "\n";
+    if ($old_shift->location_id != $new_shift->location_id) {
+        $message .= sprintf(__('* Shift Location changed from %s to %s'), $old_location->name, $new_location->name) . "\n";
         $noticeable_changes = true;
     }
 
@@ -67,7 +67,7 @@ function mail_shift_change(Shift $old_shift, Shift $new_shift)
     $message .= $new_shift->shiftType->name . "\n";
     $message .= $new_shift->title . "\n";
     $message .= $new_shift->start->format(__('Y-m-d H:i')) . ' - ' . $new_shift->end->format(__('H:i')) . "\n";
-    $message .= $new_room->name . "\n\n";
+    $message .= $new_location->name . "\n\n";
     $message .= url('/shifts', ['action' => 'view', 'shift_id' => $new_shift->id]) . "\n";
 
     foreach ($shiftEntries as $shiftEntry) {
@@ -89,13 +89,11 @@ function mail_shift_assign(User $user, Shift $shift)
         return;
     }
 
-    $room = $shift->room;
-
     $message = __('You have been assigned to a Shift:') . "\n";
     $message .= $shift->shiftType->name . "\n";
     $message .= $shift->title . "\n";
     $message .= $shift->start->format(__('Y-m-d H:i')) . ' - ' . $shift->end->format(__('H:i')) . "\n";
-    $message .= $room->name . "\n\n";
+    $message .= $shift->location->name . "\n\n";
     $message .= url('/shifts', ['action' => 'view', 'shift_id' => $shift->id]) . "\n";
 
     engelsystem_email_to_user($user, __('Assigned to Shift'), $message, true);
@@ -107,13 +105,11 @@ function mail_shift_removed(User $user, Shift $shift)
         return;
     }
 
-    $room = $shift->room;
-
     $message = __('You have been removed from a Shift:') . "\n";
     $message .= $shift->shiftType->name . "\n";
     $message .= $shift->title . "\n";
     $message .= $shift->start->format(__('Y-m-d H:i')) . ' - ' . $shift->end->format(__('H:i')) . "\n";
-    $message .= $room->name . "\n";
+    $message .= $shift->location->name . "\n";
 
     engelsystem_email_to_user($user, __('Removed from Shift'), $message, true);
 }

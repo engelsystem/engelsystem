@@ -87,12 +87,12 @@ class FeedController extends BaseController
                 // Talk URL
                 'URL'            => $shift->url,
 
-                // Room id
-                'RID'            => $shift->room->id,
-                // Room name
-                'Name'           => $shift->room->name,
+                // Location (room) id
+                'RID'            => $shift->location->id,
+                // Location (room) name
+                'Name'           => $shift->location->name,
                 // Location map url
-                'map_url'        => $shift->room->map_url,
+                'map_url'        => $shift->location->map_url,
 
                 // Start timestamp
                 /** @deprecated start_date should be used */
@@ -151,7 +151,7 @@ class FeedController extends BaseController
             ->shiftEntries()
             ->leftJoin('shifts', 'shifts.id', 'shift_entries.shift_id')
             ->orderBy('shifts.start')
-            ->with(['shift', 'shift.room', 'shift.shiftType'])
+            ->with(['shift', 'shift.location', 'shift.shiftType'])
             ->get(['*', 'shift_entries.id']);
     }
 }

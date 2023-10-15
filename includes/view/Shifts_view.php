@@ -1,7 +1,7 @@
 <?php
 
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -14,10 +14,10 @@ use Illuminate\Support\Collection;
  * Renders the basic shift view header.
  *
  * @param Shift $shift
- * @param Room  $room
+ * @param Location $location
  * @return string HTML
  */
-function Shift_view_header(Shift $shift, Room $room)
+function Shift_view_header(Shift $shift, Location $location)
 {
     return div('row', [
         div('col-sm-3 col-xs-6', [
@@ -46,7 +46,7 @@ function Shift_view_header(Shift $shift, Room $room)
         ]),
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('Location') . '</h4>',
-            '<p class="lead">' . Room_name_render($room) . '</p>',
+            '<p class="lead">' . location_name_render($location) . '</p>',
         ]),
     ]);
 }
@@ -109,16 +109,21 @@ function Shift_signup_button_render(Shift $shift, AngelType $angeltype)
 /**
  * @param Shift                  $shift
  * @param ShiftType              $shifttype
- * @param Room                   $room
+ * @param Location               $location
  * @param AngelType[]|Collection $angeltypes_source
  * @param ShiftSignupState       $shift_signup_state
  * @return string
  */
-function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
-{
+function Shift_view(
+    Shift $shift,
+    ShiftType $shifttype,
+    Location $location,
+    $angeltypes_source,
+    ShiftSignupState $shift_signup_state
+) {
     $shift_admin = auth()->can('admin_shifts');
     $user_shift_admin = auth()->can('user_shifts_admin');
-    $admin_rooms = auth()->can('admin_rooms');
+    $admin_locations = auth()->can('admin_locations');
     $admin_shifttypes = auth()->can('shifttypes');
 
     $parsedown = new Parsedown();
@@ -166,12 +171,12 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
     }
 
     $buttons = [];
-    if ($shift_admin || $admin_shifttypes || $admin_rooms) {
+    if ($shift_admin || $admin_shifttypes || $admin_locations) {
         $buttons = [
             $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
             $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
             $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype->name) : '',
-            $admin_rooms ? button(room_link($room), icon('pin-map-fill') . $room->name) : '',
+            $admin_locations ? button(location_link($location), icon('pin-map-fill') . $location->name) : '',
         ];
     }
     $buttons[] = button(
@@ -180,7 +185,7 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
     );
     $content[] = buttons($buttons);
 
-    $content[] = Shift_view_header($shift, $room);
+    $content[] = Shift_view_header($shift, $location);
     $content[] = div('row', [
         div('col-sm-6', [
             '<h2>' . __('Needed angels') . '</h2>',

@@ -120,10 +120,10 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
     }
 
     $angeltypes_select = $angeltypes->pluck('name', 'id')->toArray();
-    $room = $shift->room;
+    $location = $shift->location;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_select, $signup_user, $users_select),
+        ShiftEntry_create_view_admin($shift, $location, $angeltype, $angeltypes_select, $signup_user, $users_select),
     ];
 }
 
@@ -167,10 +167,10 @@ function shift_entry_create_controller_supporter(Shift $shift, AngelType $angelt
         $users_select[$u->id] = $u->displayName;
     }
 
-    $room = $shift->room;
+    $location = $shift->location;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_supporter($shift, $room, $angeltype, $signup_user, $users_select),
+        ShiftEntry_create_view_supporter($shift, $location, $angeltype, $signup_user, $users_select),
     ];
 }
 
@@ -250,10 +250,10 @@ function shift_entry_create_controller_user(Shift $shift, AngelType $angeltype):
         throw_redirect(shift_link($shift));
     }
 
-    $room = $shift->room;
+    $location = $shift->location;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_user($shift, $room, $angeltype, $comment),
+        ShiftEntry_create_view_user($shift, $location, $angeltype, $comment),
     ];
 }
 

@@ -2,19 +2,19 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('room.rooms') }}{% endblock %}
+{% block title %}{{ __('location.locations') }}{% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>
             {% if not is_index|default(false) %}
-                {{ m.button(m.icon('chevron-left'), room ? url('/rooms', {'action': 'view', 'room_id': room.id}) : url('/admin/rooms'), 'secondary', 'sm') }}
+                {{ m.button(m.icon('chevron-left'), location ? url('/locations', {'action': 'view', 'location_id': location.id}) : url('/admin/locations'), 'secondary', 'sm') }}
             {% endif %}
 
             {{ block('title') }}
 
             {% if is_index|default(false) %}
-                {{ m.button(m.icon('plus-lg'), url('/admin/rooms/edit'), 'secondary') }}
+                {{ m.button(m.icon('plus-lg'), url('/admin/locations/edit'), 'secondary') }}
             {% endif %}
         </h1>
 
@@ -30,33 +30,33 @@
                             <tr>
                                 <th>{{ __('general.name') }}</th>
                                 <th>{{ __('general.dect') }}</th>
-                                <th>{{ __('room.map_url') }}</th>
+                                <th>{{ __('location.map_url') }}</th>
                                 <th></th>
                             </tr>
                             </thead>
 
                             <tbody>
-                            {% for room in rooms %}
+                            {% for location in locations %}
                                 <tr>
                                     <td>
                                         {{ m.icon('pin-map-fill') }}
-                                        <a href="{{ url('/rooms', {'action': 'view', 'room_id': room.id}) }}">
-                                            {{ room.name }}
+                                        <a href="{{ url('/locations', {'action': 'view', 'location_id': location.id}) }}">
+                                            {{ location.name }}
                                         </a>
                                     </td>
 
-                                    <td>{{ m.iconBool(room.dect) }}</td>
+                                    <td>{{ m.iconBool(location.dect) }}</td>
 
-                                    <td>{{ m.iconBool(room.map_url) }}</td>
+                                    <td>{{ m.iconBool(location.map_url) }}</td>
 
                                     <td>
                                         <div class="d-flex ms-auto">
 
-                                            {{ m.button(m.icon('pencil'), url('admin/rooms/edit/' ~ room.id), null, 'sm', __('form.edit')) }}
+                                            {{ m.button(m.icon('pencil'), url('admin/locations/edit/' ~ location.id), null, 'sm', __('form.edit')) }}
 
                                             <form method="post" class="ps-1">
                                                 {{ csrf() }}
-                                                {{ f.hidden('id', room.id) }}
+                                                {{ f.hidden('id', location.id) }}
                                                 {{ f.button(m.icon('trash'), {'title': __('form.delete'), 'name': 'delete', 'type': 'submit', 'btn_type': 'danger', 'size': 'sm'}) }}
                                             </form>
 

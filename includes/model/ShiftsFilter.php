@@ -44,10 +44,10 @@ class ShiftsFilter
      * ShiftsFilter constructor.
      *
      * @param bool  $user_shifts_admin
-     * @param int[] $rooms
+     * @param int[] $locations
      * @param int[] $angelTypes
      */
-    public function __construct($user_shifts_admin = false, private $rooms = [], $angelTypes = [])
+    public function __construct($user_shifts_admin = false, private $locations = [], $angelTypes = [])
     {
         $this->types = $angelTypes;
 
@@ -68,7 +68,7 @@ class ShiftsFilter
         return [
             'userShiftsAdmin' => $this->userShiftsAdmin,
             'filled'          => $this->filled,
-            'rooms'           => $this->rooms,
+            'locations'       => $this->locations,
             'types'           => $this->types,
             'startTime'       => $this->startTime,
             'endTime'         => $this->endTime,
@@ -80,12 +80,12 @@ class ShiftsFilter
      */
     public function sessionImport($data)
     {
-        $this->userShiftsAdmin = $data['userShiftsAdmin'];
-        $this->filled = $data['filled'];
-        $this->rooms = $data['rooms'];
-        $this->types = $data['types'];
-        $this->startTime = $data['startTime'];
-        $this->endTime = $data['endTime'];
+        $this->userShiftsAdmin = $data['userShiftsAdmin'] ?? false;
+        $this->filled = $data['filled'] ?? [];
+        $this->locations = $data['locations'] ?? [];
+        $this->types = $data['types'] ?? [];
+        $this->startTime = $data['startTime'] ?? null;
+        $this->endTime = $data['endTime'] ?? null;
     }
 
     /**
@@ -163,20 +163,20 @@ class ShiftsFilter
     /**
      * @return int[]
      */
-    public function getRooms()
+    public function getLocations()
     {
-        if (count($this->rooms) == 0) {
+        if (count($this->locations) == 0) {
             return [0];
         }
-        return $this->rooms;
+        return $this->locations;
     }
 
     /**
-     * @param int[] $rooms
+     * @param int[] $locations
      */
-    public function setRooms($rooms)
+    public function setLocations($locations)
     {
-        $this->rooms = $rooms;
+        $this->locations = $locations;
     }
 
     /**

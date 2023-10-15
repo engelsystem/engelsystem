@@ -9,7 +9,7 @@ use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -42,7 +42,7 @@ class FactoriesTest extends TestCase
             [PasswordReset::class],
             [PersonalData::class],
             [Question::class],
-            [Room::class],
+            [Location::class],
             [Schedule::class],
             [ShiftEntry::class],
             [Settings::class],
@@ -65,7 +65,7 @@ class FactoriesTest extends TestCase
      * @covers       \Database\Factories\Engelsystem\Models\User\PasswordResetFactory
      * @covers       \Database\Factories\Engelsystem\Models\User\PersonalDataFactory
      * @covers       \Database\Factories\Engelsystem\Models\QuestionFactory
-     * @covers       \Database\Factories\Engelsystem\Models\RoomFactory
+     * @covers       \Database\Factories\Engelsystem\Models\LocationFactory
      * @covers       \Database\Factories\Engelsystem\Models\Shifts\ScheduleFactory
      * @covers       \Database\Factories\Engelsystem\Models\User\SettingsFactory
      * @covers       \Database\Factories\Engelsystem\Models\Shifts\ShiftFactory

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
-use Engelsystem\Controllers\Admin\RoomsController;
+use Engelsystem\Controllers\Admin\LocationsController;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -19,26 +19,26 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class RoomsControllerTest extends ControllerTest
+class LocationsControllerTest extends ControllerTest
 {
     protected Redirector|MockObject $redirect;
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::__construct
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::index
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::__construct
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::index
      */
     public function testIndex(): void
     {
-        /** @var RoomsController $controller */
-        $controller = $this->app->make(RoomsController::class);
-        Room::factory(5)->create();
+        /** @var LocationsController $controller */
+        $controller = $this->app->make(LocationsController::class);
+        Location::factory(5)->create();
 
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals('admin/rooms/index', $view);
+                $this->assertEquals('admin/locations/index', $view);
                 $this->assertTrue($data['is_index'] ?? false);
-                $this->assertCount(5, $data['rooms'] ?? []);
+                $this->assertCount(5, $data['locations'] ?? []);
                 return $this->response;
             });
 
@@ -46,48 +46,52 @@ class RoomsControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::edit
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::showEdit
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::edit
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::showEdit
      */
     public function testEdit(): void
     {
-        /** @var RoomsController $controller */
-        $controller = $this->app->make(RoomsController::class);
-        /** @var Room $room */
-        $room = Room::factory()->create();
+        /** @var LocationsController $controller */
+        $controller = $this->app->make(LocationsController::class);
+        /** @var Location $location */
+        $location = Location::factory()->create();
         $angelTypes = AngelType::factory(3)->create();
-        (new NeededAngelType(['room_id' => $room->id, 'angel_type_id' => $angelTypes[0]->id, 'count' => 3]))->save();
+        (new NeededAngelType([
+            'location_id' => $location->id,
+            'angel_type_id' => $angelTypes[0]->id,
+            'count' => 3,
+        ]))->save();
 
         $this->response->expects($this->once())
             ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) use ($room) {
-                $this->assertEquals('admin/rooms/edit', $view);
-                $this->assertEquals($room->id, $data['room']?->id);
+            ->willReturnCallback(function (string $view, array $data) use ($location) {
+                $this->assertEquals('admin/locations/edit', $view);
+                $this->assertEquals($location->id, $data['location']?->id);
                 $this->assertCount(3, $data['angel_types'] ?? []);
                 $this->assertCount(1, $data['needed_angel_types'] ?? []);
                 return $this->response;
             });
 
-        $this->request = $this->request->withAttribute('room_id', 1);
+        $this->request = $this->request->withAttribute('location_id', 1);
 
         $controller->edit($this->request);
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::edit
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::showEdit
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::edit
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::showEdit
      */
     public function testEditNew(): void
     {
-        /** @var RoomsController $controller */
-        $controller = $this->app->make(RoomsController::class);
+        /** @var LocationsController $controller */
+        $controller = $this->app->make(LocationsController::class);
         AngelType::factory(3)->create();
 
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals('admin/rooms/edit', $view);
-                $this->assertEmpty($data['room'] ?? []);
+                $this->assertEquals('admin/locations/edit', $view);
+                $this->assertEmpty($data['location'] ?? []);
                 $this->assertCount(3, $data['angel_types'] ?? []);
                 $this->assertEmpty($data['needed_angel_types'] ?? []);
                 return $this->response;
@@ -97,16 +101,16 @@ class RoomsControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::save
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::save
      */
     public function testSave(): void
     {
-        /** @var RoomsController $controller */
-        $controller = $this->app->make(RoomsController::class);
+        /** @var LocationsController $controller */
+        $controller = $this->app->make(LocationsController::class);
         $controller->setValidator(new Validator());
         AngelType::factory(3)->create();
 
-        $this->setExpects($this->redirect, 'to', ['/admin/rooms']);
+        $this->setExpects($this->redirect, 'to', ['/admin/locations']);
 
         $this->request = $this->request->withParsedBody([
             'name'         => 'Testlocation',
@@ -120,10 +124,10 @@ class RoomsControllerTest extends ControllerTest
         $controller->save($this->request);
 
         $this->assertTrue($this->log->hasInfoThatContains('Updated location'));
-        $this->assertHasNotification('room.edit.success');
-        $this->assertCount(1, Room::whereName('Testlocation')->get());
+        $this->assertHasNotification('location.edit.success');
+        $this->assertCount(1, Location::whereName('Testlocation')->get());
 
-        $neededAngelType = NeededAngelType::whereRoomId(1)
+        $neededAngelType = NeededAngelType::whereLocationId(1)
             ->where('angel_type_id', 2)
             ->where('count', 3)
             ->get();
@@ -131,14 +135,14 @@ class RoomsControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::save
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::save
      */
     public function testSaveUniqueName(): void
     {
-        /** @var RoomsController $controller */
-        $controller = $this->app->make(RoomsController::class);
+        /** @var LocationsController $controller */
+        $controller = $this->app->make(LocationsController::class);
         $controller->setValidator(new Validator());
-        Room::factory()->create(['name' => 'Testlocation']);
+        Location::factory()->create(['name' => 'Testlocation']);
 
         $this->request = $this->request->withParsedBody([
             'name' => 'Testlocation',
@@ -149,16 +153,16 @@ class RoomsControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::save
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::delete
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::save
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::delete
      */
     public function testSaveDelete(): void
     {
-        /** @var RoomsController $controller */
-        $controller = $this->app->make(RoomsController::class);
+        /** @var LocationsController $controller */
+        $controller = $this->app->make(LocationsController::class);
         $controller->setValidator(new Validator());
-        /** @var Room $room */
-        $room = Room::factory()->create();
+        /** @var Location $location */
+        $location = Location::factory()->create();
 
         $this->request = $this->request->withParsedBody([
             'id'     => '1',
@@ -166,36 +170,36 @@ class RoomsControllerTest extends ControllerTest
         ]);
 
         $controller->save($this->request);
-        $this->assertEmpty(Room::find($room->id));
+        $this->assertEmpty(Location::find($location->id));
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\RoomsController::delete
+     * @covers \Engelsystem\Controllers\Admin\LocationsController::delete
      */
     public function testDelete(): void
     {
         /** @var EventDispatcher|MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance('events.dispatcher', $dispatcher);
-        /** @var RoomsController $controller */
-        $controller = $this->app->make(RoomsController::class);
+        /** @var LocationsController $controller */
+        $controller = $this->app->make(LocationsController::class);
         $controller->setValidator(new Validator());
-        /** @var Room $room */
-        $room = Room::factory()->create();
+        /** @var Location $location */
+        $location = Location::factory()->create();
         /** @var Shift $shift */
-        $shift = Shift::factory()->create(['room_id' => $room->id, 'start' => Carbon::create()->subHour()]);
+        $shift = Shift::factory()->create(['location_id' => $location->id, 'start' => Carbon::create()->subHour()]);
         /** @var User $user */
         $user = User::factory()->create(['name' => 'foo', 'email' => 'lorem@ipsum']);
         /** @var ShiftEntry $shiftEntry */
         ShiftEntry::factory()->create(['shift_id' => $shift->id, 'user_id' => $user->id]);
 
-        $this->setExpects($this->redirect, 'to', ['/admin/rooms'], $this->response);
+        $this->setExpects($this->redirect, 'to', ['/admin/locations'], $this->response);
 
         $dispatcher->expects($this->once())
             ->method('dispatch')
-            ->willReturnCallback(function (string $event, array $data) use ($room, $user) {
+            ->willReturnCallback(function (string $event, array $data) use ($location, $user) {
                 $this->assertEquals('shift.entry.deleting', $event);
-                $this->assertEquals($room->id, $data['room']->id);
+                $this->assertEquals($location->id, $data['location']->id);
                 $this->assertEquals($user->id, $data['user']->id);
 
                 return [];
@@ -205,9 +209,9 @@ class RoomsControllerTest extends ControllerTest
 
         $controller->delete($this->request);
 
-        $this->assertNull(Room::find($room->id));
+        $this->assertNull(Location::find($location->id));
         $this->assertTrue($this->log->hasInfoThatContains('Deleted location'));
-        $this->assertHasNotification('room.delete.success');
+        $this->assertHasNotification('location.delete.success');
     }
 
     public function setUp(): void
