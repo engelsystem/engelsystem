@@ -8,6 +8,7 @@ use Carbon\CarbonTimeZone;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Models\News;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Illuminate\Support\Collection;
@@ -26,6 +27,7 @@ class FeedController extends BaseController
         protected Authenticator $auth,
         protected Request $request,
         protected Response $response,
+        protected UrlGenerator $url,
     ) {
     }
 
@@ -74,16 +76,22 @@ class FeedController extends BaseController
                 'name'           => $shift->shiftType->name,
                 // Shift / Talk title
                 'title'          => $shift->title,
-                // Shift description
+                // Shift description, should be shown after shifttype_description, markdown formatted
                 'description'    => $shift->description,
+
+                'link'           => $this->url->to('/shifts', ['action' => 'view', 'shift_id' => $shift->id]),
 
                 // Users comment
                 'Comment'        => $entry->user_comment,
 
                 // Shift id
                 'SID'            => $shift->id,
-                // Shift type id
+
+                // Shift type
                 'shifttype_id'   => $shift->shiftType->id,
+                'shifttype_name' => $shift->shiftType->name, // General type of the task
+                'shifttype_description' => $shift->shiftType->description, // General description, markdown formatted
+
                 // Talk URL
                 'URL'            => $shift->url,
 
