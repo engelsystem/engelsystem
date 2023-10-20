@@ -40,7 +40,7 @@
             <tbody>
             {% for room in rooms %}
                 <tr>
-                    <td>{{ general.name }}</td>
+                    <td>{{ room.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -66,7 +66,7 @@
                     <td>{{ shift.date.format(__('Y-m-d H:i')) }} - {{ shift.endDate.format(__('H:i')) }}</td>
                     <td>{{ shift.type }}</td>
                     <td>{{ shift.title }}{% if shift.subtitle %}<br><small>{{ shift.subtitle }}</small>{% endif %}</td>
-                    <td>{{ shift.general.name }}</td>
+                    <td>{{ shift.room.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>

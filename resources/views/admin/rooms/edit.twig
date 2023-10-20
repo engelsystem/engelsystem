@@ -14,7 +14,7 @@
                 {{ f.input('name', __('general.name'), {
                     'required': true,
                     'required_icon': true,
-                    'value': f.formData('room', room ? general.name : ''),
+                    'value': f.formData('room', room ? room.name : ''),
                 }) }}
 
                 {{ f.input('dect', __('general.dect'), {
