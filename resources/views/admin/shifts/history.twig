@@ -1,0 +1,71 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% set title %}{% block title %}{{ __('shifts.history') }}{% endblock %}{% endset %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ m.button(m.icon('chevron-left'), url('/admin-shifts'), null, 'sm') }}
+            {% block content_title %}{{ title }}{% endblock %}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+{% block row_content %}
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>{{ __('general.id') }}</th>
+                    <th>{{ __('title.title') }}</th>
+                    <th>{{ __('general.count') }}</th>
+                    <th>{{ __('shifts.start') }}</th>
+                    <th>{{ __('shifts.end') }}</th>
+                    <th>{{ __('general.user') }}</th>
+                    <th>{{ __('general.created_at') }}</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for shift in shifts %}
+                    <tr>
+                        <td>{{ shift.transaction_id }}</td>
+                        <td>
+                            {% if shift.schedule %}
+                                {{ __('shifts.history.schedule', [shift.schedule.name]) }}
+                            {% else %}
+                                {{ shift.title }}
+                            {% endif %}
+                        </td>
+                        <td>{{ shift.count }}</td>
+                        <td>{{ shift.start.format(__('Y-m-d H:i')) }}</td>
+                        <td>{{ shift.end.format(__('Y-m-d H:i')) }}</td>
+                        <td>{{ m.user(shift.createdBy) }}</td>
+                        <td>{{ shift.created_at.format(__('Y-m-d H:i')) }}</td>
+                        <td>
+                            <form method="post" class="ps-1">
+                                {{ csrf() }}
+                                {{ f.hidden('transaction_id', shift.transaction_id) }}
+                                {{ f.delete(null, {
+                                    'size': 'sm',
+                                    'title': __('form.delete_all'),
+                                    'confirm_title': __('shifts.history.delete_all.title', [shift.count]),
+                                    'confirm_button_text': __('form.delete_all'),
+                                }) }}
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+        </div>
+    </div>
+{% endblock %}

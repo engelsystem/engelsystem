@@ -99,7 +99,7 @@ function ShiftEntry_create_view_admin(
             info(__('Do you want to sign up the following user for this shift?'), true),
             form([
                 form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype->id),
-                form_select('user_id', __('User'), $users_select, $signup_user->id),
+                form_select('user_id', __('general.user'), $users_select, $signup_user->id),
                 form_submit('submit', icon('check-lg') . __('form.save')),
             ]),
         ]
@@ -134,7 +134,7 @@ function ShiftEntry_create_view_supporter(
                 $angeltype->name
             ), true),
             form([
-                form_select('user_id', __('User'), $users_select, $signup_user->id),
+                form_select('user_id', __('general.user'), $users_select, $signup_user->id),
                 form_submit('submit', icon('check-lg') . __('form.save')),
             ]),
         ]

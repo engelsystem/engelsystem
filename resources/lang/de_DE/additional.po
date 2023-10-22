@@ -280,3 +280,6 @@ msgstr "Die Registrierung ist deaktiviert."
 
 msgid "registration.successful"
 msgstr "Registrierung erfolgreich. Du kannst dich jetzt anmelden!"
+
+msgid "shifts.history.delete.success"
+msgstr "Schichten erfolgreich gelöscht."

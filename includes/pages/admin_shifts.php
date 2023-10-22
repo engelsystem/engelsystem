@@ -1,15 +1,11 @@
 <?php
 
-use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
-use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
-use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
-use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
@@ -457,7 +453,7 @@ function admin_shifts()
     return page_with_title(
         $link . ' ' . admin_shifts_title() . ' ' . sprintf(
             '<a href="%s">%s</a>',
-            url('/admin-shifts-history'),
+            url('/admin/shifts/history'),
             icon('clock-history')
         ),
         [
@@ -480,7 +476,7 @@ function admin_shifts()
                             div('col-lg-6', [
                                 form_datetime(
                                     'start',
-                                    __('Start'),
+                                    __('shifts.start'),
                                     $request->has('start')
                                         ? Carbon::createFromDatetime($request->input('start'))
                                         : $start
@@ -489,7 +485,7 @@ function admin_shifts()
                             div('col-lg-6', [
                                 form_datetime(
                                     'end',
-                                    __('End'),
+                                    __('shifts.end'),
                                     $request->has('end')
                                         ? Carbon::createFromDatetime($request->input('end'))
                                         : $end
@@ -564,100 +560,4 @@ function admin_shifts()
             ]),
         ]
     );
-}
-
-function admin_shifts_history_title(): string
-{
-    return __('Shifts history');
-}
-
-/**
- * Display shifts transaction history
- *
- * @return string
- */
-function admin_shifts_history(): string
-{
-    if (!auth()->can('admin_shifts')) {
-        throw new HttpForbidden();
-    }
-
-    $request = request();
-    $transactionId = $request->postData('transaction_id');
-    if ($request->hasPostData('delete') && $transactionId) {
-        $shifts = Shift::whereTransactionId($transactionId)->get();
-
-        engelsystem_log('Deleting ' . count($shifts) . ' shifts (transaction id ' . $transactionId . ')');
-
-        foreach ($shifts as $shift) {
-            $shift = Shift($shift);
-            foreach ($shift->shiftEntries as $entry) {
-                event('shift.entry.deleting', [
-                    'user'       => $entry->user,
-                    'start'      => $shift->start,
-                    'end'        => $shift->end,
-                    'name'       => $shift->shiftType->name,
-                    'title'      => $shift->title,
-                    'type'       => $entry->angelType->name,
-                    'location'   => $shift->location,
-                    'freeloaded' => $entry->freeloaded,
-                ]);
-            }
-
-            $shift->delete();
-
-            engelsystem_log(
-                'Deleted shift ' . $shift->title . ' / ' . $shift->shiftType->name
-                . ' from ' . $shift->start->format('Y-m-d H:i')
-                . ' to ' . $shift->end->format('Y-m-d H:i')
-            );
-        }
-
-        success(sprintf(__('%s shifts deleted.'), count($shifts)));
-        throw_redirect(url('/admin-shifts-history'));
-    }
-
-    $schedules = Schedule::all()->pluck('name', 'id')->toArray();
-    $shiftsData = Db::select('
-        SELECT
-            s.transaction_id,
-            s.title,
-            schedule_shift.schedule_id,
-            COUNT(s.id) AS count,
-            MIN(s.start) AS start,
-            MAX(s.end) AS end,
-            s.created_by AS user_id,
-            MAX(s.created_at) AS created_at
-        FROM shifts AS s
-        LEFT JOIN schedule_shift on schedule_shift.shift_id = s.id
-        WHERE s.transaction_id IS NOT NULL
-        GROUP BY s.transaction_id
-        ORDER BY created_at DESC
-    ');
-
-    foreach ($shiftsData as &$shiftData) {
-        $shiftData['title'] = $shiftData['schedule_id'] ? __('shifts_history.schedule', [$schedules[$shiftData['schedule_id']]]) : $shiftData['title'];
-        $shiftData['user'] = User_Nick_render(User::find($shiftData['user_id']));
-        $shiftData['start'] = Carbon::make($shiftData['start'])->format(__('Y-m-d H:i'));
-        $shiftData['end'] = Carbon::make($shiftData['end'])->format(__('Y-m-d H:i'));
-        $shiftData['created_at'] = Carbon::make($shiftData['created_at'])->format(__('Y-m-d H:i'));
-        $shiftData['actions'] = form([
-            form_hidden('transaction_id', $shiftData['transaction_id']),
-            form_submit('delete', icon('trash') . __('delete all'), 'btn-sm', true, 'danger'),
-        ]);
-    }
-
-    return page_with_title(admin_shifts_history_title(), [
-        msg(),
-        table([
-            'transaction_id' => __('ID'),
-            'title'          => __('title.title'),
-            'count'          => __('Count'),
-            'start'          => __('Start'),
-            'end'            => __('End'),
-            'user'           => __('User'),
-            'created_at'     => __('Created'),
-            'actions'        => '',
-        ], $shiftsData),
-    ], true);
 }

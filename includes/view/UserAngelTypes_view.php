@@ -153,7 +153,7 @@ function UserAngelType_add_view(AngelType $angeltype, $users_source, $user_id)
         form([
             form_info(__('Angeltype'), $angeltype->name),
             form_checkbox('auto_confirm_user', __('Confirm user'), true),
-            form_select('user_id', __('User'), $users, $user_id),
+            form_select('user_id', __('general.user'), $users, $user_id),
             form_submit('submit', __('Add')),
         ]),
     ]);

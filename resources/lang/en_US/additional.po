@@ -279,3 +279,6 @@ msgstr "The registration is disabled."
 
 msgid "registration.successful"
 msgstr "Registration successful. You can now log in!"
+
+msgid "shifts.history.delete.success"
+msgstr "Shifts deleted successfully."

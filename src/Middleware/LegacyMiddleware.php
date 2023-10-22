@@ -24,7 +24,6 @@ class LegacyMiddleware implements MiddlewareInterface
         'shift_entries',
         'shifts',
         'users',
-        'admin_shifts_history',
     ];
 
     public function __construct(protected ContainerInterface $container, protected Authenticator $auth)
@@ -129,8 +128,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = admin_shifts_title();
                 $content = admin_shifts();
                 return [$title, $content];
-            case 'admin_shifts_history':
-                return [admin_shifts_history_title(), admin_shifts_history()];
         }
 
         throw_redirect(url('/login'));

@@ -157,9 +157,6 @@ msgstr "Title"
 msgid "schedule.import.shift.location"
 msgstr "Location"
 
-msgid "shifts_history.schedule"
-msgstr "Schedule: %s"
-
 msgid "news.title"
 msgstr "News"
 
@@ -662,3 +659,30 @@ msgstr "Please enter a mobile number in your settings!"
 
 msgid "confirmation.delete"
 msgstr "Do you really want to delete it?"
+
+msgid "general.id"
+msgstr "ID"
+
+msgid "general.user"
+msgstr "User"
+
+msgid "general.count"
+msgstr "Count"
+
+msgid "general.created_at"
+msgstr "Created at"
+
+msgid "shifts.history"
+msgstr "Shifts history"
+
+msgid "shifts.history.schedule"
+msgstr "Schedule: %s"
+
+msgid "shifts.history.delete_all.title"
+msgstr "Delete %u shifts"
+
+msgid "shifts.start"
+msgstr "Start"
+
+msgid "shifts.end"
+msgstr "End"
