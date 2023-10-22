@@ -317,18 +317,6 @@ msgstr "Benötigte Engel"
 msgid "Shift deleted."
 msgstr "Schicht gelöscht."
 
-msgid "Shifts history"
-msgstr "Schichten Historie"
-
-msgid "%s shifts deleted."
-msgstr "%s Schichten gelöscht."
-
-msgid "Created"
-msgstr "Erstellt"
-
-msgid "delete all"
-msgstr "alle löschen"
-
 msgid "Do you want to delete the shift %s from %s to %s?"
 msgstr "Möchtest Du die Schicht %s von %s bis %s löschen?"
 
@@ -634,9 +622,6 @@ msgstr "Summe angekommen"
 msgid "Date"
 msgstr "Datum"
 
-msgid "Count"
-msgstr "Anzahl"
-
 msgid "Arrival statistics"
 msgstr "Ankunfts-Statistik"
 
@@ -672,12 +657,6 @@ msgstr "Gruppe bearbeiten"
 
 msgid "Please select a shift type."
 msgstr "Bitte einen Schichttyp wählen."
-
-msgid "Start"
-msgstr "Beginn"
-
-msgid "End"
-msgstr "Ende"
 
 msgid "Location"
 msgstr "Ort"
@@ -1115,9 +1094,6 @@ msgstr "Von Schicht austragen"
 msgid "Do you want to sign up the following user for this shift?"
 msgstr "Möchtest du den folgenden User für die Schicht eintragen?"
 
-msgid "User"
-msgstr "Benutzer"
-
 msgid "Do you want to sign up the following user for this shift as %s?"
 msgstr "Möchtest du den folgenden User als %s in die Schicht eintragen?"
 
@@ -1538,9 +1514,6 @@ msgstr "Typ"
 
 msgid "schedule.import.shift.location"
 msgstr "Ort"
-
-msgid "shifts_history.schedule"
-msgstr "Programm: %s"
 
 msgid "news.title"
 msgstr "News"
@@ -2007,3 +1980,30 @@ msgstr "Registrieren"
 
 msgid "confirmation.delete"
 msgstr "Möchtest du es wirklich löschen?"
+
+msgid "general.id"
+msgstr "ID"
+
+msgid "general.user"
+msgstr "Benutzer"
+
+msgid "general.count"
+msgstr "Anzahl"
+
+msgid "general.created_at"
+msgstr "Erstellt am"
+
+msgid "shifts.history"
+msgstr "Schichten Historie"
+
+msgid "shifts.history.schedule"
+msgstr "Programm: %s"
+
+msgid "shifts.history.delete_all.title"
+msgstr "%u Schichten löschen"
+
+msgid "shifts.start"
+msgstr "Start"
+
+msgid "shifts.end"
+msgstr "Ende"

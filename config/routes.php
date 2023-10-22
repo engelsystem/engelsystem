@@ -153,6 +153,15 @@ $route->addGroup(
             }
         );
 
+        // Shifts
+        $route->addGroup(
+            '/shifts',
+            function (RouteCollector $route): void {
+                $route->get('/history', 'Admin\\ShiftsController@history');
+                $route->post('/history', 'Admin\\ShiftsController@deleteTransaction');
+            }
+        );
+
         // Questions
         $route->addGroup(
             '/questions',
