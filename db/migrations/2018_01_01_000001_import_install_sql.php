@@ -29,23 +29,8 @@ class ImportInstallSql extends Migration
         'UserAngelTypes',
         'UserDriverLicenses',
         'UserGroups',
+        'UserWorkLog',
     ];
-
-    /**
-     * Run the migration
-     */
-    public function up(): void
-    {
-        foreach ($this->oldTables as $table) {
-            if ($this->schema->hasTable($table)) {
-                return;
-            }
-        }
-
-        $sql = file_get_contents(__DIR__ . '/../install.sql');
-        $this->schema->getConnection()->unprepared($sql);
-    }
-
 
     /**
      * Reverse the migration
@@ -54,6 +39,7 @@ class ImportInstallSql extends Migration
     {
         $this->schema->getConnection()->statement('SET FOREIGN_KEY_CHECKS=0;');
 
+        // Delete all remaining tables
         foreach ($this->oldTables as $table) {
             if ($this->schema->hasTable($table)) {
                 $this->schema->dropIfExists($table);

@@ -8,24 +8,5 @@ use Engelsystem\Database\Migration\Migration;
 
 class ImportUpdateSql extends Migration
 {
-    /**
-     * Run the migration
-     */
-    public function up(): void
-    {
-        if ($this->schema->hasTable('UserWorkLog')) {
-            return;
-        }
-
-        $sql = file_get_contents(__DIR__ . '/../update.sql');
-        $this->schema->getConnection()->unprepared($sql);
-    }
-
-    /**
-     * Reverse the migration
-     */
-    public function down(): void
-    {
-        $this->schema->dropIfExists('UserWorkLog');
-    }
+    // Do nothing as the tables will be created by later migrations and deleted by ImportInstall
 }

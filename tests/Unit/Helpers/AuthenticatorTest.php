@@ -190,12 +190,9 @@ class AuthenticatorTest extends ServiceProviderTest
     {
         $this->initDatabase();
 
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var Session|MockObject $session */
-        $session = $this->createMock(Session::class);
-        /** @var UserModelImplementation|MockObject $userRepository */
-        $userRepository = new UserModelImplementation();
+        $request = new Request();
+        $this->app->instance('request', $request);
+        $session = new Session(new MockArraySessionStorage());
         /** @var User $user */
         $user = User::factory()->create();
         /** @var Group $group */
@@ -206,33 +203,33 @@ class AuthenticatorTest extends ServiceProviderTest
         $user->groups()->attach($group);
         $group->privileges()->attach($privilege);
 
-        $session->expects($this->once())
-            ->method('get')
-            ->with('user_id')
-            ->willReturn(42);
-        $session->expects($this->once())
-            ->method('remove')
-            ->with('user_id');
-
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->getMockBuilder(Authenticator::class)
-            ->setConstructorArgs([$request, $session, $userRepository])
-            ->onlyMethods(['user'])
-            ->getMock();
-        $auth->expects($this->exactly(2))
-            ->method('user')
-            ->willReturnOnConsecutiveCalls(null, $user);
-
-        Group::factory()->create(['id' => $auth->getGuestRole()]);
-
-        // No user, no permissions
-        $this->assertFalse($auth->can('foo'));
-
+        $auth = new Authenticator($request, $session, new User());
+        $session->set('user_id', $user->id);
         // User exists, has permissions
         $this->assertTrue($auth->can('bar'));
 
         // Permissions cached
         $this->assertTrue($auth->can('bar'));
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::can
+     */
+    public function testCanUnauthorized(): void
+    {
+        $this->initDatabase();
+
+        $request = new Request();
+        $this->app->instance('request', $request);
+        $session = new Session(new MockArraySessionStorage());
+
+        $auth = new Authenticator($request, $session, new User());
+        $session->set('user_id', 42);
+
+        // No user, no permissions
+        $this->assertFalse($auth->can('foo'));
+        // Old/invalid user id got removed
+        $this->assertNull($session->get('user_id'));
     }
 
     /**
