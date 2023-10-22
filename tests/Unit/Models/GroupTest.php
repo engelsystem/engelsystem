@@ -28,7 +28,7 @@ class GroupTest extends ModelTest
         $model->privileges()->attach($privilege2);
 
         /** @var Group $savedModel */
-        $savedModel = Group::first();
+        $savedModel = Group::all()->last();
         $this->assertEquals('Some Group', $savedModel->name);
         $this->assertEquals($privilege1->name, $savedModel->privileges[0]->name);
         $this->assertEquals($privilege2->name, $savedModel->privileges[1]->name);
@@ -52,7 +52,7 @@ class GroupTest extends ModelTest
         $model->users()->attach($user2);
 
         /** @var Group $savedModel */
-        $savedModel = Group::first();
+        $savedModel = Group::all()->last();
         $this->assertEquals($user1->name, $savedModel->users[0]->name);
         $this->assertEquals($user2->name, $savedModel->users[1]->name);
     }

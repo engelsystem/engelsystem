@@ -92,7 +92,7 @@ function admin_shifts()
             $lid = $request->input('lid');
         } else {
             $valid = false;
-            $lid = $locations->first()->id;
+            $lid = $locations->first()?->id ?? 0;
             error(__('Please select a location.'));
         }
 
