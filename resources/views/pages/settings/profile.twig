@@ -28,6 +28,8 @@
                     {{ f.input('pronoun', __('settings.profile.pronoun'), {
                         'value': user.personalData.pronoun,
                         'max_length': 15,
+                        'required': isPronounRequired,
+                        'required_icon': isPronounRequired,
                     }) }}
                     {{ m.info(__('settings.profile.pronoun.info')) }}
                 </div>
@@ -40,12 +42,16 @@
                     {{ f.input('first_name', __('settings.profile.firstname'), {
                         'value': user.personalData.first_name,
                         'max_length': 64,
+                        'required': isFirstnameRequired,
+                        'required_icon': isFirstnameRequired,
                     }) }}
                 </div>
                 <div class="col-sm-6">
                     {{ f.input('last_name', __('settings.profile.lastname'), {
                         'value': user.personalData.last_name,
                         'max_length': 64,
+                        'required': isLastnameRequired,
+                        'required_icon': isLastnameRequired,
                     }) }}
                 </div>
             </div>
@@ -82,6 +88,8 @@
                     {{ f.input('dect', __('general.dect'), {
                         'value': user.contact.dect,
                         'max_length': 40,
+                        'required': isDectRequired,
+                        'required_icon': isDectRequired,
                     }) }}
                 </div>
             {% endif %}
@@ -89,6 +97,8 @@
                 {{ f.input('mobile', __('settings.profile.mobile'), {
                     'value': user.contact.mobile,
                     'max_length': 40,
+                    'required': isMobileRequired,
+                    'required_icon': isMobileRequired,
                 }) }}
                 {% if config('enable_mobile_show') %}
                     {{ f.checkbox('mobile_show', __('settings.profile.mobile_show'), {
@@ -141,8 +151,8 @@
                 <div class="col-12">
                     {{ f.select('shirt_size', __('settings.profile.shirt_size'), config('tshirt_sizes'), {
                         'selected': user.personalData.shirt_size,
-                        'required': true,
-                        'required_icon': true,
+                        'required': isTShirtSizeRequired,
+                        'required_icon': isTShirtSizeRequired,
                         'default_option': __('form.select_placeholder'),
                     }) }}
                 </div>

@@ -934,12 +934,21 @@ class SettingsControllerTest extends ControllerTest
             'de_DE' => 'Deutsch',
         ];
         $tshirt_sizes = ['S' => 'Small'];
+        $requiredFields = [
+            'pronoun'     => false,
+            'firstname'   => false,
+            'lastname'    => false,
+            'tshirt_size' => true,
+            'mobile'      => false,
+            'dect'        => false,
+        ];
         $this->config = new Config([
             'min_password_length' => 6,
             'themes' => $themes,
             'locales' => $languages,
             'tshirt_sizes' => $tshirt_sizes,
             'goodie_type' => GoodieType::Goodie->value,
+            'signup_required_fields' => $requiredFields,
         ]);
         $this->app->instance('config', $this->config);
         $this->app->instance(Config::class, $this->config);

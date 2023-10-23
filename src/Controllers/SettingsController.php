@@ -35,6 +35,7 @@ class SettingsController extends BaseController
     public function profile(): Response
     {
         $user = $this->auth->user();
+        $requiredFields = $this->config->get('signup_required_fields');
 
         return $this->response->withView(
             'pages/settings/profile',
@@ -43,6 +44,12 @@ class SettingsController extends BaseController
                 'user' => $user,
                 'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
                 'goodie_enabled' => $this->config->get('goodie_type') !== GoodieType::None->value,
+                'isPronounRequired' => $requiredFields['pronoun'],
+                'isFirstnameRequired' => $requiredFields['firstname'],
+                'isLastnameRequired' => $requiredFields['lastname'],
+                'isTShirtSizeRequired' => $requiredFields['tshirt_size'],
+                'isMobileRequired' => $requiredFields['mobile'],
+                'isDectRequired' => $requiredFields['dect'],
             ]
         );
     }
@@ -359,6 +366,12 @@ class SettingsController extends BaseController
         return true;
     }
 
+    private function isRequired(string $key): string
+    {
+        $requiredFields = $this->config->get('signup_required_fields');
+        return $requiredFields[$key] ? 'required' : 'optional';
+    }
+
     /**
      * @return string[]
      */
@@ -366,11 +379,12 @@ class SettingsController extends BaseController
     {
         $goodie_tshirt = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
         $rules = [
-            'pronoun' => 'optional|max:15',
-            'first_name' => 'optional|max:64',
-            'last_name' => 'optional|max:64',
-            'dect' => 'optional|length:0:40', // dect/mobile can be purely numbers. "max" would have
-            'mobile' => 'optional|length:0:40', // checked their values, not their character length.
+            'pronoun' => $this->isRequired('pronoun') . '|max:15',
+            'first_name' => $this->isRequired('firstname') . '|max:64',
+            'last_name' => $this->isRequired('lastname') . '|max:64',
+            'dect' => $this->isRequired('dect') . '|length:0:40',
+            // dect/mobile can be purely numbers. "max" would have checked their values, not their character length.
+            'mobile' => $this->isRequired('mobile') . '|length:0:40',
             'mobile_show' => 'optional|checked',
             'email' => 'required|email|max:254',
             'email_shiftinfo' => 'optional|checked',
@@ -384,7 +398,7 @@ class SettingsController extends BaseController
             $rules['planned_departure_date'] = 'optional|date:Y-m-d';
         }
         if ($goodie_tshirt) {
-            $rules['shirt_size'] = 'required|shirt_size';
+            $rules['shirt_size'] = $this->isRequired('tshirt_size') . '|shirt_size';
         }
         return $rules;
     }
