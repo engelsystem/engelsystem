@@ -579,20 +579,22 @@ function AngelTypes_render_contact_info(AngelType $angeltype)
  */
 function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
 {
-    return page_with_title(angeltypes_title(), [
-        msg(),
-        buttons([
-            $admin_angeltypes
-                ? button(page_link_to('angeltypes', ['action' => 'edit']), __('New angeltype'), 'add')
-                : '',
-            button(url('/angeltypes/about'), __('angeltypes.about')),
-        ]),
-        table([
-            'name'                      => __('general.name'),
-            'is_restricted'             => icon('mortarboard-fill') . __('angeltypes.restricted'),
-            'shift_self_signup_allowed' => icon('pencil-square') . __('shift.self_signup.allowed'),
-            'membership'                => __('Membership'),
-            'actions'                   => '',
-        ], $angeltypes),
-    ], true);
+    $link = button(page_link_to('angeltypes', ['action' => 'edit']), icon('plus-lg'), 'add');
+    return page_with_title(
+        angeltypes_title() . ' ' . ($admin_angeltypes ? $link : ''),
+        [
+            msg(),
+            buttons([
+                button(url('/angeltypes/about'), __('angeltypes.about')),
+            ]),
+            table([
+                'name'                      => __('general.name'),
+                'is_restricted'             => icon('mortarboard-fill') . __('angeltypes.restricted'),
+                'shift_self_signup_allowed' => icon('pencil-square') . __('shift.self_signup.allowed'),
+                'membership'                => __('Membership'),
+                'actions'                   => '',
+            ], $angeltypes),
+        ],
+        true,
+    );
 }

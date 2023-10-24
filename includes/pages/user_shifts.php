@@ -289,11 +289,14 @@ function view_user_shifts()
         return Carbon::make($value)->format(__('Y-m-d'));
     })->toArray();
 
+    $link = button(page_link_to('admin-shifts'), icon('plus-lg'), 'add');
+
     return page([
         div('col-md-12', [
             msg(),
             view(__DIR__ . '/../../resources/views/pages/user-shifts.html', [
                 'title'         => shifts_title(),
+                'add_link'      => auth()->can('admin_shifts') ? $link : '',
                 'room_select'   => make_select(
                     $rooms,
                     $shiftsFilter->getRooms(),
