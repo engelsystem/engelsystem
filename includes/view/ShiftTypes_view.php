@@ -124,14 +124,17 @@ function ShiftTypes_list_view($shifttypes)
         ]);
     }
 
-    return page_with_title(shifttypes_title(), [
-        msg(),
-        buttons([
-            button(page_link_to('shifttypes', ['action' => 'edit']), __('New shifttype'), 'add'),
-        ]),
-        table([
-            'name'    => __('general.name'),
-            'actions' => '',
-        ], $shifttypes),
-    ], true);
+    $link = button(page_link_to('shifttypes', ['action' => 'edit']), icon('plus-lg'), 'add');
+    return page_with_title(
+        shifttypes_title() . ' ' . $link,
+        [
+            msg(),
+
+            table([
+                'name'    => __('general.name'),
+                'actions' => '',
+            ], $shifttypes),
+        ],
+        true,
+    );
 }

@@ -174,11 +174,9 @@ function Users_view(
         unset($user_table_headers[$key]);
     }
 
-    return page_with_title(__('All users'), [
+    $link = button(page_link_to('sign-up'), icon('plus-lg'), 'add');
+    return page_with_title(__('All users') . ' ' . $link, [
         msg(),
-        buttons([
-            button(page_link_to('sign-up'), icon('plus-lg') . __('New user')),
-        ]),
         table($user_table_headers, $usersList),
     ]);
 }

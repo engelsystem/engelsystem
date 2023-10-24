@@ -1048,9 +1048,6 @@ msgstr "Alle bestätigen"
 msgid "deny all"
 msgstr "Alle ablehnen"
 
-msgid "New angeltype"
-msgstr "Neuer Engeltyp"
-
 msgid "Membership"
 msgstr "Mitgliedschaft"
 
@@ -1203,9 +1200,6 @@ msgstr "Schichttyp bearbeiten"
 msgid "Create shifttype"
 msgstr "Schichttyp erstellen"
 
-msgid "New shifttype"
-msgstr "Neuer Schichttyp"
-
 msgid "Location"
 msgstr "Ort"
 
@@ -1296,9 +1290,6 @@ msgstr "T-Shirt"
 
 msgid "Last login"
 msgstr "Letzter Login"
-
-msgid "New user"
-msgstr "Neuer User"
 
 msgid "Next shift %c"
 msgstr "Nächste Schicht %c"
