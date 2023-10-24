@@ -249,9 +249,6 @@ class NewsControllerTest extends ControllerTest
     {
         $this->request = $this->request->withAttribute('comment_id', 2)->withParsedBody(['delete' => '1']);
 
-        $this->addUser(1);
-        $this->addUser(2);
-
         /** @var NewsController $controller */
         $controller = $this->app->get(NewsController::class);
         $controller->setValidator($this->app->get(Validator::class));
@@ -267,8 +264,6 @@ class NewsControllerTest extends ControllerTest
     {
         $this->request = $this->request->withAttribute('comment_id', 1)->withParsedBody(['delete' => '1']);
         $this->setExpects($this->response, 'redirectTo', ['http://localhost/news/1'], $this->response);
-
-        $this->addUser(1);
 
         /** @var NewsController $controller */
         $controller = $this->app->get(NewsController::class);
@@ -292,6 +287,9 @@ class NewsControllerTest extends ControllerTest
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
+
+        $this->addUser(1);
+        $this->addUser(2);
 
         foreach ($this->data as $news) {
             (new News($news))->save();

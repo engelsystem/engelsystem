@@ -19,6 +19,7 @@ class UserFactory extends Factory
             'password' => crypt(random_bytes(16), '$1$salt$'),
             'email'    => $this->faker->unique()->safeEmail(),
             'api_key'  => bin2hex(random_bytes(32)),
+            'updated_at' => $this->faker->dateTimeInInterval('-3 months', 'now'),
         ];
     }
 }

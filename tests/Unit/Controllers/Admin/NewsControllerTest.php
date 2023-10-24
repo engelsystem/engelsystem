@@ -279,10 +279,11 @@ class NewsControllerTest extends ControllerTest
             ->willReturnSelf();
         $this->app->instance('events.dispatcher', $eventDispatcher);
 
+        $user = User::factory()->create();
         (new News([
             'title'      => 'Foo',
             'text'       => '**foo**',
-            'user_id'    => 1,
+            'user_id'    => $user->id,
         ]))->save();
     }
 }

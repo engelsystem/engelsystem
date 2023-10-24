@@ -23,7 +23,7 @@ trait HasDatabase
     protected function initDatabase(): void
     {
         $dbManager = new CapsuleManager();
-        $dbManager->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);
+        $dbManager->addConnection(['driver' => 'sqlite', 'database' => ':memory:', 'foreign_key_constraints' => true]);
         $dbManager->bootEloquent();
 
         $connection = $dbManager->getConnection();
