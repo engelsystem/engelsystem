@@ -336,8 +336,9 @@ class UserTest extends ModelTest
      */
     public function testNewsComments(): void
     {
+        News::factory()->create();
         ($user = new User($this->data))->save();
-        $newsComment = NewsComment::create(['news_id' => 0, 'text' => 'test comment', 'user_id' => $user->id]);
+        $newsComment = NewsComment::create(['news_id' => 1, 'text' => 'test comment', 'user_id' => $user->id]);
         $comments = $user->newsComments;
 
         $this->assertCount(1, $comments);

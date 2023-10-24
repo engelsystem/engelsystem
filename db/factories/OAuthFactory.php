@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories\Engelsystem\Models;
 
 use Engelsystem\Models\OAuth;
+use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OAuthFactory extends Factory
@@ -18,11 +19,12 @@ class OAuthFactory extends Factory
     public function definition(): array
     {
         return [
-            'provider'   => $this->faker->unique()->word(),
+            'user_id' => User::factory(),
+            'provider' => $this->faker->unique()->word(),
             'identifier' => $this->faker->unique()->word(),
             'access_token' => $this->faker->unique()->word(),
             'refresh_token' => $this->faker->unique()->word(),
-            'expires_at' => '2099-12-31',
+            'expires_at' => $this->faker->dateTimeInInterval('+5 days', '+3 months')->format('Y-m-d'),
         ];
     }
 }

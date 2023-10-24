@@ -18,6 +18,7 @@ class LocationFactory extends Factory
             'name'        => $this->faker->unique()->firstName(),
             'map_url'     => $this->faker->url(),
             'description' => $this->faker->text(),
+            'dect'        => $this->faker->optional()->numberBetween(1000, 9999),
         ];
     }
 }

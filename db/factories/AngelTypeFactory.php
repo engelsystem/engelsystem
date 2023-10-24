@@ -24,6 +24,7 @@ class AngelTypeFactory extends Factory
 
             'restricted'              => $this->faker->boolean(),
             'requires_driver_license' => $this->faker->boolean(),
+            'requires_ifsg_certificate' => $this->faker->boolean(),
             'shift_self_signup'       => $this->faker->boolean(),
             'show_on_dashboard'       => $this->faker->boolean(),
             'hide_register'           => $this->faker->boolean(),

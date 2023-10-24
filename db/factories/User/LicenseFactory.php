@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories\Engelsystem\Models\User;
 
 use Engelsystem\Models\User\License;
+use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LicenseFactory extends Factory
@@ -25,6 +26,7 @@ class LicenseFactory extends Factory
         $ifsg_certificate_light = $this->faker->boolean(0.5) && !$ifsg_certificate;
 
         return [
+            'user_id'                => User::factory(),
             'has_car'                => $drive_car && $this->faker->boolean(.7),
             'drive_forklift'         => $drive_forklift,
             'drive_car'              => $drive_car,

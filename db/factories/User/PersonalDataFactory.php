@@ -6,6 +6,7 @@ namespace Database\Factories\Engelsystem\Models\User;
 
 use Carbon\Carbon;
 use Engelsystem\Models\User\PersonalData;
+use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PersonalDataFactory extends Factory
@@ -19,6 +20,7 @@ class PersonalDataFactory extends Factory
         $departure = $this->faker->optional()->dateTimeThisMonth('2 weeks');
 
         return [
+            'user_id' => User::factory(),
             'first_name' => $this->faker->optional(.7)->firstName(),
             'last_name' => $this->faker->optional()->lastName(),
             'pronoun' => $this->faker->optional(.3)->pronoun(),
