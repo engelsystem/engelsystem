@@ -80,85 +80,91 @@ function AngelType_delete_view(AngelType $angeltype)
  */
 function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
 {
-    return page_with_title(sprintf(__('Edit %s'), $angeltype->name), [
-        buttons([
-            button(page_link_to('angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
-        ]),
-        msg(),
-        form([
-            $supporter_mode
-                ? form_info(__('general.name'), $angeltype->name)
-                : form_text('name', __('general.name'), $angeltype->name),
-            $supporter_mode
-                ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
-                : form_checkbox(
-                    'restricted',
-                    __('angeltypes.restricted') .
-                    ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                    __('angeltypes.restricted.info') . '"></span>',
-                    $angeltype->restricted
-                ),
-            $supporter_mode
-                ? form_info(__('shift.self_signup'), $angeltype->shift_self_signup ? __('Yes') : __('No'))
-                : form_checkbox(
-                    'shift_self_signup',
-                    __('shift.self_signup') .
-                    ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                    __('angeltypes.shift.self_signup.info') . '"></span>',
-                    $angeltype->shift_self_signup
-                ),
-            $supporter_mode ?
+    $link = button($angeltype->id
+        ? page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
+        : page_link_to('angeltypes'), icon('chevron-left'), 'btn-sm');
+    return page_with_title(
+        $link . ' ' . sprintf(__('Edit %s'), $angeltype->name),
+        [
+            buttons([
+                button(page_link_to('angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
+            ]),
+            msg(),
+            form([
+                $supporter_mode
+                    ? form_info(__('general.name'), $angeltype->name)
+                    : form_text('name', __('general.name'), $angeltype->name),
+                $supporter_mode
+                    ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
+                    : form_checkbox(
+                        'restricted',
+                        __('angeltypes.restricted') .
+                        ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                        __('angeltypes.restricted.info') . '"></span>',
+                        $angeltype->restricted
+                    ),
+                $supporter_mode
+                    ? form_info(__('shift.self_signup'), $angeltype->shift_self_signup ? __('Yes') : __('No'))
+                    : form_checkbox(
+                        'shift_self_signup',
+                        __('shift.self_signup') .
+                        ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                        __('angeltypes.shift.self_signup.info') . '"></span>',
+                        $angeltype->shift_self_signup
+                    ),
+                $supporter_mode ?
+                    form_info(
+                        __('Requires driver license'),
+                        $angeltype->requires_driver_license
+                            ? __('Yes')
+                            : __('No')
+                    ) :
+                    form_checkbox(
+                        'requires_driver_license',
+                        __('Requires driver license'),
+                        $angeltype->requires_driver_license
+                    ),
+                $supporter_mode && config('ifsg_enabled') ?
+                    form_info(
+                        __('angeltype.ifsg.required'),
+                        $angeltype->requires_ifsg_certificate
+                            ? __('Yes')
+                            : __('No')
+                    ) :
+                    form_checkbox(
+                        'requires_ifsg_certificate',
+                        __('angeltype.ifsg.required'),
+                        $angeltype->requires_ifsg_certificate
+                    ),
+                $supporter_mode
+                    ? form_info(__('Show on dashboard'), $angeltype->show_on_dashboard ? __('Yes') : __('No'))
+                    : form_checkbox('show_on_dashboard', __('Show on dashboard'), $angeltype->show_on_dashboard),
+                $supporter_mode
+                    ? form_info(__('Hide at Registration'), $angeltype->hide_register ? __('Yes') : __('No'))
+                    : form_checkbox('hide_register', __('Hide at Registration'), $angeltype->hide_register),
+                $supporter_mode
+                    ? form_info(__('angeltypes.hide_on_shift_view'), $angeltype->hide_on_shift_view ? __('Yes') : __('No'))
+                    : form_checkbox(
+                        'hide_on_shift_view',
+                        __('angeltypes.hide_on_shift_view') .
+                        ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                        __('angeltypes.hide_on_shift_view.info') . '"></span>',
+                        $angeltype->hide_on_shift_view
+                    ),
+                form_textarea('description', __('general.description'), $angeltype->description),
+                form_info('', __('Please use markdown for the description.')),
+                heading(__('Contact'), 3),
                 form_info(
-                    __('Requires driver license'),
-                    $angeltype->requires_driver_license
-                        ? __('Yes')
-                        : __('No')
-                ) :
-                form_checkbox(
-                    'requires_driver_license',
-                    __('Requires driver license'),
-                    $angeltype->requires_driver_license
+                    '',
+                    __('Primary contact person/desk for user questions.')
                 ),
-            $supporter_mode && config('ifsg_enabled') ?
-                form_info(
-                    __('angeltype.ifsg.required'),
-                    $angeltype->requires_ifsg_certificate
-                        ? __('Yes')
-                        : __('No')
-                ) :
-                form_checkbox(
-                    'requires_ifsg_certificate',
-                    __('angeltype.ifsg.required'),
-                    $angeltype->requires_ifsg_certificate
-                ),
-            $supporter_mode
-                ? form_info(__('Show on dashboard'), $angeltype->show_on_dashboard ? __('Yes') : __('No'))
-                : form_checkbox('show_on_dashboard', __('Show on dashboard'), $angeltype->show_on_dashboard),
-            $supporter_mode
-                ? form_info(__('Hide at Registration'), $angeltype->hide_register ? __('Yes') : __('No'))
-                : form_checkbox('hide_register', __('Hide at Registration'), $angeltype->hide_register),
-            $supporter_mode
-                ? form_info(__('angeltypes.hide_on_shift_view'), $angeltype->hide_on_shift_view ? __('Yes') : __('No'))
-                : form_checkbox(
-                    'hide_on_shift_view',
-                    __('angeltypes.hide_on_shift_view') .
-                    ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                    __('angeltypes.hide_on_shift_view.info') . '"></span>',
-                    $angeltype->hide_on_shift_view
-                ),
-            form_textarea('description', __('general.description'), $angeltype->description),
-            form_info('', __('Please use markdown for the description.')),
-            heading(__('Contact'), 3),
-            form_info(
-                '',
-                __('Primary contact person/desk for user questions.')
-            ),
-            form_text('contact_name', __('general.name'), $angeltype->contact_name),
-            config('enable_dect') ? form_text('contact_dect', __('general.dect'), $angeltype->contact_dect) : '',
-            form_text('contact_email', __('general.email'), $angeltype->contact_email),
-            form_submit('submit', __('form.save')),
-        ]),
-    ]);
+                form_text('contact_name', __('general.name'), $angeltype->contact_name),
+                config('enable_dect') ? form_text('contact_dect', __('general.dect'), $angeltype->contact_dect) : '',
+                form_text('contact_email', __('general.email'), $angeltype->contact_email),
+                form_submit('submit', __('form.save')),
+            ]),
+        ]
+    );
 }
 
 /**
@@ -422,24 +428,28 @@ function AngelType_view(
     ShiftCalendarRenderer $shiftCalendarRenderer,
     $tab
 ) {
-    return page_with_title(sprintf(__('Team %s'), $angeltype->name), [
-        AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user),
-        msg(),
-        tabs([
-            __('Info')   => AngelType_view_info(
-                $angeltype,
-                $members,
-                $admin_user_angeltypes,
-                $admin_angeltypes,
-                $supporter
-            ),
-            __('Shifts') => AngelType_view_shifts(
-                $angeltype,
-                $shiftsFilterRenderer,
-                $shiftCalendarRenderer
-            ),
-        ], $tab),
-    ], true);
+    return page_with_title(
+        sprintf(__('Team %s'), $angeltype->name),
+        [
+            AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user),
+            msg(),
+            tabs([
+                __('Info')   => AngelType_view_info(
+                    $angeltype,
+                    $members,
+                    $admin_user_angeltypes,
+                    $admin_angeltypes,
+                    $supporter
+                ),
+                __('Shifts') => AngelType_view_shifts(
+                    $angeltype,
+                    $shiftsFilterRenderer,
+                    $shiftCalendarRenderer
+                ),
+            ], $tab),
+        ],
+        true
+    );
 }
 
 /**

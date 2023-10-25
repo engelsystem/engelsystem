@@ -453,8 +453,9 @@ function admin_shifts()
             . '</div>';
     }
 
+    $link = button(page_link_to('user-shifts'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        admin_shifts_title() . ' ' . sprintf(
+        $link . ' ' . admin_shifts_title() . ' ' . sprintf(
             '<a href="%s">%s</a>',
             page_link_to('admin_shifts_history'),
             icon('clock-history')

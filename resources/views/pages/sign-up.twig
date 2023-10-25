@@ -7,7 +7,13 @@
 {% block content %}
 <div class="container">
     <div class="mb-5">
-        <h1>{{ __('page.sign-up.title') }}</h1>
+        <h1>
+        {{ has_permission_to('admin_user')
+            ? m.button(m.icon('chevron-left'), url('/users'), null, 'sm')
+            : ''
+        }}
+        {{ __('page.sign-up.title') }}
+        </h1>
     </div>
 
     {% include 'layouts/parts/messages.twig' %}
