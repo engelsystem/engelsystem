@@ -175,7 +175,7 @@ function Shift_view(
         $buttons = [
             $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
             $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
-            $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype->name) : '',
+            $admin_shifttypes ? button(url('/admin/shifttypes/' . $shifttype->id), $shifttype->name) : '',
             $admin_locations ? button(location_link($location), icon('pin-map-fill') . $location->name) : '',
         ];
     }

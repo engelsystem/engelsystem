@@ -328,7 +328,7 @@ function admin_shifts()
                         . '<br>'
                         . location_name_render(Location::find($shift['location_id'])),
                     'title'         =>
-                        ShiftType_name_render(ShiftType::find($shifttype_id))
+                        ShiftType::find($shifttype_id)->name
                         . ($shift['title'] ? '<br />' . $shift['title'] : ''),
                     'needed_angels' => '',
                 ];

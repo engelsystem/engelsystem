@@ -162,6 +162,18 @@ $route->addGroup(
             }
         );
 
+        // Shift types
+        $route->addGroup(
+            '/shifttypes',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\ShiftTypesController@index');
+                $route->post('', 'Admin\\ShiftTypesController@delete');
+                $route->get('/{shift_type_id:\d+}', 'Admin\\ShiftTypesController@view');
+                $route->get('/edit[/{shift_type_id:\d+}]', 'Admin\\ShiftTypesController@edit');
+                $route->post('/edit[/{shift_type_id:\d+}]', 'Admin\\ShiftTypesController@save');
+            }
+        );
+
         // Questions
         $route->addGroup(
             '/questions',

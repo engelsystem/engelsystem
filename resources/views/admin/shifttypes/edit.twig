@@ -1,0 +1,38 @@
+{% extends 'admin/shifttypes/index.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ shifttype ? __('shifttype.edit.title') : __('shifttype.create.title') }}{% endblock %}
+
+{% block row_content %}
+    <form method="post">
+        {{ csrf() }}
+        {{ f.hidden('id', shifttype ? shifttype.id : '') }}
+
+        <div class="row">
+            <div class="col-lg-6">
+                {{ f.input('name', __('general.name'), {
+                    'required': true,
+                    'required_icon': true,
+                    'value': f.formData('shifttype', shifttype ? shifttype.name : ''),
+                }) }}
+
+                {{ f.textarea('description', __('general.description'), {
+                    'value': f.formData('description', shifttype ? shifttype.description : ''),
+                    'rows': 5,
+                    'info': __('form.markdown')
+                }) }}
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="btn-group">
+                {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+                {% if shifttype %}
+                    {{ f.delete(__('form.delete'), {'confirm_title': __('shifttype.delete.title', [shifttype.name|e])}) }}
+                {% endif %}
+            </div>
+        </div>
+
+    </form>
+{% endblock %}
