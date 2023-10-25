@@ -348,13 +348,13 @@ return [
     // To disable a t-shirt size in the config.php, you can set its value to null
     'tshirt_sizes'            => [
         'S'    => 'Small Straight-Cut',
-        'S-G'  => 'Small Fitted-Cut',
+        'S-F'  => 'Small Fitted-Cut',
         'M'    => 'Medium Straight-Cut',
-        'M-G'  => 'Medium Fitted-Cut',
+        'M-F'  => 'Medium Fitted-Cut',
         'L'    => 'Large Straight-Cut',
-        'L-G'  => 'Large Fitted-Cut',
+        'L-F'  => 'Large Fitted-Cut',
         'XL'   => 'XLarge Straight-Cut',
-        'XL-G' => 'XLarge Fitted-Cut',
+        'XL-F' => 'XLarge Fitted-Cut',
         '2XL'  => '2XLarge Straight-Cut',
         '3XL'  => '3XLarge Straight-Cut',
         '4XL'  => '4XLarge Straight-Cut',
