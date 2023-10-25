@@ -6,16 +6,16 @@
 
 {% block content %}
     <div class="container">
-        <h1>{{ block('title') }}</h1>
+        <h1>
+            {{ m.button(m.icon('chevron-left'), url('/users', {action: 'view', user_id: user.id}), null, 'sm') }}
+            {{ block('title') }}
+        </h1>
 
         {% include 'layouts/parts/messages.twig' %}
 
         <form method="post">
             {{ csrf() }}
             <div class="row g-2">
-                <div class="col-12">
-                    {{ m.button(__('back'), url('/users', {action: 'view', user_id: user.id})) }}
-                </div>
                 <div class="col-12">
                     <div>
                         <label class="form-label">{{ __('User') }}</label>

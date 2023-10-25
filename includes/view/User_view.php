@@ -43,25 +43,26 @@ function User_delete_view($user)
  */
 function User_edit_vouchers_view($user)
 {
-    return page_with_title(sprintf(__('%s\'s vouchers'), User_Nick_render($user)), [
-        msg(),
-        buttons([
-            button(user_link($user->id), icon('chevron-left') . __('back')),
-        ]),
-        info(sprintf(
-            $user->state->force_active
-                ? __('Angel can receive another %d vouchers and is FA.')
-                : __('Angel can receive another %d vouchers.'),
-            User_get_eligable_voucher_count($user)
-        ), true),
-        form(
-            [
-                form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
-                form_submit('submit', __('form.save')),
-            ],
-            page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
-        ),
-    ]);
+    $link = button(user_link($user->id), icon('chevron-left'), 'btn-sm');
+    return page_with_title(
+        $link . ' ' . sprintf(__('%s\'s vouchers'), User_Nick_render($user)),
+        [
+            msg(),
+            info(sprintf(
+                $user->state->force_active
+                    ? __('Angel can receive another %d vouchers and is FA.')
+                    : __('Angel can receive another %d vouchers.'),
+                User_get_eligable_voucher_count($user)
+            ), true),
+            form(
+                [
+                    form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
+                    form_submit('submit', __('form.save')),
+                ],
+                page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
+            ),
+        ]
+    );
 }
 
 /**

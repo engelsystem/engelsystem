@@ -303,9 +303,13 @@ function admin_user()
         }
     }
 
-    return page_with_title(__('Edit user'), [
+    $link = button(page_link_to('users', ['action' => 'view', 'user_id' => $user_id]), icon('chevron-left'), 'btn-sm');
+    return page_with_title(
+        $link . ' ' . __('Edit user'),
+        [
         $html,
-    ]);
+        ]
+    );
 }
 
 /**

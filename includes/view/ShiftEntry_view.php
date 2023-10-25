@@ -213,17 +213,25 @@ function ShiftEntry_edit_view(
         $comment = '';
     }
 
-    return page_with_title(__('Edit shift entry'), [
-        msg(),
-        form([
-            form_info(__('Angel:'), User_Nick_render($angel)),
-            form_info(__('Date, Duration:'), $date),
-            form_info(__('Location:'), $location),
-            form_info(__('Title:'), $title),
-            form_info(__('Type:'), $type),
-            $comment,
-            join('', $freeload_form),
-            form_submit('submit', __('form.save')),
-        ]),
-    ]);
+    $link = button(
+        page_link_to('users', ['action' => 'view', 'user_id' => $angel->id]),
+        icon('chevron-left'),
+        'btn-sm'
+    );
+    return page_with_title(
+        $link . ' ' . __('Edit shift entry'),
+        [
+            msg(),
+            form([
+                form_info(__('Angel:'), User_Nick_render($angel)),
+                form_info(__('Date, Duration:'), $date),
+                form_info(__('Location:'), $location),
+                form_info(__('Title:'), $title),
+                form_info(__('Type:'), $type),
+                $comment,
+                join('', $freeload_form),
+                form_submit('submit', __('form.save')),
+            ]),
+        ]
+    );
 }

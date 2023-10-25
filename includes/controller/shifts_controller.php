@@ -199,8 +199,9 @@ function shift_edit_controller()
         );
     }
 
+    $link = button(page_link_to('user-shifts'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        shifts_title(),
+        $link . ' ' . shifts_title(),
         [
             msg(),
             '<noscript>'
@@ -270,18 +271,22 @@ function shift_delete_controller()
         throw_redirect(page_link_to('user_shifts'));
     }
 
-    return page_with_title(shifts_title(), [
-        error(sprintf(
-            __('Do you want to delete the shift %s from %s to %s?'),
-            $shift->shiftType->name,
-            $shift->start->format(__('Y-m-d H:i')),
-            $shift->end->format(__('H:i'))
-        ), true),
-        form([
-            form_hidden('delete_shift', $shift->id),
-            form_submit('delete', __('delete')),
-        ]),
-    ]);
+    $link = button(page_link_to('user-shifts'), icon('chevron-left'), 'btn-sm');
+    return page_with_title(
+        $link . ' ' . shifts_title(),
+        [
+            error(sprintf(
+                __('Do you want to delete the shift %s from %s to %s?'),
+                $shift->shiftType->name,
+                $shift->start->format(__('Y-m-d H:i')),
+                $shift->end->format(__('H:i'))
+            ), true),
+            form([
+                form_hidden('delete_shift', $shift->id),
+                form_submit('delete', __('delete')),
+            ]),
+        ]
+    );
 }
 
 /**
