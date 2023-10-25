@@ -272,6 +272,12 @@ msgstr "Ort erfolgreich bearbeitet."
 msgid "location.delete.success"
 msgstr "Ort erfolgreich gelöscht."
 
+msgid "shifttype.edit.success"
+msgstr "Schichttyp erfolgreich bearbeitet."
+
+msgid "shifttype.delete.success"
+msgstr "Schichttyp erfolgreich gelöscht."
+
 msgid "validation.name.exists"
 msgstr "Der Name wird bereits verwendet."
 

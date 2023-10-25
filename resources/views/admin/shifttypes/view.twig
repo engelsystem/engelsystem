@@ -1,0 +1,11 @@
+{% extends 'admin/shifttypes/index.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ shifttype.name }}{% endblock %}
+
+{% block row_content %}
+        <div class="col-md-12">
+            {{ shifttype.description|md }}
+        </div>
+{% endblock %}

@@ -271,6 +271,12 @@ msgstr "Location edited successfully."
 msgid "location.delete.success"
 msgstr "Location successfully deleted."
 
+msgid "shifttype.edit.success"
+msgstr "Shift type edited successfully."
+
+msgid "shifttype.delete.success"
+msgstr "Shift type successfully deleted."
+
 msgid "validation.name.exists"
 msgstr "The name is already used."
 

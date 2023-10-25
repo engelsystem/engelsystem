@@ -31,7 +31,6 @@ $includeFiles = [
     __DIR__ . '/../includes/view/ShiftsFilterRenderer.php',
     __DIR__ . '/../includes/view/Shifts_view.php',
     __DIR__ . '/../includes/view/ShiftEntry_view.php',
-    __DIR__ . '/../includes/view/ShiftTypes_view.php',
     __DIR__ . '/../includes/view/UserAngelTypes_view.php',
     __DIR__ . '/../includes/view/UserHintsRenderer.php',
     __DIR__ . '/../includes/view/User_view.php',
@@ -42,7 +41,6 @@ $includeFiles = [
     __DIR__ . '/../includes/controller/locations_controller.php',
     __DIR__ . '/../includes/controller/shift_entries_controller.php',
     __DIR__ . '/../includes/controller/shifts_controller.php',
-    __DIR__ . '/../includes/controller/shifttypes_controller.php',
     __DIR__ . '/../includes/controller/users_controller.php',
     __DIR__ . '/../includes/controller/user_angeltypes_controller.php',
 

@@ -88,9 +88,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 return users_controller();
             case 'user_angeltypes':
                 return user_angeltypes_controller();
-            case 'shifttypes':
-                list($title, $content) = shifttypes_controller();
-                return [$title, $content];
             case 'admin_event_config':
                 list($title, $content) = event_config_edit_controller();
                 return [$title, $content];

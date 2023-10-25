@@ -1,0 +1,66 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('shifttype.shifttypes') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {% if not is_index|default(false) %}
+                {{ m.button(m.icon('chevron-left'), url('/admin/shifttypes'), 'secondary', 'sm') }}
+            {% endif %}
+
+            {{ block('title') }}
+
+            {% if is_index|default(false) %}
+                {{ m.button(m.icon('plus-lg'), url('/admin/shifttypes/edit'), 'secondary') }}
+            {% endif %}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+
+            {% block row_content %}
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{ __('general.name') }}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for shifttype in shifttypes %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url('/admin/shifttypes/' ~ shifttype.id) }}">{{ shifttype.name }}</a>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex ms-auto">
+
+                                            {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), null, 'sm', __('form.edit')) }}
+
+                                            <form method="post" class="ps-1">
+                                                {{ csrf() }}
+                                                {{ f.hidden('id', shifttype.id) }}
+                                                {{ f.delete(null, {'size': 'sm', 'confirm_title': __('shifttype.delete.title', [shifttype.name|e])}) }}
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endblock %}
+
+        </div>
+    </div>
+{% endblock %}

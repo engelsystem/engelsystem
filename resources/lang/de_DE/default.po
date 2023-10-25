@@ -323,24 +323,6 @@ msgstr "Möchtest Du die Schicht %s von %s bis %s löschen?"
 msgid "Shift could not be found."
 msgstr "Schicht konnte nicht gefunden werden."
 
-msgid "Shifttype %s deleted."
-msgstr "Schichttyp %s gelöscht."
-
-msgid "Delete shifttype %s"
-msgstr "Lösche Schichttyp %s"
-
-msgid "Please enter a name."
-msgstr "Gib bitte einen Namen an."
-
-msgid "Updated shifttype."
-msgstr "Schichttyp geändert."
-
-msgid "Created shifttype."
-msgstr "Schichttyp erstellt."
-
-msgid "Shifttypes"
-msgstr "Schichttypen"
-
 msgid "There is %d unconfirmed angeltype."
 msgid_plural "There are %d unconfirmed angeltypes."
 msgstr[0] "Es gibt %d nicht freigeschalteten Engeltypen!"
@@ -1126,15 +1108,6 @@ msgstr "Titel:"
 
 msgid "Type:"
 msgstr "Typ:"
-
-msgid "Do you want to delete shifttype %s?"
-msgstr "Möchtest Du den Schichttypen %s löschen?"
-
-msgid "Edit shifttype"
-msgstr "Schichttyp bearbeiten"
-
-msgid "Create shifttype"
-msgstr "Schichttyp erstellen"
 
 msgid "Location"
 msgstr "Ort"
@@ -1959,6 +1932,18 @@ msgstr "Ort bearbeiten"
 
 msgid "location.delete.title"
 msgstr "Ort \"%s\" löschen"
+
+msgid "shifttype.shifttypes"
+msgstr "Schichttypen"
+
+msgid "shifttype.edit.title"
+msgstr "Schichttyp bearbeiten"
+
+msgid "shifttype.create.title"
+msgstr "Schichttyp erstellen"
+
+msgid "shifttype.delete.title"
+msgstr "Schichttyp \"%s\" löschen"
 
 msgid "event.day"
 msgstr "Tag %1$d"

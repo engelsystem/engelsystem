@@ -616,6 +616,18 @@ msgstr "Edit location"
 msgid "location.delete.title"
 msgstr "Delete location \"%s\""
 
+msgid "shifttype.shifttypes"
+msgstr "Shift types"
+
+msgid "shifttype.edit.title"
+msgstr "Edit shift type"
+
+msgid "shifttype.create.title"
+msgstr "Create shift type"
+
+msgid "shifttype.delete.title"
+msgstr "Delete shift type \"%s\""
+
 msgid "event.day"
 msgstr "Day %1$d"
 
