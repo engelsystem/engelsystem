@@ -1,7 +1,11 @@
 {% extends 'admin/schedule/index.twig' %}
+{% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('schedule.import.load.title') }}{% endblock %}
+{% block title %}
+    {{ m.button(m.icon('chevron-left'), url('/admin/schedule'), 'secondary', 'sm') }}
+    {{ __('schedule.import.load.title') }}
+{% endblock %}
 
 {% block row_content %}
     <form method="post" action="{{ url('/admin/schedule/import/' ~ schedule_id) }}">

@@ -2,7 +2,10 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{% if news.is_meeting %}{{ __('news.is_meeting') }} {% endif %}{{ news.title }}{% endblock %}
+{% block title %}
+    {{ m.button(m.icon('chevron-left'), url('/news'), null, 'sm') }}
+    {% if news.is_meeting %}{{ __('news.is_meeting') }} {% endif %}{{ news.title }}
+{% endblock %}
 
 {% block news %}
     {{ _self.news(news) }}

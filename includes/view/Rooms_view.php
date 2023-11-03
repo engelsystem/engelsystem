@@ -57,7 +57,11 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
         $selected_tab = count($tabs) - 1;
     }
 
-    return page_with_title(icon('pin-map-fill') . $room->name, [
+    $link = button(page_link_to('admin/rooms'), icon('chevron-left'), 'btn-sm');
+    return page_with_title(
+        (auth()->can('admin_rooms') ? $link . ' ' : '') .
+        icon('pin-map-fill') . $room->name,
+        [
         $assignNotice,
         auth()->can('admin_rooms') ? buttons([
             button(
@@ -68,7 +72,9 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
         $dect,
         $description,
         tabs($tabs, $selected_tab),
-    ], true);
+        ],
+        true
+    );
 }
 
 /**
