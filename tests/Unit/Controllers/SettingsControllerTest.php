@@ -106,6 +106,7 @@ class SettingsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\SettingsController::saveProfile
      * @covers \Engelsystem\Controllers\SettingsController::getSaveProfileRules
+     * @covers \Engelsystem\Controllers\SettingsController::isRequired
      */
     public function testSaveProfile(): void
     {
