@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
-use Engelsystem\Controllers\Api\RoomsController;
+use Engelsystem\Controllers\Api\LocationsController;
 use Engelsystem\Http\Response;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 
-class RoomsControllerTest extends ApiBaseControllerTest
+class LocationsControllerTest extends ApiBaseControllerTest
 {
     /**
-     * @covers \Engelsystem\Controllers\Api\RoomsController::index
+     * @covers \Engelsystem\Controllers\Api\LocationsController::index
      */
     public function testIndex(): void
     {
-        $this->initDatabase();
-        $items = Room::factory(3)->create();
+        $items = Location::factory(3)->create();
 
-        $controller = new RoomsController(new Response(), $this->url);
+        $controller = new LocationsController(new Response(), $this->url);
 
         $response = $controller->index();
-        $this->validateApiResponse('/rooms', 'get', $response);
+        $this->validateApiResponse('/locations', 'get', $response);
 
         $this->assertEquals(['application/json'], $response->getHeader('content-type'));
         $this->assertJson($response->getContent());
