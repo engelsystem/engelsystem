@@ -199,8 +199,9 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
 
     $start = $shift->start->format(__('Y-m-d H:i'));
 
+    $link = button(page_link_to('user-shifts'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        $shift->shiftType->name . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
+        $link . ' ' . $shift->shiftType->name . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         $content
     );
 }

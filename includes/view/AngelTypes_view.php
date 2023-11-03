@@ -60,7 +60,10 @@ function AngelType_render_membership(AngelType $user_angeltype)
  */
 function AngelType_delete_view(AngelType $angeltype)
 {
-    return page_with_title(sprintf(__('Delete angeltype %s'), $angeltype->name), [
+    $link = button($angeltype->id
+        ? page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
+        : page_link_to('angeltypes'), icon('chevron-left'), 'btn-sm');
+    return page_with_title($link . ' ' . sprintf(__('Delete angeltype %s'), $angeltype->name), [
         info(sprintf(__('Do you want to delete angeltype %s?'), $angeltype->name), true),
         form([
             buttons([
@@ -186,10 +189,6 @@ function AngelType_view_buttons(
     $user_driver_license,
     $user
 ) {
-    $buttons = [
-        button(page_link_to('angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
-    ];
-
     if ($angeltype->requires_driver_license) {
         $buttons[] = button(
             user_driver_license_edit_link($user),
@@ -428,8 +427,9 @@ function AngelType_view(
     ShiftCalendarRenderer $shiftCalendarRenderer,
     $tab
 ) {
+    $link = button(page_link_to('angeltypes'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        sprintf(__('Team %s'), $angeltype->name),
+        $link . ' ' . sprintf(__('Team %s'), $angeltype->name),
         [
             AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user),
             msg(),

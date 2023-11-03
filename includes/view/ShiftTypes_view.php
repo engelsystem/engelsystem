@@ -77,10 +77,10 @@ function ShiftType_view(ShiftType $shifttype)
 {
     $parsedown = new Parsedown();
     $title = $shifttype->name;
-    return page_with_title($title, [
+    $link = button(page_link_to('shifttypes'), icon('chevron-left'), 'btn-sm');
+    return page_with_title($link . ' ' . $title, [
         msg(),
         buttons([
-            button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
             button(
                 page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype->id]),
                 icon('pencil') . __('edit')

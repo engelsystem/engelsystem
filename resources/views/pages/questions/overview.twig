@@ -11,10 +11,7 @@
         <div class="page-header">
             <h1>
                 {{ block('title') }}
-
-                {% if not is_admin|default(false) %}
-                    {{ m.button(m.icon('plus-lg'), url('questions/new'), 'secondary') }}
-                {% endif %}
+                {{ m.button(m.icon('plus-lg'), url('questions/new'), 'secondary') }}
             </h1>
         </div>
 

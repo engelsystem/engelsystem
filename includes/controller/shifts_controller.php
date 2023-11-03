@@ -199,7 +199,7 @@ function shift_edit_controller()
         );
     }
 
-    $link = button(page_link_to('user-shifts'), icon('chevron-left'), 'btn-sm');
+    $link = button(page_link_to('shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         $link . ' ' . shifts_title(),
         [
@@ -271,7 +271,7 @@ function shift_delete_controller()
         throw_redirect(page_link_to('user_shifts'));
     }
 
-    $link = button(page_link_to('user-shifts'), icon('chevron-left'), 'btn-sm');
+    $link = button(page_link_to('shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         $link . ' ' . shifts_title(),
         [
