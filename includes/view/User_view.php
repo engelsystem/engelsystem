@@ -953,7 +953,11 @@ function render_user_tshirt_hint()
 {
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
-    if ($goodie_tshirt && !auth()->user()->personalData->shirt_size) {
+    if (
+        $goodie_tshirt
+        && config('signup_required_fields')['tshirt_size']
+        && !auth()->user()->personalData->shirt_size
+    ) {
         $text = __('You need to specify a tshirt size in your settings!');
         return render_profile_link($text);
     }
