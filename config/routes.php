@@ -123,6 +123,7 @@ $route->addGroup(
                 $route->get('/news', 'Api\NewsController@index');
                 $route->get('/locations', 'Api\LocationsController@index');
                 $route->get('/locations/{location_id:\d+}/shifts', 'Api\ShiftsController@entriesByLocation');
+                $route->get('/users/{user_id:\d+}/angeltypes', 'Api\AngelTypeController@ofUser');
 
                 $route->addRoute(
                     ['POST', 'PUT', 'DELETE', 'PATCH'],
