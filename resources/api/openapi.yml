@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   version: 0.0.1-beta
   title: Engelsystem
-  description: |
+  description: >
     This API is as stable as a **beta** version might be.
     It could burst into flames and morph into a monster at any second!
     (But we try to keep it somewhat consistent, at least during events).
@@ -25,6 +25,8 @@ tags:
     description: News and meeting announcements
   - name: shift
     description: Event shifts and location
+  - name: user
+    description: User information
 
 components:
   securitySchemes:
@@ -81,6 +83,24 @@ components:
         - name
         - description
         - url
+    UserAngelType:
+      allOf:
+        - $ref: '#/components/schemas/AngelType'
+        - type: object
+          properties:
+            confirmed:
+              type: boolean
+              example: true
+              description: >
+                If the user is confirmed
+                (either by the angeltype not requiring confirmation, being a supporter or being confirmed by one).
+            supporter:
+              type: boolean
+              example: false
+              description: If the user is a supporter of the angeltype.
+          required:
+            - confirmed
+            - supporter
     Error:
       type: object
       properties:
@@ -168,9 +188,9 @@ components:
           example: Cleanup the venue
         description:
           type: string
-          example: You clean up the venue after the event, its fun, we promise!
-          description: |
-            Shift description, should be added to the shift type description as it might be empty.
+          example: You clean up the venue after the event. Its fun, we promise!
+          description: >
+            Shift description, should be added to the shift type description but might be empty.
             Normally contains additional information for a specific shift / task.
         starts_at:
           type: string
@@ -206,7 +226,7 @@ components:
         url:
           type: string
           example: https://example.com/shifts/42
-          description: Direct link of the shift
+          description: Direct link to the shift
       required:
         - id
         - title
@@ -230,9 +250,10 @@ components:
           $ref: '#/components/schemas/AngelType'
         needs:
           type: integer
-          description: |
-            Number of users needed for the shift.
-            Can be more than users count when not full, less when overbooked or 0 when additional users have been added.
+          description: >
+            Number of users needed for the shift of the given type.
+            Will be more than users count when not full, less when overbooked
+            or 0 when only additional users with given type have been added.
           example: 3
       required:
         - users
@@ -396,6 +417,38 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Shift'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /users/{id}/angeltypes:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The user identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - user
+      summary: Get the users angel types
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserAngelType'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
