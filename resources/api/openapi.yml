@@ -140,7 +140,7 @@ components:
         - created_at
         - updated_at
         - url
-    Room:
+    Location:
       type: object
       properties:
         id:
@@ -151,8 +151,8 @@ components:
           example: Heaven
         url:
           type: string
-          example: https://example.com/rooms/42
-          description: Link of the room start page
+          example: https://example.com/location/42
+          description: Link of the location page
       required:
         - id
         - name
@@ -172,18 +172,18 @@ components:
           description: |
             Shift description, should be added to the shift type description as it might be empty.
             Normally contains additional information for a specific shift / task.
-        start:
+        starts_at:
           type: string
           format: date-time
           description: DateTime in ISO-8601 format
           example: 2023-05-13T14:00:00.000000Z
-        end:
+        ends_at:
           type: string
           format: date-time
           description: DateTime in ISO-8601 format
           example: 2023-05-13T16:00:00.000000Z23
-        room:
-          $ref: '#/components/schemas/Room'
+        location:
+          $ref: '#/components/schemas/Location'
         shift_type:
           $ref: '#/components/schemas/ShiftType'
         created_at:
@@ -211,9 +211,9 @@ components:
         - id
         - title
         - description
-        - start
-        - end
-        - room
+        - starts_at
+        - ends_at
+        - location
         - shift_type
         - created_at
         - updated_at
@@ -349,11 +349,11 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
 
-  /rooms:
+  /locations:
     get:
       tags:
         - shift
-      summary: Get a list of rooms
+      summary: Get a list of locations
       responses:
         '200':
           description: Ok
@@ -365,25 +365,25 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Room'
+                      $ref: '#/components/schemas/Location'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
 
-  /rooms/{id}/shifts:
+  /locations/{id}/shifts:
     parameters:
       - name: id
         in: path
         required: true
-        description: The rooms identifier
+        description: The locations identifier
         example: 42
         schema:
           type: integer
     get:
       tags:
         - shift
-      summary: Get all shifts in the requested room
+      summary: Get all shifts in the requested location
       responses:
         '200':
           description: Ok

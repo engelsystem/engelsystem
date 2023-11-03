@@ -6,23 +6,23 @@ namespace Engelsystem\Controllers\Api;
 
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Illuminate\Database\Eloquent\Collection;
 
 class ShiftsController extends ApiController
 {
-    public function entriesByRoom(Request $request): Response
+    public function entriesByLocation(Request $request): Response
     {
-        $roomId = (int) $request->getAttribute('room_id');
-        /** @var Room $room */
-        $room = Room::findOrFail($roomId);
+        $locationId = (int) $request->getAttribute('location_id');
+        /** @var Location $location */
+        $location = Location::findOrFail($locationId);
         /** @var Shift[]|Collection $shifts */
-        $shifts = $room->shifts()
+        $shifts = $location->shifts()
             ->with([
                 'neededAngelTypes.angelType',
-                'room',
+                'location.neededAngelTypes.angelType',
                 'shiftEntries.angelType',
                 'shiftEntries.user.contact',
                 'shiftEntries.user.personalData',
@@ -70,16 +70,16 @@ class ShiftsController extends ApiController
                 ];
             }
 
-            $roomData = $room->only(['id', 'name']);
-            $roomData['url'] = $this->url->to('/rooms', ['action' => 'view', 'room_id' => $room->id]);
+            $locationData = $location->only(['id', 'name']);
+            $locationData['url'] = $this->url->to('/locations', ['action' => 'view', 'location_id' => $location->id]);
 
             $shiftEntries[] = [
                 'id' => $shift->id,
                 'title' => $shift->title,
                 'description' => $shift->description,
-                'start' => $shift->start,
-                'end' => $shift->end,
-                'room' => $roomData,
+                'starts_at' => $shift->start,
+                'ends_at' => $shift->end,
+                'location' => $locationData,
                 'shift_type' => $shift->shiftType->only(['id', 'name', 'description']),
                 'created_at' => $shift->created_at,
                 'updated_at' => $shift->updated_at,
@@ -101,8 +101,8 @@ class ShiftsController extends ApiController
         // From shift
         $neededAngelTypes = $shift->neededAngelTypes;
 
-        // Add from room
-        foreach ($shift->room->neededAngelTypes as $neededAngelType) {
+        // Add from location
+        foreach ($shift->location->neededAngelTypes as $neededAngelType) {
             /** @var NeededAngelType $existingNeededAngelType */
             $existingNeededAngelType = $neededAngelTypes
                 ->where('angel_type_id', $neededAngelType->angel_type_id)
@@ -112,7 +112,7 @@ class ShiftsController extends ApiController
                 continue;
             }
 
-            $existingNeededAngelType->room_id = $shift->room->id;
+            $existingNeededAngelType->location_id = $shift->location->id;
             $existingNeededAngelType->count += $neededAngelType->count;
         }
 

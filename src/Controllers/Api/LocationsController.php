@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers\Api;
 
 use Engelsystem\Http\Response;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 
-class RoomsController extends ApiController
+class LocationsController extends ApiController
 {
     public function index(): Response
     {
-        $models = Room::query()
+        $models = Location::query()
             ->orderBy('name')
             ->get(['id', 'name']);
 
-        $models->map(function (Room $model): void {
-            $model->url = $this->url->to('/rooms', ['action' => 'view', 'room_id' => $model->id]);
+        $models->map(function (Location $model): void {
+            $model->url = $this->url->to('/locations', ['action' => 'view', 'location_id' => $model->id]);
         });
 
         $data = ['data' => $models];
