@@ -14,3 +14,7 @@ $invert-color-value: 1 !default;
 input[type='time']::-webkit-calendar-picker-indicator {
   filter: invert($invert-color-value);
 }
+
+.modal .bg-dark .modal-header .btn-close {
+  background-color: $list-group-form-check-input-border-color;
+}

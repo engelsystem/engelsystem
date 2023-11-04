@@ -200,6 +200,30 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-3 col-md-6 mb-2">
+                <span id="modal" class="ref-id"></span>
+                <h3>Modal <a href="#modal" class="ref-link">{{ m.icon('link') }}</a></h3>
+                <div class="modal position-static d-block" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content {{ m.type_bg_class() }}">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ lipsum }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row mb-4">
             <div class="col-md-12">
                 <span id="forms" class="ref-id"></span>
