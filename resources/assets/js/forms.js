@@ -152,7 +152,7 @@ const DISABLE_ELEMENTS = [
 ready(() => {
   // get all input-radio's and add for each an onChange event listener
   document.querySelectorAll('input[type="radio"]').forEach((radioElement) => {
-    // build selector and get all corrsponding elements for this input-radio
+    // build selector and get all corresponding elements for this input-radio
     const selector = DISABLE_ELEMENTS.map(
       (tagName) => `${tagName}[data-radio-name="${radioElement.name}"][data-radio-value]`
     ).join(',');
@@ -231,6 +231,9 @@ ready(() => {
   });
 });
 
+/**
+ * Init select dropdown choices
+ */
 ready(() => {
   document.querySelectorAll('select').forEach((element) => {
     element.choices = new Choices(element, {
@@ -263,6 +266,13 @@ ready(() => {
  */
 ready(() => {
   document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => new bootstrap.Tooltip(element));
+});
+
+/**
+ * Init Bootstrap Modals
+ */
+ready(() => {
+  document.querySelectorAll('.modal').forEach((element) => new bootstrap.Modal(element));
 });
 
 /**

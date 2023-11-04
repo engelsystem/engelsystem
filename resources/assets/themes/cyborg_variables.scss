@@ -591,4 +591,13 @@ $dl-horizontal-offset: $component-offset-horizontal !default;
 //** Horizontal line color.
 $hr-border: $gray-dark !default;
 
+//== Modal
+//
+//##
+$modal-header-border-color: $hr-border !default;
+$modal-footer-border-color: $hr-border !default;
+
+//== Base
+//
+//##
 @import 'base.scss';
