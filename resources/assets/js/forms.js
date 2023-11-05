@@ -316,7 +316,9 @@ ready(() => {
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="${element.className}"
-                    title="${element.title}" data-submit="">${element.innerHTML}</button>
+                    title="${element.title}" data-submit="">
+                    ${element.dataset.confirm_button_text ?? element.innerHTML}
+                  </button>
                 </div>
               </div>
             </div>

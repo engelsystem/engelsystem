@@ -58,6 +58,18 @@
                                     <span class="ms-auto">
                                         {{ m.button(m.icon('pencil'), url('/admin/faq/' ~ item.id), 'secondary', 'sm') }}
                                     </span>
+
+                                    <form class="ps-1"
+                                        action="{{ url('/admin/faq/' ~ item.id) }}"
+                                        enctype="multipart/form-data"
+                                        method="post">
+                                        {{ csrf() }}
+                                        {{ f.delete(null, {
+                                            'size': 'sm',
+                                            'confirm_title': item.question[:40]|e,
+                                            'confirm_button_text': __('form.delete')
+                                        }) }}
+                                    </form>
                                 {% endif %}
                             </div>
                         </div>

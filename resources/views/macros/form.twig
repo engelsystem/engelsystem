@@ -265,6 +265,8 @@ Renders a button.
 @param {string} [opt.confirm_text] - Optional value for the confirmation text.
 #}
 {% macro button(label, opt) %}
+    {%- set icon_left = opt.icon_left is defined ? '<span class="bi bi-' ~ opt.icon_left ~ '"></span>' : '' %}
+    {%- set icon_right = opt.icon_right is defined ? '<span class="bi bi-' ~ opt.icon_right ~ '"></span>' : '' %}
     <button
         class="btn btn-{{ opt.btn_type|default('secondary') }}
         {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}"
@@ -274,10 +276,13 @@ Renders a button.
         {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}
         {%- if opt.confirm_title is defined %} data-confirm_submit_title="{{ opt.confirm_title }}"{% endif -%}
         {%- if opt.confirm_text is defined %} data-confirm_submit_text="{{ opt.confirm_text }}"{% endif -%}
+        {%- if opt.confirm_button_text is defined %}
+            data-confirm_button_text="{{ icon_left ~ ' ' ~ opt.confirm_button_text ~ ' ' ~ icon_right }}"
+        {%- endif -%}
     >
-        {%- if opt.icon_left is defined %}<span class="bi bi-{{ opt.icon_left }}"></span>{% endif %}
+        {{ icon_left|raw }}
         {{ label }}
-        {%- if opt.icon_right is defined %}<span class="bi bi-{{ opt.icon_right }}"></span>{% endif %}
+        {{ icon_right|raw }}
     </button>
 {%- endmacro %}
 

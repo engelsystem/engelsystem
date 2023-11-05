@@ -57,7 +57,7 @@
             <div class="btn-group">
                 {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
                 {% if location %}
-                    {{ f.submit(__('form.delete'), {'name': 'delete', 'btn_type': 'danger', 'icon_left': 'trash'}) }}
+                    {{ f.delete(__('form.delete'), {'confirm_title': location.name|e}) }}
                 {% endif %}
             </div>
         </div>

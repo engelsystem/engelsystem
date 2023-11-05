@@ -40,7 +40,7 @@
                                         {{ csrf() }}
                                         {{ f.hidden('id', session.id[:15]) }}
                                         {{ f.submit(
-                                            __('form.delete'),
+                                            ' ',
                                             {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'icon_left': 'trash'}
                                         ) }}
                                     </form>
