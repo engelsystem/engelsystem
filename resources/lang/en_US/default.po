@@ -644,3 +644,6 @@ msgstr "Please enter a lastname in your settings!"
 
 msgid "mobile.required.hint"
 msgstr "Please enter a mobile number in your settings!"
+
+msgid "confirmation.delete"
+msgstr "Do you really want to delete it?"

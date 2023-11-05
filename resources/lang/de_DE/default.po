@@ -1989,3 +1989,6 @@ msgstr "Was möchtest Du machen?"
 
 msgid "registration.register"
 msgstr "Registrieren"
+
+msgid "confirmation.delete"
+msgstr "Möchtest du es wirklich löschen?"
