@@ -276,6 +276,71 @@ ready(() => {
 });
 
 /**
+ * Show confirmation modal before submitting form
+ *
+ * Uses the buttons data attributes to show in the modal:
+ * - data-confirm_title: Optional title of the modal
+ * - data-confirm_submit: Body of the modal
+ *
+ * The class, title and content of the requesting button gets copied for confirmation
+ *
+ */
+ready(() => {
+  document.querySelectorAll('[data-confirm_submit_title], [data-confirm_submit_text]').forEach((element) => {
+    let modalOpen = false;
+    let oldType = element.type;
+    if (element.type !== 'submit') {
+      return;
+    }
+
+    element.type = 'button';
+    element.addEventListener('click', (event) => {
+      if (modalOpen) {
+        return;
+      }
+      event.preventDefault();
+
+      document.getElementById('confirmation-modal')?.remove();
+      document.body.insertAdjacentHTML(
+        'beforeend',
+        `
+          <div class="modal" tabindex="-1" id="confirmation-modal">
+            <div class="modal-dialog">
+              <div class="modal-content ${document.body.dataset.theme_type === 'light' ? 'bg-white' : 'bg-dark'}">
+                <div class="modal-header">
+                  <h5 class="modal-title">${element.dataset.confirm_submit_title ?? ''}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body${element.dataset.confirm_submit_text ? '' : ' d-none'}">
+                  <p>${element.dataset.confirm_submit_text ?? ''}</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="${element.className}"
+                    title="${element.title}" data-submit="">${element.innerHTML}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      );
+
+      let modal = document.getElementById('confirmation-modal');
+      modal.addEventListener('hide.bs.modal', () => {
+        modalOpen = false;
+      });
+      modal.querySelector('[data-submit]').addEventListener('click', (event) => {
+        element.type = oldType;
+        element.click();
+      });
+
+      modalOpen = true;
+      let bootstrapModal = new bootstrap.Modal(modal);
+      bootstrapModal.show();
+    });
+  });
+});
+
+/**
  * Show oauth buttons on welcome title click
  */
 ready(() => {

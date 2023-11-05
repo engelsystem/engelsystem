@@ -33,7 +33,7 @@
                                 action="{{ url('/news/comment/' ~ comment.id) }}" enctype="multipart/form-data"
                                 method="post">
                                 {{ csrf() }}
-                                {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'title': __('form.delete')}) }}
+                                {{ f.delete(null, {'size': 'sm', 'confirm_title': comment.text[:40]|e}) }}
                             </form>
                         </div>
                     {% endif %}

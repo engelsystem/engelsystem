@@ -261,6 +261,8 @@ Renders a button.
                                     Must be a Bootstrap icon class without prefix, such as "info" or "check".
 @param {string} [opt.icon_right] - Optional icon to be added after the button label.
                                     Must be a Bootstrap icon class without prefix, such as "info" or "check".
+@param {string} [opt.confirm_title] - Optional value for the confirmation title.
+@param {string} [opt.confirm_text] - Optional value for the confirmation text.
 #}
 {% macro button(label, opt) %}
     <button
@@ -270,6 +272,8 @@ Renders a button.
         {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
         {%- if opt.title is defined %} title="{{ opt.title }}"{% endif %}
         {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}
+        {%- if opt.confirm_title is defined %} data-confirm_submit_title="{{ opt.confirm_title }}"{% endif -%}
+        {%- if opt.confirm_text is defined %} data-confirm_submit_text="{{ opt.confirm_text }}"{% endif -%}
     >
         {%- if opt.icon_left is defined %}<span class="bi bi-{{ opt.icon_left }}"></span>{% endif %}
         {{ label }}
@@ -279,6 +283,16 @@ Renders a button.
 
 {% macro submit(label, opt) %}
     {{ _self.button(label|default(__('form.submit')), {'type': 'submit', 'btn_type': 'primary'}|merge(opt|default({}))) }}
+{%- endmacro %}
+
+{% macro delete(label, opt) %}
+    {{ _self.submit(label|default(' '), {
+        'icon_left': 'trash',
+        'title': __('form.delete'),
+        'name': 'delete',
+        'btn_type': 'danger',
+        'confirm_text': __('confirmation.delete')
+    }|merge(opt|default({}))) }}
 {%- endmacro %}
 
 {#

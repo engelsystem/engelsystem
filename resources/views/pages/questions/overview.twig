@@ -54,7 +54,7 @@
                                                 >
                                                     {{ csrf() }}
                                                     {{ f.hidden('id', question.id) }}
-                                                    {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'title': __('form.delete')}) }}
+                                                    {{ f.delete(null, {'size': 'sm', 'confirm_title': question.text[:40]|e}) }}
                                                 </form>
                                             {% endif %}
 

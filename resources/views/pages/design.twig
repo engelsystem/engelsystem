@@ -354,9 +354,13 @@
                                 'title': 'Click me!',
                             }) }}
                         </div>
-                        <code>f.submit(label)</code>
-                        <form id="form">
+                        <code>f.submit(label, opt)</code>
+                        <form class="prevent-default">
                             {{ f.submit('Go!') }}
+                        </form>
+                        <code>f.delete(label, opt)</code>
+                        <form class="prevent-default">
+                            {{ f.delete('Delete it', {'confirm_title': 'Delete some item'}) }}
                         </form>
                     </div>
 
@@ -529,9 +533,11 @@ Por scientie, musica, sport etc, litot Europa usa li sam vocabular.</code></pre>
     </div>
     </div>
     <script>
-        document.getElementById('form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            return false;
-        });
+        [...document.getElementsByClassName('prevent-default')].forEach((element) => {
+            element.addEventListener('submit', (e) => {
+                e.preventDefault();
+                return false;
+            });
+        })
     </script>
 {% endblock %}

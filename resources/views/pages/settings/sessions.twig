@@ -20,10 +20,7 @@
                                 <form action="" enctype="multipart/form-data" method="post">
                                     {{ csrf() }}
                                     {{ f.hidden('id', 'all') }}
-                                    {{ f.submit(
-                                        __('form.delete_all'),
-                                        {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'icon_left': 'trash'}
-                                    ) }}
+                                    {{ f.delete(__('form.delete_all'), {'size': 'sm', 'confirm_title': __('form.delete_all')}) }}
                                 </form>
                             {% endif %}
                         </th>
