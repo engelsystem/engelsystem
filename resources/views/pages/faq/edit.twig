@@ -46,12 +46,12 @@
                         'value': faq ? faq.text : '',
                     }) }}
 
-                    {{ f.submit() }}
+                    {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
 
                     {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
 
                     {% if faq and faq.id %}
-                        {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
+                        {{ f.delete(__('form.delete'), {'confirm_title': faq.question[:40]|e})}}
                     {% endif %}
                 </div>
             </div>

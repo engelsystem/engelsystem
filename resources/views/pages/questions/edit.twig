@@ -48,13 +48,11 @@
                         }) }}
                     {% endif %}
 
-                    {{ f.submit() }}
-
+                    {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
                     {% if is_admin|default(false) %}
                         {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
-
                         {% if question and question.id %}
-                            {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
+                            {{ f.delete(__('form.delete'), {'confirm_title': question.text[:40]|e}) }}
                         {% endif %}
                     {% endif %}
                 </div>

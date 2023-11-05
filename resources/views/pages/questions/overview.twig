@@ -42,26 +42,21 @@
 
                                             {% if has_permission_to('question.edit') %}
                                                 {{ m.user(question.user, {'pronoun': true}) }}
-                                                <div class="d-flex ms-auto">
                                             {% endif %}
 
-                                            {% if question.user.id == user.id or has_permission_to('question.edit') %}
-                                                <form
-                                                    class="pe-1"
-                                                    action=""
-                                                    enctype="multipart/form-data"
-                                                    method="post"
-                                                >
-                                                    {{ csrf() }}
-                                                    {{ f.hidden('id', question.id) }}
-                                                    {{ f.delete(null, {'size': 'sm', 'confirm_title': question.text[:40]|e}) }}
-                                                </form>
-                                            {% endif %}
+                                            <div class="d-flex ms-auto">
+                                                {% if has_permission_to('question.edit') %}
+                                                    {{ m.button(m.icon('pencil'), url('/admin/questions/' ~ question.id), null, 'sm') }}
+                                                {% endif %}
 
-                                            {% if has_permission_to('question.edit') %}
-                                                {{ m.button(m.icon('pencil'), url('/admin/questions/' ~ question.id), null, 'sm') }}
-                                                </div>
-                                            {% endif %}
+                                                {% if question.user.id == user.id or has_permission_to('question.edit') %}
+                                                    <form class="ps-1" method="post" action="">
+                                                        {{ csrf() }}
+                                                        {{ f.hidden('id', question.id) }}
+                                                        {{ f.delete(null, {'size': 'sm', 'confirm_title': question.text[:40]|e, 'confirm_button_text': __('form.delete')}) }}
+                                                    </form>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

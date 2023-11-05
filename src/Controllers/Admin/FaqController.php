@@ -46,14 +46,7 @@ class FaqController extends BaseController
         /** @var Faq $faq */
         $faq = $this->faq->findOrNew($faqId);
 
-        $data = $this->validate($request, [
-            'question' => 'required',
-            'text'     => 'required',
-            'delete'   => 'optional|checked',
-            'preview'  => 'optional|checked',
-        ]);
-
-        if (!is_null($data['delete'])) {
+        if ($request->request->has('delete')) {
             $faq->delete();
 
             $this->log->info('Deleted faq "{question}"', ['question' => $faq->question]);
@@ -62,6 +55,13 @@ class FaqController extends BaseController
 
             return $this->redirect->to('/faq');
         }
+
+        $data = $this->validate($request, [
+            'question' => 'required',
+            'text'     => 'required',
+            'delete'   => 'optional|checked',
+            'preview'  => 'optional|checked',
+        ]);
 
         $faq->question = $data['question'];
         $faq->text = $data['text'];

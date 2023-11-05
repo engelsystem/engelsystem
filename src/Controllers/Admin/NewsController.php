@@ -62,17 +62,7 @@ class NewsController extends BaseController
         /** @var News $news */
         $news = $this->news->findOrNew($newsId);
 
-        $data = $this->validate($request, [
-            'title'          => 'required',
-            'text'           => 'required',
-            'is_meeting'     => 'optional|checked',
-            'is_pinned'      => 'optional|checked',
-            'is_highlighted' => 'optional|checked',
-            'delete'         => 'optional|checked',
-            'preview'        => 'optional|checked',
-        ]);
-
-        if (!is_null($data['delete'])) {
+        if ($request->request->has('delete')) {
             $news->delete();
 
             $this->log->info(
@@ -87,6 +77,16 @@ class NewsController extends BaseController
 
             return $this->redirect->to('/news');
         }
+
+        $data = $this->validate($request, [
+            'title'          => 'required',
+            'text'           => 'required',
+            'is_meeting'     => 'optional|checked',
+            'is_pinned'      => 'optional|checked',
+            'is_highlighted' => 'optional|checked',
+            'delete'         => 'optional|checked',
+            'preview'        => 'optional|checked',
+        ]);
 
         if (!$news->user) {
             $news->user()->associate($this->auth->user());
