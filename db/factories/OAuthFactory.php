@@ -19,7 +19,7 @@ class OAuthFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'user_id'   => User::factory(),
             'provider' => $this->faker->unique()->word(),
             'identifier' => $this->faker->unique()->word(),
             'access_token' => $this->faker->unique()->word(),
