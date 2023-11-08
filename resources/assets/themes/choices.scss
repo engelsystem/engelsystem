@@ -20,6 +20,10 @@ $es-choices-highlight-color: $choices-text-color !default;
   padding: $input-padding-y 1.75rem $input-padding-y $input-padding-x !important;
 }
 
+.#{$choices-selector} .#{$choices-selector}__list {
+  z-index: $zindex-sticky + 2;
+}
+
 .#{$choices-selector}__list--single {
   padding: 0;
 }

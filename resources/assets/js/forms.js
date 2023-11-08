@@ -238,6 +238,8 @@ ready(() => {
   document.querySelectorAll('select').forEach((element) => {
     element.choices = new Choices(element, {
       allowHTML: true,
+      shouldSort: false,
+      shouldSortItems: false,
       classNames: {
         containerInner: 'choices__inner form-control',
       },
