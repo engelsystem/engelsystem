@@ -211,6 +211,12 @@ msgstr "Message"
 msgid "news.edit.hint"
 msgstr "You can use Markdown and the [more] tag"
 
+msgid "news.delete.title"
+msgstr "Delete news \"%s\""
+
+msgid "news.comments.delete.title"
+msgstr "Delete comment \"%s\""
+
 msgid "form.search"
 msgstr "Search"
 
@@ -459,6 +465,9 @@ msgstr "Question"
 msgid "faq.message"
 msgstr "Answer"
 
+msgid "faq.delete.title"
+msgstr "Delete FAQ \"%s\""
+
 msgid "question.questions"
 msgstr "Questions"
 
@@ -476,6 +485,9 @@ msgstr "Question"
 
 msgid "question.answer"
 msgstr "Answer"
+
+msgid "question.delete.title"
+msgstr "Delete question \"%s\""
 
 msgid "user.edit.shirt"
 msgstr "Edit shirt"
@@ -603,6 +615,9 @@ msgstr "Create location"
 
 msgid "location.edit.title"
 msgstr "Edit location"
+
+msgid "location.delete.title"
+msgstr "Delete location \"%s\""
 
 msgid "event.day"
 msgstr "Day %1$d"

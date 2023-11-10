@@ -57,7 +57,11 @@
                                             <form method="post" class="ps-1">
                                                 {{ csrf() }}
                                                 {{ f.hidden('id', location.id) }}
-                                                {{ f.delete(null, {'size': 'sm','confirm_title': location.name|e}) }}
+                                                {{ f.delete(null, {
+                                                    'size': 'sm',
+                                                    'confirm_title': __('location.delete.title', [location.name|e]),
+                                                    'confirm_button_text': __('form.delete'),
+                                                }) }}
                                             </form>
 
                                         </div>
