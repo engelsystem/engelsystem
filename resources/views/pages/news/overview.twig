@@ -104,7 +104,7 @@
                             {{ csrf() }}
                             {{ f.delete(null, {
                                 'size': 'sm',
-                                'confirm_title': news.title[:40]|e,
+                                'confirm_title': __('news.delete.title', [news.title[:40]|e]),
                                 'confirm_button_text': __('form.delete')
                             }) }}
                         </form>

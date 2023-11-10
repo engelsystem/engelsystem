@@ -51,7 +51,7 @@
                     {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
 
                     {% if faq and faq.id %}
-                        {{ f.delete(__('form.delete'), {'confirm_title': faq.question[:40]|e})}}
+                        {{ f.delete(__('form.delete'), {'confirm_title': __('faq.delete.title', [faq.question[:40]|e])})}}
                     {% endif %}
                 </div>
             </div>

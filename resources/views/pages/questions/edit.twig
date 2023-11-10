@@ -52,7 +52,7 @@
                     {% if is_admin|default(false) %}
                         {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
                         {% if question and question.id %}
-                            {{ f.delete(__('form.delete'), {'confirm_title': question.text[:40]|e}) }}
+                            {{ f.delete(__('form.delete'), {'confirm_title': __('question.delete.title', [question.text[:40]|e])}) }}
                         {% endif %}
                     {% endif %}
                 </div>
