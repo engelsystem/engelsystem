@@ -24,7 +24,6 @@ class LegacyMiddleware implements MiddlewareInterface
         'shift_entries',
         'shifts',
         'users',
-        'user_driver_licenses',
         'admin_shifts_history',
     ];
 
@@ -90,8 +89,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 return users_controller();
             case 'user_angeltypes':
                 return user_angeltypes_controller();
-            case 'user_driver_licenses':
-                return user_driver_licenses_controller();
             case 'shifttypes':
                 list($title, $content) = shifttypes_controller();
                 return [$title, $content];

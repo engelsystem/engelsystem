@@ -11,6 +11,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Models\AngelType;
 use Psr\Log\LoggerInterface;
 
 class SettingsController extends BaseController
@@ -234,40 +235,69 @@ class SettingsController extends BaseController
         return $this->redirect->to('/settings/language');
     }
 
-    public function ifsgCertificate(): Response
+    public function certificate(): Response
     {
         $user = $this->auth->user();
 
-        if (!config('ifsg_enabled')) {
-            throw new HttpNotFound('ifsg.disabled');
+        if (!config('ifsg_enabled') && !$this->checkDrivingLicense()) {
+            throw new HttpNotFound();
         }
 
         return $this->response->withView(
             'pages/settings/certificates',
             [
                 'settings_menu'          => $this->settingsMenu(),
-                'ifsg_certificate_light' => $user->license->ifsg_certificate_light,
-                'ifsg_certificate'       => $user->license->ifsg_certificate,
+                'driving_license'        => $this->checkDrivingLicense(),
+                'certificates'           => $user->license,
             ]
         );
     }
 
     public function saveIfsgCertificate(Request $request): Response
     {
+        if (!config('ifsg_enabled')) {
+            throw new HttpNotFound();
+        }
+
         $user = $this->auth->user();
         $data = $this->validate($request, [
             'ifsg_certificate_light' => 'optional|checked',
             'ifsg_certificate' => 'optional|checked',
         ]);
 
-        if (!config('ifsg_enabled')) {
-            throw new HttpNotFound('ifsg.disabled');
-        }
-
         if (config('ifsg_light_enabled')) {
             $user->license->ifsg_certificate_light = !$data['ifsg_certificate'] && $data['ifsg_certificate_light'];
         }
         $user->license->ifsg_certificate = (bool) $data['ifsg_certificate'];
+        $user->license->save();
+
+        $this->addNotification('settings.certificates.success');
+
+        return $this->redirect->to('/settings/certificates');
+    }
+
+    public function saveDrivingLicense(Request $request): Response
+    {
+        if (!$this->checkDrivingLicense()) {
+            throw new HttpNotFound();
+        }
+
+        $user = $this->auth->user();
+        $data = $this->validate($request, [
+            'has_car' => 'optional|checked',
+            'drive_car' => 'optional|checked',
+            'drive_3_5t' => 'optional|checked',
+            'drive_7_5t' => 'optional|checked',
+            'drive_12t' => 'optional|checked',
+            'drive_forklift' => 'optional|checked',
+        ]);
+
+        $user->license->has_car = (bool) $data['has_car'];
+        $user->license->drive_car = (bool) $data['drive_car'];
+        $user->license->drive_3_5t = (bool) $data['drive_3_5t'];
+        $user->license->drive_7_5t = (bool) $data['drive_7_5t'];
+        $user->license->drive_12t = (bool) $data['drive_12t'];
+        $user->license->drive_forklift = (bool) $data['drive_forklift'];
         $user->license->save();
 
         $this->addNotification('settings.certificates.success');
@@ -342,7 +372,7 @@ class SettingsController extends BaseController
             $menu[url('/settings/theme')] = 'settings.theme';
         }
 
-        if (config('ifsg_enabled')) {
+        if (config('ifsg_enabled') || $this->checkDrivingLicense()) {
             $menu[url('/settings/certificates')] = ['title' => 'settings.certificates', 'icon' => 'card-checklist'];
         }
 
@@ -364,6 +394,13 @@ class SettingsController extends BaseController
         }
 
         return true;
+    }
+
+    protected function checkDrivingLicense(): bool
+    {
+        return $this->auth->user()->userAngelTypes->filter(function (AngelType $angelType) {
+            return $angelType->requires_driver_license;
+        })->isNotEmpty();
     }
 
     private function isRequired(string $key): string

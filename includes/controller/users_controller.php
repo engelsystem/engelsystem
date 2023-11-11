@@ -437,3 +437,57 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
 
     return new ShiftCalendarRenderer($filtered_shifts, $needed_angeltypes, $shift_entries, $shiftsFilter);
 }
+
+/**
+ * Generates a hint, if user joined angeltypes that require a driving license and the user has no driver license
+ * information provided.
+ *
+ * @return string|null
+ */
+function user_driver_license_required_hint()
+{
+    $user = auth()->user();
+
+    // User has already entered data, no hint needed.
+    if ($user->license->wantsToDrive()) {
+        return null;
+    }
+
+    $angeltypes = $user->userAngelTypes;
+    foreach ($angeltypes as $angeltype) {
+        if ($angeltype->requires_driver_license) {
+            return sprintf(
+                __('angeltype.driving_license.required.info.here'),
+                '<a href="' . url('/settings/certificates') . '">' . __('driving_license.info') . '</a>'
+            );
+        }
+    }
+
+    return null;
+}
+
+function user_ifsg_certificate_required_hint()
+{
+    $user = auth()->user();
+
+    // User has already entered data, no hint needed.
+    if (!config('ifsg_enabled') || $user->license->ifsg_light || $user->license->ifsg) {
+        return null;
+    }
+
+    $angeltypes = $user->userAngelTypes;
+    foreach ($angeltypes as $angeltype) {
+        if (
+            $angeltype->requires_ifsg_certificate && !(
+                $user->license->ifsg_certificate || $user->license->ifsg_certificate_light
+            )
+        ) {
+            return sprintf(
+                __('angeltype.ifsg.required.info.here'),
+                '<a href="' . url('/settings/certificates') . '">' . __('ifsg.info') . '</a>'
+            );
+        }
+    }
+
+    return null;
+}

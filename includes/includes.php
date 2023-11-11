@@ -33,7 +33,6 @@ $includeFiles = [
     __DIR__ . '/../includes/view/ShiftEntry_view.php',
     __DIR__ . '/../includes/view/ShiftTypes_view.php',
     __DIR__ . '/../includes/view/UserAngelTypes_view.php',
-    __DIR__ . '/../includes/view/UserDriverLicenses_view.php',
     __DIR__ . '/../includes/view/UserHintsRenderer.php',
     __DIR__ . '/../includes/view/User_view.php',
 
@@ -46,7 +45,6 @@ $includeFiles = [
     __DIR__ . '/../includes/controller/shifttypes_controller.php',
     __DIR__ . '/../includes/controller/users_controller.php',
     __DIR__ . '/../includes/controller/user_angeltypes_controller.php',
-    __DIR__ . '/../includes/controller/user_driver_licenses_controller.php',
 
     __DIR__ . '/../includes/helper/legacy_helper.php',
     __DIR__ . '/../includes/helper/message_helper.php',

@@ -191,7 +191,7 @@ function AngelType_view_buttons(
 ) {
     if ($angeltype->requires_driver_license) {
         $buttons[] = button(
-            user_driver_license_edit_link($user),
+            url('/settings/certificates'),
             icon('person-vcard') . __('my driving license')
         );
     }
@@ -378,11 +378,11 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
         $headers = array_merge($headers, [
             'wants_to_drive'               => __('Driver'),
             'has_car'                      => __('Has car'),
-            'has_license_car'              => __('Car'),
-            'has_license_3_5t_transporter' => __('3.5t Transporter'),
-            'has_license_7_5t_truck'       => __('7.5t Truck'),
-            'has_license_12t_truck'        => __('12t Truck'),
-            'has_license_forklift'         => __('Forklift'),
+            'has_license_car'              => __('settings.certificates.drive_car'),
+            'has_license_3_5t_transporter' => __('settings.certificates.drive_3_5t'),
+            'has_license_7_5t_truck'       => __('settings.certificates.drive_7_5t'),
+            'has_license_12t_truck'        => __('settings.certificates.drive_12t'),
+            'has_license_forklift'         => __('settings.certificates.drive_forklift'),
         ]);
     }
 

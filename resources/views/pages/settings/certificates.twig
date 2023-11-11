@@ -5,22 +5,56 @@
 {% block title %}{{ __('settings.certificates') }}{% endblock %}
 
 {% block row_content %}
-    <form action="" enctype="multipart/form-data" method="post">
-        {{ csrf() }}
-
-        <div class="row">
-            <div class="col-md-12">
-                {{ m.info(__('settings.certificates.info')) }}
-                {% if config('ifsg_light_enabled') %}
-                    {{ f.checkbox('ifsg_certificate_light', __('settings.ifsg_light'), {
-                            'checked': ifsg_certificate_light,
+    <div class="row">
+        {% if config('ifsg_enabled') %}
+            <form action="{{ url('/settings/certificates/ifsg') }}" enctype="multipart/form-data" method="post">
+                {{ csrf() }}
+                <div class="col-md-12 pb-3">
+                    <h3>{{ __('settings.certificates.title.ifsg') }}</h3>
+                    {{ m.info(__('settings.certificates.info')) }}
+                    {% if config('ifsg_light_enabled') %}
+                        {{ f.checkbox('ifsg_certificate_light', __('settings.certificates.ifsg_light'), {
+                                'checked': certificates.ifsg_certificate_light,
+                        }) }}
+                    {% endif %}
+                    {{ f.checkbox('ifsg_certificate', __('settings.certificates.ifsg'), {
+                            'checked': certificates.ifsg_certificate,
                     }) }}
-                {% endif %}
-                {{ f.checkbox('ifsg_certificate', __('settings.ifsg'), {
-                        'checked': ifsg_certificate,
-                }) }}
-                {{ f.submit(__('form.save')) }}
-            </div>
-        </div>
-    </form>
+                    {{ f.submit(__('form.save')) }}
+                </div>
+            </form>
+        {% endif %}
+
+        {% if driving_license %}
+            <form action="{{ url('/settings/certificates/driving') }}" enctype="multipart/form-data" method="post">
+                {{ csrf() }}
+                <div class="col-md-12">
+                    <h3>{{ __('settings.certificates.driving_license') }}</h3>
+                    {{ m.info(__('settings.certificates.info')) }}
+
+                    {{ f.checkbox('drive_car', __('settings.certificates.drive_car'), {
+                            'checked': certificates.drive_car,
+                    }) }}
+                    {{ f.checkbox('drive_3_5t', __('settings.certificates.drive_3_5t'), {
+                            'checked': certificates.drive_3_5t,
+                    }) }}
+                    {{ f.checkbox('drive_7_5t', __('settings.certificates.drive_7_5t'), {
+                            'checked': certificates.drive_7_5t,
+                    }) }}
+                    {{ f.checkbox('drive_12t', __('settings.certificates.drive_12t'), {
+                            'checked': certificates.drive_12t,
+                    }) }}
+                    {{ f.checkbox('drive_forklift', __('settings.certificates.drive_forklift'), {
+                            'checked': certificates.drive_forklift,
+                    }) }}
+
+                    {{ f.checkbox('has_car', __('settings.certificates.has_car'), {
+                            'checked': certificates.has_car,
+                    }) }}
+
+                    {{ f.submit(__('form.save')) }}
+                </div>
+            </form>
+        {% endif %}
+    </div>
 {% endblock %}
