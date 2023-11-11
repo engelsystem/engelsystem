@@ -105,15 +105,9 @@ Also adds buttons to increment / decrement the value.
                 {%- if opt.min is defined %} min="{{ opt.min }}"{% endif %}
                 {%- if opt.max is defined %} max="{{ opt.max }}"{% endif %}
                 {%- if opt.step is defined %} step="{{ opt.step }}"{% endif %}
-                {%- if opt.required|default(false) %}
-                    required
-                {%- endif -%}
-                {%- if opt.disabled|default(false) %}
-                    disabled
-                {%- endif -%}
-                {%- if opt.readonly|default(false) %}
-                    readonly
-                {%- endif -%}
+                {%- if opt.required|default(false) %} required{% endif -%}
+                {%- if opt.disabled|default(false) %} disabled{% endif -%}
+                {%- if opt.readonly|default(false) %} readonly{% endif -%}
             >
 
             <button class="btn btn-secondary spinner-down" type="button" data-input-id="{{ name }}">
@@ -152,12 +146,8 @@ Also adds buttons to increment / decrement the value.
             {% endif %}
         {%- endif %}
         <textarea class="form-control" id="{{ name }}" name="{{ name }}"
-            {%- if opt.required|default(false) %}
-                required
-            {%- endif -%}
-            {%- if opt.rows|default(0) %}
-                rows="{{ opt.rows }}"
-            {%- endif -%}
+            {%- if opt.required|default(false) %} required{%- endif -%}
+            {%- if opt.rows|default(0) %} rows="{{ opt.rows }}"{%- endif -%}
         >{{ opt.value|default('') }}</textarea>
     </div>
 {%- endmacro %}
@@ -193,7 +183,7 @@ Renders a select element wrapped in a DIV with mb-3.
         {% endif %}
         <select id="{{ name }}" name="{{ name }}"
             class="form-control {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
-            {%- if opt.required|default(false) %}required{%- endif -%}>
+            {%- if opt.required|default(false) %} required{%- endif -%}>
             {%- if opt.default_option is defined %}
                 <option value="">{{ opt.default_option }}</option>
             {% endif %}
