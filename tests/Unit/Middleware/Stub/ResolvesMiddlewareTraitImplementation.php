@@ -18,7 +18,7 @@ class ResolvesMiddlewareTraitImplementation
     }
 
     public function callResolveMiddleware(
-        string|callable|MiddlewareInterface|RequestHandlerInterface $middleware
+        string|callable|array|MiddlewareInterface|RequestHandlerInterface $middleware
     ): MiddlewareInterface|RequestHandlerInterface {
         return $this->resolveMiddleware($middleware);
     }

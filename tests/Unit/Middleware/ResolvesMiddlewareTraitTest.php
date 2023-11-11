@@ -12,6 +12,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Server\MiddlewareInterface;
+use stdClass;
 
 class ResolvesMiddlewareTraitTest extends TestCase
 {
@@ -49,6 +50,20 @@ class ResolvesMiddlewareTraitTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $middleware->callResolveMiddleware('UnresolvableClass');
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\ResolvesMiddlewareTrait::resolveMiddleware
+     */
+    public function testResolveMiddlewareNotCallable(): void
+    {
+        /** @var Application|MockObject $container */
+        $container = $this->createMock(Application::class);
+
+        $middleware = new ResolvesMiddlewareTraitImplementation($container);
+
+        $this->expectException(InvalidArgumentException::class);
+        $middleware->callResolveMiddleware([new stdClass(), 'test']);
     }
 
     /**

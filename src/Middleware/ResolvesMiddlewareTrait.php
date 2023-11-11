@@ -15,7 +15,7 @@ trait ResolvesMiddlewareTrait
      * Resolve the middleware with the container
      */
     protected function resolveMiddleware(
-        string|callable|MiddlewareInterface|RequestHandlerInterface $middleware
+        string|callable|array|MiddlewareInterface|RequestHandlerInterface $middleware
     ): MiddlewareInterface|RequestHandlerInterface {
         if ($this->isMiddleware($middleware)) {
             return $middleware;
