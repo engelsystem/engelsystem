@@ -430,28 +430,6 @@ msgstr "Du bist %s beigetreten."
 msgid "Become a %s"
 msgstr "Werde ein %s"
 
-msgid ""
-"You joined an angeltype which requires a driving license. Please edit your "
-"driving license information here: %s."
-msgstr ""
-"Du bist einem Engeltypen beigetreten, der Führerschein-Infos benötigt. Bitte "
-"trage Deine Führerschein-Infos hier ein: %s."
-
-msgid "driving license information"
-msgstr "Führerschein-Infos"
-
-msgid "Your driver license information has been saved."
-msgstr "Deine Führerschein-Infos wurden gespeichert."
-
-msgid "Please select at least one driving license."
-msgstr "Bitte wähle mindestens einen Führerschein-Typen aus."
-
-msgid "Your driver license information has been removed."
-msgstr "Deine Führerschein-Infos wurden gelöscht."
-
-msgid "Edit %s driving license information"
-msgstr "Bearbeite die Führerschein-Infos von %s"
-
 msgid "You cannot delete yourself."
 msgstr "Du kannst Dich nicht selber löschen."
 
@@ -1015,21 +993,6 @@ msgstr "Fahrer"
 msgid "Has car"
 msgstr "Hat Auto"
 
-msgid "Car"
-msgstr "Auto"
-
-msgid "3.5t Transporter"
-msgstr "3,5t Transporter"
-
-msgid "7.5t Truck"
-msgstr "7,5t LKW"
-
-msgid "12t Truck"
-msgstr "12t LKW"
-
-msgid "Forklift"
-msgstr "Gabelstapler"
-
 msgid "Info"
 msgstr "Info"
 
@@ -1243,23 +1206,6 @@ msgstr "Ausblenden bei Registrierung"
 msgid "Back to profile"
 msgstr "Zurück zum Profil"
 
-msgid "Privacy"
-msgstr "Privatsphäre"
-
-msgid ""
-"Your driving license information is only visible for supporters and admins."
-msgstr "Deine Führerschein-Infos sind nur für Supporter und Admins sichtbar."
-
-msgid "I am willing to drive a car for the event"
-msgstr "Ich möchte für das Event Auto fahren"
-
-msgid ""
-"I have my own car with me and am willing to use it for the event (You'll get "
-"reimbursed for fuel)"
-msgstr ""
-"Ich habe mein eigenes Auto dabei und möchte es zum Fahren für das Event "
-"verwenden (Du wirst für Spritkosten entschädigt)"
-
 msgid ""
 "Do you really want to delete the user including all his shifts and every "
 "other piece of his data?"
@@ -1332,9 +1278,6 @@ msgstr "Aktion"
 
 msgid "You have done enough."
 msgstr "Du hast genug gemacht."
-
-msgid "driving license"
-msgstr "Führerschein"
 
 msgid "Vouchers"
 msgstr "Gutscheine"
@@ -1784,18 +1727,44 @@ msgid "settings.certificates"
 msgstr "Zertifikate"
 
 msgid "settings.certificates.info"
-msgstr "Hier kannst du deine gemachte Gesundheitsbelehrung eintragen"
+msgstr "Diese Informationen sind nur für Supporter und Admins sichtbar."
 
-msgid "settings.ifsg_light"
+msgid "settings.certificates.title.ifsg"
+msgstr "Gesundheitsbelehrungen"
+
+msgid "settings.certificates.driving_license"
+msgstr "Führerschein"
+
+msgid "settings.certificates.has_car"
+msgstr ""
+"Ich habe mein eigenes Auto dabei und möchte es zum Fahren für das Event "
+"verwenden (Du wirst für Spritkosten entschädigt)"
+
+msgid "settings.certificates.drive_car"
+msgstr "Auto"
+
+msgid "settings.certificates.drive_3_5t"
+msgstr "3,5t Transporter"
+
+msgid "settings.certificates.drive_7_5t"
+msgstr "7,5t LKW"
+
+msgid "settings.certificates.drive_12t"
+msgstr "12t LKW"
+
+msgid "settings.certificates.drive_forklift"
+msgstr "Gabelstapler"
+
+msgid "settings.certificates.ifsg_light"
 msgstr "Ich wurde vor Ort nach IfSG §43 (Frikadellendiplom light) belehrt."
 
-msgid "settings.ifsg"
+msgid "settings.certificates.ifsg"
 msgstr "Ich habe eine Belehrung nach §43 IfSG (Frikadellendiplom) bei meinem Gesundheitsamt "
 "erhalten und innerhalb von 3 Monaten die Zweitbelehrung durch uns oder meinen Arbeitgeber/Koch/Verein bekommen. "
 "Zusätzlich ist die Zweitbelehrung nicht älter als zwei Jahre."
 
 msgid "settings.certificates.success"
-msgstr "Gesundheitsbelehrung wurde erfolgreich geändert."
+msgstr "Zertifikate wurden erfolgreich aktualisiert."
 
 msgid "angeltype.ifsg.required"
 msgstr "Benötigt eine Gesundheitsbelehrung"
@@ -1816,8 +1785,16 @@ msgid "angeltype.ifsg.required.info.here"
 msgstr "Dieser Engeltyp benötigt eine Gesundheitsbelehrung. "
 "Bitte trage deine Gesundheitsbelehrung hier ein: %s"
 
+msgid "angeltype.driving_license.required.info.here"
+msgstr ""
+"Du bist einem Engeltypen beigetreten, der Führerschein-Infos benötigt. "
+"Bitte trage Deine Führerschein-Infos hier ein: %s."
+
 msgid "ifsg.info"
 msgstr "Gesundheitsbelehrungs-Infos"
+
+msgid "driving_license.info"
+msgstr "Führerschein-Infos"
 
 msgid "settings.language"
 msgstr "Sprache"

@@ -11,6 +11,7 @@ use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Session as SessionModel;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\Settings;
@@ -88,7 +89,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testProfile(): void
     {
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
         /** @var Response|MockObject $response */
         $this->response->expects($this->once())
             ->method('withView')
@@ -417,7 +418,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testThemeUnderNormalConditionReturnsCorrectViewAndData(): void
     {
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         /** @var Response|MockObject $response */
         $this->response->expects($this->once())
@@ -488,7 +489,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testLanguageUnderNormalConditionReturnsCorrectViewAndData(): void
     {
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         /** @var Response|MockObject $response */
         $this->response->expects($this->once())
@@ -593,7 +594,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testSessions(): void
     {
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         $this->response->expects($this->once())
             ->method('withView')
@@ -680,37 +681,57 @@ class SettingsControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::__construct
-     * @covers \Engelsystem\Controllers\SettingsController::ifsgCertificate
+     * @covers \Engelsystem\Controllers\SettingsController::certificate
      */
-    public function testIfsgCertificate(): void
+    public function testCertificateIfsg(): void
     {
         config(['ifsg_enabled' => true, 'ifsg_light_enabled' => true]);
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
                 $this->assertEquals('pages/settings/certificates', $view);
-                $this->assertArrayHasKey('ifsg_certificate_light', $data);
-                $this->assertArrayHasKey('ifsg_certificate', $data);
-                $this->assertEquals($this->user->license->ifsg_certificate_light, $data['ifsg_certificate_light']);
-                $this->assertEquals($this->user->license->ifsg_certificate, $data['ifsg_certificate']);
+                $this->assertArrayHasKey('certificates', $data);
+                $this->assertEquals($this->user->license, $data['certificates']);
                 return $this->response;
             });
 
-        $this->controller->ifsgCertificate();
+        $this->controller->certificate();
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SettingsController::ifsgCertificate
+     * @covers \Engelsystem\Controllers\SettingsController::certificate
      */
-    public function testIfsgCertificateNotConfigured(): void
+    public function testCertificateIfsgNotConfigured(): void
     {
         config(['ifsg_enabled' => false]);
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         $this->expectException(HttpNotFound::class);
-        $this->controller->ifsgCertificate();
+        $this->controller->certificate();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::certificate
+     */
+    public function testCertificateDrivingLicense(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        $angelType = AngelType::factory()->create(['requires_driver_license' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertEquals('pages/settings/certificates', $view);
+                $this->assertArrayHasKey('certificates', $data);
+                $this->assertEquals($this->user->license, $data['certificates']);
+                return $this->response;
+            });
+
+        $this->controller->certificate();
     }
 
     /**
@@ -719,7 +740,6 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveIfsgCertificateNotConfigured(): void
     {
         config(['ifsg_enabled' => false]);
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
 
         $this->expectException(HttpNotFound::class);
         $this->controller->saveIfsgCertificate($this->request);
@@ -823,6 +843,49 @@ class SettingsControllerTest extends ControllerTest
         $this->assertEquals(false, $this->user->license->ifsg_certificate_light);
         $this->assertEquals(true, $this->user->license->ifsg_certificate);
     }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveDrivingLicense
+     * @covers \Engelsystem\Controllers\SettingsController::checkDrivingLicense
+     */
+    public function testSaveDrivingLicense(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        $angelType = AngelType::factory()->create(['requires_driver_license' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
+
+        $body = [
+            'has_car' => true,
+            'drive_forklift' => true,
+            'drive_12t' => true,
+        ];
+        $this->request = $this->request->withParsedBody($body);
+
+        $this->response->expects($this->once())
+            ->method('redirectTo')
+            ->with('http://localhost/settings/certificates')
+            ->willReturn($this->response);
+
+        $this->controller->saveDrivingLicense($this->request);
+
+        $this->assertTrue($this->user->license->has_car);
+        $this->assertTrue($this->user->license->drive_forklift);
+        $this->assertTrue($this->user->license->drive_12t);
+        $this->assertFalse($this->user->license->drive_car);
+        $this->assertFalse($this->user->license->drive_3_5t);
+        $this->assertFalse($this->user->license->drive_7_5t);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveDrivingLicense
+     */
+    public function testSaveDrivingLicenseNotAvailable(): void
+    {
+        $this->expectException(HttpNotFound::class);
+        $this->controller->saveDrivingLicense($this->request);
+    }
+
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
@@ -968,6 +1031,8 @@ class SettingsControllerTest extends ControllerTest
             ]))
             ->has(License::factory())
             ->create();
+
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
 
         // Create 4 sessions, 3 for the active user
         $this->otherSession = SessionModel::factory()->create()->first(); // Other users sessions

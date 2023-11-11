@@ -557,14 +557,6 @@ function User_view(
                             page_link_to('admin_user', ['id' => $user_source->id]),
                             icon('pencil') . __('edit')
                         ) : '',
-                        $admin_user_privilege || ($its_me && $needs_drivers_license) ? button(
-                            user_driver_license_edit_link($user_source),
-                            icon('person-vcard') . __('driving license')
-                        ) : '',
-                        config('ifsg_enabled') && ($admin_user_privilege || ($its_me && $needs_ifsg_certificate)) ? button(
-                            page_link_to('settings/certificates'),
-                            icon('card-checklist') . __('ifsg.certificate')
-                        ) : '',
                         (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
                             form([
                                 form_hidden('action', 'arrived'),
