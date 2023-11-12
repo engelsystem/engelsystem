@@ -281,7 +281,7 @@ msgid "settings.profile.email_messages"
 msgstr "Notify me on new private messages."
 
 msgid "settings.profile.email_by_human_allowed"
-msgstr "Allow heaven angels to contact you by e-mail."
+msgstr "Allow heaven angels to contact me by e-mail."
 
 msgid "settings.profile.email_goody"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
@@ -577,7 +577,7 @@ msgid "dashboard.day"
 msgstr "Day"
 
 msgid "page.sign-up.title"
-msgstr "Angel sign-up"
+msgstr "Angel registration"
 
 msgid "page.sign-up.login-data"
 msgstr "Login data"
@@ -589,10 +589,10 @@ msgid "page.sign-up.what-do-you-want-to-do"
 msgstr "What do you want to do?"
 
 msgid "page.sign-up.sign-up"
-msgstr "Sign up"
+msgstr "Register"
 
 msgid "pages.sign-up.disabled"
 msgstr "The angel registration is disabled"
 
 msgid "pages.sign-up.successful"
-msgstr "Angel sign-up success. You can now log in."
+msgstr "Angel registration success. You can now log in."

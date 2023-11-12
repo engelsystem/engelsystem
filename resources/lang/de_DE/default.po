@@ -1710,7 +1710,7 @@ msgid "settings.profile.email_messages"
 msgstr "Benachrichtige mich bei neuen privaten Nachrichten."
 
 msgid "settings.profile.email_by_human_allowed"
-msgstr "Erlaube Himmel-Engeln dich per Mail zu kontaktieren."
+msgstr "Erlaube Himmel-Engeln mich per Mail zu kontaktieren."
 
 msgid "settings.profile.email_goody"
 msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "

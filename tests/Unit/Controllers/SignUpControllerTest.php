@@ -100,7 +100,7 @@ final class SignUpControllerTest extends ControllerTest
         $this->response
             ->expects(self::once())
             ->method('redirectTo')
-            ->with('http://localhost/sign-up', 302);
+            ->with('http://localhost/register', 302);
 
         $this->subject->save($request);
     }
