@@ -273,3 +273,9 @@ msgstr "Location successfully deleted."
 
 msgid "validation.name.exists"
 msgstr "The name is already used."
+
+msgid "registration.disabled"
+msgstr "The registration is disabled."
+
+msgid "registration.successful"
+msgstr "Registration successful. You can now log in!"

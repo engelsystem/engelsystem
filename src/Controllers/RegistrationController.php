@@ -15,7 +15,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class SignUpController extends BaseController
+class RegistrationController extends BaseController
 {
     use HasUserNotifications;
 
@@ -48,7 +48,7 @@ class SignUpController extends BaseController
         $rawData = $request->getParsedBody();
         $user = $this->userFactory->createFromData($rawData);
 
-        $this->addNotification('pages.sign-up.successful');
+        $this->addNotification('registration.successful');
 
         if ($this->config->get('welcome_msg')) {
             // Set a session marker to display the welcome message on the next page
@@ -71,7 +71,7 @@ class SignUpController extends BaseController
 
     private function notifySignUpDisabledAndRedirectToHome(): Response
     {
-        $this->addNotification('pages.sign-up.disabled', NotificationType::INFORMATION);
+        $this->addNotification('registration.disabled', NotificationType::INFORMATION);
         return $this->redirect->to('/');
     }
 
@@ -79,7 +79,7 @@ class SignUpController extends BaseController
     {
         $goodieType = GoodieType::from($this->config->get('goodie_type'));
         $preselectedAngelTypes = $this->determinePreselectedAngelTypes();
-        $requiredFields = $this->config->get('signup_required_fields');
+        $requiredFields = $this->config->get('required_user_fields');
 
         // form-data-register-submit is a marker, that the form was submitted.
         // It will be used for instance to use the default angel types or the user selected ones.
@@ -87,7 +87,7 @@ class SignUpController extends BaseController
         $this->session->remove('form-data-register-submit');
 
         return $this->response->withView(
-            'pages/sign-up',
+            'pages/registration',
             [
                 'tShirtSizes' => $this->config->get('tshirt_sizes'),
                 'angelTypes' => AngelType::whereHideRegister(false)->get(),

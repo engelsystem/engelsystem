@@ -337,7 +337,7 @@ class UserTest extends ServiceProviderTest
             $user->userAngelTypes->contains('name', $angelTypes[0]->name)
         );
 
-        // Do not expect an assignment of the angel type hidden on sign-up
+        // Do not expect an assignment of the angel type hidden on registration
         $this->assertFalse(
             $user->userAngelTypes->contains('name', $angelTypes[1]->name)
         );
@@ -461,7 +461,7 @@ class UserTest extends ServiceProviderTest
     /**
      * Creates two AngelTypes:
      * 1. Normal angel type
-     * 2. Angel type hidden on sign-up
+     * 2. Angel type hidden on registration
      *
      * @return Array<AngelType>
      */

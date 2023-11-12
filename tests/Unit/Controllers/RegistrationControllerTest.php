@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers;
 
-use Engelsystem\Controllers\SignUpController;
+use Engelsystem\Controllers\RegistrationController;
 use Engelsystem\Factories\User;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\OAuth;
@@ -12,9 +12,9 @@ use Engelsystem\Models\User\User as EngelsystemUser;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @group sign-up-controller-tests
+ * @group registration-controller-tests
  */
-final class SignUpControllerTest extends ControllerTest
+final class RegistrationControllerTest extends ControllerTest
 {
     /**
      * @var Authenticator&MockObject
@@ -26,7 +26,7 @@ final class SignUpControllerTest extends ControllerTest
      */
     private User $userFactory;
 
-    private SignUpController $subject;
+    private RegistrationController $subject;
 
     public function setUp(): void
     {
@@ -44,11 +44,11 @@ final class SignUpControllerTest extends ControllerTest
             ->getMock();
         $this->config->set('oauth', []);
         $this->app->instance(User::class, $this->userFactory);
-        $this->subject = $this->app->make(SignUpController::class);
+        $this->subject = $this->app->make(RegistrationController::class);
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testSave(): void
     {
@@ -75,7 +75,7 @@ final class SignUpControllerTest extends ControllerTest
         // Assert that the success notification is there
         self::assertEquals(
             [
-                'messages.message' => ['pages.sign-up.successful'],
+                'messages.message' => ['registration.successful'],
             ],
             $this->session->all()
         );
@@ -86,7 +86,7 @@ final class SignUpControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testSaveAlreadyLoggedIn(): void
     {
@@ -96,7 +96,7 @@ final class SignUpControllerTest extends ControllerTest
         // Fake logged in user
         $this->authenticator->method('user')->willReturn(new EngelsystemUser());
 
-        // Assert that the user is redirected to /sign-up again
+        // Assert that the user is redirected to /register again
         $this->response
             ->expects(self::once())
             ->method('redirectTo')
@@ -106,7 +106,7 @@ final class SignUpControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testSaveOAuth(): void
     {
@@ -136,7 +136,7 @@ final class SignUpControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testSaveWithWelcomeMesssage(): void
     {
@@ -153,7 +153,7 @@ final class SignUpControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testSaveRegistrationDisabled(): void
     {
@@ -176,14 +176,14 @@ final class SignUpControllerTest extends ControllerTest
         // Assert that the error notification is there
         self::assertEquals(
             [
-                'messages.information' => ['pages.sign-up.disabled'],
+                'messages.information' => ['registration.disabled'],
             ],
             $this->session->all()
         );
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewRegistrationDisabled(): void
     {
@@ -206,7 +206,7 @@ final class SignUpControllerTest extends ControllerTest
         // Assert that the error notification is there
         self::assertEquals(
             [
-                'messages.information' => ['pages.sign-up.disabled'],
+                'messages.information' => ['registration.disabled'],
             ],
             $this->session->all()
         );

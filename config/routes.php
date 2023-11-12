@@ -8,8 +8,8 @@ use FastRoute\RouteCollector;
 
 // Pages
 $route->get('/', 'HomeController@index');
-$route->get('/register', 'SignUpController@view');
-$route->post('/register', 'SignUpController@save');
+$route->get('/register', 'RegistrationController@view');
+$route->post('/register', 'RegistrationController@save');
 $route->get('/credits', 'CreditsController@index');
 $route->get('/health', 'HealthController@index');
 

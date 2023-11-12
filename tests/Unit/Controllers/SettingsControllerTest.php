@@ -949,7 +949,7 @@ class SettingsControllerTest extends ControllerTest
             'locales' => $languages,
             'tshirt_sizes' => $tshirt_sizes,
             'goodie_type' => GoodieType::Goodie->value,
-            'signup_required_fields' => $requiredFields,
+            'required_user_fields' => $requiredFields,
         ]);
         $this->app->instance('config', $this->config);
         $this->app->instance(Config::class, $this->config);

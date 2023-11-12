@@ -233,8 +233,8 @@ return [
     // Users are able to sign up
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
 
-    // Required fields on sign-up page
-    'signup_required_fields' => [
+    // Required user fields
+    'required_user_fields' => [
         'pronoun'            => (bool) env('PRONOUN_REQUIRED', false),
         'firstname'          => (bool) env('FIRSTNAME_REQUIRED', false),
         'lastname'           => (bool) env('LASTNAME_REQUIRED', false),
