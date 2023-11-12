@@ -73,51 +73,54 @@ class FeedController extends BaseController
             // ! All attributes not defined in $data might change at any time !
             $data = [
                 // Name of the shift (type)
-                'name'           => $shift->shiftType->name,
+                /** @deprecated, use shifttype_name instead */
+                'name'           => (string) $shift->shiftType->name,
                 // Shift / Talk title
-                'title'          => $shift->title,
+                'title'          => (string) $shift->title,
                 // Shift description, should be shown after shifttype_description, markdown formatted
-                'description'    => $shift->description,
+                'description'    => (string) $shift->description,
 
-                'link'           => $this->url->to('/shifts', ['action' => 'view', 'shift_id' => $shift->id]),
+                'link'           => (string) $this->url->to('/shifts', ['action' => 'view', 'shift_id' => $shift->id]),
 
-                // Users comment
-                'Comment'        => $entry->user_comment,
+                // Users comment, might be empty
+                'Comment'        => (string) $entry->user_comment,
 
                 // Shift id
-                'SID'            => $shift->id,
+                'SID'            => (int) $shift->id,
 
                 // Shift type
-                'shifttype_id'   => $shift->shiftType->id,
-                'shifttype_name' => $shift->shiftType->name, // General type of the task
-                'shifttype_description' => $shift->shiftType->description, // General description, markdown formatted
+                'shifttype_id'   => (int) $shift->shiftType->id,
+                // General type of the task
+                'shifttype_name' => (string) $shift->shiftType->name,
+                // General description, markdown formatted, might be empty
+                'shifttype_description' => (string) $shift->shiftType->description,
 
-                // Talk URL
-                'URL'            => $shift->url,
+                // Talk URL, mostly empty
+                'URL'            => (string) $shift->url,
 
                 // Location (room) id
-                'RID'            => $shift->location->id,
+                'RID'            => (int) $shift->location->id,
                 // Location (room) name
-                'Name'           => $shift->location->name,
-                // Location map url
-                'map_url'        => $shift->location->map_url,
+                'Name'           => (string) $shift->location->name,
+                // Location map url, can be empty
+                'map_url'        => (string) $shift->location->map_url,
 
                 // Start timestamp
                 /** @deprecated start_date should be used */
-                'start'          => $shift->start->timestamp,
+                'start'          => (int) $shift->start->timestamp,
                 // Start date
-                'start_date'     => $shift->start->toRfc3339String(),
+                'start_date'     => (string) $shift->start->toRfc3339String(),
                 // End timestamp
                 /** @deprecated end_date should be used */
-                'end'            => $shift->end->timestamp,
+                'end'            => (int) $shift->end->timestamp,
                 // End date
-                'end_date'       => $shift->end->toRfc3339String(),
+                'end_date'       => (string) $shift->end->toRfc3339String(),
 
                 // Timezone offset like "+01:00"
                 /** @deprecated should be retrieved from start_date or end_date */
-                'timezone'       => $timeZone->toOffsetName(),
+                'timezone'       => (string) $timeZone->toOffsetName(),
                 // The events timezone like "Europe/Berlin"
-                'event_timezone' => $timeZone->getName(),
+                'event_timezone' => (string) $timeZone->getName(),
             ];
 
             $response[] = [
