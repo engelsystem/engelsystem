@@ -324,6 +324,6 @@ class OAuthController extends BaseController
         $this->session->set('oauth2_enable_password', $config['enable_password']);
         $this->session->set('oauth2_allow_registration', $config['allow_registration']);
 
-        return $this->redirect->to('/sign-up');
+        return $this->redirect->to('/register');
     }
 }

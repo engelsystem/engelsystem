@@ -440,7 +440,7 @@ class OAuthControllerTest extends TestCase
 
         $this->setExpects($this->auth, 'user', null, null, $this->atLeastOnce());
 
-        $this->setExpects($this->redirect, 'to', ['/sign-up']);
+        $this->setExpects($this->redirect, 'to', ['/register']);
 
         $request = new Request();
         $request = $request
@@ -528,7 +528,7 @@ class OAuthControllerTest extends TestCase
 
         $this->setExpects($this->auth, 'user', null, null, $this->atLeastOnce());
 
-        $this->setExpects($this->redirect, 'to', ['/sign-up']);
+        $this->setExpects($this->redirect, 'to', ['/register']);
 
         $request = new Request();
         $request = $request

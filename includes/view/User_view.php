@@ -174,7 +174,7 @@ function Users_view(
         unset($user_table_headers[$key]);
     }
 
-    $link = button(page_link_to('sign-up'), icon('plus-lg'), 'add');
+    $link = button(url('register'), icon('plus-lg'), 'add');
     return page_with_title(__('All users') . ' ' . $link, [
         msg(),
         table($user_table_headers, $usersList),
