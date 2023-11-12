@@ -35,7 +35,7 @@ class SettingsController extends BaseController
     public function profile(): Response
     {
         $user = $this->auth->user();
-        $requiredFields = $this->config->get('signup_required_fields');
+        $requiredFields = $this->config->get('required_user_fields');
 
         return $this->response->withView(
             'pages/settings/profile',
@@ -368,7 +368,7 @@ class SettingsController extends BaseController
 
     private function isRequired(string $key): string
     {
-        $requiredFields = $this->config->get('signup_required_fields');
+        $requiredFields = $this->config->get('required_user_fields');
         return $requiredFields[$key] ? 'required' : 'optional';
     }
 

@@ -40,7 +40,7 @@ class User
      * Takes some arbitrary data, validates it and tries to create a user from it.
      *
      * @param Array<string, mixed> $rawData Raw data from which a user should be created
-     * @return The user if successful
+     * @return EngelsystemUser The user if successful
      * @throws
      */
     public function createFromData(array $rawData): EngelsystemUser
@@ -69,7 +69,7 @@ class User
 
     private function isRequired(string $key): string
     {
-        $requiredFields = $this->config->get('signup_required_fields');
+        $requiredFields = $this->config->get('required_user_fields');
         return $requiredFields[$key] ? 'required' : 'optional';
     }
 

@@ -35,7 +35,7 @@ final class SignUpConfig
         $config->set('enable_user_name', true);
         $config->set('enable_mobile_show', true);
         $config->set('enable_dect', true);
-        $config->set('signup_required_fields', $requiredFields);
+        $config->set('required_user_fields', $requiredFields);
     }
 
     public static function setMinimumConfig(Config $config): void
@@ -48,12 +48,6 @@ final class SignUpConfig
             'mobile'      => false,
             'dect'        => false,
         ];
-        $requiredFields['pronoun'] = false;
-        $requiredFields['firstname'] = false;
-        $requiredFields['lastname'] = false;
-        $requiredFields['tshirt_size'] = true;
-        $requiredFields['mobile'] = false;
-        $requiredFields['dect'] = false;
         $config->set('registration_enabled', true);
         $config->set('enable_password', true);
         $config->set('enable_pronoun', false);
@@ -66,6 +60,6 @@ final class SignUpConfig
         $config->set('enable_user_name', false);
         $config->set('enable_mobile_show', false);
         $config->set('enable_dect', false);
-        $config->set('signup_required_fields', $requiredFields);
+        $config->set('required_user_fields', $requiredFields);
     }
 }

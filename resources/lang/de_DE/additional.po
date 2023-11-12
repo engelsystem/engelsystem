@@ -274,3 +274,9 @@ msgstr "Ort erfolgreich gelöscht."
 
 msgid "validation.name.exists"
 msgstr "Der Name wird bereits verwendet."
+
+msgid "registration.disabled"
+msgstr "Die Registrierung ist deaktiviert."
+
+msgid "registration.successful"
+msgstr "Registrierung erfolgreich. Du kannst dich jetzt anmelden!"

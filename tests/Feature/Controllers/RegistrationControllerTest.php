@@ -6,7 +6,7 @@ namespace Engelsystem\Test\Feature\Controllers;
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
-use Engelsystem\Controllers\SignUpController;
+use Engelsystem\Controllers\RegistrationController;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
@@ -17,9 +17,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * @group sign-up-controller-tests
+ * @group registration-controller-tests
  */
-final class SignUpControllerTest extends ApplicationFeatureTest
+final class RegistrationControllerTest extends ApplicationFeatureTest
 {
     private Application $application;
     private Config $config;
@@ -32,7 +32,7 @@ final class SignUpControllerTest extends ApplicationFeatureTest
      * @var Array<BaseModel>
      */
     private array $modelsToBeDeleted;
-    private SignUpController $subject;
+    private RegistrationController $subject;
 
     public function setUp(): void
     {
@@ -45,7 +45,7 @@ final class SignUpControllerTest extends ApplicationFeatureTest
         $this->application->instance(OAuth2::class, $this->oauth);
         $this->config = $this->application->get(Config::class);
         $this->session = $this->application->get(SessionInterface::class);
-        $this->subject = $this->application->make(SignUpController::class);
+        $this->subject = $this->application->make(RegistrationController::class);
     }
 
     public function tearDown(): void
@@ -55,10 +55,10 @@ final class SignUpControllerTest extends ApplicationFeatureTest
     }
 
     /**
-     * Renders the sign-up page with a minimum fields config.
+     * Renders the registration page with a minimum fields config.
      * Asserts that the basic fields are there while the other fields are not there.
      *
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewMinimumConfig(): void
     {
@@ -87,10 +87,10 @@ final class SignUpControllerTest extends ApplicationFeatureTest
     }
 
     /**
-     * Renders the sign-up page with a maximum fields config.
+     * Renders the registration page with a maximum fields config.
      * Asserts that all fields are there.
      *
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewMaximumConfig(): void
     {
@@ -117,7 +117,7 @@ final class SignUpControllerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewAngelTypesOAuthPreselection(): void
     {
@@ -154,7 +154,7 @@ final class SignUpControllerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewAngelTypesPreselection(): void
     {
@@ -180,7 +180,7 @@ final class SignUpControllerTest extends ApplicationFeatureTest
     /**
      * Asserts that values are prefilled after submit
      *
-     * @covers \Engelsystem\Controllers\SignUpController
+     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewValuesAfterSubmit(): void
     {
@@ -207,7 +207,7 @@ final class SignUpControllerTest extends ApplicationFeatureTest
      * Creates three angel types:
      * - unrestricted
      * - restricted
-     * - unrestricted, hidden on sign-up
+     * - unrestricted, hidden on registration
      *
      * @return Array<AngelType>
      */

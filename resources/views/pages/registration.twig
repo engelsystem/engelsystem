@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('page.sign-up.title') }}{% endblock %}
+{% block title %}{{ __('registration.title') }}{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -12,7 +12,7 @@
             ? m.button(m.icon('chevron-left'), url('/users'), null, 'sm')
             : ''
         }}
-        {{ __('page.sign-up.title') }}
+        {{ __('registration.title') }}
         </h1>
     </div>
 
@@ -22,7 +22,7 @@
         {{ csrf() }}
 
         <div class="mb-5">
-            <h2>{{ __('page.sign-up.login-data') }}</h2>
+            <h2>{{ __('registration.login_data') }}</h2>
             <div class="row">
                 {% if isPronounEnabled %}
                     <div class="col-md-6">
@@ -188,7 +188,7 @@
         {% endif %}
 
         <div class="mb-5">
-            <h2>{{ __('page.sign-up.event-data') }}</h2>
+            <h2>{{ __('registration.event_data') }}</h2>
             <div class="row">
                 {% if isGoodieEnabled %}
                     <div class="col-md-6">
@@ -284,7 +284,7 @@
         </div>
 
         <div class="mb-5">
-            <h2>{{ __('page.sign-up.what-do-you-want-to-do') }}</h2>
+            <h2>{{ __('registration.what_todo') }}</h2>
             <div class="row mb-3">
                 {% for angelType in angelTypes %}
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
@@ -318,7 +318,7 @@
             By assigning a name here, some magic™ will create a session var
             "form-data-register-submit" with the value 1 on submit.
         #}
-        {{ f.submit(__('page.sign-up.sign-up'), {
+        {{ f.submit(__('registration.register'), {
             'name': 'register-submit',
         }) }}
     </form>

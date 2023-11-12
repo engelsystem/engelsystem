@@ -174,7 +174,7 @@ function Users_view(
         unset($user_table_headers[$key]);
     }
 
-    $link = button(url('register'), icon('plus-lg'), 'add');
+    $link = button(url('/register'), icon('plus-lg'), 'add');
     return page_with_title(__('All users') . ' ' . $link, [
         msg(),
         table($user_table_headers, $usersList),
@@ -954,7 +954,7 @@ function render_user_tshirt_hint()
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     if (
         $goodie_tshirt
-        && config('signup_required_fields')['tshirt_size']
+        && config('required_user_fields')['tshirt_size']
         && !auth()->user()->personalData->shirt_size
     ) {
         $text = __('You need to specify a tshirt size in your settings!');

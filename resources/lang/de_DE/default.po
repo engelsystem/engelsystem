@@ -1988,23 +1988,17 @@ msgstr "Tag %1$d"
 msgid "dashboard.day"
 msgstr "Tag"
 
-msgid "page.sign-up.title"
-msgstr "Engelregistrierung"
+msgid "registration.title"
+msgstr "Engel-Registrierung"
 
-msgid "page.sign-up.login-data"
+msgid "registration.login_data"
 msgstr "Anmeldedaten"
 
-msgid "page.sign-up.event-data"
+msgid "registration.event_data"
 msgstr "Eventdaten"
 
-msgid "page.sign-up.what-do-you-want-to-do"
+msgid "registration.what_todo"
 msgstr "Was möchtest Du machen?"
 
-msgid "page.sign-up.sign-up"
+msgid "registration.register"
 msgstr "Registrieren"
-
-msgid "pages.sign-up.disabled"
-msgstr "Die Engelregistrierung ist deaktiviert"
-
-msgid "pages.sign-up.successful"
-msgstr "Engelregistrierung erfolgreich! Du kannst dich jetzt anmelden!"

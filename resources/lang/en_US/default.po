@@ -576,23 +576,17 @@ msgstr "Day %1$d"
 msgid "dashboard.day"
 msgstr "Day"
 
-msgid "page.sign-up.title"
+msgid "registration.title"
 msgstr "Angel registration"
 
-msgid "page.sign-up.login-data"
+msgid "registration.login_data"
 msgstr "Login data"
 
-msgid "page.sign-up.event-data"
+msgid "registration.event_data"
 msgstr "Event data"
 
-msgid "page.sign-up.what-do-you-want-to-do"
+msgid "registration.what_todo"
 msgstr "What do you want to do?"
 
-msgid "page.sign-up.sign-up"
+msgid "registration.register"
 msgstr "Register"
-
-msgid "pages.sign-up.disabled"
-msgstr "The angel registration is disabled"
-
-msgid "pages.sign-up.successful"
-msgstr "Angel registration success. You can now log in."
