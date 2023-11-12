@@ -680,7 +680,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
     }
 
     return div('col-md-2', [
-        heading(__('User state'), 4),
+        heading(__('State'), 4),
         join('<br>', $state),
     ]);
 }
