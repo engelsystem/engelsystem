@@ -36,8 +36,12 @@ function header_render_hints()
         // Important hints:
         $hints_renderer->addHint(render_user_freeloader_hint(), true);
         $hints_renderer->addHint(render_user_arrived_hint(), true);
+        $hints_renderer->addHint(render_user_pronoun_hint(), true);
+        $hints_renderer->addHint(render_user_firstname_hint(), true);
+        $hints_renderer->addHint(render_user_lastname_hint(), true);
         $hints_renderer->addHint(render_user_tshirt_hint(), true);
         $hints_renderer->addHint(render_user_dect_hint(), true);
+        $hints_renderer->addHint(render_user_mobile_hint(), true);
 
         return $hints_renderer->render();
     }

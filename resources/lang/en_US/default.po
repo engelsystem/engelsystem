@@ -590,3 +590,23 @@ msgstr "What do you want to do?"
 
 msgid "registration.register"
 msgstr "Register"
+
+msgid "tshirt.required.hint"
+msgstr "Please specify a tshirt size in your settings!"
+
+msgid "dect.required.hint"
+msgstr ""
+"Please specify a DECT phone number in your settings! "
+"If you don't have a DECT phone, just enter '-'."
+
+msgid "pronoun.required.hint"
+msgstr "Please enter a pronoun in your settings!"
+
+msgid "firstname.required.hint"
+msgstr "Please enter a firstname in your settings!"
+
+msgid "lastname.required.hint"
+msgstr "Please enter a lastname in your settings!"
+
+msgid "mobile.required.hint"
+msgstr "Please enter a mobile number in your settings!"
