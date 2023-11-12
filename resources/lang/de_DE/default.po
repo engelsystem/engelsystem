@@ -1403,15 +1403,25 @@ msgstr ""
 "Du hast mindestens %s Schichten geschwänzt. Schicht-Registrierung ist "
 "gesperrt. Bitte gehe zum Himmelsschreibtisch um wieder entsperrt zu werden."
 
-msgid "You need to specify a tshirt size in your settings!"
-msgstr "Bitte eine T-Shirt-Größe auswählen"
+msgid "tshirt.required.hint"
+msgstr "Bitte gib eine T-Shirt-Größe in deinen Einstellungen an."
 
-msgid ""
-"You need to specify a DECT phone number in your settings! If you don't have "
-"a DECT phone, just enter '-'."
+msgid "dect.required.hint"
 msgstr ""
-"Bitte eine DECT-Telefonnummer in den Einstellungen eingeben. Wenn du noch "
-"keine Nummer hast, bitte einfach \"-\" angeben."
+"Bitte gib eine DECT-Telefonnummer in deinen Einstellungen an. Wenn du "
+"keine Nummer hast, trage einfach '-' ein."
+
+msgid "pronoun.required.hint"
+msgstr "Bitte gib ein Pronomen in deinen Einstellungen an."
+
+msgid "firstname.required.hint"
+msgstr "Bitte gib einen Vornamen in deinen Einstellungen an."
+
+msgid "lastname.required.hint"
+msgstr "Bitte gib einen Nachnamen in deinen Einstellungen an."
+
+msgid "mobile.required.hint"
+msgstr "Bitte gib eine Handynummer in deinen Einstellungen an."
 
 msgid ""
 "Here you can change the user entry. Under the item 'Arrived' the angel is marked as present, "
