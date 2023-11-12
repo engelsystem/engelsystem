@@ -1355,8 +1355,8 @@ msgstr ""
 "Gehe zur <a href=\"%s\">Schicht-Tabelle</a>, um Dich für Schichten "
 "einzutragen."
 
-msgid "User state"
-msgstr "Engelzustand"
+msgid "State"
+msgstr "Status"
 
 msgid "Not arrived"
 msgstr "Nicht angekommen"
@@ -1380,7 +1380,7 @@ msgid "out of %s"
 msgstr "von %s"
 
 msgid "Rights"
-msgstr "Rechte"
+msgstr "Berechtigungen"
 
 msgid ""
 "You are not marked as arrived. Please go to heaven's desk, get your angel "
