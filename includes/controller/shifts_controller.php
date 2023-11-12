@@ -195,7 +195,9 @@ function shift_edit_controller()
         $angel_types_spinner .= form_spinner(
             'angeltype_count_' . $angeltype_id,
             $angeltype_name,
-            $needed_angel_types[$angeltype_id]
+            $needed_angel_types[$angeltype_id],
+            [],
+            ScheduleShift::whereShiftId($shift->id)->first() ? true : false,
         );
     }
 

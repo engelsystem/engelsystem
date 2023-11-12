@@ -24,21 +24,22 @@ function form_hidden($name, $value)
  * @param array  $data_attributes
  * @return string
  */
-function form_spinner(string $name, string $label, int $value, array $data_attributes = [])
+function form_spinner(string $name, string $label, int $value, array $data_attributes = [], bool $isDisabled = false)
 {
     $id = 'spinner-' . $name;
     $attr = '';
     foreach ($data_attributes as $attr_key => $attr_value) {
         $attr .= ' data-' . $attr_key . '="' . $attr_value . '"';
     }
+    $disabled = $isDisabled ? ' disabled' : '';
 
     return form_element($label, '
         <div class="input-group">
-            <input id="' . $id . '" class="form-control" type="number" min="0" step="1" name="' . $name . '" value="' . $value . '"' . $attr . ' />
-            <button class="btn btn-secondary spinner-down" type="button" data-input-id="' . $id . '"' . $attr . '>
+            <input id="' . $id . '" class="form-control" type="number" min="0" step="1" name="' . $name . '" value="' . $value . '"' . $attr . $disabled . '/>
+            <button class="btn btn-secondary spinner-down' . $disabled . '" type="button" data-input-id="' . $id . '"' . $attr . '>
                 ' . icon('dash-lg') . '
             </button>
-            <button class="btn btn-secondary spinner-up" type="button" data-input-id="' . $id . '"' . $attr . '>
+            <button class="btn btn-secondary spinner-up' . $disabled . '" type="button" data-input-id="' . $id . '"' . $attr . '>
                 ' . icon('plus-lg') . '
             </button>
         </div>
