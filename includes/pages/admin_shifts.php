@@ -391,7 +391,7 @@ function admin_shifts()
             !is_array($session->get('admin_shifts_shifts'))
             || !is_array($session->get('admin_shifts_types'))
         ) {
-            throw_redirect(page_link_to('admin_shifts'));
+            throw_redirect(url('/admin-shifts'));
         }
 
         $transactionId = Str::uuid();
@@ -428,7 +428,7 @@ function admin_shifts()
         }
 
         success('Shifts created.');
-        throw_redirect(page_link_to('admin_shifts'));
+        throw_redirect(url('/admin-shifts'));
     } else {
         $session->remove('admin_shifts_shifts');
         $session->remove('admin_shifts_types');
@@ -453,11 +453,11 @@ function admin_shifts()
             . '</div>';
     }
 
-    $link = button(page_link_to('user-shifts'), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         $link . ' ' . admin_shifts_title() . ' ' . sprintf(
             '<a href="%s">%s</a>',
-            page_link_to('admin_shifts_history'),
+            url('/admin-shifts-history'),
             icon('clock-history')
         ),
         [
@@ -614,7 +614,7 @@ function admin_shifts_history(): string
         }
 
         success(sprintf(__('%s shifts deleted.'), count($shifts)));
-        throw_redirect(page_link_to('admin_shifts_history'));
+        throw_redirect(url('/admin-shifts-history'));
     }
 
     $schedules = Schedule::all()->pluck('name', 'id')->toArray();

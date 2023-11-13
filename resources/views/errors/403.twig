@@ -10,6 +10,6 @@
         {% do session_set('previous_page', request.url) %}
 
         <p>{{ __('page.403.login') }}</p>
-        <p>{{ m.button(__('general.login'), url('login')) }}</p>
+        <p>{{ m.button(__('general.login'), url('/login')) }}</p>
     {% endif %}
 {% endblock %}

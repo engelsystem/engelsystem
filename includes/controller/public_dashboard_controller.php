@@ -136,5 +136,5 @@ function public_dashboard_needed_angels($needed_angels, ShiftsFilter $filter = n
  */
 function public_dashboard_link(array $parameters = []): string
 {
-    return page_link_to('public-dashboard', $parameters);
+    return url('/public-dashboard', $parameters);
 }

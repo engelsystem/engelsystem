@@ -48,7 +48,7 @@ function angeltypes_controller()
 function angeltype_link($angeltype_id, $params = [])
 {
     $params = array_merge(['action' => 'view', 'angeltype_id' => $angeltype_id], $params);
-    return page_link_to('angeltypes', $params);
+    return url('/angeltypes', $params);
 }
 
 /**
@@ -59,7 +59,7 @@ function angeltype_link($angeltype_id, $params = [])
 function angeltype_delete_controller()
 {
     if (!auth()->can('admin_angel_types')) {
-        throw_redirect(page_link_to('angeltypes'));
+        throw_redirect(url('/angeltypes'));
     }
 
     $angeltype = AngelType::findOrFail(request()->input('angeltype_id'));
@@ -68,7 +68,7 @@ function angeltype_delete_controller()
         $angeltype->delete();
         engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype, true));
         success(sprintf(__('Angeltype %s deleted.'), $angeltype->name));
-        throw_redirect(page_link_to('angeltypes'));
+        throw_redirect(url('/angeltypes'));
     }
 
     return [
@@ -93,13 +93,13 @@ function angeltype_edit_controller()
         $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
 
         if (!auth()->user()?->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
-            throw_redirect(page_link_to('angeltypes'));
+            throw_redirect(url('/angeltypes'));
         }
     } else {
         // New angeltype
         if ($supporter_mode) {
             // Supporters aren't allowed to create new angeltypes.
-            throw_redirect(page_link_to('angeltypes'));
+            throw_redirect(url('/angeltypes'));
         }
         $angeltype = new AngelType();
     }
@@ -169,7 +169,7 @@ function angeltype_controller()
     $user = auth()->user();
 
     if (!auth()->can('angeltypes')) {
-        throw_redirect(page_link_to('/'));
+        throw_redirect(url('/'));
     }
 
     $angeltype = AngelType::findOrFail(request()->input('angeltype_id'));
@@ -275,14 +275,14 @@ function angeltypes_list_controller()
     $user = auth()->user();
 
     if (!auth()->can('angeltypes')) {
-        throw_redirect(page_link_to('/'));
+        throw_redirect(url('/'));
     }
 
     $angeltypes = AngelTypes_with_user($user->id);
     foreach ($angeltypes as $angeltype) {
         $actions = [
             button(
-                page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
+                url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
                 icon('eye') . __('view'),
                 'btn-sm'
             ),
@@ -290,12 +290,12 @@ function angeltypes_list_controller()
 
         if (auth()->can('admin_angel_types')) {
             $actions[] = button(
-                page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
+                url('/angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
                 icon('pencil') . __('edit'),
                 'btn-sm'
             );
             $actions[] = button(
-                page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
+                url('/angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
                 icon('trash') . __('delete'),
                 'btn-sm'
             );
@@ -304,8 +304,8 @@ function angeltypes_list_controller()
         $angeltype->membership = AngelType_render_membership($angeltype);
         if (!empty($angeltype->user_angel_type_id)) {
             $actions[] = button(
-                page_link_to(
-                    'user_angeltypes',
+                url(
+                    '/user-angeltypes',
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angel_type_id]
                 ),
                 icon('box-arrow-right') . __('leave'),
@@ -313,7 +313,7 @@ function angeltypes_list_controller()
             );
         } else {
             $actions[] = button(
-                page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
+                url('/user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
                 icon('box-arrow-in-right') . __('join'),
                 'btn-sm'
             );
@@ -323,7 +323,7 @@ function angeltypes_list_controller()
         $angeltype->shift_self_signup_allowed = $angeltype->shift_self_signup ? icon('pencil-square') : '';
 
         $angeltype->name = '<a href="'
-            . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
+            . url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
             . '">'
             . $angeltype->name
             . '</a>';

@@ -59,7 +59,7 @@ function User_edit_vouchers_view($user)
                     form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
                     form_submit('submit', __('form.save')),
                 ],
-                page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
+                url('/users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
             ),
         ]
     );
@@ -115,7 +115,7 @@ function Users_view(
             ? $user->personalData->planned_departure_date->format(__('Y-m-d')) : '';
         $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
         $u['actions'] = table_buttons([
-            button_icon(page_link_to('admin_user', ['id' => $user->id]), 'pencil', 'btn-sm'),
+            button_icon(url('/admin-user', ['id' => $user->id]), 'pencil', 'btn-sm'),
         ]);
         $usersList[] = $u;
     }
@@ -190,7 +190,7 @@ function Users_view(
 function Users_table_header_link($column, $label, $order_by)
 {
     return '<a href="'
-        . page_link_to('users', ['OrderBy' => $column])
+        . url('/users', ['OrderBy' => $column])
         . '">'
         . $label . ($order_by == $column ? ' <span class="caret"></span>' : '')
         . '</a>';
@@ -271,7 +271,7 @@ function User_last_shift_render($user)
 function User_view_shiftentries($needed_angel_type)
 {
     $shift_info = '<br><b><a href="'
-        . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $needed_angel_type['id']])
+        . url('/angeltypes', ['action' => 'view', 'angeltype_id' => $needed_angel_type['id']])
         . '">' . $needed_angel_type['name'] . '</a>:</b> ';
 
     $shift_entries = [];
@@ -339,7 +339,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     ];
     if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
-            page_link_to('user_myshifts', ['edit' => $shift->shift_entry_id, 'id' => $user_source->id]),
+            url('/user-myshifts', ['edit' => $shift->shift_entry_id, 'id' => $user_source->id]),
             icon('pencil') . __('edit'),
             'btn-sm'
         );
@@ -554,7 +554,7 @@ function User_view(
                             icon('person') . ($goodie_tshirt ? __('Shirt') : __('Goodie'))
                         ) : '',
                         $admin_user_privilege ? button(
-                            page_link_to('admin_user', ['id' => $user_source->id]),
+                            url('/admin-user', ['id' => $user_source->id]),
                             icon('pencil') . __('edit')
                         ) : '',
                         (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
@@ -562,11 +562,11 @@ function User_view(
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
                                 form_submit('submit', __('user.arrived'), '', false),
-                            ], page_link_to('admin_arrive'), true) : '',
+                            ], url('/admin-arrive'), true) : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(
-                                page_link_to(
-                                    'users',
+                                url(
+                                    '/users',
                                     ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
                                 ),
                                 icon('valentine') . __('Vouchers')
@@ -579,15 +579,15 @@ function User_view(
                     ], 'mb-2'),
                     $its_me ? table_buttons([
                         button(
-                            page_link_to('settings/profile'),
+                            url('/settings/profile'),
                             icon('person-fill-gear') . __('settings.settings')
                         ),
                         $auth->can('ical') ? button(
-                            page_link_to('ical', ['key' => $user_source->api_key]),
+                            url('/ical', ['key' => $user_source->api_key]),
                             icon('calendar-week') . __('iCal Export')
                         ) : '',
                         $auth->can('shifts_json_export') ? button(
-                            page_link_to('shifts_json_export', ['key' => $user_source->api_key]),
+                            url('/shifts-json-export', ['key' => $user_source->api_key]),
                             icon('braces') . __('JSON Export')
                         ) : '',
                         (
@@ -595,7 +595,7 @@ function User_view(
                             || $auth->can('ical')
                             || $auth->can('atom')
                         ) ? button(
-                            page_link_to('user_myshifts', ['reset' => 1]),
+                            url('/user-myshifts', ['reset' => 1]),
                             icon('arrow-repeat') . __('Reset API key')
                         ) : '',
                     ], 'mb-2') : '',
@@ -623,7 +623,7 @@ function User_view(
                         : '',
                     $auth->can('user_messages') ?
                         heading(
-                            '<a href="' . page_link_to('/messages/' . $user_source->id) . '">'
+                            '<a href="' . url('/messages/' . $user_source->id) . '">'
                             . icon('envelope')
                             . '</a>'
                         )
@@ -647,7 +647,7 @@ function User_view(
             $its_me && count($shifts) == 0
                 ? error(sprintf(
                     __('Go to the <a href="%s">shifts table</a> to sign yourself up for some shifts.'),
-                    page_link_to('user_shifts')
+                    url('/user-shifts')
                 ), true)
                 : '',
             $its_me ? ical_hint() : '',
@@ -878,9 +878,9 @@ function User_Pronoun_render(User $user): string
  */
 function render_profile_link($text, $user_id = null, $class = '')
 {
-    $profile_link = page_link_to('settings/profile');
+    $profile_link = url('/settings/profile');
     if (!is_null($user_id)) {
-        $profile_link = page_link_to('users', ['action' => 'view', 'user_id' => $user_id]);
+        $profile_link = url('/users', ['action' => 'view', 'user_id' => $user_id]);
     }
 
     return sprintf(

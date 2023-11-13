@@ -34,7 +34,7 @@ function user_shifts()
     $request = request();
 
     if (auth()->user()->isFreeloader()) {
-        throw_redirect(page_link_to('user_myshifts'));
+        throw_redirect(url('/user-myshifts'));
     }
 
     if ($request->has('edit_shift')) {
@@ -137,7 +137,7 @@ function load_locations(bool $onlyWithActiveShifts = false)
 
     if ($locations->isEmpty()) {
         error(__('The administration has not configured any locations yet.'));
-        throw_redirect(page_link_to('/'));
+        throw_redirect(url('/'));
     }
 
     return $locations;
@@ -162,7 +162,7 @@ function load_days()
         error(__('The administration has not configured any shifts yet.'));
         // Do not try to redirect to the current page
         if (config('home_site') != 'user_shifts') {
-            throw_redirect(page_link_to('/'));
+            throw_redirect(url('/'));
         }
     }
     return $days;
@@ -178,7 +178,7 @@ function load_types()
 
     if (!AngelType::count()) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
-        throw_redirect(page_link_to('/'));
+        throw_redirect(url('/'));
     }
 
     $types = Db::select(
@@ -289,7 +289,7 @@ function view_user_shifts()
         return Carbon::make($value)->format(__('Y-m-d'));
     })->toArray();
 
-    $link = button(page_link_to('admin-shifts'), icon('plus-lg'), 'add');
+    $link = button(url('/admin-shifts'), icon('plus-lg'), 'add');
 
     return page([
         div('col-md-12', [
@@ -371,9 +371,9 @@ function ical_hint()
     return heading(__('iCal export and API') . ' ' . button_help('user/ical'), 2)
         . '<p>' . sprintf(
             __('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
-            page_link_to('ical', ['key' => $user->api_key]),
-            page_link_to('shifts_json_export', ['key' => $user->api_key]),
-            page_link_to('user_myshifts', ['reset' => 1])
+            url('/ical', ['key' => $user->api_key]),
+            url('/shifts-json-export', ['key' => $user->api_key]),
+            url('/user-myshifts', ['reset' => 1])
         )
         . ' <button class="btn btn-sm btn-danger" type="button"
             data-bs-toggle="collapse" data-bs-target="#collapseApiKey"

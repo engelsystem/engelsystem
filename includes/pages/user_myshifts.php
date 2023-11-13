@@ -37,14 +37,14 @@ function user_myshifts()
         if ($request->input('reset') == 'ack') {
             User_reset_api_key($user);
             success(__('Key changed.'));
-            throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+            throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
         }
         return page_with_title(__('Reset API key'), [
             error(
                 __('If you reset the key, the url to your iCal- and JSON-export and your atom/rss feed changes! You have to update it in every application using one of these exports.'),
                 true
             ),
-            button(page_link_to('user_myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger'),
+            button(url('/user-myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger'),
         ]);
     } elseif ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
         $shift_entry_id = $request->input('edit');
@@ -90,7 +90,7 @@ function user_myshifts()
                         . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeloaded_comment : 'NO')
                     );
                     success(__('Shift saved.'));
-                    throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+                    throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
                 }
             }
 
@@ -106,10 +106,10 @@ function user_myshifts()
                 auth()->can('user_shifts_admin')
             );
         } else {
-            throw_redirect(page_link_to('user_myshifts'));
+            throw_redirect(url('/user-myshifts'));
         }
     }
 
-    throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+    throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
     return '';
 }

@@ -50,7 +50,7 @@ function admin_user()
         }
         $html .= '<br /><br />';
         $html .= '<form action="'
-            . page_link_to('admin_user', ['action' => 'save', 'id' => $user_id])
+            . url('/admin-user', ['action' => 'save', 'id' => $user_id])
             . '" method="post">' . "\n";
         $html .= form_csrf();
         $html .= '<table>' . "\n";
@@ -129,7 +129,7 @@ function admin_user()
         $html .= form_info('', __('Please visit the angeltypes page or the users profile to manage the users angeltypes.'));
 
         $html .= ' ' . __('Here you can reset the password of this angel:') . '<form action="'
-            . page_link_to('admin_user', ['action' => 'change_pw', 'id' => $user_id])
+            . url('/admin-user', ['action' => 'change_pw', 'id' => $user_id])
             . '" method="post">' . "\n";
         $html .= form_csrf();
         $html .= '<table>' . "\n";
@@ -158,7 +158,7 @@ function admin_user()
             && ($my_highest_group >= $angel_highest_group || is_null($angel_highest_group))
         ) {
             $html .= __('Here you can define the user groups of the angel:') . '<form action="'
-                . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
+                . url('/admin-user', ['action' => 'save_groups', 'id' => $user_id])
                 . '" method="post">' . "\n";
             $html .= form_csrf();
             $html .= '<div>';
@@ -303,7 +303,7 @@ function admin_user()
         }
     }
 
-    $link = button(page_link_to('users', ['action' => 'view', 'user_id' => $user_id]), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/users', ['action' => 'view', 'user_id' => $user_id]), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         $link . ' ' . __('Edit user'),
         [

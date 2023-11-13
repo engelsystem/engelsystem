@@ -63,17 +63,17 @@
                     {% endif %}
 
                     {% if has_permission_to('login') %}
-                        {{ _self.toolbar_item(__('general.login'), url('login'), 'login', 'box-arrow-in-right') }}
+                        {{ _self.toolbar_item(__('general.login'), url('/login'), 'login', 'box-arrow-in-right') }}
                     {% endif %}
                 {% endif %}
 
                 {% if is_user() %}
-                    {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'clock', __('Next shift')) }}
+                    {{ _self.toolbar_item(menuUserShiftState(user), url('/shifts', {'action': 'next'}), '', 'clock', __('Next shift')) }}
 
                     {% if has_permission_to('user_messages') %}
                         {{ _self.toolbar_item(
                             user_messages ? '<span class="badge bg-danger">' ~ user_messages ~ '</span>' : '',
-                            url('messages'),
+                            url('/messages'),
                             'messages',
                             'envelope'
                         ) }}
@@ -88,15 +88,15 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             {% if has_permission_to('user_myshifts') %}
-                                {{ _self.dropdown_item(__('profile.my-shifts'), url('users', {'action': 'view'}), 'users', m.icon('calendar-range')) }}
+                                {{ _self.dropdown_item(__('profile.my-shifts'), url('/users', {'action': 'view'}), 'users', m.icon('calendar-range')) }}
                             {% endif %}
 
                             {% if has_permission_to('user_settings') %}
-                                {{ _self.dropdown_item(__('settings.settings'), url('settings/profile'), 'settings/profile', m.icon('person-fill-gear')) }}
+                                {{ _self.dropdown_item(__('settings.settings'), url('/settings/profile'), 'settings/profile', m.icon('person-fill-gear')) }}
                             {% endif %}
 
                             {% if has_permission_to('logout') %}
-                                {{ _self.dropdown_item(__('Logout'), url('logout'), 'logout', m.icon('box-arrow-left')) }}
+                                {{ _self.dropdown_item(__('Logout'), url('/logout'), 'logout', m.icon('box-arrow-left')) }}
                             {% endif %}
                         </ul>
                     </li>

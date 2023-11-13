@@ -25,7 +25,7 @@ function ShiftType_delete_view(ShiftType $shifttype)
         info(sprintf(__('Do you want to delete shifttype %s?'), $shifttype->name), true),
         form([
             buttons([
-                button(page_link_to('shifttypes'), icon('x-lg') . __('form.cancel')),
+                button(url('/shifttypes'), icon('x-lg') . __('form.cancel')),
                 form_submit(
                     'delete',
                     icon('trash') . __('delete'),
@@ -48,15 +48,15 @@ function ShiftType_edit_view($name, $description, $shifttype_id)
     return page_with_title(
         $shifttype_id
         ? (button(
-            page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]),
+            url('/shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]),
             icon('chevron-left'),
             'btn-sm'
         ) . ' ' . __('Edit shifttype'))
-        : (button(page_link_to('shifttypes'), icon('chevron-left'), 'btn-sm') . ' ' . __('Create shifttype')),
+        : (button(url('/shifttypes'), icon('chevron-left'), 'btn-sm') . ' ' . __('Create shifttype')),
         [
             msg(),
             buttons([
-                button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
+                button(url('/shifttypes'), shifttypes_title(), 'back'),
             ]),
             form([
                 form_text('name', __('general.name'), $name),
@@ -77,16 +77,16 @@ function ShiftType_view(ShiftType $shifttype)
 {
     $parsedown = new Parsedown();
     $title = $shifttype->name;
-    $link = button(page_link_to('shifttypes'), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/shifttypes'), icon('chevron-left'), 'btn-sm');
     return page_with_title($link . ' ' . $title, [
         msg(),
         buttons([
             button(
-                page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype->id]),
+                url('/shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype->id]),
                 icon('pencil') . __('edit')
             ),
             button(
-                page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
+                url('/shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
                 icon('trash') . __('delete'),
             ),
         ]),
@@ -103,28 +103,28 @@ function ShiftTypes_list_view($shifttypes)
 {
     foreach ($shifttypes as $shifttype) {
         $shifttype->name = '<a href="'
-            . page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype->id])
+            . url('/shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype->id])
             . '">'
             . $shifttype->name
             . '</a>';
         $shifttype->actions = table_buttons([
             button(
-                page_link_to(
-                    'shifttypes',
+                url(
+                    '/shifttypes',
                     ['action' => 'edit', 'shifttype_id' => $shifttype->id]
                 ),
                 icon('pencil') . __('edit'),
                 'btn-sm'
             ),
             button(
-                page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
+                url('/shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype->id]),
                 icon('trash') . __('delete'),
                 'btn-sm'
             ),
         ]);
     }
 
-    $link = button(page_link_to('shifttypes', ['action' => 'edit']), icon('plus-lg'), 'add');
+    $link = button(url('/shifttypes', ['action' => 'edit']), icon('plus-lg'), 'add');
     return page_with_title(
         shifttypes_title() . ' ' . $link,
         [

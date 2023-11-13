@@ -133,7 +133,7 @@ class LegacyMiddleware implements MiddlewareInterface
                 return [admin_shifts_history_title(), admin_shifts_history()];
         }
 
-        throw_redirect(page_link_to('login'));
+        throw_redirect(url('/login'));
 
         return [];
     }

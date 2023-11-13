@@ -219,7 +219,7 @@ function ShiftEntry_edit_view(
     }
 
     $link = button(
-        page_link_to('users', ['action' => 'view', 'user_id' => $angel->id]),
+        url('/users', ['action' => 'view', 'user_id' => $angel->id]),
         icon('chevron-left'),
         'btn-sm'
     );

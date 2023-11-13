@@ -17,7 +17,7 @@ function event_config_title()
 function event_config_edit_controller()
 {
     if (!auth()->can('admin_event_config')) {
-        throw_redirect(page_link_to('/'));
+        throw_redirect(url('/'));
     }
 
     $request = request();
@@ -118,7 +118,7 @@ function event_config_edit_controller()
                 )
             );
             success(__('settings.success'));
-            throw_redirect(page_link_to('admin_event_config'));
+            throw_redirect(url('/admin_event_config'));
         }
     }
 

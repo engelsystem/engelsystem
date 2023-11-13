@@ -9,7 +9,7 @@
         <h1>
             {{ block('title') }}
             {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
-                {{ m.button(m.icon('plus-lg'), url('admin/news', only_meetings ? {'meeting': 1} : {}), 'secondary') }}
+                {{ m.button(m.icon('plus-lg'), url('/admin/news', only_meetings ? {'meeting': 1} : {}), 'secondary') }}
             {%- endif %}
         </h1>
 
@@ -51,7 +51,7 @@
     <div class="card {% if news.is_highlighted %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} mb-4">
         {% if is_overview|default(false) %}
         <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
-                <a href="{{ url('news/' ~ news.id) }}" class="text-inherit">
+                <a href="{{ url('/news/' ~ news.id) }}" class="text-inherit">
                     {% if news.is_pinned %}{{ m.icon('pin-angle') }}{% endif %}
                     {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                     {{ news.title }}
@@ -62,7 +62,7 @@
         <div class="card-body bg-body">
             {{ news.text(not is_overview)|markdown }}
             {% if is_overview and news.text != news.text(false) %}
-                {{ m.button(__('news.read_more'), url('news/' ~ news.id), null, 'sm', null, null, 'chevron-double-right') }}
+                {{ m.button(__('news.read_more'), url('/news/' ~ news.id), null, 'sm', null, null, 'chevron-double-right') }}
             {% endif %}
         </div>
 
@@ -85,7 +85,7 @@
 
                 {% if show_comments_link|default(false) %}
                     <div>
-                        <a href="{{ url('news/' ~ news.id) }}" class="me-1">
+                        <a href="{{ url('/news/' ~ news.id) }}" class="me-1">
                             {{ m.icon('chat-left-text') }} {{ __('news.comments') }}
                         </a>
                         <span class="badge bg-primary">{{ news.comments.count() }}</span>
@@ -95,7 +95,7 @@
 
                 {% if has_permission_to('admin_news') %}
                     <div>
-                        {{ m.button(m.icon('pencil'), url('admin/news/' ~ news.id), 'secondary', 'sm') }}
+                        {{ m.button(m.icon('pencil'), url('/admin/news/' ~ news.id), 'secondary', 'sm') }}
                     </div>
                 {% endif %}
             </div>
