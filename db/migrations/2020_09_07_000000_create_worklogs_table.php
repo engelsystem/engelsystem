@@ -37,6 +37,7 @@ class CreateWorklogsTable extends Migration
                 ->get();
 
             foreach ($previousRecords as $previousRecord) {
+                $worked_at = Carbon::createFromTimestamp($previousRecord->work_timestamp);
                 $created_at = Carbon::createFromTimestamp($previousRecord->created_timestamp);
                 $this->schema->getConnection()
                     ->table('worklogs')
@@ -44,7 +45,7 @@ class CreateWorklogsTable extends Migration
                         'id'         => $previousRecord->id,
                         'user_id'    => $previousRecord->user_id,
                         'creator_id' => $previousRecord->created_user_id,
-                        'worked_at'  => $previousRecord->work_timestamp,
+                        'worked_at'  => $worked_at,
                         'hours'      => $previousRecord->work_hours,
                         'comment'    => $previousRecord->comment,
                         'created_at' => $created_at,
@@ -87,11 +88,11 @@ class CreateWorklogsTable extends Migration
                 ->insert([
                     'id'                => $record->id,
                     'user_id'           => $record->user_id,
-                    'work_timestamp'    => $record->worked_at->timestamp,
+                    'work_timestamp'    => Carbon::createFromFormat('Y-m-d', $record->worked_at)->timestamp,
                     'work_hours'        => $record->hours,
                     'comment'           => $record->comment,
                     'created_user_id'   => $record->creator_id,
-                    'created_timestamp' => $record->created_at->timestamp,
+                    'created_timestamp' => Carbon::createFromFormat('Y-m-d H:i:s', $record->created_at)->timestamp,
                 ]);
         }
 
