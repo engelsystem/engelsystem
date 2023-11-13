@@ -18,7 +18,7 @@ function shift_entries_controller(): array
 {
     $user = auth()->user();
     if (!$user) {
-        throw_redirect(page_link_to('login'));
+        throw_redirect(url('/login'));
     }
 
     $action = strip_request_item('action');
@@ -44,7 +44,7 @@ function shift_entry_create_controller(): array
     $request = request();
 
     if ($user->isFreeloader()) {
-        throw_redirect(page_link_to('user_myshifts'));
+        throw_redirect(url('/user_myshifts'));
     }
 
     $shift = Shift($request->input('shift_id'));
@@ -272,7 +272,7 @@ function shift_entry_create_link(Shift $shift, AngelType $angeltype, $params = [
         'shift_id'     => $shift->id,
         'angeltype_id' => $angeltype->id,
     ], $params);
-    return page_link_to('shift_entries', $params);
+    return url('/shift-entries', $params);
 }
 
 /**
@@ -288,7 +288,7 @@ function shift_entry_create_link_admin(Shift $shift, $params = [])
         'action'   => 'create',
         'shift_id' => $shift->id,
     ], $params);
-    return page_link_to('shift_entries', $params);
+    return url('/shift-entries', $params);
 }
 
 /**
@@ -301,7 +301,7 @@ function shift_entry_load()
     $request = request();
 
     if (!$request->has('shift_entry_id') || !test_request_int('shift_entry_id')) {
-        throw_redirect(page_link_to('user_shifts'));
+        throw_redirect(url('/user-shifts'));
     }
     $shiftEntry = ShiftEntry::findOrFail($request->input('shift_entry_id'));
 
@@ -362,5 +362,5 @@ function shift_entry_delete_link($shiftEntry, $params = [])
         'action'         => 'delete',
         'shift_entry_id' => $shiftEntry['shift_entry_id'] ?? $shiftEntry['id'],
     ], $params);
-    return page_link_to('shift_entries', $params);
+    return url('/shift-entries', $params);
 }

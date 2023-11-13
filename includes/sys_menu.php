@@ -5,17 +5,6 @@ use Engelsystem\Models\Question;
 use Engelsystem\UserHintsRenderer;
 
 /**
- * @param string $page
- * @param array  $parameters get parameters
- * @return string
- */
-function page_link_to($page = '', $parameters = [])
-{
-    $page = str_replace('_', '-', $page);
-    return url($page, $parameters);
-}
-
-/**
  * Render the user hints
  *
  * @return string
@@ -80,7 +69,7 @@ function make_navigation()
         }
 
         $title = ((array) $options)[0];
-        $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
+        $menu[] = toolbar_item_link(url(str_replace('_', '-', $menu_page)), '', $title, $menu_page == $page);
     }
 
     $menu = make_location_navigation($menu);
@@ -114,7 +103,7 @@ function make_navigation()
 
         $title = ((array) $options)[0];
         $admin_menu[] = toolbar_dropdown_item(
-            page_link_to($menu_page),
+            url(str_replace('_', '-', $menu_page)),
             __($title),
             $menu_page == $page
         );
@@ -162,7 +151,7 @@ function make_location_navigation($menu)
     $location_menu = [];
     if (auth()->can('admin_locations')) {
         $location_menu[] = toolbar_dropdown_item(
-            page_link_to('admin/locations'),
+            url('/admin/locations'),
             __('Manage locations'),
             false,
             'list'
@@ -219,7 +208,7 @@ function admin_new_questions()
         return null;
     }
 
-    return '<a href="' . page_link_to('/admin/questions') . '">'
+    return '<a href="' . url('/admin/questions') . '">'
         . __('There are unanswered questions!')
         . '</a>';
 }

@@ -52,7 +52,7 @@
                                     <td>
                                         <div class="d-flex ms-auto">
 
-                                            {{ m.button(m.icon('pencil'), url('admin/locations/edit/' ~ location.id), null, 'sm', __('form.edit')) }}
+                                            {{ m.button(m.icon('pencil'), url('/admin/locations/edit/' ~ location.id), null, 'sm', __('form.edit')) }}
 
                                             <form method="post" class="ps-1">
                                                 {{ csrf() }}

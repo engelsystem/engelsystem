@@ -44,7 +44,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
     }
 
     $tabs[__('Shifts')] = div('first', [
-        $shiftsFilterRenderer->render(page_link_to('locations', [
+        $shiftsFilterRenderer->render(url('/locations', [
             'action'  => 'view',
             'location_id' => $location->id,
         ]), ['locations' => [$location->id]]),
@@ -57,7 +57,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         $selected_tab = count($tabs) - 1;
     }
 
-    $link = button(page_link_to('admin/locations'), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/admin/locations'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         (auth()->can('admin_locations') ? $link . ' ' : '') .
         icon('pin-map-fill') . $location->name,
@@ -65,7 +65,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         $assignNotice,
         auth()->can('admin_locations') ? buttons([
             button(
-                page_link_to('admin/locations/edit/' . $location->id),
+                url('/admin/locations/edit/' . $location->id),
                 icon('pencil') . __('edit')
             ),
         ]) : '',

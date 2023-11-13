@@ -39,14 +39,14 @@
             {% for c in conversations %}
             <tr>
                 <td>
-                    {{ m.user(c.other_user, {'pronoun': true, 'url': url('messages/' ~ c.other_user.id ~ '#newest')}) }}
+                    {{ m.user(c.other_user, {'pronoun': true, 'url': url('/messages/' ~ c.other_user.id ~ '#newest')}) }}
 
                     {% if c.unread_messages > 0 %}
                         <span class="badge bg-danger">{{ c.unread_messages }}</span>
                     {% endif %}
                     </td>
                 <td>
-                    <a href="{{ url('messages/' ~ c.other_user.id ~ '#newest') }}">
+                    <a href="{{ url('/messages/' ~ c.other_user.id ~ '#newest') }}">
                         {{ c.latest_message.text|length > 100 ? c.latest_message.text|slice(0, 100) ~ '…' : c.latest_message.text }}
                     </a>
                 </td>

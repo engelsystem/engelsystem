@@ -61,13 +61,13 @@ function AngelType_render_membership(AngelType $user_angeltype)
 function AngelType_delete_view(AngelType $angeltype)
 {
     $link = button($angeltype->id
-        ? page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
-        : page_link_to('angeltypes'), icon('chevron-left'), 'btn-sm');
+        ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
+        : url('/angeltypes'), icon('chevron-left'), 'btn-sm');
     return page_with_title($link . ' ' . sprintf(__('Delete angeltype %s'), $angeltype->name), [
         info(sprintf(__('Do you want to delete angeltype %s?'), $angeltype->name), true),
         form([
             buttons([
-                button(page_link_to('angeltypes'), icon('x-lg') . __('form.cancel')),
+                button(url('/angeltypes'), icon('x-lg') . __('form.cancel')),
                 form_submit('delete', icon('trash') . __('delete'), 'btn-danger', false),
             ]),
         ]),
@@ -84,13 +84,13 @@ function AngelType_delete_view(AngelType $angeltype)
 function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
 {
     $link = button($angeltype->id
-        ? page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
-        : page_link_to('angeltypes'), icon('chevron-left'), 'btn-sm');
+        ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
+        : url('/angeltypes'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         $link . ' ' . sprintf(__('Edit %s'), $angeltype->name),
         [
             buttons([
-                button(page_link_to('angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
+                button(url('/angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
             ]),
             msg(),
             form([
@@ -204,7 +204,7 @@ function AngelType_view_buttons(
 
     if (is_null($user_angeltype)) {
         $buttons[] = button(
-            page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
+            url('/user-angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
             icon('box-arrow-in-right') . __('join'),
             'add'
         );
@@ -228,20 +228,20 @@ function AngelType_view_buttons(
             ));
         }
         $buttons[] = button(
-            page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype->id]),
+            url('/user-angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype->id]),
             icon('box-arrow-right') . __('leave')
         );
     }
 
     if ($admin_angeltypes || $supporter) {
         $buttons[] = button(
-            page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
+            url('/angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
             icon('pencil') . __('edit')
         );
     }
     if ($admin_angeltypes) {
         $buttons[] = button(
-            page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
+            url('/angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
             icon('trash') . __('delete')
         );
     }
@@ -287,16 +287,16 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
         if ($angeltype->restricted && empty($member->pivot->confirm_user_id)) {
             $member['actions'] = table_buttons([
                 button(
-                    page_link_to(
-                        'user_angeltypes',
+                    url(
+                        '/user-angeltypes',
                         ['action' => 'confirm', 'user_angeltype_id' => $member->pivot->id]
                     ),
                     __('confirm'),
                     'btn-sm'
                 ),
                 button(
-                    page_link_to(
-                        'user_angeltypes',
+                    url(
+                        '/user-angeltypes',
                         ['action' => 'delete', 'user_angeltype_id' => $member->pivot->id]
                     ),
                     __('deny'),
@@ -308,7 +308,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
             if ($admin_angeltypes) {
                 $member['actions'] = table_buttons([
                     button(
-                        page_link_to('user_angeltypes', [
+                        url('/user-angeltypes', [
                             'action'            => 'update',
                             'user_angeltype_id' => $member->pivot->id,
                             'supporter'         => 0,
@@ -326,7 +326,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                 $member['actions'] = table_buttons([
                     $admin_angeltypes ?
                         button(
-                            page_link_to('user_angeltypes', [
+                            url('/user-angeltypes', [
                                 'action'            => 'update',
                                 'user_angeltype_id' => $member->pivot->id,
                                 'supporter'         => 1,
@@ -336,7 +336,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                         ) :
                         '',
                     button(
-                        page_link_to('user_angeltypes', [
+                        url('/user-angeltypes', [
                             'action'            => 'delete',
                             'user_angeltype_id' => $member->pivot->id,
                         ]),
@@ -427,7 +427,7 @@ function AngelType_view(
     ShiftCalendarRenderer $shiftCalendarRenderer,
     $tab
 ) {
-    $link = button(page_link_to('angeltypes'), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/angeltypes'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         $link . ' ' . sprintf(__('Team %s'), $angeltype->name),
         [
@@ -460,7 +460,7 @@ function AngelType_view(
  */
 function AngelType_view_shifts(AngelType $angeltype, $shiftsFilterRenderer, $shiftCalendarRenderer)
 {
-    $shifts = $shiftsFilterRenderer->render(page_link_to('angeltypes', [
+    $shifts = $shiftsFilterRenderer->render(url('/angeltypes', [
         'action'       => 'view',
         'angeltype_id' => $angeltype->id,
     ]), ['type' => $angeltype->id]);
@@ -528,8 +528,8 @@ function AngelType_view_info(
     if ($admin_user_angeltypes) {
         $info[] = buttons([
             button(
-                page_link_to(
-                    'user_angeltypes',
+                url(
+                    '/user-angeltypes',
                     ['action' => 'add', 'angeltype_id' => $angeltype->id]
                 ),
                 __('Add'),
@@ -543,11 +543,11 @@ function AngelType_view_info(
         $info[] = '<h3>' . __('Unconfirmed') . '</h3>';
         $info[] = buttons([
             button(
-                page_link_to('user_angeltypes', ['action' => 'confirm_all', 'angeltype_id' => $angeltype->id]),
+                url('/user-angeltypes', ['action' => 'confirm_all', 'angeltype_id' => $angeltype->id]),
                 icon('check-lg') . __('confirm all')
             ),
             button(
-                page_link_to('user_angeltypes', ['action' => 'delete_all', 'angeltype_id' => $angeltype->id]),
+                url('/user-angeltypes', ['action' => 'delete_all', 'angeltype_id' => $angeltype->id]),
                 icon('trash') . __('deny all')
             ),
         ]);
@@ -589,7 +589,7 @@ function AngelTypes_render_contact_info(AngelType $angeltype)
  */
 function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
 {
-    $link = button(page_link_to('angeltypes', ['action' => 'edit']), icon('plus-lg'), 'add');
+    $link = button(url('/angeltypes', ['action' => 'edit']), icon('plus-lg'), 'add');
     return page_with_title(
         angeltypes_title() . ' ' . ($admin_angeltypes ? $link : ''),
         [

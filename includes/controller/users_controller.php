@@ -20,7 +20,7 @@ function users_controller()
     $request = request();
 
     if (!$user) {
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     $action = 'list';
@@ -55,7 +55,7 @@ function user_delete_controller()
     }
 
     if (!auth()->can('admin_user')) {
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     // You cannot delete yourself
@@ -101,7 +101,7 @@ function user_delete_controller()
  */
 function users_link()
 {
-    return page_link_to('users');
+    return url('/users');
 }
 
 /**
@@ -110,7 +110,7 @@ function users_link()
  */
 function user_edit_link($userId)
 {
-    return page_link_to('admin_user', ['user_id' => $userId]);
+    return url('/admin-user', ['user_id' => $userId]);
 }
 
 /**
@@ -119,7 +119,7 @@ function user_edit_link($userId)
  */
 function user_delete_link($userId)
 {
-    return page_link_to('users', ['action' => 'delete', 'user_id' => $userId]);
+    return url('/users', ['action' => 'delete', 'user_id' => $userId]);
 }
 
 /**
@@ -128,7 +128,7 @@ function user_delete_link($userId)
  */
 function user_link($userId)
 {
-    return page_link_to('users', ['action' => 'view', 'user_id' => $userId]);
+    return url('/users', ['action' => 'view', 'user_id' => $userId]);
 }
 
 /**
@@ -149,7 +149,7 @@ function user_edit_vouchers_controller()
         (!auth()->can('admin_user') && !auth()->can('voucher.edit'))
         || !config('enable_voucher')
     ) {
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     if ($request->hasPostData('submit')) {
@@ -200,7 +200,7 @@ function user_controller()
         $user_source = User::find($request->input('user_id'));
         if (!$user_source) {
             error(__('User not found.'));
-            throw_redirect(page_link_to('/'));
+            throw_redirect(url('/'));
         }
     }
 
@@ -271,7 +271,7 @@ function users_list_controller()
     $request = request();
 
     if (!auth()->can('admin_user')) {
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     $order_by = 'name';
@@ -343,13 +343,13 @@ function load_user()
 {
     $request = request();
     if (!$request->has('user_id')) {
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     $user = User::find($request->input('user_id'));
     if (!$user) {
         error(__('User doesn\'t exist.'));
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     return $user;

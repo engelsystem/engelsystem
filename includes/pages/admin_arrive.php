@@ -198,7 +198,7 @@ function admin_arrive()
         form([
             form_text('search', __('form.search'), $search),
             form_submit('submit', __('form.search')),
-        ], page_link_to('admin_arrive')),
+        ], url('/admin-arrive')),
         table([
             'name'                            => __('general.name'),
             'rendered_planned_arrival_date'   => __('Planned arrival'),

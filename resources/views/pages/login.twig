@@ -78,7 +78,7 @@
                                 <div class="row">
                                     <div class="mb-3 btn-group">
                                         {% for name,config in config('oauth') %}
-                                            <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} d-none{% endif %}">
+                                            <a href="{{ url('/oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} d-none{% endif %}">
                                                 {{ __(
                                                     'oauth.login-using-provider',
                                                     [__(config.name|default(name|capitalize))]

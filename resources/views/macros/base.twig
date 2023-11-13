@@ -23,7 +23,7 @@
 {% endmacro %}
 
 {% macro user(user, opt) %}
-    <a href="{{ opt.url|default(url('users', {'action': 'view', 'user_id': user.id})) }}"
+    <a href="{{ opt.url|default(url('/users', {'action': 'view', 'user_id': user.id})) }}"
             {%- if not user.state.arrived %} class="text-muted"{% endif -%}
     >
         {{ _self.angel() }} {{ user.displayName }}

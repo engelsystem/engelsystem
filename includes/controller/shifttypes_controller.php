@@ -8,7 +8,7 @@ use Engelsystem\Models\Shifts\ShiftType;
  */
 function shifttype_link(ShiftType $shifttype)
 {
-    return page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype->id]);
+    return url('/shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype->id]);
 }
 
 /**
@@ -20,7 +20,7 @@ function shifttype_delete_controller()
 {
     $request = request();
     if (!$request->has('shifttype_id')) {
-        throw_redirect(page_link_to('shifttypes'));
+        throw_redirect(url('/shifttypes'));
     }
 
     $shifttype = ShiftType::findOrFail($request->input('shifttype_id'));
@@ -29,7 +29,7 @@ function shifttype_delete_controller()
         success(sprintf(__('Shifttype %s deleted.'), $shifttype->name));
 
         $shifttype->delete();
-        throw_redirect(page_link_to('shifttypes'));
+        throw_redirect(url('/shifttypes'));
     }
 
     return [
@@ -88,7 +88,7 @@ function shifttype_edit_controller()
                 success(__('Created shifttype.'));
             }
 
-            throw_redirect(page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]));
+            throw_redirect(url('/shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]));
         }
     }
 
@@ -105,7 +105,7 @@ function shifttype_controller()
 {
     $request = request();
     if (!$request->has('shifttype_id')) {
-        throw_redirect(page_link_to('shifttypes'));
+        throw_redirect(url('/shifttypes'));
     }
     $shifttype = ShiftType::findOrFail($request->input('shifttype_id'));
 

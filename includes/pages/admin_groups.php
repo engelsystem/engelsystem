@@ -38,8 +38,8 @@ function admin_groups()
                 'name'       => $group->name,
                 'privileges' => join(', ', $privileges_html),
                 'actions'    => button(
-                    page_link_to(
-                        'admin_groups',
+                    url(
+                        '/admin-groups',
                         ['action' => 'edit', 'id' => $group->id]
                     ),
                     icon('pencil') . __('edit'),
@@ -83,7 +83,7 @@ function admin_groups()
                     $html .= page_with_title(__('Edit group') . ' ' . $group->name, [
                         form(
                             $privileges_form,
-                            page_link_to('admin_groups', ['action' => 'save', 'id' => $group->id])
+                            url('/admin-groups', ['action' => 'save', 'id' => $group->id])
                         ),
                     ]);
                 } else {
@@ -118,7 +118,7 @@ function admin_groups()
                         'Group privileges of group ' . $group->name
                         . ' edited: ' . join(', ', $privilege_names)
                     );
-                    throw_redirect(page_link_to('admin_groups'));
+                    throw_redirect(url('/admin-groups'));
                 } else {
                     return error('No Group found.', true);
                 }

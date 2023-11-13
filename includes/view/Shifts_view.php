@@ -95,7 +95,7 @@ function Shift_signup_button_render(Shift $shift, AngelType $angeltype)
         return button(shift_entry_create_link($shift, $angeltype), __('Sign up'));
     } elseif (empty($user_angeltype)) {
         return button(
-            page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
+            url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
             sprintf(
                 __('Become %s'),
                 $angeltype->name
@@ -204,7 +204,7 @@ function Shift_view(
 
     $start = $shift->start->format(__('Y-m-d H:i'));
 
-    $link = button(page_link_to('user-shifts'), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         $link . ' ' . $shift->shiftType->name . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         $content
@@ -279,7 +279,7 @@ function Shift_view_render_shift_entry(ShiftEntry $shift_entry, $user_shift_admi
         $entry .= ' <div class="btn-group m-1">';
         if ($user_shift_admin || $isUser) {
             $entry .= button_icon(
-                page_link_to('user_myshifts', ['edit' => $shift_entry->id, 'id' => $shift_entry->user_id]),
+                url('/user-myshifts', ['edit' => $shift_entry->id, 'id' => $shift_entry->user_id]),
                 'pencil',
                 'btn-sm'
             );

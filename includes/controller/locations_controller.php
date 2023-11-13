@@ -17,7 +17,7 @@ use Engelsystem\ShiftsFilterRenderer;
 function location_controller(): array
 {
     if (!auth()->can('view_locations')) {
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     $request = request();
@@ -73,8 +73,8 @@ function locations_controller(): array
 
     return match ($action) {
         'view'  => location_controller(),
-        'list'  => throw_redirect(page_link_to('admin/locations')),
-        default => throw_redirect(page_link_to('admin/locations')),
+        'list'  => throw_redirect(url('/admin/locations')),
+        default => throw_redirect(url('/admin/locations')),
     };
 }
 
@@ -84,7 +84,7 @@ function locations_controller(): array
  */
 function location_link(Location $location)
 {
-    return page_link_to('locations', ['action' => 'view', 'location_id' => $location->id]);
+    return url('/locations', ['action' => 'view', 'location_id' => $location->id]);
 }
 
 /**
@@ -95,12 +95,12 @@ function location_link(Location $location)
 function load_location()
 {
     if (!test_request_int('location_id')) {
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     $location = Location::find(request()->input('location_id'));
     if (!$location) {
-        throw_redirect(page_link_to());
+        throw_redirect(url('/'));
     }
 
     return $location;
