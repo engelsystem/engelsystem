@@ -856,9 +856,6 @@ msgstr ""
 "Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
 "(Engeltypen/Aufgaben) abhängig!"
 
-msgid "Description of the jobs."
-msgstr "Beschreibung der Aufgaben."
-
 msgid "Filter"
 msgstr "Filter"
 
