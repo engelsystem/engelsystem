@@ -12,12 +12,13 @@ class NewsControllerTest extends ApiBaseControllerTest
 {
     /**
      * @covers \Engelsystem\Controllers\Api\NewsController::index
+     * @covers \Engelsystem\Controllers\Api\Resources\NewsResource::toArray
      */
     public function testIndex(): void
     {
         $items = News::factory(3)->create();
 
-        $controller = new NewsController(new Response(), $this->url);
+        $controller = new NewsController(new Response());
 
         $response = $controller->index();
         $this->validateApiResponse('/news', 'get', $response);

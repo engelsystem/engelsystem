@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api;
 
+use Engelsystem\Controllers\Api\Resources\LocationResource;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Location;
 
@@ -13,13 +14,9 @@ class LocationsController extends ApiController
     {
         $models = Location::query()
             ->orderBy('name')
-            ->get(['id', 'name']);
+            ->get();
 
-        $models->map(function (Location $model): void {
-            $model->url = $this->url->to('/locations', ['action' => 'view', 'location_id' => $model->id]);
-        });
-
-        $data = ['data' => $models];
+        $data = ['data' => LocationResource::collection($models)];
         return $this->response
             ->withContent(json_encode($data));
     }

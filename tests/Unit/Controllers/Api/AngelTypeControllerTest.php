@@ -15,14 +15,13 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
 {
     /**
      * @covers \Engelsystem\Controllers\Api\AngelTypeController::index
-     * @covers \Engelsystem\Controllers\Api\AngelTypeController::getUrl
      */
     public function testIndex(): void
     {
         $this->initDatabase();
         $items = AngelType::factory(3)->create();
 
-        $controller = new AngelTypeController(new Response(), $this->url);
+        $controller = new AngelTypeController(new Response());
 
         $response = $controller->index();
         $this->validateApiResponse('/angeltypes', 'get', $response);
@@ -39,6 +38,7 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
     }
     /**
      * @covers \Engelsystem\Controllers\Api\AngelTypeController::ofUser
+     * @covers \Engelsystem\Controllers\Api\Resources\UserAngelTypeResource::toArray
      */
     public function testOfUser(): void
     {
@@ -46,7 +46,7 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         $user = User::factory()->create();
         $items = UserAngelType::factory(3)->create(['user_id' => $user->id]);
 
-        $controller = new AngelTypeController(new Response(), $this->url);
+        $controller = new AngelTypeController(new Response());
 
         $response = $controller->ofUser(new Request([], [], ['user_id' => $user->id]));
         $this->validateApiResponse('/users/{id}/angeltypes', 'get', $response);

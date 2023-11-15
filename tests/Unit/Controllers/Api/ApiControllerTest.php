@@ -14,7 +14,7 @@ class ApiControllerTest extends ApiBaseControllerTest
      */
     public function testConstruct(): void
     {
-        $controller = new class (new Response('{"some":"json"}'), $this->url) extends ApiController {
+        $controller = new class (new Response('{"some":"json"}')) extends ApiController {
             public function getResponse(): Response
             {
                 return $this->response;

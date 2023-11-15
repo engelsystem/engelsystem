@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api;
 
+use Engelsystem\Controllers\Api\Resources\NewsResource;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\News;
 
@@ -14,13 +15,9 @@ class NewsController extends ApiController
         $models = News::query()
             ->orderByDesc('updated_at')
             ->orderByDesc('created_at')
-            ->get(['id', 'title', 'text', 'is_meeting', 'is_pinned', 'is_highlighted', 'created_at', 'updated_at']);
+            ->get();
 
-        $models->map(function (News $model): void {
-            $model->url = $this->url->to('/news/' . $model->id);
-        });
-
-        $data = ['data' => $models];
+        $data = ['data' => NewsResource::collection($models)];
         return $this->response
             ->withContent(json_encode($data));
     }
