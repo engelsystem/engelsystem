@@ -286,7 +286,7 @@ function view_user_shifts()
     }
 
     $formattedDays = collect($days)->map(function ($value) {
-        return Carbon::make($value)->format(__('Y-m-d'));
+        return dateWithEventDay(Carbon::make($value)->format('Y-m-d'));
     })->toArray();
 
     $link = button(url('/admin-shifts'), icon('plus-lg'), 'add');
@@ -321,7 +321,10 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    icon('person-lines-fill') . __('angeltypes.angeltypes') . '<sup>1</sup>',
+                    icon('person-lines-fill') . __('angeltypes.angeltypes')
+                    . ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+                    . __('The tasks shown here are influenced by the angeltypes you joined already!')
+                    . '"></span></small>',
                     $ownAngelTypes
                 ),
                 'filled_select' => make_select(
@@ -330,12 +333,6 @@ function view_user_shifts()
                     'filled',
                     icon('person-fill-slash') . __('Occupancy')
                 ),
-                'task_notice'   =>
-                    '<sup>1</sup>'
-                    . __('The tasks shown here are influenced by the angeltypes you joined already!')
-                    . ' <a href="' . url('/angeltypes/about') . '">'
-                    . __('Description of the jobs.')
-                    . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),

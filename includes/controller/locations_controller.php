@@ -28,7 +28,7 @@ function location_controller(): array
     foreach ($all_shifts as $shift) {
         $day = $shift->start->format('Y-m-d');
         if (!isset($days[$day])) {
-            $days[$day] = $shift->start->format(__('Y-m-d'));
+            $days[$day] = dateWithEventDay($day);
         }
     }
 

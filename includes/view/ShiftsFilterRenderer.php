@@ -49,7 +49,7 @@ class ShiftsFilterRenderer
         $toolbar = [];
         if ($this->daySelectionEnabled && !empty($this->days)) {
             $selected_day = date('Y-m-d', $this->shiftsFilter->getStartTime());
-            $selected_day_formatted = date(__('Y-m-d'), $this->shiftsFilter->getStartTime());
+            $selected_day_formatted = dateWithEventDay($selected_day);
             $day_dropdown_items = [];
             foreach ($this->days as $value => $day) {
                 $link = $page_link . '&shifts_filter_day=' . $value;

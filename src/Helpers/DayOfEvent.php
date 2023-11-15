@@ -14,7 +14,7 @@ class DayOfEvent
      *         the first day of the event will be 0, else 1.
      *         Returns null if "event_start" is not set.
      */
-    public static function get(): int | null
+    public static function get(Carbon $date = null): int | null
     {
         $startOfEvent = config('event_start');
 
@@ -24,8 +24,9 @@ class DayOfEvent
 
         /** @var Carbon $startOfEvent */
         $startOfEvent = $startOfEvent->copy()->startOfDay();
+        $date = $date ?: Carbon::now();
 
-        $now = Carbon::now()->startOfDay();
+        $now = $date->startOfDay();
         $diff = $startOfEvent->diffInDays($now, false);
 
         if ($diff >= 0) {

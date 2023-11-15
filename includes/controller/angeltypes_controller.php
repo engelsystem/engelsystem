@@ -224,9 +224,8 @@ function angeltype_controller_shiftsFilterDays(AngelType $angeltype)
     $days = [];
     foreach ($all_shifts as $shift) {
         $day = Carbon::make($shift['start'])->format('Y-m-d');
-        $dayFormatted = Carbon::make($shift['start'])->format(__('Y-m-d'));
         if (!isset($days[$day])) {
-            $days[$day] = $dayFormatted;
+            $days[$day] = dateWithEventDay($day);
         }
     }
     ksort($days);

@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Engelsystem\Renderer\Twig\Extensions\Globals;
+use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\DayOfEvent;
 
 function theme_id(): int
 {
@@ -24,4 +26,17 @@ function theme(): array
 function theme_type(): string
 {
     return theme()['type'];
+}
+
+function dateWithEventDay(string $day): string
+{
+    $date = Carbon::createFromFormat('Y-m-d', $day);
+    $dayOfEvent = DayOfEvent::get($date);
+    $dateFormatted = $date->format(__('Y-m-d'));
+
+    if (!config('enable_show_day_of_event') || is_null($dayOfEvent)) {
+        return $dateFormatted;
+    }
+
+    return $dateFormatted . ' (' . $dayOfEvent . ')';
 }
