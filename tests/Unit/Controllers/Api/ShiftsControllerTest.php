@@ -20,6 +20,11 @@ class ShiftsControllerTest extends ApiBaseControllerTest
 {
     /**
      * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByLocation
+     * @covers \Engelsystem\Controllers\Api\Resources\ShiftResource::toArray
+     * @covers \Engelsystem\Controllers\Api\Resources\ShiftTypeResource::toArray
+     * @covers \Engelsystem\Controllers\Api\Resources\ShiftWithEntriesResource::toArray
+     * @covers \Engelsystem\Controllers\Api\Resources\UserResource::toArray
+     * @covers \Engelsystem\Controllers\Api\Resources\AngelTypeResource::toArray
      * @covers \Engelsystem\Controllers\Api\ShiftsController::getNeededAngelTypes
      */
     public function testEntriesByLocation(): void
@@ -83,7 +88,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $request = new Request();
         $request = $request->withAttribute('location_id', $location->id);
 
-        $controller = new ShiftsController(new Response(), $this->url);
+        $controller = new ShiftsController(new Response());
 
         $response = $controller->entriesByLocation($request);
         $this->validateApiResponse('/locations/{id}/shifts', 'get', $response);

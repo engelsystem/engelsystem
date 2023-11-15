@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api;
 
+use Engelsystem\Controllers\Api\Resources\AngelTypeResource;
+use Engelsystem\Controllers\Api\Resources\LocationResource;
+use Engelsystem\Controllers\Api\Resources\ShiftWithEntriesResource;
+use Engelsystem\Controllers\Api\Resources\UserResource;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Location;
@@ -39,53 +43,23 @@ class ShiftsController extends ApiController
 
             $entries = new Collection();
             foreach ($neededAngelTypes as $neededAngelType) {
-                $users = [];
-                foreach ($neededAngelType->users ?? [] as $user) {
-                    $users[] = [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'first_name' => $user->personalData->first_name,
-                        'last_name' => $user->personalData->last_name,
-                        'pronoun' => $user->personalData->pronoun,
-                        'contact' => $user->contact->only(['dect', 'mobile']),
-                        'url' => $this->url->to('/users', ['action' => 'view', 'user_id' => $user->id]),
-                    ];
-                }
+                $users = UserResource::collection($neededAngelType->users ?? []);
 
                 // Skip empty entries
-                if ($neededAngelType->count <= 0 && empty($users)) {
+                if ($neededAngelType->count <= 0 && $users->isEmpty()) {
                     continue;
                 }
 
-                $angelTypeData = $neededAngelType->angelType->only(['id', 'name', 'description']);
-                $angelTypeData['url'] = $this->url->to(
-                    '/angeltypes',
-                    ['action' => 'view', 'angeltype_id' => $neededAngelType->angelType->id]
-                );
-
-                $entries[] = [
+                $angelTypeData = new AngelTypeResource($neededAngelType->angelType);
+                $entries[] = new Collection([
                     'users' => $users,
                     'type' => $angelTypeData,
                     'needs' => $neededAngelType->count,
-                ];
+                ]);
             }
 
-            $locationData = $location->only(['id', 'name']);
-            $locationData['url'] = $this->url->to('/locations', ['action' => 'view', 'location_id' => $location->id]);
-
-            $shiftEntries[] = [
-                'id' => $shift->id,
-                'title' => $shift->title,
-                'description' => $shift->description,
-                'starts_at' => $shift->start,
-                'ends_at' => $shift->end,
-                'location' => $locationData,
-                'shift_type' => $shift->shiftType->only(['id', 'name', 'description']),
-                'created_at' => $shift->created_at,
-                'updated_at' => $shift->updated_at,
-                'entries' => $entries,
-                'url' => $this->url->to('/shifts', ['action' => 'view', 'shift_id' => $shift->id]),
-            ];
+            $locationData = new LocationResource($location);
+            $shiftEntries[] = (new ShiftWithEntriesResource($shift))->toArray($locationData, $entries);
         }
 
         $data = ['data' => $shiftEntries];

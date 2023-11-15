@@ -15,7 +15,7 @@ class IndexControllerTest extends ApiBaseControllerTest
      */
     public function testIndex(): void
     {
-        $controller = new IndexController(new Response(), $this->url);
+        $controller = new IndexController(new Response());
         $response = $controller->index();
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -32,7 +32,7 @@ class IndexControllerTest extends ApiBaseControllerTest
      */
     public function testIndexV0(): void
     {
-        $controller = new IndexController(new Response(), $this->url);
+        $controller = new IndexController(new Response());
         $response = $controller->indexV0();
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -48,7 +48,7 @@ class IndexControllerTest extends ApiBaseControllerTest
      */
     public function testOptions(): void
     {
-        $controller = new IndexController(new Response(), $this->url);
+        $controller = new IndexController(new Response());
         $response = $controller->options();
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -61,7 +61,7 @@ class IndexControllerTest extends ApiBaseControllerTest
      */
     public function testNotFound(): void
     {
-        $controller = new IndexController(new Response(), $this->url);
+        $controller = new IndexController(new Response());
         $response = $controller->notFound();
 
         $this->assertEquals(404, $response->getStatusCode());
@@ -74,7 +74,7 @@ class IndexControllerTest extends ApiBaseControllerTest
      */
     public function testNotImplemented(): void
     {
-        $controller = new IndexController(new Response(), $this->url);
+        $controller = new IndexController(new Response());
         $response = $controller->notImplemented();
 
         $this->assertEquals(405, $response->getStatusCode());

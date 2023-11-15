@@ -12,12 +12,13 @@ class LocationsControllerTest extends ApiBaseControllerTest
 {
     /**
      * @covers \Engelsystem\Controllers\Api\LocationsController::index
+     * @covers \Engelsystem\Controllers\Api\Resources\LocationResource::toArray
      */
     public function testIndex(): void
     {
         $items = Location::factory(3)->create();
 
-        $controller = new LocationsController(new Response(), $this->url);
+        $controller = new LocationsController(new Response());
 
         $response = $controller->index();
         $this->validateApiResponse('/locations', 'get', $response);

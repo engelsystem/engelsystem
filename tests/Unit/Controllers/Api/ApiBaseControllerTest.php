@@ -15,7 +15,6 @@ use Psr\Http\Message\ResponseInterface;
 abstract class ApiBaseControllerTest extends TestCase
 {
     protected OpenApiResponseValidator $validator;
-    protected UrlGeneratorInterface $url;
 
     protected function validateApiResponse(string $path, string $method, ResponseInterface $response): void
     {
@@ -41,6 +40,6 @@ abstract class ApiBaseControllerTest extends TestCase
                 $query = http_build_query($params);
                 return $path . ($query ? '?' . $query : '');
             });
-        $this->url = $url;
+        $this->app->instance('http.urlGenerator', $url);
     }
 }
