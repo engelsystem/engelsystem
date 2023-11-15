@@ -296,17 +296,20 @@ class User
         $defaultGroup = Group::find($this->authenticator->getDefaultRole());
         $user->groups()->attach($defaultGroup);
 
+        auth()->resetApiKey($user);
         if ($this->determineIsPasswordEnabled() && array_key_exists('password', $data)) {
             auth()->setPassword($user, $data['password']);
         }
 
         $assignedAngelTypeNames = $this->assignAngelTypes($user, $rawData);
 
-        $this->logger->info(sprintf(
-            'User %s signed up as: %s',
-            sprintf('%s (%u)', $user->displayName, $user->id),
-            join(', ', $assignedAngelTypeNames),
-        ));
+        $this->logger->info(
+            'User {user} signed up as: {angeltypes}',
+            [
+                'user' => sprintf('%s (%u)', $user->displayName, $user->id),
+                'angeltypes' => join(', ', $assignedAngelTypeNames),
+            ]
+        );
 
         $this->dbConnection->commit();
 

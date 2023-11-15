@@ -263,7 +263,7 @@ function view_user_shifts()
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
     if (empty($user->api_key)) {
-        User_reset_api_key($user, false);
+        auth()->resetApiKey($user);
     }
 
     $filled = [

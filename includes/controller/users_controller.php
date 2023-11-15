@@ -234,7 +234,7 @@ function user_controller()
     }
 
     if (empty($user_source->api_key)) {
-        User_reset_api_key($user_source, false);
+        auth()->resetApiKey($user_source);
     }
 
     if ($user_source->state->force_active) {
