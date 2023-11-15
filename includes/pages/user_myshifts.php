@@ -35,7 +35,8 @@ function user_myshifts()
     $shifts_user = User::find($shift_entry_id);
     if ($request->has('reset')) {
         if ($request->input('reset') == 'ack') {
-            User_reset_api_key($user);
+            auth()->resetApiKey($user);
+            engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user, true)));
             success(__('Key changed.'));
             throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
         }

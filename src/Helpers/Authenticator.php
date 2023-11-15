@@ -187,6 +187,12 @@ class Authenticator
         return $this->user;
     }
 
+    public function resetApiKey(User $user): void
+    {
+        $user->api_key = bin2hex(random_bytes(32));
+        $user->save();
+    }
+
     /**
      * Get the user by its api key
      */

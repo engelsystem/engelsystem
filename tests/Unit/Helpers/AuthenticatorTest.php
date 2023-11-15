@@ -12,6 +12,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\Helpers\Stub\UserModelImplementation;
 use Engelsystem\Test\Unit\ServiceProviderTest;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -181,6 +182,27 @@ class AuthenticatorTest extends ServiceProviderTest
         $user = $auth->user();
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('F00Bar', $user->api_key);
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::resetApiKey
+     */
+    public function testResetApiKey(): void
+    {
+        $this->initDatabase();
+
+        $user = User::factory()->create();
+        $oldKey = $user->api_key;
+
+        $auth = new Authenticator(new Request(), new Session(new MockArraySessionStorage()), new User());
+        $auth->resetApiKey($user);
+
+        $updatedUser = User::all()->last();
+        $newApiKey = $updatedUser->api_key;
+
+        $this->assertNotEquals($oldKey, $newApiKey);
+        $this->assertTrue(Str::isAscii($newApiKey));
+        $this->assertEquals(64, Str::length($newApiKey));
     }
 
     /**

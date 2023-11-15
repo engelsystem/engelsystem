@@ -138,22 +138,6 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
 }
 
 /**
- * Generates a new api key for given user.
- *
- * @param User $user
- * @param bool $log
- */
-function User_reset_api_key($user, $log = true)
-{
-    $user->api_key = bin2hex(random_bytes(32));
-    $user->save();
-
-    if ($log) {
-        engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user, true)));
-    }
-}
-
-/**
  * @param User $user
  * @return float
  */
