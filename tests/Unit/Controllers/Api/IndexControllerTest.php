@@ -29,6 +29,7 @@ class IndexControllerTest extends ApiBaseControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Api\IndexController::indexV0
+     * @covers \Engelsystem\Controllers\Api\IndexController::getApiSpecV0
      */
     public function testIndexV0(): void
     {
@@ -41,6 +42,25 @@ class IndexControllerTest extends ApiBaseControllerTest
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('version', $data);
         $this->assertArrayHasKey('paths', $data);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\IndexController::openApiV0
+     * @covers \Engelsystem\Controllers\Api\IndexController::getApiSpecV0
+     */
+    public function testOpenApiV0(): void
+    {
+        $controller = new IndexController(new Response());
+
+        $response = $controller->openApiV0();
+        $this->validateApiResponse('/openapi', 'get', $response);
+
+        $this->assertEquals(['application/json'], $response->getHeader('content-type'));
+        $this->assertJson($response->getContent());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('openapi', $data);
+        $this->assertArrayHasKey('info', $data);
     }
 
     /**

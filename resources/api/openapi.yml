@@ -455,3 +455,20 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+
+  /openapi:
+    get:
+      tags:
+        - api
+      summary: Get the OpenAPI definition
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json: {}
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
