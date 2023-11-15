@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api;
 
+use cebe\openapi\spec\OpenApi;
 use Engelsystem\Http\Response;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder as OpenApiValidatorBuilder;
 
@@ -12,6 +13,7 @@ class IndexController extends ApiController
     public array $permissions = [
         'index' => 'api',
         'indexV0' => 'api',
+        'openApiV0' => 'api',
     ];
 
     public function index(): Response
@@ -26,11 +28,7 @@ class IndexController extends ApiController
 
     public function indexV0(): Response
     {
-        $openApiDefinition = app()->get('path.resources.api') . '/openapi.yml';
-        $schema = (new OpenApiValidatorBuilder())
-            ->fromYamlFile($openApiDefinition)
-            ->getResponseValidator()
-            ->getSchema();
+        $schema = $this->getApiSpecV0();
         $info = $schema->info;
         $paths = [];
         foreach ($schema->paths->getIterator() as $path => $item) {
@@ -43,6 +41,16 @@ class IndexController extends ApiController
                 'description' => $info->description,
                 'paths' => $paths,
             ]));
+    }
+
+    public function openApiV0(): Response
+    {
+        $schema = $this->getApiSpecV0();
+        $data = $schema->getSerializableData();
+        unset($data->servers[1]);
+        $data->servers[0]->url = url('/api/v0-beta');
+
+        return $this->response->withContent(json_encode($data));
     }
 
     public function options(): Response
@@ -67,5 +75,14 @@ class IndexController extends ApiController
             ->setStatusCode(405)
             ->withHeader('allow', 'GET')
             ->withContent(json_encode(['message' => 'Method not implemented']));
+    }
+
+    protected function getApiSpecV0(): OpenApi
+    {
+        $openApiDefinition = app()->get('path.resources.api') . '/openapi.yml';
+        return (new OpenApiValidatorBuilder())
+            ->fromYamlFile($openApiDefinition)
+            ->getResponseValidator()
+            ->getSchema();
     }
 }
