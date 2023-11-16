@@ -45,10 +45,10 @@ msgstr ""
 "Use up to 24 letters, numbers or connecting punctuations (.-_) for your nickname."
 
 msgid "validation.email.required"
-msgstr "The email address is required."
+msgstr "The e-mail address is required."
 
 msgid "validation.email.email"
-msgstr "This email address is not valid."
+msgstr "This e-mail address is not valid."
 
 msgid "validation.password.length"
 msgstr "Your new password is too short."
