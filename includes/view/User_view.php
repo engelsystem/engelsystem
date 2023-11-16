@@ -638,9 +638,10 @@ function User_view(
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
                 icon('info-circle') . sprintf(
-                    __('Your night shifts between %d and %d am count twice.'),
+                    __('Your night shifts between %d and %d am count twice for the %s score.'),
                     $nightShiftsConfig['start'],
-                    $nightShiftsConfig['end']
+                    $nightShiftsConfig['end'],
+                    ($goodie_tshirt ? __('T-shirt') : __('goodie'))
                 ),
                 true
             ) : '',
