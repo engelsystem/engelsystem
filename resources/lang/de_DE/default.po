@@ -1737,6 +1737,35 @@ msgstr "Hier kannst Du Deine Sprache ändern."
 msgid "settings.language.success"
 msgstr "Sprache wurde erfolgreich geändert."
 
+msgid "settings.api"
+msgstr "API"
+
+msgid "settings.api.about"
+msgstr ""
+"Die API erlaubt es dir, über externe Programme, mit dem Engelsystem zu interagieren. "
+"Sie ist noch nicht vollständig, wir arbeiten aber daran sie zu erweitern.\n"
+"Der API Einstiegspunkt befindet sich unter `%s` und ist in der [OpenAPI Spezifikation](%s) beschrieben.\n"
+"Teile deinen persönlichen API Key mit niemandem, er erlaubt es deine persönlichen Daten einzusehen "
+"und Änderungen in deinem Namen durch zu führen!"
+
+msgid "settings.api.shifts_json_show"
+msgstr "JSON Schichten Export anzeigen"
+
+msgid "settings.api.ical_show"
+msgstr "iCal export anzeigen"
+
+msgid "settings.api.news_show"
+msgstr "News feeds anzeigen"
+
+msgid "settings.api.key_show"
+msgstr "API Key anzeigen"
+
+msgid "settings.api.key_reset"
+msgstr "API Key zurücksetzen"
+
+msgid "settings.api.key_reset_confirm"
+msgstr "Wenn du den API Key zurücksetzt, musst ihn in allen deinen Anwendungen aktualisieren."
+
 msgid "settings.oauth"
 msgstr "Single Sign-On"
 

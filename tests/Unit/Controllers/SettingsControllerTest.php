@@ -10,6 +10,7 @@ use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Session as SessionModel;
@@ -886,6 +887,41 @@ class SettingsControllerTest extends ControllerTest
         $this->controller->saveDrivingLicense($this->request);
     }
 
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::api
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testApi(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        /** @var Response|MockObject $response */
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertEquals('pages/settings/api', $view);
+                $this->assertArrayHasKey('settings_menu', $data);
+                return $this->response;
+            });
+
+        $this->controller = $this->app->make(SettingsController::class);
+        $this->controller->api();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::apiKeyReset
+     */
+    public function testApiKeyReset(): void
+    {
+        $redirector = $this->createMock(Redirector::class);
+        $this->app->instance(Redirector::class, $redirector);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+        $this->setExpects($this->auth, 'resetApiKey', [$this->user], null, $this->atLeastOnce());
+        $this->setExpects($redirector, 'back', null, $this->response);
+
+        $this->controller = $this->app->make(SettingsController::class);
+        $this->controller->apiKeyReset();
+    }
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
@@ -980,6 +1016,26 @@ class SettingsControllerTest extends ControllerTest
 
         $menu = $this->controller->settingsMenu();
         $this->assertArrayNotHasKey('http://localhost/settings/certificates', $menu);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuApi(): void
+    {
+        $this->setExpects($this->auth, 'can', ['api'], true, $this->atLeastOnce());
+
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/profile', $menu);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuApiNotAvailable(): void
+    {
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayNotHasKey('http://localhost/settings/api', $menu);
     }
 
     /**

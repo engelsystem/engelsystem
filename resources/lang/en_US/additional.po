@@ -191,6 +191,9 @@ msgstr "Settings saved."
 msgid "settings.sessions.delete_success"
 msgstr "Session deleted successfully."
 
+msgid "settings.api.key_reset_success"
+msgstr "API key successfully reset."
+
 msgid "faq.delete.success"
 msgstr "FAQ entry successfully deleted."
 
