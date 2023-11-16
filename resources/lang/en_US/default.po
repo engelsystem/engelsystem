@@ -291,13 +291,13 @@ msgstr "Allow heaven angels to contact me by e-mail."
 
 msgid "settings.profile.email_goody"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
-"that my nick, e-mail address, worked hours and shirt size will be stored until then."
+"that my nick, e-mail address, worked hours and T-shirt size will be stored until then."
 
 msgid "settings.profile.privacy"
 msgstr "To withdraw your approval, send an e-mail to <a href=\"mailto:%s\">%1$s</a>."
 
 msgid "settings.profile.shirt_size"
-msgstr "Shirt size"
+msgstr "T-shirt size"
 
 msgid "settings.profile.angeltypes.info"
 msgstr "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
@@ -490,16 +490,16 @@ msgid "question.delete.title"
 msgstr "Delete question \"%s\""
 
 msgid "user.edit.shirt"
-msgstr "Edit shirt"
+msgstr "Edit T-shirt"
 
 msgid "user.edit.goodie"
 msgstr "Edit goodie"
 
 msgid "form.shirt"
-msgstr "Shirt"
+msgstr "T-shirt"
 
 msgid "user.shirt_size"
-msgstr "Shirt size"
+msgstr "T-shirt size"
 
 msgid "user.active"
 msgstr "Active"
@@ -511,7 +511,7 @@ msgid "user.arrived"
 msgstr "Arrived"
 
 msgid "user.got_shirt"
-msgstr "Got shirt"
+msgstr "Got T-shirt"
 
 msgid "user.got_goodie"
 msgstr "Got goodie"
@@ -641,7 +641,7 @@ msgid "registration.register"
 msgstr "Register"
 
 msgid "tshirt.required.hint"
-msgstr "Please specify a tshirt size in your settings!"
+msgstr "Please specify a T-shirt size in your settings!"
 
 msgid "dect.required.hint"
 msgstr ""

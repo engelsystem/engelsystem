@@ -544,10 +544,10 @@ msgstr "Engel nicht gefunden."
 msgid "Angel has been marked as not active."
 msgstr "Engel wurde als nicht aktiv markiert."
 
-msgid "Angel has got a t-shirt."
+msgid "Angel has got a T-shirt."
 msgstr "Engel hat ein T-Shirt bekommen."
 
-msgid "Angel has got no t-shirt."
+msgid "Angel has got no T-shirt."
 msgstr "Engel hat kein T-Shirt bekommen."
 
 msgid "set active"
@@ -556,10 +556,10 @@ msgstr "setze aktiv"
 msgid "remove active"
 msgstr "entferne aktiv"
 
-msgid "got t-shirt"
+msgid "got T-shirt"
 msgstr "T-Shirt bekommen"
 
-msgid "remove t-shirt"
+msgid "remove T-shirt"
 msgstr "entferne T-Shirt"
 
 msgid "Sum"
@@ -595,10 +595,10 @@ msgstr "Erzwungen"
 msgid "T-shirt?"
 msgstr "T-Shirt?"
 
-msgid "Shirt statistic"
+msgid "T-shirt statistic"
 msgstr "T-Shirt Statistik"
 
-msgid "Given shirts"
+msgid "Given T-shirts"
 msgstr "Ausgegebene T-Shirts"
 
 msgid "Arrive angels"
@@ -1228,7 +1228,7 @@ msgstr "Gutschein"
 msgid "Freeloads"
 msgstr "Schwänzereien"
 
-msgid "T-Shirt"
+msgid "T-shirt"
 msgstr "T-Shirt"
 
 msgid "Last login"
@@ -1252,7 +1252,7 @@ msgstr "austragen"
 msgid "Sum:"
 msgstr "Summe:"
 
-msgid "Your t-shirt score"
+msgid "Your T-shirt score"
 msgstr "Dein T-Shirt Score"
 
 msgid "Work log entry"
@@ -1676,7 +1676,7 @@ msgstr "Erlaube Himmel-Engeln mich per E-Mail zu kontaktieren."
 
 msgid "settings.profile.email_goody"
 msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "
-"dass mein Nick, E-Mail-Adresse, geleistete Arbeit und Shirt-Größe solange gespeichert werden."
+"dass mein Nick, E-Mail-Adresse, geleistete Arbeit und T-Shirt-Größe solange gespeichert werden."
 
 msgid "settings.profile.privacy"
 msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
@@ -1875,16 +1875,16 @@ msgid "question.delete.title"
 msgstr "Frage \"%s\" löschen"
 
 msgid "user.edit.shirt"
-msgstr "Shirt bearbeiten"
+msgstr "T-Shirt bearbeiten"
 
 msgid "user.edit.goodie"
 msgstr "Goodie bearbeiten"
 
 msgid "form.shirt"
-msgstr "Shirt"
+msgstr "T-Shirt"
 
 msgid "user.shirt_size"
-msgstr "Shirt größe"
+msgstr "T-Shirt größe"
 
 msgid "user.active"
 msgstr "Aktiv"
@@ -1896,7 +1896,7 @@ msgid "user.arrived"
 msgstr "Angekommen"
 
 msgid "user.got_shirt"
-msgstr "Shirt bekommen"
+msgstr "T-Shirt bekommen"
 
 msgid "user.got_goodie"
 msgstr "Goodie bekommen"

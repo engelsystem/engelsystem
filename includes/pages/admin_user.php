@@ -111,7 +111,7 @@ function admin_user()
         if ($goodie_enabled) {
             // T-Shirt bekommen?
             if ($goodie_tshirt) {
-                $html .= '  <tr><td>' . __('T-Shirt') . '</td><td>' . "\n";
+                $html .= '  <tr><td>' . __('T-shirt') . '</td><td>' . "\n";
             } else {
                 $html .= '  <tr><td>' . __('Goodie') . '</td><td>' . "\n";
             }

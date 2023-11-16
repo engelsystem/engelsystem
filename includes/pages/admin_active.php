@@ -133,7 +133,7 @@ function admin_active()
                 $user_source->state->got_shirt = true;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has tshirt now.');
-                $msg = success(($goodie_tshirt ? __('Angel has got a t-shirt.') : __('Angel has got a goodie.')), true);
+                $msg = success(($goodie_tshirt ? __('Angel has got a T-shirt.') : __('Angel has got a goodie.')), true);
             } else {
                 $msg = error('Angel not found.', true);
             }
@@ -144,7 +144,7 @@ function admin_active()
                 $user_source->state->got_shirt = false;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO tshirt.');
-                $msg = success(($goodie_tshirt ? __('Angel has got no t-shirt.') : __('Angel has got no goodie.')), true);
+                $msg = success(($goodie_tshirt ? __('Angel has got no T-shirt.') : __('Angel has got no goodie.')), true);
             } else {
                 $msg = error(__('Angel not found.'), true);
             }
@@ -268,7 +268,7 @@ function admin_active()
 
             if ($goodie_enabled) {
                 $actions[] = form(
-                    [form_submit('submit', ($goodie_tshirt ? __('got t-shirt') : __('got goodie')), 'btn-sm', false, 'secondary')],
+                    [form_submit('submit', ($goodie_tshirt ? __('got T-shirt') : __('got goodie')), 'btn-sm', false, 'secondary')],
                     url('/admin-active', $parametersShirt),
                     false,
                     true
@@ -286,7 +286,7 @@ function admin_active()
 
             if ($goodie_enabled) {
                 $actions[] = form(
-                    [form_submit('submit', ($goodie_tshirt ? __('remove t-shirt') : __('remove goodie')), 'btn-sm', false, 'secondary')],
+                    [form_submit('submit', ($goodie_tshirt ? __('remove T-shirt') : __('remove goodie')), 'btn-sm', false, 'secondary')],
                     url('/admin-active', $parameters),
                     false,
                     true
@@ -355,10 +355,10 @@ function admin_active()
             ),
             $matched_users
         ),
-        $goodie_enabled ? '<h2>' . ($goodie_tshirt ? __('Shirt statistic') : __('Goodie statistic')) . '</h2>' : '',
+        $goodie_enabled ? '<h2>' . ($goodie_tshirt ? __('T-shirt statistic') : __('Goodie statistic')) . '</h2>' : '',
         $goodie_enabled ? table(array_merge(
             ($goodie_tshirt ? ['size'  => __('Size')] : []),
-            ['given' => $goodie_tshirt ? __('Given shirts') : __('Given goodies') ]
+            ['given' => $goodie_tshirt ? __('Given T-shirts') : __('Given goodies') ]
         ), $goodie_statistics) : '',
     ]);
 }
