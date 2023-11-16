@@ -456,6 +456,35 @@ msgstr "Here you can change your language."
 msgid "settings.language.success"
 msgstr "Language was changed successfully."
 
+msgid "settings.api"
+msgstr "API"
+
+msgid "settings.api.about"
+msgstr ""
+"The API allows you to interact with the Engelsystem by using external programs. "
+"It's not complete but we are working on extending it.\n"
+"The API endpoint is located at `%s` and described in the [OpenAPI specification](%s).\n"
+"Don't share your personal API key with anyone as it can be used to view your personal data "
+"and do changes your behalf!"
+
+msgid "settings.api.shifts_json_show"
+msgstr "Show JSON shifts export"
+
+msgid "settings.api.ical_show"
+msgstr "Show iCal export"
+
+msgid "settings.api.news_show"
+msgstr "Show news feeds"
+
+msgid "settings.api.key_show"
+msgstr "Show API key"
+
+msgid "settings.api.key_reset"
+msgstr "Reset API key"
+
+msgid "settings.api.key_reset_confirm"
+msgstr "If you reset the API key you have to update it in all your applications."
+
 msgid "settings.oauth"
 msgstr "Single Sign-On"
 

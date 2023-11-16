@@ -22,6 +22,8 @@ class SettingsController extends BaseController
     /** @var string[] */
     protected array $permissions = [
         'user_settings',
+        'api' => 'api',
+        'apiKeyReset' => 'api',
     ];
 
     public function __construct(
@@ -305,6 +307,24 @@ class SettingsController extends BaseController
         return $this->redirect->to('/settings/certificates');
     }
 
+    public function api(): Response
+    {
+        return $this->response->withView(
+            'pages/settings/api',
+            [
+                'settings_menu' => $this->settingsMenu(),
+            ],
+        );
+    }
+
+    public function apiKeyReset(): Response
+    {
+        $this->auth->resetApiKey($this->auth->user());
+
+        $this->addNotification('settings.api.key_reset_success');
+        return $this->redirect->back();
+    }
+
     public function oauth(): Response
     {
         $providers = $this->config->get('oauth');
@@ -380,6 +400,10 @@ class SettingsController extends BaseController
 
         if (!empty(config('oauth'))) {
             $menu[url('/settings/oauth')] = ['title' => 'settings.oauth', 'hidden' => $this->checkOauthHidden()];
+        }
+
+        if ($this->auth->can('api')) {
+            $menu[url('/settings/api')] = ['title' => 'settings.api', 'icon' => 'braces'];
         }
 
         return $menu;

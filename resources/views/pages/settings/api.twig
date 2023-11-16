@@ -1,0 +1,95 @@
+{% extends 'pages/settings/settings.twig' %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('settings.api') }}{% endblock %}
+
+{% block row_content %}
+
+    <div content="row">
+        <div class="col-md-12">
+
+            {{ f.button(
+                __('settings.api.key_show'),
+                {'size': 'sm', 'icon_left': 'key', 'attr': {
+                    'data-bs-toggle': 'collapse', 'data-bs-target': '#key_hide',
+                    'aria-expanded': 'true', 'aria-controls': 'key_hide'
+                }}
+            ) }}
+
+            {% if has_permission_to('shifts_json_export') %}
+                {{ f.button(
+                    __('settings.api.shifts_json_show'),
+                    {'size': 'sm', 'icon_left': 'braces', 'attr': {
+                        'data-bs-toggle': 'collapse', 'data-bs-target': '#shifts_json_hide',
+                        'aria-expanded': 'true', 'aria-controls': 'shifts_json_hide'
+                    }}
+                ) }}
+            {% endif %}
+
+            {% if has_permission_to('ical') %}
+                {{ f.button(
+                    __('settings.api.ical_show'),
+                    {'size': 'sm', 'icon_left': 'calendar-week', 'attr': {
+                        'data-bs-toggle': 'collapse', 'data-bs-target': '#ical_hide',
+                        'aria-expanded': 'true', 'aria-controls': 'ical_hide'
+                    }}
+                ) }}
+            {% endif %}
+
+            {% if has_permission_to('atom') %}
+                {{ f.button(
+                    __('settings.api.news_show'),
+                    {'size': 'sm', 'icon_left': 'calendar-week', 'attr': {
+                        'data-bs-toggle': 'collapse', 'data-bs-target': '#news_hide',
+                        'aria-expanded': 'true', 'aria-controls': 'news_hide'
+                    }}
+                ) }}
+            {% endif %}
+
+            <form method="post" class="d-inline">
+                {{ csrf() }}
+                {{ f.submit(
+                    __('settings.api.key_reset'),
+                    { 'size': 'sm', 'icon_left': 'arrow-repeat', 'confirm_text': __('settings.api.key_reset_confirm') }
+                ) }}
+            </form>
+
+        </div>
+
+        <div class="col-md-12 pt-2" id="exports_hide">
+
+            <p id="key_hide" class="collapse" data-bs-parent="#exports_hide">
+                <code>{{ user.api_key }}</code>
+            </p>
+
+            {% if has_permission_to('shifts_json_export') %}
+                <p id="shifts_json_hide" class="collapse" data-bs-parent="#exports_hide">
+                    <code>{{ url('/shifts-json-export', {'key': user.api_key}) }}</code>
+                </p>
+            {% endif %}
+
+            {% if has_permission_to('ical') %}
+                <p id="ical_hide" class="collapse" data-bs-parent="#exports_hide">
+                    <code>{{ url('/ical', {'key': user.api_key}) }}</code>
+                </p>
+            {% endif %}
+
+            {% if has_permission_to('atom') %}
+                <p id="news_hide" class="collapse" data-bs-parent="#exports_hide">
+                    <code>{{ url('/atom', {'key': user.api_key}) }}</code>
+                    <code>{{ url('/atom', {'meetings': 1, 'key': user.api_key}) }}</code>
+                    <code>{{ url('/rss', {'key': user.api_key}) }}</code>
+                    <code>{{ url('/rss', {'meetings': 1, 'key': user.api_key}) }}</code>
+                </p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ __('settings.api.about', [url('/api/v0-beta'), url('/api/v0-beta/openapi')])|markdown|nl2br }}
+        </div>
+    </div>
+
+{% endblock %}
