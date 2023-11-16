@@ -287,7 +287,7 @@ return [
 
     // Regular expression describing a FALSE username.
     // Per default usernames must only contain alphanumeric chars, "-", "_" or ".".
-    'username_regex' => (string) env('USERNAME_REGEX', '/([^\p{L}\p{N}\-_.]+)/ui'),
+    'username_regex' => (string) env('USERNAME_REGEX', '/([^\p{L}\p{N}_.-]+)/ui'),
 
     // Enables first name and last name
     'enable_user_name'        => (bool) env('ENABLE_USER_NAME', false),

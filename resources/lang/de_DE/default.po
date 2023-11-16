@@ -1285,8 +1285,8 @@ msgstr "iCal Export"
 msgid "JSON Export"
 msgstr "JSON Export"
 
-msgid "Your night shifts between %d and %d am count twice."
-msgstr "Deine Nachtschichten zwischen %d und %d Uhr zählen doppelt."
+msgid "Your night shifts between %d and %d am count twice for the %s score."
+msgstr "Deine Nachtschichten zwischen %d und %d Uhr zählen für den %s Score doppelt."
 
 msgid ""
 "Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
@@ -1406,11 +1406,17 @@ msgstr "Die Einträge müssen übereinstimmen und dürfen nicht leer sein!"
 msgid "Number of shifts: %s"
 msgstr "Anzahl an Schichten: %s"
 
+msgid "Shifts created."
+msgstr "Schichten erstellt."
+
 msgid "If the angel is active, it can claim a goodie. If goodie is set to 'Yes', the angel already got their goodie."
 msgstr "Ist der Engel Aktiv, hat er damit Anspruch auf ein Goodie. Wenn Goodie ein 'Ja' enthält, bedeutet dies, "
 "dass der Engel bereits sein Goodie erhalten hat."
 
 msgid "Goodie"
+msgstr "Goodie"
+
+msgid "goodie"
 msgstr "Goodie"
 
 msgid "Your goodie score"
