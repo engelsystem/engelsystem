@@ -63,10 +63,10 @@ msgid "validation.password_confirmation.required"
 msgstr "You have to confirm your password."
 
 msgid "validation.tshirt_size.required"
-msgstr "Please choose your t-shirt size."
+msgstr "Please choose your T-shirt size."
 
 msgid "validation.tshirt_size.shirtSize"
-msgstr "Please choose a valid t-shirt size."
+msgstr "Please choose a valid T-shirt size."
 
 msgid "validation.planned_arrival_date.required"
 msgstr "Please enter your planned date of arrival."

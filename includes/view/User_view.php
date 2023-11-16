@@ -411,7 +411,7 @@ function User_view_myshifts(
         ];
         if ($goodie_enabled && ($its_me || $tshirt_admin)) {
             $myshifts_table[] = [
-                'date'       => '<b>' . ($goodie_tshirt ? __('Your t-shirt score') : __('Your goodie score')) . '&trade;:</b>',
+                'date'       => '<b>' . ($goodie_tshirt ? __('Your T-shirt score') : __('Your goodie score')) . '&trade;:</b>',
                 'duration'   => '<b>' . $tshirt_score . '</b>',
                 'location'   => '',
                 'shift_info' => '',
@@ -734,7 +734,7 @@ function User_view_state_admin($freeloader, $user_source)
             $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
         if ($user_source->state->got_shirt && $goodie_enabled) {
-            $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-Shirt') : __('Goodie')) . '</span>';
+            $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-shirt') : __('Goodie')) . '</span>';
         }
     } else {
         $arrivalDate = $user_source->personalData->planned_arrival_date;
