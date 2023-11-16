@@ -1995,3 +1995,6 @@ msgstr "Start"
 
 msgid "shifts.end"
 msgstr "Ende"
+
+msgid "user.info"
+msgstr "Benutzer Info"

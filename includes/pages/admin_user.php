@@ -27,6 +27,7 @@ function admin_user()
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $user_info_edit = auth()->can('user.info.edit');
 
     if (!$request->has('id')) {
         throw_redirect(users_link());
@@ -81,6 +82,14 @@ function admin_user()
                     $user_source->personalData->shirt_size,
                     __('form.select_placeholder')
                 )
+                . '</td></tr>' . "\n";
+        }
+
+        if ($user_info_edit) {
+            $html .= '  <tr><td>' . __('user.info') . '</td><td>'
+                . '<textarea cols="40" rows="" name="userInfo" class="form-control">'
+                . htmlspecialchars((string) $user_source->state->user_info)
+                . '</textarea>'
                 . '</td></tr>' . "\n";
         }
 
@@ -270,16 +279,21 @@ function admin_user()
                 if ($goodie_enabled) {
                     $user_source->state->got_shirt = $request->postData('eTshirt');
                 }
+                if ($user_info_edit) {
+                    $user_source->state->user_info = $request->postData('userInfo');
+                }
+
                 $user_source->state->active = $request->postData('eAktiv');
                 $user_source->state->force_active = $force_active;
                 $user_source->state->save();
 
                 engelsystem_log(
                     'Updated user: ' . $user_source->name . ' (' . $user_source->id . ')'
-                    . ($goodie_tshirt ? ', t-shirt: ' : '' . $user_source->personalData->shirt_size)
+                    . ($goodie_tshirt ? ', t-shirt-size: ' . $user_source->personalData->shirt_size : '')
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
-                    . ($goodie_tshirt ? ', tshirt: ' : ', goodie: ' . $user_source->state->got_shirt)
+                    . ($goodie_tshirt ? ', t-shirt: ' : ', goodie: ' . $user_source->state->got_shirt)
+                    . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
                 );
                 $html .= success(__('Changes were saved.') . "\n", true);
                 break;

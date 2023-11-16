@@ -11,6 +11,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 /**
  * @property bool        $arrived
  * @property Carbon|null $arrival_date
+ * @property string|null $user_info
  * @property bool        $active
  * @property bool        $force_active
  * @property bool        $got_shirt
@@ -18,6 +19,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  *
  * @method static QueryBuilder|State[] whereArrived($value)
  * @method static QueryBuilder|State[] whereArrivalDate($value)
+ * @method static QueryBuilder|State[] whereUserInfo($value)
  * @method static QueryBuilder|State[] whereActive($value)
  * @method static QueryBuilder|State[] whereForceActive($value)
  * @method static QueryBuilder|State[] whereGotShirt($value)
@@ -34,6 +36,7 @@ class State extends HasUserModel
     protected $attributes = [ // phpcs:ignore
         'arrived'      => false,
         'arrival_date' => null,
+        'user_info'    => null,
         'active'       => false,
         'force_active' => false,
         'got_shirt'    => false,
@@ -60,6 +63,7 @@ class State extends HasUserModel
         'user_id',
         'arrived',
         'arrival_date',
+        'user_info',
         'active',
         'force_active',
         'got_shirt',

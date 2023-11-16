@@ -698,3 +698,6 @@ msgstr "Start"
 
 msgid "shifts.end"
 msgstr "End"
+
+msgid "user.info"
+msgstr "User info"
