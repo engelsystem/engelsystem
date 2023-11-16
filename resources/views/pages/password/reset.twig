@@ -16,7 +16,7 @@
                     <form action="" enctype="multipart/form-data" method="post">
                         {{ csrf() }}
 
-                        {{ __('We will send you an e-mail with a password recovery link. Please use the email address you used for registration.') }}
+                        {{ __('We will send you an e-mail with a password recovery link. Please use the e-mail address you used for registration.') }}
                         {{ f.input('email', __('general.email'), {
                             'type': 'email',
                             'required': true,

@@ -269,13 +269,13 @@ msgid "settings.profile.mobile_show"
 msgstr "Show mobile number to other users to contact me."
 
 msgid "settings.profile.email-preferences"
-msgstr "E-Mail preferences"
+msgstr "E-mail preferences"
 
 msgid "general.email"
-msgstr "E-Mail"
+msgstr "E-mail"
 
 msgid "settings.profile.email.already-taken"
-msgstr "The email is already taken."
+msgstr "This e-mail address is already taken."
 
 msgid "settings.profile.email_shiftinfo"
 msgstr "The %s is allowed to send me an e-mail (e.g. when my shifts change)."
@@ -576,7 +576,7 @@ msgid "angeltypes.can-change-later"
 msgstr "You can change your selection later in the settings."
 
 msgid "angeltypes.email"
-msgstr "E-Mail"
+msgstr "E-mail"
 
 msgid "angeltypes.shift.self_signup.info"
 msgstr "Angel types which have shift self signup enabled allow angels to self sign up for there shifts, "

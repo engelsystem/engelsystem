@@ -26,8 +26,8 @@ function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe
     );
 
     if (!$status) {
-        error(sprintf(__('User %s could not be notified by email due to an error.'), $recipientUser->displayName));
-        engelsystem_log(sprintf('User %s could not be notified by email due to an error.', $recipientUser->name));
+        error(sprintf(__('User %s could not be notified by e-mail due to an error.'), $recipientUser->displayName));
+        engelsystem_log(sprintf('User %s could not be notified by e-mail due to an error.', $recipientUser->name));
     }
 
     return $status;
