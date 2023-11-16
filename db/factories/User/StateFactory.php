@@ -22,6 +22,7 @@ class StateFactory extends Factory
             'user_id'      => User::factory(),
             'arrived'      => (bool) $arrival,
             'arrival_date' => $arrival ? Carbon::instance($arrival) : null,
+            'user_info'    => $this->faker->optional(.1)->text(),
             'active'       => $this->faker->boolean(.3),
             'force_active' => $this->faker->boolean(.1),
             'got_shirt'    => $this->faker->boolean(),

@@ -387,7 +387,6 @@ function User_view_myshifts(
     foreach ($shifts as $shift) {
         $key = $shift->start->timestamp . '-shift-' . $shift->shift_entry_id . $shift->id;
         $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me);
-
         if (!$shift->freeloaded) {
             $timeSum += ($shift->end->timestamp - $shift->start->timestamp);
         }
@@ -543,7 +542,10 @@ function User_view(
             : ''
         )
         . htmlspecialchars($user_source->name)
-        . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
+        . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : '')
+        . ((auth()->can('user.info.show') && $user_source->state->user_info)
+        ? (' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+        . htmlspecialchars($user_source->state->user_info) . '"></span></small>') : ''),
         [
             msg(),
             div('row', [
