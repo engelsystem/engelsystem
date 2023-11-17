@@ -85,12 +85,18 @@ function admin_user()
                 . '</td></tr>' . "\n";
         }
 
+        // User info
         if ($user_info_edit) {
-            $html .= '  <tr><td>' . __('user.info') . '</td><td>'
-                . '<textarea cols="40" rows="" name="userInfo" class="form-control">'
-                . htmlspecialchars((string) $user_source->state->user_info)
-                . '</textarea>'
-                . '</td></tr>' . "\n";
+            $html .= '  <tr><td>'
+            . __('user.info')
+            . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+            . __('user.info.hint')
+            . '"></span>'
+            . '</td><td>'
+            . '<textarea cols="40" rows="" name="userInfo" class="form-control">'
+            . htmlspecialchars((string) $user_source->state->user_info)
+            . '</textarea>'
+            . '</td></tr>' . "\n";
         }
 
         $options = [
@@ -98,7 +104,7 @@ function admin_user()
             '0' => __('No'),
         ];
 
-        // Gekommen?
+        // Arrived?
         $html .= '  <tr><td>' . __('user.arrived') . '</td><td>' . "\n";
         if ($user_source->state->arrived) {
             $html .= __('Yes');
@@ -107,11 +113,11 @@ function admin_user()
         }
         $html .= '</td></tr>' . "\n";
 
-        // Aktiv?
+        // Active?
         $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
         $html .= html_options('eAktiv', $options, $user_source->state->active) . '</td></tr>' . "\n";
 
-        // Aktiv erzwingen
+        // Forced active?
         if (auth()->can('admin_active')) {
             $html .= '  <tr><td>' . __('Force active') . '</td><td>' . "\n";
             $html .= html_options('force_active', $options, $user_source->state->force_active) . '</td></tr>' . "\n";
