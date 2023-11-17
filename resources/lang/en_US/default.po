@@ -701,3 +701,6 @@ msgstr "End"
 
 msgid "user.info"
 msgstr "User info"
+
+msgid "user.info.hint"
+msgstr "Is displayed for shift coordinators and admins in the user view."

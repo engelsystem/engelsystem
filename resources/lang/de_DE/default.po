@@ -1998,3 +1998,6 @@ msgstr "Ende"
 
 msgid "user.info"
 msgstr "Benutzer Info"
+
+msgid "user.info.hint"
+msgstr "Wird auf der Benutzer Seite für Schichtkoordinatoren und Admins angezeigt."
