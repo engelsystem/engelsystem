@@ -87,11 +87,12 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
         ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
         : url('/angeltypes'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        $link . ' ' . sprintf(__('Edit %s'), $angeltype->name),
+        $link . ' ' . ($angeltype->id ? sprintf(__('Edit %s'), $angeltype->name) : __('Create angeltype')),
         [
+            $angeltype->id ?
             buttons([
                 button(url('/angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
-            ]),
+            ]) : '',
             msg(),
             form([
                 $supporter_mode
