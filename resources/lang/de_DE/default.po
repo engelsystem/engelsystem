@@ -182,6 +182,9 @@ msgstr "%s bearbeiten"
 msgid "Team %s"
 msgstr "Team %s"
 
+msgid "not"
+msgstr "kein"
+
 msgid "view"
 msgstr "ansehen"
 
