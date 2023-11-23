@@ -218,7 +218,7 @@ function admin_arrive()
                     'sum'   => '#888',
                 ], $planned_arrival_at_day),
                 table([
-                    'day'   => __('Date'),
+                    'day'   => __('title.date'),
                     'count' => __('general.count'),
                     'sum'   => __('Sum'),
                 ], $planned_arrival_at_day),
@@ -233,7 +233,7 @@ function admin_arrive()
                     'sum'   => '#888',
                 ], $arrival_at_day),
                 table([
-                    'day'   => __('Date'),
+                    'day'   => __('title.date'),
                     'count' => __('general.count'),
                     'sum'   => __('Sum'),
                 ], $arrival_at_day),
@@ -248,7 +248,7 @@ function admin_arrive()
                     'sum'   => '#888',
                 ], $planned_departure_at_day),
                 table([
-                    'day'   => __('Date'),
+                    'day'   => __('title.date'),
                     'count' => __('general.count'),
                     'sum'   => __('Sum'),
                 ], $planned_departure_at_day),

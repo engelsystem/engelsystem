@@ -6,7 +6,7 @@
         {% block eventinfo %}
             {% if config('name') %}
                 {% if config('event_start') and config('event_end') %}
-                    {{ __('%1$s, from %2$s to %3$s', [
+                    {{ __('footer.eventinfo.name_start_end', [
                         config('name'),
                         config('event_start').format(__('general.date')),
                         config('event_end').format(__('general.date'))
@@ -15,7 +15,7 @@
                         , {{ __('event.day', [day_of_event]) }}
                     {% endif %}
                 {% elseif config('event_start') %}
-                    {{ __('%1$s, starting %2$s', [
+                    {{ __('footer.eventinfo.name_start', [
                         config('name'),
                         config('event_start').format(__('general.date'))
                     ]) }}
@@ -26,7 +26,7 @@
                     {{ config('name') }}
                 {% endif %} <br>
             {% elseif config('event_start') and config('event_end') %}
-                {{ __('Event from %1$s to %2$s', [
+                {{ __('footer.eventinfo.start_end', [
                     config('event_start').format(__('general.date')),
                     config('event_end').format(__('general.date'))
                 ]) }}
@@ -42,8 +42,8 @@
                 {{ __(name) }}
             </a> ·
         {% endfor %}
-        <a href="https://github.com/engelsystem/engelsystem/issues">{{ __('Bugs / Features') }}</a>
-        · <a href="https://github.com/engelsystem/engelsystem/">{{ __('Development Platform') }}</a>
-        · <a href="{{ url('/credits') }}">{{ __('Credits') }}</a>
+        <a href="https://github.com/engelsystem/engelsystem/issues">{{ __('footer.issues') }}</a>
+        · <a href="https://github.com/engelsystem/engelsystem/">{{ __('footer.github') }}</a>
+        · <a href="{{ url('/credits') }}">{{ __('credits.title') }}</a>
     </div>
 </div>

@@ -1,10 +1,10 @@
 {% extends "layouts/app.twig" %}
 
-{% block title %}{{ __('Credits') }}{% endblock %}
+{% block title %}{{ __('credits.title') }}{% endblock %}
 
 {% block content %}
     <div class="container">
-        <h1>{{ __('Credits') }}</h1>
+        <h1>{{ __('credits.title') }}</h1>
         <div class="row">
             {% for title, credit in credits %}
                 <div class="col-md-4">
@@ -14,8 +14,8 @@
             {% endfor %}
 
             <div class="col-md-4">
-                <h2>{{ __('Source code') }}</h2>
-                <p>{{ __('Version: _%s_', [version])|markdown }}</i></p>
+                <h2>{{ __('credits.source') }}</h2>
+                <p>{{ __('credits.version', [version])|markdown }}</i></p>
                 <p>
                     {{ __('credits.credit')|markdown }}
                 </p>

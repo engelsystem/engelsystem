@@ -2,11 +2,11 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('Password recovery') }}{% endblock %}
+{% block title %}{{ __('password.reset.title') }}{% endblock %}
 
 {% block content %}
     <div class="container">
-        <h1>{{ __('Password recovery') }}</h1>
+        <h1>{{ __('password.reset.title') }}</h1>
 
         {% include 'layouts/parts/messages.twig' %}
 
@@ -16,13 +16,13 @@
                     <form action="" enctype="multipart/form-data" method="post">
                         {{ csrf() }}
 
-                        {{ __('We will send you an e-mail with a password recovery link. Please use the e-mail address you used for registration.') }}
+                        {{ __('password.recovery.text') }}
                         {{ f.input('email', __('general.email'), {
                             'type': 'email',
                             'required': true,
                         }) }}
 
-                        {{ f.submit(__('Recover')) }}
+                        {{ f.submit(__('form.recover')) }}
                     </form>
                 </div>
             {% endblock %}
