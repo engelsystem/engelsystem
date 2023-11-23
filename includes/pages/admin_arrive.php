@@ -103,10 +103,10 @@ function admin_arrive()
         $arrivalDate = $usr->state->arrival_date;
         $plannedArrivalDate = $usr->personalData->planned_arrival_date;
         $usr['rendered_planned_departure_date'] = $plannedDepartureDate
-            ? $plannedDepartureDate->format(__('Y-m-d'))
+            ? $plannedDepartureDate->format(__('general.date'))
             : '-';
-        $usr['rendered_planned_arrival_date'] = $plannedArrivalDate ? $plannedArrivalDate->format(__('Y-m-d')) : '-';
-        $usr['rendered_arrival_date'] = $arrivalDate ? $arrivalDate->format(__('Y-m-d')) : '-';
+        $usr['rendered_planned_arrival_date'] = $plannedArrivalDate ? $plannedArrivalDate->format(__('general.date')) : '-';
+        $usr['rendered_arrival_date'] = $arrivalDate ? $arrivalDate->format(__('general.date')) : '-';
         $usr['arrived'] = icon_bool($usr->state->arrived);
         $usr['actions'] = form([
             form_hidden('action', $usr->state->arrived ? 'reset' : 'arrived'),
@@ -165,7 +165,7 @@ function admin_arrive()
     foreach ($arrival_count_at_day as $day => $entry) {
         $arrival_sum += $entry['count'];
         $arrival_at_day[$day] = [
-            'day'   => $entry['day']->format(__('Y-m-d')),
+            'day'   => $entry['day']->format(__('general.date')),
             'count' => $entry['count'],
             'sum'   => $arrival_sum,
         ];
@@ -176,7 +176,7 @@ function admin_arrive()
     foreach ($planned_arrival_count_at_day as $day => $entry) {
         $planned_arrival_sum += $entry['count'];
         $planned_arrival_at_day[$day] = [
-            'day'   => $entry['day']->format(__('Y-m-d')),
+            'day'   => $entry['day']->format(__('general.date')),
             'count' => $entry['count'],
             'sum'   => $planned_arrival_sum,
         ];
@@ -187,7 +187,7 @@ function admin_arrive()
     foreach ($planned_departure_count_at_day as $day => $entry) {
         $planned_departure_sum += $entry['count'];
         $planned_departure_at_day[$day] = [
-            'day'   => $entry['day']->format(__('Y-m-d')),
+            'day'   => $entry['day']->format(__('general.date')),
             'count' => $entry['count'],
             'sum'   => $planned_departure_sum,
         ];

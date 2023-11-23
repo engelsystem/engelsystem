@@ -672,6 +672,12 @@ msgstr "Please enter a mobile number in your settings!"
 msgid "confirmation.delete"
 msgstr "Do you really want to delete it?"
 
+msgid "general.datetime"
+msgstr "Y-m-d H:i"
+
+msgid "general.date"
+msgstr "Y-m-d"
+
 msgid "general.id"
 msgstr "ID"
 

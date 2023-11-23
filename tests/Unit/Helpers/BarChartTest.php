@@ -37,7 +37,7 @@ class BarChartTest extends TestCase
     {
         parent::setUp();
         $this->rendererMock = $this->mockRenderer(false);
-        $this->mockTranslator();
+        $this->mockTranslator(fn(string $key, array $replace = []) => $key == 'general.date' ? 'Y-m-d' : $key);
     }
 
     public function provideRenderTestData(): Generator

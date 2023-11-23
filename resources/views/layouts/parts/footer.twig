@@ -8,8 +8,8 @@
                 {% if config('event_start') and config('event_end') %}
                     {{ __('%1$s, from %2$s to %3$s', [
                         config('name'),
-                        config('event_start').format(__('Y-m-d')),
-                        config('event_end').format(__('Y-m-d'))
+                        config('event_start').format(__('general.date')),
+                        config('event_end').format(__('general.date'))
                     ]) }}
                     {%- if config('enable_show_day_of_event') and day_of_event is defined -%}
                         , {{ __('event.day', [day_of_event]) }}
@@ -17,7 +17,7 @@
                 {% elseif config('event_start') %}
                     {{ __('%1$s, starting %2$s', [
                         config('name'),
-                        config('event_start').format(__('Y-m-d'))
+                        config('event_start').format(__('general.date'))
                     ]) }}
                     {%- if config('enable_show_day_of_event') and day_of_event is defined -%}
                         , {{ __('event.day', [day_of_event]) }}
@@ -27,8 +27,8 @@
                 {% endif %} <br>
             {% elseif config('event_start') and config('event_end') %}
                 {{ __('Event from %1$s to %2$s', [
-                    config('event_start').format(__('Y-m-d')),
-                    config('event_end').format(__('Y-m-d'))
+                    config('event_start').format(__('general.date')),
+                    config('event_end').format(__('general.date'))
                 ]) }}
                 {%- if config('enable_show_day_of_event') and day_of_event is defined -%}
                     , {{ __('event.day', [day_of_event]) }}

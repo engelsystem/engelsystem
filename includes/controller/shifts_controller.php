@@ -280,7 +280,7 @@ function shift_delete_controller()
             error(sprintf(
                 __('Do you want to delete the shift %s from %s to %s?'),
                 $shift->shiftType->name,
-                $shift->start->format(__('Y-m-d H:i')),
+                $shift->start->format(__('general.datetime')),
                 $shift->end->format(__('H:i'))
             ), true),
             form([

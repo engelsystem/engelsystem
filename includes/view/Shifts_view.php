@@ -31,7 +31,7 @@ function Shift_view_header(Shift $shift, Location $location)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('shifts.start') . '</h4>',
             '<p class="lead' . (time() >= $shift->start->timestamp ? ' text-success' : '') . '">',
-            icon('calendar-event') . $shift->start->format(__('Y-m-d')),
+            icon('calendar-event') . $shift->start->format(__('general.date')),
             '<br />',
             icon('clock') . $shift->start->format('H:i'),
             '</p>',
@@ -39,7 +39,7 @@ function Shift_view_header(Shift $shift, Location $location)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('shifts.end') . '</h4>',
             '<p class="lead' . (time() >= $shift->end->timestamp ? ' text-success' : '') . '">',
-            icon('calendar-event') . $shift->end->format(__('Y-m-d')),
+            icon('calendar-event') . $shift->end->format(__('general.date')),
             '<br />',
             icon('clock') . $shift->end->format('H:i'),
             '</p>',
@@ -61,14 +61,14 @@ function Shift_editor_info_render(Shift $shift)
     if (!empty($shift->created_by)) {
         $info[] = sprintf(
             icon('plus-lg') . __('created at %s by %s'),
-            $shift->created_at->format(__('Y-m-d H:i')),
+            $shift->created_at->format(__('general.datetime')),
             User_Nick_render($shift->createdBy)
         );
     }
     if (!empty($shift->updated_by)) {
         $info[] = sprintf(
             icon('pencil') . __('edited at %s by %s'),
-            $shift->updated_at->format(__('Y-m-d H:i')),
+            $shift->updated_at->format(__('general.datetime')),
             User_Nick_render($shift->updatedBy)
         );
     }
@@ -166,7 +166,7 @@ function Shift_view(
     if (config('signup_advance_hours') && $shift->start->timestamp > time() + config('signup_advance_hours') * 3600) {
         $content[] = info(sprintf(
             __('This shift is in the far future and becomes available for signup at %s.'),
-            date(__('Y-m-d H:i'), $shift->start->timestamp - config('signup_advance_hours') * 3600)
+            date(__('general.datetime'), $shift->start->timestamp - config('signup_advance_hours') * 3600)
         ), true);
     }
 
@@ -202,7 +202,7 @@ function Shift_view(
         $content[] = Shift_editor_info_render($shift);
     }
 
-    $start = $shift->start->format(__('Y-m-d H:i'));
+    $start = $shift->start->format(__('general.datetime'));
 
     $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm');
     return page_with_title(

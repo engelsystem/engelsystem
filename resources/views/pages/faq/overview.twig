@@ -51,7 +51,7 @@
 
                             <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} d-flex align-items-center">
                                 <div class="me-3">
-                                    {{ m.icon('clock') }} {{ item.updated_at.format(__('Y-m-d H:i')) }}
+                                    {{ m.icon('clock') }} {{ item.updated_at.format(__('general.datetime')) }}
                                 </div>
 
                                 {% if has_permission_to('faq.edit') %}

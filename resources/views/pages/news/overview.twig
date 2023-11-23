@@ -71,13 +71,13 @@
             <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
                 {% if news.updated_at != news.created_at and not is_overview %}
                     <div>
-                        {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ news.updated_at.format(__('general.datetime')) }}
                         {{ __('news.updated') }}
                     </div>
                 {% endif %}
 
                 <div>
-                    {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+                    {{ m.icon('clock') }} {{ news.created_at.format(__('general.datetime')) }}
                 </div>
 
                 <div class="text-truncate">

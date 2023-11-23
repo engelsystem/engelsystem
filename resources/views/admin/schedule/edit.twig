@@ -10,7 +10,7 @@
 {% block row_content %}
     {% if schedule and schedule.updated_at %}
         <div class="col-md-12">
-            <p>{{  __('schedule.last_update', [schedule.updated_at.format(__('Y-m-d H:i'))]) }}</p>
+            <p>{{  __('schedule.last_update', [schedule.updated_at.format(__('general.datetime'))]) }}</p>
         </div>
     {% endif %}
 

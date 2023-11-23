@@ -55,7 +55,7 @@ msgstr "Autorisierung ist abgelaufen"
 msgid "The provided CSRF token is invalid or has expired"
 msgstr "Das angegebene CSRF Token ist ungültig oder abgelaufen"
 
-msgid "Y-m-d"
+msgid "general.date"
 msgstr "d.m.Y"
 
 msgid "%1$s, from %2$s to %3$s"
@@ -486,9 +486,6 @@ msgstr ""
 "Dein %s-Konto wurde gelöscht. Wenn Du dazu Fragen hast, kontaktiere bitte "
 "den Himmel."
 
-msgid "m/d/Y h:i a"
-msgstr "d.m.Y H:i"
-
 msgid "Active angels"
 msgstr "Aktive Engel"
 
@@ -760,11 +757,8 @@ msgstr "Aktiv erzwingen"
 msgid "Edit user"
 msgstr "User bearbeiten"
 
-msgid "Y-m-d H:i"
+msgid "general.datetime"
 msgstr "d.m.Y H:i"
-
-msgid "Y-m-d H:i:s"
-msgstr "d.m.Y H:i:s"
 
 msgid "Key changed."
 msgstr "Key geändert."
