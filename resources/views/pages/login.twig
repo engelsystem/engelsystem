@@ -21,8 +21,8 @@
                 {% if date > date() %}
                     <div class="col-sm-3 text-center d-none d-sm-block">
                         <h4>{{ name }}</h4>
-                        <div class="h2 text-body" title="{{ date.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ date.getTimestamp() }}">%c</div>
-                        <small>{{ date.format(__('Y-m-d')) }}</small>
+                        <div class="h2 text-body" title="{{ date.format(__('general.datetime')) }}" data-countdown-ts="{{ date.getTimestamp() }}">%c</div>
+                        <small>{{ date.format(__('general.date')) }}</small>
                     </div>
                 {% endif %}
             {% endfor %}

@@ -17,12 +17,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <p>
-                        {{ m.icon('clock') }} {{ faq.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ faq.updated_at.format(__('general.datetime')) }}
 
                         {% if faq.updated_at != faq.created_at %}
                             &emsp;{{ __('form.updated') }}
                             <br>
-                            {{ m.icon('clock') }} {{ faq.created_at.format(__('Y-m-d H:i')) }}
+                            {{ m.icon('clock') }} {{ faq.created_at.format(__('general.datetime')) }}
                         {% endif %}
                     </p>
                 </div>

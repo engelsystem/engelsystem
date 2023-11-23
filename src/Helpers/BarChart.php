@@ -29,7 +29,7 @@ class BarChart
             $groupLabels[$groupKey] = $groupKey;
 
             if ($date) {
-                $groupLabels[$groupKey] = $date->format(__('Y-m-d'));
+                $groupLabels[$groupKey] = $date->format(__('general.date'));
             }
 
             foreach ($rowLabels as $rowKey => $rowName) {

@@ -61,7 +61,7 @@ abstract class TestCase extends PHPUnitTestCase
     /**
      * @return Translator&MockObject
      */
-    protected function mockTranslator(bool $mockImplementation = true): Translator
+    protected function mockTranslator(bool|callable $mockImplementation = true): Translator
     {
         $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
@@ -70,7 +70,11 @@ abstract class TestCase extends PHPUnitTestCase
 
         if ($mockImplementation) {
             $translator->method('translate')
-                ->willReturnCallback(fn(string $key, array $replace = []) => $key);
+                ->willReturnCallback(
+                    is_callable($mockImplementation)
+                    ? $mockImplementation
+                    : fn(string $key, array $replace = []) => $key
+                );
         }
 
         $this->app->instance('translator', $translator);

@@ -45,8 +45,8 @@ class Shift
             $title,
             $type,
             $location->name,
-            $start->format(__('Y-m-d H:i')),
-            $end->format(__('Y-m-d H:i'))
+            $start->format(__('general.datetime')),
+            $end->format(__('general.datetime'))
         );
         $workLog->save();
 

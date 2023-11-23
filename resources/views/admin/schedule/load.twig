@@ -67,7 +67,7 @@
             <tbody>
             {% for shift in shifts %}
                 <tr>
-                    <td>{{ shift.date.format(__('Y-m-d H:i')) }} - {{ shift.endDate.format(__('H:i')) }}</td>
+                    <td>{{ shift.date.format(__('general.datetime')) }} - {{ shift.endDate.format(__('H:i')) }}</td>
                     <td>{{ shift.type }}</td>
                     <td>{{ shift.title }}{% if shift.subtitle %}<br><small>{{ shift.subtitle }}</small>{% endif %}</td>
                     <td>{{ shift.room.name }}</td>

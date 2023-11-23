@@ -96,7 +96,7 @@ function user_myshifts()
 
             return ShiftEntry_edit_view(
                 $shifts_user,
-                $shift->start->format(__('Y-m-d H:i')) . ', ' . shift_length($shift),
+                $shift->start->format(__('general.datetime')) . ', ' . shift_length($shift),
                 $shift->location->name,
                 $shift->shiftType->name,
                 $shiftEntry->angelType->name,

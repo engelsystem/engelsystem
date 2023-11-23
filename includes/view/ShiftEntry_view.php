@@ -21,8 +21,8 @@ function ShiftEntry_delete_view_admin(Shift $shift, AngelType $angeltype, User $
             __('Do you want to sign off %s from shift %s from %s to %s as %s?'),
             User_Nick_render($signoff_user),
             $shift->shiftType->name,
-            $shift->start->format(__('Y-m-d H:i')),
-            $shift->end->format(__('Y-m-d H:i')),
+            $shift->start->format(__('general.datetime')),
+            $shift->end->format(__('general.datetime')),
             $angeltype->name
         ), true),
         form([
@@ -49,8 +49,8 @@ function ShiftEntry_delete_view(Shift $shift, AngelType $angeltype, User $signof
         info(sprintf(
             __('Do you want to sign off from your shift %s from %s to %s as %s?'),
             $shift->shiftType->name,
-            $shift->start->format(__('Y-m-d H:i')),
-            $shift->end->format(__('Y-m-d H:i')),
+            $shift->start->format(__('general.datetime')),
+            $shift->end->format(__('general.datetime')),
             $angeltype->name
         ), true),
 
@@ -90,7 +90,7 @@ function ShiftEntry_create_view_admin(
     $signup_user,
     $users_select
 ) {
-    $start = $shift->start->format(__('Y-m-d H:i'));
+    $start = $shift->start->format(__('general.datetime'));
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift->shiftType->name
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
@@ -123,7 +123,7 @@ function ShiftEntry_create_view_supporter(
     $signup_user,
     $users_select
 ) {
-    $start = $shift->start->format(__('Y-m-d H:i'));
+    $start = $shift->start->format(__('general.datetime'));
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift->shiftType->name
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
@@ -152,7 +152,7 @@ function ShiftEntry_create_view_supporter(
  */
 function ShiftEntry_create_view_user(Shift $shift, Location $location, AngelType $angeltype, $comment)
 {
-    $start = $shift->start->format(__('Y-m-d H:i'));
+    $start = $shift->start->format(__('general.datetime'));
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift->shiftType->name
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',

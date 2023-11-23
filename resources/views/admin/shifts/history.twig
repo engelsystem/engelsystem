@@ -43,10 +43,10 @@
                             {% endif %}
                         </td>
                         <td>{{ shift.count }}</td>
-                        <td>{{ shift.start.format(__('Y-m-d H:i')) }}</td>
-                        <td>{{ shift.end.format(__('Y-m-d H:i')) }}</td>
+                        <td>{{ shift.start.format(__('general.datetime')) }}</td>
+                        <td>{{ shift.end.format(__('general.datetime')) }}</td>
                         <td>{{ m.user(shift.createdBy) }}</td>
-                        <td>{{ shift.created_at.format(__('Y-m-d H:i')) }}</td>
+                        <td>{{ shift.created_at.format(__('general.datetime')) }}</td>
                         <td>
                             <form method="post" class="ps-1">
                                 {{ csrf() }}

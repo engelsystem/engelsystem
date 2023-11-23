@@ -110,10 +110,10 @@ function Users_view(
             }
         }
         $u['arrival_date'] = $user->personalData->planned_arrival_date
-            ? $user->personalData->planned_arrival_date->format(__('Y-m-d')) : '';
+            ? $user->personalData->planned_arrival_date->format(__('general.date')) : '';
         $u['departure_date'] = $user->personalData->planned_departure_date
-            ? $user->personalData->planned_departure_date->format(__('Y-m-d')) : '';
-        $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
+            ? $user->personalData->planned_departure_date->format(__('general.date')) : '';
+        $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('general.datetime')) : '';
         $u['actions'] = table_buttons([
             button_icon(url('/admin-user', ['id' => $user->id]), 'pencil', 'btn-sm'),
         ]);
@@ -216,8 +216,8 @@ function User_shift_state_render($user)
 
     $start = $nextShiftEntry->shift->start;
     $end = $nextShiftEntry->shift->end;
-    $startFormat = $start->format(__('Y-m-d H:i'));
-    $endFormat = $end->format(__('Y-m-d H:i'));
+    $startFormat = $start->format(__('general.datetime'));
+    $endFormat = $end->format(__('general.datetime'));
     $startTimestamp = $start->timestamp;
     $endTimestamp = $end->timestamp;
 
@@ -259,7 +259,7 @@ function User_last_shift_render($user)
     $lastShiftEntry = $last_shifts->first();
     $end = $lastShiftEntry->shift->end;
 
-    return '<span title="' . $end->format(__('Y-m-d H:i')) . '" data-countdown-ts="' . $end->timestamp . '">'
+    return '<span title="' . $end->format(__('general.datetime')) . '" data-countdown-ts="' . $end->timestamp . '">'
         . __('Shift ended %c')
         . '</span>';
 }
@@ -308,7 +308,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
 
     $myshift = [
         'date'       => icon('calendar-event')
-            . $shift->start->format(__('Y-m-d')) . '<br>'
+            . $shift->start->format(__('general.date')) . '<br>'
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
             . $shift->end->format(__('H:i')),
@@ -448,7 +448,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     }
 
     return [
-        'date'       => icon('calendar-event') . date(__('Y-m-d'), $worklog->worked_at->timestamp),
+        'date'       => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
         'location'   => '',
         'shift_info' => __('Work log entry'),
@@ -456,7 +456,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
             . sprintf(
                 __('Added by %s at %s'),
                 User_Nick_render($worklog->creator),
-                $worklog->created_at->format(__('Y-m-d H:i'))
+                $worklog->created_at->format(__('general.datetime'))
             ),
         'actions'    => $actions,
     ];
@@ -726,7 +726,7 @@ function User_view_state_admin($freeloader, $user_source)
         $state[] = '<span class="text-success">' . icon('house')
             . sprintf(
                 __('Arrived at %s'),
-                $user_source->state->arrival_date ? $user_source->state->arrival_date->format(__('Y-m-d')) : ''
+                $user_source->state->arrival_date ? $user_source->state->arrival_date->format(__('general.date')) : ''
             )
             . '</span>';
 
@@ -743,7 +743,7 @@ function User_view_state_admin($freeloader, $user_source)
         $state[] = '<span class="text-danger">'
             . ($arrivalDate ? sprintf(
                 __('Not arrived (Planned: %s)'),
-                $arrivalDate->format(__('Y-m-d'))
+                $arrivalDate->format(__('general.date'))
             ) : __('Not arrived'))
             . '</span>';
     }

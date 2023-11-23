@@ -54,7 +54,7 @@ class DesignController extends BaseController
 
         for ($i = 1; $i <= 600; $i++) {
             $dateKey = $date->format('Y-m-d');
-            $formattedDisplayDate = $date->format(__('Y-m-d'));
+            $formattedDisplayDate = $date->format(__('general.date'));
             $dateSelectOptions[$dateKey] = $formattedDisplayDate;
             $date = $date->addDay();
         }

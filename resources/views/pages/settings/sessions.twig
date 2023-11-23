@@ -33,7 +33,7 @@
                             <td>
                                 <pre>{{ session.id[:15] }}&hellip;</pre>
                             </td>
-                            <td>{{ session.last_activity.format(__('Y-m-d H:i:s')) }}</td>
+                            <td>{{ session.last_activity.format(__('general.datetime')) }}</td>
                             <td>
                                 {% if session.id != current_session %}
                                     <form action="" enctype="multipart/form-data" method="post">

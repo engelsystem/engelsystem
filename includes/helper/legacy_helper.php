@@ -32,7 +32,7 @@ function dateWithEventDay(string $day): string
 {
     $date = Carbon::createFromFormat('Y-m-d', $day);
     $dayOfEvent = DayOfEvent::get($date);
-    $dateFormatted = $date->format(__('Y-m-d'));
+    $dateFormatted = $date->format(__('general.date'));
 
     if (!config('enable_show_day_of_event') || is_null($dayOfEvent)) {
         return $dateFormatted;
