@@ -59,7 +59,7 @@
                     {% include "layouts/parts/language_dropdown.twig" %}
 
                     {% if has_permission_to('register') and config('registration_enabled') %}
-                        {{ _self.toolbar_item(__('Register'), url('/register'), 'register', 'plus') }}
+                        {{ _self.toolbar_item(__('general.register'), url('/register'), 'register', 'plus') }}
                     {% endif %}
 
                     {% if has_permission_to('login') %}
@@ -68,7 +68,7 @@
                 {% endif %}
 
                 {% if is_user() %}
-                    {{ _self.toolbar_item(menuUserShiftState(user), url('/shifts', {'action': 'next'}), '', 'clock', __('Next shift')) }}
+                    {{ _self.toolbar_item(menuUserShiftState(user), url('/shifts', {'action': 'next'}), '', 'clock', __('shift.next')) }}
 
                     {% if has_permission_to('user_messages') %}
                         {{ _self.toolbar_item(
@@ -96,7 +96,7 @@
                             {% endif %}
 
                             {% if has_permission_to('logout') %}
-                                {{ _self.dropdown_item(__('Logout'), url('/logout'), 'logout', m.icon('box-arrow-left')) }}
+                                {{ _self.dropdown_item(__('general.logout'), url('/logout'), 'logout', m.icon('box-arrow-left')) }}
                             {% endif %}
                         </ul>
                     </li>

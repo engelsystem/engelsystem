@@ -124,7 +124,7 @@ function admin_free()
         ]),
         table([
             'name'        => __('general.name'),
-            'shift_state' => __('Next shift'),
+            'shift_state' => __('shift.next'),
             'last_shift'  => __('Last shift'),
             'dect'        => __('general.dect'),
             'email'       => __('general.email'),

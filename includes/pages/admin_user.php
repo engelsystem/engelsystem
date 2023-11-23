@@ -149,7 +149,7 @@ function admin_user()
         $html .= form_csrf();
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>' . __('settings.password') . '</td><td>' . '<input type="password" size="40" name="new_pw" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
-        $html .= '  <tr><td>' . __('Confirm password') . '</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('password.reset.confirm') . '</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '<br />' . "\n";
         $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
