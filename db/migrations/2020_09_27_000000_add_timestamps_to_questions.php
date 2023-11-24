@@ -10,8 +10,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class AddTimestampsToQuestions extends Migration
 {
-    use ChangesReferences;
-
     /**
      * Run the migration
      */

@@ -11,7 +11,6 @@ use stdClass;
 class CreateRoomsTable extends Migration
 {
     use ChangesReferences;
-    use Reference;
 
     /**
      * Run the migration

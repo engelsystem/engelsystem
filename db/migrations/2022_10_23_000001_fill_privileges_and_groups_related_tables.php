@@ -9,9 +9,6 @@ use stdClass;
 
 class FillPrivilegesAndGroupsRelatedTables extends Migration
 {
-    use ChangesReferences;
-    use Reference;
-
     /**
      * Inserts missing data into permissions & groups related tables
      */

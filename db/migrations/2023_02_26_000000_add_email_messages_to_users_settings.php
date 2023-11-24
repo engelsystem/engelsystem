@@ -9,8 +9,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class AddEmailMessagesToUsersSettings extends Migration
 {
-    use Reference;
-
     /**
      * Run the migration
      */
