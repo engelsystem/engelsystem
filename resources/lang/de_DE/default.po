@@ -182,8 +182,8 @@ msgstr "%s bearbeiten"
 msgid "Team %s"
 msgstr "Team %s"
 
-msgid "not"
-msgstr "kein"
+msgid "%s (not \"%s\")"
+msgstr "%s (kein \"%s\")"
 
 msgid "view"
 msgstr "ansehen"

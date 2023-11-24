@@ -118,7 +118,7 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
     foreach ($users as $user) {
         $name = $user->displayName;
         if ($user->userAngelTypes->where('id', $angeltype->id)->isEmpty()) {
-            $name .= ' (' . __('not') . ' "' . $angeltype->name . '")';
+            $name = __('%s (not "%s")', [$name, $angeltype->name]);
         }
         $users_select[$user->id] = $name;
     }
