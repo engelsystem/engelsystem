@@ -14,9 +14,11 @@ class ShiftTypeFactory extends Factory
 
     public function definition(): array
     {
+        $advanceMinutes = $this->faker->optional(.2)->numberBetween(1, 8 * 12) / 12; // 5 minutes steps
         return [
-            'name'        => $this->faker->unique()->firstName(),
+            'name' => $this->faker->unique()->firstName(),
             'description' => $this->faker->text(),
+            'signup_advance_hours' => $advanceMinutes ? round($advanceMinutes) / 60 : null,
         ];
     }
 }
