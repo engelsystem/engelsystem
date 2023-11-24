@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __(is_edit ? 'worklog.edit' : 'worklog.add') }}{% endblock %}
+{% block title %}{{ is_edit ? __('worklog.edit') : __('worklog.add') }}{% endblock %}
 
 {% block content %}
     <div class="container">

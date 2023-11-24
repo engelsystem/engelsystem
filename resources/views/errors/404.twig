@@ -1,13 +1,13 @@
 {% extends "errors/default.twig" %}
 
-{% block title %}{{ __("Page not found") }}{% endblock %}
+{% block title %}{{ __('page.404.title') }}{% endblock %}
 
 {% block content_container %}
     <div class="row">
         <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4 error-big">
             <h2>
                 4<span class="pulse">:</span>{{ status|slice(1, 2) }}
-                <small class="text-muted">{{ __("No sleep found") }}</small>
+                <small class="text-muted">{{ __('page.404.not_found') }}</small>
             </h2>
 
             {% block content_text %}

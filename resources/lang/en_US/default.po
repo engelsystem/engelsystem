@@ -34,13 +34,34 @@ msgstr "Name"
 msgid "general.description"
 msgstr "Description"
 
+msgid "page.403.title"
+msgstr "Forbidden"
+
+msgid "page.403.headline"
+msgstr "You are not allowed to access this page"
+
 msgid "page.403.login"
 msgstr "Please log in."
+
+msgid "page.404.title"
+msgstr "Page not found"
+
+msgid "page.404.not_found"
+msgstr "No sleep found"
 
 msgid "page.404.text"
 msgstr ""
 "This page could not be found or you don't have permission to view it. "
 "You probably have to sign in or register in order to gain access!"
+
+msgid "page.405.title"
+msgstr "405: Method not allowed"
+
+msgid "page.419.title"
+msgstr "Authentication expired"
+
+msgid "page.419.text"
+msgstr "The provided CSRF token is invalid or has expired"
 
 msgid "credits.credit"
 msgstr ""
@@ -795,8 +816,7 @@ msgid "login.do"
 msgstr "What can I do?"
 
 msgid "login.jobs"
-msgstr ""
-"Please read about the jobs you can do to help us."
+msgstr "Read about the jobs you can do to help us."
 
 msgid "login.cookies"
 msgstr "Please note: You have to activate cookies!"

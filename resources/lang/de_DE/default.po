@@ -32,25 +32,25 @@ msgstr ""
 msgid "password.email.message"
 msgstr "Bitte besuche %s, um Dein Passwort zurückzusetzen."
 
-msgid "Forbidden"
+msgid "page.403.title"
 msgstr "Nicht erlaubt"
 
-msgid "You are not allowed to access this page"
+msgid "page.403.headline"
 msgstr "Du darfst diese Seite nicht aufrufen"
 
-msgid "Page not found"
+msgid "page.404.title"
 msgstr "Seite nicht gefunden"
 
-msgid "No sleep found"
-msgstr "No sleep found"
+msgid "page.404.not_found"
+msgstr "Schlaf nicht auffindbar"
 
-msgid "405: Method not allowed"
-msgstr "405: Method not allowed"
+msgid "page.405.title"
+msgstr "405: Anfragetyp nicht erlaubt"
 
-msgid "Authentication expired"
+msgid "page.419.title"
 msgstr "Autorisierung ist abgelaufen"
 
-msgid "The provided CSRF token is invalid or has expired"
+msgid "page.419.text"
 msgstr "Das angegebene CSRF Token ist ungültig oder abgelaufen"
 
 msgid "general.date"
@@ -135,8 +135,7 @@ msgid "login.do"
 msgstr "Was kann ich machen?"
 
 msgid "login.jobs"
-msgstr ""
-"Bitte informiere Dich über die Tätigkeiten bei denen Du uns helfen kannst."
+msgstr "Informiere Dich über die Tätigkeiten bei denen Du uns helfen kannst."
 
 msgid "login.cookies"
 msgstr "Hinweis: Cookies müssen aktiviert sein!"
