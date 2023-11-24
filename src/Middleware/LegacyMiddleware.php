@@ -60,7 +60,7 @@ class LegacyMiddleware implements MiddlewareInterface
             $translator = $this->container->get('translator');
 
             $page = 404;
-            $title = $translator->translate('Page not found');
+            $title = $translator->translate('page.404.title');
             $content = $translator->translate('page.404.text');
         }
 

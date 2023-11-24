@@ -1,9 +1,9 @@
 {% extends "errors/default.twig" %}
 {% import 'macros/base.twig' as m %}
 
-{% block title %}{{ __("Forbidden") }}{% endblock %}
+{% block title %}{{ __('page.403.title') }}{% endblock %}
 
-{% block content_headline_text %}{{ __("You are not allowed to access this page") }}{% endblock %}
+{% block content_headline_text %}{{ __('page.403.headline') }}{% endblock %}
 
 {% block content_text %}
     {% if is_guest() %}
