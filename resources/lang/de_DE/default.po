@@ -962,8 +962,8 @@ msgstr "Andere Engeltypen benötigt / kollidiert mit meinen Schichten"
 msgid "Shift is full"
 msgstr "Schicht ist voll"
 
-msgid "Shift is running/ended or you have not arrived"
-msgstr "Schicht läuft/vorbei oder du bist noch nicht angekommen"
+msgid "Shift is running/has ended, you have not arrived or signup is blocked otherwise"
+msgstr "Schicht läuft/ist vorbei, du bist noch nicht angekommen oder das eintragen ist blockiert"
 
 msgid "Add more angels"
 msgstr "Mehr Engel hinzufügen"
@@ -982,8 +982,8 @@ msgstr "vorbei"
 msgid "please arrive for signup"
 msgstr "Ankommen zum Eintragen"
 
-msgid "not yet"
-msgstr "noch nicht"
+msgid "not yet possible"
+msgstr "noch nicht möglich"
 
 msgid "m-d"
 msgstr "d.m."
@@ -1045,9 +1045,8 @@ msgstr "bearbeitet am %s von %s"
 msgid "History ID: %s"
 msgstr "Historien-ID: %s"
 
-msgid "This shift is in the far future and becomes available for signup at %s."
-msgstr ""
-"Diese Schicht liegt in der fernen Zukunft und du kannst dich ab %s eintragen."
+msgid "This shift is in the far future. It becomes available for signup at %s."
+msgstr "Diese Schicht liegt in der fernen Zukunft. Du kannst dich ab %s eintragen."
 
 msgid "Do you really want to add supporter rights for %s to %s?"
 msgstr "Sollen %s %s als neuen Supporter bekommen?"
@@ -1969,6 +1968,12 @@ msgstr "Schichttyp \"%s\" löschen"
 
 msgid "shifttype.required_angels"
 msgstr "Benötigte Engel (bei Fahrplan import)"
+
+msgid "shifttype.edit.signup_advance_hours"
+msgstr "Selbsteintragen im voraus in Stunden"
+
+msgid "shifttype.edit.signup_advance_hours.info"
+msgstr "Anzahl Stunden vor Schicht start in welchen die Eintragung möglich ist"
 
 msgid "event.day"
 msgstr "Tag %1$d"

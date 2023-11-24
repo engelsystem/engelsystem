@@ -5,10 +5,16 @@
 {% block title %}{{ shifttype.name }}{% endblock %}
 
 {% block row_content %}
+    {% if shifttype.signup_advance_hours %}
+        <div class="col-md-12">
+            {{ __('shifttype.edit.signup_advance_hours') }} {{ f.info(__('shifttype.edit.signup_advance_hours.info')) }}: {{ shifttype.signup_advance_hours }}
+        </div>
+    {% endif %}
+
     <div class="col-md-12">
-        <h3>{{ __('general.description') }}</h3>
-        {{ shifttype.description|md }}
+        <h3>{{ __('general.description') }}</h3>{{ shifttype.description|md }}
     </div>
+
     {% if shifttype.neededAngelTypes.isNotEmpty() %}
         <div class="col-md-12">
             <h3>{{ __('location.required_angels') }}</h3>

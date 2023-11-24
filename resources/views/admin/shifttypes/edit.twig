@@ -23,6 +23,13 @@
                     'rows': 5,
                     'info': __('form.markdown')
                 }) }}
+
+                {{ f.number('signup_advance_hours', __('shifttype.edit.signup_advance_hours'), {
+                    'value': f.formData('signup_advance_hours', shifttype ? shifttype.signup_advance_hours : ''),
+                    'info': __('shifttype.edit.signup_advance_hours.info'),
+                    'step': 0.01,
+                    'min': 0,
+                }) }}
             </div>
 
             <div class="col-lg-6">
