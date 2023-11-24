@@ -11,8 +11,6 @@ use stdClass;
 
 class SetAdminPassword extends Migration
 {
-    use Reference;
-
     public function __construct(SchemaBuilder $schemaBuilder, protected Config $config)
     {
         parent::__construct($schemaBuilder);

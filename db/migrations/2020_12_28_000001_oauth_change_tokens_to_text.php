@@ -9,8 +9,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class OauthChangeTokensToText extends Migration
 {
-    use Reference;
-
     /**
      * Run the migration
      */

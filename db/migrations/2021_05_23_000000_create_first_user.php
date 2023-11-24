@@ -12,8 +12,6 @@ use stdClass;
 
 class CreateFirstUser extends Migration
 {
-    use Reference;
-
     public function __construct(SchemaBuilder $schemaBuilder, protected Config $config)
     {
         parent::__construct($schemaBuilder);
