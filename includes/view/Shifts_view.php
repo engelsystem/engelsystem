@@ -206,10 +206,11 @@ function Shift_view(
                 : ''), true);
     }
 
-    if (config('signup_advance_hours') && $shift->start->timestamp > time() + config('signup_advance_hours') * 3600) {
+    $signupAdvanceSeconds = ($shift->shiftType->signup_advance_hours ?: config('signup_advance_hours')) * 3600;
+    if ($signupAdvanceSeconds && $shift->start->timestamp > time() + $signupAdvanceSeconds) {
         $content[] = info(sprintf(
-            __('This shift is in the far future and becomes available for signup at %s.'),
-            date(__('general.datetime'), $shift->start->timestamp - config('signup_advance_hours') * 3600)
+            __('This shift is in the far future. It becomes available for signup at %s.'),
+            date(__('general.datetime'), $shift->start->timestamp - $signupAdvanceSeconds)
         ), true);
     }
 

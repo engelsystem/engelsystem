@@ -129,6 +129,7 @@ class ShiftTypesControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody([
             'name' => 'Test shift type',
             'description' => 'Something',
+            'signup_advance_hours' => 42.5,
             'angel_type_' . $angelType->id => 3,
             'angel_type_' . $angelType->id + 1 => 0,
         ]);
@@ -138,6 +139,8 @@ class ShiftTypesControllerTest extends ControllerTest
         $this->assertTrue($this->log->hasInfoThatContains('Updated shift type'));
         $this->assertHasNotification('shifttype.edit.success');
         $this->assertCount(1, ShiftType::whereName('Test shift type')->get());
+        $this->assertCount(1, ShiftType::whereDescription('Something')->get());
+        $this->assertCount(1, ShiftType::whereSignupAdvanceHours(42.5)->get());
         $this->assertCount(1, ShiftType::first()->neededAngelTypes);
     }
 

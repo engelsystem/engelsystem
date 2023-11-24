@@ -481,7 +481,8 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupStatus::COLLIDES, $free_entries);
     }
 
-    if (config('signup_advance_hours') && $shift->start->timestamp > time() + config('signup_advance_hours') * 3600) {
+    $signupAdvanceHours = $shift->shiftType->signup_advance_hours ?: config('signup_advance_hours');
+    if ($signupAdvanceHours && $shift->start->timestamp > time() + $signupAdvanceHours * 3600) {
         return new ShiftSignupState(ShiftSignupStatus::NOT_YET, $free_entries);
     }
 
