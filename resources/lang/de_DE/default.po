@@ -30,7 +30,7 @@ msgstr ""
 "werden. Du hast diese E-Mail bekommen, weil Du im %s registriert bist."
 
 msgid "password.email.message"
-msgstr "Bitte besuche %s, um Dein Passwort zurückzusetzen."
+msgstr "Um dein Passwort zurückzusetzen, besuche %s"
 
 msgid "page.403.title"
 msgstr "Nicht erlaubt"
