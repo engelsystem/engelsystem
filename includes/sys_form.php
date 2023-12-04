@@ -128,14 +128,15 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
     }
 
     return '<div class="form-check">'
-        . '<input class="form-check-input" type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars((string) $value) . '" '
+        . '<input class="form-check-input" type="checkbox" id="' . $html_id . '" '
+        . 'name="' . htmlspecialchars($name) . '" value="' . $value . '" '
         . ($selected ? ' checked="checked"' : '') . ' /><label class="form-check-label" for="' . $html_id . '">'
         . $label
         . '</label></div>';
 }
 
 /**
- * Rendert einen Radio
+ * Renders a radio button
  *
  * @param string $name
  * @param string $label
@@ -233,26 +234,6 @@ function form_text($name, $label, $value, $disabled = false, $maxlength = null, 
 }
 
 /**
- * Renders a text input with placeholder instead of label.
- *
- * @param string  $name        Input name
- * @param string  $placeholder Placeholder
- * @param string  $value       The value
- * @param boolean $disabled    Is the field enabled?
- * @return string
- */
-function form_text_placeholder($name, $placeholder, $value, $disabled = false)
-{
-    $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element(
-        '',
-        '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars((string) $value) . '" placeholder="' . $placeholder
-        . '" ' . $disabled . '/>'
-    );
-}
-
-/**
  * Rendert ein Formular-Emailfeld
  *
  * @param string      $name
@@ -278,22 +259,6 @@ function form_email($name, $label, $value, $disabled = false, $autocomplete = nu
 }
 
 /**
- * Rendert ein Formular-Dateifeld
- *
- * @param string $name
- * @param string $label
- * @return string
- */
-function form_file($name, $label)
-{
-    return form_element(
-        $label,
-        sprintf('<input id="form_%1$s" type="file" name="%1$s" />', $name),
-        'form_' . $name
-    );
-}
-
-/**
  * Rendert ein Formular-Passwortfeld
  *
  * @param string $name
@@ -308,31 +273,12 @@ function form_password($name, $label, $autocomplete, $disabled = false)
     return form_element(
         $label,
         sprintf(
-            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value="" autocomplete="%3$s"%4$s/>',
+            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value="" autocomplete="%3$s" %4$s>',
             $name,
             config('min_password_length'),
             $autocomplete,
             $disabled
         ),
-        'form_' . $name
-    );
-}
-
-/**
- * Renders a password input with placeholder instead of label.
- *
- * @param string $name
- * @param string $placeholder
- * @param bool   $disabled
- * @return string
- */
-function form_password_placeholder($name, $placeholder, $disabled = false)
-{
-    $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element(
-        '',
-        '<input class="form-control" id="form_' . $name . '" type="password" name="'
-        . $name . '" value="" placeholder="' . $placeholder . '" ' . $disabled . '/>',
         'form_' . $name
     );
 }
@@ -463,9 +409,13 @@ function html_select_key($dom_id, $name, $rows, $selected, $selectText = '')
     }
     foreach ($rows as $key => $row) {
         if (($key == $selected) || ($row === $selected)) {
-            $html .= '<option value="' . $key . '" selected="selected">' . $row . '</option>';
+            $html .= '<option value="' . htmlspecialchars($key) . '" selected="selected">'
+                . htmlspecialchars($row)
+                . '</option>';
         } else {
-            $html .= '<option value="' . $key . '">' . $row . '</option>';
+            $html .= '<option value="' . htmlspecialchars($key) . '">'
+                . htmlspecialchars($row)
+                . '</option>';
         }
     }
     $html .= '</select>';

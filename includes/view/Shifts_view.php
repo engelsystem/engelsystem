@@ -24,8 +24,8 @@ function Shift_view_header(Shift $shift, Room $room)
             '<h4>' . __('Title') . '</h4>',
             '<p class="lead">'
             . ($shift->url != ''
-                ? '<a href="' . $shift->url . '">' . $shift->title . '</a>'
-                : $shift->title)
+                ? '<a href="' . htmlspecialchars($shift->url) . '">' . htmlspecialchars($shift->title) . '</a>'
+                : htmlspecialchars($shift->title))
             . '</p>',
         ]),
         div('col-sm-3 col-xs-6', [
@@ -98,7 +98,7 @@ function Shift_signup_button_render(Shift $shift, AngelType $angeltype)
             page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
             sprintf(
                 __('Become %s'),
-                $angeltype->name
+                htmlspecialchars($angeltype->name)
             )
         );
     }
@@ -170,8 +170,15 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
         $buttons = [
             $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
             $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
-            $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype->name) : '',
-            $admin_rooms ? button(room_link($room), icon('pin-map-fill') . $room->name) : '',
+            $admin_shifttypes
+                ? button(shifttype_link($shifttype), htmlspecialchars($shifttype->name))
+                : '',
+            $admin_rooms
+                ? button(
+                    room_link($room),
+                    icon('pin-map-fill') . htmlspecialchars($room->name)
+                )
+                : '',
         ];
     }
     $buttons[] = button(user_link(auth()->user()->id), '<span class="icon-icon_angel"></span> ' . __('My shifts'));
@@ -185,8 +192,8 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
         ]),
         div('col-sm-6', [
             '<h2>' . __('Description') . '</h2>',
-            $parsedown->parse($shifttype->description),
-            $parsedown->parse($shift->description),
+            $parsedown->parse(htmlspecialchars($shifttype->description)),
+            $parsedown->parse(htmlspecialchars($shift->description)),
         ]),
     ]);
 
@@ -197,7 +204,8 @@ function Shift_view(Shift $shift, ShiftType $shifttype, Room $room, $angeltypes_
     $start = $shift->start->format(__('Y-m-d H:i'));
 
     return page_with_title(
-        $shift->shiftType->name . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
+        htmlspecialchars($shift->shiftType->name)
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         $content
     );
 }

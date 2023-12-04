@@ -194,7 +194,7 @@ function shift_edit_controller()
     foreach ($angeltypes as $angeltype_id => $angeltype_name) {
         $angel_types_spinner .= form_spinner(
             'angeltype_count_' . $angeltype_id,
-            $angeltype_name,
+            htmlspecialchars($angeltype_name),
             $needed_angel_types[$angeltype_id]
         );
     }
@@ -213,7 +213,10 @@ function shift_edit_controller()
                 form_text('start', __('Start:'), $start->format('Y-m-d H:i')),
                 form_text('end', __('End:'), $end->format('Y-m-d H:i')),
                 form_textarea('description', __('Additional description'), $description),
-                form_info('', __('This description is for single shifts, otherwise please use the description in shift type.')),
+                form_info(
+                    '',
+                    __('This description is for single shifts, otherwise please use the description in shift type.')
+                ),
                 '<h2>' . __('Needed angels') . '</h2>',
                 $angel_types_spinner,
                 form_submit('submit', __('Save')),
@@ -338,7 +341,7 @@ function shift_controller()
     }
 
     return [
-        $shift->shiftType->name,
+        htmlspecialchars($shift->shiftType->name),
         Shift_view($shift, $shifttype, $room, $angeltypes, $shift_signup_state),
     ];
 }

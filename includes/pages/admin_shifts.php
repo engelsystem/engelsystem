@@ -333,7 +333,7 @@ function admin_shifts()
                         . Room_name_render(Room::find($shift['room_id'])),
                     'title'         =>
                         ShiftType_name_render(ShiftType::find($shifttype_id))
-                        . ($shift['title'] ? '<br />' . $shift['title'] : ''),
+                        . ($shift['title'] ? '<br />' . htmlspecialchars($shift['title']) : ''),
                     'needed_angels' => '',
                 ];
                 foreach ($types as $type) {
@@ -443,7 +443,7 @@ function admin_shifts()
         $angel_types .= '<div class="col-sm-6 col-md-8 col-lg-6 col-xl-4 col-xxl-3">'
             . form_spinner(
                 'angeltype_count_' . $type->id,
-                $type->name,
+                htmlspecialchars($type->name),
                 $needed_angel_types[$type->id],
                 [
                     'radio-name'  => 'angelmode',

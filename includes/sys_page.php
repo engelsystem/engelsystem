@@ -2,9 +2,7 @@
 
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpTemporaryRedirect;
-use Engelsystem\Models\BaseModel;
 use Engelsystem\ValidationResult;
-use Illuminate\Support\Collection;
 
 /**
  * Provide page/request helper functions
@@ -61,41 +59,6 @@ function parse_date($pattern, $value)
 function throw_redirect($url)
 {
     throw new HttpTemporaryRedirect($url);
-}
-
-/**
- * Echoes given output and dies.
- *
- * @param string $output String to display
- */
-function raw_output($output = '')
-{
-    echo $output;
-    die();
-}
-
-/**
- * Helper function for transforming list of entities into array for select boxes.
- *
- * @param array|Collection $data       The data array
- * @param string           $key_name   name of the column to use as id/key
- * @param string           $value_name name of the column to use as displayed value
- *
- * @return array|Collection
- */
-function select_array($data, $key_name, $value_name)
-{
-    if ($data instanceof Collection) {
-        return $data->mapWithKeys(function (BaseModel $model) use ($key_name, $value_name) {
-            return [$model->{$key_name} => $model->{$value_name}];
-        });
-    }
-
-    $return = [];
-    foreach ($data as $value) {
-        $return[$value[$key_name]] = $value[$value_name];
-    }
-    return $return;
 }
 
 /**
@@ -182,23 +145,6 @@ function strip_request_item($name, $default_value = null)
     if ($request->has($name)) {
         return strip_item($request->input($name));
     }
-    return $default_value;
-}
-
-/**
- * Returns REQUEST value or default value (null) if not set.
- *
- * @param string $name
- * @param string|null $default_value
- * @return mixed|null
- */
-function strip_request_tags($name, $default_value = null)
-{
-    $request = request();
-    if ($request->has($name)) {
-        return strip_tags($request->input($name));
-    }
-
     return $default_value;
 }
 

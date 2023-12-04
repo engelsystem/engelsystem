@@ -26,7 +26,7 @@ function AngelType_name_render(AngelType $angeltype, $plain = false)
     }
 
     return '<a href="' . angeltype_link($angeltype->id) . '">'
-        . ($angeltype->restricted ? icon('mortarboard-fill') : '') . $angeltype->name
+        . ($angeltype->restricted ? icon('mortarboard-fill') : '') . htmlspecialchars($angeltype->name)
         . '</a>';
 }
 
@@ -60,7 +60,7 @@ function AngelType_render_membership(AngelType $user_angeltype)
  */
 function AngelType_delete_view(AngelType $angeltype)
 {
-    return page_with_title(sprintf(__('Delete angeltype %s'), $angeltype->name), [
+    return page_with_title(sprintf(__('Delete angeltype %s'), htmlspecialchars($angeltype->name)), [
         info(sprintf(__('Do you want to delete angeltype %s?'), $angeltype->name), true),
         form([
             buttons([
@@ -80,14 +80,14 @@ function AngelType_delete_view(AngelType $angeltype)
  */
 function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
 {
-    return page_with_title(sprintf(__('Edit %s'), $angeltype->name), [
+    return page_with_title(sprintf(__('Edit %s'), htmlspecialchars((string) $angeltype->name)), [
         buttons([
             button(page_link_to('angeltypes'), icon('person-lines-fill') . __('Angeltypes'), 'back'),
         ]),
         msg(),
         form([
             $supporter_mode
-                ? form_info(__('Name'), $angeltype->name)
+                ? form_info(__('Name'), htmlspecialchars($angeltype->name))
                 : form_text('name', __('Name'), $angeltype->name),
             $supporter_mode
                 ? form_info(__('Requires introduction'), $angeltype->restricted ? __('Yes') : __('No'))
@@ -244,7 +244,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
     foreach ($members as $member) {
         $member->name = User_Nick_render($member) . User_Pronoun_render($member);
         if (config('enable_dect')) {
-            $member['dect'] = $member->contact->dect;
+            $member['dect'] = htmlspecialchars((string) $member->contact->dect);
         }
         if ($angeltype->requires_driver_license) {
             $member['wants_to_drive'] = icon_bool($member->license->wantsToDrive());
@@ -405,7 +405,7 @@ function AngelType_view(
     ShiftCalendarRenderer $shiftCalendarRenderer,
     $tab
 ) {
-    return page_with_title(sprintf(__('Team %s'), $angeltype->name), [
+    return page_with_title(sprintf(__('Team %s'), htmlspecialchars($angeltype->name)), [
         AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user),
         msg(),
         tabs([
@@ -465,7 +465,7 @@ function AngelType_view_info(
     $info[] = '<h3>' . __('Description') . '</h3>';
     $parsedown = new Parsedown();
     if ($angeltype->description != '') {
-        $info[] = $parsedown->parse($angeltype->description);
+        $info[] = $parsedown->parse(htmlspecialchars($angeltype->description));
     }
 
     list($supporters, $members_confirmed, $members_unconfirmed) = AngelType_view_members(
@@ -539,9 +539,20 @@ function AngelType_view_info(
 function AngelTypes_render_contact_info(AngelType $angeltype)
 {
     $info = [
-        __('Name')   => [$angeltype->contact_name, $angeltype->contact_name],
-        __('DECT')   => config('enable_dect') ? [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect] : null,
-        __('E-Mail') => [sprintf('<a href="mailto:%s">%1$s</a>', $angeltype->contact_email), $angeltype->contact_email],
+        __('Name')  => [
+            htmlspecialchars($angeltype->contact_name),
+            htmlspecialchars($angeltype->contact_name),
+        ],
+        __('DECT')  => config('enable_dect')
+            ? [
+                sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars($angeltype->contact_dect)),
+                htmlspecialchars($angeltype->contact_dect),
+            ]
+            : null,
+        __('E-Mail') => [
+            sprintf('<a href="mailto:%s">%1$s</a>', htmlspecialchars($angeltype->contact_email)),
+            htmlspecialchars($angeltype->contact_email),
+        ],
     ];
     $contactInfo = [];
     foreach ($info as $name => $data) {

@@ -31,11 +31,11 @@ function admin_groups()
             $privileges_html = [];
 
             foreach ($privileges as $privilege) {
-                $privileges_html[] = $privilege['name'];
+                $privileges_html[] = htmlspecialchars($privilege['name']);
             }
 
             $groups_table[] = [
-                'name'       => $group->name,
+                'name'       => htmlspecialchars($group->name),
                 'privileges' => join(', ', $privileges_html),
                 'actions'    => button(
                     page_link_to(
@@ -72,15 +72,15 @@ function admin_groups()
                     foreach ($privileges as $privilege) {
                         $privileges_form[] = form_checkbox(
                             'privileges[]',
-                            $privilege->description . ' (' . $privilege->name . ')',
+                            htmlspecialchars($privilege->description . ' (' . $privilege->name . ')'),
                             $privilege->selected != '',
                             $privilege->id,
-                            'privilege-' . $privilege->name
+                            'privilege-' . htmlspecialchars($privilege->name)
                         );
                     }
 
                     $privileges_form[] = form_submit('submit', __('Save'));
-                    $html .= page_with_title(__('Edit group') . ' ' . $group->name, [
+                    $html .= page_with_title(__('Edit group') . ' ' . htmlspecialchars($group->name), [
                         form(
                             $privileges_form,
                             page_link_to('admin_groups', ['action' => 'save', 'id' => $group->id])

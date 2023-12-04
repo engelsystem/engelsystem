@@ -33,7 +33,7 @@ function shifttype_delete_controller()
     }
 
     return [
-        sprintf(__('Delete shifttype %s'), $shifttype->name),
+        sprintf(__('Delete shifttype %s'), htmlspecialchars($shifttype->name)),
         ShiftType_delete_view($shifttype),
     ];
 }
@@ -110,7 +110,7 @@ function shifttype_controller()
     $shifttype = ShiftType::findOrFail($request->input('shifttype_id'));
 
     return [
-        $shifttype->name,
+        htmlspecialchars($shifttype->name),
         ShiftType_view($shifttype),
     ];
 }

@@ -24,13 +24,13 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
     if ($room->description) {
         $description = '<h3>' . __('Description') . '</h3>';
         $parsedown = new Parsedown();
-        $description .= $parsedown->parse($room->description);
+        $description .= $parsedown->parse(htmlspecialchars($room->description));
     }
 
     $dect = '';
     if (config('enable_dect') && $room->dect) {
         $dect = heading(__('Contact'), 3)
-            . description([__('DECT') => sprintf('<a href="tel:%s">%1$s</a>', $room->dect)]);
+            . description([__('DECT') => sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars($room->dect))]);
     }
 
     $tabs = [];
@@ -39,7 +39,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
             '<div class="map">'
             . '<iframe style="width: 100%%; min-height: 400px; border: 0 none;" src="%s"></iframe>'
             . '</div>',
-            $room->map_url
+            htmlspecialchars($room->map_url)
         );
     }
 
@@ -57,7 +57,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
         $selected_tab = count($tabs) - 1;
     }
 
-    return page_with_title(icon('pin-map-fill') . $room->name, [
+    return page_with_title(icon('pin-map-fill') . htmlspecialchars($room->name), [
         $assignNotice,
         auth()->can('admin_rooms') ? buttons([
             button(
@@ -79,8 +79,8 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
 function Room_name_render(Room $room)
 {
     if (auth()->can('view_rooms')) {
-        return '<a href="' . room_link($room) . '">' . icon('pin-map-fill') . $room->name . '</a>';
+        return '<a href="' . room_link($room) . '">' . icon('pin-map-fill') . htmlspecialchars($room->name) . '</a>';
     }
 
-    return icon('pin-map-fill') . $room->name;
+    return icon('pin-map-fill') . htmlspecialchars($room->name);
 }

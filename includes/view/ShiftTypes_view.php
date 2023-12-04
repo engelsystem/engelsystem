@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 function ShiftType_name_render(ShiftType $shifttype)
 {
     if (auth()->can('shifttypes')) {
-        return '<a href="' . shifttype_link($shifttype) . '">' . $shifttype->name . '</a>';
+        return '<a href="' . shifttype_link($shifttype) . '">' . htmlspecialchars($shifttype->name) . '</a>';
     }
     return $shifttype->name;
 }
@@ -21,7 +21,7 @@ function ShiftType_name_render(ShiftType $shifttype)
  */
 function ShiftType_delete_view(ShiftType $shifttype)
 {
-    return page_with_title(sprintf(__('Delete shifttype %s'), $shifttype->name), [
+    return page_with_title(sprintf(__('Delete shifttype %s'), htmlspecialchars($shifttype->name)), [
         info(sprintf(__('Do you want to delete shifttype %s?'), $shifttype->name), true),
         form([
             buttons([
@@ -67,7 +67,7 @@ function ShiftType_view(ShiftType $shifttype)
 {
     $parsedown = new Parsedown();
     $title = $shifttype->name;
-    return page_with_title($title, [
+    return page_with_title(htmlspecialchars($title), [
         msg(),
         buttons([
             button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
@@ -81,7 +81,7 @@ function ShiftType_view(ShiftType $shifttype)
             ),
         ]),
         heading(__('Description'), 2),
-        $parsedown->parse($shifttype->description),
+        $parsedown->parse(htmlspecialchars($shifttype->description)),
     ], true);
 }
 
@@ -95,7 +95,7 @@ function ShiftTypes_list_view($shifttypes)
         $shifttype->name = '<a href="'
             . page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype->id])
             . '">'
-            . $shifttype->name
+            . htmlspecialchars($shifttype->name)
             . '</a>';
         $shifttype->actions = table_buttons([
             button(

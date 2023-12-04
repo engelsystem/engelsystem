@@ -76,15 +76,22 @@ function make_navigation()
         }
 
         $title = ((array) $options)[0];
-        $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
+        $menu[] = toolbar_item_link(
+            page_link_to($menu_page),
+            '',
+            $title,
+            $menu_page == $page
+        );
     }
 
     $menu = make_room_navigation($menu);
 
     $admin_menu = [];
     $admin_pages = [
-        // path              => name
-        // path              => [name, permission]
+        // Examples:
+        // path              => name,
+        // path              => [name, permission],
+
         'admin_arrive'       => 'Arrive angels',
         'admin_active'       => 'Active angels',
         'users'              => ['All Angels', 'admin_user'],
@@ -111,7 +118,7 @@ function make_navigation()
         $title = ((array) $options)[0];
         $admin_menu[] = toolbar_dropdown_item(
             page_link_to($menu_page),
-            __($title),
+            htmlspecialchars(__($title)),
             $menu_page == $page
         );
     }

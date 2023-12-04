@@ -86,7 +86,7 @@ function guest_register()
         if ($angel_type->hide_register) {
             continue;
         }
-        $angel_types[$angel_type->id] = $angel_type->name
+        $angel_types[$angel_type->id] = htmlspecialchars($angel_type->name)
             . ($angel_type->restricted ? ' (' . __('Requires introduction') . ')' : '');
         if (!$angel_type->restricted) {
             $selected_angel_types[] = $angel_type->id;
@@ -436,7 +436,7 @@ function guest_register()
                         'email_shiftinfo',
                         __(
                             'settings.profile.email_shiftinfo',
-                            [config('app_name')]
+                            [htmlspecialchars(config('app_name'))]
                         ),
                         $email_shiftinfo
                     ),
@@ -459,7 +459,7 @@ function guest_register()
                         form_checkbox(
                             'email_goody',
                             __('To receive vouchers, give consent that nick, email address, worked hours and shirt size will be stored until the next similar event.')
-                            . (config('privacy_email') ? ' ' . __('To withdraw your approval, send an email to <a href="mailto:%s">%1$s</a>.', [config('privacy_email')]) : ''),
+                            . (config('privacy_email') ? ' ' . __('To withdraw your approval, send an email to <a href="mailto:%s">%1$s</a>.', [htmlspecialchars(config('privacy_email'))]) : ''),
                             $email_goody
                         ) : '',
                 ]),

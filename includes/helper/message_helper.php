@@ -17,11 +17,12 @@ function msg()
  *
  * @param string $msg
  * @param bool   $immediately
+ * @param bool   $immediatelyRaw
  * @return string
  */
-function info($msg, $immediately = false)
+function info($msg, $immediately = false, $immediatelyRaw = false)
 {
-    return alert(NotificationType::INFORMATION, $msg, $immediately);
+    return alert(NotificationType::INFORMATION, $msg, $immediately, $immediatelyRaw);
 }
 
 /**
@@ -29,11 +30,12 @@ function info($msg, $immediately = false)
  *
  * @param string $msg
  * @param bool   $immediately
+ * @param bool   $immediatelyRaw
  * @return string
  */
-function warning($msg, $immediately = false)
+function warning($msg, $immediately = false, $immediatelyRaw = false)
 {
-    return alert(NotificationType::WARNING, $msg, $immediately);
+    return alert(NotificationType::WARNING, $msg, $immediately, $immediatelyRaw);
 }
 
 /**
@@ -41,11 +43,12 @@ function warning($msg, $immediately = false)
  *
  * @param string $msg
  * @param bool   $immediately
+ * @param bool   $immediatelyRaw
  * @return string
  */
-function error($msg, $immediately = false)
+function error($msg, $immediately = false, $immediatelyRaw = false)
 {
-    return alert(NotificationType::ERROR, $msg, $immediately);
+    return alert(NotificationType::ERROR, $msg, $immediately, $immediatelyRaw);
 }
 
 /**
@@ -53,24 +56,27 @@ function error($msg, $immediately = false)
  *
  * @param string $msg
  * @param bool   $immediately
+ * @param bool   $immediatelyRaw
  * @return string
  */
-function success($msg, $immediately = false)
+function success($msg, $immediately = false, $immediatelyRaw = false)
 {
-    return alert(NotificationType::MESSAGE, $msg, $immediately);
+    return alert(NotificationType::MESSAGE, $msg, $immediately, $immediatelyRaw);
 }
 
 /**
  * Renders an alert message with the given alert-* class or sets it in session
  *
- * @see \Engelsystem\Controllers\HasUserNotifications
- *
  * @param NotificationType $type
  * @param string           $msg
  * @param bool             $immediately
+ * @param bool             $immediatelyRaw
  * @return string
+ *
+ * @see \Engelsystem\Controllers\HasUserNotifications
+ *
  */
-function alert(NotificationType $type, $msg, $immediately = false)
+function alert(NotificationType $type, $msg, $immediately = false, $immediatelyRaw = false)
 {
     if (empty($msg)) {
         return '';
@@ -87,6 +93,7 @@ function alert(NotificationType $type, $msg, $immediately = false)
             ['danger', 'warning', 'info', 'success'],
             $type->value
         );
+        $msg = $immediatelyRaw ? $msg : htmlspecialchars($msg);
         return '<div class="alert alert-' . $type . '" role="alert">' . $msg . '</div>';
     }
 

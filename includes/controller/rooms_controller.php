@@ -53,7 +53,7 @@ function room_controller(): array
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
     return [
-        $room->name,
+        htmlspecialchars($room->name),
         Room_view($room, $shiftsFilterRenderer, $shiftCalendarRenderer),
     ];
 }
