@@ -42,7 +42,7 @@ msgid "page.404.title"
 msgstr "Seite nicht gefunden"
 
 msgid "page.404.not_found"
-msgstr "Schlaf nicht auffindbar"
+msgstr "No sleep found"
 
 msgid "page.405.title"
 msgstr "405: Anfragetyp nicht erlaubt"
@@ -63,7 +63,7 @@ msgid "footer.eventinfo.name_start"
 msgstr "%1$s, ab dem %2$s"
 
 msgid "footer.eventinfo.start_end"
-msgstr "Event von %1$s bis %2$s"
+msgstr "Event vom %1$s bis %2$s"
 
 msgid "footer.issues"
 msgstr "Bugs / Features"

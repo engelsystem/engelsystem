@@ -746,11 +746,8 @@ msgstr ""
 msgid "password.email.message"
 msgstr "Please visit %s to recover your password."
 
-msgid "footer.eventinfo.start_end"
+msgid "footer.eventinfo.name_start_end"
 msgstr "%1$s, from %2$s to %3$s"
-
-msgid "footer.eventinfo.name_start"
-msgstr "%1$s, ab dem %2$s"
 
 msgid "footer.eventinfo.name_start"
 msgstr "%1$s, starting %2$s"
