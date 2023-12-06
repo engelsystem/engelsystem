@@ -72,7 +72,7 @@ function angeltype_delete_controller()
     }
 
     return [
-        sprintf(__('Delete angeltype %s'), $angeltype->name),
+        sprintf(__('Delete angeltype %s'), htmlspecialchars($angeltype->name)),
         AngelType_delete_view($angeltype),
     ];
 }
@@ -154,7 +154,7 @@ function angeltype_edit_controller()
     }
 
     return [
-        sprintf(__('Edit %s'), $angeltype->name),
+        sprintf(__('Edit %s'), htmlspecialchars((string) $angeltype->name)),
         AngelType_edit_view($angeltype, $supporter_mode),
     ];
 }
@@ -195,7 +195,7 @@ function angeltype_controller()
 
     $isSupporter = !is_null($user_angeltype) && $user_angeltype->supporter;
     return [
-        sprintf(__('Team %s'), $angeltype->name),
+        sprintf(__('Team %s'), htmlspecialchars($angeltype->name)),
         AngelType_view(
             $angeltype,
             $members,
@@ -324,7 +324,7 @@ function angeltypes_list_controller()
         $angeltype->name = '<a href="'
             . url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
             . '">'
-            . $angeltype->name
+            . htmlspecialchars($angeltype->name)
             . '</a>';
 
         $angeltype->actions = table_buttons($actions);

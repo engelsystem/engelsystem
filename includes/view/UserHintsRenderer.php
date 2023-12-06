@@ -20,9 +20,9 @@ class UserHintsRenderer
         if (!empty($hint)) {
             if ($important) {
                 $this->important = true;
-                $this->hints[] = error($hint, true);
+                $this->hints[] = error($hint, true, true);
             } else {
-                $this->hints[] = info($hint, true);
+                $this->hints[] = info($hint, true, true);
             }
         }
     }

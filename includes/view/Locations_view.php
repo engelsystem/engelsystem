@@ -24,13 +24,16 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
     if ($location->description) {
         $description = '<h3>' . __('general.description') . '</h3>';
         $parsedown = new Parsedown();
-        $description .= $parsedown->parse($location->description);
+        $description .= $parsedown->parse(htmlspecialchars($location->description));
     }
 
     $dect = '';
     if (config('enable_dect') && $location->dect) {
         $dect = heading(__('Contact'), 3)
-            . description([__('general.dect') => sprintf('<a href="tel:%s">%1$s</a>', $location->dect)]);
+            . description([__('general.dect') => sprintf(
+                '<a href="tel:%s">%1$s</a>',
+                htmlspecialchars($location->dect)
+            )]);
     }
 
     $tabs = [];
@@ -39,7 +42,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
             '<div class="map">'
             . '<iframe style="width: 100%%; min-height: 400px; border: 0 none;" src="%s"></iframe>'
             . '</div>',
-            $location->map_url
+            htmlspecialchars($location->map_url)
         );
     }
 
@@ -60,7 +63,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
     $link = button(url('/admin/locations'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
         (auth()->can('admin_locations') ? $link . ' ' : '') .
-        icon('pin-map-fill') . $location->name,
+        icon('pin-map-fill') . htmlspecialchars($location->name),
         [
         $assignNotice,
         auth()->can('admin_locations') ? buttons([
@@ -85,8 +88,10 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
 function location_name_render(Location $location)
 {
     if (auth()->can('view_locations')) {
-        return '<a href="' . location_link($location) . '">' . icon('pin-map-fill') . $location->name . '</a>';
+        return '<a href="' . location_link($location) . '">'
+            . icon('pin-map-fill') . htmlspecialchars($location->name)
+            . '</a>';
     }
 
-    return icon('pin-map-fill') . $location->name;
+    return icon('pin-map-fill') . htmlspecialchars($location->name);
 }

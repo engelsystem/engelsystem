@@ -19,7 +19,7 @@ function ShiftEntry_delete_view_admin(Shift $shift, AngelType $angeltype, User $
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
             __('Do you want to sign off %s from shift %s from %s to %s as %s?'),
-            User_Nick_render($signoff_user),
+            $signoff_user->displayName,
             $shift->shiftType->name,
             $shift->start->format(__('general.datetime')),
             $shift->end->format(__('general.datetime')),
@@ -92,7 +92,7 @@ function ShiftEntry_create_view_admin(
 ) {
     $start = $shift->start->format(__('general.datetime'));
     return page_with_title(
-        ShiftEntry_create_title() . ': ' . $shift->shiftType->name
+        ShiftEntry_create_title() . ': ' . htmlspecialchars($shift->shiftType->name)
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
             Shift_view_header($shift, $location),
@@ -125,7 +125,7 @@ function ShiftEntry_create_view_supporter(
 ) {
     $start = $shift->start->format(__('general.datetime'));
     return page_with_title(
-        ShiftEntry_create_title() . ': ' . $shift->shiftType->name
+        ShiftEntry_create_title() . ': ' . htmlspecialchars($shift->shiftType->name)
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
             Shift_view_header($shift, $location),
@@ -154,7 +154,7 @@ function ShiftEntry_create_view_user(Shift $shift, Location $location, AngelType
 {
     $start = $shift->start->format(__('general.datetime'));
     return page_with_title(
-        ShiftEntry_create_title() . ': ' . $shift->shiftType->name
+        ShiftEntry_create_title() . ': ' . htmlspecialchars($shift->shiftType->name)
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
             Shift_view_header($shift, $location),
@@ -230,9 +230,9 @@ function ShiftEntry_edit_view(
             form([
                 form_info(__('Angel:'), User_Nick_render($angel)),
                 form_info(__('Date, Duration:'), $date),
-                form_info(__('Location:'), $location),
-                form_info(__('Title:'), $title),
-                form_info(__('Type:'), $type),
+                form_info(__('Location:'), htmlspecialchars($location)),
+                form_info(__('Title:'), htmlspecialchars($title)),
+                form_info(__('Type:'), htmlspecialchars($type)),
                 $comment,
                 join('', $freeload_form),
                 form_submit('submit', __('form.save')),

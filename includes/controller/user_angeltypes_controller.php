@@ -37,7 +37,7 @@ function user_angeltypes_unconfirmed_hint()
     foreach ($unconfirmed_user_angeltypes as $user_angeltype) {
         $unconfirmed_links[] = '<a href="'
             . url('/angeltypes', ['action' => 'view', 'angeltype_id' => $user_angeltype->angel_type_id])
-            . '">' . $user_angeltype->angelType->name
+            . '">' . htmlspecialchars($user_angeltype->angelType->name)
             . ' (+' . $user_angeltype->count . ')'
             . '</a>';
     }
@@ -418,7 +418,7 @@ function user_angeltype_join_controller(AngelType $angeltype)
     }
 
     return [
-        sprintf(__('Become a %s'), $angeltype->name),
+        sprintf(__('Become a %s'), htmlspecialchars($angeltype->name)),
         UserAngelType_join_view($user, $angeltype),
     ];
 }

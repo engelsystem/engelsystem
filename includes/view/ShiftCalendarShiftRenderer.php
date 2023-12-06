@@ -29,7 +29,7 @@ class ShiftCalendarShiftRenderer
     {
         $info_text = '';
         if ($shift->title != '') {
-            $info_text = icon('info-circle') . $shift->title . '<br>';
+            $info_text = icon('info-circle') . htmlspecialchars($shift->title) . '<br>';
         }
         list($shift_signup_state, $shifts_row) = $this->renderShiftNeededAngeltypes(
             $shift,
@@ -197,7 +197,7 @@ class ShiftCalendarShiftRenderer
                 : $inner_text . '<br />'
                 . button(
                     url('/user-angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
-                    sprintf(__('Become %s'), $angeltype->name),
+                    sprintf(__('Become %s'), htmlspecialchars($angeltype->name)),
                     'btn-sm'
                 ),
             // Shift collides or user is already signed up: No signup allowed
@@ -260,7 +260,7 @@ class ShiftCalendarShiftRenderer
         }
         $shift_heading = $shift->start->format('H:i') . ' &dash; '
             . $shift->end->format('H:i') . ' &mdash; '
-            . $shift->shiftType->name;
+            . htmlspecialchars($shift->shiftType->name);
 
         if ($needed_angeltypes_count > 0) {
             $shift_heading = '<span class="badge bg-light text-danger me-1">' . $needed_angeltypes_count . '</span> ' . $shift_heading;

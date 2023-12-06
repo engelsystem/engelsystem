@@ -100,9 +100,9 @@ function admin_free()
             'name'        => User_Nick_render($usr) . User_Pronoun_render($usr),
             'shift_state' => User_shift_state_render($usr),
             'last_shift'  => User_last_shift_render($usr),
-            'dect'        => sprintf('<a href="tel:%s">%1$s</a>', $usr->contact->dect),
+            'dect'        => sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars((string) $usr->contact->dect)),
             'email'       => $usr->settings->email_human
-                ? sprintf('<a href="mailto:%s">%1$s</a>', $email)
+                ? sprintf('<a href="mailto:%s">%1$s</a>', htmlspecialchars((string) $email))
                 : icon('eye-slash'),
             'actions'     =>
                 auth()->can('admin_user')

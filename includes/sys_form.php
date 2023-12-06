@@ -49,31 +49,6 @@ function form_spinner(string $name, string $label, int $value, array $data_attri
 /**
  * Render a bootstrap datepicker
  *
- * @param string $name       Name of the parameter
- * @param string $label      Label
- * @param int|Carbon $value  Unix Timestamp
- * @param string $start_date Earliest possible date
- * @param string $end_date
- * @return string HTML
- */
-function form_date($name, $label, $value, $start_date = '', $end_date = '')
-{
-    $dom_id = $name . '-date';
-    $value = ($value instanceof Carbon) ? $value->getTimestamp() : $value;
-    $value = is_numeric($value) ? date('Y-m-d', $value) : '';
-    $start_date = is_numeric($start_date) ? date('Y-m-d', $start_date) : '';
-    $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
-
-    return form_element(
-        $label,
-        '<input class="form-control" id="' . $dom_id . '" type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="' . $start_date . '" max="' . $end_date . '" name="' . $name . '" value="' . htmlspecialchars((string) $value) . '" autocomplete="off">',
-        $dom_id
-    );
-}
-
-/**
- * Render a bootstrap datepicker
- *
  * @param string $name  Name of the parameter
  * @param string $label
  * @param mixed $value
@@ -95,24 +70,6 @@ function form_datetime(string $name, string $label, $value)
 }
 
 /**
- * Rendert eine Liste von Checkboxen für ein Formular
- *
- * @param string $name     Die Namen der Checkboxen werden aus name_key gebildet
- * @param string $label    Die Beschriftung der Liste
- * @param array  $items    Array mit den einzelnen Checkboxen
- * @param array  $selected Array mit den Keys, die ausgewählt sind
- * @return string
- */
-function form_checkboxes($name, $label, $items, $selected)
-{
-    $html = form_element($label, '');
-    foreach ($items as $key => $item) {
-        $html .= form_checkbox($name . '_' . $key, $item, in_array($key, $selected));
-    }
-    return $html;
-}
-
-/**
  * Rendert eine Checkbox
  *
  * @param string $name
@@ -129,14 +86,15 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
     }
 
     return '<div class="form-check">'
-        . '<input class="form-check-input" type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars((string) $value) . '" '
+        . '<input class="form-check-input" type="checkbox" id="' . $html_id . '" '
+        . 'name="' . htmlspecialchars($name) . '" value="' . $value . '" '
         . ($selected ? ' checked="checked"' : '') . ' /><label class="form-check-label" for="' . $html_id . '">'
         . $label
         . '</label></div>';
 }
 
 /**
- * Rendert einen Radio
+ * Renders a radio button
  *
  * @param string $name
  * @param string $label
@@ -234,67 +192,6 @@ function form_text($name, $label, $value, $disabled = false, $maxlength = null, 
 }
 
 /**
- * Renders a text input with placeholder instead of label.
- *
- * @param string  $name        Input name
- * @param string  $placeholder Placeholder
- * @param string  $value       The value
- * @param boolean $disabled    Is the field enabled?
- * @return string
- */
-function form_text_placeholder($name, $placeholder, $value, $disabled = false)
-{
-    $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element(
-        '',
-        '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars((string) $value) . '" placeholder="' . $placeholder
-        . '" ' . $disabled . '/>'
-    );
-}
-
-/**
- * Rendert ein Formular-Emailfeld
- *
- * @param string      $name
- * @param string      $label
- * @param string      $value
- * @param bool        $disabled
- * @param string|null $autocomplete
- * @param int|null    $maxlength
- *
- * @return string
- */
-function form_email($name, $label, $value, $disabled = false, $autocomplete = null, $maxlength = null)
-{
-    $disabled = $disabled ? ' disabled="disabled"' : '';
-    $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
-    $maxlength = $maxlength ? ' maxlength=' . (int) $maxlength : '';
-    return form_element(
-        $label,
-        '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="'
-        . htmlspecialchars((string) $value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
-        'form_' . $name
-    );
-}
-
-/**
- * Rendert ein Formular-Dateifeld
- *
- * @param string $name
- * @param string $label
- * @return string
- */
-function form_file($name, $label)
-{
-    return form_element(
-        $label,
-        sprintf('<input id="form_%1$s" type="file" name="%1$s" />', $name),
-        'form_' . $name
-    );
-}
-
-/**
  * Rendert ein Formular-Passwortfeld
  *
  * @param string $name
@@ -309,31 +206,12 @@ function form_password($name, $label, $autocomplete, $disabled = false)
     return form_element(
         $label,
         sprintf(
-            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value="" autocomplete="%3$s"%4$s/>',
+            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value="" autocomplete="%3$s" %4$s>',
             $name,
             config('min_password_length'),
             $autocomplete,
             $disabled
         ),
-        'form_' . $name
-    );
-}
-
-/**
- * Renders a password input with placeholder instead of label.
- *
- * @param string $name
- * @param string $placeholder
- * @param bool   $disabled
- * @return string
- */
-function form_password_placeholder($name, $placeholder, $disabled = false)
-{
-    $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element(
-        '',
-        '<input class="form-control" id="form_' . $name . '" type="password" name="'
-        . $name . '" value="" placeholder="' . $placeholder . '" ' . $disabled . '/>',
         'form_' . $name
     );
 }
@@ -464,9 +342,13 @@ function html_select_key($dom_id, $name, $rows, $selected, $selectText = '')
     }
     foreach ($rows as $key => $row) {
         if (($key == $selected) || ($row === $selected)) {
-            $html .= '<option value="' . $key . '" selected="selected">' . $row . '</option>';
+            $html .= '<option value="' . htmlspecialchars($key) . '" selected="selected">'
+                . htmlspecialchars($row)
+                . '</option>';
         } else {
-            $html .= '<option value="' . $key . '">' . $row . '</option>';
+            $html .= '<option value="' . htmlspecialchars($key) . '">'
+                . htmlspecialchars($row)
+                . '</option>';
         }
     }
     $html .= '</select>';

@@ -91,7 +91,7 @@ function user_delete_controller()
     }
 
     return [
-        sprintf(__('Delete %s'), $user_source->displayName),
+        sprintf(__('Delete %s'), htmlspecialchars($user_source->displayName)),
         User_delete_view($user_source),
     ];
 }
@@ -182,7 +182,7 @@ function user_edit_vouchers_controller()
     }
 
     return [
-        sprintf(__('%s\'s vouchers'), $user_source->displayName),
+        sprintf(__('%s\'s vouchers'), htmlspecialchars($user_source->displayName)),
         User_edit_vouchers_view($user_source),
     ];
 }
@@ -244,7 +244,7 @@ function user_controller()
     }
 
     return [
-        $user_source->displayName,
+        htmlspecialchars($user_source->displayName),
         User_view(
             $user_source,
             auth()->can('admin_user'),

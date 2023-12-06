@@ -24,8 +24,8 @@ function Shift_view_header(Shift $shift, Location $location)
             '<h4>' . __('title.title') . '</h4>',
             '<p class="lead">'
             . ($shift->url != ''
-                ? '<a href="' . $shift->url . '">' . $shift->title . '</a>'
-                : $shift->title)
+                ? '<a href="' . htmlspecialchars($shift->url) . '">' . htmlspecialchars($shift->title) . '</a>'
+                : htmlspecialchars($shift->title))
             . '</p>',
         ]),
         div('col-sm-3 col-xs-6', [
@@ -98,7 +98,7 @@ function Shift_signup_button_render(Shift $shift, AngelType $angeltype)
             url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
             sprintf(
                 __('Become %s'),
-                $angeltype->name
+                htmlspecialchars($angeltype->name)
             )
         );
     }
@@ -175,8 +175,15 @@ function Shift_view(
         $buttons = [
             $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
             $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
-            $admin_shifttypes ? button(url('/admin/shifttypes/' . $shifttype->id), $shifttype->name) : '',
-            $admin_locations ? button(location_link($location), icon('pin-map-fill') . $location->name) : '',
+            $admin_shifttypes
+                ? button(url('/admin/shifttypes/' . $shifttype->id), htmlspecialchars($shifttype->name))
+                : '',
+            $admin_locations
+                ? button(
+                    location_link($location),
+                    icon('pin-map-fill') . htmlspecialchars($location->name)
+                )
+                : '',
         ];
     }
     $buttons[] = button(
@@ -193,8 +200,8 @@ function Shift_view(
         ]),
         div('col-sm-6', [
             '<h2>' . __('general.description') . '</h2>',
-            $parsedown->parse($shifttype->description),
-            $parsedown->parse($shift->description),
+            $parsedown->parse(htmlspecialchars($shifttype->description)),
+            $parsedown->parse(htmlspecialchars($shift->description)),
         ]),
     ]);
 
@@ -206,7 +213,9 @@ function Shift_view(
 
     $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        $link . ' ' . $shift->shiftType->name . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
+        $link . ' '
+        . htmlspecialchars($shift->shiftType->name)
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         $content
     );
 }

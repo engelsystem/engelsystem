@@ -49,7 +49,7 @@ function admin_user()
                 $html .= ' ' . __('If the angel is active, it can claim a goodie. If goodie is set to \'Yes\', the angel already got their goodie.');
             }
         }
-        $html .= '<br /><br />';
+        $html .= '<br><br>';
         $html .= '<form action="'
             . url('/admin-user', ['action' => 'save', 'id' => $user_id])
             . '" method="post">' . "\n";
@@ -58,20 +58,32 @@ function admin_user()
         $html .= '<input type="hidden" name="Type" value="Normal">' . "\n";
         $html .= '<tr><td>' . "\n";
         $html .= '<table>' . "\n";
-        $html .= '  <tr><td>' . __('general.nick') . '</td><td>' . '<input size="40" name="eNick" value="' . $user_source->name . '" class="form-control" maxlength="24"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('general.nick') . '</td><td>'
+            . '<input size="40" name="eNick" value="' . htmlspecialchars($user_source->name) . '" class="form-control" maxlength="24">'
+            . '</td></tr>' . "\n";
         $html .= '  <tr><td>' . __('Last login') . '</td><td><p class="help-block">'
             . ($user_source->last_login_at ? $user_source->last_login_at->format(__('general.datetime')) : '-')
             . '</p></td></tr>' . "\n";
         if (config('enable_user_name')) {
-            $html .= '  <tr><td>' . __('settings.profile.firstname') . '</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
-            $html .= '  <tr><td>' . __('settings.profile.lastname') . '</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control" maxlength="64"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('settings.profile.firstname') . '</td><td>'
+                . '<input size="40" name="eName" value="' . htmlspecialchars((string) $user_source->personalData->last_name) . '" class="form-control" maxlength="64">'
+                . '</td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('settings.profile.lastname') . '</td><td>'
+                . '<input size="40" name="eVorname" value="' . htmlspecialchars((string) $user_source->personalData->first_name) . '" class="form-control" maxlength="64">'
+                . '</td></tr>' . "\n";
         }
-        $html .= '  <tr><td>' . __('settings.profile.mobile') . '</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source->contact->mobile . '" class="form-control" maxlength="40"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('settings.profile.mobile') . '</td><td>'
+            . '<input type= "tel" size="40" name="eHandy" value="' . htmlspecialchars((string) $user_source->contact->mobile) . '" class="form-control" maxlength="40">'
+            . '</td></tr>' . "\n";
         if (config('enable_dect')) {
-            $html .= '  <tr><td>' . __('general.dect') . '</td><td>' . '<input size="40" name="eDECT" value="' . $user_source->contact->dect . '" class="form-control" maxlength="40"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('general.dect') . '</td><td>'
+                . '<input size="40" name="eDECT" value="' . htmlspecialchars((string) $user_source->contact->dect) . '" class="form-control" maxlength="40">'
+                . '</td></tr>' . "\n";
         }
         if ($user_source->settings->email_human) {
-            $html .= '  <tr><td>' . __('general.email') . '</td><td>' . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control" maxlength="254"></td></tr>' . "\n";
+            $html .= '  <tr><td>' . __('general.email') . '</td><td>'
+                . '<input type="email" size="40" name="eemail" value="' . htmlspecialchars($user_source->email) . '" class="form-control" maxlength="254">'
+                . '</td></tr>' . "\n";
         }
         if ($goodie_tshirt) {
             $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
@@ -135,11 +147,11 @@ function admin_user()
         $html .= '</table>' . "\n" . '</td><td></td></tr>';
 
         $html .= '</td></tr>' . "\n";
-        $html .= '</table>' . "\n" . '<br />' . "\n";
+        $html .= '</table>' . "\n" . '<br>' . "\n";
         $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
         $html .= '</form>';
 
-        $html .= '<hr />';
+        $html .= '<hr>';
 
         $html .= form_info('', __('Please visit the angeltypes page or the users profile to manage the users angeltypes.'));
 
@@ -148,14 +160,18 @@ function admin_user()
             . '" method="post">' . "\n";
         $html .= form_csrf();
         $html .= '<table>' . "\n";
-        $html .= '  <tr><td>' . __('settings.password') . '</td><td>' . '<input type="password" size="40" name="new_pw" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
-        $html .= '  <tr><td>' . __('password.reset.confirm') . '</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password"></td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('settings.password') . '</td><td>'
+            . '<input type="password" size="40" name="new_pw" value="" class="form-control" autocomplete="new-password">'
+            . '</td></tr>' . "\n";
+        $html .= '  <tr><td>' . __('password.reset.confirm') . '</td><td>'
+            . '<input type="password" size="40" name="new_pw2" value="" class="form-control" autocomplete="new-password">'
+            . '</td></tr>' . "\n";
 
-        $html .= '</table>' . "\n" . '<br />' . "\n";
+        $html .= '</table>' . "\n" . '<br>' . "\n";
         $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
         $html .= '</form>';
 
-        $html .= '<hr />';
+        $html .= '<hr>';
 
         /** @var Group $my_highest_group */
         $my_highest_group = $user->groups()->orderByDesc('id')->first();
@@ -183,7 +199,9 @@ function admin_user()
                 $html .= '<div class="form-check">'
                     . '<input class="form-check-input" type="checkbox" id="' . $group->id . '" name="groups[]" value="' . $group->id . '" '
                     . ($group->selected ? ' checked="checked"' : '')
-                    . ' /><label class="form-check-label" for="' . $group->id . '">' . $group->name . '</label></div>';
+                    . ' /><label class="form-check-label" for="' . $group->id . '">'
+                    . htmlspecialchars($group->name)
+                    . '</label></div>';
             }
 
             $html .= '</div><br>';
@@ -191,7 +209,7 @@ function admin_user()
             $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
             $html .= '</form>';
 
-            $html .= '<hr />';
+            $html .= '<hr>';
         }
 
         $html .= buttons([

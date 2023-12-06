@@ -138,7 +138,7 @@ function UserAngelType_add_view(AngelType $angeltype, $users_source, $user_id)
 {
     $users = [];
     foreach ($users_source as $user_source) {
-        $users[$user_source->id] = User_Nick_render($user_source);
+        $users[$user_source->id] = $user_source->displayName;
     }
 
     return page_with_title(__('Add user to angeltype'), [
@@ -151,7 +151,7 @@ function UserAngelType_add_view(AngelType $angeltype, $users_source, $user_id)
             ),
         ]),
         form([
-            form_info(__('Angeltype'), $angeltype->name),
+            form_info(__('Angeltype'), htmlspecialchars($angeltype->name)),
             form_checkbox('auto_confirm_user', __('Confirm user'), true),
             form_select('user_id', __('general.user'), $users, $user_id),
             form_submit('submit', __('Add')),
@@ -166,7 +166,7 @@ function UserAngelType_add_view(AngelType $angeltype, $users_source, $user_id)
  */
 function UserAngelType_join_view($user, AngelType $angeltype)
 {
-    return page_with_title(sprintf(__('Become a %s'), $angeltype->name), [
+    return page_with_title(sprintf(__('Become a %s'), htmlspecialchars($angeltype->name)), [
         msg(),
         info(sprintf(
             __('Do you really want to add %s to %s?'),

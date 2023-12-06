@@ -2,9 +2,11 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}
+{% block title %}{{ schedule ? __('schedule.edit.title') : __('schedule.import.title') }}{% endblock %}
+
+{% block content_title %}
     {{ m.button(m.icon('chevron-left'), url('/admin/schedule'), 'secondary', 'sm') }}
-    {{ schedule ? __('schedule.edit.title') : __('schedule.import.title') }}
+    {{ block('title') }}
 {% endblock %}
 
 {% block row_content %}

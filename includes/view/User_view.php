@@ -93,9 +93,9 @@ function Users_view(
     foreach ($users as $user) {
         $u = [];
         $u['name'] = User_Nick_render($user) . User_Pronoun_render($user);
-        $u['first_name'] = $user->personalData->first_name;
-        $u['last_name'] = $user->personalData->last_name;
-        $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', $user->contact->dect);
+        $u['first_name'] = htmlspecialchars((string) $user->personalData->first_name);
+        $u['last_name'] = htmlspecialchars((string) $user->personalData->last_name);
+        $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars((string) $user->contact->dect));
         $u['arrived'] = icon_bool($user->state->arrived);
         if (config('enable_voucher')) {
             $u['got_voucher'] = $user->state->got_voucher;
@@ -272,7 +272,7 @@ function User_view_shiftentries($needed_angel_type)
 {
     $shift_info = '<br><b><a href="'
         . url('/angeltypes', ['action' => 'view', 'angeltype_id' => $needed_angel_type['id']])
-        . '">' . $needed_angel_type['name'] . '</a>:</b> ';
+        . '">' . htmlspecialchars($needed_angel_type['name']) . '</a>:</b> ';
 
     $shift_entries = [];
     foreach ($needed_angel_type['users'] as $user_shift) {
@@ -298,9 +298,9 @@ function User_view_shiftentries($needed_angel_type)
  */
 function User_view_myshift(Shift $shift, $user_source, $its_me)
 {
-    $shift_info = '<a href="' . shift_link($shift) . '">' . $shift->shiftType->name . '</a>';
+    $shift_info = '<a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->shiftType->name) . '</a>';
     if ($shift->title) {
-        $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . $shift->title . '</a>';
+        $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->title) . '</a>';
     }
     foreach ($shift->needed_angeltypes as $needed_angel_type) {
         $shift_info .= User_view_shiftentries($needed_angel_type);
@@ -319,7 +319,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     ];
 
     if ($its_me) {
-        $myshift['comment'] = $shift->user_comment;
+        $myshift['comment'] = htmlspecialchars($shift->user_comment);
     }
 
     if ($shift->freeloaded) {
@@ -328,7 +328,9 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
             . '</p>';
         if (auth()->can('user_shifts_admin')) {
             $myshift['comment'] .= '<br />'
-                . '<p class="text-danger">' . __('Freeloaded') . ': ' . $shift->freeloaded_comment . '</p>';
+                . '<p class="text-danger">'
+                . __('Freeloaded') . ': ' . htmlspecialchars($shift->freeloaded_comment)
+                . '</p>';
         } else {
             $myshift['comment'] .= '<br /><p class="text-danger">' . __('Freeloaded') . '</p>';
         }
@@ -452,7 +454,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
         'location'   => '',
         'shift_info' => __('Work log entry'),
-        'comment'    => $worklog->comment . '<br>'
+        'comment'    => htmlspecialchars($worklog->comment) . '<br>'
             . sprintf(
                 __('Added by %s at %s'),
                 User_Nick_render($worklog->creator),
@@ -543,9 +545,15 @@ function User_view(
         )
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : '')
-        . ((auth()->can('user.info.show') && $user_source->state->user_info)
-        ? (' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-        . htmlspecialchars($user_source->state->user_info) . '"></span></small>') : ''),
+        . (
+            (auth()->can('user.info.show') && $user_source->state->user_info)
+            ? (
+                ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+                . htmlspecialchars($user_source->state->user_info)
+                . '"></span></small>'
+            )
+            : ''
+        ),
         [
             msg(),
             div('row', [
@@ -608,8 +616,8 @@ function User_view(
                     config('enable_dect') && $user_source->contact->dect ?
                         heading(
                             icon('phone')
-                            . ' <a href="tel:' . $user_source->contact->dect . '">'
-                            . $user_source->contact->dect
+                            . ' <a href="tel:' . htmlspecialchars($user_source->contact->dect) . '">'
+                            . htmlspecialchars($user_source->contact->dect)
                             . '</a>'
                         )
                         : '',
@@ -617,8 +625,8 @@ function User_view(
                         $user_source->settings->mobile_show ?
                             heading(
                                 icon('phone')
-                                . ' <a href="tel:' . $user_source->contact->mobile . '">'
-                                . $user_source->contact->mobile
+                                . ' <a href="tel:' . htmlspecialchars($user_source->contact->mobile) . '">'
+                                . htmlspecialchars($user_source->contact->mobile)
                                 . '</a>'
                             )
                             : ''
@@ -639,19 +647,20 @@ function User_view(
             ($its_me || $admin_user_privilege) ? '<h2>' . __('Shifts') . '</h2>' : '',
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
-                icon('info-circle') . sprintf(
-                    __('Your night shifts between %d and %d am count twice for the %s score.'),
+                sprintf(
+                    icon('info-circle') . __('Your night shifts between %d and %d am count twice for the %s score.'),
                     $nightShiftsConfig['start'],
                     $nightShiftsConfig['end'],
                     ($goodie_tshirt ? __('T-shirt') : __('goodie'))
                 ),
+                true,
                 true
             ) : '',
             $its_me && count($shifts) == 0
                 ? error(sprintf(
                     __('Go to the <a href="%s">shifts table</a> to sign yourself up for some shifts.'),
                     url('/user-shifts')
-                ), true)
+                ), true, true)
                 : '',
             $its_me ? ical_hint() : '',
         ]
@@ -781,7 +790,7 @@ function User_angeltypes_render($user_angeltypes)
             $class = 'text-warning';
         }
         $output[] = '<a href="' . angeltype_link($angeltype->id) . '" class="' . $class . '">'
-            . ($angeltype->pivot->supporter ? icon('patch-check') : '') . $angeltype->name
+            . ($angeltype->pivot->supporter ? icon('patch-check') : '') . htmlspecialchars($angeltype->name)
             . '</a>';
     }
     return div('col-md-2', [
@@ -798,7 +807,7 @@ function User_groups_render($user_groups)
 {
     $output = [];
     foreach ($user_groups as $group) {
-        $output[] = __($group->name);
+        $output[] = __(htmlspecialchars($group->name));
     }
 
     return div('col-md-2', [
@@ -818,9 +827,11 @@ function User_oauth_render(User $user)
     $output = [];
     foreach ($user->oauth as $oauth) {
         $output[] = __(
-            isset($config[$oauth->provider]['name'])
-                ? $config[$oauth->provider]['name']
-                : Str::ucfirst($oauth->provider)
+            htmlspecialchars(
+                isset($config[$oauth->provider]['name'])
+                    ? $config[$oauth->provider]['name']
+                    : Str::ucfirst($oauth->provider)
+            )
         );
     }
 
@@ -965,7 +976,10 @@ function render_user_tshirt_hint()
 function render_user_dect_hint()
 {
     $user = auth()->user();
-    if ((config('required_user_fields')['dect'] || $user->state->arrived) && config('enable_dect') && !$user->contact->dect) {
+    if (
+        (config('required_user_fields')['dect'] || $user->state->arrived)
+        && config('enable_dect') && !$user->contact->dect
+    ) {
         $text = __('dect.required.hint');
         return render_profile_link($text);
     }

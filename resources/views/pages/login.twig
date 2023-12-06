@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <div class="row mb-3 mt-5">
             <div class="col-sm-12 text-center" id="welcome-title">
-                <h2>{{ __('login.welcome', [config('name') ~ m.angel() ~ (config('app_name')|upper) ])|raw }}</h2>
+                <h2>{{ __('login.welcome', [config('name')|e ~ m.angel() ~ (config('app_name')|upper|e) ])|raw }}</h2>
             </div>
         </div>
 

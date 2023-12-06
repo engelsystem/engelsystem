@@ -328,8 +328,8 @@ function admin_shifts()
                         . '<br>'
                         . location_name_render(Location::find($shift['location_id'])),
                     'title'         =>
-                        ShiftType::find($shifttype_id)->name
-                        . ($shift['title'] ? '<br />' . $shift['title'] : ''),
+                        htmlspecialchars(ShiftType::find($shifttype_id)->name)
+                        . ($shift['title'] ? '<br />' . htmlspecialchars($shift['title']) : ''),
                     'needed_angels' => '',
                 ];
                 foreach ($types as $type) {
@@ -439,7 +439,7 @@ function admin_shifts()
         $angel_types .= '<div class="col-sm-6 col-md-8 col-lg-6 col-xl-4 col-xxl-3">'
             . form_spinner(
                 'angeltype_count_' . $type->id,
-                $type->name,
+                htmlspecialchars($type->name),
                 $needed_angel_types[$type->id],
                 [
                     'radio-name'  => 'angelmode',

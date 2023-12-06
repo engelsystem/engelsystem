@@ -26,7 +26,7 @@ function AngelType_name_render(AngelType $angeltype, $plain = false)
     }
 
     return '<a href="' . angeltype_link($angeltype->id) . '">'
-        . ($angeltype->restricted ? icon('mortarboard-fill') : '') . $angeltype->name
+        . ($angeltype->restricted ? icon('mortarboard-fill') : '') . htmlspecialchars($angeltype->name)
         . '</a>';
 }
 
@@ -63,7 +63,7 @@ function AngelType_delete_view(AngelType $angeltype)
     $link = button($angeltype->id
         ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
         : url('/angeltypes'), icon('chevron-left'), 'btn-sm');
-    return page_with_title($link . ' ' . sprintf(__('Delete angeltype %s'), $angeltype->name), [
+    return page_with_title($link . ' ' . sprintf(__('Delete angeltype %s'), htmlspecialchars($angeltype->name)), [
         info(sprintf(__('Do you want to delete angeltype %s?'), $angeltype->name), true),
         form([
             buttons([
@@ -87,7 +87,11 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
         ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
         : url('/angeltypes'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        $link . ' ' . ($angeltype->id ? sprintf(__('Edit %s'), $angeltype->name) : __('Create angeltype')),
+        $link . ' ' . (
+            $angeltype->id ?
+                sprintf(__('Edit %s'), htmlspecialchars((string) $angeltype->name)) :
+                __('Create angeltype')
+        ),
         [
             $angeltype->id ?
             buttons([
@@ -96,7 +100,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
             msg(),
             form([
                 $supporter_mode
-                    ? form_info(__('general.name'), $angeltype->name)
+                    ? form_info(__('general.name'), htmlspecialchars($angeltype->name))
                     : form_text('name', __('general.name'), $angeltype->name),
                 $supporter_mode
                     ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
@@ -267,7 +271,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
     foreach ($members as $member) {
         $member->name = User_Nick_render($member) . User_Pronoun_render($member);
         if (config('enable_dect')) {
-            $member['dect'] = $member->contact->dect;
+            $member['dect'] = htmlspecialchars((string) $member->contact->dect);
         }
         if ($angeltype->requires_driver_license) {
             $member['wants_to_drive'] = icon_bool($member->license->wantsToDrive());
@@ -430,7 +434,7 @@ function AngelType_view(
 ) {
     $link = button(url('/angeltypes'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        $link . ' ' . sprintf(__('Team %s'), $angeltype->name),
+        $link . ' ' . sprintf(__('Team %s'), htmlspecialchars($angeltype->name)),
         [
             AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user),
             msg(),
@@ -493,7 +497,7 @@ function AngelType_view_info(
     $info[] = '<h3>' . __('general.description') . '</h3>';
     $parsedown = new Parsedown();
     if ($angeltype->description != '') {
-        $info[] = $parsedown->parse($angeltype->description);
+        $info[] = $parsedown->parse(htmlspecialchars($angeltype->description));
     }
 
     list($supporters, $members_confirmed, $members_unconfirmed) = AngelType_view_members(
@@ -567,9 +571,20 @@ function AngelType_view_info(
 function AngelTypes_render_contact_info(AngelType $angeltype)
 {
     $info = [
-        __('general.name')   => [$angeltype->contact_name, $angeltype->contact_name],
-        __('general.dect')   => config('enable_dect') ? [sprintf('<a href="tel:%s">%1$s</a>', $angeltype->contact_dect), $angeltype->contact_dect] : null,
-        __('general.email') => [sprintf('<a href="mailto:%s">%1$s</a>', $angeltype->contact_email), $angeltype->contact_email],
+        __('general.name')  => [
+            htmlspecialchars($angeltype->contact_name),
+            htmlspecialchars($angeltype->contact_name),
+        ],
+        __('general.dect')  => config('enable_dect')
+            ? [
+                sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars($angeltype->contact_dect)),
+                htmlspecialchars($angeltype->contact_dect),
+            ]
+            : null,
+        __('general.email') => [
+            sprintf('<a href="mailto:%s">%1$s</a>', htmlspecialchars($angeltype->contact_email)),
+            htmlspecialchars($angeltype->contact_email),
+        ],
     ];
     $contactInfo = [];
     foreach ($info as $name => $data) {

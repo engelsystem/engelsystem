@@ -19,7 +19,9 @@ function public_dashboard_view($stats, $free_shifts, $highlighted_news)
     if ($highlighted_news->isNotEmpty()) {
         $first_news = $highlighted_news->first();
         $news = div('alert alert-warning text-center', [
-            '<a href="' . url('/news/' . $first_news->id) . '"><strong>' . $first_news->title . '</strong></a>',
+            '<a href="' . url('/news/' . $first_news->id) . '">'
+            . '<strong>' . htmlspecialchars($first_news->title) . '</strong>'
+            . '</a>',
         ]);
     }
 
@@ -93,17 +95,17 @@ function public_dashboard_shift_render($shift)
     $panel_body = icon('clock-history') . $shift['start'] . ' - ' . $shift['end'];
     $panel_body .= ' (' . $shift['duration'] . '&nbsp;h)';
 
-    $panel_body .= '<br>' . icon('list-task') . $shift['shifttype_name'];
+    $panel_body .= '<br>' . icon('list-task') . htmlspecialchars($shift['shifttype_name']);
     if (!empty($shift['title'])) {
-        $panel_body .= ' (' . $shift['title'] . ')';
+        $panel_body .= ' (' . htmlspecialchars($shift['title']) . ')';
     }
 
-    $panel_body .= '<br>' . icon('pin-map-fill') . $shift['location_name'];
+    $panel_body .= '<br>' . icon('pin-map-fill') . htmlspecialchars($shift['location_name']);
 
     foreach ($shift['needed_angels'] as $needed_angels) {
         $panel_body .= '<br>' . icon('person')
             . '<span class="text-' . $shift['style'] . '">'
-            . $needed_angels['need'] . ' &times; ' . $needed_angels['angeltype_name']
+            . $needed_angels['need'] . ' &times; ' . htmlspecialchars($needed_angels['angeltype_name'])
             . '</span>';
     }
 
