@@ -6,9 +6,10 @@
 
 {{ '-- ' }}
 {% block footer %}
-{{config('name')}}
-{%- if config('enable_show_day_of_event') and day_of_event is defined %}
-, {{ __('event.day', [day_of_event]) }}
-{% endif %}
+{{ config('name') }}
+{%- if config('enable_show_day_of_event') and day_of_event is defined -%}
+{% if config('name') %}, {% endif %}{{ __('event.day', [day_of_event]) }}
+{%- endif %}
+
 {{ __('email.footer', [config('app_name')]) }}
 {% endblock %}
