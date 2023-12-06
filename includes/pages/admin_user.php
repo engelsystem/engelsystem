@@ -153,14 +153,17 @@ function admin_user()
 
         $html .= '<hr>';
 
-        $html .= form_info('', __('Please visit the angeltypes page or the users profile to manage the users angeltypes.'));
+        $html .= __('Here you can reset the password of this angel:');
 
-        $html .= ' ' . __('Here you can reset the password of this angel:') . '<form action="'
+        $html .= '<form action="'
             . url('/admin-user', ['action' => 'change_pw', 'id' => $user_id])
             . '" method="post">' . "\n";
         $html .= form_csrf();
         $html .= '<table>' . "\n";
-        $html .= '  <tr><td>' . __('settings.password') . '</td><td>'
+        $html .= '  <tr><td>' . __('settings.password')
+            . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+            . __('password.minimal_length', [config('min_password_length')]) . '"></span>'
+            . '</td><td>'
             . '<input type="password" size="40" name="new_pw" value="" class="form-control" autocomplete="new-password">'
             . '</td></tr>' . "\n";
         $html .= '  <tr><td>' . __('password.reset.confirm') . '</td><td>'
