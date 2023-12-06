@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\LogEntry;
+use Engelsystem\Models\User\User;
 use Psr\Log\LogLevel;
 
 class LogEntryTest extends ModelTest
@@ -14,6 +15,8 @@ class LogEntryTest extends ModelTest
      */
     public function testFilter(): void
     {
+        $user = User::factory()->create();
+        (new LogEntry(['level' => LogLevel::DEBUG, 'message' => 'Some users fault', 'user_id' => $user->id]))->save();
         foreach (
             [
                 'I\'m an info'            => LogLevel::INFO,
@@ -31,9 +34,10 @@ class LogEntryTest extends ModelTest
             (new LogEntry(['level' => $level, 'message' => $message]))->save();
         }
 
-        $this->assertCount(10, LogEntry::filter());
+        $this->assertCount(11, LogEntry::filter());
         $this->assertCount(3, LogEntry::filter(LogLevel::INFO));
         $this->assertCount(1, LogEntry::filter('Oops'));
+        $this->assertCount(1, LogEntry::filter(null, $user->id));
 
         /** @var LogEntry $first */
         $first = LogEntry::filter()->first();

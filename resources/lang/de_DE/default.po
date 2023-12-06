@@ -1407,6 +1407,9 @@ msgstr "Du kannst hier Markdown verwenden"
 msgid "form.required"
 msgstr "Pflichtfeld"
 
+msgid "form.user_select"
+msgstr "Wähle einen User"
+
 msgid "schedule.import"
 msgstr "Programm importieren"
 
@@ -1530,6 +1533,9 @@ msgstr "Suchen"
 
 msgid "log.log"
 msgstr "Logs"
+
+msgid "log.only_own"
+msgstr "Du siehst hier deine eigenen Logs. Die logs anderer User können nur Bürokraten sehen."
 
 msgid "log.time"
 msgstr "Zeit"

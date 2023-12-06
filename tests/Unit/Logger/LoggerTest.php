@@ -45,6 +45,7 @@ class LoggerTest extends ServiceProviderTest
 
     /**
      * @covers       \Engelsystem\Logger\Logger::log
+     * @covers       \Engelsystem\Logger\Logger::createEntry
      * @dataProvider provideLogLevels
      */
     public function testAllLevels(string $level): void
