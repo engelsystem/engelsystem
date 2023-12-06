@@ -61,7 +61,7 @@
                     <div class="col-md-12">
                         <h2>{{ __('form.preview') }}</h2>
 
-                        <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %}">
+                        <div class="card {{ m.type_bg_class() }}">
                             <div class="card-header">
                                 {{ faq.question }}
                             </div>

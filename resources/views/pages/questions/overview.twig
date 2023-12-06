@@ -33,7 +33,7 @@
                                             {{ question.text|nl2br }}
                                         </div>
 
-                                        <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} d-flex align-items-center">
+                                        <div class="card-footer {{ m.type_bg_class() }} d-flex align-items-center">
                                             <div class="me-3">
                                                 {{ m.icon('clock') }} {{ question.created_at.format(__('general.datetime')) }}
                                             </div>
@@ -68,7 +68,7 @@
                                             <div class="card-body bg-body {{ m.type_text_class() }}">
                                                 {{ question.answer|markdown }}
                                             </div>
-                                            <div class="card-footer bg-dark d-flex align-items-center {{ m.type_text_class() }}">
+                                            <div class="card-footer {{ m.type_bg_class() }} d-flex align-items-center {{ m.type_text_class() }}">
                                                 <div class="me-3">
                                                     {{ m.icon('clock') }} {{ question.updated_at.format(__('general.datetime')) }}
                                                 </div>

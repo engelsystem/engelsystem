@@ -52,7 +52,7 @@
 {% endblock %}
 
 {% macro news(news, show_comments_link, is_overview) %}
-    <div class="card {% if news.is_highlighted %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} mb-4">
+    <div class="card {% if news.is_highlighted %}bg-warning{% elseif news.is_meeting %}bg-info{% else %}{{ m.type_bg_class() }}{% endif %} mb-4">
         {% if is_overview|default(false) %}
         <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
                 <a href="{{ url('/news/' ~ news.id) }}" class="text-inherit">
@@ -70,7 +70,7 @@
             {% endif %}
         </div>
 
-        <div class="card-footer text-nowrap {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} text-muted">
+        <div class="card-footer text-nowrap {{ m.type_bg_class() }} text-muted">
             <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
                 {% if news.updated_at != news.created_at and not is_overview %}
                     <div>
