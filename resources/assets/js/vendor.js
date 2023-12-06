@@ -3,3 +3,4 @@ window.bootstrap = require('bootstrap');
 import './forms';
 import './countdown';
 import './dashboard';
+import './design';
