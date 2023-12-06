@@ -44,7 +44,7 @@ class Logger extends AbstractLogger
             $message .= $this->formatException($context['exception']);
         }
 
-        $this->log->create(['level' => $level, 'message' => $message]);
+        $this->createEntry(['level' => $level, 'message' => $message]);
     }
 
     /**
@@ -80,5 +80,10 @@ class Logger extends AbstractLogger
     protected function checkLevel(string $level): bool
     {
         return in_array($level, $this->allowedLevels);
+    }
+
+    protected function createEntry(array $data): void
+    {
+        $this->log->create($data);
     }
 }

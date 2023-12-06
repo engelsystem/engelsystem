@@ -30,7 +30,7 @@ trait Reference
             $table->primary($fromColumn);
         }
 
-        $this->addReference($table, $fromColumn, $targetTable, $targetColumn ?: 'id');
+        $this->addReference($table, $fromColumn, $targetTable, $targetColumn);
 
         return $col;
     }

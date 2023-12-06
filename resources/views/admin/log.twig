@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="col-md-12">
-        <h1>{{ block('title') }}</h1>
+        <h1>{{ block('title') }} <small>({{ entries|length }})</small></h1>
 
         <div class="row">
             <div class="col-md-12">
@@ -14,19 +14,39 @@
                     <form method="post" action="{{ url('/admin/logs') }}" class="form-inline">
                         {{ csrf() }}
 
-                        {{ f.input('search', __('form.search'), {
-                            'value': search,
-                            'hide_label': true,
-                        }) }}
+                        <div class="row">
+                            <div class="col-md-8">
+                                {{ f.input('search', __('form.search'), {
+                                    'value': search,
+                                    'hide_label': true,
+                                }) }}
+                            </div>
+
+                            {% if has_permission_to('logs.all') %}
+                                <div class="col-md-4">
+                                    {{ f.select('search_user_id', __('general.user'), users, {
+                                        'default_option': __('form.user_select'),
+                                        'selected': search_user_id,
+                                    }) }}
+                                </div>
+                            {% endif %}
+                        </div>
 
                         {{ f.submit(__('form.search')) }}
                     </form>
                 </div>
 
+                {% if not has_permission_to('logs.all') %}
+                    <div class="mb-3">
+                        {{ m.alert(__('log.only_own')) }}
+                    </div>
+                {% endif %}
+
                 <table class="table table-striped">
                     <tr>
                         <th>{{ __('log.time') }}</th>
                         <th>{{ __('log.level') }}</th>
+                        <th>{{ __('general.user') }}</th>
                         <th>{{ __('log.message') }}</th>
                     </tr>
                     {% for entry in entries %}
@@ -47,10 +67,11 @@
                         {%- endif %}
 
                         <tr>
-                            <td class="table-{{ td_type }}">{{ entry.created_at.format(__('general.datetime')) }}</td>
-                            <td class="table-{{ td_type }}">
+                            <td class="table-{{ td_type }} text-nowrap">{{ entry.created_at.format(__('general.datetime')) }}</td>
+                            <td class="table-{{ td_type }} text-nowrap">
                                 <span class="badge bg-{{ type }}">{{ entry.level|capitalize }}</span> <!-- //todo bs5 -->
                             </td>
+                            <td class="text-nowrap">{% if entry.user %}{{ m.user(entry.user) }}{% endif %}</td>
                             <td>{{ entry.message|nl2br }}</td>
                         </tr>
                     {% endfor %}
