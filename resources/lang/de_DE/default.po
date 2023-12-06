@@ -156,6 +156,9 @@ msgstr ""
 "zurücksetzen kannst. Bitte benutze die E-Mail-Adresse, die du bei der Anmeldung "
 "verwendet hast."
 
+msgid "password.minimal_length"
+msgstr "Mindestlänge %d Zeichen"
+
 msgid "form.recover"
 msgstr "Wiederherstellen"
 
@@ -1316,9 +1319,6 @@ msgid ""
 msgstr ""
 "Ist der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, bedeutet dies, "
 "dass der Engel bereits sein T-Shirt erhalten hat."
-
-msgid "Please visit the angeltypes page or the users profile to manage the users angeltypes."
-msgstr "Bitte besuche die Seite Engeltypen oder das Benutzerprofil, um die Engeltypen des Benutzers zu verwalten."
 
 msgid "Here you can reset the password of this angel:"
 msgstr "Hier kannst du das Passwort für diesen Engel zurücksetzen:"

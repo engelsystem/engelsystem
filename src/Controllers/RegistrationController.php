@@ -89,6 +89,7 @@ class RegistrationController extends BaseController
         return $this->response->withView(
             'pages/registration',
             [
+                'minPasswordLength' => $this->config->get('min_password_length'),
                 'tShirtSizes' => $this->config->get('tshirt_sizes'),
                 'angelTypes' => AngelType::whereHideRegister(false)->get(),
                 'preselectedAngelTypes' => $preselectedAngelTypes,

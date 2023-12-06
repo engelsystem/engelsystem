@@ -746,6 +746,9 @@ msgstr ""
 msgid "password.email.message"
 msgstr "Please visit %s to recover your password."
 
+msgid "password.minimal_length"
+msgstr "Minimal length %d characters"
+
 msgid "footer.eventinfo.name_start_end"
 msgstr "%1$s, from %2$s to %3$s"
 
