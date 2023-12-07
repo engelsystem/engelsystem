@@ -2,12 +2,12 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% set title %}{% block title %}{{ __('schedule.import.title') }}{% endblock %}{% endset %}
+{% block title %}{{ __('schedule.import.title') }}{% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>
-            {% block content_title %}{{ title }}{% endblock %}
+            {% block content_title %}{{ block('title') }}{% endblock %}
 
             {% if is_index|default(false) %}
                 {{ m.button(m.icon('plus-lg'), url('/admin/schedule/edit'), 'secondary') }}
