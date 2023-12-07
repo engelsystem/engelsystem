@@ -52,9 +52,6 @@ msgstr "Bitte gib eine E-Mail-Adresse an."
 msgid "validation.email.email"
 msgstr "Die E-Mail-Adresse ist nicht gültig."
 
-msgid "validation.password.length"
-msgstr "Dein neues Passwort ist zu kurz."
-
 msgid "validation.new_password.length"
 msgstr "Dein neues Passwort ist zu kurz."
 

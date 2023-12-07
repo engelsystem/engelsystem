@@ -667,9 +667,6 @@ msgstr "Event data"
 msgid "registration.what_todo"
 msgstr "What do you want to do?"
 
-msgid "registration.register"
-msgstr "Register"
-
 msgid "tshirt.required.hint"
 msgstr "Please specify a T-shirt size in your settings!"
 

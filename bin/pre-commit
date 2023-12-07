@@ -3,10 +3,24 @@
 # immediate exit after an error
 set -e
 
+testing() {
+    echo
+    echo "🔎 Checking ${1}"
+}
+
+testing 'JS & CSS 🎨'
 yarn check
 yarn lint
 
+testing 'PHP ⚙️'
 composer validate
 composer phpcs
 composer phpstan
 ./vendor/bin/phpunit
+
+testing 'translations 🗺️'
+find resources/lang -type f -name '*.po' -exec sh -c 'msgfmt "${1%.*}.po" -o"${1%.*}.mo"' shell {} \;
+[ "$(find resources/lang -type f -name '*.po' | wc -l)" -eq "$(find resources/lang -type f -name '*.mo' | wc -l)" ]
+find resources/lang -type f -name '*.mo' -exec rm {} \;
+
+echo '✅ Done 🎉'

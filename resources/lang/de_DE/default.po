@@ -1095,17 +1095,11 @@ msgstr "Engel:"
 msgid "Date, Duration:"
 msgstr "Termin, Dauer:"
 
-msgid "Location:"
-msgstr "Ort:"
-
 msgid "Title:"
 msgstr "Titel:"
 
 msgid "Type:"
 msgstr "Typ:"
-
-msgid "Location"
-msgstr "Ort"
 
 msgid "created at %s by %s"
 msgstr "erstellt am %s von %s"
@@ -1900,9 +1894,6 @@ msgstr "Auf Schicht-Ansicht ausblenden"
 msgid "angeltypes.hide_on_shift_view.info"
 msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
 "Schicht Seite die Filteroption für diesen Engeltyp sehen."
-
-msgid "registration.register"
-msgstr "Registrieren"
 
 msgid "location.locations"
 msgstr "Orte"
