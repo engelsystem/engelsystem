@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% set title %}{% block title %}{{ __('log.log') }}{% endblock %}{% endset %}
+{% block title %}{{ __('log.log') }}{% endblock %}
 
 {% block content %}
     <div class="col-md-12">

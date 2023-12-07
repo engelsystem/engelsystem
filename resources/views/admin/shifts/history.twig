@@ -2,13 +2,13 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% set title %}{% block title %}{{ __('shifts.history') }}{% endblock %}{% endset %}
+{% block title %}{{ __('shifts.history') }}{% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>
             {{ m.button(m.icon('chevron-left'), url('/admin-shifts'), null, 'sm') }}
-            {% block content_title %}{{ title }}{% endblock %}
+            {% block content_title %}{{ block('title') }}{% endblock %}
         </h1>
 
         {% include 'layouts/parts/messages.twig' %}
