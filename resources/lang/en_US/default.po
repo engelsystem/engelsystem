@@ -46,6 +46,9 @@ msgstr "You are not allowed to access this page"
 msgid "page.403.login"
 msgstr "Please log in."
 
+msgid "page.error.title"
+msgstr "Error %s"
+
 msgid "page.404.title"
 msgstr "Page not found"
 

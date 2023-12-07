@@ -1,6 +1,6 @@
 {% extends "layouts/app.twig" %}
 
-{% block title %}Error {{ status }}{% endblock %}
+{% block title %}{{ __('page.error.title', [status]) }}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -8,7 +8,7 @@
             <div class="alert alert-info" role="alert">
 
                 {% block content_headline %}
-                    <h2>{% block content_headline_text %}Error {{ status }}{% endblock %}</h2>
+                    <h2>{% block content_headline_text %}{{ __('page.error.title', [status]) }}{% endblock %}</h2>
                 {% endblock %}
 
                 {% block content_text %}
