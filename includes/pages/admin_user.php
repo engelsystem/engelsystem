@@ -28,6 +28,7 @@ function admin_user()
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $user_info_edit = auth()->can('user.info.edit');
+    $user_edit_shirt = auth()->can('user.edit.shirt');
 
     if (!$request->has('id')) {
         throw_redirect(users_link());
@@ -42,7 +43,7 @@ function admin_user()
         }
 
         $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
-        if ($goodie_enabled) {
+        if ($goodie_enabled && $user_edit_shirt) {
             if ($goodie_tshirt) {
                 $html .= ' ' . __('If the angel is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the angel already got their T-shirt.');
             } else {
@@ -85,7 +86,7 @@ function admin_user()
                 . '<input type="email" size="40" name="eemail" value="' . htmlspecialchars($user_source->email) . '" class="form-control" maxlength="254">'
                 . '</td></tr>' . "\n";
         }
-        if ($goodie_tshirt) {
+        if ($goodie_tshirt && $user_edit_shirt) {
             $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
                 . html_select_key(
                     'size',
@@ -118,16 +119,18 @@ function admin_user()
 
         // Arrived?
         $html .= '  <tr><td>' . __('user.arrived') . '</td><td>' . "\n";
-        if ($user_source->state->arrived) {
-            $html .= __('Yes');
-        } else {
-            $html .= __('No');
-        }
+        $html .= ($user_source->state->arrived ? __('Yes') : __('No'));
         $html .= '</td></tr>' . "\n";
 
         // Active?
-        $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
-        $html .= html_options('eAktiv', $options, $user_source->state->active) . '</td></tr>' . "\n";
+        if ($user_edit_shirt) {
+            $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
+            $html .= html_options('eAktiv', $options, $user_source->state->active) . '</td></tr>' . "\n";
+        } else {
+            $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
+            $html .= ($user_source->state->active ? __('Yes') : __('No'));
+            $html .= '</td></tr>' . "\n";
+        }
 
         // Forced active?
         if (auth()->can('admin_active')) {
@@ -135,7 +138,7 @@ function admin_user()
             $html .= html_options('force_active', $options, $user_source->state->force_active) . '</td></tr>' . "\n";
         }
 
-        if ($goodie_enabled) {
+        if ($goodie_enabled && $user_edit_shirt) {
             // T-Shirt bekommen?
             if ($goodie_tshirt) {
                 $html .= '  <tr><td>' . __('T-shirt') . '</td><td>' . "\n";
@@ -273,11 +276,8 @@ function admin_user()
                 break;
 
             case 'save':
-                $force_active = $user->state->force_active;
                 $user_source = User::find($user_id);
-                if (auth()->can('admin_active')) {
-                    $force_active = $request->input('force_active');
-                }
+
                 if ($user_source->settings->email_human) {
                     $user_source->email = $request->postData('eemail');
                 }
@@ -294,24 +294,30 @@ function admin_user()
                     $user_source->personalData->first_name = $request->postData('eVorname');
                     $user_source->personalData->last_name = $request->postData('eName');
                 }
-                if ($goodie_tshirt) {
+                if ($goodie_tshirt && $user_edit_shirt) {
                     $user_source->personalData->shirt_size = $request->postData('eSize');
                 }
                 $user_source->personalData->save();
 
                 $user_source->contact->mobile = $request->postData('eHandy');
-                $user_source->contact->dect = $request->postData('eDECT');
+                if (config('enable_dect')) {
+                    $user_source->contact->dect = $request->postData('eDECT');
+                }
                 $user_source->contact->save();
 
-                if ($goodie_enabled) {
+                if ($goodie_enabled && $user_edit_shirt) {
                     $user_source->state->got_shirt = $request->postData('eTshirt');
                 }
                 if ($user_info_edit) {
                     $user_source->state->user_info = $request->postData('userInfo');
                 }
 
-                $user_source->state->active = $request->postData('eAktiv');
-                $user_source->state->force_active = $force_active;
+                if ($user_edit_shirt) {
+                    $user_source->state->active = $request->postData('eAktiv');
+                }
+                if (auth()->can('admin_active')) {
+                    $user_source->state->force_active = $request->input('force_active');
+                }
                 $user_source->state->save();
 
                 engelsystem_log(
