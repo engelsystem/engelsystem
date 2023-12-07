@@ -32,6 +32,9 @@ msgstr ""
 msgid "password.email.message"
 msgstr "Um dein Passwort zurückzusetzen, besuche %s"
 
+msgid "page.error.title"
+msgstr "Fehler %s"
+
 msgid "page.403.title"
 msgstr "Nicht erlaubt"
 
