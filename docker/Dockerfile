@@ -8,7 +8,7 @@ RUN composer --no-ansi dump-autoload --optimize
 FROM alpine AS translation
 RUN apk add gettext
 COPY resources/lang/ /data
-RUN find /data -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+RUN find /data -type f -name '*.po' -exec sh -c 'msgfmt "${1%.*}.po" -o"${1%.*}.mo"' shell {} \;
 
 # Build the themes
 FROM node:20-alpine AS themes

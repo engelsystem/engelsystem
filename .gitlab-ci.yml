@@ -155,6 +155,15 @@ yarn lint:
     - apk add --no-cache git
     - yarn lint
 
+translations lint:
+  image: alpine
+  stage: prepare
+  before_script:
+    - apk add gettext
+  script:
+    - find resources/lang -type f -name '*.po' -exec sh -c 'msgfmt "${1%.*}.po" -o"${1%.*}.mo"' shell {} \;
+    - '[[ $(find resources/lang -type f -name "*.po" | wc -l) == $(find resources/lang -type f -name "*.mo" | wc -l) ]]'
+
 #
 # Build
 #
@@ -177,6 +186,7 @@ build-image:
     - composer validate
     - yarn check
     - yarn lint
+    - translations lint
     - generate-version
   dependencies:
     - generate-version
