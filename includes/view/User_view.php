@@ -501,6 +501,7 @@ function User_view(
     $nightShiftsConfig = config('night_shifts');
     $user_name = htmlspecialchars((string) $user_source->personalData->first_name) . ' '
         . htmlspecialchars((string) $user_source->personalData->last_name);
+    $user_info_show = auth()->can('user.info.show');
     $myshifts_table = '';
     if ($its_me || $admin_user_privilege || $tshirt_admin) {
         $my_shifts = User_view_myshifts(
@@ -546,10 +547,12 @@ function User_view(
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : '')
         . (
-            (auth()->can('user.info.show') && $user_source->state->user_info)
+            (($user_info_show || auth()->can('admin_arrive')) && $user_source->state->user_info)
             ? (
-                ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-                . htmlspecialchars($user_source->state->user_info)
+                ' <small><span class="bi bi-info-circle-fill text-info" '
+                . ($user_info_show
+                    ? 'data-bs-toggle="tooltip" title="' . htmlspecialchars($user_source->state->user_info)
+                    : '')
                 . '"></span></small>'
             )
             : ''
