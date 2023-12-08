@@ -1267,11 +1267,11 @@ msgid "Rights"
 msgstr "Berechtigungen"
 
 msgid ""
-"You are not marked as arrived. Please go to heaven's desk, get your angel "
+"You are not marked as arrived. Please go to heaven, get your angel "
 "badge and/or tell them that you arrived already."
 msgstr ""
-"Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
-"hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
+"Du bist nicht als angekommen markiert. Geh bitte zum Himmel, "
+"hole Dein Badge ab und/oder melde dich als angekommen."
 
 msgid ""
 "Please enter your planned date of departure on your settings page to give us "
@@ -1993,6 +1993,9 @@ msgstr "Benutzer Info"
 
 msgid "user.info.hint"
 msgstr "Wird auf der Benutzer Seite für Schichtkoordinatoren und Admins angezeigt."
+
+msgid "user.info.not.arrived.hint"
+msgstr "Wenn du dich für Schichten eintragen willst, komm gerne im Himmel vorbei."
 
 msgid "design.title"
 msgstr "Design"

@@ -937,17 +937,20 @@ function render_user_freeloader_hint()
 }
 
 /**
- * Hinweis für Engel, die noch nicht angekommen sind
+ * hint for angels, which are noch arrived yet
  *
  * @return string|null
  */
-function render_user_arrived_hint()
+function render_user_arrived_hint(bool $is_user_shifts = false)
 {
+    $user_info = auth()->user()->state->user_info;
     if (config('signup_requires_arrival') && !auth()->user()->state->arrived) {
         /** @var Carbon $buildup */
         $buildup = config('buildup_start');
         if (!empty($buildup) && $buildup->lessThan(new Carbon())) {
-            return __('You are not marked as arrived. Please go to heaven\'s desk, get your angel badge and/or tell them that you arrived already.');
+            return !$user_info
+                ? __('You are not marked as arrived. Please go to heaven, get your angel badge and/or tell them that you arrived already.')
+                : ($is_user_shifts ? __('user.info.not.arrived.hint') : null);
         }
     }
 

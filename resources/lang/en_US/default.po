@@ -732,6 +732,9 @@ msgstr "User info"
 msgid "user.info.hint"
 msgstr "Is displayed for shift coordinators and admins in the user view."
 
+msgid "user.info.not.arrived.hint"
+msgstr "If you want to sign up for shifts, feel free to drop by heaven."
+
 msgid "email.greeting"
 msgstr "Hi %s,"
 
