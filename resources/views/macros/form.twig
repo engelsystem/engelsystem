@@ -280,6 +280,13 @@ Renders a button.
     {{ _self.button(label|default(__('form.submit')), {'type': 'submit', 'btn_type': 'primary'}|merge(opt|default({}))) }}
 {%- endmacro %}
 
+{% macro save(label, opt) %}
+    {{ _self.submit(label|default(' '), {
+        'icon_left': 'save',
+        'title': __('form.save'),
+    }|merge(opt|default({}))) }}
+{%- endmacro %}
+
 {% macro delete(label, opt) %}
     {{ _self.submit(label|default(' '), {
         'icon_left': 'trash',

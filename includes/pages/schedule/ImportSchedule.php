@@ -110,6 +110,10 @@ class ImportSchedule extends BaseController
         /** @var ScheduleUrl $schedule */
         $schedule = ScheduleUrl::findOrNew($scheduleId);
 
+        if ($request->request->has('delete')) {
+            return $this->delete($schedule);
+        }
+
         $data = $this->validate($request, [
             'name'           => 'required',
             'url'            => 'required',
@@ -144,6 +148,34 @@ class ImportSchedule extends BaseController
         $this->addNotification('schedule.edit.success');
 
         return redirect('/admin/schedule/load/' . $schedule->id);
+    }
+
+    protected function delete(ScheduleUrl $schedule): Response
+    {
+        foreach ($schedule->scheduleShifts as $scheduleShift) {
+            // Only guid is needed here
+            $event = new Event(
+                $scheduleShift->guid,
+                0,
+                new Room(''),
+                '',
+                '',
+                '',
+                Carbon::now(),
+                '',
+                '',
+                '',
+                '',
+                ''
+            );
+
+            $this->fireDeleteShiftEntryEvents($event);
+            $this->deleteEvent($event);
+        }
+        $schedule->delete();
+
+        $this->addNotification('schedule.delete.success');
+        return redirect('/admin/schedule');
     }
 
     public function loadSchedule(Request $request): Response

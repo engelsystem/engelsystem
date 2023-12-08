@@ -121,6 +121,9 @@ msgstr "Import schedule"
 msgid "schedule.edit.title"
 msgstr "Edit schedule"
 
+msgid "schedule.delete.title"
+msgstr "Delete schedule with %u shifts"
+
 msgid "schedule.import.title"
 msgstr "Import schedule"
 

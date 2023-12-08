@@ -1431,6 +1431,9 @@ msgstr "Programm importieren"
 msgid "schedule.edit.title"
 msgstr "Programm bearbeiten"
 
+msgid "schedule.delete.title"
+msgstr "Programm mit %u Schichten löschen"
+
 msgid "schedule.import.title"
 msgstr "Programm importieren"
 

@@ -45,7 +45,13 @@
                 'value': schedule ? schedule.minutes_after : 15
             }) }}
 
-            {{ f.submit(__('form.save')) }}
+            {{ f.save(__('form.save')) }}
+
+            {% if schedule %}
+                {{ f.delete(__('form.delete'), {
+                    'confirm_title': __('schedule.delete.title', [schedule.shifts|length])
+                }) }}
+            {% endif %}
         </div>
     </form>
 {% endblock %}
