@@ -92,7 +92,11 @@ function Users_view(
     $usersList = [];
     foreach ($users as $user) {
         $u = [];
-        $u['name'] = User_Nick_render($user) . User_Pronoun_render($user);
+        $u['name'] = User_Nick_render($user)
+            . User_Pronoun_render($user)
+            . ($user->state->user_info
+                ? ' <small><span class="bi bi-info-circle-fill text-info"></span></small>'
+                : '');
         $u['first_name'] = htmlspecialchars((string) $user->personalData->first_name);
         $u['last_name'] = htmlspecialchars((string) $user->personalData->last_name);
         $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars((string) $user->contact->dect));
@@ -937,7 +941,7 @@ function render_user_freeloader_hint()
 }
 
 /**
- * hint for angels, which are noch arrived yet
+ * hint for angels, which are not arrived yet
  *
  * @return string|null
  */
@@ -950,7 +954,7 @@ function render_user_arrived_hint(bool $is_user_shifts = false)
         if (!empty($buildup) && $buildup->lessThan(new Carbon())) {
             return !$user_info
                 ? __('You are not marked as arrived. Please go to heaven, get your angel badge and/or tell them that you arrived already.')
-                : ($is_user_shifts ? __('user.info.not.arrived.hint') : null);
+                : ($is_user_shifts ? __('user_info.not_arrived_hint') : null);
         }
     }
 

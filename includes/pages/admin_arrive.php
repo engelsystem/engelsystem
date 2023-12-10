@@ -98,7 +98,11 @@ function admin_arrive()
             }
         }
 
-        $usr->name = User_Nick_render($usr) . User_Pronoun_render($usr);
+        $usr->name = User_Nick_render($usr)
+            . User_Pronoun_render($usr)
+            . ($usr->state->user_info
+            ? ' <small><span class="bi bi-info-circle-fill text-info"></span></small>'
+            : '');
         $plannedDepartureDate = $usr->personalData->planned_departure_date;
         $arrivalDate = $usr->state->arrival_date;
         $plannedArrivalDate = $usr->personalData->planned_arrival_date;

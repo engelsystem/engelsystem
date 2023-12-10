@@ -17,7 +17,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
 
     $assignNotice = '';
     if (config('signup_requires_arrival') && !$user->state->arrived) {
-        $assignNotice = info(render_user_arrived_hint($user->state->user_info), true);
+        $assignNotice = info(render_user_arrived_hint((bool) $user->state->user_info), true);
     }
 
     $description = '';

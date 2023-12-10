@@ -1992,9 +1992,12 @@ msgid "user.info"
 msgstr "Benutzer Info"
 
 msgid "user.info.hint"
-msgstr "Wird auf der Benutzer Seite für Schichtkoordinatoren und Admins angezeigt."
+msgstr ""
+"Wird auf der Benutzer Seite für Schichtkoordinatoren und Admins angezeigt. "
+"Wenn ein Engel nicht als angekommen markiert ist, "
+"entfernt eine Benutzer Info die nicht-angekommen Nachricht im Systemmenü des Engels."
 
-msgid "user.info.not.arrived.hint"
+msgid "user_info.not_arrived_hint"
 msgstr "Wenn du dich für Schichten eintragen willst, komm gerne im Himmel vorbei."
 
 msgid "design.title"
