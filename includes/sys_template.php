@@ -327,7 +327,7 @@ function render_table($columns, $rows, $data = true)
     $html .= '</tr></thead>';
     $html .= '<tbody>';
     foreach ($rows as $row) {
-        $html .= '<tr>';
+        $html .= '<tr' . (isset($row['row-class']) ? ' class="' . $row['row-class'] . '"' : '') . '>';
         foreach ($columns as $key => $column) {
             $value = '&nbsp;';
             if (isset($row[$key])) {

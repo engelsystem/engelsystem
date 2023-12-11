@@ -316,6 +316,8 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
         'location'   => location_name_render($shift->location),
         'shift_info' => $shift_info,
         'comment'    => '',
+        'start'      => $shift->start,
+        'end'        => $shift->end,
     ];
 
     if ($its_me) {
@@ -402,6 +404,20 @@ function User_view_myshifts(
 
     if (count($myshifts_table) > 0) {
         ksort($myshifts_table);
+        $myshifts_table = array_values($myshifts_table);
+        foreach ($myshifts_table as $i => &$shift) {
+            $before = $myshifts_table[$i - 1] ?? null;
+            $after = $myshifts_table[$i + 1] ?? null;
+            if (Carbon::now() > $shift['start'] &&  Carbon::now() < $shift['end']) {
+                $shift['row-class'] = 'border border-info border-2';
+            } elseif ($after && Carbon::now() > $shift['end'] && Carbon::now() < $after['start']) {
+                $shift['row-class'] = 'border-bottom border-info';
+            } elseif (!$before && Carbon::now() < $shift['start']) {
+                $shift['row-class'] = 'border-top-info';
+            } elseif (!$after && Carbon::now() > $shift['end']) {
+                $shift['row-class'] = 'border-bottom border-info';
+            }
+        }
         $myshifts_table[] = [
             'date'       => '<b>' . __('Sum:') . '</b>',
             'duration'   => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
@@ -461,6 +477,8 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
                 $worklog->created_at->format(__('general.datetime'))
             ),
         'actions'    => $actions,
+        'start'      => $worklog->worked_at,
+        'end'        => $worklog->worked_at,
     ];
 }
 

@@ -121,6 +121,27 @@ table a > .icon-icon_angel {
   margin-bottom: 0;
 }
 
+/* making top border visible in tables */
+table .border-top {
+  border-top-width: calc(var(--bs-border-width) * 2) !important;
+}
+
+/* to only highlight the top row in info color */
+table .border-top-info {
+  border-top-width: calc(var(--bs-border-width) * 2) !important;
+  border-top-color: rgba(var(--bs-info-rgb)) !important;
+}
+
+// equal top and bottom border if highlighted
+table .border-bottom {
+  border-bottom-width: calc(var(--bs-border-width) * 2) !important;
+}
+
+/* to be able to highlight table rows */
+.table-responsive {
+  padding: 0 2px;
+}
+
 .stats {
   font-size: 20px;
   height: 150px;
