@@ -34,6 +34,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
 
         $session = $this->getSessionMock();
         $request = $this->getRequestMock();
+        $request->server->set('HTTPS', 'on');
 
         /** @var SessionServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(SessionServiceProvider::class)
@@ -106,17 +107,17 @@ class SessionServiceProviderTest extends ServiceProviderTest
             ->method('get')
             ->withConsecutive(
                 ['request'],
+                ['request'],
                 ['config'],
                 ['request'],
                 ['config'],
-                ['request']
             )
             ->willReturnOnConsecutiveCalls(
                 $request,
+                $request,
                 $config,
                 $request,
                 $config,
-                $request
             );
 
         $app->expects($this->atLeastOnce())
@@ -191,7 +192,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
             ->getMock();
     }
 
-    private function getRequestMock(): MockObject
+    private function getRequestMock(): MockObject|Request
     {
         return $this->getMockBuilder(Request::class)
             ->onlyMethods(['setSession'])
