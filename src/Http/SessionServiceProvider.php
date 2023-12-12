@@ -18,7 +18,10 @@ class SessionServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $sessionStorage = $this->getSessionStorage();
+        /** @var Request $request */
+        $request = $this->app->get('request');
+
+        $sessionStorage = $this->getSessionStorage($request);
         $this->app->instance('session.storage', $sessionStorage);
         $this->app->bind(SessionStorageInterface::class, 'session.storage');
 
@@ -31,8 +34,6 @@ class SessionServiceProvider extends ServiceProvider
             $session->set('_token', Str::random(42));
         }
 
-        /** @var Request $request */
-        $request = $this->app->get('request');
         $request->setSession($session);
 
         $session->start();
@@ -41,7 +42,7 @@ class SessionServiceProvider extends ServiceProvider
     /**
      * Returns the session storage
      */
-    protected function getSessionStorage(): SessionStorageInterface
+    protected function getSessionStorage(Request $request): SessionStorageInterface
     {
         if ($this->isCli()) {
             return $this->app->make(MockArraySessionStorage::class);
@@ -58,9 +59,9 @@ class SessionServiceProvider extends ServiceProvider
 
         return $this->app->make(NativeSessionStorage::class, [
             'options' => [
-                'cookie_secure'   => true,
-                'cookie_httponly' => true,
                 'name'            => $sessionConfig['name'],
+                'cookie_secure'   => $request->isSecure(),
+                'cookie_httponly' => true,
                 'cookie_lifetime' => (int) ($sessionConfig['lifetime'] * 24 * 60 * 60),
             ],
             'handler' => $handler,
