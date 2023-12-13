@@ -116,7 +116,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
 
     $shifts = collect($shifts);
 
-    return Shift::query()
+    return Shift::with(['location', 'shiftType'])
         ->whereIn('id', $shifts->pluck('id')->toArray())
         ->orderBy('shifts.start')
         ->get();
@@ -189,12 +189,14 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
         ]
     );
 
-    $shifts = [];
+    $shifts = new Collection();
     foreach ($shiftsData as $shift) {
         $shifts[] = (new Shift())->forceFill($shift);
     }
 
-    return collect($shifts);
+    $shifts->load(['location', 'shiftType']);
+
+    return $shifts;
 }
 
 /**
@@ -354,7 +356,7 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
  */
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    return ShiftEntry::with('user')
+    return ShiftEntry::with('user', 'user.state')
         ->join('shifts', 'shifts.id', 'shift_entries.shift_id')
         ->whereIn('shifts.location_id', $shiftsFilter->getLocations())
         ->whereBetween('start', [$shiftsFilter->getStart(), $shiftsFilter->getEnd()])
@@ -638,12 +640,13 @@ function Shifts_by_user($userId, $include_freeloaded_comments = false)
         ]
     );
 
-    $shifts = [];
+    $shifts = new Collection();
     foreach ($shiftsData as $data) {
         $shifts[] = (new Shift())->forceFill($data);
     }
+    $shifts->load(['shiftType', 'location']);
 
-    return collect($shifts);
+    return $shifts;
 }
 
 /**

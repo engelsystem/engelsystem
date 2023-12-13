@@ -297,7 +297,6 @@ function view_user_shifts()
 
     return page([
         div('col-md-12', [
-            msg(),
             view(__DIR__ . '/../../resources/views/pages/user-shifts.html', [
                 'title'         => shifts_title(),
                 'add_link'      => auth()->can('admin_shifts') ? $link : '',

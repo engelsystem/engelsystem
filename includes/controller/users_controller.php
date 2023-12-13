@@ -7,6 +7,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
@@ -297,13 +298,15 @@ function users_list_controller()
     }
 
     /** @var User[]|Collection $users */
-    $users = User::with(['contact', 'personalData', 'state'])
+    $users = User::with(['contact', 'personalData', 'state', 'shiftEntries' => function (HasMany $query) {
+        $query->where('freeloaded', true);
+    }])
         ->orderBy('name')
         ->get();
     foreach ($users as $user) {
         $user->setAttribute(
             'freeloads',
-            $user->shiftEntries()
+            $user->shiftEntries
                 ->where('freeloaded', true)
                 ->count()
         );

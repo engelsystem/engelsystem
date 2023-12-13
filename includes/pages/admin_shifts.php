@@ -326,6 +326,9 @@ function admin_shifts()
 
             $shifts_table = [];
             foreach ($shifts as $shift) {
+                $shiftType = $shifttypes_source->find($shift['shift_type_id']);
+                $location = $locations->find($shift['location_id']);
+
                 /** @var Carbon $start */
                 $start = $shift['start'];
                 /** @var Carbon $end */
@@ -340,9 +343,9 @@ function admin_shifts()
                         . '</span>'
                         . ', ' . round($end->copy()->diffInMinutes($start) / 60, 2) . 'h'
                         . '<br>'
-                        . location_name_render(Location::find($shift['location_id'])),
+                        . location_name_render($location),
                     'title'         =>
-                        htmlspecialchars(ShiftType::find($shifttype_id)->name)
+                        htmlspecialchars($shiftType->name)
                         . ($shift['title'] ? '<br />' . htmlspecialchars($shift['title']) : ''),
                     'needed_angels' => '',
                 ];

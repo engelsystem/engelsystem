@@ -21,13 +21,13 @@ function admin_groups()
     $html = '';
     $request = request();
     /** @var Group[]|Collection $groups */
-    $groups = Group::query()->orderBy('name')->get();
+    $groups = Group::with('privileges')->orderBy('name')->get();
 
     if (!$request->has('action')) {
         $groups_table = [];
         foreach ($groups as $group) {
             /** @var Privilege[]|Collection $privileges */
-            $privileges = $group->privileges()->orderBy('name')->get();
+            $privileges = $group->privileges->sortBy('name');
             $privileges_html = [];
 
             foreach ($privileges as $privilege) {

@@ -218,7 +218,8 @@ class MessagesController extends BaseController
                 $join->on('messages.id', '=', 'conversations.last_id');
             })
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->get()
+            ->load(['receiver.personalData', 'receiver.state']);
     }
 
     protected function raw(mixed $value): QueryExpression

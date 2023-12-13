@@ -175,7 +175,9 @@ function angeltype_controller()
     $angeltype = AngelType::findOrFail(request()->input('angeltype_id'));
     /** @var UserAngelType $user_angeltype */
     $user_angeltype = UserAngelType::whereUserId($user->id)->where('angel_type_id', $angeltype->id)->first();
-    $members = $angeltype->userAngelTypes->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE);
+    $members = $angeltype->userAngelTypes
+        ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)
+        ->load(['state', 'personalData', 'contact']);
     $days = angeltype_controller_shiftsFilterDays($angeltype);
     $shiftsFilter = angeltype_controller_shiftsFilter($angeltype, $days);
     if (request()->input('showFilledShifts')) {

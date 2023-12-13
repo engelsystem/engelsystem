@@ -53,8 +53,7 @@ class NewsController extends BaseController
         $newsId = (int) $request->getAttribute('news_id');
 
         $news = $this->news
-            ->with('user')
-            ->with('comments')
+            ->with(['user', 'comments.user.state', 'comments.user.personalData'])
             ->findOrFail($newsId);
 
         return $this->renderView('pages/news/news.twig', ['news' => $news]);
