@@ -10,13 +10,44 @@ use Engelsystem\Controllers\Api\Resources\ShiftWithEntriesResource;
 use Engelsystem\Controllers\Api\Resources\UserResource;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
 
 class ShiftsController extends ApiController
 {
+    public function entriesByAngeltype(Request $request): Response
+    {
+        $id = (int) $request->getAttribute('angeltype_id');
+        /** @var AngelType $angeltype */
+        $angeltype = AngelType::findOrFail($id);
+        /** @var ShiftEntry[]|Collection $shifts */
+        $shiftEntries = $angeltype->shiftEntries()
+            ->with([
+                'shift.neededAngelTypes.angelType',
+                'shift.location.neededAngelTypes.angelType',
+                'shift.shiftEntries.angelType',
+                'shift.shiftEntries.user.contact',
+                'shift.shiftEntries.user.personalData',
+                'shift.shiftType',
+                'shift.schedule',
+            ])
+            ->get();
+
+        /** @var Shift[]|Collection $shifts */
+        $shifts = Collection::make(
+            $shiftEntries
+                ->pluck('shift')
+                ->sortBy('start')
+        );
+
+        return $this->shiftEntriesResponse($shifts);
+    }
+
     public function entriesByLocation(Request $request): Response
     {
         $locationId = (int) $request->getAttribute('location_id');
@@ -31,10 +62,45 @@ class ShiftsController extends ApiController
                 'shiftEntries.user.contact',
                 'shiftEntries.user.personalData',
                 'shiftType',
+                'schedule',
             ])
             ->orderBy('start')
             ->get();
 
+        return $this->shiftEntriesResponse($shifts);
+    }
+
+    public function entriesByUser(Request $request): Response
+    {
+        $id = (int) $request->getAttribute('user_id');
+        /** @var User $user */
+        $user = User::findOrFail($id);
+        /** @var ShiftEntry[]|Collection $shifts */
+        $shiftEntries = $user->shiftEntries()
+            ->with([
+                'shift.neededAngelTypes.angelType',
+                'shift.location.neededAngelTypes.angelType',
+                'shift.shiftEntries.angelType',
+                'shift.shiftEntries.user.contact',
+                'shift.shiftEntries.user.personalData',
+                'shift.shiftType',
+                'shift.schedule',
+            ])
+            ->get();
+
+        /** @var Shift[]|Collection $shifts */
+        $shifts = Collection::make(
+            $shiftEntries
+                ->pluck('shift')
+                ->sortBy('start')
+        );
+
+        return $this->shiftEntriesResponse($shifts);
+    }
+
+    protected function shiftEntriesResponse(Collection $shifts): Response
+    {
+        /** @var Collection|Shift[] $shifts */
         $shiftEntries = [];
         // Blob of not-optimized mediocre pseudo-serialization
         foreach ($shifts as $shift) {
@@ -58,7 +124,7 @@ class ShiftsController extends ApiController
                 ]);
             }
 
-            $locationData = new LocationResource($location);
+            $locationData = new LocationResource($shift->location);
             $shiftEntries[] = (new ShiftWithEntriesResource($shift))->toArray($locationData, $entries);
         }
 
@@ -72,22 +138,12 @@ class ShiftsController extends ApiController
      */
     protected function getNeededAngelTypes(Shift $shift): Collection
     {
-        // From shift
-        $neededAngelTypes = $shift->neededAngelTypes;
-
-        // Add from location
-        foreach ($shift->location->neededAngelTypes as $neededAngelType) {
-            /** @var NeededAngelType $existingNeededAngelType */
-            $existingNeededAngelType = $neededAngelTypes
-                ->where('angel_type_id', $neededAngelType->angel_type_id)
-                ->first();
-            if (!$existingNeededAngelType) {
-                $neededAngelTypes[] = clone $neededAngelType;
-                continue;
-            }
-
-            $existingNeededAngelType->location_id = $shift->location->id;
-            $existingNeededAngelType->count += $neededAngelType->count;
+        if (!$shift->schedule) {
+            // Get from shift
+            $neededAngelTypes = $shift->neededAngelTypes;
+        } else {
+            // Load instead from location
+            $neededAngelTypes = $shift->location->neededAngelTypes;
         }
 
         // Add needed angeltypes from additionally added users
