@@ -151,7 +151,7 @@ function admin_active()
         }
     }
 
-    $query = User::with('personalData')
+    $query = User::with(['personalData', 'state'])
         ->selectRaw(
             sprintf(
                 '

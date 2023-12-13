@@ -552,8 +552,7 @@ class ImportSchedule extends BaseController
         $existingShifts = $this->getScheduleShiftsByGuid($scheduleUrl, $scheduleEventsGuidList);
         foreach ($existingShifts as $scheduleShift) {
             $guid = $scheduleShift->guid;
-            /** @var Shift $shift */
-            $shift = Shift::with('location')->find($scheduleShift->shift_id);
+            $shift = $scheduleShift->shift;
             $event = $scheduleEvents[$guid];
             $location = $locations->where('name', $event->getRoom()->getName())->first();
 
@@ -620,7 +619,7 @@ class ImportSchedule extends BaseController
      */
     protected function getScheduleShiftsByGuid(ScheduleUrl $scheduleUrl, array $events)
     {
-        return ScheduleShift::query()
+        return ScheduleShift::with('shift.location')
             ->whereIn('guid', $events)
             ->where('schedule_id', $scheduleUrl->id)
             ->get();
@@ -633,7 +632,7 @@ class ImportSchedule extends BaseController
      */
     protected function getScheduleShiftsWhereNotGuid(ScheduleUrl $scheduleUrl, array $events)
     {
-        return ScheduleShift::query()
+        return ScheduleShift::with('shift.location')
             ->whereNotIn('guid', $events)
             ->where('schedule_id', $scheduleUrl->id)
             ->get();

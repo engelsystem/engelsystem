@@ -18,6 +18,7 @@ function UserWorkLogsForUser($userId, Carbon $sinceTime = null)
     if ($sinceTime) {
         $worklogs = $worklogs->whereDate('worked_at', '>=', $sinceTime);
     }
+    $worklogs->with(['user', 'creator']);
 
     return $worklogs->get();
 }

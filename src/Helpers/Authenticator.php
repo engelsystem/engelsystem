@@ -42,7 +42,7 @@ class Authenticator
         }
 
         $this->user = $this->userFromSession();
-        if (!$this->user && request()->getAttribute('route-api-accessible', false)) {
+        if (!$this->user && $this->isApiRequest()) {
             $this->user = $this->userFromApi();
         }
 
@@ -102,8 +102,10 @@ class Authenticator
             if ($user) {
                 $this->permissions = $user->privileges->pluck('name')->toArray();
 
-                $user->last_login_at = new Carbon();
-                $user->save();
+                if ($user->last_login_at < Carbon::now()->subMinutes(5) && !$this->isApiRequest()) {
+                    $user->last_login_at = Carbon::now();
+                    $user->save(['touch' => false]);
+                }
             } elseif ($this->session->get('user_id')) {
                 $this->session->remove('user_id');
             }
@@ -204,6 +206,11 @@ class Authenticator
             ->first();
 
         return $this->user;
+    }
+
+    protected function isApiRequest(): bool
+    {
+        return (bool) request()->getAttribute('route-api-accessible', false);
     }
 
     public function setPassword(User $user, string $password): void

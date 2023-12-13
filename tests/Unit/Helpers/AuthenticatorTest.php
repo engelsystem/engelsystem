@@ -207,6 +207,7 @@ class AuthenticatorTest extends ServiceProviderTest
 
     /**
      * @covers \Engelsystem\Helpers\Authenticator::can
+     * @covers \Engelsystem\Helpers\Authenticator::isApiRequest
      */
     public function testCan(): void
     {

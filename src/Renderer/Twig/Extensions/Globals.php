@@ -14,6 +14,8 @@ use function array_key_exists;
 
 class Globals extends TwigExtension implements GlobalsInterface
 {
+    protected array $globals = [];
+
     public function __construct(protected Authenticator $auth, protected Request $request)
     {
     }
@@ -22,6 +24,18 @@ class Globals extends TwigExtension implements GlobalsInterface
      * Returns a list of global variables to add to the existing list.
      */
     public function getGlobals(): array
+    {
+        if (empty($this->globals)) {
+            $this->globals = $this->getGlobalValues();
+        }
+
+        return $this->globals;
+    }
+
+    /**
+     * Generates the list of global variables
+     */
+    protected function getGlobalValues(): array
     {
         $user = $this->auth->user();
         $themes = config('themes');

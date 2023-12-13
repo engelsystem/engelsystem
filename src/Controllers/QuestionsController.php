@@ -36,7 +36,8 @@ class QuestionsController extends BaseController
             ->whereUserId($this->auth->user()->id)
             ->orderByDesc('answered_at')
             ->orderBy('created_at')
-            ->get();
+            ->get()
+            ->load(['user.state', 'answerer.state']);
 
         return $this->response->withView(
             'pages/questions/overview.twig',
