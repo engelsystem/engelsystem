@@ -10,6 +10,8 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
+use Engelsystem\Models\Shifts\Schedule;
+use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\Contact;
@@ -18,8 +20,13 @@ use Engelsystem\Models\User\User;
 
 class ShiftsControllerTest extends ApiBaseControllerTest
 {
+    protected Location $location;
+    protected Shift $shiftA;
+    protected Shift $shiftB;
+
     /**
      * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByLocation
+     * @covers \Engelsystem\Controllers\Api\ShiftsController::shiftEntriesResponse
      * @covers \Engelsystem\Controllers\Api\Resources\ShiftResource::toArray
      * @covers \Engelsystem\Controllers\Api\Resources\ShiftTypeResource::toArray
      * @covers \Engelsystem\Controllers\Api\Resources\ShiftWithEntriesResource::toArray
@@ -29,64 +36,8 @@ class ShiftsControllerTest extends ApiBaseControllerTest
      */
     public function testEntriesByLocation(): void
     {
-        $this->initDatabase();
-
-        /** @var Location $location */
-        $location = Location::factory()->create();
-
-        // Shifts
-        /** @var Shift $shiftA */
-        $shiftA = Shift::factory(1)
-            ->create(['location_id' => $location->id, 'start' => Carbon::now()->subHour()])
-            ->first();
-        /** @var Shift $shiftB */
-        $shiftB = Shift::factory(1)
-            ->create(['location_id' => $location->id, 'start' => Carbon::now()->addHour()])
-            ->first();
-
-        // "Empty" entry to be skipped
-        NeededAngelType::factory(1)->create(['location_id' => null, 'shift_id' => $shiftA->id, 'count' => 0]);
-
-        // Needed entry by shift
-        /** @var NeededAngelType $byShift */
-        $byShift = NeededAngelType::factory(2)
-            ->create(['location_id' => null, 'shift_id' => $shiftA->id, 'count' => 2])
-            ->first();
-
-        // Needed entry by location
-        /** @var NeededAngelType $byLocation */
-        $byLocation = NeededAngelType::factory(1)
-            ->create(['location_id' => $location->id, 'shift_id' => null, 'count' => 3])
-            ->first();
-
-        // Added by both
-        NeededAngelType::factory(1)
-            ->create([
-                'location_id' => $location->id,
-                'shift_id' => null,
-                'angel_type_id' => $byShift->angel_type_id,
-                'count' => 3,
-            ])
-            ->first();
-
-        // By shift
-        ShiftEntry::factory(2)->create(['shift_id' => $shiftA->id, 'angel_type_id' => $byShift->angel_type_id]);
-
-        // By location
-        ShiftEntry::factory(1)->create(['shift_id' => $shiftA->id, 'angel_type_id' => $byLocation->angel_type_id]);
-
-        // Additional (not required by shift nor location)
-        ShiftEntry::factory(1)->create(['shift_id' => $shiftA->id]);
-
-        foreach (User::all() as $user) {
-            // Generate user data
-            /** @var User $user */
-            PersonalData::factory()->create(['user_id' => $user->id]);
-            Contact::factory()->create(['user_id' => $user->id]);
-        }
-
         $request = new Request();
-        $request = $request->withAttribute('location_id', $location->id);
+        $request = $request->withAttribute('location_id', $this->location->id);
 
         $controller = new ShiftsController(new Response());
 
@@ -102,15 +53,15 @@ class ShiftsControllerTest extends ApiBaseControllerTest
 
         // First shift
         $shiftAData = $data['data'][0];
-        $this->assertEquals($shiftA->title, $shiftAData['title'], 'Title is equal');
-        $this->assertEquals($location->id, $shiftAData['location']['id'], 'Same location');
-        $this->assertEquals($shiftA->shiftType->id, $shiftAData['shift_type']['id'], 'Shift type equals');
+        $this->assertEquals($this->shiftA->title, $shiftAData['title'], 'Title is equal');
+        $this->assertEquals($this->location->id, $shiftAData['location']['id'], 'Same location');
+        $this->assertEquals($this->shiftA->shiftType->id, $shiftAData['shift_type']['id'], 'Shift type equals');
         $this->assertCount(4, $shiftAData['entries']);
         // Has users
         $entriesA = collect($shiftAData['entries'])->sortBy('type.id');
         $entry = $entriesA[0];
         $this->assertCount(2, $entry['users']);
-        $this->assertEquals(5, $entry['needs']);
+        $this->assertEquals(2, $entry['needs']);
         $user = $entry['users'][0];
         $this->assertEquals('/users?action=view&user_id=' . $user['id'], $user['url']);
         $this->assertCount(0, $entriesA[1]['users']);
@@ -119,12 +70,130 @@ class ShiftsControllerTest extends ApiBaseControllerTest
 
         // Second (empty) shift
         $shiftBData = $data['data'][1];
-        $this->assertEquals($shiftB->title, $shiftBData['title'], 'Title is equal');
-        $this->assertEquals($location->id, $shiftBData['location']['id'], 'Same location');
-        $this->assertEquals($shiftB->shiftType->id, $shiftBData['shift_type']['id'], 'Shift type equals');
+        $this->assertEquals($this->shiftB->title, $shiftBData['title'], 'Title is equal');
+        $this->assertEquals($this->location->id, $shiftBData['location']['id'], 'Same location');
+        $this->assertEquals($this->shiftB->shiftType->id, $shiftBData['shift_type']['id'], 'Shift type equals');
         $this->assertCount(2, $shiftBData['entries']);
         // No users
         $entriesB = collect($shiftBData['entries'])->sortBy('type.id');
         $this->assertCount(0, $entriesB[0]['users']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByAngeltype
+     */
+    public function testEntriesByAngeltype(): void
+    {
+        /** @var ShiftEntry $firstEntry */
+        $firstEntry = $this->shiftA->shiftEntries->first();
+
+        $request = new Request();
+        $request = $request->withAttribute('angeltype_id', $firstEntry->angelType->id);
+
+        $controller = new ShiftsController(new Response());
+
+        $response = $controller->entriesByAngeltype($request);
+        $this->validateApiResponse('/angeltypes/{id}/shifts', 'get', $response);
+
+        $this->assertEquals(['application/json'], $response->getHeader('content-type'));
+        $this->assertJson($response->getContent());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('data', $data);
+        $this->assertCount(2, $data['data']);
+
+        $shift = $data['data'][0];
+        $this->assertTrue(count($shift['entries']) >= 1);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByUser
+     */
+    public function testEntriesByUser(): void
+    {
+        /** @var ShiftEntry $firstEntry */
+        $firstEntry = $this->shiftA->shiftEntries->first();
+
+        $request = new Request();
+        $request = $request->withAttribute('user_id', $firstEntry->user->id);
+
+        $controller = new ShiftsController(new Response());
+
+        $response = $controller->entriesByUser($request);
+        $this->validateApiResponse('/users/{id}/shifts', 'get', $response);
+
+        $this->assertEquals(['application/json'], $response->getHeader('content-type'));
+        $this->assertJson($response->getContent());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('data', $data);
+        $this->assertCount(1, $data['data']);
+
+        $shift = $data['data'][0];
+        $this->assertTrue(count($shift['entries']) >= 1);
+    }
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->location = Location::factory()->create();
+        $schedule = Schedule::factory()->create();
+
+        // Shifts
+        $this->shiftA = Shift::factory(1)
+            ->create(['location_id' => $this->location->id, 'start' => Carbon::now()->subHour()])
+            ->first();
+        $this->shiftB = Shift::factory(1)
+            ->create(['location_id' => $this->location->id, 'start' => Carbon::now()->addHour()])
+            ->first();
+        (new ScheduleShift(['shift_id' => $this->shiftB->id, 'schedule_id' => $schedule->id, 'guid' => 'a']))->save();
+
+        // "Empty" entry to be skipped
+        NeededAngelType::factory(1)->create(['location_id' => null, 'shift_id' => $this->shiftA->id, 'count' => 0]);
+
+        // Needed entry by shift
+        /** @var NeededAngelType $byShift */
+        $byShift = NeededAngelType::factory(2)
+            ->create(['location_id' => null, 'shift_id' => $this->shiftA->id, 'count' => 2])
+            ->first();
+
+        // Needed entry by location
+        /** @var NeededAngelType $byLocation */
+        $byLocation = NeededAngelType::factory(1)
+            ->create(['location_id' => $this->location->id, 'shift_id' => null, 'count' => 3])
+            ->first();
+
+        // Added by both
+        NeededAngelType::factory(1)
+            ->create([
+                'location_id' => $this->location->id,
+                'shift_id' => null,
+                'angel_type_id' => $byShift->angel_type_id,
+                'count' => 3,
+            ])
+            ->first();
+
+        // By shift
+        ShiftEntry::factory(2)->create([
+            'shift_id' => $this->shiftA->id,
+            'angel_type_id' => $byShift->angel_type_id,
+        ]);
+
+        // By location
+        ShiftEntry::factory(1)->create([
+            'shift_id' => $this->shiftA->id,
+            'angel_type_id' => $byLocation->angel_type_id,
+        ]);
+
+        // Additional (not required by shift nor location)
+        ShiftEntry::factory(1)->create(['shift_id' => $this->shiftA->id]);
+
+        foreach (User::all() as $user) {
+            // Generate user data
+            /** @var User $user */
+            PersonalData::factory()->create(['user_id' => $user->id]);
+            Contact::factory()->create(['user_id' => $user->id]);
+        }
     }
 }

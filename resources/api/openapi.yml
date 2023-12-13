@@ -21,10 +21,14 @@ servers:
     description: Your local dev instance
 
 tags:
+  - name: angeltype
+    description: Angeltypes
+  - name: location
+    description: Event locations
   - name: news
     description: News and meeting announcements
   - name: shift
-    description: Event shifts and location
+    description: Event shifts
   - name: user
     description: User information
 
@@ -321,6 +325,55 @@ components:
         - pronoun
         - contact
         - url
+    UserDetail:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            email:
+              type: string
+              example: user@example.com
+            tshirt:
+              type: string
+              nullable: true
+              example: XL
+            dates:
+              type: object
+              properties:
+                planned_arrival:
+                  type: string
+                  nullable: true
+                  format: date-time
+                  description: DateTime in ISO-8601 format
+                  example: 2023-05-13T00:00:00.000000Z
+                planned_departure:
+                  type: string
+                  nullable: true
+                  format: date-time
+                  description: DateTime in ISO-8601 format
+                  example: 2023-05-23T00:00:00.000000Z
+                arrival:
+                  type: string
+                  nullable: true
+                  format: date-time
+                  description: Actual arrival date, DateTime in ISO-8601 format
+                  example: 2023-05-23T13:37:42.000000Z
+              required:
+                - planned_arrival
+                - planned_departure
+                - arrival
+            language:
+              type: string
+              example: en_US
+            arrived:
+              type: boolean
+              example: true
+      required:
+        - email
+        - tshirt
+        - dates
+        - language
+        - arrived
 
 security:
   - bearerAuth: [ ]
@@ -329,7 +382,7 @@ paths:
   /angeltypes:
     get:
       tags:
-        - shift
+        - angeltype
       summary: Get a list of angeltypes
       responses:
         '200':
@@ -347,6 +400,33 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+
+  /angeltypes/{id}/shifts:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The angeltype identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - angeltype
+        - shift
+      summary: Get all shifts of the requested angeltype
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shift'
 
   /news:
     get:
@@ -373,7 +453,7 @@ paths:
   /locations:
     get:
       tags:
-        - shift
+        - location
       summary: Get a list of locations
       responses:
         '200':
@@ -403,6 +483,7 @@ paths:
           type: integer
     get:
       tags:
+        - location
         - shift
       summary: Get all shifts in the requested location
       responses:
@@ -424,6 +505,28 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundError'
 
+  /users/self:
+    get:
+      tags:
+        - user
+      summary: Get the requesting users information
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserDetail'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
   /users/{id}/angeltypes:
     parameters:
       - name: id
@@ -435,6 +538,7 @@ paths:
           type: integer
     get:
       tags:
+        - angeltype
         - user
       summary: Get the users angel types
       responses:
@@ -449,6 +553,39 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserAngelType'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /users/{id}/shifts:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The user identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - shift
+        - user
+      summary: Get all shifts of the requested user
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shift'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
