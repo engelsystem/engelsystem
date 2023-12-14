@@ -15,11 +15,12 @@ use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
-use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
 
 class ShiftsController extends ApiController
 {
+    use UsesAuth;
+
     public function entriesByAngeltype(Request $request): Response
     {
         $id = (int) $request->getAttribute('angeltype_id');
@@ -72,9 +73,9 @@ class ShiftsController extends ApiController
 
     public function entriesByUser(Request $request): Response
     {
-        $id = (int) $request->getAttribute('user_id');
-        /** @var User $user */
-        $user = User::findOrFail($id);
+        $id = $request->getAttribute('user_id');
+        $user = $this->getUser($id);
+
         /** @var ShiftEntry[]|Collection $shifts */
         $shiftEntries = $user->shiftEntries()
             ->with([

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
 use Engelsystem\Controllers\Api\AngelTypeController;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AngelTypeControllerTest extends ApiBaseControllerTest
 {
@@ -18,7 +20,6 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
      */
     public function testIndex(): void
     {
-        $this->initDatabase();
         $items = AngelType::factory(3)->create();
 
         $controller = new AngelTypeController(new Response());
@@ -42,7 +43,6 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
      */
     public function testOfUser(): void
     {
-        $this->initDatabase();
         $user = User::factory()->create();
         $items = UserAngelType::factory(3)->create(['user_id' => $user->id]);
 
@@ -60,5 +60,39 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         $this->assertCount(1, collect($data['data'])->filter(function ($item) use ($items) {
             return $item['name'] == $items->first()->angelType->name;
         }));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\AngelTypeController::ofUser
+     */
+    public function testEntriesOfUserSelf(): void
+    {
+        $user = User::factory()->create();
+
+        $auth = $this->createMock(Authenticator::class);
+        $this->setExpects($auth, 'user', null, $user);
+
+        $request = new Request();
+        $request = $request->withAttribute('user_id', 'self');
+
+        $controller = new AngelTypeController(new Response());
+        $controller->setAuth($auth);
+
+        $response = $controller->ofUser($request);
+        $this->validateApiResponse('/users/{id}/angeltypes', 'get', $response);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\AngelTypeController::ofUser
+     */
+    public function testEntriesByUserNotFound(): void
+    {
+        $request = new Request();
+        $request = $request->withAttribute('user_id', 42);
+
+        $controller = new AngelTypeController(new Response());
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->ofUser($request);
     }
 }

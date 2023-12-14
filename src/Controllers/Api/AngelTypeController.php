@@ -9,10 +9,11 @@ use Engelsystem\Controllers\Api\Resources\UserAngelTypeResource;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\User\User;
 
 class AngelTypeController extends ApiController
 {
+    use UsesAuth;
+
     public function index(): Response
     {
         $models = AngelType::query()
@@ -26,9 +27,10 @@ class AngelTypeController extends ApiController
 
     public function ofUser(Request $request): Response
     {
-        $id = (int) $request->getAttribute('user_id');
-        $model = User::findOrFail($id);
-        $data = ['data' => UserAngelTypeResource::collection($model->userAngelTypes)];
+        $id = $request->getAttribute('user_id');
+        $user = $this->getUser($id);
+
+        $data = ['data' => UserAngelTypeResource::collection($user->userAngelTypes)];
 
         return $this->response
             ->withContent(json_encode($data));

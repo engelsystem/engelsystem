@@ -37,6 +37,7 @@ return [
         \Engelsystem\Http\HttpClientServiceProvider::class,
         \Engelsystem\Helpers\DumpServerServiceProvider::class,
         \Engelsystem\Helpers\UuidServiceProvider::class,
+        \Engelsystem\Controllers\Api\UsesAuthServiceProvider::class,
     ],
 
     // Application middleware
