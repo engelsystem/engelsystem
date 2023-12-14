@@ -130,9 +130,9 @@ $route->addGroup(
 
                 $route->get('/news', 'Api\NewsController@index');
 
-                $route->get('/users/self', 'Api\UsersController@self');
-                $route->get('/users/{user_id:\d+}/angeltypes', 'Api\AngelTypeController@ofUser');
-                $route->get('/users/{user_id:\d+}/shifts', 'Api\ShiftsController@entriesByUser');
+                $route->get('/users/{user_id:(?:\d+|self)}', 'Api\UsersController@user');
+                $route->get('/users/{user_id:(?:\d+|self)}/angeltypes', 'Api\AngelTypeController@ofUser');
+                $route->get('/users/{user_id:(?:\d+|self)}/shifts', 'Api\ShiftsController@entriesByUser');
 
                 $route->addRoute(
                     ['POST', 'PUT', 'DELETE', 'PATCH'],

@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers\Api;
 
 use Engelsystem\Controllers\Api\Resources\UserDetailResource;
-use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Controllers\Api\Resources\UserResource;
+use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 
 class UsersController extends ApiController
 {
-    public function __construct(Response $response, protected Authenticator $auth)
-    {
-        parent::__construct($response);
-    }
+    use UsesAuth;
 
-    public function self(): Response
+    public function user(Request $request): Response
     {
-        $user = $this->auth->user();
+        $id = $request->getAttribute('user_id');
+        $user = $this->getUser($id);
 
-        $data = ['data' => (new UserDetailResource($user))->toArray()];
+        $userData = $user->id == $this->auth->user()->id ? new UserDetailResource($user) : new UserResource($user);
+        $data = ['data' => $userData->toArray()];
         return $this->response
             ->withContent(json_encode($data));
     }

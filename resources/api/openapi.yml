@@ -505,7 +505,17 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundError'
 
-  /users/self:
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The user identifier or `self`
+        example: 42
+        schema:
+          oneOf:
+            - type: string
+            - type: integer
     get:
       tags:
         - user
@@ -519,7 +529,9 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/UserDetail'
+                    anyOf:
+                      - $ref: '#/components/schemas/UserDetail'
+                      - $ref: '#/components/schemas/User'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -532,10 +544,12 @@ paths:
       - name: id
         in: path
         required: true
-        description: The user identifier
+        description: The user identifier or `self`
         example: 42
         schema:
-          type: integer
+          oneOf:
+            - type: string
+            - type: integer
     get:
       tags:
         - angeltype
@@ -565,10 +579,12 @@ paths:
       - name: id
         in: path
         required: true
-        description: The user identifier
+        description: The user identifier or `self`
         example: 42
         schema:
-          type: integer
+          oneOf:
+            - type: string
+            - type: integer
     get:
       tags:
         - shift

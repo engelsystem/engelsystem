@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
 use Engelsystem\Controllers\Api\ShiftsController;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -17,6 +18,7 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ShiftsControllerTest extends ApiBaseControllerTest
 {
@@ -131,6 +133,40 @@ class ShiftsControllerTest extends ApiBaseControllerTest
 
         $shift = $data['data'][0];
         $this->assertTrue(count($shift['entries']) >= 1);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByUser
+     */
+    public function testEntriesByUserSelf(): void
+    {
+        $user = User::query()->first();
+
+        $auth = $this->createMock(Authenticator::class);
+        $this->setExpects($auth, 'user', null, $user);
+
+        $request = new Request();
+        $request = $request->withAttribute('user_id', 'self');
+
+        $controller = new ShiftsController(new Response());
+        $controller->setAuth($auth);
+
+        $response = $controller->entriesByUser($request);
+        $this->validateApiResponse('/users/{id}/shifts', 'get', $response);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByUser
+     */
+    public function testEntriesByUserNotFound(): void
+    {
+        $request = new Request();
+        $request = $request->withAttribute('user_id', 42);
+
+        $controller = new ShiftsController(new Response());
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->entriesByUser($request);
     }
 
     public function setUp(): void
