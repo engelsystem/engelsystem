@@ -733,7 +733,12 @@ msgid "user.info"
 msgstr "User info"
 
 msgid "user.info.hint"
-msgstr "Is displayed for shift coordinators and admins in the user view."
+msgstr ""
+"Is displayed for shift coordinators and admins in the user view. "
+"If an angel is not marked as arrived a user-info removes the not-arrived notification in the angels sysmenu."
+
+msgid "user_info.not_arrived_hint"
+msgstr "If you want to sign up for shifts, feel free to drop by heaven."
 
 msgid "email.greeting"
 msgstr "Hi %s,"

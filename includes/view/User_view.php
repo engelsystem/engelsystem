@@ -92,7 +92,11 @@ function Users_view(
     $usersList = [];
     foreach ($users as $user) {
         $u = [];
-        $u['name'] = User_Nick_render($user) . User_Pronoun_render($user);
+        $u['name'] = User_Nick_render($user)
+            . User_Pronoun_render($user)
+            . ($user->state->user_info
+                ? ' <small><span class="bi bi-info-circle-fill text-info"></span></small>'
+                : '');
         $u['first_name'] = htmlspecialchars((string) $user->personalData->first_name);
         $u['last_name'] = htmlspecialchars((string) $user->personalData->last_name);
         $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars((string) $user->contact->dect));
@@ -519,6 +523,7 @@ function User_view(
     $nightShiftsConfig = config('night_shifts');
     $user_name = htmlspecialchars((string) $user_source->personalData->first_name) . ' '
         . htmlspecialchars((string) $user_source->personalData->last_name);
+    $user_info_show = auth()->can('user.info.show');
     $myshifts_table = '';
     if ($its_me || $admin_user_privilege || $tshirt_admin) {
         $my_shifts = User_view_myshifts(
@@ -564,10 +569,12 @@ function User_view(
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : '')
         . (
-            (auth()->can('user.info.show') && $user_source->state->user_info)
+            (($user_info_show || auth()->can('admin_arrive')) && $user_source->state->user_info)
             ? (
-                ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-                . htmlspecialchars($user_source->state->user_info)
+                ' <small><span class="bi bi-info-circle-fill text-info" '
+                . ($user_info_show
+                    ? 'data-bs-toggle="tooltip" title="' . htmlspecialchars($user_source->state->user_info)
+                    : '')
                 . '"></span></small>'
             )
             : ''
@@ -952,17 +959,20 @@ function render_user_freeloader_hint()
 }
 
 /**
- * Hinweis für Engel, die noch nicht angekommen sind
+ * hint for angels, which are not arrived yet
  *
  * @return string|null
  */
-function render_user_arrived_hint()
+function render_user_arrived_hint(bool $is_user_shifts = false)
 {
+    $user_info = auth()->user()->state->user_info;
     if (config('signup_requires_arrival') && !auth()->user()->state->arrived) {
         /** @var Carbon $buildup */
         $buildup = config('buildup_start');
         if (!empty($buildup) && $buildup->lessThan(new Carbon())) {
-            return __('You are not marked as arrived. Please go to heaven\'s desk, get your angel badge and/or tell them that you arrived already.');
+            return !$user_info
+                ? __('You are not marked as arrived. Please go to heaven, get your angel badge and/or tell them that you arrived already.')
+                : ($is_user_shifts ? __('user_info.not_arrived_hint') : null);
         }
     }
 

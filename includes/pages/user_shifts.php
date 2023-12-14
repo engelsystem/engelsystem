@@ -282,7 +282,7 @@ function view_user_shifts()
     $end_time = $shiftsFilter->getEnd()->format('H:i');
 
     if (config('signup_requires_arrival') && !$user->state->arrived) {
-        info(render_user_arrived_hint());
+        info(render_user_arrived_hint((bool) $user->state->user_info));
     }
 
     $formattedDays = collect($days)->map(function ($value) {
