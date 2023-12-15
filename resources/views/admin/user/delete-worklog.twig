@@ -12,8 +12,13 @@
             <div class="row">
                 <div class="col-md-12">
                     {{ m.alert(__('worklog.delete.info', [m.user(user)]), 'danger', true) }}
-                    {{ m.button(__('form.cancel'), url('/users?action=view&user_id=' ~ user.id)) }}
-                    {{ f.submit(__('form.delete'), {'btn_type': 'danger'}) }}
+                    {{ m.button(__('form.cancel'),
+                        url('/users?action=view&user_id=' ~ user.id),
+                        null,
+                        null,
+                        null,
+                        'x-lg') }}
+                    {{ f.delete(__('form.delete')) }}
                 </div>
             </div>
         </form>

@@ -272,6 +272,7 @@ function angeltype_controller_shiftsFilter(AngelType $angeltype, $days)
 function angeltypes_list_controller()
 {
     $user = auth()->user();
+    $admin_angeltypes = auth()->can('admin_angel_types');
 
     if (!auth()->can('angeltypes')) {
         throw_redirect(url('/'));
@@ -282,21 +283,27 @@ function angeltypes_list_controller()
         $actions = [
             button(
                 url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
-                icon('eye') . __('view'),
-                'btn-sm'
+                icon('eye') . ($admin_angeltypes ? '' : __('View')),
+                'btn-sm btn-info',
+                '',
+                ($admin_angeltypes ? __('View') : '')
             ),
         ];
 
-        if (auth()->can('admin_angel_types')) {
+        if ($admin_angeltypes) {
             $actions[] = button(
                 url('/angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype->id]),
-                icon('pencil') . __('edit'),
-                'btn-sm'
+                icon('pencil'),
+                'btn-sm',
+                '',
+                __('form.edit')
             );
             $actions[] = button(
                 url('/angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype->id]),
-                icon('trash') . __('delete'),
-                'btn-sm'
+                icon('trash'),
+                'btn-sm btn-danger',
+                '',
+                __('form.delete')
             );
         }
 
@@ -307,14 +314,18 @@ function angeltypes_list_controller()
                     '/user-angeltypes',
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angel_type_id]
                 ),
-                icon('box-arrow-right') . __('leave'),
-                'btn-sm'
+                icon('box-arrow-right') . ($admin_angeltypes ? '' : __('Leave')),
+                'btn-sm',
+                '',
+                ($admin_angeltypes ? __('Leave') : '')
             );
         } else {
             $actions[] = button(
                 url('/user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
-                icon('box-arrow-in-right') . __('join'),
-                'btn-sm'
+                icon('box-arrow-in-right') . ($admin_angeltypes ? '' : __('Join')),
+                'btn-sm',
+                '',
+                ($admin_angeltypes ? __('Join') : '')
             );
         }
 

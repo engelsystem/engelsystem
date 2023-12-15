@@ -9,7 +9,7 @@
     <div class="mb-5">
         <h1>
         {{ has_permission_to('admin_user')
-            ? m.button(m.icon('chevron-left'), url('/users'), null, 'sm')
+            ? m.button(m.icon('chevron-left'), url('/users'), null, 'sm', __('general.back'))
             : ''
         }}
         {{ __('registration.title') }}

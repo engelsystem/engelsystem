@@ -8,7 +8,9 @@
     <div class="container">
         <h1>
             {% if not is_index|default(false) %}
-                {{ m.button(m.icon('chevron-left'), location ? url('/locations', {'action': 'view', 'location_id': location.id}) : url('/admin/locations'), 'secondary', 'sm') }}
+                {{ m.button(m.icon('chevron-left'), location
+                    ? url('/locations', {'action': 'view', 'location_id': location.id})
+                    : url('/admin/locations'), 'secondary', 'sm', __('general.back')) }}
             {% endif %}
 
             {{ block('title') }}

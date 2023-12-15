@@ -20,7 +20,7 @@
                     {{ f.checkbox('ifsg_certificate', __('settings.certificates.ifsg'), {
                             'checked': certificates.ifsg_certificate,
                     }) }}
-                    {{ f.submit(__('form.save')) }}
+                    {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
                 </div>
             </form>
         {% endif %}
@@ -52,7 +52,7 @@
                             'checked': certificates.has_car,
                     }) }}
 
-                    {{ f.submit(__('form.save')) }}
+                    {{ f.submit(__('form.save'), {'icon_left': 'save'} ) }}
                 </div>
             </form>
         {% endif %}

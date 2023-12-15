@@ -44,7 +44,7 @@
 
                                             <div class="d-flex ms-auto">
                                                 {% if has_permission_to('question.edit') %}
-                                                    {{ m.button(m.icon('pencil'), url('/admin/questions/' ~ question.id), null, 'sm') }}
+                                                    {{ m.button(m.icon('pencil'), url('/admin/questions/' ~ question.id), null, 'sm', __('form.edit')) }}
                                                 {% endif %}
 
                                                 {% if question.user.id == user.id or has_permission_to('question.edit') %}

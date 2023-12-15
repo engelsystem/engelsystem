@@ -19,18 +19,16 @@ use Illuminate\Support\Str;
  */
 function User_delete_view($user)
 {
-    return page_with_title(sprintf(__('Delete %s'), User_Nick_render($user)), [
+    $link = button(user_edit_link($user->id), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    return page_with_title($link . ' ' . sprintf(__('Delete %s'), User_Nick_render($user)), [
         msg(),
-        buttons([
-            button(user_edit_link($user->id), icon('chevron-left') . __('back')),
-        ]),
         error(
             __('Do you really want to delete the user including all his shifts and every other piece of his data?'),
             true
         ),
         form([
             form_password('password', __('Your password'), 'current-password'),
-            form_submit('submit', __('Delete')),
+            form_submit('submit', __('form.delete')),
         ]),
     ]);
 }
@@ -43,7 +41,7 @@ function User_delete_view($user)
  */
 function User_edit_vouchers_view($user)
 {
-    $link = button(user_link($user->id), icon('chevron-left'), 'btn-sm');
+    $link = button(user_link($user->id), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
         $link . ' ' . sprintf(__('%s\'s vouchers'), User_Nick_render($user)),
         [
@@ -57,7 +55,7 @@ function User_edit_vouchers_view($user)
             form(
                 [
                     form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
-                    form_submit('submit', __('form.save')),
+                    form_submit('submit', icon('save') . __('form.save')),
                 ],
                 url('/users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
             ),
@@ -119,7 +117,15 @@ function Users_view(
             ? $user->personalData->planned_departure_date->format(__('general.date')) : '';
         $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('general.datetime')) : '';
         $u['actions'] = table_buttons([
-            button_icon(url('/admin-user', ['id' => $user->id]), 'pencil', 'btn-sm'),
+            button(
+                url(
+                    '/admin-user',
+                    ['id' => $user->id]
+                ),
+                'pencil',
+                'btn-sm',
+                __('form.edit')
+            ),
         ]);
         $usersList[] = $u;
     }
@@ -343,24 +349,28 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     }
 
     $myshift['actions'] = [
-        button(shift_link($shift), icon('eye') . __('view'), 'btn-sm'),
+        button(shift_link($shift), icon('eye'), 'btn-sm btn-info', '', __('View')),
     ];
     if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
             url('/user-myshifts', ['edit' => $shift->shift_entry_id, 'id' => $user_source->id]),
-            icon('pencil') . __('edit'),
-            'btn-sm'
+            icon('pencil'),
+            'btn-sm',
+            '',
+            __('form.edit')
         );
     }
 
     if (Shift_signout_allowed($shift, (new AngelType())->forceFill(['id' => $shift->angel_type_id]), $user_source->id)) {
         $myshift['actions'][] = button(
             shift_entry_delete_link($shift),
-            icon('trash') . __('sign off'),
-            'btn-sm'
+            icon('trash'),
+            'btn-sm btn-danger',
+            '',
+            __('Sign off')
         );
     }
-    $myshift['actions'] = table_buttons($myshift['actions']);
+    $myshift['actions'] = '<div class="text-end">' . table_buttons($myshift['actions']) . '</div>';
 
     return $myshift;
 }
@@ -455,18 +465,22 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
 {
     $actions = '';
     if ($admin_user_worklog_privilege) {
-        $actions = table_buttons([
+        $actions = '<div class="text-end">' . table_buttons([
             button(
                 url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id),
-                icon('pencil') . __('edit'),
-                'btn-sm'
+                icon('pencil'),
+                'btn-sm',
+                '',
+                __('form.edit')
             ),
             button(
                 url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id . '/delete'),
-                icon('trash') . __('delete'),
-                'btn-sm'
+                icon('trash'),
+                'btn-sm btn-danger',
+                '',
+                __('form.delete')
             ),
-        ]);
+        ]) . '</div>';
     }
 
     return [
@@ -542,7 +556,7 @@ function User_view(
                 'location'   => __('Location'),
                 'shift_info' => __('Name & Workmates'),
                 'comment'    => __('worklog.comment'),
-                'actions'    => __('Action'),
+                'actions'    => __('general.actions'),
             ], $my_shifts));
         } elseif ($user_source->state->force_active) {
             $myshifts_table = success(__('You have done enough.'), true);
@@ -590,13 +604,13 @@ function User_view(
                         ) : '',
                         $admin_user_privilege ? button(
                             url('/admin-user', ['id' => $user_source->id]),
-                            icon('pencil') . __('edit')
+                            icon('pencil') . __('form.edit'),
                         ) : '',
                         (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
-                                form_submit('submit', __('user.arrived'), '', false),
+                                form_submit('submit', icon('house') . __('user.arrive'), '', false),
                             ], url('/admin-arrive'), true) : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(

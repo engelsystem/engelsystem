@@ -9,7 +9,7 @@
 {% block content %}
     <div class="container">
         <h1>
-            {{ m.button(m.icon('chevron-left'), url('/admin-active'), null, 'sm') }}
+            {{ m.button(m.icon('chevron-left'), url('/admin-active'), null, 'sm', __('general.back')) }}
             {{ block('title') }}: <small>{{ m.user(userdata) }}</small>
         </h1>
 
@@ -51,7 +51,7 @@
                     }) }}
                 </div>
                 <div class="col-md-12">
-                    {{ f.submit(__('form.save')) }}
+                    {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
                 </div>
             </div>
         </form>

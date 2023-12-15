@@ -9,7 +9,7 @@
     <div class="container">
         <h1>
             {% if not is_overview|default(false) %}
-                {{ m.button(m.icon('chevron-left'), url('/news'), null, 'sm') }}
+                {{ m.button(m.icon('chevron-left'), url('/news'), null, 'sm', __('general.back')) }}
             {% endif %}
             {{ block('title') }}
             {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
@@ -99,7 +99,7 @@
 
                 {% if has_permission_to('admin_news') %}
                     <div class="d-flex ms-auto">
-                        {{ m.button(m.icon('pencil'), url('/admin/news/' ~ news.id), 'secondary', 'sm') }}
+                        {{ m.button(m.icon('pencil'), url('/admin/news/' ~ news.id), 'secondary', 'sm', __('form.edit')) }}
 
                         <form class="ps-1"
                             action="{{ url('/admin/news/' ~ news.id) }}" enctype="multipart/form-data"

@@ -97,8 +97,8 @@ function admin_active()
             $msg = success(__('Marked angels.'), true);
         } else {
             $set_active = form([
-                button(url('/admin-active', ['search' => $search]), '&laquo; ' . __('back')),
-                form_submit('ack', '&raquo; ' . __('apply')),
+                button(url('/admin-active', ['search' => $search]), '&laquo; ' . __('general.back')),
+                form_submit('ack', '&raquo; ' . __('Apply')),
             ], url('/admin-active', ['search' => $search, 'count' => $count, 'set_active' => 1]));
         }
     }
@@ -236,7 +236,7 @@ function admin_active()
                 $parameters['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('set active'), 'btn-sm', false, 'secondary')],
+                [form_submit('submit', icon('plus-lg') . __('set active'), 'btn-sm', false, 'secondary')],
                 url('/admin-active', $parameters),
                 false,
                 true
@@ -251,7 +251,7 @@ function admin_active()
                 $parametersRemove['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('remove active'), 'btn-sm', false, 'secondary')],
+                [form_submit('submit', icon('dash-lg') . __('Remove active'), 'btn-sm', false, 'secondary')],
                 url('/admin-active', $parametersRemove),
                 false,
                 true
@@ -268,7 +268,7 @@ function admin_active()
 
             if ($goodie_enabled) {
                 $actions[] = form(
-                    [form_submit('submit', ($goodie_tshirt ? __('got T-shirt') : __('got goodie')), 'btn-sm', false, 'secondary')],
+                    [form_submit('submit', icon('person') . ($goodie_tshirt ? __('Got T-shirt') : __('Got goodie')), 'btn-sm', false, 'secondary')],
                     url('/admin-active', $parametersShirt),
                     false,
                     true
@@ -286,7 +286,7 @@ function admin_active()
 
             if ($goodie_enabled) {
                 $actions[] = form(
-                    [form_submit('submit', ($goodie_tshirt ? __('remove T-shirt') : __('remove goodie')), 'btn-sm', false, 'secondary')],
+                    [form_submit('submit', icon('person') . ($goodie_tshirt ? __('Remove T-shirt') : __('Remove goodie')), 'btn-sm', false, 'secondary')],
                     url('/admin-active', $parameters),
                     false,
                     true
@@ -295,7 +295,7 @@ function admin_active()
         }
 
         if ($goodie_tshirt) {
-            $actions[] = button(url('/admin/user/' . $usr->id . '/goodie'), __('form.edit'), 'btn-secondary btn-sm');
+            $actions[] = button(url('/admin/user/' . $usr->id . '/goodie'), icon('pencil') . __('form.edit'), 'btn-secondary btn-sm');
         }
 
         $userData['actions'] = buttons($actions);
@@ -328,11 +328,11 @@ function admin_active()
         form([
             form_text('search', __('Search angel:'), $search),
             form_checkbox('show_all_shifts', __('Show all shifts'), $show_all_shifts),
-            form_submit('submit', __('form.search')),
+            form_submit('submit', icon('search') . __('form.search')),
         ], url('/admin-active')),
         $set_active == '' ? form([
             form_text('count', __('How much angels should be active?'), $count ?: $forced_count),
-            form_submit('set_active', __('form.preview')),
+            form_submit('set_active', icon('eye') .  __('form.preview'), 'btn-info'),
         ]) : $set_active,
         $msg . msg(),
         table(
@@ -350,7 +350,7 @@ function admin_active()
                 ],
                 ($goodie_enabled ? ['tshirt' => ($goodie_tshirt ? __('T-shirt?') : __('Goodie?'))] : []),
                 [
-                    'actions'      => '',
+                    'actions'      => __('general.actions'),
                 ]
             ),
             $matched_users

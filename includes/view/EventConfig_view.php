@@ -42,7 +42,7 @@ function EventConfig_edit_view(
             ]),
             div('row', [
                 div('col-md-6', [
-                    form_submit('submit', __('form.save')),
+                    form_submit('submit', icon('save') . __('form.save')),
                 ]),
             ]),
         ]),

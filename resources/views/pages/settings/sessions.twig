@@ -20,7 +20,7 @@
                                 <form action="" enctype="multipart/form-data" method="post">
                                     {{ csrf() }}
                                     {{ f.hidden('id', 'all') }}
-                                    {{ f.delete(__('form.delete_all'), {'size': 'sm', 'confirm_title': __('form.delete_all')}) }}
+                                    {{ f.delete(__('form.delete_all'), {'size': 'sm', 'confirm_title': __('form.delete_all'), 'title': ''}) }}
                                 </form>
                             {% endif %}
                         </th>
@@ -41,7 +41,7 @@
                                         {{ f.hidden('id', session.id[:15]) }}
                                         {{ f.submit(
                                             ' ',
-                                            {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'icon_left': 'trash'}
+                                            {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'icon_left': 'trash', 'title': __('form.delete'),}
                                         ) }}
                                     </form>
                                 {% else %}

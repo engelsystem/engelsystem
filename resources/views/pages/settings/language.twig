@@ -14,7 +14,7 @@
                 {{ f.select('select_language', __('settings.language'), languages, {
                     'selected': current_language,
                 }) }}
-                {{ f.submit(__('form.save')) }}
+                {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
             </div>
         </div>
     </form>

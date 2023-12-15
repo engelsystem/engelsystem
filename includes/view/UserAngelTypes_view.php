@@ -140,21 +140,20 @@ function UserAngelType_add_view(AngelType $angeltype, $users_source, $user_id)
     foreach ($users_source as $user_source) {
         $users[$user_source->id] = $user_source->displayName;
     }
-
-    return page_with_title(__('Add user to angeltype'), [
+    $link = button(
+        url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
+        icon('chevron-left'),
+        'btn-sm',
+        '',
+        __('general.back')
+    );
+    return page_with_title($link . ' ' . __('Add user to angeltype'), [
         msg(),
-        buttons([
-            button(
-                url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
-                __('back'),
-                'back'
-            ),
-        ]),
         form([
             form_info(__('Angeltype'), htmlspecialchars($angeltype->name)),
             form_checkbox('auto_confirm_user', __('Confirm user'), true),
             form_select('user_id', __('general.user'), $users, $user_id),
-            form_submit('submit', __('Add')),
+            form_submit('submit', icon('plus-lg') . __('Add')),
         ]),
     ]);
 }
@@ -177,7 +176,7 @@ function UserAngelType_join_view($user, AngelType $angeltype)
             auth()->can('admin_user_angeltypes') ? form_checkbox('auto_confirm_user', __('Confirm user'), true) : '',
             buttons([
                 button(angeltype_link($angeltype->id), icon('x-lg') . __('form.cancel')),
-                form_submit('submit', icon('check-lg') . __('form.save'), 'btn-primary', false),
+                form_submit('submit', icon('save') . __('form.save'), 'btn-primary', false),
             ]),
         ], url(
             '/user-angeltypes',

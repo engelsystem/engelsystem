@@ -173,8 +173,8 @@ function Shift_view(
     $buttons = [];
     if ($shift_admin || $admin_shifttypes || $admin_locations) {
         $buttons = [
-            $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
-            $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
+            $shift_admin ? button(shift_edit_link($shift), icon('pencil'), '', '', __('form.edit')) : '',
+            $shift_admin ? button(shift_delete_link($shift), icon('trash'), 'btn-danger', '', __('form.delete')) : '',
             $admin_shifttypes
                 ? button(url('/admin/shifttypes/' . $shifttype->id), htmlspecialchars($shifttype->name))
                 : '',
@@ -211,7 +211,7 @@ function Shift_view(
 
     $start = $shift->start->format(__('general.datetime'));
 
-    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
         $link . ' '
         . htmlspecialchars($shift->shiftType->name)
@@ -290,12 +290,13 @@ function Shift_view_render_shift_entry(ShiftEntry $shift_entry, $user_shift_admi
             $entry .= button_icon(
                 url('/user-myshifts', ['edit' => $shift_entry->id, 'id' => $shift_entry->user_id]),
                 'pencil',
-                'btn-sm'
+                'btn-sm',
+                __('form.edit')
             );
         }
         $angeltype = $shift_entry->angelType;
         $disabled = Shift_signout_allowed($shift, $angeltype, $shift_entry->user_id) ? '' : ' btn-disabled';
-        $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-sm' . $disabled);
+        $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-sm btn-danger' . $disabled, __('form.delete'));
         $entry .= '</div>';
     }
     return $entry;

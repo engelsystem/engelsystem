@@ -151,7 +151,8 @@ function admin_user()
 
         $html .= '</td></tr>' . "\n";
         $html .= '</table>' . "\n" . '<br>' . "\n";
-        $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
+        $html .= '<button type="submit" class="btn btn-primary">'
+            . icon('save') . __('form.save') . '</button>' . "\n";
         $html .= '</form>';
 
         $html .= '<hr>';
@@ -174,7 +175,8 @@ function admin_user()
             . '</td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '<br>' . "\n";
-        $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
+        $html .= '<button type="submit" class="btn btn-primary">'
+            . icon('save') . __('form.save') . '</button>' . "\n";
         $html .= '</form>';
 
         $html .= '<hr>';
@@ -212,14 +214,15 @@ function admin_user()
 
             $html .= '</div><br>';
 
-            $html .= '<button type="submit" class="btn btn-primary">' . __('form.save') . '</button>' . "\n";
+            $html .= '<button type="submit" class="btn btn-primary">'
+                . icon('save') . __('form.save') . '</button>' . "\n";
             $html .= '</form>';
 
             $html .= '<hr>';
         }
 
         $html .= buttons([
-            button(user_delete_link($user_source->id), icon('trash') . __('delete'), 'btn-danger'),
+            button(user_delete_link($user_source->id), icon('trash') . __('form.delete'), 'btn-danger'),
         ]);
 
         $html .= '<hr>';
@@ -350,7 +353,7 @@ function admin_user()
         }
     }
 
-    $link = button(url('/users', ['action' => 'view', 'user_id' => $user_id]), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/users', ['action' => 'view', 'user_id' => $user_id]), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
         $link . ' ' . __('Edit user'),
         [

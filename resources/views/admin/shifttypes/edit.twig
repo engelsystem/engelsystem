@@ -29,7 +29,8 @@
             <div class="btn-group">
                 {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
                 {% if shifttype %}
-                    {{ f.delete(__('form.delete'), {'confirm_title': __('shifttype.delete.title', [shifttype.name|e])}) }}
+                    {{ f.delete(__('form.delete'),
+                        {'title' : '', 'confirm_title': __('shifttype.delete.title', [shifttype.name|e])}) }}
                 {% endif %}
             </div>
         </div>

@@ -110,7 +110,7 @@ function admin_free()
                 : icon('eye-slash'),
             'actions'     =>
                 auth()->can('admin_user')
-                    ? button(url('/admin-user', ['id' => $usr->id]), icon('pencil') . __('edit'), 'btn-sm')
+                    ? button(url('/admin-user', ['id' => $usr->id]), icon('pencil'), 'btn-sm', '', __('form.edit'))
                     : '',
         ];
     }
@@ -121,7 +121,7 @@ function admin_free()
                     div('row', [
                         form_text('search', __('form.search'), $search, null, null, null, 'col'),
                         form_select('angeltype', __('Angeltype'), $angel_types, $angelType, '', 'col'),
-                        form_submit('submit', __('form.search')),
+                        form_submit('submit', icon('search') . __('form.search')),
                     ]),
                 ]),
             ]),

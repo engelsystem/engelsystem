@@ -249,12 +249,16 @@ class ShiftCalendarShiftRenderer
                     button(
                         url('/user-shifts', ['edit_shift' => $shift->id]),
                         icon('pencil'),
-                        'btn-' . $class . ' btn-sm border-light text-white'
+                        'btn-' . $class . ' btn-sm border-light text-white',
+                        '',
+                        __('form.edit')
                     ),
                     button(
                         url('/user-shifts', ['delete_shift' => $shift->id]),
                         icon('trash'),
-                        'btn-' . $class . ' btn-sm border-light text-white'
+                        'btn-' . $class . ' btn-sm border-light text-white',
+                        '',
+                        __('form.delete')
                     ),
                 ]) . '</div>';
         }

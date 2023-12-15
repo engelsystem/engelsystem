@@ -201,7 +201,7 @@ function shift_edit_controller()
         );
     }
 
-    $link = button(url('/shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
         $link . ' ' . shifts_title(),
         [
@@ -222,7 +222,7 @@ function shift_edit_controller()
                 ),
                 '<h2>' . __('Needed angels') . '</h2>',
                 $angel_types_spinner,
-                form_submit('submit', __('form.save')),
+                form_submit('submit', icon('save') . __('form.save')),
             ]),
         ]
     );
@@ -276,7 +276,7 @@ function shift_delete_controller()
         throw_redirect(url('/user-shifts'));
     }
 
-    $link = button(url('/shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
         $link . ' ' . shifts_title(),
         [
@@ -288,7 +288,7 @@ function shift_delete_controller()
             ), true),
             form([
                 form_hidden('delete_shift', $shift->id),
-                form_submit('delete', __('delete')),
+                form_submit('delete', icon('trash') . __('form.delete'), '', true, 'danger'),
             ]),
         ]
     );

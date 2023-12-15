@@ -164,17 +164,19 @@
             <h3>Icons <a href="#icons" class="ref-link">{{ m.icon('link') }}</a></h3>
             <div class="row">
                 <div class="col-md-6 col-lg-4 mb-4">
+                    cancel: {{ m.icon('x-lg') }}<br>
                     delete: {{ m.icon('trash', 'danger') }}<br>
                     edit: {{ m.icon('pencil') }}<br>
                     preview: {{ m.icon('eye','info') }}<br>
                     reset: {{ m.icon('arrow-counterclockwise') }}<br>
                     save: {{ m.icon('save', 'primary') }}<br>
                     <br>
-                    {{ f.delete('delete') }}<br>
-                    {{ f.button('edit', {'icon_left': 'pencil'}) }}<br>
-                    {{ f.button('reset', {'icon_left': 'arrow-counterclockwise'}) }}<br>
-                    {{ f.submit('save', {'icon_left': 'save'}) }}<br>
-                    {{ f.button('view', {'icon_left': 'eye', 'btn_type': 'info'}) }}
+                    {{ f.button('Cancel', {'icon_left': 'x-lg'}) }}<br class="mb-3">
+                    {{ f.delete('Delete') }}<br class="mb-3">
+                    {{ f.button('Edit', {'icon_left': 'pencil'}) }}<br class="mb-3">
+                    {{ f.button('Reset', {'icon_left': 'arrow-counterclockwise'}) }}<br class="mb-3">
+                    {{ f.submit('Save', {'icon_left': 'save'}) }}<br class="mb-3">
+                    {{ f.button('View', {'icon_left': 'eye', 'btn_type': 'info'}) }}
                 </div>
                 <div class="col-md-6 col-lg-4 mb-4">
                     angel: {{ m.angel() }}<br>
@@ -211,7 +213,7 @@
                     occupancy: {{ m.icon('person-fill-slash') }}<br>
                     password: {{ m.icon('key-fill') }}<br>
                     phone: {{ m.icon('phone') }}<br>
-                    shirt / goodie: {{ m.icon('person') }}<br>
+                    T-shirt / goodie: {{ m.icon('person') }}<br>
                     supporter: {{ m.icon('patch-check') }}<br>
                     user settings: {{ m.icon('person-fill-gear') }}<br>
                     voucher: {{ m.icon('valentine') }}<br>

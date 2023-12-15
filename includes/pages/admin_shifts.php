@@ -371,7 +371,7 @@ function admin_shifts()
                     form_hidden('change_hours', implode(', ', $change_hours)),
                     form_hidden('angelmode', $angelmode),
                     form_hidden('shift_over_midnight', $shift_over_midnight ? 'true' : 'false'),
-                    form_submit('back', icon('chevron-left') . __('back')),
+                    form_submit('back', icon('chevron-left') . __('general.back')),
                     $shiftsCreationHint,
                     table([
                         'timeslot'      => __('Time and location'),
@@ -449,7 +449,7 @@ function admin_shifts()
             . '</div>';
     }
 
-    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
         $link . ' ' . admin_shifts_title() . ' ' . sprintf(
             '<a href="%s">%s</a>',
@@ -556,7 +556,7 @@ function admin_shifts()
                         ]),
                     ]),
                 ]),
-                form_submit('preview', icon('search') . __('form.preview')),
+                form_submit('preview', icon('eye') . __('form.preview'), 'btn-info'),
             ]),
         ]
     );
