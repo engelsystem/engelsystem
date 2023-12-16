@@ -48,8 +48,11 @@
                     {{ csrf() }}
 
                     <div class="input-group">
-                        <label for="message" class="visually-hidden">{{ __('message.message') }}</label>
-                        <textarea class="form-control" id="message" name="text" required="" rows="3"></textarea>
+                        {{ f.textarea(
+                            'text',
+                            __('message.message'),
+                            {'required': true, 'rows': 3, 'label_hidden': true, 'no_div': true}
+                        ) }}
                         {{ f.submit(m.icon('send-fill')) }}
                     </div>
                 </form>
