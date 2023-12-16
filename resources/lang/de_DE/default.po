@@ -222,6 +222,9 @@ msgstr "Das Aufbau Start Datum muss vor dem Abbau Ende Datum liegen."
 msgid "Public Dashboard"
 msgstr "Öffentliches Dashboard"
 
+msgid "shifts.random"
+msgstr "Zufällige Schicht"
+
 msgid "%s has been subscribed to the shift."
 msgstr "%s wurde in die Schicht eingetragen."
 

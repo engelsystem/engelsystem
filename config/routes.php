@@ -69,6 +69,11 @@ $route->addGroup('/angeltypes', function (RouteCollector $route): void {
     $route->get('/about', 'AngelTypesController@about');
 });
 
+// Shifts
+$route->addGroup('/shifts', function (RouteCollector $route): void {
+    $route->get('/random', 'ShiftsController@random');
+});
+
 // News
 $route->get('/meetings', 'NewsController@meetings');
 $route->addGroup(

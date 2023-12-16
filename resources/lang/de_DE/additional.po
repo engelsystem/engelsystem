@@ -251,6 +251,9 @@ msgstr ""
 "Da die gelöschte Schicht bereits vergangen ist, "
 "haben wir einen entsprechenden Arbeitseinsatz hinzugefügt."
 
+msgid "notification.shift.no_next_found"
+msgstr "Es wurde keine verfügbare Schicht gefunden."
+
 msgid "user.edit.success"
 msgstr "Benutzer erfolgreich bearbeitet."
 
