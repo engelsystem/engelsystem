@@ -18,7 +18,6 @@ $includeFiles = [
     __DIR__ . '/../includes/model/ShiftSignupState.php',
     __DIR__ . '/../includes/model/Stats.php',
     __DIR__ . '/../includes/model/User_model.php',
-    __DIR__ . '/../includes/model/UserWorkLog_model.php',
     __DIR__ . '/../includes/model/ValidationResult.php',
 
     __DIR__ . '/../includes/view/AngelTypes_view.php',

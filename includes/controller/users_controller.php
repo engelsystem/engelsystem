@@ -244,6 +244,10 @@ function user_controller()
         $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source->id)) . '&nbsp;h';
     }
 
+    $worklogs = $user_source->worklogs()
+        ->with(['user', 'creator'])
+        ->get();
+
     return [
         htmlspecialchars($user_source->displayName),
         User_view(
@@ -257,7 +261,7 @@ function user_controller()
             $tshirt_score,
             auth()->can('admin_active'),
             auth()->can('admin_user_worklog'),
-            UserWorkLogsForUser($user_source->id)
+            $worklogs
         ),
     ];
 }

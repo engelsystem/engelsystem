@@ -5,7 +5,6 @@ use Engelsystem\Database\Db;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
-use Engelsystem\ValidationResult;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 
@@ -65,76 +64,6 @@ function Users_by_angeltype_inverted(AngelType $angeltype)
         ->whereNull('user_angel_type.id')
         ->orderBy('users.name')
         ->get();
-}
-
-/**
- * Validate the planned arrival date
- *
- * @param int $planned_arrival_date Unix timestamp
- * @return ValidationResult
- */
-function User_validate_planned_arrival_date($planned_arrival_date)
-{
-    if (is_null($planned_arrival_date)) {
-        // null is not okay
-        return new ValidationResult(false, time());
-    }
-
-    $config = config();
-    $buildup = $config->get('buildup_start');
-    $teardown = $config->get('teardown_end');
-
-    /** @var Carbon $buildup */
-    if (!empty($buildup) && Carbon::createFromTimestamp($planned_arrival_date)->lessThan($buildup->setTime(0, 0))) {
-        // Planned arrival can not be before buildup start date
-        return new ValidationResult(false, $buildup->getTimestamp());
-    }
-
-    /** @var Carbon $teardown */
-    if (!empty($teardown) && Carbon::createFromTimestamp($planned_arrival_date)->greaterThanOrEqualTo($teardown->addDay()->setTime(0, 0))) {
-        // Planned arrival can not be after teardown end date
-        return new ValidationResult(false, $teardown->getTimestamp());
-    }
-
-    return new ValidationResult(true, $planned_arrival_date);
-}
-
-/**
- * Validate the planned departure date
- *
- * @param int $planned_arrival_date Unix timestamp
- * @param int $planned_departure_date Unix timestamp
- * @return ValidationResult
- */
-function User_validate_planned_departure_date($planned_arrival_date, $planned_departure_date)
-{
-    if (is_null($planned_departure_date)) {
-        // null is okay
-        return new ValidationResult(true, null);
-    }
-
-    if ($planned_arrival_date > $planned_departure_date) {
-        // departure cannot be before arrival
-        return new ValidationResult(false, $planned_arrival_date);
-    }
-
-    $config = config();
-    $buildup = $config->get('buildup_start');
-    $teardown = $config->get('teardown_end');
-
-    /** @var Carbon $buildup */
-    if (!empty($buildup) && Carbon::createFromTimestamp($planned_departure_date)->lessThan($buildup->setTime(0, 0))) {
-        // Planned departure can not be before buildup start date
-        return new ValidationResult(false, $buildup->getTimestamp());
-    }
-
-    /** @var Carbon $teardown */
-    if (!empty($teardown) && Carbon::createFromTimestamp($planned_departure_date)->greaterThanOrEqualTo($teardown->addDay()->setTime(0, 0))) {
-        // Planned departure can not be after teardown end date
-        return new ValidationResult(false, $teardown->getTimestamp());
-    }
-
-    return new ValidationResult(true, $planned_departure_date);
 }
 
 /**

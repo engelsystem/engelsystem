@@ -180,14 +180,6 @@ class ShiftsFilter
     }
 
     /**
-     * @return bool
-     */
-    public function isUserShiftsAdmin()
-    {
-        return $this->userShiftsAdmin;
-    }
-
-    /**
      * @param bool $userShiftsAdmin
      */
     public function setUserShiftsAdmin($userShiftsAdmin)
