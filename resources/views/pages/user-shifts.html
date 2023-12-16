@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group d-print-none" style="margin-top: .5em">
+            <div class="form-group d-print-none mt-2">
                 <div class="btn-group mb-1" role="group">
                     <button type="button" class="btn btn-secondary set-date" data-days="-1">%set_yesterday%</button>
                     <button type="button" class="btn btn-secondary set-date" data-days="0">%set_today%</button>
@@ -55,7 +55,7 @@
             </div>
             <div class="row d-print-none">
                 <div class="col-md-12">
-                    <button class="btn btn-primary" type="submit" style="width:100%; margin: 1em 0">%filter%</button>
+                    <button class="btn btn-primary mt-3 mb-3 w-100" type="submit">%filter%</button>
                 </div>
             </div>
         </div>
@@ -73,11 +73,12 @@
                     <div class="col col-12 col-sm-5 col-md-12 col-lg-7 col-xl-5 col-xxl-4">%type_select%</div>
                     <div class="col col-12 col-sm-3 col-md-12 col-lg-5 col-xl-3 col-xxl-4">%filled_select%</div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12 d-print-none d-md-none">
+                        <button class="btn btn-primary mb-3 w-100" type="submit">%filter%</button>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="col-md-12 d-print-none d-md-none">
-            <button class="btn btn-primary" type="submit" style="width:100%; margin: 1em 0">%filter%</button>
         </div>
     </div>
 </form>

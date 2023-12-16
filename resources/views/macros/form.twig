@@ -133,11 +133,19 @@ Also adds buttons to increment / decrement the value.
 @param {bool} [opt.required] - Whether to add the "required" attribute. Defaults to false.
 @param {int} [opt.rows=0] - Optional value of the "rows" attriute. Defaults to 0.
 @param {string} [opt.value=""] - Optional value to set. Defaults to empty string.
+@param {string} [opt.label_hidden=true] - Optionaly hide the label. Defaults to false.
+@param {string} [opt.no_div=false] - Optionaly don't add a div. Defaults to false.
 #}
 {% macro textarea(name, label, opt) %}
-    <div class="mb-3">
-        {% if label  -%}
-            <label class="form-label" for="{{ name }}">{{ label }}</label>
+    {% if not opt.no_div|default(false) -%}
+        <div class="mb-3">
+    {% endif -%}
+        {% if label -%}
+            <label class="form-label
+                    {%- if opt.label_hidden|default(false) %} visually-hidden{% endif -%}
+                " for="{{ name }}">
+                {{ label }}
+            </label>
             {% if opt.required_icon|default(false) %}
                 {{ _self.entry_required() }}
             {% endif %}
@@ -146,10 +154,12 @@ Also adds buttons to increment / decrement the value.
             {% endif %}
         {%- endif %}
         <textarea class="form-control" id="{{ name }}" name="{{ name }}"
-            {%- if opt.required|default(false) %} required{%- endif -%}
+                    {%- if opt.required|default(false) %} required{%- endif -%}
             {%- if opt.rows|default(0) %} rows="{{ opt.rows }}"{%- endif -%}
-        >{{ opt.value|default('') }}</textarea>
-    </div>
+                >{{ opt.value|default('') }}</textarea>
+    {% if not opt.no_div|default(false) -%}
+        </div>
+    {%- endif %}
 {%- endmacro %}
 
 {#
