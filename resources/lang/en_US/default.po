@@ -749,6 +749,9 @@ msgstr "Count"
 msgid "general.created_at"
 msgstr "Created at"
 
+msgid "shifts.random"
+msgstr "Zufällige Schicht"
+
 msgid "shifts.history"
 msgstr "Shifts history"
 

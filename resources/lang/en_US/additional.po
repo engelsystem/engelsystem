@@ -253,6 +253,9 @@ msgstr ""
 "Since the deleted shift was already done, "
 "we added a worklog entry instead, to keep your work hours correct."
 
+msgid "notification.shift.no_next_found"
+msgstr "There is no available shift."
+
 msgid "user.edit.success"
 msgstr "User edited successfully."
 

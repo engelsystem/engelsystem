@@ -281,7 +281,9 @@ function view_user_shifts()
     $end_day = $shiftsFilter->getEnd()->format('Y-m-d');
     $end_time = $shiftsFilter->getEnd()->format('H:i');
 
+    $canSignUpForShifts = true;
     if (config('signup_requires_arrival') && !$user->state->arrived) {
+        $canSignUpForShifts = false;
         info(render_user_arrived_hint((bool) $user->state->user_info));
     }
 
@@ -344,7 +346,11 @@ function view_user_shifts()
                 'set_last_4h'   => __('last 4h'),
                 'set_next_4h'   => __('next 4h'),
                 'set_next_8h'   => __('next 8h'),
-                'buttons'       => button(
+                'random'        => auth()->can('user_shifts') && $canSignUpForShifts ? button(
+                    url('/shifts/random'),
+                    icon('dice-4-fill') . __('shifts.random')
+                ) : '',
+                'dashboard'     => button(
                     public_dashboard_link(),
                     icon('speedometer2') . __('Public Dashboard')
                 ),
