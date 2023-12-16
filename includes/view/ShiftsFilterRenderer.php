@@ -87,14 +87,4 @@ class ShiftsFilterRenderer
         $this->daySelectionEnabled = true;
         $this->days = $days;
     }
-
-    /**
-     * Should the filter display a day selection.
-     *
-     * @return bool
-     */
-    public function isDaySelectionEnabled()
-    {
-        return $this->daySelectionEnabled;
-    }
 }
