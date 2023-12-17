@@ -322,6 +322,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
         'comment'    => '',
         'start'      => $shift->start,
         'end'        => $shift->end,
+        'freeloaded' => $shift->freeloaded,
     ];
 
     if ($its_me) {
@@ -412,7 +413,9 @@ function User_view_myshifts(
         foreach ($myshifts_table as $i => &$shift) {
             $before = $myshifts_table[$i - 1] ?? null;
             $after = $myshifts_table[$i + 1] ?? null;
-            if (Carbon::now() > $shift['start'] &&  Carbon::now() < $shift['end']) {
+            if ($shift['freeloaded']) {
+                $shift['row-class'] = 'border border-danger border-2';
+            } elseif (Carbon::now() > $shift['start'] &&  Carbon::now() < $shift['end']) {
                 $shift['row-class'] = 'border border-info border-2';
             } elseif ($after && Carbon::now() > $shift['end'] && Carbon::now() < $after['start']) {
                 $shift['row-class'] = 'border-bottom border-info';
@@ -483,6 +486,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
         'actions'    => $actions,
         'start'      => $worklog->worked_at,
         'end'        => $worklog->worked_at,
+        'freeloaded' => false,
     ];
 }
 
