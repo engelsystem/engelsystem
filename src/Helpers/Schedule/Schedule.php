@@ -14,7 +14,8 @@ class Schedule
     public function __construct(
         protected string $version,
         protected Conference $conference,
-        protected array $days
+        protected array $days,
+        protected ?ScheduleGenerator $generator = null,
     ) {
     }
 
@@ -81,5 +82,10 @@ class Schedule
         }
 
         return $end;
+    }
+
+    public function getGenerator(): ?ScheduleGenerator
+    {
+        return $this->generator;
     }
 }

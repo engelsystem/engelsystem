@@ -9,6 +9,7 @@ use Engelsystem\Helpers\Schedule\Conference;
 use Engelsystem\Helpers\Schedule\Day;
 use Engelsystem\Helpers\Schedule\Room;
 use Engelsystem\Helpers\Schedule\Schedule;
+use Engelsystem\Helpers\Schedule\ScheduleGenerator;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 
@@ -21,6 +22,7 @@ class ScheduleTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Schedule::getVersion
      * @covers \Engelsystem\Helpers\Schedule\Schedule::getConference
      * @covers \Engelsystem\Helpers\Schedule\Schedule::getDays
+     * @covers \Engelsystem\Helpers\Schedule\Schedule::getGenerator
      */
     public function testCreate(): void
     {
@@ -31,6 +33,7 @@ class ScheduleTest extends TestCase
         $this->assertEquals('Foo\'ing stuff 1.0', $schedule->getVersion());
         $this->assertEquals($conference, $schedule->getConference());
         $this->assertEquals($days, $schedule->getDays());
+        $this->assertNull($schedule->getGenerator());
     }
 
     /**
@@ -101,6 +104,19 @@ class ScheduleTest extends TestCase
         $schedule = new Schedule('Ipsum old', $conference, []);
         $this->assertNull($schedule->getStartDateTime());
         $this->assertNull($schedule->getEndDateTime());
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Schedule\Schedule::__construct
+     * @covers \Engelsystem\Helpers\Schedule\Schedule::getGenerator
+     */
+    public function testGetGenerator(): void
+    {
+        $conference = new Conference('Foo Bar', 'FooB');
+        $generator = new ScheduleGenerator('test', '1337');
+        $schedule = new Schedule('1.0', $conference, [], $generator);
+
+        $this->assertEquals($generator, $schedule->getGenerator());
     }
 
     /**

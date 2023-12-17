@@ -9,6 +9,7 @@ use Engelsystem\Helpers\Carbon;
 use DateTimeInterface;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
+use Engelsystem\Helpers\Schedule\ConferenceTrack;
 use Engelsystem\Helpers\Schedule\Event;
 use Engelsystem\Helpers\Schedule\Room;
 use Engelsystem\Helpers\Schedule\Schedule;
@@ -158,7 +159,7 @@ class ScheduleController extends BaseController
                 '',
                 '',
                 '',
-                ''
+                new ConferenceTrack('')
             );
 
             $this->deleteEvent($event, $schedule);
@@ -571,7 +572,7 @@ class ScheduleController extends BaseController
             $duration->format('%H:%I'),
             '',
             '',
-            ''
+            new ConferenceTrack('')
         );
     }
 

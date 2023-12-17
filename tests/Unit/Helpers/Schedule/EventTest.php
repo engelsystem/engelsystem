@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Helpers\Schedule;
 
 use Carbon\Carbon;
+use Engelsystem\Helpers\Schedule\ConferenceTrack;
 use Engelsystem\Helpers\Schedule\Event;
+use Engelsystem\Helpers\Schedule\EventRecording;
 use Engelsystem\Helpers\Schedule\Room;
+use Engelsystem\Helpers\Uuid;
 use Engelsystem\Test\Unit\TestCase;
 
 class EventTest extends TestCase
@@ -34,15 +37,17 @@ class EventTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Event::getLinks
      * @covers \Engelsystem\Helpers\Schedule\Event::getAttachments
      * @covers \Engelsystem\Helpers\Schedule\Event::getUrl
+     * @covers \Engelsystem\Helpers\Schedule\Event::getFeedbackUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getVideoDownloadUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getEndDate
      */
-    public function testCreate(): void
+    public function testCreateDefault(): void
     {
         $room = new Room('Foo');
         $date = new Carbon('2020-12-28T19:30:00+00:00');
+        $uuid = Uuid::uuid();
         $event = new Event(
-            '0-1-2-3',
+            $uuid,
             1,
             $room,
             'Some stuff',
@@ -53,10 +58,10 @@ class EventTest extends TestCase
             '00:50',
             'Doing stuff is hard, plz try again',
             '1-some-stuff',
-            'Security'
+            new ConferenceTrack('Security'),
         );
 
-        $this->assertEquals('0-1-2-3', $event->getGuid());
+        $this->assertEquals($uuid, $event->getGuid());
         $this->assertEquals(1, $event->getId());
         $this->assertEquals($room, $event->getRoom());
         $this->assertEquals('Some stuff', $event->getTitle());
@@ -67,16 +72,17 @@ class EventTest extends TestCase
         $this->assertEquals('00:50', $event->getDuration());
         $this->assertEquals('Doing stuff is hard, plz try again', $event->getAbstract());
         $this->assertEquals('1-some-stuff', $event->getSlug());
-        $this->assertEquals('Security', $event->getTrack());
+        $this->assertEquals('Security', $event->getTrack()->getName());
         $this->assertNull($event->getLogo());
         $this->assertEquals([], $event->getPersons());
         $this->assertNull($event->getLanguage());
         $this->assertNull($event->getDescription());
-        $this->assertEquals('', $event->getRecording());
+        $this->assertNull($event->getRecording());
         $this->assertEquals([], $event->getLinks());
         $this->assertEquals([], $event->getAttachments());
         $this->assertNull($event->getUrl());
         $this->assertNull($event->getVideoDownloadUrl());
+        $this->assertNull($event->getFeedbackUrl());
         $this->assertEquals('2020-12-28T20:20:00+00:00', $event->getEndDate()->format(Carbon::RFC3339));
     }
 
@@ -104,15 +110,16 @@ class EventTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Event::getLinks
      * @covers \Engelsystem\Helpers\Schedule\Event::getAttachments
      * @covers \Engelsystem\Helpers\Schedule\Event::getUrl
+     * @covers \Engelsystem\Helpers\Schedule\Event::getFeedbackUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getVideoDownloadUrl
      */
-    public function testCreateNotDefault(): void
+    public function testCreate(): void
     {
         $persons = [1337 => 'Some Person'];
         $links = ['https://foo.bar' => 'Foo Bar'];
         $attachments = ['/files/foo.pdf' => 'Suspicious PDF'];
         $event = new Event(
-            '3-2-1-0',
+            Uuid::uuid(),
             2,
             new Room('Bar'),
             'Lorem',
@@ -123,27 +130,30 @@ class EventTest extends TestCase
             '00:30',
             'Lorem ipsum dolor sit amet',
             '2-lorem',
-            'DevOps',
+            new ConferenceTrack('DevOps'),
             '/foo/bar.png',
             $persons,
             'de',
             'Foo bar is awesome! & That\'s why...',
-            'CC BY SA',
+            new EventRecording('CC BY SA', false),
             $links,
             $attachments,
             'https://foo.bar/2-lorem',
-            'https://videos.orem.ipsum/2-lorem.mp4'
+            'https://videos.orem.ipsum/2-lorem.mp4',
+            'https://videos.orem.ipsum/2-lorem/feedback'
         );
 
         $this->assertEquals('/foo/bar.png', $event->getLogo());
         $this->assertEquals($persons, $event->getPersons());
         $this->assertEquals('de', $event->getLanguage());
         $this->assertEquals('Foo bar is awesome! & That\'s why...', $event->getDescription());
-        $this->assertEquals('CC BY SA', $event->getRecording());
+        $this->assertNotNull($event->getRecording());
+        $this->assertEquals('CC BY SA', $event->getRecording()->getLicense());
         $this->assertEquals($links, $event->getLinks());
         $this->assertEquals($attachments, $event->getAttachments());
         $this->assertEquals('https://foo.bar/2-lorem', $event->getUrl());
         $this->assertEquals('https://videos.orem.ipsum/2-lorem.mp4', $event->getVideoDownloadUrl());
+        $this->assertEquals('https://videos.orem.ipsum/2-lorem/feedback', $event->getFeedbackUrl());
 
         $event->setTitle('Event title');
         $this->assertEquals('Event title', $event->getTitle());
