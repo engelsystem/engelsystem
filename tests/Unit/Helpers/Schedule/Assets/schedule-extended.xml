@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="https://c3voc.de/schedule/schema.xsd"
 >
     <generator name="Engelsystem" version="1.2.3"/>
-    <version>Some version string</version>
+    <version>some-version-string</version>
     <conference>
         <title>Test Event</title>
         <acronym>test-3</acronym>
@@ -13,7 +13,11 @@
         <days>1</days>
         <timeslot_duration>00:15</timeslot_duration>
         <base_url>https://foo.bar/baz/schedule/</base_url>
+        <logo>https://foo.bar/baz.png</logo>
+        <url>https://foo.bar/</url>
         <time_zone_name>Europe/Berlin</time_zone_name>
+        <color primary="#abcdef" background="#aabbcc" customColor="#s011e7"/>
+        <track name="Testing" color="#dead55" slug="testing"/>
     </conference>
     <day index='1' date='2042-01-01' start='2042-01-01T01:00:00+02:00' end='2042-01-01T22:59:00+02:00'>
         <room name='Rooming' guid="bf5f1132-82bd-4da2-bbe0-1abbf8daf4ab">
@@ -38,15 +42,19 @@
                 <abstract>Foo bar is da best</abstract>
                 <description>Any describing stuff?</description>
                 <url>https://foo.bar/baz/schedule/ipsum</url>
+                <feedback_url>https://foo.bar/baz/schedule/ipsum#feedback</feedback_url>
                 <logo>https://lorem.ipsum/foo/bar.png</logo>
                 <persons>
                     <person id='1234'>Some Person</person>
+                    <person id='1337'>Another Person</person>
                 </persons>
                 <links>
                     <link href="https://foo.bar">Some Foo Bar</link>
+                    <link href="https://example.com">Another example</link>
                 </links>
                 <attachments>
                     <attachment href="https://foo.bar/stuff.pdf">A PDF File</attachment>
+                    <attachment href="https://foo.bar/something.png">An image</attachment>
                 </attachments>
             </event>
         </room>

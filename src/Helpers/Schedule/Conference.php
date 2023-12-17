@@ -8,6 +8,9 @@ class Conference
 {
     use CalculatesTime;
 
+    /**
+     * @param ConferenceTrack[] $tracks
+     */
     public function __construct(
         protected string $title,
         protected string $acronym,
@@ -15,7 +18,12 @@ class Conference
         protected ?string $end = null,
         protected ?int $days = null,
         protected ?string $timeslotDuration = null,
-        protected ?string $baseUrl = null
+        protected ?string $baseUrl = null,
+        protected ?string $logo = null,
+        protected ?string $url = null,
+        protected ?string $timeZoneName = null,
+        protected ?ConferenceColor $color = null,
+        protected array $tracks = [],
     ) {
     }
 
@@ -62,5 +70,33 @@ class Conference
     public function getBaseUrl(): ?string
     {
         return $this->baseUrl;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function getTimeZoneName(): ?string
+    {
+        return $this->timeZoneName;
+    }
+
+    public function getColor(): ?ConferenceColor
+    {
+        return $this->color;
+    }
+
+    /**
+     * @return ConferenceTrack[]
+     */
+    public function getTracks(): array
+    {
+        return $this->tracks;
     }
 }

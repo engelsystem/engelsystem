@@ -19,11 +19,11 @@ class Event
      * @param string $start time (hh:mm:ss || hh:mm)
      * @param string $duration (h?h:mm:ss || h?h:mm)
      * @param string $slug globally unique
-     * @param string[] $persons id => name
+     * @param array<int, string> $persons id => name
      * @param string|null $language two-letter code
-     * @param string|null $recording license (and opt out in XML, null if not recorded, empty if no license defined)/
-     * @param array $links href => title
-     * @param array $attachments href => title
+     * @param EventRecording|null $recording license, links, url and opt out from XML, null if not defined
+     * @param array<string, string> $links href => title
+     * @param array<string, string> $attachments href => title
      */
     public function __construct(
         protected string $guid,
@@ -37,16 +37,17 @@ class Event
         protected string $duration,
         protected string $abstract,
         protected string $slug,
-        protected string $track,
+        protected ConferenceTrack $track,
         protected ?string $logo = null,
         protected array $persons = [],
         protected ?string $language = null,
         protected ?string $description = null,
-        protected ?string $recording = '',
+        protected ?EventRecording $recording = null,
         protected array $links = [],
         protected array $attachments = [],
         protected ?string $url = null,
-        protected ?string $videoDownloadUrl = null
+        protected ?string $videoDownloadUrl = null,
+        protected ?string $feedbackUrl = null,
     ) {
         $this->endDate = $this->date
             ->copy()
@@ -118,7 +119,7 @@ class Event
         return $this->slug;
     }
 
-    public function getTrack(): string
+    public function getTrack(): ConferenceTrack
     {
         return $this->track;
     }
@@ -129,7 +130,7 @@ class Event
     }
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     public function getPersons(): array
     {
@@ -146,7 +147,7 @@ class Event
         return $this->description;
     }
 
-    public function getRecording(): ?string
+    public function getRecording(): ?EventRecording
     {
         return $this->recording;
     }
@@ -164,6 +165,11 @@ class Event
     public function getUrl(): ?string
     {
         return $this->url;
+    }
+
+    public function getFeedbackUrl(): ?string
+    {
+        return $this->feedbackUrl;
     }
 
     public function getVideoDownloadUrl(): ?string

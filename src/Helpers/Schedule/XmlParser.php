@@ -35,6 +35,10 @@ class XmlParser
     protected function parseXml(): void
     {
         $version = $this->getFirstXpathContent('version');
+        $generator = $this->parseGenerator($this->scheduleXML);
+        $color = $this->parseConferenceColor($this->scheduleXML);
+        $tracks = $this->parseTracks($this->scheduleXML);
+
         $conference = new Conference(
             $this->getFirstXpathContent('conference/title'),
             $this->getFirstXpathContent('conference/acronym'),
@@ -42,28 +46,36 @@ class XmlParser
             $this->getFirstXpathContent('conference/end'),
             (int) $this->getFirstXpathContent('conference/days'),
             $this->getFirstXpathContent('conference/timeslot_duration'),
-            $this->getFirstXpathContent('conference/base_url')
+            $this->getFirstXpathContent('conference/base_url'),
+            $this->getFirstXpathContent('conference/logo'),
+            $this->getFirstXpathContent('conference/url'),
+            $this->getFirstXpathContent('conference/time_zone_name'),
+            $color,
+            $tracks,
         );
-        $days = [];
 
+        $days = [];
         foreach ($this->scheduleXML->xpath('day') as $day) {
             $rooms = [];
 
             foreach ($day->xpath('room') as $roomElement) {
+                $guid = (string) $roomElement->attributes()['guid'];
                 $room = new Room(
-                    (string) $roomElement->attributes()['name']
+                    (string) $roomElement->attributes()['name'],
+                    !empty($guid) ? $guid : null
                 );
 
-                $events = $this->parseEvents($roomElement->xpath('event'), $room);
+                $events = $this->parseEvents($roomElement->xpath('event'), $room, $tracks);
                 $room->setEvents($events);
                 $rooms[] = $room;
             }
 
+            $data = $day->attributes();
             $days[] = new Day(
-                (string) $day->attributes()['date'],
-                new Carbon($day->attributes()['start']),
-                new Carbon($day->attributes()['end']),
-                (int) $day->attributes()['index'],
+                (string) $data['date'],
+                new Carbon($data['start']),
+                new Carbon($data['end']),
+                (int) $data['index'],
                 $rooms
             );
         }
@@ -71,14 +83,68 @@ class XmlParser
         $this->schedule = new Schedule(
             $version,
             $conference,
-            $days
+            $days,
+            $generator
+        );
+    }
+
+    protected function parseGenerator(SimpleXMLElement $scheduleXML): ?ScheduleGenerator
+    {
+        $generatorData = $scheduleXML->xpath('generator');
+        if (!isset($generatorData[0])) {
+            return null;
+        }
+
+        $data = $generatorData[0]->attributes();
+        return new ScheduleGenerator(
+            (string) $data['name'] ?? null,
+            (string) $data['version'] ?? null,
+        );
+    }
+
+    protected function parseConferenceColor(SimpleXMLElement $scheduleXML): ?ConferenceColor
+    {
+        $conferenceColorData = $scheduleXML->xpath('conference/color');
+        if (!isset($conferenceColorData[0])) {
+            return null;
+        }
+
+        $data = collect($conferenceColorData[0]->attributes())->map(fn($value) => (string) $value);
+        $additionalData = $data->collect()->forget(['primary', 'background']);
+        return new ConferenceColor(
+            $data['primary'] ?? null,
+            $data['background'] ?? null,
+            $additionalData->isNotEmpty() ? $additionalData->toArray() : []
         );
     }
 
     /**
-     * @param SimpleXMLElement[] $eventElements
+     * @return ConferenceTrack[]
      */
-    protected function parseEvents(array $eventElements, Room $room): array
+    protected function parseTracks(SimpleXMLElement $scheduleXML): array
+    {
+        $tracksData = $scheduleXML->xpath('conference/track');
+        if (!isset($tracksData[0])) {
+            return [];
+        }
+
+        $tracks = [];
+        foreach ($tracksData as $trackData) {
+            $data = $trackData->attributes();
+            $tracks[] = new ConferenceTrack(
+                (string) $data['name'],
+                (string) $data['color'] ?? null,
+                (string) $data['slug'] ?? null,
+            );
+        }
+        return $tracks;
+    }
+
+    /**
+     * @param SimpleXMLElement[] $eventElements
+     * @param ConferenceTrack[] $tracks
+     */
+    protected function parseEvents(array $eventElements, Room $room, array $tracks): array
     {
         $events = [];
 
@@ -87,11 +153,9 @@ class XmlParser
             $links = $this->getListFromSequence($event, 'links', 'link', 'href');
             $attachments = $this->getListFromSequence($event, 'attachments', 'attachment', 'href');
 
-            $recording = '';
-            $recordingElement = $event->xpath('recording');
-            if ($recordingElement && $this->getFirstXpathContent('optout', $recordingElement[0]) == 'false') {
-                $recording = $this->getFirstXpathContent('license', $recordingElement[0]);
-            }
+            $recording = $this->parseRecording($event);
+            $trackName = $this->getFirstXpathContent('track', $event);
+            $track = collect($tracks)->where('name', $trackName)->first() ?: new ConferenceTrack($trackName);
 
             $events[] = new Event(
                 (string) $event->attributes()['guid'],
@@ -105,7 +169,7 @@ class XmlParser
                 $this->getFirstXpathContent('duration', $event),
                 $this->getFirstXpathContent('abstract', $event),
                 $this->getFirstXpathContent('slug', $event),
-                $this->getFirstXpathContent('track', $event),
+                $track,
                 $this->getFirstXpathContent('logo', $event) ?: null,
                 $persons,
                 $this->getFirstXpathContent('language', $event) ?: null,
@@ -114,11 +178,28 @@ class XmlParser
                 $links,
                 $attachments,
                 $this->getFirstXpathContent('url', $event) ?: null,
-                $this->getFirstXpathContent('video_download_url', $event) ?: null
+                $this->getFirstXpathContent('video_download_url', $event) ?: null,
+                $this->getFirstXpathContent('feedback_url', $event) ?: null,
             );
         }
 
         return $events;
+    }
+
+    protected function parseRecording(SimpleXMLElement $event): ?EventRecording
+    {
+        $recordingElement = $event->xpath('recording');
+        if (!isset($recordingElement[0])) {
+            return null;
+        }
+
+        $element = $recordingElement[0];
+        return new EventRecording(
+            $this->getFirstXpathContent('license', $element) ?: '',
+            $this->getFirstXpathContent('optout', $element) != 'false',
+            $this->getFirstXpathContent('url', $element) ?: null,
+            $this->getFirstXpathContent('link', $element) ?: null,
+        );
     }
 
     protected function getFirstXpathContent(string $path, ?SimpleXMLElement $xml = null): string

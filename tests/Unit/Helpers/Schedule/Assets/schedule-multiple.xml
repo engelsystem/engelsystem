@@ -11,6 +11,8 @@
         <end>2042-10-02</end>
         <days>2</days>
         <timeslot_duration>00:30</timeslot_duration>
+        <track name="Talk"/>
+        <track name="Testing"/>
     </conference>
     <day index='1' date='2042-10-01' start='2042-10-01T10:00:00+02:00' end='2042-10-01T22:59:00+02:00'>
         <room name='Example Room'>
@@ -22,7 +24,7 @@
                 <duration>01:30</duration>
                 <room>Example Room</room>
                 <slug>first-1-event</slug>
-                <track>Testing</track>
+                <track>Foo</track>
                 <type>Talk</type>
                 <abstract>A minimal description</abstract>
                 <url>https://example.com/first-1-event</url>

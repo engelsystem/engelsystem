@@ -8,9 +8,11 @@ class Room
 {
     /**
      * @param Event[] $events
+     * @param ?string $guid Globally unique id
      */
     public function __construct(
         protected string $name,
+        protected ?string $guid = null,
         protected array $events = []
     ) {
     }
@@ -34,5 +36,10 @@ class Room
     public function setEvents(array $events): void
     {
         $this->events = $events;
+    }
+
+    public function getGuid(): ?string
+    {
+        return $this->guid;
     }
 }
