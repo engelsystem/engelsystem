@@ -896,6 +896,30 @@ msgstr ""
 msgid "form.recover"
 msgstr "Recover"
 
+msgid "notification.shift.updated.introduction"
+msgstr "Your shift has changed:"
+
+msgid "notification.shift.updated.type"
+msgstr "Shift type changed from %s to %s"
+
+msgid "notification.shift.updated.title"
+msgstr "Shift title changed from %s to %s"
+
+msgid "notification.shift.updated.description"
+msgstr "Shift description changed"
+
+msgid "notification.shift.updated.start"
+msgstr "Shift start changed from %s to %s"
+
+msgid "notification.shift.updated.end"
+msgstr "Shift end changed from %s to %s"
+
+msgid "notification.shift.updated.location"
+msgstr "Shift location moved from %s to %s"
+
+msgid "notification.shift.updated.shift"
+msgstr "The updated Shift:"
+
 msgid "general.actions"
 msgstr "Actions"
 

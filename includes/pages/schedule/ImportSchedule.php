@@ -172,7 +172,6 @@ class ImportSchedule extends BaseController
                 ''
             );
 
-            $this->fireDeleteShiftEntryEvents($event, $schedule);
             $this->deleteEvent($event, $schedule);
         }
         $schedule->delete();
@@ -280,7 +279,6 @@ class ImportSchedule extends BaseController
         }
 
         foreach ($deleteEvents as $event) {
-            $this->fireDeleteShiftEntryEvents($event, $scheduleUrl);
             $this->deleteEvent($event, $scheduleUrl);
         }
 
@@ -372,6 +370,7 @@ class ImportSchedule extends BaseController
         /** @var ScheduleShift $scheduleShift */
         $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->where('schedule_id', $schedule->id)->first();
         $shift = $scheduleShift->shift;
+        $oldShift = Shift::find($shift->id);
         $shift->title = $event->getTitle();
         $shift->shift_type_id = $shiftTypeId;
         $shift->start = $event->getDate()->copy()->timezone($eventTimeZone);
@@ -380,6 +379,8 @@ class ImportSchedule extends BaseController
         $shift->url = $event->getUrl() ?? '';
         $shift->updatedBy()->associate($user);
         $shift->save();
+
+        $this->fireUpdateShiftUpdateEvent($oldShift, $shift);
 
         $this->log(
             'Updated schedule shift "{shift}" in "{location}" ({from} {to}, {guid})',
@@ -400,6 +401,8 @@ class ImportSchedule extends BaseController
         $shift = $scheduleShift->shift;
         $shift->delete();
 
+        $this->fireDeleteShiftEntryEvents($event, $schedule);
+
         $this->log(
             'Deleted schedule shift "{shift}" in {location} ({from} {to}, {guid})',
             [
@@ -410,6 +413,14 @@ class ImportSchedule extends BaseController
                 'guid'     => $scheduleShift->guid,
             ]
         );
+    }
+
+    protected function fireUpdateShiftUpdateEvent(Shift $oldShift, Shift $newShift): void
+    {
+        event('shift.updating', [
+            'shift' => $newShift,
+            'oldShift' => $oldShift,
+        ]);
     }
 
     /**

@@ -6,8 +6,11 @@ use Carbon\Carbon;
 use Engelsystem\Helpers\Shifts;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\Location;
+use Engelsystem\Models\Shifts\Shift as ShiftModel;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
+use Illuminate\Database\Eloquent\Collection;
 use Psr\Log\LoggerInterface;
 
 class Shift
@@ -84,5 +87,49 @@ class Shift
                 'username'   => $user->displayName,
             ]
         );
+    }
+
+    public function updatedShiftSendEmail(
+        ShiftModel $shift,
+        ShiftModel $oldShift
+    ): void {
+        // Only send e-mail on relevant changes
+        if (
+            $oldShift->shift_type_id == $shift->shift_type_id
+            && $oldShift->title == $shift->title
+            && $oldShift->start == $shift->start
+            && $oldShift->end == $shift->end
+            && $oldShift->location_id == $shift->location_id
+        ) {
+            return;
+        }
+
+        $shift->load(['shiftType', 'location']);
+        $oldShift->load(['shiftType', 'location']);
+        /** @var ShiftEntry[]|Collection $shiftEntries */
+        $shiftEntries = $shift->shiftEntries()
+            ->with(['angelType', 'user.settings'])
+            ->get();
+
+        foreach ($shiftEntries as $shiftEntry) {
+            $user = $shiftEntry->user;
+            $angelType = $shiftEntry->angelType;
+
+            if (!$user->settings->email_shiftinfo || $shift->end < Carbon::now()) {
+                continue;
+            }
+
+            $this->mailer->sendViewTranslated(
+                $user,
+                'notification.shift.updated',
+                'emails/updated-shift',
+                [
+                    'shift' => $shift,
+                    'oldShift' => $oldShift,
+                    'angelType' => $angelType,
+                    'username' => $user->displayName,
+                ]
+            );
+        }
     }
 }

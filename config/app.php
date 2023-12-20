@@ -83,5 +83,7 @@ return [
             \Engelsystem\Events\Listener\Shift::class . '@deletedEntryCreateWorklog',
             \Engelsystem\Events\Listener\Shift::class . '@deletedEntrySendEmail',
         ],
+
+        'shift.updating' => \Engelsystem\Events\Listener\Shift::class . '@updatedShiftSendEmail',
     ],
 ];

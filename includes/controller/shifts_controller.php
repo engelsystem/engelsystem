@@ -160,7 +160,10 @@ function shift_edit_controller()
             $shift->updatedBy()->associate(auth()->user());
             $shift->save();
 
-            mail_shift_change($oldShift, $shift);
+            event('shift.updating', [
+                'shift' => $shift,
+                'oldShift' => $oldShift,
+            ]);
 
             NeededAngelType::whereShiftId($shift_id)->delete();
             $needed_angel_types_info = [];
