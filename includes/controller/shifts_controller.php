@@ -74,7 +74,7 @@ function shift_edit_controller()
     $angeltypes = AngelType::all()->pluck('name', 'id')->toArray();
     $shifttypes = ShiftType::all()->pluck('name', 'id')->toArray();
 
-    $needed_angel_types = collect(NeededAngelTypes_by_shift($shift_id))->pluck('count', 'angel_type_id')->toArray();
+    $needed_angel_types = collect(NeededAngelTypes_by_shift($shift))->pluck('count', 'angel_type_id')->toArray();
     foreach (array_keys($angeltypes) as $angeltype_id) {
         if (!isset($needed_angel_types[$angeltype_id])) {
             $needed_angel_types[$angeltype_id] = 0;

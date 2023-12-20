@@ -722,8 +722,11 @@ msgstr "Schichtwechsel-Stunden"
 msgid "Create a shift over midnight."
 msgstr "Erstelle Schichten über Mitternacht"
 
-msgid "Take needed angels from location settings"
-msgstr "Übernehme benötigte Engel von den Ort-Einstellungen"
+msgid "Copy needed angels from location settings"
+msgstr "Kopiere benötigte Engel von den Ort-Einstellungen"
+
+msgid "Copy needed angels from shift type settings"
+msgstr "Kopiere benötigte Engel von den Schichttyp-Einstellungen"
 
 msgid "The following angels are needed"
 msgstr "Die folgenden Engel werden benötigt"
@@ -1447,6 +1450,9 @@ msgstr "Programm URL (schedule.xml)"
 msgid "schedule.shift-type"
 msgstr "Schichttyp"
 
+msgid "schedule.needed-from-shift-type"
+msgstr "Engeltypen vom Schichttyp laden (sonst vom Ort)"
+
 msgid "schedule.minutes-before"
 msgstr "Minuten vor Talk beginn hinzufügen"
 
@@ -1934,7 +1940,7 @@ msgid "location.map_url"
 msgstr "Karte"
 
 msgid "location.required_angels"
-msgstr "Benötigte Engel"
+msgstr "Benötigte Engel (bei Fahrplan import)"
 
 msgid "location.map_url.info"
 msgstr "Die Karte wird auf der Ort-Seite als iframe eingebettet."
@@ -1959,6 +1965,9 @@ msgstr "Schichttyp erstellen"
 
 msgid "shifttype.delete.title"
 msgstr "Schichttyp \"%s\" löschen"
+
+msgid "shifttype.required_angels"
+msgstr "Benötigte Engel (bei Fahrplan import)"
 
 msgid "event.day"
 msgstr "Tag %1$d"

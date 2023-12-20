@@ -17,6 +17,7 @@ class ScheduleTest extends ModelTest
         'url'            => 'https://foo.bar/schedule.xml',
         'name'           => 'Testing',
         'shift_type'     => 1,
+        'needed_from_shift_type' => false,
         'minutes_before' => 10,
         'minutes_after'  => 10,
     ];

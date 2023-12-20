@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Models\Shifts;
 
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -11,6 +12,19 @@ use Engelsystem\Test\Unit\Models\ModelTest;
 
 class ShiftTypeTest extends ModelTest
 {
+    /**
+     * @covers \Engelsystem\Models\Shifts\ShiftType::neededAngelTypes
+     */
+    public function testNeededAngelTypes(): void
+    {
+        $shiftType = new ShiftType(['name' => 'Another type', 'description' => '']);
+        $shiftType->save();
+
+        NeededAngelType::factory()->create(['shift_type_id' => 1]);
+
+        $this->assertCount(1, ShiftType::find(1)->neededAngelTypes);
+    }
+
     /**
      * @covers \Engelsystem\Models\Shifts\ShiftType::schedules
      */

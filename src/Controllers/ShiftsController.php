@@ -78,6 +78,10 @@ class ShiftsController extends BaseController
                 $query->on('needed_angel_types.shift_id', '=', 'shifts.id')
                     ->whereNull('schedule_shift.shift_id');
             })
+            ->leftJoin('needed_angel_types AS nast', function (JoinClause $query): void {
+                $query->on('nast.shift_type_id', '=', 'shifts.shift_type_id')
+                    ->whereNotNull('schedule_shift.shift_id');
+            })
             ->leftJoin('needed_angel_types AS nas', function (JoinClause $query): void {
                 $query->on('nas.location_id', '=', 'shifts.location_id')
                     ->whereNotNull('schedule_shift.shift_id');
@@ -88,6 +92,7 @@ class ShiftsController extends BaseController
             ->where(function (EloquentBuilder $query) use ($angelTypes): void {
                 $query
                     ->whereIn('needed_angel_types.angel_type_id', $angelTypes)
+                    ->orWhereIn('nast.angel_type_id', $angelTypes)
                     ->orWhereIn('nas.angel_type_id', $angelTypes);
             })
             // Starts soon
@@ -98,7 +103,7 @@ class ShiftsController extends BaseController
                     ->from('shift_entries')
                     ->selectRaw('COUNT(*)')
                     ->where(fn(Builder $query) => $this->queryShiftEntries($query));
-            }, '<', Shift::query()->raw('COALESCE(needed_angel_types.count, nas.count)'))
+            }, '<', Shift::query()->raw('COALESCE(needed_angel_types.count, nast.count, nas.count)'))
             ->limit(10)
             ->orderBy('start');
 

@@ -17,11 +17,12 @@ class NeededAngelTypeFactory extends Factory
 
     public function definition(): array
     {
-        $forLocation = $this->faker->boolean();
+        $type = $this->faker->numberBetween(0, 2);
 
         return [
-            'location_id'   => $forLocation ? Location::factory() : null,
-            'shift_id'      => $forLocation ? null : Shift::factory(),
+            'location_id'   => $type == 0 ? Location::factory() : null,
+            'shift_id'      => $type == 1 ? null : Shift::factory(),
+            'shift_type_id' => $type == 2 ? null : Shift::factory(),
             'angel_type_id' => AngelType::factory(),
             'count'         => $this->faker->numberBetween(1, 5),
         ];

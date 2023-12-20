@@ -47,19 +47,36 @@ function stats_hours_to_work(ShiftsFilter $filter = null)
                 * TIMESTAMPDIFF(MINUTE, `shifts`.`start`, `shifts`.`end`) / 60 AS `count`
             FROM `shifts`
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-            WHERE `shifts`.`end` >= NOW()
+            WHERE shifts.`end` >= NOW()
             AND s.shift_id IS NULL
             ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
 
             UNION ALL
 
+            /* By shift type */
+            SELECT
+                (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`shift_type_id`=`shifts`.`shift_type_id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+                * TIMESTAMPDIFF(MINUTE, `shifts`.`start`, `shifts`.`end`) / 60 AS `count`
+            FROM `shifts`
+            LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
+            LEFT JOIN schedules AS se on s.schedule_id = se.id
+            WHERE shifts.`end` >= NOW()
+            AND NOT s.shift_id IS NULL
+            AND se.needed_from_shift_type = TRUE
+            ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
+
+            UNION ALL
+
+            /* By location */
             SELECT
                 (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`location_id`=`shifts`.`location_id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
                 * TIMESTAMPDIFF(MINUTE, `shifts`.`start`, `shifts`.`end`) / 60 AS `count`
             FROM `shifts`
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-            WHERE shifts.`end` >=  NOW()
+            LEFT JOIN schedules AS se on s.schedule_id = se.id
+            WHERE shifts.`end` >= NOW()
             AND NOT s.shift_id IS NULL
+            AND se.needed_from_shift_type = FALSE
             ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
         ) AS `tmp`
         '
@@ -90,7 +107,8 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                         AND `needed_angel_types`.`shift_id`=`shifts`.`id`
                         ' . ($filter ? 'AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     ) - (
-                    SELECT COUNT(*) FROM `shift_entries`
+                    SELECT COUNT(*)
+                    FROM `shift_entries`
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `shift_entries`.`shift_id`=`shifts`.`id`
@@ -107,6 +125,38 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
 
             UNION ALL
 
+            /* By shift type */
+            SELECT
+                GREATEST(0,
+                    (
+                    SELECT SUM(needed_angel_types.`count`)
+                    FROM `needed_angel_types`
+                    JOIN `angel_types` ON `angel_types`.`id`=`needed_angel_types`.`angel_type_id`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
+                        AND `needed_angel_types`.`shift_type_id`=`shifts`.`shift_type_id`
+                        ' . ($filter ? 'AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                    ) - (
+                    SELECT COUNT(*)
+                    FROM `shift_entries`
+                    JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
+                        AND `shift_entries`.`shift_id`=`shifts`.`id`
+                        AND `freeloaded`=0
+                        ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                    )
+                )
+                AS `count`
+            FROM `shifts`
+            LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
+            LEFT JOIN schedules AS se on s.schedule_id = se.id
+            WHERE shifts.`end` > NOW() AND shifts.`start` < ?
+            AND NOT s.shift_id IS NULL
+            AND se.needed_from_shift_type = TRUE
+            ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
+
+            UNION ALL
+
+            /* By location */
             SELECT
                 GREATEST(0,
                     (
@@ -129,10 +179,13 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                 AS `count`
             FROM `shifts`
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-            WHERE `end` > NOW() AND `start` < ?
+            LEFT JOIN schedules AS se on s.schedule_id = se.id
+            WHERE shifts.`end` > NOW() AND shifts.`start` < ?
             AND NOT s.shift_id IS NULL
+            AND se.needed_from_shift_type = FALSE
             ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
         ) AS `tmp`', [
+        $in3hours,
         $in3hours,
         $in3hours,
     ]);
@@ -189,6 +242,37 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
 
             UNION ALL
 
+            /* By shift type */
+            SELECT
+                GREATEST(0,
+                    (
+                    SELECT SUM(needed_angel_types.`count`)
+                    FROM `needed_angel_types`
+                    JOIN `angel_types` ON `angel_types`.`id`=`needed_angel_types`.`angel_type_id`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
+                        AND `needed_angel_types`.`shift_type_id`=`shifts`.`shift_type_id`
+                        ' . ($filter ? 'AND angel_types.id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                    ) - (
+                    SELECT COUNT(*) FROM `shift_entries`
+                    JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
+                    WHERE `angel_types`.`show_on_dashboard`=TRUE
+                        AND `shift_entries`.`shift_id`=`shifts`.`id`
+                        AND shift_entries.`freeloaded`=0
+                        ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
+                    )
+                )
+                AS `count`
+            FROM `shifts`
+            LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
+            LEFT JOIN schedules AS se on s.schedule_id = se.id
+            WHERE shifts.`end` > ? AND shifts.`start` < ?
+            AND NOT s.shift_id IS NULL
+            AND se.needed_from_shift_type = TRUE
+            ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
+
+            UNION ALL
+
+            /* By location */
             SELECT
                 GREATEST(0,
                     (
@@ -203,17 +287,21 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `shift_entries`.`shift_id`=`shifts`.`id`
-                        AND `freeloaded`=0
+                        AND shift_entries.`freeloaded`=0
                         ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
                 AS `count`
             FROM `shifts`
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-            WHERE `end` > ? AND `start` < ?
+            LEFT JOIN schedules AS se on s.schedule_id = se.id
+            WHERE shifts.`end` > ? AND shifts.`start` < ?
             AND NOT s.shift_id IS NULL
+            AND se.needed_from_shift_type = FALSE
             ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
         ) AS `tmp`', [
+        $night_start,
+        $night_end,
         $night_start,
         $night_end,
         $night_start,

@@ -11,6 +11,7 @@ use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Validation\Validator;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\Shifts\Shift;
@@ -18,7 +19,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ShiftTypeControllerTest extends ControllerTest
+class ShiftTypesControllerTest extends ControllerTest
 {
     protected Redirector|MockObject $redirect;
 
@@ -82,6 +83,7 @@ class ShiftTypeControllerTest extends ControllerTest
                 $this->assertEquals($shifttype->id, $data['shifttype']?->id);
                 $this->assertNotEmpty($data['shifttype']?->name);
                 $this->assertNotEmpty($data['shifttype']?->description);
+                $this->assertNotNull($data['angel_types']);
                 return $this->response;
             });
 
@@ -104,6 +106,7 @@ class ShiftTypeControllerTest extends ControllerTest
                 $this->assertEquals('admin/shifttypes/edit', $view);
                 $this->assertArrayHasKey('shifttype', $data);
                 $this->assertNull($data['shifttype']);
+                $this->assertNotNull($data['angel_types']);
                 return $this->response;
             });
 
@@ -115,6 +118,8 @@ class ShiftTypeControllerTest extends ControllerTest
      */
     public function testSave(): void
     {
+        $angelType = AngelType::factory(2)->create()->first();
+
         /** @var ShiftTypesController $controller */
         $controller = $this->app->make(ShiftTypesController::class);
         $controller->setValidator(new Validator());
@@ -124,6 +129,8 @@ class ShiftTypeControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody([
             'name' => 'Test shift type',
             'description' => 'Something',
+            'angel_type_' . $angelType->id => 3,
+            'angel_type_' . $angelType->id + 1 => 0,
         ]);
 
         $controller->save($this->request);
@@ -131,6 +138,7 @@ class ShiftTypeControllerTest extends ControllerTest
         $this->assertTrue($this->log->hasInfoThatContains('Updated shift type'));
         $this->assertHasNotification('shifttype.edit.success');
         $this->assertCount(1, ShiftType::whereName('Test shift type')->get());
+        $this->assertCount(1, ShiftType::first()->neededAngelTypes);
     }
 
     /**

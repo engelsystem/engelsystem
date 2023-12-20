@@ -34,6 +34,10 @@
                 'selected': schedule ? schedule.shift_type : '',
             }) }}
 
+            {{ f.checkbox('needed_from_shift_type', __('schedule.needed-from-shift-type'), {
+                'checked': schedule ? schedule.needed_from_shift_type : '',
+            }) }}
+
             {{ f.input('minutes_before', __('schedule.minutes-before'), {
                 'type': 'number',
                 'required': true,
