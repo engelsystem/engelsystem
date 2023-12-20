@@ -118,6 +118,7 @@ class ImportSchedule extends BaseController
             'name'           => 'required',
             'url'            => 'required',
             'shift_type'     => 'required|int',
+            'needed_from_shift_type' => 'optional|checked',
             'minutes_before' => 'int',
             'minutes_after'  => 'int',
         ]);
@@ -129,17 +130,19 @@ class ImportSchedule extends BaseController
         $schedule->name = $data['name'];
         $schedule->url = $data['url'];
         $schedule->shift_type = $data['shift_type'];
+        $schedule->needed_from_shift_type = (bool) $data['needed_from_shift_type'];
         $schedule->minutes_before = $data['minutes_before'];
         $schedule->minutes_after = $data['minutes_after'];
 
         $schedule->save();
 
         $this->log->info(
-            'Schedule {name}: Url {url}, Shift Type {shift_type}, minutes before/after {before}/{after}',
+            'Schedule {name}: Url {url}, Shift Type {shift_type}, ({need}), minutes before/after {before}/{after}',
             [
                 'name'       => $schedule->name,
                 'url'        => $schedule->name,
                 'shift_type' => $schedule->shift_type,
+                'need'       => $schedule->needed_from_shift_type ? 'from shift type' : 'from room',
                 'before'     => $schedule->minutes_before,
                 'after'      => $schedule->minutes_after,
             ]
@@ -169,8 +172,8 @@ class ImportSchedule extends BaseController
                 ''
             );
 
-            $this->fireDeleteShiftEntryEvents($event);
-            $this->deleteEvent($event);
+            $this->fireDeleteShiftEntryEvents($event, $schedule);
+            $this->deleteEvent($event, $schedule);
         }
         $schedule->delete();
 
@@ -271,13 +274,14 @@ class ImportSchedule extends BaseController
                 $shiftType,
                 $locations
                     ->where('name', $event->getRoom()->getName())
-                    ->first()
+                    ->first(),
+                $scheduleUrl
             );
         }
 
         foreach ($deleteEvents as $event) {
-            $this->fireDeleteShiftEntryEvents($event);
-            $this->deleteEvent($event);
+            $this->fireDeleteShiftEntryEvents($event, $scheduleUrl);
+            $this->deleteEvent($event, $scheduleUrl);
         }
 
         $scheduleUrl->touch();
@@ -296,7 +300,7 @@ class ImportSchedule extends BaseController
         $this->log('Created schedule location "{location}"', ['location' => $room->getName()]);
     }
 
-    protected function fireDeleteShiftEntryEvents(Event $event): void
+    protected function fireDeleteShiftEntryEvents(Event $event, ScheduleUrl $schedule): void
     {
         $shiftEntries = $this->db
             ->table('shift_entries')
@@ -310,6 +314,7 @@ class ImportSchedule extends BaseController
             ->join('angel_types', 'angel_types.id', 'shift_entries.angel_type_id')
             ->join('shift_types', 'shift_types.id', 'shifts.shift_type_id')
             ->where('schedule_shift.guid', $event->getGuid())
+            ->where('schedule_shift.schedule_id', $schedule->id)
             ->get();
 
         foreach ($shiftEntries as $shiftEntry) {
@@ -359,13 +364,13 @@ class ImportSchedule extends BaseController
         );
     }
 
-    protected function updateEvent(Event $event, int $shiftTypeId, Location $location): void
+    protected function updateEvent(Event $event, int $shiftTypeId, Location $location, ScheduleUrl $schedule): void
     {
         $user = auth()->user();
         $eventTimeZone = Carbon::now()->timezone;
 
         /** @var ScheduleShift $scheduleShift */
-        $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->first();
+        $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->where('schedule_id', $schedule->id)->first();
         $shift = $scheduleShift->shift;
         $shift->title = $event->getTitle();
         $shift->shift_type_id = $shiftTypeId;
@@ -388,10 +393,10 @@ class ImportSchedule extends BaseController
         );
     }
 
-    protected function deleteEvent(Event $event): void
+    protected function deleteEvent(Event $event, ScheduleUrl $schedule): void
     {
         /** @var ScheduleShift $scheduleShift */
-        $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->first();
+        $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->where('schedule_id', $schedule->id)->first();
         $shift = $scheduleShift->shift;
         $shift->delete();
 
@@ -509,10 +514,10 @@ class ImportSchedule extends BaseController
 
         $scheduleEventsGuidList = array_keys($scheduleEvents);
         $existingShifts = $this->getScheduleShiftsByGuid($scheduleUrl, $scheduleEventsGuidList);
-        foreach ($existingShifts as $shift) {
-            $guid = $shift->guid;
+        foreach ($existingShifts as $scheduleShift) {
+            $guid = $scheduleShift->guid;
             /** @var Shift $shift */
-            $shift = Shift::with('location')->find($shift->shift_id);
+            $shift = Shift::with('location')->find($scheduleShift->shift_id);
             $event = $scheduleEvents[$guid];
             $location = $locations->where('name', $event->getRoom()->getName())->first();
 
@@ -535,8 +540,8 @@ class ImportSchedule extends BaseController
         }
 
         $scheduleShifts = $this->getScheduleShiftsWhereNotGuid($scheduleUrl, $scheduleEventsGuidList);
-        foreach ($scheduleShifts as $shift) {
-            $event = $this->eventFromScheduleShift($shift);
+        foreach ($scheduleShifts as $scheduleShift) {
+            $event = $this->eventFromScheduleShift($scheduleShift);
             $deleteEvents[$event->getGuid()] = $event;
         }
 
@@ -545,8 +550,7 @@ class ImportSchedule extends BaseController
 
     protected function eventFromScheduleShift(ScheduleShift $scheduleShift): Event
     {
-        /** @var Shift $shift */
-        $shift = Shift::with('location')->find($scheduleShift->shift_id);
+        $shift = $scheduleShift->shift;
         $duration = $shift->start->diff($shift->end);
 
         return new Event(

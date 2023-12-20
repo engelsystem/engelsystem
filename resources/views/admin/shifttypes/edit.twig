@@ -23,6 +23,27 @@
                     'info': __('form.markdown')
                 }) }}
             </div>
+
+            <div class="col-lg-6">
+                <h4>{{ __('shifttype.required_angels') }}</h4>
+                {% for types in angel_types.chunk(3) %}
+                    <div class="row">
+                        {% for angel_type in types %}
+                            {% set needed = shifttype
+                                ? shifttype.neededAngelTypes.where('angel_type_id', angel_type.id).first()
+                                : null %}
+                            {% set name = 'angel_type_' ~ angel_type.id %}
+                            <div class="col-md-4">
+                                {{ f.number(name, angel_type.name, {
+                                    'value': f.formData(name, needed ? needed.count : 0),
+                                    'min': 0,
+                                    'step': 1,
+                                }) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
 
         <div class="col-md-12">

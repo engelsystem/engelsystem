@@ -15,6 +15,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string                     $name
  * @property string                     $description
  *
+ * @property-read Collection|NeededAngelType[] $neededAngelTypes
  * @property-read Collection|Schedule[] $schedules
  * @property-read Collection|Shift[]    $shifts
  *
@@ -31,6 +32,11 @@ class ShiftType extends BaseModel
         'name',
         'description',
     ];
+
+    public function neededAngelTypes(): HasMany
+    {
+        return $this->hasMany(NeededAngelType::class);
+    }
 
     public function schedules(): HasMany
     {

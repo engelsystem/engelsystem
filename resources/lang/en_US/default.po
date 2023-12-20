@@ -151,6 +151,9 @@ msgstr "Schedule URL (schedule.xml)"
 msgid "schedule.shift-type"
 msgstr "Shift type"
 
+msgid "schedule.needed-from-shift-type"
+msgstr "Load angel types from shift type (else from location)"
+
 msgid "schedule.minutes-before"
 msgstr "Add minutes before talk begins"
 
@@ -664,7 +667,7 @@ msgid "location.map_url"
 msgstr "Map"
 
 msgid "location.required_angels"
-msgstr "Required angels"
+msgstr "Required angels (on schedule import)"
 
 msgid "location.map_url.info"
 msgstr "The map will be embedded on the location page as an iframe."
@@ -689,6 +692,9 @@ msgstr "Create shift type"
 
 msgid "shifttype.delete.title"
 msgstr "Delete shift type \"%s\""
+
+msgid "shifttype.required_angels"
+msgstr "Required angels (on schedule import)"
 
 msgid "event.day"
 msgstr "Day %1$d"

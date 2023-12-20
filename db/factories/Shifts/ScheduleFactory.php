@@ -18,6 +18,7 @@ class ScheduleFactory extends Factory
             'name'           => $this->faker->unique()->words(4, true),
             'url'            => $this->faker->parse('https://{{safeEmailDomain}}/{{slug}}.xml'),
             'shift_type'     => $this->faker->numberBetween(1, 5),
+            'needed_from_shift_type' => $this->faker->boolean(.2),
             'minutes_before' => 15,
             'minutes_after'  => 15,
         ];

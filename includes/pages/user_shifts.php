@@ -126,7 +126,9 @@ function load_locations(bool $onlyWithActiveShifts = false)
 
         $locationIdsFromShift = Shift::query()
             ->leftJoin('needed_angel_types', 'shifts.id', 'needed_angel_types.shift_id')
-            ->whereNotNull('needed_angel_types.shift_id')
+            ->leftJoin('needed_angel_types AS nast', 'shifts.shift_type_id', 'nast.shift_type_id')
+            ->whereNotNull('needed_angel_types.id')
+            ->orWhereNotNull('nast.id')
             ->select('shifts.location_id');
 
         $locations->whereIn('id', $locationIdsFromAngelType)

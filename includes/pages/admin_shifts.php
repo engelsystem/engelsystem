@@ -171,7 +171,9 @@ function admin_shifts()
         }
 
         if ($request->has('angelmode')) {
-            if ($request->input('angelmode') == 'location') {
+            if ($request->input('angelmode') == 'shift_type') {
+                $angelmode = 'shift_type';
+            } elseif ($request->input('angelmode') == 'location') {
                 $angelmode = 'location';
             } elseif ($request->input('angelmode') == 'manually') {
                 foreach ($types as $type) {
@@ -203,7 +205,11 @@ function admin_shifts()
 
         // Alle Eingaben in Ordnung
         if ($valid) {
-            if ($angelmode == 'location') {
+            if ($angelmode == 'shift_type') {
+                $needed_angel_types = NeededAngelType::whereShiftTypeId($shifttype_id)
+                        ->pluck('count', 'angel_type_id')
+                        ->toArray() + $needed_angel_types;
+            } elseif ($angelmode == 'location') {
                 $needed_angel_types = NeededAngelType::whereLocationId($lid)
                         ->pluck('count', 'angel_type_id')
                         ->toArray() + $needed_angel_types;
@@ -541,7 +547,13 @@ function admin_shifts()
                         form_info(__('Needed angels')),
                         form_radio(
                             'angelmode',
-                            __('Take needed angels from location settings'),
+                            __('Copy needed angels from shift type settings'),
+                            $angelmode == 'shift_type',
+                            'shift_type'
+                        ),
+                        form_radio(
+                            'angelmode',
+                            __('Copy needed angels from location settings'),
                             $angelmode == 'location',
                             'location'
                         ),

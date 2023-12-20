@@ -15,16 +15,19 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property int             $id
  * @property int|null        $location_id
  * @property int|null        $shift_id
+ * @property int|null        $shift_type_id
  * @property int             $angel_type_id
  * @property int             $count
  *
  * @property-read Location|null  $location
  * @property-read Shift|null $shift
+ * @property-read ShiftType|null $shiftType
  * @property-read AngelType  $angelType
  *
  * @method static QueryBuilder|NeededAngelType[] whereId($value)
  * @method static QueryBuilder|NeededAngelType[] whereLocationId($value)
  * @method static QueryBuilder|NeededAngelType[] whereShiftId($value)
+ * @method static QueryBuilder|NeededAngelType[] whereShiftTypeId($value)
  * @method static QueryBuilder|NeededAngelType[] whereAngelTypeId($value)
  * @method static QueryBuilder|NeededAngelType[] whereCount($value)
  */
@@ -36,12 +39,14 @@ class NeededAngelType extends BaseModel
     protected $attributes = [ // phpcs:ignore
         'location_id'  => null,
         'shift_id' => null,
+        'shift_type_id' => null,
     ];
 
     /** @var array<string> */
     protected $fillable = [ // phpcs:ignore
         'location_id',
         'shift_id',
+        'shift_type_id',
         'angel_type_id',
         'count',
     ];
@@ -54,6 +59,11 @@ class NeededAngelType extends BaseModel
     public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class);
+    }
+
+    public function shiftType(): BelongsTo
+    {
+        return $this->belongsTo(ShiftType::class);
     }
 
     public function angelType(): BelongsTo

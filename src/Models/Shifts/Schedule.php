@@ -18,6 +18,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string                                       $name
  * @property string                                       $url
  * @property int                                          $shift_type
+ * @property bool                                         $needed_from_shift_type
  * @property int                                          $minutes_before
  * @property int                                          $minutes_after
  * @property Carbon                                       $created_at
@@ -31,6 +32,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Schedule[] whereName($value)
  * @method static QueryBuilder|Schedule[] whereUrl($value)
  * @method static QueryBuilder|Schedule[] whereShiftType($value)
+ * @method static QueryBuilder|Schedule[] whereNeededFromShiftType($value)
  * @method static QueryBuilder|Schedule[] whereMinutesBefore($value)
  * @method static QueryBuilder|Schedule[] whereMinutesAfter($value)
  * @method static QueryBuilder|Schedule[] whereCreatedAt($value)
@@ -46,6 +48,7 @@ class Schedule extends BaseModel
     /** @var array<string> */
     protected $casts = [ // phpcs:ignore
         'shift_type'     => 'integer',
+        'needed_from_shift_type' => 'boolean',
         'minutes_before' => 'integer',
         'minutes_after'  => 'integer',
     ];
@@ -55,6 +58,7 @@ class Schedule extends BaseModel
         'name',
         'url',
         'shift_type',
+        'needed_from_shift_type',
         'minutes_before',
         'minutes_after',
     ];
