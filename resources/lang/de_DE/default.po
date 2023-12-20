@@ -432,30 +432,6 @@ msgstr ""
 msgid "%s (%s as %s) in %s, %s - %s"
 msgstr "%s (%s als %s) in %s, %s - %s"
 
-msgid "A Shift you are registered on has changed:"
-msgstr "Eine deiner Schichten hat sich geändert:"
-
-msgid "* Shift type changed from %s to %s"
-msgstr "* Schichttyp von %s in %s geändert"
-
-msgid "* Shift title changed from %s to %s"
-msgstr "* Schicht Titel von %s nach %s geändert"
-
-msgid "* Shift Start changed from %s to %s"
-msgstr "* Schicht Beginn von %s nach %s geändert"
-
-msgid "* Shift End changed from %s to %s"
-msgstr "* Schicht Ende von %s nach %s geändert"
-
-msgid "* Shift Location changed from %s to %s"
-msgstr "* Schicht Ort von %s to %s geändert"
-
-msgid "The updated Shift:"
-msgstr "Die aktualisierte Schicht:"
-
-msgid "Your Shift has changed"
-msgstr "Deine Schicht hat sich geändert"
-
 msgid "You have been assigned to a Shift:"
 msgstr "Du wurdest in eine Schicht eingetragen:"
 
@@ -2034,3 +2010,27 @@ msgstr "Wenn du dich für Schichten eintragen willst, komm gerne im Himmel vorbe
 
 msgid "design.title"
 msgstr "Design"
+
+msgid "notification.shift.updated.introduction"
+msgstr "Eine deiner Schichten wurde aktualisiert:"
+
+msgid "notification.shift.updated.type"
+msgstr "Schichttyp wurde von %s in %s geändert"
+
+msgid "notification.shift.updated.title"
+msgstr "Schicht Titel wurde von %s in %s geändert"
+
+msgid "notification.shift.updated.description"
+msgstr "Schicht Beschreibung wurde geändert"
+
+msgid "notification.shift.updated.start"
+msgstr "Schicht Start wurde von %s zu %s geändert"
+
+msgid "notification.shift.updated.end"
+msgstr "Schicht Ende wurde von %s zu %s geändert"
+
+msgid "notification.shift.updated.location"
+msgstr "Schicht Ort wurde von %s nach %s verschoben"
+
+msgid "notification.shift.updated.shift"
+msgstr "Die aktualisierte Schicht:"

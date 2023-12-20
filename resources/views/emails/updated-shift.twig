@@ -1,0 +1,42 @@
+{% extends "emails/mail.twig" %}
+
+{% block introduction %}
+{{ __('notification.shift.updated.introduction') }}
+{% endblock %}
+
+{% block message %}
+{%- if oldShift.shift_type_id != shift.shift_type_id -%}
+* {{ __('notification.shift.updated.type', [oldShift.shiftType.name, shift.shiftType.name]) }}
+{% endif %}
+{%- if oldShift.title != shift.title -%}
+* {{ __('notification.shift.updated.title', [oldShift.title, shift.title]) }}
+{% endif %}
+{%- if oldShift.description != shift.description -%}
+* {{ __('notification.shift.updated.description', [oldShift.description, shift.description]) }}
+{% endif %}
+{%- if oldShift.start != shift.start -%}
+* {{ __(
+    'notification.shift.updated.start',
+    [oldShift.start.format(__('general.datetime')), shift.start.format(__('general.datetime'))]
+) }}
+{% endif %}
+{%- if oldShift.end != shift.end -%}
+* {{ __(
+    'notification.shift.updated.end',
+    [oldShift.end.format(__('general.datetime')), shift.end.format(__('general.datetime'))]
+) }}
+{% endif %}
+{%- if oldShift.location_id != shift.location_id -%}
+* {{ __('notification.shift.updated.location', [oldShift.location.name, shift.location.name]) }}
+{% endif %}
+
+{{ __('notification.shift.updated.shift') }}
+
+{{ shift.shiftType.name }}
+{{ shift.title }}
+{{ shift.description }}
+{{ shift.start.format(__('general.datetime')) }} - {{ shift.end.format(__('H:i')) }}
+{{ shift.location.name }}
+
+{{ url('/shifts', {'action': 'view', 'shift_id': shift.id})|raw }}
+{% endblock %}
