@@ -29,6 +29,7 @@ function admin_user()
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $user_info_edit = auth()->can('user.info.edit');
     $user_edit_shirt = auth()->can('user.edit.shirt');
+    $user_edit = auth()->can('user.edit');
 
     if (!$request->has('id')) {
         throw_redirect(users_link());
@@ -60,7 +61,8 @@ function admin_user()
         $html .= '<tr><td>' . "\n";
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>' . __('general.nick') . '</td><td>'
-            . '<input size="40" name="eNick" value="' . htmlspecialchars($user_source->name) . '" class="form-control" maxlength="24">'
+            . '<input size="40" name="eNick" value="' . htmlspecialchars($user_source->name)
+            . '" class="form-control" maxlength="24" ' . ($user_edit ? '' : 'disabled') . '>'
             . '</td></tr>' . "\n";
         $html .= '  <tr><td>' . __('Last login') . '</td><td><p class="help-block">'
             . ($user_source->last_login_at ? $user_source->last_login_at->format(__('general.datetime')) : '-')
@@ -278,14 +280,19 @@ function admin_user()
             case 'save':
                 $user_source = User::find($user_id);
 
+                $changed_email = false;
                 if ($user_source->settings->email_human) {
+                    $changed_email = $user_source->email !== $request->postData('eemail');
                     $user_source->email = $request->postData('eemail');
                 }
 
                 $nick = trim($request->get('eNick'));
                 $nickValid = (new Username())->validate($nick);
 
-                if ($nickValid) {
+                $changed_nick = false;
+                $old_nick = $user_source->name;
+                if ($nickValid && $user_edit) {
+                    $changed_nick = $user_source->name !== $nick;
                     $user_source->name = $nick;
                 }
                 $user_source->save();
@@ -321,7 +328,11 @@ function admin_user()
                 $user_source->state->save();
 
                 engelsystem_log(
-                    'Updated user: ' . $user_source->name . ' (' . $user_source->id . ')'
+                    'Updated user: ' . ($changed_nick
+                        ? ('nick modified form ' . $old_nick . ' to ' . $user_source->name)
+                        : $user_source->name)
+                    . ' (' . $user_source->id . ')'
+                    . ($changed_email ? ', email modified' : '')
                     . ($goodie_tshirt ? ', t-shirt-size: ' . $user_source->personalData->shirt_size : '')
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
