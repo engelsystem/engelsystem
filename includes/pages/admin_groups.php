@@ -42,7 +42,10 @@ function admin_groups()
                         '/admin-groups',
                         ['action' => 'edit', 'id' => $group->id]
                     ),
-                    icon('pencil') . __('edit'),
+                    icon('pencil'),
+                    '',
+                    '',
+                    __('form.edit'),
                     'btn-sm'
                 ),
             ];
@@ -79,7 +82,7 @@ function admin_groups()
                         );
                     }
 
-                    $privileges_form[] = form_submit('submit', __('form.save'));
+                    $privileges_form[] = form_submit('submit', icon('save') . __('form.save'));
                     $html .= page_with_title(__('Edit group') . ' ' . htmlspecialchars($group->name), [
                         form(
                             $privileges_form,

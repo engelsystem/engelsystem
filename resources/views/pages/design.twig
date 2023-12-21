@@ -159,6 +159,68 @@
                 </p>
             </div>
         </div>
+            <div class="col-6 col-md-12 mb-4">
+            <span id="icons" class="ref-id"></span>
+            <h3>Icons <a href="#icons" class="ref-link">{{ m.icon('link') }}</a></h3>
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4">
+                    cancel: {{ m.icon('x-lg') }}<br>
+                    delete: {{ m.icon('trash', 'danger') }}<br>
+                    edit: {{ m.icon('pencil') }}<br>
+                    preview: {{ m.icon('eye','info') }}<br>
+                    reset: {{ m.icon('arrow-counterclockwise') }}<br>
+                    save: {{ m.icon('save', 'primary') }}<br>
+                    <br>
+                    {{ f.button('Cancel', {'icon_left': 'x-lg'}) }}<br class="mb-3">
+                    {{ f.delete('Delete') }}<br class="mb-3">
+                    {{ f.button('Edit', {'icon_left': 'pencil'}) }}<br class="mb-3">
+                    {{ f.button('Reset', {'icon_left': 'arrow-counterclockwise'}) }}<br class="mb-3">
+                    {{ f.submit('Save', {'icon_left': 'save'}) }}<br class="mb-3">
+                    {{ f.button('View', {'icon_left': 'eye', 'btn_type': 'info'}) }}
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    angel: {{ m.angel() }}<br>
+                    dashboard: {{ m.icon('speedometer2') }}<br>
+                    documentation: {{ m.icon('question-circle') }}<br>
+                    drivers license / ifsg: {{ m.icon('card-checklist') }}<br>
+                    form required: {{ f.entry_required() }}<br>
+                    heading add / add anything else: {{ m.icon('plus-lg') }}<br>
+                    heading back: {{ m.icon('chevron-left') }}<br>
+                    info: {{ m.icon('info-circle') }} / {{ m.icon('info-circle-fill', 'info') }}<br>
+                    info hidden: {{ m.icon('eye-slash') }}<br>
+                    language: {{ m.icon('translate') }}<br>
+                    location: {{ m.icon('pin-map-fill') }}<br>
+                    remove / substract: {{ m.icon('dash-lg') }}<br>
+                    requires introduction: {{ m.icon('mortarboard-fill') }}<br>
+                    search: {{ m.icon('search') }}<br>
+                    settings: {{ m.icon('gear-fill') }}<br>
+                    sign off / leave: {{ m.icon('box-arrow-right') }}<br>
+                    sign up / import: {{ m.icon('box-arrow-in-right') }}<br>
+                    sign up allowed: {{ m.icon('pencil-square') }}<br>
+                    yes / no: {{ m.iconBool(true) }} / {{ m.iconBool(false) }}<br>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    angeltypes: {{ m.icon('person-lines-fill') }}<br>
+                    arrived: {{ m.icon('house') }}<br>
+                    comment: {{ m.icon('chat-left-text') }}<br>
+                    email: {{ m.icon('envelope') }}<br>
+                    iCal: {{ m.icon('calendar-week') }}<br>
+                    json export: {{ m.icon('braces') }}<br>
+                    lists: {{ m.icon('list') }}<br>
+                    logout: {{ m.icon('box-arrow-left') }}<br>
+                    message: {{ m.icon('envelope') }}<br>
+                    next shift: {{ m.icon('clock') }}<br>
+                    occupancy: {{ m.icon('person-fill-slash') }}<br>
+                    password: {{ m.icon('key-fill') }}<br>
+                    phone: {{ m.icon('phone') }}<br>
+                    T-shirt / goodie: {{ m.icon('person') }}<br>
+                    supporter: {{ m.icon('patch-check') }}<br>
+                    user settings: {{ m.icon('person-fill-gear') }}<br>
+                    voucher: {{ m.icon('valentine') }}<br>
+                    worklog / history: {{ m.icon('clock-history') }}
+                </div>
+            </div>
+        </div>
 
         <div class="row mb-4">
             <div class="col">

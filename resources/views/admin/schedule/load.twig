@@ -5,7 +5,7 @@
 {% block title %}{{ __('schedule.import.load.title') }}{% endblock %}
 
 {% block content_title %}
-    {{ m.button(m.icon('chevron-left'), url('/admin/schedule'), 'secondary', 'sm') }}
+    {{ m.button(m.icon('chevron-left'), url('/admin/schedule'), 'secondary', 'sm', __('general.back')) }}
     {{ block('title') }}
 {% endblock %}
 
@@ -28,7 +28,7 @@
             <h2>{{ __('schedule.import.shifts.delete') }}</h2>
             {{ _self.shiftsTable(shifts.delete) }}
 
-            {{ f.submit(__('form.import')) }}
+            {{ f.submit(__('form.import'), {'icon_left': 'box-arrow-in-down'}) }}
         </div>
     </form>
 {% endblock %}

@@ -14,7 +14,7 @@
                 {{ f.select('select_theme', __('settings.theme'), themes, {
                     'selected': current_theme,
                 }) }}
-                {{ f.submit(__('form.save')) }}
+                {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
             </div>
         </div>
     </form>

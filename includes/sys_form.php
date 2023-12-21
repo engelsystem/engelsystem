@@ -143,9 +143,9 @@ function form_info($label, $text = '')
  * @param string $buttonType
  * @return string
  */
-function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType = 'primary')
+function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType = 'primary', $title = '')
 {
-    $button = '<button class="btn btn-' . $buttonType . ($class ? ' ' . $class : '') . '" type="submit" name="' . $name . '">'
+    $button = '<button class="btn btn-' . $buttonType . ($class ? ' ' . $class : '') . '" type="submit" name="' . $name . '" title="' . $title . '">'
         . $label
         . '</button>';
 

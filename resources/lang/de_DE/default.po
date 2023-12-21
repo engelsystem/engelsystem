@@ -183,20 +183,14 @@ msgstr "Team %s"
 msgid "%s (not \"%s\")"
 msgstr "%s (kein \"%s\")"
 
-msgid "view"
-msgstr "ansehen"
+msgid "View"
+msgstr "Ansehen"
 
-msgid "edit"
-msgstr "bearbeiten"
+msgid "Leave"
+msgstr "Verlassen"
 
-msgid "delete"
-msgstr "löschen"
-
-msgid "leave"
-msgstr "verlassen"
-
-msgid "join"
-msgstr "mitmachen"
+msgid "Join"
+msgstr "Mitmachen"
 
 msgid "Event config"
 msgstr "Event Einstellungen"
@@ -497,11 +491,11 @@ msgstr ""
 msgid "Marked angels."
 msgstr "Engel wurden markiert."
 
-msgid "back"
-msgstr "zurück"
+msgid "general.back"
+msgstr "Zurück"
 
-msgid "apply"
-msgstr "anwenden"
+msgid "Apply"
+msgstr "Anwenden"
 
 msgid "Angel has been marked as active."
 msgstr "Engel wurde als aktiv markiert."
@@ -521,13 +515,13 @@ msgstr "Engel hat kein T-Shirt bekommen."
 msgid "set active"
 msgstr "setze aktiv"
 
-msgid "remove active"
+msgid "Remove active"
 msgstr "entferne aktiv"
 
-msgid "got T-shirt"
+msgid "Got T-shirt"
 msgstr "T-Shirt bekommen"
 
-msgid "remove T-shirt"
+msgid "Remove T-shirt"
 msgstr "entferne T-Shirt"
 
 msgid "Sum"
@@ -578,8 +572,8 @@ msgstr "Zurückgesetzt. Engel ist nicht angekommen."
 msgid "Angel has been marked as arrived."
 msgstr "Engel wurde als angekommen markiert."
 
-msgid "reset"
-msgstr "zurücksetzen"
+msgid "Reset"
+msgstr "Zurücksetzen"
 
 msgid "Planned arrival"
 msgstr "Geplanter Ankunftstag"
@@ -640,9 +634,6 @@ msgstr "Bitte einen Schichttyp wählen."
 
 msgid "Location"
 msgstr "Ort"
-
-msgid "Delete"
-msgstr "löschen"
 
 msgid "Answer questions"
 msgstr "Fragen beantworten"
@@ -931,14 +922,14 @@ msgstr ""
 "Du bist noch nicht für diesen Engeltyp bestätigt. Bitte gehe zur Einführung "
 "für %s um bestätigt zu werden."
 
-msgid "confirm"
-msgstr "bestätigen"
+msgid "Confirm"
+msgstr "Bestätigen"
 
-msgid "deny"
-msgstr "ablehnen"
+msgid "Deny"
+msgstr "Ablehnen"
 
-msgid "remove"
-msgstr "entfernen"
+msgid "Remove"
+msgstr "Entfernen"
 
 msgid "Driver"
 msgstr "Fahrer"
@@ -958,10 +949,10 @@ msgstr "Mitglieder"
 msgid "Add"
 msgstr "Hinzufügen"
 
-msgid "confirm all"
+msgid "Confirm all"
 msgstr "Alle bestätigen"
 
-msgid "deny all"
+msgid "Deny all"
 msgstr "Alle ablehnen"
 
 msgid "Membership"
@@ -1184,8 +1175,8 @@ msgstr "Schicht endet %c"
 msgid "Shift ended %c"
 msgstr "Schicht endete %c"
 
-msgid "sign off"
-msgstr "austragen"
+msgid "Sign off"
+msgstr "Austragen"
 
 msgid "Sum:"
 msgstr "Summe:"
@@ -1207,9 +1198,6 @@ msgstr "Dauer"
 
 msgid "Name & Workmates"
 msgstr "Name & Kollegen"
-
-msgid "Action"
-msgstr "Aktion"
 
 msgid "You have done enough."
 msgstr "Du hast genug gemacht."
@@ -1363,10 +1351,10 @@ msgstr "Ausgegebene Goodies"
 msgid "Goodie statistic"
 msgstr "Goodie Statistik"
 
-msgid "remove goodie"
-msgstr "entferne Goodie"
+msgid "Remove goodie"
+msgstr "Goodie entfernen"
 
-msgid "got goodie"
+msgid "Got goodie"
 msgstr "Goodie bekommen"
 
 msgid "Goodie?"
@@ -1829,6 +1817,9 @@ msgstr "Aktiv (erzwungen)"
 
 msgid "user.arrived"
 msgstr "Angekommen"
+
+msgid "user.arrive"
+msgstr "Ankommen"
 
 msgid "user.got_shirt"
 msgstr "T-Shirt bekommen"

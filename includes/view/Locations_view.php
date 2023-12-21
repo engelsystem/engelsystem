@@ -60,7 +60,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         $selected_tab = count($tabs) - 1;
     }
 
-    $link = button(url('/admin/locations'), icon('chevron-left'), 'btn-sm');
+    $link = button(url('/admin/locations'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
         (auth()->can('admin_locations') ? $link . ' ' : '') .
         icon('pin-map-fill') . htmlspecialchars($location->name),
@@ -69,7 +69,10 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         auth()->can('admin_locations') ? buttons([
             button(
                 url('/admin/locations/edit/' . $location->id),
-                icon('pencil') . __('edit')
+                icon('pencil'),
+                '',
+                '',
+                __('form.edit')
             ),
         ]) : '',
         $dect,

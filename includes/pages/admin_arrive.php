@@ -117,10 +117,15 @@ function admin_arrive()
             form_hidden('user', $usr->id),
             form_submit(
                 'submit',
-                $usr->state->arrived ? __('reset') : __('user.arrived'),
+                $usr->state->arrived
+                    ? icon('arrow-counterclockwise')
+                    : icon('house'),
                 'btn-sm',
                 true,
-                $usr->state->arrived ? 'secondary' : 'primary'
+                $usr->state->arrived ? 'secondary' : 'primary',
+                $usr->state->arrived
+                    ? __('Reset')
+                    : __('user.arrive')
             ),
         ]);
 
@@ -201,7 +206,7 @@ function admin_arrive()
         $msg . msg(),
         form([
             form_text('search', __('form.search'), $search),
-            form_submit('submit', __('form.search')),
+            form_submit('submit', icon('search') . __('form.search')),
         ], url('/admin-arrive')),
         table([
             'name'                            => __('general.name'),
@@ -209,7 +214,7 @@ function admin_arrive()
             'arrived'                         => __('Arrived?'),
             'rendered_arrival_date'           => __('Arrival date'),
             'rendered_planned_departure_date' => __('Planned departure'),
-            'actions'                         => '',
+            'actions'                         => __('general.actions'),
         ], $users_matched),
         div('row', [
             div('col-md-4', [

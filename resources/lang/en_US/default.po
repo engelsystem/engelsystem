@@ -531,6 +531,9 @@ msgstr "Active (forced)"
 msgid "user.arrived"
 msgstr "Arrived"
 
+msgid "user.arrive"
+msgstr "Arrive"
+
 msgid "user.got_shirt"
 msgstr "Got T-shirt"
 
@@ -848,3 +851,9 @@ msgstr ""
 
 msgid "form.recover"
 msgstr "Recover"
+
+msgid "general.actions"
+msgstr "Actions"
+
+msgid "general.back"
+msgstr "Back"
