@@ -219,6 +219,9 @@ msgstr "Es gibt eine neue News: %1$s"
 msgid "notification.news.new.text"
 msgstr "Du kannst sie dir unter %3$s anschauen."
 
+msgid "notification.news.updated"
+msgstr "Aktualisierte News: %s"
+
 msgid "notification.messages.new"
 msgstr "Neue private Nachricht von %s"
 

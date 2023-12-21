@@ -76,6 +76,7 @@ return [
         'message.created' => \Engelsystem\Events\Listener\Messages::class . '@created',
 
         'news.created' => \Engelsystem\Events\Listener\News::class . '@created',
+        'news.updated' => \Engelsystem\Events\Listener\News::class . '@updated',
 
         'oauth2.login' => \Engelsystem\Events\Listener\OAuth2::class . '@login',
 
