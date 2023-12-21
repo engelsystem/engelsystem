@@ -213,7 +213,10 @@ msgid "notification.news.new.introduction"
 msgstr "A new news is available: %1$s"
 
 msgid "notification.news.new.text"
-msgstr "You can watch it at %3$s"
+msgstr "You can view it at %3$s"
+
+msgid "notification.news.updated"
+msgstr "Updated News: %s"
 
 msgid "notification.messages.new"
 msgstr "New private message from %s"

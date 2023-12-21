@@ -86,6 +86,9 @@ msgstr "Bitte melde dich an."
 msgid "form.submit"
 msgstr "Absenden"
 
+msgid "form.send_notification"
+msgstr "Benachrichtigungen versenden"
+
 msgid "credits.source"
 msgstr "Quellcode"
 
@@ -1536,6 +1539,12 @@ msgstr "News \"%s\" löschen"
 
 msgid "news.comments.delete.title"
 msgstr "Kommentar \"%s\" löschen"
+
+msgid "notification.news.updated.introduction"
+msgstr "Die News %1$s wurde aktualisiert"
+
+msgid "notification.news.updated.text"
+msgstr "Du kannst sie dir unter %3$s anschauen."
 
 msgid "form.search"
 msgstr "Suchen"

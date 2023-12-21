@@ -22,6 +22,9 @@ msgstr "Your password is incorrect. Please try it again."
 msgid "form.submit"
 msgstr "Submit"
 
+msgid "form.send_notification"
+msgstr "Send notifications"
+
 msgid "general.login"
 msgstr "Login"
 
@@ -237,6 +240,12 @@ msgstr "Delete news \"%s\""
 
 msgid "news.comments.delete.title"
 msgstr "Delete comment \"%s\""
+
+msgid "notification.news.updated.introduction"
+msgstr "The news %1$s was updated"
+
+msgid "notification.news.updated.text"
+msgstr "You can view it at %3$s"
 
 msgid "form.search"
 msgstr "Search"
