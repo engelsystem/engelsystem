@@ -121,6 +121,7 @@ $route->addGroup(
                 $route->addRoute(['OPTIONS'], '[/{resource:.+}]', 'Api\IndexController@options');
                 $route->get('', 'Api\IndexController@indexV0');
                 $route->get('/openapi', 'Api\IndexController@openApiV0');
+                $route->get('/info', 'Api\IndexController@info');
 
                 $route->get('/angeltypes', 'Api\AngelTypeController@index');
                 $route->get('/angeltypes/{angeltype_id:\d+}/shifts', 'Api\ShiftsController@entriesByAngeltype');

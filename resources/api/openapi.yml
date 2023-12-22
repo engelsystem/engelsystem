@@ -21,8 +21,12 @@ servers:
     description: Your local dev instance
 
 tags:
+  - name: api
+    description: API related
   - name: angeltype
     description: Angeltypes
+  - name: event
+    description: Event information
   - name: location
     description: Event locations
   - name: news
@@ -105,11 +109,6 @@ components:
           required:
             - confirmed
             - supporter
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
     News:
       type: object
       properties:
@@ -140,16 +139,9 @@ components:
           example: false
           description: True if the news should be highlightet and shown on the dashboard
         created_at:
-          type: string
-          format: date-time
-          description: DateTime in ISO-8601 format
-          example: 2023-05-13T13:37:42.000000Z
+          $ref: '#/components/schemas/DateTime'
         updated_at:
-          type: string
-          nullable: true
-          format: date-time
-          description: DateTime in ISO-8601 format
-          example: 2023-05-13T23:00:00.000000Z
+          $ref: '#/components/schemas/DateTimeOptional'
         url:
           type: string
           example: https://example.com/news/42
@@ -197,31 +189,17 @@ components:
             Shift description, should be added to the shift type description but might be empty.
             Normally contains additional information for a specific shift / task.
         starts_at:
-          type: string
-          format: date-time
-          description: DateTime in ISO-8601 format
-          example: 2023-05-13T14:00:00.000000Z
+          $ref: '#/components/schemas/DateTime'
         ends_at:
-          type: string
-          format: date-time
-          description: DateTime in ISO-8601 format
-          example: 2023-05-13T16:00:00.000000Z23
+          $ref: '#/components/schemas/DateTime'
         location:
           $ref: '#/components/schemas/Location'
         shift_type:
           $ref: '#/components/schemas/ShiftType'
         created_at:
-          type: string
-          nullable: true
-          format: date-time
-          description: DateTime in ISO-8601 format
-          example: 2023-05-13T13:37:42.000000Z
+          $ref: '#/components/schemas/DateTimeOptional'
         updated_at:
-          type: string
-          nullable: true
-          format: date-time
-          description: DateTime in ISO-8601 format
-          example: 2023-05-13T23:00:00.000000Z
+          $ref: '#/components/schemas/DateTimeOptional'
         entries:
           type: array
           description: Can be empty (for example on Schedule import of unused room)
@@ -341,17 +319,9 @@ components:
               type: object
               properties:
                 planned_arrival:
-                  type: string
-                  nullable: true
-                  format: date-time
-                  description: DateTime in ISO-8601 format
-                  example: 2023-05-13T00:00:00.000000Z
+                  $ref: '#/components/schemas/DateTimeOptional'
                 planned_departure:
-                  type: string
-                  nullable: true
-                  format: date-time
-                  description: DateTime in ISO-8601 format
-                  example: 2023-05-23T00:00:00.000000Z
+                  $ref: '#/components/schemas/DateTimeOptional'
                 arrival:
                   type: string
                   nullable: true
@@ -374,6 +344,77 @@ components:
         - dates
         - language
         - arrived
+
+    DateTime:
+      type: string
+      format: date-time
+      description: DateTime in ISO-8601 format
+      example: 2023-05-23T00:00:00.000000Z
+    DateTimeOptional:
+      type: string
+      format: date-time
+      description: DateTime in ISO-8601 format
+      example: 2023-05-23T00:00:00.000000Z
+      nullable: true
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+    EventInfo:
+      type: object
+      properties:
+        api:
+          type: string
+          description: API version for easier version detection
+          example: 1.2.3
+        spec:
+          type: string
+          description: Link to OpenAPI specification
+          example: https://galactic-help.example/api/v1.2.3/openapi
+        name:
+          type: string
+          example: 42. Galactic Conglomeration Congress
+        app_name:
+          type: string
+          example: Engelsystem
+        url:
+          type: string
+          description: URL to be used when linking to the application
+          example: https://galactic-help.example
+        timezone:
+          type: string
+          example: Europe/Berlin
+          description: Timezone of the event
+        buildup:
+          type: object
+          properties:
+            start:
+              $ref: '#/components/schemas/DateTimeOptional'
+            end:
+              $ref: '#/components/schemas/DateTimeOptional'
+          required:
+            - start
+            - end
+        teardown:
+          type: object
+          properties:
+            start:
+              $ref: '#/components/schemas/DateTimeOptional'
+            end:
+              $ref: '#/components/schemas/DateTimeOptional'
+          required:
+            - start
+            - end
+      required:
+        - api
+        - spec
+        - name
+        - app_name
+        - url
+        - timezone
+        - buildup
+        - teardown
 
 security:
   - bearerAuth: [ ]
@@ -602,6 +643,28 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Shift'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /info:
+    get:
+      tags:
+        - event
+      summary: Get event information
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EventInfo'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
