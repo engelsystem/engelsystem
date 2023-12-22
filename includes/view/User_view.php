@@ -981,16 +981,18 @@ function render_user_freeloader_hint()
  *
  * @return string|null
  */
-function render_user_arrived_hint(bool $is_user_shifts = false)
+function render_user_arrived_hint(bool $is_sys_menu = false)
 {
-    $user_info = auth()->user()->state->user_info;
-    if (config('signup_requires_arrival') && !auth()->user()->state->arrived) {
+    $user = auth()->user();
+    $user_arrival_date = $user->personalData->planned_arrival_date;
+    $is_before_arrival_date = $is_sys_menu && $user_arrival_date && Carbon::now() < $user_arrival_date;
+    if (config('signup_requires_arrival') && !$user->state->arrived && !$is_before_arrival_date) {
         /** @var Carbon $buildup */
         $buildup = config('buildup_start');
         if (!empty($buildup) && $buildup->lessThan(new Carbon())) {
-            return !$user_info
-                ? __('You are not marked as arrived. Please go to heaven, get your angel badge and/or tell them that you arrived already.')
-                : ($is_user_shifts ? __('user_info.not_arrived_hint') : null);
+            return $user->state->user_info
+                ? ($is_sys_menu ? null : __('user_info.not_arrived_hint'))
+                : __('You are not marked as arrived. Please go to heaven, get your angel badge and/or tell them that you arrived already.');
         }
     }
 

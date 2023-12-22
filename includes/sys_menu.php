@@ -24,7 +24,7 @@ function header_render_hints()
 
         // Important hints:
         $hints_renderer->addHint(render_user_freeloader_hint(), true);
-        $hints_renderer->addHint(render_user_arrived_hint(), true);
+        $hints_renderer->addHint(render_user_arrived_hint(true), true);
         $hints_renderer->addHint(render_user_pronoun_hint(), true);
         $hints_renderer->addHint(render_user_firstname_hint(), true);
         $hints_renderer->addHint(render_user_lastname_hint(), true);
