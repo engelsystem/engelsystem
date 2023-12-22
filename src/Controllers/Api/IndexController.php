@@ -21,7 +21,7 @@ class IndexController extends ApiController
         return $this->response
             ->withContent(json_encode([
                 'versions' => [
-                    '0.0.1-beta' => '/v0-beta',
+                    $this->getApiSpecV0()->info->version => '/v0-beta',
                 ],
             ]));
     }
@@ -51,6 +51,32 @@ class IndexController extends ApiController
         $data->servers[0]->url = url('/api/v0-beta');
 
         return $this->response->withContent(json_encode($data));
+    }
+
+    public function info(): Response
+    {
+        $config = config();
+        $schema = $this->getApiSpecV0();
+
+        $data = ['data' => [
+            'api' => $schema->info->version,
+            'spec' => url('/api/v0-beta/openapi'),
+            'name' => (string) $config->get('name'),
+            'app_name' => (string) $config->get('app_name'),
+            'url' => url('/'),
+            'timezone' => (string) $config->get('timezone'),
+            'buildup' => [
+                'start' => $config->get('buildup_start'),
+                'end' => $config->get('buildup_end'),
+            ],
+            'teardown' => [
+                'start' => $config->get('teardown_start'),
+                'end' => $config->get('teardown_end'),
+            ],
+        ]];
+
+        return $this->response
+            ->withContent(json_encode($data));
     }
 
     public function options(): Response

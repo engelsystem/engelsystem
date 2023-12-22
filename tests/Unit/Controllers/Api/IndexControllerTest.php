@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Api\IndexController;
 use Engelsystem\Http\Response;
 
@@ -61,6 +62,52 @@ class IndexControllerTest extends ApiBaseControllerTest
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('openapi', $data);
         $this->assertArrayHasKey('info', $data);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\IndexController::info
+     */
+    public function testInfo(): void
+    {
+        $config = new Config(['name' => 'TestEvent', 'app_name' => 'TestSystem', 'timezone' => 'UTC']);
+        $this->app->instance('config', $config);
+
+        $controller = new IndexController(new Response());
+
+        $response = $controller->info();
+        $this->validateApiResponse('/info', 'get', $response);
+
+        $this->assertEquals(['application/json'], $response->getHeader('content-type'));
+        $this->assertJson($response->getContent());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('data', $data);
+        $data = $data['data'];
+        $this->assertArrayHasKey('api', $data);
+        $this->assertArrayHasKey('timezone', $data);
+        $this->assertEquals('UTC', $data['timezone']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\IndexController::info
+     */
+    public function testInfoNotConfigured(): void
+    {
+        $config = new Config([]);
+        $this->app->instance('config', $config);
+
+        $controller = new IndexController(new Response());
+
+        $response = $controller->info();
+        $this->validateApiResponse('/info', 'get', $response);
+
+        $this->assertEquals(['application/json'], $response->getHeader('content-type'));
+        $this->assertJson($response->getContent());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('data', $data);
+        $this->assertArrayHasKey('name', $data['data']);
+        $this->assertEquals('', $data['data']['name']);
     }
 
     /**
