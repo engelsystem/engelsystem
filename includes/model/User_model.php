@@ -149,7 +149,10 @@ function User_get_eligable_voucher_count($user)
         : null;
 
     $shiftEntries = ShiftEntries_finished_by_user($user, $start);
-    $worklog = UserWorkLogsForUser($user->id, $start);
+    $worklog = $user->worklogs()
+        ->whereDate('worked_at', '>=', $start ?: 0)
+        ->with(['user', 'creator'])
+        ->get();
     $shifts_done =
         count($shiftEntries)
         + $worklog->count();

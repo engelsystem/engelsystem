@@ -131,6 +131,16 @@ class UserWorkLogController extends BaseController
         }
         $worklog->delete();
 
+        $this->log->info(
+            'Deleted worklog for {name} ({id}) at {time} about {hours}h: {text}',
+            [
+                'name' => $worklog->user->name,
+                'id' => $worklog->user->id,
+                'time' => $worklog->worked_at,
+                'hours' => $worklog->hours,
+                'text' => $worklog->comment,
+            ]
+        );
         $this->addNotification('worklog.delete.success');
 
         return $this->redirect->to('/users?action=view&user_id=' . $userId);

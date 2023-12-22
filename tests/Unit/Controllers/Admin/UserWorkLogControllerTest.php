@@ -306,6 +306,7 @@ class UserWorkLogControllerTest extends ControllerTest
 
         $this->controller->deleteWorklog($request);
 
+        $this->log->hasInfoThatContains('Deleted worklog');
         $this->assertHasNotification('worklog.delete.success');
         $worklog = Worklog::find($worklog->id);
         $this->assertNull($worklog);
