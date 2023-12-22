@@ -391,12 +391,9 @@ components:
           properties:
             start:
               $ref: '#/components/schemas/DateTimeOptional'
-            end:
-              $ref: '#/components/schemas/DateTimeOptional'
           required:
             - start
-            - end
-        teardown:
+        event:
           type: object
           properties:
             start:
@@ -406,6 +403,13 @@ components:
           required:
             - start
             - end
+        teardown:
+          type: object
+          properties:
+            end:
+              $ref: '#/components/schemas/DateTimeOptional'
+          required:
+            - end
       required:
         - api
         - spec
@@ -414,6 +418,7 @@ components:
         - url
         - timezone
         - buildup
+        - event
         - teardown
 
 security:
