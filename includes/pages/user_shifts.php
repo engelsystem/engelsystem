@@ -284,7 +284,7 @@ function view_user_shifts()
     $canSignUpForShifts = true;
     if (config('signup_requires_arrival') && !$user->state->arrived) {
         $canSignUpForShifts = false;
-        info(render_user_arrived_hint((bool) $user->state->user_info));
+        info(render_user_arrived_hint());
     }
 
     $formattedDays = collect($days)->map(function ($value) {
