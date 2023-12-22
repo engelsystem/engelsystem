@@ -67,10 +67,12 @@ class IndexController extends ApiController
             'timezone' => (string) $config->get('timezone'),
             'buildup' => [
                 'start' => $config->get('buildup_start'),
-                'end' => $config->get('buildup_end'),
+            ],
+            'event' => [
+                'start' => $config->get('event_start'),
+                'end' => $config->get('event_end'),
             ],
             'teardown' => [
-                'start' => $config->get('teardown_start'),
                 'end' => $config->get('teardown_end'),
             ],
         ]];
