@@ -9,6 +9,7 @@ use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\Faq;
+use Engelsystem\Models\Tag;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
 
 class FaqControllerTest extends ControllerTest
@@ -16,6 +17,7 @@ class FaqControllerTest extends ControllerTest
     protected array $data = [
         'question' => 'Foo?',
         'text'     => 'Bar!',
+        'tags'     => 'Lorem, Lorem, Ipsum! ,',
     ];
 
     /**
@@ -82,6 +84,8 @@ class FaqControllerTest extends ControllerTest
         $this->assertEquals('Foo?', $faq->question);
         $this->assertEquals('Bar!', $faq->text);
         $this->assertHasNotification('faq.edit.success');
+        $this->assertCount(2, Tag::all());
+        $this->assertTrue(Tag::whereName('Ipsum!')->get()->isNotEmpty());
     }
 
     /**
@@ -94,6 +98,7 @@ class FaqControllerTest extends ControllerTest
             'question' => 'New question',
             'text'     => 'New text',
             'preview'  => '1',
+            'tags'     => 'Foo, Bar',
         ]);
         $this->response->expects($this->once())
             ->method('withView')
@@ -105,6 +110,7 @@ class FaqControllerTest extends ControllerTest
                 // Contains new text
                 $this->assertEquals('New question', $faq->question);
                 $this->assertEquals('New text', $faq->text);
+                $this->assertEquals('Foo, Bar', $data['tags']);
 
                 return $this->response;
             });
@@ -119,6 +125,7 @@ class FaqControllerTest extends ControllerTest
         $faq = Faq::find(1);
         $this->assertEquals('Lorem', $faq->question);
         $this->assertEquals('Ipsum!', $faq->text);
+        $this->assertEmpty(Tag::all());
     }
 
     /**

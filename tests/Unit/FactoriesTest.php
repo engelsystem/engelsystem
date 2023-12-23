@@ -21,6 +21,7 @@ use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\Tag;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
@@ -65,6 +66,7 @@ class FactoriesTest extends TestCase
             [ShiftEntry::class],
             [ShiftType::class],
             [State::class],
+            [Tag::class],
             [UserAngelType::class],
             [User::class],
             [Worklog::class],
@@ -91,6 +93,7 @@ class FactoriesTest extends TestCase
      * @covers       \Database\Factories\Engelsystem\Models\Shifts\ShiftEntryFactory
      * @covers       \Database\Factories\Engelsystem\Models\Shifts\ShiftFactory
      * @covers       \Database\Factories\Engelsystem\Models\Shifts\ShiftTypeFactory
+     * @covers       \Database\Factories\Engelsystem\Models\TagFactory
      * @covers       \Database\Factories\Engelsystem\Models\UserAngelTypeFactory
      * @covers       \Database\Factories\Engelsystem\Models\User\ContactFactory
      * @covers       \Database\Factories\Engelsystem\Models\User\LicenseFactory

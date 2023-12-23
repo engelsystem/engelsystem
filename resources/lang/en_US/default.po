@@ -133,6 +133,12 @@ msgstr "You can use Markdown here"
 msgid "form.user_select"
 msgstr "Select a user"
 
+msgid "form.tags"
+msgstr "Tags"
+
+msgid "form.tags.info"
+msgstr "Comma seperated list of tags"
+
 msgid "schedule.import"
 msgstr "Import schedule"
 
