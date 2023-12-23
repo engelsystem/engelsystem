@@ -36,12 +36,20 @@ tags:
   - name: user
     description: User information
 
+security:
+  - bearer-auth: [ ]
+  - api-key-header: [ ]
+
 components:
   securitySchemes:
-    bearerAuth:
+    bearer-auth:
       type: http
       scheme: bearer
       bearerFormat: API key from settings
+    api-key-header:
+      type: apiKey
+      name: x-api-key
+      in: header
 
   responses:
     UnauthorizedError: # 401
@@ -420,9 +428,6 @@ components:
         - buildup
         - event
         - teardown
-
-security:
-  - bearerAuth: [ ]
 
 paths:
   /angeltypes:
