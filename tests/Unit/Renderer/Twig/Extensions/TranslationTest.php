@@ -14,7 +14,7 @@ class TranslationTest extends ExtensionTest
      * @covers \Engelsystem\Renderer\Twig\Extensions\Translation::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Translation::getFilters
      */
-    public function testGeFilters(): void
+    public function testGetFilters(): void
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->createMock(Translator::class);
@@ -22,7 +22,7 @@ class TranslationTest extends ExtensionTest
         $extension = new Translation($translator);
         $filters = $extension->getFilters();
 
-        $this->assertExtensionExists('trans', [$translator, 'translate'], $filters);
+        $this->assertFilterExists('trans', [$translator, 'translate'], $filters);
     }
 
     /**
