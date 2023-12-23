@@ -87,7 +87,7 @@ class IndexController extends ApiController
         return $this->response
             ->setStatusCode(200)
             ->withHeader('allow', 'OPTIONS, HEAD, GET')
-            ->withHeader('access-control-allow-headers', 'Authorization');
+            ->withHeader('access-control-allow-headers', 'Authorization, x-api-key');
     }
 
     public function notFound(): Response
