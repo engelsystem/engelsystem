@@ -1114,6 +1114,9 @@ msgstr "Möchtest Du wirklich %s von %s entfernen?"
 msgid "Do you really want to add %s to %s?"
 msgstr "Möchtest Du wirklich %s zu %s hinzufügen?"
 
+msgid "Do you want to become a %2$s?"
+msgstr "Möchtest Du ein %2$s werden?"
+
 msgid "Confirm user"
 msgstr "Benutzer bestätigen"
 
