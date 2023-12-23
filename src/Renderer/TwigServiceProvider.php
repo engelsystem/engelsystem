@@ -16,6 +16,7 @@ use Engelsystem\Renderer\Twig\Extensions\Legacy;
 use Engelsystem\Renderer\Twig\Extensions\Markdown;
 use Engelsystem\Renderer\Twig\Extensions\Notification;
 use Engelsystem\Renderer\Twig\Extensions\Session;
+use Engelsystem\Renderer\Twig\Extensions\StringExtension;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use Engelsystem\Renderer\Twig\Extensions\Url;
 use Engelsystem\Renderer\Twig\Extensions\Uuid;
@@ -38,6 +39,7 @@ class TwigServiceProvider extends ServiceProvider
         'notification'   => Notification::class,
         'twigmodel'      => TwigModel::class,
         'session'        => Session::class,
+        'string'         => StringExtension::class,
         'legacy'         => Legacy::class,
         'markdown'       => Markdown::class,
         'translation'    => Translation::class,
