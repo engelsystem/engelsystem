@@ -4,6 +4,10 @@
 
 {% block title %}{{ faq and faq.id ? __('faq.edit') : __('faq.add') }}{% endblock %}
 
+{% if tags is null and faq %}
+    {% set tags = faq.tags.implode('name', ', ') %}
+{% endif %}
+
 {% block content %}
     <div class="container">
         <h1>
@@ -36,15 +40,22 @@
                 <div class="col-md-12">
                     {{ f.input('question', __('faq.question'), {
                         'required': true,
+                        'required_icon': true,
                         'value': faq ? faq.question : '',
                     }) }}
                 </div>
                 <div class="col-md-12">
                     {{ f.textarea('text', __('faq.message'), {
                         'required': true,
+                        'required_icon': true,
                         'rows': 10,
                         'value': faq ? faq.text : '',
                     }) }}
+                    {{ f.input(
+                        'tags',
+                        __('form.tags'),
+                        {'value': tags, 'info': __('form.tags.info')}
+                    ) }}
 
                     {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
 

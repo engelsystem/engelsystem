@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Http\Exceptions\HttpNotFound;
+use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Faq;
+use Engelsystem\Models\Tag;
+use Illuminate\Database\Eloquent\Collection;
 
 class FaqController extends BaseController
 {
@@ -26,13 +30,41 @@ class FaqController extends BaseController
 
     public function index(): Response
     {
+        $faq = $this->faq
+            ->with('tags')
+            ->orderBy('question')
+            ->get();
+        $tags = $faq->pluck('tags')
+            ->flatten()
+            ->unique('id')
+            ->sortBy('name');
+
+        return $this->showFaqs($faq, ['tags' => $tags]);
+    }
+
+    public function tagged(Request $request): Response
+    {
+        $tagId = $request->getAttribute('tag_id');
+        $tag = Tag::findOrFail($tagId);
+
+        $faq = $tag->faqs()
+            ->with('tags')
+            ->orderBy('question')
+            ->get();
+        if ($faq->isEmpty()) {
+            throw new HttpNotFound();
+        }
+
+        return $this->showFaqs($faq, ['tag' => $tag]);
+    }
+
+    protected function showFaqs(Collection $faqs, array $data): Response
+    {
         $text = $this->config->get('faq_text');
 
-        $faq = $this->faq->orderBy('question')->get();
-
         return $this->response->withView(
-            'pages/faq/index.twig',
-            ['text' => $text, 'items' => $faq]
+            'pages/faq/index',
+            array_merge(['text' => $text, 'items' => $faqs], $data)
         );
     }
 }

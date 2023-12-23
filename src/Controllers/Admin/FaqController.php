@@ -10,6 +10,7 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Faq;
+use Engelsystem\Models\Tag;
 use Psr\Log\LoggerInterface;
 
 class FaqController extends BaseController
@@ -34,7 +35,7 @@ class FaqController extends BaseController
     {
         $faqId = $request->getAttribute('faq_id'); // optional
 
-        $faq = $this->faq->find($faqId);
+        $faq = $this->faq->with('tags')->find($faqId);
 
         return $this->showEdit($faq);
     }
@@ -53,6 +54,7 @@ class FaqController extends BaseController
         $data = $this->validate($request, [
             'question' => 'required',
             'text'     => 'required',
+            'tags'     => 'required|optional',
             'delete'   => 'optional|checked',
             'preview'  => 'optional|checked',
         ]);
@@ -61,10 +63,20 @@ class FaqController extends BaseController
         $faq->text = $data['text'];
 
         if (!is_null($data['preview'])) {
-            return $this->showEdit($faq);
+            return $this->showEdit($faq, $data['tags']);
         }
 
         $faq->save();
+
+        $faq->tags()->detach();
+        $tags = collect(explode(',', $data['tags']))
+            ->transform(fn($value) => trim($value))
+            ->filter(fn($value) => $value != '')
+            ->unique();
+        foreach ($tags as $tagName) {
+            $tag = Tag::whereName($tagName)->firstOrCreate(['name' => $tagName]);
+            $faq->tags()->attach($tag);
+        }
 
         $this->log->info('Updated faq "{question}": {text}', ['question' => $faq->question, 'text' => $faq->text]);
 
@@ -84,11 +96,11 @@ class FaqController extends BaseController
         return $this->redirect->to('/faq');
     }
 
-    protected function showEdit(?Faq $faq): Response
+    protected function showEdit(?Faq $faq, string $tags = null): Response
     {
         return $this->response->withView(
             'pages/faq/edit.twig',
-            ['faq' => $faq]
+            ['faq' => $faq, 'tags' => $tags]
         );
     }
 }
