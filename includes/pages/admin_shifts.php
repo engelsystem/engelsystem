@@ -184,14 +184,22 @@ function admin_shifts()
                         error(sprintf(__('Please check the needed angels for team %s.'), $type->name));
                     }
                 }
-
-                if (array_sum($needed_angel_types) == 0) {
-                    $valid = false;
-                    error(__('There are 0 angels needed. Please enter the amounts of needed angels.'));
-                }
             } else {
                 $valid = false;
                 error(__('Please select a mode for needed angels.'));
+            }
+
+            if (
+                $angelmode == 'manually' && array_sum($needed_angel_types) == 0
+                || $angelmode == 'location' && !NeededAngelType::whereLocationId($lid)
+                    ->where('count', '>', '0')
+                    ->count()
+                || $angelmode == 'shift_type' && !NeededAngelType::whereShiftTypeId($shifttype_id)
+                    ->where('count', '>', '0')
+                    ->count()
+            ) {
+                $valid = false;
+                error(__('There are 0 angels needed. Please enter the amounts of needed angels.'));
             }
         } else {
             $valid = false;
@@ -427,13 +435,18 @@ function admin_shifts()
                     $needed_angel_types_info[] = $angel_type_source->name . ': ' . $count;
                 }
             }
-            engelsystem_log('Shift created: ' . $shifttypes[$shift->shift_type_id]
+
+            engelsystem_log(
+                'Shift created: ' . $shifttypes[$shift->shift_type_id]
+                . ' (' . $shift->id . ')'
                 . ' with title ' . $shift->title
-                . ' with description ' . $shift->description
+                . ' and description ' . $shift->description
                 . ' from ' . $shift->start->format('Y-m-d H:i')
                 . ' to ' . $shift->end->format('Y-m-d H:i')
+                . ' in ' . $shift->location->name
+                . ' with angel types: ' . join(', ', $needed_angel_types_info)
                 . ', transaction: ' . $transactionId
-                . '; needed angel types: ' . join(', ', $needed_angel_types_info));
+            );
         }
 
         success('Shifts created.');
