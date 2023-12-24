@@ -32,9 +32,9 @@ return [
     // Available link placeholders: %lang%
     // To disable a header_item in the config.php, you can set its value to null
     'header_items'            => [
+        // Name can be a translation string, permission is a engelsystem privilege
         // 'Name' => 'URL',
         // 'Name' => ['URL', 'permission'],
-        // Name can be a translation string, permission is a engelsystem privilege
 
         //'Foo' => ['https://foo.bar/batz-%lang%.html', 'logout'], // Permission: for logged-in users
     ],
@@ -42,9 +42,9 @@ return [
     // Footer links
     // To disable a footer item in the config.php, you can set its value to null
     'footer_items'            => [
+        // Name can be a translation string, permission is a engelsystem privilege
         // 'Name' => 'URL',
         // 'Name' => ['URL', 'permission'],
-        // Name can be a translation string, permission is a engelsystem privilege
 
         // URL to the angel faq and job description
         'faq.faq' => [env('FAQ_URL', '/faq'), 'faq.view'],

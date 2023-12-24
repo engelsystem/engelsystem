@@ -50,9 +50,7 @@
                         {% set permission = opt is iterable ? opt[1] : null %}
                         {% if not permission or has_permission_to(permission) %}
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="{{ url|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}"
-                                >
+                                <a class="nav-link" href="{{ url|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}">
                                     {{ __(name) }}
                                 </a>
                             </li>
