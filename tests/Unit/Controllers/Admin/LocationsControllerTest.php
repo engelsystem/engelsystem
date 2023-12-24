@@ -198,9 +198,9 @@ class LocationsControllerTest extends ControllerTest
         $dispatcher->expects($this->once())
             ->method('dispatch')
             ->willReturnCallback(function (string $event, array $data) use ($location, $user) {
-                $this->assertEquals('shift.entry.deleting', $event);
-                $this->assertEquals($location->id, $data['location']->id);
-                $this->assertEquals($user->id, $data['user']->id);
+                $this->assertEquals('shift.deleting', $event);
+                $this->assertEquals($location->id, $data['shift']->location->id);
+                $this->assertEquals($user->id, $data['shift']->shiftEntries[0]->user->id);
 
                 return [];
             });

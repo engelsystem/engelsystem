@@ -5,10 +5,8 @@ namespace Engelsystem\Events\Listener;
 use Carbon\Carbon;
 use Engelsystem\Helpers\Shifts;
 use Engelsystem\Mail\EngelsystemMailer;
-use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift as ShiftModel;
 use Engelsystem\Models\Shifts\ShiftEntry;
-use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Log\LoggerInterface;
@@ -21,72 +19,56 @@ class Shift
     ) {
     }
 
-    public function deletedEntryCreateWorklog(
-        User $user,
-        Carbon $start,
-        Carbon $end,
-        string $name,
-        string $title,
-        string $type,
-        Location $location,
-        bool $freeloaded
-    ): void {
-        if ($freeloaded || $start > Carbon::now()) {
-            return;
+    public function shiftDeletingCreateWorklogs(ShiftModel $shift): void
+    {
+        foreach ($shift->shiftEntries as $entry) {
+            if ($entry->freeloaded || $shift->start > Carbon::now()) {
+                continue;
+            }
+
+            $workLog = new Worklog();
+            $workLog->user()->associate($entry->user);
+            $workLog->creator()->associate(auth()->user());
+            $workLog->worked_at = $shift->start->copy()->startOfDay();
+            $workLog->hours =
+                (($shift->end->timestamp - $shift->start->timestamp) / 60 / 60)
+                * Shifts::getNightShiftMultiplier($shift->start, $shift->end);
+            $workLog->comment = sprintf(
+                __('%s (%s as %s) in %s, %s - %s'),
+                $shift->shiftType->name,
+                $shift->title,
+                $entry->angelType->name,
+                $shift->location->name,
+                $shift->start->format(__('general.datetime')),
+                $shift->end->format(__('general.datetime'))
+            );
+            $workLog->save();
+
+            $this->log->info(
+                'Created worklog entry from shift for {user} ({uid}): {worklog})',
+                ['user' => $workLog->user->name, 'uid' => $workLog->user->id, 'worklog' => $workLog->comment]
+            );
         }
-
-        $workLog = new Worklog();
-        $workLog->user()->associate($user);
-        $workLog->creator()->associate(auth()->user());
-        $workLog->worked_at = $start->copy()->startOfDay();
-        $workLog->hours =
-            (($end->timestamp - $start->timestamp) / 60 / 60)
-            * Shifts::getNightShiftMultiplier($start, $end);
-        $workLog->comment = sprintf(
-            __('%s (%s as %s) in %s, %s - %s'),
-            $name,
-            $title,
-            $type,
-            $location->name,
-            $start->format(__('general.datetime')),
-            $end->format(__('general.datetime'))
-        );
-        $workLog->save();
-
-        $this->log->info(
-            'Created worklog entry from shift for {user} ({uid}): {worklog})',
-            ['user' => $workLog->user->name, 'uid' => $workLog->user->id, 'worklog' => $workLog->comment]
-        );
     }
 
-    public function deletedEntrySendEmail(
-        User $user,
-        Carbon $start,
-        Carbon $end,
-        string $name,
-        string $title,
-        string $type,
-        Location $location,
-        bool $freeloaded
-    ): void {
-        if (!$user->settings->email_shiftinfo) {
-            return;
-        }
+    public function shiftDeletingSendEmails(ShiftModel $shift): void
+    {
+        foreach ($shift->shiftEntries as $entry) {
+            if (!$entry->user->settings->email_shiftinfo) {
+                continue;
+            }
 
-        $this->mailer->sendViewTranslated(
-            $user,
-            'notification.shift.deleted',
-            'emails/worklog-from-shift',
-            [
-                'name'       => $name,
-                'title'      => $title,
-                'start'      => $start,
-                'end'        => $end,
-                'location'   => $location,
-                'freeloaded' => $freeloaded,
-                'username'   => $user->displayName,
-            ]
-        );
+            $this->mailer->sendViewTranslated(
+                $entry->user,
+                'notification.shift.deleted',
+                'emails/worklog-from-shift',
+                [
+                    'shift' => $shift,
+                    'entry' => $entry,
+                    'username' => $entry->user->displayName,
+                ]
+            );
+        }
     }
 
     public function updatedShiftSendEmail(
