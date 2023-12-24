@@ -36,11 +36,15 @@
             {% endif %}
         {% endblock %}
 
-        {% for name,url in config('footer_items') %}
-            <a href="{% if url starts with '/' %}{{ url(url) }}{% else %}{{ url }}{% endif %}">
-                {% if '@' in url %}{{ m.icon('envelope') }}{% endif %}
-                {{ __(name) }}
-            </a> ·
+        {% for name,opt in config('footer_items') %}
+            {% set url = opt is iterable ? opt[0] : opt %}
+            {% set permission = opt is iterable ? opt[1] : null %}
+            {% if not permission or has_permission_to(permission) %}
+                <a href="{% if url starts with '/' %}{{ url(url) }}{% else %}{{ url }}{% endif %}">
+                    {% if '@' in url %}{{ m.icon('envelope') }}{% endif %}
+                    {{ __(name) }}
+                </a> ·
+            {% endif %}
         {% endfor %}
         <a href="https://github.com/engelsystem/engelsystem/issues">{{ __('footer.issues') }}</a>
         · <a href="https://github.com/engelsystem/engelsystem/">{{ __('footer.github') }}</a>
