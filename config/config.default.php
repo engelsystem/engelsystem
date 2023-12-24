@@ -32,14 +32,22 @@ return [
     // Available link placeholders: %lang%
     // To disable a header_item in the config.php, you can set its value to null
     'header_items'            => [
-        //'Foo' => 'https://foo.bar/batz-%lang%.html',
+        // 'Name' => 'URL',
+        // 'Name' => ['URL', 'permission'],
+        // Name can be a translation string, permission is a engelsystem privilege
+
+        //'Foo' => ['https://foo.bar/batz-%lang%.html', 'logout'], // Permission: for logged-in users
     ],
 
     // Footer links
     // To disable a footer item in the config.php, you can set its value to null
     'footer_items'            => [
+        // 'Name' => 'URL',
+        // 'Name' => ['URL', 'permission'],
+        // Name can be a translation string, permission is a engelsystem privilege
+
         // URL to the angel faq and job description
-        'FAQ'     => env('FAQ_URL', '/faq'),
+        'faq.faq' => [env('FAQ_URL', '/faq'), 'faq.view'],
 
         // Contact email address, linked on every page
         'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),

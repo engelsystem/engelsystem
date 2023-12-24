@@ -45,12 +45,18 @@
 
             {% if config('header_items') %}
                 <ul class="navbar-nav mb-2 mb-lg-0">
-                    {% for text,link in config('header_items', {}) %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ link|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}">
-                                {{ text }}
-                            </a>
-                        </li>
+                    {% for name,opt in config('header_items', {}) %}
+                        {% set url = opt is iterable ? opt[0] : opt %}
+                        {% set permission = opt is iterable ? opt[1] : null %}
+                        {% if not permission or has_permission_to(permission) %}
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="{{ url|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}"
+                                >
+                                    {{ __(name) }}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             {% endif %}
