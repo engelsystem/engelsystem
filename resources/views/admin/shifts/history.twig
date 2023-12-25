@@ -22,6 +22,7 @@
                 <tr>
                     <th>{{ __('general.id') }}</th>
                     <th>{{ __('title.title') }}</th>
+                    <th>{{ __('location.location') }}</th>
                     <th>{{ __('general.count') }}</th>
                     <th>{{ __('shifts.start') }}</th>
                     <th>{{ __('shifts.end') }}</th>
@@ -40,8 +41,10 @@
                                 {{ __('shifts.history.schedule', [shift.schedule.name]) }}
                             {% else %}
                                 {{ shift.title }}
-                            {% endif %}
+                            {% endif %}<br>
+                            {{ shift.shiftType.name }}
                         </td>
+                        <td>{{ shift.location.name }}</td>
                         <td>{{ shift.count }}</td>
                         <td>{{ shift.start.format(__('general.datetime')) }}</td>
                         <td>{{ shift.end.format(__('general.datetime')) }}</td>

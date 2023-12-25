@@ -1089,6 +1089,9 @@ msgstr "erstellt am %s von %s"
 msgid "edited at %s by %s"
 msgstr "bearbeitet am %s von %s"
 
+msgid "History ID: %s"
+msgstr "Historien-ID: %s"
+
 msgid "This shift is in the far future and becomes available for signup at %s."
 msgstr ""
 "Diese Schicht liegt in der fernen Zukunft und du kannst dich ab %s eintragen."
@@ -1935,6 +1938,9 @@ msgstr "Auf Schicht-Ansicht ausblenden"
 msgid "angeltypes.hide_on_shift_view.info"
 msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
 "Schicht Seite die Filteroption für diesen Engeltyp sehen."
+
+msgid "location.location"
+msgstr "Ort"
 
 msgid "location.locations"
 msgstr "Orte"

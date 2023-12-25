@@ -72,6 +72,12 @@ function Shift_editor_info_render(Shift $shift)
             User_Nick_render($shift->updatedBy)
         );
     }
+    if ($shift->transaction_id) {
+        $info[] = sprintf(
+            icon('clock-history') . __('History ID: %s'),
+            $shift->transaction_id
+        );
+    }
     return join('<br />', $info);
 }
 
