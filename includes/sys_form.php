@@ -285,14 +285,14 @@ function form_element($label, $input, $for = '', $class = '')
  *
  * @param string[] $elements
  * @param string   $action
- * @param bool     $inline
+ * @param string   $style
  * @return string
  */
-function form($elements, $action = '', $inline = false, $btnGroup = false)
+function form($elements, $action = '', $style = '', $btnGroup = false)
 {
     return '<form action="' . $action . '" enctype="multipart/form-data" method="post"'
         . ($btnGroup ? ' class="btn-group"' : '')
-        . ($inline ? ' style="float:left"' : '') . '>'
+        . ($style ? ' style="' . $style . '"' : '') . '>'
         . join($elements)
         . form_csrf()
         . '</form>';

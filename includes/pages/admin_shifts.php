@@ -351,9 +351,9 @@ function admin_shifts()
             $session->set('admin_shifts_shifts', $shifts);
             $session->set('admin_shifts_types', $needed_angel_types);
 
-            $hidden_types = '';
+            $previousEntries = [];
             foreach ($needed_angel_types as $type_id => $count) {
-                $hidden_types .= form_hidden('angeltype_count_' . $type_id, $count);
+                $previousEntries['angeltype_count_' . $type_id] = $count;
             }
 
             // Number of Shifts that will be created (if over 100 its danger-red)
@@ -363,20 +363,30 @@ function admin_shifts()
                 $shiftsCreationHint = '<span class="text-danger">' . $shiftsCreationHint . '</span>';
             }
 
+            // Save as previous state to be able to reuse it
+            $previousEntries += [
+                'shifttype_id' => $shifttype_id,
+                'description' => $description,
+                'title' => $title,
+                'lid' => $lid,
+                'start' => $request->input('start'),
+                'end' => $request->input('end'),
+                'mode' => $mode,
+                'length' => $length,
+                'change_hours' => implode(', ', $change_hours),
+                'angelmode' => $angelmode,
+                'shift_over_midnight' => $shift_over_midnight ? 'true' : 'false',
+            ];
+            $session->set('admin_shifts_previous', $previousEntries);
+
+            $hidden_types = '';
+            foreach ($previousEntries as $name => $value) {
+                $hidden_types .= form_hidden($name, $value);
+            }
+
             return page_with_title(__('form.preview'), [
                 form([
                     $hidden_types,
-                    form_hidden('shifttype_id', $shifttype_id),
-                    form_hidden('description', $description),
-                    form_hidden('title', $title),
-                    form_hidden('lid', $lid),
-                    form_hidden('start', $request->input('start')),
-                    form_hidden('end', $request->input('end')),
-                    form_hidden('mode', $mode),
-                    form_hidden('length', $length),
-                    form_hidden('change_hours', implode(', ', $change_hours)),
-                    form_hidden('angelmode', $angelmode),
-                    form_hidden('shift_over_midnight', $shift_over_midnight ? 'true' : 'false'),
                     form_submit('back', icon('chevron-left') . __('general.back')),
                     $shiftsCreationHint,
                     table([
@@ -456,12 +466,27 @@ function admin_shifts()
     }
 
     $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $reset = '';
+    if ($session->has('admin_shifts_previous')) {
+        $reset = form_submit(
+            'back',
+            icon('arrow-counterclockwise'),
+            '',
+            false,
+            'link',
+            __('Reset to previous state')
+        );
+        foreach ($session->get('admin_shifts_previous', []) as $name => $value) {
+            $reset .= form_hidden($name, $value);
+        }
+    }
+
     return page_with_title(
         $link . ' ' . admin_shifts_title() . ' ' . sprintf(
             '<a href="%s">%s</a>',
             url('/admin/shifts/history'),
             icon('clock-history')
-        ),
+        ) . form([$reset], '', 'display:inline'),
         [
             msg(),
             form([

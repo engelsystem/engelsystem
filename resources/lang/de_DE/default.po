@@ -614,6 +614,9 @@ msgstr "Gruppe bearbeiten"
 msgid "Please select a shift type."
 msgstr "Bitte einen Schichttyp wählen."
 
+msgid "Reset to previous state"
+msgstr "Auf vorherigen Stand zurücksetzen"
+
 msgid "Location"
 msgstr "Ort"
 
