@@ -675,6 +675,9 @@ msgstr "If checked only admins and members of the angeltype "
 msgid "registration.register"
 msgstr "Register"
 
+msgid "location.location"
+msgstr "Location"
+
 msgid "location.locations"
 msgstr "Locations"
 
