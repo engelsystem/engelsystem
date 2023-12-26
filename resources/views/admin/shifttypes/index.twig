@@ -15,6 +15,8 @@
 
             {% if is_index|default(false) %}
                 {{ m.button(m.icon('plus-lg'), url('/admin/shifttypes/edit'), 'secondary') }}
+            {% elseif has_permission_to('shifttypes') and is_view|default(false) %}
+                {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), null, 'sm', __('form.edit')) }}
             {% endif %}
         </h1>
 
