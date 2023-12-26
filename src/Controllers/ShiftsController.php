@@ -10,7 +10,9 @@ use Engelsystem\Http\Response;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
+use Illuminate\Contracts\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection as DbCollection;
 use Illuminate\Database\Query\JoinClause;
@@ -65,7 +67,8 @@ class ShiftsController extends BaseController
                     ->where('angel_types.restricted', false)
                     ->orWhereNot('confirm_user_id', false);
             });
-        $shifts = $user->shiftEntries()->select('shift_id');
+        /** @var ShiftEntry[]|DbCollection $shiftEntries */
+        $shiftEntries = $user->shiftEntries()->with('shift')->get();
 
         $freeShifts = Shift::query()
             ->select('shifts.*')
@@ -80,7 +83,7 @@ class ShiftsController extends BaseController
                     ->whereNotNull('schedule_shift.shift_id');
             })
             // Not already signed in
-            ->whereNotIn('shifts.id', $shifts)
+            ->whereNotIn('shifts.id', $shiftEntries->pluck('shift_id'))
             // Same angel types
             ->where(function (EloquentBuilder $query) use ($angelTypes): void {
                 $query
@@ -98,6 +101,13 @@ class ShiftsController extends BaseController
             }, '<', Shift::query()->raw('COALESCE(needed_angel_types.count, nas.count)'))
             ->limit(10)
             ->orderBy('start');
+
+        foreach ($shiftEntries as $entry) {
+            $freeShifts->where(function (QueryBuilder $query) use ($entry) {
+                $query->where('end', '<=', $entry->shift->start);
+                $query->orWhere('start', '>=', $entry->shift->end);
+            });
+        }
 
         return $freeShifts->get();
     }
