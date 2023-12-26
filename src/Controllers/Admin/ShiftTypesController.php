@@ -70,7 +70,7 @@ class ShiftTypesController extends BaseController
 
         return $this->response->withView(
             'admin/shifttypes/view',
-            ['shifttype' => $shiftType]
+            ['shifttype' => $shiftType, 'is_view' => true]
         );
     }
 
