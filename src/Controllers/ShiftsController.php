@@ -103,7 +103,7 @@ class ShiftsController extends BaseController
             ->orderBy('start');
 
         foreach ($shiftEntries as $entry) {
-            $freeShifts->where(function (QueryBuilder $query) use ($entry) {
+            $freeShifts->where(function (QueryBuilder $query) use ($entry): void {
                 $query->where('end', '<=', $entry->shift->start);
                 $query->orWhere('start', '>=', $entry->shift->end);
             });
