@@ -13,9 +13,9 @@
 
             {{ block('title') }}
 
-            {% if is_index|default(false) %}
+            {% if is_index|default(false) and has_permission_to('shifttypes.edit') %}
                 {{ m.button(m.icon('plus-lg'), url('/admin/shifttypes/edit'), 'secondary') }}
-            {% elseif has_permission_to('shifttypes') and is_view|default(false) %}
+            {% elseif is_view|default(false) and has_permission_to('shifttypes.edit') %}
                 {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), null, 'sm', __('form.edit')) }}
             {% endif %}
         </h1>
@@ -43,8 +43,8 @@
                                     </td>
 
                                     <td>
+                                        {% if has_permission_to('shifttypes.edit') %}
                                         <div class="d-flex ms-auto">
-
                                             {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), null, 'sm', __('form.edit')) }}
 
                                             <form method="post" class="ps-1">
@@ -54,6 +54,7 @@
                                             </form>
 
                                         </div>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}

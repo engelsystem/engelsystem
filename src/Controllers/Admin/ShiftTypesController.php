@@ -24,6 +24,9 @@ class ShiftTypesController extends BaseController
     /** @var array<string> */
     protected array $permissions = [
         'shifttypes',
+        'edit' => 'shifttypes.edit',
+        'delete' => 'shifttypes.edit',
+        'save' => 'shifttypes.edit',
     ];
 
     public function __construct(
