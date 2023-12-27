@@ -73,18 +73,21 @@ class ShiftsController extends BaseController
         $freeShifts = Shift::query()
             ->select('shifts.*')
             // Load needed from shift if no schedule configured, else from room
-            ->leftJoin('schedule_shift', 'schedule_shift.shift_id', '=', 'shifts.id')
+            ->leftJoin('schedule_shift', 'schedule_shift.shift_id', 'shifts.id')
+            ->leftJoin('schedules', 'schedules.id', 'schedule_shift.schedule_id')
             ->leftJoin('needed_angel_types', function (JoinClause $query): void {
-                $query->on('needed_angel_types.shift_id', '=', 'shifts.id')
+                $query->on('needed_angel_types.shift_id', 'shifts.id')
                     ->whereNull('schedule_shift.shift_id');
             })
             ->leftJoin('needed_angel_types AS nast', function (JoinClause $query): void {
-                $query->on('nast.shift_type_id', '=', 'shifts.shift_type_id')
-                    ->whereNotNull('schedule_shift.shift_id');
+                $query->on('nast.shift_type_id', 'shifts.shift_type_id')
+                    ->whereNotNull('schedule_shift.shift_id')
+                    ->where('schedules.needed_from_shift_type', true);
             })
             ->leftJoin('needed_angel_types AS nas', function (JoinClause $query): void {
-                $query->on('nas.location_id', '=', 'shifts.location_id')
-                    ->whereNotNull('schedule_shift.shift_id');
+                $query->on('nas.location_id', 'shifts.location_id')
+                    ->whereNotNull('schedule_shift.shift_id')
+                    ->where('schedules.needed_from_shift_type', false);
             })
             // Not already signed in
             ->whereNotIn('shifts.id', $shiftEntries->pluck('shift_id'))
