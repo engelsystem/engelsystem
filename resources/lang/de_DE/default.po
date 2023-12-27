@@ -1187,8 +1187,14 @@ msgstr "Dauer"
 msgid "Name & Workmates"
 msgstr "Name & Kollegen"
 
-msgid "You have done enough."
-msgstr "Du hast genug gemacht."
+msgid "myshifts.sucess"
+msgstr "%s genug gemacht."
+
+msgid "You have"
+msgstr "Du hast"
+
+msgid "has"
+msgstr "hat"
 
 msgid "Vouchers"
 msgstr "Gutscheine"
