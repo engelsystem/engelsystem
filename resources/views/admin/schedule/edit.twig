@@ -64,7 +64,11 @@
                 <div class="row">
                     {% for id,name in locations %}
                         <div class="col-md-3">
-                            {{ f.checkbox('location_' ~ id, name, {'checked': id in schedule.activeLocations.pluck('id')}) }}
+                            {{ f.checkbox(
+                                'location_' ~ id,
+                                name,
+                                {'checked': schedule and id in schedule.activeLocations.pluck('id')}
+                            ) }}
                         </div>
                     {% endfor %}
                 </div>

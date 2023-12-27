@@ -91,11 +91,7 @@ class ImportSchedule extends BaseController
     public function edit(Request $request): Response
     {
         $scheduleId = $request->getAttribute('schedule_id'); // optional
-
         $schedule = ScheduleUrl::find($scheduleId);
-        if ($schedule == null) {
-            $schedule = new ScheduleUrl();
-        }
 
         return $this->response->withView(
             'admin/schedule/edit.twig',
