@@ -90,10 +90,10 @@ class ShiftsControllerTest extends ControllerTest
         $this->redirect->expects($this->exactly(10))
             ->method('to')
             ->willReturnCallback(function (string $url) use ($possibleShift1, $possibleShift2) {
-                parse_str(parse_url($url)['query'], $parameters);
+                parse_str(parse_url($url)['query'] ?? '', $parameters);
                 $this->assertTrue(Str::startsWith($url, 'http://localhost/shifts'));
                 $this->assertArrayHasKey('shift_id', $parameters);
-                $shiftId = $parameters['shift_id'];
+                $shiftId = $parameters['shift_id'] ?? 0;
                 $this->assertTrue(in_array($shiftId, [$possibleShift1->id, $possibleShift2->id]));
                 return $this->response;
             });
