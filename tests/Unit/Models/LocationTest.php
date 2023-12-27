@@ -6,11 +6,27 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
+use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Illuminate\Database\Eloquent\Collection;
 
 class LocationTest extends ModelTest
 {
+    /**
+     * @covers \Engelsystem\Models\Location::activeForSchedules
+     */
+    public function testActiveForSchedules(): void
+    {
+        $location = new Location(['name' => 'Test location']);
+        $location->save();
+
+        $schedule = Schedule::factory()->create();
+        $location->activeForSchedules()->attach($schedule);
+
+        $location = Location::find($location->id);
+        $this->assertCount(1, $location->activeForSchedules);
+    }
+
     /**
      * @covers \Engelsystem\Models\Location::shifts
      */

@@ -160,6 +160,9 @@ msgstr "Add minutes before talk begins"
 msgid "schedule.minutes-after"
 msgstr "Add minutes after talk ends"
 
+msgid "schedule.for_locations"
+msgstr "For locations"
+
 msgid "schedule.import.request_error"
 msgstr "Unable to load schedule."
 

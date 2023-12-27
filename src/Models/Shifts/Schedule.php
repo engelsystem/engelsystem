@@ -6,9 +6,11 @@ namespace Engelsystem\Models\Shifts;
 
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\Location;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -24,6 +26,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon                                       $created_at
  * @property Carbon                                       $updated_at
  *
+ * @property-read QueryBuilder|Location[]                 $activeLocations
  * @property-read QueryBuilder|Collection|Shift[]         $shifts
  * @property-read QueryBuilder|Collection|ScheduleShift[] $scheduleShifts
  * @property-read QueryBuilder|ShiftType                  $shiftType
@@ -62,6 +65,11 @@ class Schedule extends BaseModel
         'minutes_before',
         'minutes_after',
     ];
+
+    public function activeLocations(): BelongsToMany
+    {
+        return $this->belongsToMany(Location::class, 'schedule_locations');
+    }
 
     public function scheduleShifts(): HasMany
     {
