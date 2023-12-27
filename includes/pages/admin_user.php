@@ -289,7 +289,7 @@ function admin_user()
                     $user_source->email = $request->postData('eemail');
                 }
 
-                $nick = trim($request->get('eNick'));
+                $nick = trim((string)$request->get('eNick'));
                 $nickValid = (new Username())->validate($nick);
 
                 $changed_nick = false;

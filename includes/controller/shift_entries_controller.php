@@ -210,7 +210,7 @@ function shift_entry_create_controller_user(Shift $shift, AngelType $angeltype):
     $request = request();
 
     $signup_user = auth()->user();
-    $needed_angeltype = (new AngelType())->forceFill(NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype));
+    $needed_angeltype = (new AngelType())->forceFill(NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype) ?: []);
     $shift_entries = $shift->shiftEntries()
         ->where('angel_type_id', $angeltype->id)
         ->get();
