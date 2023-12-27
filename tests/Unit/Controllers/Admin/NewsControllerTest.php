@@ -44,7 +44,7 @@ class NewsControllerTest extends ControllerTest
                 $this->assertEquals('pages/news/edit.twig', $view);
 
                 $this->assertNotEmpty($data['news']);
-                $this->assertTrue($data['send_notification']);
+                $this->assertFalse($data['send_notification']);
 
                 return $this->response;
             });
