@@ -414,15 +414,6 @@ function admin_shifts()
             $shift->createdBy()->associate(auth()->user());
             $shift->save();
 
-            engelsystem_log(
-                'Shift created: ' . $shifttypes[$shift->shift_type_id]
-                . ' with title ' . $shift->title
-                . ' with description ' . $shift->description
-                . ' from ' . $shift->start->format('Y-m-d H:i')
-                . ' to ' . $shift->end->format('Y-m-d H:i')
-                . ', transaction: ' . $transactionId
-            );
-
             $needed_angel_types_info = [];
             foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
                 $angel_type_source = AngelType::find($type_id);
@@ -436,7 +427,13 @@ function admin_shifts()
                     $needed_angel_types_info[] = $angel_type_source->name . ': ' . $count;
                 }
             }
-            engelsystem_log('Shift needs following angel types: ' . join(', ', $needed_angel_types_info));
+            engelsystem_log('Shift created: ' . $shifttypes[$shift->shift_type_id]
+                . ' with title ' . $shift->title
+                . ' with description ' . $shift->description
+                . ' from ' . $shift->start->format('Y-m-d H:i')
+                . ' to ' . $shift->end->format('Y-m-d H:i')
+                . ', transaction: ' . $transactionId
+                . '; needed angel types: ' . join(', ', $needed_angel_types_info));
         }
 
         success('Shifts created.');

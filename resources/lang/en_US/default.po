@@ -937,3 +937,6 @@ msgstr "Actions"
 
 msgid "general.back"
 msgstr "Back"
+
+msgid "myshifts.sucess"
+msgstr "%s done enough."

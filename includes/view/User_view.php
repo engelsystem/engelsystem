@@ -122,8 +122,9 @@ function Users_view(
                     '/admin-user',
                     ['id' => $user->id]
                 ),
-                'pencil',
+                icon('pencil'),
                 'btn-sm',
+                '',
                 __('form.edit')
             ),
         ]);
@@ -563,7 +564,10 @@ function User_view(
                 'actions'    => __('general.actions'),
             ], $my_shifts));
         } elseif ($user_source->state->force_active) {
-            $myshifts_table = success(__('You have done enough.'), true);
+            $myshifts_table = success(__(
+                'myshifts.sucess',
+                [($its_me ? __('You have') : ($user_source->name . ' ' . __('has')))]
+            ), true);
         }
     }
 
