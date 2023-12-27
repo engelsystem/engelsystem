@@ -92,7 +92,10 @@ class ImportSchedule extends BaseController
     {
         $scheduleId = $request->getAttribute('schedule_id'); // optional
 
-        $schedule = ScheduleUrl::findOrFail($scheduleId);
+        $schedule = ScheduleUrl::find($scheduleId);
+        if ($schedule == null) {
+            $schedule = new ScheduleUrl();
+        }
 
         return $this->response->withView(
             'admin/schedule/edit.twig',
@@ -421,6 +424,7 @@ class ImportSchedule extends BaseController
         $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->where('schedule_id', $schedule->id)->first();
         $shift = $scheduleShift->shift;
         $shift->delete();
+        $scheduleShift->delete();
 
         $this->fireDeleteShiftEntryEvents($event, $schedule);
 
