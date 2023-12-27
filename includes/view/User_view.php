@@ -564,10 +564,10 @@ function User_view(
                 'actions'    => __('general.actions'),
             ], $my_shifts));
         } elseif ($user_source->state->force_active) {
-            $myshifts_table = success(__(
-                'myshifts.sucess',
-                [($its_me ? __('You have') : ($user_source->name . ' ' . __('has')))]
-            ), true);
+            $myshifts_table = success(
+                ($its_me ? __('You have done enough.') : (__('%s has done enough.', [$user_source->name]))),
+                true
+            );
         }
     }
 
