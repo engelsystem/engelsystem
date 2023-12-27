@@ -27,6 +27,22 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         $description .= $parsedown->parse(htmlspecialchars($location->description));
     }
 
+    $neededAngelTypes = '';
+    if (auth()->can('admin_shifts')) {
+        $neededAngelTypes .= '<h3>' . __('location.required_angels') . '</h3><ul>';
+        foreach ($location->neededAngelTypes as $neededAngelType) {
+            if ($neededAngelType->count) {
+                $neededAngelTypes .= '<li><a href="'
+                    . url('angeltypes', ['action' => 'view', 'angeltype_id' => $neededAngelType->angelType->id])
+                    . '">' . $neededAngelType->angelType->name
+                    . '</a>: '
+                    . $neededAngelType->count
+                    . '</li>';
+            }
+        }
+        $neededAngelTypes .= '</ul>';
+    }
+
     $dect = '';
     if (config('enable_dect') && $location->dect) {
         $dect = heading(__('Contact'), 3)
@@ -77,6 +93,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         ]) : '',
         $dect,
         $description,
+        $neededAngelTypes,
         tabs($tabs, $selected_tab),
         ],
         true
