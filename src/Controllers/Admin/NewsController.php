@@ -39,7 +39,7 @@ class NewsController extends BaseController
         $news = $this->news->find($newsId);
         $isMeeting = (bool) $request->get('meeting', false);
 
-        return $this->showEdit($news, true, $isMeeting);
+        return $this->showEdit($news, !$news, $isMeeting);
     }
 
     protected function showEdit(?News $news, bool $sendNotification = true, bool $isMeetingDefault = false): Response
