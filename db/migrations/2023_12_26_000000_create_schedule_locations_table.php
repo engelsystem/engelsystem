@@ -38,7 +38,7 @@ class CreateScheduleLocationsTable extends Migration
 
         foreach ($scheduleLocations as $scheduleLocation) {
             $connection->table('schedule_locations')
-                ->insert((array)$scheduleLocation);
+                ->insert((array) $scheduleLocation);
         }
     }
 
