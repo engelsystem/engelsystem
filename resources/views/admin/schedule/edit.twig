@@ -12,50 +12,63 @@
 {% block row_content %}
     {% if schedule and schedule.updated_at %}
         <div class="col-md-12">
-            <p>{{  __('schedule.last_update', [schedule.updated_at.format(__('general.datetime'))]) }}</p>
+            <p>{{ __('schedule.last_update', [schedule.updated_at.format(__('general.datetime'))]) }}</p>
         </div>
     {% endif %}
 
     <form method="post">
         {{ csrf() }}
 
-        <div class="col-lg-12">
-            {{ f.input('name', __('schedule.name'), {
-                'required': true,
-                'value': schedule ? schedule.name : '',
-            }) }}
-            {{ f.input('url', __('schedule.url'), {
-                'type': 'url',
-                'required': true,
-                'value': schedule ? schedule.url : ''
-            }) }}
-
-            {{ f.select('shift_type', __('schedule.shift-type'), shift_types|default([]), {
-                'selected': schedule ? schedule.shift_type : '',
-            }) }}
-
-            {{ f.checkbox('needed_from_shift_type', __('schedule.needed-from-shift-type'), {
-                'checked': schedule ? schedule.needed_from_shift_type : '',
-            }) }}
-
-            {{ f.input('minutes_before', __('schedule.minutes-before'), {
-                'type': 'number',
-                'required': true,
-                'value': schedule ? schedule.minutes_before : 15
-            }) }}
-            {{ f.input('minutes_after', __('schedule.minutes-after'), {
-                'type': 'number',
-                'required': true,
-                'value': schedule ? schedule.minutes_after : 15
-            }) }}
-
-            {{ f.save(__('form.save')) }}
-
-            {% if schedule %}
-                {{ f.delete(__('form.delete'), {
-                    'confirm_title': __('schedule.delete.title', [schedule.shifts|length])
+        <div class="row">
+            <div class="col-md-6">
+                {{ f.input('name', __('schedule.name'), {
+                    'required': true,
+                    'value': schedule ? schedule.name : '',
                 }) }}
-            {% endif %}
+                {{ f.input('url', __('schedule.url'), {
+                    'type': 'url',
+                    'required': true,
+                    'value': schedule ? schedule.url : ''
+                }) }}
+
+                {{ f.select('shift_type', __('schedule.shift-type'), shift_types|default([]), {
+                    'selected': schedule ? schedule.shift_type : '',
+                }) }}
+
+                {{ f.checkbox('needed_from_shift_type', __('schedule.needed-from-shift-type'), {
+                    'checked': schedule ? schedule.needed_from_shift_type : '',
+                }) }}
+
+                {{ f.input('minutes_before', __('schedule.minutes-before'), {
+                    'type': 'number',
+                    'required': true,
+                    'value': schedule ? schedule.minutes_before : 15
+                }) }}
+                {{ f.input('minutes_after', __('schedule.minutes-after'), {
+                    'type': 'number',
+                    'required': true,
+                    'value': schedule ? schedule.minutes_after : 15
+                }) }}
+
+                {{ f.save(__('form.save')) }}
+
+                {% if schedule %}
+                    {{ f.delete(__('form.delete'), {
+                        'confirm_title': __('schedule.delete.title', [schedule.shifts|length])
+                    }) }}
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <h3>{{ __('schedule.for_locations') }}</h3>
+
+                <div class="row">
+                    {% for id,name in locations %}
+                        <div class="col-md-3">
+                            {{ f.checkbox('location_' ~ id, name, {'checked': id in schedule.activeLocations.pluck('id')}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </form>
 {% endblock %}

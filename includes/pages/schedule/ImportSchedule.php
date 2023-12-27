@@ -92,13 +92,14 @@ class ImportSchedule extends BaseController
     {
         $scheduleId = $request->getAttribute('schedule_id'); // optional
 
-        $schedule = ScheduleUrl::find($scheduleId);
+        $schedule = ScheduleUrl::findOrFail($scheduleId);
 
         return $this->response->withView(
             'admin/schedule/edit.twig',
             [
                 'schedule'    => $schedule,
-                'shift_types' => ShiftType::all()->pluck('name', 'id'),
+                'shift_types' => ShiftType::all()->sortBy('name')->pluck('name', 'id'),
+                'locations'   => Location::all()->sortBy('name')->pluck('name', 'id'),
             ]
         );
     }
@@ -114,6 +115,12 @@ class ImportSchedule extends BaseController
             return $this->delete($schedule);
         }
 
+        $locationsList = Location::all()->pluck('id');
+        $locationsValidation = [];
+        foreach ($locationsList as $id) {
+            $locationsValidation['location_' . $id] = 'optional|checked';
+        }
+
         $data = $this->validate($request, [
             'name'           => 'required',
             'url'            => 'required',
@@ -121,7 +128,7 @@ class ImportSchedule extends BaseController
             'needed_from_shift_type' => 'optional|checked',
             'minutes_before' => 'int',
             'minutes_after'  => 'int',
-        ]);
+        ] + $locationsValidation);
 
         if (!ShiftType::find($data['shift_type'])) {
             throw new ErrorException('schedule.import.invalid-shift-type');
@@ -135,9 +142,22 @@ class ImportSchedule extends BaseController
         $schedule->minutes_after = $data['minutes_after'];
 
         $schedule->save();
+        $schedule->activeLocations()->detach();
+
+        $for = new Collection();
+        foreach ($locationsList as $id) {
+            if (!$data['location_' . $id]) {
+                continue;
+            }
+
+            $location = Location::find($id);
+            $schedule->activeLocations()->attach($location);
+            $for[] = $location->name;
+        }
 
         $this->log->info(
-            'Schedule {name}: Url {url}, Shift Type {shift_type}, ({need}), minutes before/after {before}/{after}',
+            'Schedule {name}: Url {url}, Shift Type {shift_type}, ({need}), '
+            . 'minutes before/after {before}/{after}, for: {locations}',
             [
                 'name'       => $schedule->name,
                 'url'        => $schedule->name,
@@ -145,6 +165,7 @@ class ImportSchedule extends BaseController
                 'need'       => $schedule->needed_from_shift_type ? 'from shift type' : 'from room',
                 'before'     => $schedule->minutes_before,
                 'after'      => $schedule->minutes_after,
+                'locations'  => $for->implode(', '),
             ]
         );
 
@@ -509,6 +530,10 @@ class ImportSchedule extends BaseController
 
         foreach ($schedule->getDay() as $day) {
             foreach ($day->getRoom() as $room) {
+                if (!$scheduleUrl->activeLocations->where('name', $room->getName())->count()) {
+                    continue;
+                }
+
                 foreach ($room->getEvent() as $event) {
                     $scheduleEvents[$event->getGuid()] = $event;
 

@@ -1441,6 +1441,9 @@ msgstr "Minuten vor Talk beginn hinzufügen"
 msgid "schedule.minutes-after"
 msgstr "Minuten nach Talk ende hinzufügen"
 
+msgid "schedule.for_locations"
+msgstr "Für Orte"
+
 msgid "schedule.import.locations.add"
 msgstr "Neue Orte"
 
