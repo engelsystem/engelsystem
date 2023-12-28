@@ -68,9 +68,14 @@ class Controller extends BaseController
             ],
             'users'                => [
                 'type' => 'gauge',
-                ['labels' => ['state' => 'incoming'], 'value' => $this->stats->newUsers()],
-                ['labels' => ['state' => 'arrived', 'working' => 'no'], 'value' => $this->stats->arrivedUsers(false)],
-                ['labels' => ['state' => 'arrived', 'working' => 'yes'], 'value' => $this->stats->arrivedUsers(true)],
+                ['labels' => ['state' => 'incoming', 'working' => 'no'], 'value'
+                => $this->stats->usersState(false, false)],
+                ['labels' => ['state' => 'incoming', 'working' => 'yes'], 'value'
+                => $this->stats->usersState(true, false)],
+                ['labels' => ['state' => 'arrived', 'working' => 'no'], 'value'
+                => $this->stats->usersState(false)],
+                ['labels' => ['state' => 'arrived', 'working' => 'yes'], 'value'
+                => $this->stats->usersState(true)],
             ],
             'users_force_active'   => ['type' => 'gauge', $this->stats->forceActiveUsers()],
             'users_pronouns'     => ['type' => 'gauge', $this->stats->usersPronouns()],
@@ -194,8 +199,8 @@ class Controller extends BaseController
         $this->checkAuth(true);
 
         $data = [
-            'user_count'         => $this->stats->newUsers() + $this->stats->arrivedUsers(),
-            'arrived_user_count' => $this->stats->arrivedUsers(),
+            'user_count'         => $this->stats->usersState() + $this->stats->usersState(null, false),
+            'arrived_user_count' => $this->stats->usersState(),
             'done_work_hours'    => round($this->stats->workSeconds(true) / 60 / 60, 0),
             'users_in_action'    => $this->stats->currentlyWorkingUsers(),
         ];
