@@ -69,6 +69,14 @@ class Stats
         return $query->count('users_state.user_id');
     }
 
+    public function usersInfo(): int
+    {
+        return State::query()
+            ->whereNotNull('user_info')
+            ->whereNot('user_info', '')
+            ->count();
+    }
+
     public function forceActiveUsers(): int
     {
         return State::whereForceActive(true)->count();
