@@ -288,6 +288,17 @@ class StatsTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::usersInfo
+     */
+    public function testUsersInfo(): void
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(1, $stats->usersInfo());
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::forceActiveUsers
      */
     public function testForceActiveUsers(): void
@@ -474,7 +485,7 @@ class StatsTest extends TestCase
         $this->addUser(['arrived' => 1], ['pronoun' => 'unicorn'], ['language' => 'lo_RM', 'email_shiftinfo' => true]);
         $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL'], ['language' => 'lo_RM']);
         $this->addUser(
-            ['arrived' => 1, 'got_voucher' => 9, 'force_active' => true],
+            ['arrived' => 1, 'got_voucher' => 9, 'force_active' => true, 'user_info' => 'Info'],
             [],
             ['theme' => 1],
             ['drive_car' => true, 'drive_12t' => true]
