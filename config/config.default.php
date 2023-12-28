@@ -144,6 +144,11 @@ return [
     // Supported themes
     // To disable a theme in the config.php, you can set its value to null
     'themes' => [
+        17 => [
+            'name' => 'Engelsystem 37c3 (2023)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark',
+        ],
         16 => [
             'name' => 'Engelsystem cccamp23 (2023)',
             'type' => 'dark',
