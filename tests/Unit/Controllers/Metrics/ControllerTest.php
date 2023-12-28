@@ -90,10 +90,10 @@ class ControllerTest extends TestCase
             ->method('licenses')
             ->withConsecutive(['has_car'], ['forklift'], ['car'], ['3.5t'], ['7.5t'], ['12t'], ['ifsg_light'], ['ifsg'])
             ->willReturnOnConsecutiveCalls(6, 3, 15, 9, 7, 1, 5, 4);
-        $stats->expects($this->exactly(2))
-            ->method('arrivedUsers')
-            ->withConsecutive([false], [true])
-            ->willReturnOnConsecutiveCalls(7, 43);
+        $stats->expects($this->exactly(4))
+            ->method('usersState')
+            ->withConsecutive([false, false], [true, false], [false], [true])
+            ->willReturnOnConsecutiveCalls(7, 43, 42, 10);
         $stats->expects($this->exactly(2))
             ->method('currentlyWorkingUsers')
             ->withConsecutive([false], [true])
@@ -123,7 +123,6 @@ class ControllerTest extends TestCase
                 [LogLevel::DEBUG]
             )
             ->willReturnOnConsecutiveCalls(0, 1, 0, 5, 999, 4, 55, 3);
-        $this->setExpects($stats, 'newUsers', null, 9);
         $this->setExpects($stats, 'worklogSeconds', null, 39 * 60 * 60);
         $this->setExpects($stats, 'vouchers', null, 17);
         $this->setExpects($stats, 'tshirts', null, 3);
@@ -192,7 +191,7 @@ class ControllerTest extends TestCase
         $response->expects($this->once())
             ->method('withContent')
             ->with(json_encode([
-                'user_count'         => 13,
+                'user_count'         => 20,
                 'arrived_user_count' => 10,
                 'done_work_hours'    => 99,
                 'users_in_action'    => 5,
@@ -210,8 +209,7 @@ class ControllerTest extends TestCase
             ->method('workSeconds')
             ->with(true)
             ->willReturn((int) (60 * 60 * 99.47));
-        $this->setExpects($stats, 'newUsers', null, 3);
-        $this->setExpects($stats, 'arrivedUsers', null, 10, $this->exactly(2));
+        $this->setExpects($stats, 'usersState', null, 10, $this->exactly(3));
         $this->setExpects($stats, 'currentlyWorkingUsers', null, 5);
 
         $controller = new Controller($response, $engine, $config, $request, $stats, $version);

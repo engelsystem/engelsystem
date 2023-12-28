@@ -36,13 +36,13 @@ class Stats
     }
 
     /**
-     * The number of not arrived users
+     * The number of users that arrived/not arrived and/or did some work
      *
      * @param bool|null $working
      */
-    public function arrivedUsers(bool $working = null): int
+    public function usersState(bool $working = null, bool $arrived = true): int
     {
-        $query = State::whereArrived(true);
+        $query = State::whereArrived($arrived);
 
         if (!is_null($working)) {
             $query
@@ -67,14 +67,6 @@ class Stats
         }
 
         return $query->count('users_state.user_id');
-    }
-
-    /**
-     * The number of not arrived users
-     */
-    public function newUsers(): int
-    {
-        return State::whereArrived(false)->count();
     }
 
     public function forceActiveUsers(): int

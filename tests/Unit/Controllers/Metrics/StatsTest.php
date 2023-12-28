@@ -33,20 +33,9 @@ class StatsTest extends TestCase
     use HasDatabase;
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::__construct
-     * @covers \Engelsystem\Controllers\Metrics\Stats::newUsers
-     */
-    public function testNewUsers(): void
-    {
-        $this->addUsers();
-
-        $stats = new Stats($this->database);
-        $this->assertEquals(2, $stats->newUsers());
-    }
-
-    /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::vouchers
      * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersQuery
+     * @covers \Engelsystem\Controllers\Metrics\Stats::__construct
      */
     public function testVouchers(): void
     {
@@ -280,18 +269,22 @@ class StatsTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::arrivedUsers
+     * @covers \Engelsystem\Controllers\Metrics\Stats::usersState
      */
-    public function testArrivedUsers(): void
+    public function testUsersState(): void
     {
         $this->addUsers();
         ShiftEntry::factory()->create(['user_id' => 3]);
         ShiftEntry::factory()->create(['user_id' => 4]);
+        ShiftEntry::factory()->create(['user_id' => 1]);
 
         $stats = new Stats($this->database);
-        $this->assertEquals(7, $stats->arrivedUsers());
-        $this->assertEquals(5, $stats->arrivedUsers(false));
-        $this->assertEquals(2, $stats->arrivedUsers(true));
+        $this->assertEquals(7, $stats->usersState());
+        $this->assertEquals(5, $stats->usersState(false));
+        $this->assertEquals(2, $stats->usersState(true));
+        $this->assertEquals(2, $stats->usersState(null, false));
+        $this->assertEquals(1, $stats->usersState(true, false));
+        $this->assertEquals(1, $stats->usersState(false, false));
     }
 
     /**
