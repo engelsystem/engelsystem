@@ -1196,14 +1196,11 @@ msgstr "Dauer"
 msgid "Name & Workmates"
 msgstr "Name & Kollegen"
 
-msgid "myshifts.sucess"
-msgstr "%s genug gemacht."
+msgid "You have done enough."
+msgstr "Du hast genug gemacht."
 
-msgid "You have"
-msgstr "Du hast"
-
-msgid "has"
-msgstr "hat"
+msgid "%s has done enough."
+msgstr "%s hat genug gemacht."
 
 msgid "Vouchers"
 msgstr "Gutscheine"

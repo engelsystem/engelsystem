@@ -5,7 +5,22 @@
 {% block title %}{{ shifttype.name }}{% endblock %}
 
 {% block row_content %}
-        <div class="col-md-12">
-            {{ shifttype.description|md }}
-        </div>
+    <div class="col-md-12">
+        <h3>{{ __('general.description') }}</h3>
+        {{ shifttype.description|md }}
+    </div>
+    <div class="col-md-12">
+        <h3>{{ __('location.required_angels') }}</h3>
+        <ul>
+            {% for neededAngelType in shifttype.neededAngelTypes %}
+                {% if neededAngelType.count %}
+                    <li>
+                        <a href="{{ url('angeltypes', {'action':'view', 'angeltype_id': neededAngelType.angelType.id}) }}">
+                            {{ neededAngelType.angelType.name -}}
+                        </a>: {{ neededAngelType.count }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
