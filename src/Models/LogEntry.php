@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Models;
 
 use Carbon\Carbon;
+use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -57,7 +58,11 @@ class LogEntry extends BaseModel
             ->limit(10000);
 
         if (!empty($userId)) {
-            $query->where('user_id', $userId);
+            $query->where(function (Builder $query) use ($userId): void {
+                $user = User::findOrFail($userId);
+                $query->where('user_id', $userId)
+                    ->orWhere('message', 'like', '%' . $user->name . ' (' . $userId . ')%');
+            });
         }
 
         if (!empty($keyword)) {

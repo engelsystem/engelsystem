@@ -28,7 +28,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
     }
 
     $neededAngelTypes = '';
-    if (auth()->can('admin_shifts')) {
+    if (auth()->can('admin_shifts') && $location->neededAngelTypes->isNotEmpty()) {
         $neededAngelTypes .= '<h3>' . __('location.required_angels') . '</h3><ul>';
         foreach ($location->neededAngelTypes as $neededAngelType) {
             if ($neededAngelType->count) {
