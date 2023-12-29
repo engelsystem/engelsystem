@@ -154,6 +154,7 @@
                         'required': isTShirtSizeRequired,
                         'required_icon': isTShirtSizeRequired,
                         'default_option': __('form.select_placeholder'),
+                        'disabled': user.state.got_shirt,
                     }) }}
                 </div>
             {% endif %}
