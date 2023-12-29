@@ -139,6 +139,8 @@ class Controller extends BaseController
             'locales'              => ['type' => 'gauge', 'help' => 'The locales users have configured'] + $userLocales,
             'themes'               => ['type' => 'gauge', 'help' => 'The themes users have configured'] + $userThemes,
             'locations'            => ['type' => 'gauge', $this->stats->locations()],
+            'angeltypes'           => ['type' => 'gauge', $this->stats->angeltypes()],
+            'shifttypes'           => ['type' => 'gauge', $this->stats->shifttypes()],
             'shifts'               => ['type' => 'gauge', $this->stats->shifts()],
             'announcements'        => [
                 'type' => 'gauge',

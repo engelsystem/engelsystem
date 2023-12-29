@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Controllers\Metrics;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\Metrics\Stats;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Faq;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
@@ -16,6 +17,7 @@ use Engelsystem\Models\Question;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
@@ -198,6 +200,34 @@ class StatsTest extends TestCase
 
         $stats = new Stats($this->database);
         $this->assertEquals(4, $stats->locations());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::angeltypes
+     */
+    public function testAngeltypes(): void
+    {
+        (new AngelType(['name' => 'AngelType 1']))->save();
+        (new AngelType(['name' => 'Second AngelType']))->save();
+        (new AngelType(['name' => 'Another AngelType']))->save();
+        (new AngelType(['name' => 'Old AngelType']))->save();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(4, $stats->angeltypes());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::shifttypes
+     */
+    public function testShifttypes(): void
+    {
+        (new ShiftType(['name' => 'ShiftType 1', 'description' => 'rtfm']))->save();
+        (new ShiftType(['name' => 'Second ShiftType', 'description' => 'pebkac']))->save();
+        (new ShiftType(['name' => 'Another ShiftType', 'description' => 'id10t error']))->save();
+        (new ShiftType(['name' => 'Old ShiftType', 'description' => 'layer 8']))->save();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(4, $stats->shifttypes());
     }
 
     /**
