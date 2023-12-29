@@ -12,6 +12,7 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\User\User;
 use Psr\Log\LoggerInterface;
 
 class SettingsController extends BaseController
@@ -60,7 +61,7 @@ class SettingsController extends BaseController
     public function saveProfile(Request $request): Response
     {
         $user = $this->auth->user();
-        $data = $this->validate($request, $this->getSaveProfileRules());
+        $data = $this->validate($request, $this->getSaveProfileRules($user));
         $goodie = GoodieType::from(config('goodie_type'));
         $goodie_enabled = $goodie !== GoodieType::None;
         $goodie_tshirt = $goodie === GoodieType::Tshirt;
@@ -109,7 +110,7 @@ class SettingsController extends BaseController
 
         if (
             $goodie_tshirt
-            && isset(config('tshirt_sizes')[$data['shirt_size']])
+            && isset(config('tshirt_sizes')[$data['shirt_size'] ?? ''])
             && !$user->state->got_shirt
         ) {
             $user->personalData->shirt_size = $data['shirt_size'];
@@ -437,7 +438,7 @@ class SettingsController extends BaseController
     /**
      * @return string[]
      */
-    private function getSaveProfileRules(): array
+    private function getSaveProfileRules(User $user): array
     {
         $goodie_tshirt = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
         $rules = [
@@ -459,7 +460,7 @@ class SettingsController extends BaseController
             $rules['planned_arrival_date'] = 'required|date:Y-m-d';
             $rules['planned_departure_date'] = 'optional|date:Y-m-d';
         }
-        if ($goodie_tshirt) {
+        if ($goodie_tshirt && !$user->state->got_shirt) {
             $rules['shirt_size'] = $this->isRequired('tshirt_size') . '|shirt_size';
         }
         return $rules;
