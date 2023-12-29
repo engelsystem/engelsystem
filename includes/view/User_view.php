@@ -444,9 +444,9 @@ function User_view_myshifts(
             'comment'    => '',
             'actions'    => '',
         ];
-        if ($goodie_enabled && ($its_me || $tshirt_admin)) {
+        if ($goodie_enabled && ($its_me || $tshirt_admin || auth()->can('admin_user'))) {
             $myshifts_table[] = [
-                'date'       => '<b>' . ($goodie_tshirt ? __('Your T-shirt score') : __('Your goodie score')) . '&trade;:</b>',
+                'date'       => '<b>' . ($goodie_tshirt ? __('T-shirt score') : __('Goodie score')) . '&trade;:</b>',
                 'duration'   => '<b>' . $tshirt_score . '</b>',
                 'location'   => '',
                 'shift_info' => '',

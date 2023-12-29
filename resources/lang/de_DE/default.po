@@ -1178,8 +1178,8 @@ msgstr "Austragen"
 msgid "Sum:"
 msgstr "Summe:"
 
-msgid "Your T-shirt score"
-msgstr "Dein T-Shirt Score"
+msgid "T-shirt score"
+msgstr "T-Shirt Score"
 
 msgid "Work log entry"
 msgstr "Arbeitseinsatz"
@@ -1342,8 +1342,8 @@ msgstr "Goodie"
 msgid "goodie"
 msgstr "Goodie"
 
-msgid "Your goodie score"
-msgstr "Dein Goodie Score"
+msgid "Goodie score"
+msgstr "Goodie Score"
 
 msgid "Given goodies"
 msgstr "Ausgegebene Goodies"
