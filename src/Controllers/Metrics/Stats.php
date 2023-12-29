@@ -6,6 +6,7 @@ namespace Engelsystem\Controllers\Metrics;
 
 use Carbon\Carbon;
 use Engelsystem\Database\Database;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Models\Faq;
 use Engelsystem\Models\LogEntry;
@@ -16,6 +17,7 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
@@ -294,6 +296,18 @@ class Stats
     public function locations(): int
     {
         return Location::query()
+            ->count();
+    }
+
+    public function shifttypes(): int
+    {
+        return ShiftType::query()
+            ->count();
+    }
+
+    public function angeltypes(): int
+    {
+        return AngelType::query()
             ->count();
     }
 
