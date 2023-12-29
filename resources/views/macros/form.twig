@@ -193,6 +193,7 @@ Renders a select element wrapped in a DIV with mb-3.
         {% endif %}
         <select id="{{ name }}" name="{{ name }}"
             class="form-control {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
+            {%- if opt.disabled|default(false) %} disabled{%- endif -%}
             {%- if opt.required|default(false) %} required{%- endif -%}>
             {%- if opt.default_option is defined %}
                 <option value="">{{ opt.default_option }}</option>
