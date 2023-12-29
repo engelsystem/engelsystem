@@ -30,6 +30,7 @@ function admin_user()
     $user_info_edit = auth()->can('user.info.edit');
     $user_edit_shirt = auth()->can('user.edit.shirt');
     $user_edit = auth()->can('user.edit');
+    $admin_arrive = auth()->can('admin_arrive');
 
     if (!$request->has('id')) {
         throw_redirect(users_link());
@@ -121,8 +122,12 @@ function admin_user()
 
         // Arrived?
         $html .= '  <tr><td>' . __('user.arrived') . '</td><td>' . "\n";
-        $html .= ($user_source->state->arrived ? __('Yes') : __('No'));
-        $html .= '</td></tr>' . "\n";
+        if ($admin_arrive) {
+            $html .= html_options('arrive', $options, $user_source->state->arrived) . '</td></tr>' . "\n";
+        } else {
+            $html .= ($user_source->state->arrived ? __('Yes') : __('No'));
+            $html .= '</td></tr>' . "\n";
+        }
 
         // Active?
         if ($user_edit_shirt) {
@@ -321,6 +326,9 @@ function admin_user()
                 if ($user_info_edit) {
                     $user_source->state->user_info = $request->postData('userInfo');
                 }
+                if ($admin_arrive) {
+                    $user_source->state->arrived = $request->postData('arrive');
+                }
 
                 if ($user_edit_shirt) {
                     $user_source->state->active = $request->postData('eAktiv');
@@ -337,6 +345,7 @@ function admin_user()
                     . ' (' . $user_source->id . ')'
                     . ($changed_email ? ', email modified' : '')
                     . ($goodie_tshirt ? ', t-shirt-size: ' . $user_source->personalData->shirt_size : '')
+                    . ', arrived: ' . $user_source->state->arrived
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
                     . ($goodie_tshirt ? ', t-shirt: ' : ', goodie: ' . $user_source->state->got_shirt)
