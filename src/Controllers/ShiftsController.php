@@ -124,13 +124,11 @@ class ShiftsController extends BaseController
     {
         $query->select('id')
             ->from('shift_entries')
+            ->where('shift_entries.shift_id', $query->raw('shifts.id'))
             ->where(function (Builder $query): void {
-                $query->where('shift_entries.shift_id', $query->raw('needed_angel_types.shift_id'))
-                    ->where('shift_entries.angel_type_id', $query->raw('needed_angel_types.angel_type_id'));
-            })
-            ->orWhere(function (Builder $query): void {
-                $query->where('shift_entries.shift_id', $query->raw('nas.shift_id'))
-                    ->where('shift_entries.angel_type_id', $query->raw('nas.angel_type_id'));
+                $query->where('shift_entries.angel_type_id', $query->raw('needed_angel_types.angel_type_id'))
+                ->orWhere('shift_entries.angel_type_id', $query->raw('nas.angel_type_id'))
+                ->orWhere('shift_entries.angel_type_id', $query->raw('nast.angel_type_id'));
             })
             ->groupBy(['shift_entries.shift_id', 'shift_entries.angel_type_id']);
     }
