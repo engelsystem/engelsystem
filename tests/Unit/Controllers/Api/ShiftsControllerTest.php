@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ShiftsControllerTest extends ApiBaseControllerTest
 {
     protected Location $location;
+    protected Schedule $schedule;
     protected Shift $shiftA;
     protected Shift $shiftB;
 
@@ -75,10 +76,41 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertEquals($this->shiftB->title, $shiftBData['title'], 'Title is equal');
         $this->assertEquals($this->location->id, $shiftBData['location']['id'], 'Same location');
         $this->assertEquals($this->shiftB->shiftType->id, $shiftBData['shift_type']['id'], 'Shift type equals');
-        $this->assertCount(2, $shiftBData['entries']);
+        $this->assertCount(3, $shiftBData['entries']);
         // No users
         $entriesB = collect($shiftBData['entries'])->sortBy('type.id');
         $this->assertCount(0, $entriesB[0]['users']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByAngeltype
+     * @covers \Engelsystem\Controllers\Api\ShiftsController::getNeededAngelTypes
+     */
+    public function testEntriesViaShiftType(): void
+    {
+        $this->schedule->needed_from_shift_type = true;
+        $this->schedule->save();
+
+        /** @var ShiftEntry $firstEntry */
+        $firstEntry = $this->shiftB->shiftEntries->first();
+
+        $request = new Request();
+        $request = $request->withAttribute('angeltype_id', $firstEntry->angelType->id);
+
+        $controller = new ShiftsController(new Response());
+
+        $response = $controller->entriesByAngeltype($request);
+        $this->validateApiResponse('/angeltypes/{id}/shifts', 'get', $response);
+
+        $this->assertEquals(['application/json'], $response->getHeader('content-type'));
+        $this->assertJson($response->getContent());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('data', $data);
+        $this->assertCount(5, $data['data']);
+
+        $shift = $data['data'][0];
+        $this->assertTrue(count($shift['entries']) >= 1);
     }
 
     /**
@@ -174,7 +206,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         parent::setUp();
 
         $this->location = Location::factory()->create();
-        $schedule = Schedule::factory()->create();
+        $this->schedule = Schedule::factory()->create();
 
         // Shifts
         $this->shiftA = Shift::factory(1)
@@ -183,7 +215,8 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->shiftB = Shift::factory(1)
             ->create(['location_id' => $this->location->id, 'start' => Carbon::now()->addHour()])
             ->first();
-        (new ScheduleShift(['shift_id' => $this->shiftB->id, 'schedule_id' => $schedule->id, 'guid' => 'a']))->save();
+        (new ScheduleShift(['shift_id' => $this->shiftB->id, 'schedule_id' => $this->schedule->id, 'guid' => 'a']))
+            ->save();
 
         // "Empty" entry to be skipped
         NeededAngelType::factory(1)->create(['location_id' => null, 'shift_id' => $this->shiftA->id, 'count' => 0]);
@@ -191,19 +224,31 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         // Needed entry by shift
         /** @var NeededAngelType $byShift */
         $byShift = NeededAngelType::factory(2)
-            ->create(['location_id' => null, 'shift_id' => $this->shiftA->id, 'count' => 2])
+            ->create(['location_id' => null, 'shift_type_id' => null, 'shift_id' => $this->shiftA->id, 'count' => 2])
             ->first();
 
         // Needed entry by location
         /** @var NeededAngelType $byLocation */
         $byLocation = NeededAngelType::factory(1)
-            ->create(['location_id' => $this->location->id, 'shift_id' => null, 'count' => 3])
+            ->create(['location_id' => $this->location->id, 'shift_type_id' => null, 'shift_id' => null, 'count' => 3])
             ->first();
+
+        // Needed entry by shift type
+        $shiftType = $this->shiftB->shiftType;
+        /** @var NeededAngelType $byShiftType */
+        $byShiftType = NeededAngelType::factory(2)
+            ->create(['location_id' => null, 'shift_type_id' => $shiftType->id, 'count' => 3])
+            ->first();
+        ShiftEntry::factory(5)->create([
+            'shift_id' => $this->shiftB->id,
+            'angel_type_id' => $byShiftType->angel_type_id,
+        ]);
 
         // Added by both
         NeededAngelType::factory(1)
             ->create([
                 'location_id' => $this->location->id,
+                'shift_type_id' => null,
                 'shift_id' => null,
                 'angel_type_id' => $byShift->angel_type_id,
                 'count' => 3,
@@ -224,6 +269,8 @@ class ShiftsControllerTest extends ApiBaseControllerTest
 
         // Additional (not required by shift nor location)
         ShiftEntry::factory(1)->create(['shift_id' => $this->shiftA->id]);
+
+        $this->schedule->shiftType()->associate($shiftType);
 
         foreach (User::all() as $user) {
             // Generate user data

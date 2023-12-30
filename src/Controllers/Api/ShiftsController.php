@@ -35,7 +35,7 @@ class ShiftsController extends ApiController
                 'shift.shiftEntries.user.contact',
                 'shift.shiftEntries.user.personalData',
                 'shift.shiftType',
-                'shift.schedule',
+                'shift.schedule.shiftType.neededAngelTypes.angelType',
             ])
             ->get();
 
@@ -63,7 +63,7 @@ class ShiftsController extends ApiController
                 'shiftEntries.user.contact',
                 'shiftEntries.user.personalData',
                 'shiftType',
-                'schedule',
+                'schedule.shiftType.neededAngelTypes.angelType',
             ])
             ->orderBy('start')
             ->get();
@@ -85,7 +85,7 @@ class ShiftsController extends ApiController
                 'shift.shiftEntries.user.contact',
                 'shift.shiftEntries.user.personalData',
                 'shift.shiftType',
-                'shift.schedule',
+                'shift.schedule.shiftType.neededAngelTypes.angelType',
             ])
             ->get();
 
@@ -139,10 +139,14 @@ class ShiftsController extends ApiController
      */
     protected function getNeededAngelTypes(Shift $shift): Collection
     {
+        $neededAngelTypes = new Collection();
         if (!$shift->schedule) {
             // Get from shift
             $neededAngelTypes = $shift->neededAngelTypes;
-        } else {
+        } elseif ($shift->schedule->needed_from_shift_type) {
+            // Load instead from shift type
+            $neededAngelTypes = $shift->schedule->shiftType->neededAngelTypes;
+        } elseif (!$shift->schedule->needed_from_shift_type) {
             // Load instead from location
             $neededAngelTypes = $shift->location->neededAngelTypes;
         }

@@ -66,7 +66,8 @@ class ShiftsController extends BaseController
                 $query
                     ->where('angel_types.restricted', false)
                     ->orWhereNot('confirm_user_id', false);
-            });
+            })
+            ->pluck('id');
         /** @var ShiftEntry[]|DbCollection $shiftEntries */
         $shiftEntries = $user->shiftEntries()->with('shift')->get();
 
@@ -75,20 +76,25 @@ class ShiftsController extends BaseController
             // Load needed from shift if no schedule configured, else from room
             ->leftJoin('schedule_shift', 'schedule_shift.shift_id', 'shifts.id')
             ->leftJoin('schedules', 'schedules.id', 'schedule_shift.schedule_id')
+
+            // From shift
             ->leftJoin('needed_angel_types', function (JoinClause $query): void {
                 $query->on('needed_angel_types.shift_id', 'shifts.id')
                     ->whereNull('schedule_shift.shift_id');
             })
+            // Via schedule shift type
             ->leftJoin('needed_angel_types AS nast', function (JoinClause $query): void {
                 $query->on('nast.shift_type_id', 'shifts.shift_type_id')
                     ->whereNotNull('schedule_shift.shift_id')
                     ->where('schedules.needed_from_shift_type', true);
             })
+            // Via schedule location
             ->leftJoin('needed_angel_types AS nas', function (JoinClause $query): void {
                 $query->on('nas.location_id', 'shifts.location_id')
                     ->whereNotNull('schedule_shift.shift_id')
                     ->where('schedules.needed_from_shift_type', false);
             })
+
             // Not already signed in
             ->whereNotIn('shifts.id', $shiftEntries->pluck('shift_id'))
             // Same angel types
