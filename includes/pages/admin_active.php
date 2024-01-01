@@ -3,6 +3,7 @@
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Engelsystem\Config\GoodieType;
@@ -78,6 +79,11 @@ function admin_active()
                 ->leftJoin('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
                 ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
                 ->where('users_state.arrived', '=', true)
+                ->orWhere(function (EloquentBuilder $userinfo) {
+                    $userinfo->where('users_state.arrived', '=', false)
+                        ->whereNotNull('users_state.user_info')
+                        ->whereNot('users_state.user_info', '');
+                })
                 ->groupBy('users.id')
                 ->orderByDesc('force_active')
                 ->orderByDesc('shift_length')
@@ -180,6 +186,11 @@ function admin_active()
         })
         ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
         ->where('users_state.arrived', '=', true)
+        ->orWhere(function (EloquentBuilder $userinfo) {
+            $userinfo->where('users_state.arrived', '=', false)
+                ->whereNotNull('users_state.user_info')
+                ->whereNot('users_state.user_info', '');
+        })
         ->groupBy('users.id')
         ->orderByDesc('force_active')
         ->orderByDesc('shift_length')
@@ -216,6 +227,14 @@ function admin_active()
         $userData = [];
         $userData['no'] = count($matched_users) + 1;
         $userData['nick'] = User_Nick_render($usr) . User_Pronoun_render($usr);
+        if ($usr->state->user_info) {
+            $userData['nick'] .=
+                ' <small><span class="bi bi-info-circle-fill text-info"'
+                . (auth()->can('user.info.show')
+                    ? (' data-bs-toggle="tooltip" title="' . htmlspecialchars($usr->state->user_info) . '"')
+                    : '')
+                . '></span></small>';
+        }
         if ($goodie_tshirt) {
             $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '');
         }
