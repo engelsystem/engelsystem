@@ -165,7 +165,7 @@ class Authenticator
     {
         $header = $this->request->getHeader('authorization');
         if (!empty($header) && Str::startsWith(Str::lower($header[0]), 'bearer ')) {
-            return $this->userByApiKey(Str::substr($header[0], 7));
+            return $this->userByApiKey(trim(Str::substr($header[0], 7)));
         }
 
         $header = $this->request->getHeader('x-api-key');

@@ -185,6 +185,26 @@ class AuthenticatorTest extends ServiceProviderTest
     }
 
     /**
+     * @covers \Engelsystem\Helpers\Authenticator::userByHeaders
+     */
+    public function testUserByHeadersBearerTrimApiKey(): void
+    {
+        $this->initDatabase();
+
+        $request = new Request();
+        $request = $request->withAttribute('route-api-accessible', true);
+        $session = new Session(new MockArraySessionStorage());
+        $this->app->instance('request', $request);
+
+        $request = $request->withHeader('authorization', 'bearer  F00Bar ');
+        $auth = new Authenticator($request, $session, new User());
+        User::factory()->create(['api_key' => 'F00Bar']);
+        $user = $auth->user();
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals('F00Bar', $user->api_key);
+    }
+
+    /**
      * @covers \Engelsystem\Helpers\Authenticator::resetApiKey
      */
     public function testResetApiKey(): void
