@@ -67,6 +67,7 @@ class ApiRouteHandlerTest extends TestCase
 
         if ($isApi) {
             $this->assertEquals('application/json', $apiResponse->getHeaderLine('content-type'));
+            $this->assertEquals('*', $apiResponse->getHeaderLine('access-control-allow-origin'));
             $this->assertEquals('{"message":"response content"}', (string) $apiResponse->getBody());
             $this->assertNotEmpty($apiResponse->getHeaderLine('Etag'));
         } else {

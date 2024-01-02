@@ -61,7 +61,7 @@ class ApiRouteHandler implements MiddlewareInterface
     {
         try {
             $response = $handler->handle($request);
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException) {
             $response = new Response('', 404);
             $response->setContent($response->getReasonPhrase());
         } catch (HttpException $e) {
@@ -83,6 +83,10 @@ class ApiRouteHandler implements MiddlewareInterface
             $response = $response
                 ->withHeader('content-type', 'application/json')
                 ->withBody($content);
+        }
+
+        if (!$response->hasHeader('access-control-allow-origin')) {
+            $response = $response->withHeader('access-control-allow-origin', '*');
         }
 
         $eTag = md5((string) $response->getBody());
