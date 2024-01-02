@@ -99,9 +99,7 @@ function admin_free()
         $free_users_table[] = [
             'name'        => User_Nick_render($usr)
                 . User_Pronoun_render($usr)
-                . ($usr->state->user_info
-                    ? ' <small><span class="bi bi-info-circle-fill text-info"></span></small>'
-                    : ''),
+                . user_info_icon($usr),
             'shift_state' => User_shift_state_render($usr),
             'last_shift'  => User_last_shift_render($usr),
             'dect'        => sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars((string) $usr->contact->dect)),

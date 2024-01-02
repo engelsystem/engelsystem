@@ -226,15 +226,7 @@ function admin_active()
         $shirtSize = $usr->personalData->shirt_size;
         $userData = [];
         $userData['no'] = count($matched_users) + 1;
-        $userData['nick'] = User_Nick_render($usr) . User_Pronoun_render($usr);
-        if ($usr->state->user_info) {
-            $userData['nick'] .=
-                ' <small><span class="bi bi-info-circle-fill text-info"'
-                . (auth()->can('user.info.show')
-                    ? (' data-bs-toggle="tooltip" title="' . htmlspecialchars($usr->state->user_info) . '"')
-                    : '')
-                . '></span></small>';
-        }
+        $userData['nick'] = User_Nick_render($usr) . User_Pronoun_render($usr) . user_info_icon($usr);
         if ($goodie_tshirt) {
             $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '');
         }

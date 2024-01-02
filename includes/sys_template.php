@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\User\User;
 use Illuminate\Support\Str;
 
 /**
@@ -420,4 +421,17 @@ function buttons($buttons = [])
 function table_buttons($buttons = [], $additionalClass = '')
 {
     return '<div class="btn-group ' . $additionalClass . '" role="group">' . join('', $buttons) . '</div>';
+}
+
+function user_info_icon(User $user): string
+{
+    if (!auth()->can('admin_arrive') || !$user->state->user_info) {
+        return '';
+    }
+    $infoIcon = ' <small><span class="bi bi-info-circle-fill text-info" ';
+    if (auth()->can('user.info.show')) {
+        $infoIcon .= 'data-bs-toggle="tooltip" title="' . htmlspecialchars($user->state->user_info) . '"';
+    }
+    $infoIcon .= '></span></small>';
+    return $infoIcon;
 }
