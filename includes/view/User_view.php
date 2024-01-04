@@ -735,7 +735,7 @@ function User_view_state_user($user_source)
         User_shift_state_render($user_source),
     ];
 
-    if ($user_source->state->arrived) {
+    if ($user_source->state->arrived || $user_source->state->user_info) {
         $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
     } else {
         $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
@@ -899,7 +899,7 @@ function User_Nick_render($user, $plain = false)
     return render_profile_link(
         '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user->displayName) . '</a>',
         $user->id,
-        ($user->state->arrived ? '' : 'text-muted')
+        ($user->state->arrived || $user->state->user_info ? '' : 'text-muted')
     );
 }
 
