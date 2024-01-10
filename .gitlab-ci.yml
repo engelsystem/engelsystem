@@ -113,7 +113,14 @@ generate-version:
   before_script:
     - apk add -q git
   script:
-    - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
+    - >
+      VERSION="$(\
+        git describe --exact-match --tags HEAD 2> /dev/null\
+        || (\
+          (git describe --abbrev=0 --tags | tr -d '\n')\
+          && echo "-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"\
+        )\
+      )"
     - echo "${VERSION}"
     - echo -n "${VERSION}" > storage/app/VERSION
 
@@ -441,7 +448,8 @@ deploy:
     GIT_STRATEGY: none
   when: manual
   script:
-    - kubectl delete all,ingress,pvc -l app=$CI_PROJECT_PATH_SLUG -l environment=$CI_ENVIRONMENT_SLUG
+    - TARGETS=all,ingress,pvc,certificate
+    - kubectl -n "${KUBE_NAMESPACE}" delete $TARGETS -l app=$CI_PROJECT_PATH_SLUG -l environment=$CI_ENVIRONMENT_SLUG
 
 deploy-k8s-review:
   <<: *deploy_k8s
