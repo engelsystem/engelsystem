@@ -120,7 +120,7 @@ msgid "news.comment-delete.success"
 msgstr "Comment successfully deleted."
 
 msgid "news.edit.duplicate"
-msgstr "Diese News wurde bereits erstellt."
+msgstr "This news has already been created."
 
 msgid "news.edit.success"
 msgstr "News successfully updated."
