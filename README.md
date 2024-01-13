@@ -28,6 +28,8 @@ The Engelsystem may be installed manually or by using the provided [docker setup
  * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
  * Webserver, i.e. lighttpd, nginx, or Apache
 
+From experience 2 cores and 2GB ram are roughly enough for about 1000 Angels (~700 arrived + 500 arrived but not working) during an event.
+
 ### Download
  * Go to the [Releases](https://github.com/engelsystem/engelsystem/releases) page and download the latest stable release file.
  * Extract the files to your webroot and continue with the directions for configurations and setup.
