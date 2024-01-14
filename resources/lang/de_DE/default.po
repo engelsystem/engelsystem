@@ -596,6 +596,18 @@ msgstr "Engeltyp"
 msgid "shift.next"
 msgstr "Nächste Schicht"
 
+msgid "general.shift"
+msgstr "Schicht"
+
+msgid "shift.angeltype_source"
+msgstr "Benötigte Engel von: %s"
+
+msgid "shift.angeltype_source.shift_type"
+msgstr "Programm %s via Schichttyp %s"
+
+msgid "shift.angeltype_source.location"
+msgstr "Programm %s via Ort %s"
+
 msgid "Last shift"
 msgstr "Letzte Schicht"
 

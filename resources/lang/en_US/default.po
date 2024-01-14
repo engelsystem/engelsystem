@@ -843,6 +843,18 @@ msgstr "Register"
 msgid "shift.next"
 msgstr "Next shift"
 
+msgid "general.shift"
+msgstr "Shift"
+
+msgid "shift.angeltype_source"
+msgstr "Needed angels from: %s"
+
+msgid "shift.angeltype_source.shift_type"
+msgstr "Schedule %s via shift type %s"
+
+msgid "shift.angeltype_source.location"
+msgstr "Schedule %s via location %s"
+
 msgid "general.logout"
 msgstr "Logout"
 
