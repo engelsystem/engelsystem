@@ -78,6 +78,29 @@ function Shift_editor_info_render(Shift $shift)
             $shift->transaction_id
         );
     }
+    if ($shift->schedule) {
+        $angeltypeSource = $shift->schedule->needed_from_shift_type
+            ? __(
+                'shift.angeltype_source.shift_type',
+                [
+                    '<a href="' . url('/admin/schedule/edit/' . $shift->schedule->id) . '">'
+                    . htmlspecialchars($shift->schedule->name)
+                    . '</a>',
+                    '<a href="' . url('/admin/shifttypes/' . $shift->shift_type_id) . '">'
+                    . htmlspecialchars($shift->shiftType->name)
+                    . '</a>',
+                ]
+            )
+            : __('shift.angeltype_source.location', [
+                '<a href="' . url('/admin/schedule/edit/' . $shift->schedule->id) . '">'
+                . htmlspecialchars($shift->schedule->name)
+                . '</a>',
+                location_name_render($shift->location),
+            ]);
+    } else {
+        $angeltypeSource = __('Shift');
+    }
+    $info[] = sprintf(__('shift.angeltype_source'), $angeltypeSource);
     return join('<br />', $info);
 }
 
