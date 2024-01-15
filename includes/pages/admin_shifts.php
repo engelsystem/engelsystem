@@ -545,7 +545,7 @@ function admin_shifts()
                             $request->has('length')
                             ? $request->input('length')
                             : '120',
-                            false,
+                            'in minutes',
                             false,
                             null,
                             null,
