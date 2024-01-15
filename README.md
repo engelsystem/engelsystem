@@ -70,8 +70,8 @@ cd docker
 docker compose up -d
 ```
 
-#### Migrate
-Import database changes to migrate it to the newest version
+#### Set Up / Migrate Database
+Create the Database Schema (on a fresh install) or import database changes to migrate it to the newest version
 ```bash
 cd docker
 docker compose exec es_server bin/migrate
