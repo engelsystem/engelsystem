@@ -41,11 +41,13 @@ function admin_shifts()
 
     // Locations laden
     $locations = Location::orderBy('name')->get();
+    $no_locations = $locations->isEmpty();
     $location_array = $locations->pluck('name', 'id')->toArray();
 
     // Load angeltypes
     /** @var AngelType[] $types */
     $types = AngelType::all();
+    $no_angeltypes = $types->isEmpty();
     $needed_angel_types = [];
     foreach ($types as $type) {
         $needed_angel_types[$type->id] = 0;
@@ -54,6 +56,7 @@ function admin_shifts()
     // Load shift types
     /** @var ShiftType[]|Collection $shifttypes_source */
     $shifttypes_source = ShiftType::all();
+    $no_shifttypes = $shifttypes_source->isEmpty();
     $shifttypes = [];
     foreach ($shifttypes_source as $shifttype) {
         $shifttypes[$shifttype->id] = $shifttype->name;
@@ -501,6 +504,9 @@ function admin_shifts()
             icon('clock-history')
         ) . form([$reset], '', 'display:inline'),
         [
+            $no_locations ? warning(__('admin_shifts.no_locations')) : '',
+            $no_shifttypes ? warning(__('admin_shifts.no_shifttypes')) : '',
+            $no_angeltypes ? warning(__('admin_shifts.no_angeltypes')) : '',
             msg(),
             form([
                 div('row', [
