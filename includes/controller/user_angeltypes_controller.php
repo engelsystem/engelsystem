@@ -265,7 +265,7 @@ function user_angeltype_update_controller(): array
     $supporter = false;
     $request = request();
 
-    if (!auth()->can('admin_angel_types')) {
+    if (!auth()->can('admin_angel_types') && !config('supporters_can_promote')) {
         error(__('You are not allowed to set supporter rights.'));
         throw_redirect(url('/angeltypes'));
     }

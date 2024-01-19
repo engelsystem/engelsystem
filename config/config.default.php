@@ -262,6 +262,9 @@ return [
     // Whether newly-registered user should automatically be marked as arrived
     'autoarrive'              => (bool) env('ANGEL_AUTOARRIVE', false),
 
+    // Supporters of an angeltype can promote other angels of the angeltype to supporter
+    'supporters_can_promote' => (bool) env('SUPPORTERS_CAN_PROMOTE', false),
+
     // Only allow shift signup this number of hours in advance
     // Setting this to 0 disables the feature
     'signup_advance_hours'    => env('SIGNUP_ADVANCE_HOURS', 0),

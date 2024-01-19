@@ -321,7 +321,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
             ]);
             $members_unconfirmed[] = $member;
         } elseif ($member->pivot->supporter) {
-            if ($admin_angeltypes) {
+            if ($admin_angeltypes || ($admin_user_angeltypes && config('supporters_can_promote'))) {
                 $member['actions'] = table_buttons([
                     button(
                         url('/user-angeltypes', [
@@ -342,7 +342,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
         } else {
             if ($admin_user_angeltypes) {
                 $member['actions'] = table_buttons([
-                    $admin_angeltypes ?
+                    ($admin_angeltypes || config('supporters_can_promote')) ?
                         button(
                             url('/user-angeltypes', [
                                 'action'            => 'update',
