@@ -102,6 +102,10 @@ a .icon-icon_angel {
   background-color: $link-color;
 }
 
+a .disabled {
+  pointer-events: none;
+}
+
 .navbar .icon-icon_angel {
   background-color: $nav-link-disabled-color;
 }

@@ -974,3 +974,7 @@ msgstr "No shift type has been created yet. Shifts can't be created without one.
 
 msgid "admin_shifts.no_angeltypes"
 msgstr "No angeltype has been created yet. Shifts can't be created without one."
+
+msgid "shift.sign_out.hint"
+msgstr "You can self sign out up to %s hours before the start of the shift. "
+"If you can't attend your shift, ask heaven to sign you out."

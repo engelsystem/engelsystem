@@ -554,7 +554,7 @@ function Shift_signout_allowed(Shift $shift, AngelType $angeltype, $signout_user
         return true;
     }
 
-    if ($signout_user_id == $user->id && $shift->start->timestamp > time() + config('last_unsubscribe') * 3600) {
+    if ($signout_user_id == $user->id && $shift->start->subHours(config('last_unsubscribe')) > Carbon::now()) {
         return true;
     }
 
