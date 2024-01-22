@@ -2095,3 +2095,7 @@ msgstr "Es wurde noch kein Schichttyp erstellt. Ohne können keine Schichten ers
 
 msgid "admin_shifts.no_angeltypes"
 msgstr "Es wurde noch kein Engeltyp erstellt. Ohne können keine Schichten erstellt werden."
+
+msgid "shift.sign_out.hint"
+msgstr "Du kannst dich bis %s Stunden vor dem Start der Schicht austragen. "
+"Wenn du nicht zu deiner Schicht kommen kannst, lass dich vom Himmel austragen."

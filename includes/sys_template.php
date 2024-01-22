@@ -352,7 +352,7 @@ function render_table($columns, $rows, $data = true)
  * @param string $id
  * @return string
  */
-function button($href, $label, $class = '', $id = '', $title = '')
+function button($href, $label, $class = '', $id = '', $title = '', $disabled = false)
 {
     if (!Str::contains(str_replace(['btn-sm', 'btn-xl'], '', $class), 'btn-')) {
         $class = 'btn-secondary' . ($class ? ' ' . $class : '');
@@ -361,7 +361,7 @@ function button($href, $label, $class = '', $id = '', $title = '')
     $idAttribute = $id ? 'id="' . $id . '"' : '';
 
     return '<a ' . $idAttribute . ' href="' . $href
-        . '" class="btn ' . $class . '" title="' . $title . '">' . $label . '</a>';
+        . '" class="btn ' . $class . ($disabled ? ' disabled' : '') . '" title="' . $title . '">' . $label . '</a>';
 }
 
 /**
@@ -387,9 +387,9 @@ function button_checkbox_selection($name, $label, $value)
  *
  * @return string
  */
-function button_icon($href, $icon, $class = '', $title = '')
+function button_icon($href, $icon, $class = '', $title = '', $disabled = false)
 {
-    return button($href, icon($icon), $class, '', $title);
+    return button($href, icon($icon), $class, '', $title, $disabled);
 }
 
 /**

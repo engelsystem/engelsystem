@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
@@ -189,7 +190,10 @@ function Shift_view(
     }
 
     if ($shift_signup_state->getState() === ShiftSignupStatus::SIGNED_UP) {
-        $content[] = info(__('You are signed up for this shift.'), true);
+        $content[] = info(__('You are signed up for this shift.')
+            . (($shift->start->subHours(config('last_unsubscribe')) < Carbon::now() && $shift->end > Carbon::now())
+                ? ' ' . __('shift.sign_out.hint', [config('last_unsubscribe')])
+                : ''), true);
     }
 
     if (config('signup_advance_hours') && $shift->start->timestamp > time() + config('signup_advance_hours') * 3600) {
@@ -325,7 +329,13 @@ function Shift_view_render_shift_entry(ShiftEntry $shift_entry, $user_shift_admi
         }
         $angeltype = $shift_entry->angelType;
         $disabled = Shift_signout_allowed($shift, $angeltype, $shift_entry->user_id) ? '' : ' btn-disabled';
-        $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-sm btn-danger' . $disabled, __('form.delete'));
+        $entry .= button_icon(
+            shift_entry_delete_link($shift_entry),
+            'trash',
+            'btn-sm btn-danger' . $disabled,
+            __('form.delete'),
+            !Shift_signout_allowed($shift, $angeltype, $shift_entry->user_id)
+        );
         $entry .= '</div>';
     }
     return $entry;
