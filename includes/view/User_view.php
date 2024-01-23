@@ -47,7 +47,7 @@ function User_edit_vouchers_view($user)
         [
             msg(),
             info(sprintf(
-                $user->state->force_active
+                $user->state->force_active && config('enable_force_active')
                     ? __('Angel can receive another %d vouchers and is FA.')
                     : __('Angel can receive another %d vouchers.'),
                 User_get_eligable_voucher_count($user)
@@ -157,7 +157,9 @@ function Users_view(
     }
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
-    $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
+    if (config('enable_force_active')) {
+        $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
+    }
     if ($goodie_enabled) {
         if ($goodie_tshirt) {
             $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
@@ -560,7 +562,7 @@ function User_view(
                 'comment'    => __('worklog.comment'),
                 'actions'    => __('general.actions'),
             ], $my_shifts));
-        } elseif ($user_source->state->force_active) {
+        } elseif ($user_source->state->force_active && config('enable_force_active')) {
             $myshifts_table = success(
                 ($its_me ? __('You have done enough.') : (__('%s has done enough.', [$user_source->name]))),
                 true
@@ -771,7 +773,7 @@ function User_view_state_admin($freeloader, $user_source)
             )
             . '</span>';
 
-        if ($user_source->state->force_active) {
+        if ($user_source->state->force_active && config('enable_force_active')) {
             $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
         } elseif ($user_source->state->active) {
             $state[] = '<span class="text-success">' . __('user.active') . '</span>';

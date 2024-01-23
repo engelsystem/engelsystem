@@ -238,7 +238,7 @@ function user_controller()
         auth()->resetApiKey($user_source);
     }
 
-    if ($user_source->state->force_active) {
+    if ($user_source->state->force_active && config('enable_force_active')) {
         $tshirt_score = __('Enough');
     } else {
         $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source->id)) . '&nbsp;h';
