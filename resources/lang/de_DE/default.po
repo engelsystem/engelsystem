@@ -1077,8 +1077,8 @@ msgstr "Schicht Anmeldung"
 msgid "Freeloaded"
 msgstr "Geschwänzt"
 
-msgid "Freeload comment (Only for shift coordination):"
-msgstr "Schwänzer Kommentar (Nur für die Schicht-Koordination):"
+msgid "Freeload comment (Only for shift coordination and supporters):"
+msgstr "Schwänzer Kommentar (Nur für Supporter und die Schicht-Koordination):"
 
 msgid "Edit shift entry"
 msgstr "Schichteintrag bearbeiten"

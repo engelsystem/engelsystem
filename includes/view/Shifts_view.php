@@ -319,14 +319,12 @@ function Shift_view_render_shift_entry(ShiftEntry $shift_entry, $user_shift_admi
     $isUser = $shift_entry->user_id == auth()->user()->id;
     if ($user_shift_admin || $angeltype_supporter || $isUser) {
         $entry .= ' <div class="btn-group m-1">';
-        if ($user_shift_admin || $isUser) {
-            $entry .= button_icon(
-                url('/user-myshifts', ['edit' => $shift_entry->id, 'id' => $shift_entry->user_id]),
-                'pencil',
-                'btn-sm',
-                __('form.edit')
-            );
-        }
+        $entry .= button_icon(
+            url('/user-myshifts', ['edit' => $shift_entry->id, 'id' => $shift_entry->user_id]),
+            'pencil',
+            'btn-sm',
+            __('form.edit')
+        );
         $angeltype = $shift_entry->angelType;
         $disabled = Shift_signout_allowed($shift, $angeltype, $shift_entry->user_id) ? '' : ' btn-disabled';
         $entry .= button_icon(
