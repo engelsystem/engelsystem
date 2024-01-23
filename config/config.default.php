@@ -318,6 +318,9 @@ return [
     // Enables the planned arrival/leave date
     'enable_planned_arrival'  => (bool) env('ENABLE_PLANNED_ARRIVAL', true),
 
+    // Whether force active should be enabled
+    'enable_force_active' => (bool) env('ENABLE_FORCE_ACTIVE', true),
+
     // Resembles the Goodie Type. There are three options:
     // 'none' => no goodie at all
     // 'goodie' => a goodie which has no sizing options

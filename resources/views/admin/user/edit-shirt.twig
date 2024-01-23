@@ -35,7 +35,7 @@
                         'disabled': not has_permission_to('admin_arrive'),
                     }) }}
 
-                    {% if userdata.state.force_active %}
+                    {% if userdata.state.force_active and config('enable_force_active') %}
                         {{ f.switch('force_active', __('user.force_active'), {
                             'checked': true,
                             'disabled': true,

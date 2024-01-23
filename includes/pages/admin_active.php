@@ -43,7 +43,7 @@ function admin_active()
     if ($request->has('set_active')) {
         if ($request->has('count') && preg_match('/^\d+$/', $request->input('count'))) {
             $count = strip_request_item('count');
-            if ($count < $forced_count) {
+            if ($count < $forced_count && config('enable_force_active')) {
                 error(sprintf(
                     __('At least %s angels are forced to be active. The number has to be greater.'),
                     $forced_count
@@ -85,10 +85,13 @@ function admin_active()
                         ->whereNot('users_state.user_info', '');
                 })
                 ->groupBy('users.id')
-                ->orderByDesc('force_active')
                 ->orderByDesc('shift_length')
                 ->orderByDesc('name')
                 ->limit($count);
+
+            if (config('enable_force_active')) {
+                $query->orderByDesc('force_active');
+            }
 
             $users = $query->get();
             $user_nicks = [];
@@ -192,9 +195,12 @@ function admin_active()
                 ->whereNot('users_state.user_info', '');
         })
         ->groupBy('users.id')
-        ->orderByDesc('force_active')
         ->orderByDesc('shift_length')
         ->orderByDesc('name');
+
+    if (config('enable_force_active')) {
+        $query->orderByDesc('force_active');
+    }
 
     if (!is_null($count)) {
         $query->limit($count);
@@ -357,8 +363,8 @@ function admin_active()
                     'shift_count'  => __('Shifts'),
                     'work_time'    => __('Length'),
                     'active'       => __('Active?'),
-                    'force_active' => __('Forced'),
                 ],
+                (config('enable_force_active') ? ['force_active' => __('Forced'),] : []),
                 ($goodie_enabled ? ['tshirt' => ($goodie_tshirt ? __('T-shirt?') : __('Goodie?'))] : []),
                 [
                     'actions'      => __('general.actions'),
