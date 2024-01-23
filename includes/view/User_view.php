@@ -580,13 +580,11 @@ function User_view(
 
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
-        . (
-        (config('enable_pronoun') && $user_source->personalData->pronoun)
-            ? '<small>' . htmlspecialchars($user_source->personalData->pronoun) . '</small> '
-            : ''
-        )
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : '')
+        . ((config('enable_pronoun') && $user_source->personalData->pronoun)
+            ? ' <small>(' . htmlspecialchars($user_source->personalData->pronoun) . ')</small> '
+            : '')
         . user_info_icon($user_source),
         [
             msg(),
