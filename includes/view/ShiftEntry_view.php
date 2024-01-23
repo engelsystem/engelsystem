@@ -205,15 +205,16 @@ function ShiftEntry_edit_view(
     $comment,
     $freeloaded,
     $freeloaded_comment,
-    $user_admin_shifts = false
+    $user_admin_shifts = false,
+    $angeltype_supporter = false
 ) {
     $freeload_form = [];
-    if ($user_admin_shifts) {
+    if ($user_admin_shifts || $angeltype_supporter) {
         $freeload_form = [
             form_checkbox('freeloaded', __('Freeloaded'), $freeloaded),
             form_textarea(
                 'freeloaded_comment',
-                __('Freeload comment (Only for shift coordination):'),
+                __('Freeload comment (Only for shift coordination and supporters):'),
                 $freeloaded_comment
             ),
         ];
