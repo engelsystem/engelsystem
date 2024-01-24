@@ -180,9 +180,7 @@ function form_text($name, $label, $value, $description = '', $disabled = false, 
     $maxlength = $maxlength ? ' maxlength=' . (int) $maxlength : '';
     $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
     $attr = '';
-
     $description = $description ? '<div class="form-text">' . $description . '</div>' : '';
-
 
     foreach ($data_attributes as $attr_key => $attr_value) {
         $attr .= ' data-' . $attr_key . '="' . $attr_value . '"';
