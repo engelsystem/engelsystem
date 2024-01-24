@@ -518,7 +518,7 @@ msgstr "Suche Engel:"
 msgid "Show all shifts"
 msgstr "Alle Schichten anzeigen"
 
-msgid "How much angels should be active?"
+msgid "How many angels should be active?"
 msgstr "Wie viele Engel sollten aktiv sein?"
 
 msgid "Size"

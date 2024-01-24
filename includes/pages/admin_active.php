@@ -342,7 +342,7 @@ function admin_active()
             form_submit('submit', icon('search') . __('form.search')),
         ], url('/admin-active')),
         $set_active == '' ? form([
-            form_text('count', __('How much angels should be active?'), $count ?: $forced_count),
+            form_text('count', __('How many angels should be active?'), $count ?: $forced_count),
             form_submit('set_active', icon('eye') .  __('form.preview'), 'btn-info'),
         ]) : $set_active,
         $msg . msg(),
