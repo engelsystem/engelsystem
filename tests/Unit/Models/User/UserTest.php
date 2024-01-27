@@ -10,6 +10,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Group;
+use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
@@ -280,6 +281,19 @@ class UserTest extends ModelTest
 
         $this->assertTrue($user->isAngelTypeSupporter($angelType1));
         $this->assertFalse($user->isAngelTypeSupporter($angelType2));
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::logs
+     */
+    public function testLogs(): void
+    {
+        $user = new User($this->data);
+        $user->save();
+
+        LogEntry::factory(2)->create(['user_id' => $user->id]);
+
+        $this->assertCount(2, $user->logs);
     }
 
     /**
