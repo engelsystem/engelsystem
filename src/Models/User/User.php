@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Group;
+use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
@@ -46,6 +47,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read string                        $displayName
  *
  * @property-read Collection|Group[]            $groups
+ * @property-read Collection|LogEntry[]         $logs
  * @property-read Collection|News[]             $news
  * @property-read Collection|NewsComment[]      $newsComments
  * @property-read Collection|OAuth[]            $oauth
@@ -192,6 +194,11 @@ class User extends BaseModel
             ->wherePivot('angel_type_id', $angelType->id)
             ->wherePivot('supporter', true)
             ->exists();
+    }
+
+    public function logs(): HasMany
+    {
+        return $this->hasMany(LogEntry::class);
     }
 
     public function news(): HasMany
