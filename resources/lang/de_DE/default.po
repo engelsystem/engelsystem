@@ -2069,7 +2069,7 @@ msgid "admin_shifts.no_locations"
 msgstr "Es wurde noch kein Ort erstellt. Ohne können keine Schichten erstellt werden."
 
 msgid "admin_shifts.no_shifttypes"
-msgstr "Es wurden noch kein Schichttyp erstellt. Ohne können keine Schichten erstellt werden."
+msgstr "Es wurde noch kein Schichttyp erstellt. Ohne können keine Schichten erstellt werden."
 
 msgid "admin_shifts.no_angeltypes"
-msgstr "Es wurden noch kein Engeltyp erstellt. Ohne können keine Schichten erstellt werden."
+msgstr "Es wurde noch kein Engeltyp erstellt. Ohne können keine Schichten erstellt werden."
