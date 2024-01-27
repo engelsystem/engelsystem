@@ -1075,10 +1075,10 @@ msgstr "Zurück zum Profil"
 
 msgid ""
 "Do you really want to delete the user including all his shifts and every "
-"other piece of his data?"
+"other piece of his data? All created shifts, news, answers etc. will be reassigned to you."
 msgstr ""
 "Möchtest Du wirklich den Engel inklusive aller seiner Schichten und allen "
-"anderen seiner Daten löschen?"
+"anderen seiner Daten löschen? Alle erstellten Schichten, News, Antworten usw. werden auf dich übertragen."
 
 msgid "Your password"
 msgstr "Dein Passwort"

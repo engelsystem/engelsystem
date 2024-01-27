@@ -51,7 +51,7 @@ function user_delete_controller()
     $request = request();
 
     if ($request->has('user_id')) {
-        $user_source = User::find($request->query->get('user_id'));
+        $user_source = User::findOrFail($request->query->get('user_id'));
     } else {
         $user_source = $user;
     }
@@ -80,6 +80,13 @@ function user_delete_controller()
         }
 
         if ($valid) {
+            // Move user created news/answers/worklogs/shifts  etc. to deleting user
+            $user_source->news()->update(['user_id' => $user->id]);
+            $user_source->questionsAnswered()->update(['answerer_id' => $user->id]);
+            $user_source->worklogsCreated()->update(['creator_id' => $user->id]);
+            $user_source->shiftsCreated()->update(['created_by' => $user->id]);
+            $user_source->shiftsUpdated()->update(['updated_by' => $user->id]);
+
             // Load data before user deletion to prevent errors when displaying
             $user_source->load(['contact', 'personalData', 'settings', 'state']);
             $user_source->delete();
