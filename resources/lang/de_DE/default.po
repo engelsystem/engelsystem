@@ -321,8 +321,8 @@ msgstr "Benötigte Engel"
 msgid "Shift deleted."
 msgstr "Schicht gelöscht."
 
-msgid "Do you want to delete the shift %s from %s to %s?"
-msgstr "Möchtest Du die Schicht %s von %s bis %s löschen?"
+msgid "Do you want to delete the shift \"%s\" from %s to %s?"
+msgstr "Möchtest Du die Schicht \"%s\" von %s bis %s löschen?"
 
 msgid "Shift could not be found."
 msgstr "Schicht konnte nicht gefunden werden."

@@ -141,11 +141,23 @@ function form_info($label, $text = '')
  * @param string $class
  * @param bool   $wrapForm
  * @param string $buttonType
+ * @param array $dataAttributes
  * @return string
  */
-function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType = 'primary', $title = '')
-{
-    $button = '<button class="btn btn-' . $buttonType . ($class ? ' ' . $class : '') . '" type="submit" name="' . $name . '" title="' . $title . '">'
+function form_submit(
+    $name,
+    $label,
+    $class = '',
+    $wrapForm = true,
+    $buttonType = 'primary',
+    $title = '',
+    array $dataAttributes = []
+) {
+    $add = '';
+    foreach ($dataAttributes as $dataType => $dataValue) {
+        $add .= ' data-' . $dataType . '="'. htmlspecialchars($dataValue) .'"';
+    }
+    $button = '<button class="btn btn-' . $buttonType . ($class ? ' ' . $class : '') . '" type="submit" name="' . $name . '" title="' . $title . '"' . $add . '>'
         . $label
         . '</button>';
 

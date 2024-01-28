@@ -245,7 +245,7 @@ class ShiftCalendarShiftRenderer
     {
         $header_buttons = '';
         if (auth()->can('admin_shifts')) {
-            $header_buttons = '<div class="ms-auto d-print-none">' . table_buttons([
+            $header_buttons = div('ms-auto d-print-none d-flex', [
                     button(
                         url('/user-shifts', ['edit_shift' => $shift->id]),
                         icon('pencil'),
@@ -253,14 +253,26 @@ class ShiftCalendarShiftRenderer
                         '',
                         __('form.edit')
                     ),
-                    button(
-                        url('/user-shifts', ['delete_shift' => $shift->id]),
-                        icon('trash'),
-                        'btn-' . $class . ' btn-sm border-light text-white',
-                        '',
-                        __('form.delete')
-                    ),
-                ]) . '</div>';
+                    form([
+                        form_hidden('delete_shift', $shift->id),
+                        form_submit(
+                            'delete',
+                            icon('trash'),
+                            'btn-' . $class . ' btn-sm border-light text-white ms-1',
+                            false,
+                            'danger',
+                            __('form.delete'),
+                            [
+                                'confirm_submit_title' => __('Do you want to delete the shift "%s" from %s to %s?', [
+                                    $shift->shiftType->name,
+                                    $shift->start->format(__('general.datetime')),
+                                    $shift->end->format(__('H:i'))
+                                ]),
+                                'confirm_button_text' => icon('trash') . __('form.delete'),
+                            ]
+                        ),
+                    ], url('/user-shifts', ['delete_shift' => $shift->id])),
+                ]);
         }
         $shift_heading = $shift->start->format('H:i') . ' &dash; '
             . $shift->end->format('H:i') . ' &mdash; '

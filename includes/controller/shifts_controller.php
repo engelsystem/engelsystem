@@ -1,5 +1,8 @@
 <?php
 
+use Engelsystem\Http\Exceptions\HttpForbidden;
+use Engelsystem\Http\Exceptions\HttpNotFound;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
@@ -8,6 +11,7 @@ use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\ShiftSignupState;
+use Illuminate\Support\Str;
 
 /**
  * @param array|Shift $shift
@@ -21,15 +25,6 @@ function shift_link($shift)
     }
 
     return url('/shifts', $parameters);
-}
-
-/**
- * @param Shift $shift
- * @return string
- */
-function shift_delete_link(Shift $shift)
-{
-    return url('/user-shifts', ['delete_shift' => $shift->id]);
 }
 
 /**
@@ -231,70 +226,53 @@ function shift_edit_controller()
     );
 }
 
-/**
- * @return string
- */
-function shift_delete_controller()
+function shift_delete_controller(): void
 {
     $request = request();
 
+    // Only accessible for admins / ShiCos with user_shifts_admin privileg
     if (!auth()->can('user_shifts_admin')) {
-        throw_redirect(url('/user-shifts'));
+        throw new HttpForbidden();
     }
 
-    // Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
-    if (!$request->has('delete_shift') || !preg_match('/^\d+$/', $request->input('delete_shift'))) {
-        throw_redirect(url('/user-shifts'));
+    // Must contain shift id and confirmation
+    if (!$request->has('delete_shift') || !$request->hasPostData('delete')) {
+        throw new HttpNotFound();
     }
+
     $shift_id = $request->input('delete_shift');
+    $shift = Shift::findOrFail($shift_id);
 
-    $shift = Shift($shift_id);
-    if (empty($shift)) {
-        throw_redirect(url('/user-shifts'));
+    foreach ($shift->shiftEntries as $entry) {
+        event('shift.entry.deleting', [
+            'user'       => $entry->user,
+            'start'      => $shift->start,
+            'end'        => $shift->end,
+            'name'       => $shift->shiftType->name,
+            'title'      => $shift->title,
+            'type'       => $entry->angelType->name,
+            'location'   => $shift->location,
+            'freeloaded' => $entry->freeloaded,
+        ]);
     }
 
-    // Schicht löschen bestätigt
-    if ($request->hasPostData('delete')) {
-        foreach ($shift->shiftEntries as $entry) {
-            event('shift.entry.deleting', [
-                'user'       => $entry->user,
-                'start'      => $shift->start,
-                'end'        => $shift->end,
-                'name'       => $shift->shiftType->name,
-                'title'      => $shift->title,
-                'type'       => $entry->angelType->name,
-                'location'   => $shift->location,
-                'freeloaded' => $entry->freeloaded,
-            ]);
-        }
+    $shift->delete();
 
-        $shift->delete();
-
-        engelsystem_log(
-            'Deleted shift ' . $shift->title . ': ' . $shift->shiftType->name
-            . ' from ' . $shift->start->format('Y-m-d H:i')
-            . ' to ' . $shift->end->format('Y-m-d H:i')
-        );
-        success(__('Shift deleted.'));
-        throw_redirect(url('/user-shifts'));
-    }
-
-    $link = button(url('/shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm', '', __('general.back'));
-    return page_with_title(
-        $link . ' ' . shifts_title(),
-        [
-            error(sprintf(
-                __('Do you want to delete the shift %s from %s to %s?'),
-                $shift->shiftType->name,
-                $shift->start->format(__('general.datetime')),
-                $shift->end->format(__('H:i'))
-            ), true),
-            form([
-                form_hidden('delete_shift', $shift->id),
-                form_submit('delete', icon('trash') . __('form.delete'), '', true, 'danger'),
-            ]),
-        ]
+    engelsystem_log(
+        'Deleted shift ' . $shift->title . ': ' . $shift->shiftType->name
+        . ' from ' . $shift->start->format('Y-m-d H:i')
+        . ' to ' . $shift->end->format('Y-m-d H:i')
     );
+    success(__('Shift deleted.'));
+
+    /** @var Redirector $redirect */
+    $redirect = app('redirect');
+    $old = $redirect->back()->getHeaderLine('location');
+    if (Str::contains($old, '/shifts') && Str::contains($old, 'action=view')) {
+        throw_redirect(url('/user-shifts'));
+    }
+
+    throw_redirect($old);
 }
 
 /**
