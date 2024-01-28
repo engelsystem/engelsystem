@@ -207,7 +207,25 @@ function Shift_view(
     if ($shift_admin || $admin_shifttypes || $admin_locations) {
         $buttons = [
             $shift_admin ? button(shift_edit_link($shift), icon('pencil'), '', '', __('form.edit')) : '',
-            $shift_admin ? button(shift_delete_link($shift), icon('trash'), 'btn-danger', '', __('form.delete')) : '',
+            $shift_admin ? form([
+                form_hidden('delete_shift', $shift->id),
+                form_submit(
+                    'delete',
+                    icon('trash'),
+                    '',
+                    false,
+                    'danger',
+                    __('form.delete'),
+                    [
+                        'confirm_submit_title' => __('Do you want to delete the shift "%s" from %s to %s?', [
+                            $shift->shiftType->name,
+                            $shift->start->format(__('general.datetime')),
+                            $shift->end->format(__('H:i'))
+                        ]),
+                        'confirm_button_text' => icon('trash') . __('form.delete'),
+                    ]
+                ),
+            ], url('/user-shifts', ['delete_shift' => $shift->id])): '',
             $admin_shifttypes
                 ? button(url('/admin/shifttypes/' . $shifttype->id), htmlspecialchars($shifttype->name))
                 : '',
