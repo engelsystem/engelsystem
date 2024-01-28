@@ -2074,3 +2074,12 @@ msgstr "Schicht Ort wurde von %s nach %s verschoben"
 
 msgid "notification.shift.updated.shift"
 msgstr "Die aktualisierte Schicht:"
+
+msgid "admin_shifts.no_locations"
+msgstr "Es wurde noch kein Ort erstellt. Ohne können keine Schichten erstellt werden."
+
+msgid "admin_shifts.no_shifttypes"
+msgstr "Es wurde noch kein Schichttyp erstellt. Ohne können keine Schichten erstellt werden."
+
+msgid "admin_shifts.no_angeltypes"
+msgstr "Es wurde noch kein Engeltyp erstellt. Ohne können keine Schichten erstellt werden."

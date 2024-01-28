@@ -953,3 +953,12 @@ msgstr "Actions"
 
 msgid "general.back"
 msgstr "Back"
+
+msgid "admin_shifts.no_locations"
+msgstr "No location has been created yet. Shifts can't be created without one."
+
+msgid "admin_shifts.no_shifttypes"
+msgstr "No shift type has been created yet. Shifts can't be created without one."
+
+msgid "admin_shifts.no_angeltypes"
+msgstr "No angeltype has been created yet. Shifts can't be created without one."
