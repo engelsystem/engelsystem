@@ -10,4 +10,9 @@ ready(() => {
     element.addEventListener('submit', preventDefault);
     element.addEventListener('click', preventDefault);
   });
+
+  document.getElementById('delete-form')?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    console.log('Delete confirmed');
+  });
 });
