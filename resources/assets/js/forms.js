@@ -318,6 +318,7 @@ ready(() => {
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="${element.className}"
+                    autofocus
                     title="${element.title}" data-submit="">
                     ${element.dataset.confirm_button_text ?? element.innerHTML}
                   </button>
@@ -328,13 +329,23 @@ ready(() => {
         `
       );
 
-      let modal = document.getElementById('confirmation-modal');
+      const modal = document.getElementById('confirmation-modal');
       modal.addEventListener('hide.bs.modal', () => {
         modalOpen = false;
       });
-      modal.querySelector('[data-submit]').addEventListener('click', (event) => {
+
+      const modalSubmitButton = modal.querySelector('[data-submit]');
+      modalSubmitButton.addEventListener('click', () => {
         element.type = oldType;
         element.click();
+      });
+
+      /**
+       * After the modal has been shown, focus on the "Submit" button in the modal
+       * so that it can be confirmed with "Enter".
+       */
+      modal.addEventListener('shown.bs.modal', () => {
+        modalSubmitButton.focus();
       });
 
       modalOpen = true;
