@@ -27,6 +27,8 @@ max_line_length = unset
 indent_size = 2
 
 [*.js]
+indent_size = 2
+max_line_length = unset
 quote_type = single
 
 [{LICENSE,db/*.sql}]

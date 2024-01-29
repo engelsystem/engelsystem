@@ -1,17 +1,10 @@
 {
   "parser": "@babel/eslint-parser",
-  "extends": [ "plugin:editorconfig/all" ],
-  "plugins": [ "editorconfig" ],
+  "extends": ["plugin:editorconfig/all", "prettier"],
+  "plugins": ["editorconfig"],
   "rules": {
     "prefer-arrow-callback": "error",
     "prefer-template": "error",
-    "no-var": "error",
-    "quotes": [
-      "error",
-      "single",
-      {
-        "avoidEscape": true
-      }
-    ]
+    "no-var": "error"
   }
 }
