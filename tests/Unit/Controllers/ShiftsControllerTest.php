@@ -57,7 +57,7 @@ class ShiftsControllerTest extends ControllerTest
         $otherUser = User::factory()->create();
         [$userAngelType, $otherAngelType] = AngelType::factory(2)->create();
         [$possibleShift1, $possibleShift2, $otherAngelTypeShift, $alreadySubscribedShift] = Shift::factory(4)
-            ->create(['start' => $start]);
+            ->create(['start' => $start, 'end' => $start->addHours(2)]);
         $this->user->userAngelTypes()->attach($userAngelType, ['confirm_user_id' => $this->user->id]);
         NeededAngelType::factory()->create([
             'shift_id' => $possibleShift1->id,

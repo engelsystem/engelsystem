@@ -50,8 +50,9 @@ class ShiftsController extends BaseController
             ->collect()
             // Prefer soon starting shifts
             ->groupBy('start')
+            // Get first starting shifts
             ->first()
-            // Select one at random
+            // Select one of them at random
             ->random();
 
         return $this->redirect->to($this->url->to('/shifts', ['action' => 'view', 'shift_id' => $randomShift->id]));
