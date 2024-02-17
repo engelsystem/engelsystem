@@ -1,6 +1,8 @@
 <?php
 
+use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\Shifts;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
@@ -155,6 +157,10 @@ function Shift_view(
     $user_shift_admin = auth()->can('user_shifts_admin');
     $admin_locations = auth()->can('admin_locations');
     $admin_shifttypes = auth()->can('shifttypes');
+    $nightShiftsConfig = config('night_shifts');
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
     $parsedown = new Parsedown();
 
@@ -262,11 +268,22 @@ function Shift_view(
 
     $start = $shift->start->format(__('general.datetime'));
 
+    $night_shift_hint = '';
+    if (Shifts::isNightShift($shift->start, $shift->end) && $nightShiftsConfig['enabled'] && $goodie_enabled) {
+        $night_shift_hint = ' <small><span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
+            . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
+                $nightShiftsConfig['start'],
+                $nightShiftsConfig['end'],
+                $nightShiftsConfig['multiplier'],
+                ($goodie_tshirt ? __('T-shirt') : __('goodie'))])
+            . '"></span></small>';
+    }
     $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
         $link . ' '
         . htmlspecialchars($shift->shiftType->name)
-        . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
+        . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>'
+        . $night_shift_hint,
         $content
     );
 }
