@@ -165,8 +165,6 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
  * @param string      $name
  * @param string      $label
  * @param string      $value
- * @param string|null $description    additional info rendered at block level under the element.
- *                                    see https://getbootstrap.com/docs/5.3/forms/form-control/#form-text for more info
  * @param bool        $disabled
  * @param int|null    $maxlength
  * @param string|null $autocomplete
@@ -174,14 +172,12 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
  * @param array       $data_attributes
  * @return string
  */
-function form_text($name, $label, $value, $description = '', $disabled = false, $maxlength = null, $autocomplete = null, $class = '', $data_attributes = [])
+function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null, $class = '', $data_attributes = [])
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     $maxlength = $maxlength ? ' maxlength=' . (int) $maxlength : '';
     $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
     $attr = '';
-    $description = $description ? '<div class="form-text">' . $description . '</div>' : '';
-
     foreach ($data_attributes as $attr_key => $attr_value) {
         $attr .= ' data-' . $attr_key . '="' . $attr_value . '"';
     }
@@ -189,8 +185,7 @@ function form_text($name, $label, $value, $description = '', $disabled = false, 
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars((string) $value) . '"' . $maxlength . $disabled . $autocomplete . $attr . '/>'
-        . $description,
+        . '" value="' . htmlspecialchars((string) $value) . '"' . $maxlength . $disabled . $autocomplete . $attr . '/>',
         'form_' . $name,
         $class
     );

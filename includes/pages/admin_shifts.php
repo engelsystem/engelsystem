@@ -543,9 +543,8 @@ function admin_shifts()
                             'length',
                             __('Length (in minutes)'),
                             $request->has('length')
-                            ? $request->input('length')
-                            : '120',
-                            '',
+                                ? $request->input('length')
+                                : '120',
                             false,
                             null,
                             null,
@@ -567,7 +566,6 @@ function admin_shifts()
                             $request->has('change_hours')
                                 ? ($change_hours ? implode(', ', $change_hours) : $request->input('change_hours'))
                                 : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22',
-                            '',
                             false,
                             null,
                             null,
