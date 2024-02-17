@@ -2,6 +2,8 @@
 
 namespace Engelsystem;
 
+use Engelsystem\Config\GoodieType;
+use Engelsystem\Helpers\Shifts;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -243,6 +245,10 @@ class ShiftCalendarShiftRenderer
      */
     private function renderShiftHead(Shift $shift, $class, $needed_angeltypes_count)
     {
+        $nightShiftsConfig = config('night_shifts');
+        $goodie = GoodieType::from(config('goodie_type'));
+        $goodie_enabled = $goodie !== GoodieType::None;
+
         $header_buttons = '';
         if (auth()->can('admin_shifts')) {
             $header_buttons = div('ms-auto d-print-none d-flex', [
@@ -274,9 +280,17 @@ class ShiftCalendarShiftRenderer
                     ], url('/user-shifts', ['delete_shift' => $shift->id])),
                 ]);
         }
-        $shift_heading = $shift->start->format('H:i') . ' &dash; '
+        $night_shift = '';
+        if (Shifts::isNightShift($shift->start, $shift->end) && $nightShiftsConfig['enabled'] && $goodie_enabled) {
+            $night_shift = ' <i class="bi-moon-stars"></i>';
+        }
+
+        $shift_heading = '<span>'
+            . $shift->start->format('H:i') . ' &dash; '
             . $shift->end->format('H:i') . ' &mdash; '
-            . htmlspecialchars($shift->shiftType->name);
+            . htmlspecialchars($shift->shiftType->name)
+            . $night_shift
+            . '</span>';
 
         if ($needed_angeltypes_count > 0) {
             $shift_heading = '<span class="badge bg-light text-danger me-1">' . $needed_angeltypes_count . '</span> ' . $shift_heading;

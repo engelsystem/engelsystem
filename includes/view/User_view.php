@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Helpers\Shifts;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Shifts\Shift;
@@ -309,6 +310,10 @@ function User_view_shiftentries($needed_angel_type)
  */
 function User_view_myshift(Shift $shift, $user_source, $its_me)
 {
+    $nightShiftsConfig = config('night_shifts');
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+
     $shift_info = '<a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->shiftType->name) . '</a>';
     if ($shift->title) {
         $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->title) . '</a>';
@@ -317,12 +322,19 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
         $shift_info .= User_view_shiftentries($needed_angel_type);
     }
 
+    $night_shift = '';
+    if (Shifts::isNightShift($shift->start, $shift->end) && $nightShiftsConfig['enabled'] && $goodie_enabled) {
+        $night_shift = ' <span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
+            . __('Night shift')
+            . '"></span>';
+    }
     $myshift = [
         'date'       => icon('calendar-event')
             . $shift->start->format(__('general.date')) . '<br>'
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
-            . $shift->end->format(__('H:i')),
+            . $shift->end->format(__('H:i'))
+            . $night_shift,
         'duration'   => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
         'location'   => location_name_render($shift->location),
         'shift_info' => $shift_info,
@@ -682,10 +694,11 @@ function User_view(
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
                 sprintf(
-                    icon('info-circle') . __('Your night shifts between %d and %d am count twice for the %s score.'),
-                    $nightShiftsConfig['start'],
-                    $nightShiftsConfig['end'],
-                    ($goodie_tshirt ? __('T-shirt') : __('goodie'))
+                    icon('moon-stars') . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
+                        $nightShiftsConfig['start'],
+                        $nightShiftsConfig['end'],
+                        $nightShiftsConfig['multiplier'],
+                        ($goodie_tshirt ? __('T-shirt') : __('goodie'))])
                 ),
                 true,
                 true

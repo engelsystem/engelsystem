@@ -343,7 +343,7 @@ return [
     'night_shifts'            => [
         'enabled'    => (bool) env('NIGHT_SHIFTS', true), // Disable to weigh every shift the same
         'start'      => env('NIGHT_SHIFTS_START', 2),
-        'end'        => env('NIGHT_SHIFTS_END', 6),
+        'end'        => env('NIGHT_SHIFTS_END', 8),
         'multiplier' => env('NIGHT_SHIFTS_MULTIPLIER', 2),
     ],
 
