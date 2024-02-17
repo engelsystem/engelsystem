@@ -533,6 +533,9 @@ msgstr "Schichten"
 msgid "Length"
 msgstr "Länge"
 
+msgid "Length (in minutes)"
+msgstr "Länge (in Minuten)"
+
 msgid "Active?"
 msgstr "Aktiv?"
 

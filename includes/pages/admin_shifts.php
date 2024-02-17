@@ -547,7 +547,7 @@ function admin_shifts()
                         form_radio('mode', __('Create multiple shifts'), $mode == 'multi', 'multi'),
                         form_text(
                             'length',
-                            __('Length'),
+                            __('Length (in minutes)'),
                             $request->has('length')
                                 ? $request->input('length')
                                 : '120',
