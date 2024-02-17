@@ -155,7 +155,7 @@ function form_submit(
 ) {
     $add = '';
     foreach ($dataAttributes as $dataType => $dataValue) {
-        $add .= ' data-' . $dataType . '="'. htmlspecialchars($dataValue) .'"';
+        $add .= ' data-' . $dataType . '="' . htmlspecialchars($dataValue) . '"';
     }
     $button = '<button class="btn btn-' . $buttonType . ($class ? ' ' . $class : '') . '" type="submit" name="' . $name . '" title="' . $title . '"' . $add . '>'
         . $label

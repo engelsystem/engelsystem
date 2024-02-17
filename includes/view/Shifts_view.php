@@ -220,12 +220,12 @@ function Shift_view(
                         'confirm_submit_title' => __('Do you want to delete the shift "%s" from %s to %s?', [
                             $shift->shiftType->name,
                             $shift->start->format(__('general.datetime')),
-                            $shift->end->format(__('H:i'))
+                            $shift->end->format(__('H:i')),
                         ]),
                         'confirm_button_text' => icon('trash') . __('form.delete'),
                     ]
                 ),
-            ], url('/user-shifts', ['delete_shift' => $shift->id])): '',
+            ], url('/user-shifts', ['delete_shift' => $shift->id])) : '',
             $admin_shifttypes
                 ? button(url('/admin/shifttypes/' . $shifttype->id), htmlspecialchars($shifttype->name))
                 : '',
