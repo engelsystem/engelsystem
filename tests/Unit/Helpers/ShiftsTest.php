@@ -32,22 +32,24 @@ class ShiftsTest extends TestCase
     }
 
     /**
-     * @return array{0: Carbon, 1: Carbon, 2: boolean}[]
+     * @return array{0: string, 1: string, 2: boolean}[]
      */
     public function nightShiftData(): array
     {
         // $start, $end, $isNightShift
         return [
             // Is night shift
-            [new Carbon('2042-01-01 04:00'), new Carbon('2042-01-01 05:00'), true],
+            ['2042-01-01 04:00', '2042-01-01 05:00', true],
             // Starts as night shift
-            [new Carbon('2042-01-01 05:45'), new Carbon('2042-01-01 07:00'), true],
+            ['2042-01-01 05:45', '2042-01-01 07:00', true],
             // Ends as night shift
-            [new Carbon('2042-01-01 00:00'), new Carbon('2042-01-01 02:15'), true],
+            ['2042-01-01 00:00', '2042-01-01 03:00', true],
+            // Contains night shift
+            ['2042-01-01 01:00', '2042-01-01 09:00', true],
             // Too early
-            [new Carbon('2042-01-01 00:00'), new Carbon('2042-01-01 01:59'), false],
+            ['2042-01-01 00:00', '2042-01-01 02:00', false],
             // Too late
-            [new Carbon('2042-01-01 06:00'), new Carbon('2042-01-01 09:59'), false],
+            ['2042-01-01 06:00', '2042-01-01 10:00', false],
         ];
     }
 
@@ -55,7 +57,7 @@ class ShiftsTest extends TestCase
      * @covers       \Engelsystem\Helpers\Shifts::isNightShift
      * @dataProvider nightShiftData
      */
-    public function testIsNightShiftEnabled(Carbon $start, Carbon $end, bool $isNightShift): void
+    public function testIsNightShiftEnabled(string $start, string $end, bool $isNightShift): void
     {
         $config = new Config(['night_shifts' => [
             'enabled'    => true,
@@ -65,7 +67,7 @@ class ShiftsTest extends TestCase
         ]]);
         $this->app->instance('config', $config);
 
-        $this->assertEquals($isNightShift, Shifts::isNightShift($start, $end));
+        $this->assertEquals($isNightShift, Shifts::isNightShift(new Carbon($start), new Carbon($end)));
     }
 
     /**

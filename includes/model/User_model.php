@@ -123,13 +123,14 @@ function User_get_shifts_sum_query()
         return 'COALESCE(SUM(UNIX_TIMESTAMP(shifts.end) - UNIX_TIMESTAMP(shifts.start)), 0)';
     }
 
+    /* @see \Engelsystem\Helpers\Shifts::isNightShift to keep it in sync */
     return sprintf(
         '
             COALESCE(SUM(
                 (1 + (
-                    (HOUR(shifts.end) > %1$d AND HOUR(shifts.end) < %2$d)
-                    OR (HOUR(shifts.start) > %1$d AND HOUR(shifts.start) < %2$d)
-                    OR (HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d)
+                    HOUR(shifts.start) > %1$d AND HOUR(shifts.start) < %2$d
+                    OR HOUR(shifts.end) > %1$d AND HOUR(shifts.end) < %2$d
+                    OR HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d
                 ))
                 * (UNIX_TIMESTAMP(shifts.end) - UNIX_TIMESTAMP(shifts.start))
                 * (1 - (%3$d + 1) * `shift_entries`.`freeloaded`)
