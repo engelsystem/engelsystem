@@ -414,7 +414,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
  * @param Shift[]|Collection   $shifts
  * @param User                 $user_source
  * @param bool                 $its_me
- * @param int                  $tshirt_score
+ * @param string               $tshirt_score
  * @param bool                 $tshirt_admin
  * @param Worklog[]|Collection $user_worklogs
  * @param bool                 $admin_user_worklog_privilege
@@ -549,7 +549,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
  * @param Group[]              $user_groups
  * @param Shift[]|Collection   $shifts
  * @param bool                 $its_me
- * @param int                  $tshirt_score
+ * @param string               $tshirt_score
  * @param bool                 $tshirt_admin
  * @param bool                 $admin_user_worklog_privilege
  * @param Worklog[]|Collection $user_worklogs

@@ -239,10 +239,9 @@ function user_controller()
         auth()->resetApiKey($user_source);
     }
 
+    $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source->id)) . '&nbsp;h';
     if ($user_source->state->force_active && config('enable_force_active')) {
-        $tshirt_score = __('Enough');
-    } else {
-        $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source->id)) . '&nbsp;h';
+        $tshirt_score = '<span title="' . $tshirt_score . '">' . __('Enough') . '</span>';
     }
 
     $worklogs = $user_source->worklogs()
