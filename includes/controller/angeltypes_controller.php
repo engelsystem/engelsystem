@@ -325,7 +325,7 @@ function angeltypes_list_controller()
             $actions[] = button(
                 url('/user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
                 icon('box-arrow-in-right') . ($admin_angeltypes ? '' : __('Join')),
-                'btn-sm',
+                'btn-sm' . ($admin_angeltypes ? ' btn-success' : ''),
                 '',
                 ($admin_angeltypes ? __('Join') : '')
             );
