@@ -10,7 +10,7 @@ class NewsResource extends BasicResource
     {
         return [
             'id' => $this->model->id,
-            'title' => $this->model->title,
+            'name' => $this->model->title,
             'text' => $this->model->text,
             'is_meeting' => $this->model->is_meeting,
             'is_pinned' => $this->model->is_pinned,

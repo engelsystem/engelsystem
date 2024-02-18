@@ -34,7 +34,6 @@ class ShiftsControllerTest extends ApiBaseControllerTest
      * @covers \Engelsystem\Controllers\Api\Resources\ShiftTypeResource::toArray
      * @covers \Engelsystem\Controllers\Api\Resources\ShiftWithEntriesResource::toArray
      * @covers \Engelsystem\Controllers\Api\Resources\UserResource::toArray
-     * @covers \Engelsystem\Controllers\Api\Resources\AngelTypeResource::toArray
      * @covers \Engelsystem\Controllers\Api\ShiftsController::getNeededAngelTypes
      */
     public function testEntriesByLocation(): void
@@ -56,7 +55,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
 
         // First shift
         $shiftAData = $data['data'][0];
-        $this->assertEquals($this->shiftA->title, $shiftAData['title'], 'Title is equal');
+        $this->assertEquals($this->shiftA->title, $shiftAData['name'], 'Title is equal');
         $this->assertEquals($this->location->id, $shiftAData['location']['id'], 'Same location');
         $this->assertEquals($this->shiftA->shiftType->id, $shiftAData['shift_type']['id'], 'Shift type equals');
         $this->assertCount(4, $shiftAData['entries']);
@@ -66,14 +65,16 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertCount(2, $entry['users']);
         $this->assertEquals(2, $entry['needs']);
         $user = $entry['users'][0];
-        $this->assertEquals('/users?action=view&user_id=' . $user['id'], $user['url']);
+        $this->assertArrayHasKey('id', $user);
+        $this->assertArrayHasKey('name', $user);
+        $this->assertArrayNotHasKey('email', $user);
         $this->assertCount(0, $entriesA[1]['users']);
         $this->assertCount(1, $entriesA[2]['users']);
         $this->assertCount(1, $entriesA[3]['users']);
 
         // Second (empty) shift
         $shiftBData = $data['data'][1];
-        $this->assertEquals($this->shiftB->title, $shiftBData['title'], 'Title is equal');
+        $this->assertEquals($this->shiftB->title, $shiftBData['name'], 'Title is equal');
         $this->assertEquals($this->location->id, $shiftBData['location']['id'], 'Same location');
         $this->assertEquals($this->shiftB->shiftType->id, $shiftBData['shift_type']['id'], 'Shift type equals');
         $this->assertCount(3, $shiftBData['entries']);
@@ -86,7 +87,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
      * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByAngeltype
      * @covers \Engelsystem\Controllers\Api\ShiftsController::getNeededAngelTypes
      */
-    public function testEntriesViaShiftType(): void
+    public function testEntriesByAngelType(): void
     {
         $this->schedule->needed_from_shift_type = true;
         $this->schedule->save();
@@ -114,27 +115,27 @@ class ShiftsControllerTest extends ApiBaseControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByAngeltype
+     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByShiftType
      */
-    public function testEntriesByAngeltype(): void
+    public function testEntriesByShiftType(): void
     {
         /** @var ShiftEntry $firstEntry */
         $firstEntry = $this->shiftA->shiftEntries->first();
 
         $request = new Request();
-        $request = $request->withAttribute('angeltype_id', $firstEntry->angelType->id);
+        $request = $request->withAttribute('shifttype_id', $firstEntry->shift->shift_type_id);
 
         $controller = new ShiftsController(new Response());
 
-        $response = $controller->entriesByAngeltype($request);
-        $this->validateApiResponse('/angeltypes/{id}/shifts', 'get', $response);
+        $response = $controller->entriesByShiftType($request);
+        $this->validateApiResponse('/shifttypes/{id}/shifts', 'get', $response);
 
         $this->assertEquals(['application/json'], $response->getHeader('content-type'));
         $this->assertJson($response->getContent());
 
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('data', $data);
-        $this->assertCount(2, $data['data']);
+        $this->assertCount(1, $data['data']);
 
         $shift = $data['data'][0];
         $this->assertTrue(count($shift['entries']) >= 1);
