@@ -350,8 +350,8 @@ return [
     // Goodies must be enabled to use this feature
     'night_shifts'            => [
         'enabled'    => (bool) env('NIGHT_SHIFTS', true), // Disable to weigh every shift the same
-        'start'      => env('NIGHT_SHIFTS_START', 2),
-        'end'        => env('NIGHT_SHIFTS_END', 8),
+        'start'      => env('NIGHT_SHIFTS_START', 2), // Starting from hour
+        'end'        => env('NIGHT_SHIFTS_END', 8), // Ends at (without including) hour
         'multiplier' => env('NIGHT_SHIFTS_MULTIPLIER', 2),
     ],
 

@@ -19,7 +19,7 @@ class ShiftsTest extends TestCase
         $config = new Config(['night_shifts' => [
             'enabled'    => false,
             'start'      => 2,
-            'end'        => 6,
+            'end'        => 8,
             'multiplier' => 2,
         ]]);
         $this->app->instance('config', $config);
@@ -40,16 +40,24 @@ class ShiftsTest extends TestCase
         return [
             // Is night shift
             ['2042-01-01 04:00', '2042-01-01 05:00', true],
+            // Is night shift
+            ['2042-01-01 02:00', '2042-01-01 02:15', true],
+            // Is night shift
+            ['2042-01-01 07:45', '2042-01-01 08:00', true],
             // Starts as night shift
-            ['2042-01-01 05:45', '2042-01-01 07:00', true],
+            ['2042-01-01 07:59', '2042-01-01 09:00', true],
             // Ends as night shift
-            ['2042-01-01 00:00', '2042-01-01 03:00', true],
+            ['2042-01-01 00:00', '2042-01-01 02:01', true],
+            // Equals night shift
+            ['2042-01-01 02:00', '2042-01-01 08:00', true],
             // Contains night shift
             ['2042-01-01 01:00', '2042-01-01 09:00', true],
             // Too early
             ['2042-01-01 00:00', '2042-01-01 02:00', false],
             // Too late
-            ['2042-01-01 06:00', '2042-01-01 10:00', false],
+            ['2042-01-01 08:00', '2042-01-01 10:00', false],
+            // Out of range
+            ['2042-01-01 23:00', '2042-01-02 01:00', false],
         ];
     }
 
@@ -62,7 +70,7 @@ class ShiftsTest extends TestCase
         $config = new Config(['night_shifts' => [
             'enabled'    => true,
             'start'      => 2,
-            'end'        => 6,
+            'end'        => 8,
             'multiplier' => 2,
         ]]);
         $this->app->instance('config', $config);
@@ -78,7 +86,7 @@ class ShiftsTest extends TestCase
         $config = new Config(['night_shifts' => [
             'enabled'    => true,
             'start'      => 2,
-            'end'        => 6,
+            'end'        => 8,
             'multiplier' => 2,
         ]]);
         $this->app->instance('config', $config);
