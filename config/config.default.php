@@ -53,6 +53,13 @@ return [
         'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
     ],
 
+    // Other ways to ask the heaven
+    // Multiple contact options / links are possible, analogue to footer_items
+    'contact_options' => [
+        // E-mail address
+        'general.email' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
+    ],
+
     // Text displayed on the FAQ page, rendered as markdown
     'faq_text'                => env('FAQ_TEXT', null),
 

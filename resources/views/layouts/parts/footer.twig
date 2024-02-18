@@ -40,7 +40,15 @@
             {% set url = opt is iterable ? opt[0] : opt %}
             {% set permission = opt is iterable ? opt[1] : null %}
             {% if not permission or has_permission_to(permission) %}
-                <a href="{% if url starts with '/' %}{{ url(url) }}{% else %}{{ url }}{% endif %}">
+                <a href="
+                {%- if url starts with '/' %}
+                    {{ url(url) }}
+                {%- else -%}
+                    {{ url }}
+                {%- endif %}"
+                {%- if not (url starts with '/') %}
+                    target="_blank" rel="noopener"
+                {%- endif %}>
                     {% if '@' in url %}{{ m.icon('envelope') }}{% endif %}
                     {{ __(name) }}
                 </a> ·
