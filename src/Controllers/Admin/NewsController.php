@@ -12,6 +12,7 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\News;
+use Engelsystem\Models\User\Settings;
 use Psr\Log\LoggerInterface;
 
 class NewsController extends BaseController
@@ -44,6 +45,7 @@ class NewsController extends BaseController
 
     protected function showEdit(?News $news, bool $sendNotification = true, bool $isMeetingDefault = false): Response
     {
+        $notificationsCount = Settings::whereEmailNews(true)->count();
         return $this->response->withView(
             'pages/news/edit.twig',
             [
@@ -52,6 +54,7 @@ class NewsController extends BaseController
                 'is_pinned'      => $news ? $news->is_pinned : false,
                 'is_highlighted' => $news ? $news->is_highlighted : false,
                 'send_notification' => $sendNotification,
+                'notifications_count' => $notificationsCount,
             ],
         );
     }

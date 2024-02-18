@@ -78,7 +78,7 @@
                         {{ f.delete(__('form.delete'), {'confirm_title': __('news.delete.title', [news.title[:40]|e])}) }}
                     {% endif %}
 
-                    {{ f.checkbox('send_notification', __('form.send_notification'), {'checked': send_notification, 'class': 'ms-2 form-check-inline'}) }}
+                    {{ f.checkbox('send_notification', __('form.send_notification', [notifications_count]), {'checked': send_notification, 'class': 'ms-2 form-check-inline'}) }}
                 </div>
             </div>
 
