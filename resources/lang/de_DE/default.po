@@ -90,7 +90,7 @@ msgid "form.submit"
 msgstr "Absenden"
 
 msgid "form.send_notification"
-msgstr "Benachrichtigungen versenden"
+msgstr "%d Benachrichtigungen versenden"
 
 msgid "credits.source"
 msgstr "Quellcode"

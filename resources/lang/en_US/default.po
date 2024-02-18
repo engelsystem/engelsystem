@@ -23,7 +23,7 @@ msgid "form.submit"
 msgstr "Submit"
 
 msgid "form.send_notification"
-msgstr "Send notifications"
+msgstr "Send %d notifications"
 
 msgid "general.login"
 msgstr "Login"
