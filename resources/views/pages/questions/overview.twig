@@ -2,14 +2,24 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('question.questions') }}{% endblock %}
+{% block title %}
+    {% if is_admin | default(false) %}
+        {{ __('question.admin') }}
+    {% else %}
+        {{ __('question.questions') }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="page-header">
             <h1>
                 {{ block('title') }}
-                {{ m.button(m.icon('plus-lg'), url('/questions/new'), 'secondary') }}
+                {% if is_admin | default(false) %}
+                    {{ m.button(m.icon('question-lg'), url('/faq'), 'secondary', null, __('faq.faq')) }}
+                {% else %}
+                    {{ m.button(m.icon('plus-lg'), url('/questions/new'), 'secondary') }}
+                {% endif %}
             </h1>
         </div>
 
@@ -21,7 +31,9 @@
                     {% block questions %}
                         {% block faq_text %}
                             {% if has_permission_to('faq.view') %}
-                                <p>{{ __('question.faq_link', [url('/faq')]) | raw }}</p>
+                                {% if not is_admin | default(false) %}
+                                    <p>{{ __('question.faq_link', [url('/faq')]) | raw }}</p>
+                                {% endif %}
                             {% endif %}
                         {% endblock %}
 

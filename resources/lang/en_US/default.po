@@ -555,6 +555,9 @@ msgstr "Delete FAQ \"%s\""
 msgid "question.questions"
 msgstr "Questions"
 
+msgid "question.admin"
+msgstr "Answer questions"
+
 msgid "question.faq_link"
 msgstr "For general questions, have a look at our <a href=\"%s\">FAQ</a>."
 

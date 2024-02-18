@@ -1854,6 +1854,9 @@ msgstr "FAQ \"%s\" löschen"
 msgid "question.questions"
 msgstr "Fragen"
 
+msgid "question.admin"
+msgstr "Fragen beantworten"
+
 msgid "question.faq_link"
 msgstr "Hast du eine generelle Frage? Vielleicht ist diese schon in den <a href=\"%s\">FAQ</a> beantwortet."
 
