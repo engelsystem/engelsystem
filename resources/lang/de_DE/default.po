@@ -1875,6 +1875,9 @@ msgstr "Antwort"
 msgid "question.delete.title"
 msgstr "Frage \"%s\" löschen"
 
+msgid "question.contact_options"
+msgstr "Weitere Kontaktmöglichkeiten: "
+
 msgid "user.edit.shirt"
 msgstr "T-Shirt bearbeiten"
 
@@ -1956,9 +1959,6 @@ msgstr "Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen.
 
 msgid "angeltypes.can-change-later"
 msgstr "Du kannst Deine Auswahl später in den Einstellungen ändern."
-
-msgid "angeltypes.email"
-msgstr "E-Mail"
 
 msgid "angeltypes.hide_on_shift_view"
 msgstr "Auf Schicht-Ansicht ausblenden"

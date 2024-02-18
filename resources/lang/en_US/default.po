@@ -576,6 +576,9 @@ msgstr "Answer"
 msgid "question.delete.title"
 msgstr "Delete question \"%s\""
 
+msgid "question.contact_options"
+msgstr "Other contact options: "
+
 msgid "user.edit.shirt"
 msgstr "Edit T-shirt"
 
@@ -664,9 +667,6 @@ msgstr "This angeltype requires the attendance at an introduction meeting. "
 
 msgid "angeltypes.can-change-later"
 msgstr "You can change your selection later in the settings."
-
-msgid "angeltypes.email"
-msgstr "E-mail"
 
 msgid "angeltypes.shift.self_signup.info"
 msgstr "Angel types which have shift self signup enabled allow angels to self sign up for there shifts, "

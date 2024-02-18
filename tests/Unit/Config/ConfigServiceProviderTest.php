@@ -20,7 +20,7 @@ class ConfigServiceProviderTest extends ServiceProviderTest
     use ArraySubsetAsserts;
 
     private array $configVarsWhereNullIsPruned =
-        ['themes', 'tshirt_sizes', 'headers', 'header_items', 'footer_items', 'locales'];
+        ['themes', 'tshirt_sizes', 'headers', 'header_items', 'footer_items', 'locales', 'contact_options'];
 
     /**
      * @covers \Engelsystem\Config\ConfigServiceProvider::getConfigPath

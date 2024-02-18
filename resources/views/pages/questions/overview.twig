@@ -10,6 +10,26 @@
     {% endif %}
 {% endblock %}
 
+{% block contact_options %}
+    {% for name,opt in config('contact_options') %}
+        {% set url = opt is iterable ? opt[0] : opt %}
+        {% set permission = opt is iterable ? opt[1] : null %}
+        {% if not permission or has_permission_to(permission) %}
+            <a href="
+            {%- if url starts with '/' %}
+                {{ url(url) }}
+            {%- else -%}
+                {{ url }}
+            {%- endif %}"
+            {%- if not (url starts with '/') %}
+                target="_blank" rel="noopener"
+            {%- endif %}>
+                {{ __(name) }}
+            </a>{% if not loop.last %},{% endif %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="page-header">
@@ -32,8 +52,17 @@
                         {% block faq_text %}
                             {% if has_permission_to('faq.view') %}
                                 {% if not is_admin | default(false) %}
-                                    <p>{{ __('question.faq_link', [url('/faq')]) | raw }}</p>
+                                    <p>
+                                        {{ __('question.faq_link', [url('/faq')]) | raw }}
+                                    </p>
                                 {% endif %}
+                            {% endif %}
+                        {% endblock %}
+                        {%- block info_text %}
+                            {% if config('contact_options') and not is_admin|default(false) %}
+                                <p>
+                                    {{ m.info(__('question.contact_options') ~ block('contact_options'), true) }}
+                                </p>
                             {% endif %}
                         {% endblock %}
 
