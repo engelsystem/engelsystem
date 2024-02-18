@@ -28,6 +28,22 @@ class BasicResourceTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::toIdentifierArray
+     */
+    public function testToIdentifierArray(): void
+    {
+        $model = $this->getModel()->setAttribute('id', 42);
+        $resource = $this->getResource($model);
+
+        $this->assertEquals(['id' => 42], $resource->toIdentifierArray($model));
+
+        $model = $model->setAttribute('name', 'test');
+        $resource = $this->getResource($model);
+
+        $this->assertEquals(['id' => 42, 'name' => 'test'], $resource->toIdentifierArray($model));
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::toJson
      */
     public function testToJson(): void

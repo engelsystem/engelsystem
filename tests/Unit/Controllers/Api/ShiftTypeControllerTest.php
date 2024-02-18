@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
-use Engelsystem\Controllers\Api\NewsController;
+use Engelsystem\Controllers\Api\ShiftTypeController;
 use Engelsystem\Http\Response;
-use Engelsystem\Models\News;
+use Engelsystem\Models\Shifts\ShiftType;
 
-class NewsControllerTest extends ApiBaseControllerTest
+class ShiftTypeControllerTest extends ApiBaseControllerTest
 {
     /**
-     * @covers \Engelsystem\Controllers\Api\NewsController::index
-     * @covers \Engelsystem\Controllers\Api\Resources\NewsResource::toArray
+     * @covers \Engelsystem\Controllers\Api\ShiftTypeController::index
+     * @covers \Engelsystem\Controllers\Api\Resources\ShiftTypeResource::toArray
      */
     public function testIndex(): void
     {
-        $items = News::factory(3)->create();
+        $items = ShiftType::factory(3)->create();
 
-        $controller = new NewsController(new Response());
+        $controller = new ShiftTypeController(new Response());
 
         $response = $controller->index();
-        $this->validateApiResponse('/news', 'get', $response);
+        $this->validateApiResponse('/shifttypes', 'get', $response);
 
         $this->assertEquals(['application/json'], $response->getHeader('content-type'));
         $this->assertJson($response->getContent());
@@ -29,9 +29,8 @@ class NewsControllerTest extends ApiBaseControllerTest
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('data', $data);
         $this->assertCount(3, $data['data']);
-
         $this->assertCount(1, collect($data['data'])->filter(function ($item) use ($items) {
-            return $item['name'] == $items->first()->getAttribute('title');
+            return $item['name'] == $items->first()->getAttribute('name');
         }));
     }
 }
