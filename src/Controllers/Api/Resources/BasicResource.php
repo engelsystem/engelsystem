@@ -13,7 +13,7 @@ use Stringable;
 /** @phpstan-consistent-constructor */
 abstract class BasicResource implements Arrayable, Jsonable, Stringable
 {
-    public function __construct(protected BaseModel|Collection $model)
+    public function __construct(protected BaseModel | Collection $model)
     {
     }
 
@@ -32,6 +32,16 @@ abstract class BasicResource implements Arrayable, Jsonable, Stringable
     public function toArray(): array
     {
         return $this->model->toArray();
+    }
+
+    public static function toIdentifierArray(array | Arrayable $data): array
+    {
+        $data = $data instanceof Arrayable ? $data->toArray() : $data;
+        $identifier = ['id' => $data['id']];
+        if (array_key_exists('name', $data)) {
+            $identifier['name'] = $data['name'];
+        }
+        return $identifier;
     }
 
     /**

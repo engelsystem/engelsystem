@@ -146,6 +146,9 @@ $route->addGroup(
 
                 $route->get('/news', 'Api\NewsController@index');
 
+                $route->get('/shifttypes', 'Api\ShiftTypeController@index');
+                $route->get('/shifttypes/{shifttype_id:\d+}/shifts', 'Api\ShiftsController@entriesByShiftType');
+
                 $route->get('/users/{user_id:(?:\d+|self)}', 'Api\UsersController@user');
                 $route->get('/users/{user_id:(?:\d+|self)}/angeltypes', 'Api\AngelTypeController@ofUser');
                 $route->get('/users/{user_id:(?:\d+|self)}/shifts', 'Api\ShiftsController@entriesByUser');

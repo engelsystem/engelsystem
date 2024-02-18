@@ -17,6 +17,7 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
 {
     /**
      * @covers \Engelsystem\Controllers\Api\AngelTypeController::index
+     * @covers \Engelsystem\Controllers\Api\Resources\AngelTypeResource::toArray
      */
     public function testIndex(): void
     {
@@ -37,6 +38,7 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
             return $item['name'] == $items->first()->getAttribute('name');
         }));
     }
+
     /**
      * @covers \Engelsystem\Controllers\Api\AngelTypeController::ofUser
      * @covers \Engelsystem\Controllers\Api\Resources\UserAngelTypeResource::toArray

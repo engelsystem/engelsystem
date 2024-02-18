@@ -15,6 +15,7 @@ use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\Shifts\ShiftType;
 use Illuminate\Database\Eloquent\Collection;
 
 class ShiftsController extends ApiController
@@ -56,6 +57,28 @@ class ShiftsController extends ApiController
         $location = Location::findOrFail($locationId);
         /** @var Shift[]|Collection $shifts */
         $shifts = $location->shifts()
+            ->with([
+                'neededAngelTypes.angelType',
+                'location.neededAngelTypes.angelType',
+                'shiftEntries.angelType',
+                'shiftEntries.user.contact',
+                'shiftEntries.user.personalData',
+                'shiftType',
+                'schedule.shiftType.neededAngelTypes.angelType',
+            ])
+            ->orderBy('start')
+            ->get();
+
+        return $this->shiftEntriesResponse($shifts);
+    }
+
+    public function entriesByShiftType(Request $request): Response
+    {
+        $shiftTypeId = (int) $request->getAttribute('shifttype_id');
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::findOrFail($shiftTypeId);
+        /** @var Shift[]|Collection $shifts */
+        $shifts = $shiftType->shifts()
             ->with([
                 'neededAngelTypes.angelType',
                 'location.neededAngelTypes.angelType',
@@ -117,10 +140,11 @@ class ShiftsController extends ApiController
                     continue;
                 }
 
-                $angelTypeData = new AngelTypeResource($neededAngelType->angelType);
+                $users = $users->map(fn($user) => UserResource::toIdentifierArray($user));
+                $angelTypeData = AngelTypeResource::toIdentifierArray($neededAngelType->angelType);
                 $entries[] = new Collection([
                     'users' => $users,
-                    'type' => $angelTypeData,
+                    'angeltype' => $angelTypeData,
                     'needs' => $neededAngelType->count,
                 ]);
             }
