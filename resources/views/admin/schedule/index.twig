@@ -35,7 +35,7 @@
                             {% for schedule in schedules %}
                                 <tr>
                                     <td>{{ schedule.name }}</td>
-                                    <td><a href="{{ schedule.url }}" target="_blank">{{ schedule.url }}</a></td>
+                                    <td><a href="{{ schedule.url }}" target="_blank" rel="noopener">{{ schedule.url }}</a></td>
                                     <td>
                                         <form method="post" action="{{ url('/admin/schedule/edit/' ~ schedule.id) }}">
                                             {{ csrf() }}
