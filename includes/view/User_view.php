@@ -7,6 +7,7 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Illuminate\Support\Collection;
@@ -771,6 +772,9 @@ function User_view_state_admin($freeloader, $user_source)
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $password_resets = PasswordReset::whereUserId($user_source->id)
+        ->where('created_at', '>', $user_source->last_login_at)
+        ->count();
 
     if ($freeloader) {
         $state[] = '<span class="text-danger">' . icon('exclamation-circle') . __('Freeloader') . '</span>';
@@ -819,6 +823,10 @@ function User_view_state_admin($freeloader, $user_source)
                 . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')
                 . '</span>';
         }
+    }
+
+    if ($password_resets > 0) {
+        $state[] = __('Password reset');
     }
 
     return $state;
