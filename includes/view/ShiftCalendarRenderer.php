@@ -215,6 +215,12 @@ class ShiftCalendarRenderer
     {
         $time = Carbon::createFromTimestamp($time);
         $class = $label ? 'tick bg-' . theme_type() : 'tick ';
+
+        $diffNow = $time->diffInMinutes(null, false) * 60;
+        if ($diffNow >= 0 && $diffNow < self::SECONDS_PER_ROW) {
+            $class .= ' now';
+        }
+
         if ($time->isStartOfDay()) {
             if (!$label) {
                 return div($class . ' day');
