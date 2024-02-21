@@ -251,6 +251,10 @@ table .border-bottom {
       font-size: 0.9em;
       padding-left: 5px;
     }
+
+    .tick.now {
+      border-top: 2px solid $info;
+    }
   }
 
   .lane.time {
