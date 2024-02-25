@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ session_get('locale')|split('_')[0]|escape('html_attr') }}">
+<html lang="{{ session_get('locale')|split('_')[0]|escape('html_attr') }}" class="h-100">
 <head>
     {% block head %}
         <meta charset="utf-8"/>
@@ -23,7 +23,7 @@
 
     {% endblock %}
 </head>
-<body data-theme_type="{{ theme.type }}">
+<body class="d-flex flex-column h-100" data-theme_type="{{ theme.type }}">
 
 {% block body %}
     {% block header %}
@@ -36,11 +36,12 @@
                 {{ content|raw }}
             {% endblock %}
         </div>
-        <div id="footer">
-            {% block footer %}
-                {% include "layouts/parts/footer.twig" %}
-            {% endblock %}
-        </div>
+    </div>
+
+    <div id="footer" class="mt-auto">
+        {% block footer %}
+            {% include "layouts/parts/footer.twig" %}
+        {% endblock %}
     </div>
 
     {% block scripts %}{% endblock %}
