@@ -314,6 +314,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     $nightShiftsConfig = config('night_shifts');
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
     $shift_info = '<a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->shiftType->name) . '</a>';
     if ($shift->title) {
@@ -350,16 +351,27 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     }
 
     if ($shift->freeloaded) {
-        $myshift['duration'] = '<p class="text-danger">'
-            . sprintf('%.2f', -($shift->end->timestamp - $shift->start->timestamp) / 3600 * 2) . '&nbsp;h'
-            . '</p>';
+        $myshift['duration'] = '<p class="text-danger"><s>'
+            . sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h'
+            . '</s></p>';
         if (auth()->can('user_shifts_admin')) {
             $myshift['comment'] .= '<br />'
                 . '<p class="text-danger">'
                 . __('Freeloaded') . ': ' . htmlspecialchars($shift->freeloaded_comment)
                 . '</p>';
         } else {
-            $myshift['comment'] .= '<br /><p class="text-danger">' . __('Freeloaded') . '</p>';
+            if (!$goodie_enabled) {
+                $freeload_info = __('freeload.info');
+            } else {
+                $freeload_info = __('freeload.info.goodie', [($goodie_tshirt
+                    ? __('T-shirt score')
+                    : __('Goodie score'))]);
+            }
+            $myshift['comment'] .= '<br /><p class="text-danger">'
+                . __('Freeloaded')
+                . ' <span class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="'
+                . $freeload_info
+                . '"></span></p>';
         }
     }
 
@@ -980,7 +992,7 @@ function render_user_freeloader_hint()
 {
     if (auth()->user()->isFreeloader()) {
         return sprintf(
-            __('You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again.'),
+            __('freeload.freeloader.info'),
             config('max_freeloadable_shifts')
         );
     }

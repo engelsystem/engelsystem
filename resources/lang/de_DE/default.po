@@ -1280,13 +1280,6 @@ msgstr ""
 "Bitte gib Dein geplantes Abreisedatum an, damit wir ein Gefühl für die Abbau-"
 "Planung bekommen."
 
-msgid ""
-"You freeloaded at least %s shifts. Shift signup is locked. Please go to "
-"heavens desk to be unlocked again."
-msgstr ""
-"Du hast mindestens %s Schichten geschwänzt. Schicht-Registrierung ist "
-"gesperrt. Bitte gehe zum Himmelsschreibtisch um wieder entsperrt zu werden."
-
 msgid "tshirt.required.hint"
 msgstr "Bitte gib eine T-Shirt-Größe in deinen Einstellungen an."
 
@@ -2111,3 +2104,28 @@ msgstr "Du kannst dich bis %s Stunden vor dem Start der Schicht austragen. "
 
 msgid "Password reset"
 msgstr "Passwort zurücksetzen"
+
+msgid "freeload.info.goodie"
+msgstr "Du warst bei dieser Schicht nicht anwesend. "
+"Die doppelte Länge der Schicht wurde von deinem %s abgezogen. "
+"Bitte wende dich bei Fragen an den Himmel."
+
+msgid "freeload.info"
+msgstr "Du warst bei dieser Schicht nicht anwesend. "
+"Bitte wende dich bei Fragen an den Himmel."
+
+msgid "freeload.freeloader.info"
+msgstr ""
+"Du warst bei mindestens %s Schichten nicht anwesend. Deshalb ist die Schicht-Registrierung "
+"gesperrt. Bitte gehe zum Himmel um wieder entsperrt zu werden."
+
+msgid "freeload.freeloaded.info.goodie"
+msgstr ""
+"War ein Engel bei einer Schicht nicht anwesend, "
+"wird die doppelte Länge der Schicht von dem %s abgezogen. "
+"Bei %s geschwänzten Schichten wird die Schicht-Registration für den Engel gesperrt."
+
+msgid "freeload.freeloaded.info"
+msgstr ""
+"Der Engel war bei einer Schicht nicht anwesend. "
+"Bei %s geschwänzten Schichten wird die Schicht-Registration für den Engel gesperrt."
