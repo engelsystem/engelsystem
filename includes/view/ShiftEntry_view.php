@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Config\GoodieType;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
@@ -209,9 +210,22 @@ function ShiftEntry_edit_view(
     $angeltype_supporter = false
 ) {
     $freeload_form = [];
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+
     if ($user_admin_shifts || $angeltype_supporter) {
+        if (!$goodie_enabled) {
+            $freeload_info = __('freeload.freeloaded.info', [config('max_freeloadable_shifts')]);
+        } else {
+            $freeload_info = __('freeload.freeloaded.info.goodie', [($goodie_tshirt
+                ? __('T-shirt score')
+                : __('Goodie score')),
+                config('max_freeloadable_shifts')]);
+        }
         $freeload_form = [
-            form_checkbox('freeloaded', __('Freeloaded'), $freeloaded),
+            form_checkbox('freeloaded', __('Freeloaded') . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                $freeload_info . '"></span>', $freeloaded),
             form_textarea(
                 'freeloaded_comment',
                 __('Freeload comment (Only for shift coordination and supporters):'),

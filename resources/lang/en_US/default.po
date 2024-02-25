@@ -998,3 +998,25 @@ msgstr "No angeltype has been created yet. Shifts can't be created without one."
 msgid "shift.sign_out.hint"
 msgstr "You can self sign out up to %s hours before the start of the shift. "
 "If you can't attend your shift, ask heaven to sign you out."
+
+msgid "freeload.info.goodie"
+msgstr "You were not present for this shift. "
+"The double length of the shift was deducted from your %s. Please contact heaven if you have questions."
+
+msgid "freeload.info"
+msgstr "You were not present for this shift. "
+"Please contact heaven if you have questions."
+
+msgid "freeload.freeloader.info"
+msgstr "You were not present for at least %s shifts. Therefore, shift registration is blocked. "
+"Please go to heaven to be unlocked again."
+
+msgid "freeload.freeloaded.info.goodie"
+msgstr ""
+"If an angel was not present for a shift, the double length of the shift is deducted from the %s. "
+"If %s shifts are freeloaded, the shift registration is blocked for the angel."
+
+msgid "freeload.freeloaded.info"
+msgstr ""
+"The angel was not present for a shift. "
+"If %s shifts are freeloaded, the shift registration is blocked for the angel."
