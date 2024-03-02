@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
@@ -229,6 +230,21 @@ function admin_active()
             }
         }
 
+        $timeSum = 0;
+        /** @var ShiftEntry[] $shiftEntries */
+        $shiftEntries = $usr->shiftEntries()
+            ->with('shift')
+            ->get();
+        foreach ($shiftEntries as $entry) {
+            if ($entry->freeloaded || $entry->shift->start > Carbon::now()) {
+                continue;
+            }
+            $timeSum += ($entry->shift->end->timestamp - $entry->shift->start->timestamp);
+        }
+        foreach ($usr->worklogs as $worklog) {
+            $timeSum += $worklog->hours * 3600;
+        }
+
         $shirtSize = $usr->personalData->shirt_size;
         $userData = [];
         $userData['no'] = count($matched_users) + 1;
@@ -236,7 +252,8 @@ function admin_active()
         if ($goodie_tshirt) {
             $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '');
         }
-        $userData['work_time'] = round($usr['shift_length'] / 60)
+        $userData['work_time'] = sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h';
+        $userData['score'] = round($usr['shift_length'] / 60)
             . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
         $userData['active'] = icon_bool($usr->state->active == 1);
         $userData['force_active'] = icon_bool($usr->state->force_active == 1);
@@ -362,6 +379,12 @@ function admin_active()
                 [
                     'shift_count'  => __('Shifts'),
                     'work_time'    => __('Length'),
+                ],
+                ($goodie_enabled ? ['score'   => ($goodie_tshirt
+                    ? __('T-shirt score')
+                    : __('Goodie score')
+                )] : []),
+                [
                     'active'       => __('Active?'),
                 ],
                 (config('enable_force_active') ? ['force_active' => __('Forced'),] : []),
