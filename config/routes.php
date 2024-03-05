@@ -51,6 +51,15 @@ $route->addGroup(
     }
 );
 
+// User admin settings
+$route->addGroup(
+    '/users/{user_id:\d+}',
+    function (RouteCollector $route): void {
+            $route->get('/certificates', 'Admin\\UserSettingsController@certificate');
+            $route->post('/certificates/ifsg', 'Admin\\UserSettingsController@saveIfsgCertificate');
+    }
+);
+
 // Password recovery
 $route->addGroup(
     '/password/reset',

@@ -1,0 +1,43 @@
+{% extends 'pages/settings/certificates.twig' %}
+{% import 'macros/form.twig' as f %}
+{% import 'macros/base.twig' as m %}
+
+{% block row_content %}
+    <div class="row">
+
+        {% if config('ifsg_enabled') %}
+            <form
+                action="{{ url('/users/' ~ admin_user.id ~ '/certificates/ifsg') }}"
+                enctype="multipart/form-data" method="post"
+            >
+                {{ csrf() }}
+                <div class="col-md-12 pb-3">
+                    <h3>{{ __('settings.certificates.title.ifsg') }}</h3>
+
+                    {% if config('ifsg_light_enabled') %}
+                        {{ f.checkbox('ifsg_certificate_light', __('settings.certificates.ifsg_light_admin'), {
+                            'checked': certificates.ifsg_certificate_light,
+                        }) }}
+                    {% endif %}
+                    {{ f.checkbox('ifsg_certificate', __('settings.certificates.ifsg_admin'), {
+                        'checked': certificates.ifsg_certificate,
+                    }) }}
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+                        </div>
+
+                        <div class="col-auto">
+                            {{ f.checkbox(
+                                'ifsg_confirmed',
+                                __('settings.certificates.confirmed') ~ f.info(__('settings.certificates.confirmation.info')),
+                                {'raw_label': true, 'checked': certificates.ifsg_confirmed}
+                            ) }}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+
+    </div>
+{% endblock %}

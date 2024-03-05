@@ -242,29 +242,28 @@ class SettingsController extends BaseController
 
     public function certificate(): Response
     {
-        $user = $this->auth->user();
-
         if (!config('ifsg_enabled') && !$this->checkDrivingLicense()) {
             throw new HttpNotFound();
         }
 
+        $user = $this->auth->user();
         return $this->response->withView(
             'pages/settings/certificates',
             [
-                'settings_menu'          => $this->settingsMenu(),
-                'driving_license'        => $this->checkDrivingLicense(),
-                'certificates'           => $user->license,
+                'settings_menu' => $this->settingsMenu(),
+                'driving_license' => $this->checkDrivingLicense(),
+                'certificates' => $user->license,
             ]
         );
     }
 
     public function saveIfsgCertificate(Request $request): Response
     {
-        if (!config('ifsg_enabled')) {
+        $user = $this->auth->user();
+        if (!config('ifsg_enabled') || $user->license->ifsg_confirmed) {
             throw new HttpNotFound();
         }
 
-        $user = $this->auth->user();
         $data = $this->validate($request, [
             'ifsg_certificate_light' => 'optional|checked',
             'ifsg_certificate' => 'optional|checked',
@@ -274,8 +273,8 @@ class SettingsController extends BaseController
             $user->license->ifsg_certificate_light = !$data['ifsg_certificate'] && $data['ifsg_certificate_light'];
         }
         $user->license->ifsg_certificate = (bool) $data['ifsg_certificate'];
-        $user->license->save();
 
+        $user->license->save();
         $this->addNotification('settings.certificates.success');
 
         return $this->redirect->to('/settings/certificates');
