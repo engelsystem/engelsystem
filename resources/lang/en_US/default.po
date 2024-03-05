@@ -437,10 +437,27 @@ msgstr "Forklift"
 msgid "settings.certificates.ifsg_light"
 msgstr "I was instructed about IfSG §43 (aka Frikadellendiplom light) on site."
 
+msgid "settings.certificates.ifsg_light_admin"
+msgstr "Was instructed about IfSG §43 (aka Frikadellendiplom light) on site."
+
 msgid "settings.certificates.ifsg"
 msgstr "I have gotten the instruction about §43 IfSG (aka Frikadellendiplom) from my Health Department "
-"and a second instruction from us or my employer/chef/assosiation within 3 months. "
+"and a second instruction from us or my employer/chef/association within 3 months. "
 "Additionally my second instruction is not older than 2 years."
+
+msgid "settings.certificates.ifsg_admin"
+msgstr "Got the instruction about §43 IfSG (aka Frikadellendiplom) from a Health Department "
+"and a second instruction from us or his employer/chef/association within 3 months. "
+"Additionally the second instruction is not older than 2 years."
+
+msgid "settings.certificates.confirmed"
+msgstr "Certificate confirmed"
+
+msgid "settings.certificates.ifsg_confirmed.hint"
+msgstr "Your health instruction has been confirmed, you can no longer change it by yourself."
+
+msgid "settings.certificates.confirmation.info"
+msgstr "You personally checked that the certificate / license meets the requirements."
 
 msgid "settings.certificates.success"
 msgstr "Certificates were updated successfully."
@@ -449,13 +466,13 @@ msgid "angeltype.ifsg.required"
 msgstr "Requires health instruction"
 
 msgid "ifsg.certificate"
-msgstr "health instruction"
+msgstr "Health instruction"
 
 msgid "ifsg.certificate_light"
-msgstr "health instruction on site"
+msgstr "Health instruction on site"
 
 msgid "angeltype.ifsg.own"
-msgstr "my health instruction"
+msgstr "My health instruction"
 
 msgid "angeltype.ifsg.required.info"
 msgstr "This angeltype requires a health instruction. Please enter your health instruction information!"

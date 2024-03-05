@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
@@ -248,6 +249,12 @@ function user_controller()
         ->with(['user', 'creator'])
         ->get();
 
+    $is_ifsg_supporter = (bool) AngelType::whereRequiresIfsgCertificate(true)
+        ->leftJoin('user_angel_type', 'user_angel_type.angel_type_id', 'angel_types.id')
+        ->where('user_angel_type.user_id', $user->id)
+        ->where('user_angel_type.supporter', true)
+        ->count();
+
     return [
         htmlspecialchars($user_source->displayName),
         User_view(
@@ -261,7 +268,8 @@ function user_controller()
             $tshirt_score,
             auth()->can('admin_active'),
             auth()->can('admin_user_worklog'),
-            $worklogs
+            $worklogs,
+            auth()->can('user.ifsg.edit') || $is_ifsg_supporter,
         ),
     ];
 }

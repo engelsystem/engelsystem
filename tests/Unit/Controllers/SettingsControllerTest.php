@@ -805,7 +805,7 @@ class SettingsControllerTest extends ControllerTest
         $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
 
         $body = [
-            'ifsg_certificate'       => true,
+            'ifsg_certificate' => true,
         ];
         $this->request = $this->request->withParsedBody($body);
 

@@ -42,6 +42,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|AngelType[] whereContactEmail($value)
  * @method static QueryBuilder|AngelType[] whereRestricted($value)
  * @method static QueryBuilder|AngelType[] whereRequiresDriverLicense($value)
+ * @method static QueryBuilder|AngelType[] whereRequiresIfsgCertificate($value)
  * @method static QueryBuilder|AngelType[] whereNoSelfSignup($value)
  * @method static QueryBuilder|AngelType[] whereShowOnDashboard($value)
  * @method static QueryBuilder|AngelType[] whereHideRegister($value)

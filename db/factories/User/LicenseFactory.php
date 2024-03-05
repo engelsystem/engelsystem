@@ -24,6 +24,7 @@ class LicenseFactory extends Factory
 
         $ifsg_certificate = $this->faker->boolean(0.1);
         $ifsg_certificate_light = $this->faker->boolean(0.5) && !$ifsg_certificate;
+        $ifsg_confirmed = $this->faker->boolean(0.5) && ($ifsg_certificate || $ifsg_certificate_light);
 
         return [
             'user_id'                => User::factory(),
@@ -35,6 +36,7 @@ class LicenseFactory extends Factory
             'drive_12t'              => $drive_12t,
             'ifsg_certificate'       => $ifsg_certificate,
             'ifsg_certificate_light' => $ifsg_certificate_light,
+            'ifsg_confirmed'         => $ifsg_confirmed,
         ];
     }
 }

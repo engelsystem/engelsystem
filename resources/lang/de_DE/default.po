@@ -368,6 +368,9 @@ msgstr "Du darfst diesen Benutzer nicht von diesem Engeltyp entfernen."
 msgid "User %s removed from %s."
 msgstr "Benutzer %s von %s entfernt."
 
+msgid "Edit certificates"
+msgstr "Zertifikate bearbeiten"
+
 msgid "Remove angeltype"
 msgstr "Engeltyp löschen"
 
@@ -911,7 +914,7 @@ msgstr "Kontakt"
 msgid "Primary contact person/desk for user questions."
 msgstr "Ansprechpartner für Fragen."
 
-msgid "my driving license"
+msgid "My driving license"
 msgstr "Meine Führerschein-Infos"
 
 msgid ""
@@ -1736,10 +1739,27 @@ msgstr "Gabelstapler"
 msgid "settings.certificates.ifsg_light"
 msgstr "Ich wurde vor Ort nach IfSG §43 (Frikadellendiplom light) belehrt."
 
+msgid "settings.certificates.ifsg_light_admin"
+msgstr "Wurde vor Ort nach IfSG §43 (Frikadellendiplom light) belehrt."
+
 msgid "settings.certificates.ifsg"
 msgstr "Ich habe eine Belehrung nach §43 IfSG (Frikadellendiplom) bei meinem Gesundheitsamt "
 "erhalten und innerhalb von 3 Monaten die Zweitbelehrung durch uns oder meinen Arbeitgeber/Koch/Verein bekommen. "
 "Zusätzlich ist die Zweitbelehrung nicht älter als zwei Jahre."
+
+msgid "settings.certificates.ifsg_admin"
+msgstr "Hat eine Belehrung nach §43 IfSG (Frikadellendiplom) vom Gesundheitsamt "
+"erhalten und innerhalb von 3 Monaten die Zweitbelehrung durch uns oder einen Arbeitgeber/Koch/Verein bekommen. "
+"Zusätzlich ist die Zweitbelehrung nicht älter als zwei Jahre."
+
+msgid "settings.certificates.confirmed"
+msgstr "Zertifikat bestätigt"
+
+msgid "settings.certificates.ifsg_confirmed.hint"
+msgstr "Deine Gesundheitsbelehrung wurde bestätigt, du kannst deine Angaben nicht mehr selber ändern."
+
+msgid "settings.certificates.confirmation.info"
+msgstr "Du hast persönlich überprüft, dass die Zertifizierung / Bescheinigung den Anforderungen genügt."
 
 msgid "settings.certificates.success"
 msgstr "Zertifikate wurden erfolgreich aktualisiert."

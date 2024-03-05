@@ -7,20 +7,33 @@
 {% block row_content %}
     <div class="row">
         {% if config('ifsg_enabled') %}
-            <form action="{{ url('/settings/certificates/ifsg') }}" enctype="multipart/form-data" method="post">
+            <form
+                action="{{ url('/settings/certificates/ifsg') }}"
+                enctype="multipart/form-data" method="post"
+            >
                 {{ csrf() }}
                 <div class="col-md-12 pb-3">
                     <h3>{{ __('settings.certificates.title.ifsg') }}</h3>
                     {{ m.info(__('settings.certificates.info')) }}
+                    {% if certificates.ifsg_confirmed %}
+                        <p class="text-success">{{ __('settings.certificates.ifsg_confirmed.hint') }}</p>
+                    {% endif %}
+
                     {% if config('ifsg_light_enabled') %}
                         {{ f.checkbox('ifsg_certificate_light', __('settings.certificates.ifsg_light'), {
-                                'checked': certificates.ifsg_certificate_light,
+                            'checked': certificates.ifsg_certificate_light,
+                            'disabled': certificates.ifsg_confirmed,
                         }) }}
                     {% endif %}
+
                     {{ f.checkbox('ifsg_certificate', __('settings.certificates.ifsg'), {
-                            'checked': certificates.ifsg_certificate,
+                        'checked': certificates.ifsg_certificate,
+                        'disabled': certificates.ifsg_confirmed,
                     }) }}
-                    {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+
+                    {% if not certificates.ifsg_confirmed %}
+                        {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+                    {% endif %}
                 </div>
             </form>
         {% endif %}

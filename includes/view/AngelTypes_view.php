@@ -197,10 +197,10 @@ function AngelType_view_buttons(
     if ($angeltype->requires_driver_license) {
         $buttons[] = button(
             url('/settings/certificates'),
-            icon('person-vcard') . __('my driving license')
+            icon('person-vcard') . __('My driving license')
         );
     }
-    if (config('isfg_enabled') && $angeltype->requires_ifsg_certificate) {
+    if (config('ifsg_enabled') && $angeltype->requires_ifsg_certificate) {
         $buttons[] = button(
             url('/settings/certificates'),
             icon('card-checklist') . __('angeltype.ifsg.own')
@@ -294,14 +294,35 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
             $member['has_license_forklift'] = icon_bool($member->license->drive_forklift);
         }
         if ($angeltype->requires_ifsg_certificate && config('ifsg_enabled')) {
-            $member['ifsg_certificate'] = icon_bool($member->license->ifsg_certificate);
+            $ifsg_certificate = $member->license->ifsg_certificate;
+            $member['ifsg_certificate'] = ($member->license->ifsg_confirmed && $ifsg_certificate)
+                ? icon('check2-all', 'text-success')
+                : icon_bool($ifsg_certificate);
             if (config('ifsg_light_enabled')) {
-                $member['ifsg_certificate_light'] = icon_bool($member->license->ifsg_certificate_light);
+                $ifsg_certificate_light = $member->license->ifsg_certificate_light;
+                $member['ifsg_certificate_light'] = ($member->license->ifsg_confirmed && $ifsg_certificate_light)
+                    ? icon('check2-all', 'text-success')
+                    : icon_bool($ifsg_certificate_light);
             }
         }
 
+        $edit_certificates = '';
+        if (
+            ($angeltype->requires_driver_license || $angeltype->requires_ifsg_certificate)
+            && ($admin_user_angeltypes || auth()->can('user.ifsg.edit'))
+        ) {
+            $edit_certificates =
+                button(
+                    url('/users/' . $member->id . '/certificates'),
+                    icon('card-checklist'),
+                    'btn-sm',
+                    '',
+                    __('Edit certificates'),
+                );
+        }
         if ($angeltype->restricted && empty($member->pivot->confirm_user_id)) {
             $member['actions'] = table_buttons([
+                $edit_certificates,
                 button(
                     url(
                         '/user-angeltypes',
@@ -323,6 +344,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
         } elseif ($member->pivot->supporter) {
             if ($admin_angeltypes || ($admin_user_angeltypes && config('supporters_can_promote'))) {
                 $member['actions'] = table_buttons([
+                    $edit_certificates,
                     button(
                         url('/user-angeltypes', [
                             'action'            => 'update',
@@ -336,12 +358,15 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                     ),
                 ]);
             } else {
-                $member['actions'] = '';
+                $member['actions'] = $edit_certificates
+                    ? table_buttons([$edit_certificates,])
+                    : '';
             }
             $supporters[] = $member;
         } else {
             if ($admin_user_angeltypes) {
                 $member['actions'] = table_buttons([
+                    $edit_certificates,
                     ($admin_angeltypes || config('supporters_can_promote')) ?
                         button(
                             url('/user-angeltypes', [
@@ -365,6 +390,10 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                         '',
                         __('Remove'),
                     ),
+                ]);
+            } elseif ($edit_certificates) {
+                $member['actions'] = table_buttons([
+                    $edit_certificates,
                 ]);
             }
             $members_confirmed[] = $member;
@@ -408,7 +437,10 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
         ]);
     }
 
-    if (config('ifsg_enabled') && $angeltype->requires_ifsg_certificate && ($supporter || $admin_angeltypes)) {
+    if (
+        config('ifsg_enabled') && $angeltype->requires_ifsg_certificate
+        && ($supporter || $admin_angeltypes || auth()->can('user.ifsg.edit'))
+    ) {
         if (config('ifsg_light_enabled')) {
             $headers['ifsg_certificate_light'] = __('ifsg.certificate_light');
         }
