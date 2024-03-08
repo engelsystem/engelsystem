@@ -669,7 +669,7 @@ msgid "angeltypes.can-change-later"
 msgstr "You can change your selection later in the settings."
 
 msgid "angeltypes.shift.self_signup.info"
-msgstr "Angel types which have shift self signup enabled allow angels to self sign up for there shifts, "
+msgstr "Angel types which have shift self signup enabled allow angels to self sign up for their shifts, "
 "if shift self signup is disabled only supporters and admins can sign angels into shifts of these angel types."
 
 msgid "shift.self_signup"
