@@ -43,10 +43,9 @@ function admin_groups()
                         ['action' => 'edit', 'id' => $group->id]
                     ),
                     icon('pencil'),
+                    'btn-sm',
                     '',
-                    '',
-                    __('form.edit'),
-                    'btn-sm'
+                    __('form.edit')
                 ),
             ];
         }
@@ -122,10 +121,9 @@ function admin_groups()
                         . ' edited: ' . join(', ', $privilege_names)
                     );
                     throw_redirect(url('/admin-groups'));
-                } else {
-                    return error('No Group found.', true);
                 }
-                break;
+
+                return error('No Group found.', true);
         }
     }
     return $html;
