@@ -365,14 +365,17 @@ msgstr "Engeltyp für Benutzer bestätigen"
 msgid "You are not allowed to delete this users angeltype."
 msgstr "Du darfst diesen Benutzer nicht von diesem Engeltyp entfernen."
 
-msgid "User %s removed from %s."
-msgstr "Benutzer %s von %s entfernt."
+msgid "User \"%s\" removed from \"%s\"."
+msgstr "Benutzer \"%s\" von \"%s\" entfernt."
 
 msgid "Edit certificates"
 msgstr "Zertifikate bearbeiten"
 
-msgid "Remove angeltype"
-msgstr "Engeltyp löschen"
+msgid "You successfully left \"%2$s\"."
+msgstr "Du hast erfolgreich \"%2$s\" verlassen."
+
+msgid "Leave angeltype"
+msgstr "Engeltyp verlassen"
 
 msgid "You are not allowed to set supporter rights."
 msgstr "Du darfst keine Supporterrechte bearbeiten."
@@ -1129,8 +1132,11 @@ msgstr "Möchtest Du wirklich alle Benutzer als %s bestätigen?"
 msgid "Do you really want to confirm %s for %s?"
 msgstr "Möchtest Du wirklich %s für %s bestätigen?"
 
-msgid "Do you really want to delete %s from %s?"
-msgstr "Möchtest Du wirklich %s von %s entfernen?"
+msgid "Do you really want to remove \"%s\" from \"%s\"?"
+msgstr "Möchtest Du wirklich \"%s\" von \"%s\" entfernen?"
+
+msgid "Do you really want to leave \"%2$s\"?"
+msgstr "Möchtest Du \"%2$s\" wirklich verlassen?"
 
 msgid "Do you really want to add %s to %s?"
 msgstr "Möchtest Du wirklich %s zu %s hinzufügen?"
