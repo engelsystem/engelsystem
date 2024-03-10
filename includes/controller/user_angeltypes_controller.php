@@ -231,8 +231,9 @@ function user_angeltype_delete_controller(): array
     $user_angeltype = UserAngelType::findOrFail($request->input('user_angeltype_id'));
     $angeltype = $user_angeltype->angelType;
     $user_source = $user_angeltype->user;
+    $isOwnAngelType = $user->id == $user_source->id;
     if (
-        $user->id != $user_angeltype->user_id
+        !$isOwnAngelType
         && !$user->isAngelTypeSupporter($angeltype)
         && !auth()->can('admin_user_angeltypes')
     ) {
@@ -243,15 +244,15 @@ function user_angeltype_delete_controller(): array
     if ($request->hasPostData('delete')) {
         $user_angeltype->delete();
 
-        engelsystem_log(sprintf('User %s removed from %s.', User_Nick_render($user_source, true), $angeltype->name));
-        success(sprintf(__('User %s removed from %s.'), $user_source->displayName, $angeltype->name));
+        engelsystem_log(sprintf('User "%s" removed from "%s".', User_Nick_render($user_source, true), $angeltype->name));
+        success(sprintf($isOwnAngelType ? __('You successfully left "%2$s".') : __('User "%s" removed from "%s".'), $user_source->displayName, $angeltype->name));
 
         throw_redirect(url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
     }
 
     return [
-        __('Remove angeltype'),
-        UserAngelType_delete_view($user_angeltype, $user_source, $angeltype),
+        __('Leave angeltype'),
+        UserAngelType_delete_view($user_angeltype, $user_source, $angeltype, $isOwnAngelType),
     ];
 }
 

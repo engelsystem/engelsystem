@@ -108,14 +108,15 @@ function UserAngelType_confirm_view(UserAngelType $user_angeltype, User $user, A
  * @param UserAngelType $user_angeltype
  * @param User          $user
  * @param AngelType     $angeltype
+ * @param bool          $isOwnAngelType
  * @return string
  */
-function UserAngelType_delete_view(UserAngelType $user_angeltype, User $user, AngelType $angeltype)
+function UserAngelType_delete_view(UserAngelType $user_angeltype, User $user, AngelType $angeltype, bool $isOwnAngelType)
 {
-    return page_with_title(__('Remove angeltype'), [
+    return page_with_title(__('Leave angeltype'), [
         msg(),
         info(sprintf(
-            __('Do you really want to delete %s from %s?'),
+            $isOwnAngelType ? __('Do you really want to leave "%2$s"?') : __('Do you really want to remove "%s" from "%s"?'),
             $user->displayName,
             $angeltype->name
         ), true),
