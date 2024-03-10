@@ -10,6 +10,7 @@ $choices-bg-color-dropdown: $input-bg;
 $choices-text-color: $input-color;
 
 $es-choices-highlight-color: $choices-text-color !default;
+$choices-bg-color-disabled: $input-disabled-bg;
 
 @import '~choices.js/src/styles/choices.scss';
 
