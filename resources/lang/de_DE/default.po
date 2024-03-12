@@ -1229,9 +1229,6 @@ msgstr "JSON Export"
 msgid "Night shifts between %d and %d am are multiplied by %d for the %s score."
 msgstr "Nachtschichten zwischen %d und %d Uhr werden für den %4$s Score mit %3$d multipliziert."
 
-msgid "Night shifts"
-msgstr "Nachtschicht"
-
 msgid ""
 "Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
 "shifts."

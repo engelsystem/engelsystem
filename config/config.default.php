@@ -346,7 +346,8 @@ return [
     // Local timezone
     'timezone'                => env('TIMEZONE', 'Europe/Berlin'),
 
-    // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
+    // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 8 exclusive) by 2 in goodie score
+    // Goodies must be enabled to use this feature
     'night_shifts'            => [
         'enabled'    => (bool) env('NIGHT_SHIFTS', true), // Disable to weigh every shift the same
         'start'      => env('NIGHT_SHIFTS_START', 2),
