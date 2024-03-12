@@ -327,7 +327,12 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     $night_shift = '';
     if (Shifts::isNightShift($shift->start, $shift->end) && $nightShiftsConfig['enabled'] && $goodie_enabled) {
         $night_shift = ' <span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
-            . __('Night shift')
+            . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
+                $nightShiftsConfig['start'],
+                $nightShiftsConfig['end'],
+                $nightShiftsConfig['multiplier'],
+                ($goodie_tshirt ? __('T-shirt') : __('goodie')),
+            ])
             . '"></span>';
     }
     $myshift = [
@@ -335,9 +340,9 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
             . $shift->start->format(__('general.date')) . '<br>'
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
-            . $shift->end->format(__('H:i'))
-            . $night_shift,
+            . $shift->end->format(__('H:i')),
         'duration'   => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
+        'hints'      => $night_shift,
         'location'   => location_name_render($shift->location),
         'shift_info' => $shift_info,
         'comment'    => '',
@@ -360,19 +365,20 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
                 . __('Freeloaded') . ': ' . htmlspecialchars($shift->freeloaded_comment)
                 . '</p>';
         } else {
-            if (!$goodie_enabled) {
-                $freeload_info = __('freeload.info');
-            } else {
-                $freeload_info = __('freeload.info.goodie', [($goodie_tshirt
-                    ? __('T-shirt score')
-                    : __('Goodie score'))]);
-            }
             $myshift['comment'] .= '<br /><p class="text-danger">'
                 . __('Freeloaded')
-                . ' <span class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="'
-                . $freeload_info
-                . '"></span></p>';
+                . '</p>';
         }
+        if (!$goodie_enabled) {
+            $freeload_info = __('freeload.info');
+        } else {
+            $freeload_info = __('freeload.info.goodie', [($goodie_tshirt
+                ? __('T-shirt score')
+                : __('Goodie score'))]);
+        }
+        $myshift['hints'] .= ' <span class="bi bi-info-circle-fill text-danger" data-bs-toggle="tooltip" title="'
+            . $freeload_info
+            . '"></span>';
     }
 
     $myshift['actions'] = [
@@ -464,6 +470,7 @@ function User_view_myshifts(
         $myshifts_table[] = [
             'date'       => '<b>' . __('Sum:') . '</b>',
             'duration'   => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
+            'hints'      => '',
             'location'   => '',
             'shift_info' => '',
             'comment'    => '',
@@ -473,6 +480,7 @@ function User_view_myshifts(
             $myshifts_table[] = [
                 'date'       => '<b>' . ($goodie_tshirt ? __('T-shirt score') : __('Goodie score')) . '&trade;:</b>',
                 'duration'   => '<b>' . $tshirt_score . '</b>',
+                'hints'      => '',
                 'location'   => '',
                 'shift_info' => '',
                 'comment'    => '',
@@ -515,6 +523,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     return [
         'date'       => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
+        'hints'      => '',
         'location'   => '',
         'shift_info' => __('Work log entry'),
         'comment'    => htmlspecialchars($worklog->comment) . '<br>'
@@ -584,6 +593,7 @@ function User_view(
             $myshifts_table = div('table-responsive', table([
                 'date'       => __('Day & Time'),
                 'duration'   => __('Duration'),
+                'hints'      => '',
                 'location'   => __('Location'),
                 'shift_info' => __('Name & Workmates'),
                 'comment'    => __('worklog.comment'),
