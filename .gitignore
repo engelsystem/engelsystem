@@ -23,6 +23,7 @@ _vimrc_local.vim
 /docker/deployment.env
 /docker/dev/.env
 /docker/dev/deployment.env
+/docker/secrets/
 
 # Project files
 /config/config.php
