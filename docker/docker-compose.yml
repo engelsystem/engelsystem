@@ -26,6 +26,7 @@ services:
       MYSQL_PASSWORD: engelsystem
       MYSQL_RANDOM_ROOT_PASSWORD: "1"
       MYSQL_INITDB_SKIP_TZINFO: "yes"
+      MARIADB_AUTO_UPGRADE: 1
     volumes:
       - db:/var/lib/mysql
     networks:
