@@ -1552,7 +1552,7 @@ msgid "news.comments.delete.title"
 msgstr "Kommentar \"%s\" löschen"
 
 msgid "notification.news.updated.introduction"
-msgstr "Die News %1$s wurde aktualisiert"
+msgstr "Die News \"%1$s\" wurde aktualisiert"
 
 msgid "notification.news.updated.text"
 msgstr "Du kannst sie dir unter %3$s anschauen."
@@ -1753,6 +1753,9 @@ msgstr "Zertifikat bestätigt"
 
 msgid "settings.certificates.ifsg_confirmed.hint"
 msgstr "Deine Gesundheitsbelehrung wurde bestätigt, du kannst deine Angaben nicht mehr selber ändern."
+
+msgid "settings.certificates.drive_confirmed.hint"
+msgstr "Dein Führerschein wurde bestätigt, du kannst deine Angaben nicht mehr selber ändern."
 
 msgid "settings.certificates.confirmation.info"
 msgstr "Du hast persönlich überprüft, dass die Zertifizierung / Bescheinigung den Anforderungen genügt."

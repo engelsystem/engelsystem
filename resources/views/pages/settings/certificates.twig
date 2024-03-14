@@ -6,7 +6,7 @@
 
 {% block row_content %}
     <div class="row">
-        {% if config('ifsg_enabled') %}
+        {% if config('ifsg_enabled') and ifsg %}
             <form
                 action="{{ url('/settings/certificates/ifsg') }}"
                 enctype="multipart/form-data" method="post"
@@ -38,27 +38,42 @@
             </form>
         {% endif %}
 
-        {% if driving_license %}
-            <form action="{{ url('/settings/certificates/driving') }}" enctype="multipart/form-data" method="post">
+        {% if config('driving_license_enabled') and driving_license %}
+            <form
+                action="{{ url('/settings/certificates/driving') }}"
+                enctype="multipart/form-data" method="post"
+            >
                 {{ csrf() }}
                 <div class="col-md-12">
                     <h3>{{ __('settings.certificates.driving_license') }}</h3>
                     {{ m.info(__('settings.certificates.info')) }}
+                    {% if certificates.drive_confirmed %}
+                        <p class="text-success">{{ __('settings.certificates.drive_confirmed.hint') }}</p>
+                    {% endif %}
 
                     {{ f.checkbox('drive_car', __('settings.certificates.drive_car'), {
-                            'checked': certificates.drive_car,
+                        'checked': certificates.drive_car,
+                        'disabled': certificates.drive_confirmed,
                     }) }}
+
                     {{ f.checkbox('drive_3_5t', __('settings.certificates.drive_3_5t'), {
-                            'checked': certificates.drive_3_5t,
+                        'checked': certificates.drive_3_5t,
+                        'disabled': certificates.drive_confirmed,
                     }) }}
+
                     {{ f.checkbox('drive_7_5t', __('settings.certificates.drive_7_5t'), {
-                            'checked': certificates.drive_7_5t,
+                        'checked': certificates.drive_7_5t,
+                        'disabled': certificates.drive_confirmed,
                     }) }}
+
                     {{ f.checkbox('drive_12t', __('settings.certificates.drive_12t'), {
-                            'checked': certificates.drive_12t,
+                        'checked': certificates.drive_12t,
+                        'disabled': certificates.drive_confirmed,
                     }) }}
+
                     {{ f.checkbox('drive_forklift', __('settings.certificates.drive_forklift'), {
-                            'checked': certificates.drive_forklift,
+                        'checked': certificates.drive_forklift,
+                        'disabled': certificates.drive_confirmed,
                     }) }}
 
                     {{ f.checkbox('has_car', __('settings.certificates.has_car'), {
