@@ -8,6 +8,14 @@ RUN composer --no-ansi dump-autoload --optimize
 FROM alpine AS translation
 RUN apk add gettext
 COPY resources/lang/ /data
+COPY includes/ /app/includes
+COPY resources/views/ /app/resources/views
+COPY src/ /app/src
+RUN sh /data/lang_en_create_missing.sh
+RUN sh /data/lang_en_patch.sh /data/en_US/default.po
+RUN sh /data/lang_en_patch.sh /data/en_US/additional.po
+RUN sh /data/lang_de_patch.sh /data/de_DE/default.po
+RUN sh /data/lang_de_patch.sh /data/de_DE/additional.po
 RUN find /data -type f -name '*.po' -exec sh -c 'msgfmt "${1%.*}.po" -o"${1%.*}.mo"' shell {} \;
 
 # Build the themes
