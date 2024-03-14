@@ -242,7 +242,10 @@ class SettingsController extends BaseController
 
     public function certificate(): Response
     {
-        if (!config('ifsg_enabled') && !$this->checkDrivingLicense()) {
+        if (
+            !(config('ifsg_enabled') && $this->checkIfsgCertificate())
+            && !(config('driving_license_enabled') && $this->checkDrivingLicense())
+        ) {
             throw new HttpNotFound();
         }
 
@@ -252,6 +255,7 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'driving_license' => $this->checkDrivingLicense(),
+                'ifsg' => $this->checkIfsgCertificate(),
                 'certificates' => $user->license,
             ]
         );
@@ -260,7 +264,7 @@ class SettingsController extends BaseController
     public function saveIfsgCertificate(Request $request): Response
     {
         $user = $this->auth->user();
-        if (!config('ifsg_enabled') || $user->license->ifsg_confirmed) {
+        if (!config('ifsg_enabled') || $user->license->ifsg_confirmed || !$this->checkIfsgCertificate()) {
             throw new HttpNotFound();
         }
 
@@ -282,7 +286,7 @@ class SettingsController extends BaseController
 
     public function saveDrivingLicense(Request $request): Response
     {
-        if (!$this->checkDrivingLicense()) {
+        if (!config('driving_license_enabled') || !$this->checkDrivingLicense()) {
             throw new HttpNotFound();
         }
 
@@ -297,11 +301,13 @@ class SettingsController extends BaseController
         ]);
 
         $user->license->has_car = (bool) $data['has_car'];
-        $user->license->drive_car = (bool) $data['drive_car'];
-        $user->license->drive_3_5t = (bool) $data['drive_3_5t'];
-        $user->license->drive_7_5t = (bool) $data['drive_7_5t'];
-        $user->license->drive_12t = (bool) $data['drive_12t'];
-        $user->license->drive_forklift = (bool) $data['drive_forklift'];
+        if (!$user->license->drive_confirmed) {
+            $user->license->drive_car = (bool) $data['drive_car'];
+            $user->license->drive_3_5t = (bool) $data['drive_3_5t'];
+            $user->license->drive_7_5t = (bool) $data['drive_7_5t'];
+            $user->license->drive_12t = (bool) $data['drive_12t'];
+            $user->license->drive_forklift = (bool) $data['drive_forklift'];
+        }
         $user->license->save();
 
         $this->addNotification('settings.certificates.success');
@@ -394,7 +400,10 @@ class SettingsController extends BaseController
             $menu[url('/settings/theme')] = 'settings.theme';
         }
 
-        if (config('ifsg_enabled') || $this->checkDrivingLicense()) {
+        if (
+            (config('ifsg_enabled') && $this->checkIfsgCertificate())
+            || (config('driving_license_enabled') && $this->checkDrivingLicense())
+        ) {
             $menu[url('/settings/certificates')] = ['title' => 'settings.certificates', 'icon' => 'card-checklist'];
         }
 
@@ -426,6 +435,13 @@ class SettingsController extends BaseController
     {
         return $this->auth->user()->userAngelTypes->filter(function (AngelType $angelType) {
             return $angelType->requires_driver_license;
+        })->isNotEmpty();
+    }
+
+    protected function checkIfsgCertificate(): bool
+    {
+        return $this->auth->user()->userAngelTypes->filter(function (AngelType $angelType) {
+            return $angelType->requires_ifsg_certificate;
         })->isNotEmpty();
     }
 

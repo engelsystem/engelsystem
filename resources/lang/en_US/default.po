@@ -254,7 +254,7 @@ msgid "news.comments.delete.title"
 msgstr "Delete comment \"%s\""
 
 msgid "notification.news.updated.introduction"
-msgstr "The news %1$s was updated"
+msgstr "The news \"%1$s\" was updated"
 
 msgid "notification.news.updated.text"
 msgstr "You can view it at %3$s"
@@ -455,6 +455,9 @@ msgstr "Certificate confirmed"
 
 msgid "settings.certificates.ifsg_confirmed.hint"
 msgstr "Your health instruction has been confirmed, you can no longer change it by yourself."
+
+msgid "settings.certificates.drive_confirmed.hint"
+msgstr "Your driving license has been confirmed, you can no longer change it by yourself."
 
 msgid "settings.certificates.confirmation.info"
 msgstr "You personally checked that the certificate / license meets the requirements."

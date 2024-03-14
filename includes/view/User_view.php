@@ -553,7 +553,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
  * @param bool                 $tshirt_admin
  * @param bool                 $admin_user_worklog_privilege
  * @param Worklog[]|Collection $user_worklogs
- * @param bool                 $admin_ifsg
+ * @param bool                 $admin_certificates
  *
  * @return string
  */
@@ -569,7 +569,7 @@ function User_view(
     $tshirt_admin,
     $admin_user_worklog_privilege,
     $user_worklogs,
-    $admin_ifsg
+    $admin_certificates
 ) {
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
@@ -653,7 +653,10 @@ function User_view(
                                 icon('valentine') . __('Vouchers')
                             )
                             : '',
-                        $admin_ifsg ? button(
+                        (
+                            $admin_certificates
+                            && (config('ifsg_enabled') || config('driving_license_enabled'))
+                        ) ? button(
                             url('/users/' . $user_source->id . '/certificates'),
                             icon('card-checklist') . __('settings.certificates')
                         ) : '',

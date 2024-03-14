@@ -57,6 +57,7 @@ $route->addGroup(
     function (RouteCollector $route): void {
             $route->get('/certificates', 'Admin\\UserSettingsController@certificate');
             $route->post('/certificates/ifsg', 'Admin\\UserSettingsController@saveIfsgCertificate');
+            $route->post('/certificates/driving', 'Admin\\UserSettingsController@saveDrivingLicense');
     }
 );
 

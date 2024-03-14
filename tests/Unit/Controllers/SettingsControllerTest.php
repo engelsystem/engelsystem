@@ -689,6 +689,9 @@ class SettingsControllerTest extends ControllerTest
         config(['ifsg_enabled' => true, 'ifsg_light_enabled' => true]);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
+        $angelType = AngelType::factory()->create(['requires_ifsg_certificate' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
+
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
@@ -707,7 +710,6 @@ class SettingsControllerTest extends ControllerTest
     public function testCertificateIfsgNotConfigured(): void
     {
         config(['ifsg_enabled' => false]);
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         $this->expectException(HttpNotFound::class);
         $this->controller->certificate();
@@ -718,6 +720,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testCertificateDrivingLicense(): void
     {
+        config(['driving_license_enabled' => true]);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         $angelType = AngelType::factory()->create(['requires_driver_license' => true]);
@@ -752,7 +755,10 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveIfsgCertificateLight(): void
     {
         config(['ifsg_enabled' => true, 'ifsg_light_enabled' => true]);
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        $angelType = AngelType::factory()->create(['requires_ifsg_certificate' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
 
         $body = [
             'ifsg_certificate_light' => true,
@@ -776,7 +782,11 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveIfsgCertificateLightWhileDisabled(): void
     {
         config(['ifsg_enabled' => true, 'ifsg_light_enabled' => false]);
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        $angelType = AngelType::factory()->create(['requires_ifsg_certificate' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
+
         $this->user->license->ifsg_certificate_light = false;
         $this->user->license->save();
 
@@ -798,11 +808,15 @@ class SettingsControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::saveIfsgCertificate
+     * @covers \Engelsystem\Controllers\SettingsController::checkIfsgCertificate
      */
     public function testSaveIfsgCertificate(): void
     {
         config(['ifsg_enabled' => true]);
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        $angelType = AngelType::factory()->create(['requires_ifsg_certificate' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
 
         $body = [
             'ifsg_certificate' => true,
@@ -826,7 +840,10 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveIfsgCertificateBoth(): void
     {
         config(['ifsg_enabled' => true]);
-        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        $angelType = AngelType::factory()->create(['requires_ifsg_certificate' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
 
         $body = [
             'ifsg_certificate_light' => true,
@@ -851,6 +868,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testSaveDrivingLicense(): void
     {
+        config(['driving_license_enabled' => true]);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         $angelType = AngelType::factory()->create(['requires_driver_license' => true]);
@@ -893,6 +911,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testApi(): void
     {
+        config(['ifsg_enabled' => true]);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
 
         /** @var Response|MockObject $response */
@@ -993,11 +1012,33 @@ class SettingsControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
-     * @covers \Engelsystem\Controllers\SettingsController::checkOauthHidden
      */
     public function testSettingsMenuWithIfsg(): void
     {
         config(['ifsg_enabled' => true]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        $angelType = AngelType::factory()->create(['requires_ifsg_certificate' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
+
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/certificates', $menu);
+        $this->assertEquals(
+            ['title' => 'settings.certificates', 'icon' => 'card-checklist'],
+            $menu['http://localhost/settings/certificates']
+        );
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuWithDrivingLicense(): void
+    {
+        config(['driving_license_enabled' => true]);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+
+        $angelType = AngelType::factory()->create(['requires_driver_license' => true]);
+        $this->user->userAngelTypes()->attach($angelType);
 
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/certificates', $menu);
