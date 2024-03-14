@@ -1,16 +1,32 @@
 ---
 version: "3.6"
 services:
-  es_server:
-    image: es_server
+  helferinnen_server:
+    image: helferinnen_server
     build:
       context: ..
       dockerfile: docker/Dockerfile
     environment:
-      MYSQL_HOST: es_database
-      MYSQL_USER: engelsystem
-      MYSQL_PASSWORD: engelsystem
-      MYSQL_DATABASE: engelsystem
+      MYSQL_HOST: helferinnen_database
+      MYSQL_USER: helferinnensystem
+      MYSQL_PASSWORD: helferinnensystem
+      MYSQL_DATABASE: helferinnensystem
+      APP_NAME: Helferinnensystem
+      CONTACT_EMAIL: "mailto:helfen@froscon.org"
+      THEME: 0
+      TSHIRT_SIZE_REQUIRED: 'false'
+      ANGEL_AUTOARRIVE: 'true'
+      SUPPORTERS_CAN_PROMOTE: 'true'
+      SIGNUP_POST_FRACTION: 1
+      PASSWORD_MINIMUM_LENGTH: 5
+      ENABLE_PLANNED_ARRIVAL: 'false'
+      ENABLE_FORCE_ACTIVE: 'false'
+      GOODIE_TYPE: none
+      ENABLE_VOUCHER: 'false'
+      NIGHT_SHIFTS: 'false'
+      IFSG_ENABLED: 'true'
+      IFSG_LIGHT_ENABLED: 'true'
+      DEFAULT_LOCALE: de_DE
     ports:
       - "5080:80"
     env_file: deployment.env
@@ -18,13 +34,13 @@ services:
       - database
       - internet
     depends_on:
-      - es_database
-  es_database:
+      - helferinnen_database
+  helferinnen_database:
     image: mariadb:10.2
     environment:
-      MYSQL_DATABASE: engelsystem
-      MYSQL_USER: engelsystem
-      MYSQL_PASSWORD: engelsystem
+      MYSQL_DATABASE: helferinnensystem
+      MYSQL_USER: helferinnensystem
+      MYSQL_PASSWORD: helferinnensystem
       MYSQL_RANDOM_ROOT_PASSWORD: 1
       MYSQL_INITDB_SKIP_TZINFO: "yes"
     volumes:
