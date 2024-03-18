@@ -47,8 +47,25 @@ services:
       - db:/var/lib/mysql
     networks:
       - database
+  backup:
+    image: ${COMPOSE_PROJECT_NAME}_backup
+    build:
+      context: ..
+      dockerfile: docker/backup.Dockerfile
+    depends_on:
+      - database
+    environment:
+      MYSQL_HOST: database
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    networks:
+      - database
+    volumes:
+      - backup:/backup
+    secrets:
+      - db_root_password
 volumes:
   db: {}
+  backup: {}
 
 networks:
   database:
