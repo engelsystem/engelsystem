@@ -47,22 +47,17 @@ services:
       - db:/var/lib/mysql
     networks:
       - database
-  backup:
-    image: ${COMPOSE_PROJECT_NAME}_backup
-    build:
-      context: ..
-      dockerfile: docker/backup.Dockerfile
-    depends_on:
-      - database
+  phpmyadmin:
+    image: phpmyadmin:latest
     environment:
-      MYSQL_HOST: database
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      PMA_HOST: database
     networks:
       - database
-    volumes:
-      - backup:/backup
-    secrets:
-      - db_root_password
+      - internet
+    ports:
+      - "5081:80"
+    profiles:
+      - dev
 volumes:
   db: {}
   backup: {}
