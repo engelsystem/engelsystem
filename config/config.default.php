@@ -10,7 +10,7 @@ return [
         'host'     => env('MYSQL_HOST', (env('CI', false) ? 'mariadb' : 'localhost')),
         'database' => env('MYSQL_DATABASE', 'engelsystem'),
         'username' => env('MYSQL_USER', 'root'),
-        'password' => env('MYSQL_PASSWORD', ''),
+        'password' => env('MYSQL_PASSWORD', (env('MYSQL_PASSWORD_FILE', '') ? file_get_contents(env('MYSQL_PASSWORD_FILE')) : '')),
     ],
 
     // For accessing /metrics (and /stats)
