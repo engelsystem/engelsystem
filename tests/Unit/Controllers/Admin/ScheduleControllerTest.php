@@ -199,7 +199,7 @@ class ScheduleControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::save
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::delete
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::fireDeleteShiftEntryEvents
+     * @covers \Engelsystem\Controllers\Admin\ScheduleController::fireDeleteShiftEvents
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::deleteEvent
      */
     public function testSaveDelete(): void
