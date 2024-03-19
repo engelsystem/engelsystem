@@ -9,7 +9,7 @@ services:
     environment:
       MYSQL_HOST: database
       MYSQL_USER: helferinnensystem
-      MYSQL_PASSWORD: helferinnensystem
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
       MYSQL_DATABASE: helferinnensystem
       APP_NAME: Helferinnensystem
       CONTACT_EMAIL: "mailto:helfen@froscon.org"
@@ -35,18 +35,23 @@ services:
       - internet
     depends_on:
       - database
+    secrets:
+      - db_password
   database:
     image: mariadb:10.2
     environment:
       MYSQL_DATABASE: helferinnensystem
       MYSQL_USER: helferinnensystem
-      MYSQL_PASSWORD: helferinnensystem
-      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_INITDB_SKIP_TZINFO: "yes"
     volumes:
       - db:/var/lib/mysql
     networks:
       - database
+    secrets:
+      - db_root_password
+      - db_password
   phpmyadmin:
     image: phpmyadmin:latest
     environment:
@@ -66,3 +71,9 @@ networks:
   database:
     internal: true
   internet:
+
+secrets:
+  db_password:
+    file: secrets/mysql_pw.txt
+  db_root_password:
+    file: secrets/mysql_root_pw.txt
