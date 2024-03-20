@@ -9,6 +9,7 @@ use Engelsystem\Test\Unit\TestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Twig\Node\Node as TwigNode;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 abstract class ExtensionTest extends TestCase
@@ -18,16 +19,20 @@ abstract class ExtensionTest extends TestCase
     /**
      * Assert that a twig filter was registered
      *
-     * @param TwigFunction[] $functions
+     * @param TwigFilter[] $functions
      */
-    protected function assertFilterExists(string $name, callable $callback, array $functions): void
+    protected function assertFilterExists(string $name, mixed $callback, array $functions): void
     {
         foreach ($functions as $function) {
             if ($function->getName() != $name) {
                 continue;
             }
 
-            $this->assertEquals($callback, $function->getCallable());
+            if (!is_null($callback)) {
+                $this->assertEquals($callback, $function->getCallable());
+            } else {
+                $this->assertIsCallable($function->getCallable());
+            }
             return;
         }
 
@@ -51,7 +56,11 @@ abstract class ExtensionTest extends TestCase
                 continue;
             }
 
-            $this->assertEquals($callback, $function->getCallable());
+            if (!is_null($callback)) {
+                $this->assertEquals($callback, $function->getCallable());
+            } else {
+                $this->assertIsCallable($function->getCallable());
+            }
 
             if (isset($options['is_save'])) {
                 /** @var TwigNode|MockObject $twigNode */

@@ -99,6 +99,7 @@ $route->addGroup(
 
 // FAQ
 $route->get('/faq', 'FaqController@index');
+$route->get('/faq/tag/{tag_id:\d+}', 'FaqController@tagged');
 
 // Questions
 $route->addGroup(
