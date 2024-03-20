@@ -9,14 +9,18 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection as SupportCollection;
 
 /**
  * @property int         $id
+ * @property int|null    $user_id
  * @property string      $level
  * @property string      $message
  * @property Carbon|null $created_at
+ *
+ * @property-read User|null $user
  *
  * @method static QueryBuilder|LogEntry[] whereId($value)
  * @method static QueryBuilder|LogEntry[] whereLevel($value)
@@ -26,6 +30,7 @@ use Illuminate\Support\Collection as SupportCollection;
 class LogEntry extends BaseModel
 {
     use UsesUserModel;
+    use HasFactory;
 
     /** @var bool enable timestamps for created_at */
     public $timestamps = true; // phpcs:ignore
