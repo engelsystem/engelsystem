@@ -309,8 +309,8 @@ class OAuthController extends BaseController
 
         $this->session->set('form-data-username', $userdata->get($config['username']));
         $this->session->set('form-data-email', $userdata->get($config['email']));
-        $this->session->set('form-data-first_name', $userdata->get($config['first_name']));
-        $this->session->set('form-data-last_name', $userdata->get($config['last_name']));
+        $this->session->set('form-data-firstname', $userdata->get($config['first_name']));
+        $this->session->set('form-data-lastname', $userdata->get($config['last_name']));
 
         $this->session->set('oauth2_groups', $userdata->get($config['groups'], []));
         $this->session->set('oauth2_connect_provider', $providerName);
