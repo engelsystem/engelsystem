@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  version: 0.0.1-beta
+  version: 0.1.0-beta
   title: Engelsystem
   description: >
     This API is as stable as a **beta** version might be.
@@ -17,8 +17,11 @@ info:
 servers:
   - url: /api/v0-beta
     description: This server
-  - url: http://localhost:5080/api/v0-beta
-    description: Your local dev instance
+  - url: '{host}/api/v0-beta'
+    description: Engelsystem instance to use
+    variables:
+      host:
+        default: http://localhost:5080
 
 tags:
   - name: api
@@ -33,6 +36,8 @@ tags:
     description: News and meeting announcements
   - name: shift
     description: Event shifts
+  - name: shifttype
+    description: Shift types
   - name: user
     description: User information
 
@@ -89,7 +94,7 @@ components:
           example: Angel
         description:
           type: string
-          example: Meta-Group of all registered Angels
+          example: Standard angel type, without further requirements
         url:
           type: string
           example: https://example.com/angeltype/42
@@ -201,9 +206,9 @@ components:
         ends_at:
           $ref: '#/components/schemas/DateTime'
         location:
-          $ref: '#/components/schemas/Location'
+          $ref: '#/components/schemas/Reference'
         shift_type:
-          $ref: '#/components/schemas/ShiftType'
+          $ref: '#/components/schemas/Reference'
         created_at:
           $ref: '#/components/schemas/DateTimeOptional'
         updated_at:
@@ -235,9 +240,9 @@ components:
         users:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: '#/components/schemas/Reference'
         type:
-          $ref: '#/components/schemas/AngelType'
+          $ref: '#/components/schemas/Reference'
         needs:
           type: integer
           description: >
@@ -428,6 +433,14 @@ components:
         - buildup
         - event
         - teardown
+    Reference:
+      type: object
+      description: Reference to other resources
+      properties:
+        id:
+          type: integer
+          example: 42
+          description: The ID of the related resource
 
 paths:
   /angeltypes:
@@ -537,6 +550,61 @@ paths:
         - location
         - shift
       summary: Get all shifts in the requested location
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shift'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /shifttypes:
+    get:
+      tags:
+        - shifttype
+      summary: Get a list of shifttypes
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShiftType'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /shifttypes/{id}/shifts:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The shift types identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - shifttype
+        - shift
+      summary: Get all shifts of the requested shift type
       responses:
         '200':
           description: Ok
