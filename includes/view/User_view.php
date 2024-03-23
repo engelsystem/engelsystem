@@ -803,8 +803,8 @@ function User_view_state_admin($freeloader, $user_source)
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
-    $password_resets = PasswordReset::whereUserId($user_source->id)
-        ->where('created_at', '>', $user_source->last_login_at)
+    $password_reset = PasswordReset::whereUserId($user_source->id)
+        ->where('created_at', '>', $user_source->last_login_at ?: '')
         ->count();
 
     if ($freeloader) {
@@ -856,8 +856,8 @@ function User_view_state_admin($freeloader, $user_source)
         }
     }
 
-    if ($password_resets > 0) {
-        $state[] = __('Password reset');
+    if ($password_reset) {
+        $state[] = __('Password reset in progress');
     }
 
     return $state;
