@@ -2128,8 +2128,8 @@ msgid "shift.sign_out.hint"
 msgstr "Du kannst dich bis %s Stunden vor dem Start der Schicht austragen. "
 "Wenn du nicht zu deiner Schicht kommen kannst, lass dich vom Himmel austragen."
 
-msgid "Password reset"
-msgstr "Passwort zurücksetzen"
+msgid "Password reset in progress"
+msgstr "Passwort zurücksetzen aktiv"
 
 msgid "freeload.info.goodie"
 msgstr "Du warst bei dieser Schicht nicht anwesend. "
