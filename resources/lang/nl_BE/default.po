@@ -1,0 +1,535 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Engelsystem 2.0\n"
+"POT-Creation-Date: 2017-12-29 19:01+0100\n"
+"PO-Revision-Date: 2019-06-04 23:41+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Last-Translator: \n"
+"Language: en_US\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "auth.password.error"
+msgstr "Je paswoord is onjuist. Probeer opnieuw."
+
+msgid "form.submit"
+msgstr "Submit"
+
+msgid "login.login"
+msgstr "Login"
+
+msgid "page.403.login"
+msgstr "Please log in."
+
+msgid "page.404.text"
+msgstr ""
+"Deze pagina kon niet worden gevonden of je hebt de rechten niet om deze te bekijken. "
+"Je zal je waarschijnlijk moeten inloggen of een account aanmaken om toegang te krijgen!"
+
+msgid "credits.credit"
+msgstr ""
+"Het originele Engelsysteem is geschreven door "
+"[cookie](https://github.com/cookieBerlin/engelsystem)"
+". Het is volledig herschreven en verbeterd door "
+"[msquare](https://notrademark.de)"
+" (maintainer) en "
+"[MyIgel](https://myigel.name)"
+"."
+
+msgid "credits.contributors"
+msgstr ""
+"Please have a look at the "
+"[contributors list on GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
+" for a complete list."
+
+msgid "form.select_placeholder"
+msgstr "Kies aub..."
+
+msgid "form.load_schedule"
+msgstr "Laad schema"
+
+msgid "form.import"
+msgstr "Import"
+
+msgid "form.save"
+msgstr "Opslaan"
+
+msgid "form.edit"
+msgstr "Edit"
+
+msgid "form.preview"
+msgstr "Preview"
+
+msgid "form.delete"
+msgstr "Verwijder"
+
+msgid "form.updated"
+msgstr "Updated"
+
+msgid "form.cancel"
+msgstr "Annuleer"
+
+msgid "form.required"
+msgstr "Verplicht"
+
+msgid "form.markdown"
+msgstr "Je kan hier Markdown gebruiken."
+
+msgid "schedule.import"
+msgstr "Importeer schema"
+
+msgid "schedule.edit.title"
+msgstr "Editeer schema"
+
+msgid "schedule.import.title"
+msgstr "Importeer schema"
+
+msgid "schedule.last_update"
+msgstr "Laatste update: %s"
+
+msgid "schedule.import.text"
+msgstr "Importeert gemaakte ruimtes en maakt, update en verwijderd shifts volgens de schema.xml export."
+
+msgid "schedule.import.load.title"
+msgstr "Import schema: Preview"
+
+msgid "schedule.import.load.info"
+msgstr "Import \"%s\" (versia \"%s\")"
+
+msgid "schedule.name"
+msgstr "Programma naam"
+
+msgid "schedule.url"
+msgstr "Schema URL (schedule.xml)"
+
+msgid "schedule.shift-type"
+msgstr "Shift type"
+
+msgid "schedule.minutes-before"
+msgstr "Voeg minuten toe voor gesprek begint."
+
+msgid "schedule.minutes-after"
+msgstr "Voeg minuten toe voor gesprek eindigd."
+
+msgid "schedule.import.request_error"
+msgstr "Niet mogelijk om schema te laden."
+
+msgid "schedule.import.rooms.add"
+msgstr "Ruimtes om te creëren"
+
+msgid "schedule.import.shifts.add"
+msgstr "Shifts om te maken"
+
+msgid "schedule.import.shifts.update"
+msgstr "Shifts om up te daten"
+
+msgid "schedule.import.shifts.delete"
+msgstr "Shifts om te verwijderen"
+
+msgid "schedule.import.rooms.name"
+msgstr "Naam"
+
+msgid "schedule.import.shift.dates"
+msgstr "Tijdstippen"
+
+msgid "schedule.import.shift.type"
+msgstr "Type"
+
+msgid "schedule.import.shift.title"
+msgstr "Titel"
+
+msgid "schedule.import.shift.room"
+msgstr "Ruimte"
+
+msgid "shifts_history.schedule"
+msgstr "Schema: %s"
+
+msgid "news.title"
+msgstr "Nieuws"
+
+msgid "news.title.meetings"
+msgstr "Afspraken"
+
+msgid "news.add"
+msgstr "+"
+
+msgid "news.is_meeting"
+msgstr "[Meeting]"
+
+msgid "news.read_more"
+msgstr "Lees verder"
+
+msgid "news.updated"
+msgstr "Geupdate"
+
+msgid "news.comments"
+msgstr "Commentaren"
+
+msgid "news.comments.new"
+msgstr "Nieuwe commentaar"
+
+msgid "news.comments.message"
+msgstr "Bericht"
+
+msgid "news.edit.edit"
+msgstr "Pas nieuws aan"
+
+msgid "news.edit.add"
+msgstr "Voeg nieuws toe"
+
+msgid "news.edit.subject"
+msgstr "Onderwerp"
+
+msgid "news.edit.is_meeting"
+msgstr "Afspraak"
+
+msgid "news.edit.is_important"
+msgstr "Belangrijk"
+
+msgid "news.edit.is_pinned"
+msgstr "Pin bovenaan"
+
+msgid "news.edit.message"
+msgstr "Bericht"
+
+msgid "news.edit.hint"
+msgstr "Je kan Markdown gebruiken en de [More] tag"
+
+msgid "form.search"
+msgstr "Zoeken"
+
+msgid "log.log"
+msgstr "Logs"
+
+msgid "log.time"
+msgstr "Tijd"
+
+msgid "log.level"
+msgstr "Level"
+
+msgid "log.message"
+msgstr "Bericht"
+
+msgid "settings.settings"
+msgstr "Settings"
+
+msgid "settings.profile.entry_required"
+msgstr "Invulling verplicht"
+
+msgid "settings.profile.nick"
+msgstr "Nick"
+
+msgid "settings.profile.pronoun"
+msgstr "Voornaamwoord"
+
+msgid "settings.profile.pronoun.info"
+msgstr "Wordt getoond op je profiel en op de angels pagina."
+
+msgid "settings.profile.firstname"
+msgstr "Voornaam"
+
+msgid "settings.profile.lastname"
+msgstr "Achternaam"
+
+msgid "settings.profile.planned_arrival_date"
+msgstr "Geplande moment van toekomen"
+
+msgid "settings.profile.planned_departure_date"
+msgstr "Gepland moment van vertrek"
+
+msgid "settings.profile.dect"
+msgstr "DECT"
+
+msgid "settings.profile.mobile"
+msgstr "Tel. nr."
+
+msgid "settings.profile.mobile_show"
+msgstr "Toon telefoonnummer aan andere gebruikers om mij te contacteren."
+
+msgid "settings.profile.email"
+msgstr "E-Mail"
+
+msgid "settings.profile.email_shiftinfo"
+msgstr "De %s mag me contacteren via email (bv. verandering van shift)."
+
+msgid "settings.profile.email_news"
+msgstr "Verwittig me van nieuw nieuws."
+
+msgid "settings.profile.email_messages"
+msgstr "Verwittig me van nieuwe privé berichten."
+
+msgid "settings.profile.email_by_human_allowed"
+msgstr "Sta toe om gecontacteerd te worden door de organisatoren."
+
+msgid "settings.profile.email_goody"
+msgstr "Om bonnen te ontvangen, sta ik toe om mijn email, nickname, gepresteerde uren en t-shirt maat bij te laten houden "
+"tot het volgende event."
+
+msgid "settings.profile.privacy"
+msgstr "Om je toestemming te veranderen, stuur een email naar <a href=\"mailto:%s\">%1$s</a>."
+
+msgid "settings.profile.shirt_size"
+msgstr "T-shirt maat"
+
+msgid "settings.profile.angeltypes.info"
+msgstr "Je kan je Angeltypes beheren <a href=\"%s\">op de Angeltypes pagina</a>."
+
+msgid "settings.password"
+msgstr "Paswoord"
+
+msgid "settings.password.info"
+msgstr "Hier kan je je paswoord veranderen."
+
+msgid "settings.password.password"
+msgstr "Oud paswoord"
+
+msgid "settings.password.new_password"
+msgstr "Nieuw paswoord"
+
+msgid "settings.password.new_password2"
+msgstr "Bevestiging paswoord"
+
+msgid "settings.password.success"
+msgstr "Paswoord succesvol aangepast."
+
+msgid "settings.theme"
+msgstr "Thema"
+
+msgid "settings.theme.info"
+msgstr "Hier kan je het thema veranderen."
+
+msgid "settings.theme.success"
+msgstr "Thema succesvol aangepast."
+
+msgid "settings.certificates"
+msgstr "Certificaten"
+
+msgid "settings.certificates.info"
+msgstr "Hier kan je je gezondheidsinstructies invullen."
+
+msgid "settings.ifsg_light"
+msgstr "I was instructed about IfSG §43 (aka Frikadellendiplom light) on site."
+
+msgid "settings.ifsg"
+msgstr "I have gotten the instruction about §43 IfSG (aka Frikadellendiplom) from my Health Department "
+"and a second instruction from us or my employer/chef/assosiation within 3 months. "
+"Additionally my second instruction is not older than 2 years."
+
+msgid "settings.certificates.success"
+msgstr "gezondheidsinstructie succesvol aangepast."
+
+msgid "angeltype.ifsg.required"
+msgstr "Verwacht een gezondheidsinstructie"
+
+msgid "ifsg.certificate"
+msgstr "gezondheidsinstructie"
+
+msgid "ifsg.certificate_light"
+msgstr "gezondheidsinstructie op site"
+
+msgid "angeltype.ifsg.own"
+msgstr "Mijn gezondheidsinstructie"
+
+msgid "angeltype.ifsg.required.info"
+msgstr "Dit angeltype verwacht een gezondheidsinstructie. Vul je gezondheidsinstructie in!"
+
+msgid "angeltype.ifsg.required.info.here"
+msgstr "Je sloot je aan bij een angeltype met een gezondheidsinstructie. "
+"Pas je gezondheidsinstructie informatie hier aan: %s."
+
+msgid "ifsg.info"
+msgstr "gezondheidsinstructie informatie"
+
+msgid "settings.language"
+msgstr "Taal"
+
+msgid "settings.language.info"
+msgstr "Hier kan je de taal aanpassen."
+
+msgid "settings.language.success"
+msgstr "Taal succesvol aangepast."
+
+msgid "settings.oauth"
+msgstr "Single Sign-On"
+
+msgid "settings.oauth.identity-provider"
+msgstr "Identity provider"
+
+msgid "oauth.login"
+msgstr "Login met OAuth"
+
+msgid "oauth.login-using-provider"
+msgstr "Login met %s"
+
+msgid "form.connect"
+msgstr "Connect"
+
+msgid "form.disconnect"
+msgstr "Disconnect"
+
+msgid "faq.faq"
+msgstr "FAQ"
+
+msgid "faq.questions_link"
+msgstr "Vind je geen antwoord, vraag het <a href=\"%s\">aan de hemel</a>."
+
+msgid "faq.edit"
+msgstr "Pas FAQ vraag aan"
+
+msgid "faq.add"
+msgstr "Voeg FAQ vraag toe"
+
+msgid "faq.question"
+msgstr "Vraag"
+
+msgid "faq.message"
+msgstr "Antwoord"
+
+msgid "question.questions"
+msgstr "Vragen"
+
+msgid "question.faq_link"
+msgstr "Voor algemene vragen, gelieve een kijkje te nemen bij onze <a href=\"%s\">FAQ</a>."
+
+msgid "question.add"
+msgstr "Stel een vraag"
+
+msgid "question.edit"
+msgstr "Pas vraag aan"
+
+msgid "question.question"
+msgstr "Vraag"
+
+msgid "question.answer"
+msgstr "Antwoord"
+
+msgid "user.edit.shirt"
+msgstr "Pas T-shirt aan"
+
+msgid "user.edit.goodie"
+msgstr "Pas goodie aan"
+
+msgid "form.shirt"
+msgstr "T-shirt"
+
+msgid "user.shirt_size"
+msgstr "T-shirt maat"
+
+msgid "user.active"
+msgstr "Actief"
+
+msgid "user.force_active"
+msgstr "Actief (forced)"
+
+msgid "user.arrived"
+msgstr "Aangekomen"
+
+msgid "user.got_shirt"
+msgstr "Heeft T-shirt"
+
+msgid "user.got_goodie"
+msgstr "Heeft goodie"
+
+msgid "message.title"
+msgstr "Berichten"
+
+msgid "message.choose_angel"
+msgstr "Kies een Engel"
+
+msgid "message.to_conversation"
+msgstr "Naar conversaties"
+
+msgid "message.message"
+msgstr "Bericht"
+
+msgid "angel"
+msgstr "Angel"
+
+msgid "date"
+msgstr "Datum"
+
+msgid "worklog.add"
+msgstr "Voeg werk log toe"
+
+msgid "worklog.edit"
+msgstr "Pas werk log aan"
+
+msgid "worklog.date"
+msgstr "Werk datum"
+
+msgid "worklog.hours"
+msgstr "Werkuren"
+
+msgid "worklog.comment"
+msgstr "Opmerking"
+
+msgid "worklog.delete"
+msgstr "Verwijder werk log"
+
+msgid "worklog.delete.info"
+msgstr "Zeker dat je de werklog voor %s wilt verwijderen?"
+
+msgid "angeltypes.angeltypes"
+msgstr "Angeltypes"
+
+msgid "angeltypes.about"
+msgstr "Teams-/Job Beschrijving"
+
+msgid "angeltypes.about.text"
+msgstr "Hier kan je een lijst vinden van teams met hun taken. Heb je meer vragen, kijk dan eens in onze FAQ. "
+
+msgid "angeltypes.restricted.hint"
+msgstr "Dit angeltype wordt verwacht op een introductie meeting.  "
+"Meer info vind je in de beschrijving"
+
+msgid "angeltypes.name"
+msgstr "Naam"
+
+msgid "angeltypes.dect"
+msgstr "DECT"
+
+msgid "angeltypes.email"
+msgstr "E-Mail"
+
+msgid "registration.register"
+msgstr "Registreer"
+
+msgid "room.rooms"
+msgstr "Locaties"
+
+msgid "room.name"
+msgstr "Naam"
+
+msgid "room.dect"
+msgstr "DECT"
+
+msgid "room.map_url"
+msgstr "Kaart"
+
+msgid "room.description"
+msgstr "Beschrijving"
+
+msgid "room.required_angels"
+msgstr "Verplichte angels"
+
+msgid "room.map_url.info"
+msgstr "De kaart zal verwerkt zijn in de iFrame"
+
+msgid "room.create.title"
+msgstr "Maak locatie"
+
+msgid "room.edit.title"
+msgstr "Pas locatie aan"
+
+msgid "event.day"
+msgstr "Dag %1$d"
+
+msgid "dashboard.day"
+msgstr "Dag"
