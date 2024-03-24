@@ -42,7 +42,10 @@ class LocationsController extends BaseController
 
         return $this->response->withView(
             'admin/locations/index',
-            ['locations' => $locations, 'is_index' => true]
+            [
+                'locations' => $locations,
+                'is_index' => true,
+            ]
         );
     }
 
