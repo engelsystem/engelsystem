@@ -19,14 +19,14 @@
         <div class="row g-4">
             <div class="col-lg-6">
                 {{ f.input('nick', __('general.nick'), {
-                    'value': user.name,
+                    'value': userdata.name,
                     'disabled': true,
                 }) }}
             </div>
             {% if config('enable_pronoun') %}
                 <div class="col-lg-6">
                     {{ f.input('pronoun', __('settings.profile.pronoun'), {
-                        'value': user.personalData.pronoun,
+                        'value': userdata.personalData.pronoun,
                         'max_length': 15,
                         'required': isPronounRequired,
                         'required_icon': isPronounRequired,
@@ -40,7 +40,7 @@
             <div class="row g-4">
                 <div class="col-sm-6">
                     {{ f.input('first_name', __('settings.profile.firstname'), {
-                        'value': user.personalData.first_name,
+                        'value': userdata.personalData.first_name,
                         'max_length': 64,
                         'required': isFirstnameRequired,
                         'required_icon': isFirstnameRequired,
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-sm-6">
                     {{ f.input('last_name', __('settings.profile.lastname'), {
-                        'value': user.personalData.last_name,
+                        'value': userdata.personalData.last_name,
                         'max_length': 64,
                         'required': isLastnameRequired,
                         'required_icon': isLastnameRequired,
@@ -60,7 +60,7 @@
         {% if config('enable_planned_arrival') %}
             <div class="row g-4">
                 <div class="col-sm-6">
-                    {% set planned_arrival_date = user.personalData.planned_arrival_date %}
+                    {% set planned_arrival_date = userdata.personalData.planned_arrival_date %}
                     {{ f.input('planned_arrival_date', __('settings.profile.planned_arrival_date'), {
                         'type': 'date',
                         'value': planned_arrival_date ? planned_arrival_date.format('Y-m-d') : '',
@@ -71,7 +71,7 @@
                     }) }}
                 </div>
                 <div class="col-sm-6">
-                    {% set planned_departure_date = user.personalData.planned_departure_date %}
+                    {% set planned_departure_date = userdata.personalData.planned_departure_date %}
                     {{ f.input('planned_departure_date', __('settings.profile.planned_departure_date'), {
                         'type': 'date',
                         'value': planned_departure_date ? planned_departure_date.format('Y-m-d') : '',
@@ -86,7 +86,7 @@
             {% if config('enable_dect') %}
                 <div class="col-md-6">
                     {{ f.input('dect', __('general.dect'), {
-                        'value': user.contact.dect,
+                        'value': userdata.contact.dect,
                         'max_length': 40,
                         'required': isDectRequired,
                         'required_icon': isDectRequired,
@@ -95,14 +95,14 @@
             {% endif %}
             <div class="col-md-6">
                 {{ f.input('mobile', __('settings.profile.mobile'), {
-                    'value': user.contact.mobile,
+                    'value': userdata.contact.mobile,
                     'max_length': 40,
                     'required': isMobileRequired,
                     'required_icon': isMobileRequired,
                 }) }}
                 {% if config('enable_mobile_show') %}
                     {{ f.checkbox('mobile_show', __('settings.profile.mobile_show'), {
-                        'checked': user.settings.mobile_show,
+                        'checked': userdata.settings.mobile_show,
                     }) }}
                 {% endif %}
             </div>
@@ -112,7 +112,7 @@
             <div class="col-md-6">
                 {{ f.input('email', __('general.email'), {
                     'type': 'email',
-                    'value': user.email,
+                    'value': userdata.email,
                     'max_length': 254,
                     'required': true,
                     'required_icon': true,
@@ -122,16 +122,16 @@
             <div class="col-md-6">
                 <label class="form-label">{{ __('settings.profile.email-preferences') }}</label>
                 {{ f.checkbox('email_shiftinfo', __('settings.profile.email_shiftinfo', [config('app_name')]), {
-                    'checked': user.settings.email_shiftinfo,
+                    'checked': userdata.settings.email_shiftinfo,
                 }) }}
                 {{ f.checkbox('email_news', __('settings.profile.email_news'), {
-                    'checked': user.settings.email_news,
+                    'checked': userdata.settings.email_news,
                 }) }}
                 {{ f.checkbox('email_messages', __('settings.profile.email_messages'), {
-                    'checked': user.settings.email_messages,
+                    'checked': userdata.settings.email_messages,
                 }) }}
                 {{ f.checkbox('email_human', __('settings.profile.email_by_human_allowed'), {
-                    'checked': user.settings.email_human,
+                    'checked': userdata.settings.email_human,
                 }) }}
                 {% if goodie_enabled %}
                     {% set privacy_email = config('privacy_email') %}
@@ -139,7 +139,7 @@
                         (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
                     %}
                     {{ f.checkbox('email_goody', email_goody_label, {
-                        'checked': user.settings.email_goody,
+                        'checked': userdata.settings.email_goody,
                         'raw_label': true,
                     }) }}
                 {% endif %}
@@ -150,11 +150,11 @@
             {% if goodie_tshirt %}
                 <div class="col-12">
                     {{ f.select('shirt_size', __('settings.profile.shirt_size'), config('tshirt_sizes'), {
-                        'selected': user.personalData.shirt_size,
+                        'selected': userdata.personalData.shirt_size,
                         'required': isTShirtSizeRequired,
                         'required_icon': isTShirtSizeRequired,
                         'default_option': __('form.select_placeholder'),
-                        'disabled': user.state.got_shirt,
+                        'disabled': userdata.state.got_shirt,
                         'info': __('settings.profile.shirt_size.hint'),
                         'raw_form_text': true,
                         'form_text': (tShirtLink ? m.icon('info-circle')

@@ -96,8 +96,8 @@ class SettingsControllerTest extends ControllerTest
             ->method('withView')
             ->willReturnCallback(function ($view, $data) {
                 $this->assertEquals('pages/settings/profile', $view);
-                $this->assertArrayHasKey('user', $data);
-                $this->assertEquals($this->user, $data['user']);
+                $this->assertArrayHasKey('userdata', $data);
+                $this->assertEquals($this->user, $data['userdata']);
                 return $this->response;
             });
 

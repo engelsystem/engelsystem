@@ -45,7 +45,7 @@ class SettingsController extends BaseController
             'pages/settings/profile',
             [
                 'settings_menu' => $this->settingsMenu(),
-                'user' => $user,
+                'userdata' => $user,
                 'goodie_enabled' => $this->config->get('goodie_type') !== GoodieType::None->value,
                 'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
                 'tShirtLink' => $this->config->get('tshirt_link'),
