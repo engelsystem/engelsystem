@@ -136,7 +136,7 @@ class UserShirtControllerTest extends ControllerTest
         try {
             $controller->saveShirt($request);
             self::fail('Expected exception was not raised');
-        } catch (ValidationException $e) {
+        } catch (ValidationException) {
             // ignore
         }
         $user = User::find(1);

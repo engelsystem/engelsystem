@@ -9,6 +9,7 @@ use Engelsystem\Test\Unit\TestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Twig\Node\Node as TwigNode;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 abstract class ExtensionTest extends TestCase
@@ -35,9 +36,9 @@ abstract class ExtensionTest extends TestCase
     }
 
     /**
-     * Assert that a twig function was registered
+     * Assert that a twig function or filter was registered
      *
-     * @param TwigFunction[] $functions
+     * @param TwigFunction[]|TwigFilter[] $functions
      * @throws Exception
      */
     protected function assertExtensionExists(

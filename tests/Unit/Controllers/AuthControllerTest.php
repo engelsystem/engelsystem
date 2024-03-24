@@ -99,7 +99,7 @@ class AuthControllerTest extends ControllerTest
         try {
             $controller->postLogin($request);
             $this->fail('Login without credentials possible');
-        } catch (ValidationException $e) {
+        } catch (ValidationException) {
         }
 
         // Missing password
@@ -107,7 +107,7 @@ class AuthControllerTest extends ControllerTest
         try {
             $controller->postLogin($request);
             $this->fail('Login without password possible');
-        } catch (ValidationException $e) {
+        } catch (ValidationException) {
         }
 
         // No user found

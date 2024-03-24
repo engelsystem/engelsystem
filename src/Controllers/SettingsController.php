@@ -424,7 +424,7 @@ class SettingsController extends BaseController
     protected function checkOauthHidden(): bool
     {
         foreach (config('oauth') as $config) {
-            if (empty($config['hidden']) || !$config['hidden']) {
+            if (empty($config['hidden'])) {
                 return false;
             }
         }

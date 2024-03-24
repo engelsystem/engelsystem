@@ -34,7 +34,7 @@ class Validator
             $v = new RespectValidator();
             $v->with('\\Engelsystem\\Http\\Validation\\Rules', true);
 
-            $value = isset($data[$key]) ? $data[$key] : null;
+            $value = $data[$key] ?? null;
             $values = explode('|', $values);
 
             // Rules that have side effects on others like inverting the result with not and making them optional

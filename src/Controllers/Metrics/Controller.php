@@ -48,7 +48,7 @@ class Controller extends BaseController
         $oauthProviders = $this->config->get('oauth');
         foreach ($userOauth as $key => $oauth) {
             $provider = $oauth['labels']['provider'];
-            $name = isset($oauthProviders[$provider]['name']) ? $oauthProviders[$provider]['name'] : $provider;
+            $name = $oauthProviders[$provider]['name'] ?? $provider;
             $userOauth[$key]['labels']['name'] = $name;
         }
 
@@ -200,7 +200,7 @@ class Controller extends BaseController
         $data['scrape_memory_bytes'] = [
             'type' => 'gauge',
             'help' => 'Memory usage of the current request',
-            memory_get_usage(false),
+            memory_get_usage(),
         ];
 
         return $this->response
@@ -215,7 +215,7 @@ class Controller extends BaseController
         $data = [
             'user_count'         => $this->stats->usersState() + $this->stats->usersState(null, false),
             'arrived_user_count' => $this->stats->usersState(),
-            'done_work_hours'    => round($this->stats->workSeconds(true) / 60 / 60, 0),
+            'done_work_hours'    => round($this->stats->workSeconds(true) / 60 / 60),
             'users_in_action'    => $this->stats->currentlyWorkingUsers(),
         ];
 

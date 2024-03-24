@@ -17,7 +17,6 @@ class NewsCommentsTest extends ModelTest
 
     private News $news;
 
-    /** @var array */
     private array $newsCommentData;
 
     /**

@@ -16,10 +16,8 @@ class HtmlEngine extends Engine
         $data = array_replace_recursive($this->sharedData, $data);
         $template = file_get_contents($path);
 
-        if (is_array($data)) {
-            foreach ($data as $name => $content) {
-                $template = str_replace('%' . $name . '%', $content, $template);
-            }
+        foreach ($data as $name => $content) {
+            $template = str_replace('%' . $name . '%', $content, $template);
         }
 
         return $template;

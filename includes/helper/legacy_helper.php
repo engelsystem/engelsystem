@@ -14,9 +14,6 @@ function theme_id(): int
     return $globals['themeId'];
 }
 
-/**
- * @return array
- */
 function theme(): array
 {
     $theme_id = theme_id();

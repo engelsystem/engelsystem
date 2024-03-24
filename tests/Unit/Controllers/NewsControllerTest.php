@@ -23,7 +23,6 @@ class NewsControllerTest extends ControllerTest
 
     protected Authenticator|MockObject $auth;
 
-    /** @var array */
     protected array $data = [
         [
             'title'      => 'Foo',

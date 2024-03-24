@@ -42,8 +42,6 @@ class UrlGenerator implements UrlGeneratorInterface
 
     /**
      * Prepend the auto-detected or configured app base path and domain
-     *
-     * @param $path
      */
     protected function generateUrl(string $path): string
     {

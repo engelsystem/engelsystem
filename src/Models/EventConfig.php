@@ -91,6 +91,6 @@ class EventConfig extends BaseModel
      */
     protected function getValueCast(string $value): ?string
     {
-        return isset($this->valueCasts[$value]) ? $this->valueCasts[$value] : null;
+        return $this->valueCasts[$value] ?? null;
     }
 }
