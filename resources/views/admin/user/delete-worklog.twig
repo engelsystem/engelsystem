@@ -11,9 +11,9 @@
             {{ csrf() }}
             <div class="row">
                 <div class="col-md-12">
-                    {{ m.alert(__('worklog.delete.info', [m.user(user)]), 'danger', true) }}
+                    {{ m.alert(__('worklog.delete.info', [m.user(userdata)]), 'danger', true) }}
                     {{ m.button(__('form.cancel'),
-                        url('/users?action=view&user_id=' ~ user.id),
+                        url('/users?action=view&user_id=' ~ userdata.id),
                         null,
                         null,
                         null,
