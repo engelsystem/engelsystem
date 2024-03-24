@@ -62,7 +62,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         );
     }
 
-    $tabs[__('Shifts')] = div('first', [
+    $tabs[__('general.shifts')] = div('first', [
         $shiftsFilterRenderer->render(url('/locations', [
             'action'  => 'view',
             'location_id' => $location->id,

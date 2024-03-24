@@ -533,7 +533,7 @@ msgstr "Größe"
 msgid "No."
 msgstr "Nr."
 
-msgid "Shifts"
+msgid "general.shifts"
 msgstr "Schichten"
 
 msgid "Length"

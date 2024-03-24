@@ -722,7 +722,7 @@ function User_view(
                 User_groups_render($user_groups),
                 $admin_user_privilege ? User_oauth_render($user_source) : '',
             ]),
-            ($its_me || $admin_user_privilege) ? '<h2>' . __('Shifts') . '</h2>' : '',
+            ($its_me || $admin_user_privilege) ? '<h2>' . __('general.shifts') . '</h2>' : '',
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
                 sprintf(
