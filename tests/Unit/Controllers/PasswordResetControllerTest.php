@@ -30,7 +30,6 @@ class PasswordResetControllerTest extends ControllerTest
     use ArraySubsetAsserts;
     use HasDatabase;
 
-    /** @var array */
     protected array $args = [];
 
     /**
