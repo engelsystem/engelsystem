@@ -177,6 +177,9 @@ msgstr "Lösche Engeltyp %s"
 msgid "Please check the name. Maybe it already exists."
 msgstr "Bitte überprüfe den Namen. Vielleicht ist er bereits vergeben."
 
+msgid "Angel type saved."
+msgstr "Engeltyp wurde gespeichert."
+
 msgid "Create angeltype"
 msgstr "Engeltyp erstellen"
 

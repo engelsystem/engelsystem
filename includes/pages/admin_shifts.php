@@ -455,7 +455,7 @@ function admin_shifts()
             );
         }
 
-        success('Shifts created.');
+        success(__('Shifts created.'));
         throw_redirect(url('/admin-shifts'));
     } else {
         $session->remove('admin_shifts_shifts');
