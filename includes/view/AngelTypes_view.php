@@ -517,7 +517,7 @@ function AngelType_view(
                     $admin_angeltypes,
                     $supporter
                 ),
-                __('Shifts') => AngelType_view_shifts(
+                __('general.shifts') => AngelType_view_shifts(
                     $angeltype,
                     $shiftsFilterRenderer,
                     $shiftCalendarRenderer

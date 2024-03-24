@@ -34,6 +34,9 @@ msgstr "DECT"
 msgid "general.name"
 msgstr "Name"
 
+msgid "general.shifts"
+msgstr "Shifts"
+
 msgid "general.description"
 msgstr "Description"
 
