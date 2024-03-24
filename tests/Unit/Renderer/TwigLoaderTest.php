@@ -19,7 +19,6 @@ class TwigLoaderTest extends TestCase
 
         $reflection = new Reflection(get_class($loader));
         $property = $reflection->getProperty('cache');
-        $property->setAccessible(true);
 
         $realPath = __DIR__ . '/Stub/foo.twig';
         $property->setValue($loader, ['Stub/foo.twig' => $realPath]);

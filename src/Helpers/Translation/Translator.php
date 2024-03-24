@@ -59,7 +59,7 @@ class Translator
             try {
                 $translated = call_user_func_array([$translator, $type], $parameters);
                 break;
-            } catch (TranslationNotFound $e) {
+            } catch (TranslationNotFound) {
             }
         }
 

@@ -20,8 +20,9 @@ function form_hidden($name, $value)
  *
  * @param string $name
  * @param string $label
- * @param int    $value
- * @param array  $data_attributes
+ * @param int $value
+ * @param array $data_attributes
+ * @param bool $isDisabled
  * @return string
  */
 function form_spinner(string $name, string $label, int $value, array $data_attributes = [], bool $isDisabled = false)
@@ -139,8 +140,9 @@ function form_info($label, $text = '')
  * @param string $name
  * @param string $label
  * @param string $class
- * @param bool   $wrapForm
+ * @param bool $wrapForm
  * @param string $buttonType
+ * @param string $title
  * @param array $dataAttributes
  * @return string
  */

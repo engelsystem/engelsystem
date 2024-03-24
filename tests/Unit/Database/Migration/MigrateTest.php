@@ -154,7 +154,7 @@ class MigrateTest extends TestCase
         $this->setExpects($migration, 'getMigrations', null, collect([
             ['migration' => '1234_01_23_123456_init_foo', 'path' => '/foo'],
         ]));
-        $this->setExpects($migration, 'getMigrated', null, collect([]));
+        $this->setExpects($migration, 'getMigrated', null, collect());
         $migration->expects($this->once())
             ->method('migrate')
             ->willReturnCallback(function (): void {

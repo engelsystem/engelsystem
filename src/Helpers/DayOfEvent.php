@@ -7,7 +7,7 @@ namespace Engelsystem\Helpers;
 class DayOfEvent
 {
     /**
-     * @return  ?int The current day of the event.
+     * @return ?int The current day of the event.
      *  If `event_has_day0` is set to true in config, the first day of the event will be 0, else 1.
      *  Returns null if "event_start" is not set.
      */

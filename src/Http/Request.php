@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http;
 
+use InvalidArgumentException;
 use Nyholm\Psr7\UploadedFile;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -124,7 +125,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * @param string $method Case-sensitive method.
      * @return static
-     * @throws \InvalidArgumentException for invalid HTTP methods.
+     * @throws InvalidArgumentException for invalid HTTP methods.
      */
     public function withMethod(mixed $method): static
     {
@@ -309,7 +310,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      *
      * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
      * @return static
-     * @throws \InvalidArgumentException if an invalid structure is provided.
+     * @throws InvalidArgumentException if an invalid structure is provided.
      */
     public function withUploadedFiles(array $uploadedFiles): static
     {
@@ -381,7 +382,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      * @param null|array|object $data The deserialized body data. This will
      *                                typically be in an array or object.
      * @return static
-     * @throws \InvalidArgumentException if an unsupported argument type is
+     * @throws InvalidArgumentException if an unsupported argument type is
      *                                provided.
      */
     public function withParsedBody(mixed $data): static

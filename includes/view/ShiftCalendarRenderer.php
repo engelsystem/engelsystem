@@ -302,7 +302,7 @@ class ShiftCalendarRenderer
      */
     private function calcBlocksPerSlot()
     {
-        return ceil(
+        return (int) ceil(
             ($this->getLastBlockEndTime() - $this->getFirstBlockStartTime())
             / ShiftCalendarRenderer::SECONDS_PER_ROW
         );

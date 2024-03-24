@@ -26,7 +26,7 @@ class ShirtSizeTest extends ServiceProviderTest
      */
     public function provideTestValidateData(): array
     {
-        $data =  [
+        return [
             'empty string' => ['', false],
             'null' => [null, false],
             '0' => [0, false],
@@ -34,8 +34,6 @@ class ShirtSizeTest extends ServiceProviderTest
             '"M" (known value)' => ['M', true],
             '"L" (unknown value)' => ['L', false],
         ];
-
-        return $data;
     }
 
     /**

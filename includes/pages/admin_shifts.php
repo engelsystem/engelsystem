@@ -45,7 +45,7 @@ function admin_shifts()
     $location_array = $locations->pluck('name', 'id')->toArray();
 
     // Load angeltypes
-    /** @var AngelType[] $types */
+    /** @var AngelType[]|Collection $types */
     $types = AngelType::all();
     $no_angeltypes = $types->isEmpty();
     $needed_angel_types = [];

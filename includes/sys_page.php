@@ -116,7 +116,7 @@ function check_date($input, $error_message = null, $null_allowed = false, $time_
         } else {
             $time = Carbon::createFromFormat('Y-m-d', $trimmed_input);
         }
-    } catch (InvalidArgumentException $e) {
+    } catch (InvalidArgumentException) {
         $time = null;
     }
 

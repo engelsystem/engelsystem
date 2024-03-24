@@ -9,7 +9,7 @@ use Engelsystem\Http\Request;
 
 trait ValidatesRequest
 {
-    protected Validator $validator;
+    protected ?Validator $validator;
 
     protected function validate(Request $request, array $rules): array
     {

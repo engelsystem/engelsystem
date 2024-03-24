@@ -65,14 +65,14 @@ class ErrorHandler implements MiddlewareInterface
             if ($request instanceof Request) {
                 $response->withInput(Arr::except($request->request->all(), $this->formIgnore));
             }
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException) {
             $response = $this->createResponse('', 404);
         }
 
         $statusCode = $response->getStatusCode();
         $contentType = $response->getHeader('content-type');
         $contentType = array_shift($contentType);
-        if (!$contentType && strpos($response->getBody()?->getContents() ?? '', '<html') !== false) {
+        if (!$contentType && str_contains($response->getBody()?->getContents() ?? '', '<html')) {
             $contentType = 'text/html';
         }
 

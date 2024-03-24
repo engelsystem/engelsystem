@@ -28,9 +28,7 @@ class Renderer
             return $renderer->get($template, $data);
         }
 
-        if ($this->logger) {
-            $this->logger->critical('Unable to find a renderer for template file "{file}"', ['file' => $template]);
-        }
+        $this->logger?->critical('Unable to find a renderer for template file "{file}"', ['file' => $template]);
 
         return '';
     }

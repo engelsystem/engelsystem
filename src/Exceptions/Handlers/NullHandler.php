@@ -11,6 +11,5 @@ class NullHandler extends Legacy
 {
     public function render(Request $request, Throwable $e): void
     {
-        return;
     }
 }
