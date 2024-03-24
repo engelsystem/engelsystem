@@ -239,6 +239,7 @@ test:
       --coverage-text --coverage-html "${HOMEDIR}/coverage/"
       --log-junit "${HOMEDIR}/unittests.xml"
   after_script:
+    - sed -i 's~/var/www/~~' unittests.xml
     - '"${DOCROOT}/bin/migrate" down'
 
 dump-database:
