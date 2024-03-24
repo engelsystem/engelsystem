@@ -65,7 +65,11 @@ class Handler
             return $output;
         }
 
-        http_response_code(500);
+        if (!headers_sent()) {
+            // @codeCoverageIgnoreStart
+            http_response_code(500);
+            // @codeCoverageIgnoreEnd
+        }
         ob_end_flush();
 
         $this->terminateApplicationImmediately();
