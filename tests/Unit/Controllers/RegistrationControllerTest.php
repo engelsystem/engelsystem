@@ -188,7 +188,6 @@ final class RegistrationControllerTest extends ControllerTest
     public function testViewRegistrationDisabled(): void
     {
         $this->config->set('registration_enabled', false);
-        $request = $this->request->withParsedBody([]);
 
         // Assert the controller does not call createFromData
         $this->userFactory
@@ -201,7 +200,7 @@ final class RegistrationControllerTest extends ControllerTest
             ->method('redirectTo')
             ->with('http://localhost/', 302);
 
-        $this->subject->view($request);
+        $this->subject->view();
 
         // Assert that the error notification is there
         self::assertEquals(

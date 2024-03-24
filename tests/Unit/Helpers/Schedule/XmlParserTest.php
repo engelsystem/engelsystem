@@ -72,7 +72,6 @@ class XmlParserTest extends TestCase
         $this->assertEquals('Testing', $tracks[0]->getName());
         $this->assertEquals('#dead55', $tracks[0]->getColor());
         $this->assertEquals('testing', $tracks[0]->getSlug());
-        ;
 
         /** @var Day $day */
         $day = Arr::first($schedule->getDays());

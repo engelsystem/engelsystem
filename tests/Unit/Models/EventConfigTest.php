@@ -93,8 +93,6 @@ class EventConfigTest extends ModelTest
     {
         $model = new EventConfig(['name' => 'foo', 'value' => 'bar']);
         $this->assertEquals('bar', $model->value);
-
-        return;
     }
 
     /**

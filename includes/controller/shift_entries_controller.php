@@ -307,9 +307,8 @@ function shift_entry_load()
     if (!$request->has('shift_entry_id') || !test_request_int('shift_entry_id')) {
         throw_redirect(url('/user-shifts'));
     }
-    $shiftEntry = ShiftEntry::findOrFail($request->input('shift_entry_id'));
 
-    return $shiftEntry;
+    return ShiftEntry::findOrFail($request->input('shift_entry_id'));
 }
 
 /**

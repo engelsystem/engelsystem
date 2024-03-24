@@ -53,8 +53,7 @@ class Handler
             $this->request = new Request();
         }
 
-        $handler = isset($this->handler[$this->environment->value])
-            ? $this->handler[$this->environment->value] : new Legacy();
+        $handler = $this->handler[$this->environment->value] ?? new Legacy();
         $handler->report($e);
         ob_start();
         $handler->render($this->request, $e);

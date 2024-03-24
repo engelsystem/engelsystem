@@ -36,7 +36,6 @@ class DispatcherTest extends TestCase
 
         $reflection = new Reflection(get_class($dispatcher));
         $property = $reflection->getProperty('container');
-        $property->setAccessible(true);
         $this->assertEquals($container, $property->getValue($dispatcher));
     }
 
@@ -66,7 +65,6 @@ class DispatcherTest extends TestCase
 
         $reflection = new Reflection(get_class($dispatcher));
         $property = $reflection->getProperty('next');
-        $property->setAccessible(true);
 
         $this->assertEquals($handler, $property->getValue($dispatcher));
     }
@@ -113,7 +111,6 @@ class DispatcherTest extends TestCase
 
         $reflection = new Reflection(get_class($dispatcher));
         $property = $reflection->getProperty('next');
-        $property->setAccessible(true);
         $property->setValue($dispatcher, $handler);
 
         $return = $dispatcher->handle($request);
@@ -193,7 +190,6 @@ class DispatcherTest extends TestCase
 
         $reflection = new Reflection(get_class($middleware));
         $property = $reflection->getProperty('container');
-        $property->setAccessible(true);
 
         $this->assertEquals($container, $property->getValue($middleware));
     }

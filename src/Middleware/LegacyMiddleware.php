@@ -143,7 +143,7 @@ class LegacyMiddleware implements MiddlewareInterface
             return response($content, $page);
         }
 
-        if (strpos((string) $content, '<html') !== false) {
+        if (str_contains($content, '<html')) {
             return response($content);
         }
 
@@ -154,8 +154,7 @@ class LegacyMiddleware implements MiddlewareInterface
                     'title'   => $title,
                     'content' => msg() . $content,
                 ]
-            ),
-            200
+            )
         );
     }
 }

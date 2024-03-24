@@ -459,10 +459,10 @@ class OAuthControllerTest extends TestCase
         $this->assertEquals(4242424242, $this->session->get('oauth2_expires_at')->unix());
         $this->assertFalse($this->session->get('oauth2_enable_password'));
         $this->assertEquals(null, $this->session->get('oauth2_allow_registration'));
-        $this->assertEquals($this->session->get('form-data-username'), 'username');
-        $this->assertEquals($this->session->get('form-data-email'), 'foo.bar@localhost');
-        $this->assertEquals($this->session->get('form-data-firstname'), 'Foo');
-        $this->assertEquals($this->session->get('form-data-lastname'), 'Bar');
+        $this->assertEquals('username', $this->session->get('form-data-username'));
+        $this->assertEquals('foo.bar@localhost', $this->session->get('form-data-email'));
+        $this->assertEquals('Foo', $this->session->get('form-data-firstname'));
+        $this->assertEquals('Bar', $this->session->get('form-data-lastname'));
 
         $this->config->set('registration_enabled', false);
         $this->expectException(HttpNotFound::class);
@@ -539,10 +539,10 @@ class OAuthControllerTest extends TestCase
         $this->setExpects($controller, 'getProvider', ['testprovider'], $provider, $this->atLeastOnce());
 
         $controller->index($request);
-        $this->assertEquals($this->session->get('form-data-username'), 'testuser');
-        $this->assertEquals($this->session->get('form-data-email'), 'foo.bar@localhost');
-        $this->assertEquals($this->session->get('form-data-firstname'), 'Test');
-        $this->assertEquals($this->session->get('form-data-lastname'), 'Tester');
+        $this->assertEquals('testuser', $this->session->get('form-data-username'));
+        $this->assertEquals('foo.bar@localhost', $this->session->get('form-data-email'));
+        $this->assertEquals('Test', $this->session->get('form-data-firstname'));
+        $this->assertEquals('Tester', $this->session->get('form-data-lastname'));
     }
 
 

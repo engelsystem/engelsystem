@@ -65,7 +65,7 @@ class ConfigServiceProvider extends ServiceProvider
         try {
             /** @var EventConfig[] $values */
             $values = $this->eventConfig->newQuery()->get(['name', 'value']);
-        } catch (QueryException $e) {
+        } catch (QueryException) {
             return;
         }
 

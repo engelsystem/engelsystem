@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers;
 
 use Carbon\CarbonImmutable;
+use DateInterval;
+use DateTimeImmutable;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\BarChart;
 use Engelsystem\Http\Response;
@@ -60,26 +62,26 @@ class DesignController extends BaseController
         }
 
         $themes = $this->config->get('themes');
-        $date = new \DateTimeImmutable();
+        $date = new DateTimeImmutable();
         $data = [
             'demo_user'         => $demoUser,
             'demo_user_2'       => $demoUser2,
             'themes'            => $themes,
             'bar_chart'         => BarChart::render(...BarChart::generateChartDemoData(23)),
 
-            'timestamp30m'      => $date->add(new \DateInterval('PT30M')),
-            'timestamp59m'      => $date->add(new \DateInterval('PT59M')),
-            'timestamp1h'       => $date->add(new \DateInterval('PT1H')),
-            'timestamp1h30m'    => $date->add(new \DateInterval('PT1H30M')),
-            'timestamp1h31m'    => $date->add(new \DateInterval('PT1H31M')),
-            'timestamp2h'       => $date->add(new \DateInterval('PT2H')),
-            'timestamp2d'       => $date->add(new \DateInterval('P2D')),
-            'timestamp3m'       => $date->add(new \DateInterval('P3M')),
-            'timestamp22y'      => $date->add(new \DateInterval('P22Y')),
-            'timestamp30s'      => $date->add(new \DateInterval('PT30S')),
+            'timestamp30m'      => $date->add(new DateInterval('PT30M')),
+            'timestamp59m'      => $date->add(new DateInterval('PT59M')),
+            'timestamp1h'       => $date->add(new DateInterval('PT1H')),
+            'timestamp1h30m'    => $date->add(new DateInterval('PT1H30M')),
+            'timestamp1h31m'    => $date->add(new DateInterval('PT1H31M')),
+            'timestamp2h'       => $date->add(new DateInterval('PT2H')),
+            'timestamp2d'       => $date->add(new DateInterval('P2D')),
+            'timestamp3m'       => $date->add(new DateInterval('P3M')),
+            'timestamp22y'      => $date->add(new DateInterval('P22Y')),
+            'timestamp30s'      => $date->add(new DateInterval('PT30S')),
 
-            'timestamp30mago'   => $date->sub(new \DateInterval('PT30M')),
-            'timestamp45mago'   => $date->sub(new \DateInterval('PT45M')),
+            'timestamp30mago'   => $date->sub(new DateInterval('PT30M')),
+            'timestamp45mago'   => $date->sub(new DateInterval('PT45M')),
             'selectOptions'     => $selectOptions,
             'dateSelectOptions' => $dateSelectOptions,
         ];

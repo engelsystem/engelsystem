@@ -34,7 +34,7 @@ class Validator
             $v = new RespectValidator();
             $v->with('\\Engelsystem\\Http\\Validation\\Rules', true);
 
-            $value = isset($data[$key]) ? $data[$key] : null;
+            $value = $data[$key] ?? null;
             $values = explode('|', $values);
 
             $packing = [];

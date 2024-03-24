@@ -79,7 +79,7 @@ class MetricsEngine implements EngineInterface
             );
         }
 
-        $sum = isset($row['sum']) ? $row['sum'] : 'NaN';
+        $sum = $row['sum'] ?? 'NaN';
         $count = $row['value']['+Inf'];
         $return[] = $this->formatData($name . '_sum', $data + ['value' => $sum]);
         $return[] = $this->formatData($name . '_count', $data + ['value' => $count]);
