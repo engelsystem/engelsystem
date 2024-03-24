@@ -33,6 +33,7 @@
                                 <th>{{ __('general.name') }}</th>
                                 <th>{{ __('general.dect') }}</th>
                                 <th>{{ __('location.map_url') }}</th>
+                                <th>{{ __('general.shifts') }}</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -50,6 +51,8 @@
                                     <td>{{ m.iconBool(location.dect) }}</td>
 
                                     <td>{{ m.iconBool(location.map_url) }}</td>
+
+                                    <td>{{ m.iconBool(location.shifts.count) }}</td>
 
                                     <td>
                                         <div class="d-flex ms-auto">
