@@ -18,18 +18,20 @@ class LegacyMiddlewareTest extends TestCase
      * @covers \Engelsystem\Middleware\LegacyMiddleware::__construct
      * @covers \Engelsystem\Middleware\LegacyMiddleware::process
      */
-    public function testRegisterNotFound(): void
+    public function testProcess404(): void
     {
         /** @var RequestHandlerInterface|MockObject $handler */
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        $response = new Response();
-        $request = new Request(['p' => 'foo']);
+
+        $request = new Request(['p' => 'notAvailablePage']);
         $this->app->instance('request', $request);
+
         $this->mockTranslator();
 
-        /** @var LegacyMiddleware|MockObject $middleware */
+        $response = new Response();
         $middleware = $this->getMockBuilder(LegacyMiddleware::class)
             ->setConstructorArgs([$this->app, $auth])
             ->onlyMethods(['renderPage'])
@@ -45,20 +47,22 @@ class LegacyMiddlewareTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\LegacyMiddleware::process
      */
-    public function testRegisterHasPermission(): void
+    public function testProcess(): void
     {
         /** @var RequestHandlerInterface|MockObject $handler */
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $auth->expects($this->exactly(2))
             ->method('can')
             ->withConsecutive(['users.arrive.list'], ['admin_arrive'])
             ->willReturnOnConsecutiveCalls(true, false);
-        $response = new Response();
+
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => 'admin-arrive']);
         $this->app->instance('request', $request);
 
+        $response = new Response();
         /** @var LegacyMiddleware|MockObject $middleware */
         $middleware = $this->getMockBuilder(LegacyMiddleware::class)
             ->setConstructorArgs([$this->app, $auth])
