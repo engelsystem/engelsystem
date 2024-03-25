@@ -197,7 +197,6 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $reflection = new Reflection(get_class($serviceProvider));
 
         $property = $reflection->getProperty('extensions');
-        $property->setAccessible(true);
 
         $property->setValue($serviceProvider, $extensions);
     }

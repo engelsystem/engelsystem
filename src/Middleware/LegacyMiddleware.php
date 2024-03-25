@@ -33,7 +33,7 @@ class LegacyMiddleware implements MiddlewareInterface
     /**
      * Handle the request the old way
      *
-     * Should be used before a 404 is send
+     * Should be used before a 404 is sent
      */
     public function process(
         ServerRequestInterface $request,
@@ -143,7 +143,7 @@ class LegacyMiddleware implements MiddlewareInterface
             return response($content, $page);
         }
 
-        if (strpos((string) $content, '<html') !== false) {
+        if (str_contains($content, '<html')) {
             return response($content);
         }
 
@@ -154,8 +154,7 @@ class LegacyMiddleware implements MiddlewareInterface
                     'title'   => $title,
                     'content' => msg() . $content,
                 ]
-            ),
-            200
+            )
         );
     }
 }

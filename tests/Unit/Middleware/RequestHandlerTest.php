@@ -33,7 +33,6 @@ class RequestHandlerTest extends TestCase
 
         $reflection = new Reflection(get_class($handler));
         $property = $reflection->getProperty('container');
-        $property->setAccessible(true);
 
         $this->assertEquals($container, $property->getValue($handler));
     }

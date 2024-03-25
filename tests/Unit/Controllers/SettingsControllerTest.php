@@ -772,8 +772,8 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->saveIfsgCertificate($this->request);
 
-        $this->assertEquals(true, $this->user->license->ifsg_certificate_light);
-        $this->assertEquals(false, $this->user->license->ifsg_certificate);
+        $this->assertTrue($this->user->license->ifsg_certificate_light);
+        $this->assertFalse($this->user->license->ifsg_certificate);
     }
 
     /**
@@ -802,8 +802,8 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->saveIfsgCertificate($this->request);
 
-        $this->assertEquals(false, $this->user->license->ifsg_certificate_light);
-        $this->assertEquals(false, $this->user->license->ifsg_certificate);
+        $this->assertFalse($this->user->license->ifsg_certificate_light);
+        $this->assertFalse($this->user->license->ifsg_certificate);
     }
 
     /**
@@ -830,8 +830,8 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->saveIfsgCertificate($this->request);
 
-        $this->assertEquals(false, $this->user->license->ifsg_certificate_light);
-        $this->assertEquals(true, $this->user->license->ifsg_certificate);
+        $this->assertFalse($this->user->license->ifsg_certificate_light);
+        $this->assertTrue($this->user->license->ifsg_certificate);
     }
 
     /**
@@ -858,8 +858,8 @@ class SettingsControllerTest extends ControllerTest
 
         $this->controller->saveIfsgCertificate($this->request);
 
-        $this->assertEquals(false, $this->user->license->ifsg_certificate_light);
-        $this->assertEquals(true, $this->user->license->ifsg_certificate);
+        $this->assertFalse($this->user->license->ifsg_certificate_light);
+        $this->assertTrue($this->user->license->ifsg_certificate);
     }
 
     /**

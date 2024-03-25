@@ -195,7 +195,7 @@ function shift_edit_controller()
             htmlspecialchars($angeltype_name),
             $needed_angel_types[$angeltype_id],
             [],
-            ScheduleShift::whereShiftId($shift->id)->first() ? true : false,
+            (bool) ScheduleShift::whereShiftId($shift->id)->first(),
         );
     }
 

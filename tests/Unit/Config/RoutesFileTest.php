@@ -22,7 +22,6 @@ class RoutesFileTest extends TestCase
             ->onlyMethods(['addRoute'])
             ->getMock();
 
-        $this->doesNotPerformAssertions();
         /** @see RouteCollector::addRoute */
         $route->expects($this->any())
             ->method('addRoute')

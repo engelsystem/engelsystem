@@ -41,7 +41,7 @@ class Carbon extends \Carbon\Carbon
     public static function createTimestampFromDatetime(string $value): ?int
     {
         $carbon = self::createFromDateTime($value);
-        return $carbon === null ? null : $carbon->timestamp;
+        return $carbon?->timestamp;
     }
 
     /**

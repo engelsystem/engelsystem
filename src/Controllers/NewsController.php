@@ -156,9 +156,6 @@ class NewsController extends BaseController
         );
     }
 
-    /**
-     * @param array $data
-     */
     protected function renderView(string $page, array $data): Response
     {
         return $this->response->withView($page, $data);

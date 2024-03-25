@@ -130,14 +130,13 @@ function admin_user()
         }
 
         // Active?
+        $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
         if ($user_edit_shirt) {
-            $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
-            $html .= html_options('eAktiv', $options, $user_source->state->active) . '</td></tr>' . "\n";
+            $html .= html_options('eAktiv', $options, $user_source->state->active);
         } else {
-            $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
             $html .= ($user_source->state->active ? __('Yes') : __('No'));
-            $html .= '</td></tr>' . "\n";
         }
+        $html .= '</td></tr>' . "\n";
 
         // Forced active?
         if (auth()->can('admin_active') && config('enable_force_active')) {

@@ -12,7 +12,6 @@ use Engelsystem\Models\User\User;
  */
 class NewsTest extends ModelTest
 {
-    /** @var array */
     private array $newsData;
 
     private User $user;
