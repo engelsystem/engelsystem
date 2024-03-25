@@ -7,14 +7,11 @@ namespace Engelsystem\Test\Unit\Middleware;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Request;
+use Engelsystem\Http\Response;
 use Engelsystem\Middleware\LegacyMiddleware;
+use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class LegacyMiddlewareTest extends TestCase
 {
@@ -22,79 +19,68 @@ class LegacyMiddlewareTest extends TestCase
      * @covers \Engelsystem\Middleware\LegacyMiddleware::__construct
      * @covers \Engelsystem\Middleware\LegacyMiddleware::process
      */
-    public function testRegister(): void
+    public function testProcess404(): void
     {
-        /** @var ContainerInterface|MockObject $container */
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        /** @var LegacyMiddleware|MockObject $middleware */
-        $middleware = $this->getMockBuilder(LegacyMiddleware::class)
-            ->setConstructorArgs([$container, $auth])
-            ->onlyMethods(['loadPage', 'renderPage'])
-            ->getMock();
-        /** @var Request|MockObject $defaultRequest */
-        $defaultRequest = $this->createMock(Request::class);
-        /** @var ParameterBag|MockObject $parameters */
-        $parameters = $this->createMock(ParameterBag::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->getMockForAbstractClass(ResponseInterface::class);
+
         /** @var RequestHandlerInterface|MockObject $handler */
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
+
+        $request = new Request(['p' => 'notAvailablePage']);
+        $this->app->instance('request', $request);
+
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-        $middleware->expects($this->once())
-            ->method('loadPage')
-            ->with('users')
-            ->willReturn(['title', 'content']);
-
-        $middleware->expects($this->exactly(2))
-            ->method('renderPage')
-            ->withConsecutive(
-                ['users', 'title', 'content'],
-                [404, 'Page not found', 'It\'s not available!']
-            )
-            ->willReturn($response);
-
-        $container->expects($this->exactly(3))
-            ->method('get')
-            ->withConsecutive(['request'], ['request'], ['translator'])
-            ->willReturnOnConsecutiveCalls(
-                $defaultRequest,
-                $defaultRequest,
-                $translator
-            );
-
-        $auth->expects($this->atLeastOnce())
-            ->method('can')
-            ->willReturn(false);
-
         $translator->expects($this->exactly(2))
             ->method('translate')
-            ->willReturnOnConsecutiveCalls(
-                'Page not found',
-                'It\'s not available!'
-            );
+            ->withConsecutive(['page.404.title'], ['page.404.text'])
+            ->willReturnOnConsecutiveCalls('page.404.title', 'page.404.text');
+        $this->app->instance('translator', $translator);
 
-        $defaultRequest->query = $parameters;
-        $defaultRequest->expects($this->once())
-            ->method('path')
-            ->willReturn('users');
-
-        $parameters->expects($this->exactly(2))
-            ->method('get')
-            ->with('p')
-            ->willReturnOnConsecutiveCalls(
-                null,
-                'foo'
-            );
+        $response = new Response();
+        $middleware = $this->getMockBuilder(LegacyMiddleware::class)
+            ->setConstructorArgs([$this->app, $auth])
+            ->onlyMethods(['renderPage'])
+            ->getMock();
+        $middleware->expects($this->once())
+            ->method('renderPage')
+            ->with(404, 'page.404.title', 'page.404.text')
+            ->willReturn($response);
 
         $middleware->process($request, $handler);
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\LegacyMiddleware::process
+     */
+    public function testProcess(): void
+    {
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+
+        /** @var RequestHandlerInterface|MockObject $handler */
+        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+
+        $request = new Request([], [], [], [], [], ['REQUEST_URI' => 'public-dashboard']);
+        $this->app->instance('request', $request);
+
+        $response = new Response();
+        $middleware = $this->getMockBuilder(LegacyMiddleware::class)
+            ->setConstructorArgs([$this->app, $auth])
+            ->onlyMethods(['loadPage', 'renderPage'])
+            ->getMock();
+        $middleware->expects($this->once())
+            ->method('loadPage')
+            ->with('public_dashboard')
+            ->willReturn(['title', 'content']);
+        $middleware->expects($this->once())
+            ->method('renderPage')
+            ->with('public_dashboard', 'title', 'content')
+            ->willReturn($response);
+
         $middleware->process($request, $handler);
     }
 }
