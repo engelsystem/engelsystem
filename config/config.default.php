@@ -85,8 +85,11 @@ return [
         'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
     ],
 
-    # Your privacy@ contact address
+    // Your privacy@ contact address
     'privacy_email' => env('PRIVACY_EMAIL', null),
+
+    // Show opt in to save some personal data after the event on user profile and registration pages
+    'enable_email_goody' => (bool) env('ENABLE_EMAIL_GOODY', true),
 
     // Initial admin password
     'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),

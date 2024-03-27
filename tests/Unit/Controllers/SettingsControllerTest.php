@@ -74,6 +74,7 @@ class SettingsControllerTest extends ControllerTest
             'enable_planned_arrival' => true,
             'enable_dect'            => true,
             'enable_mobile_show'     => true,
+            'enable_email_goody'     => true,
             'goodie_type'            => GoodieType::Tshirt->value,
         ]);
 
