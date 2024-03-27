@@ -88,6 +88,10 @@ return [
     # Your privacy@ contact address
     'privacy_email' => env('PRIVACY_EMAIL', null),
 
+    # Enable checkbox to consent for storage of nick, email address and worked hours (and T-shirt size)
+    # to possibly receive vouchers for the next similar event on user profile and register page
+    'enable_email_goody' => (bool) env('ENABLE_EMAIL_GOODY', true),
+
     // Initial admin password
     'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),
 

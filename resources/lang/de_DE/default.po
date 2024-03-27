@@ -1637,6 +1637,10 @@ msgstr "Erlaube Himmel-Engeln mich per E-Mail zu kontaktieren."
 
 msgid "settings.profile.email_goody"
 msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "
+"dass mein Nick, E-Mail-Adresse und geleistete Arbeit solange gespeichert werden."
+
+msgid "settings.profile.email_tshirt"
+msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "
 "dass mein Nick, E-Mail-Adresse, geleistete Arbeit und T-Shirt-Größe solange gespeichert werden."
 
 msgid "settings.profile.privacy"
