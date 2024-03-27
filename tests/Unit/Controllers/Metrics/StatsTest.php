@@ -129,12 +129,19 @@ class StatsTest extends TestCase
         $stats = new Stats($this->database);
         $this->assertEquals(1, $stats->licenses('has_car'));
         $this->assertEquals(1, $stats->licenses('forklift'));
-        $this->assertEquals(2, $stats->licenses('car'));
+        $this->assertEquals(1, $stats->licenses('car'));
         $this->assertEquals(0, $stats->licenses('3.5t'));
         $this->assertEquals(0, $stats->licenses('7.5t'));
-        $this->assertEquals(1, $stats->licenses('12t'));
-        $this->assertEquals(0, $stats->licenses('ifsg_light'));
+        $this->assertEquals(0, $stats->licenses('12t'));
+        $this->assertEquals(1, $stats->licenses('ifsg_light'));
         $this->assertEquals(0, $stats->licenses('ifsg'));
+        $this->assertEquals(0, $stats->licenses('forklift', true));
+        $this->assertEquals(1, $stats->licenses('car', true));
+        $this->assertEquals(0, $stats->licenses('3.5t', true));
+        $this->assertEquals(0, $stats->licenses('7.5t', true));
+        $this->assertEquals(1, $stats->licenses('12t', true));
+        $this->assertEquals(0, $stats->licenses('ifsg_light', true));
+        $this->assertEquals(1, $stats->licenses('ifsg', true));
     }
 
     /**
@@ -518,13 +525,19 @@ class StatsTest extends TestCase
             ['arrived' => 1, 'got_voucher' => 9, 'force_active' => true, 'user_info' => 'Info'],
             [],
             ['theme' => 1],
-            ['drive_car' => true, 'drive_12t' => true]
+            ['drive_car' => true, 'drive_12t' => true, 'drive_confirmed' => true, 'ifsg_certificate_light' => true]
         );
         $this->addUser(
             ['arrived' => 1, 'got_voucher' => 3],
             ['pronoun' => 'per'],
             ['theme' => 1, 'email_human' => true],
-            ['has_car' => true, 'drive_forklift' => true, 'drive_car' => true]
+            [
+                'has_car' => true,
+                'drive_forklift' => true,
+                'drive_car' => true,
+                'ifsg_certificate' => true,
+                'ifsg_confirmed' => true,
+            ]
         );
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true, 'force_active' => true]);
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L'], ['theme' => 4]);

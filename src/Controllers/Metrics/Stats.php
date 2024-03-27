@@ -176,22 +176,25 @@ class Stats
             ->get();
     }
 
-    public function licenses(string $license): int
+    public function licenses(string $license, bool $confirmed = false): int
     {
         $mapping = [
-            'has_car'   => 'has_car',
-            'forklift'  => 'drive_forklift',
-            'car'       => 'drive_car',
-            '3.5t'      => 'drive_3_5t',
-            '7.5t'      => 'drive_7_5t',
-            '12t'       => 'drive_12t',
-            'ifsg_light'      => 'ifsg_certificate_light',
-            'ifsg' => 'ifsg_certificate',
+            'has_car'   => ['has_car', null],
+            'forklift' => ['drive_forklift', 'drive_confirmed'],
+            'car' => ['drive_car', 'drive_confirmed'],
+            '3.5t' => ['drive_3_5t', 'drive_confirmed'],
+            '7.5t' => ['drive_7_5t', 'drive_confirmed'],
+            '12t' => ['drive_12t', 'drive_confirmed'],
+            'ifsg_light' => ['ifsg_certificate_light', 'ifsg_confirmed'],
+            'ifsg' => ['ifsg_certificate', 'ifsg_confirmed'],
         ];
 
         $query = (new License())
             ->getQuery()
-            ->where($mapping[$license], true);
+            ->where($mapping[$license][0], true);
+        if (!is_null($mapping[$license][1])) {
+            $query->where($mapping[$license][1], $confirmed);
+        }
 
         return $query->count();
     }
