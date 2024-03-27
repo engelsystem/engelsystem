@@ -339,6 +339,10 @@ msgstr "Allow heaven angels to contact me by e-mail."
 
 msgid "settings.profile.email_goody"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
+"that my nick, e-mail address and worked hours will be stored until then."
+
+msgid "settings.profile.email_tshirt"
+msgstr "To possibly receive vouchers for the next similar event, I consent "
 "that my nick, e-mail address, worked hours and T-shirt size will be stored until then."
 
 msgid "settings.profile.privacy"

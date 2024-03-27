@@ -46,7 +46,8 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'userdata' => $user,
-                'goodie_enabled' => $this->config->get('goodie_type') !== GoodieType::None->value,
+                'goodie_enabled' => $this->config->get('goodie_type') !== GoodieType::None->value
+                    && config('enable_email_goody'),
                 'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
                 'tShirtLink' => $this->config->get('tshirt_link'),
                 'isPronounRequired' => $requiredFields['pronoun'],
@@ -105,7 +106,7 @@ class SettingsController extends BaseController
         $user->settings->email_human = $data['email_human'] ?: false;
         $user->settings->email_messages = $data['email_messages'] ?: false;
 
-        if ($goodie_enabled) {
+        if ($goodie_enabled && config('enable_email_goody')) {
             $user->settings->email_goody = $data['email_goody'] ?: false;
         }
 
