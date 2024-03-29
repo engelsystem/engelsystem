@@ -202,13 +202,21 @@ function AngelType_view_buttons(
     $user_license,
     $user
 ) {
-    if (config('driving_license_enabled') && $angeltype->requires_driver_license) {
+    if (
+        config('driving_license_enabled')
+        && $angeltype->requires_driver_license
+        && $user_angeltype
+    ) {
         $buttons[] = button(
             url('/settings/certificates'),
             icon('person-vcard') . __('My driving license')
         );
     }
-    if (config('ifsg_enabled') && $angeltype->requires_ifsg_certificate) {
+    if (
+        config('ifsg_enabled')
+        && $angeltype->requires_ifsg_certificate
+        && $user_angeltype
+    ) {
         $buttons[] = button(
             url('/settings/certificates'),
             icon('card-checklist') . __('angeltype.ifsg.own')

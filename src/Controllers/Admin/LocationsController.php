@@ -117,8 +117,9 @@ class LocationsController extends BaseController
         }
 
         $this->log->info(
-            'Updated location "{name}": {description} {dect} {map_url} {angels}',
+            'Updated location "{name}" ({id}): {description} {dect} {map_url} {angels}',
             [
+                'id'          => $location->id,
                 'name'        => $location->name,
                 'description' => $location->description,
                 'dect'        => $location->dect,
