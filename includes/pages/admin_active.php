@@ -85,14 +85,14 @@ function admin_active()
                         ->whereNotNull('users_state.user_info')
                         ->whereNot('users_state.user_info', '');
                 })
-                ->groupBy('users.id')
-                ->orderByDesc('shift_length')
-                ->orderByDesc('name')
-                ->limit($count);
-
+                ->groupBy('users.id');
             if (config('enable_force_active')) {
                 $query->orderByDesc('force_active');
             }
+            $query
+                ->orderByDesc('shift_length')
+                ->orderByDesc('name')
+                ->limit($count);
 
             $users = $query->get();
             $user_nicks = [];
@@ -195,13 +195,13 @@ function admin_active()
                 ->whereNotNull('users_state.user_info')
                 ->whereNot('users_state.user_info', '');
         })
-        ->groupBy('users.id')
-        ->orderByDesc('shift_length')
-        ->orderByDesc('name');
-
+        ->groupBy('users.id');
     if (config('enable_force_active')) {
         $query->orderByDesc('force_active');
     }
+    $query
+        ->orderByDesc('shift_length')
+        ->orderByDesc('name');
 
     if (!is_null($count)) {
         $query->limit($count);
