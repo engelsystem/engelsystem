@@ -43,7 +43,7 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
     /**
      * Handle the request and return a response.
      *
-     * It calls all configured middleware and handles their response
+     * It calls all configured middlewares and handles their response
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

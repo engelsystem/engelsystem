@@ -113,6 +113,7 @@ class ShiftTypesController extends BaseController
         $shiftType->save();
         $shiftType->neededAngelTypes()->delete();
 
+        // Associate angel types with the shift type
         $angelsInfo = '';
         foreach ($angelTypes as $angelType) {
             $count = $data['angel_type_' . $angelType->id];

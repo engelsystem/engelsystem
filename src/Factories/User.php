@@ -210,6 +210,7 @@ class User
      */
     private function createUser(array $data, array $rawData): EngelsystemUser
     {
+        // Ensure all user entries got created before saving
         $this->dbConnection->beginTransaction();
 
         $user = new EngelsystemUser([
@@ -274,6 +275,7 @@ class User
             ->associate($user)
             ->save();
 
+        // Handle OAuth registration
         if ($this->session->has('oauth2_connect_provider') && $this->session->has('oauth2_user_id')) {
             $oauth = new OAuth([
                 'provider'      => $this->session->get('oauth2_connect_provider'),

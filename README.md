@@ -28,7 +28,7 @@ The Engelsystem may be installed manually or by using the provided [docker setup
  * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
  * Webserver, i.e. lighttpd, nginx, or Apache
 
-From experience 2 cores and 2GB ram are roughly enough for about 1000 Angels (~700 arrived + 500 arrived but not working) during an event.
+From previous experience, 2 cores and 2GB ram are roughly enough for up to 1000 Angels (~700 arrived + 500 arrived but not working) during an event.
 
 ### Download
  * Go to the [Releases](https://github.com/engelsystem/engelsystem/releases) page and download the latest stable release file.
@@ -42,7 +42,14 @@ From experience 2 cores and 2GB ram are roughly enough for about 1000 Angels (~7
  * Recommended: Directory Listing should be disabled.
  * There must be a MySQL database set up with a user who has full rights to that database.
  * If necessary, create a `config/config.php` to override values from `config/config.default.php`.
-   * To disable/remove values from the `themes`, `tshirt_sizes`, `headers`, `header_items`, `footer_items`, or `locales` lists, set the value of the entry to `null`.
+   * To disable/remove values from the following lists, set the value of the entry to `null`:
+     * `themes`
+     * `tshirt_sizes`
+     * `headers`
+     * `header_items`
+     * `footer_items`
+     * `locales`
+     * `contact_options`
  * To import the database, the `bin/migrate` script has to be run. If you can't execute scripts, you can use the `initial-install.sql` file from the release zip.
  * In the browser, login with credentials `admin` : `asdfasdf` and change the password.
 

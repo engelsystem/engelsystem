@@ -98,6 +98,7 @@ class LocationsController extends BaseController
         $location->neededAngelTypes()->getQuery()->delete();
         $angelsInfo = '';
 
+        // Associate angel types with the room
         foreach ($angelTypes as $angelType) {
             $count = $data['angel_type_' . $angelType->id];
             if (!$count) {

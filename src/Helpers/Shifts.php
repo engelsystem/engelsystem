@@ -18,11 +18,14 @@ class Shifts
 
         /** @see User_get_shifts_sum_query to keep it in sync */
         return $config['enabled'] && (
+                // Starts during night
                 $start->hour >= $config['start'] && $start->hour < $config['end']
+                // Ends during night
                 || (
                     $end->hour > $config['start']
                     || $end->hour == $config['start'] && $end->minute > 0
                 ) && $end->hour <= $config['end']
+                // Starts before and ends after night
                 || $start->hour <= $config['start'] && $end->hour >= $config['end']
             );
     }

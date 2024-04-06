@@ -225,7 +225,7 @@ class Controller extends BaseController
     }
 
     /**
-     * Ensure that the if the request is authorized
+     * Ensure that the request is authorized
      */
     protected function checkAuth(bool $isJson = false): void
     {

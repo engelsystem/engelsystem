@@ -72,23 +72,26 @@ class TranslationServiceProvider extends ServiceProvider
 
     public function getTranslator(string $locale): GettextTranslator
     {
-        if (!isset($this->translators[$locale])) {
-            $names = ['default', 'additional'];
-
-            /** @var Translations $translations */
-            $translations = $this->app->call([Translations::class, 'create']);
-            $path = $this->app->get('path.lang');
-            foreach ($names as $name) {
-                $file = $this->getFile($locale, $path, $name);
-                $translations = $this->loadFile($file, $translations);
-            }
-
-            $file = $this->getFile($locale, $this->app->get('path.config') . '/lang', 'custom');
-            $translations = $this->loadFile($file, $translations);
-
-            $translator = GettextTranslator::createFromTranslations($translations);
-            $this->translators[$locale] = $translator;
+        if (isset($this->translators[$locale])) {
+            return $this->translators[$locale];
         }
+
+        $names = ['default', 'additional'];
+
+        /** @var Translations $translations */
+        $translations = $this->app->call([Translations::class, 'create']);
+        $path = $this->app->get('path.lang');
+        foreach ($names as $name) {
+            $file = $this->getFile($locale, $path, $name);
+            $translations = $this->loadFile($file, $translations);
+        }
+
+        $file = $this->getFile($locale, $this->app->get('path.config') . '/lang', 'custom');
+        $translations = $this->loadFile($file, $translations);
+
+        /** @var GettextTranslator $translator */
+        $translator = GettextTranslator::createFromTranslations($translations);
+        $this->translators[$locale] = $translator;
 
         return $this->translators[$locale];
     }

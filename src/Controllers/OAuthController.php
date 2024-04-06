@@ -51,6 +51,7 @@ class OAuthController extends BaseController
             throw new HttpNotFound('oauth.' . $request->get('error'));
         }
 
+        // Initial request redirects to provider
         if (!$request->has('code')) {
             $authorizationUrl = $provider->getAuthorizationUrl(
                 [
@@ -64,6 +65,7 @@ class OAuthController extends BaseController
             return $this->redirect->to($authorizationUrl);
         }
 
+        // Redirected URL got called a second time
         if (
             !$this->session->get('oauth2_state')
             || $request->get('state') !== $this->session->get('oauth2_state')
@@ -75,6 +77,7 @@ class OAuthController extends BaseController
             throw new HttpNotFound('oauth.invalid-state');
         }
 
+        // Fetch access token
         $accessToken = null;
         try {
             $accessToken = $provider->getAccessToken(
@@ -87,6 +90,7 @@ class OAuthController extends BaseController
             $this->handleOAuthError($e, $providerName);
         }
 
+        // Load resource identifier
         $resourceOwner = null;
         try {
             $resourceOwner = $provider->getResourceOwner($accessToken);
@@ -95,6 +99,7 @@ class OAuthController extends BaseController
         }
         $resourceId = $this->getId($providerName, $resourceOwner);
 
+        // Fetch existing oauth state
         /** @var OAuth|null $oauth */
         $oauth = $this->oauth
             ->query()
@@ -105,6 +110,7 @@ class OAuthController extends BaseController
             ->where('identifier', '===', (string) $resourceId)
             ->first();
 
+        // Update oauth state
         $expirationTime = $accessToken->getExpires();
         $expirationTime = $expirationTime ? Carbon::createFromTimestamp($expirationTime) : null;
         if ($oauth) {
@@ -115,6 +121,7 @@ class OAuthController extends BaseController
             $oauth->save();
         }
 
+        // Load user
         $user = $this->auth->user();
         if ($oauth && $user && $user->id != $oauth->user_id) {
             throw new HttpNotFound('oauth.already-connected');
@@ -122,6 +129,7 @@ class OAuthController extends BaseController
 
         $connectProvider = $this->session->get('oauth2_connect_provider');
         $this->session->remove('oauth2_connect_provider');
+        // Connect user with oauth
         if (!$oauth && $user && $connectProvider && $connectProvider == $providerName) {
             $oauth = new OAuth([
                 'provider'      => $providerName,
@@ -141,6 +149,7 @@ class OAuthController extends BaseController
             $this->addNotification('oauth.connected');
         }
 
+        // Load user data
         $resourceData = $resourceOwner->toArray();
         if (!empty($config['nested_info'])) {
             $resourceData = Arr::dot($resourceData);
@@ -148,6 +157,7 @@ class OAuthController extends BaseController
 
         $userdata = new Collection($resourceData);
         if (!$oauth) {
+            // User authenticated but has no account
             return $this->redirectRegister(
                 $providerName,
                 (string) $resourceId,
@@ -307,11 +317,13 @@ class OAuthController extends BaseController
             throw new HttpNotFound('oauth.not-found');
         }
 
+        // Set registration form field data
         $this->session->set('form-data-username', $userdata->get($config['username']));
         $this->session->set('form-data-email', $userdata->get($config['email']));
         $this->session->set('form-data-firstname', $userdata->get($config['first_name']));
         $this->session->set('form-data-lastname', $userdata->get($config['last_name']));
 
+        // Define OAuth state
         $this->session->set('oauth2_groups', $userdata->get($config['groups'], []));
         $this->session->set('oauth2_connect_provider', $providerName);
         $this->session->set('oauth2_user_id', $providerUserIdentifier);

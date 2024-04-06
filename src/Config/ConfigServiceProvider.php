@@ -14,9 +14,16 @@ class ConfigServiceProvider extends ServiceProvider
 {
     protected array $configFiles = ['app.php', 'config.default.php', 'config.php'];
 
-    # remember to update ConfigServiceProviderTest, config.default.php, and README.md
-    protected array $configVarsToPruneNulls
-        = ['themes', 'tshirt_sizes', 'headers', 'header_items', 'footer_items', 'locales', 'contact_options'];
+    // Remember to update ConfigServiceProviderTest, config.default.php, and README.md
+    protected array $configVarsToPruneNulls = [
+        'themes',
+        'tshirt_sizes',
+        'headers',
+        'header_items',
+        'footer_items',
+        'locales',
+        'contact_options',
+    ];
 
     public function __construct(Application $app, protected ?EventConfig $eventConfig = null)
     {
@@ -29,6 +36,7 @@ class ConfigServiceProvider extends ServiceProvider
         $this->app->instance(Config::class, $config);
         $this->app->instance('config', $config);
 
+        // Load configuration from files
         foreach ($this->configFiles as $file) {
             $file = $this->getConfigPath($file);
 
@@ -47,6 +55,7 @@ class ConfigServiceProvider extends ServiceProvider
             throw new Exception('Configuration not found');
         }
 
+        // Prune values with null to remove them
         foreach ($this->configVarsToPruneNulls as $key) {
             $config->set($key, array_filter($config->get($key), function ($v) {
                 return !is_null($v);

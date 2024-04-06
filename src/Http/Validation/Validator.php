@@ -37,6 +37,7 @@ class Validator
             $value = isset($data[$key]) ? $data[$key] : null;
             $values = explode('|', $values);
 
+            // Rules that have side effects on others like inverting the result with not and making them optional
             $packing = [];
             foreach ($this->nestedRules as $rule) {
                 if (in_array($rule, $values)) {
