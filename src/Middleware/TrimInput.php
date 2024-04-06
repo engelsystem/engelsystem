@@ -35,7 +35,6 @@ class TrimInput implements MiddlewareInterface
             $request = $request->withParsedBody($trimmedParsedBody);
         }
 
-
         return $handler->handle($request);
     }
 

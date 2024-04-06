@@ -70,6 +70,7 @@ class FeedController extends BaseController
             $shift = $entry->shift;
             // Data required for the Fahrplan app integration https://github.com/johnjohndoe/engelsystem
             // See engelsystem-base/src/main/kotlin/info/metadude/kotlin/library/engelsystem/models/Shift.kt
+            // Explicitly typecasts used to stay consistent
             // ! All attributes not defined in $data might change at any time !
             $data = [
                 // Name of the shift (type)

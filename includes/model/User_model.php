@@ -128,11 +128,14 @@ function User_get_shifts_sum_query()
         '
             COALESCE(SUM(
                 (1 + (
+                    /* Starts during night */
                     HOUR(shifts.start) >= %1$d AND HOUR(shifts.start) < %2$d
+                    /* Ends during night */
                     OR (
                         HOUR(shifts.end) > %1$d
                         || HOUR(shifts.end) = %1$d AND MINUTE(shifts.end) > 0
                     ) AND HOUR(shifts.end) <= %2$d
+                    /* Starts before and ends after night */
                     OR HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d
                 ))
                 * (UNIX_TIMESTAMP(shifts.end) - UNIX_TIMESTAMP(shifts.start))

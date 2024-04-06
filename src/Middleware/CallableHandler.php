@@ -12,6 +12,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+/**
+ * Wraps a callable to be used to respond / as a middleware
+ */
 class CallableHandler implements MiddlewareInterface, RequestHandlerInterface
 {
     /** @var callable */

@@ -41,7 +41,7 @@ class UrlGenerator implements UrlGeneratorInterface
     }
 
     /**
-     * Prepend the auto detected or configured app base path and domain
+     * Prepend the auto-detected or configured app base path and domain
      *
      * @param $path
      */

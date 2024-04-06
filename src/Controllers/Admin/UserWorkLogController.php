@@ -69,6 +69,7 @@ class UserWorkLogController extends BaseController
             'comment' => 'required|max:200',
         ]);
 
+        // Search / create worklog
         if (isset($worklogId)) {
             $worklog = $this->worklog->findOrFail((int) $worklogId);
 

@@ -115,7 +115,7 @@ class RegistrationController extends BaseController
     }
 
     /**
-     * @return Array<string, 1> Checkbox field name/Id →  1
+     * @return Array<string, 1> Checkbox field name/id →  1
      */
     private function determinePreselectedAngelTypes(): array
     {
