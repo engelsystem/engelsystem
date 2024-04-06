@@ -88,6 +88,11 @@ docker compose exec es_workspace yarn build:watch
 docker compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
 
+It might also be useful to have an interactive database interface for which a phpMyAdmin instance can be startet at [http://localhost:8888](http://localhost:8888).
+```bash
+docker compose --profile dev up
+```
+
 ## Localhost
 You can find your local Engelsystem on [http://localhost:5080](http://localhost:5080).
 
