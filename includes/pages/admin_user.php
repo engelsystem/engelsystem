@@ -140,9 +140,14 @@ function admin_user()
         }
 
         // Forced active?
-        if (auth()->can('admin_active') && config('enable_force_active')) {
+        if (config('enable_force_active')) {
             $html .= '  <tr><td>' . __('Force active') . '</td><td>' . "\n";
-            $html .= html_options('force_active', $options, $user_source->state->force_active) . '</td></tr>' . "\n";
+            if (auth()->can('user.fa.edit')) {
+                $html .= html_options('force_active', $options, $user_source->state->force_active);
+            } else {
+                $html .= ($user_source->state->force_active ? __('Yes') : __('No'));
+            }
+            $html .= '</td></tr>' . "\n";
         }
 
         if ($goodie_enabled && $user_edit_shirt) {
@@ -341,7 +346,7 @@ function admin_user()
                 if ($user_edit_shirt) {
                     $user_source->state->active = $request->postData('eAktiv');
                 }
-                if (auth()->can('admin_active') && config('enable_force_active')) {
+                if (auth()->can('user.fa.edit') && config('enable_force_active')) {
                     $user_source->state->force_active = $request->input('force_active');
                 }
                 $user_source->state->save();

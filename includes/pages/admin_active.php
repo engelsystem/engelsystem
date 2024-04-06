@@ -255,9 +255,9 @@ function admin_active()
         $userData['work_time'] = sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h';
         $userData['score'] = round($usr['shift_length'] / 60)
             . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
-        $userData['active'] = icon_bool($usr->state->active == 1);
-        $userData['force_active'] = icon_bool($usr->state->force_active == 1);
-        $userData['tshirt'] = icon_bool($usr->state->got_shirt == 1);
+        $userData['active'] = icon_bool($usr->state->active);
+        $userData['force_active'] = icon_bool($usr->state->force_active);
+        $userData['tshirt'] = icon_bool($usr->state->got_shirt);
         $userData['shift_count'] = $usr['shift_count'];
 
         $actions = [];
