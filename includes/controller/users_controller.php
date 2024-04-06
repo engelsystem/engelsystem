@@ -271,7 +271,7 @@ function user_controller()
             $shifts,
             $user->id == $user_source->id,
             $tshirt_score,
-            auth()->can('admin_active'),
+            auth()->can('user.edit.shirt'),
             auth()->can('admin_user_worklog'),
             $worklogs,
             auth()->can('user.ifsg.edit')
