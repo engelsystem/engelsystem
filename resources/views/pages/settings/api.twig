@@ -50,7 +50,10 @@
                 {{ csrf() }}
                 {{ f.submit(
                     __('settings.api.key_reset'),
-                    { 'size': 'sm', 'icon_left': 'arrow-repeat', 'confirm_text': __('settings.api.key_reset_confirm') }
+                    {
+                        'size': 'sm', 'btn_type': 'danger',
+                        'icon_left': 'arrow-repeat', 'confirm_text': __('settings.api.key_reset_confirm')
+                    }
                 ) }}
             </form>
 
@@ -77,9 +80,13 @@
             {% if has_permission_to('atom') %}
                 <p id="news_hide" class="collapse" data-bs-parent="#exports_hide">
                     <code>{{ url('/atom', {'key': user.api_key}) }}</code>
-                    <code>{{ url('/atom', {'meetings': 1, 'key': user.api_key}) }}</code>
-                    <code>{{ url('/rss', {'key': user.api_key}) }}</code>
-                    <code>{{ url('/rss', {'meetings': 1, 'key': user.api_key}) }}</code>
+                    {% if has_permission_to('user_meetings') %}
+                        <br><code>{{ url('/atom', {'meetings': 1, 'key': user.api_key}) }}</code>
+                    {% endif %}
+                    <br><code>{{ url('/rss', {'key': user.api_key}) }}</code>
+                    {% if has_permission_to('user_meetings') %}
+                        <br><code>{{ url('/rss', {'meetings': 1, 'key': user.api_key}) }}</code>
+                    {% endif %}
                 </p>
             {% endif %}
 
@@ -88,7 +95,15 @@
 
     <div class="row">
         <div class="col-md-12">
-            {{ __('settings.api.about', [url('/api/v0-beta'), url('/api/v0-beta/openapi')])|markdown|nl2br }}
+            {% if has_permission_to('api') %}
+                {{ __('settings.api.about', [
+                    config('app_name'),
+                    url('/api/v0-beta'),
+                    url('/api/v0-beta/openapi')
+                ])|markdown|nl2br }}
+            {% endif %}
+
+            {{ __('settings.api.about.warning')|markdown|nl2br }}
         </div>
     </div>
 
