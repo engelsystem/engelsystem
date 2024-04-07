@@ -97,24 +97,7 @@ class Authenticator
         $abilities = (array) $abilities;
 
         if (empty($this->permissions)) {
-            $user = $this->user();
-
-            if ($user) {
-                $this->permissions = $user->privileges->pluck('name')->toArray();
-
-                if ($user->last_login_at < Carbon::now()->subMinutes(5) && !$this->isApiRequest()) {
-                    $user->last_login_at = Carbon::now();
-                    $user->save(['touch' => false]);
-                }
-            } elseif ($this->session->get('user_id')) {
-                $this->session->remove('user_id');
-            }
-
-            if (empty($this->permissions)) {
-                /** @var Group $group */
-                $group = Group::find($this->guestRole);
-                $this->permissions = $group->privileges->pluck('name')->toArray();
-            }
+            $this->loadPermissions();
         }
 
         foreach ($abilities as $ability) {
@@ -124,6 +107,22 @@ class Authenticator
         }
 
         return true;
+    }
+
+    /**
+     * @param string[]|string $abilities
+     */
+    public function canAny(array|string $abilities): bool
+    {
+        $abilities = (array) $abilities;
+
+        foreach ($abilities as $ability) {
+            if ($this->can($ability)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function authenticate(string $login, string $password): ?User
@@ -247,5 +246,27 @@ class Authenticator
     public function setGuestRole(int $guestRole): void
     {
         $this->guestRole = $guestRole;
+    }
+
+    protected function loadPermissions(): void
+    {
+        $user = $this->user();
+
+        if ($user) {
+            $this->permissions = $user->privileges->pluck('name')->toArray();
+
+            if ($user->last_login_at < Carbon::now()->subMinutes(5) && !$this->isApiRequest()) {
+                $user->last_login_at = Carbon::now();
+                $user->save(['touch' => false]);
+            }
+        } elseif ($this->session->get('user_id')) {
+            $this->session->remove('user_id');
+        }
+
+        if (empty($this->permissions)) {
+            /** @var Group $group */
+            $group = Group::find($this->guestRole);
+            $this->permissions = $group->privileges->pluck('name')->toArray();
+        }
     }
 }

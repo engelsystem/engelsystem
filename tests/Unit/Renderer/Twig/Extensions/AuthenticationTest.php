@@ -26,6 +26,7 @@ class AuthenticationTest extends ExtensionTest
         $this->assertExtensionExists('is_user', [$extension, 'isAuthenticated'], $functions);
         $this->assertExtensionExists('is_guest', [$extension, 'isGuest'], $functions);
         $this->assertExtensionExists('has_permission_to', [$auth, 'can'], $functions);
+        $this->assertExtensionExists('has_permission_to_any', [$auth, 'canAny'], $functions);
     }
 
     /**

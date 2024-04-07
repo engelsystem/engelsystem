@@ -677,11 +677,7 @@ function User_view(
                             url('/shifts-json-export', ['key' => $user_source->api_key]),
                             icon('braces') . __('JSON Export')
                         ) : '',
-                        (
-                            $auth->can('shifts_json_export')
-                            || $auth->can('ical')
-                            || $auth->can('atom')
-                        ) ? button(
+                        $auth->canAny(['shifts_json_export', 'ical', 'atom']) ? button(
                             url('/user-myshifts', ['reset' => 1]),
                             icon('arrow-repeat') . __('Reset API key')
                         ) : '',

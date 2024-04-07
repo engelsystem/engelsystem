@@ -64,7 +64,7 @@ class UserSettingsControllerTest extends ControllerTest
     public function testCertificateByPermission(): void
     {
         config(['ifsg_enabled' => true]);
-        $this->setExpects($this->auth, 'can', ['user.ifsg.edit'], true, $this->atLeastOnce());
+        $this->setExpects($this->auth, 'canAny', [['user.ifsg.edit', 'user.drive.edit']], true, $this->atLeastOnce());
 
         $this->response->expects($this->once())
             ->method('withView')

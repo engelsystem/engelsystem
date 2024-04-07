@@ -102,8 +102,7 @@ class NewsController extends BaseController
         $comment = $this->comment->findOrFail($commentId);
         if (
             $comment->user->id != $this->auth->user()->id
-            && !$this->auth->can('admin_news')
-            && !$this->auth->can('comment.delete')
+            && !$this->auth->canAny(['admin_news', 'comment.delete'])
         ) {
             throw new HttpForbidden();
         }
