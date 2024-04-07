@@ -516,11 +516,14 @@ msgstr "API"
 
 msgid "settings.api.about"
 msgstr ""
-"The API allows you to interact with the Engelsystem by using external programs. "
+"The API allows you to interact with the %s by using external programs. "
 "It's not complete but we are working on extending it.\n"
-"The API endpoint is located at `%s` and described in the [OpenAPI specification](%s).\n"
+"The endpoint of the API is located at `%s` and described in the [OpenAPI specification](%s).\n"
+
+msgid "settings.api.about.warning"
+msgstr ""
 "Don't share your personal API key with anyone as it can be used to view your personal data "
-"and do changes your behalf!"
+"and do changes on your behalf!"
 
 msgid "settings.api.shifts_json_show"
 msgstr "Show JSON shifts export"

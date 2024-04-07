@@ -41,21 +41,7 @@ function user_myshifts()
     }
 
     $shifts_user = User::find($shift_entry_id);
-    if ($request->has('reset')) {
-        if ($request->input('reset') == 'ack') {
-            auth()->resetApiKey($user);
-            engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user, true)));
-            success(__('Key changed.'));
-            throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
-        }
-        return page_with_title(__('Reset API key'), [
-            error(
-                __('If you reset the key, the url to your iCal- and JSON-export and your atom/rss feed changes! You have to update it in every application using one of these exports.'),
-                true
-            ),
-            button(url('/user-myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger'),
-        ]);
-    } elseif ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
+    if ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
         $shift_entry_id = $request->input('edit');
         /** @var ShiftEntry $shiftEntry */
         $shiftEntry = ShiftEntry::where('id', $shift_entry_id)

@@ -23,8 +23,8 @@ class SettingsController extends BaseController
     /** @var string[] */
     protected array $permissions = [
         'user_settings',
-        'api' => 'api',
-        'apiKeyReset' => 'api',
+        'api' => 'api||shifts_json_export||ical||atom',
+        'apiKeyReset' => 'api||shifts_json_export||ical||atom',
     ];
 
     public function __construct(
@@ -414,7 +414,7 @@ class SettingsController extends BaseController
             $menu[url('/settings/oauth')] = ['title' => 'settings.oauth', 'hidden' => $this->checkOauthHidden()];
         }
 
-        if ($this->auth->can('api')) {
+        if ($this->auth->canAny(['api', 'shifts_json_export', 'ical', 'atom'])) {
             $menu[url('/settings/api')] = ['title' => 'settings.api', 'icon' => 'braces'];
         }
 

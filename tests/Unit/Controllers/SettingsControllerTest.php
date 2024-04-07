@@ -1065,7 +1065,7 @@ class SettingsControllerTest extends ControllerTest
      */
     public function testSettingsMenuApi(): void
     {
-        $this->setExpects($this->auth, 'can', ['api'], true, $this->atLeastOnce());
+        $this->setExpects($this->auth, 'canAny', null, true, $this->atLeastOnce());
 
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/profile', $menu);
