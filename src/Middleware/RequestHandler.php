@@ -8,6 +8,7 @@ use Engelsystem\Application;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -103,8 +104,14 @@ class RequestHandler implements MiddlewareInterface
                 continue;
             }
 
-            if (!$auth->can($permission)) {
-                throw new HttpForbidden();
+            foreach ((array) $permission as $value) {
+                if (
+                    Str::contains($value, '||')
+                        ? !$auth->canAny(explode('||', $value))
+                        : !$auth->can($permission)
+                ) {
+                    throw new HttpForbidden();
+                }
             }
         }
 

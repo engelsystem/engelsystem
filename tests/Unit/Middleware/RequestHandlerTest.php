@@ -7,11 +7,13 @@ namespace Engelsystem\Test\Unit\Middleware;
 use Engelsystem\Application;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Engelsystem\Http\Request;
+use Engelsystem\Http\Response;
 use Engelsystem\Middleware\CallableHandler;
 use Engelsystem\Middleware\RequestHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ControllerImplementation;
+use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -210,6 +212,54 @@ class RequestHandlerTest extends TestCase
         $class->setPermissions(array_merge(['not.existing.permission'], $hasPermissions));
         $this->expectException(HttpForbidden::class);
         $middleware->process($request, $handler);
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\RequestHandler::checkPermissions
+     */
+    public function testCheckPermissionsAnyForbidden(): void
+    {
+        /** @var RequestHandlerInterface|MockObject $handler */
+        list(, , $handler) = $this->getMocks();
+        $this->app->instance('response', new Response());
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $this->setExpects($auth, 'canAny', [['foo', 'bar', 'baz']], false);
+        $this->app->instance('auth', $auth);
+
+        $controller = new ControllerImplementation();
+        $request = (new Request())
+            ->withAttribute('route-request-handler', [$controller, 'actionStub']);
+
+        $middleware = new RequestHandler($this->app);
+
+        $controller->setPermissions(['foo||bar||baz']);
+        $this->expectException(HttpForbidden::class);
+        $middleware->process($request, $handler);
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\RequestHandler::checkPermissions
+     */
+    public function testCheckPermissionsAny(): void
+    {
+        /** @var RequestHandlerInterface|MockObject $handler */
+        list(, , $handler) = $this->getMocks();
+        $this->app->instance('response', new Response());
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $this->setExpects($auth, 'canAny', [['foo', 'bar', 'baz']], true);
+        $this->app->instance('auth', $auth);
+
+        $controller = new ControllerImplementation();
+        $request = (new Request())
+            ->withAttribute('route-request-handler', [$controller, 'actionStub']);
+
+        $middleware = new RequestHandler($this->app);
+
+        $controller->setPermissions(['actionStub' => 'foo||bar||baz']);
+        $response = $middleware->process($request, $handler);
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     protected function getMocks(): array
