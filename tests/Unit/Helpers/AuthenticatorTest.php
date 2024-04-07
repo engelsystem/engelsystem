@@ -227,6 +227,7 @@ class AuthenticatorTest extends ServiceProviderTest
 
     /**
      * @covers \Engelsystem\Helpers\Authenticator::can
+     * @covers \Engelsystem\Helpers\Authenticator::loadPermissions
      * @covers \Engelsystem\Helpers\Authenticator::isApiRequest
      */
     public function testCan(): void
@@ -252,11 +253,15 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertTrue($auth->can('bar'));
 
         // Permissions cached
-        $this->assertTrue($auth->can('bar'));
+        $this->assertTrue($auth->can(['bar']));
+
+        // Can not
+        $this->assertFalse($auth->can(['nope']));
     }
 
     /**
      * @covers \Engelsystem\Helpers\Authenticator::can
+     * @covers \Engelsystem\Helpers\Authenticator::loadPermissions
      */
     public function testCanUnauthorized(): void
     {
@@ -273,6 +278,34 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertFalse($auth->can('foo'));
         // Old/invalid user id got removed
         $this->assertNull($session->get('user_id'));
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::canAny
+     */
+    public function testCanAny(): void
+    {
+        $this->initDatabase();
+
+        $request = new Request();
+        $this->app->instance('request', $request);
+        $session = new Session(new MockArraySessionStorage());
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Group $group */
+        $group = Group::factory()->create();
+        /** @var Privilege $privilege */
+        $privilege = Privilege::factory()->create(['name' => 'bar']);
+
+        $user->groups()->attach($group);
+        $group->privileges()->attach($privilege);
+
+        $auth = new Authenticator($request, $session, new User());
+        $session->set('user_id', $user->id);
+
+        $this->assertTrue($auth->canAny('bar'));
+        $this->assertTrue($auth->canAny(['foo', 'bar', 'baz']));
+        $this->assertFalse($auth->canAny(['lorem', 'ipsum']));
     }
 
     /**

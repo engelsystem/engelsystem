@@ -38,8 +38,7 @@ class UserSettingsController extends BaseController
 
         if (
             !(
-                $this->auth->can('user.ifsg.edit')
-                || $this->auth->can('user.drive.edit')
+                $this->auth->canAny(['user.ifsg.edit', 'user.drive.edit'])
                 || $this->isDriverLicenseSupporter()
                 || $this->isIfsgSupporter()
             )
@@ -158,9 +157,8 @@ class UserSettingsController extends BaseController
                 'title' => 'settings.certificates',
                 'icon' => 'card-checklist',
                 'permission' => (
-                    $this->auth->can('user.ifsg.edit')
+                    $this->auth->canAny(['user.ifsg.edit', 'user.drive.edit'])
                     || $this->isIfsgSupporter()
-                    || $this->auth->can('user.drive.edit')
                     || $this->isDriverLicenseSupporter()
                 ) ? null : '_',
             ];
