@@ -122,43 +122,38 @@ function admin_user()
 
         // Arrived?
         $html .= '  <tr><td>' . __('user.arrived') . '</td><td>' . "\n";
-        if ($admin_arrive) {
-            $html .= html_options('arrive', $options, $user_source->state->arrived) . '</td></tr>' . "\n";
-        } else {
-            $html .= ($user_source->state->arrived ? __('Yes') : __('No'));
-            $html .= '</td></tr>' . "\n";
-        }
+        $html .= $admin_arrive
+            ? html_options('arrive', $options, $user_source->state->arrived)
+            : icon_bool($user_source->state->arrived);
+        $html .= '</td></tr>' . "\n";
 
         // Active?
-        if ($user_edit_shirt) {
-            $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
-            $html .= html_options('eAktiv', $options, $user_source->state->active) . '</td></tr>' . "\n";
-        } else {
-            $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
-            $html .= ($user_source->state->active ? __('Yes') : __('No'));
-            $html .= '</td></tr>' . "\n";
-        }
+        $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
+        $html .= $user_edit_shirt
+            ? html_options('eAktiv', $options, $user_source->state->active)
+            : icon_bool($user_source->state->active);
+        $html .= '</td></tr>' . "\n";
 
         // Forced active?
         if (config('enable_force_active')) {
             $html .= '  <tr><td>' . __('Force active') . '</td><td>' . "\n";
-            if (auth()->can('user.fa.edit')) {
-                $html .= html_options('force_active', $options, $user_source->state->force_active);
-            } else {
-                $html .= ($user_source->state->force_active ? __('Yes') : __('No'));
-            }
+            $html .= auth()->can('user.fa.edit')
+                ? html_options('force_active', $options, $user_source->state->force_active)
+                : icon_bool($user_source->state->force_active);
             $html .= '</td></tr>' . "\n";
         }
 
-        if ($goodie_enabled && $user_edit_shirt) {
+        if ($goodie_enabled) {
             // T-Shirt bekommen?
-            if ($goodie_tshirt) {
-                $html .= '  <tr><td>' . __('T-shirt') . '</td><td>' . "\n";
-            } else {
-                $html .= '  <tr><td>' . __('Goodie') . '</td><td>' . "\n";
-            }
-            $html .= html_options('eTshirt', $options, $user_source->state->got_shirt) . '</td></tr>' . "\n";
+            $html .= '  <tr><td>'
+                . ($goodie_tshirt ? __('T-shirt') : __('Goodie'))
+                . '</td><td>' . "\n";
+            $html .= $user_edit_shirt
+                ? html_options('eTshirt', $options, $user_source->state->got_shirt)
+                : icon_bool($user_source->state->got_shirt);
+            $html .= '</td></tr>' . "\n";
         }
+
         $html .= '</table>' . "\n" . '</td><td></td></tr>';
 
         $html .= '</td></tr>' . "\n";
