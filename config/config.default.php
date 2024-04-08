@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 // To change settings create a config.php
 
+function env_password($var) {
+    $filename = env("{$var}_FILE", null);
+    if ($filename) {
+        return file_get_contents($filename);
+    }
+    return env($var, null);
+}
+
 return [
     // MySQL-Connection Settings
     'database'                => [
         'host'     => env('MYSQL_HOST', (env('CI', false) ? 'mariadb' : 'localhost')),
         'database' => env('MYSQL_DATABASE', 'engelsystem'),
         'username' => env('MYSQL_USER', 'root'),
-        'password' => env('MYSQL_PASSWORD', (env('MYSQL_PASSWORD_FILE', '') ? file_get_contents(env('MYSQL_PASSWORD_FILE')) : '')),
+        'password' => env_password('MYSQL_PASSWORD'),
     ],
 
     // For accessing /metrics (and /stats)
@@ -81,7 +89,7 @@ return [
         // If tls transport encryption should be used
         'tls'        => env('MAIL_TLS', null),
         'username'   => env('MAIL_USERNAME'),
-        'password'   => env('MAIL_PASSWORD'),
+        'password'   => env_password('MAIL_PASSWORD'),
         'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
     ],
 
@@ -89,7 +97,7 @@ return [
     'privacy_email' => env('PRIVACY_EMAIL', null),
 
     // Initial admin password
-    'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),
+    'setup_admin_password'    => env_password('SETUP_ADMIN_PASSWORD'),
 
     'oauth'                   => [
         // '[name]' => [config]
