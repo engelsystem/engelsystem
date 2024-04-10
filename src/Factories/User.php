@@ -86,7 +86,7 @@ class User
             'email_by_human_allowed' => 'optional|checked',
             'email_messages' => 'optional|checked',
             'email_news' => 'optional|checked',
-            'email_goody' => 'optional|checked',
+            'email_goodie' => 'optional|checked',
             // Using length here, because min/max would validate dect/mobile as numbers.
             'mobile' => $this->isRequired('mobile') . '|length:0:40',
         ];
@@ -255,7 +255,7 @@ class User
             'theme'           => $this->config->get('theme'),
             'email_human'     => $data['email_by_human_allowed'] ?? false,
             'email_messages'  => $data['email_messages'] ?? false,
-            'email_goody'     => $data['email_goody'] ?? false,
+            'email_goodie'     => $data['email_goodie'] ?? false,
             'email_shiftinfo' => $data['email_shiftinfo'] ?? false,
             'email_news'      => $data['email_news'] ?? false,
             'mobile_show'     => $isShowMobileEnabled && $data['mobile_show'],
