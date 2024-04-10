@@ -612,9 +612,6 @@ msgstr "Edit T-shirt"
 msgid "user.edit.goodie"
 msgstr "Edit goodie"
 
-msgid "form.shirt"
-msgstr "T-shirt"
-
 msgid "user.shirt_size"
 msgstr "T-shirt size"
 

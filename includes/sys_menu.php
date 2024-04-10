@@ -28,7 +28,7 @@ function header_render_hints()
         $hints_renderer->addHint(render_user_pronoun_hint(), true);
         $hints_renderer->addHint(render_user_firstname_hint(), true);
         $hints_renderer->addHint(render_user_lastname_hint(), true);
-        $hints_renderer->addHint(render_user_tshirt_hint(), true);
+        $hints_renderer->addHint(render_user_goodie_hint(), true);
         $hints_renderer->addHint(render_user_dect_hint(), true);
         $hints_renderer->addHint(render_user_mobile_hint(), true);
 

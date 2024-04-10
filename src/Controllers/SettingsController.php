@@ -113,7 +113,7 @@ class SettingsController extends BaseController
         if (
             $goodie_tshirt
             && isset(config('tshirt_sizes')[$data['shirt_size'] ?? ''])
-            && !$user->state->got_shirt
+            && !$user->state->got_goodie
         ) {
             $user->personalData->shirt_size = $data['shirt_size'];
         }
@@ -477,7 +477,7 @@ class SettingsController extends BaseController
             $rules['planned_arrival_date'] = 'required|date:Y-m-d';
             $rules['planned_departure_date'] = 'optional|date:Y-m-d';
         }
-        if ($goodie_tshirt && !$user->state->got_shirt) {
+        if ($goodie_tshirt && !$user->state->got_goodie) {
             $rules['shirt_size'] = $this->isRequired('tshirt_size') . '|shirt_size';
         }
         return $rules;

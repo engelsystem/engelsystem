@@ -25,7 +25,7 @@ class StateFactory extends Factory
             'user_info'    => $this->faker->optional(.1)->text(),
             'active'       => $this->faker->boolean(.3),
             'force_active' => $this->faker->boolean(.1),
-            'got_shirt'    => $this->faker->boolean(),
+            'got_goodie'   => $this->faker->boolean(),
             'got_voucher'  => $this->faker->numberBetween(0, 10),
         ];
     }

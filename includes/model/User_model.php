@@ -13,17 +13,17 @@ use Illuminate\Support\Collection;
  */
 
 /**
- * Returns the tshirt score (number of hours counted for tshirt).
+ * Returns the goodie score (number of hours counted for tshirt).
  * Accounts only ended shifts.
  *
  * @param int $userId
- * @return int
+ * @return float
  */
-function User_tshirt_score($userId)
+function User_goodie_score(int $userId): float
 {
     $shift_sum_formula = User_get_shifts_sum_query();
     $result_shifts = Db::selectOne(sprintf('
-        SELECT ROUND((%s) / 3600, 2) AS `tshirt_score`
+        SELECT ROUND((%s) / 3600, 2) AS `goodie_score`
         FROM `users` LEFT JOIN `shift_entries` ON `users`.`id` = `shift_entries`.`user_id`
         LEFT JOIN `shifts` ON `shift_entries`.`shift_id` = `shifts`.`id`
         WHERE `users`.`id` = ?
@@ -32,8 +32,8 @@ function User_tshirt_score($userId)
     ', $shift_sum_formula), [
         $userId,
     ]);
-    if (!isset($result_shifts['tshirt_score'])) {
-        $result_shifts = ['tshirt_score' => 0];
+    if (!isset($result_shifts['goodie_score'])) {
+        $result_shifts = ['goodie_score' => 0];
     }
 
     $worklogHours = Worklog::query()
@@ -41,7 +41,7 @@ function User_tshirt_score($userId)
         ->where('worked_at', '<=', Carbon::Now())
         ->sum('hours');
 
-    return $result_shifts['tshirt_score'] + $worklogHours;
+    return $result_shifts['goodie_score'] + $worklogHours;
 }
 
 /**

@@ -252,12 +252,12 @@ $route->addGroup(
         $route->addGroup(
             '/user/{user_id:\d+}',
             function (RouteCollector $route): void {
-                // Shirts
+                // Goodies
                 $route->addGroup(
                     '/goodie',
                     function (RouteCollector $route): void {
-                        $route->get('', 'Admin\\UserShirtController@editShirt');
-                        $route->post('', 'Admin\\UserShirtController@saveShirt');
+                        $route->get('', 'Admin\\UserGoodieController@editGoodie');
+                        $route->post('', 'Admin\\UserGoodieController@saveGoodie');
                     }
                 );
 
