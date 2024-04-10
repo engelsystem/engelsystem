@@ -135,12 +135,12 @@
                 }) }}
                 {% if goodie_enabled %}
                     {% set privacy_email = config('privacy_email') %}
-                    {% set email_goody_label =
-                        (goodie_tshirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goody')) ~
+                    {% set email_goodie_label =
+                        (goodie_tshirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
                         (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
                     %}
-                    {{ f.checkbox('email_goody', email_goody_label, {
-                        'checked': userdata.settings.email_goody,
+                    {{ f.checkbox('email_goodie', email_goodie_label, {
+                        'checked': userdata.settings.email_goodie,
                         'raw_label': true,
                     }) }}
                 {% endif %}

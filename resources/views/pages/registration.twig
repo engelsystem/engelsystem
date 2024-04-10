@@ -196,16 +196,16 @@
                 {% if isGoodieEnabled %}
                     <div class="col-md-6">
                         {% set privacy_email = config('privacy_email') %}
-                        {% set email_goody_label =
-                            (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goody')) ~
+                        {% set email_goodie_label =
+                            (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
                             (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
                         %}
                         {{ f.checkbox(
-                            'email_goody',
-                            email_goody_label,
+                            'email_goodie',
+                            email_goodie_label,
                             {
                                 'raw_label': true,
-                                'checked': f.formData('email_goody', false),
+                                'checked': f.formData('email_goodie', false),
                             },
                         ) }}
                     </div>

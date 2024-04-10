@@ -89,7 +89,7 @@ return [
     'privacy_email' => env('PRIVACY_EMAIL'),
 
     // Show opt in to save some personal data after the event on user profile and registration pages
-    'enable_email_goody' => (bool) env('ENABLE_EMAIL_GOODY', true),
+    'enable_email_goodie' => (bool) env('ENABLE_EMAIL_GOODIE', true),
 
     // Initial admin password
     'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD'),

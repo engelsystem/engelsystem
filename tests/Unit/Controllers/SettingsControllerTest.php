@@ -56,7 +56,7 @@ class SettingsControllerTest extends ControllerTest
             'email_news'             => true,
             'email_human'            => true,
             'email_messages'         => true,
-            'email_goody'            => true,
+            'email_goodie'            => true,
             'shirt_size'             => 'S',
         ];
         $this->request = $this->request->withParsedBody($body);
@@ -74,7 +74,7 @@ class SettingsControllerTest extends ControllerTest
             'enable_planned_arrival' => true,
             'enable_dect'            => true,
             'enable_mobile_show'     => true,
-            'enable_email_goody'     => true,
+            'enable_email_goodie'     => true,
             'goodie_type'            => GoodieType::Tshirt->value,
         ]);
 
@@ -135,7 +135,7 @@ class SettingsControllerTest extends ControllerTest
         $this->assertEquals($body['email_news'], $this->user->settings->email_news);
         $this->assertEquals($body['email_human'], $this->user->settings->email_human);
         $this->assertEquals($body['email_messages'], $this->user->settings->email_messages);
-        $this->assertEquals($body['email_goody'], $this->user->settings->email_goody);
+        $this->assertEquals($body['email_goodie'], $this->user->settings->email_goodie);
         $this->assertEquals($body['shirt_size'], $this->user->personalData->shirt_size);
     }
 
@@ -221,12 +221,12 @@ class SettingsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\SettingsController::saveProfile
      */
-    public function testSaveProfileIgnoresEmailGoodyIfDisabled(): void
+    public function testSaveProfileIgnoresEmailGoodieIfDisabled(): void
     {
         $this->setUpProfileTest();
         $this->config->set('goodie_type', GoodieType::None->value);
         $this->controller->saveProfile($this->request);
-        $this->assertFalse($this->user->settings->email_goody);
+        $this->assertFalse($this->user->settings->email_goodie);
     }
 
     /**
@@ -1124,7 +1124,7 @@ class SettingsControllerTest extends ControllerTest
             ->has(Settings::factory([
                 'theme' => 1,
                 'language' => 'en_US',
-                'email_goody' => false,
+                'email_goodie' => false,
                 'mobile_show' => false,
             ]))
             ->has(License::factory())
