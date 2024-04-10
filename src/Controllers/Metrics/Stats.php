@@ -146,9 +146,9 @@ class Stats
         return $return;
     }
 
-    public function tshirts(): int
+    public function goodies(): int
     {
-        return State::whereGotShirt(true)->count();
+        return State::whereGotGoodie(true)->count();
     }
 
     public function tshirtSizes(): Collection

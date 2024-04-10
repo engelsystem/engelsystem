@@ -28,7 +28,7 @@ function admin_user()
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $user_info_edit = auth()->can('user.info.edit');
-    $user_edit_shirt = auth()->can('user.edit.shirt');
+    $user_goodie_edit = auth()->can('user.goodie.edit');
     $user_edit = auth()->can('user.edit');
     $admin_arrive = auth()->can('admin_arrive');
 
@@ -45,7 +45,7 @@ function admin_user()
         }
 
         $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
-        if ($goodie_enabled && $user_edit_shirt) {
+        if ($goodie_enabled && $user_goodie_edit) {
             if ($goodie_tshirt) {
                 $html .= ' ' . __('If the angel is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the angel already got their T-shirt.');
             } else {
@@ -89,7 +89,7 @@ function admin_user()
                 . '<input type="email" size="40" name="eemail" value="' . htmlspecialchars($user_source->email) . '" class="form-control" maxlength="254">'
                 . '</td></tr>' . "\n";
         }
-        if ($goodie_tshirt && $user_edit_shirt) {
+        if ($goodie_tshirt && $user_goodie_edit) {
             $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
                 . html_select_key(
                     'size',
@@ -129,7 +129,7 @@ function admin_user()
 
         // Active?
         $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
-        $html .= $user_edit_shirt
+        $html .= $user_goodie_edit
             ? html_options('eAktiv', $options, $user_source->state->active)
             : icon_bool($user_source->state->active);
         $html .= '</td></tr>' . "\n";
@@ -144,13 +144,13 @@ function admin_user()
         }
 
         if ($goodie_enabled) {
-            // T-Shirt bekommen?
+            // got goodie?
             $html .= '  <tr><td>'
                 . ($goodie_tshirt ? __('T-shirt') : __('Goodie'))
                 . '</td><td>' . "\n";
-            $html .= $user_edit_shirt
-                ? html_options('eTshirt', $options, $user_source->state->got_shirt)
-                : icon_bool($user_source->state->got_shirt);
+            $html .= $user_goodie_edit
+                ? html_options('eTshirt', $options, $user_source->state->got_goodie)
+                : icon_bool($user_source->state->got_goodie);
             $html .= '</td></tr>' . "\n";
         }
 
@@ -317,7 +317,7 @@ function admin_user()
                     $user_source->personalData->first_name = $request->postData('eVorname');
                     $user_source->personalData->last_name = $request->postData('eName');
                 }
-                if ($goodie_tshirt && $user_edit_shirt) {
+                if ($goodie_tshirt && $user_goodie_edit) {
                     $user_source->personalData->shirt_size = $request->postData('eSize');
                 }
                 $user_source->personalData->save();
@@ -328,8 +328,8 @@ function admin_user()
                 }
                 $user_source->contact->save();
 
-                if ($goodie_enabled && $user_edit_shirt) {
-                    $user_source->state->got_shirt = $request->postData('eTshirt');
+                if ($goodie_enabled && $user_goodie_edit) {
+                    $user_source->state->got_goodie = $request->postData('eTshirt');
                 }
                 if ($user_info_edit) {
                     $user_source->state->user_info = $request->postData('userInfo');
@@ -338,7 +338,7 @@ function admin_user()
                     $user_source->state->arrived = $request->postData('arrive');
                 }
 
-                if ($user_edit_shirt) {
+                if ($user_goodie_edit) {
                     $user_source->state->active = $request->postData('eAktiv');
                 }
                 if (auth()->can('user.fa.edit') && config('enable_force_active')) {
@@ -356,7 +356,7 @@ function admin_user()
                     . ', arrived: ' . $user_source->state->arrived
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
-                    . ($goodie_tshirt ? ', t-shirt: ' : ', goodie: ' . $user_source->state->got_shirt)
+                    . ($goodie_tshirt ? ', t-shirt: ' : ', goodie: ' . $user_source->state->got_goodie)
                     . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
                 );
                 $html .= success(__('Changes were saved.') . "\n", true);

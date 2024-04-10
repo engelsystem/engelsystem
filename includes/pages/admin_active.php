@@ -58,7 +58,7 @@ function admin_active()
 
         if ($request->hasPostData('ack')) {
             State::query()
-                ->where('got_shirt', '=', false)
+                ->where('got_goodie', '=', false)
                 ->update(['active' => false]);
 
             $query = User::query()
@@ -140,7 +140,7 @@ function admin_active()
             $user_id = $request->input('tshirt');
             $user_source = User::find($user_id);
             if ($user_source) {
-                $user_source->state->got_shirt = true;
+                $user_source->state->got_goodie = true;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has tshirt now.');
                 $msg = success(($goodie_tshirt ? __('Angel has got a T-shirt.') : __('Angel has got a goodie.')), true);
@@ -151,7 +151,7 @@ function admin_active()
             $user_id = $request->input('not_tshirt');
             $user_source = User::find($user_id);
             if ($user_source) {
-                $user_source->state->got_shirt = false;
+                $user_source->state->got_goodie = false;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO tshirt.');
                 $msg = success(($goodie_tshirt ? __('Angel has got no T-shirt.') : __('Angel has got no goodie.')), true);
@@ -257,7 +257,7 @@ function admin_active()
             . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
         $userData['active'] = icon_bool($usr->state->active);
         $userData['force_active'] = icon_bool($usr->state->force_active);
-        $userData['tshirt'] = icon_bool($usr->state->got_shirt);
+        $userData['tshirt'] = icon_bool($usr->state->got_goodie);
         $userData['shift_count'] = $usr['shift_count'];
 
         $actions = [];
@@ -291,7 +291,7 @@ function admin_active()
                 true
             );
         }
-        if (!$usr->state->got_shirt) {
+        if (!$usr->state->got_goodie) {
             $parametersShirt = [
                 'tshirt' => $usr->id,
                 'search' => $search,
@@ -309,7 +309,7 @@ function admin_active()
                 );
             }
         }
-        if ($usr->state->got_shirt) {
+        if ($usr->state->got_goodie) {
             $parameters = [
                 'not_tshirt' => $usr->id,
                 'search'     => $search,
@@ -343,7 +343,7 @@ function admin_active()
             $gc = State::query()
                 ->leftJoin('users_settings', 'users_state.user_id', '=', 'users_settings.user_id')
                 ->leftJoin('users_personal_data', 'users_state.user_id', '=', 'users_personal_data.user_id')
-                ->where('users_state.got_shirt', '=', true)
+                ->where('users_state.got_goodie', '=', true)
                 ->where('users_personal_data.shirt_size', '=', $size)
                 ->count();
             $goodie_statistics[] = [
@@ -355,7 +355,7 @@ function admin_active()
 
     $goodie_statistics[] = array_merge(
         ($goodie_tshirt ? ['size'  => '<b>' . __('Sum') . '</b>'] : []),
-        ['given' => '<b>' . State::whereGotShirt(true)->count() . '</b>']
+        ['given' => '<b>' . State::whereGotGoodie(true)->count() . '</b>']
     );
 
     return page_with_title(admin_active_title(), [
