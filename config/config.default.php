@@ -333,11 +333,11 @@ return [
     // Whether force active should be enabled
     'enable_force_active' => (bool) env('ENABLE_FORCE_ACTIVE', true),
 
-    // Resembles the Goodie Type. There are three options:
-    // 'none' => no goodie at all
-    // 'goodie' => a goodie which has no sizing options
-    // 'tshirt' => goodie that is called tshirt and has sizing options
-    'goodie_type'             => env('GOODIE_TYPE', 'goodie'),
+    // Resembles the Goody Type. There are three options:
+    // 'none' => no goody at all
+    // 'goody' => a goody which has no sizing options
+    // 'tshirt' => goody that is called tshirt and has sizing options
+    'goody_type'             => env('GOODY_TYPE', 'goody'),
 
     // Enables the food voucher in the user profile
     'enable_voucher'          => (bool) env('ENABLE_VOUCHER', true),
@@ -351,7 +351,7 @@ return [
     // Local timezone
     'timezone'                => env('TIMEZONE', 'Europe/Berlin'),
 
-    // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 8 exclusive) by 2 in goodie score
+    // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 8 exclusive) by 2 in goody score
     // Goodies must be enabled to use this feature
     'night_shifts'            => [
         'enabled'    => (bool) env('NIGHT_SHIFTS', true), // Disable to weigh every shift the same

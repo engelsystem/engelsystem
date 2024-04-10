@@ -3,7 +3,7 @@
 {% import 'macros/form.twig' as f %}
 
 {% block title %}
-    {{ is_tshirt ? __('user.edit.shirt') : __('user.edit.goodie') }}
+    {{ is_tshirt ? __('user.edit.shirt') : __('user.edit.goody') }}
 {%- endblock %}
 
 {% block content %}
@@ -46,7 +46,7 @@
                         'checked': userdata.state.active,
                     }) }}
 
-                    {{ f.switch('got_shirt', is_tshirt ? __('user.got_shirt') : __('user.got_goodie'), {
+                    {{ f.switch('got_shirt', is_tshirt ? __('user.got_shirt') : __('user.got_goody'), {
                         'checked': userdata.state.got_shirt,
                     }) }}
                 </div>

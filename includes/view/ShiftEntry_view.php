@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
@@ -210,17 +210,17 @@ function ShiftEntry_edit_view(
     $angeltype_supporter = false
 ) {
     $freeload_form = [];
-    $goodie = GoodieType::from(config('goodie_type'));
-    $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $goody = GoodyType::from(config('goody_type'));
+    $goody_enabled = $goody !== GoodyType::None;
+    $goody_tshirt = $goody === GoodyType::Tshirt;
 
     if ($user_admin_shifts || $angeltype_supporter) {
-        if (!$goodie_enabled) {
+        if (!$goody_enabled) {
             $freeload_info = __('freeload.freeloaded.info', [config('max_freeloadable_shifts')]);
         } else {
-            $freeload_info = __('freeload.freeloaded.info.goodie', [($goodie_tshirt
+            $freeload_info = __('freeload.freeloaded.info.goody', [($goody_tshirt
                 ? __('T-shirt score')
-                : __('Goodie score')),
+                : __('Goody score')),
                 config('max_freeloadable_shifts')]);
         }
         $freeload_form = [

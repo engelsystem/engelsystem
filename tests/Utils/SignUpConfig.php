@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Utils;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 
 final class SignUpConfig
 {
@@ -22,7 +22,7 @@ final class SignUpConfig
         $config->set('registration_enabled', true);
         $config->set('enable_password', true);
         $config->set('enable_pronoun', true);
-        $config->set('goodie_type', GoodieType::Tshirt->value);
+        $config->set('goody_type', GoodyType::Tshirt->value);
         $config->set('tshirt_sizes', [
             'S'    => 'Small Straight-Cut',
             'M'    => 'Medium Straight-Cut',
@@ -51,7 +51,7 @@ final class SignUpConfig
         $config->set('registration_enabled', true);
         $config->set('enable_password', true);
         $config->set('enable_pronoun', false);
-        $config->set('goodie_type', GoodieType::None->value);
+        $config->set('goody_type', GoodyType::None->value);
         // disallow numeric values in username for tests
         $config->set('username_regex', '/\d+/');
         $config->set('min_password_length', 3);

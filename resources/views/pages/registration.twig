@@ -193,11 +193,11 @@
         <div class="mb-5">
             <h2>{{ __('registration.event_data') }}</h2>
             <div class="row">
-                {% if isGoodieEnabled %}
+                {% if isGoodyEnabled %}
                     <div class="col-md-6">
                         {% set privacy_email = config('privacy_email') %}
                         {% set email_goody_label =
-                            (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goody')) ~
+                            (isGoodyTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goody')) ~
                             (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
                         %}
                         {{ f.checkbox(
@@ -229,7 +229,7 @@
                     </div>
                 {% endif %}
 
-                {% if isGoodieTShirt %}
+                {% if isGoodyTShirt %}
                     <div class="col-md-6">
                         {{ f.select(
                             'tshirt_size',

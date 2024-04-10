@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Shifts\Shift;
@@ -85,9 +85,9 @@ function Users_view(
     $tshirts_count,
     $voucher_count
 ) {
-    $goodie = GoodieType::from(config('goodie_type'));
-    $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $goody = GoodyType::from(config('goody_type'));
+    $goody_enabled = $goody !== GoodyType::None;
+    $goody_tshirt = $goody === GoodyType::Tshirt;
     $usersList = [];
     foreach ($users as $user) {
         $u = [];
@@ -104,9 +104,9 @@ function Users_view(
         $u['freeloads'] = $user->getAttribute('freeloads');
         $u['active'] = icon_bool($user->state->active);
         $u['force_active'] = icon_bool($user->state->force_active);
-        if ($goodie_enabled) {
+        if ($goody_enabled) {
             $u['got_shirt'] = icon_bool($user->state->got_shirt);
-            if ($goodie_tshirt) {
+            if ($goody_tshirt) {
                 $u['shirt_size'] = $user->personalData->shirt_size;
             }
         }
@@ -161,12 +161,12 @@ function Users_view(
     if (config('enable_force_active')) {
         $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
     }
-    if ($goodie_enabled) {
-        if ($goodie_tshirt) {
+    if ($goody_enabled) {
+        if ($goody_tshirt) {
             $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
             $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
         } else {
-            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('Goodie'), $order_by);
+            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('Goody'), $order_by);
         }
     }
     $user_table_headers['arrival_date'] = Users_table_header_link(
@@ -311,9 +311,9 @@ function User_view_shiftentries($needed_angel_type)
 function User_view_myshift(Shift $shift, $user_source, $its_me)
 {
     $nightShiftsConfig = config('night_shifts');
-    $goodie = GoodieType::from(config('goodie_type'));
-    $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $goody = GoodyType::from(config('goody_type'));
+    $goody_enabled = $goody !== GoodyType::None;
+    $goody_tshirt = $goody === GoodyType::Tshirt;
 
     $shift_info = '<a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->shiftType->name) . '</a>';
     if ($shift->title) {
@@ -324,13 +324,13 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     }
 
     $night_shift = '';
-    if ($shift->isNightShift() && $goodie_enabled) {
+    if ($shift->isNightShift() && $goody_enabled) {
         $night_shift = ' <span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
             . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
                 $nightShiftsConfig['start'],
                 $nightShiftsConfig['end'],
                 $nightShiftsConfig['multiplier'],
-                ($goodie_tshirt ? __('T-shirt') : __('goodie')),
+                ($goody_tshirt ? __('T-shirt') : __('goody')),
             ])
             . '"></span>';
     }
@@ -368,12 +368,12 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
                 . __('Freeloaded')
                 . '</p>';
         }
-        if (!$goodie_enabled) {
+        if (!$goody_enabled) {
             $freeload_info = __('freeload.info');
         } else {
-            $freeload_info = __('freeload.info.goodie', [($goodie_tshirt
+            $freeload_info = __('freeload.info.goody', [($goody_tshirt
                 ? __('T-shirt score')
-                : __('Goodie score'))]);
+                : __('Goody score'))]);
         }
         $myshift['hints'] .= ' <span class="bi bi-info-circle-fill text-danger" data-bs-toggle="tooltip" title="'
             . $freeload_info
@@ -429,9 +429,9 @@ function User_view_myshifts(
     $user_worklogs,
     $admin_user_worklog_privilege
 ) {
-    $goodie = GoodieType::from(config('goodie_type'));
-    $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $goody = GoodyType::from(config('goody_type'));
+    $goody_enabled = $goody !== GoodyType::None;
+    $goody_tshirt = $goody === GoodyType::Tshirt;
     $myshifts_table = [];
     $timeSum = 0;
     foreach ($shifts as $shift) {
@@ -475,9 +475,9 @@ function User_view_myshifts(
             'comment'    => '',
             'actions'    => '',
         ];
-        if ($goodie_enabled && ($its_me || $tshirt_admin || auth()->can('admin_user'))) {
+        if ($goody_enabled && ($its_me || $tshirt_admin || auth()->can('admin_user'))) {
             $myshifts_table[] = [
-                'date'       => '<b>' . ($goodie_tshirt ? __('T-shirt score') : __('Goodie score')) . '&trade;:</b>',
+                'date'       => '<b>' . ($goody_tshirt ? __('T-shirt score') : __('Goody score')) . '&trade;:</b>',
                 'duration'   => '<b>' . $tshirt_score . '</b>',
                 'hints'      => '',
                 'location'   => '',
@@ -570,9 +570,9 @@ function User_view(
     $user_worklogs,
     $admin_certificates
 ) {
-    $goodie = GoodieType::from(config('goodie_type'));
-    $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $goody = GoodyType::from(config('goody_type'));
+    $goody_enabled = $goody !== GoodyType::None;
+    $goody_tshirt = $goody === GoodyType::Tshirt;
     $auth = auth();
     $nightShiftsConfig = config('night_shifts');
     $user_name = htmlspecialchars((string) $user_source->personalData->first_name) . ' '
@@ -629,9 +629,9 @@ function User_view(
             div('row', [
                 div('col-md-12', [
                     table_buttons([
-                        $auth->can('user.edit.shirt') && $goodie_enabled ? button(
-                            url('/admin/user/' . $user_source->id . '/goodie'),
-                            icon('person') . ($goodie_tshirt ? __('Shirt') : __('Goodie'))
+                        $auth->can('user.edit.shirt') && $goody_enabled ? button(
+                            url('/admin/user/' . $user_source->id . '/goody'),
+                            icon('person') . ($goody_tshirt ? __('Shirt') : __('Goody'))
                         ) : '',
                         $admin_user_privilege ? button(
                             url('/admin-user', ['id' => $user_source->id]),
@@ -723,13 +723,13 @@ function User_view(
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . __('general.shifts') . '</h2>' : '',
             $myshifts_table,
-            ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
+            ($its_me && $nightShiftsConfig['enabled'] && $goody_enabled) ? info(
                 sprintf(
                     icon('moon-stars') . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
                         $nightShiftsConfig['start'],
                         $nightShiftsConfig['end'],
                         $nightShiftsConfig['multiplier'],
-                        ($goodie_tshirt ? __('T-shirt') : __('goodie'))])
+                        ($goody_tshirt ? __('T-shirt') : __('goody'))])
                 ),
                 true,
                 true
@@ -799,9 +799,9 @@ function User_view_state_user($user_source)
 function User_view_state_admin($freeloader, $user_source)
 {
     $state = [];
-    $goodie = GoodieType::from(config('goodie_type'));
-    $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $goody = GoodyType::from(config('goody_type'));
+    $goody_enabled = $goody !== GoodyType::None;
+    $goody_tshirt = $goody === GoodyType::Tshirt;
     $password_reset = PasswordReset::whereUserId($user_source->id)
         ->where('created_at', '>', $user_source->last_login_at ?: '')
         ->count();
@@ -825,8 +825,8 @@ function User_view_state_admin($freeloader, $user_source)
         } elseif ($user_source->state->active) {
             $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
-        if ($user_source->state->got_shirt && $goodie_enabled) {
-            $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-shirt') : __('Goodie')) . '</span>';
+        if ($user_source->state->got_shirt && $goody_enabled) {
+            $state[] = '<span class="text-success">' . ($goody_tshirt ? __('T-shirt') : __('Goody')) . '</span>';
         }
     } else {
         $arrivalDate = $user_source->personalData->planned_arrival_date;
@@ -1046,10 +1046,10 @@ function render_user_arrived_hint(bool $is_sys_menu = false)
  */
 function render_user_tshirt_hint()
 {
-    $goodie = GoodieType::from(config('goodie_type'));
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $goody = GoodyType::from(config('goody_type'));
+    $goody_tshirt = $goody === GoodyType::Tshirt;
     if (
-        $goodie_tshirt
+        $goody_tshirt
         && config('required_user_fields')['tshirt_size']
         && !auth()->user()->personalData->shirt_size
     ) {

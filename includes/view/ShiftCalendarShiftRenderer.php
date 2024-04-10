@@ -2,7 +2,7 @@
 
 namespace Engelsystem;
 
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -244,8 +244,8 @@ class ShiftCalendarShiftRenderer
      */
     private function renderShiftHead(Shift $shift, $class, $needed_angeltypes_count)
     {
-        $goodie = GoodieType::from(config('goodie_type'));
-        $goodie_enabled = $goodie !== GoodieType::None;
+        $goody = GoodyType::from(config('goody_type'));
+        $goody_enabled = $goody !== GoodyType::None;
 
         $header_buttons = '';
         if (auth()->can('admin_shifts')) {
@@ -279,7 +279,7 @@ class ShiftCalendarShiftRenderer
                 ]);
         }
         $night_shift = '';
-        if ($shift->isNightShift() && $goodie_enabled) {
+        if ($shift->isNightShift() && $goody_enabled) {
             $night_shift = ' <i class="bi-moon-stars"></i>';
         }
 
