@@ -239,9 +239,9 @@ function user_controller()
         auth()->resetApiKey($user_source);
     }
 
-    $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source->id)) . '&nbsp;h';
+    $goody_score = sprintf('%.2f', User_goody_score($user_source->id)) . '&nbsp;h';
     if ($user_source->state->force_active && config('enable_force_active')) {
-        $tshirt_score = '<span title="' . $tshirt_score . '">' . __('Enough') . '</span>';
+        $goody_score = '<span title="' . $goody_score . '">' . __('Enough') . '</span>';
     }
 
     $worklogs = $user_source->worklogs()
@@ -270,8 +270,8 @@ function user_controller()
             $user_source->groups,
             $shifts,
             $user->id == $user_source->id,
-            $tshirt_score,
-            auth()->can('user.edit.shirt'),
+            $goody_score,
+            auth()->can('user.goody.edit'),
             auth()->can('admin_user_worklog'),
             $worklogs,
             auth()->can('user.ifsg.edit')
@@ -307,7 +307,7 @@ function users_list_controller()
             'freeloads',
             'active',
             'force_active',
-            'got_shirt',
+            'got_goody',
             'shirt_size',
             'planned_arrival_date',
             'planned_departure_date',
@@ -351,7 +351,7 @@ function users_list_controller()
             State::whereActive(true)->count(),
             State::whereForceActive(true)->count(),
             ShiftEntry::whereFreeloaded(true)->count(),
-            State::whereGotShirt(true)->count(),
+            State::whereGotGoody(true)->count(),
             State::query()->sum('got_voucher')
         ),
     ];

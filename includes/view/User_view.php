@@ -105,7 +105,7 @@ function Users_view(
         $u['active'] = icon_bool($user->state->active);
         $u['force_active'] = icon_bool($user->state->force_active);
         if ($goody_enabled) {
-            $u['got_shirt'] = icon_bool($user->state->got_shirt);
+            $u['got_goody'] = icon_bool($user->state->got_goody);
             if ($goody_tshirt) {
                 $u['shirt_size'] = $user->personalData->shirt_size;
             }
@@ -136,7 +136,7 @@ function Users_view(
         'active'       => $active_count,
         'force_active' => $force_active_count,
         'freeloads'    => $freeloads_count,
-        'got_shirt'    => $tshirts_count,
+        'got_goody'    => $tshirts_count,
         'actions'      => '<strong>' . count($usersList) . '</strong>',
     ];
 
@@ -163,10 +163,10 @@ function Users_view(
     }
     if ($goody_enabled) {
         if ($goody_tshirt) {
-            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
+            $user_table_headers['got_goody'] = Users_table_header_link('got_goody', __('T-Shirt'), $order_by);
             $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
         } else {
-            $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('Goody'), $order_by);
+            $user_table_headers['got_goody'] = Users_table_header_link('got_goody', __('Goody'), $order_by);
         }
     }
     $user_table_headers['arrival_date'] = Users_table_header_link(
@@ -413,7 +413,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
  * @param Shift[]|Collection   $shifts
  * @param User                 $user_source
  * @param bool                 $its_me
- * @param string               $tshirt_score
+ * @param string               $goody_score
  * @param bool                 $tshirt_admin
  * @param Worklog[]|Collection $user_worklogs
  * @param bool                 $admin_user_worklog_privilege
@@ -424,7 +424,7 @@ function User_view_myshifts(
     $shifts,
     $user_source,
     $its_me,
-    $tshirt_score,
+    $goody_score,
     $tshirt_admin,
     $user_worklogs,
     $admin_user_worklog_privilege
@@ -478,7 +478,7 @@ function User_view_myshifts(
         if ($goody_enabled && ($its_me || $tshirt_admin || auth()->can('admin_user'))) {
             $myshifts_table[] = [
                 'date'       => '<b>' . ($goody_tshirt ? __('T-shirt score') : __('Goody score')) . '&trade;:</b>',
-                'duration'   => '<b>' . $tshirt_score . '</b>',
+                'duration'   => '<b>' . $goody_score . '</b>',
                 'hints'      => '',
                 'location'   => '',
                 'shift_info' => '',
@@ -548,7 +548,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
  * @param Group[]              $user_groups
  * @param Shift[]|Collection   $shifts
  * @param bool                 $its_me
- * @param string               $tshirt_score
+ * @param string               $goody_score
  * @param bool                 $tshirt_admin
  * @param bool                 $admin_user_worklog_privilege
  * @param Worklog[]|Collection $user_worklogs
@@ -564,7 +564,7 @@ function User_view(
     $user_groups,
     $shifts,
     $its_me,
-    $tshirt_score,
+    $goody_score,
     $tshirt_admin,
     $admin_user_worklog_privilege,
     $user_worklogs,
@@ -583,7 +583,7 @@ function User_view(
             $shifts,
             $user_source,
             $its_me,
-            $tshirt_score,
+            $goody_score,
             $tshirt_admin,
             $user_worklogs,
             $admin_user_worklog_privilege
@@ -629,7 +629,7 @@ function User_view(
             div('row', [
                 div('col-md-12', [
                     table_buttons([
-                        $auth->can('user.edit.shirt') && $goody_enabled ? button(
+                        $auth->can('user.goody.edit') && $goody_enabled ? button(
                             url('/admin/user/' . $user_source->id . '/goody'),
                             icon('person') . ($goody_tshirt ? __('Shirt') : __('Goody'))
                         ) : '',
@@ -825,7 +825,7 @@ function User_view_state_admin($freeloader, $user_source)
         } elseif ($user_source->state->active) {
             $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
-        if ($user_source->state->got_shirt && $goody_enabled) {
+        if ($user_source->state->got_goody && $goody_enabled) {
             $state[] = '<span class="text-success">' . ($goody_tshirt ? __('T-shirt') : __('Goody')) . '</span>';
         }
     } else {

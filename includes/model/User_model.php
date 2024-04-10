@@ -19,11 +19,11 @@ use Illuminate\Support\Collection;
  * @param int $userId
  * @return int
  */
-function User_tshirt_score($userId)
+function User_goody_score(int $userId): int
 {
     $shift_sum_formula = User_get_shifts_sum_query();
     $result_shifts = Db::selectOne(sprintf('
-        SELECT ROUND((%s) / 3600, 2) AS `tshirt_score`
+        SELECT ROUND((%s) / 3600, 2) AS `goody_score`
         FROM `users` LEFT JOIN `shift_entries` ON `users`.`id` = `shift_entries`.`user_id`
         LEFT JOIN `shifts` ON `shift_entries`.`shift_id` = `shifts`.`id`
         WHERE `users`.`id` = ?
@@ -32,8 +32,8 @@ function User_tshirt_score($userId)
     ', $shift_sum_formula), [
         $userId,
     ]);
-    if (!isset($result_shifts['tshirt_score'])) {
-        $result_shifts = ['tshirt_score' => 0];
+    if (!isset($result_shifts['goody_score'])) {
+        $result_shifts = ['goody_score' => 0];
     }
 
     $worklogHours = Worklog::query()
@@ -41,7 +41,7 @@ function User_tshirt_score($userId)
         ->where('worked_at', '<=', Carbon::Now())
         ->sum('hours');
 
-    return $result_shifts['tshirt_score'] + $worklogHours;
+    return $result_shifts['goody_score'] + $worklogHours;
 }
 
 /**

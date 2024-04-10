@@ -61,12 +61,12 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::tshirts
      */
-    public function testTshirts(): void
+    public function testGoodies(): void
     {
         $this->addUsers();
 
         $stats = new Stats($this->database);
-        $this->assertEquals(2, $stats->tshirts());
+        $this->assertEquals(2, $stats->goodies());
     }
 
     /**
@@ -539,8 +539,8 @@ class StatsTest extends TestCase
                 'ifsg_confirmed' => true,
             ]
         );
-        $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true, 'force_active' => true]);
-        $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L'], ['theme' => 4]);
+        $this->addUser(['arrived' => 1, 'active' => 1, 'got_goody' => true, 'force_active' => true]);
+        $this->addUser(['arrived' => 1, 'active' => 1, 'got_goody' => true], ['shirt_size' => 'L'], ['theme' => 4]);
     }
 
     protected function addUser(

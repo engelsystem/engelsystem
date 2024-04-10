@@ -256,8 +256,8 @@ $route->addGroup(
                 $route->addGroup(
                     '/goody',
                     function (RouteCollector $route): void {
-                        $route->get('', 'Admin\\UserShirtController@editShirt');
-                        $route->post('', 'Admin\\UserShirtController@saveShirt');
+                        $route->get('', 'Admin\\UserGoodyController@editGoody');
+                        $route->post('', 'Admin\\UserGoodyController@saveGoody');
                     }
                 );
 

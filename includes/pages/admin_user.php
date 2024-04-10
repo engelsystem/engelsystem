@@ -28,7 +28,7 @@ function admin_user()
     $goody_enabled = $goody !== GoodyType::None;
     $goody_tshirt = $goody === GoodyType::Tshirt;
     $user_info_edit = auth()->can('user.info.edit');
-    $user_edit_shirt = auth()->can('user.edit.shirt');
+    $user_edit_shirt = auth()->can('user.goody.edit');
     $user_edit = auth()->can('user.edit');
     $admin_arrive = auth()->can('admin_arrive');
 
@@ -149,8 +149,8 @@ function admin_user()
                 . ($goody_tshirt ? __('T-shirt') : __('Goody'))
                 . '</td><td>' . "\n";
             $html .= $user_edit_shirt
-                ? html_options('eTshirt', $options, $user_source->state->got_shirt)
-                : icon_bool($user_source->state->got_shirt);
+                ? html_options('eTshirt', $options, $user_source->state->got_goody)
+                : icon_bool($user_source->state->got_goody);
             $html .= '</td></tr>' . "\n";
         }
 
@@ -329,7 +329,7 @@ function admin_user()
                 $user_source->contact->save();
 
                 if ($goody_enabled && $user_edit_shirt) {
-                    $user_source->state->got_shirt = $request->postData('eTshirt');
+                    $user_source->state->got_goody = $request->postData('eTshirt');
                 }
                 if ($user_info_edit) {
                     $user_source->state->user_info = $request->postData('userInfo');
@@ -356,7 +356,7 @@ function admin_user()
                     . ', arrived: ' . $user_source->state->arrived
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
-                    . ($goody_tshirt ? ', t-shirt: ' : ', goody: ' . $user_source->state->got_shirt)
+                    . ($goody_tshirt ? ', t-shirt: ' : ', goody: ' . $user_source->state->got_goody)
                     . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
                 );
                 $html .= success(__('Changes were saved.') . "\n", true);

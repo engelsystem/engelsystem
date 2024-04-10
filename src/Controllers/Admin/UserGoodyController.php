@@ -15,14 +15,14 @@ use Engelsystem\Http\Response;
 use Engelsystem\Models\User\User;
 use Psr\Log\LoggerInterface;
 
-class UserShirtController extends BaseController
+class UserGoodyController extends BaseController
 {
     use HasUserNotifications;
 
     /** @var array<string, string> */
     protected array $permissions = [
-        'editShirt' => 'user.edit.shirt',
-        'saveShirt' => 'user.edit.shirt',
+        'editGoody' => 'user.goody.edit',
+        'saveGoody' => 'user.goody.edit',
     ];
 
     public function __construct(
@@ -35,14 +35,14 @@ class UserShirtController extends BaseController
     ) {
     }
 
-    public function editShirt(Request $request): Response
+    public function editGoody(Request $request): Response
     {
         $userId = (int) $request->getAttribute('user_id');
 
         $user = $this->user->findOrFail($userId);
 
         return $this->response->withView(
-            'admin/user/edit-shirt.twig',
+            'admin/user/edit-goody.twig',
             [
                 'userdata' => $user,
                 'is_tshirt' => $this->config->get('goody_type') === GoodyType::Tshirt->value,
@@ -50,7 +50,7 @@ class UserShirtController extends BaseController
         );
     }
 
-    public function saveShirt(Request $request): Response
+    public function saveGoody(Request $request): Response
     {
         $userId = (int) $request->getAttribute('user_id');
         $shirtEnabled = $this->config->get('goody_type') === GoodyType::Tshirt->value;
@@ -61,7 +61,7 @@ class UserShirtController extends BaseController
             'shirt_size' => ($shirtEnabled ? 'required' : 'optional') . '|shirt_size',
             'arrived'    => 'optional|checked',
             'active'     => 'optional|checked',
-            'got_shirt'  => 'optional|checked',
+            'got_goody'  => 'optional|checked',
         ]);
 
         if ($shirtEnabled) {
@@ -74,19 +74,19 @@ class UserShirtController extends BaseController
         }
 
         $user->state->active = (bool) $data['active'];
-        $user->state->got_shirt = (bool) $data['got_shirt'];
+        $user->state->got_goody = (bool) $data['got_goody'];
         $user->state->save();
 
         $this->log->info(
             'Updated user shirt state "{user}" ({id}): '
-            . '{size}, arrived: {arrived}, active: {active}, got shirt: {got_shirt}',
+            . '{size}, arrived: {arrived}, active: {active}, got shirt: {got_goody}',
             [
                 'id'        => $user->id,
                 'user'      => $user->name,
                 'size'      => $user->personalData->shirt_size,
                 'arrived'   => $user->state->arrived ? 'yes' : 'no',
                 'active'    => $user->state->active ? 'yes' : 'no',
-                'got_shirt' => $user->state->got_shirt ? 'yes' : 'no',
+                'got_goody' => $user->state->got_goody ? 'yes' : 'no',
             ]
         );
 

@@ -52,7 +52,7 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('work_seconds', $data);
                 $this->assertArrayHasKey('worklog_seconds', $data);
                 $this->assertArrayHasKey('vouchers', $data);
-                $this->assertArrayHasKey('tshirts_issued', $data);
+                $this->assertArrayHasKey('goodies_issued', $data);
                 $this->assertArrayHasKey('tshirt_sizes', $data);
                 $this->assertArrayHasKey('locales', $data);
                 $this->assertArrayHasKey('themes', $data);
@@ -141,7 +141,7 @@ class ControllerTest extends TestCase
             ->willReturnOnConsecutiveCalls(0, 1, 0, 5, 999, 4, 55, 3);
         $this->setExpects($stats, 'worklogSeconds', null, 39 * 60 * 60);
         $this->setExpects($stats, 'vouchers', null, 17);
-        $this->setExpects($stats, 'tshirts', null, 3);
+        $this->setExpects($stats, 'goodies', null, 3);
         $this->setExpects($stats, 'tshirtSizes', null, new Collection([
             ['shirt_size' => 'L', 'count' => 2],
         ]));

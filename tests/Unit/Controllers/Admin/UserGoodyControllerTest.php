@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Engelsystem\Config\GoodyType;
-use Engelsystem\Controllers\Admin\UserShirtController;
+use Engelsystem\Controllers\Admin\UserGoodyController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
@@ -18,13 +18,13 @@ use Engelsystem\Test\Unit\HasDatabase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class UserShirtControllerTest extends ControllerTest
+class UserGoodyControllerTest extends ControllerTest
 {
     use HasDatabase;
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserShirtController::editShirt
-     * @covers \Engelsystem\Controllers\Admin\UserShirtController::__construct
+     * @covers \Engelsystem\Controllers\Admin\UserGoodyController::editGoody
+     * @covers \Engelsystem\Controllers\Admin\UserGoodyController::__construct
      */
     public function testIndex(): void
     {
@@ -36,15 +36,15 @@ class UserShirtControllerTest extends ControllerTest
         $user = new User();
         User::factory()->create();
 
-        $this->setExpects($this->response, 'withView', ['admin/user/edit-shirt.twig'], $this->response);
+        $this->setExpects($this->response, 'withView', ['admin/user/edit-goody.twig'], $this->response);
 
-        $controller = new UserShirtController($auth, $this->config, $this->log, $redirector, $this->response, $user);
+        $controller = new UserGoodyController($auth, $this->config, $this->log, $redirector, $this->response, $user);
 
-        $controller->editShirt($request);
+        $controller->editGoody($request);
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserShirtController::editShirt
+     * @covers \Engelsystem\Controllers\Admin\UserGoodyController::editGoody
      */
     public function testIndexUserNotFound(): void
     {
@@ -54,17 +54,17 @@ class UserShirtControllerTest extends ControllerTest
         $redirector = $this->createMock(Redirector::class);
         $user = new User();
 
-        $controller = new UserShirtController($auth, $this->config, $this->log, $redirector, $this->response, $user);
+        $controller = new UserGoodyController($auth, $this->config, $this->log, $redirector, $this->response, $user);
 
         $this->expectException(ModelNotFoundException::class);
-        $controller->editShirt($this->request);
+        $controller->editGoody($this->request);
     }
 
     /**
      * @todo Factor out separate tests. Isolated User, Config and permissions per test.
-     * @covers \Engelsystem\Controllers\Admin\UserShirtController::saveShirt
+     * @covers \Engelsystem\Controllers\Admin\UserGoodyController::saveGoody
      */
-    public function testSaveShirt(): void
+    public function testSaveGoody(): void
     {
         $this->config->set('goody_type', GoodyType::Tshirt->value);
         $request = $this->request
@@ -89,7 +89,7 @@ class UserShirtControllerTest extends ControllerTest
             ->willReturnOnConsecutiveCalls(true, true, false, false, true);
         $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(5));
 
-        $controller = new UserShirtController(
+        $controller = new UserGoodyController(
             $auth,
             $this->config,
             $this->log,
@@ -100,7 +100,7 @@ class UserShirtControllerTest extends ControllerTest
         $controller->setValidator(new Validator());
 
         // Set shirt size
-        $controller->saveShirt($request);
+        $controller->saveGoody($request);
 
         $this->assertHasNotification('user.edit.success');
         $this->assertTrue($this->log->hasInfoThatContains('Updated user shirt state'));
@@ -109,23 +109,23 @@ class UserShirtControllerTest extends ControllerTest
         $this->assertEquals('S', $user->personalData->shirt_size);
         $this->assertFalse($user->state->arrived);
         $this->assertFalse($user->state->active);
-        $this->assertFalse($user->state->got_shirt);
+        $this->assertFalse($user->state->got_goody);
 
-        // Set active, arrived and got_shirt
+        // Set active, arrived and got_goody
         $request = $request
             ->withParsedBody([
                 'shirt_size' => 'S',
                 'arrived'    => '1',
                 'active'     => '1',
-                'got_shirt'  => '1',
+                'got_goody'  => '1',
             ]);
 
-        $controller->saveShirt($request);
+        $controller->saveGoody($request);
 
         $user = User::find(1);
         $this->assertTrue($user->state->active);
         $this->assertTrue($user->state->arrived);
-        $this->assertTrue($user->state->got_shirt);
+        $this->assertTrue($user->state->got_goody);
 
         // Shirt size not available
         $request = $request
@@ -134,7 +134,7 @@ class UserShirtControllerTest extends ControllerTest
             ]);
 
         try {
-            $controller->saveShirt($request);
+            $controller->saveGoody($request);
             self::fail('Expected exception was not raised');
         } catch (ValidationException) {
             // ignore
@@ -152,7 +152,7 @@ class UserShirtControllerTest extends ControllerTest
         $user->state->arrived = false;
         $user->state->save();
         $this->assertFalse($user->state->arrived);
-        $controller->saveShirt($request);
+        $controller->saveGoody($request);
         $user = User::find(1);
         $this->assertFalse($user->state->arrived);
 
@@ -163,7 +163,7 @@ class UserShirtControllerTest extends ControllerTest
                 'shirt_size' => 'XS',
             ]);
 
-        $controller->saveShirt($request);
+        $controller->saveGoody($request);
         $user = User::find(1);
         $this->assertEquals('S', $user->personalData->shirt_size);
 
@@ -174,15 +174,15 @@ class UserShirtControllerTest extends ControllerTest
                 'shirt_size' => 'XS',
             ]);
 
-        $controller->saveShirt($request);
+        $controller->saveGoody($request);
         $user = User::find(1);
         $this->assertEquals('XS', $user->personalData->shirt_size);
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserShirtController::saveShirt
+     * @covers \Engelsystem\Controllers\Admin\UserGoodyController::saveGoody
      */
-    public function testSaveShirtUserNotFound(): void
+    public function testSaveGoodyUserNotFound(): void
     {
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
@@ -190,9 +190,9 @@ class UserShirtControllerTest extends ControllerTest
         $redirector = $this->createMock(Redirector::class);
         $user = new User();
 
-        $controller = new UserShirtController($auth, $this->config, $this->log, $redirector, $this->response, $user);
+        $controller = new UserGoodyController($auth, $this->config, $this->log, $redirector, $this->response, $user);
 
         $this->expectException(ModelNotFoundException::class);
-        $controller->editShirt($this->request);
+        $controller->editGoody($this->request);
     }
 }
