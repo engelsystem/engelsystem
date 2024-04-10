@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Factories\User;
 use Engelsystem\Helpers\Authenticator;
@@ -77,7 +77,7 @@ class RegistrationController extends BaseController
 
     private function renderSignUpPage(): Response
     {
-        $goodieType = GoodieType::from($this->config->get('goodie_type'));
+        $goodyType = GoodyType::from($this->config->get('goody_type'));
         $preselectedAngelTypes = $this->determinePreselectedAngelTypes();
         $requiredFields = $this->config->get('required_user_fields');
 
@@ -99,8 +99,8 @@ class RegistrationController extends BaseController
                 'isPasswordEnabled' => $this->userFactory->determineIsPasswordEnabled(),
                 'isDECTEnabled' => $this->config->get('enable_dect'),
                 'isShowMobileEnabled' => $this->config->get('enable_mobile_show'),
-                'isGoodieEnabled' => $goodieType !== GoodieType::None && config('enable_email_goody'),
-                'isGoodieTShirt' => $goodieType === GoodieType::Tshirt,
+                'isGoodyEnabled' => $goodyType !== GoodyType::None && config('enable_email_goody'),
+                'isGoodyTShirt' => $goodyType === GoodyType::Tshirt,
                 'isPronounEnabled' => $this->config->get('enable_pronoun'),
                 'isFullNameEnabled' => $this->config->get('enable_user_name'),
                 'isPlannedArrivalDateEnabled' => $this->config->get('enable_planned_arrival'),

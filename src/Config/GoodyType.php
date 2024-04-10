@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Engelsystem\Config;
 
-enum GoodieType : string
+enum GoodyType : string
 {
     case None = 'none';
-    case Goodie = 'goodie';
+    case Goody = 'goody';
     case Tshirt = 'tshirt';
 }

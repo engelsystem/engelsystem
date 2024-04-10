@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
@@ -45,7 +45,7 @@ class UserShirtController extends BaseController
             'admin/user/edit-shirt.twig',
             [
                 'userdata' => $user,
-                'is_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
+                'is_tshirt' => $this->config->get('goody_type') === GoodyType::Tshirt->value,
             ]
         );
     }
@@ -53,7 +53,7 @@ class UserShirtController extends BaseController
     public function saveShirt(Request $request): Response
     {
         $userId = (int) $request->getAttribute('user_id');
-        $shirtEnabled = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
+        $shirtEnabled = $this->config->get('goody_type') === GoodyType::Tshirt->value;
         /** @var User $user */
         $user = $this->user->findOrFail($userId);
 

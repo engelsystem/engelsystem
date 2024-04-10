@@ -7,7 +7,7 @@ namespace Engelsystem\Factories;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use Engelsystem\Config\Config;
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -146,10 +146,10 @@ class User
             $validationRules['dect'] = $this->isRequired('dect') . '|length:0:40';
         }
 
-        $goodieType = GoodieType::from($this->config->get('goodie_type'));
-        $isGoodieTShirt = $goodieType === GoodieType::Tshirt;
+        $goodyType = GoodyType::from($this->config->get('goody_type'));
+        $isGoodyTShirt = $goodyType === GoodyType::Tshirt;
 
-        if ($isGoodieTShirt) {
+        if ($isGoodyTShirt) {
             $validationRules['tshirt_size'] = $this->isRequired('tshirt_size') . '|shirt-size';
         }
 

@@ -6,7 +6,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 
 use Carbon\Carbon;
 use Engelsystem\Config\Config;
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Http\Exceptions\HttpNotFound;
@@ -75,7 +75,7 @@ class SettingsControllerTest extends ControllerTest
             'enable_dect'            => true,
             'enable_mobile_show'     => true,
             'enable_email_goody'     => true,
-            'goodie_type'            => GoodieType::Tshirt->value,
+            'goody_type'            => GoodyType::Tshirt->value,
         ]);
 
         $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
@@ -224,7 +224,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveProfileIgnoresEmailGoodyIfDisabled(): void
     {
         $this->setUpProfileTest();
-        $this->config->set('goodie_type', GoodieType::None->value);
+        $this->config->set('goody_type', GoodyType::None->value);
         $this->controller->saveProfile($this->request);
         $this->assertFalse($this->user->settings->email_goody);
     }
@@ -235,7 +235,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveProfileIgnoresTShirtSizeIfDisabled(): void
     {
         $this->setUpProfileTest();
-        $this->config->set('goodie_type', GoodieType::None->value);
+        $this->config->set('goody_type', GoodyType::None->value);
         $this->controller->saveProfile($this->request);
         $this->assertEquals('', $this->user->personalData->shirt_size);
     }
@@ -1109,7 +1109,7 @@ class SettingsControllerTest extends ControllerTest
             'themes' => $themes,
             'locales' => $languages,
             'tshirt_sizes' => $tshirt_sizes,
-            'goodie_type' => GoodieType::Goodie->value,
+            'goody_type' => GoodyType::Goody->value,
             'required_user_fields' => $requiredFields,
         ]);
         $this->app->instance('config', $this->config);

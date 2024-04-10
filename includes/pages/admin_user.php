@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Http\Validation\Rules\Username;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
@@ -24,9 +24,9 @@ function admin_user()
     $tshirt_sizes = config('tshirt_sizes');
     $request = request();
     $html = '';
-    $goodie = GoodieType::from(config('goodie_type'));
-    $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $goody = GoodyType::from(config('goody_type'));
+    $goody_enabled = $goody !== GoodyType::None;
+    $goody_tshirt = $goody === GoodyType::Tshirt;
     $user_info_edit = auth()->can('user.info.edit');
     $user_edit_shirt = auth()->can('user.edit.shirt');
     $user_edit = auth()->can('user.edit');
@@ -45,11 +45,11 @@ function admin_user()
         }
 
         $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
-        if ($goodie_enabled && $user_edit_shirt) {
-            if ($goodie_tshirt) {
+        if ($goody_enabled && $user_edit_shirt) {
+            if ($goody_tshirt) {
                 $html .= ' ' . __('If the angel is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the angel already got their T-shirt.');
             } else {
-                $html .= ' ' . __('If the angel is active, it can claim a goodie. If goodie is set to \'Yes\', the angel already got their goodie.');
+                $html .= ' ' . __('If the angel is active, it can claim a goody. If goody is set to \'Yes\', the angel already got their goody.');
             }
         }
         $html .= '<br><br>';
@@ -89,7 +89,7 @@ function admin_user()
                 . '<input type="email" size="40" name="eemail" value="' . htmlspecialchars($user_source->email) . '" class="form-control" maxlength="254">'
                 . '</td></tr>' . "\n";
         }
-        if ($goodie_tshirt && $user_edit_shirt) {
+        if ($goody_tshirt && $user_edit_shirt) {
             $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
                 . html_select_key(
                     'size',
@@ -143,10 +143,10 @@ function admin_user()
             $html .= '</td></tr>' . "\n";
         }
 
-        if ($goodie_enabled) {
+        if ($goody_enabled) {
             // T-Shirt bekommen?
             $html .= '  <tr><td>'
-                . ($goodie_tshirt ? __('T-shirt') : __('Goodie'))
+                . ($goody_tshirt ? __('T-shirt') : __('Goody'))
                 . '</td><td>' . "\n";
             $html .= $user_edit_shirt
                 ? html_options('eTshirt', $options, $user_source->state->got_shirt)
@@ -317,7 +317,7 @@ function admin_user()
                     $user_source->personalData->first_name = $request->postData('eVorname');
                     $user_source->personalData->last_name = $request->postData('eName');
                 }
-                if ($goodie_tshirt && $user_edit_shirt) {
+                if ($goody_tshirt && $user_edit_shirt) {
                     $user_source->personalData->shirt_size = $request->postData('eSize');
                 }
                 $user_source->personalData->save();
@@ -328,7 +328,7 @@ function admin_user()
                 }
                 $user_source->contact->save();
 
-                if ($goodie_enabled && $user_edit_shirt) {
+                if ($goody_enabled && $user_edit_shirt) {
                     $user_source->state->got_shirt = $request->postData('eTshirt');
                 }
                 if ($user_info_edit) {
@@ -352,11 +352,11 @@ function admin_user()
                         : $user_source->name)
                     . ' (' . $user_source->id . ')'
                     . ($changed_email ? ', email modified' : '')
-                    . ($goodie_tshirt ? ', t-shirt-size: ' . $user_source->personalData->shirt_size : '')
+                    . ($goody_tshirt ? ', t-shirt-size: ' . $user_source->personalData->shirt_size : '')
                     . ', arrived: ' . $user_source->state->arrived
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
-                    . ($goodie_tshirt ? ', t-shirt: ' : ', goodie: ' . $user_source->state->got_shirt)
+                    . ($goody_tshirt ? ', t-shirt: ' : ', goody: ' . $user_source->state->got_shirt)
                     . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
                 );
                 $html .= success(__('Changes were saved.') . "\n", true);

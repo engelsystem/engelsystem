@@ -1352,38 +1352,38 @@ msgstr "Anzahl an Schichten: %s"
 msgid "Shifts created."
 msgstr "Schichten erstellt."
 
-msgid "If the angel is active, it can claim a goodie. If goodie is set to 'Yes', the angel already got their goodie."
+msgid "If the angel is active, it can claim a goody. If goody is set to 'Yes', the angel already got their goody."
 msgstr "Ist der Engel Aktiv, hat er damit Anspruch auf ein Goodie. Wenn Goodie ein 'Ja' enthält, bedeutet dies, "
 "dass der Engel bereits sein Goodie erhalten hat."
 
-msgid "Goodie"
+msgid "Goody"
 msgstr "Goodie"
 
-msgid "goodie"
+msgid "goody"
 msgstr "Goodie"
 
-msgid "Goodie score"
+msgid "Goody score"
 msgstr "Goodie Score"
 
 msgid "Given goodies"
 msgstr "Ausgegebene Goodies"
 
-msgid "Goodie statistic"
+msgid "Goody statistic"
 msgstr "Goodie Statistik"
 
-msgid "Remove goodie"
+msgid "Remove goody"
 msgstr "Goodie entfernen"
 
-msgid "Got goodie"
+msgid "Got goody"
 msgstr "Goodie bekommen"
 
-msgid "Goodie?"
+msgid "Goody?"
 msgstr "Goodie?"
 
-msgid "Angel has got a goodie."
+msgid "Angel has got a goody."
 msgstr "Engel hat ein Goodie bekommen."
 
-msgid "Angel has got no goodie."
+msgid "Angel has got no goody."
 msgstr "Engel hat kein Goodie bekommen."
 
 msgid "page.404.text"
@@ -1907,7 +1907,7 @@ msgstr "Weitere Kontaktmöglichkeiten: "
 msgid "user.edit.shirt"
 msgstr "T-Shirt bearbeiten"
 
-msgid "user.edit.goodie"
+msgid "user.edit.goody"
 msgstr "Goodie bearbeiten"
 
 msgid "form.shirt"
@@ -1931,7 +1931,7 @@ msgstr "Ankommen"
 msgid "user.got_shirt"
 msgstr "T-Shirt bekommen"
 
-msgid "user.got_goodie"
+msgid "user.got_goody"
 msgstr "Goodie bekommen"
 
 msgid "message.title"
@@ -2138,7 +2138,7 @@ msgstr "Du kannst dich bis %s Stunden vor dem Start der Schicht austragen. "
 msgid "Password reset in progress"
 msgstr "Passwort zurücksetzen aktiv"
 
-msgid "freeload.info.goodie"
+msgid "freeload.info.goody"
 msgstr "Du warst bei dieser Schicht nicht anwesend. "
 "Die doppelte Länge der Schicht wurde von deinem %s abgezogen. "
 "Bitte wende dich bei Fragen an den Himmel."
@@ -2152,7 +2152,7 @@ msgstr ""
 "Du warst bei mindestens %s Schichten nicht anwesend. Deshalb ist die Schicht-Registrierung "
 "gesperrt. Bitte gehe zum Himmel um wieder entsperrt zu werden."
 
-msgid "freeload.freeloaded.info.goodie"
+msgid "freeload.freeloaded.info.goody"
 msgstr ""
 "War ein Engel bei einer Schicht nicht anwesend, "
 "wird die doppelte Länge der Schicht von dem %s abgezogen. "

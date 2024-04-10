@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
-use Engelsystem\Config\GoodieType;
+use Engelsystem\Config\GoodyType;
 use Engelsystem\Controllers\Admin\UserShirtController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -66,7 +66,7 @@ class UserShirtControllerTest extends ControllerTest
      */
     public function testSaveShirt(): void
     {
-        $this->config->set('goodie_type', GoodieType::Tshirt->value);
+        $this->config->set('goody_type', GoodyType::Tshirt->value);
         $request = $this->request
             ->withAttribute('user_id', 1)
             ->withParsedBody([
@@ -157,7 +157,7 @@ class UserShirtControllerTest extends ControllerTest
         $this->assertFalse($user->state->arrived);
 
         // Shirt disabled
-        $this->config->set('goodie_type', GoodieType::None->value);
+        $this->config->set('goody_type', GoodyType::None->value);
         $request = $request
             ->withParsedBody([
                 'shirt_size' => 'XS',
@@ -168,7 +168,7 @@ class UserShirtControllerTest extends ControllerTest
         $this->assertEquals('S', $user->personalData->shirt_size);
 
         // Shirt enabled
-        $this->config->set('goodie_type', GoodieType::Tshirt->value);
+        $this->config->set('goody_type', GoodyType::Tshirt->value);
         $request = $request
             ->withParsedBody([
                 'shirt_size' => 'XS',
