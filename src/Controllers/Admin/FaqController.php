@@ -47,13 +47,7 @@ class FaqController extends BaseController
         $faq = $this->faq->findOrNew($faqId);
 
         if ($request->request->has('delete')) {
-            $faq->delete();
-
-            $this->log->info('Deleted faq "{question}"', ['question' => $faq->question]);
-
-            $this->addNotification('faq.delete.success');
-
-            return $this->redirect->to('/faq');
+            return $this->delete($faq);
         }
 
         $data = $this->validate($request, [
@@ -77,6 +71,17 @@ class FaqController extends BaseController
         $this->addNotification('faq.edit.success');
 
         return $this->redirect->to('/faq#faq-' . $faq->id);
+    }
+
+    protected function delete(Faq $faq): Response
+    {
+        $faq->delete();
+
+        $this->log->info('Deleted faq "{question}"', ['question' => $faq->question]);
+
+        $this->addNotification('faq.delete.success');
+
+        return $this->redirect->to('/faq');
     }
 
     protected function showEdit(?Faq $faq): Response
