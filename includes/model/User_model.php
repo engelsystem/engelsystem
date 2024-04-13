@@ -123,7 +123,7 @@ function User_get_shifts_sum_query()
         return 'COALESCE(SUM(UNIX_TIMESTAMP(shifts.end) - UNIX_TIMESTAMP(shifts.start)), 0)';
     }
 
-    /* @see \Engelsystem\Helpers\Shifts::isNightShift to keep it in sync */
+    /* @see \Engelsystem\Models\Shifts\Shift::isNightShift to keep it in sync */
     return sprintf(
         '
             COALESCE(SUM(
