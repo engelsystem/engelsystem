@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Engelsystem\Models;
 
-use Carbon\Carbon;
+use DateTimeInterface;
+use Engelsystem\Helpers\Carbon;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -55,7 +56,7 @@ class EventConfig extends BaseModel
         if (!empty($value)) {
             return match ($this->getValueCast($this->name)) {
                 'datetime_human' => Carbon::make($value),
-                'datetime'       => Carbon::createFromFormat(Carbon::ISO8601, $value),
+                'datetime'       => Carbon::createFromFormat(DateTimeInterface::ATOM, $value),
                 default          => $value,
             };
         }
@@ -71,11 +72,10 @@ class EventConfig extends BaseModel
     public function setValueAttribute(mixed $value): static
     {
         if (!empty($value)) {
+            /** @var Carbon $value */
             $value = match ($this->getValueCast($this->name)) {
-                /** @var Carbon $value */
                 'datetime_human' => $value->toDateTimeString('minute'),
-                /** @var Carbon $value */
-                'datetime'       => $value->toIso8601String(),
+                'datetime'       => $value->format(DateTimeInterface::ATOM),
                 default          => $value,
             };
         }
