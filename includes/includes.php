@@ -46,7 +46,6 @@ $includeFiles = [
     __DIR__ . '/../includes/helper/legacy_helper.php',
     __DIR__ . '/../includes/helper/message_helper.php',
     __DIR__ . '/../includes/helper/email_helper.php',
-    __DIR__ . '/../includes/helper/shift_helper.php',
 
     __DIR__ . '/../includes/mailer/shifts_mailer.php',
     __DIR__ . '/../includes/mailer/users_mailer.php',
