@@ -224,6 +224,7 @@ class NewsControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::save
+     * @covers \Engelsystem\Controllers\Admin\NewsController::delete
      */
     public function testSaveDelete(): void
     {

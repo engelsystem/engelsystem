@@ -123,6 +123,7 @@ class FaqControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\FaqController::save
+     * @covers \Engelsystem\Controllers\Admin\FaqController::delete
      */
     public function testSaveDelete(): void
     {
