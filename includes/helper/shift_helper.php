@@ -3,7 +3,6 @@
 namespace Engelsystem\Events\Listener;
 
 use Carbon\Carbon;
-use Engelsystem\Helpers\Shifts;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\Shifts\Shift as ShiftModel;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -32,7 +31,7 @@ class Shift
             $workLog->worked_at = $shift->start->copy()->startOfDay();
             $workLog->hours =
                 (($shift->end->timestamp - $shift->start->timestamp) / 60 / 60)
-                * Shifts::getNightShiftMultiplier($shift->start, $shift->end);
+                * $shift->getNightShiftMultiplier();
             $workLog->comment = sprintf(
                 __('%s (%s as %s) in %s, %s - %s'),
                 $shift->shiftType->name,

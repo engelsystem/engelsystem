@@ -2,7 +2,6 @@
 
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Carbon;
-use Engelsystem\Helpers\Shifts;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
@@ -269,7 +268,7 @@ function Shift_view(
     $start = $shift->start->format(__('general.datetime'));
 
     $night_shift_hint = '';
-    if (Shifts::isNightShift($shift->start, $shift->end) && $nightShiftsConfig['enabled'] && $goodie_enabled) {
+    if ($shift->isNightShift() && $goodie_enabled) {
         $night_shift_hint = ' <small><span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
             . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
                 $nightShiftsConfig['start'],
