@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Events\Listener;
 
 use Carbon\Carbon;
 use Engelsystem\Mail\EngelsystemMailer;
-use Engelsystem\Models\Shifts\Shift as ShiftModel;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Log\LoggerInterface;
 
-class Shift
+class Shifts
 {
     public function __construct(
         protected LoggerInterface $log,
@@ -18,7 +20,7 @@ class Shift
     ) {
     }
 
-    public function shiftDeletingCreateWorklogs(ShiftModel $shift): void
+    public function deletingCreateWorklogs(Shift $shift): void
     {
         foreach ($shift->shiftEntries as $entry) {
             if ($entry->freeloaded || $shift->start > Carbon::now()) {
@@ -50,7 +52,7 @@ class Shift
         }
     }
 
-    public function shiftDeletingSendEmails(ShiftModel $shift): void
+    public function deletingSendEmails(Shift $shift): void
     {
         foreach ($shift->shiftEntries as $entry) {
             if (!$entry->user->settings->email_shiftinfo) {
@@ -70,10 +72,8 @@ class Shift
         }
     }
 
-    public function updatedShiftSendEmail(
-        ShiftModel $shift,
-        ShiftModel $oldShift
-    ): void {
+    public function updatedSendEmail(Shift $shift, Shift $oldShift): void
+    {
         // Only send e-mail on relevant changes
         if (
             $oldShift->shift_type_id == $shift->shift_type_id
@@ -96,7 +96,10 @@ class Shift
             $user = $shiftEntry->user;
             $angelType = $shiftEntry->angelType;
 
-            if (!$user->settings->email_shiftinfo || $shift->end < Carbon::now()) {
+            if (
+                !$user->settings->email_shiftinfo
+                || $shift->end < Carbon::now() && $oldShift->end < Carbon::now()
+            ) {
                 continue;
             }
 
