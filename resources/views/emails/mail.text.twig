@@ -2,7 +2,7 @@
 
 {% block introduction %}{{ __('email.introduction', [config('app_name')]) }}{% endblock %}
 
-{% block message %}{{ message|raw }}{% endblock %}
+{% block message %}{{ message }}{% endblock %}
 
 {{ '-- ' }}
 {% block footer %}

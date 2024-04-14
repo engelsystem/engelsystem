@@ -6,7 +6,6 @@ namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\TwigLoader;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass as Reflection;
 
 class TwigLoaderTest extends TestCase
 {
@@ -17,11 +16,8 @@ class TwigLoaderTest extends TestCase
     {
         $loader = new TwigLoader();
 
-        $reflection = new Reflection(get_class($loader));
-        $property = $reflection->getProperty('cache');
-
+        $loader->setPaths(__DIR__);
         $realPath = __DIR__ . '/Stub/foo.twig';
-        $property->setValue($loader, ['Stub/foo.twig' => $realPath]);
 
         $return = $loader->findTemplate('Stub/foo.twig');
         $this->assertEquals($realPath, $return);
