@@ -171,6 +171,15 @@ class ShiftCalendarShiftRenderer
             $angeltype,
             $shift_entries
         );
+        $shift_can_signup = Shift_signup_allowed_angel(
+            $user,
+            $shift,
+            $angeltype,
+            null,
+            null,
+            $angeltype,
+            $shift_entries
+        );
         $freeEntriesCount = $shift_signup_state->getFreeEntries();
         $inner_text = _e('%d helper needed', '%d helpers needed', $freeEntriesCount, [$freeEntriesCount]);
 
@@ -217,7 +226,7 @@ class ShiftCalendarShiftRenderer
         $shifts_row .= join(', ', $entry_list);
         $shifts_row .= '</li>';
         return [
-            $shift_signup_state,
+            $shift_can_signup,
             $shifts_row,
         ];
     }
