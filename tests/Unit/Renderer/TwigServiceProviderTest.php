@@ -9,6 +9,7 @@ use Engelsystem\Renderer\Twig\Extensions\Develop;
 use Engelsystem\Renderer\TwigEngine;
 use Engelsystem\Renderer\TwigLoader;
 use Engelsystem\Renderer\TwigServiceProvider;
+use Engelsystem\Renderer\TwigTextLoader;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass as Reflection;
@@ -70,6 +71,8 @@ class TwigServiceProviderTest extends ServiceProviderTest
     {
         /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);
+        /** @var Twig|MockObject $textTwig */
+        $textTwig = $this->createMock(Twig::class);
         /** @var ExtensionInterface|MockObject $firsExtension */
         $firsExtension = $this->getMockForAbstractClass(ExtensionInterface::class);
         /** @var ExtensionInterface|MockObject $secondExtension */
@@ -81,10 +84,10 @@ class TwigServiceProviderTest extends ServiceProviderTest
 
         $app = $this->getApp(['get', 'tagged', 'make']);
 
-        $app->expects($this->exactly(2))
+        $app->expects($this->exactly(3))
             ->method('get')
-            ->withConsecutive(['twig.environment'], ['twig.extension.develop'])
-            ->willReturnOnConsecutiveCalls($twig, $devExtension);
+            ->withConsecutive(['twig.environment'], ['twig.textEnvironment'], ['twig.extension.develop'])
+            ->willReturnOnConsecutiveCalls($twig, $textTwig, $devExtension);
         $app->expects($this->once())
             ->method('tagged')
             ->with('twig.extension')
@@ -95,6 +98,10 @@ class TwigServiceProviderTest extends ServiceProviderTest
             ->willReturn($dumper);
 
         $twig->expects($this->exactly(2))
+            ->method('addExtension')
+            ->withConsecutive([$firsExtension], [$secondExtension]);
+
+        $textTwig->expects($this->exactly(2))
             ->method('addExtension')
             ->withConsecutive([$firsExtension], [$secondExtension]);
 
@@ -115,6 +122,8 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $twigEngine = $this->createMock(TwigEngine::class);
         /** @var TwigLoader|MockObject $twigLoader */
         $twigLoader = $this->createMock(TwigLoader::class);
+        /** @var TwigTextLoader|MockObject $twigTextLoader */
+        $twigTextLoader = $this->createMock(TwigTextLoader::class);
         /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);
         /** @var Config|MockObject $config */
@@ -129,37 +138,56 @@ class TwigServiceProviderTest extends ServiceProviderTest
             true,
             ['setTimezone']
         );
+        /** @var Twig|MockObject $twigText */
+        $twigText = $this->createMock(Twig::class);
+        /** @var TwigEngine|MockObject $twigTextEngine */
+        $twigTextEngine = $this->createMock(TwigEngine::class);
 
         $app = $this->getApp(['make', 'instance', 'tag', 'get']);
 
         $viewsPath = __DIR__ . '/Stub';
 
-        $app->expects($this->exactly(3))
+        $app->expects($this->exactly(6))
             ->method('make')
             ->withConsecutive(
                 [TwigLoader::class, ['paths' => $viewsPath]],
+                [TwigTextLoader::class, ['paths' => $viewsPath]],
                 [Twig::class, ['options' => [
                     'cache'            => false,
                     'auto_reload'      => true,
                     'strict_variables' => true,
                     'debug'            => true,
                 ]]],
-                [TwigEngine::class]
+                [TwigEngine::class],
+                [Twig::class, ['loader' => $twigTextLoader, 'options' => [
+                    'cache'            => false,
+                    'auto_reload'      => true,
+                    'strict_variables' => true,
+                    'debug'            => true,
+                    'autoescape'       => false,
+                ]]],
+                [TwigEngine::class, ['twig' => $twigText]]
             )->willReturnOnConsecutiveCalls(
                 $twigLoader,
+                $twigTextLoader,
                 $twig,
-                $twigEngine
+                $twigEngine,
+                $twigText,
+                $twigTextEngine
             );
 
-        $app->expects($this->exactly(6))
+        $app->expects($this->exactly(9))
             ->method('instance')
             ->withConsecutive(
                 [TwigLoader::class, $twigLoader],
                 [TwigLoaderInterface::class, $twigLoader],
                 ['twig.loader', $twigLoader],
+                ['twig.textLoader', $twigTextLoader],
                 [Twig::class, $twig],
                 ['twig.environment', $twig],
-                ['renderer.twigEngine', $twigEngine]
+                ['renderer.twigEngine', $twigEngine],
+                ['twig.textEnvironment', $twigText],
+                ['renderer.twigTextEngine', $twigTextEngine],
             );
 
         $app->expects($this->exactly(3))
@@ -167,7 +195,12 @@ class TwigServiceProviderTest extends ServiceProviderTest
             ->withConsecutive(['path.views'], ['config'], ['path.cache.views'])
             ->willReturnOnConsecutiveCalls($viewsPath, $config, 'cache/views');
 
-        $this->setExpects($app, 'tag', ['renderer.twigEngine', ['renderer.engine']]);
+        $app->expects($this->exactly(2))
+            ->method('tag')
+            ->withConsecutive(
+                ['renderer.twigTextEngine', ['renderer.engine']], // Text goes first to catch .text.twig files
+                ['renderer.twigEngine', ['renderer.engine']],
+            );
 
         $config->expects($this->exactly(2))
             ->method('get')

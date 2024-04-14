@@ -1,4 +1,4 @@
-{% extends "emails/mail.twig" %}
+{% extends "emails/mail.text.twig" %}
 
 {% block introduction %}
 {{ __('notification.news.new.introduction', [news.title, news.text, url('/news/' ~ news.id)]) }}

@@ -216,7 +216,7 @@ msgid "notification.messages.new"
 msgstr "New private message from %s"
 
 msgid "notification.messages.new.text"
-msgstr "you've got a new private message from %s. You can view it under %s"
+msgstr "you've got a new private message from \"%s\". You can view it at %s"
 
 msgid "notification.angeltype.confirmed"
 msgstr "You have been confirmed as an %s"

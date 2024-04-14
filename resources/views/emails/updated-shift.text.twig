@@ -1,4 +1,4 @@
-{% extends "emails/mail.twig" %}
+{% extends "emails/mail.text.twig" %}
 
 {% block introduction %}
 {{ __('notification.shift.updated.introduction') }}
@@ -38,5 +38,5 @@
 {{ shift.start.format(__('general.datetime')) }} - {{ shift.end.format(__('H:i')) }}
 {{ shift.location.name }}
 
-{{ url('/shifts', {'action': 'view', 'shift_id': shift.id})|raw }}
+{{ url('/shifts', {'action': 'view', 'shift_id': shift.id}) }}
 {% endblock %}
