@@ -305,7 +305,8 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
     foreach ($members as $member) {
         $member->name = User_Nick_render($member) . User_Pronoun_render($member);
         if (config('enable_dect')) {
-            $member['dect'] = htmlspecialchars((string) $member->contact->dect);
+            $member['dect'] =
+                sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars($member->contact->dect));
         }
         if (config('driving_license_enabled') && $angeltype->requires_driver_license) {
             $drive_confirmed = $member->license->drive_confirmed;
