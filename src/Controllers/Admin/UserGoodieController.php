@@ -9,6 +9,7 @@ use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -35,8 +36,16 @@ class UserGoodieController extends BaseController
     ) {
     }
 
+    private function checkActive(): void
+    {
+        if (GoodieType::from(config('goodie_type')) == GoodieType::None) {
+            throw new HttpNotFound();
+        }
+    }
+
     public function editGoodie(Request $request): Response
     {
+        $this->checkActive();
         $userId = (int) $request->getAttribute('user_id');
 
         $user = $this->user->findOrFail($userId);
@@ -52,6 +61,7 @@ class UserGoodieController extends BaseController
 
     public function saveGoodie(Request $request): Response
     {
+        $this->checkActive();
         $userId = (int) $request->getAttribute('user_id');
         $shirtEnabled = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
         /** @var User $user */
@@ -61,7 +71,7 @@ class UserGoodieController extends BaseController
             'shirt_size' => ($shirtEnabled ? 'required' : 'optional') . '|shirt_size',
             'arrived'    => 'optional|checked',
             'active'     => 'optional|checked',
-            'got_goodie'  => 'optional|checked',
+            'got_goodie' => 'optional|checked',
         ]);
 
         if ($shirtEnabled) {

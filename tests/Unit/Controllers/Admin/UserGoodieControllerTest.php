@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Controllers\Admin;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\Admin\UserGoodieController;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Validation\Validator;
@@ -28,6 +29,7 @@ class UserGoodieControllerTest extends ControllerTest
      */
     public function testIndex(): void
     {
+        $this->config->set('goodie_type', GoodieType::Tshirt->value);
         $request = $this->request->withAttribute('user_id', 1);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
@@ -48,6 +50,7 @@ class UserGoodieControllerTest extends ControllerTest
      */
     public function testIndexUserNotFound(): void
     {
+        $this->config->set('goodie_type', GoodieType::Goodie->value);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var Redirector|MockObject $redirector */
@@ -58,6 +61,44 @@ class UserGoodieControllerTest extends ControllerTest
 
         $this->expectException(ModelNotFoundException::class);
         $controller->editGoodie($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::editGoodie
+     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::checkActive
+     */
+    public function testEditShirtGoodieNone(): void
+    {
+        $this->config->set('goodie_type', GoodieType::None->value);
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        /** @var Redirector|MockObject $redirector */
+        $redirector = $this->createMock(Redirector::class);
+        $user = new User();
+
+        $controller = new UserGoodieController($auth, $this->config, $this->log, $redirector, $this->response, $user);
+
+        $this->expectException(HttpNotFound::class);
+        $controller->editGoodie($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::saveGoodie
+     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::checkActive
+     */
+    public function testSaveShirtGoodieNone(): void
+    {
+        $this->config->set('goodie_type', GoodieType::None->value);
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        /** @var Redirector|MockObject $redirector */
+        $redirector = $this->createMock(Redirector::class);
+        $user = new User();
+
+        $controller = new UserGoodieController($auth, $this->config, $this->log, $redirector, $this->response, $user);
+
+        $this->expectException(HttpNotFound::class);
+        $controller->saveGoodie($this->request);
     }
 
     /**
@@ -156,8 +197,8 @@ class UserGoodieControllerTest extends ControllerTest
         $user = User::find(1);
         $this->assertFalse($user->state->arrived);
 
-        // Goodie disabled
-        $this->config->set('goodie_type', GoodieType::None->value);
+        // Goodie enabled but not a shirt
+        $this->config->set('goodie_type', GoodieType::Goodie->value);
         $request = $request
             ->withParsedBody([
                 'shirt_size' => 'XS',
@@ -184,6 +225,7 @@ class UserGoodieControllerTest extends ControllerTest
      */
     public function testSaveGoodieUserNotFound(): void
     {
+        $this->config->set('goodie_type', GoodieType::Goodie->value);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var Redirector|MockObject $redirector */
