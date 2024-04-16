@@ -6,7 +6,6 @@ namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Helpers\Carbon;
-use DateTimeInterface;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Schedule\ConferenceTrack;
@@ -125,12 +124,13 @@ class ScheduleController extends BaseController
         }
 
         $this->log->info(
-            'Schedule {name}: Url {url}, Shift Type {shift_type}, ({need}), '
+            'Schedule {name}: Url {url}, Shift Type {shift_type_name} ({shift_type_id}), ({need}), '
             . 'minutes before/after {before}/{after}, for: {locations}',
             [
                 'name' => $schedule->name,
                 'url' => $schedule->name,
-                'shift_type' => $schedule->shift_type,
+                'shift_type_name' => Shifttype::find($schedule->shift_type)->name,
+                'shift_type_id' => $schedule->shift_type,
                 'need'       => $schedule->needed_from_shift_type ? 'from shift type' : 'from room',
                 'before' => $schedule->minutes_before,
                 'after' => $schedule->minutes_after,
@@ -323,12 +323,15 @@ class ScheduleController extends BaseController
         $scheduleShift->save();
 
         $this->log->info(
-            'Created schedule shift "{shift}" in "{location}" ({from} - {to}, {guid})',
+            'Created schedule ({schedule}) shift: {shifttype} with title '
+            . '"{shift}" in "{location}" ({from} - {to}, {guid})',
             [
+                'schedule' => $scheduleShift->schedule->name,
+                'shifttype' => $shift->shiftType->name,
                 'shift' => $shift->title,
                 'location' => $shift->location->name,
-                'from' => $shift->start->format(DateTimeInterface::RFC3339),
-                'to' => $shift->end->format(DateTimeInterface::RFC3339),
+                'from' => $shift->start->format('Y-m-d H:i'),
+                'to' => $shift->end->format('Y-m-d H:i'),
                 'guid' => $scheduleShift->guid,
             ]
         );
@@ -355,12 +358,15 @@ class ScheduleController extends BaseController
         $this->fireUpdateShiftUpdateEvent($oldShift, $shift);
 
         $this->log->info(
-            'Updated schedule shift "{shift}" in "{location}" ({from} {to}, {guid})',
+            'Updated schedule ({schedule}) shift: {shifttype} with title '
+            . '"{shift}" in "{location}" ({from} - {to}, {guid})',
             [
+                'schedule' => $scheduleShift->schedule->name,
+                'shifttype' => $shift->shiftType->name,
                 'shift' => $shift->title,
                 'location' => $shift->location->name,
-                'from' => $shift->start->format(DateTimeInterface::RFC3339),
-                'to' => $shift->end->format(DateTimeInterface::RFC3339),
+                'from' => $shift->start->format('Y-m-d H:i'),
+                'to' => $shift->end->format('Y-m-d H:i'),
                 'guid' => $scheduleShift->guid,
             ]
         );
@@ -377,12 +383,13 @@ class ScheduleController extends BaseController
         $scheduleShift->delete();
 
         $this->log->info(
-            'Deleted schedule shift "{shift}" in {location} ({from} {to}, {guid})',
+            'Deleted schedule ({schedule}) shift: "{shift}" in {location} ({from} - {to}, {guid})',
             [
+                'schedule' => $scheduleShift->schedule->name,
                 'shift' => $shift->title,
                 'location' => $shift->location->name,
-                'from' => $shift->start->format(DateTimeInterface::RFC3339),
-                'to' => $shift->end->format(DateTimeInterface::RFC3339),
+                'from' => $shift->start->format('Y-m-d H:i'),
+                'to' => $shift->end->format('Y-m-d H:i'),
                 'guid' => $scheduleShift->guid,
             ]
         );
