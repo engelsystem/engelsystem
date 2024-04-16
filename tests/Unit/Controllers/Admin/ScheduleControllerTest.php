@@ -222,7 +222,7 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertNull(Schedule::find($this->schedule->id));
 
         $this->assertHasNotification('schedule.delete.success');
-        $this->assertTrue($this->log->hasInfoThatContains('Deleted schedule shift'));
+        $this->assertTrue($this->log->hasInfoThatContains('Deleted schedule ({schedule}) shift'));
         $this->assertTrue($this->log->hasInfoThatContains('Schedule {name}'));
     }
 
@@ -361,9 +361,9 @@ class ScheduleControllerTest extends ControllerTest
 
         $this->assertTrue($this->log->hasInfoThatContains('Started schedule'));
         $this->assertTrue($this->log->hasInfoThatContains('Created schedule location'));
-        $this->assertTrue($this->log->hasInfoThatContains('Created schedule shift'));
-        $this->assertTrue($this->log->hasInfoThatContains('Updated schedule shift'));
-        $this->assertTrue($this->log->hasInfoThatContains('Deleted schedule shift'));
+        $this->assertTrue($this->log->hasInfoThatContains('Created schedule ({schedule}) shift'));
+        $this->assertTrue($this->log->hasInfoThatContains('Updated schedule ({schedule}) shift'));
+        $this->assertTrue($this->log->hasInfoThatContains('Deleted schedule ({schedule}) shift'));
         $this->assertTrue($this->log->hasInfoThatContains('Ended schedule'));
 
         $this->assertHasNotification('schedule.import.success');
