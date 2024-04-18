@@ -12,7 +12,7 @@
                 {{ m.button(m.icon('chevron-left'), url('/news'), null, 'sm', __('general.back')) }}
             {% endif %}
             {{ block('title') }}
-            {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
+            {%- if can('admin_news') and is_overview|default(false) -%}
                 {{ m.button(m.icon('plus-lg'), url('/admin/news', only_meetings ? {'meeting': 1} : {}), 'secondary') }}
             {%- endif %}
         </h1>
@@ -97,7 +97,7 @@
                     </div>
                 {% endif %}
 
-                {% if has_permission_to('admin_news') %}
+                {% if can('admin_news') %}
                     <div class="d-flex ms-auto">
                         {{ m.button(m.icon('pencil'), url('/admin/news/' ~ news.id), 'secondary', 'sm', __('form.edit')) }}
 

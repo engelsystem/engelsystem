@@ -12,7 +12,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme' ~ themeId ~ '.css') }}"/>
         <script src="{{ asset('assets/vendor.js') }}"></script>
 
-        {% if page() in ['news', 'meetings'] and is_user() and has_permission_to('atom') -%}
+        {% if page() in ['news', 'meetings'] and is_user() and can('atom') -%}
             {% set parameters = {'key': user.api_key} -%}
             {% if page() == 'meetings' -%}
                 {% set parameters = {'meetings': 1}|merge(parameters) -%}

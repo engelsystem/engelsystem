@@ -14,7 +14,7 @@
     {% for name,opt in config('contact_options') %}
         {% set url = opt is iterable ? opt[0] : opt %}
         {% set permission = opt is iterable ? opt[1] : null %}
-        {% if not permission or has_permission_to(permission) %}
+        {% if not permission or can(permission) %}
             <a href="
             {%- if url starts with '/' %}
                 {{ url(url) }}
@@ -50,7 +50,7 @@
                 <div class="col-md-12">
                     {% block questions %}
                         {% block faq_text %}
-                            {% if has_permission_to('faq.view') %}
+                            {% if can('faq.view') %}
                                 {% if not is_admin | default(false) %}
                                     <p>
                                         {{ __('question.faq_link', [url('/faq')]) | raw }}
@@ -79,16 +79,16 @@
                                                 {{ m.icon('clock') }} {{ question.created_at.format(__('general.datetime')) }}
                                             </div>
 
-                                            {% if has_permission_to('question.edit') %}
+                                            {% if can('question.edit') %}
                                                 {{ m.user(question.user, {'pronoun': true}) }}
                                             {% endif %}
 
                                             <div class="d-flex ms-auto">
-                                                {% if has_permission_to('question.edit') %}
+                                                {% if can('question.edit') %}
                                                     {{ m.button(m.icon('pencil'), url('/admin/questions/' ~ question.id), null, 'sm', __('form.edit')) }}
                                                 {% endif %}
 
-                                                {% if question.user.id == user.id or has_permission_to('question.edit') %}
+                                                {% if question.user.id == user.id or can('question.edit') %}
                                                     <form class="ps-1" method="post" action="">
                                                         {{ csrf() }}
                                                         {{ f.hidden('id', question.id) }}

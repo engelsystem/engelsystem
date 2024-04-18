@@ -22,8 +22,8 @@ class Authentication extends TwigExtension
         return [
             new TwigFunction('is_user', [$this, 'isAuthenticated']),
             new TwigFunction('is_guest', [$this, 'isGuest']),
-            new TwigFunction('has_permission_to', [$this->auth, 'can']),
-            new TwigFunction('has_permission_to_any', [$this->auth, 'canAny']),
+            new TwigFunction('can', [$this->auth, 'can']),
+            new TwigFunction('canAny', [$this->auth, 'canAny']),
         ];
     }
 

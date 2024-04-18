@@ -9,7 +9,7 @@
         <h1>
             {{ block('title') }}
 
-            {%- if has_permission_to('faq.edit') -%}
+            {%- if can('faq.edit') -%}
                 {{ m.button(m.icon('plus-lg'), url('/admin/faq'), 'secondary') }}
             {%- endif %}
         </h1>
@@ -18,7 +18,7 @@
 
         <div class="row">
             {% block questions_text %}
-                {% if has_permission_to('question.add') %}
+                {% if can('question.add') %}
                     <p>{{ __('faq.questions_link', [url('/questions')]) | raw }}</p>
                 {% endif %}
             {% endblock %}
@@ -52,7 +52,7 @@
                                     {{ m.icon('clock') }} {{ item.updated_at.format(__('general.datetime')) }}
                                 </div>
 
-                                {% if has_permission_to('faq.edit') %}
+                                {% if can('faq.edit') %}
                                     <span class="ms-auto">
                                         {{ m.button(m.icon('pencil'), url('/admin/faq/' ~ item.id), 'secondary', 'sm', __('form.edit')) }}
                                     </span>
@@ -76,7 +76,7 @@
             {% endblock %}
 
             {% block ask_question %}
-                {% if has_permission_to('question.add') %}
+                {% if can('question.add') %}
                     <form action="{{ url('/questions/new') }}" enctype="multipart/form-data" method="post">
                         {{ csrf() }}
                         <div class="col-md-12">

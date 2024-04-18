@@ -14,7 +14,7 @@
                         {{ __('angeltypes.angeltypes') }}
                     </a>
                 {% else %}
-                    {% if has_permission_to('register') and config('registration_enabled') %}
+                    {% if can('register') and config('registration_enabled') %}
                         <a
                             href="{{ config('external_registration_url') ?: url('/register') }}"
                             class="btn btn-secondary back"

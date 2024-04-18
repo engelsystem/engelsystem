@@ -22,7 +22,7 @@
                                 }) }}
                             </div>
 
-                            {% if has_permission_to('logs.all') %}
+                            {% if can('logs.all') %}
                                 <div class="col-md-4">
                                     {{ f.select('search_user_id', __('general.user'), users, {
                                         'default_option': __('form.user_select'),
@@ -36,7 +36,7 @@
                     </form>
                 </div>
 
-                {% if not has_permission_to('logs.all') %}
+                {% if not can('logs.all') %}
                     <div class="mb-3">
                         {{ m.alert(__('log.only_own')) }}
                     </div>
