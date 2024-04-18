@@ -32,7 +32,7 @@
                 <div class="col-md-6">
                     {{ f.switch('arrived', __('user.arrived'), {
                         'checked': userdata.state.arrived,
-                        'disabled': not has_permission_to('admin_arrive'),
+                        'disabled': not can('admin_arrive'),
                     }) }}
 
                     {% if userdata.state.force_active and config('enable_force_active') %}

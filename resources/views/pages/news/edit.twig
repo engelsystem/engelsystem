@@ -52,7 +52,7 @@
                     {{ f.checkbox('is_pinned', __('news.edit.is_pinned'), {
                         'checked': is_pinned,
                     }) }}
-                    {% if has_permission_to('news.highlight') %}
+                    {% if can('news.highlight') %}
                         {{ f.checkbox('is_highlighted', __('news.edit.is_highlighted'), {
                             'checked': is_highlighted,
                         }) }}

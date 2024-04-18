@@ -48,7 +48,7 @@
                     {% for name,opt in config('header_items', {}) %}
                         {% set url = opt is iterable ? opt[0] : opt %}
                         {% set permission = opt is iterable ? opt[1] : null %}
-                        {% if not permission or has_permission_to(permission) %}
+                        {% if not permission or can(permission) %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}">
                                     {{ __(name) }}
@@ -62,7 +62,7 @@
                 {% if is_guest() %}
                     {% include "layouts/parts/language_dropdown.twig" %}
 
-                    {% if has_permission_to('register') and config('registration_enabled') %}
+                    {% if can('register') and config('registration_enabled') %}
                         {{ _self.toolbar_item(
                             __('general.register'),
                             config('external_registration_url') ?: url('/register'),
@@ -71,7 +71,7 @@
                         ) }}
                     {% endif %}
 
-                    {% if has_permission_to('login') %}
+                    {% if can('login') %}
                         {{ _self.toolbar_item(__('general.login'), url('/login'), 'login', 'box-arrow-in-right') }}
                     {% endif %}
                 {% endif %}
@@ -79,7 +79,7 @@
                 {% if is_user() %}
                     {{ _self.toolbar_item(menuUserShiftState(user), url('/shifts', {'action': 'next'}), '', 'clock', __('shift.next')) }}
 
-                    {% if has_permission_to('user_messages') %}
+                    {% if can('user_messages') %}
                         {{ _self.toolbar_item(
                             user_messages ? '<span class="badge bg-danger">' ~ user_messages ~ '</span>' : '',
                             url('/messages'),
@@ -96,15 +96,15 @@
                             {{ m.angel() }} {{ user.displayName }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            {% if has_permission_to('user_myshifts') %}
+                            {% if can('user_myshifts') %}
                                 {{ _self.dropdown_item(__('profile.my-shifts'), url('/users', {'action': 'view'}), 'users', m.icon('calendar-range')) }}
                             {% endif %}
 
-                            {% if has_permission_to('user_settings') %}
+                            {% if can('user_settings') %}
                                 {{ _self.dropdown_item(__('settings.settings'), url('/settings/profile'), 'settings/profile', m.icon('person-fill-gear')) }}
                             {% endif %}
 
-                            {% if has_permission_to('logout') %}
+                            {% if can('logout') %}
                                 {{ _self.dropdown_item(__('general.logout'), url('/logout'), 'logout', m.icon('box-arrow-left')) }}
                             {% endif %}
                         </ul>

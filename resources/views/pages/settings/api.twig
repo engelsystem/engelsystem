@@ -16,7 +16,7 @@
                 }}
             ) }}
 
-            {% if has_permission_to('shifts_json_export') %}
+            {% if can('shifts_json_export') %}
                 {{ f.button(
                     __('settings.api.shifts_json_show'),
                     {'size': 'sm', 'icon_left': 'braces', 'attr': {
@@ -26,7 +26,7 @@
                 ) }}
             {% endif %}
 
-            {% if has_permission_to('ical') %}
+            {% if can('ical') %}
                 {{ f.button(
                     __('settings.api.ical_show'),
                     {'size': 'sm', 'icon_left': 'calendar-week', 'attr': {
@@ -36,7 +36,7 @@
                 ) }}
             {% endif %}
 
-            {% if has_permission_to('atom') %}
+            {% if can('atom') %}
                 {{ f.button(
                     __('settings.api.news_show'),
                     {'size': 'sm', 'icon_left': 'calendar-week', 'attr': {
@@ -65,26 +65,26 @@
                 <code>{{ user.api_key }}</code>
             </p>
 
-            {% if has_permission_to('shifts_json_export') %}
+            {% if can('shifts_json_export') %}
                 <p id="shifts_json_hide" class="collapse" data-bs-parent="#exports_hide">
                     <code>{{ url('/shifts-json-export', {'key': user.api_key}) }}</code>
                 </p>
             {% endif %}
 
-            {% if has_permission_to('ical') %}
+            {% if can('ical') %}
                 <p id="ical_hide" class="collapse" data-bs-parent="#exports_hide">
                     <code>{{ url('/ical', {'key': user.api_key}) }}</code>
                 </p>
             {% endif %}
 
-            {% if has_permission_to('atom') %}
+            {% if can('atom') %}
                 <p id="news_hide" class="collapse" data-bs-parent="#exports_hide">
                     <code>{{ url('/atom', {'key': user.api_key}) }}</code>
-                    {% if has_permission_to('user_meetings') %}
+                    {% if can('user_meetings') %}
                         <br><code>{{ url('/atom', {'meetings': 1, 'key': user.api_key}) }}</code>
                     {% endif %}
                     <br><code>{{ url('/rss', {'key': user.api_key}) }}</code>
-                    {% if has_permission_to('user_meetings') %}
+                    {% if can('user_meetings') %}
                         <br><code>{{ url('/rss', {'meetings': 1, 'key': user.api_key}) }}</code>
                     {% endif %}
                 </p>
@@ -95,7 +95,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            {% if has_permission_to('api') %}
+            {% if can('api') %}
                 {{ __('settings.api.about', [
                     config('app_name'),
                     url('/api/v0-beta'),

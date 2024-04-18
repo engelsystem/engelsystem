@@ -39,7 +39,7 @@
         {% for name,opt in config('footer_items') %}
             {% set url = opt is iterable ? opt[0] : opt %}
             {% set permission = opt is iterable ? opt[1] : null %}
-            {% if not permission or has_permission_to(permission) %}
+            {% if not permission or can(permission) %}
                 <a href="
                 {%- if url starts with '/' %}
                     {{ url(url) }}

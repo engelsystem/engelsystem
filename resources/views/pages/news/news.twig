@@ -24,7 +24,7 @@
                     </div>
                     {{ m.user(comment.user, {'pronoun': true}) }}
 
-                    {% if comment.user.id == user.id or has_permission_to('admin_news') or has_permission_to('comment.delete') %}
+                    {% if comment.user.id == user.id or can('admin_news') or can('comment.delete') %}
                         <div class="ms-auto">
                             <form
                                 action="{{ url('/news/comment/' ~ comment.id) }}" enctype="multipart/form-data"
@@ -45,7 +45,7 @@
 {% endblock %}
 
 {% block write_comment %}
-    {% if has_permission_to('news_comments') %}
+    {% if can('news_comments') %}
         <div class="col-md-12 mt-4">
             <h3>{{ __('news.comments.new') }}</h3>
 

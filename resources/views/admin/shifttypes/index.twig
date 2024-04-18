@@ -13,9 +13,9 @@
 
             {{ block('title') }}
 
-            {% if is_index|default(false) and has_permission_to('shifttypes.edit') %}
+            {% if is_index|default(false) and can('shifttypes.edit') %}
                 {{ m.button(m.icon('plus-lg'), url('/admin/shifttypes/edit'), 'secondary') }}
-            {% elseif is_view|default(false) and has_permission_to('shifttypes.edit') %}
+            {% elseif is_view|default(false) and can('shifttypes.edit') %}
                 {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), null, 'sm', __('form.edit')) }}
             {% endif %}
         </h1>
@@ -43,7 +43,7 @@
                                     </td>
 
                                     <td>
-                                        {% if has_permission_to('shifttypes.edit') %}
+                                        {% if can('shifttypes.edit') %}
                                         <div class="d-flex ms-auto">
                                             {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), null, 'sm', __('form.edit')) }}
 
