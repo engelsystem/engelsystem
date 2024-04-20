@@ -24,6 +24,9 @@ services:
       IFSG_ENABLED: 'true'
       IFSG_LIGHT_ENABLED: 'false'
       DEFAULT_LOCALE: de_DE
+      MAIL_DRIVER: smtp
+      MAIL_FROM_ADDRESS: helfen@froscon.org
+      MAIL_HOST: mail.froscon.org
     secrets:
       - db_password
   es_database:
