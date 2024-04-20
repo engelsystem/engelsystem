@@ -39,6 +39,8 @@ services:
       MYSQL_ROOT_PASSWORD:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_INITDB_SKIP_TZINFO: "yes"
+    volumes:
+      - ./dbsetup.sql:/docker-entrypoint-initdb.d/dbsetup.sql:ro
     secrets:
       - db_root_password
       - db_password
