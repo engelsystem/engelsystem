@@ -1,32 +1,16 @@
 ---
 version: "3.6"
 services:
-  server:
-    image: ${COMPOSE_PROJECT_NAME}_server
+  es_server:
+    image: es_server
     build:
       context: ..
       dockerfile: docker/Dockerfile
     environment:
-      MYSQL_HOST: database
-      MYSQL_USER: helferinnensystem
-      MYSQL_PASSWORD_FILE: /run/secrets/db_password
-      MYSQL_DATABASE: helferinnensystem
-      APP_NAME: Helferinnensystem
-      CONTACT_EMAIL: "mailto:helfen@froscon.org"
-      THEME: 0
-      TSHIRT_SIZE_REQUIRED: 'false'
-      ANGEL_AUTOARRIVE: 'true'
-      SUPPORTERS_CAN_PROMOTE: 'true'
-      SIGNUP_POST_FRACTION: 1
-      PASSWORD_MINIMUM_LENGTH: 5
-      ENABLE_PLANNED_ARRIVAL: 'false'
-      ENABLE_FORCE_ACTIVE: 'false'
-      GOODIE_TYPE: none
-      ENABLE_VOUCHER: 'false'
-      NIGHT_SHIFTS: 'false'
-      IFSG_ENABLED: 'true'
-      IFSG_LIGHT_ENABLED: 'true'
-      DEFAULT_LOCALE: de_DE
+      MYSQL_HOST: es_database
+      MYSQL_USER: engelsystem
+      MYSQL_PASSWORD: engelsystem
+      MYSQL_DATABASE: engelsystem
     ports:
       - "5080:80"
     env_file: deployment.env
@@ -34,46 +18,23 @@ services:
       - database
       - internet
     depends_on:
-      - database
-    secrets:
-      - db_password
-  database:
+      - es_database
+  es_database:
     image: mariadb:10.2
     environment:
-      MYSQL_DATABASE: helferinnensystem
-      MYSQL_USER: helferinnensystem
-      MYSQL_PASSWORD_FILE: /run/secrets/db_password
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_DATABASE: engelsystem
+      MYSQL_USER: engelsystem
+      MYSQL_PASSWORD: engelsystem
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
       MYSQL_INITDB_SKIP_TZINFO: "yes"
     volumes:
       - db:/var/lib/mysql
     networks:
       - database
-    secrets:
-      - db_root_password
-      - db_password
-  phpmyadmin:
-    image: phpmyadmin:latest
-    environment:
-      PMA_HOST: database
-    networks:
-      - database
-      - internet
-    ports:
-      - "5081:80"
-    profiles:
-      - dev
 volumes:
   db: {}
-  backup: {}
 
 networks:
   database:
     internal: true
   internet:
-
-secrets:
-  db_password:
-    file: secrets/mysql_pw.txt
-  db_root_password:
-    file: secrets/mysql_root_pw.txt
