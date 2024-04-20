@@ -22,7 +22,7 @@ services:
       ENABLE_VOUCHER: 'false'
       NIGHT_SHIFTS: 'false'
       IFSG_ENABLED: 'true'
-      IFSG_LIGHT_ENABLED: 'true'
+      IFSG_LIGHT_ENABLED: 'false'
       DEFAULT_LOCALE: de_DE
     secrets:
       - db_password
