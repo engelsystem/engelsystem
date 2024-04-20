@@ -29,7 +29,7 @@ function admin_user()
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $user_info_edit = auth()->can('user.info.edit');
     $user_goodie_edit = auth()->can('user.goodie.edit');
-    $user_edit = auth()->can('user.edit');
+    $user_nick_edit = auth()->can('user.nick.edit');
     $admin_arrive = auth()->can('admin_arrive');
 
     if (!$request->has('id')) {
@@ -63,7 +63,7 @@ function admin_user()
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>' . __('general.nick') . '</td><td>'
             . '<input size="40" name="eNick" value="' . htmlspecialchars($user_source->name)
-            . '" class="form-control" maxlength="24" ' . ($user_edit ? '' : 'disabled') . '>'
+            . '" class="form-control" maxlength="24" ' . ($user_nick_edit ? '' : 'disabled') . '>'
             . '</td></tr>' . "\n";
         $html .= '  <tr><td>' . __('Last login') . '</td><td><p class="help-block">'
             . ($user_source->last_login_at ? $user_source->last_login_at->format(__('general.datetime')) : '-')
@@ -307,7 +307,7 @@ function admin_user()
                     break;
                 }
                 $old_nick = $user_source->name;
-                if ($nickValid && $user_edit) {
+                if ($nickValid && $user_nick_edit) {
                     $changed_nick = ($user_source->name !== $nick) || User::whereName($nick)->exists();
                     $user_source->name = $nick;
                 }
