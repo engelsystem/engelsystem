@@ -548,8 +548,7 @@ function Shift_signout_allowed(Shift $shift, AngelType $angeltype, $signout_user
 
     // angeltype supporter can sign out any user at any time from their supported angeltype
     if (
-        auth()->can('shiftentry_edit_angeltype_supporter')
-        && ($user->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes'))
+        $user->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes')
     ) {
         return true;
     }
@@ -587,8 +586,7 @@ function Shift_signup_allowed(
     }
 
     if (
-        auth()->can('shiftentry_edit_angeltype_supporter')
-        && (auth()->user()->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes'))
+        auth()->user()->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes')
     ) {
         return Shift_signup_allowed_angeltype_supporter($needed_angeltype, $shift_entries);
     }
