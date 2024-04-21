@@ -45,16 +45,21 @@ class LegacyMiddleware implements MiddlewareInterface
         /** @var Request $appRequest */
         $appRequest = $this->container->get('request');
         $page = $appRequest->query->get('p');
-        // Support old URL scheme
+        // Support old URL/permission scheme
         if (empty($page)) {
             $page = $appRequest->path();
             $page = str_replace('-', '_', $page);
         }
 
+        $allowPage = false;
+        if ($page === 'admin_arrive') {
+            $allowPage = $this->auth->can('users.arrive.list');
+        }
+
         $title = $content = '';
         if (
             preg_match('~^\w+$~i', $page)
-            && (in_array($page, $this->free_pages) || $this->auth->can($page))
+            && (in_array($page, $this->free_pages) || $this->auth->can($page) || $allowPage)
         ) {
             list($title, $content) = $this->loadPage($page);
         }
