@@ -85,7 +85,7 @@ function make_navigation()
         // path              => name,
         // path              => [name, permission],
 
-        'admin_arrive'       => 'Arrive angels',
+        'admin_arrive'       => [admin_arrive_title(), 'users.arrive.list'],
         'admin_active'       => 'Active angels',
         'users'              => ['All Angels', 'admin_user'],
         'admin_free'         => 'Free angels',

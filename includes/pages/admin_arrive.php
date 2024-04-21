@@ -8,7 +8,7 @@ use Engelsystem\Models\User\User;
  */
 function admin_arrive_title()
 {
-    return __('Arrive angels');
+    return auth()->can('admin_arrive') ? __('Arrive angels') : __('Angels');
 }
 
 /**
@@ -19,48 +19,51 @@ function admin_arrive()
     $msg = '';
     $search = '';
     $request = request();
+    $admin_arrive = auth()->can('admin_arrive');
 
     if ($request->has('search')) {
         $search = strip_request_item('search');
         $search = trim($search);
     }
 
-    $action = $request->get('action');
-    if (
-        $action == 'reset'
-        && preg_match('/^\d+$/', $request->input('user'))
-        && $request->hasPostData('submit')
-    ) {
-        $user_id = $request->input('user');
-        $user_source = User::find($user_id);
-        if ($user_source) {
-            $user_source->state->arrived = false;
-            $user_source->state->arrival_date = null;
-            $user_source->state->save();
+    if ($admin_arrive) {
+        $action = $request->get('action');
+        if (
+            $action == 'reset'
+            && preg_match('/^\d+$/', $request->input('user'))
+            && $request->hasPostData('submit')
+        ) {
+            $user_id = $request->input('user');
+            $user_source = User::find($user_id);
+            if ($user_source) {
+                $user_source->state->arrived = false;
+                $user_source->state->arrival_date = null;
+                $user_source->state->save();
 
-            engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source, true));
-            success(__('Reset done. Angel has not arrived.'));
-            throw_redirect(user_link($user_source->id));
-        } else {
-            $msg = error(__('Angel not found.'), true);
-        }
-    } elseif (
-        $action == 'arrived'
-        && preg_match('/^\d+$/', $request->input('user'))
-        && $request->hasPostData('submit')
-    ) {
-        $user_id = $request->input('user');
-        $user_source = User::find($user_id);
-        if ($user_source) {
-            $user_source->state->arrived = true;
-            $user_source->state->arrival_date = new Carbon\Carbon();
-            $user_source->state->save();
+                engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source, true));
+                success(__('Reset done. Angel has not arrived.'));
+                throw_redirect(user_link($user_source->id));
+            } else {
+                $msg = error(__('Angel not found.'), true);
+            }
+        } elseif (
+            $action == 'arrived'
+            && preg_match('/^\d+$/', $request->input('user'))
+            && $request->hasPostData('submit')
+        ) {
+            $user_id = $request->input('user');
+            $user_source = User::find($user_id);
+            if ($user_source) {
+                $user_source->state->arrived = true;
+                $user_source->state->arrival_date = new Carbon\Carbon();
+                $user_source->state->save();
 
-            engelsystem_log('User set has arrived: ' . User_Nick_render($user_source, true));
-            success(__('Angel has been marked as arrived.'));
-            throw_redirect(user_link($user_source->id));
-        } else {
-            $msg = error(__('Angel not found.'), true);
+                engelsystem_log('User set has arrived: ' . User_Nick_render($user_source, true));
+                success(__('Angel has been marked as arrived.'));
+                throw_redirect(user_link($user_source->id));
+            } else {
+                $msg = error(__('Angel not found.'), true);
+            }
         }
     }
 
@@ -206,15 +209,17 @@ function admin_arrive()
             form_text('search', __('form.search'), $search),
             form_submit('submit', icon('search') . __('form.search')),
         ], url('/admin-arrive')),
-        table([
-            'name'                            => __('general.name'),
-            'rendered_planned_arrival_date'   => __('Planned arrival'),
-            'arrived'                         => __('Arrived?'),
-            'rendered_arrival_date'           => __('Arrival date'),
-            'rendered_planned_departure_date' => __('Planned departure'),
-            'actions'                         => __('general.actions'),
-        ], $users_matched),
-        div('row', [
+        table(array_merge(
+            ['name' => __('general.name'),],
+            ($admin_arrive ? ['rendered_planned_arrival_date' => __('Planned arrival')] : []),
+            ['arrived' => __('Arrived?')],
+            ($admin_arrive ? [
+                'rendered_arrival_date' => __('Arrival date'),
+                'rendered_planned_departure_date' => __('Planned departure'),
+                'actions' => __('general.actions'),
+            ] : [])
+        ), $users_matched),
+        div('row', $admin_arrive ? [
             div('col-md-4', [
                 heading(__('Planned arrival statistics'), 3),
                 BarChart::render([
@@ -260,6 +265,6 @@ function admin_arrive()
                     'sum'   => __('Sum'),
                 ], $planned_departure_at_day),
             ]),
-        ]),
+        ] : []),
     ]);
 }
