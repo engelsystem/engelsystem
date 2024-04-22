@@ -206,7 +206,7 @@ function user_controller()
         }
     }
 
-    $shifts = Shifts_by_user($user_source->id, auth()->can('user_shifts_admin'));
+    $shifts = Shifts_by_user($user_source->id, true);
     foreach ($shifts as $shift) {
         // TODO: Move queries to model
         $shift->needed_angeltypes = Db::select(

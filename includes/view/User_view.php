@@ -314,6 +314,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $supporter = auth()->user()->isAngelTypeSupporter(AngelType::findOrFail($shift->angel_type_id));
 
     $shift_info = '<a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->shiftType->name) . '</a>';
     if ($shift->title) {
@@ -358,7 +359,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
         $myshift['duration'] = '<p class="text-danger"><s>'
             . sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h'
             . '</s></p>';
-        if (auth()->can('user_shifts_admin')) {
+        if (auth()->can('user_shifts_admin') || $supporter) {
             $myshift['comment'] .= '<br />'
                 . '<p class="text-danger">'
                 . __('Freeloaded') . ': ' . htmlspecialchars($shift->freeloaded_comment)
@@ -383,7 +384,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     $myshift['actions'] = [
         button(shift_link($shift), icon('eye'), 'btn-sm btn-info', '', __('View')),
     ];
-    if ($its_me || auth()->can('user_shifts_admin')) {
+    if ($its_me || auth()->can('user_shifts_admin') || $supporter) {
         $myshift['actions'][] = button(
             url('/user-myshifts', ['edit' => $shift->shift_entry_id, 'id' => $user_source->id]),
             icon('pencil'),
@@ -432,10 +433,21 @@ function User_view_myshifts(
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $supported_angeltypes = auth()->user()
+        ->userAngelTypes()
+        ->where('supporter', true)
+        ->pluck('angel_types.id');
+    $show_sum = true;
+
     $myshifts_table = [];
     $timeSum = 0;
     foreach ($shifts as $shift) {
         $key = $shift->start->timestamp . '-shift-' . $shift->shift_entry_id . $shift->id;
+        $supporter = $supported_angeltypes->contains($shift->angel_type_id);
+        if (!auth()->can('user_shifts_admin') && !$supporter && !$its_me) {
+            $show_sum = false;
+            continue;
+        }
         $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me);
         if (!$shift->freeloaded) {
             $timeSum += ($shift->end->timestamp - $shift->start->timestamp);
@@ -466,15 +478,17 @@ function User_view_myshifts(
                 $shift['row-class'] = 'border-bottom border-info';
             }
         }
-        $myshifts_table[] = [
-            'date'       => '<b>' . __('Sum:') . '</b>',
-            'duration'   => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
-            'hints'      => '',
-            'location'   => '',
-            'shift_info' => '',
-            'comment'    => '',
-            'actions'    => '',
-        ];
+        if ($show_sum) {
+            $myshifts_table[] = [
+                'date'       => '<b>' . __('Sum:') . '</b>',
+                'duration'   => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
+                'hints'      => '',
+                'location'   => '',
+                'shift_info' => '',
+                'comment'    => '',
+                'actions'    => '',
+            ];
+        }
         if ($goodie_enabled && ($its_me || $goodie_admin || auth()->can('admin_user'))) {
             $myshifts_table[] = [
                 'date'       => '<b>' . ($goodie_tshirt ? __('T-shirt score') : __('Goodie score')) . '&trade;:</b>',
@@ -578,7 +592,13 @@ function User_view(
     $user_name = htmlspecialchars((string) $user_source->personalData->first_name) . ' '
         . htmlspecialchars((string) $user_source->personalData->last_name);
     $myshifts_table = '';
-    if ($its_me || $admin_user_privilege || $goodie_admin) {
+    $user_angeltypes_supporter = false;
+    foreach ($user_source->userAngelTypes as $user_angeltype) {
+        $user_angeltypes_supporter = $user_angeltypes_supporter
+            || $auth->user()->isAngelTypeSupporter($user_angeltype);
+    }
+
+    if ($its_me || $admin_user_privilege || $goodie_admin || $user_angeltypes_supporter) {
         $my_shifts = User_view_myshifts(
             $shifts,
             $user_source,
