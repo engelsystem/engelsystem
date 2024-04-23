@@ -78,7 +78,7 @@ function config_path(string $path = ''): string
  * called `${var}_FILE` is set, read the password from that file. Otherwise
  * returns the content of the `$var` environment variable.
  */
-function env_password(string $var): string {
+function env_password(string $var): string|null {
     $filename = env("{$var}_FILE", null);
     if ($filename) {
         if (file_exists($filename)) {
