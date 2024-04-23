@@ -80,11 +80,11 @@ return [
 
         'oauth2.login' => \Engelsystem\Events\Listener\OAuth2::class . '@login',
 
-        'shift.entry.deleting' => [
-            \Engelsystem\Events\Listener\Shift::class . '@deletedEntryCreateWorklog',
-            \Engelsystem\Events\Listener\Shift::class . '@deletedEntrySendEmail',
+        'shift.deleting' => [
+            \Engelsystem\Events\Listener\Shifts::class . '@deletingCreateWorklogs',
+            \Engelsystem\Events\Listener\Shifts::class . '@deletingSendEmails',
         ],
 
-        'shift.updating' => \Engelsystem\Events\Listener\Shift::class . '@updatedShiftSendEmail',
+        'shift.updating' => \Engelsystem\Events\Listener\Shifts::class . '@updatedSendEmail',
     ],
 ];

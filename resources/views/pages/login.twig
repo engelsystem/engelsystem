@@ -30,7 +30,8 @@
 
         <div class="row mb-5">
             <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
-                <div class="card {{ m.type_bg_class() }}">
+                <div class="card {{ m.type_bg_class() }} registration">
+                    {% set login_hidden = not config('enable_password') %}
                     <div class="card-body">
                         {% include 'layouts/parts/messages.twig' %}
 
@@ -40,7 +41,7 @@
 
                         <form action="" enctype="multipart/form-data" method="post">
                             {{ csrf() }}
-                            <div class="mb-3">
+                            <div class="mb-3{% if login_hidden %} d-none{% endif %}">
                                 <div class="input-group input-group-lg">
                                     <span class="input-group-text {{ m.type_text_class() }}">
                                         {{ m.angel }}
@@ -56,7 +57,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3{% if login_hidden %} d-none{% endif %}">
                                 <div class="input-group input-group-lg">
                                     <span class="input-group-text {{ m.type_text_class() }}">
                                         <i class="bi bi-key"></i>
@@ -68,7 +69,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3 text-center">
+                            <div class="mb-3 text-center{% if login_hidden %} d-none{% endif %}">
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" name="submit">
                                     {{ __('general.login') }}
                                 </button>
@@ -89,7 +90,7 @@
                                 </div>
                             {% endif %}
 
-                            <div class="text-center">
+                            <div class="text-center{% if login_hidden %} d-none{% endif %}">
                                 <a href="{{ url('/password/reset') }}" class="">
                                     {{ __('login.password.reset') }}
                                 </a>
@@ -103,15 +104,19 @@
         <div class="row mb-5">
             <div class="col-sm-6 text-center">
                 <h2>{{ __('general.register') }}</h2>
-                {% if has_permission_to('register') and config('registration_enabled') %}
-                    {% if config('enable_password') %}
-                        <p>{{ __('login.registration') }}</p>
-                        <a href="{{ url('/register') }}" class="btn btn-primary">{{ __('general.register') }} &raquo;</a>
-                    {% else %}
-                        <p>{{ __('login.registration.external') }}</p>
-                    {% endif %}
+                {% if
+                    (has_permission_to('register') and config('registration_enabled') and config('enable_password'))
+                    or config('external_registration_url') %}
+                    <p>{{ __('login.registration') }}</p>
+
+                    {% set registration_url = config('external_registration_url') ?: url('/register') %}
+                    <a href="{{ registration_url }}" class="btn btn-primary">{{ __('general.register') }} &raquo;</a>
                 {% else %}
-                    {{ m.alert(__('login.registration.disabled'), 'danger') }}
+                    {% if not config('enable_password') %}
+                        <p>{{ __('login.registration.external') }}</p>
+                    {% else %}
+                        {{ m.alert(__('login.registration.disabled'), 'danger') }}
+                    {% endif %}
                 {% endif %}
             </div>
 

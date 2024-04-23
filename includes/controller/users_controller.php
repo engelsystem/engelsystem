@@ -254,6 +254,12 @@ function user_controller()
         ->where('user_angel_type.supporter', true)
         ->count();
 
+    $is_drive_supporter = (bool) AngelType::whereRequiresDriverLicense(true)
+        ->leftJoin('user_angel_type', 'user_angel_type.angel_type_id', 'angel_types.id')
+        ->where('user_angel_type.user_id', $user->id)
+        ->where('user_angel_type.supporter', true)
+        ->count();
+
     return [
         htmlspecialchars($user_source->displayName),
         User_view(
@@ -265,10 +271,13 @@ function user_controller()
             $shifts,
             $user->id == $user_source->id,
             $tshirt_score,
-            auth()->can('admin_active'),
+            auth()->can('user.edit.shirt'),
             auth()->can('admin_user_worklog'),
             $worklogs,
-            auth()->can('user.ifsg.edit') || $is_ifsg_supporter,
+            auth()->can('user.ifsg.edit')
+                || $is_ifsg_supporter
+                || auth()->can('user.drive.edit')
+                || $is_drive_supporter,
         ),
     ];
 }
@@ -463,7 +472,7 @@ function user_driver_license_required_hint()
     $user = auth()->user();
 
     // User has already entered data, no hint needed.
-    if ($user->license->wantsToDrive()) {
+    if (!config('driving_license_enabled') || $user->license->wantsToDrive()) {
         return null;
     }
 

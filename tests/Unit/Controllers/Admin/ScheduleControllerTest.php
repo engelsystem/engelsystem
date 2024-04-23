@@ -199,16 +199,16 @@ class ScheduleControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::save
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::delete
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::fireDeleteShiftEntryEvents
+     * @covers \Engelsystem\Controllers\Admin\ScheduleController::fireDeleteShiftEvents
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::deleteEvent
      */
     public function testSaveDelete(): void
     {
         $this->setExpects($this->redirect, 'to', ['/admin/schedule'], $this->response);
 
-        $this->event->expects($this->exactly(2))
+        $this->event->expects($this->exactly(3))
             ->method('dispatch')
-            ->with('shift.entry.deleting')
+            ->with('shift.deleting')
             ->willReturn([]);
 
         $request = Request::create('', 'POST', ['delete' => 'yes'])
@@ -348,9 +348,9 @@ class ScheduleControllerTest extends ControllerTest
         $request = Request::create('', 'POST')
             ->withAttribute('schedule_id', $this->schedule->id);
 
-        $this->event->expects($this->exactly(2))
+        $this->event->expects($this->exactly(3))
             ->method('dispatch')
-            ->withConsecutive(['shift.updating'], ['shift.entry.deleting'])
+            ->withConsecutive(['shift.updating'], ['shift.deleting'])
             ->willReturn([]);
 
         /** @var ScheduleController $controller */

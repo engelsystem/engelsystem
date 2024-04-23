@@ -22,7 +22,7 @@ class ErrorHandler implements MiddlewareInterface
     protected string $viewPrefix = 'errors/';
 
     /**
-     * A list of inputs that are not saved from form input
+     * A list of inputs that are not saved from input
      *
      * @var array<string>
      */
@@ -42,7 +42,7 @@ class ErrorHandler implements MiddlewareInterface
     }
 
     /**
-     * Handles any error messages
+     * Handles any error messages / http exceptions / validation errors
      *
      * Should be added at the beginning
      */
@@ -50,6 +50,7 @@ class ErrorHandler implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
+        // Handle response
         try {
             $response = $handler->handle($request);
         } catch (HttpException $e) {
@@ -64,17 +65,18 @@ class ErrorHandler implements MiddlewareInterface
             if ($request instanceof Request) {
                 $response->withInput(Arr::except($request->request->all(), $this->formIgnore));
             }
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException) {
             $response = $this->createResponse('', 404);
         }
 
         $statusCode = $response->getStatusCode();
         $contentType = $response->getHeader('content-type');
         $contentType = array_shift($contentType);
-        if (!$contentType && strpos($response->getBody()?->getContents() ?? '', '<html') !== false) {
+        if (!$contentType && str_contains($response->getBody()?->getContents() ?? '', '<html')) {
             $contentType = 'text/html';
         }
 
+        // Handle response based on status
         if (
             $statusCode < 400
             || !$response instanceof Response

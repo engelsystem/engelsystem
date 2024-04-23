@@ -3,7 +3,6 @@
 namespace Engelsystem;
 
 use Engelsystem\Config\GoodieType;
-use Engelsystem\Helpers\Shifts;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -171,6 +170,15 @@ class ShiftCalendarShiftRenderer
             $angeltype,
             $shift_entries
         );
+        $shift_can_signup = Shift_signup_allowed_angel(
+            $user,
+            $shift,
+            $angeltype,
+            null,
+            null,
+            $angeltype,
+            $shift_entries
+        );
         $freeEntriesCount = $shift_signup_state->getFreeEntries();
         $inner_text = _e('%d helper needed', '%d helpers needed', $freeEntriesCount, [$freeEntriesCount]);
 
@@ -217,7 +225,7 @@ class ShiftCalendarShiftRenderer
         $shifts_row .= join(', ', $entry_list);
         $shifts_row .= '</li>';
         return [
-            $shift_signup_state,
+            $shift_can_signup,
             $shifts_row,
         ];
     }
@@ -245,7 +253,6 @@ class ShiftCalendarShiftRenderer
      */
     private function renderShiftHead(Shift $shift, $class, $needed_angeltypes_count)
     {
-        $nightShiftsConfig = config('night_shifts');
         $goodie = GoodieType::from(config('goodie_type'));
         $goodie_enabled = $goodie !== GoodieType::None;
 
@@ -281,7 +288,7 @@ class ShiftCalendarShiftRenderer
                 ]);
         }
         $night_shift = '';
-        if (Shifts::isNightShift($shift->start, $shift->end) && $nightShiftsConfig['enabled'] && $goodie_enabled) {
+        if ($shift->isNightShift() && $goodie_enabled) {
             $night_shift = ' <i class="bi-moon-stars"></i>';
         }
 

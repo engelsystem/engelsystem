@@ -26,6 +26,7 @@ class Url extends TwigExtension
 
     public function getUrl(string $path, array $parameters = []): string
     {
+        // Fix legacy URLs
         $path = str_replace('_', '-', $path);
 
         return $this->urlGenerator->to($path, $parameters);

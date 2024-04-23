@@ -205,9 +205,9 @@ class ShiftTypesControllerTest extends ControllerTest
         $dispatcher->expects($this->once())
             ->method('dispatch')
             ->willReturnCallback(function (string $event, array $data) use ($shifttype, $user) {
-                $this->assertEquals('shift.entry.deleting', $event);
-                $this->assertEquals($shifttype->name, $data['name']);
-                $this->assertEquals($user->id, $data['user']->id);
+                $this->assertEquals('shift.deleting', $event);
+                $this->assertEquals($shifttype->name, $data['shift']->shiftType->name);
+                $this->assertEquals($user->id, $data['shift']->shiftEntries[0]->user->id);
 
                 return [];
             });

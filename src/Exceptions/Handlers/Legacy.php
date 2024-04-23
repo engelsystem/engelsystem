@@ -40,7 +40,7 @@ class Legacy implements HandlerInterface
 
         try {
             $this->log->critical('', ['exception' => $e]);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
     }
 

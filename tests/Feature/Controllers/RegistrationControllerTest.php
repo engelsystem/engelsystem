@@ -79,7 +79,7 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
         FormFieldAssert::assertNotContainsInputField('pronoun', $responseHTML);
         FormFieldAssert::assertNotContainsInputField('firstname', $responseHTML);
         FormFieldAssert::assertNotContainsInputField('lastname', $responseHTML);
-        FormFieldAssert::assertNotContainsInputField('email_goody', $responseHTML);
+        FormFieldAssert::assertNotContainsInputField('email_goodie', $responseHTML);
         FormFieldAssert::assertNotContainsSelectField('tshirt_size', $responseHTML);
         FormFieldAssert::assertNotContainsInputField('planned_arrival_date', $responseHTML);
         FormFieldAssert::assertNotContainsInputField('mobile_show', $responseHTML);
@@ -109,7 +109,7 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
         FormFieldAssert::assertContainsInputField('password_confirmation', $responseHTML);
         FormFieldAssert::assertContainsInputField('firstname', $responseHTML);
         FormFieldAssert::assertContainsInputField('lastname', $responseHTML);
-        FormFieldAssert::assertContainsInputField('email_goody', $responseHTML);
+        FormFieldAssert::assertContainsInputField('email_goodie', $responseHTML);
         FormFieldAssert::assertContainsSelectField('tshirt_size', $responseHTML);
         FormFieldAssert::assertContainsInputField('planned_arrival_date', $responseHTML);
         FormFieldAssert::assertContainsInputField('mobile_show', $responseHTML);

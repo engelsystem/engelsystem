@@ -63,7 +63,12 @@
                     {% include "layouts/parts/language_dropdown.twig" %}
 
                     {% if has_permission_to('register') and config('registration_enabled') %}
-                        {{ _self.toolbar_item(__('general.register'), url('/register'), 'register', 'plus') }}
+                        {{ _self.toolbar_item(
+                            __('general.register'),
+                            config('external_registration_url') ?: url('/register'),
+                            'register',
+                            'plus'
+                        ) }}
                     {% endif %}
 
                     {% if has_permission_to('login') %}

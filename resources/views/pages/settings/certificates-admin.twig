@@ -38,6 +38,47 @@
                 </div>
             </form>
         {% endif %}
+        {% if config('driving_license_enabled') %}
+            <form
+                action="{{ url('/users/' ~ admin_user.id ~ '/certificates/driving') }}"
+                enctype="multipart/form-data" method="post"
+            >
+                {{ csrf() }}
+                <div class="col-md-12">
+                    <h3>{{ __('settings.certificates.driving_license') }}</h3>
+
+                    {{ f.checkbox('drive_car', __('settings.certificates.drive_car'), {
+                        'checked': certificates.drive_car,
+                    }) }}
+                    {{ f.checkbox('drive_3_5t', __('settings.certificates.drive_3_5t'), {
+                        'checked': certificates.drive_3_5t,
+                    }) }}
+                    {{ f.checkbox('drive_7_5t', __('settings.certificates.drive_7_5t'), {
+                        'checked': certificates.drive_7_5t,
+                    }) }}
+                    {{ f.checkbox('drive_12t', __('settings.certificates.drive_12t'), {
+                        'checked': certificates.drive_12t,
+                    }) }}
+                    {{ f.checkbox('drive_forklift', __('settings.certificates.drive_forklift'), {
+                        'checked': certificates.drive_forklift,
+                    }) }}
+
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+                        </div>
+
+                        <div class="col-auto">
+                            {{ f.checkbox(
+                                'drive_confirmed',
+                                __('settings.certificates.confirmed') ~ f.info(__('settings.certificates.confirmation.info')),
+                                {'raw_label': true, 'checked': certificates.drive_confirmed}
+                            ) }}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {% endif %}
 
     </div>
 {% endblock %}

@@ -13,6 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+/**
+ * Middleware to support the old routing / pages from includes
+ */
 class LegacyMiddleware implements MiddlewareInterface
 {
     /** @var array<string> */
@@ -33,7 +36,7 @@ class LegacyMiddleware implements MiddlewareInterface
     /**
      * Handle the request the old way
      *
-     * Should be used before a 404 is send
+     * Should be used before a 404 is sent
      */
     public function process(
         ServerRequestInterface $request,
@@ -42,6 +45,7 @@ class LegacyMiddleware implements MiddlewareInterface
         /** @var Request $appRequest */
         $appRequest = $this->container->get('request');
         $page = $appRequest->query->get('p');
+        // Support old URL scheme
         if (empty($page)) {
             $page = $appRequest->path();
             $page = str_replace('-', '_', $page);
@@ -143,7 +147,7 @@ class LegacyMiddleware implements MiddlewareInterface
             return response($content, $page);
         }
 
-        if (strpos((string) $content, '<html') !== false) {
+        if (str_contains($content, '<html')) {
             return response($content);
         }
 
@@ -154,8 +158,7 @@ class LegacyMiddleware implements MiddlewareInterface
                     'title'   => $title,
                     'content' => msg() . $content,
                 ]
-            ),
-            200
+            )
         );
     }
 }

@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
  */
 function shifts_title()
 {
-    return __('Shifts');
+    return __('general.shifts');
 }
 
 /**

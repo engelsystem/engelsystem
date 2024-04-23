@@ -26,7 +26,7 @@ return [
     'environment'             => env('ENVIRONMENT', 'production'),
 
     // Application URL and base path to use instead of the auto-detected one
-    'url'                     => env('APP_URL', null),
+    'url'                     => env('APP_URL'),
 
     // Header links
     // Available link placeholders: %lang%
@@ -61,7 +61,7 @@ return [
     ],
 
     // Text displayed on the FAQ page, rendered as markdown
-    'faq_text'                => env('FAQ_TEXT', null),
+    'faq_text'                => env('FAQ_TEXT'),
 
     // Link to documentation/help
     'documentation_url'       => env('DOCUMENTATION_URL', 'https://engelsystem.de/doc/'),
@@ -79,14 +79,17 @@ return [
         'host'       => env('MAIL_HOST', 'localhost'),
         'port'       => env('MAIL_PORT', 587),
         // If tls transport encryption should be used
-        'tls'        => env('MAIL_TLS', null),
+        'tls'        => env('MAIL_TLS'),
         'username'   => env('MAIL_USERNAME'),
         'password'   => env_password('MAIL_PASSWORD'),
         'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
     ],
 
-    # Your privacy@ contact address
-    'privacy_email' => env('PRIVACY_EMAIL', null),
+    // Your privacy@ contact address
+    'privacy_email' => env('PRIVACY_EMAIL'),
+
+    // Show opt in to save some personal data after the event on user profile and registration pages
+    'enable_email_goodie' => (bool) env('ENABLE_EMAIL_GOODIE', true),
 
     // Initial admin password
     'setup_admin_password'    => env_password('SETUP_ADMIN_PASSWORD'),
@@ -253,6 +256,9 @@ return [
     // Users are able to sign up
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
 
+    // URL to external registration page, used on login page
+    'external_registration_url'   => env('EXTERNAL_REGISTRATION_URL'),
+
     // Required user fields
     'required_user_fields' => [
         'pronoun'            => (bool) env('PRONOUN_REQUIRED', false),
@@ -297,9 +303,8 @@ return [
     // The minimum length for passwords
     'min_password_length'     => env('PASSWORD_MINIMUM_LENGTH', 8),
 
-    // Whether the Password field should be enabled on registration.
-    // This is useful when using oauth, disabling it also disables normal
-    // registration without oauth.
+    // Whether the login and registration via password should be enabled (login will be hidden)
+    // This is useful when using oauth, disabling it also disables normal registration without oauth
     'enable_password'         => (bool) env('ENABLE_PASSWORD', true),
 
     // Whether the DECT field should be enabled
@@ -361,15 +366,17 @@ return [
         'shifts_per_voucher' => env('SHIFTS_PER_VOUCHER', 0),
         'hours_per_voucher'  => env('HOURS_PER_VOUCHER', 2),
         // 'Y-m-d' formatted
-        'voucher_start'      => env('VOUCHER_START', null) ?: null,
+        'voucher_start'      => env('VOUCHER_START') ?: null,
     ],
+
+    // Enables Driving License
+    'driving_license_enabled' => (bool) env('DRIVING_LICENSE_ENABLED', true),
 
     # Instruction in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)
     'ifsg_enabled'           => (bool) env('IFSG_ENABLED', false),
 
     # Instruction only onsite in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)
-    'ifsg_light_enabled'           => (bool) env('IFSG_LIGHT_ENABLED', false)
-        && env('IFSG_ENABLED', false),
+    'ifsg_light_enabled'           => env('IFSG_LIGHT_ENABLED', false) && env('IFSG_ENABLED', false),
 
     // Available locales in /resources/lang/
     // To disable a locale in the config.php, you can set its value to null
@@ -398,7 +405,7 @@ return [
     ],
 
     // T-shirt Size-Guide link
-    'tshirt_link' => env('TSHIRT_LINK', null),
+    'tshirt_link' => env('TSHIRT_LINK'),
 
     // Whether to show the current day of the event (-2, -1, 0, 1, 2…) in footer and on the dashboard.
     // The event start date has to be set for it to appear.

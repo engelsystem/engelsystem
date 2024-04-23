@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block message %}
-{{ name }}
-{{ title }}
-{{ start.format(__('general.datetime')) }} - {{ end.format(__('general.datetime')) }}
-{{ location.name }}
+{{ shift.shiftType.name }}
+{{ shift.title }}
+{{ shift.start.format(__('general.datetime')) }} - {{ shift.end.format(__('general.datetime')) }}
+{{ shift.location.name }}
 
-{% if start <= date() and not freeloaded %}
+{% if shift.start <= date() and not entry.freeloaded %}
 {{ __('notification.shift.deleted.worklog') }}
 {% endif %}
 {% endblock %}

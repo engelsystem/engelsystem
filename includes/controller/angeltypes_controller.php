@@ -136,12 +136,16 @@ function angeltype_edit_controller()
         if ($valid) {
             $angeltype->save();
 
-            success('Angel type saved.');
+            success(__('Angel type saved.'));
             engelsystem_log(
                 'Saved angeltype: ' . $angeltype->name . ($angeltype->restricted ? ', restricted' : '')
                 . ($angeltype->shift_self_signup ? ', shift_self_signup' : '')
-                . ($angeltype->requires_driver_license ? ', requires driver license' : '') . ', '
-                . ($angeltype->requires_ifsg_certificate ? ', requires ifsg certificate' : '') . ', '
+                . (config('driving_license_enabled')
+                    ? (($angeltype->requires_driver_license ? ', requires driver license' : '') . ', ')
+                    : '')
+                . (config('ifsg_enabled')
+                    ? (($angeltype->requires_ifsg_certificate ? ', requires ifsg certificate' : '') . ', ')
+                    : '')
                 . $angeltype->contact_name . ', '
                 . $angeltype->contact_dect . ', '
                 . $angeltype->contact_email . ', '

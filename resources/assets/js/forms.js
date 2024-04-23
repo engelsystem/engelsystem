@@ -360,7 +360,7 @@ ready(() => {
  */
 ready(() => {
   [
-    ['welcome-title', '.btn-group .btn.d-none'],
+    ['welcome-title', '.registration .d-none'],
     ['settings-title', '.user-settings .nav-item'],
     ['oauth-settings-title', 'table tr.d-none'],
   ].forEach(([id, selector]) => {

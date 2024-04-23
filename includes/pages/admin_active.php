@@ -85,14 +85,14 @@ function admin_active()
                         ->whereNotNull('users_state.user_info')
                         ->whereNot('users_state.user_info', '');
                 })
-                ->groupBy('users.id')
-                ->orderByDesc('shift_length')
-                ->orderByDesc('name')
-                ->limit($count);
-
+                ->groupBy('users.id');
             if (config('enable_force_active')) {
                 $query->orderByDesc('force_active');
             }
+            $query
+                ->orderByDesc('shift_length')
+                ->orderByDesc('name')
+                ->limit($count);
 
             $users = $query->get();
             $user_nicks = [];
@@ -195,13 +195,13 @@ function admin_active()
                 ->whereNotNull('users_state.user_info')
                 ->whereNot('users_state.user_info', '');
         })
-        ->groupBy('users.id')
-        ->orderByDesc('shift_length')
-        ->orderByDesc('name');
-
+        ->groupBy('users.id');
     if (config('enable_force_active')) {
         $query->orderByDesc('force_active');
     }
+    $query
+        ->orderByDesc('shift_length')
+        ->orderByDesc('name');
 
     if (!is_null($count)) {
         $query->limit($count);
@@ -255,9 +255,9 @@ function admin_active()
         $userData['work_time'] = sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h';
         $userData['score'] = round($usr['shift_length'] / 60)
             . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
-        $userData['active'] = icon_bool($usr->state->active == 1);
-        $userData['force_active'] = icon_bool($usr->state->force_active == 1);
-        $userData['tshirt'] = icon_bool($usr->state->got_shirt == 1);
+        $userData['active'] = icon_bool($usr->state->active);
+        $userData['force_active'] = icon_bool($usr->state->force_active);
+        $userData['tshirt'] = icon_bool($usr->state->got_shirt);
         $userData['shift_count'] = $usr['shift_count'];
 
         $actions = [];
@@ -377,7 +377,7 @@ function admin_active()
                 ],
                 ($goodie_tshirt ? ['shirt_size'   => __('Size')] : []),
                 [
-                    'shift_count'  => __('Shifts'),
+                    'shift_count'  => __('general.shifts'),
                     'work_time'    => __('Length'),
                 ],
                 ($goodie_enabled ? ['score'   => ($goodie_tshirt

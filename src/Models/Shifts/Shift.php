@@ -125,4 +125,37 @@ class Shift extends BaseModel
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
+    /**
+     * Check if the shift is a night shift
+     */
+    public function isNightShift(): bool
+    {
+        $config = config('night_shifts');
+
+        /** @see User_get_shifts_sum_query to keep it in sync */
+        return $config['enabled'] && (
+                // Starts during night
+                $this->start->hour >= $config['start'] && $this->start->hour < $config['end']
+                // Ends during night
+                || (
+                    $this->end->hour > $config['start']
+                    || $this->end->hour == $config['start'] && $this->end->minute > 0
+                ) && $this->end->hour <= $config['end']
+                // Starts before and ends after night
+                || $this->start->hour <= $config['start'] && $this->end->hour >= $config['end']
+            );
+    }
+
+    /**
+     * Calculate the shifts night multiplier
+     */
+    public function getNightShiftMultiplier(): float
+    {
+        if (!$this->isNightShift()) {
+            return 1;
+        }
+
+        return config('night_shifts')['multiplier'];
+    }
 }

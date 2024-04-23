@@ -12,7 +12,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property int    $theme
  * @property bool   $email_human
  * @property bool   $email_messages
- * @property bool   $email_goody
+ * @property bool   $email_goodie
  * @property bool   $email_shiftinfo
  * @property bool   $email_news
  * @property bool   $mobile_show
@@ -21,7 +21,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Settings[] whereTheme($value)
  * @method static QueryBuilder|Settings[] whereEmailHuman($value)
  * @method static QueryBuilder|Settings[] whereEmailMessages($value)
- * @method static QueryBuilder|Settings[] whereEmailGoody($value)
+ * @method static QueryBuilder|Settings[] whereEmailGoodie($value)
  * @method static QueryBuilder|Settings[] whereEmailShiftinfo($value)
  * @method static QueryBuilder|Settings[] whereEmailNews($value)
  * @method static QueryBuilder|Settings[] whereMobileShow($value)
@@ -37,7 +37,7 @@ class Settings extends HasUserModel
     protected $attributes = [ // phpcs:ignore
         'email_human'     => false,
         'email_messages'  => false,
-        'email_goody'     => false,
+        'email_goodie'     => false,
         'email_shiftinfo' => false,
         'email_news'      => false,
         'mobile_show'     => false,
@@ -54,7 +54,7 @@ class Settings extends HasUserModel
         'theme',
         'email_human',
         'email_messages',
-        'email_goody',
+        'email_goodie',
         'email_shiftinfo',
         'email_news',
         'mobile_show',
@@ -66,7 +66,7 @@ class Settings extends HasUserModel
         'theme'           => 'integer',
         'email_human'     => 'boolean',
         'email_messages'  => 'boolean',
-        'email_goody'     => 'boolean',
+        'email_goodie'     => 'boolean',
         'email_shiftinfo' => 'boolean',
         'email_news'      => 'boolean',
         'mobile_show'     => 'boolean',

@@ -50,7 +50,7 @@ class UserWorkLogControllerTest extends ControllerTest
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
                 $this->assertEquals('admin/user/edit-worklog.twig', $view);
-                $this->assertEquals($this->user->id, $data['user']->id);
+                $this->assertEquals($this->user->id, $data['userdata']->id);
                 $this->assertEquals(Carbon::today(), $data['work_date']);
                 $this->assertEquals(0, $data['work_hours']);
                 $this->assertEquals('', $data['comment']);
@@ -96,7 +96,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals($this->user->id, $data['user']->id);
+                $this->assertEquals($this->user->id, $data['userdata']->id);
                 $this->assertEquals(new Carbon('2022-01-01'), $data['work_date']);
                 $this->assertEquals(3.14, $data['work_hours']);
                 $this->assertEquals('a comment', $data['comment']);
@@ -252,7 +252,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals($this->user->id, $data['user']->id);
+                $this->assertEquals($this->user->id, $data['userdata']->id);
                 return $this->response;
             });
         $this->controller->showDeleteWorklog($request);

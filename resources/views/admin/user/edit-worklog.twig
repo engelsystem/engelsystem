@@ -7,7 +7,7 @@
 {% block content %}
     <div class="container">
         <h1>
-            {{ m.button(m.icon('chevron-left'), url('/users', {action: 'view', user_id: user.id}),
+            {{ m.button(m.icon('chevron-left'), url('/users', {action: 'view', user_id: userdata.id}),
                 null, 'sm', __('general.back')) }}
             {{ block('title') }}
         </h1>
@@ -21,7 +21,7 @@
                     <div>
                         <label class="form-label">{{ __('general.user') }}</label>
                     </div>
-                    {{ m.user(user, {'pronoun': true}) }}
+                    {{ m.user(userdata, {'pronoun': true}) }}
                 </div>
                 <div class="col-12">
                     {{ f.input('work_date', __('worklog.date'), {

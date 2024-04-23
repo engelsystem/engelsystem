@@ -56,13 +56,13 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
     if ($location->map_url) {
         $tabs[__('location.map_url')] = sprintf(
             '<div class="map">'
-            . '<iframe style="width: 100%%; min-height: 400px; border: 0 none;" src="%s"></iframe>'
+            . '<iframe style="width: 100%%; min-height: 75vh; border: 0 none;" src="%s"></iframe>'
             . '</div>',
             htmlspecialchars($location->map_url)
         );
     }
 
-    $tabs[__('Shifts')] = div('first', [
+    $tabs[__('general.shifts')] = div('first', [
         $shiftsFilterRenderer->render(url('/locations', [
             'action'  => 'view',
             'location_id' => $location->id,

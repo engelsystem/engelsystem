@@ -54,7 +54,7 @@ class ShiftsControllerTest extends ControllerTest
         /** @var EventDispatcher|MockObject $event */
         $event = $this->createMock(EventDispatcher::class);
         $this->app->instance('events.dispatcher', $event);
-        $this->setExpects($event, 'dispatch', ['shift.entry.deleting'], [], $this->exactly(2));
+        $this->setExpects($event, 'dispatch', ['shift.deleting'], [], $this->exactly(3));
 
         /** @var ShiftsController $controller */
         $controller = $this->app->make(ShiftsController::class);

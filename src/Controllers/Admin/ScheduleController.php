@@ -22,12 +22,12 @@ use Engelsystem\Models\Shifts\Schedule as ScheduleModel;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
-use Engelsystem\Models\User\User;
 use ErrorException;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Connection as DatabaseConnection;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 
@@ -289,34 +289,15 @@ class ScheduleController extends BaseController
         $this->log->info('Created schedule location "{location}"', ['location' => $room->getName()]);
     }
 
-    protected function fireDeleteShiftEntryEvents(Event $event, ScheduleModel $schedule): void
+    protected function fireDeleteShiftEvents(Event $event, ScheduleModel $schedule): void
     {
-        $shiftEntries = $this->db
-            ->table('shift_entries')
-            ->select([
-                'shift_types.name', 'shifts.title', 'angel_types.name AS type', 'locations.id AS location_id',
-                'shifts.start', 'shifts.end', 'shift_entries.user_id', 'shift_entries.freeloaded',
-            ])
-            ->join('shifts', 'shifts.id', 'shift_entries.shift_id')
-            ->join('schedule_shift', 'shifts.id', 'schedule_shift.shift_id')
-            ->join('locations', 'locations.id', 'shifts.location_id')
-            ->join('angel_types', 'angel_types.id', 'shift_entries.angel_type_id')
-            ->join('shift_types', 'shift_types.id', 'shifts.shift_type_id')
-            ->where('schedule_shift.guid', $event->getGuid())
-            ->where('schedule_shift.schedule_id', $schedule->id)
+        /** @var DatabaseCollection|ScheduleShift[] $scheduleShifts */
+        $scheduleShifts = ScheduleShift::where('guid', $event->getGuid())
+            ->where('schedule_id', $schedule->id)
             ->get();
 
-        foreach ($shiftEntries as $shiftEntry) {
-            event('shift.entry.deleting', [
-                'user' => User::find($shiftEntry->user_id),
-                'start' => Carbon::make($shiftEntry->start),
-                'end' => Carbon::make($shiftEntry->end),
-                'name' => $shiftEntry->name,
-                'title' => $shiftEntry->title,
-                'type' => $shiftEntry->type,
-                'location' => Location::find($shiftEntry->location_id),
-                'freeloaded' => $shiftEntry->freeloaded,
-            ]);
+        foreach ($scheduleShifts as $scheduleShift) {
+            event('shift.deleting', ['shift' => $scheduleShift->shift]);
         }
     }
 
@@ -391,7 +372,7 @@ class ScheduleController extends BaseController
         $scheduleShift = ScheduleShift::whereGuid($event->getGuid())->where('schedule_id', $schedule->id)->first();
         $shift = $scheduleShift->shift;
 
-        $this->fireDeleteShiftEntryEvents($event, $schedule);
+        $this->fireDeleteShiftEvents($event, $schedule);
         $shift->delete();
         $scheduleShift->delete();
 

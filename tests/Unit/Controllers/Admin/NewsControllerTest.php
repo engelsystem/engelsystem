@@ -21,7 +21,6 @@ class NewsControllerTest extends ControllerTest
     protected Authenticator|MockObject $auth;
     protected EventDispatcher|MockObject $eventDispatcher;
 
-    /** @var array */
     protected array $data = [
         [
             'title'      => 'Foo',
@@ -225,6 +224,7 @@ class NewsControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::save
+     * @covers \Engelsystem\Controllers\Admin\NewsController::delete
      */
     public function testSaveDelete(): void
     {

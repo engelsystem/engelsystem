@@ -45,7 +45,7 @@ function admin_shifts()
     $location_array = $locations->pluck('name', 'id')->toArray();
 
     // Load angeltypes
-    /** @var AngelType[] $types */
+    /** @var AngelType[]|Collection $types */
     $types = AngelType::all();
     $no_angeltypes = $types->isEmpty();
     $needed_angel_types = [];
@@ -455,7 +455,7 @@ function admin_shifts()
             );
         }
 
-        success('Shifts created.');
+        success(__('Shifts created.'));
         throw_redirect(url('/admin-shifts'));
     } else {
         $session->remove('admin_shifts_shifts');

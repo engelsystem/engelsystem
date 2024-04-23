@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Models\Shifts;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
@@ -110,5 +111,103 @@ class ShiftTest extends ModelTest
         ShiftEntry::factory(5)->create(['shift_id' => $shift->id]);
 
         $this->assertCount(5, $shift->shiftEntries);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::isNightShift
+     */
+    public function testIsNightShiftDisabled(): void
+    {
+        $config = new Config(['night_shifts' => [
+            'enabled'    => false,
+            'start'      => 2,
+            'end'        => 8,
+            'multiplier' => 2,
+        ]]);
+        $this->app->instance('config', $config);
+
+        $shift = new Shift([
+            'start' => new Carbon('2042-01-01 04:00'),
+            'end' => new Carbon('2042-01-01 05:00'),
+        ]);
+
+        // At night but disabled
+        $this->assertFalse($shift->isNightShift());
+    }
+
+    /**
+     * @return array{0: string, 1: string, 2: boolean}[]
+     */
+    public function nightShiftData(): array
+    {
+        // $start, $end, $isNightShift
+        return [
+            // Is night shift
+            ['2042-01-01 04:00', '2042-01-01 05:00', true],
+            // Is night shift
+            ['2042-01-01 02:00', '2042-01-01 02:15', true],
+            // Is night shift
+            ['2042-01-01 07:45', '2042-01-01 08:00', true],
+            // Starts as night shift
+            ['2042-01-01 07:59', '2042-01-01 09:00', true],
+            // Ends as night shift
+            ['2042-01-01 00:00', '2042-01-01 02:01', true],
+            // Equals night shift
+            ['2042-01-01 02:00', '2042-01-01 08:00', true],
+            // Contains night shift
+            ['2042-01-01 01:00', '2042-01-01 09:00', true],
+            // Too early
+            ['2042-01-01 00:00', '2042-01-01 02:00', false],
+            // Too late
+            ['2042-01-01 08:00', '2042-01-01 10:00', false],
+            // Out of range
+            ['2042-01-01 23:00', '2042-01-02 01:00', false],
+        ];
+    }
+
+    /**
+     * @covers       \Engelsystem\Models\Shifts\Shift::isNightShift
+     * @dataProvider nightShiftData
+     */
+    public function testIsNightShiftEnabled(string $start, string $end, bool $isNightShift): void
+    {
+        $config = new Config(['night_shifts' => [
+            'enabled'    => true,
+            'start'      => 2,
+            'end'        => 8,
+            'multiplier' => 2,
+        ]]);
+        $this->app->instance('config', $config);
+
+        $shift = new Shift([
+            'start' => new Carbon($start),
+            'end' => new Carbon($end),
+        ]);
+
+        $this->assertEquals($isNightShift, $shift->isNightShift());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::getNightShiftMultiplier
+     */
+    public function testGetNightShiftMultiplier(): void
+    {
+        $config = new Config(['night_shifts' => [
+            'enabled'    => true,
+            'start'      => 2,
+            'end'        => 8,
+            'multiplier' => 2,
+        ]]);
+        $this->app->instance('config', $config);
+
+        $shift = new Shift([
+            'start' => new Carbon('2042-01-01 02:00'),
+            'end' => new Carbon('2042-01-01 04:00'),
+        ]);
+
+        $this->assertEquals(2, $shift->getNightShiftMultiplier());
+
+        $config->set('night_shifts', array_merge($config->get('night_shifts'), ['enabled' => false]));
+        $this->assertEquals(1, $shift->getNightShiftMultiplier());
     }
 }

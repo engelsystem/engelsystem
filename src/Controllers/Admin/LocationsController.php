@@ -42,7 +42,10 @@ class LocationsController extends BaseController
 
         return $this->response->withView(
             'admin/locations/index',
-            ['locations' => $locations, 'is_index' => true]
+            [
+                'locations' => $locations,
+                'is_index' => true,
+            ]
         );
     }
 
@@ -95,6 +98,7 @@ class LocationsController extends BaseController
         $location->neededAngelTypes()->getQuery()->delete();
         $angelsInfo = '';
 
+        // Associate angel types with the room
         foreach ($angelTypes as $angelType) {
             $count = $data['angel_type_' . $angelType->id];
             if (!$count) {
@@ -114,8 +118,9 @@ class LocationsController extends BaseController
         }
 
         $this->log->info(
-            'Updated location "{name}": {description} {dect} {map_url} {angels}',
+            'Updated location "{name}" ({id}): {description} {dect} {map_url} {angels}',
             [
+                'id'          => $location->id,
                 'name'        => $location->name,
                 'description' => $location->description,
                 'dect'        => $location->dect,
@@ -140,18 +145,7 @@ class LocationsController extends BaseController
 
         $shifts = $location->shifts;
         foreach ($shifts as $shift) {
-            foreach ($shift->shiftEntries as $entry) {
-                event('shift.entry.deleting', [
-                    'user'       => $entry->user,
-                    'start'      => $shift->start,
-                    'end'        => $shift->end,
-                    'name'       => $shift->shiftType->name,
-                    'title'      => $shift->title,
-                    'type'       => $entry->angelType->name,
-                    'location'   => $location,
-                    'freeloaded' => $entry->freeloaded,
-                ]);
-            }
+            event('shift.deleting', ['shift' => $shift]);
         }
         $location->delete();
 

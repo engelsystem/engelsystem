@@ -195,7 +195,7 @@ function shift_edit_controller()
             htmlspecialchars($angeltype_name),
             $needed_angel_types[$angeltype_id],
             [],
-            ScheduleShift::whereShiftId($shift->id)->first() ? true : false,
+            (bool) ScheduleShift::whereShiftId($shift->id)->first(),
         );
     }
 
@@ -243,18 +243,7 @@ function shift_delete_controller(): void
     $shift_id = $request->input('delete_shift');
     $shift = Shift::findOrFail($shift_id);
 
-    foreach ($shift->shiftEntries as $entry) {
-        event('shift.entry.deleting', [
-            'user'       => $entry->user,
-            'start'      => $shift->start,
-            'end'        => $shift->end,
-            'name'       => $shift->shiftType->name,
-            'title'      => $shift->title,
-            'type'       => $entry->angelType->name,
-            'location'   => $shift->location,
-            'freeloaded' => $entry->freeloaded,
-        ]);
-    }
+    event('shift.deleting', ['shift' => $shift]);
 
     $shift->delete();
 

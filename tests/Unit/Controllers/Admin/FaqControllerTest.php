@@ -13,7 +13,6 @@ use Engelsystem\Test\Unit\Controllers\ControllerTest;
 
 class FaqControllerTest extends ControllerTest
 {
-    /** @var array */
     protected array $data = [
         'question' => 'Foo?',
         'text'     => 'Bar!',
@@ -124,6 +123,7 @@ class FaqControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\FaqController::save
+     * @covers \Engelsystem\Controllers\Admin\FaqController::delete
      */
     public function testSaveDelete(): void
     {

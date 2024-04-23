@@ -21,7 +21,7 @@ class SettingsFactory extends Factory
             'theme'           => $this->faker->numberBetween(1, 20),
             'email_human'     => $this->faker->boolean(),
             'email_messages'  => $this->faker->boolean(),
-            'email_goody'     => $this->faker->boolean(),
+            'email_goodie'     => $this->faker->boolean(),
             'email_shiftinfo' => $this->faker->boolean(),
             'email_news'      => $this->faker->boolean(),
             'mobile_show'     => $this->faker->boolean(),
