@@ -73,6 +73,19 @@ function config_path(string $path = ''): string
     return app('path.config') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
 }
 
+function env_password(string $var): string {
+    $filename = env("{$var}_FILE", null);
+    if ($filename) {
+        if (file_exists($filename)) {
+            return file_get_contents($filename);
+        } else {
+            echo "The password file $filename does not exist. Please fix your config.";
+            exit(1);
+        }
+    }
+    return env($var, null);
+}
+
 function event(string|object|null $event = null, array $payload = []): array|EventDispatcher
 {
     /** @var EventDispatcher $dispatcher */

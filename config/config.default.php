@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 // To change or overwrite some settings, create a config.php
 
-function env_password($var) {
-    $filename = env("{$var}_FILE", null);
-    if ($filename) {
-        return file_get_contents($filename);
-    }
-    return env($var, null);
-}
-
 return [
     // MySQL-Connection Settings
     'database'                => [
