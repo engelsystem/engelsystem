@@ -20,7 +20,7 @@ services:
       APP_NAME: Engelsystem DEV
     env_file: deployment.env
     ports:
-      - "5080:80"
+      - "127.0.0.1:5080:80"
     depends_on:
       - es_database
   es_workspace:
@@ -48,7 +48,7 @@ services:
     environment:
       PMA_HOST: es_database
     ports:
-      - "8888:80"
+      - "127.0.0.1:8888:80"
     depends_on:
       - es_database
     profiles: [ dev ]
