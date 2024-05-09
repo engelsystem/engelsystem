@@ -385,10 +385,10 @@ function admin_active()
                     : __('Goodie score')
                 )] : []),
                 [
-                    'active'       => __('Active?'),
+                    'active'       => __('Active'),
                 ],
                 (config('enable_force_active') ? ['force_active' => __('Forced'),] : []),
-                ($goodie_enabled ? ['tshirt' => ($goodie_tshirt ? __('T-shirt?') : __('Goodie?'))] : []),
+                ($goodie_enabled ? ['tshirt' => ($goodie_tshirt ? __('T-shirt') : __('Goodie'))] : []),
                 [
                     'actions'      => __('general.actions'),
                 ]
