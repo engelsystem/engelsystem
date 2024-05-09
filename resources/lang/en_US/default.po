@@ -518,7 +518,7 @@ msgid "settings.api.about"
 msgstr ""
 "The API allows you to interact with the %s by using external programs. "
 "It's not complete but we are working on extending it.\n"
-"The endpoint of the API is located at `%s` and described in the [OpenAPI specification](%s).\n"
+"The endpoint of the API is located at `%s` and described in the [OpenAPI specification](%s)."
 
 msgid "settings.api.about.warning"
 msgstr ""
@@ -814,7 +814,7 @@ msgid "general.created_at"
 msgstr "Created at"
 
 msgid "shifts.random"
-msgstr "Zufällige Schicht"
+msgstr "Random shift"
 
 msgid "shifts.history"
 msgstr "Shifts history"

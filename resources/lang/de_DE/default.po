@@ -545,14 +545,14 @@ msgstr "Länge"
 msgid "Length (in minutes)"
 msgstr "Länge (in Minuten)"
 
-msgid "Active?"
-msgstr "Aktiv?"
+msgid "Active"
+msgstr "Aktiv"
 
 msgid "Forced"
 msgstr "Erzwungen"
 
-msgid "T-shirt?"
-msgstr "T-Shirt?"
+msgid "T-shirt"
+msgstr "T-Shirt"
 
 msgid "T-shirt statistic"
 msgstr "T-Shirt Statistik"
@@ -1164,9 +1164,6 @@ msgstr "Gutschein"
 msgid "Freeloads"
 msgstr "Schwänzereien"
 
-msgid "T-shirt"
-msgstr "T-Shirt"
-
 msgid "Last login"
 msgstr "Letzter Login"
 
@@ -1359,9 +1356,6 @@ msgstr "Goodie entfernen"
 
 msgid "Got goodie"
 msgstr "Goodie bekommen"
-
-msgid "Goodie?"
-msgstr "Goodie?"
 
 msgid "Angel has got a goodie."
 msgstr "Engel hat ein Goodie bekommen."
@@ -1799,7 +1793,7 @@ msgid "settings.api.about"
 msgstr ""
 "Die API erlaubt es dir, über externe Programme, mit dem %s zu interagieren. "
 "Sie ist noch nicht vollständig, wir arbeiten aber daran sie zu erweitern.\n"
-"Der Einstiegspunkt der API befindet sich unter `%s` und ist in der [OpenAPI Spezifikation](%s) beschrieben.\n"
+"Der Einstiegspunkt der API befindet sich unter `%s` und ist in der [OpenAPI Spezifikation](%s) beschrieben."
 
 msgid "settings.api.about.warning"
 msgstr ""
