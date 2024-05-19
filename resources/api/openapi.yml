@@ -179,6 +179,10 @@ components:
         name:
           type: string
           example: Heaven
+        description:
+          type: string
+          example: Located behind room 42
+          description: Description of the room
         url:
           type: string
           example: https://example.com/location/42
@@ -186,6 +190,7 @@ components:
       required:
         - id
         - name
+        - description
         - url
     Shift:
       type: object
@@ -326,7 +331,7 @@ components:
             email:
               type: string
               example: user@example.com
-            tshirt:
+            tshirt_size:
               type: string
               nullable: true
               example: XL
@@ -355,7 +360,7 @@ components:
               example: true
       required:
         - email
-        - tshirt
+        - tshirt_size
         - dates
         - language
         - arrived
