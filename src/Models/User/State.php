@@ -47,11 +47,11 @@ class State extends HasUserModel
     protected $casts = [ // phpcs:ignore
         'user_id'      => 'integer',
         'arrived'      => 'boolean',
+        'arrival_date' => 'datetime',
         'active'       => 'boolean',
         'force_active' => 'boolean',
         'got_goodie'   => 'boolean',
         'got_voucher'  => 'integer',
-        'arrival_date' => 'datetime',
     ];
 
     /**

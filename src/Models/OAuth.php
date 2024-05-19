@@ -13,8 +13,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property int         $id
  * @property string      $provider
  * @property string      $identifier
- * @property string      $access_token
- * @property string      $refresh_token
+ * @property string|null $access_token
+ * @property string|null $refresh_token
  * @property Carbon|null $expires_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at

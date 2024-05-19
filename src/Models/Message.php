@@ -20,8 +20,10 @@ use Illuminate\Support\Carbon;
  * @property string      $text
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @property-read User   $sender
  * @property-read User   $receiver
+ *
  * @method static Builder|Message whereId($value)
  * @method static Builder|Message whereUserId($value)
  * @method static Builder|Message whereReceiverId($value)
