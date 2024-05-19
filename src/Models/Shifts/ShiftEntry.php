@@ -53,6 +53,9 @@ class ShiftEntry extends BaseModel
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
+        'shift_id' => 'integer',
+        'angel_type_id' => 'integer',
+        'user_id' => 'integer',
         'freeloaded' => 'bool',
     ];
 

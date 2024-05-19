@@ -51,6 +51,15 @@ class NeededAngelType extends BaseModel
         'count',
     ];
 
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
+        'location_id' => 'integer',
+        'shift_id' => 'integer',
+        'shift_type_id' => 'integer',
+        'angel_type_id' => 'integer',
+        'count' => 'integer',
+    ];
+
     public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class);

@@ -42,6 +42,7 @@ class PersonalData extends HasUserModel
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
+        'user_id'                => 'integer',
         'planned_arrival_date'   => 'datetime',
         'planned_departure_date' => 'datetime',
     ];
