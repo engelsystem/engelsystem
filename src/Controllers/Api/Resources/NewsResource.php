@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api\Resources;
 
+use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\News;
+use Illuminate\Support\Collection;
+
 class NewsResource extends BasicResource
 {
+    protected Collection | BaseModel | News $model;
+
     public function toArray(): array
     {
         return [

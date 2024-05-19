@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api\Resources;
 
+use Engelsystem\Models\AngelType;
+use Engelsystem\Models\BaseModel;
+use Illuminate\Support\Collection;
+
 class AngelTypeResource extends BasicResource
 {
+    protected Collection | BaseModel | AngelType $model;
+
     public function toArray(): array
     {
         return [

@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api\Resources;
 
+use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\Shifts\Shift;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 
 class ShiftResource extends BasicResource
 {
-    public function toArray(array|Arrayable $location = []): array
+    protected Collection | BaseModel | Shift $model;
+
+    public function toArray(array | Arrayable $location = []): array
     {
         return [
             'id' => $this->model->id,
