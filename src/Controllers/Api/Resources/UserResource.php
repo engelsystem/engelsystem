@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api\Resources;
 
+use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\User\User;
+use Illuminate\Support\Collection;
+
 class UserResource extends BasicResource
 {
+    protected Collection | BaseModel | User $model;
+
     public function toArray(): array
     {
         return [
