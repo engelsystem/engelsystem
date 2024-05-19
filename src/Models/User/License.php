@@ -72,6 +72,7 @@ class License extends HasUserModel
 
     /** @var array<string> */
     protected $casts = [ // phpcs:ignore
+        'user_id' => 'integer',
         'has_car' => 'boolean',
         'drive_forklift' => 'boolean',
         'drive_car' => 'boolean',

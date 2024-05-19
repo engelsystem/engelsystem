@@ -14,9 +14,12 @@ use Illuminate\Support\Collection as SupportCollection;
 
 /**
  * @property int         $id
+ * @property int|null    $user_id
  * @property string      $level
  * @property string      $message
  * @property Carbon|null $created_at
+ *
+ * @property-read User|null $user
  *
  * @method static QueryBuilder|LogEntry[] whereId($value)
  * @method static QueryBuilder|LogEntry[] whereLevel($value)
@@ -32,6 +35,11 @@ class LogEntry extends BaseModel
 
     /** @var null Disable updated_at */
     public const UPDATED_AT = null;
+
+    /** @var array Default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'user_id' => null,
+    ];
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
