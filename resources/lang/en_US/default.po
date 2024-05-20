@@ -484,6 +484,9 @@ msgstr "Health instruction on site"
 msgid "angeltype.ifsg.own"
 msgstr "My health instruction"
 
+msgid "angeltype.ifsg.required.info.preview"
+msgstr "This angeltype requires a health instruction."
+
 msgid "angeltype.ifsg.required.info"
 msgstr "This angeltype requires a health instruction. Please enter your health instruction information!"
 
@@ -495,6 +498,9 @@ msgid "angeltype.driving_license.required.info.here"
 msgstr ""
 "You joined an angeltype which requires a driving license. "
 "Please edit your driving license information here: %s."
+
+msgid "angeltype.driving_license.required.info.preview"
+msgstr "This angeltype requires a driver's license."
 
 msgid "ifsg.info"
 msgstr "Health instruction information"

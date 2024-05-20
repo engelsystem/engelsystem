@@ -906,6 +906,12 @@ msgstr "Ansprechpartner für Fragen."
 msgid "My driving license"
 msgstr "Meine Führerschein-Infos"
 
+msgid "angeltype.ifsg.required.info.preview"
+msgstr "Dieser Engeltyp benötigt eine Gesundheitsbelehrung."
+
+msgid "angeltype.driving_license.required.info.preview"
+msgstr "Dieser Engeltyp benötigt Führerschein-Infos."
+
 msgid ""
 "This angeltype requires a driver license. Please enter your driver license "
 "information!"
