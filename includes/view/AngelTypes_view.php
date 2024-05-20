@@ -569,6 +569,13 @@ function AngelType_view_info(
     $admin_angeltypes,
     $supporter
 ) {
+    $required_info_show = !auth()->user()
+            ->userAngelTypes()
+            ->where('angel_types.id', $angeltype->id)
+            ->count()
+        && !$admin_angeltypes
+        && !$admin_user_angeltypes
+        && !$supporter;
     $info = [];
     if ($angeltype->hasContactInfo()) {
         $info[] = AngelTypes_render_contact_info($angeltype);
@@ -578,6 +585,12 @@ function AngelType_view_info(
     $parsedown = new Parsedown();
     if ($angeltype->description != '') {
         $info[] = $parsedown->parse(htmlspecialchars($angeltype->description));
+    }
+    if ($angeltype->requires_ifsg_certificate && $required_info_show) {
+        $info[] = info(__('angeltype.ifsg.required.info.preview'), true);
+    }
+    if ($angeltype->requires_driver_license && $required_info_show) {
+        $info[] = info(__('angeltype.driving_license.required.info.preview'), true);
     }
 
     list($supporters, $members_confirmed, $members_unconfirmed) = AngelType_view_members(
