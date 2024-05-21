@@ -10,7 +10,7 @@
             {{ block('title') }}
 
             {%- if can('faq.edit') -%}
-                {{ m.button(m.icon('plus-lg'), url('/admin/faq'), 'secondary') }}
+                {{ m.button(m.icon('plus-lg'), url('/admin/faq')) }}
             {%- endif %}
         </h1>
 
@@ -54,7 +54,7 @@
 
                                 {% if can('faq.edit') %}
                                     <span class="ms-auto">
-                                        {{ m.button(m.icon('pencil'), url('/admin/faq/' ~ item.id), 'secondary', 'sm', __('form.edit')) }}
+                                        {{ m.button(m.icon('pencil'), url('/admin/faq/' ~ item.id), {'size': 'sm', 'title': __('form.edit')}) }}
                                     </span>
 
                                     <form class="ps-1"

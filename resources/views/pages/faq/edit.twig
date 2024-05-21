@@ -7,7 +7,7 @@
 {% block content %}
     <div class="container">
         <h1>
-            {{ m.button(m.icon('chevron-left'), url('/faq'), 'secondary', 'sm', __('general.back')) }}
+            {{ m.button(m.icon('chevron-left'), url('/faq'), {'size': 'sm', 'title': __('general.back')}) }}
             {{ block('title') }}
         </h1>
 
