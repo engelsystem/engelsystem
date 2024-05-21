@@ -8,15 +8,15 @@
     <div class="container">
         <h1>
             {% if not is_index|default(false) %}
-                {{ m.button(m.icon('chevron-left'), url('/admin/shifttypes'), 'secondary', 'sm', __('general.back')) }}
+                {{ m.button(m.icon('chevron-left'), url('/admin/shifttypes'), {'size': 'sm', 'title': __('general.back')}) }}
             {% endif %}
 
             {{ block('title') }}
 
             {% if is_index|default(false) and can('shifttypes.edit') %}
-                {{ m.button(m.icon('plus-lg'), url('/admin/shifttypes/edit'), 'secondary') }}
+                {{ m.button(m.icon('plus-lg'), url('/admin/shifttypes/edit')) }}
             {% elseif is_view|default(false) and can('shifttypes.edit') %}
-                {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), null, 'sm', __('form.edit')) }}
+                {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), {'size': 'sm', 'title': __('form.edit')}) }}
             {% endif %}
         </h1>
 
@@ -45,7 +45,7 @@
                                     <td>
                                         {% if can('shifttypes.edit') %}
                                         <div class="d-flex ms-auto">
-                                            {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), null, 'sm', __('form.edit')) }}
+                                            {{ m.button(m.icon('pencil'), url('admin/shifttypes/edit/' ~ shifttype.id), {'size': 'sm', 'title': __('form.edit')}) }}
 
                                             <form method="post" class="ps-1">
                                                 {{ csrf() }}

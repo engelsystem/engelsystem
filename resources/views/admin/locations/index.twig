@@ -10,13 +10,13 @@
             {% if not is_index|default(false) %}
                 {{ m.button(m.icon('chevron-left'), location
                     ? url('/locations', {'action': 'view', 'location_id': location.id})
-                    : url('/admin/locations'), 'secondary', 'sm', __('general.back')) }}
+                    : url('/admin/locations'), {'size':'sm', 'title':__('general.back')}) }}
             {% endif %}
 
             {{ block('title') }}
 
             {% if is_index|default(false) %}
-                {{ m.button(m.icon('plus-lg'), url('/admin/locations/edit'), 'secondary') }}
+                {{ m.button(m.icon('plus-lg'), url('/admin/locations/edit')) }}
             {% endif %}
         </h1>
 
@@ -57,7 +57,7 @@
                                     <td>
                                         <div class="d-flex ms-auto">
 
-                                            {{ m.button(m.icon('pencil'), url('/admin/locations/edit/' ~ location.id), null, 'sm', __('form.edit')) }}
+                                            {{ m.button(m.icon('pencil'), url('/admin/locations/edit/' ~ location.id), {'size': 'sm', 'title': __('form.edit')}) }}
 
                                             <form method="post" class="ps-1">
                                                 {{ csrf() }}

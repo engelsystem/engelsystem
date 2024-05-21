@@ -9,7 +9,7 @@
     <div class="mb-5">
         <h1>
         {{ can('admin_user')
-            ? m.button(m.icon('chevron-left'), url('/users'), null, 'sm', __('general.back'))
+            ? m.button(m.icon('chevron-left'), url('/users'), {'size': 'sm', 'title': __('general.back')})
             : ''
         }}
         {{ __('registration.title') }}
