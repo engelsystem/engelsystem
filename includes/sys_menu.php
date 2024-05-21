@@ -90,7 +90,7 @@ function make_navigation()
         'users'              => ['All Angels', 'admin_user'],
         'admin_free'         => 'Free angels',
         'admin/questions'    => ['Answer questions', 'question.edit'],
-        'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes'],
+        'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.view'],
         'admin_shifts'       => 'Create shifts',
         'admin/locations'    => ['location.locations', 'admin_locations'],
         'admin_groups'       => 'Grouprights',

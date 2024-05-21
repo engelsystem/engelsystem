@@ -155,7 +155,7 @@ function Shift_view(
     $shift_admin = auth()->can('admin_shifts');
     $user_shift_admin = auth()->can('user_shifts_admin');
     $admin_locations = auth()->can('admin_locations');
-    $admin_shifttypes = auth()->can('shifttypes');
+    $admin_shifttypes = auth()->can('shifttypes.view');
     $nightShiftsConfig = config('night_shifts');
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
