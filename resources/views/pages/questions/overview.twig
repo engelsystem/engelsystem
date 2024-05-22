@@ -85,7 +85,7 @@
 
                                             <div class="d-flex ms-auto">
                                                 {% if can('question.edit') %}
-                                                    {{ m.button(m.icon('pencil'), url('/admin/questions/' ~ question.id), {'size': 'sm', 'title': __('form.edit')}) }}
+                                                    {{ m.edit(url('/admin/questions/' ~ question.id)) }}
                                                 {% endif %}
 
                                                 {% if question.user.id == user.id or can('question.edit') %}

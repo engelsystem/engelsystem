@@ -8,9 +8,9 @@
     <div class="container">
         <h1>
             {% if not is_index|default(false) %}
-                {{ m.button(m.icon('chevron-left'), location
+                {{ m.back(location
                     ? url('/locations', {'action': 'view', 'location_id': location.id})
-                    : url('/admin/locations'), {'size':'sm', 'title':__('general.back')}) }}
+                    : url('/admin/locations')) }}
             {% endif %}
 
             {{ block('title') }}
@@ -57,7 +57,7 @@
                                     <td>
                                         <div class="d-flex ms-auto">
 
-                                            {{ m.button(m.icon('pencil'), url('/admin/locations/edit/' ~ location.id), {'size': 'sm', 'title': __('form.edit')}) }}
+                                            {{ m.edit(url('/admin/locations/edit/' ~ location.id)) }}
 
                                             <form method="post" class="ps-1">
                                                 {{ csrf() }}

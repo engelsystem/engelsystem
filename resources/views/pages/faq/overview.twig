@@ -54,7 +54,7 @@
 
                                 {% if can('faq.edit') %}
                                     <span class="ms-auto">
-                                        {{ m.button(m.icon('pencil'), url('/admin/faq/' ~ item.id), {'size': 'sm', 'title': __('form.edit')}) }}
+                                        {{ m.edit(url('/admin/faq/' ~ item.id)) }}
                                     </span>
 
                                     <form class="ps-1"

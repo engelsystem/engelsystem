@@ -8,7 +8,7 @@
     <div class="container">
         <div class="page-header">
             <h1>
-                {{ m.button(m.icon('chevron-left'), url('/messages'), {'size': 'sm', 'title': __('general.back')}) }}
+                {{ m.back(url('/messages')) }}
                 {{ __('message.title') }}: {{ m.user(other_user, {'pronoun': true}) }}
             </h1>
         </div>
