@@ -9,7 +9,7 @@
 {% block content %}
     <div class="container">
         <h1>
-            {{ m.button(m.icon('chevron-left'), url('/admin-active'), {'size': 'sm', 'title': __('general.back')}) }}
+            {{ m.back(url('/admin-active')) }}
             {{ block('title') }}: <small>{{ m.user(userdata) }}</small>
         </h1>
 

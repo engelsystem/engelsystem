@@ -9,7 +9,7 @@
     <div class="container">
         <h1>
             {% if not is_overview|default(false) %}
-                {{ m.button(m.icon('chevron-left'), url('/news'), {'size': 'sm', 'title': __('general.back')}) }}
+                {{ m.back(url('/news')) }}
             {% endif %}
             {{ block('title') }}
             {%- if can('admin_news') and is_overview|default(false) -%}
@@ -99,7 +99,7 @@
 
                 {% if can('admin_news') %}
                     <div class="d-flex ms-auto">
-                        {{ m.button(m.icon('pencil'), url('/admin/news/' ~ news.id), {'size': 'sm', 'title': __('form.edit')}) }}
+                        {{ m.edit(url('/admin/news/' ~ news.id)) }}
 
                         <form class="ps-1"
                             action="{{ url('/admin/news/' ~ news.id) }}" enctype="multipart/form-data"

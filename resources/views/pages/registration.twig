@@ -8,10 +8,7 @@
 <div class="container">
     <div class="mb-5">
         <h1>
-        {{ can('admin_user')
-            ? m.button(m.icon('chevron-left'), url('/users'), {'size': 'sm', 'title': __('general.back')})
-            : ''
-        }}
+        {{ can('admin_user') ? m.back(url('/users')) : '' }}
         {{ __('registration.title') }}
         </h1>
     </div>

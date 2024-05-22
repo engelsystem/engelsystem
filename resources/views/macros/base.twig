@@ -45,6 +45,14 @@
     </a>
 {% endmacro %}
 
+{% macro edit(url) %}
+    {{ _self.button(_self.icon('pencil'), url, {'size': 'sm', 'title': __('form.edit')}) }}
+{% endmacro %}
+
+{% macro back(url) %}
+    {{ _self.button(_self.icon('chevron-left'), url, {'size': 'sm', 'title': __('general.back')}) }}
+{% endmacro %}
+
 {% macro info(text, raw) %}
     <span class="help-block">
         {{ _self.icon('info-circle') }}

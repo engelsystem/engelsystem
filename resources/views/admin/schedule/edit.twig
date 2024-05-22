@@ -5,7 +5,7 @@
 {% block title %}{{ schedule ? __('schedule.edit.title') : __('schedule.import.title') }}{% endblock %}
 
 {% block content_title %}
-    {{ m.button(m.icon('chevron-left'), url('/admin/schedule'), {'size': 'sm', 'title': __('general.back')}) }}
+    {{ m.back(url('/admin/schedule')) }}
     {{ block('title') }}
 {% endblock %}
 
