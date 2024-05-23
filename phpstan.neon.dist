@@ -8,3 +8,8 @@ parameters:
         - tests
     scanDirectories:
         - includes
+    ignoreErrors:
+        -
+            message: '#.*#'
+            path: config/config.php
+            reportUnmatched: false
