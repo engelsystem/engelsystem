@@ -129,28 +129,32 @@ class ShiftsController extends ApiController
         // Blob of not-optimized mediocre pseudo-serialization
         foreach ($shifts as $shift) {
             // Get all needed/used angel types
+            /** @var Collection|NeededAngelType[] $neededAngelTypes */
             $neededAngelTypes = $this->getNeededAngelTypes($shift);
 
-            $entries = new Collection();
+            $angelTypes = new Collection();
             foreach ($neededAngelTypes as $neededAngelType) {
-                $users = UserResource::collection($neededAngelType->users ?? []);
+                $entries = $neededAngelType->entries ?: new Collection();
 
                 // Skip empty entries
-                if ($neededAngelType->count <= 0 && $users->isEmpty()) {
+                if ($neededAngelType->count <= 0 && $entries->isEmpty()) {
                     continue;
                 }
 
-                $users = $users->map(fn($user) => UserResource::toIdentifierArray($user));
+                $entries = $entries->map(fn(ShiftEntry $entry) => [
+                    'user' => UserResource::toIdentifierArray($entry->user),
+                    'freeloaded' => $entry->freeloaded,
+                ]);
                 $angelTypeData = AngelTypeResource::toIdentifierArray($neededAngelType->angelType);
-                $entries[] = new Collection([
-                    'users' => $users,
+                $angelTypes[] = new Collection([
                     'angeltype' => $angelTypeData,
                     'needs' => $neededAngelType->count,
+                    'entries' => $entries,
                 ]);
             }
 
             $locationData = new LocationResource($shift->location);
-            $shiftEntries[] = (new ShiftWithEntriesResource($shift))->toArray($locationData, $entries);
+            $shiftEntries[] = (new ShiftWithEntriesResource($shift))->toArray($locationData, $angelTypes);
         }
 
         $data = ['data' => $shiftEntries];
@@ -187,11 +191,11 @@ class ShiftsController extends ApiController
                 $neededAngelTypes[] = $neededAngelType;
             }
 
-            // Add users to entries
-            $neededAngelType->users = isset($neededAngelType->users)
-                ? $neededAngelType->users
+            // Add entries to needed angeltype
+            $neededAngelType->entries = isset($neededAngelType->entries)
+                ? $neededAngelType->entries
                 : new Collection();
-            $neededAngelType->users[] = $entry->user;
+            $neededAngelType->entries[] = $entry;
         }
 
         return $neededAngelTypes;
