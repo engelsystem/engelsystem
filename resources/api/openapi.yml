@@ -192,6 +192,26 @@ components:
         - name
         - description
         - url
+    NeededAngelType:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShiftEntry'
+        angeltype:
+          $ref: '#/components/schemas/Reference'
+        needs:
+          type: integer
+          description: >
+            Number of users needed for the shift of the given type.
+            Will be more than users count when not full, less when overbooked
+            or 0 when only additional users with given type have been added.
+          example: 3
+      required:
+        - entries
+        - angeltype
+        - needs
     Shift:
       type: object
       properties:
@@ -220,11 +240,11 @@ components:
           $ref: '#/components/schemas/DateTimeOptional'
         updated_at:
           $ref: '#/components/schemas/DateTimeOptional'
-        entries:
+        angeltypes:
           type: array
-          description: Can be empty (for example on Schedule import of unused room)
+          description: Needed angel types and user entries, can be empty (for example on Schedule import of unused room)
           items:
-            $ref: '#/components/schemas/ShiftEntry'
+            $ref: '#/components/schemas/NeededAngelType'
         url:
           type: string
           example: https://example.com/shifts/42
@@ -239,28 +259,20 @@ components:
         - shift_type
         - created_at
         - updated_at
-        - entries
+        - angeltypes
         - url
     ShiftEntry:
       type: object
       properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/Reference'
-        angeltype:
+        user:
           $ref: '#/components/schemas/Reference'
-        needs:
-          type: integer
-          description: >
-            Number of users needed for the shift of the given type.
-            Will be more than users count when not full, less when overbooked
-            or 0 when only additional users with given type have been added.
-          example: 3
+        freeloaded:
+          type: boolean
+          example: false
+          description: True if the user did not arrive to the shift
       required:
-        - users
-        - angeltype
-        - needs
+        - user
+        - freeloaded
     ShiftType:
       type: object
       properties:
