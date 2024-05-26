@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Faq;
 use Engelsystem\Models\Group;
+use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
@@ -47,6 +48,7 @@ class FactoriesTest extends TestCase
             [Group::class],
             [License::class],
             [Location::class],
+            [LogEntry::class],
             [Message::class],
             [NeededAngelType::class],
             [News::class],
@@ -76,6 +78,7 @@ class FactoriesTest extends TestCase
      * @covers       \Database\Factories\Engelsystem\Models\FaqFactory
      * @covers       \Database\Factories\Engelsystem\Models\GroupFactory
      * @covers       \Database\Factories\Engelsystem\Models\LocationFactory
+     * @covers       \Database\Factories\Engelsystem\Models\LogEntryFactory
      * @covers       \Database\Factories\Engelsystem\Models\MessageFactory
      * @covers       \Database\Factories\Engelsystem\Models\NewsCommentFactory
      * @covers       \Database\Factories\Engelsystem\Models\NewsFactory

@@ -24,7 +24,7 @@ function User_delete_view($user)
     return page_with_title($link . ' ' . sprintf(__('Delete %s'), User_Nick_render($user)), [
         msg(),
         error(
-            __('Do you really want to delete the user including all his shifts and every other piece of his data?'),
+            __('Do you really want to delete the user including all his shifts and every other piece of his data? All created shifts, news, answers etc. will be reassigned to you.'),
             true
         ),
         form([
