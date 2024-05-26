@@ -1413,6 +1413,12 @@ msgstr "Pflichtfeld"
 msgid "form.user_select"
 msgstr "Wähle einen User"
 
+msgid "form.tags"
+msgstr "Schlagworte"
+
+msgid "form.tags.info"
+msgstr "Komma separierte Liste von Schlagworten"
+
 msgid "schedule.import"
 msgstr "Programm importieren"
 
