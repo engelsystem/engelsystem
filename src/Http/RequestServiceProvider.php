@@ -25,7 +25,7 @@ class RequestServiceProvider extends ServiceProvider
         }
 
         if (!empty($this->appUrl['path'])) {
-            Request::setFactory([$this, 'createRequestWithoutPrefix']);
+            Request::setFactory($this->createRequestWithoutPrefix(...));
         }
 
         /** @var Request $request */
