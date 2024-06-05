@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Controllers\Admin;
 use Carbon\Carbon;
 use Engelsystem\Controllers\Admin\UserWorkLogController;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
@@ -30,6 +31,19 @@ class UserWorkLogControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::needsUser
+     */
+    public function testNeedsUserSelfWorklogDisabled(): void
+    {
+        $this->config->set('enable_self_worklog', false);
+        $request = $this->request->withAttribute('user_id', $this->user->id);
+        $this->expectException(HttpForbidden::class);
+        $this->controller->editWorklog($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::needsUser
      */
     public function testShowAddWorklogWithUnknownUserIdThrows(): void
     {
@@ -108,6 +122,7 @@ class UserWorkLogControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::needsUser
      */
     public function testSaveWorklogWithUnknownUserIdThrows(): void
     {
@@ -159,6 +174,7 @@ class UserWorkLogControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::needsUser
      */
     public function testOverwriteWorklogWithUnknownWorkLogIdThrows(): void
     {
@@ -260,6 +276,7 @@ class UserWorkLogControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::deleteWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::needsUser
      */
     public function testDeleteWorklogWithUnknownWorkLogIdThrows(): void
     {
@@ -357,6 +374,7 @@ class UserWorkLogControllerTest extends ControllerTest
     public function setUp(): void
     {
         parent::setUp();
+        $this->config->set('enable_self_worklog', true);
 
         $this->app->bind('http.urlGenerator', UrlGenerator::class);
 
