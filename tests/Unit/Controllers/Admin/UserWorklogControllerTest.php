@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Carbon\Carbon;
-use Engelsystem\Controllers\Admin\UserWorkLogController;
+use Engelsystem\Controllers\Admin\UserWorklogController;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
@@ -18,7 +19,7 @@ use Engelsystem\Test\Unit\Controllers\ControllerTest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class UserWorkLogControllerTest extends ControllerTest
+class UserWorklogControllerTest extends ControllerTest
 {
     protected Authenticator|MockObject $auth;
 
@@ -26,10 +27,23 @@ class UserWorkLogControllerTest extends ControllerTest
 
     protected User $user;
 
-    protected UserWorkLogController $controller;
+    protected UserWorklogController $controller;
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::editWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::needsUser
+     */
+    public function testNeedsUserSelfWorklogDisabled(): void
+    {
+        $this->config->set('enable_self_worklog', false);
+        $request = $this->request->withAttribute('user_id', $this->user->id);
+        $this->expectException(HttpForbidden::class);
+        $this->controller->editWorklog($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::editWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::needsUser
      */
     public function testShowAddWorklogWithUnknownUserIdThrows(): void
     {
@@ -39,9 +53,9 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::__construct
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::showEditWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::editWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::__construct
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::showEditWorklog
      */
     public function testShowAddWorklog(): void
     {
@@ -61,9 +75,9 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::editWorklog
      */
-    public function testShowEditWorklogWithWorkLogNotAssociatedToUserThrows(): void
+    public function testShowEditWorklogWithWorklogNotAssociatedToUserThrows(): void
     {
         /** @var User $user2 */
         $user2 = User::factory()->create();
@@ -78,7 +92,7 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::editWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::editWorklog
      */
     public function testShowEditWorklog(): void
     {
@@ -107,7 +121,8 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::needsUser
      */
     public function testSaveWorklogWithUnknownUserIdThrows(): void
     {
@@ -117,9 +132,9 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::saveWorklog
      *
-     * @dataProvider invalidSaveWorkLogParams
+     * @dataProvider invalidSaveWorklogParams
      */
     public function testSaveWorklogWithInvalidParamsThrows(array $body): void
     {
@@ -129,7 +144,7 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::saveWorklog
      */
     public function testSaveNewWorklog(): void
     {
@@ -158,9 +173,10 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::needsUser
      */
-    public function testOverwriteWorklogWithUnknownWorkLogIdThrows(): void
+    public function testOverwriteWorklogWithUnknownWorklogIdThrows(): void
     {
         $body = ['work_date' => Carbon::today(), 'work_hours' => 3.14, 'comment' => 'a comment'];
         $request = $this->request
@@ -172,9 +188,9 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::saveWorklog
      */
-    public function testOverwriteWorklogWithWorkLogNotAssociatedToUserThrows(): void
+    public function testOverwriteWorklogWithWorklogNotAssociatedToUserThrows(): void
     {
         /** @var User $user2 */
         $user2 = User::factory()->create();
@@ -191,7 +207,7 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::saveWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::saveWorklog
      */
     public function testOverwriteWorklog(): void
     {
@@ -222,9 +238,9 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::showDeleteWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::showDeleteWorklog
      */
-    public function testShowDeleteWorklogWithWorkLogNotAssociatedToUserThrows(): void
+    public function testShowDeleteWorklogWithWorklogNotAssociatedToUserThrows(): void
     {
         /** @var User $user2 */
         $user2 = User::factory()->create();
@@ -239,7 +255,7 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::showDeleteWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::showDeleteWorklog
      */
     public function testShowDeleteWorklog(): void
     {
@@ -259,9 +275,10 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::deleteWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::deleteWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::needsUser
      */
-    public function testDeleteWorklogWithUnknownWorkLogIdThrows(): void
+    public function testDeleteWorklogWithUnknownWorklogIdThrows(): void
     {
         $request = $this->request
             ->withAttribute('user_id', $this->user->id)
@@ -271,9 +288,9 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::deleteWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::deleteWorklog
      */
-    public function testDeleteWorklogWithWorkLogNotAssociatedToUserThrows(): void
+    public function testDeleteWorklogWithWorklogNotAssociatedToUserThrows(): void
     {
         /** @var User $user2 */
         $user2 = User::factory()->create();
@@ -288,7 +305,7 @@ class UserWorkLogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorkLogController::deleteWorklog
+     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::deleteWorklog
      */
     public function testDeleteWorklog(): void
     {
@@ -315,7 +332,7 @@ class UserWorkLogControllerTest extends ControllerTest
     /**
      * @return array[]
      */
-    public function invalidSaveWorkLogParams(): array
+    public function invalidSaveWorklogParams(): array
     {
         $today = Carbon::today();
         return [
@@ -357,6 +374,7 @@ class UserWorkLogControllerTest extends ControllerTest
     public function setUp(): void
     {
         parent::setUp();
+        $this->config->set('enable_self_worklog', true);
 
         $this->app->bind('http.urlGenerator', UrlGenerator::class);
 
@@ -369,7 +387,7 @@ class UserWorkLogControllerTest extends ControllerTest
         $this->user = User::factory()->create();
         $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
 
-        $this->controller = $this->app->make(UserWorkLogController::class);
+        $this->controller = $this->app->make(UserWorklogController::class);
         $this->controller->setValidator(new Validator());
     }
 }

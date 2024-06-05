@@ -27,14 +27,14 @@ class Shifts
                 continue;
             }
 
-            $workLog = new Worklog();
-            $workLog->user()->associate($entry->user);
-            $workLog->creator()->associate(auth()->user());
-            $workLog->worked_at = $shift->start->copy()->startOfDay();
-            $workLog->hours =
+            $worklog = new Worklog();
+            $worklog->user()->associate($entry->user);
+            $worklog->creator()->associate(auth()->user());
+            $worklog->worked_at = $shift->start->copy()->startOfDay();
+            $worklog->hours =
                 (($shift->end->timestamp - $shift->start->timestamp) / 60 / 60)
                 * $shift->getNightShiftMultiplier();
-            $workLog->comment = sprintf(
+            $worklog->comment = sprintf(
                 __('%s (%s as %s) in %s, %s - %s'),
                 $shift->shiftType->name,
                 $shift->title,
@@ -43,11 +43,11 @@ class Shifts
                 $shift->start->format(__('general.datetime')),
                 $shift->end->format(__('general.datetime'))
             );
-            $workLog->save();
+            $worklog->save();
 
             $this->log->info(
                 'Created worklog entry from shift for {user} ({uid}): {worklog})',
-                ['user' => $workLog->user->name, 'uid' => $workLog->user->id, 'worklog' => $workLog->comment]
+                ['user' => $worklog->user->name, 'uid' => $worklog->user->id, 'worklog' => $worklog->comment]
             );
         }
     }
