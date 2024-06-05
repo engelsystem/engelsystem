@@ -456,7 +456,7 @@ function User_view_myshifts(
 
     foreach ($user_worklogs as $worklog) {
         $key = $worklog->worked_at->timestamp . '-worklog-' . $worklog->id;
-        $myshifts_table[$key] = User_view_worklog($worklog, $admin_user_worklog_privilege);
+        $myshifts_table[$key] = User_view_worklog($worklog, $admin_user_worklog_privilege, $its_me);
         $timeSum += $worklog->hours * 3600;
     }
 
@@ -511,10 +511,12 @@ function User_view_myshifts(
  * @param bool    $admin_user_worklog_privilege
  * @return array
  */
-function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
+function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its_me)
 {
     $actions = '';
-    if ($admin_user_worklog_privilege) {
+    $self_worklog = config('enable_self_worklog') || !$its_me;
+
+    if ($admin_user_worklog_privilege && $self_worklog) {
         $actions = '<div class="text-end">' . table_buttons([
             button(
                 url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id),
@@ -636,6 +638,8 @@ function User_view(
         $needs_ifsg_certificate = $needs_ifsg_certificate || $angeltype->requires_ifsg_certificate;
     }
 
+    $self_worklog = config('enable_self_worklog') || !$its_me;
+
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
         . htmlspecialchars($user_source->name)
@@ -679,7 +683,7 @@ function User_view(
                             url('/users/' . $user_source->id . '/certificates'),
                             icon('card-checklist') . __('settings.certificates')
                         ) : '',
-                        $admin_user_worklog_privilege ? button(
+                        ($admin_user_worklog_privilege && $self_worklog) ? button(
                             url('/admin/user/' . $user_source->id . '/worklog'),
                             icon('clock-history') . __('worklog.add')
                         ) : '',
