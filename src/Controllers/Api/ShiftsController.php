@@ -147,7 +147,7 @@ class ShiftsController extends ApiController
                 ]);
                 $angelTypeData = AngelTypeResource::toIdentifierArray($neededAngelType->angelType);
                 $angelTypes[] = new Collection([
-                    'angeltype' => $angelTypeData,
+                    'angel_type' => $angelTypeData,
                     'needs' => $neededAngelType->count,
                     'entries' => $entries,
                 ]);
@@ -163,7 +163,7 @@ class ShiftsController extends ApiController
     }
 
     /**
-     * Collect all needed angeltypes
+     * Collect all needed angel types
      */
     protected function getNeededAngelTypes(Shift $shift): Collection
     {
@@ -179,7 +179,7 @@ class ShiftsController extends ApiController
             $neededAngelTypes = $shift->location->neededAngelTypes;
         }
 
-        // Add needed angeltypes from additionally added users
+        // Add needed angel types from additionally added users
         foreach ($shift->shiftEntries as $entry) {
             $neededAngelType = $neededAngelTypes->where('angel_type_id', $entry->angelType->id)->first();
             if (!$neededAngelType) {
@@ -191,7 +191,7 @@ class ShiftsController extends ApiController
                 $neededAngelTypes[] = $neededAngelType;
             }
 
-            // Add entries to needed angeltype
+            // Add entries to needed angel type
             $neededAngelType->entries = isset($neededAngelType->entries)
                 ? $neededAngelType->entries
                 : new Collection();

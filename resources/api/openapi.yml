@@ -26,7 +26,7 @@ servers:
 tags:
   - name: api
     description: API related
-  - name: angeltype
+  - name: angel_type
     description: Angel types
   - name: event
     description: Event information
@@ -199,7 +199,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ShiftEntry'
-        angeltype:
+        angel_type:
           $ref: '#/components/schemas/Reference'
         needs:
           type: integer
@@ -210,7 +210,7 @@ components:
           example: 3
       required:
         - entries
-        - angeltype
+        - angel_type
         - needs
     Shift:
       type: object
@@ -240,7 +240,7 @@ components:
           $ref: '#/components/schemas/DateTimeOptional'
         updated_at:
           $ref: '#/components/schemas/DateTimeOptional'
-        angeltypes:
+        angel_types:
           type: array
           description: Needed angel types and user entries, can be empty (for example on Schedule import of unused room)
           items:
@@ -259,7 +259,7 @@ components:
         - shift_type
         - created_at
         - updated_at
-        - angeltypes
+        - angel_types
         - url
     ShiftEntry:
       type: object
