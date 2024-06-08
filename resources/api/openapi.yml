@@ -26,7 +26,7 @@ servers:
 tags:
   - name: api
     description: API related
-  - name: angeltype
+  - name: angel type
     description: Angel types
   - name: event
     description: Event information
@@ -36,7 +36,7 @@ tags:
     description: News and meeting announcements
   - name: shift
     description: Event shifts
-  - name: shifttype
+  - name: shift type
     description: Shift types
   - name: user
     description: Users
@@ -199,18 +199,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ShiftEntry'
-        angeltype:
+        angel_type:
           $ref: '#/components/schemas/Reference'
         needs:
           type: integer
           description: >
-            Number of users needed for the shift of the given type.
-            Will be more than users count when not full, less when overbooked
+            Number of users needed for the shift of the given angel type.
+            Will be greater than users count when not full, less when overbooked
             or 0 when only additional users with given type have been added.
           example: 3
       required:
         - entries
-        - angeltype
+        - angel_type
         - needs
     Shift:
       type: object
@@ -240,7 +240,7 @@ components:
           $ref: '#/components/schemas/DateTimeOptional'
         updated_at:
           $ref: '#/components/schemas/DateTimeOptional'
-        angeltypes:
+        needed_angel_types:
           type: array
           description: Needed angel types and user entries, can be empty (for example on Schedule import of unused room)
           items:
@@ -259,7 +259,7 @@ components:
         - shift_type
         - created_at
         - updated_at
-        - angeltypes
+        - needed_angel_types
         - url
     ShiftEntry:
       type: object
@@ -269,7 +269,7 @@ components:
         freeloaded:
           type: boolean
           example: false
-          description: True if the user did not arrive to the shift
+          description: True if the user was marked as freeloaded for not arriving to the shift
       required:
         - user
         - freeloaded
@@ -472,7 +472,7 @@ paths:
   /angeltypes:
     get:
       tags:
-        - angeltype
+        - angel type
       summary: Get a list of angel types
       responses:
         '200':
@@ -502,7 +502,7 @@ paths:
           type: integer
     get:
       tags:
-        - angeltype
+        - angel type
         - shift
       summary: Get all shifts of the requested angel type
       responses:
@@ -598,7 +598,7 @@ paths:
   /shifttypes:
     get:
       tags:
-        - shifttype
+        - shift type
       summary: Get a list of shift types
       responses:
         '200':
@@ -628,7 +628,7 @@ paths:
           type: integer
     get:
       tags:
-        - shifttype
+        - shift type
         - shift
       summary: Get all shifts of the requested shift type
       responses:
@@ -697,7 +697,7 @@ paths:
             - type: integer
     get:
       tags:
-        - angeltype
+        - angel type
         - user
       summary: Get the users angel types
       responses:
