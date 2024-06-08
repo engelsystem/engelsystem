@@ -12,7 +12,7 @@ class ShiftWithEntriesResource extends ShiftResource
     {
         return [
             ...parent::toArray($location),
-            'angeltypes' => $angelTypes instanceof Arrayable ? $angelTypes->toArray() : $angelTypes,
+            'needed_angel_types' => $angelTypes instanceof Arrayable ? $angelTypes->toArray() : $angelTypes,
         ];
     }
 }

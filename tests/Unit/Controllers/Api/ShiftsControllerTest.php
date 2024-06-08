@@ -57,9 +57,9 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertEquals($this->shiftA->title, $shiftAData['name'], 'Title is equal');
         $this->assertEquals($this->location->id, $shiftAData['location']['id'], 'Same location');
         $this->assertEquals($this->shiftA->shiftType->id, $shiftAData['shift_type']['id'], 'Shift type equals');
-        $this->assertCount(4, $shiftAData['angeltypes']);
+        $this->assertCount(4, $shiftAData['needed_angel_types']);
         // Has users
-        $entriesA = collect($shiftAData['angeltypes'])->sortBy('angeltype.id');
+        $entriesA = collect($shiftAData['needed_angel_types'])->sortBy('angeltype.id');
         $entry = $entriesA[0];
         $this->assertCount(2, $entry['entries']);
         $this->assertEquals(2, $entry['needs']);
@@ -76,9 +76,9 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertEquals($this->shiftB->title, $shiftBData['name'], 'Title is equal');
         $this->assertEquals($this->location->id, $shiftBData['location']['id'], 'Same location');
         $this->assertEquals($this->shiftB->shiftType->id, $shiftBData['shift_type']['id'], 'Shift type equals');
-        $this->assertCount(3, $shiftBData['angeltypes']);
+        $this->assertCount(3, $shiftBData['needed_angel_types']);
         // No users
-        $entriesB = collect($shiftBData['angeltypes'])->sortBy('angeltype.id');
+        $entriesB = collect($shiftBData['needed_angel_types'])->sortBy('angeltype.id');
         $this->assertCount(0, $entriesB[0]['entries']);
     }
 
@@ -110,7 +110,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertCount(5, $data['data']);
 
         $shift = $data['data'][0];
-        $this->assertTrue(count($shift['angeltypes']) >= 1);
+        $this->assertTrue(count($shift['needed_angel_types']) >= 1);
     }
 
     /**
@@ -137,7 +137,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertCount(1, $data['data']);
 
         $shift = $data['data'][0];
-        $this->assertTrue(count($shift['angeltypes']) >= 1);
+        $this->assertTrue(count($shift['needed_angel_types']) >= 1);
     }
 
     /**
@@ -164,7 +164,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertCount(1, $data['data']);
 
         $shift = $data['data'][0];
-        $this->assertTrue(count($shift['angeltypes']) >= 1);
+        $this->assertTrue(count($shift['needed_angel_types']) >= 1);
     }
 
     /**
