@@ -18,7 +18,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Psr\Log\LoggerInterface;
 
-class UserWorkLogController extends BaseController
+class UserWorklogController extends BaseController
 {
     use HasUserNotifications;
 
