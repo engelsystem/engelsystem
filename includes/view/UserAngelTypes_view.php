@@ -156,7 +156,7 @@ function UserAngelType_add_view(AngelType $angeltype, $users_source, $user_id)
                 ? form_checkbox('auto_confirm_user', __('Confirm user'), true)
                 : '',
             form_select('user_id', __('general.user'), $users, $user_id),
-            form_submit('submit', icon('plus-lg') . __('Add')),
+            form_submit('submit', icon('plus-lg') . __('general.add')),
         ]),
     ]);
 }
