@@ -14,7 +14,7 @@
             {{ block('title') }}
 
             {% if is_index|default(false) and can('shifttypes.edit') %}
-                {{ m.button(m.icon('plus-lg'), url('/admin/shifttypes/edit')) }}
+                {{ m.add(url('/admin/shifttypes/edit')) }}
             {% elseif is_view|default(false) and can('shifttypes.edit') %}
                 {{ m.edit(url('admin/shifttypes/edit/' ~ shifttype.id)) }}
             {% endif %}
