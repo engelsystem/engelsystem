@@ -53,6 +53,10 @@
     {{ _self.button(_self.icon('chevron-left'), url, {'size': 'sm', 'title': __('general.back')}) }}
 {% endmacro %}
 
+{% macro add(url) %}
+    {{ _self.button(_self.icon('plus-lg'), url, {'title': __('general.add')}) }}
+{% endmacro %}
+
 {% macro info(text, raw) %}
     <span class="help-block">
         {{ _self.icon('info-circle') }}

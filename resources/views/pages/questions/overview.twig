@@ -38,7 +38,7 @@
                 {% if is_admin | default(false) %}
                     {{ m.button(m.icon('question-lg'), url('/faq'), {'title': __('faq.faq')}) }}
                 {% else %}
-                    {{ m.button(m.icon('plus-lg'), url('/questions/new')) }}
+                    {{ m.add(url('/questions/new')) }}
                 {% endif %}
             </h1>
         </div>
