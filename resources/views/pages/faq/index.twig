@@ -10,7 +10,7 @@
             {{ block('title') }}
 
             {%- if can('faq.edit') -%}
-                {{ m.button(m.icon('plus-lg'), url('/admin/faq')) }}
+                {{ m.add(url('/admin/faq')) }}
             {%- endif %}
         </h1>
 

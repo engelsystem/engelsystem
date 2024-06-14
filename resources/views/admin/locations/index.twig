@@ -16,7 +16,7 @@
             {{ block('title') }}
 
             {% if is_index|default(false) %}
-                {{ m.button(m.icon('plus-lg'), url('/admin/locations/edit')) }}
+                {{ m.add(url('/admin/locations/edit')) }}
             {% endif %}
         </h1>
 
