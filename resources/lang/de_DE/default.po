@@ -950,7 +950,7 @@ msgstr "Supporter"
 msgid "Members"
 msgstr "Mitglieder"
 
-msgid "Add"
+msgid "general.add"
 msgstr "Hinzufügen"
 
 msgid "Confirm all"

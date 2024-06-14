@@ -25,6 +25,9 @@ msgstr "Submit"
 msgid "form.send_notification"
 msgstr "Send %d notifications"
 
+msgid "general.add"
+msgstr "Add"
+
 msgid "general.login"
 msgstr "Login"
 
