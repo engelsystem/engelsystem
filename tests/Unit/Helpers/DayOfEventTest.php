@@ -18,7 +18,7 @@ class DayOfEventTest extends ServiceProviderTest
     {
         $app = $this->createAndSetUpAppWithConfig([]);
         $this->config = $app->get('config');
-        $this->config->set('enable_show_day_of_event', true);
+        $this->config->set('enable_day_of_event', true);
     }
 
     public function tearDown(): void
@@ -72,7 +72,7 @@ class DayOfEventTest extends ServiceProviderTest
      */
     public function testGetDisabledShowDayOfEvent(): void
     {
-        $this->config->set('enable_show_day_of_event', false);
+        $this->config->set('enable_day_of_event', false);
         $this->assertNull(DayOfEvent::get());
     }
 }
