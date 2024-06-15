@@ -2,11 +2,8 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\Db;
-use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
-use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Collection;
 
 /**
  * User model
@@ -42,28 +39,6 @@ function User_goodie_score(int $userId): float
         ->sum('hours');
 
     return $result_shifts['goodie_score'] + $worklogHours;
-}
-
-/**
- * Returns all users that are not member of given angeltype.
- *
- * @param AngelType $angeltype Angeltype
- *
- * @return User[]|Collection
- */
-function Users_by_angeltype_inverted(AngelType $angeltype)
-{
-    return User::query()
-        ->select('users.*')
-        ->leftJoin('user_angel_type', function ($query) use ($angeltype) {
-            /** @var JoinClause $query */
-            $query
-                ->on('users.id', '=', 'user_angel_type.user_id')
-                ->where('user_angel_type.angel_type_id', '=', $angeltype->id);
-        })
-        ->whereNull('user_angel_type.id')
-        ->orderBy('users.name')
-        ->get();
 }
 
 /**

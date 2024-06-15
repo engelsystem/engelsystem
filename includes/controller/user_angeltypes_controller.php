@@ -330,8 +330,29 @@ function user_angeltype_add_controller(): array
     // Default selection
     $user_source = auth()->user();
 
-    // Load possible users, that are not in the angeltype already
-    $users_source = Users_by_angeltype_inverted($angeltype);
+    // Load all users with userAngelTypes
+    /** @var Collection|User[] $users */
+    $users = User::with('userAngelTypes')->orderBy('name')->get();
+
+    // Add membership state to displayname
+    $users_select = [];
+    foreach ($users as $user) {
+        $name = $user->displayName;
+        /** @var AngelType|null $userAngelType */
+        $userAngelType = $user->userAngelTypes->where('id', $angeltype->id)->first();
+        if ($userAngelType) {
+            $membershipState = __('Member');
+            if ($userAngelType->pivot->supporter) {
+                $membershipState = __('Supporter');
+            } elseif (
+                !$userAngelType->pivot->isConfirmed
+            ) {
+                $membershipState = __('Unconfirmed');
+            }
+            $name = __('%s (%s)', [$name, $membershipState]);
+        }
+        $users_select[$user->id] = $name;
+    }
 
     $request = request();
     if ($request->hasPostData('submit')) {
@@ -369,7 +390,7 @@ function user_angeltype_add_controller(): array
 
     return [
         __('Add user to angeltype'),
-        UserAngelType_add_view($angeltype, $users_source, $user_source->id),
+        UserAngelType_add_view($angeltype, $users_select, $user_source->id),
     ];
 }
 
