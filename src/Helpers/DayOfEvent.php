@@ -13,7 +13,7 @@ class DayOfEvent
      */
     public static function get(Carbon $date = null): int | null
     {
-        if (!config('enable_show_day_of_event')) {
+        if (!config('enable_day_of_event')) {
             return null;
         }
 
