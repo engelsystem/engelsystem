@@ -55,7 +55,7 @@ function public_dashboard_view($stats, $free_shifts, $highlighted_news)
 
     $dayOfEvent = DayOfEvent::get();
 
-    if (config('enable_show_day_of_event') && $dayOfEvent !== null) {
+    if ($dayOfEvent !== null) {
         $stats[] = stats(__('dashboard.day'), $dayOfEvent, 'default');
     }
 

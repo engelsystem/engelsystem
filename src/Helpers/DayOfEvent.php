@@ -13,6 +13,10 @@ class DayOfEvent
      */
     public static function get(Carbon $date = null): int | null
     {
+        if (!config('enable_show_day_of_event')) {
+            return null;
+        }
+
         $startOfEvent = config('event_start');
 
         if (!$startOfEvent) {
