@@ -50,6 +50,7 @@ class GlobalsTest extends ExtensionTest
         $config = new Config(
             [
                 'event_start' => Carbon::createFromFormat('Y-m-d', '2023-08-13'),
+                'enable_show_day_of_event' => true,
                 'theme'  => 23,
                 'themes' => [
                     42   => $theme,

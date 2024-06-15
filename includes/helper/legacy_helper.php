@@ -31,7 +31,7 @@ function dateWithEventDay(string $day): string
     $dayOfEvent = DayOfEvent::get($date);
     $dateFormatted = $date->format(__('general.date'));
 
-    if (!config('enable_show_day_of_event') || is_null($dayOfEvent)) {
+    if (is_null($dayOfEvent)) {
         return $dateFormatted;
     }
 
