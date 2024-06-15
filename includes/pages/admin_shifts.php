@@ -339,9 +339,9 @@ function admin_shifts()
                 $shifts_table_entry = [
                     'timeslot'      =>
                         icon('clock-history') . ' '
-                        . $start->format(__('general.datetime'))
+                        . dateWithEventDay($start->format('Y-m-d')) . ' ' . $start->format(__('H:i'))
                         . ' - '
-                        . '<span title="' . $end->format(__('general.date')) . '">'
+                        . '<span title="' . dateWithEventDay($end->format('Y-m-d')) . '">'
                         . $end->format(__('H:i'))
                         . '</span>'
                         . ', ' . round($end->copy()->diffInMinutes($start) / 60, 2) . 'h'
