@@ -71,7 +71,7 @@ class NewsController extends BaseController
         }
 
         $data = $this->validate($request, [
-            'title'          => 'required',
+            'title'          => 'required|max:150',
             'text'           => 'required',
             'is_meeting'     => 'optional|checked',
             'is_pinned'      => 'optional|checked',

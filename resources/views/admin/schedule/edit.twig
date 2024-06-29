@@ -24,6 +24,7 @@
                 {{ f.input('name', __('schedule.name'), {
                     'required': true,
                     'value': schedule ? schedule.name : '',
+                    'max_length': 255,
                 }) }}
                 {{ f.input('url', __('schedule.url'), {
                     'type': 'url',

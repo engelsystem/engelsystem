@@ -15,6 +15,7 @@
                     'required': true,
                     'required_icon': true,
                     'value': f.formData('location', location ? location.name : ''),
+                    'max_length': 35,
                 }) }}
 
                 {{ f.input('dect', __('general.dect'), {
