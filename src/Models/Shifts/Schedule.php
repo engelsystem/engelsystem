@@ -23,8 +23,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property bool                                         $needed_from_shift_type
  * @property int                                          $minutes_before
  * @property int                                          $minutes_after
- * @property Carbon                                       $created_at
- * @property Carbon                                       $updated_at
+ * @property Carbon|null                                  $created_at
+ * @property Carbon|null                                  $updated_at
  *
  * @property-read QueryBuilder|Location[]                 $activeLocations
  * @property-read QueryBuilder|Collection|Shift[]         $shifts
@@ -47,6 +47,11 @@ class Schedule extends BaseModel
 
     /** @var bool enable timestamps */
     public $timestamps = true; // phpcs:ignore
+
+    /** @var array Default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'needed_from_shift_type' => false,
+    ];
 
     /** @var array<string> */
     protected $casts = [ // phpcs:ignore

@@ -24,7 +24,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon                            $end
  * @property int                               $shift_type_id
  * @property int                               $location_id
- * @property string                            $transaction_id
+ * @property string|null                       $transaction_id
  * @property int                               $created_by
  * @property int|null                          $updated_by
  * @property Carbon|null                       $created_at
