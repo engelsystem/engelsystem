@@ -15,6 +15,7 @@
                     'required': true,
                     'required_icon': true,
                     'value': f.formData('shifttype', shifttype ? shifttype.name : ''),
+                    'max_length': 255,
                 }) }}
 
                 {{ f.textarea('description', __('general.description'), {
