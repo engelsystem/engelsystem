@@ -51,7 +51,7 @@ class FaqController extends BaseController
         }
 
         $data = $this->validate($request, [
-            'question' => 'required',
+            'question' => 'required|max:255',
             'text'     => 'required',
             'delete'   => 'optional|checked',
             'preview'  => 'optional|checked',

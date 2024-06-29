@@ -77,7 +77,7 @@ function admin_shifts()
         }
 
         // Name/Bezeichnung der Schicht, darf leer sein
-        $title = strip_request_item('title');
+        $title = substr(strip_request_item('title'), 0, 255);
 
         // Beschreibung der Schicht, darf leer sein
         $description = strip_request_item_nl('description');
@@ -512,7 +512,7 @@ function admin_shifts()
                 div('row', [
                     div('col-md-6 col-xl-5', [
                         form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
-                        form_text('title', __('title.title'), $title),
+                        form_text('title', __('title.title'), $title, false, 255),
                         form_select('lid', __('Location'), $location_array, $lid),
                     ]),
                     div('col-md-6 col-xl-7', [

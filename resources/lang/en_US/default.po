@@ -579,12 +579,6 @@ msgstr "Edit FAQ entry"
 msgid "faq.add"
 msgstr "Add FAQ entry"
 
-msgid "faq.question"
-msgstr "Question"
-
-msgid "faq.message"
-msgstr "Answer"
-
 msgid "faq.delete.title"
 msgstr "Delete FAQ \"%s\""
 
