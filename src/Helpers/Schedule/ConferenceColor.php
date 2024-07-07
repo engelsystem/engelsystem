@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers\Schedule;
 
-class ConferenceColor
+class ConferenceColor extends ScheduleData
 {
     /**
      * @param array<string, string> $others type -> color

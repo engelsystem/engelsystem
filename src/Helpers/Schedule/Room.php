@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers\Schedule;
 
-class Room
+class Room extends ScheduleData
 {
     /**
      * @param Event[] $events
