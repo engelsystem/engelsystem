@@ -63,7 +63,12 @@
             </event>
             <event guid='c6999865-5329-43f2-8aca-85ae39932d09' id='42'>
                 <date>2042-10-02T11:45:00+00:00</date>
-                <title>Fourth event</title>
+                <title>
+                    Fourth event with a pretty long title which is so embarrassingly long that we hope nobody will
+                    never ever try to use it in production, or it will definitely look kind of weird and awkward to
+                    look at...
+                    I mean seriously, who wants such a big thing on their page?
+                </title>
                 <subtitle>With a subtitle</subtitle>
                 <start>11:45</start>
                 <duration>00:30</duration>
@@ -74,14 +79,14 @@
                 <abstract>A minimal description</abstract>
             </event>
         </room>
-        <room name='Third Room'>
+        <room name='Third Room with a very looooong title'>
             <event guid='1248925b-f608-4ebc-8d37-7a22fadc51a4' id='55'>
                 <date>2042-10-02T10:00:00+00:00</date>
                 <title>Fifth event</title>
                 <subtitle>Will be ignored</subtitle>
                 <start>10:00</start>
                 <duration>01:00</duration>
-                <room>Third Room</room>
+                <room>Third Room with a very looooong title</room>
                 <slug>fifth-55-event</slug>
                 <track>Testing</track>
                 <type>Talk</type>

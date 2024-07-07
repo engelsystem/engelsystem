@@ -329,6 +329,7 @@ class ScheduleControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::importSchedule
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::getScheduleData
+     * @covers \Engelsystem\Controllers\Admin\ScheduleController::patchSchedule
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::newRooms
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::shiftsDiff
      * @covers \Engelsystem\Controllers\Admin\ScheduleController::getScheduleShiftsByGuid
@@ -373,7 +374,7 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertCount(1, $location);
         $location2 = Location::whereName('Another Room')->get();
         $this->assertCount(1, $location2);
-        $location3 = Location::whereName('Third Room')->get();
+        $location3 = Location::whereName('Third Room with a very looooong tit')->get();
         $this->assertCount(1, $location3);
         /** @var Location $location */
         $location = $location->first();
@@ -415,6 +416,13 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertEquals($location2->id, $shift->location_id);
         $this->assertEquals($this->user->id, $shift->created_by);
         $this->assertNull($shift->updated_by);
+
+        // Truncated shift name
+        /** @var ScheduleShift $scheduleShift */
+        $scheduleShift = ScheduleShift::whereGuid('c6999865-5329-43f2-8aca-85ae39932d09')->first();
+        /** @var Shift $shift */
+        $shift = $scheduleShift->shift;
+        $this->assertStringNotContainsString('such a big thing', $shift->title);
     }
 
     /**
