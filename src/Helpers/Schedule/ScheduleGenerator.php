@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers\Schedule;
 
-class ScheduleGenerator
+class ScheduleGenerator extends ScheduleData
 {
     public function __construct(
         protected ?string $name = null,

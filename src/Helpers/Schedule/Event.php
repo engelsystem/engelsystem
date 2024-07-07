@@ -6,7 +6,7 @@ namespace Engelsystem\Helpers\Schedule;
 
 use Carbon\Carbon;
 
-class Event
+class Event extends ScheduleData
 {
     use CalculatesTime;
 

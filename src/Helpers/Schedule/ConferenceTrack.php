@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers\Schedule;
 
-class ConferenceTrack
+class ConferenceTrack extends ScheduleData
 {
     public function __construct(
         protected string $name,

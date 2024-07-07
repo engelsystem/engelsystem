@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers\Schedule;
 
-class Conference
+class Conference extends ScheduleData
 {
     use CalculatesTime;
 

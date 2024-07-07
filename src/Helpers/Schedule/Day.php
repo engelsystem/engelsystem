@@ -6,7 +6,7 @@ namespace Engelsystem\Helpers\Schedule;
 
 use Carbon\Carbon;
 
-class Day
+class Day extends ScheduleData
 {
     /**
      * @param Room[] $rooms

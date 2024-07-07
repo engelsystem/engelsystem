@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers\Schedule;
 
-class EventRecording
+class EventRecording extends ScheduleData
 {
     public function __construct(
         protected string $license,
