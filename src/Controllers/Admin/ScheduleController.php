@@ -28,6 +28,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
 
 class ScheduleController extends BaseController
@@ -435,8 +436,10 @@ class ScheduleController extends BaseController
             throw new ErrorException('schedule.import.read-error');
         }
 
-        $shiftType = $scheduleModel->shift_type;
         $schedule = $this->parser->getSchedule();
+        $schedule = $this->patchSchedule($schedule);
+
+        $shiftType = $scheduleModel->shift_type;
         $minutesBefore = $scheduleModel->minutes_before;
         $minutesAfter = $scheduleModel->minutes_after;
         $newRooms = $this->newRooms($schedule->getRooms());
@@ -562,6 +565,20 @@ class ScheduleController extends BaseController
             '',
             new ConferenceTrack('')
         );
+    }
+
+    protected function patchSchedule(Schedule $schedule): Schedule
+    {
+        foreach ($schedule->getRooms() as $room) {
+            $room->patch('name', Str::substr($room->getName(), 0, 35));
+
+            foreach ($room->getEvents() as $event) {
+                $event->patch('title', Str::substr($event->getTitle(), 0, 255));
+                $event->patch('url', Str::substr((string) $event->getUrl(), 0, 255) ?: null);
+            }
+        }
+
+        return $schedule;
     }
 
     /**
