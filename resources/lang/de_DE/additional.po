@@ -293,6 +293,9 @@ msgstr "Der Name wird bereits verwendet."
 msgid "registration.disabled"
 msgstr "Die Registrierung ist deaktiviert."
 
+msgid "registration.successful.supporter"
+msgstr "Registrierung erfolgreich."
+
 msgid "registration.successful"
 msgstr "Registrierung erfolgreich. Du kannst dich jetzt anmelden!"
 
