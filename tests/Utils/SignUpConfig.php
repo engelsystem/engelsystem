@@ -36,6 +36,7 @@ final class SignUpConfig
         $config->set('enable_mobile_show', true);
         $config->set('enable_dect', true);
         $config->set('required_user_fields', $requiredFields);
+        $config->set('enable_email_goodie', true);
     }
 
     public static function setMinimumConfig(Config $config): void
