@@ -48,7 +48,11 @@ class RegistrationController extends BaseController
         $rawData = $request->getParsedBody();
         $user = $this->userFactory->createFromData($rawData);
 
-        $this->addNotification('registration.successful');
+        if (!$this->auth->user()) {
+            $this->addNotification('registration.successful');
+        } else {
+            $this->addNotification('registration.successful.supporter');
+        }
 
         if ($this->config->get('welcome_msg')) {
             // Set a session marker to display the welcome message on the next page
