@@ -27,6 +27,7 @@ services:
       MAIL_DRIVER: smtp
       MAIL_FROM_ADDRESS: helfen@froscon.org
       MAIL_HOST: mail.froscon.org
+    restart: unless-stopped
     secrets:
       - db_password
   es_database:
@@ -41,6 +42,7 @@ services:
       MYSQL_INITDB_SKIP_TZINFO: "yes"
     volumes:
       - ./dbsetup.sql:/docker-entrypoint-initdb.d/dbsetup.sql:ro
+    restart: unless-stopped
     secrets:
       - db_root_password
       - db_password
@@ -58,6 +60,7 @@ services:
       - database
     volumes:
       - backup:/backup
+    restart: unless-stopped
     secrets:
       - db_root_password
   phpmyadmin:
