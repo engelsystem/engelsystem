@@ -10,7 +10,7 @@ return [
         'host'     => env('MYSQL_HOST', (env('CI', false) ? 'mariadb' : 'localhost')),
         'database' => env('MYSQL_DATABASE', 'engelsystem'),
         'username' => env('MYSQL_USER', 'root'),
-        'password' => env('MYSQL_PASSWORD', ''),
+        'password' => env_password('MYSQL_PASSWORD'),
     ],
 
     // For accessing /metrics (and /stats)
@@ -81,7 +81,7 @@ return [
         // If tls transport encryption should be used
         'tls'        => env('MAIL_TLS'),
         'username'   => env('MAIL_USERNAME'),
-        'password'   => env('MAIL_PASSWORD'),
+        'password'   => env_password('MAIL_PASSWORD'),
         'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
     ],
 
@@ -92,7 +92,7 @@ return [
     'enable_email_goodie' => (bool) env('ENABLE_EMAIL_GOODIE', true),
 
     // Initial admin password
-    'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD'),
+    'setup_admin_password'    => env_password('SETUP_ADMIN_PASSWORD'),
 
     'oauth'                   => [
         // '[name]' => [config]
