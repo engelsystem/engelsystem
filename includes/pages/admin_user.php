@@ -68,7 +68,7 @@ function admin_user()
         $html .= '  <tr><td>' . __('Last login') . '</td><td><p class="help-block">'
             . ($user_source->last_login_at ? $user_source->last_login_at->format(__('general.datetime')) : '-')
             . '</p></td></tr>' . "\n";
-        if (config('enable_user_name')) {
+        if (config('enable_full_name')) {
             $html .= '  <tr><td>' . __('settings.profile.firstname') . '</td><td>'
                 . '<input size="40" name="eName" value="' . htmlspecialchars((string) $user_source->personalData->last_name) . '" class="form-control" maxlength="64">'
                 . '</td></tr>' . "\n";
@@ -173,7 +173,7 @@ function admin_user()
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>' . __('settings.password')
             . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-            . __('password.minimal_length', [config('min_password_length')]) . '"></span>'
+            . __('password.minimal_length', [config('password_min_length')]) . '"></span>'
             . '</td><td>'
             . '<input type="password" size="40" name="new_pw" value="" class="form-control" autocomplete="new-password">'
             . '</td></tr>' . "\n";
@@ -313,7 +313,7 @@ function admin_user()
                 }
                 $user_source->save();
 
-                if (config('enable_user_name')) {
+                if (config('enable_full_name')) {
                     $user_source->personalData->first_name = $request->postData('eVorname');
                     $user_source->personalData->last_name = $request->postData('eName');
                 }
