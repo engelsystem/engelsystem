@@ -145,7 +145,7 @@ function Users_view(
     if (!config('display_full_name')) {
         $user_table_headers['name'] = Users_table_header_link('name', __('general.nick'), $order_by);
     }
-    if (config('enable_user_name')) {
+    if (config('enable_full_name')) {
         $user_table_headers['first_name'] = Users_table_header_link('first_name', __('settings.profile.firstname'), $order_by);
         $user_table_headers['last_name'] = Users_table_header_link('last_name', __('settings.profile.lastname'), $order_by);
     }
@@ -639,7 +639,7 @@ function User_view(
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
         . htmlspecialchars($user_source->name)
-        . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : '')
+        . (config('enable_full_name') ? ' <small>' . $user_name . '</small>' : '')
         . ((config('enable_pronoun') && $user_source->personalData->pronoun)
             ? ' <small>(' . htmlspecialchars($user_source->personalData->pronoun) . ')</small> '
             : '')
@@ -1113,7 +1113,7 @@ function render_user_pronoun_hint()
 function render_user_firstname_hint()
 {
     $user = auth()->user();
-    if (config('required_user_fields')['firstname'] && config('enable_user_name') && !$user->personalData->first_name) {
+    if (config('required_user_fields')['firstname'] && config('enable_full_name') && !$user->personalData->first_name) {
         $text = __('firstname.required.hint');
         return render_profile_link($text);
     }
@@ -1127,7 +1127,7 @@ function render_user_firstname_hint()
 function render_user_lastname_hint()
 {
     $user = auth()->user();
-    if (config('required_user_fields')['lastname'] && config('enable_user_name') && !$user->personalData->last_name) {
+    if (config('required_user_fields')['lastname'] && config('enable_full_name') && !$user->personalData->last_name) {
         $text = __('lastname.required.hint');
         return render_profile_link($text);
     }

@@ -292,6 +292,9 @@ msgstr "The name is already used."
 msgid "registration.disabled"
 msgstr "The registration is disabled."
 
+msgid "registration.successful.supporter"
+msgstr "Registration successful."
+
 msgid "registration.successful"
 msgstr "Registration successful. You can now log in!"
 

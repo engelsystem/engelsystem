@@ -108,7 +108,7 @@ class PasswordResetControllerTest extends ControllerTest
     {
         $this->initDatabase();
 
-        $this->app->instance('config', new Config(['min_password_length' => 3]));
+        $this->app->instance('config', new Config(['password_min_length' => 3]));
         $user = $this->createUser();
         $token = $this->createToken($user);
         $request = new Request([], [], ['token' => $token->token]);
@@ -138,7 +138,7 @@ class PasswordResetControllerTest extends ControllerTest
     {
         $this->initDatabase();
 
-        $this->app->instance('config', new Config(['min_password_length' => 3]));
+        $this->app->instance('config', new Config(['password_min_length' => 3]));
         $user = $this->createUser();
         $token = $this->createToken($user);
         $password = 'SomeRandomPasswordForAmazingSecurity';
@@ -180,7 +180,7 @@ class PasswordResetControllerTest extends ControllerTest
     {
         $this->initDatabase();
 
-        $this->app->instance('config', new Config(['min_password_length' => 3]));
+        $this->app->instance('config', new Config(['password_min_length' => 3]));
         $user = $this->createUser();
         $token = $this->createToken($user);
         $password = 'SomeRandomPasswordForAmazingSecurity';

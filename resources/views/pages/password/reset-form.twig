@@ -11,7 +11,7 @@
                 'type': 'password',
                 'min_length': min_length,
                 'required': true,
-                'info': __('password.minimal_length', [config('min_password_length')]),
+                'info': __('password.minimal_length', [config('password_min_length')]),
             }) }}
             {{ f.input('password_confirmation', __('password.reset.confirm'), {
                 'type': 'password',
