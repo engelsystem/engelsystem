@@ -46,7 +46,7 @@ return [
         // 'Name' => 'URL',
         // 'some.key' => ['URL', 'permission'],
 
-        // URL to the angel faq and job description
+        // URL to faq page
         'faq.faq' => [env('FAQ_URL', '/faq'), 'faq.view'],
 
         // Contact email address, linked on every page
@@ -142,8 +142,8 @@ return [
             'groups' => 'groups',
             // Groups to team (angeltype) mapping (optional)
             'teams' => [
-                '/Lorem' => 4, // 4 being the ID of the angeltype
-                '/Foo Mod' => ['id' => 5, 'supporter' => true], // 5 being the ID of the angeltype
+                '/Lorem' => 4, // 4 being the ID of the team (angeltype)
+                '/Foo Mod' => ['id' => 5, 'supporter' => true], // 5 being the ID of the team (angeltype)
             ],
         ],
         */
@@ -270,13 +270,13 @@ return [
         'dect'               => (bool) env('DECT_REQUIRED', false),
     ],
 
-    // Only arrived angels can sign up for shifts
+    // Only arrived users can sign up for shifts
     'signup_requires_arrival' => (bool) env('SIGNUP_REQUIRES_ARRIVAL', false),
 
     // Whether newly-registered users should automatically be marked as arrived
-    'autoarrive'              => (bool) env('ANGEL_AUTOARRIVE', false),
+    'autoarrive'              => (bool) env('AUTOARRIVE', false),
 
-    // Supporters of an angeltype can promote other angels of the angeltype to supporter
+    // Supporters of a team (angeltype) can promote other users of the team (angeltype) to supporter
     'supporters_can_promote' => (bool) env('SUPPORTERS_CAN_PROMOTE', false),
 
     // Only allow shift signup this number of hours in advance
@@ -302,7 +302,7 @@ return [
     'password_algorithm'      => env('PASSWORD_ALGORITHM', PASSWORD_DEFAULT),
 
     // The minimum length for passwords
-    'min_password_length'     => env('PASSWORD_MINIMUM_LENGTH', 8),
+    'password_min_length'     => env('PASSWORD_MIN_LENGTH', 8),
 
     // Whether the login and registration via password should be enabled (login will be hidden if false)
     // This is useful when using oauth, disabling it also disables normal registration without oauth
@@ -318,17 +318,17 @@ return [
     // Per default usernames must only contain alphanumeric chars, "-", "_" or ".".
     'username_regex' => (string) env('USERNAME_REGEX', '/([^\p{L}\p{N}_.-]+)/ui'),
 
-    // Enables first name and last name
-    'enable_user_name'        => (bool) env('ENABLE_USER_NAME', false),
+    // Enable first name and last name
+    'enable_full_name'        => (bool) env('ENABLE_FULL_NAME', false),
 
     // Show a users first name and last name instead of username
     'display_full_name'  => env('DISPLAY_FULL_NAME', false)
-        && env('ENABLE_USER_NAME', false),
+        && env('ENABLE_FULL_NAME', false),
 
     // Enable displaying the pronoun fields
     'enable_pronoun'          => (bool) env('ENABLE_PRONOUN', true),
 
-    // Enables the planned arrival/leave date
+    // Enable the planned arrival/leave date
     'enable_planned_arrival'  => (bool) env('ENABLE_PLANNED_ARRIVAL', true),
 
     // Whether force active should be enabled
@@ -343,7 +343,7 @@ return [
     // Enable (food) vouchers
     'enable_voucher'          => (bool) env('ENABLE_VOUCHER', true),
 
-    // Number of shifts to freeload until angel is locked from shift signup.
+    // Number of shifts to freeload until a user is locked from shift signup.
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
 
     // Hide columns in backend user view. Possible values are any sortable parameters of the table.
@@ -370,7 +370,7 @@ return [
         'voucher_start'      => env('VOUCHER_START') ?: null,
     ],
 
-    // Enables Driving License
+    // Enable Driving License
     'driving_license_enabled' => (bool) env('DRIVING_LICENSE_ENABLED', true),
 
     # Instruction in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)
