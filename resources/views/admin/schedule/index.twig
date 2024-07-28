@@ -10,7 +10,7 @@
             {% block content_title %}{{ block('title') }}{% endblock %}
 
             {% if is_index|default(false) %}
-                {{ m.button(m.icon('plus-lg'), url('/admin/schedule/edit')) }}
+                {{ m.add(url('/admin/schedule/edit')) }}
             {% endif %}
         </h1>
 
