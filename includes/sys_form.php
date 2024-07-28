@@ -222,7 +222,7 @@ function form_password($name, $label, $autocomplete, $disabled = false)
         sprintf(
             '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value="" autocomplete="%3$s" %4$s>',
             $name,
-            config('min_password_length'),
+            config('password_min_length'),
             $autocomplete,
             $disabled
         ),

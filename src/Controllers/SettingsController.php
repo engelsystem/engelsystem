@@ -72,7 +72,7 @@ class SettingsController extends BaseController
             $user->personalData->pronoun = $data['pronoun'];
         }
 
-        if (config('enable_user_name')) {
+        if (config('enable_full_name')) {
             $user->personalData->first_name = $data['first_name'];
             $user->personalData->last_name = $data['last_name'];
         }
@@ -134,7 +134,7 @@ class SettingsController extends BaseController
             'pages/settings/password',
             [
                 'settings_menu' => $this->settingsMenu(),
-                'min_length'    => config('min_password_length'),
+                'min_length'    => config('password_min_length'),
             ]
         );
     }
@@ -143,7 +143,7 @@ class SettingsController extends BaseController
     {
         $user = $this->auth->user();
 
-        $minLength = config('min_password_length');
+        $minLength = config('password_min_length');
         $data = $this->validate($request, [
             'password'      => 'required' . (empty($user->password) ? '|optional' : ''),
             'new_password'  => 'required|min:' . $minLength,

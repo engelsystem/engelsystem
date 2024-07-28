@@ -93,7 +93,7 @@ class RegistrationController extends BaseController
         return $this->response->withView(
             'pages/registration',
             [
-                'minPasswordLength' => $this->config->get('min_password_length'),
+                'minPasswordLength' => $this->config->get('password_min_length'),
                 'tShirtSizes' => $this->config->get('tshirt_sizes'),
                 'tShirtLink' => $this->config->get('tshirt_link'),
                 'angelTypes' => AngelType::whereHideRegister(false)->get(),
@@ -106,7 +106,7 @@ class RegistrationController extends BaseController
                 'isGoodieEnabled' => $goodieType !== GoodieType::None && config('enable_email_goodie'),
                 'isGoodieTShirt' => $goodieType === GoodieType::Tshirt,
                 'isPronounEnabled' => $this->config->get('enable_pronoun'),
-                'isFullNameEnabled' => $this->config->get('enable_user_name'),
+                'isFullNameEnabled' => $this->config->get('enable_full_name'),
                 'isPlannedArrivalDateEnabled' => $this->config->get('enable_planned_arrival'),
                 'isPronounRequired' => $requiredFields['pronoun'],
                 'isFirstnameRequired' => $requiredFields['firstname'],
