@@ -110,7 +110,7 @@ function angeltype_edit_controller()
         if (!$supporter_mode) {
             if ($request->has('name')) {
                 $result = AngelType_validate_name($request->postData('name'), $angeltype);
-                $angeltype->name = $result->getValue();
+                $angeltype->name = substr($result->getValue(), 0, 255);
                 if (!$result->isValid()) {
                     $valid = false;
                     error(__('Please check the name. Maybe it already exists.'));

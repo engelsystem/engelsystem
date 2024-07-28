@@ -131,7 +131,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
             form([
                 $supporter_mode
                     ? form_info(__('general.name'), htmlspecialchars($angeltype->name))
-                    : form_text('name', __('general.name'), $angeltype->name),
+                    : form_text('name', __('general.name'), $angeltype->name, false, 255),
                 $supporter_mode
                     ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
                     : form_checkbox(

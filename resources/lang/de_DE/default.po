@@ -1854,12 +1854,6 @@ msgstr "FAQ Eintrag bearbeiten"
 msgid "faq.add"
 msgstr "FAQ Eintrag erstellen"
 
-msgid "faq.question"
-msgstr "Frage"
-
-msgid "faq.message"
-msgstr "Antwort"
-
 msgid "faq.delete.title"
 msgstr "FAQ \"%s\" löschen"
 

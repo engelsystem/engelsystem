@@ -98,7 +98,7 @@ class ShiftTypesController extends BaseController
         $data = $this->validate(
             $request,
             [
-                'name' => 'required',
+                'name' => 'required|max:255',
                 'description' => 'required|optional',
             ] + $validation
         );
