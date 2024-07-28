@@ -18,6 +18,7 @@ class DayOfEventTest extends ServiceProviderTest
     {
         $app = $this->createAndSetUpAppWithConfig([]);
         $this->config = $app->get('config');
+        $this->config->set('enable_day_of_event', true);
     }
 
     public function tearDown(): void
@@ -64,5 +65,14 @@ class DayOfEventTest extends ServiceProviderTest
         $this->config->set('event_has_day0', $eventHasDay0);
         Carbon::setTestNow(Carbon::createFromFormat(self::FORMAT, $now));
         $this->assertSame($expected, DayOfEvent::get());
+    }
+    /**
+     * @dataProvider provideTestGetData
+     * @covers \Engelsystem\Helpers\DayOfEvent
+     */
+    public function testGetDisabledShowDayOfEvent(): void
+    {
+        $this->config->set('enable_day_of_event', false);
+        $this->assertNull(DayOfEvent::get());
     }
 }
