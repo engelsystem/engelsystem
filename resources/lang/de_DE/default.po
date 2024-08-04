@@ -168,10 +168,10 @@ msgstr "Mindestlänge %d Zeichen"
 msgid "form.recover"
 msgstr "Wiederherstellen"
 
-msgid "Angeltype %s deleted."
+msgid "Angel type %s deleted."
 msgstr "Engeltyp %s gelöscht."
 
-msgid "Delete angeltype %s"
+msgid "Delete angel type %s"
 msgstr "Lösche Engeltyp %s"
 
 msgid "Please check the name. Maybe it already exists."
@@ -180,7 +180,7 @@ msgstr "Bitte überprüfe den Namen. Vielleicht ist er bereits vergeben."
 msgid "Angel type saved."
 msgstr "Engeltyp wurde gespeichert."
 
-msgid "Create angeltype"
+msgid "Create angel type"
 msgstr "Engeltyp erstellen"
 
 msgid "Edit %s"
@@ -210,13 +210,13 @@ msgstr "Zufällige Schicht"
 msgid "%s has been subscribed to the shift."
 msgstr "%s wurde in die Schicht eingetragen."
 
-msgid "User is not in angeltype."
+msgid "User is not in angel type."
 msgstr "User ist nicht im Engeltyp."
 
 msgid "This shift is already occupied."
 msgstr "Die Schicht ist schon voll."
 
-msgid "You need be accepted member of the angeltype."
+msgid "You need be accepted member of the angel type."
 msgstr "Du musst bestätigtes Mitglied des Engeltyps sein."
 
 msgid "This shift collides with one of your shifts."
@@ -255,9 +255,6 @@ msgstr ""
 msgid "Please select a location."
 msgstr "Bitte einen Ort auswählen."
 
-msgid "Please select a shifttype."
-msgstr "Bitte einen Schichttyp wählen."
-
 msgid "Please enter a valid starting time for the shifts."
 msgstr "Bitte gib eine korrekte Startzeit für die Schichten ein."
 
@@ -276,7 +273,7 @@ msgstr "Schicht aktualisiert."
 msgid "This page is much more comfortable with javascript."
 msgstr "Diese Seite ist mit JavaScript viel komfortabler."
 
-msgid "Shifttype"
+msgid "Shift type"
 msgstr "Schichttyp"
 
 msgid "title.title"
@@ -303,42 +300,39 @@ msgstr "Möchtest Du die Schicht \"%s\" von %s bis %s löschen?"
 msgid "Shift could not be found."
 msgstr "Schicht konnte nicht gefunden werden."
 
-msgid "There is %d unconfirmed angeltype."
-msgid_plural "There are %d unconfirmed angeltypes."
-msgstr[0] "Es gibt %d nicht freigeschalteten Engeltypen!"
-msgstr[1] "Es gibt %d nicht freigeschaltete Engeltypen!"
+msgid "There are unconfirmed angels in %d angel type. Angel type that needs approval:"
+msgid_plural "There are unconfirmed angels in %d angel types. Angel types that need approvals:"
+msgstr[0] "Es gibt nicht freigeschaltete Engel in %d Engeltypen! Engeltyp der bestätigt werden muss:"
+msgstr[1] "Es gibt nicht freigeschaltete Engel in %d Engeltypen! Engeltypen die bestätigt werden müssen:"
 
-msgid "Angel types which need approvals:"
-msgstr "Engeltypen die bestätigt werden müssen:"
-
-msgid "You are not allowed to delete all users for this angeltype."
+msgid "You are not allowed to delete all users for this angel type."
 msgstr "Du darfst nicht alle Benutzer von diesem Engeltyp entfernen."
 
-msgid "Denied all users for angeltype %s."
+msgid "Denied all users for angel type %s."
 msgstr "Alle Benutzer mit Engeltyp %s abgelehnt."
 
 msgid "Deny all users"
 msgstr "Alle Benutzer ablehnen"
 
-msgid "You are not allowed to confirm all users for this angeltype."
+msgid "You are not allowed to confirm all users for this angel type."
 msgstr "Du darfst nicht alle Benutzer für diesen Engeltyp freischalten."
 
-msgid "Confirmed all users for angeltype %s."
+msgid "Confirmed all users for angel type %s."
 msgstr "Alle Benutzer für Engeltyp %s freigeschaltet."
 
 msgid "Confirm all users"
 msgstr "Alle Benutzer bestätigen"
 
-msgid "You are not allowed to confirm this users angeltype."
+msgid "You are not allowed to confirm this users angel type."
 msgstr "Du darfst diesen Benutzer nicht für diesen Engeltyp freischalten."
 
-msgid "%s confirmed for angeltype %s."
+msgid "%s confirmed for angel type %s."
 msgstr "%s für Engeltyp %s freigeschaltet."
 
-msgid "Confirm angeltype for user"
+msgid "Confirm angel type for user"
 msgstr "Engeltyp für Benutzer bestätigen"
 
-msgid "You are not allowed to delete this users angeltype."
+msgid "You are not allowed to delete this users angel type."
 msgstr "Du darfst diesen Benutzer nicht von diesem Engeltyp entfernen."
 
 msgid "User \"%s\" removed from \"%s\"."
@@ -350,7 +344,7 @@ msgstr "Zertifikate bearbeiten"
 msgid "You successfully left \"%2$s\"."
 msgstr "Du hast erfolgreich \"%2$s\" verlassen."
 
-msgid "Leave angeltype"
+msgid "Leave angel type"
 msgstr "Engeltyp verlassen"
 
 msgid "You are not allowed to set supporter rights."
@@ -374,7 +368,7 @@ msgstr "Supporterrechte entfernen"
 msgid "User %s added to %s."
 msgstr "Benutzer %s zu %s hinzugefügt."
 
-msgid "Add user to angeltype"
+msgid "Add user to angel type"
 msgstr "Benutzer zu Engeltyp hinzufügen"
 
 msgid "You are already a %s."
@@ -479,17 +473,17 @@ msgstr "Engel hat ein T-Shirt bekommen."
 msgid "Angel has got no T-shirt."
 msgstr "Engel hat kein T-Shirt bekommen."
 
-msgid "set active"
-msgstr "setze aktiv"
+msgid "Set active"
+msgstr "Setze aktiv"
 
 msgid "Remove active"
-msgstr "entferne aktiv"
+msgstr "Entferne aktiv"
 
 msgid "Got T-shirt"
 msgstr "T-Shirt bekommen"
 
 msgid "Remove T-shirt"
-msgstr "entferne T-Shirt"
+msgstr "Entferne T-Shirt"
 
 msgid "Sum"
 msgstr "Summe"
@@ -548,9 +542,6 @@ msgstr "Zurücksetzen"
 msgid "Planned arrival"
 msgstr "Geplanter Ankunftstag"
 
-msgid "Arrived?"
-msgstr "Angekommen?"
-
 msgid "Arrival date"
 msgstr "Ankunftsdatum"
 
@@ -575,7 +566,7 @@ msgstr "Geplante Abreise-Statistik"
 msgid "Free angels"
 msgstr "Freie Engel"
 
-msgid "Angeltype"
+msgid "Angel type"
 msgstr "Engeltyp"
 
 msgid "shift.next"
@@ -753,8 +744,8 @@ msgid "The administration has not configured any shifts yet."
 msgstr "Die Administratoren haben noch keine Schichten angelegt."
 
 msgid ""
-"The administration has not configured any angeltypes yet - or you are not "
-"subscribed to any angeltype."
+"The administration has not configured any angel types yet - or you are not "
+"subscribed to any angel type."
 msgstr ""
 "Die Administratoren haben noch keine Engeltypen konfiguriert - oder Du hast "
 "noch keine Engeltypen ausgewählt."
@@ -772,7 +763,7 @@ msgid "Occupancy"
 msgstr "Belegung"
 
 msgid ""
-"The tasks shown here are influenced by the angeltypes you joined already!"
+"The tasks shown here are influenced by the angel types you joined already!"
 msgstr ""
 "Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
 "(Engeltypen/Aufgaben) abhängig!"
@@ -840,7 +831,7 @@ msgstr "Supporter"
 msgid "Member"
 msgstr "Mitglied"
 
-msgid "Do you want to delete angeltype %s?"
+msgid "Do you want to delete angel type %s?"
 msgstr "Möchtest Du den Engeltypen %s löschen?"
 
 msgid "angeltypes.restricted"
@@ -886,14 +877,14 @@ msgid "angeltype.driving_license.required.info.preview"
 msgstr "Dieser Engeltyp benötigt Führerschein-Infos."
 
 msgid ""
-"This angeltype requires a driver license. Please enter your driver license "
+"This angel type requires a driver license. Please enter your driver license "
 "information!"
 msgstr ""
 "Dieser Engeltyp benötigt Führerschein-Infos. Bitte trage Deine Führerschein-"
 "Infos ein!"
 
 msgid ""
-"You are unconfirmed for this angeltype. Please go to the introduction for %s "
+"You are unconfirmed for this angel type. Please go to the introduction for %s "
 "to get confirmed."
 msgstr ""
 "Du bist noch nicht für diesen Engeltyp bestätigt. Bitte gehe zur Einführung "
@@ -962,7 +953,7 @@ msgstr "Meine Schicht"
 msgid "Help needed"
 msgstr "Hilfe benötigt"
 
-msgid "Other angeltype needed / collides with my shifts"
+msgid "Other angel type needed / collides with my shifts"
 msgstr "Andere Engeltypen benötigt / kollidiert mit meinen Schichten"
 
 msgid "Shift is full"

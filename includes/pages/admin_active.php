@@ -270,7 +270,7 @@ function admin_active()
                 $parameters['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', icon('plus-lg') . __('set active'), 'btn-sm', false, 'secondary')],
+                [form_submit('submit', icon('plus-lg') . __('Set active'), 'btn-sm', false, 'secondary')],
                 url('/admin-active', $parameters),
                 false,
                 true

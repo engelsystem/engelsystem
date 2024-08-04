@@ -365,7 +365,7 @@ msgid "settings.profile.shirt.link"
 msgstr "More information"
 
 msgid "settings.profile.angeltypes.info"
-msgstr "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
+msgstr "You can manage your angel types <a href=\"%s\">on the angel types page</a>."
 
 msgid "settings.password"
 msgstr "Password"
@@ -488,22 +488,22 @@ msgid "angeltype.ifsg.own"
 msgstr "My health instruction"
 
 msgid "angeltype.ifsg.required.info.preview"
-msgstr "This angeltype requires a health instruction."
+msgstr "This angel type requires a health instruction."
 
 msgid "angeltype.ifsg.required.info"
-msgstr "This angeltype requires a health instruction. Please enter your health instruction information!"
+msgstr "This angel type requires a health instruction. Please enter your health instruction information!"
 
 msgid "angeltype.ifsg.required.info.here"
-msgstr "You joined an angeltype which requires a health instruction. "
+msgstr "You joined an angel type which requires a health instruction. "
 "Please edit your health instruction information here: %s."
 
 msgid "angeltype.driving_license.required.info.here"
 msgstr ""
-"You joined an angeltype which requires a driving license. "
+"You joined an angel type which requires a driving license. "
 "Please edit your driving license information here: %s."
 
 msgid "angeltype.driving_license.required.info.preview"
-msgstr "This angeltype requires a driver's license."
+msgstr "This angel type requires a driver's license."
 
 msgid "ifsg.info"
 msgstr "Health instruction information"
@@ -676,7 +676,7 @@ msgid "worklog.delete.info"
 msgstr "Do you really want to delete the work log for %s?"
 
 msgid "angeltypes.angeltypes"
-msgstr "Angeltypes"
+msgstr "Angel types"
 
 msgid "angeltypes.about"
 msgstr "Teams-/Job description"
@@ -692,7 +692,7 @@ msgstr "Angel types which require introduction can only be used by an angel "
 "if enabled by a supporter (double opt-in)."
 
 msgid "angeltypes.restricted.hint"
-msgstr "This angeltype requires the attendance at an introduction meeting. "
+msgstr "This angel type requires the attendance at an introduction meeting. "
 "You might find additional information in the description."
 
 msgid "angeltypes.can-change-later"
@@ -712,8 +712,8 @@ msgid "angeltypes.hide_on_shift_view"
 msgstr "Hide on shift view"
 
 msgid "angeltypes.hide_on_shift_view.info"
-msgstr "If checked only admins and members of the angeltype "
-"can see the filter option for this angeltype on the shifts page"
+msgstr "If checked only admins and members of the angel type "
+"can see the filter option for this angel type on the shifts page"
 
 msgid "registration.register"
 msgstr "Register"
@@ -1006,7 +1006,7 @@ msgid "admin_shifts.no_shifttypes"
 msgstr "No shift type has been created yet. Shifts can't be created without one."
 
 msgid "admin_shifts.no_angeltypes"
-msgstr "No angeltype has been created yet. Shifts can't be created without one."
+msgstr "No angel type has been created yet. Shifts can't be created without one."
 
 msgid "shift.sign_out.hint"
 msgstr "You can self sign out up to %s hours before the start of the shift. "
