@@ -15,6 +15,7 @@ class ShiftEntryTest extends ModelTest
     /**
      * @covers \Engelsystem\Models\Shifts\ShiftEntry::shift
      * @covers \Engelsystem\Models\Shifts\ShiftEntry::angelType
+     * @covers \Engelsystem\Models\Shifts\ShiftEntry::freeloadedBy
      */
     public function testShift(): void
     {
@@ -24,16 +25,20 @@ class ShiftEntryTest extends ModelTest
         $angelType = AngelType::factory()->create();
         /** @var User $user */
         $user = User::factory()->create();
+        /** @var User $freeloadedBy */
+        $freeloadedBy = User::factory()->create();
 
         $model = new ShiftEntry();
         $model->shift()->associate($shift);
         $model->angelType()->associate($angelType);
         $model->user()->associate($user);
+        $model->freeloadedBy()->associate($freeloadedBy);
         $model->save();
 
         $model = ShiftEntry::find(1);
         $this->assertEquals($shift->id, $model->shift->id);
         $this->assertEquals($angelType->id, $model->angelType->id);
+        $this->assertEquals($freeloadedBy->id, $model->freeloadedBy->id);
         $this->assertEquals($user->id, $model->user->id);
 
         $this->assertArrayNotHasKey('freeloaded_comment', $model->toArray());

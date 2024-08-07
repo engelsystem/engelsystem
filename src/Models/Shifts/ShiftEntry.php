@@ -6,6 +6,7 @@ namespace Engelsystem\Models\Shifts;
 
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,17 +17,18 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property int            $shift_id
  * @property int            $angel_type_id
  * @property string         $user_comment
- * @property bool           $freeloaded
+ * @property int|null       $freeloaded_by
  * @property string         $freeloaded_comment
  *
  * @property-read Shift     $shift
  * @property-read AngelType $angelType
+ * @property-read User|null $freeloadedBy
  *
  * @method static QueryBuilder|ShiftEntry[] whereId($value)
  * @method static QueryBuilder|ShiftEntry[] whereShiftId($value)
  * @method static QueryBuilder|ShiftEntry[] whereAngelTypeId($value)
  * @method static QueryBuilder|ShiftEntry[] whereUserComment($value)
- * @method static QueryBuilder|ShiftEntry[] whereFreeloaded($value)
+ * @method static QueryBuilder|ShiftEntry[] whereFreeloadedBy($value)
  * @method static QueryBuilder|ShiftEntry[] whereFreeloadedComment($value)
  */
 class ShiftEntry extends BaseModel
@@ -34,10 +36,10 @@ class ShiftEntry extends BaseModel
     use HasFactory;
     use UsesUserModel;
 
-    /** @var array<string, string|bool> default attributes */
+    /** @var array<string, string|null> default attributes */
     protected $attributes = [ // phpcs:ignore
         'user_comment'       => '',
-        'freeloaded'         => false,
+        'freeloaded_by'      => null,
         'freeloaded_comment' => '',
     ];
 
@@ -47,7 +49,7 @@ class ShiftEntry extends BaseModel
         'angel_type_id',
         'user_id',
         'user_comment',
-        'freeloaded',
+        'freeloaded_by',
         'freeloaded_comment',
     ];
 
@@ -56,7 +58,7 @@ class ShiftEntry extends BaseModel
         'shift_id' => 'integer',
         'angel_type_id' => 'integer',
         'user_id' => 'integer',
-        'freeloaded' => 'bool',
+        'freeloaded_by' => 'integer',
     ];
 
     /** @var array<string> Attributes which should not be serialized */
@@ -72,5 +74,10 @@ class ShiftEntry extends BaseModel
     public function angelType(): BelongsTo
     {
         return $this->belongsTo(AngelType::class);
+    }
+
+    public function freeloadedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'freeloaded_by');
     }
 }

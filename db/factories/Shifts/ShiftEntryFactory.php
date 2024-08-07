@@ -17,15 +17,15 @@ class ShiftEntryFactory extends Factory
 
     public function definition(): array
     {
-        $freeloaded = $this->faker->optional(.01, false)->boolean();
+        $freeloaded_by = $this->faker->optional(.01)->passthrough(User::factory());
 
         return [
             'shift_id'           => Shift::factory(),
             'angel_type_id'      => AngelType::factory(),
             'user_id'            => User::factory(),
             'user_comment'       => $this->faker->optional(.05, '')->text(),
-            'freeloaded'         => $freeloaded,
-            'freeloaded_comment' => $freeloaded ? $this->faker->text() : '',
+            'freeloaded_by'      => $freeloaded_by,
+            'freeloaded_comment' => $freeloaded_by ? $this->faker->text() : '',
         ];
     }
 }

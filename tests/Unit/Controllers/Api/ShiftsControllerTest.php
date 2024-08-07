@@ -265,6 +265,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         ShiftEntry::factory(1)->create([
             'shift_id' => $this->shiftA->id,
             'angel_type_id' => $byLocation->angel_type_id,
+            'freeloaded_by' => User::first()->id,
         ]);
 
         // Additional (not required by shift nor location)

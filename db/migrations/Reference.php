@@ -10,9 +10,12 @@ use Illuminate\Support\Str;
 
 trait Reference
 {
-    protected function referencesUser(Blueprint $table, bool $setPrimary = false): ColumnDefinition
-    {
-        return $this->references($table, 'users', null, null, $setPrimary);
+    protected function referencesUser(
+        Blueprint $table,
+        bool $setPrimary = false,
+        ?string $fromColumn = null
+    ): ColumnDefinition {
+        return $this->references($table, 'users', $fromColumn, null, $setPrimary);
     }
 
     protected function references(

@@ -71,7 +71,7 @@ function NeededAngelTypes_by_shift($shift)
         $angeltype['shift_entries'] = [];
         $angeltype['taken'] = 0;
         foreach ($shift_entries as $shift_entry) {
-            if ($shift_entry->angel_type_id == $angeltype['angel_type_id'] && !$shift_entry->freeloaded) {
+            if ($shift_entry->angel_type_id == $angeltype['angel_type_id'] && !$shift_entry->freeloaded_by) {
                 $angeltype['taken']++;
                 $angeltype['shift_entries'][] = $shift_entry;
             }

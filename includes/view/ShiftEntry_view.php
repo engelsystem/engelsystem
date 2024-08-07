@@ -192,7 +192,7 @@ function ShiftEntry_create_title()
  * @param string $title
  * @param string $type
  * @param string $comment
- * @param bool   $freeloaded
+ * @param int   $freeloaded_by
  * @param string $freeloaded_comment
  * @param bool   $user_admin_shifts
  * @return string
@@ -204,7 +204,7 @@ function ShiftEntry_edit_view(
     $title,
     $type,
     $comment,
-    $freeloaded,
+    $freeloaded_by,
     $freeloaded_comment,
     $user_admin_shifts = false,
     $angeltype_supporter = false
@@ -224,8 +224,11 @@ function ShiftEntry_edit_view(
                 config('max_freeloadable_shifts')]);
         }
         $freeload_form = [
-            form_checkbox('freeloaded', __('Freeloaded') . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                $freeload_info . '"></span>', $freeloaded),
+            form_checkbox('freeloaded', (!$freeloaded_by
+                    ? __('Freeloaded')
+                    : __('Freeloaded by %s', [User_Nick_render(User::find($freeloaded_by))]))
+                . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+                . $freeload_info . '"></span>', $freeloaded_by),
             form_textarea(
                 'freeloaded_comment',
                 __('Freeload comment (Only for shift coordination and supporters):'),
@@ -247,6 +250,7 @@ function ShiftEntry_edit_view(
         '',
         __('general.back'),
     );
+
     return page_with_title(
         $link . ' ' . __('Edit shift entry'),
         [
