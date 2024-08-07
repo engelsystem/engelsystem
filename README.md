@@ -60,6 +60,9 @@ The Engelsystem can now be used.
  * Both Apache and Nginx allow for different VirtualHost configurations.
 
 ### Docker
+
+For instructions on how to build the Docker container for development, please consult the [DEVELOPMENT.md](DEVELOPMENT.md).
+
 #### Build
 To build the `es_server` container:
 ```bash
