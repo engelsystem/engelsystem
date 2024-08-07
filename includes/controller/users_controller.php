@@ -223,7 +223,7 @@ function user_controller()
         foreach ($neededAngeltypes as &$needed_angeltype) {
             $needed_angeltype['users'] = Db::select(
                 '
-                    SELECT `shift_entries`.`freeloaded`, `users`.*
+                    SELECT `shift_entries`.`freeload_user_id`, `users`.*
                     FROM `shift_entries`
                     JOIN `users` ON `shift_entries`.`user_id`=`users`.`id`
                     WHERE `shift_entries`.`shift_id` = ?
@@ -319,7 +319,7 @@ function users_list_controller()
 
     /** @var User[]|Collection $users */
     $users = User::with(['contact', 'personalData', 'state', 'shiftEntries' => function (HasMany $query) {
-        $query->where('freeloaded', true);
+        $query->whereNotNull('freeload_user_id');
     }])
         ->orderBy('name')
         ->get();
@@ -327,7 +327,7 @@ function users_list_controller()
         $user->setAttribute(
             'freeloads',
             $user->shiftEntries
-                ->where('freeloaded', true)
+                ->whereNotNull('freeload_user_id')
                 ->count()
         );
     }
@@ -434,7 +434,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
             foreach ($shift_entries[$shift->id] as $shift_entry) {
                 if (
                     $needed_angeltype['angel_type_id'] == $shift_entry->angel_type_id
-                    && !$shift_entry->freeloaded
+                    && is_null($shift_entry->freeload_user_id)
                 ) {
                     $taken++;
                 }

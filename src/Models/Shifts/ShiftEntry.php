@@ -16,7 +16,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property int            $shift_id
  * @property int            $angel_type_id
  * @property string         $user_comment
- * @property bool           $freeloaded
+ * @property int            $freeload_user_id
  * @property string         $freeloaded_comment
  *
  * @property-read Shift     $shift
@@ -26,7 +26,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|ShiftEntry[] whereShiftId($value)
  * @method static QueryBuilder|ShiftEntry[] whereAngelTypeId($value)
  * @method static QueryBuilder|ShiftEntry[] whereUserComment($value)
- * @method static QueryBuilder|ShiftEntry[] whereFreeloaded($value)
+ * @method static QueryBuilder|ShiftEntry[] whereFreeloadUserId($value)
  * @method static QueryBuilder|ShiftEntry[] whereFreeloadedComment($value)
  */
 class ShiftEntry extends BaseModel
@@ -34,10 +34,10 @@ class ShiftEntry extends BaseModel
     use HasFactory;
     use UsesUserModel;
 
-    /** @var array<string, string|bool> default attributes */
+    /** @var array<string, string|null> default attributes */
     protected $attributes = [ // phpcs:ignore
         'user_comment'       => '',
-        'freeloaded'         => false,
+        'freeload_user_id'   => null,
         'freeloaded_comment' => '',
     ];
 
@@ -47,13 +47,13 @@ class ShiftEntry extends BaseModel
         'angel_type_id',
         'user_id',
         'user_comment',
-        'freeloaded',
+        'freeload_user_id',
         'freeloaded_comment',
     ];
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
-        'freeloaded' => 'bool',
+        'freeload_user_id' => 'integer',
     ];
 
     /** @var array<string> Attributes which should not be serialized */
