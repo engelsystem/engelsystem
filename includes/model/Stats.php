@@ -11,7 +11,7 @@ use Engelsystem\ShiftsFilter;
  *
  * @return int|string
  */
-function stats_currently_working(ShiftsFilter $filter = null)
+function stats_currently_working(ShiftsFilter $filter = null): int|string
 {
     $result = Db::selectOne(
         '
@@ -19,7 +19,7 @@ function stats_currently_working(ShiftsFilter $filter = null)
                 SELECT COUNT(*)
                 FROM `shift_entries`
                 WHERE `shift_entries`.`shift_id`=`shifts`.`id`
-                AND `freeloaded`=0
+                AND `freeloaded_by` IS NULL
                 ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
             )) AS `count`
         FROM `shifts`
@@ -37,7 +37,7 @@ function stats_currently_working(ShiftsFilter $filter = null)
  *
  * @return int|string
  */
-function stats_hours_to_work(ShiftsFilter $filter = null)
+function stats_hours_to_work(ShiftsFilter $filter = null): int|string
 {
     $result = Db::selectOne(
         '
@@ -92,7 +92,7 @@ function stats_hours_to_work(ShiftsFilter $filter = null)
  *
  * @return int|string
  */
-function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
+function stats_angels_needed_three_hours(ShiftsFilter $filter = null): int|string
 {
     $in3hours = Carbon::now()->addHours(3)->toDateTimeString();
     $result = Db::selectOne('
@@ -112,7 +112,7 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `shift_entries`.`shift_id`=`shifts`.`id`
-                        AND `freeloaded`=0
+                        AND `freeloaded_by` IS NULL
                         ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
@@ -141,7 +141,7 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `shift_entries`.`shift_id`=`shifts`.`id`
-                        AND `freeloaded`=0
+                        AND `freeloaded_by` IS NULL
                         ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
@@ -172,7 +172,7 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `shift_entries`.`shift_id`=`shifts`.`id`
-                        AND `freeloaded`=0
+                        AND `freeloaded_by` IS NULL
                         ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
@@ -200,7 +200,7 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null)
  *
  * @return int|string
  */
-function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
+function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null): int|string
 {
     $nightShiftsConfig = config('night_shifts');
     $nightStartTime = $nightShiftsConfig['start'];
@@ -229,7 +229,7 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `shift_entries`.`shift_id`=`shifts`.`id`
-                        AND shift_entries.`freeloaded`=0
+                        AND shift_entries.`freeloaded_by` IS NULL
                         ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
@@ -257,7 +257,7 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `shift_entries`.`shift_id`=`shifts`.`id`
-                        AND shift_entries.`freeloaded`=0
+                        AND shift_entries.`freeloaded_by` IS NULL
                         ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )
@@ -287,7 +287,7 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
                     JOIN `angel_types` ON `angel_types`.`id`=`shift_entries`.`angel_type_id`
                     WHERE `angel_types`.`show_on_dashboard`=TRUE
                         AND `shift_entries`.`shift_id`=`shifts`.`id`
-                        AND shift_entries.`freeloaded`=0
+                        AND shift_entries.`freeloaded_by` IS NULL
                         ' . ($filter ? 'AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . '
                     )
                 )

@@ -72,7 +72,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
             LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
             WHERE (`end` > ? AND `start` < ?)
             AND (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`shift_id`=`shifts`.`id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
-            > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND shift_entries.`freeloaded`=0' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+            > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND shift_entries.`freeloaded_by` IS NULL' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND s.shift_id IS NULL
             ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
 
@@ -85,7 +85,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
             LEFT JOIN schedules AS se on s.schedule_id = se.id
             WHERE (`end` > ? AND `start` < ?)
             AND (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`shift_type_id`=`shifts`.`shift_type_id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
-            > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND shift_entries.`freeloaded`=0' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+            > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND shift_entries.`freeloaded_by` IS NULL' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND NOT s.shift_id IS NULL
             AND se.needed_from_shift_type = TRUE
             ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
@@ -99,7 +99,7 @@ function Shifts_free($start, $end, ShiftsFilter $filter = null)
             LEFT JOIN schedules AS se on s.schedule_id = se.id
             WHERE (`end` > ? AND `start` < ?)
             AND (SELECT SUM(`count`) FROM `needed_angel_types` WHERE `needed_angel_types`.`location_id`=`shifts`.`location_id`' . ($filter ? ' AND needed_angel_types.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
-            > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND shift_entries.`freeloaded`=0' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+            > (SELECT COUNT(*) FROM `shift_entries` WHERE `shift_entries`.`shift_id`=`shifts`.`id` AND shift_entries.`freeloaded_by` IS NULL' . ($filter ? ' AND shift_entries.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND NOT s.shift_id IS NULL
             AND se.needed_from_shift_type = FALSE
             ' . ($filter ? 'AND shifts.location_id IN (' . implode(',', $filter->getLocations()) . ')' : '') . '
@@ -398,7 +398,7 @@ function Shift_free_entries(AngelType $needed_angeltype, $shift_entries)
 {
     $taken = 0;
     foreach ($shift_entries as $shift_entry) {
-        if (!$shift_entry->freeloaded) {
+        if (!$shift_entry->freeloaded_by) {
             $taken++;
         }
     }
@@ -622,7 +622,7 @@ function Shifts_by_user($userId, $include_freeloaded_comments = false)
             `shift_entries`.`shift_id`,
             `shift_entries`.`angel_type_id`,
             `shift_entries`.`user_id`,
-            `shift_entries`.`freeloaded`,
+            `shift_entries`.`freeloaded_by`,
             `shift_entries`.`user_comment`,
             ' . ($include_freeloaded_comments ? '`shift_entries`.`freeloaded_comment`, ' : '') . '
             `shifts`.*

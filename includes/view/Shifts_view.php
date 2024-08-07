@@ -187,7 +187,7 @@ function Shift_view(
                 'restricted'    => true,
                 'taken'         => $shiftEntry
                     ->where('angel_type_id', $type)
-                    ->where('freeloaded', false)
+                    ->whereNull('freeloaded_by')
                     ->count(),
             ], $angeltypes, $shift, $user_shift_admin);
         }
@@ -352,7 +352,7 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, Shif
 function Shift_view_render_shift_entry(ShiftEntry $shift_entry, $user_shift_admin, $angeltype_supporter, Shift $shift)
 {
     $entry = User_Nick_render($shift_entry->user);
-    if ($shift_entry->freeloaded) {
+    if ($shift_entry->freeloaded_by) {
         $entry = '<del>' . $entry . '</del>';
     }
     $isUser = $shift_entry->user_id == auth()->user()->id;

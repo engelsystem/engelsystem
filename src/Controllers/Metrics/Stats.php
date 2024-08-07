@@ -115,7 +115,9 @@ class Stats
             ->where('shifts.end', '>', Carbon::now());
 
         if (!is_null($freeloaded)) {
-            $query->where('shift_entries.freeloaded', '=', $freeloaded);
+            $freeloaded
+                ? $query->whereNotNull('shift_entries.freeloaded_by')
+                : $query->whereNull('shift_entries.freeloaded_by');
         }
 
         return $query->count();
@@ -213,7 +215,9 @@ class Stats
             ->join('shifts', 'shifts.id', '=', 'shift_entries.shift_id');
 
         if (!is_null($freeloaded)) {
-            $query->where('freeloaded', '=', $freeloaded);
+            $freeloaded
+                ? $query->whereNull('freeloaded_by')
+                : $query->whereNotNull('freeloaded_by');
         }
 
         if (!is_null($done)) {

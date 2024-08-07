@@ -230,7 +230,7 @@ function user_controller()
         foreach ($neededAngeltypes as &$needed_angeltype) {
             $needed_angeltype['users'] = Db::select(
                 '
-                    SELECT `shift_entries`.`freeloaded`, `users`.*
+                    SELECT `shift_entries`.`freeloaded_by`, `users`.*
                     FROM `shift_entries`
                     JOIN `users` ON `shift_entries`.`user_id`=`users`.`id`
                     WHERE `shift_entries`.`shift_id` = ?
@@ -326,7 +326,7 @@ function users_list_controller()
 
     /** @var User[]|Collection $users */
     $users = User::with(['contact', 'personalData', 'state', 'shiftEntries' => function (HasMany $query) {
-        $query->where('freeloaded', true);
+        $query->whereNotNull('freeloaded_by');
     }])
         ->orderBy('name')
         ->get();
@@ -334,7 +334,7 @@ function users_list_controller()
         $user->setAttribute(
             'freeloads',
             $user->shiftEntries
-                ->where('freeloaded', true)
+                ->whereNotNull('freeloaded_by')
                 ->count()
         );
     }
@@ -357,7 +357,7 @@ function users_list_controller()
             State::whereArrived(true)->count(),
             State::whereActive(true)->count(),
             State::whereForceActive(true)->count(),
-            ShiftEntry::whereFreeloaded(true)->count(),
+            ShiftEntry::whereNotNull('freeloaded_by')->count(),
             State::whereGotGoodie(true)->count(),
             State::query()->sum('got_voucher')
         ),
@@ -441,7 +441,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
             foreach ($shift_entries[$shift->id] as $shift_entry) {
                 if (
                     $needed_angeltype['angel_type_id'] == $shift_entry->angel_type_id
-                    && !$shift_entry->freeloaded
+                    && !$shift_entry->freeloaded_by
                 ) {
                     $taken++;
                 }

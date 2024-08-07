@@ -55,6 +55,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|AngelType[]        $userAngelTypes
  * @property-read UserAngelType                 $pivot
  * @property-read Collection|ShiftEntry[]       $shiftEntries
+ * @property-read Collection|ShiftEntry[]       $siftEntriesMarkedFreeloaded
  * @property-read Collection|Session[]          $sessions
  * @property-read Collection|Worklog[]          $worklogs
  * @property-read Collection|Worklog[]          $worklogsCreated
@@ -126,9 +127,14 @@ class User extends BaseModel
     public function isFreeloader(): bool
     {
         return $this->shiftEntries()
-                ->where('freeloaded', true)
+                ->whereNotNull('freeloaded_by')
                 ->count()
             >= config('max_freeloadable_shifts');
+    }
+
+    public function siftEntriesMarkedFreeloaded(): HasMany
+    {
+        return $this->hasMany(ShiftEntry::class, 'freeloaded_by');
     }
 
     public function license(): HasOne

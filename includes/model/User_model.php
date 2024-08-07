@@ -114,7 +114,11 @@ function User_get_shifts_sum_query()
                     OR HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d
                 ))
                 * (UNIX_TIMESTAMP(shifts.end) - UNIX_TIMESTAMP(shifts.start))
-                * (1 - (%3$d + 1) * `shift_entries`.`freeloaded`)
+                * (1 - (%3$d + 1)
+                * (CASE
+                    WHEN `shift_entries`.`freeloaded_by` IS NULL THEN 0
+                    ELSE 1
+                    END))
             ), 0)
         ',
         $nightShifts['start'],

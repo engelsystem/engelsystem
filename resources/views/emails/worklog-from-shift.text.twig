@@ -10,7 +10,7 @@
 {{ shift.start.format(__('general.datetime')) }} - {{ shift.end.format(__('general.datetime')) }}
 {{ shift.location.name }}
 
-{% if shift.start <= date() and not entry.freeloaded %}
+{% if shift.start <= date() and not entry.freeloaded_by %}
 {{ __('notification.shift.deleted.worklog') }}
 {% endif %}
 {% endblock %}

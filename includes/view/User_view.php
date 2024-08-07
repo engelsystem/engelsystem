@@ -289,7 +289,7 @@ function User_view_shiftentries($needed_angel_type)
     $shift_entries = [];
     foreach ($needed_angel_type['users'] as $user_shift) {
         $member = User_Nick_render($user_shift);
-        if ($user_shift['freeloaded']) {
+        if ($user_shift['freeloaded_by']) {
             $member = '<del>' . $member . '</del>';
         }
 
@@ -348,21 +348,22 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
         'comment'    => '',
         'start'      => $shift->start,
         'end'        => $shift->end,
-        'freeloaded' => $shift->freeloaded,
+        'freeloaded' => $shift->freeloaded_by,
     ];
 
     if ($its_me) {
         $myshift['comment'] = htmlspecialchars($shift->user_comment);
     }
 
-    if ($shift->freeloaded) {
+    if ($shift->freeloaded_by) {
         $myshift['duration'] = '<p class="text-danger"><s>'
             . sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h'
             . '</s></p>';
         if (auth()->can('user_shifts_admin') || $supporter) {
             $myshift['comment'] .= '<br />'
                 . '<p class="text-danger">'
-                . __('Freeloaded') . ': ' . htmlspecialchars($shift->freeloaded_comment)
+                . __('Freeloaded by %s', [User_Nick_render(User::find($shift->freeloaded_by))])
+                . ': ' . htmlspecialchars($shift->freeloaded_comment)
                 . '</p>';
         } else {
             $myshift['comment'] .= '<br /><p class="text-danger">'
@@ -449,7 +450,7 @@ function User_view_myshifts(
             continue;
         }
         $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me);
-        if (!$shift->freeloaded) {
+        if (!$shift->freeloaded_by) {
             $timeSum += ($shift->end->timestamp - $shift->start->timestamp);
         }
     }

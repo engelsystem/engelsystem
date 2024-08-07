@@ -270,13 +270,16 @@ components:
       properties:
         user:
           $ref: '#/components/schemas/Reference'
-        freeloaded:
-          type: boolean
-          example: false
-          description: True if the user was marked as freeloaded for not arriving to the shift
+        freeloaded_by:
+          oneOf:
+            - $ref: '#/components/schemas/Reference'
+          nullable: true
+          description: >
+            Contains a reference to the user who has marked this shift entry as freeloaded, if
+            for a user not arriving to their shift
       required:
         - user
-        - freeloaded
+        - freeloaded_by
     ShiftType:
       type: object
       properties:

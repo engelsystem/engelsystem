@@ -1006,6 +1006,9 @@ msgstr "Schicht Anmeldung"
 msgid "Freeloaded"
 msgstr "Geschwänzt"
 
+msgid "Freeloaded by %s"
+msgstr "Geschwänzt gesetzt durch %s"
+
 msgid "Freeload comment (Only for shift coordination and supporters):"
 msgstr "Schwänzer Kommentar (Nur für Supporter und die Schicht-Koordination):"
 

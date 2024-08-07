@@ -143,7 +143,9 @@ class ShiftsController extends ApiController
 
                 $entries = $entries->map(fn(ShiftEntry $entry) => [
                     'user' => UserResource::toIdentifierArray($entry->user),
-                    'freeloaded' => $entry->freeloaded,
+                    'freeloaded_by' => $entry->freeloaded_by
+                        ? UserResource::toIdentifierArray($entry->freeloadedBy)
+                        : null,
                 ]);
                 $angelTypeData = AngelTypeResource::toIdentifierArray($neededAngelType->angelType);
                 $angelTypes[] = new Collection([

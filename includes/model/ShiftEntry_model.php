@@ -28,7 +28,7 @@ function ShiftEntry_onCreate(ShiftEntry $shiftEntry): void
  *
  * @param ShiftEntry $shiftEntry
  */
-function ShiftEntry_onDelete(ShiftEntry $shiftEntry)
+function ShiftEntry_onDelete(ShiftEntry $shiftEntry): void
 {
     $signout_user = $shiftEntry->user;
     $shift = Shift($shiftEntry->shift);
@@ -55,7 +55,7 @@ function ShiftEntry_onDelete(ShiftEntry $shiftEntry)
  * @param User $user
  * @return ShiftEntry[]|Collection
  */
-function ShiftEntries_upcoming_for_user(User $user)
+function ShiftEntries_upcoming_for_user(User $user): Collection
 {
     return $user->shiftEntries()
         ->with(['shift', 'shift.shiftType'])
@@ -72,13 +72,13 @@ function ShiftEntries_upcoming_for_user(User $user)
  * @param Carbon|null $sinceTime
  * @return ShiftEntry[]|Collection
  */
-function ShiftEntries_finished_by_user(User $user, Carbon $sinceTime = null)
+function ShiftEntries_finished_by_user(User $user, Carbon $sinceTime = null): Collection
 {
     $query = $user->shiftEntries()
         ->with(['shift', 'shift.shiftType'])
         ->join('shifts', 'shift_entries.shift_id', 'shifts.id')
         ->where('shifts.end', '<', Carbon::now())
-        ->where('freeloaded', false)
+        ->whereNull('freeloaded_by')
         ->orderByDesc('shifts.end');
 
     if ($sinceTime) {
