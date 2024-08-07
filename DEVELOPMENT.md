@@ -41,18 +41,20 @@ ln -s ../../bin/pre-commit .git/hooks/pre-commit
 
 ## Docker
 
-We suggest using Docker for the Development local build.
+> [!TIP]
+> We suggest using Docker for the Development local build.  
+> This repo [ships a docker setup](docker/dev) for a quick development start.  
+> If you use another uid/gid than 1000 on your machine you have to adjust it in [docker/dev/.env](docker/dev/.env).
 
-If unspecific issues appear try using Docker version >= 20.10.14.
 
-This repo [ships a docker setup](docker/dev) for a quick development start.
-
-If you use another uid/gid than 1000 on your machine you have to adjust it in [docker/dev/.env](docker/dev/.env).
-
-Run this once
+Make sure you're in the `docker/dev` subfolder: 
 
 ```bash
 cd docker/dev
+```
+
+Then, run
+```bash
 docker compose up
 ```
 
@@ -215,3 +217,11 @@ For some reason *PhpStorm* is unable to detect the server name.
 But without a server name it's impossible to set up path mappings.
 Because of that the docker setup sets the server name *engelsystem*.
 To get Xdebug working you have to create a server with the name *engelsystem* manually.
+
+## Troubleshooting
+
+### Docker version
+If unspecific issues appear try using Docker version >= 20.10.14.
+
+### `service "es_workspace" is not running`
+Make sure you're running your docker commands from the `docker/dev` directory, not from `docker`
