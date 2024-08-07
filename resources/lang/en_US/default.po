@@ -37,6 +37,9 @@ msgstr "Name"
 msgid "general.shifts"
 msgstr "Shifts"
 
+msgid "general.my_shifts"
+msgstr "My Shifts"
+
 msgid "general.description"
 msgstr "Description"
 

@@ -377,7 +377,7 @@ function admin_active()
                 ],
                 ($goodie_tshirt ? ['shirt_size'   => __('Size')] : []),
                 [
-                    'shift_count'  => __('general.shifts'),
+                    'shift_count'  => __('general.my_shifts'),
                     'work_time'    => __('Length'),
                 ],
                 ($goodie_enabled ? ['score'   => ($goodie_tshirt

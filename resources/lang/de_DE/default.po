@@ -539,6 +539,9 @@ msgstr "Nr."
 msgid "general.shifts"
 msgstr "Schichten"
 
+msgid "general.my_shifts"
+msgstr "Meine Schichten"
+
 msgid "Length"
 msgstr "Länge"
 
