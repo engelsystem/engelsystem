@@ -201,7 +201,7 @@ class ShiftCalendarRenderer
                     'angel_type_id' => $angeltype->id,
                     'count' => $shift->shiftEntries
                         ->where('angel_type_id', $angeltype->id)
-                        ->where('freeloaded', false)
+                        ->whereNull('freeloaded_user_id')
                         ->count(),
                     'name' => $angeltype->name,
                     'restricted' => $angeltype->restricted,

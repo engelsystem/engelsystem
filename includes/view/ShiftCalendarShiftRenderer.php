@@ -158,7 +158,7 @@ class ShiftCalendarShiftRenderer
         $angeltype = (new AngelType())->forceFill($angeltype);
         $entry_list = [];
         foreach ($shift_entries as $entry) {
-            $class = $entry->freeloaded ? 'text-decoration-line-through' : '';
+            $class = !is_null($entry->freeload_user_id) ? 'text-decoration-line-through' : '';
             $entry_list[] = '<span class="text-nowrap ' . $class . '">' . User_Nick_render($entry->user) . '</span>';
         }
         $shift_signup_state = Shift_signup_allowed(

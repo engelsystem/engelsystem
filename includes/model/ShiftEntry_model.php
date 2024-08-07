@@ -78,7 +78,7 @@ function ShiftEntries_finished_by_user(User $user, Carbon $sinceTime = null)
         ->with(['shift', 'shift.shiftType'])
         ->join('shifts', 'shift_entries.shift_id', 'shifts.id')
         ->where('shifts.end', '<', Carbon::now())
-        ->where('freeloaded', false)
+        ->whereNull('freeload_user_id')
         ->orderByDesc('shifts.end');
 
     if ($sinceTime) {
