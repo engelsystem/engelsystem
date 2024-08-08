@@ -223,10 +223,10 @@ function ShiftEntry_edit_view(
                 : __('Goodie score')),
                 config('max_freeloadable_shifts')]);
         }
-        $freeload_user = !is_null($freeload_user_id) ? User::findorfail($freeload_user_id) : null;
+        $freeload_user = freeloaded($freeload_user_id) ? User::findorfail($freeload_user_id) : null;
         $freeload_form = [
             form_checkbox('freeloaded', (is_null($freeload_user_id) ? __('Freeloaded') : __('Freeloaded by ') . User_Nick_render($freeload_user)) . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                $freeload_info . '"></span>', !is_null($freeload_user_id)),
+                $freeload_info . '"></span>', freeloaded($freeload_user_id)),
             form_textarea(
                 'freeloaded_comment',
                 __('Freeload comment (Only for shift coordination and supporters):'),
