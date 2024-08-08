@@ -236,7 +236,7 @@ function admin_active()
             ->with('shift')
             ->get();
         foreach ($shiftEntries as $entry) {
-            if ($entry->freeloaded || $entry->shift->start > Carbon::now()) {
+            if (!is_null($entry->freeload_user_id) || $entry->shift->start > Carbon::now()) {
                 continue;
             }
             $timeSum += ($entry->shift->end->timestamp - $entry->shift->start->timestamp);

@@ -124,7 +124,7 @@ class User extends BaseModel
     public function isFreeloader(): bool
     {
         return $this->shiftEntries()
-                ->where('freeloaded', true)
+                ->whereNotNull('freeload_user_id')
                 ->count()
             >= config('max_freeloadable_shifts');
     }

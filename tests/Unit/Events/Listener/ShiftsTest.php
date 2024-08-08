@@ -63,7 +63,7 @@ class ShiftsTest extends TestCase
      */
     public function testDeletingCreateWorklogsIgnoreFreeload(): void
     {
-        $this->entry->freeloaded = true;
+        $this->entry->freeload_user_id = 12;
         $this->entry->save();
 
         /** @var Shifts $listener */
@@ -249,7 +249,7 @@ class ShiftsTest extends TestCase
         $this->entry = ShiftEntry::factory([
             'shift_id' => $this->shift->id,
             'user_id' => $this->user->id,
-            'freeloaded' => false,
+            'freeload_user_id' => null,
         ])->create();
 
         $this->auth = $this->createMock(Authenticator::class);

@@ -23,7 +23,7 @@ class Shifts
     public function deletingCreateWorklogs(Shift $shift): void
     {
         foreach ($shift->shiftEntries as $entry) {
-            if ($entry->freeloaded || $shift->start > Carbon::now()) {
+            if (!is_null($entry->freeload_user_id) || $shift->start > Carbon::now()) {
                 continue;
             }
 
