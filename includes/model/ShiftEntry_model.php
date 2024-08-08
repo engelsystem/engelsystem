@@ -87,3 +87,14 @@ function ShiftEntries_finished_by_user(User $user, Carbon $sinceTime = null)
 
     return $query->get();
 }
+
+/**
+ * Is ShiftEntry Freeloaded
+ *
+ * @param int|null $freeload_user_id
+ * @return bool
+ */
+function freeloaded(int|null $freeload_user_id): bool
+{
+    return !is_null($freeload_user_id);
+}

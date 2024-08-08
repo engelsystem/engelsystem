@@ -56,7 +56,7 @@ function user_myshifts()
             if ($request->hasPostData('submit')) {
                 $freeloaded_comment_state = $freeloaded_comment;
                 $valid = true;
-                $freeloaded = !is_null($freeload_user_id_state);
+                $freeloaded = freeloaded($freeload_user_id_state);
                 if (
                     auth()->can('user_shifts_admin')
                     || $is_angeltype_supporter
@@ -79,7 +79,7 @@ function user_myshifts()
                     $shiftEntry->user_comment = $comment;
                     if (
                         $freeloaded_comment_state != $freeloaded_comment
-                        || $freeloaded != !is_null($freeload_user_id_state)
+                        || $freeloaded != freeloaded($freeload_user_id_state)
                     ) {
                         $shiftEntry->freeload_user_id = $freeloaded ? auth()->user()->id : null;
                         $shiftEntry->freeloaded_comment = $freeloaded_comment;
@@ -87,14 +87,14 @@ function user_myshifts()
                     $shiftEntry->save();
 
                     $freeload_user_id = $shiftEntry->freeload_user_id;
-                    $freeload_user = !is_null($freeload_user_id) ? User::findorfail($freeload_user_id) : null;
+                    $freeload_user = freeloaded($freeload_user_id) ? User::findorfail($freeload_user_id) : null;
                     engelsystem_log(
                         'Updated ' . User_Nick_render($user_source, true) . '\'s shift '
                         . $shift->title . ' / ' . $shift->shiftType->name
                         . ' from ' . $shift->start->format('Y-m-d H:i')
                         . ' to ' . $shift->end->format('Y-m-d H:i')
                         . ' with comment ' . $comment
-                        . '. Freeloaded' . (!is_null($freeload_user_id)
+                        . '. Freeloaded' . (freeloaded($freeload_user_id)
                             ? ' by ' . User_Nick_render($freeload_user, true) . ' with Comment: ' . $freeloaded_comment
                             : ': NO')
                     );

@@ -350,7 +350,7 @@ function users_list_controller()
             State::whereArrived(true)->count(),
             State::whereActive(true)->count(),
             State::whereForceActive(true)->count(),
-            ShiftEntry::whereFreeloaded(true)->count(),
+            ShiftEntry::whereFreeloadUserId(!null)->count(),
             State::whereGotGoodie(true)->count(),
             State::query()->sum('got_voucher')
         ),
