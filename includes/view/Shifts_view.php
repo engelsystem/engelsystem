@@ -178,12 +178,14 @@ function Shift_view(
     foreach ($shiftEntry->groupBy('angel_type_id') as $angelTypes) {
         /** @var Collection $angelTypes */
         $type = $angelTypes->first()['angel_type_id'];
+
         if (!$neededAngels->where('angel_type_id', $type)->first()) {
+            //how many of these edge cases are freeloaded
             $needed_angels .= Shift_view_render_needed_angeltype([
                 'angel_type_id' => $type,
                 'count'         => 0,
                 'restricted'    => true,
-                'taken'         => $angelTypes->count(),
+                'taken'         => $shiftEntry->where('angel_type_id', $type)->where('freeloaded', false)->count(),
             ], $angeltypes, $shift, $user_shift_admin);
         }
     }
