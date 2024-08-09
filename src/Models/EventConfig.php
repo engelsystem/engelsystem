@@ -11,8 +11,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 /**
  * @property string $name
  * @property string $value
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
  * @method static QueryBuilder|EventConfig[] whereName($value)
  * @method static QueryBuilder|EventConfig[] whereValue($value)

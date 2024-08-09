@@ -37,7 +37,7 @@ class Settings extends HasUserModel
     protected $attributes = [ // phpcs:ignore
         'email_human'     => false,
         'email_messages'  => false,
-        'email_goodie'     => false,
+        'email_goodie'    => false,
         'email_shiftinfo' => false,
         'email_news'      => false,
         'mobile_show'     => false,
@@ -66,7 +66,7 @@ class Settings extends HasUserModel
         'theme'           => 'integer',
         'email_human'     => 'boolean',
         'email_messages'  => 'boolean',
-        'email_goodie'     => 'boolean',
+        'email_goodie'    => 'boolean',
         'email_shiftinfo' => 'boolean',
         'email_news'      => 'boolean',
         'mobile_show'     => 'boolean',
