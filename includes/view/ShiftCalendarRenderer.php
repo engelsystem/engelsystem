@@ -3,6 +3,7 @@
 namespace Engelsystem;
 
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Illuminate\Support\Collection;
@@ -174,6 +175,7 @@ class ShiftCalendarRenderer
         $shift_renderer = new ShiftCalendarShiftRenderer();
         $html = '';
         $rendered_until = $this->getFirstBlockStartTime();
+//        $test = [];
 
         foreach ($lane->getShifts() as $shift) {
             while ($rendered_until + ShiftCalendarRenderer::SECONDS_PER_ROW <= $shift->start->timestamp) {
@@ -181,9 +183,32 @@ class ShiftCalendarRenderer
                 $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
             }
 
+            $needed_angeltypes = $this->needed_angeltypes[$shift->id];
+            // add angel types from shift entries without reference from needed angel types
+            $needed_angels = new Collection($shift->neededAngels);
+            $shiftEntry = $shift->shiftEntries;
+            foreach ($shiftEntry->groupBy('angel_type_id') as $angelTypes) {
+                /** @var Collection $angelTypes */
+                $type = $angelTypes->first()['angel_type_id'];
+                $angeltype = AngelType::find($type);
+                if (!$needed_angels->where('angel_type_id', $type)->first()) {
+                    $needed_angeltypes[] = [
+                        'id' => $angeltype->id,
+                        'location_id' => null,
+                        'shift_id' => $shift->id,
+                        'shift_type_id' => null,
+                        'angel_type_id' => $angeltype->id,
+                        'count' => $shiftEntry->where('angel_type_id', $angeltype->id)->count(),
+                        'name' => $angeltype->name,
+                        'restricted' => $angeltype->restricted,
+                        'shift_self_signup' => $angeltype->shift_self_signup,
+                    ];
+                }
+            }
+
             list ($shift_height, $shift_html) = $shift_renderer->render(
                 $shift,
-                $this->needed_angeltypes[$shift->id],
+                $needed_angeltypes,
                 $this->shift_entries[$shift->id],
                 auth()->user()
             );
@@ -191,6 +216,7 @@ class ShiftCalendarRenderer
             $rendered_until += $shift_height * ShiftCalendarRenderer::SECONDS_PER_ROW;
         }
 
+//        dd($test);
         while ($rendered_until < $this->getLastBlockEndTime()) {
             $html .= $this->renderTick($rendered_until);
             $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
