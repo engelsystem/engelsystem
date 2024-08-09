@@ -297,8 +297,8 @@ release-image:
       --dockerfile /dev/stdin
       --destination "${RELEASE_IMAGE}"
       --cache=true
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 
 .deploy_template: &deploy_definition
   stage: release
@@ -344,8 +344,8 @@ pages:
     expire_in: 1 week
     paths:
       - public
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   variables:
     GIT_STRATEGY: none
 
@@ -370,8 +370,8 @@ deploy:
   environment:
     name: rsync-staging
     deployment_tier: development
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   script:
     # Check if deployment variables where set
     - |-
@@ -498,8 +498,8 @@ deploy-production:
     name: rsync-production
     deployment_tier: production
   when: manual
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   script:
     # Check if deployment variables where set
     - |-
@@ -522,14 +522,14 @@ deploy-k8s-production:
     name: production
     on_stop: stop-k8s-production
   when: manual
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 
 stop-k8s-production:
   <<: *deploy_k8s_stop
   needs: [ deploy-k8s-production ]
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   environment:
     name: production
     action: stop
