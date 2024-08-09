@@ -3,6 +3,7 @@
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Question;
 use Engelsystem\UserHintsRenderer;
+use Illuminate\Support\Str;
 
 /**
  * Render the user hints
@@ -96,7 +97,7 @@ function make_navigation()
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
-        'admin_event_config' => 'Event config',
+        'admin/config'       => ['config.config', 'config.edit'],
     ];
 
     if (config('autoarrive')) {
@@ -112,7 +113,7 @@ function make_navigation()
         $admin_menu[] = toolbar_dropdown_item(
             url(str_replace('_', '-', $menu_page)),
             htmlspecialchars(__($title)),
-            $menu_page == $page
+            $menu_page == $page || Str::startsWith($page, $menu_page . '/')
         );
     }
 

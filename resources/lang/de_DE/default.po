@@ -201,33 +201,6 @@ msgstr "Verlassen"
 msgid "Join"
 msgstr "Mitmachen"
 
-msgid "Event config"
-msgstr "Event Einstellungen"
-
-msgid "Please enter buildup start date."
-msgstr "Bitte gib das Aufbau Start Datum an."
-
-msgid "Please enter event start date."
-msgstr "Bitte gib das Event Start Datum an."
-
-msgid "Please enter event end date."
-msgstr "Bitte gib das Event Ende Datum an."
-
-msgid "Please enter teardown end date."
-msgstr "Bitte gib das Abbau Ende Datum an."
-
-msgid "The buildup start date has to be before the event start date."
-msgstr "Das Aufbau Start Datum muss vor dem Event Start Datum liegen."
-
-msgid "The event start date has to be before the event end date."
-msgstr "Das Event Start Datum muss vor dem Event End Datum liegen."
-
-msgid "The event end date has to be before the teardown end date."
-msgstr "Das Event Ende Datum muss vor dem Abbau Ende Datum liegen."
-
-msgid "The buildup start date has to be before the teardown end date."
-msgstr "Das Aufbau Start Datum muss vor dem Abbau Ende Datum liegen."
-
 msgid "Public Dashboard"
 msgstr "Öffentliches Dashboard"
 
@@ -961,33 +934,6 @@ msgstr "Alle ablehnen"
 
 msgid "Membership"
 msgstr "Mitgliedschaft"
-
-msgid "Event Name"
-msgstr "Event Name"
-
-msgid "Event Name is shown on the start page."
-msgstr "Event Name wird auf der Startseite angezeigt."
-
-msgid "Event Welcome Message"
-msgstr "Event Willkommens-Nachricht"
-
-msgid ""
-"Welcome message is shown after successful registration. You can use markdown."
-msgstr ""
-"Die Willkommens-Nachricht wird nach einer erfolgreichen Registrierung "
-"angezeigt. Du kannst Markdown benutzen."
-
-msgid "Buildup date"
-msgstr "Aufbau Datum"
-
-msgid "Event start date"
-msgstr "Event Start Datum"
-
-msgid "Teardown end date"
-msgstr "Abbau Ende Datum"
-
-msgid "Event end date"
-msgstr "Event Ende Datum"
 
 msgid "Angels needed in the next 3 hrs"
 msgstr "Benötigte Engel in den nächsten 3 Stunden"
@@ -2142,3 +2088,9 @@ msgid "freeload.freeloaded.info"
 msgstr ""
 "Der Engel war bei einer Schicht nicht anwesend. "
 "Bei %s geschwänzten Schichten wird die Schicht-Registration für den Engel gesperrt."
+
+msgid "config.config"
+msgstr "Konfiguration"
+
+msgid "config.edit.success"
+msgstr "Konfiguration erfolgreich angepasst"

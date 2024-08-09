@@ -300,3 +300,39 @@ msgstr "Registration successful. You can now log in!"
 
 msgid "shifts.history.delete.success"
 msgstr "Shifts deleted successfully."
+
+msgid "config.event"
+msgstr "Event"
+
+msgid "config.name"
+msgstr "Event Name"
+
+msgid "config.name.info"
+msgstr "The event name is shown on the start page."
+
+msgid "config.welcome_msg"
+msgstr "Event Welcome Message"
+
+msgid "config.welcome_msg.info"
+msgstr "The welcome message is shown after successful registration. You can use markdown."
+
+msgid "config.buildup_start"
+msgstr "Buildup date"
+
+msgid "config.event_start"
+msgstr "Event start date"
+
+msgid "config.event_end"
+msgstr "Event end date"
+
+msgid "config.teardown_end"
+msgstr "Teardown end date"
+
+msgid "validation.event_start.after"
+msgstr "Event start must be after buildup."
+
+msgid "validation.event_end.after"
+msgstr "Event end must be after the event start."
+
+msgid "validation.teardown_end.after"
+msgstr "Teardown end must be after the event end."
