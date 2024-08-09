@@ -32,7 +32,7 @@ class QuestionsControllerTest extends ControllerTest
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals('pages/questions/overview.twig', $view);
+                $this->assertEquals('pages/questions/index.twig', $view);
                 $this->assertArrayHasKey('questions', $data);
 
                 $this->assertEquals('Foo?', $data['questions'][0]->text);

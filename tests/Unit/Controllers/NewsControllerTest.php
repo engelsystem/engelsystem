@@ -87,7 +87,7 @@ class NewsControllerTest extends ControllerTest
             ->method('withView')
             ->willReturnCallback(
                 function (string $page, array $data) use (&$n) {
-                    $this->assertEquals('pages/news/overview.twig', $page);
+                    $this->assertEquals('pages/news/index.twig', $page);
                     /** @var Collection $news */
                     $news = $data['news'];
 

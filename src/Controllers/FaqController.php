@@ -31,7 +31,7 @@ class FaqController extends BaseController
         $faq = $this->faq->orderBy('question')->get();
 
         return $this->response->withView(
-            'pages/faq/overview.twig',
+            'pages/faq/index.twig',
             ['text' => $text, 'items' => $faq]
         );
     }

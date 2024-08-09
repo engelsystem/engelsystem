@@ -144,7 +144,7 @@ class NewsController extends BaseController
             ->get();
 
         return $this->renderView(
-            'pages/news/overview.twig',
+            'pages/news/index.twig',
             [
                 'news'          => $news,
                 'pages'         => $pagesCount,
