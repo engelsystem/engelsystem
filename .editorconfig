@@ -51,7 +51,8 @@ max_line_length = unset
 [*.{yml,yaml}]
 indent_size = 2
 
-[*.mo]
+# Ignore for
+[{*.mo,LICENSE}]
 charset = unset
 end_of_line = unset
 indent_style = unset
