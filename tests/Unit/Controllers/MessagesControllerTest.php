@@ -51,7 +51,7 @@ class MessagesControllerTest extends ControllerTest
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals('pages/messages/overview.twig', $view);
+                $this->assertEquals('pages/messages/index.twig', $view);
                 $this->assertArrayHasKey('conversations', $data);
                 $this->assertArrayHasKey('users', $data);
                 $this->assertArrayOrCollection($data['conversations']);

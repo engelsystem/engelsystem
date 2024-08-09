@@ -75,7 +75,7 @@ class MessagesController extends BaseController
         $users->prepend($currentUser->displayName, $currentUser->id);
 
         return $this->response->withView(
-            'pages/messages/overview.twig',
+            'pages/messages/index.twig',
             [
                 'conversations' => $conversations,
                 'users' => $users,
