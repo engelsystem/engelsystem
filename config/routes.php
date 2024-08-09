@@ -178,6 +178,16 @@ $route->get('/design', 'DesignController@index');
 $route->addGroup(
     '/admin',
     function (RouteCollector $route): void {
+        // Config
+        $route->addGroup(
+            '/config',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\ConfigController@index');
+                $route->get('/{page}', 'Admin\\ConfigController@edit');
+                $route->post('/{page}', 'Admin\\ConfigController@save');
+            }
+        );
+
         // FAQ
         $route->addGroup(
             '/faq',

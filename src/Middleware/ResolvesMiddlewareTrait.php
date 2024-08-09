@@ -22,7 +22,7 @@ trait ResolvesMiddlewareTrait
         }
 
         if (!property_exists($this, 'container') || !$this->container instanceof Application) {
-            throw new InvalidArgumentException('Unable to resolve middleware');
+            throw new InvalidArgumentException('Unable to resolve container for middleware');
         }
 
         /** @var Application $container */
@@ -40,7 +40,7 @@ trait ResolvesMiddlewareTrait
             return $middleware;
         }
 
-        throw new InvalidArgumentException('Unable to resolve middleware');
+        throw new InvalidArgumentException('Unable to resolve middleware or callable');
     }
 
     /**
