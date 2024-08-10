@@ -20,10 +20,10 @@ class ValidatorTest extends TestCase
         $val = new Validator();
 
         $this->assertTrue($val->validate(
-            ['foo' => 'bar', 'lorem' => 'on', 'dolor' => 'bla'],
-            ['lorem' => 'accepted']
+            ['test' => '', 'foo' => 'bar', 'lorem' => 'on', 'dolor' => 'bla'],
+            ['test' => 'optional', 'lorem' => 'accepted']
         ));
-        $this->assertEquals(['lorem' => 'on'], $val->getData());
+        $this->assertEquals(['test' => null, 'lorem' => 'on'], $val->getData());
 
         $this->assertFalse($val->validate(
             [],
@@ -32,6 +32,26 @@ class ValidatorTest extends TestCase
         $this->assertEquals(
             ['lorem' => ['validation.lorem.required', 'validation.lorem.min']],
             $val->getErrors()
+        );
+        $this->assertFalse($val->validate(
+            ['lorem' => 'X'],
+            ['lorem' => 'required|min:3']
+        ));
+        $this->assertFalse($val->validate(
+            ['lorem' => 'X'],
+            ['lorem' => ['required', 'min:3']]
+        ));
+        $this->assertFalse($val->validate(
+            ['lorem' => 'X'],
+            ['lorem' => ['required', ['min', '3']]]
+        ));
+        $this->assertEquals(
+            ['lorem' => ['validation.lorem.min']],
+            $val->getErrors()
+        );
+        $this->assertEquals(
+            [],
+            $val->getData()
         );
     }
 
@@ -126,6 +146,20 @@ class ValidatorTest extends TestCase
             ['foo' => 'on'],
             ['foo' => 'accepted']
         ));
+        $this->assertTrue($val->validate(
+            ['foo' => null],
+            ['foo' => 'optional']
+        ));
+        $this->assertTrue($val->validate(
+            ['foo' => ''],
+            ['foo' => 'optional']
+        ));
+        $this->assertEquals(['foo' => null], $val->getData());
+        $this->assertTrue($val->validate(
+            ['foo' => 'bar'],
+            ['foo' => 'optional']
+        ));
+        $this->assertEquals(['foo' => 'bar'], $val->getData());
 
         $this->assertFalse($val->validate(
             [],
@@ -140,36 +174,54 @@ class ValidatorTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Validation\Validator::validate
      */
-    public function testValidateNesting(): void
+    public function testValidateNullable(): void
     {
         $val = new Validator();
 
         $this->assertTrue($val->validate(
             [],
-            ['foo' => 'not|required']
+            ['foo' => 'nullable']
         ));
-
         $this->assertTrue($val->validate(
-            ['foo' => 'foo'],
-            ['foo' => 'not|int']
+            ['foo' => null],
+            ['foo' => 'nullable']
         ));
+        $this->assertEquals(['foo' => null], $val->getData());
+        $this->assertTrue($val->validate(
+            ['foo' => ''],
+            ['foo' => 'nullable']
+        ));
+        $this->assertEquals(['foo' => null], $val->getData());
+        $this->assertTrue($val->validate(
+            ['foo' => 'bar'],
+            ['foo' => 'nullable']
+        ));
+        $this->assertEquals(['foo' => 'bar'], $val->getData());
+        $this->assertTrue($val->validate(
+            ['foo' => null],
+            ['foo' => 'nullable|min:42']
+        ));
+        $this->assertTrue($val->validate(
+            ['foo' => ''],
+            ['foo' => 'nullable|min:42']
+        ));
+        $this->assertEquals(['foo' => null], $val->getData());
+        $this->assertTrue($val->validate(
+            ['foo' => '99'],
+            ['foo' => 'nullable|int']
+        ));
+        $this->assertEquals(['foo' => '99'], $val->getData());
+
         $this->assertFalse($val->validate(
-            ['foo' => 1],
-            ['foo' => 'not|int']
+            ['foo' => 'foo'],
+            ['foo' => 'nullable|min:42']
         ));
-
-        $this->assertTrue($val->validate(
-            [],
-            ['foo' => 'optional|int']
-        ));
-        $this->assertTrue($val->validate(
-            ['foo' => '33'],
-            ['foo' => 'optional|int']
-        ));
+        $this->assertEquals([], $val->getData());
         $this->assertFalse($val->validate(
             ['foo' => 'T'],
             ['foo' => 'optional|int']
         ));
+        $this->assertEquals([], $val->getData());
     }
 
     /**

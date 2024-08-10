@@ -186,7 +186,7 @@ class UserTest extends ServiceProviderTest
                     'validation.email.email',
                 ],
                 'mobile' =>  [
-                    'validation.mobile.optional',
+                    'validation.mobile.length',
                 ],
                 'password' => [
                     'validation.password.length',
@@ -195,19 +195,19 @@ class UserTest extends ServiceProviderTest
                     'validation.password_confirmation.required',
                 ],
                 'firstname' => [
-                    'validation.firstname.optional',
+                    'validation.firstname.length',
                 ],
                 'lastname' => [
-                    'validation.lastname.optional',
+                    'validation.lastname.length',
                 ],
                 'pronoun' => [
-                    'validation.pronoun.optional',
+                    'validation.pronoun.max',
                 ],
                 'planned_arrival_date' => [
                     'validation.planned_arrival_date.min',
                 ],
                 'dect' =>  [
-                    'validation.dect.optional',
+                    'validation.dect.length',
                 ],
                 'tshirt_size' => [
                     'validation.tshirt_size.shirtSize',

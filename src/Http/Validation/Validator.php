@@ -17,67 +17,68 @@ class Validator
     protected array $data = [];
 
     protected array $mapping = [
-        'accepted' => 'TrueVal',
+        'accepted' => 'Checked',
         'int'      => 'IntVal',
         'float'    => 'FloatVal',
         'required' => 'NotEmpty',
+        'optional' => 'nullable',
     ];
-
-    protected array $nestedRules = ['optional', 'not'];
 
     public function validate(array $data, array $rules): bool
     {
         $this->errors = [];
         $this->data = [];
 
-        foreach ($rules as $key => $values) {
+        $validData = [];
+        foreach ($rules as $fieldName => $rulesList) {
             $v = new RespectValidator();
             $v->with('\\Engelsystem\\Http\\Validation\\Rules', true);
 
-            $value = $data[$key] ?? null;
-            $values = explode('|', $values);
+            $value = $data[$fieldName] ?? null;
+            $rulesList = is_array($rulesList) ? $rulesList : explode('|', $rulesList);
 
-            // Rules that have side effects on others like inverting the result with not and making them optional
-            $packing = [];
-            foreach ($this->nestedRules as $rule) {
-                if (in_array($rule, $values)) {
-                    $packing[] = $rule;
-                }
-            }
-
-            $values = array_diff($values, $this->nestedRules);
-            foreach ($values as $parameters) {
-                $parameters = explode(':', $parameters);
+            // Configure the check to be run for every rule
+            foreach ($rulesList as $parameters) {
+                $parameters = is_array($parameters) ? $parameters : explode(':', $parameters);
                 $rule = array_shift($parameters);
                 $rule = Str::camel($rule);
                 $rule = $this->map($rule);
 
-                // To allow rules nesting
-                $w = $v;
-                try {
-                    foreach (array_reverse(array_merge($packing, [$rule])) as $rule) {
-                        if (!in_array($rule, $this->nestedRules)) {
-                            call_user_func_array([$w, $rule], $parameters);
-                            continue;
-                        }
-
-                        $w = call_user_func_array([new RespectValidator(), $rule], [$w]);
+                // Handle empty/optional values
+                if ($rule == 'nullable') {
+                    if (is_null($value) || $value === '') {
+                        $validData[$fieldName] = null;
+                        break;
                     }
+
+                    $validData[$fieldName] = $value;
+                    continue;
+                }
+
+                // Configure the validation
+                try {
+                    $v = call_user_func_array([$v, $rule], $parameters);
                 } catch (ComponentException $e) {
                     throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
                 }
 
-                if ($w->validate($value)) {
-                    $this->data[$key] = $value;
+                // Run validation
+                if ($v->validate($value)) {
+                    $validData[$fieldName] = $value;
                 } else {
-                    $this->errors[$key][] = implode('.', ['validation', $key, $this->mapBack($rule)]);
+                    $this->errors[$fieldName][] = implode('.', ['validation', $fieldName, $this->mapBack($rule)]);
                 }
 
                 $v->removeRules();
             }
         }
 
-        return empty($this->errors);
+        $success = empty($this->errors);
+        if ($success) {
+            $this->data = $validData;
+        }
+
+        return $success;
     }
 
     protected function map(string $rule): string
