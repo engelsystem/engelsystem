@@ -6,7 +6,6 @@ use Engelsystem\Models\Location;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftsFilterRenderer;
-use Engelsystem\ValidationResult;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 
@@ -109,10 +108,10 @@ function angeltype_edit_controller()
 
         if (!$supporter_mode) {
             if ($request->has('name')) {
-                $result = AngelType_validate_name($request->postData('name'), $angeltype);
-                $angeltype->name = substr($result->getValue(), 0, 255);
-                if (!$result->isValid()) {
-                    $valid = false;
+                $name = substr(strip_item($request->postData('name')), 0, 255);
+                $valid = AngelType_validate_name($request->postData('name'), $angeltype);
+                $angeltype->name = $name;
+                if (!$valid) {
                     error(__('Please check the name. Maybe it already exists.'));
                 }
             }
@@ -355,28 +354,24 @@ function angeltypes_list_controller()
 
 /**
  * Validates a name for angeltypes.
- * Returns ValidationResult containing validation success and validated name.
  *
  * @param string    $name Wanted name for the angeltype
  * @param AngelType $angeltype The angeltype the name is for
  *
- * @return ValidationResult result and validated name
+ * @return bool validation result
  */
 function AngelType_validate_name($name, AngelType $angeltype)
 {
-    $name = strip_item($name);
     if ($name == '') {
-        return new ValidationResult(false, '');
+        return false;
     }
     if ($angeltype->id) {
-        $valid = AngelType::whereName($name)
+        return AngelType::whereName($name)
                 ->where('id', '!=', $angeltype->id)
                 ->count() == 0;
-        return new ValidationResult($valid, $name);
     }
 
-    $valid = AngelType::whereName($name)->count() == 0;
-    return new ValidationResult($valid, $name);
+    return AngelType::whereName($name)->count() == 0;
 }
 
 /**
