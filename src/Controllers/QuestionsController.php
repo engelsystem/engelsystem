@@ -58,7 +58,7 @@ class QuestionsController extends BaseController
         $data = $this->validate(
             $request,
             [
-                'id'     => 'int|required',
+                'id'     => 'required|int',
                 'delete' => 'checked',
             ]
         );

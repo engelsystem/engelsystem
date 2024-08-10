@@ -80,8 +80,8 @@ class LocationsController extends BaseController
             $request,
             [
                 'name'        => 'required|max:35',
-                'description' => 'required|optional',
-                'dect'        => 'required|optional',
+                'description' => 'optional',
+                'dect'        => 'optional',
                 'map_url'     => 'optional|url',
             ] + $validation
         );

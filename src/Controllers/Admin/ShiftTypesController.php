@@ -99,7 +99,7 @@ class ShiftTypesController extends BaseController
             $request,
             [
                 'name' => 'required|max:255',
-                'description' => 'required|optional',
+                'description' => 'optional',
             ] + $validation
         );
 
@@ -108,7 +108,7 @@ class ShiftTypesController extends BaseController
         }
 
         $shiftType->name = $data['name'];
-        $shiftType->description = $data['description'];
+        $shiftType->description = $data['description'] ?? '';
 
         $shiftType->save();
         $shiftType->neededAngelTypes()->delete();
