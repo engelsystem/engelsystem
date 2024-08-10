@@ -95,6 +95,10 @@ components:
         description:
           type: string
           example: Standard angel type, without further requirements
+        restricted:
+          type: boolean
+          example: false
+          description: True if the angel type requires an introduction
         url:
           type: string
           example: https://example.com/angeltype/42
