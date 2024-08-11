@@ -92,7 +92,7 @@
                         <a href="{{ url('/news/' ~ news.id) }}" class="me-1">
                             {{ m.icon('chat-left-text') }} {{ __('news.comments') }}
                         </a>
-                        <span class="badge bg-primary">{{ news.comments.count() }}</span>
+                        <span class="badge bg-primary">{{ news.comments_count }}</span>
                         {{ m.icon('chevron-double-right', 'primary') }}
                     </div>
                 {% endif %}
