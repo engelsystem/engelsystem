@@ -56,7 +56,7 @@ class ScheduleController extends BaseController
             'admin/schedule/index',
             [
                 'is_index' => true,
-                'schedules' => ScheduleModel::all(),
+                'schedules' => ScheduleModel::all()->loadCount('shifts'),
             ]
         );
     }

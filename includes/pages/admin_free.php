@@ -40,7 +40,7 @@ function admin_free()
     /** @var User[] $users */
     $users = [];
     if ($request->has('submit')) {
-        $query = User::with(['personalData', 'contact', 'state'])
+        $query = User::with(['personalData', 'contact', 'state', 'settings'])
             ->select('users.*')
             ->leftJoin('shift_entries', 'users.id', 'shift_entries.user_id')
             ->leftJoin('users_state', 'users.id', 'users_state.user_id')

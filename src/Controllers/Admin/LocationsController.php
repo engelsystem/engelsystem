@@ -37,6 +37,7 @@ class LocationsController extends BaseController
     public function index(): Response
     {
         $locations = $this->location
+            ->withCount('shifts')
             ->orderBy('name')
             ->get();
 
