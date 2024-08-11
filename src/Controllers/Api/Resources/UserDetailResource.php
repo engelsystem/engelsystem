@@ -10,7 +10,7 @@ class UserDetailResource extends UserResource
     {
         return array_merge(parent::toArray(), [
             'email' => $this->model->contact->email ?: $this->model->email,
-            'tshirt' => $this->model->personalData->shirt_size,
+            'tshirt_size' => $this->model->personalData->shirt_size,
             'language' => $this->model->settings->language,
             'arrived' => $this->model->state->arrived,
             'dates' => [

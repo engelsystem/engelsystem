@@ -74,7 +74,7 @@ class PasswordResetController extends BaseController
 
         return $this->showView(
             'pages/password/reset-form',
-            ['min_length' => config('min_password_length')]
+            ['min_length' => config('password_min_length')]
         );
     }
 
@@ -83,7 +83,7 @@ class PasswordResetController extends BaseController
         $reset = $this->requireToken($request);
 
         $data = $this->validate($request, [
-            'password'              => 'required|min:' . config('min_password_length'),
+            'password'              => 'required|min:' . config('password_min_length'),
             'password_confirmation' => 'required',
         ]);
 

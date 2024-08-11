@@ -20,6 +20,7 @@ class UsersControllerTest extends ApiBaseControllerTest
     /**
      * @covers \Engelsystem\Controllers\Api\UsersController::user
      * @covers \Engelsystem\Controllers\Api\Resources\UserDetailResource::toArray
+     * @covers \Engelsystem\Controllers\Api\Resources\UserResource::toArray
      */
     public function testUser(): void
     {
@@ -50,7 +51,11 @@ class UsersControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('data', $data);
         $this->assertArrayHasKey('id', $data['data']);
         $this->assertEquals($user->id, $data['data']['id']);
+        $this->assertArrayHasKey('name', $data['data']);
+        $this->assertEquals($user->name, $data['data']['name']);
+        $this->assertArrayHasKey('email', $data['data']);
         $this->assertArrayHasKey('dates', $data['data']);
+        $this->assertArrayHasKey('contact', $data['data']);
     }
 
     /**

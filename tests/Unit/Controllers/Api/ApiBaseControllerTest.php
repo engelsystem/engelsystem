@@ -6,6 +6,8 @@ namespace Engelsystem\Test\Unit\Controllers\Api;
 
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Test\Unit\Controllers\ControllerTest as TestCase;
+use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
+use League\OpenAPIValidation\PSR7\Exception\ValidationFailed;
 use League\OpenAPIValidation\PSR7\OperationAddress as OpenApiAddress;
 use League\OpenAPIValidation\PSR7\ResponseValidator as OpenApiResponseValidator;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder as OpenApiValidatorBuilder;
@@ -19,7 +21,12 @@ abstract class ApiBaseControllerTest extends TestCase
     protected function validateApiResponse(string $path, string $method, ResponseInterface $response): void
     {
         $operation = new OpenApiAddress($path, $method);
-        $this->validator->validate($operation, $response);
+        try {
+            $this->validator->validate($operation, $response);
+        } catch (InvalidBody $e) {
+            $newMessage = $e->getMessage() . ': ' . $e->getPrevious()?->getMessage();
+            throw new ValidationFailed($newMessage, $e->getCode(), $e);
+        }
     }
 
     public function setUp(): void

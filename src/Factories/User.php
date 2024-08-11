@@ -94,12 +94,12 @@ class User
         $isPasswordEnabled = $this->determineIsPasswordEnabled();
 
         if ($isPasswordEnabled) {
-            $minPasswordLength = $this->config->get('min_password_length');
+            $minPasswordLength = $this->config->get('password_min_length');
             $validationRules['password'] = 'required|length:' . $minPasswordLength;
             $validationRules['password_confirmation'] = 'required';
         }
 
-        $isFullNameEnabled = $this->config->get('enable_user_name');
+        $isFullNameEnabled = $this->config->get('enable_full_name');
 
         if ($isFullNameEnabled) {
             $validationRules['firstname'] = $this->isRequired('firstname') . '|length:0:64';

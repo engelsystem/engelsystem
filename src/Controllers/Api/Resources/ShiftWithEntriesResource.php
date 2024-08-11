@@ -8,11 +8,11 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class ShiftWithEntriesResource extends ShiftResource
 {
-    public function toArray(array|Arrayable $location = [], array|Arrayable $entries = []): array
+    public function toArray(array | Arrayable $location = [], array | Arrayable $angelTypes = []): array
     {
         return [
             ...parent::toArray($location),
-            'entries' => $entries instanceof Arrayable ? $entries->toArray() : $entries,
+            'needed_angel_types' => $angelTypes instanceof Arrayable ? $angelTypes->toArray() : $angelTypes,
         ];
     }
 }

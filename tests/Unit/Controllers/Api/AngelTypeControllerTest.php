@@ -17,6 +17,7 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
 {
     /**
      * @covers \Engelsystem\Controllers\Api\AngelTypeController::index
+     * @covers \Engelsystem\Controllers\Api\Resources\AngelTypeResource::toArray
      */
     public function testIndex(): void
     {
@@ -34,9 +35,13 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('data', $data);
         $this->assertCount(3, $data['data']);
         $this->assertCount(1, collect($data['data'])->filter(function ($item) use ($items) {
-            return $item['name'] == $items->first()->getAttribute('name');
+            $first = $items->first();
+            return $item['name'] == $first->getAttribute('name')
+                && $item['description'] == $first->getAttribute('description')
+                && $item['restricted'] == $first->getAttribute('restricted');
         }));
     }
+
     /**
      * @covers \Engelsystem\Controllers\Api\AngelTypeController::ofUser
      * @covers \Engelsystem\Controllers\Api\Resources\UserAngelTypeResource::toArray

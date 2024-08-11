@@ -36,7 +36,7 @@
             {% endif %}
         </div>
 
-        {% if config('enable_user_name') %}
+        {% if config('enable_full_name') %}
             <div class="row g-4">
                 <div class="col-sm-6">
                     {{ f.input('first_name', __('settings.profile.firstname'), {

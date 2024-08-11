@@ -35,7 +35,7 @@ class FaqControllerTest extends TestCase
         $response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) use ($response) {
-                $this->assertEquals('pages/faq/overview.twig', $view);
+                $this->assertEquals('pages/faq/index.twig', $view);
                 $this->assertEquals('Some Text', $data['text']);
                 $this->assertEquals('Nah!', $data['items'][0]->text);
 

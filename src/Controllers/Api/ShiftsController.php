@@ -15,6 +15,7 @@ use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\Shifts\ShiftType;
 use Illuminate\Database\Eloquent\Collection;
 
 class ShiftsController extends ApiController
@@ -71,6 +72,28 @@ class ShiftsController extends ApiController
         return $this->shiftEntriesResponse($shifts);
     }
 
+    public function entriesByShiftType(Request $request): Response
+    {
+        $shiftTypeId = (int) $request->getAttribute('shifttype_id');
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::findOrFail($shiftTypeId);
+        /** @var Shift[]|Collection $shifts */
+        $shifts = $shiftType->shifts()
+            ->with([
+                'neededAngelTypes.angelType',
+                'location.neededAngelTypes.angelType',
+                'shiftEntries.angelType',
+                'shiftEntries.user.contact',
+                'shiftEntries.user.personalData',
+                'shiftType',
+                'schedule.shiftType.neededAngelTypes.angelType',
+            ])
+            ->orderBy('start')
+            ->get();
+
+        return $this->shiftEntriesResponse($shifts);
+    }
+
     public function entriesByUser(Request $request): Response
     {
         $id = $request->getAttribute('user_id');
@@ -106,27 +129,32 @@ class ShiftsController extends ApiController
         // Blob of not-optimized mediocre pseudo-serialization
         foreach ($shifts as $shift) {
             // Get all needed/used angel types
+            /** @var Collection|NeededAngelType[] $neededAngelTypes */
             $neededAngelTypes = $this->getNeededAngelTypes($shift);
 
-            $entries = new Collection();
+            $angelTypes = new Collection();
             foreach ($neededAngelTypes as $neededAngelType) {
-                $users = UserResource::collection($neededAngelType->users ?? []);
+                $entries = $neededAngelType->entries ?: new Collection();
 
                 // Skip empty entries
-                if ($neededAngelType->count <= 0 && $users->isEmpty()) {
+                if ($neededAngelType->count <= 0 && $entries->isEmpty()) {
                     continue;
                 }
 
-                $angelTypeData = new AngelTypeResource($neededAngelType->angelType);
-                $entries[] = new Collection([
-                    'users' => $users,
-                    'type' => $angelTypeData,
+                $entries = $entries->map(fn(ShiftEntry $entry) => [
+                    'user' => UserResource::toIdentifierArray($entry->user),
+                    'freeloaded' => $entry->freeloaded,
+                ]);
+                $angelTypeData = AngelTypeResource::toIdentifierArray($neededAngelType->angelType);
+                $angelTypes[] = new Collection([
+                    'angel_type' => $angelTypeData,
                     'needs' => $neededAngelType->count,
+                    'entries' => $entries,
                 ]);
             }
 
             $locationData = new LocationResource($shift->location);
-            $shiftEntries[] = (new ShiftWithEntriesResource($shift))->toArray($locationData, $entries);
+            $shiftEntries[] = (new ShiftWithEntriesResource($shift))->toArray($locationData, $angelTypes);
         }
 
         $data = ['data' => $shiftEntries];
@@ -135,7 +163,7 @@ class ShiftsController extends ApiController
     }
 
     /**
-     * Collect all needed angeltypes
+     * Collect all needed angel types
      */
     protected function getNeededAngelTypes(Shift $shift): Collection
     {
@@ -151,7 +179,7 @@ class ShiftsController extends ApiController
             $neededAngelTypes = $shift->location->neededAngelTypes;
         }
 
-        // Add needed angeltypes from additionally added users
+        // Add needed angel types from additionally added users
         foreach ($shift->shiftEntries as $entry) {
             $neededAngelType = $neededAngelTypes->where('angel_type_id', $entry->angelType->id)->first();
             if (!$neededAngelType) {
@@ -163,11 +191,11 @@ class ShiftsController extends ApiController
                 $neededAngelTypes[] = $neededAngelType;
             }
 
-            // Add users to entries
-            $neededAngelType->users = isset($neededAngelType->users)
-                ? $neededAngelType->users
+            // Add entries to needed angel type
+            $neededAngelType->entries = isset($neededAngelType->entries)
+                ? $neededAngelType->entries
                 : new Collection();
-            $neededAngelType->users[] = $entry->user;
+            $neededAngelType->entries[] = $entry;
         }
 
         return $neededAngelTypes;

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  version: 0.0.1-beta
+  version: 0.1.0-beta
   title: Engelsystem
   description: >
     This API is as stable as a **beta** version might be.
@@ -17,14 +17,17 @@ info:
 servers:
   - url: /api/v0-beta
     description: This server
-  - url: http://localhost:5080/api/v0-beta
-    description: Your local dev instance
+  - url: '{host}/api/v0-beta'
+    description: Engelsystem instance to use
+    variables:
+      host:
+        default: http://localhost:5080
 
 tags:
   - name: api
     description: API related
-  - name: angeltype
-    description: Angeltypes
+  - name: angel type
+    description: Angel types
   - name: event
     description: Event information
   - name: location
@@ -33,8 +36,10 @@ tags:
     description: News and meeting announcements
   - name: shift
     description: Event shifts
+  - name: shift type
+    description: Shift types
   - name: user
-    description: User information
+    description: Users
 
 security:
   - bearer-auth: [ ]
@@ -89,11 +94,15 @@ components:
           example: Angel
         description:
           type: string
-          example: Meta-Group of all registered Angels
+          example: Standard angel type, without further requirements
+        restricted:
+          type: boolean
+          example: false
+          description: True if the angel type requires an introduction
         url:
           type: string
           example: https://example.com/angeltype/42
-          description: Link to the page of the given angeltype.
+          description: Link to the page of the given angel type.
       required:
         - id
         - name
@@ -109,11 +118,11 @@ components:
               example: true
               description: >
                 If the user is confirmed
-                (either by the angeltype not requiring confirmation, being a supporter or being confirmed by one).
+                (either by the angel type not requiring confirmation, being a supporter or being confirmed by one).
             supporter:
               type: boolean
               example: false
-              description: If the user is a supporter of the angeltype.
+              description: If the user is a supporter of the angel type.
           required:
             - confirmed
             - supporter
@@ -123,9 +132,10 @@ components:
         id:
           type: integer
           example: 42
-        title:
+        name:
           type: string
           example: First helper introduction
+          description: Title of the news
         text:
           type: string
           example: |
@@ -156,7 +166,7 @@ components:
           description: Direct link to the news page
       required:
         - id
-        - title
+        - name
         - text
         - is_meeting
         - is_pinned
@@ -173,6 +183,10 @@ components:
         name:
           type: string
           example: Heaven
+        description:
+          type: string
+          example: Located behind room 42
+          description: Description of the room
         url:
           type: string
           example: https://example.com/location/42
@@ -180,16 +194,38 @@ components:
       required:
         - id
         - name
+        - description
         - url
+    NeededAngelType:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShiftEntry'
+        angel_type:
+          $ref: '#/components/schemas/Reference'
+        needs:
+          type: integer
+          description: >
+            Number of users needed for the shift of the given angel type.
+            Will be greater than users count when not full, less when overbooked
+            or 0 when only additional users with given type have been added.
+          example: 3
+      required:
+        - entries
+        - angel_type
+        - needs
     Shift:
       type: object
       properties:
         id:
           type: integer
           example: 42
-        title:
+        name:
           type: string
           example: Cleanup the venue
+          description: Title of the shift
         description:
           type: string
           example: You clean up the venue after the event. Its fun, we promise!
@@ -201,25 +237,25 @@ components:
         ends_at:
           $ref: '#/components/schemas/DateTime'
         location:
-          $ref: '#/components/schemas/Location'
+          $ref: '#/components/schemas/Reference'
         shift_type:
-          $ref: '#/components/schemas/ShiftType'
+          $ref: '#/components/schemas/Reference'
         created_at:
           $ref: '#/components/schemas/DateTimeOptional'
         updated_at:
           $ref: '#/components/schemas/DateTimeOptional'
-        entries:
+        needed_angel_types:
           type: array
-          description: Can be empty (for example on Schedule import of unused room)
+          description: Needed angel types and user entries, can be empty (for example on Schedule import of unused room)
           items:
-            $ref: '#/components/schemas/ShiftEntry'
+            $ref: '#/components/schemas/NeededAngelType'
         url:
           type: string
           example: https://example.com/shifts/42
           description: Direct link to the shift
       required:
         - id
-        - title
+        - name
         - description
         - starts_at
         - ends_at
@@ -227,28 +263,20 @@ components:
         - shift_type
         - created_at
         - updated_at
-        - entries
+        - needed_angel_types
         - url
     ShiftEntry:
       type: object
       properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        type:
-          $ref: '#/components/schemas/AngelType'
-        needs:
-          type: integer
-          description: >
-            Number of users needed for the shift of the given type.
-            Will be more than users count when not full, less when overbooked
-            or 0 when only additional users with given type have been added.
-          example: 3
+        user:
+          $ref: '#/components/schemas/Reference'
+        freeloaded:
+          type: boolean
+          example: false
+          description: True if the user was marked as freeloaded for not arriving to the shift
       required:
-        - users
-        - type
-        - needs
+        - user
+        - freeloaded
     ShiftType:
       type: object
       properties:
@@ -319,7 +347,7 @@ components:
             email:
               type: string
               example: user@example.com
-            tshirt:
+            tshirt_size:
               type: string
               nullable: true
               example: XL
@@ -348,7 +376,7 @@ components:
               example: true
       required:
         - email
-        - tshirt
+        - tshirt_size
         - dates
         - language
         - arrived
@@ -428,13 +456,28 @@ components:
         - buildup
         - event
         - teardown
+    Reference:
+      type: object
+      description: Reference to other resources
+      properties:
+        id:
+          type: integer
+          example: 42
+          description: The ID of the related resource
+        name:
+          type: string
+          nullable: true
+          example: Foo
+          description: A name of the related resource, should only be used for reference
+      required:
+        - id
 
 paths:
   /angeltypes:
     get:
       tags:
-        - angeltype
-      summary: Get a list of angeltypes
+        - angel type
+      summary: Get a list of angel types
       responses:
         '200':
           description: Ok
@@ -457,15 +500,15 @@ paths:
       - name: id
         in: path
         required: true
-        description: The angeltype identifier
+        description: The angel type identifier
         example: 42
         schema:
           type: integer
     get:
       tags:
-        - angeltype
+        - angel type
         - shift
-      summary: Get all shifts of the requested angeltype
+      summary: Get all shifts of the requested angel type
       responses:
         '200':
           description: Ok
@@ -556,6 +599,61 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundError'
 
+  /shifttypes:
+    get:
+      tags:
+        - shift type
+      summary: Get a list of shift types
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShiftType'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /shifttypes/{id}/shifts:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The shift types identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - shift type
+        - shift
+      summary: Get all shifts of the requested shift type
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shift'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
   /users/{id}:
     parameters:
       - name: id
@@ -603,7 +701,7 @@ paths:
             - type: integer
     get:
       tags:
-        - angeltype
+        - angel type
         - user
       summary: Get the users angel types
       responses:

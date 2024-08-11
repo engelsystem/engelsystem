@@ -70,7 +70,7 @@ class SettingsControllerTest extends ControllerTest
 
         config([
             'enable_pronoun'         => true,
-            'enable_user_name'       => true,
+            'enable_full_name'       => true,
             'enable_planned_arrival' => true,
             'enable_dect'            => true,
             'enable_mobile_show'     => true,
@@ -178,7 +178,7 @@ class SettingsControllerTest extends ControllerTest
     public function testSaveProfileIgnoresFirstAndLastnameIfDisabled(): void
     {
         $this->setUpProfileTest();
-        config(['enable_user_name' => false]);
+        config(['enable_full_name' => false]);
         $this->controller->saveProfile($this->request);
         $this->assertEquals('', $this->user->personalData->first_name);
         $this->assertEquals('', $this->user->personalData->last_name);
@@ -1105,7 +1105,7 @@ class SettingsControllerTest extends ControllerTest
             'dect'        => false,
         ];
         $this->config = new Config([
-            'min_password_length' => 6,
+            'password_min_length' => 6,
             'themes' => $themes,
             'locales' => $languages,
             'tshirt_sizes' => $tshirt_sizes,

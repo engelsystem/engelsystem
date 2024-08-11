@@ -17,11 +17,11 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  *
  * @property int            $id
  * @property int            $angel_type_id
- * @property int            $confirm_user_id
+ * @property int|null       $confirm_user_id
  * @property bool           $supporter
  *
  * @property-read AngelType $angelType
- * @property-read User      $confirmUser
+ * @property-read User|null $confirmUser
  *
  * @method static QueryBuilder|UserAngelType[] whereId($value)
  * @method static QueryBuilder|UserAngelType[] whereAngelTypeId($value)

@@ -35,8 +35,8 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property string                             $password
  * @property string                             $api_key
  * @property Carbon|null                        $last_login_at
- * @property Carbon                             $created_at
- * @property Carbon                             $updated_at
+ * @property Carbon|null                        $created_at
+ * @property Carbon|null                        $updated_at
  *
  * @property-read QueryBuilder|Contact          $contact
  * @property-read QueryBuilder|License          $license
