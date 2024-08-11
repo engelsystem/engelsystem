@@ -100,6 +100,7 @@ class ShiftTypesController extends BaseController
             [
                 'name' => 'required|max:255',
                 'description' => 'required|optional',
+                'signup_advance_hours' => 'float|optional',
             ] + $validation
         );
 
@@ -108,7 +109,8 @@ class ShiftTypesController extends BaseController
         }
 
         $shiftType->name = $data['name'];
-        $shiftType->description = $data['description'];
+        $shiftType->description = $data['description'] ?? '';
+        $shiftType->signup_advance_hours = $data['signup_advance_hours'] ?: null;
 
         $shiftType->save();
         $shiftType->neededAngelTypes()->delete();
@@ -134,10 +136,11 @@ class ShiftTypesController extends BaseController
         }
 
         $this->log->info(
-            'Updated shift type "{name}": {description} {angels}',
+            'Updated shift type "{name}": {description}, {signup_advance_hours}, {angels}',
             [
                 'name' => $shiftType->name,
                 'description' => $shiftType->description,
+                'signup_advance_hours' => $shiftType->signup_advance_hours,
                 'angels' => $angelsInfo,
             ]
         );

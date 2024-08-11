@@ -199,7 +199,7 @@ class ShiftCalendarShiftRenderer
             ShiftSignupStatus::SHIFT_ENDED => $inner_text . ' (' . __('ended') . ')',
             // No link and add a text hint, when the shift ended
             ShiftSignupStatus::NOT_ARRIVED => $inner_text . ' (' . __('please arrive for signup') . ')',
-            ShiftSignupStatus::NOT_YET => $inner_text . ' (' . __('not yet') . ')',
+            ShiftSignupStatus::NOT_YET => $inner_text . ' (' . __('not yet possible') . ')',
             ShiftSignupStatus::ANGELTYPE => $angeltype->restricted || !$angeltype->shift_self_signup
                 // User has to be confirmed on the angeltype first or can't sign up by themselves
                 ? $inner_text . icon('mortarboard-fill')
