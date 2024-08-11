@@ -8,8 +8,10 @@ use Respect\Validation\Rules\AbstractRule;
 
 class Checked extends AbstractRule
 {
+    use Truthy;
+
     public function validate(mixed $input): bool
     {
-        return in_array($input, ['yes', 'on', 1, '1', 'true', true], true);
+        return $this->truthy($input);
     }
 }
