@@ -12,3 +12,4 @@ jobs:
       DockerHubPass: ${{ secrets.DOCKERHUB_PASSWORD }}
       DockerHubPrefix: eurofurence
       DockerFileLocation: ./docker/Dockerfile
+      DockerTarget: production
