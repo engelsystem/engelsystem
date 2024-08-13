@@ -334,6 +334,9 @@ return [
     // Whether force active should be enabled
     'enable_force_active' => (bool) env('ENABLE_FORCE_ACTIVE', true),
 
+    // Allow users with sufficient permission to add worklogs for themselves
+    'enable_self_worklog' => (bool) env('ENABLE_SELF_WORKLOG', true),
+
     // Resembles the Goodie Type. There are three options:
     // 'none' => no goodie at all
     // 'goodie' => a goodie which has no sizing options

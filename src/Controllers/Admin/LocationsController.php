@@ -37,6 +37,7 @@ class LocationsController extends BaseController
     public function index(): Response
     {
         $locations = $this->location
+            ->withCount('shifts')
             ->orderBy('name')
             ->get();
 
@@ -78,7 +79,7 @@ class LocationsController extends BaseController
         $data = $this->validate(
             $request,
             [
-                'name'        => 'required',
+                'name'        => 'required|max:35',
                 'description' => 'required|optional',
                 'dect'        => 'required|optional',
                 'map_url'     => 'optional|url',

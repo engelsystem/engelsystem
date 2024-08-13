@@ -16,7 +16,7 @@
             {{ block('title') }}
 
             {% if is_index|default(false) %}
-                {{ m.button(m.icon('plus-lg'), url('/admin/locations/edit')) }}
+                {{ m.add(url('/admin/locations/edit')) }}
             {% endif %}
         </h1>
 
@@ -52,7 +52,7 @@
 
                                     <td>{{ m.iconBool(location.map_url) }}</td>
 
-                                    <td>{{ m.iconBool(location.shifts.count) }}</td>
+                                    <td>{{ m.iconBool(location.shifts_count) }}</td>
 
                                     <td>
                                         <div class="d-flex ms-auto">

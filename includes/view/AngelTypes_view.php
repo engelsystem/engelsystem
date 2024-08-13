@@ -131,7 +131,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
             form([
                 $supporter_mode
                     ? form_info(__('general.name'), htmlspecialchars($angeltype->name))
-                    : form_text('name', __('general.name'), $angeltype->name),
+                    : form_text('name', __('general.name'), $angeltype->name, false, 255),
                 $supporter_mode
                     ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
                     : form_checkbox(
@@ -512,9 +512,16 @@ function AngelType_view(
     ShiftCalendarRenderer $shiftCalendarRenderer,
     $tab
 ) {
-    $link = button(url('/angeltypes'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $back = button(url('/angeltypes'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $add = (($admin_angeltypes || $admin_user_angeltypes) ? button(
+        url('/user-angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
+        icon('plus-lg'),
+        '',
+        '',
+        __('general.add')
+    ) : '');
     return page_with_title(
-        $link . ' ' . sprintf(__('Team %s'), htmlspecialchars($angeltype->name)),
+        $back . ' ' . sprintf(__('Team %s'), htmlspecialchars($angeltype->name)) . ' ' . $add,
         [
             AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_license, $user),
             msg(),
@@ -622,19 +629,14 @@ function AngelType_view_info(
         ];
     }
 
-    $info[] = '<h3>' . __('Members') . '</h3>';
-    if ($admin_user_angeltypes) {
-        $info[] = buttons([
-            button(
-                url(
-                    '/user-angeltypes',
-                    ['action' => 'add', 'angeltype_id' => $angeltype->id]
-                ),
-                icon('plus-lg') . __('Add'),
-                'add'
-            ),
-        ]);
-    }
+    $add = (($admin_angeltypes || $admin_user_angeltypes) ? button(
+        url('/user-angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
+        icon('plus-lg'),
+        'btn-sm',
+        '',
+        __('general.add')
+    ) : '');
+    $info[] = '<h3>' . __('Members') . ' ' . $add . '</h3>';
     $info[] = table($table_headers, $members_confirmed);
 
     if ($admin_user_angeltypes && $angeltype->restricted && count($members_unconfirmed) > 0) {
@@ -698,9 +700,15 @@ function AngelTypes_render_contact_info(AngelType $angeltype)
  */
 function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
 {
-    $link = button(url('/angeltypes', ['action' => 'edit']), icon('plus-lg'), 'add');
+    $add = button(
+        url('/angeltypes', ['action' => 'edit']),
+        icon('plus-lg'),
+        '',
+        '',
+        __('general.add')
+    );
     return page_with_title(
-        angeltypes_title() . ' ' . ($admin_angeltypes ? $link : ''),
+        angeltypes_title() . ' ' . ($admin_angeltypes ? $add : ''),
         [
             msg(),
             buttons([

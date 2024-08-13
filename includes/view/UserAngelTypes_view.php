@@ -131,16 +131,12 @@ function UserAngelType_delete_view(UserAngelType $user_angeltype, User $user, An
 
 /**
  * @param AngelType $angeltype
- * @param User[]    $users_source
+ * @param array     $users_select
  * @param int       $user_id
  * @return string
  */
-function UserAngelType_add_view(AngelType $angeltype, $users_source, $user_id)
+function UserAngelType_add_view(AngelType $angeltype, $users_select, $user_id)
 {
-    $users = [];
-    foreach ($users_source as $user_source) {
-        $users[$user_source->id] = $user_source->displayName;
-    }
     $link = button(
         url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
         icon('chevron-left'),
@@ -155,8 +151,8 @@ function UserAngelType_add_view(AngelType $angeltype, $users_source, $user_id)
             $angeltype->restricted
                 ? form_checkbox('auto_confirm_user', __('Confirm user'), true)
                 : '',
-            form_select('user_id', __('general.user'), $users, $user_id),
-            form_submit('submit', icon('plus-lg') . __('Add')),
+            form_select('user_id', __('general.user'), $users_select, $user_id),
+            form_submit('submit', icon('plus-lg') . __('general.add')),
         ]),
     ]);
 }

@@ -10,7 +10,7 @@
             {% block content_title %}{{ block('title') }}{% endblock %}
 
             {% if is_index|default(false) %}
-                {{ m.button(m.icon('plus-lg'), url('/admin/schedule/edit')) }}
+                {{ m.add(url('/admin/schedule/edit')) }}
             {% endif %}
         </h1>
 
@@ -45,7 +45,7 @@
                                                 {{ f.delete(null, {
                                                     'title': __('form.delete'),
                                                     'confirm_button_text': __('form.delete'),
-                                                    'confirm_title': __('schedule.delete.title', [schedule.shifts|length]),
+                                                    'confirm_title': __('schedule.delete.title', [schedule.shifts_count]),
                                                     'size': 'sm'
                                                 }) }}
                                             </div>

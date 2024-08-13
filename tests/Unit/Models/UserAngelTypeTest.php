@@ -99,6 +99,36 @@ class UserAngelTypeTest extends ModelTest
         $this->assertContains('confirm_user_id', $attributes);
     }
 
+    /**
+     * @covers \Engelsystem\Models\UserAngelType::getIsConfirmedAttribute
+     */
+    public function testGetIsConfirmedAttribute(): void
+    {
+        $this->angeltype->restricted = false;
+        $this->angeltype->save();
+
+        $model = new UserAngelType();
+        $model->user()->associate($this->user);
+        $model->angelType()->associate($this->angeltype);
+        $model->save();
+
+        /** @var UserAngelType $model */
+        $model = UserAngelType::find(1);
+        $this->assertTrue($model->isConfirmed);
+
+        $this->angeltype->restricted = true;
+        $this->angeltype->save();
+        /** @var UserAngelType $model */
+        $model = UserAngelType::find(1);
+        $this->assertFalse($model->isConfirmed);
+
+        $model->confirmUser()->associate($this->confirmed);
+        $model->save();
+        /** @var UserAngelType $model */
+        $model = UserAngelType::find(1);
+        $this->assertTrue($model->isConfirmed);
+    }
+
     public function setUp(): void
     {
         parent::setUp();

@@ -950,7 +950,7 @@ msgstr "Supporter"
 msgid "Members"
 msgstr "Mitglieder"
 
-msgid "Add"
+msgid "general.add"
 msgstr "Hinzufügen"
 
 msgid "Confirm all"
@@ -1853,12 +1853,6 @@ msgstr "FAQ Eintrag bearbeiten"
 
 msgid "faq.add"
 msgstr "FAQ Eintrag erstellen"
-
-msgid "faq.question"
-msgstr "Frage"
-
-msgid "faq.message"
-msgstr "Antwort"
 
 msgid "faq.delete.title"
 msgstr "FAQ \"%s\" löschen"

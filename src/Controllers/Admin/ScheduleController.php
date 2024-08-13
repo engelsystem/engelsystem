@@ -56,7 +56,7 @@ class ScheduleController extends BaseController
             'admin/schedule/index',
             [
                 'is_index' => true,
-                'schedules' => ScheduleModel::all(),
+                'schedules' => ScheduleModel::all()->loadCount('shifts'),
             ]
         );
     }
@@ -94,7 +94,7 @@ class ScheduleController extends BaseController
         }
 
         $data = $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|max:255',
             'url' => 'required',
             'shift_type' => 'required|int',
             'needed_from_shift_type' => 'optional|checked',
