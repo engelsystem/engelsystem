@@ -1,0 +1,29 @@
+{% import 'macros/form.twig' as f %}
+
+{% macro field(name, options) %}
+    {% set info = options['name'] ~ '.info' %}
+    {% if __(info) != info %}
+        {% set options = options + {'info': __(info)} %}
+    {% endif %}
+
+    {% if options.type == 'string' %}
+        {{ f.input(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
+    {% elseif options.type == 'text' %}
+        {{ f.textarea(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
+    {% elseif options.type == 'datetime-local' %}
+        {{ f.input(name, __(options['name']), options + {'type': 'datetime-local', 'value': config(name, options.default|default(null))}) }}
+    {% endif %}
+{%- endmacro %}
+
+<form method="post">
+    {{ csrf() }}
+    {% for name, option in config %}
+        <div class="row">
+            <div class="col-md-12">
+                {{ _self.field(name, option) }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {{ f.save(__('form.save')) }}
+</form>

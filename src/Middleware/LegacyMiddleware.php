@@ -20,7 +20,6 @@ class LegacyMiddleware implements MiddlewareInterface
 {
     /** @var array<string> */
     protected array $free_pages = [
-        'admin_event_config',
         'angeltypes',
         'public_dashboard',
         'locations',
@@ -97,9 +96,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 return users_controller();
             case 'user_angeltypes':
                 return user_angeltypes_controller();
-            case 'admin_event_config':
-                list($title, $content) = event_config_edit_controller();
-                return [$title, $content];
             case 'locations':
                 return locations_controller();
             case 'user_myshifts':

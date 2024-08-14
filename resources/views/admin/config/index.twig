@@ -1,0 +1,45 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __(title|default(__('config.config'))) }}{% endblock %}
+
+{% block content %}
+    <div class="container user-settings">
+        {% block container_title %}
+            <h1>
+                {{ __('config.config') }}
+                <small class="text-muted">
+                    {{ block('title') }}
+                </small>
+            </h1>
+        {% endblock %}
+
+        <div class="row">
+            <div class="col-md-3 settings-menu">
+                <ul class="nav nav-pills flex-column mt-3 user-settings">
+                    {% for option in options %}
+                        {% if not option.permission|default(false) or can(option.permission) %}
+                            <li class="nav-item">
+                                <a
+                                    class="nav-link {% if option.url == request.url() %}active{% endif %}"
+                                    href="{{ option.url }}"
+                                >
+                                    {{ m.icon(option.icon ?? 'gear-fill') }}
+                                    {{ __(option.title) }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+                {% include 'layouts/parts/messages.twig' %}
+
+                {% block row_content %}
+                    {% include ['admin/config/' ~ page ~ '.twig', 'admin/config/settings.twig'] %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

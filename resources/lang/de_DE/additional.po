@@ -301,3 +301,39 @@ msgstr "Registrierung erfolgreich. Du kannst dich jetzt anmelden!"
 
 msgid "shifts.history.delete.success"
 msgstr "Schichten erfolgreich gelöscht."
+
+msgid "config.event"
+msgstr "Event"
+
+msgid "config.name"
+msgstr "Event Name"
+
+msgid "config.name.info"
+msgstr "Der Event Name wird auf der Startseite angezeigt."
+
+msgid "config.welcome_msg"
+msgstr "Event Willkommens-Nachricht"
+
+msgid "config.welcome_msg.info"
+msgstr "Die Willkommens-Nachricht wird nach der Registrierung angezeigt. Du kannst Markdown benutzen."
+
+msgid "config.buildup_start"
+msgstr "Aufbau Datum"
+
+msgid "config.event_start"
+msgstr "Event Start Datum"
+
+msgid "config.event_end"
+msgstr "Event Ende Datum"
+
+msgid "config.teardown_end"
+msgstr "Abbau Ende Datum"
+
+msgid "validation.event_start.after"
+msgstr "Event Start muss nach dem Aufbau liegen."
+
+msgid "validation.event_end.after"
+msgstr "Event Ende muss nach dem Event Start liegen."
+
+msgid "validation.teardown_end.after"
+msgstr "Abbau Ende muss nach dem Event Ende liegen."

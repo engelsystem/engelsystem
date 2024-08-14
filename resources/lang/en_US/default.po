@@ -1033,3 +1033,9 @@ msgid "freeload.freeloaded.info"
 msgstr ""
 "The angel was not present for a shift. "
 "If %s shifts are freeloaded, the shift registration is blocked for the angel."
+
+msgid "config.config"
+msgstr "Config"
+
+msgid "config.edit.success"
+msgstr "Configuration updated successfully"
