@@ -81,12 +81,16 @@ docker compose exec es_workspace bin/migrate
 While developing you may use the watch mode to rebuild the system on changes
 
 ```bash
-# Run a front-end build and update on change
+# Run a front-end build and update on change. Note that this doesn't apply to changed translation files – see above on how to update them manually
 docker compose exec es_workspace yarn build:watch
 
 # Or run a front-end build and update on change for specific themes only, e.g.
 docker compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
+
+> [!NOTE]
+> Wait for a few minutes after running `docker compose exec` – it may look like it's stalling, but it's not.
+
 
 It might also be useful to have an interactive database interface for which a phpMyAdmin instance can be startet at [http://localhost:8888](http://localhost:8888).
 ```bash
