@@ -21,7 +21,7 @@ class ShiftCalendarShiftRenderer
      * Renders a shift
      *
      * @param Shift                   $shift The shift to render
-     * @param array[]                 $needed_angeltypes
+     * @param AngelType[]|Collection  $needed_angeltypes
      * @param ShiftEntry[]|Collection $shift_entries
      * @param User                    $user The user who is viewing the shift calendar
      * @return array
@@ -83,7 +83,7 @@ class ShiftCalendarShiftRenderer
 
     /**
      * @param Shift                   $shift
-     * @param array[]                 $needed_angeltypes
+     * @param AngelType[]|Collection  $needed_angeltypes
      * @param ShiftEntry[]|Collection $shift_entries
      * @param User                    $user
      * @return array
