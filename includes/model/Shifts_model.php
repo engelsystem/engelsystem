@@ -194,7 +194,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
         $shifts[] = (new Shift())->forceFill($shift);
     }
 
-    $shifts->load(['location', 'shiftType']);
+    $shifts->load(['location', 'shiftType', 'shiftEntries.angelType']);
 
     return $shifts;
 }
