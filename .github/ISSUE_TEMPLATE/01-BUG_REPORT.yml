@@ -9,14 +9,16 @@ body:
         Thank you for taking the time to report an issue with the Critter System. Your feedback helps us improve the platform.
 
         Please provide detailed information below to help us diagnose and fix the problem.    
-  - type: dropdown
+ - type: dropdown
     attributes:
-      label: User Role
+      label: Installation source
       multiple: false
       options:
-        - Critter System Staff
-        - Eurofurence Director
-        - Eurofurence Staff
-        - Attendee (Critter)
-      validations:
-        required: true
+        - Static binary from official website
+        - Microsoft Store
+        - Mac App Store
+        - Flatpak
+        - Snap
+        - Other (unofficial) source
+    validations:
+      required: true
