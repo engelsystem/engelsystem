@@ -1,7 +1,7 @@
 ---
 name: Bug Report
-description: Suggest an idea or improvement for the Eurofurence Critter System.
-labels: [enhancement]
+description: Report errors or unexpected behavior in the Critter System.
+labels: [bug]
 body:
   - type: textarea
     attributes:
