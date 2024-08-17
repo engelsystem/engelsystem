@@ -3,12 +3,12 @@ name: Bug Report
 description: Report errors or unexpected behavior in the Critter System.
 labels: [bug]
 body:
-  - type: textarea
+  - type: markdown
     attributes:
-      label: Is your feature request related to a specific event or issue during Eurofurence?
-      placeholder: Please describe if this feature request is related to a specific event or challenge you encountered during Eurofurence.
-    validations:
-      required: true
+      value: |
+        Thank you for taking the time to report an issue with the Critter System. Your feedback helps us improve the platform.
+
+        Please provide detailed information below to help us diagnose and fix the problem.    
   - type: textarea
     attributes:
       label: What problem does this feature solve?
