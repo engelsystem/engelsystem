@@ -1,5 +1,5 @@
 ---
-name: Bug Report
+name: Report
 description: Report errors or unexpected behavior you encountered with Eurofurence Critter System.
 labels: [bug]
 body:
