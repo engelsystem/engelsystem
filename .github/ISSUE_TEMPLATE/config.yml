@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: Report a security 
     url: https://github.com/eurofurence/crittersystem/security/policy
-    about: Please review our [security policy](https://github.com/eurofurence/crittersystem/security/policy) for for more details. 
+    about: Please review our security policy for for more details. 
   - name: General Questions or Issues
     url: https://help.eurofurence.org/contact/it
     about: For any other questions or problems, please contact the Eurofurence IT Department.
