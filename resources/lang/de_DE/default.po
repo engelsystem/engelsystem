@@ -1495,7 +1495,7 @@ msgid "log.log"
 msgstr "Logs"
 
 msgid "log.only_own"
-msgstr "Du siehst hier deine eigenen Logs. Die logs anderer User können nur Bürokraten sehen."
+msgstr "Du siehst hier deine eigenen Logs. Die Logs anderer User können nur Bürokraten sehen."
 
 msgid "log.time"
 msgstr "Zeit"
