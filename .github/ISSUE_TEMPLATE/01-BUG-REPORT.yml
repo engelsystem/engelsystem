@@ -18,27 +18,114 @@ body:
         - Eurofurence Director
         - Eurofurence Staff
         - Attendee (Critter)
-  - type: textarea
+   - type: dropdown
     attributes:
-      label: Describe the solution you'd like to see implemented
-      placeholder: Detail the solution or feature you would like to see added to the Critter System.
+      label: System Type
+      description: Select the type of device you were using.
+      options:
+        - Computer
+        - Tablet
+        - Smartphone
+        - Other
+      validations:
+        required: true
+  - type: dropdown
+    attributes:
+      label: Operating System
+      description: Select the operating system of your device.
+      options:
+        - iOS
+        - macOS
+        - iPadOS
+        - Windows
+        - Linux
+        - Other
+  - type: input
+    attributes:
+      label: OS Version
+      description: Enter the version of your operating system.
+      placeholder: e.g., Windows 10, macOS 12.3, Ubuntu 20.04
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Browser Details (if applicable)
+      description: Enter the name and version of the browser you were using.
+      placeholder: e.g., Chrome 93, Safari 15, Firefox 92
     validations:
       required: true
   - type: textarea
     attributes:
-      label: How would this feature improve the Critter System for Eurofurence volunteers or attendees?
-      placeholder: Explain how this feature would enhance the experience or efficiency for those using the system during Eurofurence.
+      label: Steps to Reproduce
+      placeholder: |
+        1. 
+        2. 
+        3. 
+      description: Provide step-by-step instructions on how to reproduce the issue. This field is optional but highly encouraged.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      placeholder: Tell us what should happen
     validations:
       required: true
   - type: textarea
     attributes:
-      label: Describe any alternatives you've considered or tried
-      placeholder: Mention any alternative solutions or workarounds you have considered or used, and why they might not be sufficient.
+      label: Actual Behavior
+      placeholder: Tell us what happens instead
     validations:
       required: true
+  - type: dropdown
+    attributes:
+      label: Feature Area
+      description: Select the feature area where the issue occurred.
+      options:
+        - Registration
+        - Volunteer Sign-Up
+        - Shift Creation and Management
+        - Other
+  - type: input
+    attributes:
+      label: If you selected "Other", please specify
+      placeholder: Specify the general feature you were trying to use
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: Severity
+      description: How severe is the issue?
+      options:
+        - Minor Issue
+        - Major Issue
+        - Critical Problem
   - type: textarea
     attributes:
-      label: Additional context or screenshots
-      placeholder: Provide any other relevant details, screenshots, or context that would help us understand your feature request better.
+      label: Error Messages
+      placeholder: Paste any error messages here (if applicable)
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Workarounds Tried
+      placeholder: Describe any temporary solutions or workarounds you have tried
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: Network Type
+      description: Select the type of network connection you were using.
+      options:
+        - Wired Ethernet
+        - Wi-Fi
+        - Mobile Data (3G/4G/5G)
+        - Other
+  - type: textarea
+    attributes:
+      label: Anything Else?
+      description: |
+        Links? References? Anything that will give us more context about the issue you are encountering!
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
     validations:
       required: false
