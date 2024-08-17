@@ -7,3 +7,16 @@ body:
     attributes:
       value: |
         Thank you for taking the time to report an issue with the Critter System. Your feedback helps us improve the platform.
+
+        Please provide detailed information below to help us diagnose and fix the problem.    
+  - type: dropdown
+    attributes:
+      label: User Role
+      description: Select your role when you encountered the issue.
+      options:
+        - Critter System Staff
+        - Eurofurence Director
+        - Eurofurence Staff
+        - Attendee (Critter)
+      validations:
+        required: true
