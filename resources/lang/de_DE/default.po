@@ -100,10 +100,10 @@ msgstr "Version: _%s_"
 
 msgid "credits.credit"
 msgstr ""
-"Das ursprüngliche Engelsystem wurde entwickelt von [cookie](https://github."
+"Das ursprüngliche Crittersystem wurde entwickelt von [cookie](https://github."
 "com/cookieBerlin/engelsystem). Danach wurde es von [msquare](https://"
 "notrademark.de) (Maintainer) und [MyIgel](https://myigel.name) vollständig "
-"überarbeitet und verbessert. Seit EF28 nutzt Eurofurence einen eigenen Fork."
+"überarbeitet und verbessert. Seit EF28 nutzt [Eurofurence](https://eurofurence.org) einen eigenen Fork."
 
 msgid "credits.contributors"
 msgstr ""
@@ -169,19 +169,19 @@ msgid "form.recover"
 msgstr "Wiederherstellen"
 
 msgid "Angeltype %s deleted."
-msgstr "Engeltyp %s gelöscht."
+msgstr "Crittertyp %s gelöscht."
 
 msgid "Delete angeltype %s"
-msgstr "Lösche Engeltyp %s"
+msgstr "Lösche Crittertyp %s"
 
 msgid "Please check the name. Maybe it already exists."
 msgstr "Bitte überprüfe den Namen. Vielleicht ist er bereits vergeben."
 
 msgid "Angel type saved."
-msgstr "Engeltyp wurde gespeichert."
+msgstr "Crittertyp wurde gespeichert."
 
 msgid "Create angeltype"
-msgstr "Engeltyp erstellen"
+msgstr "Crittertyp erstellen"
 
 msgid "Edit %s"
 msgstr "%s bearbeiten"
@@ -211,13 +211,13 @@ msgid "%s has been subscribed to the shift."
 msgstr "%s wurde in die Schicht eingetragen."
 
 msgid "User is not in angeltype."
-msgstr "User ist nicht im Engeltyp."
+msgstr "User ist nicht im Crittertyp."
 
 msgid "This shift is already occupied."
 msgstr "Die Schicht ist schon voll."
 
 msgid "You need be accepted member of the angeltype."
-msgstr "Du musst bestätigtes Mitglied des Engeltyps sein."
+msgstr "Du musst bestätigtes Mitglied des Crittertyps sein."
 
 msgid "This shift collides with one of your shifts."
 msgstr "Diese Schicht kollidiert mit deinen Schichten."
@@ -268,7 +268,7 @@ msgid "The ending time has to be after the starting time."
 msgstr "Die Endzeit muss nach der Startzeit liegen."
 
 msgid "Please check your input for needed angels of type %s."
-msgstr "Bitte prüfe deine Eingabe für benötigte Engel des Typs %s."
+msgstr "Bitte prüfe deine Eingabe für benötigte Critter."
 
 msgid "Shift updated."
 msgstr "Schicht aktualisiert."
@@ -292,7 +292,7 @@ msgid "End:"
 msgstr "Ende:"
 
 msgid "Needed angels"
-msgstr "Benötigte Engel"
+msgstr "Benötigte Critter"
 
 msgid "Shift deleted."
 msgstr "Schicht gelöscht."
@@ -305,41 +305,41 @@ msgstr "Schicht konnte nicht gefunden werden."
 
 msgid "There is %d unconfirmed angeltype."
 msgid_plural "There are %d unconfirmed angeltypes."
-msgstr[0] "Es gibt %d nicht freigeschalteten Engeltypen!"
-msgstr[1] "Es gibt %d nicht freigeschaltete Engeltypen!"
+msgstr[0] "Es gibt %d nicht freigeschalteten Crittertypen!"
+msgstr[1] "Es gibt %d nicht freigeschaltete Crittertypen!"
 
 msgid "Angel types which need approvals:"
-msgstr "Engeltypen die bestätigt werden müssen:"
+msgstr "Crittertypen die bestätigt werden müssen:"
 
 msgid "You are not allowed to delete all users for this angeltype."
-msgstr "Du darfst nicht alle Benutzer von diesem Engeltyp entfernen."
+msgstr "Du darfst nicht alle Benutzer von diesem Crittertyp entfernen."
 
 msgid "Denied all users for angeltype %s."
-msgstr "Alle Benutzer mit Engeltyp %s abgelehnt."
+msgstr "Alle Benutzer mit Crittertyp %s abgelehnt."
 
 msgid "Deny all users"
 msgstr "Alle Benutzer ablehnen"
 
 msgid "You are not allowed to confirm all users for this angeltype."
-msgstr "Du darfst nicht alle Benutzer für diesen Engeltyp freischalten."
+msgstr "Du darfst nicht alle Benutzer für diesen Crittertyp freischalten."
 
 msgid "Confirmed all users for angeltype %s."
-msgstr "Alle Benutzer für Engeltyp %s freigeschaltet."
+msgstr "Alle Benutzer für Crittertyp %s freigeschaltet."
 
 msgid "Confirm all users"
 msgstr "Alle Benutzer bestätigen"
 
 msgid "You are not allowed to confirm this users angeltype."
-msgstr "Du darfst diesen Benutzer nicht für diesen Engeltyp freischalten."
+msgstr "Du darfst diesen Benutzer nicht für diesen Crittertyp freischalten."
 
 msgid "%s confirmed for angeltype %s."
-msgstr "%s für Engeltyp %s freigeschaltet."
+msgstr "%s für Crittertyp %s freigeschaltet."
 
 msgid "Confirm angeltype for user"
-msgstr "Engeltyp für Benutzer bestätigen"
+msgstr "Crittertyp für Benutzer bestätigen"
 
 msgid "You are not allowed to delete this users angeltype."
-msgstr "Du darfst diesen Benutzer nicht von diesem Engeltyp entfernen."
+msgstr "Du darfst diesen Benutzer nicht von diesem Crittertyp entfernen."
 
 msgid "User \"%s\" removed from \"%s\"."
 msgstr "Benutzer \"%s\" von \"%s\" entfernt."
@@ -351,7 +351,7 @@ msgid "You successfully left \"%2$s\"."
 msgstr "Du hast erfolgreich \"%2$s\" verlassen."
 
 msgid "Leave angeltype"
-msgstr "Engeltyp verlassen"
+msgstr "Crittertyp verlassen"
 
 msgid "You are not allowed to set supporter rights."
 msgstr "Du darfst keine Supporterrechte bearbeiten."
@@ -375,7 +375,7 @@ msgid "User %s added to %s."
 msgstr "Benutzer %s zu %s hinzugefügt."
 
 msgid "Add user to angeltype"
-msgstr "Benutzer zu Engeltyp hinzufügen"
+msgstr "Benutzer zu Crittertyp hinzufügen"
 
 msgid "You are already a %s."
 msgstr "Du bist bereits %s."
@@ -393,7 +393,7 @@ msgid "auth.password.error"
 msgstr "Dein Passwort stimmt nicht. Bitte probiere es nochmal."
 
 msgid "User deleted."
-msgstr "Engel gelöscht."
+msgstr "Critter gelöscht."
 
 msgid "Delete %s"
 msgstr "%s löschen"
@@ -443,20 +443,20 @@ msgstr ""
 "den Himmel."
 
 msgid "Active angels"
-msgstr "Aktive Engel"
+msgstr "Aktive Critter"
 
 msgid ""
 "At least %s angels are forced to be active. The number has to be greater."
 msgstr ""
-"Mindestens %s Engel werden als aktiv gekennzeichnet. Die Nummer muss größer "
+"Mindestens %s Critter werden als aktiv gekennzeichnet. Die Nummer muss größer "
 "sein."
 
 msgid "Please enter a number of angels to be marked as active."
 msgstr ""
-"Bitte gib eine Anzahl an Engeln ein, die als Aktiv markiert werden sollen."
+"Bitte gib eine Anzahl an Crittern ein, die als Aktiv markiert werden sollen."
 
 msgid "Marked angels."
-msgstr "Engel wurden markiert."
+msgstr "Critter wurden markiert."
 
 msgid "general.back"
 msgstr "Zurück"
@@ -465,19 +465,19 @@ msgid "Apply"
 msgstr "Anwenden"
 
 msgid "Angel has been marked as active."
-msgstr "Engel wurde als aktiv markiert."
+msgstr "Critter wurde als aktiv markiert. "
 
 msgid "Angel not found."
-msgstr "Engel nicht gefunden."
+msgstr "Critter nicht gefunden."
 
 msgid "Angel has been marked as not active."
-msgstr "Engel wurde als nicht aktiv markiert."
+msgstr "Critter wurde als nicht aktiv markiert."
 
 msgid "Angel has got a T-shirt."
-msgstr "Engel hat ein T-Shirt bekommen."
+msgstr "Critter hat ein T-Shirt bekommen."
 
 msgid "Angel has got no T-shirt."
-msgstr "Engel hat kein T-Shirt bekommen."
+msgstr "Critter hat kein T-Shirt bekommen."
 
 msgid "set active"
 msgstr "setze aktiv"
@@ -495,13 +495,13 @@ msgid "Sum"
 msgstr "Summe"
 
 msgid "Search angel:"
-msgstr "Suche Engel:"
+msgstr "Suche Critter:"
 
 msgid "Show all shifts"
 msgstr "Alle Schichten anzeigen"
 
 msgid "How many angels should be active?"
-msgstr "Wie viele Engel sollten aktiv sein?"
+msgstr "Wie viele Critter sollten aktiv sein?"
 
 msgid "Size"
 msgstr "Größe"
@@ -534,13 +534,13 @@ msgid "Given T-shirts"
 msgstr "Ausgegebene T-Shirts"
 
 msgid "Arrive angels"
-msgstr "Ankommende Engel"
+msgstr "Ankommende Critter"
 
 msgid "Reset done. Angel has not arrived."
-msgstr "Zurückgesetzt. Engel ist nicht angekommen."
+msgstr "Zurückgesetzt. Critter ist noch nicht angekommen."
 
 msgid "Angel has been marked as arrived."
-msgstr "Engel wurde als angekommen markiert."
+msgstr "Critter wurde als angekommen markiert."
 
 msgid "Reset"
 msgstr "Zurücksetzen"
@@ -573,10 +573,10 @@ msgid "Planned departure statistics"
 msgstr "Geplante Abreise-Statistik"
 
 msgid "Free angels"
-msgstr "Freie Engel"
+msgstr "Freie Critter"
 
 msgid "Angeltype"
-msgstr "Engeltyp"
+msgstr "Crittertyp"
 
 msgid "shift.next"
 msgstr "Nächste Schicht"
@@ -585,7 +585,7 @@ msgid "general.shift"
 msgstr "Schicht"
 
 msgid "shift.angeltype_source"
-msgstr "Benötigte Engel von: %s"
+msgstr "Benötigte Critter von: %s"
 
 msgid "shift.angeltype_source.shift_type"
 msgstr "Programm %s via Schichttyp %s"
@@ -636,7 +636,7 @@ msgid "Please use markdown for the description."
 msgstr "Bitte benutze Markdown für die Beschreibung."
 
 msgid "Needed angels:"
-msgstr "Benötigte Engel:"
+msgstr "Benötigte Critter:"
 
 msgid "Create shifts"
 msgstr "Schichten erstellen"
@@ -669,16 +669,16 @@ msgid "Please select a mode."
 msgstr "Bitte einen Modus auswählen."
 
 msgid "Please check the needed angels for team %s."
-msgstr "Bitte gib die Anzahl der benötigten Engel vom Team %s an."
+msgstr "Bitte gib die Anzahl der benötigten Critter vom Team %s an."
 
 msgid "There are 0 angels needed. Please enter the amounts of needed angels."
-msgstr "Es werden 0 Engel benötigt. Bitte ändere das."
+msgstr "Es werden 0 Critter benötigt. Bitte ändere das."
 
 msgid "Please select a mode for needed angels."
-msgstr "Bitte wähle einen Modus für benötigte Engel."
+msgstr "Bitte wähle einen Modus für benötigte Critter."
 
 msgid "Please select needed angels."
-msgstr "Bitte wähle benötigte Engel."
+msgstr "Bitte wähle benötigte Critter."
 
 msgid "Time and location"
 msgstr "Zeit und Ort"
@@ -705,16 +705,16 @@ msgid "Create a shift over midnight."
 msgstr "Erstelle Schichten über Mitternacht"
 
 msgid "Copy needed angels from location settings"
-msgstr "Kopiere benötigte Engel von den Ort-Einstellungen"
+msgstr "Kopiere benötigte Critter von den Ort-Einstellungen"
 
 msgid "Copy needed angels from shift type settings"
-msgstr "Kopiere benötigte Engel von den Schichttyp-Einstellungen"
+msgstr "Kopiere benötigte Critter von den Schichttyp-Einstellungen"
 
 msgid "The following angels are needed"
-msgstr "Die folgenden Engel werden benötigt"
+msgstr "Die folgenden Critter werden benötigt"
 
 msgid "All Angels"
-msgstr "Alle Engel"
+msgstr "Alle Critter"
 
 msgid "This user does not exist."
 msgstr "Benutzer existiert nicht."
@@ -756,8 +756,8 @@ msgid ""
 "The administration has not configured any angeltypes yet - or you are not "
 "subscribed to any angeltype."
 msgstr ""
-"Die Administratoren haben noch keine Engeltypen konfiguriert - oder Du hast "
-"noch keine Engeltypen ausgewählt."
+"Die Administratoren haben noch keine Crittertypen konfiguriert - oder Du hast "
+"noch keine Crittertypen ausgewählt."
 
 msgid "occupied"
 msgstr "belegt"
@@ -775,7 +775,7 @@ msgid ""
 "The tasks shown here are influenced by the angeltypes you joined already!"
 msgstr ""
 "Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
-"(Engeltypen/Aufgaben) abhängig!"
+"(Crittertypen/Aufgaben) abhängig!"
 
 msgid "Filter"
 msgstr "Filter"
@@ -841,14 +841,14 @@ msgid "Member"
 msgstr "Mitglied"
 
 msgid "Do you want to delete angeltype %s?"
-msgstr "Möchtest Du den Engeltypen %s löschen?"
+msgstr "Möchtest Du den Crittertypen %s löschen?"
 
 msgid "angeltypes.restricted"
 msgstr "Benötigt Einführung"
 
 msgid "angeltypes.restricted.info"
 msgstr ""
-"Engeltypen, welche eine Einführung benötigen, müssen von einem Supporter freigeschaltet werden "
+"Crittertypen, welche eine Einführung benötigen, müssen von einem Supporter freigeschaltet werden "
 "(double-opt-in)."
 
 msgid "shift.self_signup"
@@ -858,10 +858,10 @@ msgid "shift.self_signup.allowed"
 msgstr "Schichten selbst eintragen erlaubt"
 
 msgid "angeltypes.shift.self_signup.info"
-msgstr "Engeltypen, welche Schichten selbst eintragen erlaubt haben, "
-"erlauben Engeln sich selbst in ihre Schichten einzutragen, "
+msgstr "Crittertypen, welche Schichten selbst eintragen erlaubt haben, "
+"erlauben Crittern sich selbst in ihre Schichten einzutragen, "
 "ist Schichten selbst eintragen nicht erlaubt können nur Supporter "
-"oder Admins Engel in die Schichten des Engeltyps eintragen."
+"oder Admins Critter in die Schichten des Crittertyps eintragen."
 
 
 msgid "Requires driver license"
@@ -880,23 +880,23 @@ msgid "My driving license"
 msgstr "Meine Führerschein-Infos"
 
 msgid "angeltype.ifsg.required.info.preview"
-msgstr "Dieser Engeltyp benötigt eine Gesundheitsbelehrung."
+msgstr "Dieser Crittertyp benötigt eine Gesundheitsbelehrung."
 
 msgid "angeltype.driving_license.required.info.preview"
-msgstr "Dieser Engeltyp benötigt Führerschein-Infos."
+msgstr "Dieser Crittertyp benötigt Führerschein-Infos."
 
 msgid ""
 "This angeltype requires a driver license. Please enter your driver license "
 "information!"
 msgstr ""
-"Dieser Engeltyp benötigt Führerschein-Infos. Bitte trage Deine Führerschein-"
+"Dieser Crittertyp benötigt Führerschein-Infos. Bitte trage Deine Führerschein-"
 "Infos ein!"
 
 msgid ""
 "You are unconfirmed for this angeltype. Please go to the introduction for %s "
 "to get confirmed."
 msgstr ""
-"Du bist noch nicht für diesen Engeltyp bestätigt. Bitte gehe zur Einführung "
+"Du bist noch nicht für diesen Crittertyp bestätigt. Bitte gehe zur Einführung "
 "für %s um bestätigt zu werden."
 
 msgid "Confirm"
@@ -936,13 +936,13 @@ msgid "Membership"
 msgstr "Mitgliedschaft"
 
 msgid "Angels needed in the next 3 hrs"
-msgstr "Benötigte Engel in den nächsten 3 Stunden"
+msgstr "Benötigte Critter in den nächsten 3 Stunden"
 
 msgid "Angels needed for nightshifts"
-msgstr "Benötigte Engel für Nachtschichten"
+msgstr "Benötigte Critter für Nachtschichten"
 
 msgid "Angels currently working"
-msgstr "Aktuell arbeitende Engel"
+msgstr "Aktuell arbeitende Critter"
 
 msgid "Hours to be worked"
 msgstr "Noch zu schaffende Stunden"
@@ -963,7 +963,7 @@ msgid "Help needed"
 msgstr "Hilfe benötigt"
 
 msgid "Other angeltype needed / collides with my shifts"
-msgstr "Andere Engeltypen benötigt / kollidiert mit meinen Schichten"
+msgstr "Andere Crittertypen benötigt / kollidiert mit meinen Schichten"
 
 msgid "Shift is full"
 msgstr "Schicht ist voll"
@@ -972,7 +972,7 @@ msgid "Shift is running/ended or you have not arrived"
 msgstr "Schicht läuft/vorbei oder du bist noch nicht angekommen"
 
 msgid "Add more angels"
-msgstr "Mehr Engel hinzufügen"
+msgstr "Mehr Critter hinzufügen"
 
 msgid "%d helper needed"
 msgid_plural "%d helpers needed"
@@ -1031,7 +1031,7 @@ msgid "Edit shift entry"
 msgstr "Schichteintrag bearbeiten"
 
 msgid "Angel:"
-msgstr "Engel:"
+msgstr "Critter:"
 
 msgid "Date, Duration:"
 msgstr "Termin, Dauer:"
@@ -1095,17 +1095,17 @@ msgid ""
 "Do you really want to delete the user including all his shifts and every "
 "other piece of his data?"
 msgstr ""
-"Möchtest Du wirklich den Engel inklusive aller seiner Schichten und allen "
+"Möchtest Du wirklich den Critter inklusive aller seiner Schichten und allen "
 "anderen seiner Daten löschen?"
 
 msgid "Your password"
 msgstr "Dein Passwort"
 
 msgid "Angel can receive another %d vouchers."
-msgstr "Engel kann noch %d Gutscheine bekommen."
+msgstr "Critter kann noch %d Gutscheine bekommen."
 
 msgid "Angel can receive another %d vouchers and is FA."
-msgstr "Engel kann noch %d Gutscheine bekommen und ist FA."
+msgstr "Critter kann noch %d Gutscheine bekommen und ist FA."
 
 msgid "Number of vouchers given out"
 msgstr "Anzahl Gutscheine bekommen"
@@ -1245,26 +1245,26 @@ msgid ""
 "Here you can change the user entry. Under the item 'Arrived' the angel is marked as present, "
 "a yes at Active means that the angel was active."
 msgstr ""
-"Hier kannst du den Benutzer Eintrag ändern. Unter dem Punkt 'Angekommen' wird der Engel als anwesend markiert, "
-"ein Ja bei Aktiv bedeutet, dass der Engel aktiv war."
+"Hier kannst du den Benutzer Eintrag ändern. Unter dem Punkt 'Angekommen' wird der Critter als anwesend markiert, "
+"ein Ja bei Aktiv bedeutet, dass der Critter aktiv war."
 
 msgid ""
 "If the angel is active, it can claim a T-shirt. If T-shirt is set to 'Yes', the angel already got their T-shirt."
 msgstr ""
-"Ist der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, bedeutet dies, "
-"dass der Engel bereits sein T-Shirt erhalten hat."
+"Ist der Critter Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, bedeutet dies, "
+"dass der Critter bereits sein T-Shirt erhalten hat."
 
 msgid "Here you can reset the password of this angel:"
-msgstr "Hier kannst du das Passwort für diesen Engel zurücksetzen:"
+msgstr "Hier kannst du das Passwort für diesen Critter:"
 
 msgid "Here you can define the user groups of the angel:"
-msgstr "Hier kannst du die Benutzergruppen des Engels definieren:"
+msgstr "Hier kannst du die Benutzergruppen des Critter:"
 
 msgid "User groups saved."
 msgstr "Benutzergruppen gespeichert."
 
 msgid "You cannot edit angels with more rights."
-msgstr "Du kannst keine Engel mit mehr Rechten bearbeiten."
+msgstr "Du kannst keine Critter mit mehr Rechten bearbeiten."
 
 msgid "You cannot edit your own rights."
 msgstr "Du kannst deine eigenen Rechte nicht bearbeiten."
@@ -1285,8 +1285,8 @@ msgid "Shifts created."
 msgstr "Schichten erstellt."
 
 msgid "If the angel is active, it can claim a goodie. If goodie is set to 'Yes', the angel already got their goodie."
-msgstr "Ist der Engel Aktiv, hat er damit Anspruch auf ein Goodie. Wenn Goodie ein 'Ja' enthält, bedeutet dies, "
-"dass der Engel bereits sein Goodie erhalten hat."
+msgstr "Ist der Critter Aktiv, hat er damit Anspruch auf ein Goodie. Wenn Goodie ein 'Ja' enthält, bedeutet dies, "
+"dass der Critter bereits sein Goodie erhalten hat."
 
 msgid "Goodie"
 msgstr "Goodie"
@@ -1310,10 +1310,10 @@ msgid "Got goodie"
 msgstr "Goodie bekommen"
 
 msgid "Angel has got a goodie."
-msgstr "Engel hat ein Goodie bekommen."
+msgstr "Critter hat enn Goodie bekommen."
 
 msgid "Angel has got no goodie."
-msgstr "Engel hat kein Goodie bekommen."
+msgstr "Critter hat kein Goodie bekommen."
 
 msgid "page.404.text"
 msgstr ""
@@ -1394,7 +1394,7 @@ msgid "schedule.shift-type"
 msgstr "Schichttyp"
 
 msgid "schedule.needed-from-shift-type"
-msgstr "Engeltypen vom Schichttyp laden (sonst vom Ort)"
+msgstr "Crittertypen vom Schichttyp laden (sonst vom Ort)"
 
 msgid "schedule.minutes-before"
 msgstr "Minuten vor Talk beginn hinzufügen"
@@ -1523,7 +1523,7 @@ msgid "settings.profile.pronoun"
 msgstr "Pronomen"
 
 msgid "settings.profile.pronoun.info"
-msgstr "Wird auf deiner Profilseite und in Engellisten angezeigt."
+msgstr "Wird auf deiner Profilseite und in Critterlisten angezeigt."
 
 msgid "settings.profile.firstname"
 msgstr "Vorname"
@@ -1562,7 +1562,7 @@ msgid "settings.profile.email_messages"
 msgstr "Benachrichtige mich bei neuen privaten Nachrichten."
 
 msgid "settings.profile.email_by_human_allowed"
-msgstr "Erlaube Himmel-Engeln mich per E-Mail zu kontaktieren."
+msgstr "Erlaube Himmel-Crittern mich per E-Mail zu kontaktieren."
 
 msgid "settings.profile.email_goodie"
 msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "
@@ -1589,7 +1589,7 @@ msgid "settings.profile.shirt.link"
 msgstr "Mehr Informationen"
 
 msgid "settings.profile.angeltypes.info"
-msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
+msgstr "Du kannst deine Crittertypen <a href=\"%s\">auf der Crittertypen-Seite</a> verwalten."
 
 msgid "settings.password"
 msgstr "Passwort"
@@ -1712,15 +1712,15 @@ msgid "angeltype.ifsg.own"
 msgstr "Meine Gesundheitsbelehrung"
 
 msgid "angeltype.ifsg.required.info"
-msgstr "Dieser Engeltyp benötigt eine Gesundheitsbelehrung. Bitte trage deine Gesundheitsbelehrung ein!"
+msgstr "Dieser Crittertyp benötigt eine Gesundheitsbelehrung. Bitte trage deine Gesundheitsbelehrung ein!"
 
 msgid "angeltype.ifsg.required.info.here"
-msgstr "Dieser Engeltyp benötigt eine Gesundheitsbelehrung. "
+msgstr "Dieser Crittertyp benötigt eine Gesundheitsbelehrung. "
 "Bitte trage deine Gesundheitsbelehrung hier ein: %s"
 
 msgid "angeltype.driving_license.required.info.here"
 msgstr ""
-"Du bist einem Engeltypen beigetreten, der Führerschein-Infos benötigt. "
+"Du bist einem Crittertypen beigetreten, der Führerschein-Infos benötigt. "
 "Bitte trage Deine Führerschein-Infos hier ein: %s."
 
 msgid "ifsg.info"
@@ -1864,7 +1864,7 @@ msgid "message.title"
 msgstr "Nachrichten"
 
 msgid "message.choose_angel"
-msgstr "Wähle einen Engel"
+msgstr "Wähle einen Critter:"
 
 msgid "message.to_conversation"
 msgstr "Zur Konversation"
@@ -1873,7 +1873,7 @@ msgid "message.message"
 msgstr "Nachricht"
 
 msgid "general.angel"
-msgstr "Engel"
+msgstr "Critter"
 
 msgid "worklog.add"
 msgstr "Arbeitseinsatz hinzufügen"
@@ -1897,7 +1897,7 @@ msgid "worklog.delete.info"
 msgstr "Möchtest du den Arbeitseinsatz von %s wirklich löschen?"
 
 msgid "angeltypes.angeltypes"
-msgstr "Engeltypen"
+msgstr "Crittertypen"
 
 msgid "angeltypes.about"
 msgstr "Teams-/Aufgabenbeschreibung"
@@ -1906,7 +1906,7 @@ msgid "angeltypes.about.text"
 msgstr "Hier findest Du die Liste der Teams und ihrer Aufgaben. Wenn Du weitere Fragen hast, schaue in den FAQ nach."
 
 msgid "angeltypes.restricted.hint"
-msgstr "Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen. "
+msgstr "Dieser Crittertyp benötigt eine Einweisung bei einem Einführungstreffen. "
 "Weitere Informationen findest du möglicherweise in der Beschreibung."
 
 msgid "angeltypes.can-change-later"
@@ -1916,8 +1916,8 @@ msgid "angeltypes.hide_on_shift_view"
 msgstr "Auf Schicht-Ansicht ausblenden"
 
 msgid "angeltypes.hide_on_shift_view.info"
-msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
-"Schicht Seite die Filteroption für diesen Engeltyp sehen."
+msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Crittertyps auf der "
+"Schicht Seite die Filteroption für diesen Crittertyp sehen."
 
 msgid "location.location"
 msgstr "Ort"
@@ -1929,7 +1929,7 @@ msgid "location.map_url"
 msgstr "Karte"
 
 msgid "location.required_angels"
-msgstr "Benötigte Engel (bei Fahrplan import)"
+msgstr "Benötigte Critter (bei Fahrplan import)"
 
 msgid "location.map_url.info"
 msgstr "Die Karte wird auf der Ort-Seite als iframe eingebettet."
@@ -1956,7 +1956,7 @@ msgid "shifttype.delete.title"
 msgstr "Schichttyp \"%s\" löschen"
 
 msgid "shifttype.required_angels"
-msgstr "Benötigte Engel (bei Fahrplan import)"
+msgstr "Benötigte Critter (bei Fahrplan import)"
 
 msgid "event.day"
 msgstr "Tag %1$d"
@@ -1965,7 +1965,7 @@ msgid "dashboard.day"
 msgstr "Tag"
 
 msgid "registration.title"
-msgstr "Engel-Registrierung"
+msgstr "Critter-Registrierung"
 
 msgid "registration.login_data"
 msgstr "Anmeldedaten"
@@ -2015,8 +2015,8 @@ msgstr "Benutzer Info"
 msgid "user.info.hint"
 msgstr ""
 "Wird auf der Benutzer Seite für Schichtkoordinatoren und Admins angezeigt. "
-"Wenn ein Engel nicht als angekommen markiert ist, "
-"entfernt eine Benutzer Info die nicht-angekommen Nachricht im Systemmenü des Engels."
+"Wenn ein Critter nicht als angekommen markiert ist, "
+"entfernt eine Benutzer Info die nicht-angekommen Nachricht im Systemmenü des Critters."
 
 msgid "user_info.not_arrived_hint"
 msgstr "Wenn du dich für Schichten eintragen willst, komm gerne im Himmel vorbei."
@@ -2055,7 +2055,7 @@ msgid "admin_shifts.no_shifttypes"
 msgstr "Es wurde noch kein Schichttyp erstellt. Ohne können keine Schichten erstellt werden."
 
 msgid "admin_shifts.no_angeltypes"
-msgstr "Es wurde noch kein Engeltyp erstellt. Ohne können keine Schichten erstellt werden."
+msgstr "Es wurde noch kein Crittertyp erstellt. Ohne können keine Schichten erstellt werden."
 
 msgid "shift.sign_out.hint"
 msgstr "Du kannst dich bis %s Stunden vor dem Start der Schicht austragen. "
@@ -2080,14 +2080,14 @@ msgstr ""
 
 msgid "freeload.freeloaded.info.goodie"
 msgstr ""
-"War ein Engel bei einer Schicht nicht anwesend, "
+"War ein Critter bei einer Schicht nicht anwesend, "
 "wird die doppelte Länge der Schicht von dem %s abgezogen. "
-"Bei %s geschwänzten Schichten wird die Schicht-Registration für den Engel gesperrt."
+"Bei %s geschwänzten Schichten wird die Schicht-Registration für den Critter gesperrt."
 
 msgid "freeload.freeloaded.info"
 msgstr ""
-"Der Engel war bei einer Schicht nicht anwesend. "
-"Bei %s geschwänzten Schichten wird die Schicht-Registration für den Engel gesperrt."
+"Der Critter war bei einer Schicht nicht anwesend. "
+"Bei %s geschwänzten Schichten wird die Schicht-Registration für den Critter gesperrt."
 
 msgid "config.config"
 msgstr "Konfiguration"

@@ -14,6 +14,9 @@ Thumbs.db
 _vimrc_local.vim
 .sass-cache
 
+# Visual Studio files
+/.vs
+
 # PHPstorm files
 /.idea/
 /.phpstorm.meta.php
