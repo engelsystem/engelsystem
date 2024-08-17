@@ -13,7 +13,6 @@ body:
     attributes:
       label: User Role
       multiple: false
-      description: Select your role when you encountered the issue.
       options:
         - Critter System Staff
         - Eurofurence Director
