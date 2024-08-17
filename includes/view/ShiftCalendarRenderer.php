@@ -3,6 +3,7 @@
 namespace Engelsystem;
 
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Illuminate\Support\Collection;
@@ -181,9 +182,36 @@ class ShiftCalendarRenderer
                 $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
             }
 
+            $needed_angeltypes = collect($this->needed_angeltypes[$shift->id]);
+
+            // Add angel types from shift entries without reference from needed angel types
+            foreach (
+                $shift->shiftEntries
+                    ->groupBy('angel_type_id')
+                    ->whereNotIn('angel_type_id', $needed_angeltypes->pluck('id')) as $shiftEntriesOfAngelType
+            ) {
+                /** @var Collection|ShiftEntry[] $shiftEntriesOfAngelType */
+                /** @var AngelType $angeltype */
+                $angeltype = $shiftEntriesOfAngelType->first()->angelType;
+                $needed_angeltypes[] = [
+                    'id' => $angeltype->id,
+                    'location_id' => null,
+                    'shift_id' => $shift->id,
+                    'shift_type_id' => null,
+                    'angel_type_id' => $angeltype->id,
+                    'count' => $shift->shiftEntries
+                        ->where('angel_type_id', $angeltype->id)
+                        ->where('freeloaded', false)
+                        ->count(),
+                    'name' => $angeltype->name,
+                    'restricted' => $angeltype->restricted,
+                    'shift_self_signup' => $angeltype->shift_self_signup,
+                ];
+            }
+
             list ($shift_height, $shift_html) = $shift_renderer->render(
                 $shift,
-                $this->needed_angeltypes[$shift->id],
+                $needed_angeltypes,
                 $this->shift_entries[$shift->id],
                 auth()->user()
             );
