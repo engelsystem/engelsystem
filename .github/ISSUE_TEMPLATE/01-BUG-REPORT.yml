@@ -18,8 +18,6 @@ body:
         - Eurofurence Director
         - Eurofurence Staff
         - Attendee (Critter)
-      validations:
-        required: true
   - type: textarea
     attributes:
       label: Describe the solution you'd like to see implemented
