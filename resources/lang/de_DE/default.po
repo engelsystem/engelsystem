@@ -347,9 +347,6 @@ msgstr "Du hast erfolgreich \"%2$s\" verlassen."
 msgid "Leave angel type"
 msgstr "Engeltyp verlassen"
 
-msgid "You are not allowed to set supporter rights."
-msgstr "Du darfst keine Supporterrechte bearbeiten."
-
 msgid "No supporter update given."
 msgstr "Kein Update für Supporterrechte gegeben."
 
