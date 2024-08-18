@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Http\Exceptions\HttpForbidden;
+use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
@@ -144,8 +146,7 @@ function user_angeltype_confirm_controller(): array
     $request = request();
 
     if (!$request->has('user_angeltype_id')) {
-        error(__('User angel type doesn\'t exist.'));
-        throw_redirect(url('/angeltypes'));
+        throw new HttpNotFound();
     }
 
     /** @var UserAngelType $user_angeltype */
@@ -222,8 +223,7 @@ function user_angeltype_delete_controller(): array
     $user = auth()->user();
 
     if (!$request->has('user_angeltype_id')) {
-        error(__('User angel type doesn\'t exist.'));
-        throw_redirect(url('/angeltypes'));
+        throw new HttpNotFound();
     }
 
     /** @var UserAngelType $user_angeltype */
@@ -265,14 +265,11 @@ function user_angeltype_update_controller(): array
     $supporter = false;
     $request = request();
 
-    if (!auth()->can('admin_angel_types') && !config('supporters_can_promote')) {
-        error(__('You are not allowed to set supporter rights.'));
-        throw_redirect(url('/angeltypes'));
-    }
-
     if (!$request->has('user_angeltype_id')) {
-        error(__('User angel type doesn\'t exist.'));
-        throw_redirect(url('/angeltypes'));
+        throw new HttpNotFound();
+    }
+    if (!auth()->can('admin_angel_types') && !config('supporters_can_promote')) {
+        throw new HttpForbidden();
     }
 
     if ($request->has('supporter') && preg_match('/^[01]$/', $request->input('supporter'))) {
