@@ -12,7 +12,7 @@ function mail_user_delete($user)
         $user,
         __('Your account has been deleted.'),
         __(
-            'Your %s account has been deleted. If you have any questions regarding your account deletion, please contact heaven.',
+            'Your %s account has been deleted. If you have any questions regarding your account deletion, please contact the Info Desk.',
             [config('app_name')]
         )
     );

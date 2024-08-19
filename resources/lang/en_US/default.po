@@ -340,7 +340,7 @@ msgid "settings.profile.email_messages"
 msgstr "Notify me on new private messages."
 
 msgid "settings.profile.email_by_human_allowed"
-msgstr "Allow heaven critters to contact me by e-mail."
+msgstr "Allow Info Desk critters to contact me by e-mail."
 
 msgid "settings.profile.email_goodie"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
@@ -576,7 +576,7 @@ msgid "faq.faq"
 msgstr "FAQ"
 
 msgid "faq.questions_link"
-msgstr "If you don't find an answer, you can <a href=\"%s\">ask the heaven</a>."
+msgstr "If you don't find an answer, you can <a href=\"%s\">ask the Info Desk</a>."
 
 msgid "faq.edit"
 msgstr "Edit FAQ entry"
@@ -845,7 +845,7 @@ msgstr ""
 "If an angel is not marked as arrived a user-info removes the not-arrived notification in the angels sysmenu."
 
 msgid "user_info.not_arrived_hint"
-msgstr "If you want to sign up for shifts, feel free to drop by heaven."
+msgstr "If you want to sign up for shifts, feel free to drop by the Info Desk."
 
 msgid "email.greeting"
 msgstr "Hi %s,"
@@ -1012,19 +1012,19 @@ msgstr "No crittertype has been created yet. Shifts can't be created without one
 
 msgid "shift.sign_out.hint"
 msgstr "You can self sign out up to %s hours before the start of the shift. "
-"If you can't attend your shift, ask heaven to sign you out."
+"If you can't attend your shift, ask Info Desk to sign you out."
 
 msgid "freeload.info.goodie"
 msgstr "You were not present for this shift. "
-"The double length of the shift was deducted from your %s. Please contact heaven if you have questions."
+"The double length of the shift was deducted from your %s. Please contact the Info Desk if you have questions."
 
 msgid "freeload.info"
 msgstr "You were not present for this shift. "
-"Please contact heaven if you have questions."
+"Please contact Info Desk if you have questions."
 
 msgid "freeload.freeloader.info"
 msgstr "You were not present for at least %s shifts. Therefore, shift registration is blocked. "
-"Please go to heaven to be unlocked again."
+"Please go to Info Desk to be unlocked again."
 
 msgid "freeload.freeloaded.info.goodie"
 msgstr ""

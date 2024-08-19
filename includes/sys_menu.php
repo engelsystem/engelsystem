@@ -61,7 +61,7 @@ function make_navigation()
         'meetings'       => [__('news.title.meetings'), 'user_meetings'],
         'user_shifts'    => __('general.shifts'),
         'angeltypes'     => __('angeltypes.angeltypes'),
-        'questions'      => [__('Ask the Heaven'), 'question.add'],
+        'questions'      => [__('Ask the Info Desk'), 'question.add'],
     ];
 
     foreach ($pages as $menu_page => $options) {
