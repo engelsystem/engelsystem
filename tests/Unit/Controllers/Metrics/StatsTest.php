@@ -381,9 +381,9 @@ class StatsTest extends TestCase
         /** @var Shift $shift */
         $shift = Shift::factory()->create(['start' => Carbon::now()->subHour(), 'end' => Carbon::now()->addHour()]);
 
-        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeloaded' => false]);
-        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeloaded' => false]);
-        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeloaded' => true]);
+        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeload_user_id' => null]);
+        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeload_user_id' => null]);
+        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'freeload_user_id' => 42]);
 
         $stats = new Stats($this->database);
         $this->assertEquals(3, $stats->currentlyWorkingUsers());

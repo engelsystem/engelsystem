@@ -50,23 +50,25 @@ function user_myshifts()
             ->first();
         if (!empty($shiftEntry)) {
             $shift = $shiftEntry->shift;
-            $freeloaded = $shiftEntry->freeloaded;
+            $freeload_user_id_state = $shiftEntry->freeload_user_id;
             $freeloaded_comment = $shiftEntry->freeloaded_comment;
 
             if ($request->hasPostData('submit')) {
+                $freeloaded_comment_state = $freeloaded_comment;
                 $valid = true;
+                $freeloaded = freeloaded($freeload_user_id_state);
                 if (
                     auth()->can('user_shifts_admin')
                     || $is_angeltype_supporter
                 ) {
                     $freeloaded = $request->has('freeloaded');
                     $freeloaded_comment = strip_request_item_nl('freeloaded_comment');
+
                     if ($freeloaded && $freeloaded_comment == '') {
                         $valid = false;
                         error(__('Please enter a freeload comment!'));
                     }
                 }
-
                 $comment = $shiftEntry->user_comment;
                 $user_source = $shiftEntry->user;
                 if (auth()->user()->id == $user_source->id) {
@@ -75,17 +77,26 @@ function user_myshifts()
 
                 if ($valid) {
                     $shiftEntry->user_comment = $comment;
-                    $shiftEntry->freeloaded = $freeloaded;
-                    $shiftEntry->freeloaded_comment = $freeloaded_comment;
+                    if (
+                        $freeloaded_comment_state != $freeloaded_comment
+                        || $freeloaded != freeloaded($freeload_user_id_state)
+                    ) {
+                        $shiftEntry->freeload_user_id = $freeloaded ? auth()->user()->id : null;
+                        $shiftEntry->freeloaded_comment = $freeloaded_comment;
+                    }
                     $shiftEntry->save();
 
+                    $freeload_user_id = $shiftEntry->freeload_user_id;
+                    $freeload_user = freeloaded($freeload_user_id) ? User::findorfail($freeload_user_id) : null;
                     engelsystem_log(
                         'Updated ' . User_Nick_render($user_source, true) . '\'s shift '
                         . $shift->title . ' / ' . $shift->shiftType->name
                         . ' from ' . $shift->start->format('Y-m-d H:i')
                         . ' to ' . $shift->end->format('Y-m-d H:i')
                         . ' with comment ' . $comment
-                        . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeloaded_comment : 'NO')
+                        . '. Freeloaded' . (freeloaded($freeload_user_id)
+                            ? ' by ' . User_Nick_render($freeload_user, true) . ' with Comment: ' . $freeloaded_comment
+                            : ': NO')
                     );
                     success(__('Shift saved.'));
                     if ($is_angeltype_supporter) {
@@ -94,7 +105,6 @@ function user_myshifts()
                     throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
                 }
             }
-
             return ShiftEntry_edit_view(
                 $shifts_user,
                 $shift->start->format(__('general.datetime')) . ', ' . shift_length($shift),
@@ -102,7 +112,7 @@ function user_myshifts()
                 $shift->shiftType->name,
                 $shiftEntry->angelType->name,
                 $shiftEntry->user_comment,
-                $shiftEntry->freeloaded,
+                $shiftEntry->freeload_user_id,
                 $shiftEntry->freeloaded_comment,
                 auth()->can('user_shifts_admin'),
                 $is_angeltype_supporter
