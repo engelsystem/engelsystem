@@ -167,10 +167,10 @@ msgstr "Mindestlänge %d Zeichen"
 msgid "form.recover"
 msgstr "Wiederherstellen"
 
-msgid "Angeltype %s deleted."
+msgid "Angel type %s deleted."
 msgstr "Crittertyp %s gelöscht."
 
-msgid "Delete angeltype %s"
+msgid "Delete angel type %s"
 msgstr "Lösche Crittertyp %s"
 
 msgid "Please check the name. Maybe it already exists."
@@ -179,7 +179,7 @@ msgstr "Bitte überprüfe den Namen. Vielleicht ist er bereits vergeben."
 msgid "Angel type saved."
 msgstr "Crittertyp wurde gespeichert."
 
-msgid "Create angeltype"
+msgid "Create angel type"
 msgstr "Crittertyp erstellen"
 
 msgid "Edit %s"
@@ -209,7 +209,7 @@ msgstr "Zufällige Schicht"
 msgid "%s has been subscribed to the shift."
 msgstr "%s wurde in die Schicht eingetragen."
 
-msgid "User is not in angeltype."
+msgid "User is not in angel type."
 msgstr "User ist nicht im Crittertyp."
 
 msgid "This shift is already occupied."
