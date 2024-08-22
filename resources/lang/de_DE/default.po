@@ -301,7 +301,7 @@ msgstr "Schicht konnte nicht gefunden werden."
 
 msgid "There are unconfirmed angels in %d angel type. Angel type that needs approval:"
 msgid_plural "There are unconfirmed angels in %d angel types. Angel types that need approvals:"
-msgstr[0] "Es gibt nicht freigeschaltete Critter in %d Crittertyp! Crittertyp der bestätigt werden muss:"
+msgstr[0] "Es gibt nicht freigeschaltete Critter in %d Crittertypen! Crittertyp der bestätigt werden muss:"
 msgstr[1] "Es gibt nicht freigeschaltete Critter in %d Crittertypen! Crittertypen die bestätigt werden müssen:"
 
 msgid "You are not allowed to delete all users for this angel type."
