@@ -47,7 +47,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
     if (config('enable_dect') && $location->dect) {
         $dect = heading(__('Contact'), 3)
             . description([__('general.dect') => sprintf(
-                '<a href="tel:%s">%1$s</a>',
+                '<a href="https://t.me/%s">%1$s</a>',
                 htmlspecialchars($location->dect)
             )]);
     }

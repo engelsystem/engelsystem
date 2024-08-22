@@ -65,13 +65,13 @@ function angeltype_delete_controller()
 
     if (request()->hasPostData('delete')) {
         $angeltype->delete();
-        engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype, true));
-        success(sprintf(__('Angeltype %s deleted.'), $angeltype->name));
+        engelsystem_log('Deleted angel type: ' . AngelType_name_render($angeltype, true));
+        success(sprintf(__('Angel type %s deleted.'), $angeltype->name));
         throw_redirect(url('/angeltypes'));
     }
 
     return [
-        sprintf(__('Delete angeltype %s'), htmlspecialchars($angeltype->name)),
+        sprintf(__('Delete angel type %s'), htmlspecialchars($angeltype->name)),
         AngelType_delete_view($angeltype),
     ];
 }
@@ -137,7 +137,7 @@ function angeltype_edit_controller()
 
             success(__('Angel type saved.'));
             engelsystem_log(
-                'Saved angeltype: ' . $angeltype->name . ($angeltype->restricted ? ', restricted' : '')
+                'Saved angel type: ' . $angeltype->name . ($angeltype->restricted ? ', restricted' : '')
                 . ($angeltype->shift_self_signup ? ', shift_self_signup' : '')
                 . (config('driving_license_enabled')
                     ? (($angeltype->requires_driver_license ? ', requires driver license' : '') . ', ')

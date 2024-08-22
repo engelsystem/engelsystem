@@ -88,7 +88,7 @@ function UserAngelTypes_confirm_all_view(AngelType $angeltype)
  */
 function UserAngelType_confirm_view(UserAngelType $user_angeltype, User $user, AngelType $angeltype)
 {
-    return page_with_title(__('Confirm angeltype for user'), [
+    return page_with_title(__('Confirm angel type for user'), [
         msg(),
         info(sprintf(
             __('Do you really want to confirm %s for %s?'),
@@ -113,7 +113,7 @@ function UserAngelType_confirm_view(UserAngelType $user_angeltype, User $user, A
  */
 function UserAngelType_delete_view(UserAngelType $user_angeltype, User $user, AngelType $angeltype, bool $isOwnAngelType)
 {
-    return page_with_title(__('Leave angeltype'), [
+    return page_with_title(__('Leave angel type'), [
         msg(),
         info(sprintf(
             $isOwnAngelType ? __('Do you really want to leave "%2$s"?') : __('Do you really want to remove "%s" from "%s"?'),
@@ -144,10 +144,10 @@ function UserAngelType_add_view(AngelType $angeltype, $users_select, $user_id)
         '',
         __('general.back')
     );
-    return page_with_title($link . ' ' . __('Add user to angeltype'), [
+    return page_with_title($link . ' ' . __('Add user to angel type'), [
         msg(),
         form([
-            form_info(__('Angeltype'), htmlspecialchars($angeltype->name)),
+            form_info(__('Angel type'), htmlspecialchars($angeltype->name)),
             $angeltype->restricted
                 ? form_checkbox('auto_confirm_user', __('Confirm user'), true)
                 : '',

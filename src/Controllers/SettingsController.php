@@ -91,7 +91,7 @@ class SettingsController extends BaseController
         }
 
         if (config('enable_dect')) {
-            $user->contact->dect = $data['dect'];
+            $user->contact->dect = ltrim($data['dect'], '@');
         }
 
         $user->contact->mobile = $data['mobile'];

@@ -33,7 +33,7 @@ function Shift_view_header(Shift $shift, Location $location)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('shifts.start') . '</h4>',
             '<p class="lead' . (time() >= $shift->start->timestamp ? ' text-success' : '') . '">',
-            icon('calendar-event') . $shift->start->format(__('general.date')),
+            icon('calendar-event') . dateWithEventDay($shift->start->format('Y-m-d')),
             '<br />',
             icon('clock') . $shift->start->format('H:i'),
             '</p>',
@@ -41,7 +41,7 @@ function Shift_view_header(Shift $shift, Location $location)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('shifts.end') . '</h4>',
             '<p class="lead' . (time() >= $shift->end->timestamp ? ' text-success' : '') . '">',
-            icon('calendar-event') . $shift->end->format(__('general.date')),
+            icon('calendar-event') . dateWithEventDay($shift->end->format('Y-m-d')),
             '<br />',
             icon('clock') . $shift->end->format('H:i'),
             '</p>',

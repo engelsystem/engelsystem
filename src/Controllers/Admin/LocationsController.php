@@ -92,7 +92,7 @@ class LocationsController extends BaseController
 
         $location->name = $data['name'];
         $location->description = $data['description'];
-        $location->dect = $data['dect'];
+        $location->dect = ltrim($data['dect'], '@');
         $location->map_url = $data['map_url'];
 
         $location->save();

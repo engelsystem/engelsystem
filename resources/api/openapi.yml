@@ -322,7 +322,7 @@ components:
               type: string
               nullable: true
               example: 4242
-              description: The DECT number is a short internal number where users can be easily reached
+              description: The Telegram handle stored in the dect field is used as a way to easily reach users
             mobile:
               type: string
               nullable: true

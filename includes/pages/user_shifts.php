@@ -179,7 +179,7 @@ function load_types()
     $isShico = auth()->can('admin_shifts');
 
     if (!AngelType::count()) {
-        error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
+        error(__('The administration has not configured any angel types yet - or you are not subscribed to any angel type.'));
         throw_redirect(url('/'));
     }
 
@@ -326,7 +326,7 @@ function view_user_shifts()
                     'types',
                     icon('person-lines-fill') . __('angeltypes.angeltypes')
                     . ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-                    . __('The tasks shown here are influenced by the angeltypes you joined already!')
+                    . __('The tasks shown here are influenced by the angel types you joined already!')
                     . '"></span></small>',
                     $ownAngelTypes
                 ),

@@ -212,7 +212,7 @@ function admin_arrive()
         table(array_merge(
             ['name' => __('general.name'),],
             ($admin_arrive ? ['rendered_planned_arrival_date' => __('Planned arrival')] : []),
-            ['arrived' => __('Arrived?')],
+            ['arrived' => __('Arrived')],
             ($admin_arrive ? [
                 'rendered_arrival_date' => __('Arrival date'),
                 'rendered_planned_departure_date' => __('Planned departure'),

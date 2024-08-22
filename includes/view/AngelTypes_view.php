@@ -63,8 +63,8 @@ function AngelType_delete_view(AngelType $angeltype)
     $link = button($angeltype->id
         ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
         : url('/angeltypes'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
-    return page_with_title($link . ' ' . sprintf(__('Delete angeltype %s'), htmlspecialchars($angeltype->name)), [
-        info(sprintf(__('Do you want to delete angeltype %s?'), $angeltype->name), true),
+    return page_with_title($link . ' ' . sprintf(__('Delete angel type %s'), htmlspecialchars($angeltype->name)), [
+        info(sprintf(__('Do you want to delete angel type %s?'), $angeltype->name), true),
         form([
             buttons([
                 button(url('/angeltypes'), icon('x-lg') . __('form.cancel')),
@@ -120,7 +120,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
         $link . ' ' . (
             $angeltype->id ?
                 sprintf(__('Edit %s'), htmlspecialchars((string) $angeltype->name)) :
-                __('Create angeltype')
+                __('Create angel type')
         ),
         [
             $angeltype->id ?
@@ -233,7 +233,7 @@ function AngelType_view_buttons(
         );
     } else {
         if (config('driving_license_enabled') && $angeltype->requires_driver_license && !$user_license->wantsToDrive()) {
-            error(__('This angeltype requires a driver license. Please enter your driver license information!'));
+            error(__('This angel type requires a driver license. Please enter your driver license information!'));
         }
 
         if (
@@ -246,7 +246,7 @@ function AngelType_view_buttons(
 
         if ($angeltype->restricted && !$user_angeltype->confirm_user_id) {
             error(sprintf(
-                __('You are unconfirmed for this angeltype. Please go to the introduction for %s to get confirmed.'),
+                __('You are unconfirmed for this angel type. Please go to the introduction for %s to get confirmed.'),
                 $angeltype->name
             ));
         }

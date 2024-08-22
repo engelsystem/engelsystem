@@ -34,7 +34,7 @@ msgid "general.login"
 msgstr "Login"
 
 msgid "general.dect"
-msgstr "DECT"
+msgstr "Telegram"
 
 msgid "general.name"
 msgstr "Name"
@@ -367,7 +367,7 @@ msgid "settings.profile.shirt.link"
 msgstr "More information"
 
 msgid "settings.profile.angeltypes.info"
-msgstr "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
+msgstr "You can manage your critter types <a href=\"%s\">on the critter types page</a>."
 
 msgid "settings.password"
 msgstr "Password"
@@ -490,22 +490,22 @@ msgid "angeltype.ifsg.own"
 msgstr "My health instruction"
 
 msgid "angeltype.ifsg.required.info.preview"
-msgstr "This crittertype requires a health instruction."
+msgstr "This critter type requires a health instruction."
 
 msgid "angeltype.ifsg.required.info"
-msgstr "This crittertype requires a health instruction. Please enter your health instruction information!"
+msgstr "This critter type requires a health instruction. Please enter your health instruction information!"
 
 msgid "angeltype.ifsg.required.info.here"
-msgstr "You joined an crittertype which requires a health instruction. "
+msgstr "You joined a critter type which requires a health instruction. "
 "Please edit your health instruction information here: %s."
 
 msgid "angeltype.driving_license.required.info.here"
 msgstr ""
-"You joined an angeltype which requires a driving license. "
+"You joined a critter type which requires a driving license. "
 "Please edit your driving license information here: %s."
 
 msgid "angeltype.driving_license.required.info.preview"
-msgstr "This crittertype requires a driver's license."
+msgstr "This critter type requires a driver's license."
 
 msgid "ifsg.info"
 msgstr "Health instruction information"
@@ -645,7 +645,7 @@ msgid "message.title"
 msgstr "Messages"
 
 msgid "message.choose_angel"
-msgstr "Choose an Angel"
+msgstr "Choose a critter"
 
 msgid "message.to_conversation"
 msgstr "To Conversation"
@@ -654,7 +654,7 @@ msgid "message.message"
 msgstr "Message"
 
 msgid "angel"
-msgstr "Angel"
+msgstr "Critter"
 
 msgid "worklog.add"
 msgstr "Add work log"
@@ -678,7 +678,7 @@ msgid "worklog.delete.info"
 msgstr "Do you really want to delete the work log for %s?"
 
 msgid "angeltypes.angeltypes"
-msgstr "Angeltypes"
+msgstr "Critter types"
 
 msgid "angeltypes.about"
 msgstr "Teams-/Job description"
@@ -690,19 +690,19 @@ msgid "angeltypes.restricted"
 msgstr "Requires introduction"
 
 msgid "angeltypes.restricted.info"
-msgstr "Angel types which require introduction can only be used by an critter "
+msgstr "Critter types which require introduction can only be used by a critter "
 "if enabled by a supporter (double opt-in)."
 
 msgid "angeltypes.restricted.hint"
-msgstr "This crittertype requires the attendance at an introduction meeting. "
+msgstr "This critter type requires the attendance at an introduction meeting. "
 "You might find additional information in the description."
 
 msgid "angeltypes.can-change-later"
 msgstr "You can change your selection later in the settings."
 
 msgid "angeltypes.shift.self_signup.info"
-msgstr "Angel types which have shift self signup enabled allow critters to self sign up for their shifts, "
-"if shift self signup is disabled only supporters and admins can sign angels into shifts of these angel types."
+msgstr "Critter types which have shift self sign-up enabled allow critters to self sign up for their shifts, "
+"if shift self sign-up is disabled only supporters and admins can sign critters into shifts of these critter types."
 
 msgid "shift.self_signup"
 msgstr "Shift self signup"
@@ -714,8 +714,8 @@ msgid "angeltypes.hide_on_shift_view"
 msgstr "Hide on shift view"
 
 msgid "angeltypes.hide_on_shift_view.info"
-msgstr "If checked only admins and members of the crittertype "
-"can see the filter option for this angeltype on the shifts page"
+msgstr "If checked only admins and members of the critter type "
+"can see the filter option for this critter type on the shifts page"
 
 msgid "registration.register"
 msgstr "Register"
@@ -766,7 +766,7 @@ msgid "dashboard.day"
 msgstr "Day"
 
 msgid "registration.title"
-msgstr "Angel registration"
+msgstr "Critter registration"
 
 msgid "registration.login_data"
 msgstr "Login data"
@@ -782,8 +782,8 @@ msgstr "Please specify a T-shirt size in your settings!"
 
 msgid "dect.required.hint"
 msgstr ""
-"Please specify a DECT phone number in your settings! "
-"If you don't have a DECT phone, just enter '-'."
+"Please specify a Telegram handle in your settings! "
+"If you don't have a Telegram account, just enter '-'."
 
 msgid "pronoun.required.hint"
 msgstr "Please enter a pronoun in your settings!"
@@ -842,7 +842,7 @@ msgstr "User info"
 msgid "user.info.hint"
 msgstr ""
 "Is displayed for shift coordinators and admins in the user view. "
-"If an angel is not marked as arrived a user-info removes the not-arrived notification in the angels sysmenu."
+"If a critter is not marked as arrived a user-info removes the not-arrived notification in the critters sysmenu."
 
 msgid "user_info.not_arrived_hint"
 msgstr "If you want to sign up for shifts, feel free to drop by the Info Desk."
@@ -949,7 +949,7 @@ msgid "login.cookies"
 msgstr "Please note: You have to activate cookies!"
 
 msgid "general.angel"
-msgstr "Angel"
+msgstr "Critter"
 
 msgid "title.date"
 msgstr "Date"
@@ -1008,7 +1008,7 @@ msgid "admin_shifts.no_shifttypes"
 msgstr "No shift type has been created yet. Shifts can't be created without one."
 
 msgid "admin_shifts.no_angeltypes"
-msgstr "No crittertype has been created yet. Shifts can't be created without one."
+msgstr "No critter type has been created yet. Shifts can't be created without one."
 
 msgid "shift.sign_out.hint"
 msgstr "You can self sign out up to %s hours before the start of the shift. "
@@ -1028,13 +1028,13 @@ msgstr "You were not present for at least %s shifts. Therefore, shift registrati
 
 msgid "freeload.freeloaded.info.goodie"
 msgstr ""
-"If an angel was not present for a shift, the double length of the shift is deducted from the %s. "
-"If %s shifts are freeloaded, the shift registration is blocked for the angel."
+"If a critter was not present for a shift, the double length of the shift is deducted from the %s. "
+"If %s shifts are freeloaded, the shift registration is blocked for the critter."
 
 msgid "freeload.freeloaded.info"
 msgstr ""
-"The angel was not present for a shift. "
-"If %s shifts are freeloaded, the shift registration is blocked for the angel."
+"The critter was not present for a shift. "
+"If %s shifts are freeloaded, the shift registration is blocked for the critter."
 
 msgid "config.config"
 msgstr "Config"

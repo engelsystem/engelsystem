@@ -104,7 +104,7 @@ function shift_edit_controller()
             $shifttype_id = $request->input('shifttype_id');
         } else {
             $valid = false;
-            error(__('Please select a shifttype.'));
+            error(__('Please select a shift type.'));
         }
 
         if ($request->has('start') && $tmp = DateTime::createFromFormat('Y-m-d H:i', $request->input('start'))) {
@@ -208,7 +208,7 @@ function shift_edit_controller()
             . info(__('This page is much more comfortable with javascript.'), true)
             . '</noscript>',
             form([
-                form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
+                form_select('shifttype_id', __('Shift type'), $shifttypes, $shifttype_id),
                 form_text('title', __('title.title'), $title),
                 form_select('rid', __('Location:'), $locations, $rid),
                 form_text('start', __('Start:'), $start->format('Y-m-d H:i')),
