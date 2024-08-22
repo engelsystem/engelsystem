@@ -96,7 +96,7 @@ function Users_view(
             . user_info_icon($user);
         $u['first_name'] = htmlspecialchars((string) $user->personalData->first_name);
         $u['last_name'] = htmlspecialchars((string) $user->personalData->last_name);
-        $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars((string) $user->contact->dect));
+        $u['dect'] = sprintf('<a href="https://t.me/%s">%1$s</a>', htmlspecialchars((string) $user->contact->dect));
         $u['arrived'] = icon_bool($user->state->arrived);
         if (config('enable_voucher')) {
             $u['got_voucher'] = $user->state->got_voucher;
@@ -713,7 +713,7 @@ function User_view(
                     config('enable_dect') && $user_source->contact->dect ?
                         heading(
                             icon('phone')
-                            . ' <a href="tel:' . htmlspecialchars($user_source->contact->dect) . '">'
+                                . ' <a href="https://t.me/' . htmlspecialchars($user_source->contact->dect) . '">'
                             . htmlspecialchars($user_source->contact->dect)
                             . '</a>'
                         )

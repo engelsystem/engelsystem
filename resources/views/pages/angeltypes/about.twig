@@ -78,7 +78,7 @@
                             <dl class="row card-text">
                                 {% for type, info in {
                                     'contact_name': {'name': __('general.name')},
-                                    'contact_dect': {'name': __('general.dect'), 'url': 'tel'},
+                                    'contact_dect': {'name': __('general.dect'), 'pattern': 'https://t.me/%s'},
                                     'contact_email': {'name': __('general.email'), 'url': 'mailto'},
                                 } %}
                                     {% if angeltype[type] and (type != 'contact_dect' or config('enable_dect')) %}
@@ -88,6 +88,10 @@
                                         <dd class="col-sm-9">
                                             {% if info.url is defined %}
                                                 <a href="{{ info['url'] }}:{{ angeltype[type] | e('html_attr') }}">
+                                                    {{ angeltype[type] }}
+                                                </a>
+                                            {% elseif info.pattern is defined %}
+                                                <a href="{{ info.pattern | format(angeltype[type]) }}">
                                                     {{ angeltype[type] }}
                                                 </a>
                                             {% else %}
