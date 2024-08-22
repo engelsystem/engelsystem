@@ -1,0 +1,15 @@
+on:
+  push:
+    branches: [ main ]
+  release:
+    types:
+      - created
+jobs:
+  build-docker:
+    uses: Thiritin/workflows/.github/workflows/docker-semver-file-location.yml@main
+    secrets:
+      DockerHubUser: ${{ secrets.DOCKERHUB_USERNAME }}
+      DockerHubPass: ${{ secrets.DOCKERHUB_PASSWORD }}
+      DockerHubPrefix: eurofurence
+      DockerFileLocation: ./docker/Dockerfile
+      DockerTarget: production

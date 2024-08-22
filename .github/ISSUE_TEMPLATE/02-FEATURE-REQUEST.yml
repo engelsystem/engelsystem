@@ -1,0 +1,41 @@
+---
+name: Feature Request
+description: Suggest an idea or improvement for the Eurofurence Critter System.
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes:
+      label: Is your feature request related to a specific event or issue during Eurofurence?
+      placeholder: Please describe if this feature request is related to a specific event or challenge you encountered during Eurofurence.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What problem does this feature solve?
+      placeholder: Provide a clear and concise description of the problem that this feature would solve.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the solution you'd like to see implemented
+      placeholder: Detail the solution or feature you would like to see added to the Critter System.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: How would this feature improve the Critter System for Eurofurence volunteers or attendees?
+      placeholder: Explain how this feature would enhance the experience or efficiency for those using the system during Eurofurence.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe any alternatives you've considered or tried
+      placeholder: Mention any alternative solutions or workarounds you have considered or used, and why they might not be sufficient.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional context or screenshots
+      placeholder: Provide any other relevant details, screenshots, or context that would help us understand your feature request better.
+    validations:
+      required: false
