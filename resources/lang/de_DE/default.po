@@ -584,7 +584,7 @@ msgid "Last shift"
 msgstr "Letzte Schicht"
 
 msgid "general.dect"
-msgstr "DECT"
+msgstr "Telegram"
 
 msgid "Grouprights"
 msgstr "Gruppenrechte"
@@ -1213,8 +1213,8 @@ msgstr "Bitte gib eine T-Shirt-Größe in deinen Einstellungen an."
 
 msgid "dect.required.hint"
 msgstr ""
-"Bitte gib eine DECT-Telefonnummer in deinen Einstellungen an. Wenn du "
-"keine Nummer hast, trage einfach '-' ein."
+"Bitte gib ein Telegram-Handle in deinen Einstellungen an. Wenn du "
+"keinen Telegram-Account hast, trage einfach '-' ein."
 
 msgid "pronoun.required.hint"
 msgstr "Bitte gib ein Pronomen in deinen Einstellungen an."

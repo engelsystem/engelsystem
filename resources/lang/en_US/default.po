@@ -34,7 +34,7 @@ msgid "general.login"
 msgstr "Login"
 
 msgid "general.dect"
-msgstr "DECT"
+msgstr "Telegram"
 
 msgid "general.name"
 msgstr "Name"
@@ -782,8 +782,8 @@ msgstr "Please specify a T-shirt size in your settings!"
 
 msgid "dect.required.hint"
 msgstr ""
-"Please specify a DECT phone number in your settings! "
-"If you don't have a DECT phone, just enter '-'."
+"Please specify a Telegram handle in your settings! "
+"If you don't have a Telegram account, just enter '-'."
 
 msgid "pronoun.required.hint"
 msgstr "Please enter a pronoun in your settings!"

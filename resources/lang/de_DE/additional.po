@@ -25,22 +25,22 @@ msgid "validation.login.required"
 msgstr "Bitte gib einen Loginnamen an."
 
 msgid "validation.pronoun.required"
-msgstr "Bitte gebe dein Pronomen an."
+msgstr "Bitte gib dein Pronomen an."
 
 msgid "validation.firstname.required"
-msgstr "Bitte gebe deinen Vornamen an."
+msgstr "Bitte gib deinen Vornamen an."
 
 msgid "validation.lastname.required"
-msgstr "Bitte gebe deinen Nachnamen an."
+msgstr "Bitte gib deinen Nachnamen an."
 
 msgid "validation.mobile.required"
-msgstr "Bitte gebe deine Handynummer an."
+msgstr "Bitte gib deine Handynummer an."
 
 msgid "validation.dect.required"
-msgstr "Bitte gebe deine DECT-Nummer an."
+msgstr "Bitte gib dein Telegram-Handle an."
 
 msgid "validation.username.required"
-msgstr "Bitte gebe deinen Nick an."
+msgstr "Bitte gib deinen Nick an."
 
 msgid "validation.username.username"
 msgstr ""

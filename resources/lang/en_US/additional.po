@@ -34,7 +34,7 @@ msgid "validation.mobile.required"
 msgstr "Please enter your mobile number."
 
 msgid "validation.dect.required"
-msgstr "Please enter your DECT number."
+msgstr "Please enter your Telegram handle."
 
 msgid "validation.username.required"
 msgstr "Please enter your nick."
