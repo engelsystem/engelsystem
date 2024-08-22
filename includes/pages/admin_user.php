@@ -104,15 +104,15 @@ function admin_user()
         // User info
         if ($user_info_edit) {
             $html .= '  <tr><td>'
-            . __('user.info')
-            . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-            . __('user.info.hint')
-            . '"></span>'
-            . '</td><td>'
-            . '<textarea cols="40" rows="" name="userInfo" class="form-control">'
-            . htmlspecialchars((string) $user_source->state->user_info)
-            . '</textarea>'
-            . '</td></tr>' . "\n";
+                . __('user.info')
+                . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+                . __('user.info.hint')
+                . '"></span>'
+                . '</td><td>'
+                . '<textarea cols="40" rows="" name="userInfo" class="form-control">'
+                . htmlspecialchars((string) $user_source->state->user_info)
+                . '</textarea>'
+                . '</td></tr>' . "\n";
         }
 
         $options = [
@@ -274,7 +274,7 @@ function admin_user()
                         }
                         engelsystem_log(
                             'Set groups of ' . User_Nick_render($angel, true) . ' to: '
-                            . join(', ', $user_groups_info)
+                                . join(', ', $user_groups_info)
                         );
                         $html .= success(__('User groups saved.'), true);
                     } else {
@@ -324,7 +324,7 @@ function admin_user()
 
                 $user_source->contact->mobile = $request->postData('eHandy');
                 if (config('enable_dect')) {
-                    $user_source->contact->dect = $request->postData('eDECT');
+                    $user_source->contact->dect = ltrim($request->postData('eDECT'), '@');
                 }
                 $user_source->contact->save();
 
@@ -350,14 +350,14 @@ function admin_user()
                     'Updated user: ' . ($changed_nick
                         ? ('nick modified form ' . $old_nick . ' to ' . $user_source->name)
                         : $user_source->name)
-                    . ' (' . $user_source->id . ')'
-                    . ($changed_email ? ', email modified' : '')
-                    . ($goodie_tshirt ? ', t-shirt-size: ' . $user_source->personalData->shirt_size : '')
-                    . ', arrived: ' . $user_source->state->arrived
-                    . ', active: ' . $user_source->state->active
-                    . ', force-active: ' . $user_source->state->force_active
-                    . ($goodie_tshirt ? ', t-shirt: ' : ', goodie: ' . $user_source->state->got_goodie)
-                    . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
+                        . ' (' . $user_source->id . ')'
+                        . ($changed_email ? ', email modified' : '')
+                        . ($goodie_tshirt ? ', t-shirt-size: ' . $user_source->personalData->shirt_size : '')
+                        . ', arrived: ' . $user_source->state->arrived
+                        . ', active: ' . $user_source->state->active
+                        . ', force-active: ' . $user_source->state->force_active
+                        . ($goodie_tshirt ? ', t-shirt: ' : ', goodie: ' . $user_source->state->got_goodie)
+                        . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
                 );
                 $html .= success(__('Changes were saved.') . "\n", true);
                 break;
@@ -385,7 +385,7 @@ function admin_user()
     return page_with_title(
         $link . ' ' . __('Edit user'),
         [
-        $html,
+            $html,
         ]
     );
 }
