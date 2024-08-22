@@ -215,7 +215,7 @@ msgstr "User ist nicht im Crittertyp."
 msgid "This shift is already occupied."
 msgstr "Die Schicht ist schon voll."
 
-msgid "You need be accepted member of the angeltype."
+msgid "You need be accepted member of the angel type."
 msgstr "Du musst bestätigtes Mitglied des Crittertyps sein."
 
 msgid "This shift collides with one of your shifts."
@@ -313,25 +313,25 @@ msgstr "Alle Benutzer mit Crittertyp %s abgelehnt."
 msgid "Deny all users"
 msgstr "Alle Benutzer ablehnen"
 
-msgid "You are not allowed to confirm all users for this angeltype."
+msgid "You are not allowed to confirm all users for this angel type."
 msgstr "Du darfst nicht alle Benutzer für diesen Crittertyp freischalten."
 
-msgid "Confirmed all users for angeltype %s."
+msgid "Confirmed all users for angel type %s."
 msgstr "Alle Benutzer für Crittertyp %s freigeschaltet."
 
 msgid "Confirm all users"
 msgstr "Alle Benutzer bestätigen"
 
-msgid "You are not allowed to confirm this users angeltype."
+msgid "You are not allowed to confirm this users angel type."
 msgstr "Du darfst diesen Benutzer nicht für diesen Crittertyp freischalten."
 
-msgid "%s confirmed for angeltype %s."
+msgid "%s confirmed for angel type %s."
 msgstr "%s für Crittertyp %s freigeschaltet."
 
-msgid "Confirm angeltype for user"
+msgid "Confirm angel type for user"
 msgstr "Crittertyp für Benutzer bestätigen"
 
-msgid "You are not allowed to delete this users angeltype."
+msgid "You are not allowed to delete this users angel type."
 msgstr "Du darfst diesen Benutzer nicht von diesem Crittertyp entfernen."
 
 msgid "User \"%s\" removed from \"%s\"."
@@ -343,7 +343,7 @@ msgstr "Zertifikate bearbeiten"
 msgid "You successfully left \"%2$s\"."
 msgstr "Du hast erfolgreich \"%2$s\" verlassen."
 
-msgid "Leave angeltype"
+msgid "Leave angel type"
 msgstr "Crittertyp verlassen"
 
 msgid "No supporter update given."
@@ -364,7 +364,7 @@ msgstr "Supporterrechte entfernen"
 msgid "User %s added to %s."
 msgstr "Benutzer %s zu %s hinzugefügt."
 
-msgid "Add user to angeltype"
+msgid "Add user to angel type"
 msgstr "Benutzer zu Crittertyp hinzufügen"
 
 msgid "You are already a %s."
@@ -562,7 +562,7 @@ msgstr "Geplante Abreise-Statistik"
 msgid "Free angels"
 msgstr "Freie Critter"
 
-msgid "Angeltype"
+msgid "Angel type"
 msgstr "Crittertyp"
 
 msgid "shift.next"
@@ -827,7 +827,7 @@ msgstr "Supporter"
 msgid "Member"
 msgstr "Mitglied"
 
-msgid "Do you want to delete angeltype %s?"
+msgid "Do you want to delete angel type %s?"
 msgstr "Möchtest Du den Crittertypen %s löschen?"
 
 msgid "angeltypes.restricted"
@@ -949,7 +949,7 @@ msgstr "Meine Schicht"
 msgid "Help needed"
 msgstr "Hilfe benötigt"
 
-msgid "Other angeltype needed / collides with my shifts"
+msgid "Other angel type needed / collides with my shifts"
 msgstr "Andere Crittertypen benötigt / kollidiert mit meinen Schichten"
 
 msgid "Shift is full"
