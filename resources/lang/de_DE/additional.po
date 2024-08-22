@@ -13,7 +13,7 @@ msgstr ""
 msgid "auth.not-found"
 msgstr ""
 "Es wurde kein User gefunden oder das Passwort ist falsch. Probiere es bitte noch einmal. Wenn das Problem "
-"weiterhin besteht, melde dich im Himmel."
+"weiterhin besteht, melde dich am Info Desk."
 
 msgid "validation.password.required"
 msgstr "Bitte gib ein Passwort an."
