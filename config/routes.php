@@ -254,7 +254,6 @@ $route->addGroup(
         $route->addGroup(
             '/locations',
             function (RouteCollector $route): void {
-                $route->get('', 'Admin\\LocationsController@index');
                 $route->post('', 'Admin\\LocationsController@delete');
                 $route->get('/edit[/{location_id:\d+}]', 'Admin\\LocationsController@edit');
                 $route->post('/edit[/{location_id:\d+}]', 'Admin\\LocationsController@save');

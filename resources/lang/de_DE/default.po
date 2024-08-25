@@ -813,9 +813,6 @@ msgstr "Abmelden"
 msgid "Admin"
 msgstr "Admin"
 
-msgid "Manage locations"
-msgstr "Orte verwalten"
-
 msgid "No data found."
 msgstr "Nichts gefunden."
 
