@@ -192,7 +192,7 @@ msgstr "Team %s"
 msgid "%s (not \"%s\")"
 msgstr "%s (kein \"%s\")"
 
-msgid "View"
+msgid "form.view"
 msgstr "Ansehen"
 
 msgid "Leave"
@@ -613,9 +613,6 @@ msgstr "Fragen beantworten"
 
 msgid "There are unanswered questions!"
 msgstr "Es gibt unbeantwortete Fragen!"
-
-msgid "Locations"
-msgstr "Orte"
 
 msgid "general.description"
 msgstr "Beschreibung"

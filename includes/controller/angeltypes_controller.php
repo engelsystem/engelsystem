@@ -288,10 +288,10 @@ function angeltypes_list_controller()
         $actions = [
             button(
                 url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
-                icon('eye') . ($admin_angeltypes ? '' : __('View')),
+                icon('eye') . ($admin_angeltypes ? '' : __('form.view')),
                 'btn-sm btn-info',
                 '',
-                ($admin_angeltypes ? __('View') : '')
+                ($admin_angeltypes ? __('form.view') : '')
             ),
         ];
 

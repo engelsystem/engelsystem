@@ -1,6 +1,5 @@
 <?php
 
-use Engelsystem\Models\Location;
 use Engelsystem\Models\Question;
 use Engelsystem\UserHintsRenderer;
 use Illuminate\Support\Str;
@@ -61,6 +60,7 @@ function make_navigation()
         'meetings'       => [__('news.title.meetings'), 'user_meetings'],
         'user_shifts'    => __('general.shifts'),
         'angeltypes'     => __('angeltypes.angeltypes'),
+        'locations'      => [__('location.locations'), 'view_locations'],
         'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];
 
@@ -77,8 +77,6 @@ function make_navigation()
             $menu_page == $page
         );
     }
-
-    $menu = make_location_navigation($menu);
 
     $admin_menu = [];
     $admin_pages = [
@@ -139,40 +137,6 @@ function menu_is_allowed(string $page, $options)
     }
 
     return auth()->can($permissions);
-}
-
-/**
- * Adds location navigation to the given menu.
- *
- * @param string[] $menu Rendered menu
- * @return string[]
- */
-function make_location_navigation($menu)
-{
-    if (!auth()->can('view_locations')) {
-        return $menu;
-    }
-
-    // Get a list of all locations
-    $locations = Location::orderBy('name')->get();
-    $location_menu = [];
-    $location_menu[] = toolbar_dropdown_item(
-        url('/locations'),
-        __('All'),
-        false,
-        'list'
-    );
-
-    if (count($location_menu) > 0) {
-        $location_menu[] = toolbar_dropdown_item_divider();
-    }
-    foreach ($locations as $location) {
-        $location_menu[] = toolbar_dropdown_item(location_link($location), $location->name, false, 'pin-map-fill');
-    }
-    if (count($location_menu) > 0) {
-        $menu[] = toolbar_dropdown(__('Locations'), $location_menu);
-    }
-    return $menu;
 }
 
 /**
