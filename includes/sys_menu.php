@@ -60,7 +60,7 @@ function make_navigation()
         'meetings'       => [__('news.title.meetings'), 'user_meetings'],
         'user_shifts'    => __('general.shifts'),
         'angeltypes'     => __('angeltypes.angeltypes'),
-        'locations'      => [__('location.locations'), 'view_locations'],
+        'locations'      => [__('location.locations'), 'locations.view'],
         'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];
 

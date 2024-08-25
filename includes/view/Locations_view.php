@@ -82,7 +82,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         icon('pin-map-fill') . htmlspecialchars($location->name),
         [
         $assignNotice,
-        auth()->can('admin_locations') ? buttons([
+        auth()->can('locations.edit') ? buttons([
             button(
                 url('/admin/locations/edit/' . $location->id),
                 icon('pencil'),
@@ -107,7 +107,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
  */
 function location_name_render(Location $location)
 {
-    if (auth()->can('view_locations')) {
+    if (auth()->can('locations.view')) {
         return '<a href="' . location_link($location) . '">'
             . icon('pin-map-fill') . htmlspecialchars($location->name)
             . '</a>';

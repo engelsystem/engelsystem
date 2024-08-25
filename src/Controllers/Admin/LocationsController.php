@@ -23,10 +23,10 @@ class LocationsController extends BaseController
 
     /** @var array<string> */
     protected array $permissions = [
-        'view_locations',
-        'edit' => 'admin_locations',
-        'save' => 'admin_locations',
-        'delete' => 'admin_locations',
+        'locations.view',
+        'edit' => 'locations.edit',
+        'save' => 'locations.edit',
+        'delete' => 'locations.edit',
     ];
 
     public function __construct(

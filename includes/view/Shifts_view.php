@@ -154,8 +154,8 @@ function Shift_view(
 ) {
     $shift_admin = auth()->can('admin_shifts');
     $user_shift_admin = auth()->can('user_shifts_admin');
-    $admin_locations = auth()->can('admin_locations');
-    $admin_shifttypes = auth()->can('shifttypes.view');
+    $locationsEdit = auth()->can('locations.edit');
+    $shiftTypesEdit = auth()->can('shifttypes.view');
     $nightShiftsConfig = config('night_shifts');
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
@@ -214,7 +214,7 @@ function Shift_view(
     }
 
     $buttons = [];
-    if ($shift_admin || $admin_shifttypes || $admin_locations) {
+    if ($shift_admin || $shiftTypesEdit || $locationsEdit) {
         $buttons = [
             $shift_admin ? button(shift_edit_link($shift), icon('pencil'), '', '', __('form.edit')) : '',
             $shift_admin ? form([
@@ -236,10 +236,10 @@ function Shift_view(
                     ]
                 ),
             ], url('/user-shifts', ['delete_shift' => $shift->id])) : '',
-            $admin_shifttypes
+            $shiftTypesEdit
                 ? button(url('/admin/shifttypes/' . $shifttype->id), htmlspecialchars($shifttype->name))
                 : '',
-            $admin_locations
+            $locationsEdit
                 ? button(
                     location_link($location),
                     icon('pin-map-fill') . htmlspecialchars($location->name)
