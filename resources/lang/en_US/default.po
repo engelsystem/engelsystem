@@ -109,6 +109,9 @@ msgstr "Edit"
 msgid "form.preview"
 msgstr "Preview"
 
+msgid "form.view"
+msgstr "View"
+
 msgid "form.delete"
 msgstr "Delete"
 
