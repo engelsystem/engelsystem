@@ -36,7 +36,7 @@ class LocationsControllerTest extends ControllerTest
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals('admin/locations/index', $view);
+                $this->assertEquals('pages/locations/index', $view);
                 $this->assertTrue($data['is_index'] ?? false);
                 $this->assertCount(5, $data['locations'] ?? []);
                 return $this->response;
@@ -110,7 +110,7 @@ class LocationsControllerTest extends ControllerTest
         $controller->setValidator(new Validator());
         AngelType::factory(3)->create();
 
-        $this->setExpects($this->redirect, 'to', ['/admin/locations']);
+        $this->setExpects($this->redirect, 'to', ['/locations']);
 
         $this->request = $this->request->withParsedBody([
             'name'         => 'Testlocation',
@@ -193,7 +193,7 @@ class LocationsControllerTest extends ControllerTest
         /** @var ShiftEntry $shiftEntry */
         ShiftEntry::factory()->create(['shift_id' => $shift->id, 'user_id' => $user->id]);
 
-        $this->setExpects($this->redirect, 'to', ['/admin/locations'], $this->response);
+        $this->setExpects($this->redirect, 'to', ['/locations'], $this->response);
 
         $dispatcher->expects($this->once())
             ->method('dispatch')

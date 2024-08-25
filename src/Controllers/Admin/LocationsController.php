@@ -23,7 +23,10 @@ class LocationsController extends BaseController
 
     /** @var array<string> */
     protected array $permissions = [
-        'admin_locations',
+        'view_locations',
+        'edit' => 'admin_locations',
+        'save' => 'admin_locations',
+        'delete' => 'admin_locations',
     ];
 
     public function __construct(
@@ -42,7 +45,7 @@ class LocationsController extends BaseController
             ->get();
 
         return $this->response->withView(
-            'admin/locations/index',
+            'pages/locations/index',
             [
                 'locations' => $locations,
                 'is_index' => true,
@@ -132,7 +135,7 @@ class LocationsController extends BaseController
 
         $this->addNotification('location.edit.success');
 
-        return $this->redirect->to('/admin/locations');
+        return $this->redirect->to('/locations');
     }
 
     public function delete(Request $request): Response
@@ -153,7 +156,7 @@ class LocationsController extends BaseController
         $this->log->info('Deleted location {location}', ['location' => $location->name]);
         $this->addNotification('location.delete.success');
 
-        return $this->redirect->to('/admin/locations');
+        return $this->redirect->to('/locations');
     }
 
     protected function showEdit(?Location $location): Response
