@@ -76,9 +76,9 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         $selected_tab = count($tabs) - 1;
     }
 
-    $link = button(url('/admin/locations'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $link = button(url('/locations'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
     return page_with_title(
-        (auth()->can('admin_locations') ? $link . ' ' : '') .
+        $link .
         icon('pin-map-fill') . htmlspecialchars($location->name),
         [
         $assignNotice,

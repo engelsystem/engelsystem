@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Controllers\Admin\LocationsController;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\ShiftsFilter;
@@ -67,14 +68,11 @@ function locations_controller(): array
 {
     $request = request();
     $action = $request->input('action');
-    if (!$request->has('action')) {
-        $action = 'list';
-    }
 
     return match ($action) {
         'view'  => location_controller(),
-        'list'  => throw_redirect(url('/admin/locations')),
-        default => throw_redirect(url('/admin/locations')),
+        'list'  => throw_redirect(url('/locations')),
+        default => ['', app(LocationsController::class)->index()->getContent()],
     };
 }
 
