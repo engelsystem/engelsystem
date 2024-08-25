@@ -197,11 +197,6 @@ function toolbar_dropdown_item(string $href, string $label, bool $active, string
     );
 }
 
-function toolbar_dropdown_item_divider(): string
-{
-    return '<li><hr class="dropdown-divider"></li>';
-}
-
 /**
  * @param string $label
  * @param array  $submenu

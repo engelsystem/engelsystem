@@ -280,7 +280,8 @@ Renders a button.
     {%- set icon_right = opt.icon_right is defined ? '<span class="bi bi-' ~ opt.icon_right ~ '"></span>' : '' %}
     <button
         class="btn btn-{{ opt.btn_type|default('secondary') }}
-        {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}"
+        {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}
+        {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
         {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
         {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
         {%- if opt.title is defined %} title="{{ opt.title }}"{% endif %}

@@ -382,7 +382,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     }
 
     $myshift['actions'] = [
-        button(shift_link($shift), icon('eye'), 'btn-sm btn-info', '', __('View')),
+        button(shift_link($shift), icon('eye'), 'btn-sm btn-info', '', __('form.view')),
     ];
     if ($its_me || auth()->can('user_shifts_admin') || $supporter) {
         $myshift['actions'][] = button(
