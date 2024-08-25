@@ -17,7 +17,7 @@ use Engelsystem\ShiftsFilterRenderer;
  */
 function location_controller(): array
 {
-    if (!auth()->can('view_locations')) {
+    if (!auth()->can('locations.view')) {
         throw_redirect(url('/'));
     }
 

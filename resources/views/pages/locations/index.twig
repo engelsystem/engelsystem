@@ -15,7 +15,7 @@
 
             {{ block('title') }}
 
-            {% if is_index|default(false) and can('admin_locations') %}
+            {% if is_index|default(false) and can('locations.edit') %}
                 {{ m.add(url('/admin/locations/edit')) }}
             {% endif %}
         </h1>
@@ -31,7 +31,7 @@
                             <thead>
                             <tr>
                                 <th>{{ __('general.name') }}</th>
-                                {% if can('admin_locations') %}
+                                {% if can('locations.edit') %}
                                     <th>{{ __('general.dect') }}</th>
                                     <th>{{ __('location.map_url') }}</th>
                                     <th>{{ __('general.shifts') }}</th>
@@ -50,7 +50,7 @@
                                         </a>
                                     </td>
 
-                                    {% if can('admin_locations') %}
+                                    {% if can('locations.edit') %}
                                         <td>{{ m.iconBool(location.dect) }}</td>
 
                                         <td>{{ m.iconBool(location.map_url) }}</td>
@@ -61,7 +61,7 @@
                                     <td>
                                         <div class="d-flex ms-auto">
 
-                                            {% if can('admin_locations') %}
+                                            {% if can('locations.edit') %}
                                                 {{ m.view(
                                                     url('/locations', {'action': 'view', 'location_id': location.id}),
                                                     {'class': 'm-1'}
