@@ -5,14 +5,14 @@ labels: [enhancement]
 body:
   - type: textarea
     attributes:
-      label: Is your feature request related to a specific event or issue during Eurofurence?
-      placeholder: Please describe if this feature request is related to a specific event or challenge you encountered during Eurofurence.
+      label: Is your feature request related to a specific event or situation at Eurofurence?
+      placeholder: Describe the event, situation, or challenge at Eurofurence that prompted this feature request. If it’s not related to a specific event, you can leave this blank.
     validations:
-      required: true
+      required: false
   - type: textarea
     attributes:
-      label: What problem does this feature solve?
-      placeholder: Provide a clear and concise description of the problem that this feature would solve.
+      label: What problem are you trying to solve with this feature?
+      placeholder: Clearly describe the problem or need that this feature would address. What issue does it resolve or improve?
     validations:
       required: true
   - type: textarea
