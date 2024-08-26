@@ -37,10 +37,10 @@ class CreateShiftsTable extends Migration
             $this->references($table, 'shift_types');
             $this->references($table, 'rooms');
 
-            $table->uuid('transaction_id')->nullable()->default(null)->index();
+            $table->uuid('transaction_id')->nullable()->index();
 
             $this->references($table, 'users', 'created_by');
-            $this->references($table, 'users', 'updated_by')->nullable()->default(null);
+            $this->references($table, 'users', 'updated_by')->nullable();
 
             $table->timestamps();
         });
@@ -95,20 +95,20 @@ class CreateShiftsTable extends Migration
 
         $this->schema->create('Shifts', function (Blueprint $table): void {
             $table->increments('SID');
-            $table->mediumText('title')->nullable()->default(null);
+            $table->mediumText('title')->nullable();
             $this->references($table, 'shift_types', 'shifttype_id');
-            $table->text('description')->nullable()->default(null);
+            $table->text('description')->nullable();
             $table->integer('start')->index();
             $table->integer('end');
             $this->references($table, 'rooms', 'RID')->default(0);
-            $table->mediumText('URL')->nullable()->default(null);
+            $table->mediumText('URL')->nullable();
 
-            $this->references($table, 'users', 'created_by_user_id')->nullable()->default(null);
+            $this->references($table, 'users', 'created_by_user_id')->nullable();
             $table->integer('created_at_timestamp');
-            $this->references($table, 'users', 'edited_by_user_id')->nullable()->default(null);
+            $this->references($table, 'users', 'edited_by_user_id')->nullable();
             $table->integer('edited_at_timestamp');
 
-            $table->uuid('transaction_id')->nullable()->default(null)->index();
+            $table->uuid('transaction_id')->nullable()->index();
         });
 
         /** @var stdClass[] $records */

@@ -24,7 +24,7 @@ class CreateUserAngelTypesTable extends Migration
             $table->increments('id');
             $this->referencesUser($table);
             $this->references($table, 'angel_types')->index();
-            $this->references($table, 'users', 'confirm_user_id')->nullable()->default(null)->index();
+            $this->references($table, 'users', 'confirm_user_id')->nullable()->index();
             $table->boolean('supporter')->default(false)->index();
             $table->index(['user_id', 'angel_type_id', 'confirm_user_id']);
             $table->unique(['user_id', 'angel_type_id']);
