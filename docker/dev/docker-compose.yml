@@ -10,6 +10,7 @@ services:
       - ./../..:/var/www
     environment:
       RUN_USER: "${UID}:${GID}"
+      MYSQL_TYPE: mariadb
       MYSQL_HOST: es_database
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
@@ -34,6 +35,7 @@ services:
       - ./../..:/var/www
     environment:
       HOME: /tmp
+      MYSQL_TYPE: mariadb
       MYSQL_HOST: es_database
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
@@ -53,7 +55,7 @@ services:
       - es_database
     profiles: [ dev ]
   es_database:
-    image: mariadb:10.3
+    image: mariadb:10.7
     environment:
       MYSQL_DATABASE: engelsystem
       MYSQL_USER: engelsystem

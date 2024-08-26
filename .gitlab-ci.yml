@@ -214,7 +214,7 @@ test:
   stage: test
   needs: [ build-image ]
   services:
-    - mariadb:10.3
+    - mariadb:10.7
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}"
     expire_in: 1 week
@@ -249,7 +249,7 @@ dump-database:
   stage: test
   needs: [ build-image ]
   services:
-    - mariadb:10.3
+    - mariadb:10.7
   artifacts:
     expire_in: 1 week
     paths:
