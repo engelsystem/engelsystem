@@ -53,7 +53,7 @@ services:
       - es_database
     profiles: [ dev ]
   es_database:
-    image: mariadb:10.2
+    image: mariadb:10.3
     environment:
       MYSQL_DATABASE: engelsystem
       MYSQL_USER: engelsystem

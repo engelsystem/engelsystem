@@ -36,7 +36,7 @@ spec:
         tier: database
     spec:
       containers:
-        - image: mariadb:10.2
+        - image: mariadb:10.3
           name: database
           imagePullPolicy: Always
           env:

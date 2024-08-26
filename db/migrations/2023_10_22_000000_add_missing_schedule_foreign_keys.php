@@ -16,10 +16,7 @@ class AddMissingScheduleForeignKeys extends Migration
      */
     public function up(): void
     {
-        $schemaManager = $this->schema->getConnection()->getDoctrineSchemaManager();
-
-        $hasShiftTypeReference = $schemaManager->introspectTable('schedules')
-            ->hasIndex('schedules_shift_type_foreign');
+        $hasShiftTypeReference = $this->schema->hasIndex('schedules', 'schedules_shift_type_foreign');
         if (!$hasShiftTypeReference) {
             $this->schema->table('schedules', function (Blueprint $table): void {
                 $table->unsignedInteger('shift_type')->change();
@@ -27,8 +24,7 @@ class AddMissingScheduleForeignKeys extends Migration
             });
         }
 
-        $hasShiftIdReference = $schemaManager->introspectTable('schedule_shift')
-            ->hasIndex('schedule_shift_schedule_id_foreign');
+        $hasShiftIdReference = $this->schema->hasIndex('schedule_shift', 'schedule_shift_shift_id_foreign');
         if (!$hasShiftIdReference) {
             $this->schema->table('schedule_shift', function (Blueprint $table): void {
                 $table->unsignedInteger('shift_id')->change();

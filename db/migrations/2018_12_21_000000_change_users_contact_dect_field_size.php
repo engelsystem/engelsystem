@@ -38,7 +38,7 @@ class ChangeUsersContactDectFieldSize extends Migration
             }
 
             $this->schema->table($table, function (Blueprint $table) use ($column, $length): void {
-                $table->string($column, $length)->change();
+                $table->string($column, $length)->nullable()->change();
             });
         }
     }
