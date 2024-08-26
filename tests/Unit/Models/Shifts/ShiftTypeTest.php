@@ -30,6 +30,7 @@ class ShiftTypeTest extends ModelTest
      */
     public function testSchedules(): void
     {
+        ShiftType::factory()->create();
         $shiftType = new ShiftType(['name' => 'Test type', 'description' => 'Foo bar baz']);
         $shiftType->save();
 
