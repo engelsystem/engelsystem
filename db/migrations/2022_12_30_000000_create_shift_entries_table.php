@@ -80,7 +80,7 @@ class CreateShiftEntriesTable extends Migration
 
             $table->mediumText('Comment')->nullable();
 
-            $table->mediumText('freeload_comment')->nullable()->default(null);
+            $table->mediumText('freeload_comment')->nullable();
             $table->boolean('freeloaded')->index();
 
             $table->index(['SID', 'TID']);
