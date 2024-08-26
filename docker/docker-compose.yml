@@ -7,6 +7,7 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     environment:
+      MYSQL_TYPE: mariadb
       MYSQL_HOST: es_database
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
@@ -20,7 +21,7 @@ services:
     depends_on:
       - es_database
   es_database:
-    image: mariadb:10.3
+    image: mariadb:10.7
     environment:
       MYSQL_DATABASE: engelsystem
       MYSQL_USER: engelsystem
