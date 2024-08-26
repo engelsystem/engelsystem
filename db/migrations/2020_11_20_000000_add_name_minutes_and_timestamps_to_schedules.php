@@ -35,10 +35,10 @@ class AddNameMinutesAndTimestampsToSchedules extends Migration
             ]);
 
         $this->schema->table('schedules', function (Blueprint $table): void {
-            $table->string('name')->default(null)->change();
-            $table->unsignedInteger('shift_type')->default(null)->change();
-            $table->integer('minutes_before')->default(null)->change();
-            $table->integer('minutes_after')->default(null)->change();
+            $table->string('name')->change();
+            $table->unsignedInteger('shift_type')->change();
+            $table->integer('minutes_before')->change();
+            $table->integer('minutes_after')->change();
         });
 
         // Add legacy reference

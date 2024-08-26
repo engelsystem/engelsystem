@@ -21,9 +21,9 @@ class ChangeMysqlDatabaseEncodingToUtf8mb4 extends Migration
 
         $connection->unprepared('ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
 
-        foreach ($connection->getDoctrineSchemaManager()->listTableNames() as $table) {
+        foreach ($this->schema->getTables() as $table) {
             $connection->unprepared(
-                'ALTER TABLE `' . $table . '` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
+                'ALTER TABLE `' . $table['name'] . '` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
             );
         }
     }
