@@ -1041,3 +1041,21 @@ msgstr "Config"
 
 msgid "config.edit.success"
 msgstr "Configuration updated successfully"
+
+msgid "Add more angels"
+msgstr "Add more critter"
+
+msgid "Create angel type"
+msgstr "Create critter type"
+
+msgid "Angel can receive another %d vouchers."
+msgstr "Critter can receive another %d vouchers."
+
+msgid "Angel can receive another %d vouchers and is FA."
+msgstr "Critter can receive another %d vouchers and is FA."
+
+msgid "Other angeltype needed / collides with my shifts"
+msgstr "Other critter type needed / collides with my shifts"
+
+msgid "Other angel type needed / collides with my shifts"
+msgstr "Other critter type needed / collides with my shifts"
