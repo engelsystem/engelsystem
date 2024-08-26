@@ -102,26 +102,26 @@ class HelpersTest extends TestCase
     }
 
     /**
-     * @covers \env_password
+     * @covers \env_secret
      */
-    public function testEnvPassword(): void
+    public function testEnvSecret(): void
     {
         $filename = __DIR__ . '/Assets/foo_secret';
         putenv('FOO=');
         putenv('FOO_FILE=');
-        $this->assertEquals('', env_password('FOO'));
+        $this->assertEquals('', env_secret('FOO'));
 
         putenv('FOO=baz');
         putenv('FOO_FILE=');
-        $this->assertEquals('baz', env_password('FOO'));
+        $this->assertEquals('baz', env_secret('FOO'));
 
         putenv('FOO=');
         putenv("FOO_FILE={$filename}");
-        $this->assertEquals('bar', env_password('FOO'));
+        $this->assertEquals('bar', env_secret('FOO'));
 
         putenv('FOO=baz');
         putenv("FOO_FILE={$filename}");
-        $this->assertEquals('bar', env_password('FOO'));
+        $this->assertEquals('bar', env_secret('FOO'));
     }
 
     /**
