@@ -36,8 +36,18 @@ class Migrate
         string $path,
         Direction $direction = Direction::UP,
         bool $oneStep = false,
-        bool $forceMigration = false
+        bool $forceMigration = false,
+        bool $prune = false
     ): void {
+        if ($prune) {
+            ($this->output)('Dropping all tables');
+            $this->schema->dropAllTables();
+
+            if ($direction == Direction::DOWN) {
+                return;
+            }
+        }
+
         $this->initMigration();
 
         $this->lockTable($forceMigration);
