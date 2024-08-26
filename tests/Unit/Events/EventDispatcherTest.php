@@ -128,7 +128,7 @@ class EventDispatcherTest extends TestCase
     /**
      * @return null
      */
-    public function returnNull()
+    public function returnNull(): null
     {
         return null;
     }

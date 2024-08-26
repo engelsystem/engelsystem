@@ -46,6 +46,7 @@
                                     <span class="input-group-text {{ m.type_text_class() }}">
                                         {{ m.angel }}
                                     </span>
+                                    <label for="form_nick" class="visually-hidden">{{ __('general.nick') }}</label>
                                     <input
                                         class="form-control"
                                         id="form_nick"
@@ -62,6 +63,7 @@
                                     <span class="input-group-text {{ m.type_text_class() }}">
                                         <i class="bi bi-key"></i>
                                     </span>
+                                    <label for="form_password" class="visually-hidden">{{ __('settings.password') }}</label>
                                     <input
                                         class="form-control" id="form_password" type="password"
                                         name="password" value="" placeholder="{{ __('settings.password') }}" autocomplete="current-password"
