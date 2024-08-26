@@ -10,7 +10,7 @@ return [
         'host'     => env('MYSQL_HOST', 'localhost'),
         'database' => env('MYSQL_DATABASE', 'engelsystem'),
         'username' => env('MYSQL_USER', 'root'),
-        'password' => env('MYSQL_PASSWORD', ''),
+        'password' => env_secret('MYSQL_PASSWORD', ''),
     ],
 
     // For accessing /metrics (and /stats)
@@ -81,7 +81,7 @@ return [
         // If tls transport encryption should be enabled
         'tls'        => env('MAIL_TLS'),
         'username'   => env('MAIL_USERNAME'),
-        'password'   => env('MAIL_PASSWORD'),
+        'password'   => env_secret('MAIL_PASSWORD'),
         'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
     ],
 
@@ -92,7 +92,7 @@ return [
     'enable_email_goodie' => (bool) env('ENABLE_EMAIL_GOODIE', false),
 
     // Initial admin password, configured on first migration
-    'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD'),
+    'setup_admin_password'    => env_secret('SETUP_ADMIN_PASSWORD'),
 
     // Setup external authentication providers
     'oauth'                   => [
