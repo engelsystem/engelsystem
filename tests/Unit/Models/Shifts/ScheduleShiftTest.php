@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Models\Shifts;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Test\Unit\Models\ModelTest;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -18,10 +19,11 @@ class ScheduleShiftTest extends ModelTest
      */
     public function testScheduleShifts(): void
     {
+        ShiftType::factory()->create();
         $schedule = new Schedule([
             'url' => 'https://lorem.ipsum/schedule.xml',
             'name' => 'Test',
-            'shift_type' => 0,
+            'shift_type' => 1,
             'minutes_before' => 15,
             'minutes_after' => 15,
         ]);

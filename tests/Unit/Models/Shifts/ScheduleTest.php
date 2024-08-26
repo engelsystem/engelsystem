@@ -23,6 +23,13 @@ class ScheduleTest extends ModelTest
         'minutes_after'  => 10,
     ];
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        ShiftType::factory()->create(['id' => 1]);
+    }
+
     /**
      * @covers \Engelsystem\Models\Shifts\Schedule::activeLocations
      */
@@ -43,6 +50,7 @@ class ScheduleTest extends ModelTest
      */
     public function testScheduleShifts(): void
     {
+        Shift::factory(3)->create();
         $schedule = new Schedule($this->data);
         $schedule->save();
 

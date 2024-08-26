@@ -73,8 +73,8 @@ class XmlParser
             $data = $day->attributes();
             $days[] = new Day(
                 (string) $data['date'],
-                new Carbon($data['start']),
-                new Carbon($data['end']),
+                new Carbon((string) $data['start']),
+                new Carbon((string) $data['end']),
                 (int) $data['index'],
                 $rooms
             );

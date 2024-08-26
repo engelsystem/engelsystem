@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories\Engelsystem\Models\Shifts;
 
 use Engelsystem\Models\Shifts\Schedule;
+use Engelsystem\Models\Shifts\ShiftType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ScheduleFactory extends Factory
@@ -17,7 +18,7 @@ class ScheduleFactory extends Factory
         return [
             'name'           => $this->faker->unique()->words(4, true),
             'url'            => $this->faker->parse('https://{{safeEmailDomain}}/{{slug}}.xml'),
-            'shift_type'     => $this->faker->numberBetween(1, 5),
+            'shift_type'     => ShiftType::factory(),
             'needed_from_shift_type' => $this->faker->boolean(.2),
             'minutes_before' => 15,
             'minutes_after'  => 15,
