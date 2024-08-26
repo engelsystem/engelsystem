@@ -10,7 +10,7 @@ return [
         'host'     => env('MYSQL_HOST', 'localhost'),
         'database' => env('MYSQL_DATABASE', 'engelsystem'),
         'username' => env('MYSQL_USER', 'root'),
-        'password' => env_secret('MYSQL_PASSWORD'),
+        'password' => env_secret('MYSQL_PASSWORD', ''),
     ],
 
     // For accessing /metrics (and /stats)

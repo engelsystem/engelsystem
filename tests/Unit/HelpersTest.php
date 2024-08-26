@@ -107,6 +107,8 @@ class HelpersTest extends TestCase
     public function testEnvSecret(): void
     {
         $filename = __DIR__ . '/Assets/foo_secret';
+
+        // Secret from env var when _FILE is emtpy
         putenv('FOO=');
         putenv('FOO_FILE=');
         $this->assertEquals('', env_secret('FOO'));
@@ -115,13 +117,22 @@ class HelpersTest extends TestCase
         putenv('FOO_FILE=');
         $this->assertEquals('baz', env_secret('FOO'));
 
+        // Load secret from file
         putenv('FOO=');
-        putenv("FOO_FILE={$filename}");
-        $this->assertEquals('bar', env_secret('FOO'));
+        putenv('FOO_FILE=' . $filename);
+        $this->assertEquals('bar' . PHP_EOL, env_secret('FOO'));
 
         putenv('FOO=baz');
-        putenv("FOO_FILE={$filename}");
-        $this->assertEquals('bar', env_secret('FOO'));
+        putenv('FOO_FILE=' . $filename);
+        $this->assertEquals('bar' . PHP_EOL, env_secret('FOO'));
+
+        // Fallback to env/default when file does not exist / is not readable
+        putenv('FOO=test');
+        putenv('FOO_FILE=/not/existing/file');
+        $this->assertEquals('test', env_secret('FOO'));
+
+        putenv('BAR_FILE=/not/existing/file');
+        $this->assertEquals('default-value', env_secret('BAR', 'default-value'));
     }
 
     /**
