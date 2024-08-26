@@ -19,6 +19,7 @@ body:
         - Eurofurence Director
         - Eurofurence Staff
         - Attendee (Critter)
+        - Anyone (Role doesn't matter)
     validations:
       required: true
 
@@ -54,7 +55,7 @@ body:
       description: Enter the version of your operating system.
       placeholder: e.g., Windows 10, macOS 12.3, Ubuntu 20.04
     validations:
-      required: true
+      required: false
 
   - type: input
     attributes:
@@ -62,7 +63,7 @@ body:
       description: Enter the name and version of the browser you were using.
       placeholder: e.g., Chrome 93, Safari 15, Firefox 92
     validations:
-      required: true
+      required: false
 
   - type: textarea
     attributes:
