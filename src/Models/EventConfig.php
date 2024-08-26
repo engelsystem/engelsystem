@@ -66,8 +66,6 @@ class EventConfig extends BaseModel
 
     /**
      * Value mutator
-     *
-     * @return static
      */
     public function setValueAttribute(mixed $value): static
     {

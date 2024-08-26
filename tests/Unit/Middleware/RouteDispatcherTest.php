@@ -136,7 +136,7 @@ class RouteDispatcherTest extends TestCase
             ->willReturn('HEAD');
         $request->expects($this->atLeastOnce())
             ->method('getUri')
-            ->willReturn('http://foo.bar/lorem/foo%21bar');
+            ->willReturn('https://foo.bar/lorem/foo%21bar');
         $request->expects($this->atLeastOnce())
             ->method('getPathInfo')
             ->willReturn('/foo%21bar');
