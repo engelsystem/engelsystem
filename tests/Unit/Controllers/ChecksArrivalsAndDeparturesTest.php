@@ -11,8 +11,6 @@ use Engelsystem\Test\Unit\TestCase;
 
 class ChecksArrivalsAndDeparturesTest extends TestCase
 {
-    private Config $config;
-
     public function invalidArrivalCombinations(): array
     {
         return [
@@ -136,8 +134,8 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->config = new Config();
-        $this->app->instance('config', $this->config);
-        $this->app->instance(Config::class, $this->config);
+        $onfig = new Config();
+        $this->app->instance('config', $onfig);
+        $this->app->instance(Config::class, $onfig);
     }
 }

@@ -108,13 +108,13 @@ class ResponseTest extends TestCase
     public function testRedirectTo(): void
     {
         $response = new Response();
-        $newResponse = $response->redirectTo('http://foo.bar/lorem', 301, ['test' => 'ing']);
+        $newResponse = $response->redirectTo('https://foo.bar/lorem', 301, ['test' => 'ing']);
 
         $this->assertNotEquals($response, $newResponse);
         $this->assertEquals(301, $newResponse->getStatusCode());
         $this->assertArraySubset(
             [
-                'location' => ['http://foo.bar/lorem'],
+                'location' => ['https://foo.bar/lorem'],
                 'test'     => ['ing'],
             ],
             $newResponse->getHeaders()

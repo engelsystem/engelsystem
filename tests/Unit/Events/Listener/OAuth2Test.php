@@ -23,8 +23,7 @@ class OAuth2Test extends TestCase
     /** @var AngelType[] */
     protected array $angelTypes;
 
-    /** @var Authenticator|MockObject */
-    protected Authenticator $auth;
+    protected Authenticator | MockObject $auth;
 
     protected Config $config;
 

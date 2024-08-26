@@ -31,10 +31,10 @@ class UrlTest extends ExtensionTest
     public function getUrls(): array
     {
         return [
-            ['/', '/', 'http://foo.bar/'],
-            ['/foo', '/foo', 'http://foo.bar/foo'],
-            ['foo_bar', 'foo-bar', 'http://foo.bar/foo-bar'],
-            ['dolor', 'dolor', 'http://foo.bar/dolor?lorem_ipsum=dolor', ['lorem_ipsum' => 'dolor']],
+            ['/', '/', 'https://foo.bar/'],
+            ['/foo', '/foo', 'https://foo.bar/foo'],
+            ['foo_bar', 'foo-bar', 'https://foo.bar/foo-bar'],
+            ['dolor', 'dolor', 'https://foo.bar/dolor?lorem_ipsum=dolor', ['lorem_ipsum' => 'dolor']],
         ];
     }
 
