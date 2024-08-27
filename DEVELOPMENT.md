@@ -89,7 +89,7 @@ docker compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
 
 > [!NOTE]
-> Wait for a few minutes after running `docker compose exec` – it may look like it's stalling, but it's not.
+> Wait some time (up to a few minutes) after running `yarn build:watch` – it may look like it's stalling, but it's not.
 
 
 It might also be useful to have an interactive database interface for which a phpMyAdmin instance can be startet at [http://localhost:8888](http://localhost:8888).
