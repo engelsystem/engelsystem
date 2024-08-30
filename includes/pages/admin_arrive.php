@@ -8,7 +8,7 @@ use Engelsystem\Models\User\User;
  */
 function admin_arrive_title()
 {
-    return auth()->can('admin_arrive') ? __('Arrive angels') : __('Angels');
+    return auth()->can('admin_arrive') ? __('Arrive critters') : __('Angels');
 }
 
 /**

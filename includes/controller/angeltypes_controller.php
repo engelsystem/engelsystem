@@ -65,13 +65,13 @@ function angeltype_delete_controller()
 
     if (request()->hasPostData('delete')) {
         $angeltype->delete();
-        engelsystem_log('Deleted angel type: ' . AngelType_name_render($angeltype, true));
-        success(sprintf(__('Angel type %s deleted.'), $angeltype->name));
+        engelsystem_log('Deleted critter type: ' . AngelType_name_render($angeltype, true));
+        success(sprintf(__('Critter type %s deleted.'), $angeltype->name));
         throw_redirect(url('/angeltypes'));
     }
 
     return [
-        sprintf(__('Delete angel type %s'), htmlspecialchars($angeltype->name)),
+        sprintf(__('Delete critter type %s'), htmlspecialchars($angeltype->name)),
         AngelType_delete_view($angeltype),
     ];
 }
@@ -135,7 +135,7 @@ function angeltype_edit_controller()
         if ($valid) {
             $angeltype->save();
 
-            success(__('Angel type saved.'));
+            success(__('Critter type saved.'));
             engelsystem_log(
                 'Saved angel type: ' . $angeltype->name . ($angeltype->restricted ? ', restricted' : '')
                 . ($angeltype->shift_self_signup ? ', shift_self_signup' : '')

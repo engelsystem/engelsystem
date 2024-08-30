@@ -46,13 +46,13 @@ function admin_active()
             $count = strip_request_item('count');
             if ($count < $forced_count && config('enable_force_active')) {
                 error(sprintf(
-                    __('At least %s angels are forced to be active. The number has to be greater.'),
+                    __('At least %s critter are forced to be active. The number has to be greater.'),
                     $forced_count
                 ));
                 throw_redirect(url('/admin-active'));
             }
         } else {
-            $msg .= error(__('Please enter a number of angels to be marked as active.'));
+            $msg .= error(__('Please enter a number of critters to be marked as active.'));
             throw_redirect(url('/admin-active'));
         }
 
@@ -102,9 +102,9 @@ function admin_active()
                 $user_nicks[] = User_Nick_render($usr, true);
             }
 
-            engelsystem_log('These angels are active now: ' . join(', ', $user_nicks));
+            engelsystem_log('These critters are active now: ' . join(', ', $user_nicks));
 
-            $msg = success(__('Marked angels.'), true);
+            $msg = success(__('Marked critters.'), true);
         } else {
             $set_active = form([
                 button(url('/admin-active', ['search' => $search]), '&laquo; ' . __('general.back')),
@@ -121,9 +121,9 @@ function admin_active()
                 $user_source->state->active = true;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' is active now.');
-                $msg = success(__('Angel has been marked as active.'), true);
+                $msg = success(__('Critter has been marked as active.'), true);
             } else {
-                $msg = error(__('Angel not found.'), true);
+                $msg = error(__('Critter not found.'), true);
             }
         } elseif ($request->has('not_active') && preg_match('/^\d+$/', $request->input('not_active'))) {
             $user_id = $request->input('not_active');
@@ -132,9 +132,9 @@ function admin_active()
                 $user_source->state->active = false;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' is NOT active now.');
-                $msg = success(__('Angel has been marked as not active.'), true);
+                $msg = success(__('Critter has been marked as not active.'), true);
             } else {
-                $msg = error(__('Angel not found.'), true);
+                $msg = error(__('Critter not found.'), true);
             }
         } elseif ($request->has('tshirt') && preg_match('/^\d+$/', $request->input('tshirt'))) {
             $user_id = $request->input('tshirt');
@@ -143,9 +143,9 @@ function admin_active()
                 $user_source->state->got_goodie = true;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has tshirt now.');
-                $msg = success(($goodie_tshirt ? __('Angel has got a T-shirt.') : __('Angel has got a goodie.')), true);
+                $msg = success(($goodie_tshirt ? __('Critter has got a T-shirt.') : __('Critter has got a goodie.')), true);
             } else {
-                $msg = error('Angel not found.', true);
+                $msg = error('Critter not found.', true);
             }
         } elseif ($request->has('not_tshirt') && preg_match('/^\d+$/', $request->input('not_tshirt'))) {
             $user_id = $request->input('not_tshirt');
@@ -154,9 +154,9 @@ function admin_active()
                 $user_source->state->got_goodie = false;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO tshirt.');
-                $msg = success(($goodie_tshirt ? __('Angel has got no T-shirt.') : __('Angel has got no goodie.')), true);
+                $msg = success(($goodie_tshirt ? __('Critter has got no T-shirt.') : __('Critter has got no goodie.')), true);
             } else {
-                $msg = error(__('Angel not found.'), true);
+                $msg = error(__('Critter not found.'), true);
             }
         }
     }
@@ -360,12 +360,12 @@ function admin_active()
 
     return page_with_title(admin_active_title(), [
         form([
-            form_text('search', __('Search angel:'), $search),
+            form_text('search', __('Search critter:'), $search),
             form_checkbox('show_all_shifts', __('Show all shifts'), $show_all_shifts),
             form_submit('submit', icon('search') . __('form.search')),
         ], url('/admin-active')),
         $set_active == '' ? form([
-            form_text('count', __('How many angels should be active?'), $count ?: $forced_count),
+            form_text('count', __('How many critters should be active?'), $count ?: $forced_count),
             form_submit('set_active', icon('eye') .  __('form.preview'), 'btn-info'),
         ]) : $set_active,
         $msg . msg(),

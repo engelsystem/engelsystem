@@ -184,12 +184,12 @@ function admin_shifts()
                         $needed_angel_types[$type->id] = trim($request->input('angeltype_count_' . $type->id, 0));
                     } else {
                         $valid = false;
-                        error(sprintf(__('Please check the needed angels for team %s.'), $type->name));
+                        error(sprintf(__('Please check the needed critters for team %s.'), $type->name));
                     }
                 }
             } else {
                 $valid = false;
-                error(__('Please select a mode for needed angels.'));
+                error(__('Please select a mode for needed critters.'));
             }
 
             if (
@@ -202,11 +202,11 @@ function admin_shifts()
                     ->count()
             ) {
                 $valid = false;
-                error(__('There are 0 angels needed. Please enter the amounts of needed angels.'));
+                error(__('There are 0 critters needed. Please enter the amounts of needed critters.'));
             }
         } else {
             $valid = false;
-            error(__('Please select needed angels.'));
+            error(__('Please select needed critters.'));
         }
 
         // Beim Zurück-Knopf das Formular zeigen
@@ -591,19 +591,19 @@ function admin_shifts()
                         form_info(__('Needed angels')),
                         form_radio(
                             'angelmode',
-                            __('Copy needed angels from shift type settings'),
+                            __('Copy needed critters from shift type settings'),
                             $angelmode == 'shift_type',
                             'shift_type'
                         ),
                         form_radio(
                             'angelmode',
-                            __('Copy needed angels from location settings'),
+                            __('Copy needed critters from location settings'),
                             $angelmode == 'location',
                             'location'
                         ),
                         form_radio(
                             'angelmode',
-                            __('The following angels are needed'),
+                            __('The following critters are needed'),
                             $angelmode == 'manually',
                             'manually'
                         ),

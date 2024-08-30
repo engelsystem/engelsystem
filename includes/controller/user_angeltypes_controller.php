@@ -47,8 +47,8 @@ function user_angeltypes_unconfirmed_hint()
     $count = $unconfirmed_user_angeltypes->count();
     return
         _e(
-            'There are unconfirmed angels in %d angel type. Angel type that needs approval:',
-            'There are unconfirmed angels in %d angel types. Angel types that need approvals:',
+            'There are unconfirmed critters in %d angel type. Critter type that needs approval:',
+            'There are unconfirmed critters in %d angel types. Critter types that need approvals:',
             $count,
             [$count]
         )
@@ -71,7 +71,7 @@ function user_angeltypes_delete_all_controller(): array
 
     $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
     if (!auth()->user()->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
-        error(__('You are not allowed to delete all users for this angel type.'));
+        error(__('You are not allowed to delete all users for this critter type.'));
         throw_redirect(url('/angeltypes'));
     }
 
@@ -80,8 +80,8 @@ function user_angeltypes_delete_all_controller(): array
             ->whereNull('confirm_user_id')
             ->delete();
 
-        engelsystem_log(sprintf('Denied all users for angel type %s', AngelType_name_render($angeltype, true)));
-        success(sprintf(__('Denied all users for angel type %s.'), $angeltype->name));
+        engelsystem_log(sprintf('Denied all users for critter type %s', AngelType_name_render($angeltype, true)));
+        success(sprintf(__('Denied all users for critter type %s.'), $angeltype->name));
         throw_redirect(url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
     }
 
@@ -108,7 +108,7 @@ function user_angeltypes_confirm_all_controller(): array
 
     $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
     if (!auth()->can('admin_user_angeltypes') && !$user->isAngelTypeSupporter($angeltype)) {
-        error(__('You are not allowed to confirm all users for this angel type.'));
+        error(__('You are not allowed to confirm all users for this critter type.'));
         throw_redirect(url('/angeltypes'));
     }
 
@@ -119,8 +119,8 @@ function user_angeltypes_confirm_all_controller(): array
             ->whereNull('confirm_user_id')
             ->update(['confirm_user_id' => $user->id]);
 
-        engelsystem_log(sprintf('Confirmed all users for angel type %s', AngelType_name_render($angeltype, true)));
-        success(sprintf(__('Confirmed all users for angel type %s.'), $angeltype->name));
+        engelsystem_log(sprintf('Confirmed all users for critter type %s', AngelType_name_render($angeltype, true)));
+        success(sprintf(__('Confirmed all users for critter type %s.'), $angeltype->name));
 
         foreach ($users as $user) {
             user_angeltype_confirm_email($user, $angeltype);
@@ -153,7 +153,7 @@ function user_angeltype_confirm_controller(): array
     $user_angeltype = UserAngelType::findOrFail($request->input('user_angeltype_id'));
     $angeltype = $user_angeltype->angelType;
     if (!$user->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
-        error(__('You are not allowed to confirm this users angel type.'));
+        error(__('You are not allowed to confirm this users critter type.'));
         throw_redirect(url('/angeltypes'));
     }
 
@@ -163,11 +163,11 @@ function user_angeltype_confirm_controller(): array
         $user_angeltype->save();
 
         engelsystem_log(sprintf(
-            '%s confirmed for angel type %s',
+            '%s confirmed for critter type %s',
             User_Nick_render($user_source, true),
             AngelType_name_render($angeltype, true)
         ));
-        success(sprintf(__('%s confirmed for angel type %s.'), $user_source->displayName, $angeltype->name));
+        success(sprintf(__('%s confirmed for critter type %s.'), $user_source->displayName, $angeltype->name));
 
         user_angeltype_confirm_email($user_source, $angeltype);
 
@@ -175,7 +175,7 @@ function user_angeltype_confirm_controller(): array
     }
 
     return [
-        __('Confirm angel type for user'),
+        __('Confirm critter type for user'),
         UserAngelType_confirm_view($user_angeltype, $user_source, $angeltype),
     ];
 }
@@ -236,7 +236,7 @@ function user_angeltype_delete_controller(): array
         && !$user->isAngelTypeSupporter($angeltype)
         && !auth()->can('admin_user_angeltypes')
     ) {
-        error(__('You are not allowed to delete this users angel type.'));
+        error(__('You are not allowed to delete this users critter type.'));
         throw_redirect(url('/angeltypes'));
     }
 
@@ -250,7 +250,7 @@ function user_angeltype_delete_controller(): array
     }
 
     return [
-        __('Leave angel type'),
+        __('Leave critter type'),
         UserAngelType_delete_view($user_angeltype, $user_source, $angeltype, $isOwnAngelType),
     ];
 }
@@ -385,7 +385,7 @@ function user_angeltype_add_controller(): array
     }
 
     return [
-        __('Add user to angel type'),
+        __('Add user to critter type'),
         UserAngelType_add_view($angeltype, $users_select, $user_source->id),
     ];
 }

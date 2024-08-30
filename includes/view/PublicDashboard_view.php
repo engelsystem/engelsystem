@@ -38,7 +38,7 @@ function public_dashboard_view($stats, $free_shifts, $highlighted_news)
         $shift_panels[] = '</div>';
         $needed_angels = div('first', [
             div('col-md-12', [
-                heading(__('Needed angels:')),
+                heading(__('Needed critters:')),
             ]),
             div('container-fluid', [
                 join($shift_panels),

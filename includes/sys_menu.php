@@ -87,9 +87,9 @@ function make_navigation()
         // path              => [name, permission],
 
         'admin_arrive'       => [admin_arrive_title(), 'users.arrive.list'],
-        'admin_active'       => 'Active angels',
-        'users'              => ['All Angels', 'admin_user'],
-        'admin_free'         => 'Free angels',
+        'admin_active'       => 'Active Critters',
+        'users'              => ['All Critters', 'admin_user'],
+        'admin_free'         => 'Free critters',
         'admin/questions'    => ['Answer questions', 'question.edit'],
         'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.view'],
         'admin_shifts'       => 'Create shifts',
