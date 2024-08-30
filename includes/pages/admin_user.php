@@ -44,12 +44,12 @@ function admin_user()
             throw_redirect(users_link());
         }
 
-        $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
+        $html .= __('Here you can change the user entry. Under the item \'Arrived\' the critter is marked as present, a yes at Active means that the critter was active.');
         if ($goodie_enabled && $user_goodie_edit) {
             if ($goodie_tshirt) {
-                $html .= ' ' . __('If the angel is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the angel already got their T-shirt.');
+                $html .= ' ' . __('If the critter is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the critter already got their T-shirt.');
             } else {
-                $html .= ' ' . __('If the angel is active, it can claim a goodie. If goodie is set to \'Yes\', the angel already got their goodie.');
+                $html .= ' ' . __('If the critter is active, it can claim a goodie. If goodie is set to \'Yes\', the critter already got their goodie.');
             }
         }
         $html .= '<br><br>';
@@ -164,7 +164,7 @@ function admin_user()
 
         $html .= '<hr>';
 
-        $html .= __('Here you can reset the password of this angel:');
+        $html .= __('Here you can reset the password of this critter:');
 
         $html .= '<form action="'
             . url('/admin-user', ['action' => 'change_pw', 'id' => $user_id])
@@ -203,7 +203,7 @@ function admin_user()
             ($user_id != $user->id || auth()->can('admin_groups'))
             && ($my_highest_group >= $angel_highest_group || is_null($angel_highest_group))
         ) {
-            $html .= __('Here you can define the user groups of the angel:') . '<form action="'
+            $html .= __('Here you can define the user groups of the critter:') . '<form action="'
                 . url('/admin-user', ['action' => 'save_groups', 'id' => $user_id])
                 . '" method="post">' . "\n";
             $html .= form_csrf();
@@ -278,7 +278,7 @@ function admin_user()
                         );
                         $html .= success(__('User groups saved.'), true);
                     } else {
-                        $html .= error(__('You cannot edit angels with more rights.'), true);
+                        $html .= error(__('You cannot edit critters with more rights.'), true);
                     }
                 } else {
                     $html .= error(__('You cannot edit your own rights.'), true);

@@ -136,7 +136,7 @@ function shift_edit_controller()
                 } else {
                     $valid = false;
                     error(sprintf(
-                        __('Please check your input for needed angels of type %s.'),
+                        __('Please check your input for needed critters of type %s.'),
                         $angeltypes[$needed_angeltype_id]
                     ));
                 }
@@ -218,7 +218,7 @@ function shift_edit_controller()
                     '',
                     __('This description is for single shifts, otherwise please use the description in shift type.')
                 ),
-                '<h2>' . __('Needed angels') . '</h2>',
+                '<h2>' . __('Needed critters') . '</h2>',
                 $angel_types_spinner,
                 form_submit('submit', icon('save') . __('form.save')),
             ]),

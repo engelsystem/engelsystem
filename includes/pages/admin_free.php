@@ -11,7 +11,7 @@ use Illuminate\Database\Query\JoinClause;
  */
 function admin_free_title()
 {
-    return __('Free angels');
+    return __('Free critters');
 }
 
 /**
@@ -118,7 +118,7 @@ function admin_free()
                 div('col-md-12 form-inline', [
                     div('row', [
                         form_text('search', __('form.search'), $search, null, null, null, 'col'),
-                        form_select('angeltype', __('Angel type'), $angel_types, $angelType, '', 'col'),
+                        form_select('angeltype', __('Critter type'), $angel_types, $angelType, '', 'col'),
                         form_submit('submit', icon('search') . __('form.search')),
                     ]),
                 ]),

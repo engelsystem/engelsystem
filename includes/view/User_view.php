@@ -49,8 +49,8 @@ function User_edit_vouchers_view($user)
             msg(),
             info(sprintf(
                 $user->state->force_active && config('enable_force_active')
-                    ? __('Angel can receive another %d vouchers and is FA.')
-                    : __('Angel can receive another %d vouchers.'),
+                    ? __('Critter can receive another %d vouchers and is FA.')
+                    : __('Critter can receive another %d vouchers.'),
                 User_get_eligable_voucher_count($user)
             ), true),
             form(

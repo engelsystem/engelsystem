@@ -125,7 +125,7 @@ class ShiftCalendarShiftRenderer
             $html .= '<li class="list-group-item d-flex align-items-center ' . $this->classBg() . '">';
             $html .= button(
                 shift_entry_create_link_admin($shift),
-                icon('plus-lg') . __('Add more angels'),
+                icon('plus-lg') . __('Add more critters'),
                 'btn-sm'
             );
             $html .= '</li>';
