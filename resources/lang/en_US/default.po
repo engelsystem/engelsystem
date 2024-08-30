@@ -1045,5 +1045,3 @@ msgstr "Configuration updated successfully"
 msgid "Add more critters"
 msgstr "Add more critter"
 
-msgid "Create angel type"
-msgstr "Create critter type"

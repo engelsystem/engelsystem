@@ -2081,6 +2081,3 @@ msgstr "Konfiguration"
 
 msgid "config.edit.success"
 msgstr "Konfiguration erfolgreich angepasst"
-
-msgid "Free critters"
-msgstr "Freie Critter"
