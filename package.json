@@ -1,9 +1,9 @@
 {
-  "name": "engelsystem",
-  "version": "1.1.0",
+  "name": "crittersystem",
+  "version": "1.0.1",
   "main": "index.js",
-  "repository": "https://github.com/engelsystem/engelsystem.git",
-  "author": "https://github.com/engelsystem/engelsystem/contributors",
+  "repository": "https://github.com/eurofurence/crittersystem.git",
+  "author": "https://github.com/eurofurence/crittersystem/contributors",
   "license": "GPL-2.0-or-later",
   "scripts": {
     "build": "NODE_ENV=production yarn build:webpack",
