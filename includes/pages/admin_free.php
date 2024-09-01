@@ -11,7 +11,7 @@ use Illuminate\Database\Query\JoinClause;
  */
 function admin_free_title()
 {
-    return __('Free critters');
+    return __('Free Critters');
 }
 
 /**

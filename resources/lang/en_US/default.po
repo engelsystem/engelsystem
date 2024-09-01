@@ -1044,4 +1044,3 @@ msgstr "Configuration updated successfully"
 
 msgid "Add more critters"
 msgstr "Add more critter"
-

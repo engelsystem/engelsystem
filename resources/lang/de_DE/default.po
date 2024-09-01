@@ -559,7 +559,7 @@ msgstr "Ankunfts-Statistik"
 msgid "Planned departure statistics"
 msgstr "Geplante Abreise-Statistik"
 
-msgid "Free critters"
+msgid "Free Critters"
 msgstr "Freie Critter"
 
 msgid "Critter type"
