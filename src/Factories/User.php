@@ -223,7 +223,7 @@ class User
         $user->save();
 
         $contact = new Contact([
-            'dect'   => $data['dect'] ?? null,
+            'dect'   => array_key_exists('dect', $data) && !empty($data['dect']) ? ltrim($data['dect'], '@') : null,
             'mobile' => $data['mobile'],
         ]);
         $contact->user()
