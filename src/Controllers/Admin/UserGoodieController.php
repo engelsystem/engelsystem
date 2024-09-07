@@ -50,11 +50,15 @@ class UserGoodieController extends BaseController
 
         $user = $this->user->findOrFail($userId);
 
+        // Get the previous page URL (referrer)
+        $previousUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
+
         return $this->response->withView(
             'admin/user/edit-goodie.twig',
             [
                 'userdata' => $user,
                 'is_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
+                'previousUrl' => $previousUrl
             ]
         );
     }
