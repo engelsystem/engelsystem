@@ -427,7 +427,7 @@ msgstr "Dein Konto wurde gelöscht."
 
 msgid ""
 "Your %s account has been deleted. If you have any questions regarding your "
-"account deletion, please contact the Info Desk.
+"account deletion, please contact the Info Desk."
 msgstr ""
 "Dein %s-Konto wurde gelöscht. Wenn Du dazu Fragen hast, kontaktiere bitte "
 "den Info Desk."
