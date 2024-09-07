@@ -161,10 +161,14 @@ function load_days()
         ->toArray();
 
     if (empty($days)) {
-        error(__('The administration has not configured any shifts yet.'));
-        // Do not try to redirect to the current page
-        if (config('home_site') != 'user_shifts') {
-            throw_redirect(url('/'));
+        if (auth()->can('admin_shifts')) {
+            throw_redirect(url('/admin-shifts'));
+        } else {
+            error(__('The administration has not configured any shifts yet.'));
+            // Do not try to redirect to the current page
+            if (config('home_site') != 'user_shifts') {
+                throw_redirect(url('/'));
+            }
         }
     }
     return $days;
