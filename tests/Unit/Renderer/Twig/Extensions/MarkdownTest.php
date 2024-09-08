@@ -12,13 +12,13 @@ class MarkdownTest extends ExtensionTest
     /**
      * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::getFilters
      */
-    public function testGeFilters(): void
+    public function testGetFilters(): void
     {
         $extension = new Markdown(new Parsedown());
         $filters = $extension->getFilters();
 
-        $this->assertExtensionExists('markdown', [$extension, 'render'], $filters);
-        $this->assertExtensionExists('md', [$extension, 'render'], $filters);
+        $this->assertFilterExists('markdown', [$extension, 'render'], $filters);
+        $this->assertFilterExists('md', [$extension, 'render'], $filters);
     }
 
     /**

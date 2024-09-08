@@ -2,12 +2,26 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('faq.faq') }}{% endblock %}
+{% block title %}
+    {{ __('faq.faq') }}
+
+    {% if tag|default(null) %}
+        - {{ tag.name }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>
-            {{ block('title') }}
+            {% if tag|default(null) %}
+                {{ m.button(m.icon('chevron-left'), url('/faq'), null, 'sm', __('general.back')) }}
+            {% endif %}
+
+            {{ __('faq.faq') }}
+
+            {% if tag|default(null) %}
+                <small>- {{ tag.name }}</small>
+            {% endif %}
 
             {%- if can('faq.edit') -%}
                 {{ m.add(url('/admin/faq')) }}
@@ -31,6 +45,20 @@
                 {% endif %}
             {% endblock %}
 
+            {% block tags %}
+                <div class="col-md-12 mb-4">
+                    {% if tags|default(null) %}
+                        {{ __('form.tags') }}:
+                    {% endif %}
+
+                    {% for tag in tags|default([]) %}
+                        <a href="{{ url('/faq/tag/' ~ tag.id) }}" class="badge bg-secondary">
+                            {{ tag.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endblock %}
+
             {% block row %}
                 {% for item in items %}
                     <div class="col-md-12 faq">
@@ -50,6 +78,14 @@
                             <div class="card-footer {{ m.type_bg_class() }} d-flex align-items-center">
                                 <div class="me-3">
                                     {{ m.icon('clock') }} {{ item.updated_at.format(__('general.datetime')) }}
+                                </div>
+
+                                <div class="me-3">
+                                    {% for tag in item.tags %}
+                                        <a href="{{ url('/faq/tag/' ~ tag.id ~ '#faq-' ~ item.id) }}" class="badge bg-secondary">
+                                            {{ tag.name }}
+                                        </a>
+                                    {% endfor %}
                                 </div>
 
                                 {% if can('faq.edit') %}
