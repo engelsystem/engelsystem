@@ -141,7 +141,8 @@ class ShiftCalendarRenderer
             return info(__('No shifts found.'), true);
         }
 
-        return div('shift-calendar table-responsive', [
+        return $this->renderLegend() .
+            div('shift-calendar table-responsive', [
                 $this->renderTimeLane(),
                 $this->renderShiftLanes(),
             ]) . $this->renderLegend();
