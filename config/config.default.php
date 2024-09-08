@@ -453,8 +453,9 @@ return [
         'Referrer-Policy'         => 'strict-origin-when-cross-origin',
         'Content-Security-Policy' =>
             'default-src \'self\'; '
+            . ' frame-src https://nav.eurofurence.org; '
             . ' style-src \'self\' \'unsafe-inline\'; '
-            . 'img-src \'self\' data:;',
+            . ' img-src \'self\' data:;',
         'X-XSS-Protection'        => '1; mode=block',
         'Feature-Policy'          => 'autoplay \'none\'',
         //'Strict-Transport-Security' => 'max-age=7776000',
