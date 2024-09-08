@@ -203,7 +203,11 @@ function load_types()
                 )'
             . ($isShico ? '' :
             'WHERE angel_types.hide_on_shift_view = 0
-                OR user_angel_type.user_id IS NOT NULL ') .
+                OR (
+                    user_angel_type.user_id IS NOT NULL
+                        AND
+                    NOT `user_angel_type`.`confirm_user_id` IS NULL
+                ) ') .
             'ORDER BY `angel_types`.`name`
         ',
         [

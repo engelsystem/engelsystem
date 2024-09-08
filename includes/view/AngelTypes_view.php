@@ -520,25 +520,36 @@ function AngelType_view(
         '',
         __('general.add')
     ) : '');
+
+    // Let's create the tabs as we go, so we can hide if needed
+    // Tab #1 -> INFO
+    $pagetabs = [
+        __('Info') => AngelType_view_info(
+            $angeltype,
+            $members,
+            $admin_user_angeltypes,
+            $admin_angeltypes,
+            $supporter
+        ),
+    ];
+    // Tab #2 -> Only if the user deserves :)
+    if ($admin_user_angeltypes ||
+       !$angeltype->hide_on_shift_view ||
+       ($angeltype->hide_on_shift_view && (!is_null($user_angeltype) && $user_angeltype->confirm_user_id))) {
+        // Yup, you can see this: admin, not to hide or confirmed user
+        $pagetabs[__('general.shifts')] = AngelType_view_shifts(
+            $angeltype,
+            $shiftsFilterRenderer,
+            $shiftCalendarRenderer
+        );
+    }
+
     return page_with_title(
         $back . ' ' . sprintf(__('Team %s'), htmlspecialchars($angeltype->name)) . ' ' . $add,
         [
             AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_license, $user),
             msg(),
-            tabs([
-                __('Info')   => AngelType_view_info(
-                    $angeltype,
-                    $members,
-                    $admin_user_angeltypes,
-                    $admin_angeltypes,
-                    $supporter
-                ),
-                __('general.shifts') => AngelType_view_shifts(
-                    $angeltype,
-                    $shiftsFilterRenderer,
-                    $shiftCalendarRenderer
-                ),
-            ], $tab),
+            tabs($pagetabs, $tab),
         ],
         true
     );
