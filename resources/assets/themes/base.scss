@@ -435,5 +435,5 @@ input[type='number'] {
 }
 
 input[type='text']:invalid {
-  color: map.get($theme-colors, 'danger') !important;
+  color: map.get($theme-colors, 'danger');
 }
