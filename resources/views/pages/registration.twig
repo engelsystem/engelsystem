@@ -15,7 +15,7 @@
 
     {% include 'layouts/parts/messages.twig' %}
 
-    <form method="post" action="{{ url('/register') }}" novalidate class="mb-5">
+    <form method="post" action="{{ url('/register') }}" class="mb-5">
         {{ csrf() }}
 
         <div class="mb-5">
@@ -46,6 +46,8 @@
                             'required': true,
                             'required_icon': true,
                             'value': f.formData('username', ''),
+                            'validationre': config('username_regex'),
+                            'validationtxt': __('validation.username.username'),
                         }
                     ) }}
                 </div>

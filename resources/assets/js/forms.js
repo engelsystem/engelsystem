@@ -423,3 +423,33 @@ ready(() => {
     });
   });
 });
+
+/**
+ * Input validation for text inputs using regex and browser functionality.
+ * This requires the data attributes validationre and validationtxt on
+ * text input elements.
+ * HTML5 input validation using the pattern attribute does not allow
+ * setting regex options; Critter system server-side regex validates
+ * non-matching, HTML5 validates matching strings; Bootstrap validation
+ * is not accessible (ARIA)
+ */
+ready(() => {
+  const elements = document.querySelectorAll('input[type="text"][data-validationre][data-validationtxt]');
+  elements.forEach((inputElement) => {
+    inputElement.addEventListener('input', (event) => {
+      // Split regex literal-as-string back into components, then create new RexExp object
+      var reArr = inputElement.dataset.validationre.split('/');
+      reArr.shift(); // Drop first slash
+      const reOpt = reArr.pop(); // Get regex options after last slash
+      const rePat = reArr.join('/'); // Reinsert slashes into actual pattern
+      const validationRexEx = new RegExp(rePat, reOpt);
+      const reMatch = validationRexEx.test(inputElement.value);
+      if (inputElement.value.length > 0 && reMatch) {
+        inputElement.setCustomValidity(inputElement.dataset.validationtxt);
+      } else {
+        inputElement.setCustomValidity('');
+      }
+      inputElement.reportValidity();
+    });
+  });
+});
