@@ -438,7 +438,7 @@ ready(() => {
   elements.forEach((inputElement) => {
     inputElement.addEventListener('input', (event) => {
       // Split regex literal-as-string back into components, then create new RexExp object
-      var reArr = inputElement.dataset.validationre.split('/');
+      let reArr = inputElement.dataset.validationre.split('/');
       reArr.shift(); // Drop first slash
       const reOpt = reArr.pop(); // Get regex options after last slash
       const rePat = reArr.join('/'); // Reinsert slashes into actual pattern
