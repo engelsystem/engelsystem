@@ -712,10 +712,11 @@ function User_view(
                 div('col-md-2', [
                     config('enable_dect') && $user_source->contact->dect ?
                         heading(
-                            icon('phone')
+                            icon('telegram')
                                 . ' <a href="https://t.me/' . htmlspecialchars($user_source->contact->dect) . '">'
                             . htmlspecialchars($user_source->contact->dect)
-                            . '</a>'
+			    . '</a>',
+                            4
                         )
                         : '',
                     config('enable_mobile_show') && $user_source->contact->mobile ?
@@ -724,7 +725,8 @@ function User_view(
                                 icon('phone')
                                 . ' <a href="tel:' . htmlspecialchars($user_source->contact->mobile) . '">'
                                 . htmlspecialchars($user_source->contact->mobile)
-                                . '</a>'
+				. '</a>',
+                                4
                             )
                             : ''
                         : '',
@@ -732,7 +734,8 @@ function User_view(
                         heading(
                             '<a href="' . url('/messages/' . $user_source->id) . '">'
                             . icon('envelope')
-                            . '</a>'
+			    . '</a>',
+                            4
                         )
                         : '',
                 ]),
