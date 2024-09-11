@@ -26,6 +26,8 @@ Renders an input field wrapped in a DIV with mb-3.
 @param {int|float|string} [opt.max] - Optional "max" attribute value.
 @param {int|float} [opt.step] - Optional "step" attribute value.
 @param {string} [opt.autocomplete] - Optional "autocomplete" attribute value.
+@param {string} [opt.validationre] - Optional "data-validationre" attribute value.
+@param {string} [opt.autocomplete] - Optional "data-validationtxt" attribute value.
 @param {bool} [opt.required=false] - Whether to add the "required" attribute. Defaults to false.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {bool} [opt.readonly=false] - Whether to add the "readonly" attribute. Defaults to false.
@@ -53,6 +55,8 @@ Renders an input field wrapped in a DIV with mb-3.
             {%- if opt.max is defined %} max="{{ opt.max }}"{% endif %}
             {%- if opt.step is defined %} step="{{ opt.step }}"{% endif %}
             {%- if opt.autocomplete is defined %} autocomplete="{{ opt.autocomplete }}"{% endif %}
+            {%- if opt.validationre is defined %} data-validationre="{{ opt.validationre }}"{% endif %}
+            {%- if opt.validationtxt is defined %} data-validationtxt="{{ opt.validationtxt }}"{% endif %}
             {%- if opt.required|default(false) %}
                 required
             {%- endif -%}
