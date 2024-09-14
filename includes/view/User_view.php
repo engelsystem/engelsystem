@@ -96,7 +96,7 @@ function Users_view(
             . user_info_icon($user);
         $u['first_name'] = htmlspecialchars((string) $user->personalData->first_name);
         $u['last_name'] = htmlspecialchars((string) $user->personalData->last_name);
-        $u['dect'] = sprintf('<a href="https://t.me/%s">%1$s</a>', htmlspecialchars((string) $user->contact->dect));
+        $u['dect'] = sprintf('<a href="https://t.me/%s">%s%1$s</a>', str_replace('@','', htmlspecialchars((string) $user->contact->dect)), config('policy')['telegram_visual_prefix']);
         $u['arrived'] = icon_bool($user->state->arrived);
         if (config('enable_voucher')) {
             $u['got_voucher'] = $user->state->got_voucher;
@@ -714,6 +714,7 @@ function User_view(
                         heading(
                             icon('telegram')
                                 . ' <a href="https://t.me/' . htmlspecialchars($user_source->contact->dect) . '">'
+                            . config('policy')['telegram_visual_prefix']
                             . htmlspecialchars($user_source->contact->dect)
 			    . '</a>',
                             4
@@ -971,9 +972,10 @@ function User_Nick_render($user, $plain = false)
     }
 
     return render_profile_link(
-        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user->displayName) . '</a>',
-        $user->id,
-        ($user->state->arrived ? '' : 'text-muted')
+        text: '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user->displayName) . '</a>',
+        user_id: $user->id,
+        class: ($user->state->arrived ? '' : 'text-muted'),
+        telegram_user: $user->contact->dect
     );
 }
 
@@ -992,26 +994,73 @@ function User_Pronoun_render(User $user): string
     return ' (' . htmlspecialchars($user->personalData->pronoun) . ')';
 }
 
+
 /**
- * @param string $text
- * @param int    $user_id
- * @param string $class
- * @return string
+ * Renders a profile link based on user permissions and policies.
+ *
+ * @param string $text The link text to be displayed.
+ * @param int|null $user_id The user ID for generating the profile link. Defaults to null.
+ * @param string $class CSS class for the link. Defaults to an empty string.
+ * @param string|null $telegram_user The Telegram username for alternate messaging. Defaults to null.
+ *
+ * @return string The generated HTML anchor tag.
  */
-function render_profile_link($text, $user_id = null, $class = '')
+function render_profile_link(string $text, int $user_id = null, string $class = '', string $telegram_user = null): string
 {
     $profile_link = url('/settings/profile');
     if (!is_null($user_id)) {
         $profile_link = url('/users', ['action' => 'view', 'user_id' => $user_id]);
     }
 
-    return sprintf(
-        '<a class="%s" href="%s">%s</a>',
-        $class,
-        $profile_link,
-        $text
-    );
+    if (auth()->can('user.type.internal_staff') or
+        auth()->can('admin_user') or
+        auth()->user()->id == $user_id or
+        is_null($user_id)
+    ){
+
+        return sprintf(
+            '<a class="%s" href="%s">%s</a>',
+            $class,
+            $profile_link,
+            $text
+        );
+
+    } else {
+        if (config('policy')['non_staff_message_shortcut']){
+            // true and we have the ID => Now, what to do...
+
+            if (config('policy')['non_staff_message_via_telegram'] and
+                !is_null($telegram_user) and
+                $telegram_user != '-'
+            ) {
+                // Message via Telegram and we have the handler
+                return sprintf(
+                    '<a href="https://t.me/%s">%s%s</a>',
+                    str_replace('@','', htmlspecialchars((string) $telegram_user)),
+                    config('policy')['telegram_visual_prefix'],
+                    $text
+                );
+
+            } else {
+                return sprintf(
+                    '<a class="%s" href="%s">%s</a>',
+                    $class,
+                    url('/messages/' . $user_id),
+                    $text
+                );
+            }
+
+        } else {
+            // false => policy disabled
+            return sprintf(
+                '<a class="%s">%s</a>',
+                $class,
+                $text
+            );
+        }
+    }
 }
+
 
 /**
  * @return string|null
@@ -1020,7 +1069,8 @@ function render_user_departure_date_hint()
 {
     if (config('enable_planned_arrival') && !auth()->user()->personalData->planned_departure_date) {
         $text = __('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
-        return render_profile_link($text, null, 'text-danger');
+        return render_profile_link(text: $text, user_id: null, class: 'text-danger', telegram_user: null);
+//        return render_profile_link($text, auth()->user()->id, 'text-danger');
     }
 
     return null;

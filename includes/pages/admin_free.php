@@ -102,7 +102,7 @@ function admin_free()
                 . user_info_icon($usr),
             'shift_state' => User_shift_state_render($usr),
             'last_shift'  => User_last_shift_render($usr),
-            'dect'        => sprintf('<a href="https://t.me/%s">%1$s</a>', htmlspecialchars((string) $usr->contact->dect)),
+            'dect'        => sprintf('<a href="https://t.me/%s">%s%1$s</a>', str_replace('@','', htmlspecialchars((string) $usr->contact->dect)), config('policy')['telegram_visual_prefix']),
             'email'       => $usr->settings->email_human
                 ? sprintf('<a href="mailto:%s">%1$s</a>', htmlspecialchars((string) $email))
                 : icon('eye-slash'),

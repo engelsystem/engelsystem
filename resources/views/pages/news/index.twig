@@ -83,9 +83,11 @@
                     {{ m.icon('clock') }} {{ news.created_at.format(__('general.datetime')) }}
                 </div>
 
-                <div class="text-truncate">
-                    {{ m.user(news.user) }}
-                </div>
+                {% if is_user() %}
+                    <div class="text-truncate">
+                        {{ m.user(news.user) }}
+                    </div>
+                {% endif %}
 
                 {% if show_comments_link|default(false) %}
                     <div>

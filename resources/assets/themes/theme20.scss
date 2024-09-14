@@ -1,0 +1,229 @@
+// Eurofurence 2024 - Cyberpunk
+// based on cccamp23
+//
+
+// Variables
+// --------------------------------------------------
+
+@import 'dark';
+
+//== changed Colors
+$gray-dark: #231f20;
+$gray-darker: darken($gray-dark, 30%);
+$gray: lighten($gray-dark, 30%);
+$gray-light: lighten($gray, 30%);
+$gray-lighter: lighten($gray-light, 30%);
+$dark: $gray-dark;
+
+$primary: #fb48c4;
+$secondary: #231f20;
+$success: #3fff21;
+$info: #3dbddf;
+$warning: #f6b345;
+$danger: #B21E2A;
+
+$text-muted: $gray-light;
+
+$btn-link-disabled-color: $gray-light;
+
+//== Typography
+
+@font-face {
+  font-family: 'Questrial';
+  src: url('theme20/Questrial-Regular.woff2') format('woff2'), url('theme20/Questrial-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Hemi Head';
+  src: url('theme20/hemi_head.woff2') format('woff2'), url('theme20/hemi_head.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+$font-family-sans-serif: 'Questrial', Helvetica Neue, Helvetica, Arial, sans-serif;
+$font-family-serif: 'Hemi Head', Georgia, 'Times New Roman', Times, serif;
+$headings-font-family: $font-family-serif;
+
+//== changed Forms
+
+$input-bg: $gray-darker;
+$input-bg-disabled: lighten($gray-lighter, 15%);
+$input-border-color: lighten($gray-dark, 15%);
+$input-group-addon-bg: $input-bg;
+
+$form-check-input-border: 1px solid $gray;
+
+//== changed Pagination
+
+$pagination-hover-color: $gray-lighter;
+$pagination-active-color: $gray-lighter;
+
+//== changed Form states and alerts
+
+$state-success-text: #fff;
+$state-success-bg: $success;
+$state-success-border: darken($state-success-bg, 5%);
+
+$state-info-text: #fff;
+$state-info-bg: $info;
+$state-info-border: darken($state-info-bg, 7%);
+
+$state-warning-text: #fff;
+$state-warning-bg: $warning;
+$state-warning-border: darken($state-warning-bg, 3%);
+
+$state-danger-text: #fff;
+$state-danger-bg: $danger;
+$state-danger-border: darken($state-danger-bg, 3%);
+
+$headings-small-color: $gray-light;
+
+code {
+  background-color: $state-info-bg;
+  color: $state-info-text;
+}
+
+$alert-bg-scale: 0%;
+$alert-border-scale: 0%;
+$alert-color-scale: 0%;
+
+// Navs =======================================================================
+
+$nav-tabs-link-active-border-color: $gray-dark;
+
+$nav-tabs-link-active-color: $gray-darker;
+$nav-pills-link-active-color: $gray-darker;
+
+//== Pagination
+//
+//##
+
+$pagination-color: $gray-lighter;
+$pagination-border-color: $gray-dark;
+
+$pagination-hover-color: #000;
+$pagination-hover-border-color: $gray-dark;
+
+$pagination-active-color: #000;
+$pagination-active-border-color: $gray-dark;
+
+$pagination-disabled-color: $gray-light;
+$pagination-disabled-border-color: $gray-dark;
+
+// dark
+@import 'cyborg_variables';
+@import 'cyborg_styles';
+
+// Specials ===================================================================
+
+.bg-success a,
+.bg-primary a,
+.bg-warning a,
+.bg-info a,
+.bg-light a {
+  color: $gray-darker !important;
+}
+
+.bg-body a,
+.bg-danger a,
+.bg-secondary a,
+.bg-dark a {
+  color: $state-danger-text !important;
+}
+
+.bg-primary,
+.bg-success,
+.bg-warning,
+.bg-info,
+.bg-light {
+  color: $gray-darker;
+}
+
+.bg-body,
+.bg-danger,
+.bg-secondary,
+.bg-dark {
+  color: $state-danger-text;
+}
+
+.navbar {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+}
+
+.navbar-brand {
+  color: $primary;
+  font-family: $headings-font-family;
+}
+
+.navbar-brand
+.icon-icon_angel {
+  background-color: $info !important;
+}
+
+.border-bottom {
+  border-bottom: 1px solid $info !important;
+}
+
+.nav-tabs,
+.nav-pills,
+.pager {
+  a {
+    color: $gray-lighter;
+  }
+}
+
+.alert a {
+  color: $gray-darker;
+}
+
+.alert.alert-danger,
+.alert.alert-danger a {
+  color: $gray-lighter;
+}
+
+h1,
+h3,
+h5,
+.h1,
+.h3,
+.h5 {
+  color: $primary;
+
+  &.bg-warning,
+  &.bg-info {
+    color: $primary;
+  }
+}
+
+h2,
+h4,
+h6,
+.h2,
+.h4,
+.h6 {
+  color: $success;
+
+  &.bg-warning,
+  &.bg-info {
+    color: $success;
+  }
+}
+
+body {
+  background: #000;
+  background: url('theme20/bg.svg') repeat;
+}
+
+hr {
+	opacity: 0.5;
+}
+
+// Custom
+.bi-telegram {
+	color: #24A1DE;
+}

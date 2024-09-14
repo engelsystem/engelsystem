@@ -206,6 +206,14 @@ function user_controller()
         }
     }
 
+    if ($user->id != $user_source->id and
+        !(auth()->can('user.type.internal_staff') or
+          auth()->can('admin_user'))
+    ) {
+        //        error(__('Not possible...'));
+        throw_redirect(url('/'));
+    }
+
     $shifts = Shifts_by_user($user_source->id, true);
     foreach ($shifts as $shift) {
         // TODO: Move queries to model

@@ -155,6 +155,21 @@ return [
     // Supported themes
     // To disable a theme in config.php, you can set its value to null
     'themes' => [
+        20 => [
+            'name' => 'Eurofurence 2024 - Cyberpunk ',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark',
+        ],
+        19 => [
+            'name' => 'Eurofurence Light',
+            'type' => 'light',
+            'navbar_classes' => 'navbar-light bg-light',
+        ],
+        18=> [
+            'name' => 'Eurofurence Dark',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-primary navbar-dark bg-black border-dark',
+        ],
         17 => [
             'name' => 'Engelsystem 37c3 (2023)',
             'type' => 'dark',
@@ -467,6 +482,16 @@ return [
         'Contribution' => 'Please visit [engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
             . 'you want to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
             . 'or need help.',
+    ],
+
+    // Policy features
+    'policy'                => [
+        // Adds the prefix to the visual text but do not affect the link
+        'telegram_visual_prefix' => '',
+        // Non-Staff - profile link redirects to Message system. False > Only shows the name (no link)
+        'non_staff_message_shortcut' => true,
+        // Non-Staff - Use Telegram for message. False > uses internal message system
+        'non_staff_message_via_telegram' => true,
     ],
 
     // var dump server

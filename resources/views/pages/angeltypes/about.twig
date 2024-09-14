@@ -74,7 +74,7 @@
                             {{ angeltype.description | md }}
                         </div>
 
-                        {% if angeltype.hasContactInfo() %}
+                        {% if angeltype.hasContactInfo() and is_user() %}
                             <dl class="row card-text">
                                 {% for type, info in {
                                     'contact_name': {'name': __('general.name')},

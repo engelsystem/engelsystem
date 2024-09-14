@@ -23,9 +23,15 @@
 {% endmacro %}
 
 {% macro user(user, opt) %}
-    <a href="{{ opt.url|default(url('/users', {'action': 'view', 'user_id': user.id})) }}"
-            {%- if not user.state.arrived %} class="text-muted"{% endif -%}
-    >
+    {% if can('user.type.internal_staff') or can('admin_user') %}
+        <a href="{{ opt.url|default(url('/users', {'action': 'view', 'user_id': user.id})) }}"
+        {%- if not user.state.arrived %} class="text-muted"{% endif -%}
+        >
+
+    {% else %}
+        <a class="text-muted">
+    {% endif %}
+
         {{ _self.angel() }} {{ user.displayName }}
         {%- if opt.pronoun|default(false) and config('enable_pronoun')
             and user.personalData.pronoun %}

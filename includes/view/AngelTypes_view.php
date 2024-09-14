@@ -306,7 +306,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
         $member->name = User_Nick_render($member) . User_Pronoun_render($member);
         if (config('enable_dect')) {
             $member['dect'] =
-                sprintf('<a href="https://t.me/%s">%1$s</a>', htmlspecialchars((string) $member->contact->dect));
+                sprintf('<a href="https://t.me/%s">%s%1$s</a>', str_replace('@', '', htmlspecialchars((string) $member->contact->dect)), config('policy')['telegram_visual_prefix']);
         }
         if (config('driving_license_enabled') && $angeltype->requires_driver_license) {
             $drive_confirmed = $member->license->drive_confirmed;
@@ -683,7 +683,7 @@ function AngelTypes_render_contact_info(AngelType $angeltype)
         ],
         __('general.dect')  => config('enable_dect')
             ? [
-                sprintf('<a href="http://t.me/%s">%1$s</a>', htmlspecialchars($angeltype->contact_dect)),
+                sprintf('<a href="https://t.me/%s">%s%1$s</a>', str_replace('@','',htmlspecialchars($angeltype->contact_dect)),config('policy')['telegram_visual_prefix']),
                 htmlspecialchars($angeltype->contact_dect),
             ]
             : null,
