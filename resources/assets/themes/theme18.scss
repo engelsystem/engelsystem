@@ -155,9 +155,9 @@ body {
   }
 }
 
-.navbar.navbar-default {
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(6px);
+.bg-black {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(3px);
 }
 
 .navbar-brand {

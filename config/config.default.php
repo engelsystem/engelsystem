@@ -150,7 +150,7 @@ return [
     ],
 
     // Default theme, 1 = theme1.scss etc.
-    'theme'                   => env('THEME', 1),
+    'theme'                   => env('THEME', 20),
 
     // Supported themes
     // To disable a theme in config.php, you can set its value to null
