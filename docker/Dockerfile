@@ -16,6 +16,7 @@ WORKDIR /app
 COPY .babelrc .browserslistrc package.json webpack.config.js yarn.lock /app/
 RUN yarn --frozen-lockfile
 COPY resources/assets/ /app/resources/assets
+RUN npx update-browserslist-db@latest
 RUN yarn build
 
 # Generate application structure
@@ -39,13 +40,19 @@ COPY --from=themes /app/public/assets /app/public/assets/
 RUN find /app/storage/ -type f -not -name VERSION -exec rm {} \;
 
 # Build the PHP/Nginx container
-FROM php:8.2-fpm-alpine as production
+FROM php:8.2-fpm-alpine AS production
 WORKDIR /var/www
 RUN apk add --no-cache icu-dev nginx && \
     docker-php-ext-install intl pdo_mysql && \
     sed -i 's/9000/127.0.0.1:9000/' /usr/local/etc/php-fpm.d/zz-docker.conf
+
+# Copy files to the right places
 COPY docker/entrypoint.sh /
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/config/nginx.conf /etc/nginx/nginx.conf
+COPY docker/config/opcache.ini /usr/local/etc/php/php.d/opcache.ini
+COPY docker/config/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+
 ENTRYPOINT /entrypoint.sh
 EXPOSE 80
 COPY --from=data /app/ /var/www

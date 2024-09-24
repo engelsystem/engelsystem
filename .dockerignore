@@ -2,6 +2,7 @@
 docker/
 !docker/entrypoint.sh
 !docker/nginx.conf
+!docker/config/
 
 # Configuration
 config/config.php
