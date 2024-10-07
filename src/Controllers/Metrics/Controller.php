@@ -52,6 +52,31 @@ class Controller extends BaseController
             $userOauth[$key]['labels']['name'] = $name;
         }
 
+        $angelTypes = [];
+        foreach ($this->stats->angelTypes() as $angelType) {
+            $angelTypes[] = [
+                'labels' => [
+                    'name' => $angelType['name'],
+                    'restricted' => $angelType['restricted'],
+                    'members' => 'unconfirmed',
+                ], 'value' => $angelType['unconfirmed'],
+            ];
+            $angelTypes[] = [
+                'labels' => [
+                    'name' => $angelType['name'],
+                    'restricted' => $angelType['restricted'],
+                    'members' => 'confirmed',
+                ], 'value' => $angelType['confirmed'],
+            ];
+            $angelTypes[] = [
+                'labels' => [
+                    'name' => $angelType['name'],
+                    'restricted' => $angelType['restricted'],
+                    'members' => 'supporters',
+                ], 'value' => $angelType['supporters'],
+            ];
+        }
+
         $data = [
             $this->config->get('app_name') . ' stats',
             'info'                 => [
@@ -150,8 +175,9 @@ class Controller extends BaseController
             'locales'              => ['type' => 'gauge', 'help' => 'The locales users have configured'] + $userLocales,
             'themes'               => ['type' => 'gauge', 'help' => 'The themes users have configured'] + $userThemes,
             'locations'            => ['type' => 'gauge', $this->stats->locations()],
-            'angeltypes'           => ['type' => 'gauge', $this->stats->angeltypes()],
-            'shifttypes'           => ['type' => 'gauge', $this->stats->shifttypes()],
+            'angel_types'          => ['type' => 'gauge', 'help' => 'Angel types with member states'] + $angelTypes,
+            'angel_types_sum'      => ['type' => 'gauge', $this->stats->angelTypesSum()],
+            'shift_types'          => ['type' => 'gauge', $this->stats->shiftTypes()],
             'shifts'               => ['type' => 'gauge', $this->stats->shifts()],
             'announcements'        => [
                 'type' => 'gauge',

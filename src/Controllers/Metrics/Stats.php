@@ -9,13 +9,13 @@ use Engelsystem\Database\Database;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Models\Faq;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
-use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\License;
@@ -24,6 +24,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
 use Illuminate\Contracts\Database\Query\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Builder;
@@ -86,7 +87,7 @@ class Stats
 
     public function usersPronouns(): int
     {
-        return PersonalData::where('pronoun', '!=', '')->count();
+        return PersonalData::query()->where('pronoun', '!=', '')->count();
     }
 
     public function email(string $type): int
@@ -302,21 +303,49 @@ class Stats
             ->count();
     }
 
-    public function shifttypes(): int
+    public function shiftTypes(): int
     {
         return ShiftType::query()
             ->count();
     }
 
-    public function angeltypes(): int
+    public function angelTypesSum(): int
     {
-        return AngelType::query()
-            ->count();
+        return AngelType::query()->count();
+    }
+
+    public function angelTypes(): array
+    {
+        $angelTypes = [];
+        $rawAngelTypes = AngelType::query()->select(['id', 'name', 'restricted'])->orderBy('name')->get();
+        foreach ($rawAngelTypes as $angelType) {
+            $restricted = $angelType->restricted;
+            $userAngelTypeQuery = UserAngelType::query()
+                ->where('angel_type_id', $angelType->id);
+
+            $members = $userAngelTypeQuery->count();
+            $supporters = (clone $userAngelTypeQuery)->where('supporter', true)->count();
+            $confirmed = $members - $supporters;
+            $unconfirmed = 0;
+            if ($restricted) {
+                $confirmed = (clone $userAngelTypeQuery)->whereNotNull('confirm_user_id')->count() - $supporters;
+                $unconfirmed = $members - ($supporters + $confirmed);
+            }
+
+            $angelTypes[] = [
+                'name' => $angelType->name,
+                'restricted' => $restricted,
+                'unconfirmed' => $unconfirmed,
+                'supporters' => $supporters,
+                'confirmed' => $confirmed,
+            ];
+        }
+        return $angelTypes;
     }
 
     public function shifts(): int
     {
-        return Shift::count();
+        return Shift::query()->count();
     }
 
     /**
