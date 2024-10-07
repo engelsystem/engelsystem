@@ -8,13 +8,13 @@ use Carbon\Carbon;
 use Engelsystem\Controllers\Metrics\Stats;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Faq;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
-use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -24,6 +24,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
@@ -210,9 +211,58 @@ class StatsTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::angeltypes
+     * @covers \Engelsystem\Controllers\Metrics\Stats::angelTypes
      */
-    public function testAngeltypes(): void
+    public function testAngelTypes(): void
+    {
+        (new AngelType(['id' => 1, 'name' => 'AngelType 1', 'restricted' => true]))->save();
+        (new AngelType(['id' => 2, 'name' => 'Second AngelType']))->save();
+        (new AngelType(['id' => 3, 'name' => 'Another AngelType', 'restricted' => true]))->save();
+        (new AngelType(['id' => 4, 'name' => 'Old AngelType']))->save();
+        UserAngelType::factory()->create(['angel_type_id' => 1, 'confirm_user_id' => 1, 'supporter' => true]);
+        UserAngelType::factory()->create(['angel_type_id' => 1, 'confirm_user_id' => null, 'supporter' => false]);
+        UserAngelType::factory()->create(['angel_type_id' => 1, 'confirm_user_id' => 1, 'supporter' => false]);
+        UserAngelType::factory()->create(['angel_type_id' => 2, 'confirm_user_id' => null, 'supporter' => true]);
+        UserAngelType::factory()->create(['angel_type_id' => 2, 'confirm_user_id' => null, 'supporter' => false]);
+        UserAngelType::factory()->create(['angel_type_id' => 2, 'confirm_user_id' => null, 'supporter' => false]);
+
+        $stats = new Stats($this->database);
+        $this->assertEquals([
+            [
+                'name' => 'AngelType 1',
+                'restricted' => true,
+                'supporters' => 1,
+                'confirmed' => 1,
+                'unconfirmed' => 1,
+            ],
+            [
+                'name' => 'Another AngelType',
+                'restricted' => true,
+                'unconfirmed' => 0,
+                'supporters' => 0,
+                'confirmed' => 0,
+            ],
+            [
+                'name' => 'Old AngelType',
+                'restricted' => false,
+                'unconfirmed' => 0,
+                'supporters' => 0,
+                'confirmed' => 0,
+            ],
+            [
+                'name' => 'Second AngelType',
+                'restricted' => false,
+                'unconfirmed' => 0,
+                'supporters' => 1,
+                'confirmed' => 2,
+            ],
+            ], $stats->angelTypes());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::angelTypesSum
+     */
+    public function testAngelTypesSum(): void
     {
         (new AngelType(['name' => 'AngelType 1']))->save();
         (new AngelType(['name' => 'Second AngelType']))->save();
@@ -220,13 +270,13 @@ class StatsTest extends TestCase
         (new AngelType(['name' => 'Old AngelType']))->save();
 
         $stats = new Stats($this->database);
-        $this->assertEquals(4, $stats->angeltypes());
+        $this->assertEquals(4, $stats->angelTypesSum());
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::shifttypes
+     * @covers \Engelsystem\Controllers\Metrics\Stats::shiftTypes
      */
-    public function testShifttypes(): void
+    public function testShiftTypes(): void
     {
         (new ShiftType(['name' => 'ShiftType 1', 'description' => 'rtfm']))->save();
         (new ShiftType(['name' => 'Second ShiftType', 'description' => 'pebkac']))->save();
@@ -234,7 +284,7 @@ class StatsTest extends TestCase
         (new ShiftType(['name' => 'Old ShiftType', 'description' => 'layer 8']))->save();
 
         $stats = new Stats($this->database);
-        $this->assertEquals(4, $stats->shifttypes());
+        $this->assertEquals(4, $stats->shiftTypes());
     }
 
     /**
