@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df9efe0dff1f7d311e20747637f1b49f",
+    "content-hash": "4bb53af4315798668364d916732d627a",
     "packages": [
         {
             "name": "brick/math",
@@ -3462,35 +3462,32 @@
         },
         {
             "name": "rcrowe/twigbridge",
-            "version": "v0.14.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rcrowe/TwigBridge.git",
-                "reference": "639345cb32156ff69845ed471bbf0778c52a28b2"
+                "reference": "418de7c4fbfa67678802093a8c3e1c319d6ad3fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rcrowe/TwigBridge/zipball/639345cb32156ff69845ed471bbf0778c52a28b2",
-                "reference": "639345cb32156ff69845ed471bbf0778c52a28b2",
+                "url": "https://api.github.com/repos/rcrowe/TwigBridge/zipball/418de7c4fbfa67678802093a8c3e1c319d6ad3fc",
+                "reference": "418de7c4fbfa67678802093a8c3e1c319d6ad3fc",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^6|^7|^8|^9|^10",
-                "illuminate/view": "^6|^7|^8|^9|^10",
-                "php": "^7.2.5 || ^8.0",
-                "twig/twig": "~3.0"
+                "illuminate/support": "^9|^10|^11",
+                "illuminate/view": "^9|^10|^11",
+                "php": "^8.1",
+                "twig/twig": "~3.12"
             },
             "require-dev": {
                 "ext-json": "*",
-                "laravel/framework": "^6|^7|^8|^9|^10",
+                "laravel/framework": "^9|^10|^11",
                 "mockery/mockery": "^1.3.1",
-                "phpunit/phpunit": "^6.5.14 || ^7.5.20 || ^8.5.8 || ^9.3.7",
+                "phpunit/phpunit": "^8.5.8 || ^9.3.7",
                 "squizlabs/php_codesniffer": "^3.6"
             },
-            "suggest": {
-                "laravelcollective/html": "For bringing back html/form in Laravel 5.x",
-                "twig/extensions": "~1.0"
-            },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3532,9 +3529,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rcrowe/TwigBridge/issues",
-                "source": "https://github.com/rcrowe/TwigBridge/tree/v0.14.1"
+                "source": "https://github.com/rcrowe/TwigBridge/tree/master"
             },
-            "time": "2023-02-16T14:03:23+00:00"
+            "time": "2024-09-15T13:48:49+00:00"
         },
         {
             "name": "respect/validation",
@@ -7925,7 +7922,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "rcrowe/twigbridge": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
