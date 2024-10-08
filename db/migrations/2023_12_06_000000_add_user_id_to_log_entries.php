@@ -17,7 +17,7 @@ class AddUserIdToLogEntries extends Migration
     public function up(): void
     {
         $this->schema->table('log_entries', function (Blueprint $table): void {
-            $table->unsignedInteger('user_id')->after('id')->nullable()->default(null);
+            $table->unsignedInteger('user_id')->after('id')->nullable();
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade')

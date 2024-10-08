@@ -28,7 +28,7 @@ class DayOfEvent
         $date = $date ?: Carbon::now();
 
         $now = $date->startOfDay();
-        $diff = $startOfEvent->diffInDays($now, false);
+        $diff = (int) $startOfEvent->diffInDays($now);
 
         if ($diff >= 0) {
             // The first day of the event (diff 0) should be 1.
@@ -37,7 +37,7 @@ class DayOfEvent
             return $diff + 1;
         }
 
-        if (config('event_has_day0') && $diff < 0) {
+        if (config('event_has_day0')) {
             // One day before the event (-1 diff) should day 0.
             // Two days before the event (-2 diff) should be -1.
             // Add one day to the diff.

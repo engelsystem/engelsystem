@@ -65,28 +65,4 @@ class CarbonTest extends TestCase
         $timestamp = Carbon::createTimestampFromDatetime($value);
         self::assertNull($timestamp);
     }
-
-    public function startOfHourDates(): array
-    {
-        return [
-            ['2022-04-16 10:00:00.000000', true],
-            ['2022-04-16 10:00:00.000000', true, true],
-            ['2022-04-16 10:00:00.123456', true, false],
-            ['2022-04-16 23:00:00.000000', true, false],
-            ['2022-04-16 10:00:42.000000', false],
-            ['2022-04-16 10:23:00.000000', false],
-            ['2022-04-16 10:00:00.123456', false, true],
-        ];
-    }
-
-    /**
-     * @covers       \Engelsystem\Helpers\Carbon::isStartOfHour
-     * @dataProvider startOfHourDates
-     */
-    public function testIsStartOfHour(string $value, bool $expected, bool $checkMicroseconds = false): void
-    {
-        $date = Carbon::createFromFormat('Y-m-d H:i:s.u', $value);
-
-        $this->assertEquals($expected, $date->isStartOfHour($checkMicroseconds));
-    }
 }

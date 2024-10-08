@@ -33,7 +33,7 @@ Renders an input field wrapped in a DIV with mb-3.
 {% macro input(name, label, opt) %}
     <div class="mb-3">
         {% if label -%}
-            <label for="{{ name }}" class="form-label {% if opt.hide_label|default(false) %}sr-only{% endif %}">
+            <label for="{{ name }}" class="form-label {% if opt.hide_label|default(false) %}visually-hidden{% endif %}">
                 {{ label }}
                 {% if opt.required_icon|default(false) %}
                     {{ _self.entry_required() }}

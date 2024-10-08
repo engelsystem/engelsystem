@@ -116,8 +116,6 @@ class Application extends Container
 
     /**
      * Set app base path
-     *
-     * @return static
      */
     public function setAppPath(string $appPath): static
     {

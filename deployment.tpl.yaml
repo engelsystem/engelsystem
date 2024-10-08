@@ -36,7 +36,7 @@ spec:
         tier: database
     spec:
       containers:
-        - image: mariadb:10.2
+        - image: mariadb:10.7
           name: database
           imagePullPolicy: Always
           env:
@@ -119,6 +119,8 @@ spec:
             - -c
             - while ! bin/migrate up; do sleep 1; done
           env:
+            - name: MYSQL_TYPE
+              value: mariadb
             - name: MYSQL_HOST
               value: database
             - name: MYSQL_DATABASE
@@ -134,6 +136,8 @@ spec:
           name: engelsystem-server
           imagePullPolicy: Always
           env:
+            - name: MYSQL_TYPE
+              value: mariadb
             - name: MYSQL_HOST
               value: database
             - name: MYSQL_DATABASE

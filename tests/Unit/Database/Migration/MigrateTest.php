@@ -10,6 +10,7 @@ use Engelsystem\Database\Migration\Direction;
 use Engelsystem\Test\Unit\TestCase;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -190,11 +191,6 @@ class MigrateTest extends TestCase
 
         $migration = new Migrate($schema, $app);
 
-        $messages = [];
-        $migration->setOutput(function ($msg) use (&$messages): void {
-            $messages[] = $msg;
-        });
-
         $migration->run(__DIR__ . '/Stub', Direction::UP);
 
         $this->assertTrue($schema->hasTable('migrations'));
@@ -224,5 +220,40 @@ class MigrateTest extends TestCase
         $db->table('migrations')->insert(['migration' => 'lock']);
         $this->expectException(Exception::class);
         $migration->run(__DIR__ . '/Stub', Direction::UP);
+    }
+
+    /**
+     * @covers \Engelsystem\Database\Migration\Migrate::run
+     */
+    public function testRunPrune(): void
+    {
+        $dbManager = new CapsuleManager($this->app);
+        $dbManager->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);
+        $dbManager->bootEloquent();
+        $db = $dbManager->getConnection();
+        $db->useDefaultSchemaGrammar();
+        $schema = $db->getSchemaBuilder();
+
+        $this->app->instance('schema', $schema);
+        $this->app->bind(SchemaBuilder::class, 'schema');
+
+        $migration = new Migrate($schema, $this->app);
+
+        $messages = [];
+        $migration->setOutput(function ($msg) use (&$messages): void {
+            $messages[] = $msg;
+        });
+
+        foreach (['test', 'another_test', 'test3'] as $name) {
+            $schema->create($name, function (Blueprint $table): void {
+                $table->increments('id');
+            });
+        }
+        $this->assertCount(3, $schema->getTables());
+
+        $migration->run(__DIR__ . '/Stub', Direction::DOWN, false, false, true);
+        $this->assertCount(0, $schema->getTables());
+
+        $this->assertCount(1, $messages);
     }
 }
