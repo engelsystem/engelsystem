@@ -24,6 +24,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
 use Illuminate\Contracts\Database\Query\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Builder;
@@ -86,7 +87,7 @@ class Stats
 
     public function usersPronouns(): int
     {
-        return PersonalData::where('pronoun', '!=', '')->count();
+        return PersonalData::query()->where('pronoun', '!=', '')->count();
     }
 
     public function email(string $type): int
@@ -302,21 +303,47 @@ class Stats
             ->count();
     }
 
-    public function shifttypes(): int
+    public function shiftTypes(): int
     {
         return ShiftType::query()
             ->count();
     }
 
-    public function angeltypes(): int
+    public function angelTypesSum(): int
     {
-        return AngelType::query()
-            ->count();
+        return AngelType::query()->count();
+    }
+
+    public function angelTypes(): array
+    {
+        $angelTypes = [];
+        $rawAngelTypes = AngelType::query()->select(['id', 'name', 'restricted'])->orderBy('id')->get();
+        foreach ($rawAngelTypes as $angelType) {
+            $restricted = $angelType->restricted;
+            $userAngelTypeQuery = UserAngelType::query()
+                ->where('angel_type_id', $angelType->id);
+
+            $members = $userAngelTypeQuery->count();
+            $confirmed = 0;
+            if ($restricted) {
+                $confirmed = $userAngelTypeQuery->whereNotNull('confirm_user_id')->count();
+            }
+            $supporters = $userAngelTypeQuery->where('supporter', true)->count();
+
+            $angelTypes[] = [
+                'name' => $angelType->name,
+                'restricted' => $restricted,
+                'members' => $members,
+                'supporters' => $supporters,
+                'confirmed' => $confirmed,
+            ];
+        }
+        return $angelTypes;
     }
 
     public function shifts(): int
     {
-        return Shift::count();
+        return Shift::query()->count();
     }
 
     /**
