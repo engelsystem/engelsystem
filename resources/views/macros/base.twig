@@ -36,7 +36,8 @@
 
 {% macro button(label, url, opt) %}
     <a href="{{ url }}" class="btn btn-{{ opt.type|default('secondary') }}
-        {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}"
+        {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}
+        {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
         {%- if opt.title is defined %} title="{{ opt.title }}"{% endif -%}
     >
         {%- if opt.icon_left is defined %}{{ _self.icon(opt.icon_left) }}{% endif %}
@@ -45,16 +46,20 @@
     </a>
 {% endmacro %}
 
-{% macro edit(url) %}
-    {{ _self.button(_self.icon('pencil'), url, {'size': 'sm', 'title': __('form.edit')}) }}
+{% macro view(url, opt) %}
+    {{ _self.button(_self.icon('eye'), url, {'type': 'info','size': 'sm', 'title': __('form.view')}|merge(opt|default({}))) }}
 {% endmacro %}
 
-{% macro back(url) %}
-    {{ _self.button(_self.icon('chevron-left'), url, {'size': 'sm', 'title': __('general.back')}) }}
+{% macro edit(url, opt) %}
+    {{ _self.button(_self.icon('pencil'), url, {'size': 'sm', 'title': __('form.edit')}|merge(opt|default({}))) }}
 {% endmacro %}
 
-{% macro add(url) %}
-    {{ _self.button(_self.icon('plus-lg'), url, {'title': __('general.add')}) }}
+{% macro back(url, opt) %}
+    {{ _self.button(_self.icon('chevron-left'), url, {'size': 'sm', 'title': __('general.back')}|merge(opt|default({}))) }}
+{% endmacro %}
+
+{% macro add(url, opt) %}
+    {{ _self.button(_self.icon('plus-lg'), url, {'title': __('general.add')}|merge(opt|default({}))) }}
 {% endmacro %}
 
 {% macro info(text, raw) %}

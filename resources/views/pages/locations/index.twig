@@ -1,0 +1,103 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('location.locations') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {% if not is_index|default(false) %}
+                {{ m.back(location
+                    ? url('/locations', {'action': 'view', 'location_id': location.id})
+                    : url('/locations')) }}
+            {% endif %}
+
+            {{ block('title') }}
+
+            {% if is_index|default(false) and can('locations.edit') %}
+                {{ m.add(url('/admin/locations/edit')) }}
+            {% endif %}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+
+            {% block row_content %}
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{ __('general.name') }}</th>
+                                {% if can('locations.edit') %}
+                                    <th>{{ __('general.dect') }}</th>
+                                    <th>{{ __('location.map_url') }}</th>
+                                    <th>{{ __('general.shifts') }}</th>
+                                {% endif %}
+                                <th></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for location in locations %}
+                                <tr>
+                                    <td>
+                                        {{ m.icon('pin-map-fill') }}
+                                        <a href="{{ url('/locations', {'action': 'view', 'location_id': location.id}) }}">
+                                            {{ location.name }}
+                                        </a>
+                                    </td>
+
+                                    {% if can('locations.edit') %}
+                                        <td>{{ m.iconBool(location.dect) }}</td>
+
+                                        <td>{{ m.iconBool(location.map_url) }}</td>
+
+                                        <td>{{ m.iconBool(location.shifts_count) }}</td>
+                                    {% endif %}
+
+                                    <td>
+                                        <div class="d-flex ms-auto">
+
+                                            {% if can('locations.edit') %}
+                                                {{ m.view(
+                                                    url('/locations', {'action': 'view', 'location_id': location.id}),
+                                                    {'class': 'm-1'}
+                                                ) }}
+
+                                                {{ m.edit(url('/admin/locations/edit/' ~ location.id), {'class': 'm-1'}) }}
+
+                                                <form method="post" class="ps-1">
+                                                    {{ csrf() }}
+                                                    {{ f.hidden('id', location.id) }}
+                                                    {{ f.delete(null, {
+                                                        'size': 'sm',
+                                                        'confirm_title': __('location.delete.title', [location.name|e]),
+                                                        'confirm_button_text': __('form.delete'),
+                                                        'class': 'm-1',
+                                                    }) }}
+                                                </form>
+                                            {% else %}
+                                                {{ m.button(
+                                                    __('form.view'),
+                                                    url('/locations', {'action': 'view', 'location_id': location.id}),
+                                                    {'icon_left': 'eye', 'size': 'sm', 'type': 'info'}
+                                                ) }}
+                                            {% endif %}
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endblock %}
+
+        </div>
+    </div>
+{% endblock %}

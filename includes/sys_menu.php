@@ -1,6 +1,5 @@
 <?php
 
-use Engelsystem\Models\Location;
 use Engelsystem\Models\Question;
 use Engelsystem\UserHintsRenderer;
 use Illuminate\Support\Str;
@@ -61,6 +60,7 @@ function make_navigation()
         'meetings'       => [__('news.title.meetings'), 'user_meetings'],
         'user_shifts'    => __('general.shifts'),
         'angeltypes'     => __('angeltypes.angeltypes'),
+        'locations'      => [__('location.locations'), 'locations.view'],
         'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];
 
@@ -78,8 +78,6 @@ function make_navigation()
         );
     }
 
-    $menu = make_location_navigation($menu);
-
     $admin_menu = [];
     $admin_pages = [
         // Examples:
@@ -93,7 +91,6 @@ function make_navigation()
         'admin/questions'    => ['Answer questions', 'question.edit'],
         'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.view'],
         'admin_shifts'       => 'Create shifts',
-        'admin/locations'    => ['location.locations', 'admin_locations'],
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
@@ -140,41 +137,6 @@ function menu_is_allowed(string $page, $options)
     }
 
     return auth()->can($permissions);
-}
-
-/**
- * Adds location navigation to the given menu.
- *
- * @param string[] $menu Rendered menu
- * @return string[]
- */
-function make_location_navigation($menu)
-{
-    if (!auth()->can('view_locations')) {
-        return $menu;
-    }
-
-    // Get a list of all locations
-    $locations = Location::orderBy('name')->get();
-    $location_menu = [];
-    if (auth()->can('admin_locations')) {
-        $location_menu[] = toolbar_dropdown_item(
-            url('/admin/locations'),
-            __('Manage locations'),
-            false,
-            'list'
-        );
-    }
-    if (count($location_menu) > 0) {
-        $location_menu[] = toolbar_dropdown_item_divider();
-    }
-    foreach ($locations as $location) {
-        $location_menu[] = toolbar_dropdown_item(location_link($location), $location->name, false, 'pin-map-fill');
-    }
-    if (count($location_menu) > 0) {
-        $menu[] = toolbar_dropdown(__('Locations'), $location_menu);
-    }
-    return $menu;
 }
 
 /**
