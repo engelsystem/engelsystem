@@ -80,7 +80,7 @@ yarn-validate:
   stage: prepare
   before_script:
     - yarn global add package-json-validator
-    - export PATH=$PATH:~/.yarn/bin
+    - export PATH=$PATH:~/.yarn/bin:/usr/local/share/.config/yarn/global/node_modules/package-json-validator/bin
   script:
     - pjv
 
