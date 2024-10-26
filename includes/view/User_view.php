@@ -67,12 +67,12 @@ function User_edit_vouchers_view($user)
 /**
  * @param User[] $users
  * @param string $order_by
- * @param int    $arrived_count
- * @param int    $active_count
- * @param int    $force_active_count
- * @param int    $freeloads_count
- * @param int    $goodies_count
- * @param int    $voucher_count
+ * @param int $arrived_count
+ * @param int $active_count
+ * @param int $force_active_count
+ * @param int $freeloads_count
+ * @param int $goodies_count
+ * @param int $voucher_count
  * @return string
  */
 function Users_view(
@@ -130,14 +130,14 @@ function Users_view(
         $usersList[] = $u;
     }
     $usersList[] = [
-        'name'         => '<strong>' . __('Sum') . '</strong>',
-        'arrived'      => $arrived_count,
-        'got_voucher'  => $voucher_count,
-        'active'       => $active_count,
+        'name' => '<strong>' . __('Sum') . '</strong>',
+        'arrived' => $arrived_count,
+        'got_voucher' => $voucher_count,
+        'active' => $active_count,
         'force_active' => $force_active_count,
-        'freeloads'    => $freeloads_count,
-        'got_goodie'   => $goodies_count,
-        'actions'      => '<strong>' . count($usersList) . '</strong>',
+        'freeloads' => $freeloads_count,
+        'got_goodie' => $goodies_count,
+        'actions' => '<strong>' . count($usersList) . '</strong>',
     ];
 
     $user_table_headers = [];
@@ -304,8 +304,8 @@ function User_view_shiftentries($needed_angel_type)
  * Helper that renders a shift line for user view
  *
  * @param Shift $shift
- * @param User  $user_source
- * @param bool  $its_me
+ * @param User $user_source
+ * @param bool $its_me
  * @return array
  */
 function User_view_myshift(Shift $shift, $user_source, $its_me)
@@ -336,18 +336,18 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
             . '"></span>';
     }
     $myshift = [
-        'date'       => icon('calendar-event')
+        'date' => icon('calendar-event')
             . $shift->start->format(__('general.date')) . '<br>'
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
             . $shift->end->format(__('H:i')),
-        'duration'   => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
-        'hints'      => $night_shift,
-        'location'   => location_name_render($shift->location),
+        'duration' => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
+        'hints' => $night_shift,
+        'location' => location_name_render($shift->location),
         'shift_info' => $shift_info,
-        'comment'    => '',
-        'start'      => $shift->start,
-        'end'        => $shift->end,
+        'comment' => '',
+        'start' => $shift->start,
+        'end' => $shift->end,
         'freeloaded' => $shift->freeloaded_by,
     ];
 
@@ -412,13 +412,13 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
 /**
  * Helper that prepares the shift table for user view
  *
- * @param Shift[]|Collection   $shifts
- * @param User                 $user_source
- * @param bool                 $its_me
- * @param string               $goodie_score
- * @param bool                 $goodie_admin
+ * @param Shift[]|Collection $shifts
+ * @param User $user_source
+ * @param bool $its_me
+ * @param string $goodie_score
+ * @param bool $goodie_admin
  * @param Worklog[]|Collection $user_worklogs
- * @param bool                 $admin_user_worklog_privilege
+ * @param bool $admin_user_worklog_privilege
  *
  * @return array
  */
@@ -469,7 +469,7 @@ function User_view_myshifts(
             $after = $myshifts_table[$i + 1] ?? null;
             if ($shift['freeloaded']) {
                 $shift['row-class'] = 'border border-danger border-2';
-            } elseif (Carbon::now() > $shift['start'] &&  Carbon::now() < $shift['end']) {
+            } elseif (Carbon::now() > $shift['start'] && Carbon::now() < $shift['end']) {
                 $shift['row-class'] = 'border border-info border-2';
             } elseif ($after && Carbon::now() > $shift['end'] && Carbon::now() < $after['start']) {
                 $shift['row-class'] = 'border-bottom border-info';
@@ -481,24 +481,24 @@ function User_view_myshifts(
         }
         if ($show_sum) {
             $myshifts_table[] = [
-                'date'       => '<b>' . __('Sum:') . '</b>',
-                'duration'   => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
-                'hints'      => '',
-                'location'   => '',
+                'date' => '<b>' . __('Sum:') . '</b>',
+                'duration' => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
+                'hints' => '',
+                'location' => '',
                 'shift_info' => '',
-                'comment'    => '',
-                'actions'    => '',
+                'comment' => '',
+                'actions' => '',
             ];
         }
         if ($goodie_enabled && ($its_me || $goodie_admin || auth()->can('admin_user'))) {
             $myshifts_table[] = [
-                'date'       => '<b>' . ($goodie_tshirt ? __('T-shirt score') : __('Goodie score')) . '&trade;:</b>',
-                'duration'   => '<b>' . $goodie_score . '</b>',
-                'hints'      => '',
-                'location'   => '',
+                'date' => '<b>' . ($goodie_tshirt ? __('T-shirt score') : __('Goodie score')) . '&trade;:</b>',
+                'duration' => '<b>' . $goodie_score . '</b>',
+                'hints' => '',
+                'location' => '',
                 'shift_info' => '',
-                'comment'    => '',
-                'actions'    => '',
+                'comment' => '',
+                'actions' => '',
             ];
         }
     }
@@ -509,7 +509,7 @@ function User_view_myshifts(
  * Renders table entry for user work log
  *
  * @param Worklog $worklog
- * @param bool    $admin_user_worklog_privilege
+ * @param bool $admin_user_worklog_privilege
  * @return array
  */
 function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its_me)
@@ -537,20 +537,20 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
     }
 
     return [
-        'date'       => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
-        'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
-        'hints'      => '',
-        'location'   => '',
+        'date' => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
+        'duration' => sprintf('%.2f', $worklog->hours) . ' h',
+        'hints' => '',
+        'location' => '',
         'shift_info' => __('Work log entry'),
-        'comment'    => htmlspecialchars($worklog->comment) . '<br>'
+        'comment' => htmlspecialchars($worklog->comment) . '<br>'
             . sprintf(
                 __('Added by %s at %s'),
                 User_Nick_render($worklog->creator),
                 $worklog->created_at->format(__('general.datetime'))
             ),
-        'actions'    => $actions,
-        'start'      => $worklog->worked_at,
-        'end'        => $worklog->worked_at,
+        'actions' => $actions,
+        'start' => $worklog->worked_at,
+        'end' => $worklog->worked_at,
         'freeloaded' => false,
     ];
 }
@@ -558,18 +558,18 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
 /**
  * Renders view for a single user
  *
- * @param User                 $user_source
- * @param bool                 $admin_user_privilege
- * @param bool                 $freeloader
- * @param AngelType[]          $user_angeltypes
- * @param Group[]              $user_groups
- * @param Shift[]|Collection   $shifts
- * @param bool                 $its_me
- * @param string               $goodie_score
- * @param bool                 $goodie_admin
- * @param bool                 $admin_user_worklog_privilege
+ * @param User $user_source
+ * @param bool $admin_user_privilege
+ * @param bool $freeloader
+ * @param AngelType[] $user_angeltypes
+ * @param Group[] $user_groups
+ * @param Shift[]|Collection $shifts
+ * @param bool $its_me
+ * @param string $goodie_score
+ * @param bool $goodie_admin
+ * @param bool $admin_user_worklog_privilege
  * @param Worklog[]|Collection $user_worklogs
- * @param bool                 $admin_certificates
+ * @param bool $admin_certificates
  *
  * @return string
  */
@@ -613,13 +613,13 @@ function User_view(
         );
         if (count($my_shifts) > 0) {
             $myshifts_table = div('table-responsive', table([
-                'date'       => __('Day & Time'),
-                'duration'   => __('Duration'),
-                'hints'      => '',
-                'location'   => __('Location'),
+                'date' => __('Day & Time'),
+                'duration' => __('Duration'),
+                'hints' => '',
+                'location' => __('Location'),
                 'shift_info' => __('Name & Workmates'),
-                'comment'    => __('worklog.comment'),
-                'actions'    => __('general.actions'),
+                'comment' => __('worklog.comment'),
+                'actions' => __('general.actions'),
             ], $my_shifts));
         } elseif ($user_source->state->force_active && config('enable_force_active')) {
             $myshifts_table = success(
@@ -657,7 +657,7 @@ function User_view(
                     table_buttons([
                         $auth->can('user.goodie.edit') && $goodie_enabled ? button(
                             url('/admin/user/' . $user_source->id . '/goodie'),
-                            icon('person') . ($goodie_tshirt ? __('T-shirt') : __('Goodie'))
+                            icon('gift') . ($goodie_tshirt ? __('T-shirt') : __('Goodie'))
                         ) : '',
                         $admin_user_privilege ? button(
                             url('/admin-user', ['id' => $user_source->id]),
@@ -959,7 +959,7 @@ function User_oauth_render(User $user)
  * Render a user nickname.
  *
  * @param array|User $user
- * @param bool       $plain
+ * @param bool $plain
  * @return string
  */
 function User_Nick_render($user, $plain = false)
@@ -996,7 +996,7 @@ function User_Pronoun_render(User $user): string
 
 /**
  * @param string $text
- * @param int    $user_id
+ * @param int $user_id
  * @param string $class
  * @return string
  */
