@@ -149,6 +149,26 @@
                             ) }}
                         </li>
                     </ul>
+                    {% if isGoodieEnabled %}
+                        <ul class="list-group pt-1">
+                            <li class="list-group-item">
+                                {% set privacy_email = config('privacy_email') %}
+                                {% set email_goodie_label =
+                                    (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
+                                    (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
+                                %}
+                                {{ f.checkbox(
+                                    'email_goodie',
+                                    email_goodie_label,
+                                    {
+                                        'class': '',
+                                        'raw_label': true,
+                                        'checked': f.formData('email_goodie', false),
+                                    },
+                                ) }}
+                            </li>
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -190,25 +210,6 @@
         <div class="mb-5">
             <h2>{{ __('registration.event_data') }}</h2>
             <div class="row">
-                {% if isGoodieEnabled %}
-                    <div class="col-md-6">
-                        {% set privacy_email = config('privacy_email') %}
-                        {% set email_goodie_label =
-                            (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
-                            (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
-                        %}
-                        {{ f.checkbox(
-                            'email_goodie',
-                            email_goodie_label,
-                            {
-                                'raw_label': true,
-                                'checked': f.formData('email_goodie', false),
-                            },
-                        ) }}
-                    </div>
-                    <div class="col-md-6"></div>
-                {% endif %}
-
                 {% if isPlannedArrivalDateEnabled %}
                     <div class="col-md-6">
                         {{ f.input(
