@@ -1,4 +1,3 @@
-version: "3.6"
 services:
   es_server:
     image: es_dev_webserver
