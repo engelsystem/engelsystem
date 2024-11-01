@@ -30,7 +30,22 @@ $migration->setOutput(function ($text) { echo $text . PHP_EOL; });
 $script = array_shift($argv);
 $argv = array_map('strtolower', $argv);
 if (in_array('help', $argv) || in_array('--help', $argv) || in_array('-h', $argv)) {
-    echo PHP_EOL . 'Usage: ' . $script . ' [up|down] [one-step] [force|-f]' . PHP_EOL . PHP_EOL;
+    echo 'Usage: ' . $script . ' [up|down] [one-step] [force|-f] [prune|-p]' . PHP_EOL;
+    echo 'Run database migrations to create tables' . PHP_EOL;
+    echo PHP_EOL;
+    echo 'When no type is specified, run up' . PHP_EOL;
+    echo PHP_EOL;
+    echo '  up                  Run migrations to create all tables' . PHP_EOL;
+    echo '  down                Undo migrations' . PHP_EOL;
+    echo '  one-step            Only run one migration' . PHP_EOL;
+    echo '  -f, --force, force  Force the migration, even if its locked (i.e. after failure)' . PHP_EOL;
+    echo '  -h, --help,  help   Show this help' . PHP_EOL;
+    echo '  -p, --prune, prune  Prune all database tables before run (including non-engelsystem ones!)' . PHP_EOL;
+    echo PHP_EOL;
+    echo 'Examples:' . PHP_EOL;
+    echo '  ' . $script . ' up one-step -f' . PHP_EOL;
+    echo '  ' . $script . ' down --prune' . PHP_EOL;
+    echo PHP_EOL;
     exit;
 }
 
@@ -50,4 +65,9 @@ if (in_array('force', $argv) || in_array('--force', $argv) || in_array('-f', $ar
     $force = true;
 }
 
-$migration->run($baseDir, $direction, $oneStep, $force);
+$prune = false;
+if (in_array('prune', $argv) || in_array('--prune', $argv) || in_array('-p', $argv)) {
+    $prune = true;
+}
+
+$migration->run($baseDir, $direction, $oneStep, $force, $prune);

@@ -18,7 +18,7 @@ class IncreaseTshirtFieldWidth extends Migration
     public function up(): void
     {
         $this->schema->table('users_personal_data', function (Blueprint $table): void {
-            $table->string('shirt_size', 10)->change();
+            $table->string('shirt_size', 10)->nullable()->change();
         });
     }
 
@@ -28,7 +28,7 @@ class IncreaseTshirtFieldWidth extends Migration
     public function down(): void
     {
         $this->schema->table('users_personal_data', function (Blueprint $table): void {
-            $table->string('shirt_size', 4)->change();
+            $table->string('shirt_size', 4)->nullable()->change();
         });
     }
 }

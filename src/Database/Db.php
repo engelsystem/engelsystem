@@ -40,8 +40,6 @@ class Db
 
     /**
      * Run a select query and return only the first result or null if no result is found.
-     *
-     * @return array|null
      */
     public static function selectOne(string $query, array $bindings = []): ?array
     {

@@ -745,12 +745,15 @@ function User_view(
             ($its_me || $admin_user_privilege) ? '<h2>' . $my_shifts_title . '</h2>' : '',
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
-                sprintf(
-                    icon('moon-stars') . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
+                icon('moon-stars')
+                . __(
+                    'Night shifts between %d and %d am are multiplied by %d for the %s score.',
+                    [
                         $nightShiftsConfig['start'],
                         $nightShiftsConfig['end'],
                         $nightShiftsConfig['multiplier'],
-                        ($goodie_tshirt ? __('T-shirt') : __('goodie'))])
+                        ($goodie_tshirt ? __('T-shirt') : __('goodie')),
+                    ]
                 ),
                 true,
                 true

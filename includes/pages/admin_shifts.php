@@ -344,7 +344,7 @@ function admin_shifts()
                         . '<span title="' . dateWithEventDay($end->format('Y-m-d')) . '">'
                         . $end->format(__('H:i'))
                         . '</span>'
-                        . ', ' . round($end->copy()->diffInMinutes($start) / 60, 2) . 'h'
+                        . ', ' . round($start->copy()->diffInMinutes($end) / 60, 2) . 'h'
                         . '<br>'
                         . location_name_render($location),
                     'title'         =>

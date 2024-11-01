@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Feature\Controllers;
 
-use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\RegistrationController;
 use Engelsystem\Events\Listener\OAuth2;
@@ -21,7 +20,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 final class RegistrationControllerTest extends ApplicationFeatureTest
 {
-    private Application $application;
     private Config $config;
     private SessionInterface $session;
     /**
@@ -38,14 +36,14 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
     {
         parent::setUp();
         $this->modelsToBeDeleted = [];
-        $this->application = app();
+        $app = app();
         $this->oauth = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->application->instance(OAuth2::class, $this->oauth);
-        $this->config = $this->application->get(Config::class);
-        $this->session = $this->application->get(SessionInterface::class);
-        $this->subject = $this->application->make(RegistrationController::class);
+        $app->instance(OAuth2::class, $this->oauth);
+        $this->config = $app->get(Config::class);
+        $this->session = $app->get(SessionInterface::class);
+        $this->subject = $app->make(RegistrationController::class);
     }
 
     public function tearDown(): void

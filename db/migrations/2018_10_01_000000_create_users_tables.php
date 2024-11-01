@@ -91,7 +91,9 @@ class CreateUsersTables extends Migration
                     'password'      => $data->Passwort,
                     'email'         => $data->email,
                     'api_key'       => $data->api_key,
-                    'last_login_at' => $data->lastLogIn ? Carbon::createFromTimestamp($data->lastLogIn) : null,
+                    'last_login_at' => $data->lastLogIn
+                        ? Carbon::createFromTimestamp($data->lastLogIn, Carbon::now()->timezone)
+                        : null,
                 ];
                 if (!in_array($data->CreateDate, $emptyDates)) {
                     $user['created_at'] = new Carbon($data->CreateDate);
@@ -110,10 +112,10 @@ class CreateUsersTables extends Migration
                     'last_name'              => $data->Name ?: null,
                     'shirt_size'             => $data->Size ?: null,
                     'planned_arrival_date'   => $data->planned_arrival_date
-                        ? Carbon::createFromTimestamp($data->planned_arrival_date)
+                        ? Carbon::createFromTimestamp($data->planned_arrival_date, Carbon::now()->timezone)
                         : null,
                     'planned_departure_date' => $data->planned_departure_date
-                        ? Carbon::createFromTimestamp($data->planned_departure_date)
+                        ? Carbon::createFromTimestamp($data->planned_departure_date, Carbon::now()->timezone)
                         : null,
                 ]);
 
@@ -128,7 +130,9 @@ class CreateUsersTables extends Migration
                 $connection->table('users_state')->insert([
                     'user_id'      => $data->UID,
                     'arrived'      => $data->Gekommen,
-                    'arrival_date' => $data->arrival_date ? Carbon::createFromTimestamp($data->arrival_date) : null,
+                    'arrival_date' => $data->arrival_date
+                        ? Carbon::createFromTimestamp($data->arrival_date, Carbon::now()->timezone)
+                        : null,
                     'active'       => $data->Aktiv,
                     'force_active' => $data->force_active,
                     'got_shirt'    => $data->Tshirt,

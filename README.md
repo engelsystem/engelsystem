@@ -15,7 +15,7 @@ Please read the [CONTRIBUTING.md](CONTRIBUTING.md) and [DEVELOPMENT.md](DEVELOPM
 The Engelsystem may be installed manually or by using the provided [docker setup](#docker).
 
 ### Requirements
- * PHP >= 8.1
+ * PHP >= 8.2
    * Required modules:
      * dom
      * json
@@ -25,7 +25,7 @@ The Engelsystem may be installed manually or by using the provided [docker setup
      * tokenizer
      * xml/libxml/SimpleXML
      * xmlwriter
- * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
+ * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.7
  * Webserver, i.e. lighttpd, nginx, or Apache
 
 From previous experience, 2 cores and 2GB ram are roughly enough for up to 1000 Angels (~700 arrived + 500 arrived but not working) during an event.

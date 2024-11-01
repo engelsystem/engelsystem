@@ -7,6 +7,7 @@ declare(strict_types=1);
 return [
     // MySQL-Connection Settings
     'database'                => [
+        'driver'   => env('MYSQL_TYPE', 'mysql'), // mysql or mariadb
         'host'     => env('MYSQL_HOST', 'localhost'),
         'database' => env('MYSQL_DATABASE', 'engelsystem'),
         'username' => env('MYSQL_USER', 'root'),

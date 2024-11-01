@@ -69,10 +69,7 @@ class Question extends BaseModel
         return static::whereAnswererId(null);
     }
 
-    /**
-     * @return Builder|QueryBuilder
-     */
-    public static function answered(): Builder
+    public static function answered(): Builder | QueryBuilder
     {
         return static::whereNotNull('answerer_id');
     }

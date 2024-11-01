@@ -85,7 +85,7 @@ class CreateMessagesTable extends Migration
             ->get();
 
         foreach ($previousMessageRecords as $previousMessage) {
-            $date = Carbon::createFromTimestamp($previousMessage->Datum);
+            $date = Carbon::createFromTimestamp($previousMessage->Datum, Carbon::now()->timezone);
             $connection->table('messages')->insert(
                 [
                     'id'          => $previousMessage->id,

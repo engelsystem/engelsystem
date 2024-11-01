@@ -61,7 +61,7 @@ class CreateScheduleShiftTable extends Migration
 
         if ($this->schema->hasTable('Shifts')) {
             $this->schema->table('Shifts', function (Blueprint $table): void {
-                $table->integer('PSID')->nullable()->default(null)->unique();
+                $table->integer('PSID')->nullable()->unique();
             });
         }
 

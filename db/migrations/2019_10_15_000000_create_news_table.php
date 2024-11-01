@@ -85,7 +85,7 @@ class CreateNewsTable extends Migration
             ->get();
 
         foreach ($previousNewsRecords as $previousNews) {
-            $date = Carbon::createFromTimestamp($previousNews->Datum);
+            $date = Carbon::createFromTimestamp($previousNews->Datum, Carbon::now()->timezone);
             $connection->table('news')->insert([
                 'id'         => $previousNews->ID,
                 'title'      => $previousNews->Betreff,

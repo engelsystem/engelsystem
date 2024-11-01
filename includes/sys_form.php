@@ -60,7 +60,7 @@ function form_datetime(string $name, string $label, $value)
 {
     $dom_id = $name . '-datetime';
     if ($value) {
-        $value = ($value instanceof Carbon) ? $value : Carbon::createFromTimestamp($value);
+        $value = ($value instanceof Carbon) ? $value : Carbon::createFromTimestamp($value, Carbon::now()->timezone);
     }
 
     return form_element($label, sprintf('

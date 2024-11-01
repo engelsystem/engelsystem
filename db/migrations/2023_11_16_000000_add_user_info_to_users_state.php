@@ -15,7 +15,7 @@ class AddUserInfoToUsersState extends Migration
     public function up(): void
     {
         $this->schema->table('users_state', function (Blueprint $table): void {
-            $table->string('user_info')->nullable()->default(null)->after('arrival_date');
+            $table->string('user_info')->nullable()->after('arrival_date');
         });
     }
 

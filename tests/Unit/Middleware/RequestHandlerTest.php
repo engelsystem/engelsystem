@@ -84,7 +84,7 @@ class RequestHandlerTest extends TestCase
         $return = $middleware->process($request, $handler);
         $this->assertEquals($return, $response);
 
-        $middleware->process($request, $handler);
+        $return = $middleware->process($request, $handler);
         $this->assertEquals($return, $response);
 
         $this->expectException(TypeError::class);

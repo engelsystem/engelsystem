@@ -241,10 +241,10 @@ class ShiftCalendarRenderer
      */
     private function renderTick($time, $label = false)
     {
-        $time = Carbon::createFromTimestamp($time);
+        $time = Carbon::createFromTimestamp($time, Carbon::now()->timezone);
         $class = $label ? 'tick bg-' . theme_type() : 'tick ';
 
-        $diffNow = $time->diffInMinutes(null, false) * 60;
+        $diffNow = $time->diffInMinutes() * 60;
         if ($diffNow >= 0 && $diffNow < self::SECONDS_PER_ROW) {
             $class .= ' now';
         }

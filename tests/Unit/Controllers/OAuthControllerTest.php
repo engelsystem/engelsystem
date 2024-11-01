@@ -590,10 +590,7 @@ class OAuthControllerTest extends TestCase
         $this->log->hasInfoThatContains('Disconnected');
     }
 
-    /**
-     * @return OAuthController|MockObject
-     */
-    protected function getMock(array $mockMethods = []): OAuthController
+    protected function getMock(array $mockMethods = []): OAuthController | MockObject
     {
         /** @var OAuthController|MockObject $controller */
         $controller = $this->getMockBuilder(OAuthController::class)

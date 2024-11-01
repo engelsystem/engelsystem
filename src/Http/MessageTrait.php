@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http;
 
+use InvalidArgumentException;
 use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @implements \Psr\Http\Message\MessageInterface
- * @extends \Symfony\Component\HttpFoundation\Response
+ * @implements MessageInterface
+ * @extends SymfonyResponse
  */
 trait MessageTrait
 {
@@ -42,7 +43,6 @@ trait MessageTrait
     {
         $new = clone $this;
         if (method_exists($new, 'setProtocolVersion')) {
-            /** @var MessageTrait */
             $new->setProtocolVersion($version);
         } else {
             $new->server->set('SERVER_PROTOCOL', $version);
@@ -154,7 +154,7 @@ trait MessageTrait
      * @param string          $name  Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
      * @return static
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values.
      */
     public function withHeader(mixed $name, mixed $value): static
     {
@@ -178,7 +178,7 @@ trait MessageTrait
      * @param string          $name  Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
      * @return static
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values.
      */
     public function withAddedHeader(mixed $name, mixed $value): static
     {
@@ -232,7 +232,7 @@ trait MessageTrait
      *
      * @param StreamInterface $body Body.
      * @return static
-     * @throws \InvalidArgumentException When the body is not valid.
+     * @throws InvalidArgumentException When the body is not valid.
      */
     public function withBody(StreamInterface $body): static
     {

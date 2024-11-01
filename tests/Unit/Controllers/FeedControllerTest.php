@@ -252,7 +252,10 @@ class FeedControllerTest extends ControllerTest
     {
         parent::setUp();
 
-        $this->config->set('display_news', 10);
+        $this->config->set([
+            'display_news' => 10,
+            'timezone' => 'UTC',
+        ]);
         $this->auth = $this->createMock(Authenticator::class);
         $this->url = $this->createMock(UrlGenerator::class);
 
