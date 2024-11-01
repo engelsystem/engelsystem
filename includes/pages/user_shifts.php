@@ -237,18 +237,21 @@ function view_user_shifts()
     $days = load_days();
     $locations = load_locations(true);
     $types = load_types();
-    $ownAngelTypes = [];
 
-    /** @var EloquentCollection|UserAngelType[] $userAngelTypes */
-    $userAngelTypes = UserAngelType::whereUserId($user->id)
+    /** @var EloquentCollection|UserAngelType[] $ownAngelTypes */
+    $ownAngelTypes = UserAngelType::whereUserId($user->id)
         ->leftJoin('angel_types', 'user_angel_type.angel_type_id', 'angel_types.id')
         ->where(function (Builder $query) {
             $query->whereNotNull('user_angel_type.confirm_user_id')
                 ->orWhere('angel_types.restricted', false);
         })
-        ->get();
-    foreach ($userAngelTypes as $type) {
-        $ownAngelTypes[] = $type->angel_type_id;
+        ->pluck('angel_type_id')->toArray();
+
+    if (empty($ownAngelTypes)) {
+        // Show at least some shifts even if the user is not in the needed angeltype / confirmed for it
+        $ownAngelTypes = UserAngelType::whereUserId($user->id)->pluck('angel_type_id')->toArray()
+            ?: AngelType::whereRestricted(false)->pluck('id')->toArray()
+            ?: AngelType::pluck('id')->toArray();
     }
 
     if (!$session->has('shifts-filter')) {
