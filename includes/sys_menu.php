@@ -55,18 +55,10 @@ function make_navigation()
 {
     $page = current_page();
     $menu = [];
-
-    # figure out if the menu is displayed to an admin account or a regular user
-    # and pick the correct name for the shift overview link
-    $shift_menu_name = 'general.my_shifts';
-    if (auth()->can('admin_shifts')) {
-        $shift_menu_name = 'general.shifts';
-    }
-
     $pages = [
         'news'           => __('news.title'),
         'meetings'       => [__('news.title.meetings'), 'user_meetings'],
-        'user_shifts'    => __($shift_menu_name),
+        'user_shifts'    => __('general.shifts'),
         'angeltypes'     => __('angeltypes.angeltypes'),
         'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];

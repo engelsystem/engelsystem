@@ -168,12 +168,6 @@ msgid "oauth.temporarily_unavailable"
 msgstr "The OAuth-Provider is currently unable to handle the request "
 "due to a temporary overloading or maintenance of the server."
 
-msgid "profile.my-shifts"
-msgstr "My shifts"
-
-msgid "settings.profile"
-msgstr "Profile"
-
 msgid "settings.profile.planned_arrival_date.invalid"
 msgstr "Please enter your planned date of arrival. "
 "It should be after the buildup start date and before teardown end date."

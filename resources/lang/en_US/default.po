@@ -37,9 +37,6 @@ msgstr "Name"
 msgid "general.shifts"
 msgstr "Shifts"
 
-msgid "general.my_shifts"
-msgstr "My Shifts"
-
 msgid "general.description"
 msgstr "Description"
 
@@ -366,6 +363,12 @@ msgstr "More information"
 
 msgid "settings.profile.angeltypes.info"
 msgstr "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
+
+msgid "profile.my_shifts"
+msgstr "My shifts"
+
+msgid "settings.profile"
+msgstr "Profile"
 
 msgid "settings.password"
 msgstr "Password"

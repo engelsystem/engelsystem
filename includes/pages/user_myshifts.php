@@ -8,7 +8,7 @@ use Engelsystem\Models\User\User;
  */
 function myshifts_title()
 {
-    return __('profile.my-shifts');
+    return __('profile.my_shifts');
 }
 
 /**
@@ -112,5 +112,4 @@ function user_myshifts()
         }
     }
     throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
-    return '';
 }

@@ -539,9 +539,6 @@ msgstr "Nr."
 msgid "general.shifts"
 msgstr "Schichten"
 
-msgid "general.my_shifts"
-msgstr "Meine Schichten"
-
 msgid "Length"
 msgstr "Länge"
 
@@ -1647,6 +1644,12 @@ msgstr "Mehr Informationen"
 
 msgid "settings.profile.angeltypes.info"
 msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
+
+msgid "profile.my_shifts"
+msgstr "Meine Schichten"
+
+msgid "settings.profile"
+msgstr "Profil"
 
 msgid "settings.password"
 msgstr "Passwort"

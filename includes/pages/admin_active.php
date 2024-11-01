@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\State;
@@ -7,7 +8,6 @@ use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
-use Engelsystem\Config\GoodieType;
 
 /**
  * @return string
@@ -366,7 +366,7 @@ function admin_active()
         ], url('/admin-active')),
         $set_active == '' ? form([
             form_text('count', __('How many angels should be active?'), $count ?: $forced_count),
-            form_submit('set_active', icon('eye') .  __('form.preview'), 'btn-info'),
+            form_submit('set_active', icon('eye') . __('form.preview'), 'btn-info'),
         ]) : $set_active,
         $msg . msg(),
         table(
@@ -377,7 +377,7 @@ function admin_active()
                 ],
                 ($goodie_tshirt ? ['shirt_size'   => __('Size')] : []),
                 [
-                    'shift_count'  => __('general.my_shifts'),
+                    'shift_count'  => __('general.shifts'),
                     'work_time'    => __('Length'),
                 ],
                 ($goodie_enabled ? ['score'   => ($goodie_tshirt

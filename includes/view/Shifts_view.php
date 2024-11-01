@@ -6,8 +6,8 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
-use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\Shifts\ShiftSignupStatus;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Collection;
@@ -244,7 +244,7 @@ function Shift_view(
     }
     $buttons[] = button(
         user_link(auth()->user()->id),
-        '<span class="icon-icon_angel"></span> ' . __('profile.my-shifts')
+        '<span class="icon-icon_angel"></span> ' . __('profile.my_shifts')
     );
     $content[] = buttons($buttons);
 
