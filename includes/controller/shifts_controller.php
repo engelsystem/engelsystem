@@ -8,8 +8,8 @@ use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
-use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\Shifts\ShiftSignupStatus;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Str;
 

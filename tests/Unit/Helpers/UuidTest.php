@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Helpers;
 
-use InvalidArgumentException;
 use Engelsystem\Helpers\Uuid;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class UuidTest extends TestCase
 {

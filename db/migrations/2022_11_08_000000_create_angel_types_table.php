@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Collection;
 use stdClass;
 
 class CreateAngelTypesTable extends Migration

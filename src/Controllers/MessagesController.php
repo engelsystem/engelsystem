@@ -6,6 +6,7 @@ namespace Engelsystem\Controllers;
 
 use Engelsystem\Database\Database;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -13,7 +14,6 @@ use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
-use Engelsystem\Http\Exceptions\HttpForbidden;
 use Psr\Http\Message\RequestInterface;
 
 class MessagesController extends BaseController

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\DayOfEvent;
+use Engelsystem\Renderer\Twig\Extensions\Globals;
 
 function theme_id(): int
 {

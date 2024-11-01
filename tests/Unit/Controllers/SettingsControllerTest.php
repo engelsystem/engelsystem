@@ -9,22 +9,22 @@ use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpNotFound;
+use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Response;
+use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Session as SessionModel;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\Settings;
+use Engelsystem\Models\User\User;
+use Engelsystem\Test\Unit\HasDatabase;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Engelsystem\Helpers\Authenticator;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Http\UrlGenerator;
-use Engelsystem\Models\User\User;
-use Engelsystem\Http\Validation\Validator;
-use Engelsystem\Http\Exceptions\ValidationException;
 
 class SettingsControllerTest extends ControllerTest
 {

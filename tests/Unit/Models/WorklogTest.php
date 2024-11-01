@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Models;
 
 use Carbon\Carbon;
-use Engelsystem\Models\Worklog;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 
 class WorklogTest extends ModelTest
 {

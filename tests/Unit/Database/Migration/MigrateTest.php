@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Database\Migration;
 
 use Engelsystem\Application;
-use Engelsystem\Database\Migration\Migrate;
 use Engelsystem\Database\Migration\Direction;
+use Engelsystem\Database\Migration\Migrate;
 use Engelsystem\Test\Unit\TestCase;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
