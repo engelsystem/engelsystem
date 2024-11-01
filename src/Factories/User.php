@@ -82,6 +82,7 @@ class User
         $validationRules = [
             'username' => 'required|username',
             'email' => 'required|email',
+            'email_system'  => 'optional|checked',
             'email_shiftinfo' => 'optional|checked',
             'email_by_human_allowed' => 'optional|checked',
             'email_messages' => 'optional|checked',
@@ -158,6 +159,13 @@ class User
         // additional validations
         $this->validateUniqueUsername($data['username']);
         $this->validateUniqueEmail($data['email']);
+
+        // simplified e-mail preferences
+        if ($data['email_system']) {
+            $data['email_shiftinfo'] = true;
+            $data['email_messages'] = true;
+            $data['email_news'] = true;
+        }
 
         if ($isPasswordEnabled) {
             // Finally, validate that password matches password_confirmation.
@@ -306,7 +314,7 @@ class User
         $assignedAngelTypeNames = $this->assignAngelTypes($user, $rawData);
 
         $this->logger->info(
-            'User {user} signed up as: {angeltypes}',
+            'User {user} registered and signed up as: {angeltypes}',
             [
                 'user' => sprintf('%s (%u)', $user->displayName, $user->id),
                 'angeltypes' => join(', ', $assignedAngelTypeNames),

@@ -331,6 +331,13 @@ msgstr "This e-mail address is already taken."
 msgid "settings.profile.email_shiftinfo"
 msgstr "The %s is allowed to send me an e-mail (e.g. when my shifts change)."
 
+msgid "registration.email_system"
+msgstr "The %s is allowed to send me an e-mail "
+"(e.g. when my shifts change, on new private messages or there is new news)."
+
+msgid "registration.email_system.info"
+msgstr "Detailed preferences can be set in your profile."
+
 msgid "settings.profile.email_news"
 msgstr "Notify me of new news."
 

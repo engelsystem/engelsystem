@@ -234,6 +234,7 @@ class UserTest extends ServiceProviderTest
             'planned_arrival_date' => $this->now->format('Y-m-d'),
             'tshirt_size' => 'M',
             'mobile_show' => 1,
+            'email_system' => 1,
         ]);
 
         $this->assertSame('they', $user->personalData->pronoun);
@@ -245,6 +246,9 @@ class UserTest extends ServiceProviderTest
             $user->personalData->planned_arrival_date->format('Y-m-d')
         );
         $this->assertTrue($user->settings->mobile_show);
+        $this->assertTrue($user->settings->email_shiftinfo);
+        $this->assertTrue($user->settings->email_messages);
+        $this->assertTrue($user->settings->email_news);
     }
 
     /**

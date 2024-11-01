@@ -1543,6 +1543,13 @@ msgstr "Diese E-Mail-Adresse ist bereits vergeben."
 msgid "settings.profile.email_shiftinfo"
 msgstr "Das %s darf mir E-Mails senden (z.B. wenn sich meine Schichten ändern)."
 
+msgid "registration.email_system"
+msgstr "Das %s darf mir E-Mails senden "
+"(z.B. wenn sich meine Schichten ändern, ich neue private Nachrichten bekomme oder es neue News gibt)."
+
+msgid "registration.email_system.info"
+msgstr "Genauere Einstellungen sind in deinem Profil möglich."
+
 msgid "settings.profile.email_news"
 msgstr "Benachrichtige mich bei neuen News."
 

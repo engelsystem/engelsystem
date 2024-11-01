@@ -104,36 +104,15 @@
                         <li class="list-group-item">
                             {# Empty class to prevent the default bottom margin #}
                             {{ f.checkbox(
-                                'email_shiftinfo',
+                                'email_system',
                                 __(
-                                    'settings.profile.email_shiftinfo',
+                                    'registration.email_system',
                                     [config('app_name')]
                                 ),
                                 {
                                     'class': '',
-                                    'checked': f.formData('email_shiftinfo', false),
-                                },
-                            ) }}
-                        </li>
-                        <li class="list-group-item">
-                            {# Empty class to prevent the default bottom margin #}
-                            {{ f.checkbox(
-                                'email_news',
-                                __('settings.profile.email_news'),
-                                {
-                                    'class': '',
-                                    'checked': f.formData('email_news', false),
-                                },
-                            ) }}
-                        </li>
-                        <li class="list-group-item">
-                            {# Empty class to prevent the default bottom margin #}
-                            {{ f.checkbox(
-                                'email_messages',
-                                __('settings.profile.email_messages'),
-                                {
-                                    'class': '',
-                                    'checked': f.formData('email_messages', false),
+                                    'checked': f.formData('email_system', false),
+                                    'info': __('registration.email_system.info'),
                                 },
                             ) }}
                         </li>
