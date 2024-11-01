@@ -112,7 +112,9 @@ class OAuthController extends BaseController
 
         // Update oauth state
         $expirationTime = $accessToken->getExpires();
-        $expirationTime = $expirationTime ? Carbon::createFromTimestamp($expirationTime) : null;
+        $expirationTime = $expirationTime
+            ? Carbon::createFromTimestamp($expirationTime, Carbon::now()->timezone)
+            : null;
         if ($oauth) {
             $oauth->access_token = $accessToken->getToken();
             $oauth->refresh_token = $accessToken->getRefreshToken();
@@ -328,8 +330,9 @@ class OAuthController extends BaseController
         $this->session->set('oauth2_connect_provider', $providerName);
         $this->session->set('oauth2_user_id', $providerUserIdentifier);
 
+        $timezone = Carbon::now()->timezone;
         $expirationTime = $accessToken->getExpires();
-        $expirationTime = $expirationTime ? Carbon::createFromTimestamp($expirationTime) : null;
+        $expirationTime = $expirationTime ? Carbon::createFromTimestamp($expirationTime, $timezone) : null;
         $this->session->set('oauth2_access_token', $accessToken->getToken());
         $this->session->set('oauth2_refresh_token', $accessToken->getRefreshToken());
         $this->session->set('oauth2_expires_at', $expirationTime);

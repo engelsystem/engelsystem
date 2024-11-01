@@ -62,15 +62,17 @@ class CreateShiftsTable extends Migration
                 'title'          => (string) $record->title,
                 'description'    => (string) $record->description,
                 'url'            => (string) $record->URL,
-                'start'          => Carbon::createFromTimestamp($record->start),
-                'end'            => Carbon::createFromTimestamp($record->end),
+                'start'          => Carbon::createFromTimestamp($record->start, Carbon::now()->timezone),
+                'end'            => Carbon::createFromTimestamp($record->end, Carbon::now()->timezone),
                 'shift_type_id'  => $record->shifttype_id,
                 'room_id'        => $record->RID,
                 'transaction_id' => $record->transaction_id,
                 'created_by'     => $record->created_by_user_id,
                 'updated_by'     => $isUpdated ? $record->edited_by_user_id : null,
-                'created_at'     => Carbon::createFromTimestamp($record->created_at_timestamp),
-                'updated_at'     => $isUpdated ? Carbon::createFromTimestamp($record->edited_at_timestamp) : null,
+                'created_at'     => Carbon::createFromTimestamp($record->created_at_timestamp, Carbon::now()->timezone),
+                'updated_at'     => $isUpdated
+                    ? Carbon::createFromTimestamp($record->edited_at_timestamp, Carbon::now()->timezone)
+                    : null,
             ]);
         }
 

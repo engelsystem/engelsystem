@@ -93,7 +93,7 @@ class ShiftsFilter
      */
     public function getStart()
     {
-        return Carbon::createFromTimestamp($this->startTime);
+        return Carbon::createFromTimestamp($this->startTime, Carbon::now()->timezone);
     }
 
     /**
@@ -117,7 +117,7 @@ class ShiftsFilter
      */
     public function getEnd()
     {
-        return Carbon::createFromTimestamp($this->endTime);
+        return Carbon::createFromTimestamp($this->endTime, Carbon::now()->timezone);
     }
 
     /**

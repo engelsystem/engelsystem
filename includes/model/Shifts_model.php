@@ -61,8 +61,8 @@ function Shifts_by_angeltype(AngelType $angeltype)
  */
 function Shifts_free($start, $end, ShiftsFilter $filter = null)
 {
-    $start = Carbon::createFromTimestamp($start);
-    $end = Carbon::createFromTimestamp($end);
+    $start = Carbon::createFromTimestamp($start, Carbon::now()->timezone);
+    $end = Carbon::createFromTimestamp($end, Carbon::now()->timezone);
 
     $shifts = Db::select('
         SELECT *

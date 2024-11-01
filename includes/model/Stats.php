@@ -211,8 +211,8 @@ function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null)
         date('Y-m-d', time() + 12 * 60 * 60) . ' ' . $nightStartTime . ':00'
     );
     $night_end = $night_start + ($nightEndTime - $nightStartTime) * 60 * 60;
-    $night_start = Carbon::createFromTimestamp($night_start)->toDateTimeString();
-    $night_end = Carbon::createFromTimestamp($night_end)->toDateTimeString();
+    $night_start = Carbon::createFromTimestamp($night_start, Carbon::now()->timezone)->toDateTimeString();
+    $night_end = Carbon::createFromTimestamp($night_end, Carbon::now()->timezone)->toDateTimeString();
     $result = Db::selectOne('
         SELECT SUM(`count`) AS `count` FROM (
             SELECT
