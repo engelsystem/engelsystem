@@ -637,6 +637,7 @@ function User_view(
     foreach ($user_angeltypes as $angeltype) {
         $needs_ifsg_certificate = $needs_ifsg_certificate || $angeltype->requires_ifsg_certificate;
     }
+    $my_shifts_title = $its_me ? __('profile.my_shifts') : __('general.shifts');
 
     $self_worklog = config('enable_self_worklog') || !$its_me;
 
@@ -741,7 +742,7 @@ function User_view(
                 User_groups_render($user_groups),
                 $admin_user_privilege ? User_oauth_render($user_source) : '',
             ]),
-            ($its_me || $admin_user_privilege) ? '<h2>' . __('general.shifts') . '</h2>' : '',
+            ($its_me || $admin_user_privilege) ? '<h2>' . $my_shifts_title . '</h2>' : '',
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
                 sprintf(

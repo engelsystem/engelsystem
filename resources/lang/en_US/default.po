@@ -367,6 +367,12 @@ msgstr "More information"
 msgid "settings.profile.angeltypes.info"
 msgstr "You can manage your angel types <a href=\"%s\">on the angel types page</a>."
 
+msgid "profile.my_shifts"
+msgstr "My shifts"
+
+msgid "settings.profile"
+msgstr "Profile"
+
 msgid "settings.password"
 msgstr "Password"
 

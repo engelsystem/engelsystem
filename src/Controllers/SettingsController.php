@@ -6,11 +6,11 @@ namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpNotFound;
-use Engelsystem\Http\Response;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
-use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Psr\Log\LoggerInterface;
@@ -388,7 +388,7 @@ class SettingsController extends BaseController
     public function settingsMenu(): array
     {
         $menu = [
-            url('/users', ['action' => 'view']) => ['title' => 'profile.my-shifts', 'icon' => 'chevron-left'],
+            url('/users', ['action' => 'view']) => ['title' => 'profile.my_shifts', 'icon' => 'chevron-left'],
             url('/settings/profile')  => 'settings.profile',
             url('/settings/password') => ['title' => 'settings.password', 'icon' => 'key-fill'],
         ];
