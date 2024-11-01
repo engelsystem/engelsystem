@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers;
 
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Response;
-use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -15,9 +15,9 @@ use Engelsystem\Models\User\User;
 use Illuminate\Contracts\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection as DbCollection;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Query\Builder;
 
 class ShiftsController extends BaseController
 {

@@ -7,13 +7,13 @@ namespace Engelsystem\Mail;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Mail\Transport\LogTransport;
+use Symfony\Component\Mailer\Mailer as SymfonyMailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
-use Symfony\Component\Mailer\Mailer as SymfonyMailer;
 
 class MailerServiceProvider extends ServiceProvider
 {

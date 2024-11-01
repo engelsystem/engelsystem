@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Admin;
 
-use Engelsystem\Controllers\NotificationType;
-use Engelsystem\Helpers\Carbon;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
+use Engelsystem\Controllers\NotificationType;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\Schedule\ConferenceTrack;
 use Engelsystem\Helpers\Schedule\Event;
 use Engelsystem\Helpers\Schedule\Room;

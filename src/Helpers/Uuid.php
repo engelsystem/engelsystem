@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers;
 
-use InvalidArgumentException;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Stringable;
 
 class Uuid

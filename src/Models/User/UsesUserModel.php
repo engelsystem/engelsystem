@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Engelsystem\Models\User;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int       $user_id
