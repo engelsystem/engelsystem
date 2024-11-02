@@ -11,7 +11,7 @@
                         config('event_start').format(__('general.date')),
                         config('event_end').format(__('general.date'))
                     ]) }}
-                    {%- if day_of_event is defined -%}
+                    {%- if day_of_event is not null -%}
                         , {{ __('event.day', [day_of_event]) }}
                     {% endif %}
                 {% elseif config('event_start') %}
@@ -19,7 +19,7 @@
                         config('name'),
                         config('event_start').format(__('general.date'))
                     ]) }}
-                    {%- if day_of_event is defined -%}
+                    {%- if day_of_event is not null -%}
                         , {{ __('event.day', [day_of_event]) }}
                     {% endif %}
                 {% else %}
@@ -30,7 +30,7 @@
                     config('event_start').format(__('general.date')),
                     config('event_end').format(__('general.date'))
                 ]) }}
-                {%- if day_of_event is defined -%}
+                {%- if day_of_event is not null -%}
                     , {{ __('event.day', [day_of_event]) }}
                 {% endif %} <br>
             {% endif %}
