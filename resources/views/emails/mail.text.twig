@@ -7,7 +7,7 @@
 {{ '-- ' }}
 {% block footer %}
 {{ config('name') }}
-{%- if day_of_event is defined -%}
+{%- if day_of_event is not null -%}
 {% if config('name') %}, {% endif %}{{ __('event.day', [day_of_event]) }}
 {%- endif %}
 
