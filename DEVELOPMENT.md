@@ -81,10 +81,10 @@ docker compose exec es_workspace bin/migrate
 While developing you may use the watch mode to rebuild the system on changes
 
 ```bash
-# Run a front-end build and update on change. Note that this doesn't apply to changed translation files – see above on how to update them manually
+# Run a front-end build and update every time a JS or CSS file is changed (not translation files!)
 docker compose exec es_workspace yarn build:watch
 
-# Or run a front-end build and update on change for specific themes only, e.g.
+# Or build and update on change for specific themes only to save build time, e.g.
 docker compose exec -e THEMES=0,1 es_workspace yarn build:watch
 ```
 
