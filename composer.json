@@ -14,7 +14,7 @@
         }
     ],
     "scripts": {
-        "phpcs:setup": "phpcs --config-set php_version 80100",
+        "phpcs:setup": "phpcs --config-set php_version 80200",
         "phpcs": [
             "composer phpcs:setup",
             "phpcs -p --cache"
