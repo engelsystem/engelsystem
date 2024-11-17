@@ -235,7 +235,7 @@ test:
     - ./bin/migrate
   script:
     - >-
-      php -d memory_limit=1024M -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit -vvv --colors=never
+      php -d memory_limit=-1 -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit -vvv --colors=never
       --coverage-text --coverage-html "${HOMEDIR}/coverage/"
       --log-junit "${HOMEDIR}/unittests.xml"
   after_script:
