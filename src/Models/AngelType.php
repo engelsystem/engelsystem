@@ -60,7 +60,7 @@ class AngelType extends BaseModel
         'restricted'                => false,
         'requires_driver_license'   => false,
         'requires_ifsg_certificate' => false,
-        'shift_self_signup'         => false,
+        'shift_self_signup'         => true,
         'show_on_dashboard'         => true,
         'hide_register'             => false,
         'hide_on_shift_view'        => false,
