@@ -1,0 +1,228 @@
+// 38c3
+
+// Variables
+// --------------------------------------------------
+
+@import 'dark';
+
+:root {
+  --color-primary: #FF5053;
+  --color-highlight: #FEF2FF;
+  --color-accent-a: #B2AAFF;
+  --color-accent-b: #6A5FDB;
+  --color-accent-c: #29114C;
+  --color-accent-d: #261A66;
+  --color-accent-e: #190B2F;
+  --color-background: #0F000A;
+}
+
+//== changed Colors
+$gray-dark: #29114c;
+$gray-darker: #190b2f;
+$gray: #6a5fdb;
+$gray-light: #b2aaff;
+$gray-lighter: #fef2ff;
+$dark: $gray-dark;
+
+$primary: #ff5053;
+$secondary: #b2aaff;
+$success: #5fdb7e;
+$info: $gray;
+$warning: #dbc85f;
+$danger: #bd0c0e;
+
+$body-bg: #0f000a;
+$border-color: $gray-dark;
+
+$text-muted: $gray-light;
+
+$btn-link-disabled-color: $gray-light;
+
+$dropdown-bg: #212529;
+$dropdown-link-hover-color: #000000;
+
+//== changed Forms
+
+$input-bg: $gray-darker;
+$input-border-color: $secondary;
+$input-group-addon-bg: $input-bg;
+$input-disabled-bg: $body-bg;
+$input-disabled-color: $gray;
+$input-disabled-border-color: $gray-darker;
+
+$form-check-input-border: 1px solid $gray;
+$form-switch-color: $gray;
+
+//== changed Pagination
+
+$pagination-hover-color: $gray-lighter;
+$pagination-active-color: $gray-lighter;
+
+//== changed Form states and alerts
+
+$state-success-text: #fff;
+$state-success-bg: $success;
+$state-success-border: darken($state-success-bg, 5%);
+
+$state-info-text: #fff;
+$state-info-bg: $info;
+$state-info-border: darken($state-info-bg, 7%);
+
+$state-warning-text: #fff;
+$state-warning-bg: $warning;
+$state-warning-border: darken($state-warning-bg, 3%);
+
+$state-danger-text: #fff;
+$state-danger-bg: $danger;
+$state-danger-border: darken($state-danger-bg, 3%);
+
+$headings-small-color: $gray-light;
+
+$alert-bg-scale: 0%;
+$alert-border-scale: 0%;
+$alert-color-scale: 0%;
+
+// Navs =======================================================================
+
+$nav-tabs-link-active-border-color: $gray-dark;
+
+$nav-tabs-link-active-color: $gray-darker;
+$nav-pills-link-active-color: $gray-darker;
+
+//== Pagination
+//
+//##
+
+$pagination-color: $gray-lighter;
+$pagination-border-color: $gray-dark;
+
+$pagination-hover-color: #000;
+$pagination-hover-border-color: $gray-dark;
+
+$pagination-active-color: #000;
+$pagination-active-border-color: $gray-dark;
+
+$pagination-disabled-color: $gray-light;
+$pagination-disabled-border-color: $gray-dark;
+
+// dark
+@import 'cyborg_variables';
+@import 'cyborg_styles';
+
+//== Typography
+
+@font-face {
+  font-family: 'pilowlava';
+  src: URL('theme18/Pilowlava-Regular.woff2')  format('woff2');
+}
+@font-face {
+  font-family: 'spacegrotesk';
+  src: URL('theme18/SpaceGrotesk-Regular.woff2') format('woff2');
+}
+
+$headings-font-family: spacegrotesk, $font-family-sans-serif;
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5 {
+  color: $white;
+}
+
+h1,
+.h1 {
+  font-family: $headings-font-family;
+}
+
+.btn-secondary {
+  background: transparent !important;
+  border-color: $secondary !important;
+  color: $secondary !important;
+}
+
+// Specials ===================================================================
+
+.bg-success a,
+.bg-primary a,
+.bg-secondary a,
+.bg-warning a,
+.bg-info a,
+.bg-light a {
+  color: $gray-darker !important;
+}
+
+.bg-body a,
+.bg-danger a,
+.bg-dark a {
+  color: $state-danger-text !important;
+}
+
+.bg-primary,
+.bg-secondary,
+.bg-success,
+.bg-warning,
+.bg-info,
+.bg-light {
+  color: $gray-darker;
+}
+
+.bg-body,
+.bg-danger,
+.bg-dark {
+  color: $state-danger-text;
+}
+
+.navbar {
+  background: $body-bg;
+}
+
+.navbar-brand {
+  color: $primary;
+  font-family: pilowlava, $headings-font-family;
+}
+
+.nav-tabs,
+.nav-pills,
+.pager {
+  a {
+    color: $gray-lighter;
+  }
+}
+
+.alert a {
+  color: $body-bg;
+}
+
+.alert.alert-info a.text-danger {
+  color: $body-bg !important;
+}
+
+.alert.alert-danger,
+.alert.alert-danger a,
+.alert.alert-info a {
+  color: $gray-lighter;
+}
+
+pre code, code {
+  background-color: $gray-dark;
+  color: $secondary;
+}
+
+body {
+  background: $body-bg url(theme18/blob-collision-wall-1.svg) no-repeat;
+  background-position: bottom right;
+}
+
+:root {
+  scrollbar-color: $secondary $gray-dark;
+}
+
+.container-fluid .container {
+  background: rgba($body-bg, 0.8);
+}
