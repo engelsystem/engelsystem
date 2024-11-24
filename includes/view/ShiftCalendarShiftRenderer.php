@@ -207,7 +207,7 @@ class ShiftCalendarShiftRenderer
                 : $inner_text . '<br />'
                 . button(
                     url('/user-angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
-                    sprintf(__('Become %s'), htmlspecialchars($angeltype->name)),
+                    sprintf(__('Join %s'), htmlspecialchars($angeltype->name)),
                     'btn-sm'
                 ),
             // Shift collides or user is already signed up: No signup allowed

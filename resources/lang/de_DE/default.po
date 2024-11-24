@@ -374,7 +374,7 @@ msgstr "Du bist bereits %s."
 msgid "You joined %s."
 msgstr "Du bist %s beigetreten."
 
-msgid "Become a %s"
+msgid "Join %s"
 msgstr "Werde ein %s"
 
 msgid "You cannot delete yourself."
@@ -972,9 +972,6 @@ msgstr "Ankommen zum Eintragen"
 
 msgid "not yet"
 msgstr "noch nicht"
-
-msgid "Become %s"
-msgstr "Werde ein %s"
 
 msgid "m-d"
 msgstr "d.m."
