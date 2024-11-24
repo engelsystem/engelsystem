@@ -72,7 +72,7 @@ function ShiftEntries_upcoming_for_user(User $user): Collection
  * @param Carbon|null $sinceTime
  * @return ShiftEntry[]|Collection
  */
-function ShiftEntries_finished_by_user(User $user, Carbon $sinceTime = null): Collection
+function ShiftEntries_finished_by_user(User $user, ?Carbon $sinceTime = null): Collection
 {
     $query = $user->shiftEntries()
         ->with(['shift', 'shift.shiftType'])

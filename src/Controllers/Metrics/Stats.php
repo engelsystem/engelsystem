@@ -41,9 +41,8 @@ class Stats
     /**
      * The number of users that arrived/not arrived and/or did some work
      *
-     * @param bool|null $working
      */
-    public function usersState(bool $working = null, bool $arrived = true): int
+    public function usersState(?bool $working = null, bool $arrived = true): int
     {
         $query = State::whereArrived($arrived);
 
@@ -104,9 +103,8 @@ class Stats
     /**
      * The number of currently working users
      *
-     * @param bool|null $freeloaded
      */
-    public function currentlyWorkingUsers(bool $freeloaded = null): int
+    public function currentlyWorkingUsers(?bool $freeloaded = null): int
     {
         $query = User::query()
             ->join('shift_entries', 'shift_entries.user_id', '=', 'users.id')
@@ -203,12 +201,10 @@ class Stats
     }
 
     /**
-     * @param bool|null $done
-     * @param bool|null $freeloaded
      *
      * @codeCoverageIgnore because it is only used in functions that use TIMESTAMPDIFF
      */
-    protected function workSecondsQuery(bool $done = null, bool $freeloaded = null): QueryBuilder
+    protected function workSecondsQuery(?bool $done = null, ?bool $freeloaded = null): QueryBuilder
     {
         $query = $this
             ->getQuery('shift_entries')
@@ -230,12 +226,10 @@ class Stats
     /**
      * The amount of worked seconds
      *
-     * @param bool|null $done
-     * @param bool|null $freeloaded
      *
      * @codeCoverageIgnore as TIMESTAMPDIFF is not implemented in SQLite
      */
-    public function workSeconds(bool $done = null, bool $freeloaded = null): int
+    public function workSeconds(?bool $done = null, ?bool $freeloaded = null): int
     {
         $query = $this->workSecondsQuery($done, $freeloaded);
 
@@ -245,12 +239,10 @@ class Stats
     /**
      * The number of worked shifts
      *
-     * @param bool|null $done
-     * @param bool|null $freeloaded
      *
      * @codeCoverageIgnore as TIMESTAMPDIFF is not implemented in SQLite
      */
-    public function workBuckets(array $buckets, bool $done = null, bool $freeloaded = null): array
+    public function workBuckets(array $buckets, ?bool $done = null, ?bool $freeloaded = null): array
     {
         return $this->getBuckets(
             $buckets,
@@ -352,10 +344,7 @@ class Stats
         return Shift::query()->count();
     }
 
-    /**
-     * @param bool|null $meeting
-     */
-    public function announcements(bool $meeting = null): int
+    public function announcements(?bool $meeting = null): int
     {
         $query = is_null($meeting) ? News::query() : News::whereIsMeeting($meeting);
 
@@ -368,10 +357,7 @@ class Stats
             ->count();
     }
 
-    /**
-     * @param bool|null $answered
-     */
-    public function questions(bool $answered = null): int
+    public function questions(?bool $answered = null): int
     {
         $query = Question::query();
         if (!is_null($answered)) {
@@ -433,10 +419,7 @@ class Stats
         return microtime(true) - $start;
     }
 
-    /**
-     * @param string|null $level
-     */
-    public function logEntries(string $level = null): int
+    public function logEntries(?string $level = null): int
     {
         $query = is_null($level) ? LogEntry::query() : LogEntry::whereLevel($level);
 

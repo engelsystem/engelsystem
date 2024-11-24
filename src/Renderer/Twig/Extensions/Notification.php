@@ -32,7 +32,7 @@ class Notification extends TwigExtension
     /**
      * @return Collection|Collection[]
      */
-    public function notifications(string $type = null): Collection
+    public function notifications(?string $type = null): Collection
     {
         $types = $type ? [NotificationType::from($type)] : null;
 

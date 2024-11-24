@@ -117,12 +117,11 @@ class NewsControllerTest extends ControllerTest
      * @covers       \Engelsystem\Controllers\Admin\NewsController::save
      * @dataProvider saveCreateEditProvider
      *
-     * @param int|null $id
      */
     public function testSaveCreateEdit(
         string $text,
         bool $isMeeting,
-        int $id = null,
+        ?int $id = null,
         bool $sendNotification = false
     ): void {
         $this->request->attributes->set('news_id', $id);

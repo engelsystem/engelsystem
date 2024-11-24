@@ -183,7 +183,7 @@ function toolbar_item_link($href, $icon, $label, $active = false)
         . '</li>';
 }
 
-function toolbar_dropdown_item(string $href, string $label, bool $active, string $icon = null): string
+function toolbar_dropdown_item(string $href, string $label, bool $active, ?string $icon = null): string
 {
     return strtr(
         '<li><a class="dropdown-item{active}" {aria} href="{href}">{icon} {label}</a></li>',

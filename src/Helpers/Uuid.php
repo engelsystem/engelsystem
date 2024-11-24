@@ -31,7 +31,7 @@ class Uuid
      * Generate a dependent v4 UUID
      * @var string|int|float|Stringable $value any value that can be converted to string
      */
-    public static function uuidBy(mixed $value, string $name = null): string
+    public static function uuidBy(mixed $value, ?string $name = null): string
     {
         if (!is_null($name)) {
             if (!preg_match('/^[\da-f]+$/i', $name)) {
