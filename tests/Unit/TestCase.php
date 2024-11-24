@@ -20,9 +20,9 @@ abstract class TestCase extends PHPUnitTestCase
     protected function setExpects(
         MockObject $object,
         string $method,
-        array $arguments = null,
+        ?array $arguments = null,
         mixed $return = null,
-        InvocationOrder|int $times = null
+        InvocationOrder|int|null $times = null
     ): void {
         if (is_null($times)) {
             $times = $this->once();

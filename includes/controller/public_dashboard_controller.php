@@ -76,7 +76,7 @@ function public_dashboard_controller()
  *
  * @return array
  */
-function public_dashboard_controller_free_shift(Shift $shift, ShiftsFilter $filter = null)
+function public_dashboard_controller_free_shift(Shift $shift, ?ShiftsFilter $filter = null)
 {
     // ToDo move to model and return one
     $free_shift = [
@@ -109,7 +109,7 @@ function public_dashboard_controller_free_shift(Shift $shift, ShiftsFilter $filt
  *
  * @return array
  */
-function public_dashboard_needed_angels($needed_angels, ShiftsFilter $filter = null)
+function public_dashboard_needed_angels($needed_angels, ?ShiftsFilter $filter = null)
 {
     $result = [];
     foreach ($needed_angels as $needed_angel) {
