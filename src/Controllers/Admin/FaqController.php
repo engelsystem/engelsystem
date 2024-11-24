@@ -54,7 +54,7 @@ class FaqController extends BaseController
         $data = $this->validate($request, [
             'question' => 'required|max:255',
             'text'     => 'required',
-            'tags'     => 'required|optional',
+            'tags'     => 'optional',
             'delete'   => 'optional|checked',
             'preview'  => 'optional|checked',
         ]);
@@ -69,7 +69,7 @@ class FaqController extends BaseController
         $faq->save();
 
         $faq->tags()->detach();
-        $tags = collect(explode(',', $data['tags']))
+        $tags = collect(explode(',', $data['tags'] ?? ''))
             ->transform(fn($value) => trim($value))
             ->filter(fn($value) => $value != '')
             ->unique();
