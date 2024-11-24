@@ -126,9 +126,9 @@ function Shift_signup_button_render(Shift $shift, AngelType $angeltype)
         return button(shift_entry_create_link($shift, $angeltype), __('Sign up'));
     } elseif (empty($user_angeltype)) {
         return button(
-            url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
+            url('/user-angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
             sprintf(
-                __('Become %s'),
+                __('Join %s'),
                 htmlspecialchars($angeltype->name)
             )
         );

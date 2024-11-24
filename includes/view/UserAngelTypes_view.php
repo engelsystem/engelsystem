@@ -165,10 +165,10 @@ function UserAngelType_add_view(AngelType $angeltype, $users_select, $user_id)
 function UserAngelType_join_view($user, AngelType $angeltype)
 {
     $isOther = $user->id != auth()->user()->id;
-    return page_with_title(sprintf(__('Become a %s'), htmlspecialchars($angeltype->name)), [
+    return page_with_title(sprintf(__('Join %s'), htmlspecialchars($angeltype->name)), [
         msg(),
         info(sprintf(
-            $isOther ? __('Do you really want to add %s to %s?') : __('Do you want to become a %2$s?'),
+            $isOther ? __('Do you really want to add %s to %s?') : __('Do you want to join %2$s?'),
             $user->displayName,
             $angeltype->name
         ), true),
