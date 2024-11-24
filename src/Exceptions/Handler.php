@@ -101,7 +101,7 @@ class Handler
     /**
      * @return HandlerInterface|HandlerInterface[]
      */
-    public function getHandler(Environment $environment = null): HandlerInterface|array
+    public function getHandler(?Environment $environment = null): HandlerInterface|array
     {
         if (!is_null($environment)) {
             return $this->handler[$environment->value];
