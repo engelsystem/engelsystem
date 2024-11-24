@@ -199,7 +199,7 @@ msgid "Leave"
 msgstr "Verlassen"
 
 msgid "Join"
-msgstr "Mitmachen"
+msgstr "Beitreten"
 
 msgid "Public Dashboard"
 msgstr "Öffentliches Dashboard"
@@ -374,8 +374,8 @@ msgstr "Du bist bereits %s."
 msgid "You joined %s."
 msgstr "Du bist %s beigetreten."
 
-msgid "Become a %s"
-msgstr "Werde ein %s"
+msgid "Join %s"
+msgstr "%s beitreten"
 
 msgid "You cannot delete yourself."
 msgstr "Du kannst Dich nicht selber löschen."
@@ -982,9 +982,6 @@ msgstr "Ankommen zum Eintragen"
 msgid "not yet"
 msgstr "noch nicht"
 
-msgid "Become %s"
-msgstr "Werde ein %s"
-
 msgid "m-d"
 msgstr "d.m."
 
@@ -1073,8 +1070,8 @@ msgstr "Möchtest Du \"%2$s\" wirklich verlassen?"
 msgid "Do you really want to add %s to %s?"
 msgstr "Möchtest Du wirklich %s zu %s hinzufügen?"
 
-msgid "Do you want to become a %2$s?"
-msgstr "Möchtest Du ein %2$s werden?"
+msgid "Do you want to join %2$s?"
+msgstr "Möchtest Du %2$s beitreten?"
 
 msgid "Confirm user"
 msgstr "Benutzer bestätigen"
