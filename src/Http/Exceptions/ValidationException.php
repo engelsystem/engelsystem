@@ -10,14 +10,11 @@ use Throwable;
 
 class ValidationException extends RuntimeException
 {
-    /**
-     * @param Throwable|null $previous
-     */
     public function __construct(
         protected Validator $validator,
         string $message = '',
         int $code = 0,
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

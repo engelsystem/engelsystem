@@ -29,7 +29,7 @@ class Application extends Container
     /**
      * Application constructor.
      */
-    public function __construct(string $appPath = null)
+    public function __construct(?string $appPath = null)
     {
         if (!is_null($appPath)) {
             $this->setAppPath($appPath);
@@ -71,9 +71,8 @@ class Application extends Container
     /**
      * Boot service providers
      *
-     * @param Config|null $config
      */
-    public function bootstrap(Config $config = null): void
+    public function bootstrap(?Config $config = null): void
     {
         if ($this->isBootstrapped) {
             return;

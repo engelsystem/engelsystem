@@ -51,7 +51,7 @@ abstract class ControllerTest extends TestCase
         $this->assertTrue(in_array($value, $messages), 'Has ' . $type->value . ' notification: ' . $value);
     }
 
-    protected function assertHasNoNotifications(NotificationType $type = null): void
+    protected function assertHasNoNotifications(?NotificationType $type = null): void
     {
         $messages = $this->session->get('messages' . ($type ? '.' . $type->value : ''), []);
         $this->assertEmpty($messages, 'Has no' . ($type ? ' ' . $type->value : '') . ' notification.');

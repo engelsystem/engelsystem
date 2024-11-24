@@ -109,7 +109,7 @@ class EngelsystemMailerTest extends TestCase
 
         $symfonyMailer->expects($this->once())
             ->method('send')
-            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null): void {
+            ->willReturnCallback(function (RawMessage $message, ?Envelope $envelope = null): void {
                 $this->assertStringContainsString('foo@bar.baz', $message->toString());
                 $this->assertStringContainsString('Foo Bar', $message->toString());
                 $this->assertStringContainsString('Mail test', $message->toString());

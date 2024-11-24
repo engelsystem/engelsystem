@@ -24,7 +24,7 @@ class Translator
         protected string $fallbackLocale,
         callable $getTranslatorCallback,
         protected array $locales = [],
-        callable $localeChangeCallback = null
+        ?callable $localeChangeCallback = null
     ) {
         $this->localeChangeCallback = $localeChangeCallback;
         $this->getTranslatorCallback = $getTranslatorCallback;
