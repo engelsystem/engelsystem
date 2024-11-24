@@ -48,7 +48,7 @@ class MailerTest extends TestCase
         $symfonyMailer = $this->createMock(MailerInterface::class);
         $symfonyMailer->expects($this->once())
             ->method('send')
-            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null): void {
+            ->willReturnCallback(function (RawMessage $message, ?Envelope $envelope = null): void {
                 $this->assertStringContainsString('to@xam.pel', $message->toString());
                 $this->assertStringContainsString('foo@bar.baz', $message->toString());
                 $this->assertStringContainsString('Test Tester', $message->toString());
@@ -75,7 +75,7 @@ class MailerTest extends TestCase
         $symfonyMailer = $this->createMock(MailerInterface::class);
         $symfonyMailer->expects($this->once())
             ->method('send')
-            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null): void {
+            ->willReturnCallback(function (RawMessage $message, ?Envelope $envelope = null): void {
                 throw new TransportException('Unable to connect to port 42');
             });
 
