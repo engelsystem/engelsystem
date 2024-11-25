@@ -1568,7 +1568,9 @@ msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalt
 "dass mein Nick, E-Mail-Adresse, geleistete Arbeit und T-Shirt-Größe solange gespeichert werden."
 
 msgid "settings.profile.privacy"
-msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
+msgstr ""
+"Diese Zustimmung kann in deinem Profil-Einstellungen, sowie nach dem Event "
+"per E-Mail an <a href=\"mailto:%s\">%1$s</a>, widerrufen werden."
 
 msgid "settings.profile.shirt_size"
 msgstr "T-Shirt-Größe"
