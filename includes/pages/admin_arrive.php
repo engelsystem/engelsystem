@@ -42,7 +42,8 @@ function admin_arrive()
 
                 engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source, true));
                 success(__('Reset done. Angel has not arrived.'));
-                throw_redirect(user_link($user_source->id));
+
+                throw_redirect(back()->getHeaderLine('redirect'));
             } else {
                 $msg = error(__('Angel not found.'), true);
             }
@@ -60,7 +61,8 @@ function admin_arrive()
 
                 engelsystem_log('User set has arrived: ' . User_Nick_render($user_source, true));
                 success(__('Angel has been marked as arrived.'));
-                throw_redirect(user_link($user_source->id));
+
+                throw_redirect(back()->getHeaderLine('redirect'));
             } else {
                 $msg = error(__('Angel not found.'), true);
             }
@@ -123,10 +125,14 @@ function admin_arrive()
                     : icon('house'),
                 'btn-sm',
                 true,
-                $usr->state->arrived ? 'secondary' : 'primary',
+                $usr->state->arrived ? 'danger' : 'primary',
                 $usr->state->arrived
                     ? __('Reset')
-                    : __('user.arrive')
+                    : __('user.arrive'),
+                $usr->state->arrived ? [
+                    'confirm_submit_title' => __('Reset arrival state for %s?', [$usr->name]),
+                    'confirm_button_text' => __('Reset'),
+                ] : [],
             ),
         ]);
 

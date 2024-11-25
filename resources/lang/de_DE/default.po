@@ -545,6 +545,9 @@ msgstr "Engel wurde als angekommen markiert."
 msgid "Reset"
 msgstr "Zurücksetzen"
 
+msgid "Reset arrival state for %s?"
+msgstr "Angekommen-Status für %s zurücksetzen?"
+
 msgid "Planned arrival"
 msgstr "Geplanter Ankunftstag"
 
