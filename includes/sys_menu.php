@@ -2,7 +2,6 @@
 
 use Engelsystem\Models\Question;
 use Engelsystem\UserHintsRenderer;
-use Illuminate\Support\Str;
 
 /**
  * Render the user hints
@@ -38,52 +37,35 @@ function header_render_hints()
     return '';
 }
 
-/**
- * Returns the path of the current path with underscores instead of hyphens
- *
- * @return string
- */
-function current_page()
+function make_navigation(): array
 {
-    return request()->query->get('p') ?: str_replace('-', '_', request()->path());
-}
-
-/**
- * @return string
- */
-function make_navigation()
-{
-    $page = current_page();
     $menu = [];
     $pages = [
-        'news'           => __('news.title'),
-        'meetings'       => [__('news.title.meetings'), 'user_meetings'],
-        'user_shifts'    => __('general.shifts'),
-        'angeltypes'     => __('angeltypes.angeltypes'),
-        'locations'      => [__('location.locations'), 'locations.view'],
-        'questions'      => [__('Ask the Heaven'), 'question.add'],
+        // path          => name,
+        // path          => [name, permission],
+        'news'           => 'news.title',
+        'meetings'       => ['news.title.meetings', 'user_meetings'],
+        'user_shifts'    => 'general.shifts',
+        'angeltypes'     => 'angeltypes.angeltypes',
+        'locations'      => ['location.locations', 'locations.view'],
+        'questions'      => ['Ask the Heaven', 'question.add'],
     ];
 
     foreach ($pages as $menu_page => $options) {
-        if (!menu_is_allowed($menu_page, $options)) {
-            continue;
-        }
-
-        $title = ((array) $options)[0];
-        $menu[] = toolbar_item_link(
+        $options = (array) $options;
+        $menu[$options[0]] = [
             url(str_replace('_', '-', $menu_page)),
-            '',
-            $title,
-            $menu_page == $page
-        );
+            $options[1] ?? $menu_page,
+        ];
     }
 
-    $admin_menu = [];
+    foreach (config('header_items', []) as $title => $options) {
+        $menu[$title] = $options;
+    }
+
     $admin_pages = [
-        // Examples:
         // path              => name,
         // path              => [name, permission],
-
         'admin_arrive'       => [admin_arrive_title(), 'users.arrive.list'],
         'admin_active'       => 'Active angels',
         'users'              => ['All Angels', 'admin_user'],
@@ -101,42 +83,22 @@ function make_navigation()
         unset($admin_pages['admin_arrive']);
     }
 
+    $admin_menu = [];
     foreach ($admin_pages as $menu_page => $options) {
-        if (!menu_is_allowed($menu_page, $options)) {
+        $options = (array) $options;
+        if (!auth()->can($options[1] ?? $menu_page)) {
             continue;
         }
 
-        $title = ((array) $options)[0];
-        $admin_menu[] = toolbar_dropdown_item(
+        $admin_menu[$options[0]] = [
             url(str_replace('_', '-', $menu_page)),
-            htmlspecialchars(__($title)),
-            $menu_page == $page || Str::startsWith($page, $menu_page . '/')
-        );
+            $options[1] ?? $menu_page,
+        ];
     }
 
-    if (count($admin_menu) > 0) {
-        $menu[] = toolbar_dropdown(__('Admin'), $admin_menu);
-    }
+    $menu['Admin'] = [$admin_menu, $admin_menu ? null : 'hide', true];
 
-    return join("\n", $menu);
-}
-
-/**
- * @param string          $page
- * @param string|string[] $options
- *
- * @return bool
- */
-function menu_is_allowed(string $page, $options)
-{
-    $options = (array) $options;
-    $permissions = $page;
-
-    if (isset($options[1])) {
-        $permissions = $options[1];
-    }
-
-    return auth()->can($permissions);
+    return $menu;
 }
 
 /**
@@ -169,7 +131,8 @@ function make_language_select()
  */
 function admin_new_questions()
 {
-    if (!auth()->can('question.edit') || current_page() == 'admin/questions') {
+    $currentPage = request()->query->get('p') ?: str_replace('-', '_', request()->path());
+    if (!auth()->can('question.edit') || $currentPage == 'admin/questions') {
         return null;
     }
 

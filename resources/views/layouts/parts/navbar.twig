@@ -35,29 +35,49 @@
             {{ m.angel() }}
             <strong class="visible-lg-inline">{{ config('app_name')|upper }}</strong>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+        >
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
-                {{ menu() }}
-            </ul>
-
-            {% if config('header_items') %}
-                <ul class="navbar-nav mb-2 mb-lg-0">
-                    {% for name,opt in config('header_items', {}) %}
-                        {% set url = opt is iterable ? opt[0] : opt %}
-                        {% set permission = opt is iterable ? opt[1] : null %}
-                        {% if not permission or can(permission) %}
+                {% for name,opt in menu() %}
+                    {% set url = opt is iterable ? opt[0] : opt %}
+                    {% set permission = opt is iterable ? opt[1] : null %}
+                    {% set dropdown = opt is iterable ? opt[2] ?? false : null %}
+                    {% if not permission or can(permission) %}
+                        {% if dropdown %}
+                            <li class="nav-item dropdown">
+                                <a
+                                    class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                >
+                                    {{ name }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% for name,opt in opt[0] %}
+                                        {% set url = opt is iterable ? opt[0] : opt %}
+                                        {% set url=url|replace({'%lang%': session_get('locale')|split('_')[0]}) %}
+                                        {{ _self.dropdown_item(__(name), url, url == request.url() or request.url() starts with url ~ '/') }}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            {% set url=url|replace({'%lang%': session_get('locale')|split('_')[0]}) %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}">
+                                <a
+                                    class="nav-link {% if url == request.url() or request.url() starts with url ~ '/' %}active{% endif %}"
+                                    href="{{ url|escape('html_attr') }}"
+                                >
                                     {{ __(name) }}
                                 </a>
                             </li>
                         {% endif %}
-                    {% endfor %}
-                </ul>
-            {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if is_guest() %}
                     {% include "layouts/parts/language_dropdown.twig" %}
