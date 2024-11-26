@@ -14,6 +14,7 @@ class ValidatorTest extends TestCase
      * @covers \Engelsystem\Http\Validation\Validator::validate
      * @covers \Engelsystem\Http\Validation\Validator::getData
      * @covers \Engelsystem\Http\Validation\Validator::getErrors
+     * @covers \Engelsystem\Http\Validation\Validator::configureValidationFactory
      */
     public function testValidate(): void
     {
