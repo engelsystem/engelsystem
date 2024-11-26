@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http\Validation\Rules;
 
+use Respect\Validation\Rules\AbstractEnvelope;
 use Respect\Validation\Rules\In as RespectIn;
 
-class In extends RespectIn
+class In extends AbstractEnvelope
 {
     public function __construct(mixed $haystack, bool $compareIdentical = false)
     {
@@ -14,6 +15,6 @@ class In extends RespectIn
             $haystack = explode(',', $haystack);
         }
 
-        parent::__construct($haystack, $compareIdentical);
+        parent::__construct(new RespectIn($haystack, $compareIdentical));
     }
 }

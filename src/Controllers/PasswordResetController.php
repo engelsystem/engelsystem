@@ -83,7 +83,7 @@ class PasswordResetController extends BaseController
         $reset = $this->requireToken($request);
 
         $data = $this->validate($request, [
-            'password'              => 'required|min:' . config('password_min_length'),
+            'password'              => 'required|length:' . config('password_min_length'),
             'password_confirmation' => 'required',
         ]);
 

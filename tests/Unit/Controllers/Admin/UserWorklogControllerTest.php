@@ -148,7 +148,7 @@ class UserWorklogControllerTest extends ControllerTest
      */
     public function testSaveNewWorklog(): void
     {
-        $work_date = Carbon::today();
+        $work_date = Carbon::today()->format('Y-m-d');
         $work_hours = 3.14;
         $comment = str_repeat('X', 200);
         $body = ['work_date' => $work_date, 'work_hours' => $work_hours, 'comment' => $comment];
@@ -167,7 +167,7 @@ class UserWorklogControllerTest extends ControllerTest
         $this->assertEquals(1, $this->user->worklogs->count());
         $new_worklog = $this->user->worklogs[0];
         $this->assertEquals($this->user->id, $new_worklog->user->id);
-        $this->assertEquals($work_date, $new_worklog->worked_at);
+        $this->assertEquals($work_date, $new_worklog->worked_at->format('Y-m-d'));
         $this->assertEquals($work_hours, $new_worklog->hours);
         $this->assertEquals($comment, $new_worklog->comment);
     }
@@ -178,7 +178,7 @@ class UserWorklogControllerTest extends ControllerTest
      */
     public function testOverwriteWorklogWithUnknownWorklogIdThrows(): void
     {
-        $body = ['work_date' => Carbon::today(), 'work_hours' => 3.14, 'comment' => 'a comment'];
+        $body = ['work_date' => Carbon::today()->format('Y-m-d'), 'work_hours' => 3.14, 'comment' => 'a comment'];
         $request = $this->request
             ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', 1234)
@@ -197,7 +197,7 @@ class UserWorklogControllerTest extends ControllerTest
         /** @var Worklog $worklog */
         $worklog = Worklog::factory(['user_id' => $user2->id])->create();
 
-        $body = ['work_date' => Carbon::today(), 'work_hours' => 3.14, 'comment' => 'a comment'];
+        $body = ['work_date' => Carbon::today()->format('Y-m-d'), 'work_hours' => 3.14, 'comment' => 'a comment'];
         $request = $this->request
             ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id)
@@ -213,7 +213,7 @@ class UserWorklogControllerTest extends ControllerTest
     {
         /** @var Worklog $worklog */
         $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
-        $work_date = Carbon::today();
+        $work_date = Carbon::today()->format('Y-m-d');
         $work_hours = 3.14;
         $comment = str_repeat('X', 200);
         $body = ['work_date' => $work_date, 'work_hours' => $work_hours, 'comment' => $comment];
@@ -232,7 +232,7 @@ class UserWorklogControllerTest extends ControllerTest
 
         $this->assertHasNotification('worklog.edit.success');
         $worklog = Worklog::find($worklog->id);
-        $this->assertEquals($work_date, $worklog->worked_at);
+        $this->assertEquals($work_date, $worklog->worked_at->format('Y-m-d'));
         $this->assertEquals($work_hours, $worklog->hours);
         $this->assertEquals($comment, $worklog->comment);
     }
@@ -334,7 +334,7 @@ class UserWorklogControllerTest extends ControllerTest
      */
     public function invalidSaveWorklogParams(): array
     {
-        $today = Carbon::today();
+        $today = Carbon::today()->format('Y-m-d');
         return [
             // missing work_date
             [['work_hours' => 3.14, 'comment' => 'com']],

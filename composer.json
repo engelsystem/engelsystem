@@ -52,7 +52,7 @@
         "psr/http-server-middleware": "^1.0",
         "psr/log": "^3.0",
         "rcrowe/twigbridge": "^0.14.x-dev",
-        "respect/validation": "^1.1",
+        "respect/validation": "^2.3",
         "symfony/http-foundation": "^7.1",
         "symfony/mailer": "^7.1",
         "symfony/psr-http-message-bridge": "^7.1",

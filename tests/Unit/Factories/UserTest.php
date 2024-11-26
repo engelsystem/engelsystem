@@ -174,7 +174,7 @@ class UserTest extends ServiceProviderTest
                 'email' => 'notanemail',
                 'password' => 'a',
                 'tshirt_size' => 'A',
-                'planned_arrival_date' => $this->now->subDays(7),
+                'planned_arrival_date' => $this->now->subDays(7)->format('Y-m-d'),
                 'dect' => str_repeat('a', 50),
                 'mobile' => str_repeat('a', 50),
             ],
@@ -413,7 +413,7 @@ class UserTest extends ServiceProviderTest
                 'email' => 'fritz@example.com',
                 'password' => 's3cret',
                 'password_confirmation' => 's3cret',
-                'planned_arrival_date' => $this->now->subDays(7),
+                'planned_arrival_date' => $this->now->subDays(7)->format('Y-m-d'),
             ],
             [
                 'planned_arrival_date' =>  [

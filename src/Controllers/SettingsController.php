@@ -146,7 +146,7 @@ class SettingsController extends BaseController
         $minLength = config('password_min_length');
         $data = $this->validate($request, [
             'password'      => empty($user->password) ? 'optional' : 'required',
-            'new_password'  => 'required|min:' . $minLength,
+            'new_password'  => 'required|length:' . $minLength,
             'new_password2' => 'required',
         ]);
 

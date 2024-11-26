@@ -16,6 +16,10 @@ class InTest extends TestCase
     {
         $rule = new In('foo,bar');
 
-        $this->assertEquals(['foo', 'bar'], $rule->haystack);
+        $this->assertTrue($rule->validate('foo'));
+        $this->assertTrue($rule->validate('bar'));
+
+        $this->assertFalse($rule->validate('baz'));
+        $this->assertFalse($rule->validate('foo,bar'));
     }
 }

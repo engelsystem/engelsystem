@@ -29,5 +29,11 @@ class MinTest extends TestCase
         $this->assertTrue($rule->validate('2042-01-01'));
         $this->assertTrue($rule->validate('2042-01-02'));
         $this->assertTrue($rule->validate('2345-01-01'));
+
+        $rule = new Min(3);
+        $this->assertFalse($rule->validate(''));
+        $this->assertFalse($rule->validate('TE'));
+        $this->assertTrue($rule->validate('TES'));
+        $this->assertTrue($rule->validate('FOO BAR'));
     }
 }
