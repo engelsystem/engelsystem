@@ -187,8 +187,8 @@ class ShiftCalendarRenderer
             // Add angel types from shift entries without reference from needed angel types
             foreach (
                 $shift->shiftEntries
-                    ->groupBy('angel_type_id')
-                    ->whereNotIn('angel_type_id', $needed_angeltypes->pluck('id')) as $shiftEntriesOfAngelType
+                    ->whereNotIn('angel_type_id', $needed_angeltypes->pluck('id'))
+                    ->groupBy('angel_type_id') as $shiftEntriesOfAngelType
             ) {
                 /** @var Collection|ShiftEntry[] $shiftEntriesOfAngelType */
                 /** @var AngelType $angeltype */
