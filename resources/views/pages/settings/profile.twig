@@ -154,7 +154,7 @@
                         'selected': userdata.personalData.shirt_size,
                         'required': isTShirtSizeRequired,
                         'required_icon': isTShirtSizeRequired,
-                        'default_option': __('form.select_placeholder'),
+                        'default_option': isTShirtSizeRequired and userdata.personalData.shirt_size ? null : __('form.select_placeholder'),
                         'disabled': userdata.state.got_goodie,
                         'info': __('settings.profile.shirt_size.hint'),
                         'raw_form_text': true,

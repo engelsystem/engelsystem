@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ schedule ? __('schedule.edit.title') : __('schedule.import.title') }}{% endblock %}
+{% block title %}{{ schedule.id ? __('schedule.edit.title') : __('schedule.import.title') }}{% endblock %}
 
 {% block content_title %}
     {{ m.back(url('/admin/schedule')) }}
@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block row_content %}
-    {% if schedule and schedule.updated_at %}
+    {% if schedule.id and schedule.updated_at %}
         <div class="col-md-12">
             <p>{{ __('schedule.last_update', [schedule.updated_at.format(__('general.datetime'))]) }}</p>
         </div>
@@ -23,37 +23,37 @@
             <div class="col-md-6">
                 {{ f.input('name', __('schedule.name'), {
                     'required': true,
-                    'value': schedule ? schedule.name : '',
+                    'value': schedule.name,
                     'max_length': 255,
                 }) }}
                 {{ f.input('url', __('schedule.url'), {
                     'type': 'url',
                     'required': true,
-                    'value': schedule ? schedule.url : ''
+                    'value': schedule.url
                 }) }}
 
                 {{ f.select('shift_type', __('schedule.shift-type'), shift_types|default([]), {
-                    'selected': schedule ? schedule.shift_type : '',
+                    'selected': schedule.shift_type,
                 }) }}
 
                 {{ f.checkbox('needed_from_shift_type', __('schedule.needed-from-shift-type'), {
-                    'checked': schedule ? schedule.needed_from_shift_type : '',
+                    'checked': schedule.needed_from_shift_type,
                 }) }}
 
                 {{ f.input('minutes_before', __('schedule.minutes-before'), {
                     'type': 'number',
                     'required': true,
-                    'value': schedule ? schedule.minutes_before : 15
+                    'value': schedule.id ? schedule.minutes_before : 15
                 }) }}
                 {{ f.input('minutes_after', __('schedule.minutes-after'), {
                     'type': 'number',
                     'required': true,
-                    'value': schedule ? schedule.minutes_after : 15
+                    'value': schedule.id ? schedule.minutes_after : 15
                 }) }}
 
                 {{ f.save(__('form.save')) }}
 
-                {% if schedule %}
+                {% if schedule.id %}
                     {{ f.delete(__('form.delete'), {
                         'confirm_title': __('schedule.delete.title', [schedule.shifts|length])
                     }) }}
@@ -68,7 +68,7 @@
                             {{ f.checkbox(
                                 'location_' ~ id,
                                 name,
-                                {'checked': schedule and id in schedule.activeLocations.pluck('id')}
+                                {'checked': schedule.id and id in schedule.activeLocations.pluck('id')}
                             ) }}
                         </div>
                     {% endfor %}

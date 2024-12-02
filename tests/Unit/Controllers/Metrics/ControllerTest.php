@@ -154,6 +154,13 @@ class ControllerTest extends TestCase
         $this->setExpects($stats, 'oauth', null, new Collection([
             ['provider' => 'test', 'count' => 2],
         ]));
+        $this->setExpects($stats, 'angelTypes', null, [[
+            'name' => 'Test',
+            'restricted' => true,
+            'unconfirmed' => 3,
+            'confirmed' => 2,
+            'supporters' => 1,
+        ]]);
         $this->setExpects($stats, 'shifts', null, 142);
         $this->setExpects($stats, 'messages', null, 3);
         $this->setExpects($stats, 'passwordResets', null, 1);

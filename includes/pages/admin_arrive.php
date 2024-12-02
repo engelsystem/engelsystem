@@ -126,7 +126,11 @@ function admin_arrive()
                 $usr->state->arrived ? 'secondary' : 'primary',
                 $usr->state->arrived
                     ? __('Reset')
-                    : __('user.arrive')
+                    : __('user.arrive'),
+                $usr->state->arrived ? [
+                    'confirm_submit_title' => __('Reset arrival for %s?', [$usr->name]),
+                    'confirm_button_text' => __('Reset'),
+                ] : [],
             ),
         ]);
 

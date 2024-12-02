@@ -436,7 +436,7 @@ function user_angeltype_join_controller(AngelType $angeltype)
     }
 
     return [
-        sprintf(__('Become a %s'), htmlspecialchars($angeltype->name)),
+        sprintf(__('Join %s'), htmlspecialchars($angeltype->name)),
         UserAngelType_join_view($user, $angeltype),
     ];
 }
