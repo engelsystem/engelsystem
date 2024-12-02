@@ -470,17 +470,26 @@ msgstr "Engel hat ein T-Shirt bekommen."
 msgid "Angel has got no T-shirt."
 msgstr "Engel hat kein T-Shirt bekommen."
 
+msgid "Angel has no valid T-shirt size. T-shirt was not set."
+msgstr "Engel hat keine valide T-Shirt Größe. T-Shirt wurde nicht gespeichert."
+
+msgid "This Angel has no valid T-shirt size, therefore it's not possible to hand out a T-shirt."
+msgstr "Dieser Engel hat keine valide T-Shirt Größe, weswegen kein T-Shirt ausgegeben werden kann."
+
 msgid "Set active"
 msgstr "Setze aktiv"
 
 msgid "Remove active"
 msgstr "Entferne aktiv"
 
-msgid "Got T-shirt"
-msgstr "T-Shirt bekommen"
-
 msgid "Remove T-shirt"
 msgstr "Entferne T-Shirt"
+
+msgid "Goodie actions"
+msgstr "Goodie Aktionen"
+
+msgid "T-shirt actions"
+msgstr "T-Shirt Aktionen"
 
 msgid "Sum"
 msgstr "Summe"
@@ -1290,9 +1299,6 @@ msgstr "Goodie Statistik"
 
 msgid "Remove goodie"
 msgstr "Goodie entfernen"
-
-msgid "Got goodie"
-msgstr "Goodie bekommen"
 
 msgid "Angel has got a goodie."
 msgstr "Engel hat ein Goodie bekommen."
