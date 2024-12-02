@@ -6,14 +6,14 @@
 @import 'dark';
 
 :root {
-  --color-primary: #FF5053;
-  --color-highlight: #FEF2FF;
-  --color-accent-a: #B2AAFF;
-  --color-accent-b: #6A5FDB;
-  --color-accent-c: #29114C;
-  --color-accent-d: #261A66;
-  --color-accent-e: #190B2F;
-  --color-background: #0F000A;
+  --color-primary: #ff5053;
+  --color-highlight: #fef2ff;
+  --color-accent-a: #b2aaff;
+  --color-accent-b: #6a5fdb;
+  --color-accent-c: #29114c;
+  --color-accent-d: #261a66;
+  --color-accent-e: #190b2f;
+  --color-background: #0f000a;
 }
 
 //== changed Colors
@@ -113,7 +113,7 @@ $pagination-disabled-border-color: $gray-dark;
 
 @font-face {
   font-family: 'pilowlava';
-  src: URL('theme18/Pilowlava-Regular.woff2')  format('woff2');
+  src: URL('theme18/Pilowlava-Regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'spacegrotesk';
@@ -209,7 +209,8 @@ h1,
   color: $gray-lighter;
 }
 
-pre code, code {
+pre code,
+code {
   background-color: $gray-dark;
   color: $secondary;
 }

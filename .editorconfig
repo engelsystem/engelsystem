@@ -52,7 +52,7 @@ max_line_length = unset
 indent_size = 2
 
 # Ignore for
-[{*.mo,LICENSE}]
+[{*.mo,*LICENSE*,*License*}]
 charset = unset
 end_of_line = unset
 indent_style = unset
