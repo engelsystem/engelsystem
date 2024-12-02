@@ -779,6 +779,12 @@ msgstr "Delete shift type \"%s\""
 msgid "shifttype.required_angels"
 msgstr "Required angels (on schedule import)"
 
+msgid "shifttype.edit.signup_advance_hours"
+msgstr "Advance signup hours"
+
+msgid "shifttype.edit.signup_advance_hours.info"
+msgstr "Maximum number of hours which allow signup in advance"
+
 msgid "event.day"
 msgstr "Day %1$d"
 
