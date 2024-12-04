@@ -1103,9 +1103,6 @@ msgstr "Engel kann noch %d Gutscheine bekommen und ist FA."
 msgid "Number of vouchers given out"
 msgstr "Anzahl Gutscheine bekommen"
 
-msgid "Voucher"
-msgstr "Gutschein"
-
 msgid "Freeloads"
 msgstr "Schwänzereien"
 

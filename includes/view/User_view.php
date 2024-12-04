@@ -73,6 +73,7 @@ function User_edit_vouchers_view($user)
  * @param int $freeloads_count
  * @param int $goodies_count
  * @param int $voucher_count
+ * @param bool $admin_user_privilege
  * @return string
  */
 function Users_view(
@@ -83,13 +84,54 @@ function Users_view(
     $force_active_count,
     $freeloads_count,
     $goodies_count,
-    $voucher_count
+    $voucher_count,
+    $admin_user_privilege
 ) {
+    $auth = auth();
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $usersList = [];
     foreach ($users as $user) {
+        $voucher_field = '';
+
+        if (config('enable_voucher')) {
+            $voucher_template = <<<EOT
+            <div class="d-flex align-items-center text-nowrap">
+                <div data-field="voucher-status" class="flex-grow-1 text-end">
+                    {issued} / {eligible}
+                </div>
+                {plus_one}
+            </div>
+EOT;
+
+            if ($admin_user_privilege || $auth->can('voucher.edit')) {
+                $plus_one = <<<EOT
+                <button
+                    class="btn btn-sm btn-secondary ms-2 js-only"
+                    data-voucher-amount="{amount}"
+                    data-voucher-user-id="{user}"
+                >
+                    +1
+                </button>
+EOT;
+
+                $voucher_template = strtr($voucher_template, [
+                    '{plus_one}' => $plus_one,
+                ]);
+            }
+
+            $voucher_field = strtr(
+                $voucher_template,
+                [
+                    '{issued}' => $user->state->got_voucher,
+                    '{eligible}' => $user->state->got_voucher + User_get_eligable_voucher_count($user),
+                    '{user}' => $user->id,
+                    '{amount}' => $user->state->got_voucher + 1,
+                ]
+            );
+        }
+
         $u = [];
         $u['name'] = User_Nick_render($user)
             . User_Pronoun_render($user)
@@ -99,7 +141,7 @@ function Users_view(
         $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', htmlspecialchars((string) $user->contact->dect));
         $u['arrived'] = icon_bool($user->state->arrived);
         if (config('enable_voucher')) {
-            $u['got_voucher'] = $user->state->got_voucher;
+            $u['got_voucher'] = $voucher_field;
         }
         $u['freeloads'] = $user->getAttribute('freeloads');
         $u['active'] = icon_bool($user->state->active);
@@ -132,7 +174,7 @@ function Users_view(
     $usersList[] = [
         'name' => '<strong>' . __('Sum') . '</strong>',
         'arrived' => $arrived_count,
-        'got_voucher' => $voucher_count,
+        'got_voucher'  => '<div id="voucher-count" class="text-center">' . $voucher_count . '</div>',
         'active' => $active_count,
         'force_active' => $force_active_count,
         'freeloads' => $freeloads_count,
@@ -154,7 +196,7 @@ function Users_view(
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
     if (config('enable_voucher')) {
-        $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
+        $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Vouchers'), $order_by);
     }
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
