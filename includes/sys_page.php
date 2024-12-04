@@ -50,6 +50,18 @@ function parse_date($pattern, $value)
 }
 
 /**
+ * Send a JSON response.
+ *
+ * @param array $data
+ */
+function json_output(array $data): void
+{
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($data);
+    die();
+}
+
+/**
  * Leitet den Browser an die übergebene URL weiter und hält das Script an.
  *
  * @param string $url
