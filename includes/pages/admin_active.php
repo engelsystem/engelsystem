@@ -1,7 +1,9 @@
 <?php
 
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\Goodie;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
@@ -23,7 +25,7 @@ function admin_active_title()
 function admin_active()
 {
     $tshirt_sizes = config('tshirt_sizes');
-    $shift_sum_formula = User_get_shifts_sum_query();
+    $shift_sum_formula = Goodie::shiftScoreQuery()->getValue(Db::connection()->getQueryGrammar());
     $request = request();
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;

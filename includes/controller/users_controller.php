@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Helpers\Goodie;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\State;
@@ -253,7 +254,7 @@ function user_controller()
         auth()->resetApiKey($user_source);
     }
 
-    $goodie_score = sprintf('%.2f', User_goodie_score($user_source->id)) . '&nbsp;h';
+    $goodie_score = sprintf('%.2f', Goodie::userScore($user_source)) . '&nbsp;h';
     if ($user_source->state->force_active && config('enable_force_active')) {
         $goodie_score = '<span title="' . $goodie_score . '">' . __('Enough') . '</span>';
     }
