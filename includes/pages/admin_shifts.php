@@ -55,7 +55,7 @@ function admin_shifts()
 
     // Load shift types
     /** @var ShiftType[]|Collection $shifttypes_source */
-    $shifttypes_source = ShiftType::all();
+    $shifttypes_source = ShiftType::query()->orderBy('name')->get();
     $no_shifttypes = $shifttypes_source->isEmpty();
     $shifttypes = [];
     foreach ($shifttypes_source as $shifttype) {
