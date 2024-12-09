@@ -365,8 +365,8 @@ msgstr "To possibly receive vouchers for the next similar event, I consent "
 "that my nick, e-mail address, worked hours and T-shirt size will be stored until then."
 
 msgid "settings.profile.privacy"
-msgstr "You can withdraw your approval in your profile settings or after the event "
-"via e-mail to <a href=\"mailto:%s\">%1$s</a>."
+msgstr "You can withdraw your approval during the event in your profile settings as well "
+"as after the event via e-mail to <a href=\"mailto:%s\">%1$s</a>."
 
 msgid "settings.profile.shirt_size"
 msgstr "T-shirt size"
