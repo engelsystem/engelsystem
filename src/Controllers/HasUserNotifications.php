@@ -21,7 +21,7 @@ trait HasUserNotifications
      * @param NotificationType[]|null $types
      * @return array<string,Collection|array<string>>
      */
-    protected function getNotifications(array $types = null): array
+    protected function getNotifications(?array $types = null): array
     {
         $return = [];
         $types = $types ?: [
