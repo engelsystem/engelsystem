@@ -1578,7 +1578,7 @@ msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalt
 
 msgid "settings.profile.privacy"
 msgstr ""
-"Diese Zustimmung kann in deinem Profil-Einstellungen, sowie nach dem Event "
+"Diese Zustimmung kann während dem Event in den Profil-Einstellungen, sowie, auch nach dem Event, "
 "per E-Mail an <a href=\"mailto:%s\">%1$s</a>, widerrufen werden."
 
 msgid "settings.profile.shirt_size"
