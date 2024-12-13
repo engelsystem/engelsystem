@@ -261,10 +261,10 @@ dump-database:
     - ./bin/migrate
   script:
     - >-
-      mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}"
+      mariadb --skip-ssl -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}"
       -e 'UPDATE users SET api_key="" WHERE name="admin"'
     - >-
-      mysqldump -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}"
+      mariadb-dump --skip-ssl -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}"
       > "${HOMEDIR}/initial-install.sql"
 
 generate-assets:
