@@ -73,7 +73,7 @@ function make_navigation(): array
         'admin/questions'    => ['Answer questions', 'question.edit'],
         'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.view'],
         'admin_shifts'       => 'Create shifts',
-        'admin_groups'       => 'Grouprights',
+        'admin_groups'       => 'Group rights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
         'admin/config'       => ['config.config', 'config.edit'],

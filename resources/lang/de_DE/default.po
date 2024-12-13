@@ -599,7 +599,7 @@ msgstr "Letzte Schicht"
 msgid "general.dect"
 msgstr "DECT"
 
-msgid "Grouprights"
+msgid "Group rights"
 msgstr "Gruppenrechte"
 
 msgid "general.name"
