@@ -12,26 +12,15 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class EngelsystemMailer extends Mailer
 {
-    protected ?Renderer $view = null;
-
-    protected ?Translator $translation = null;
-
     protected ?string $subjectPrefix = null;
 
-    /**
-     * @param Renderer|null   $view
-     * @param Translator|null $translation
-     */
     public function __construct(
         LoggerInterface $log,
         MailerInterface $mailer,
-        Renderer $view = null,
-        Translator $translation = null
+        protected ?Renderer $view = null,
+        protected ?Translator $translation = null
     ) {
         parent::__construct($log, $mailer);
-
-        $this->translation = $translation;
-        $this->view = $view;
     }
 
     /**

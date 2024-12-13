@@ -11,7 +11,7 @@ use Engelsystem\ShiftsFilter;
  *
  * @return int|string
  */
-function stats_currently_working(ShiftsFilter $filter = null): int|string
+function stats_currently_working(?ShiftsFilter $filter = null): int|string
 {
     $result = Db::selectOne(
         '
@@ -37,7 +37,7 @@ function stats_currently_working(ShiftsFilter $filter = null): int|string
  *
  * @return int|string
  */
-function stats_hours_to_work(ShiftsFilter $filter = null): int|string
+function stats_hours_to_work(?ShiftsFilter $filter = null): int|string
 {
     $result = Db::selectOne(
         '
@@ -92,7 +92,7 @@ function stats_hours_to_work(ShiftsFilter $filter = null): int|string
  *
  * @return int|string
  */
-function stats_angels_needed_three_hours(ShiftsFilter $filter = null): int|string
+function stats_angels_needed_three_hours(?ShiftsFilter $filter = null): int|string
 {
     $in3hours = Carbon::now()->addHours(3)->toDateTimeString();
     $result = Db::selectOne('
@@ -200,7 +200,7 @@ function stats_angels_needed_three_hours(ShiftsFilter $filter = null): int|strin
  *
  * @return int|string
  */
-function stats_angels_needed_for_nightshifts(ShiftsFilter $filter = null): int|string
+function stats_angels_needed_for_nightshifts(?ShiftsFilter $filter = null): int|string
 {
     $nightShiftsConfig = config('night_shifts');
     $nightStartTime = $nightShiftsConfig['start'];

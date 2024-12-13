@@ -56,7 +56,7 @@ class SendResponseHandler implements MiddlewareInterface
      *
      * @codeCoverageIgnore
      */
-    protected function sendHeader(string $content, bool $replace = true, int $code = null): void
+    protected function sendHeader(string $content, bool $replace = true, ?int $code = null): void
     {
         if (is_null($code)) {
             header($content, $replace);
