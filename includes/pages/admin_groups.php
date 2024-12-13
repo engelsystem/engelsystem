@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
  */
 function admin_groups_title()
 {
-    return __('Grouprights');
+    return __('Group rights');
 }
 
 /**
