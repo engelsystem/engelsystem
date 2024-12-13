@@ -141,7 +141,7 @@ h1,
 }
 
 .btn-secondary {
-  background: transparent !important;
+  background: $body-bg !important;
   border-color: $secondary !important;
   color: $secondary !important;
 }
@@ -216,14 +216,20 @@ code {
 }
 
 body {
-  background: $body-bg url(theme18/blob-collision-wall-1.svg) no-repeat;
-  background-position: bottom right;
+  background: $body-bg url(theme18/blob-collision-rect-6.svg) no-repeat;
+  background-position: top center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+@include media-breakpoint-up(md) {
+  body {
+    background: $body-bg url(theme18/blob-collision-wall-1.svg) no-repeat;
+    background-position: bottom right;
+    background-attachment: fixed;
+  }
 }
 
 :root {
   scrollbar-color: $secondary $gray-dark;
-}
-
-.container-fluid .container {
-  background: rgba($body-bg, 0.8);
 }
