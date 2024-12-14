@@ -216,9 +216,9 @@ class StatsTest extends TestCase
     public function testAngelTypes(): void
     {
         (new AngelType(['id' => 1, 'name' => 'AngelType 1', 'restricted' => true]))->save();
-        (new AngelType(['id' => 2, 'name' => 'Second AngelType']))->save();
+        (new AngelType(['id' => 2, 'name' => 'Second AngelType', 'restricted' => false]))->save();
         (new AngelType(['id' => 3, 'name' => 'Another AngelType', 'restricted' => true]))->save();
-        (new AngelType(['id' => 4, 'name' => 'Old AngelType']))->save();
+        (new AngelType(['id' => 4, 'name' => 'Old AngelType', 'restricted' => false]))->save();
         UserAngelType::factory()->create(['angel_type_id' => 1, 'confirm_user_id' => 1, 'supporter' => true]);
         UserAngelType::factory()->create(['angel_type_id' => 1, 'confirm_user_id' => null, 'supporter' => false]);
         UserAngelType::factory()->create(['angel_type_id' => 1, 'confirm_user_id' => 1, 'supporter' => false]);
