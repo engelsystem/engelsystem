@@ -1347,10 +1347,10 @@ msgid "form.user_select"
 msgstr "Wähle einen User"
 
 msgid "form.tags"
-msgstr "Schlagworte"
+msgstr "Tags"
 
 msgid "form.tags.info"
-msgstr "Komma separierte Liste von Schlagworten"
+msgstr "Komma separierte Liste von Tags"
 
 msgid "schedule.import"
 msgstr "Programm importieren"
@@ -1837,6 +1837,18 @@ msgstr "Frage \"%s\" löschen"
 
 msgid "question.contact_options"
 msgstr "Weitere Kontaktmöglichkeiten: "
+
+msgid "tag.tags"
+msgstr "Tags"
+
+msgid "tag.edit"
+msgstr "Tag bearbeiten"
+
+msgid "tag.add"
+msgstr "Tag erstellen"
+
+msgid "tag.delete.title"
+msgstr "Tag \"%s\" löschen"
 
 msgid "user.edit.shirt"
 msgstr "T-Shirt bearbeiten"

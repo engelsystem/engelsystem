@@ -240,6 +240,16 @@ $route->addGroup(
             }
         );
 
+        // Tag
+        $route->addGroup(
+            '/tags',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\TagController@list');
+                $route->get('/edit[/{tag_id:\d+}]', 'Admin\\TagController@edit');
+                $route->post('/edit[/{tag_id:\d+}]', 'Admin\\TagController@save');
+            }
+        );
+
         // Questions
         $route->addGroup(
             '/questions',
