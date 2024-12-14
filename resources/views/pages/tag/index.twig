@@ -1,0 +1,51 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}
+    {{ __('tag.tags') }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ block('title') }}
+
+            {% if not tag|default(false) %}
+                {{ m.add(url('/admin/tags/edit')) }}
+            {% endif %}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+
+            <table class="table table-striped">
+                <tr>
+                    <th>{{ __('general.name') }}</th>
+                    <th></th>
+                </tr>
+
+                {% block row %}
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>
+                                <div class="d-flex ms-auto">
+                                    {{ m.edit(url('admin/tags/edit/' ~ item.id)) }}
+
+                                    <form method="post" enctype="multipart/form-data" action="{{ url('admin/tags/edit/' ~ item.id) }}" class="ps-1">
+                                        {{ csrf() }}
+                                        {{ f.delete(null, {'size': 'sm', 'confirm_title': __('tag.delete.title', [item.name[:40]|e])}) }}
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endblock %}
+
+            </table>
+
+        </div>
+    </div>
+{% endblock %}
