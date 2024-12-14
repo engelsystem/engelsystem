@@ -200,6 +200,15 @@ msgstr "Question added successfully."
 msgid "question.edit.success"
 msgstr "Question updated successfully."
 
+msgid "tag.edit.duplicate"
+msgstr "A tag with the name already exists!"
+
+msgid "tag.edit.success"
+msgstr "Tag updated successfully."
+
+msgid "tag.delete.success"
+msgstr "Tag deleted successfully."
+
 msgid "notification.news.new"
 msgstr "New news: %s"
 
