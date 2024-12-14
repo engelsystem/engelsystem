@@ -1,0 +1,39 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ tag and tag.id ? __('tag.edit') : __('tag.add') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ m.back(url('/admin/tags')) }}
+            {{ block('title') }}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    {{ f.input('name', __('general.name'), {
+                        'required': true,
+                        'required_icon': true,
+                        'value': tag ? tag.name : '',
+                        'max_length': 255,
+                    }) }}
+                </div>
+                <div class="col-md-12">
+                    {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+
+                    {% if tag and tag.id %}
+                        {{ f.delete(__('form.delete'), {'confirm_title': __('tag.delete.title', [tag.name[:40]|e])})}}
+                    {% endif %}
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

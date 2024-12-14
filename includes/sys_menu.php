@@ -75,6 +75,7 @@ function make_navigation(): array
         'admin_shifts'       => 'Create shifts',
         'admin_groups'       => 'Group rights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
+        'admin/tags'         => ['tag.tags', 'tag.edit'],
         'admin/logs'         => ['log.log', 'admin_log'],
         'admin/config'       => ['config.config', 'config.edit'],
     ];

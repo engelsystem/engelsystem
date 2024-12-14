@@ -635,6 +635,18 @@ msgstr "Delete question \"%s\""
 msgid "question.contact_options"
 msgstr "Other contact options: "
 
+msgid "tag.tags"
+msgstr "Tags"
+
+msgid "tag.edit"
+msgstr "Edit tag"
+
+msgid "tag.add"
+msgstr "Create new tag"
+
+msgid "tag.delete.title"
+msgstr "Delete tag \"%s\""
+
 msgid "user.edit.shirt"
 msgstr "Edit T-shirt"
 
