@@ -130,60 +130,69 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                 ]) : '',
             msg(),
             form([
-                $supporter_mode
-                    ? form_info(__('general.name'), htmlspecialchars($angeltype->name))
-                    : form_text('name', __('general.name'), $angeltype->name, false, 255),
-                $supporter_mode
-                    ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
-                    : form_checkbox(
-                        'restricted',
-                        __('angeltypes.restricted') .
-                        ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                        __('angeltypes.restricted.info') . '"></span>',
-                        $angeltype->restricted
-                    ),
-                $supporter_mode
-                    ? form_info(__('shift.self_signup'), $angeltype->shift_self_signup ? __('Yes') : __('No'))
-                    : form_checkbox(
-                        'shift_self_signup',
-                        __('shift.self_signup') .
-                        ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                        __('angeltypes.shift.self_signup.info') . '"></span>',
-                        $angeltype->shift_self_signup
-                    ),
-                $requires_driving_license,
-                $requires_ifsg,
-                $supporter_mode
-                    ? form_info(__('Show on dashboard'), $angeltype->show_on_dashboard ? __('Yes') : __('No'))
-                    : form_checkbox('show_on_dashboard', __('Show on dashboard'), $angeltype->show_on_dashboard),
-                $supporter_mode
-                    ? form_info(__('Hide at Registration'), $angeltype->hide_register ? __('Yes') : __('No'))
-                    : form_checkbox('hide_register', __('Hide at Registration'), $angeltype->hide_register),
-                $supporter_mode
-                    ? form_info(
-                        __('angeltypes.hide_on_shift_view'),
-                        $angeltype->hide_on_shift_view ? __('Yes') : __('No')
-                    )
-                    : form_checkbox(
-                        'hide_on_shift_view',
-                        __('angeltypes.hide_on_shift_view') .
-                        ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                        __('angeltypes.hide_on_shift_view.info') . '"></span>',
-                        $angeltype->hide_on_shift_view
-                    ),
-                form_textarea('description', __('general.description'), $angeltype->description),
-                form_info('', __('Please use markdown for the description.')),
-                heading(__('Contact'), 3),
-                form_info(
-                    '',
-                    __('Primary contact person/desk for user questions.')
-                ),
-                form_text('contact_name', __('general.name'), $angeltype->contact_name),
-                config('enable_dect') ? form_text('contact_dect', __('general.dect'), $angeltype->contact_dect) : '',
-                form_text('contact_email', __('general.email'), $angeltype->contact_email),
+                div('row', [
+                    div('col-md-9', [
+                        $supporter_mode
+                            ? form_info(__('general.name'), htmlspecialchars($angeltype->name))
+                            : form_text('name', __('general.name'), $angeltype->name, false, 255),
+                        form_textarea('description', __('general.description'), $angeltype->description),
+                        form_info('', __('Please use markdown for the description.')),
+                        heading(__('Contact'), 3),
+                        form_info(
+                            '',
+                            __('Primary contact person/desk for user questions.')
+                        ),
+                        form_text('contact_name', __('general.name'), $angeltype->contact_name),
+                        config('enable_dect') ? form_text('contact_dect', __('general.dect'), $angeltype->contact_dect) : '',
+                        form_text('contact_email', __('general.email'), $angeltype->contact_email),
+                    ]),
+
+                    div('col-md-3', [
+                        heading(__('State'), 3),
+                        $supporter_mode
+                            ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
+                            : form_checkbox(
+                                'restricted',
+                                __('angeltypes.restricted') .
+                                ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                                __('angeltypes.restricted.info') . '"></span>',
+                                $angeltype->restricted
+                            ),
+                        $supporter_mode
+                            ? form_info(__('shift.self_signup'), $angeltype->shift_self_signup ? __('Yes') : __('No'))
+                            : form_checkbox(
+                                'shift_self_signup',
+                                __('shift.self_signup') .
+                                ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                                __('angeltypes.shift.self_signup.info') . '"></span>',
+                                $angeltype->shift_self_signup
+                            ),
+                        $requires_driving_license,
+                        $requires_ifsg,
+                        $supporter_mode
+                            ? form_info(__('Show on dashboard'), $angeltype->show_on_dashboard ? __('Yes') : __('No'))
+                            : form_checkbox('show_on_dashboard', __('Show on dashboard'), $angeltype->show_on_dashboard),
+                        $supporter_mode
+                            ? form_info(__('Hide at Registration'), $angeltype->hide_register ? __('Yes') : __('No'))
+                            : form_checkbox('hide_register', __('Hide at Registration'), $angeltype->hide_register),
+                        $supporter_mode
+                            ? form_info(
+                                __('angeltypes.hide_on_shift_view'),
+                                $angeltype->hide_on_shift_view ? __('Yes') : __('No')
+                            )
+                            : form_checkbox(
+                                'hide_on_shift_view',
+                                __('angeltypes.hide_on_shift_view') .
+                                ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                                __('angeltypes.hide_on_shift_view.info') . '"></span>',
+                                $angeltype->hide_on_shift_view
+                            ),
+                    ]),
+                ]),
                 form_submit('submit', icon('save') . __('form.save')),
             ]),
-        ]
+        ],
+        true
     );
 }
 
