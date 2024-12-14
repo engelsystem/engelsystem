@@ -57,7 +57,7 @@ class AngelType extends BaseModel
         'contact_name'              => '',
         'contact_dect'              => '',
         'contact_email'             => '',
-        'restricted'                => false,
+        'restricted'                => true,
         'requires_driver_license'   => false,
         'requires_ifsg_certificate' => false,
         'shift_self_signup'         => true,
