@@ -1984,6 +1984,11 @@ msgstr "Eventdaten"
 msgid "registration.what_todo"
 msgstr "Was möchtest Du machen?"
 
+msgid "registration.jobs"
+msgstr ""
+"Weitere Informationen wie Du uns helfen kannst findest du in der "
+"<a href=\"%s\" target=\"_blank\">Teams-/Aufgabenbeschreibung</a>."
+
 msgid "registration.register"
 msgstr "Registrieren"
 
