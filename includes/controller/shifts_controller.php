@@ -107,14 +107,14 @@ function shift_edit_controller()
             error(__('Please select a shift type.'));
         }
 
-        if ($request->has('start') && $tmp = DateTime::createFromFormat('Y-m-d H:i', $request->input('start'))) {
+        if ($request->has('start') && $tmp = DateTime::createFromFormat('Y-m-d\TH:i', $request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
             error(__('Please enter a valid starting time for the shifts.'));
         }
 
-        if ($request->has('end') && $tmp = DateTime::createFromFormat('Y-m-d H:i', $request->input('end'))) {
+        if ($request->has('end') && $tmp = DateTime::createFromFormat('Y-m-d\TH:i', $request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
@@ -190,13 +190,16 @@ function shift_edit_controller()
 
     $angel_types_spinner = '';
     foreach ($angeltypes as $angeltype_id => $angeltype_name) {
-        $angel_types_spinner .= form_spinner(
-            'angeltype_count_' . $angeltype_id,
-            htmlspecialchars($angeltype_name),
-            $needed_angel_types[$angeltype_id],
-            [],
-            (bool) ScheduleShift::whereShiftId($shift->id)->first(),
-        );
+        $angel_types_spinner .=
+            '<div class="col-sm-6 col-md-8 col-lg-6 col-xl-4 col-xxl-3">'
+            . form_spinner(
+                'angeltype_count_' . $angeltype_id,
+                htmlspecialchars($angeltype_name),
+                $needed_angel_types[$angeltype_id],
+                [],
+                (bool) ScheduleShift::whereShiftId($shift->id)->first(),
+            )
+            . '</div>';
     }
 
     $link = button(url('/shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm', '', __('general.back'));
@@ -208,18 +211,38 @@ function shift_edit_controller()
             . info(__('This page is much more comfortable with javascript.'), true)
             . '</noscript>',
             form([
-                form_select('shifttype_id', __('Shift type'), $shifttypes, $shifttype_id),
-                form_text('title', __('title.title'), $title),
-                form_select('rid', __('Location:'), $locations, $rid),
-                form_text('start', __('Start:'), $start->format('Y-m-d H:i')),
-                form_text('end', __('End:'), $end->format('Y-m-d H:i')),
-                form_textarea('description', __('Additional description'), $description),
-                form_info(
-                    '',
-                    __('This description is for single shifts, otherwise please use the description in shift type.')
-                ),
-                '<h2>' . __('Needed angels') . '</h2>',
-                $angel_types_spinner,
+                div('row', [
+                    div('col-md-6 col-xl-5', [
+                        form_select('shifttype_id', __('Shift type'), $shifttypes, $shifttype_id),
+                        form_text('title', __('title.title'), $title),
+                        form_select('rid', __('Location'), $locations, $rid),
+                    ]),
+                    div('col-md-6 col-xl-7', [
+                        form_textarea('description', __('Additional description'), $description),
+                        form_info(
+                            '',
+                            __('This description is for single shifts, otherwise please use the description in shift type.')
+                        ),
+                    ]),
+                ]),
+                div('row', [
+                    div('col-md-6 col-xl-5', [
+                        div('row', [
+                            div('col-lg-6', [
+                                form_datetime('start', __('shifts.start'), $start),
+                            ]),
+                            div('col-lg-6', [
+                                form_datetime('end', __('shifts.end'), $end),
+                            ]),
+                        ]),
+                    ]),
+                    div('col-md-6 col-xl-7', [
+                        '<h4>' . __('Needed angels') . '</h4>',
+                        div('row', [
+                            $angel_types_spinner,
+                        ]),
+                    ]),
+                ]),
                 form_submit('submit', icon('save') . __('form.save')),
             ]),
         ]
