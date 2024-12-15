@@ -282,12 +282,6 @@ msgstr "Titel"
 msgid "Location:"
 msgstr "Ort:"
 
-msgid "Start:"
-msgstr "Start:"
-
-msgid "End:"
-msgstr "Ende:"
-
 msgid "Needed angels"
 msgstr "Benötigte Engel"
 
