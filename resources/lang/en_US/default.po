@@ -738,9 +738,6 @@ msgid "angeltypes.hide_on_shift_view.info"
 msgstr "If checked only admins and members of the angel type "
 "can see the filter option for this angel type on the shifts page"
 
-msgid "registration.register"
-msgstr "Register"
-
 msgid "location.location"
 msgstr "Location"
 
@@ -803,6 +800,13 @@ msgstr "Event data"
 
 msgid "registration.what_todo"
 msgstr "What do you want to do?"
+
+msgid "registration.jobs"
+msgstr "You can find more information about how to help us in the "
+"<a href=\"%s\" target=\"_blank\">Teams-/Job description</a>."
+
+msgid "registration.register"
+msgstr "Register"
 
 msgid "tshirt.required.hint"
 msgstr "Please specify a T-shirt size in your settings!"
