@@ -73,7 +73,7 @@ msgid "page.419.title"
 msgstr "Authentication expired"
 
 msgid "page.419.text"
-msgstr "The provided CSRF token is invalid or has expired"
+msgstr "The provided CSRF token is invalid or has expired. Please try again."
 
 msgid "credits.credit"
 msgstr ""
