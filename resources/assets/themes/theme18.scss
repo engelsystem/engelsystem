@@ -5,17 +5,6 @@
 
 @import 'dark';
 
-:root {
-  --color-primary: #ff5053;
-  --color-highlight: #fef2ff;
-  --color-accent-a: #b2aaff;
-  --color-accent-b: #6a5fdb;
-  --color-accent-c: #29114c;
-  --color-accent-d: #261a66;
-  --color-accent-e: #190b2f;
-  --color-background: #0f000a;
-}
-
 //== changed Colors
 $gray-dark: #29114c;
 $gray-darker: #190b2f;
@@ -38,7 +27,7 @@ $text-muted: $gray-light;
 
 $btn-link-disabled-color: $gray-light;
 
-$dropdown-bg: #212529;
+$dropdown-bg: $gray-darker;
 $dropdown-link-hover-color: #000000;
 
 //== changed Forms
@@ -88,6 +77,9 @@ $nav-tabs-link-active-border-color: $gray-dark;
 
 $nav-tabs-link-active-color: $gray-darker;
 $nav-pills-link-active-color: $gray-darker;
+
+$popover-bg: $gray-dark;
+
 
 //== Pagination
 //
@@ -148,19 +140,21 @@ h1,
 
 // Specials ===================================================================
 
-.bg-success a,
-.bg-primary a,
-.bg-secondary a,
-.bg-warning a,
-.bg-info a,
-.bg-light a {
-  color: $gray-darker !important;
+.bg-success a, a.bg-success,
+.bg-primary a, a.bg-primary,
+.bg-secondary a, a.bg-secondary,
+.bg-warning a, a.bg-warning,
+.bg-info a, a.bg-info,
+.bg-light a a.bg-light, {
+  color: $gray-darker;
+  & :hover {
+    color: $gray-darker;
+  }
 }
 
-.bg-body a,
 .bg-danger a,
-.bg-dark a {
-  color: $state-danger-text !important;
+.bg-dark > a {
+  color: $state-danger-text;
 }
 
 .bg-primary,
@@ -175,7 +169,7 @@ h1,
 .bg-body,
 .bg-danger,
 .bg-dark {
-  color: $state-danger-text;
+  color: $body-color;
 }
 
 .navbar {
