@@ -54,7 +54,7 @@ msgid "page.419.title"
 msgstr "Autorisierung ist abgelaufen"
 
 msgid "page.419.text"
-msgstr "Das angegebene CSRF Token ist ungültig oder abgelaufen"
+msgstr "Das angegebene CSRF Token ist ungültig oder abgelaufen. Bitte versuche es erneut."
 
 msgid "general.date"
 msgstr "d.m.Y"
