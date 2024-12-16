@@ -11,7 +11,7 @@ $gray-darker: #190b2f;
 $gray: #6a5fdb;
 $gray-light: #b2aaff;
 $gray-lighter: #fef2ff;
-$dark: $gray-dark;
+$dark: $gray-darker;
 
 $primary: #ff5053;
 $secondary: #b2aaff;
@@ -80,7 +80,6 @@ $nav-pills-link-active-color: $gray-darker;
 
 $popover-bg: $gray-dark;
 
-
 //== Pagination
 //
 //##
@@ -140,12 +139,17 @@ h1,
 
 // Specials ===================================================================
 
-.bg-success a, a.bg-success,
-.bg-primary a, a.bg-primary,
-.bg-secondary a, a.bg-secondary,
-.bg-warning a, a.bg-warning,
-.bg-info a, a.bg-info,
-.bg-light a a.bg-light, {
+.bg-success > a,
+a.badge.bg-success,
+.bg-primary > a,
+a.badge.bg-primary,
+.bg-secondary > a,
+a.badge.bg-secondary,
+.bg-warning > a,
+a.badge.bg-warning,
+.bg-info > a,
+a.badge.bg-info,
+.bg-light > a a.badge.bg-light {
   color: $gray-darker;
   & :hover {
     color: $gray-darker;
@@ -153,7 +157,7 @@ h1,
 }
 
 .bg-danger a,
-.bg-dark > a {
+.bg-dark a {
   color: $state-danger-text;
 }
 
@@ -167,7 +171,6 @@ h1,
 }
 
 .bg-body,
-.bg-danger,
 .bg-dark {
   color: $body-color;
 }
@@ -226,4 +229,8 @@ body {
 
 :root {
   scrollbar-color: $secondary $gray-dark;
+}
+
+.shift-calendar .lane {
+  background-color: $body-bg;
 }
