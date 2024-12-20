@@ -20,15 +20,12 @@ class CallableHandler implements MiddlewareInterface, RequestHandlerInterface
     /** @var callable */
     protected $callable;
 
-    protected ?Container $container = null;
-
     /**
      * @param callable  $callable The callable that should be wrapped
      */
-    public function __construct(callable $callable, Container $container = null)
+    public function __construct(callable $callable, protected ?Container $container = null)
     {
         $this->callable = $callable;
-        $this->container = $container;
     }
 
     /**
