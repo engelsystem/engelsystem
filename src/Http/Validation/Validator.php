@@ -6,7 +6,9 @@ namespace Engelsystem\Http\Validation;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use ReflectionProperty;
 use Respect\Validation\Exceptions\ComponentException;
+use Respect\Validation\Factory;
 use Respect\Validation\Validator as RespectValidator;
 
 class Validator
@@ -29,16 +31,17 @@ class Validator
         $this->errors = [];
         $this->data = [];
 
+        $this->configureValidationFactory();
+
         $validData = [];
         foreach ($rules as $fieldName => $rulesList) {
-            $v = new RespectValidator();
-            $v->with('\\Engelsystem\\Http\\Validation\\Rules', true);
-
             $value = $data[$fieldName] ?? null;
             $rulesList = is_array($rulesList) ? $rulesList : explode('|', $rulesList);
 
             // Configure the check to be run for every rule
             foreach ($rulesList as $parameters) {
+                $v = new RespectValidator();
+
                 $parameters = is_array($parameters) ? $parameters : explode(':', $parameters);
                 $rule = array_shift($parameters);
                 $rule = Str::camel($rule);
@@ -68,8 +71,6 @@ class Validator
                 } else {
                     $this->errors[$fieldName][] = implode('.', ['validation', $fieldName, $this->mapBack($rule)]);
                 }
-
-                $v->removeRules();
             }
         }
 
@@ -111,5 +112,17 @@ class Validator
         $this->errors = array_merge($this->errors, $errors);
 
         return $this;
+    }
+
+    protected function configureValidationFactory(): void
+    {
+        $f = (new Factory())
+            ->withRuleNamespace('\\Engelsystem\\Http\\Validation\\Rules');
+
+        // Hacking around, alternative is to reimplement it...
+        $property = new ReflectionProperty($f, 'rulesNamespaces');
+        $property->setValue($f, array_reverse($property->getValue($f)));
+
+        Factory::setDefaultInstance($f);
     }
 }
