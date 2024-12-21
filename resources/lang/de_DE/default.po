@@ -974,7 +974,7 @@ msgid "ended"
 msgstr "vorbei"
 
 msgid "please arrive for signup"
-msgstr "Ankommen zum Eintragen"
+msgstr "Komme an um dich einzutragen"
 
 msgid "not yet possible"
 msgstr "noch nicht möglich"
