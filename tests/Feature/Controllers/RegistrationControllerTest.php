@@ -213,6 +213,7 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
     {
         $angelType1 = AngelType::create([
             'name' => 'Test angel type 1',
+            'restricted' => false,
         ]);
 
         $angelType2 = AngelType::create([
@@ -228,6 +229,7 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
         $angelType4 = AngelType::create([
             'name' => 'Test angel type 4',
             'hide_register' => true,
+            'restricted' => false,
         ]);
 
         $this->modelsToBeDeleted[] = $angelType1;
