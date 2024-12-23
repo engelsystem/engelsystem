@@ -80,6 +80,15 @@
                             <div class="card-body bg-body">
                                 {{ faq.text|markdown }}
                             </div>
+                            <div class="card-footer">
+                                <div class="me-3">
+                                    {% for tag in faq.tags %}
+                                        <a href="#" class="badge bg-secondary">
+                                            {{ tag.name }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
