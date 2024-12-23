@@ -216,8 +216,8 @@ class Stats
 
         if (!is_null($freeloaded)) {
             $freeloaded
-                ? $query->whereNull('freeloaded_by')
-                : $query->whereNotNull('freeloaded_by');
+                ? $query->whereNotNull('freeloaded_by')
+                : $query->whereNull('freeloaded_by');
         }
 
         if (!is_null($done)) {
