@@ -17,6 +17,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Session as SessionModel;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\Settings;
@@ -998,6 +999,22 @@ class SettingsControllerTest extends ControllerTest
         $menu = $this->controller->settingsMenu();
         $this->assertArrayHasKey('http://localhost/settings/oauth', $menu);
         $this->assertEquals(['title' => 'settings.oauth', 'hidden' => true], $menu['http://localhost/settings/oauth']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::checkOauthHidden
+     */
+    public function testSettingsMenuWithOAuthShownWhenConnected(): void
+    {
+        // Provider configured as hidden
+        $providersHidden = ['foo' => ['lorem' => 'ipsum', 'hidden' => true]];
+        config(['oauth' => $providersHidden]);
+
+        OAuth::factory()->create(['provider' => 'foo', 'user_id' => $this->user->id]);
+
+        $menu = $this->controller->settingsMenu();
+        $this->assertArrayHasKey('http://localhost/settings/oauth', $menu);
+        $this->assertEquals(['title' => 'settings.oauth', 'hidden' => false], $menu['http://localhost/settings/oauth']);
     }
 
     /**
