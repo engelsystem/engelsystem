@@ -279,16 +279,18 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         ShiftEntry::factory(2)->create([
             'shift_id' => $this->shiftB->id,
             'angel_type_id' => $byLocation->angel_type_id,
+            'freeloaded_by' => null,
         ]);
 
         // By shift type via schedule
         ShiftEntry::factory(3)->create([
             'shift_id' => $this->shiftC->id,
             'angel_type_id' => $byShiftType->angel_type_id,
+            'freeloaded_by' => null,
         ]);
 
         // Additional (not required by shift nor location)
-        ShiftEntry::factory(5)->create(['shift_id' => $this->shiftA->id]);
+        ShiftEntry::factory(5)->create(['shift_id' => $this->shiftA->id, 'freeloaded_by' => null]);
 
         foreach (User::all() as $user) {
             // Generate user data
