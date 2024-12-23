@@ -111,6 +111,7 @@ class FaqControllerTest extends ControllerTest
                 $this->assertEquals('New question', $faq->question);
                 $this->assertEquals('New text', $faq->text);
                 $this->assertEquals('Foo, Bar', $data['tags']);
+                $this->assertEquals(collect([new Tag(['name' => 'Foo']), new Tag(['name' => 'Bar'])]), $faq->tags);
 
                 return $this->response;
             });
