@@ -20,7 +20,7 @@
     </thead>
     <tbody>
     {% for name,config in providers %}
-        <tr{% if config.hidden|default(false) %} class="d-none"{% endif %}>
+        <tr{% if config.hidden|default(false) and not user.oauth.contains('provider', name) %} class="d-none"{% endif %}>
             <td>
                 {% if config.url|default %}
                     <a href="{{ config.url }}" target="_blank" rel="noopener">
