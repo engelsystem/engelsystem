@@ -201,6 +201,15 @@ msgstr "Frage erstellt."
 msgid "question.edit.success"
 msgstr "Frage erfolgreich bearbeitet."
 
+msgid "tag.edit.duplicate"
+msgstr "Ein Tag mit dem Namen existiert bereits!"
+
+msgid "tag.edit.success"
+msgstr "Der Tag wurde erfolgreich aktualisiert."
+
+msgid "tag.delete.success"
+msgstr "Tag erfolgreich gelöscht."
+
 msgid "notification.news.new"
 msgstr "Neue News: %s"
 

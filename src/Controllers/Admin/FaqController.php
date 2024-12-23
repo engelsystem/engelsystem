@@ -11,6 +11,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Faq;
 use Engelsystem\Models\Tag;
+use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 
 class FaqController extends BaseController
@@ -62,17 +63,24 @@ class FaqController extends BaseController
         $faq->question = $data['question'];
         $faq->text = $data['text'];
 
+        $tags = collect(explode(',', $data['tags'] ?? ''))
+            ->transform(fn($value) => trim($value))
+            ->filter(fn($value) => $value != '')
+            ->unique();
+
         if (!is_null($data['preview'])) {
+            $faq['tags'] = new Collection();
+            foreach ($tags as $tagName) {
+                $tag = new Tag(['name' => $tagName]);
+                $faq['tags'][] = $tag;
+            }
+
             return $this->showEdit($faq, $data['tags']);
         }
 
         $faq->save();
 
         $faq->tags()->detach();
-        $tags = collect(explode(',', $data['tags'] ?? ''))
-            ->transform(fn($value) => trim($value))
-            ->filter(fn($value) => $value != '')
-            ->unique();
         foreach ($tags as $tagName) {
             $tag = Tag::whereName($tagName)->firstOrCreate(['name' => $tagName]);
             $faq->tags()->attach($tag);
