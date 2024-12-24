@@ -402,22 +402,26 @@ function admin_active()
     $goodie_statistics = [];
     if ($goodie_tshirt) {
         foreach (array_keys($tshirt_sizes) as $size) {
-            $gc = State::query()
+            $query = State::query()
                 ->leftJoin('users_settings', 'users_state.user_id', '=', 'users_settings.user_id')
                 ->leftJoin('users_personal_data', 'users_state.user_id', '=', 'users_personal_data.user_id')
-                ->where('users_state.got_goodie', '=', true)
                 ->where('users_personal_data.shirt_size', '=', $size)
-                ->count();
+            ;
+            $given = $query->clone()->where('users_state.got_goodie', '=', true)->count();
+            $notGiven = $query->clone()->where('users_state.got_goodie', '=', false)->count();
+
             $goodie_statistics[] = [
                 'size' => $size,
-                'given' => $gc,
+                'given' => $given,
+                'total' => $given + $notGiven,
             ];
         }
     }
 
     $goodie_statistics[] = array_merge(
         ($goodie_tshirt ? ['size' => '<b>' . __('Sum') . '</b>'] : []),
-        ['given' => '<b>' . State::whereGotGoodie(true)->count() . '</b>']
+        ['given' => '<b>' . State::whereGotGoodie(true)->count() . '</b>'],
+        ['total' => '<b>' . State::whereGotGoodie(false)->count() . '</b>'],
     );
 
     return page_with_title(admin_active_title(), [
@@ -460,7 +464,8 @@ function admin_active()
         $goodie_enabled ? '<h2>' . ($goodie_tshirt ? __('T-shirt statistic') : __('Goodie statistic')) . '</h2>' : '',
         $goodie_enabled ? table(array_merge(
             ($goodie_tshirt ? ['size' => __('Size')] : []),
-            ['given' => $goodie_tshirt ? __('Given T-shirts') : __('Given goodies')]
+            ['given' => $goodie_tshirt ? __('Given T-shirts') : __('Given goodies')],
+            ['total' => $goodie_tshirt ? __('Configured T-Shirts') : __('Configured goodies')],
         ), $goodie_statistics) : '',
     ]);
 }

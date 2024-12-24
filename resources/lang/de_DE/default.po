@@ -527,6 +527,9 @@ msgstr "T-Shirt Statistik"
 msgid "Given T-shirts"
 msgstr "Ausgegebene T-Shirts"
 
+msgid "Configured T-Shirts"
+msgstr "Eingetragene T-Shirts"
+
 msgid "Arrive angels"
 msgstr "Ankommende Engel"
 
@@ -1286,6 +1289,9 @@ msgstr "Goodie Score"
 
 msgid "Given goodies"
 msgstr "Ausgegebene Goodies"
+
+msgid "Configured goodies"
+msgstr "Eingetragene Goodies"
 
 msgid "Goodie statistic"
 msgstr "Goodie Statistik"
