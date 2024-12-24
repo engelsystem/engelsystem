@@ -527,6 +527,9 @@ msgstr "T-Shirt Statistik"
 msgid "Given T-shirts"
 msgstr "Ausgegebene T-Shirts"
 
+msgid "Configured T-shirts"
+msgstr "Konfigurierte T-Shirts"
+
 msgid "Arrive angels"
 msgstr "Ankommende Engel"
 
