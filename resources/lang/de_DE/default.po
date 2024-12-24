@@ -282,12 +282,6 @@ msgstr "Titel"
 msgid "Location:"
 msgstr "Ort:"
 
-msgid "Start:"
-msgstr "Start:"
-
-msgid "End:"
-msgstr "Ende:"
-
 msgid "Needed angels"
 msgstr "Benötigte Engel"
 
@@ -532,6 +526,9 @@ msgstr "T-Shirt Statistik"
 
 msgid "Given T-shirts"
 msgstr "Ausgegebene T-Shirts"
+
+msgid "Configured T-Shirts"
+msgstr "Eingetragene T-Shirts"
 
 msgid "Arrive angels"
 msgstr "Ankommende Engel"
@@ -980,7 +977,7 @@ msgid "ended"
 msgstr "vorbei"
 
 msgid "please arrive for signup"
-msgstr "Ankommen zum Eintragen"
+msgstr "Du bist noch nicht angekommen"
 
 msgid "not yet possible"
 msgstr "noch nicht möglich"
@@ -1289,6 +1286,9 @@ msgstr "Goodie Score"
 
 msgid "Given goodies"
 msgstr "Ausgegebene Goodies"
+
+msgid "Configured goodies"
+msgstr "Eingetragene Goodies"
 
 msgid "Goodie statistic"
 msgstr "Goodie Statistik"
@@ -1989,6 +1989,11 @@ msgstr "Eventdaten"
 
 msgid "registration.what_todo"
 msgstr "Was möchtest Du machen?"
+
+msgid "registration.jobs"
+msgstr ""
+"Weitere Informationen wie Du uns helfen kannst findest du in der "
+"<a href=\"%s\" target=\"_blank\">Teams-/Aufgabenbeschreibung</a>."
 
 msgid "registration.register"
 msgstr "Registrieren"

@@ -133,6 +133,19 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                 $supporter_mode
                     ? form_info(__('general.name'), htmlspecialchars($angeltype->name))
                     : form_text('name', __('general.name'), $angeltype->name, false, 255),
+                form_textarea('description', __('general.description'), $angeltype->description),
+                form_info('', __('Please use markdown for the description.')),
+
+                heading(__('Contact'), 3),
+                form_info(
+                    '',
+                    __('Primary contact person/desk for user questions.')
+                ),
+                form_text('contact_name', __('general.name'), $angeltype->contact_name),
+                config('enable_dect') ? form_text('contact_dect', __('general.dect'), $angeltype->contact_dect) : '',
+                form_text('contact_email', __('general.email'), $angeltype->contact_email),
+
+                heading(__('State'), 3),
                 $supporter_mode
                     ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
                     : form_checkbox(
@@ -171,16 +184,6 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                         __('angeltypes.hide_on_shift_view.info') . '"></span>',
                         $angeltype->hide_on_shift_view
                     ),
-                form_textarea('description', __('general.description'), $angeltype->description),
-                form_info('', __('Please use markdown for the description.')),
-                heading(__('Contact'), 3),
-                form_info(
-                    '',
-                    __('Primary contact person/desk for user questions.')
-                ),
-                form_text('contact_name', __('general.name'), $angeltype->contact_name),
-                config('enable_dect') ? form_text('contact_dect', __('general.dect'), $angeltype->contact_dect) : '',
-                form_text('contact_email', __('general.email'), $angeltype->contact_email),
                 form_submit('submit', icon('save') . __('form.save')),
             ]),
         ]

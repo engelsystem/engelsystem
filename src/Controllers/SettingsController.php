@@ -423,8 +423,9 @@ class SettingsController extends BaseController
 
     protected function checkOauthHidden(): bool
     {
-        foreach (config('oauth') as $config) {
-            if (empty($config['hidden'])) {
+        $userServices = $this->auth->user()->oauth;
+        foreach (config('oauth') as $name => $config) {
+            if (empty($config['hidden']) || $userServices->contains('provider', $name)) {
                 return false;
             }
         }
