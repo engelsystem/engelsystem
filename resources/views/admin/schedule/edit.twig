@@ -23,32 +23,32 @@
             <div class="col-md-6">
                 {{ f.input('name', __('schedule.name'), {
                     'required': true,
-                    'value': schedule.name,
+                    'value': f.formData('name', schedule.name),
                     'max_length': 255,
                 }) }}
                 {{ f.input('url', __('schedule.url'), {
                     'type': 'url',
                     'required': true,
-                    'value': schedule.url
+                    'value': f.formData('url', schedule.url)
                 }) }}
 
                 {{ f.select('shift_type', __('schedule.shift-type'), shift_types|default([]), {
-                    'selected': schedule.shift_type,
+                    'selected': f.formData('shift_type', schedule.shift_type) ~ '',
                 }) }}
 
                 {{ f.checkbox('needed_from_shift_type', __('schedule.needed-from-shift-type'), {
-                    'checked': schedule.needed_from_shift_type,
+                    'checked': f.formData('needed_from_shift_type', schedule.needed_from_shift_type),
                 }) }}
 
                 {{ f.input('minutes_before', __('schedule.minutes-before'), {
                     'type': 'number',
                     'required': true,
-                    'value': schedule.id ? schedule.minutes_before : 15
+                    'value': f.formData('minutes_before', schedule.id ? schedule.minutes_before : 15)
                 }) }}
                 {{ f.input('minutes_after', __('schedule.minutes-after'), {
                     'type': 'number',
                     'required': true,
-                    'value': schedule.id ? schedule.minutes_after : 15
+                    'value': f.formData('minutes_after', schedule.id ? schedule.minutes_after : 15)
                 }) }}
 
                 {{ f.save(__('form.save')) }}
@@ -68,7 +68,7 @@
                             {{ f.checkbox(
                                 'location_' ~ id,
                                 name,
-                                {'checked': schedule.id and id in schedule.activeLocations.pluck('id')}
+                                {'checked': f.formData('location_' ~ id, id in schedule.activeLocations.pluck('id'))}
                             ) }}
                         </div>
                     {% endfor %}
