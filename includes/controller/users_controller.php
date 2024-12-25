@@ -256,7 +256,7 @@ function user_controller()
 
     $goodie_score = sprintf('%.2f', Goodie::userScore($user_source)) . '&nbsp;h';
     if ($user_source->state->force_active && config('enable_force_active')) {
-        $goodie_score = '<span title="' . $goodie_score . '">' . __('Enough') . '</span>';
+        $goodie_score = '<span title="' . $goodie_score . '">' . __('user.goodie_score.enough') . '</span>';
     }
 
     $worklogs = $user_source->worklogs()
