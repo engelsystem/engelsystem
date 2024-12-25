@@ -113,12 +113,15 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
     }
 
     /** @var User[]|Collection $users */
-    $users = User::with('userAngelTypes')->orderBy('name')->get();
+    $users = User::with(['userAngelTypes', 'shiftEntries'])->orderBy('name')->get();
     $users_select = [];
     foreach ($users as $user) {
         $name = $user->displayName;
         if ($user->userAngelTypes->where('id', $angeltype->id)->isEmpty()) {
             $name = __('%s (not "%s")', [$name, $angeltype->name]);
+        }
+        if ($user->shiftEntries->where('shift_id', $shift->id)->isNotEmpty()) {
+            $name = __('%s (already in shift)', [$name]);
         }
         $users_select[$user->id] = $name;
     }
