@@ -9,6 +9,7 @@ use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Goodie;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -48,13 +49,16 @@ class UserGoodieController extends BaseController
         $this->checkActive();
         $userId = (int) $request->getAttribute('user_id');
 
+        /** @var User $user */
         $user = $this->user->findOrFail($userId);
+        $goodieScore = $user->state->force_active ? '~' : Goodie::userScore($user);
 
         return $this->response->withView(
             'admin/user/edit-goodie.twig',
             [
                 'userdata' => $user,
                 'is_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
+                'goodie_score' => $goodieScore,
             ]
         );
     }

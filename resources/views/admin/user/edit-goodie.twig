@@ -15,6 +15,11 @@
 
         {% include 'layouts/parts/messages.twig' %}
 
+        <div class="row">
+            {% set score = goodie_score == '~' ? __('user.goodie_score.enough') : __('user.goodie_score.value', [goodie_score])%}
+            <p>{{ is_tshirt ? __('user.tshirt_score', [score]) : __('user.goodie_score', [score]) }}</p>
+        </div>
+
         <form method="post">
             {{ csrf() }}
 
