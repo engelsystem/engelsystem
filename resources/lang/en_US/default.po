@@ -705,7 +705,8 @@ msgid "angeltypes.about"
 msgstr "Teams-/Job description"
 
 msgid "angeltypes.about.text"
-msgstr "Here you can find the list of teams and their tasks. If you have further questions, have a look at the FAQ."
+msgstr "Here you can find the list of teams and their tasks. If you have further questions, "
+"have a look at the <a href=\"%s\">FAQ</a>."
 
 msgid "angeltypes.restricted"
 msgstr "Requires introduction"

@@ -1914,7 +1914,8 @@ msgid "angeltypes.about"
 msgstr "Teams-/Aufgabenbeschreibung"
 
 msgid "angeltypes.about.text"
-msgstr "Hier findest Du die Liste der Teams und ihrer Aufgaben. Wenn Du weitere Fragen hast, schaue in den FAQ nach."
+msgstr "Hier findest Du die Liste der Teams und ihrer Aufgaben. Wenn Du weitere Fragen hast, "
+"schaue in den <a href=\"%s\">FAQ</a> nach."
 
 msgid "angeltypes.restricted.hint"
 msgstr "Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen. "
