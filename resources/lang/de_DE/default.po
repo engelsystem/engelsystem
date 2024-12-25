@@ -192,6 +192,9 @@ msgstr "Team %s"
 msgid "%s (not \"%s\")"
 msgstr "%s (kein \"%s\")"
 
+msgid "%s (already in shift)"
+msgstr "%s (bereits eingetragen)"
+
 msgid "form.view"
 msgstr "Ansehen"
 
