@@ -286,7 +286,8 @@ function admin_user()
                 break;
 
             case 'save':
-                $user_source = User::find($user_id);
+                /** @var User $user_source */
+                $user_source = User::findOrFail($user_id);
 
                 $changed_email = false;
                 $email = $request->postData('eemail');
@@ -302,7 +303,10 @@ function admin_user()
                 $changed_nick = false;
                 $nick = trim((string) $request->get('eNick'));
                 $nickValid = (new Username())->validate($nick);
-                if (($user_source->name !== $nick) && User::whereName($nick)->exists()) {
+                if (
+                    $user_source->name !== $nick
+                    && User::whereName($nick)->whereNot('id', $user_source->id)->exists()
+                ) {
                     $html .= error(__('settings.profile.nick.already-taken') . "\n", true);
                     break;
                 }
