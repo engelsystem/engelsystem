@@ -161,6 +161,11 @@ function Shift_view(
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
+    $supportsAngelTypes = auth()->user()
+        ->userAngelTypes()
+        ->where('supporter', true)
+        ->pluck('angel_types.id');
+
     $parsedown = new Parsedown();
 
     $angeltypes = [];
@@ -171,7 +176,7 @@ function Shift_view(
     $needed_angels = '';
     $neededAngels = new Collection($shift->neededAngels);
     foreach ($neededAngels as $needed_angeltype) {
-        $needed_angels .= Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin);
+        $needed_angels .= Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin, $supportsAngelTypes);
     }
 
     $shiftEntry = $shift->shiftEntries;
@@ -189,7 +194,7 @@ function Shift_view(
                     ->where('angel_type_id', $type)
                     ->whereNull('freeloaded_by')
                     ->count(),
-            ], $angeltypes, $shift, $user_shift_admin);
+            ], $angeltypes, $shift, $user_shift_admin, $supportsAngelTypes);
         }
     }
 
@@ -298,12 +303,18 @@ function Shift_view(
  * @param AngelType[]|Collection $angeltypes
  * @param Shift                  $shift
  * @param bool                   $user_shift_admin
+ * @param Collection|int[]       $supportsAngelTypes
  * @return string
  */
-function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, Shift $shift, $user_shift_admin)
-{
+function Shift_view_render_needed_angeltype(
+    $needed_angeltype,
+    $angeltypes,
+    Shift $shift,
+    $user_shift_admin,
+    $supportsAngelTypes
+) {
     $angeltype = $angeltypes[$needed_angeltype['angel_type_id']];
-    $angeltype_supporter = auth()->user()->isAngelTypeSupporter($angeltype)
+    $angeltype_supporter = $supportsAngelTypes->contains($needed_angeltype['angel_type_id'])
         || auth()->can('admin_user_angeltypes');
 
     $needed_angels = '';
@@ -333,7 +344,13 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, Shif
     $angels = [];
     foreach ($shift->shiftEntries as $shift_entry) {
         if ($shift_entry->angel_type_id == $needed_angeltype['angel_type_id']) {
-            $angels[] = Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter, $shift);
+            $angels[] = Shift_view_render_shift_entry(
+                $shift_entry,
+                $user_shift_admin,
+                $angeltype_supporter,
+                $shift,
+                $supportsAngelTypes
+            );
         }
     }
 
@@ -348,10 +365,16 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, Shif
  * @param bool  $user_shift_admin
  * @param bool  $angeltype_supporter
  * @param Shift $shift
+ * @param Collection|int[] $supportsAngelTypes
  * @return string
  */
-function Shift_view_render_shift_entry(ShiftEntry $shift_entry, $user_shift_admin, $angeltype_supporter, Shift $shift)
-{
+function Shift_view_render_shift_entry(
+    ShiftEntry $shift_entry,
+    $user_shift_admin,
+    $angeltype_supporter,
+    Shift $shift,
+    $supportsAngelTypes
+) {
     $entry = User_Nick_render($shift_entry->user);
     if ($shift_entry->freeloaded_by) {
         $entry = '<del>' . $entry . '</del>';
@@ -366,13 +389,15 @@ function Shift_view_render_shift_entry(ShiftEntry $shift_entry, $user_shift_admi
             __('form.edit')
         );
         $angeltype = $shift_entry->angelType;
-        $disabled = Shift_signout_allowed($shift, $angeltype, $shift_entry->user_id) ? '' : ' btn-disabled';
+        $isAngeltypeSupporter = $supportsAngelTypes->contains($angeltype->id);
+        $signOutAllowed = Shift_signout_allowed($shift, $angeltype, $shift_entry->user_id, $isAngeltypeSupporter);
+        $disabled = $signOutAllowed ? '' : ' btn-disabled';
         $entry .= button_icon(
             shift_entry_delete_link($shift_entry),
             'trash',
             'btn-sm btn-danger' . $disabled,
             __('form.delete'),
-            !Shift_signout_allowed($shift, $angeltype, $shift_entry->user_id)
+            !$signOutAllowed
         );
         $entry .= '</div>';
     }

@@ -303,7 +303,9 @@ function shift_controller()
         throw_redirect(url('/user-shifts'));
     }
 
-    $shift = Shift($request->input('shift_id'));
+    $shift = Shift::with(['shiftEntries.user.state', 'shiftEntries.angelType'])
+        ->findOrFail($request->input('shift_id'));
+    $shift = Shift($shift);
     if (empty($shift)) {
         error(__('Shift could not be found.'));
         throw_redirect(url('/user-shifts'));
