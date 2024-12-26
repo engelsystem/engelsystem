@@ -422,6 +422,11 @@ code {
   border-radius: inherit;
 }
 
+blockquote {
+  border-left: .2em solid $primary;
+  padding-left: .5em;
+}
+
 /* Hide the arrow up/down buttons rendered by the browser in the input field */
 /* Chrome, Safari, Edge, Opera */
 input[type='number']::-webkit-outer-spin-button,
