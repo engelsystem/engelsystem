@@ -237,16 +237,14 @@ function user_controller()
         );
         $neededAngeltypes = $shift->needed_angeltypes;
         foreach ($neededAngeltypes as &$needed_angeltype) {
-            $needed_angeltype['users'] = Db::select(
-                '
-                    SELECT `shift_entries`.`freeloaded_by`, `users`.*
-                    FROM `shift_entries`
-                    JOIN `users` ON `shift_entries`.`user_id`=`users`.`id`
-                    WHERE `shift_entries`.`shift_id` = ?
-                    AND `shift_entries`.`angel_type_id` = ?
-                ',
-                [$shift->id, $needed_angeltype['id']]
-            );
+            $needed_angeltype['users'] = User::query()
+                ->select(['users.*', 'shift_entries.freeloaded_by'])
+                ->from('shift_entries')
+                ->join('users', 'shift_entries.user_id', 'users.id')
+                ->where('shift_entries.shift_id', $shift->id)
+                ->where('shift_entries.angel_type_id', $needed_angeltype['id'])
+                ->with('state')
+                ->get();
         }
         $shift->needed_angeltypes = $neededAngeltypes;
     }
