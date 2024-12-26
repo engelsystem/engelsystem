@@ -175,8 +175,20 @@ a.badge.bg-info,
   color: $body-color;
 }
 
-.navbar {
+.navbar,
+#footer {
   background: $body-bg;
+}
+
+#footer {
+  background: $body-bg;
+  border-top: 1px solid var(--#{$prefix}border-color);
+  margin-top: (1em, auto, 100vh) !important;
+  padding-top: 1em;
+}
+
+#footer hr {
+  display: none;
 }
 
 .navbar-brand {
@@ -216,7 +228,7 @@ body {
   background: $body-bg url(theme18/blob-collision-rect-6.svg) no-repeat;
   background-position: top center;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: 100vw;
 }
 
 @include media-breakpoint-up(md) {
