@@ -536,9 +536,10 @@ function Shift_signup_allowed_admin(AngelType $needed_angeltype, $shift_entries)
  * @param Shift     $shift The shift
  * @param AngelType $angeltype The angeltype
  * @param int       $signout_user_id The user that was signed up for the shift
+ * @param ?bool     $isAngeltypeSupporter User is supporter for angeltype
  * @return bool
  */
-function Shift_signout_allowed(Shift $shift, AngelType $angeltype, $signout_user_id)
+function Shift_signout_allowed(Shift $shift, AngelType $angeltype, $signout_user_id, ?bool $isAngeltypeSupporter = null)
 {
     $user = auth()->user();
 
@@ -548,9 +549,10 @@ function Shift_signout_allowed(Shift $shift, AngelType $angeltype, $signout_user
     }
 
     // angeltype supporter can sign out any user at any time from their supported angeltype
-    if (
-        $user->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes')
-    ) {
+    $isAngeltypeSupporter = !is_null($isAngeltypeSupporter)
+        ? $isAngeltypeSupporter
+        : $user->isAngelTypeSupporter($angeltype);
+    if ($isAngeltypeSupporter || auth()->can('admin_user_angeltypes')) {
         return true;
     }
 
@@ -632,6 +634,7 @@ function Shifts_by_user($userId, $include_freeloaded_comments = false)
         JOIN `shift_types` ON (`shift_types`.`id` = `shifts`.`shift_type_id`)
         JOIN `locations` ON (`shifts`.`location_id` = `locations`.`id`)
         WHERE shift_entries.`user_id` = ?
+        GROUP BY shifts.id
         ORDER BY `start`
         ',
         [
