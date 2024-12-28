@@ -112,8 +112,8 @@ class SettingsController extends BaseController
 
         if (
             $goodie_tshirt
-            && (isset(config('tshirt_sizes')[$data['shirt_size'] ?? '']) || is_null($data['shirt_size']))
             && !$user->state->got_goodie
+            && (isset(config('tshirt_sizes')[$data['shirt_size'] ?? '']) || is_null($data['shirt_size']))
         ) {
             $user->personalData->shirt_size = $data['shirt_size'];
         }
