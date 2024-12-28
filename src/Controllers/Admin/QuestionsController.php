@@ -67,7 +67,7 @@ class QuestionsController extends BaseController
     {
         $questionId = (int) $request->getAttribute('question_id');
 
-        $questions = $this->question->find($questionId);
+        $questions = $this->question->findOrFail($questionId);
 
         return $this->showEdit($questions);
     }
@@ -77,7 +77,7 @@ class QuestionsController extends BaseController
         $questionId = (int) $request->getAttribute('question_id');
 
         /** @var Question $question */
-        $question = $this->question->findOrNew($questionId);
+        $question = $this->question->findOrFail($questionId);
 
         $data = $this->validate($request, [
             'text'    => 'required',
