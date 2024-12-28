@@ -33,7 +33,7 @@ class DatabaseHandler extends AbstractHandler
         $session->id = $id;
         $session->payload = $data;
         $session->last_activity = Carbon::now();
-        $session->user_id = auth()->user()?->id;
+        $session->user_id = auth()->user()?->id ?? null;
         $session->save();
 
         // The save return can't be used directly as it won't change if the second call is in the same second

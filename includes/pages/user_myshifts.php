@@ -24,7 +24,7 @@ function user_myshifts()
     if ($request->has('edit')) {
         $id = $request->input('edit');
         $shiftEntry = ShiftEntry::where('id', $id)
-            ->where('user_id', User::find($request->input('id'))->id)
+            ->where('user_id', User::find($request->input('id'))?->id)
             ->first();
         $is_angeltype_supporter = $shiftEntry && auth()->user()->isAngelTypeSupporter($shiftEntry->angelType);
     }
