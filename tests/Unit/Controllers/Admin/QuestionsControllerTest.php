@@ -122,10 +122,38 @@ class QuestionsControllerTest extends ControllerTest
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Admin\QuestionsController::edit
+     */
+    public function testEditNotFound(): void
+    {
+        $this->request->attributes->set('question_id', 42);
+        $this->expectException(ModelNotFoundException::class);
+
+        /** @var QuestionsController $controller */
+        $controller = $this->app->get(QuestionsController::class);
+
+        $controller->edit($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\QuestionsController::save
+     */
+    public function testSaveNotFound(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        /** @var QuestionsController $controller */
+        $controller = $this->app->make(QuestionsController::class);
+        $controller->setValidator(new Validator());
+        $controller->save($this->request);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Admin\QuestionsController::save
      */
     public function testSaveCreateInvalid(): void
     {
+        $this->request->attributes->set('question_id', 1);
         $this->expectException(ValidationException::class);
 
         /** @var QuestionsController $controller */
