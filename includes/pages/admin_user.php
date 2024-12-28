@@ -291,7 +291,10 @@ function admin_user()
 
                 $changed_email = false;
                 $email = $request->postData('eemail');
-                if (($user_source->email !== $email) && User::whereEmail($email)->exists()) {
+                if (
+                    $user_source->email !== $email
+                    && User::whereEmail($email)->whereNot('id', $user_source->id)->exists()
+                ) {
                     $html .= error(__('settings.profile.email.already-taken') . "\n", true);
                     break;
                 }
@@ -312,7 +315,8 @@ function admin_user()
                 }
                 $old_nick = $user_source->name;
                 if ($nickValid && $user_nick_edit) {
-                    $changed_nick = $user_source->name !== $nick;
+                    $changed_nick = $user_source->name !== $nick
+                        && !User::whereName($nick)->whereNot('id', $user_source->id)->exists();
                     $user_source->name = $nick;
                 }
                 $user_source->save();
