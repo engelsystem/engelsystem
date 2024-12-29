@@ -88,7 +88,7 @@ class UserGoodieController extends BaseController
         $user->state->save();
 
         $this->log->info(
-            'Updated user goodie state "{user}" ({id}): '
+            'Updated user goodie state {user} ({id}): '
             . '{size}, arrived: {arrived}, active: {active}, got goodie: {got_goodie}',
             [
                 'id'        => $user->id,

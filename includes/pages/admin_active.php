@@ -150,7 +150,7 @@ function admin_active()
                 } else {
                     $user_source->state->got_goodie = true;
                     $user_source->state->save();
-                    engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has tshirt now.');
+                    engelsystem_log('User ' . User_Nick_render($user_source, true) . ($goodie_tshirt ? ' has T-shirt now.' : ' has goodie now.'));
                     $msg = success(
                         ($goodie_tshirt
                             ? __('Angel has got a T-shirt.')
@@ -167,7 +167,7 @@ function admin_active()
             if ($user_source) {
                 $user_source->state->got_goodie = false;
                 $user_source->state->save();
-                engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO tshirt.');
+                engelsystem_log('User ' . User_Nick_render($user_source, true) . ($goodie_tshirt ? ' has NO T-shirt.' : ' has NO goodie.'));
                 $msg = success(
                     ($goodie_tshirt
                         ? __('Angel has got no T-shirt.')
