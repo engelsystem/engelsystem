@@ -240,6 +240,11 @@ components:
           $ref: '#/components/schemas/Reference'
         shift_type:
           $ref: '#/components/schemas/Reference'
+        schedule_guid:
+          type: string
+          format: uuid
+          nullable: true
+          description: schedule.xml event guid
         created_at:
           $ref: '#/components/schemas/DateTimeOptional'
         updated_at:
@@ -261,6 +266,7 @@ components:
         - ends_at
         - location
         - shift_type
+        - schedule_guid
         - created_at
         - updated_at
         - needed_angel_types

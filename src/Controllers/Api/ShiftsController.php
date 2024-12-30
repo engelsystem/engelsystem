@@ -158,6 +158,7 @@ class ShiftsController extends ApiController
                 'shiftEntries.user.contact',
                 'shiftEntries.user.personalData',
                 'shiftType',
+                'scheduleShift',
                 'schedule.shiftType.neededAngelTypes.angelType',
             ])
             ->orderBy('start')
