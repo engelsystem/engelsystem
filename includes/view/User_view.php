@@ -348,15 +348,15 @@ function User_view_shiftentries($needed_angel_type)
  * @param Shift $shift
  * @param User $user_source
  * @param bool $its_me
+ * @param bool $supporter
  * @return array
  */
-function User_view_myshift(Shift $shift, $user_source, $its_me)
+function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
 {
     $nightShiftsConfig = config('night_shifts');
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
-    $supporter = auth()->user()->isAngelTypeSupporter(AngelType::findOrFail($shift->angel_type_id));
 
     $shift_info = '<a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->shiftType->name) . '</a>';
     if ($shift->title) {
@@ -461,6 +461,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
  * @param bool $goodie_admin
  * @param Worklog[]|Collection $user_worklogs
  * @param bool $admin_user_worklog_privilege
+ * @param Collection|int[] $supported_angeltypes
  *
  * @return array
  */
@@ -471,15 +472,12 @@ function User_view_myshifts(
     $goodie_score,
     $goodie_admin,
     $user_worklogs,
-    $admin_user_worklog_privilege
+    $admin_user_worklog_privilege,
+    $supported_angeltypes,
 ) {
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
-    $supported_angeltypes = auth()->user()
-        ->userAngelTypes()
-        ->where('supporter', true)
-        ->pluck('angel_types.id');
     $show_sum = true;
 
     $myshifts_table = [];
@@ -491,7 +489,7 @@ function User_view_myshifts(
             $show_sum = false;
             continue;
         }
-        $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me);
+        $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me, $supporter);
         if (!$shift->freeloaded_by) {
             $timeSum += ($shift->end->timestamp - $shift->start->timestamp);
         }
@@ -637,10 +635,16 @@ function User_view(
     $user_name = htmlspecialchars((string) $user_source->personalData->first_name) . ' '
         . htmlspecialchars((string) $user_source->personalData->last_name);
     $myshifts_table = '';
+    $supported_angeltypes = auth()->user()
+        ->userAngelTypes()
+        ->where('supporter', true)
+        ->pluck('angel_types.id');
     $user_angeltypes_supporter = false;
     foreach ($user_source->userAngelTypes as $user_angeltype) {
-        $user_angeltypes_supporter = $user_angeltypes_supporter
-            || $auth->user()->isAngelTypeSupporter($user_angeltype);
+        if ($supported_angeltypes->contains($user_angeltype->id)) {
+            $user_angeltypes_supporter = true;
+            break;
+        }
     }
 
     if ($its_me || $admin_user_privilege || $goodie_admin || $user_angeltypes_supporter) {
@@ -651,7 +655,8 @@ function User_view(
             $goodie_score,
             $goodie_admin,
             $user_worklogs,
-            $admin_user_worklog_privilege
+            $admin_user_worklog_privilege,
+            $supported_angeltypes,
         );
         if (count($my_shifts) > 0) {
             $myshifts_table = div('table-responsive', table([
