@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -32,6 +33,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  *
  * @property-read Collection|NeededAngelType[] $neededAngelTypes
  * @property-read Schedule                     $schedule
+ * @property-read ScheduleShift                $scheduleShift
  * @property-read Collection|ShiftEntry[]      $shiftEntries
  * @property-read ShiftType                    $shiftType
  * @property-read Location                     $location
@@ -99,6 +101,11 @@ class Shift extends BaseModel
     public function schedule(): HasOneThrough
     {
         return $this->hasOneThrough(Schedule::class, ScheduleShift::class, null, 'id', null, 'schedule_id');
+    }
+
+    public function scheduleShift(): HasOne
+    {
+        return $this->hasOne(ScheduleShift::class);
     }
 
     public function shiftEntries(): HasMany

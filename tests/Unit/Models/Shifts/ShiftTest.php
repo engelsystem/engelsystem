@@ -100,6 +100,26 @@ class ShiftTest extends ModelTest
     }
 
     /**
+     * @covers \Engelsystem\Models\Shifts\Shift::scheduleShift
+     */
+    public function testScheduleShift(): void
+    {
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create();
+        /** @var Collection|Shift[] $shifts */
+        $shifts = Shift::factory(4)->create();
+
+        (new ScheduleShift(['shift_id' => $shifts[0]->id, 'schedule_id' => $schedule->id, 'guid' => 'd']))->save();
+        (new ScheduleShift(['shift_id' => $shifts[1]->id, 'schedule_id' => $schedule->id, 'guid' => 'e']))->save();
+        (new ScheduleShift(['shift_id' => $shifts[2]->id, 'schedule_id' => $schedule->id, 'guid' => 'f']))->save();
+
+        $this->assertEquals('d', Shift::find(1)->scheduleShift->guid);
+        $this->assertEquals('e', Shift::find(2)->scheduleShift->guid);
+        $this->assertEquals('f', Shift::find(3)->scheduleShift->guid);
+        $this->assertNull(Shift::find(4)->scheduleShift?->guid);
+    }
+
+    /**
      * @covers \Engelsystem\Models\Shifts\Shift::shiftEntries
      */
     public function testShiftEntries(): void
