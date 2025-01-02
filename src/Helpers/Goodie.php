@@ -48,28 +48,29 @@ class Goodie
 
                     /* Handle freeloading */
                     * (
-                        1
-                        - (%3$d + 1)
-                        * (
-                            CASE WHEN `shift_entries`.`freeloaded_by` IS NULL
-                            THEN 0
-                            ELSE 1
-                            END
-                        )
+                        CASE WHEN `shift_entries`.`freeloaded_by` IS NULL
+                        THEN 1
+                        ELSE -2
+                        END
                     )
 
-                    /** Is night shift */
-                    * (1 + (
-                        /* Starts during night */
-                        HOUR(shifts.start) >= %1$d AND HOUR(shifts.start) < %2$d
-                        /* Ends during night */
-                        OR (
-                            HOUR(shifts.end) > %1$d
-                            || HOUR(shifts.end) = %1$d AND MINUTE(shifts.end) > 0
-                        ) AND HOUR(shifts.end) <= %2$d
-                        /* Starts before and ends after night */
-                        OR HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d
-                    ))
+                    /* Is night shift */
+                    * (
+                        CASE WHEN
+                            /* Starts during night */
+                            HOUR(shifts.start) >= %1$d AND HOUR(shifts.start) < %2$d
+                            /* Ends during night */
+                            OR (
+                                HOUR(shifts.end) > %1$d
+                                || HOUR(shifts.end) = %1$d AND MINUTE(shifts.end) > 0
+                            ) AND HOUR(shifts.end) <= %2$d
+                            /* Starts before and ends after night */
+                            OR HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d
+                        /* Use multiplier */
+                        THEN %3$d
+                        ELSE 1
+                        END
+                    )
                 ), 0)
             ';
 
