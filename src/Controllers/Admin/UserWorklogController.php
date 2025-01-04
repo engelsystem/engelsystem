@@ -84,7 +84,7 @@ class UserWorklogController extends BaseController
         $worklog->save();
 
         $this->log->info(
-            'Added worklog for {name} ({id}) at {time} spanning {hours}h: {text}',
+            (isset($worklogId) ? 'Edited' : 'Added') . ' worklog for {name} ({id}) at {time} spanning {hours}h: {text}',
             [
                 'name' => $user->name,
                 'id' => $user->id,
