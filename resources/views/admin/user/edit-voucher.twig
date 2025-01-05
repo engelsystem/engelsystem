@@ -1,0 +1,35 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('voucher.edit') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ m.back(url('/users', {action: 'view', user_id: userdata.id})) }}
+            {{ block('title') }}: <small>{{ m.user(userdata) }}</small>
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+        {{ m.alert(
+            forceActive
+            ? __('voucher.eligible.fa', [eligibleVoucherCount])
+            : __('voucher.eligible', [eligibleVoucherCount])
+        ) }}
+
+        <form method="post">
+            {{ csrf() }}
+            <div class="row g-2">
+                {{ f.input('got_voucher', __('voucher.count'), {
+                        'type': 'number',
+                        'value': gotVoucher,
+                        'required': true,
+                        'step': '1',
+                        'min': 0,
+                }) }}
+            </div>
+            {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+        </form>
+    </div>
+{% endblock %}

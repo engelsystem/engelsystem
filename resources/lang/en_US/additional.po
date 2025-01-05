@@ -277,6 +277,9 @@ msgstr "Work log successfully updated."
 msgid "worklog.delete.success"
 msgstr "Work log successfully deleted."
 
+msgid "voucher.save.success"
+msgstr "Saved the number of vouchers."
+
 msgid "location.edit.success"
 msgstr "Location edited successfully."
 

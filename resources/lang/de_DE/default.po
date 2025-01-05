@@ -386,12 +386,6 @@ msgstr "Engel gelöscht."
 msgid "Delete %s"
 msgstr "%s löschen"
 
-msgid "Please enter a valid number of vouchers."
-msgstr "Bitte gib eine korrekte Anzahl von Gutscheinen ein."
-
-msgid "Saved the number of vouchers."
-msgstr "Anzahl der Gutscheine gespeichert."
-
 msgid "User not found."
 msgstr "Benutzer nicht gefunden."
 
@@ -1091,14 +1085,26 @@ msgstr ""
 msgid "Your password"
 msgstr "Dein Passwort"
 
-msgid "Angel can receive another %d vouchers."
+msgid "voucher.vouchers"
+msgstr "Gutscheine"
+
+msgid "voucher.edit"
+msgstr "Gutscheine bearbeiten"
+
+msgid "voucher.eligible"
 msgstr "Engel kann noch %d Gutscheine bekommen."
 
-msgid "Angel can receive another %d vouchers and is FA."
+msgid "voucher.eligible.fa"
 msgstr "Engel kann noch %d Gutscheine bekommen und ist FA."
 
-msgid "Number of vouchers given out"
+msgid "voucher.count"
 msgstr "Anzahl Gutscheine bekommen"
+
+msgid "user.state.vouchers"
+msgstr "%s von %s Gutscheinen bekommen"
+
+msgid "user.state.vouchers.none"
+msgstr "Keine Gutscheine bekommen"
 
 msgid "Freeloads"
 msgstr "Schwänzereien"
@@ -1148,9 +1154,6 @@ msgstr "Du hast genug gemacht."
 msgid "%s has done enough."
 msgstr "%s hat genug gemacht."
 
-msgid "Vouchers"
-msgstr "Gutscheine"
-
 msgid "iCal Export"
 msgstr "iCal Export"
 
@@ -1181,12 +1184,6 @@ msgstr "Angekommen am %s"
 
 msgid "Not arrived (Planned: %s)"
 msgstr "Nicht angekommen (Geplant: %s)"
-
-msgid "Got %s of %s vouchers"
-msgstr "%s von %s Gutscheinen bekommen"
-
-msgid "Got no vouchers"
-msgstr "Keine Gutscheine bekommen"
 
 msgid "out of %s"
 msgstr "von %s"

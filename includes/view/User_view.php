@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Helpers\UserVouchers;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Shifts\Shift;
@@ -32,36 +33,6 @@ function User_delete_view($user)
             form_submit('submit', __('form.delete')),
         ]),
     ]);
-}
-
-/**
- * View for editing the number of given vouchers
- *
- * @param User $user
- * @return string
- */
-function User_edit_vouchers_view($user)
-{
-    $link = button(user_link($user->id), icon('chevron-left'), 'btn-sm', '', __('general.back'));
-    return page_with_title(
-        $link . ' ' . sprintf(__('%s\'s vouchers'), User_Nick_render($user)),
-        [
-            msg(),
-            info(sprintf(
-                $user->state->force_active && config('enable_force_active')
-                    ? __('Angel can receive another %d vouchers and is FA.')
-                    : __('Angel can receive another %d vouchers.'),
-                User_get_eligable_voucher_count($user)
-            ), true),
-            form(
-                [
-                    form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
-                    form_submit('submit', icon('save') . __('form.save')),
-                ],
-                url('/users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
-            ),
-        ]
-    );
 }
 
 /**
@@ -125,7 +96,7 @@ EOT;
                 $voucher_template,
                 [
                     '{issued}' => $user->state->got_voucher,
-                    '{eligible}' => $user->state->got_voucher + User_get_eligable_voucher_count($user),
+                    '{eligible}' => $user->state->got_voucher + UserVouchers::eligibleVoucherCount($user),
                     '{user}' => $user->id,
                     '{amount}' => $user->state->got_voucher + 1,
                 ]
@@ -196,7 +167,7 @@ EOT;
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
     if (config('enable_voucher')) {
-        $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Vouchers'), $order_by);
+        $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('voucher.vouchers'), $order_by);
     }
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
@@ -718,11 +689,8 @@ function User_view(
                             ], url('/admin-arrive'), 'float:left') : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(
-                                url(
-                                    '/users',
-                                    ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
-                                ),
-                                icon('valentine') . __('Vouchers')
+                                url('/admin/user/' . $user_source->id . '/voucher'),
+                                icon('valentine') . __('voucher.vouchers')
                             )
                             : '',
                         (
@@ -912,16 +880,16 @@ function User_view_state_admin($freeloader, $user_source)
 
     if (config('enable_voucher')) {
         $voucherCount = $user_source->state->got_voucher;
-        $availableCount = $voucherCount + User_get_eligable_voucher_count($user_source);
+        $availableCount = $voucherCount + UserVouchers::eligibleVoucherCount($user_source);
         $availableCount = max($voucherCount, $availableCount);
         if ($user_source->state->got_voucher > 0) {
             $state[] = '<span class="text-success">'
                 . icon('valentine')
-                . __('Got %s of %s vouchers', [$voucherCount, $availableCount])
+                . __('user.state.vouchers', [$voucherCount, $availableCount])
                 . '</span>';
         } else {
             $state[] = '<span class="text-danger">'
-                . __('Got no vouchers')
+                . __('user.state.vouchers.none')
                 . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')
                 . '</span>';
         }

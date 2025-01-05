@@ -34,7 +34,6 @@ function users_controller()
     return match ($action) {
         'view'          => user_controller(),
         'delete'        => user_delete_controller(),
-        'edit_vouchers' => user_edit_vouchers_controller(),
         'list'          => users_list_controller(),
         default         => users_list_controller(),
     };
@@ -139,71 +138,6 @@ function user_delete_link($userId)
 function user_link($userId)
 {
     return url('/users', ['action' => 'view', 'user_id' => $userId]);
-}
-
-/**
- * @return array
- */
-function user_edit_vouchers_controller()
-{
-    $user = auth()->user();
-    $request = request();
-
-    if ($request->has('user_id')) {
-        $user_source = User::find($request->input('user_id'));
-    } else {
-        $user_source = $user;
-    }
-
-    if (
-        (!auth()->can('admin_user') && !auth()->can('voucher.edit'))
-        || !config('enable_voucher')
-    ) {
-        throw_redirect(url('/'));
-    }
-
-    if ($request->hasPostData('submit')) {
-        $valid = true;
-
-        $vouchers = '';
-        if (
-            $request->has('vouchers')
-            && test_request_int('vouchers')
-            && trim($request->input('vouchers')) >= 0
-        ) {
-            $vouchers = trim($request->input('vouchers'));
-        } else {
-            $valid = false;
-            error(__('Please enter a valid number of vouchers.'));
-        }
-
-        if ($valid) {
-            $user_source->state->got_voucher = $vouchers;
-            $user_source->state->save();
-
-            engelsystem_log(User_Nick_render($user_source, true) . ': ' . sprintf(
-                'Got %s vouchers',
-                $user_source->state->got_voucher
-            ));
-
-            if (in_array('application/json', $request->getAcceptableContentTypes())) {
-                // This was an async request, send a JSON response.
-                json_output([
-                    'issued' => $user_source->state->got_voucher,
-                    'eligible' => $user_source->state->got_voucher + User_get_eligable_voucher_count($user_source),
-                    'total' => (int) State::query()->sum('got_voucher'),
-                ]);
-            }
-
-            success(__('Saved the number of vouchers.'));
-            throw_redirect(user_link($user_source->id));
-        }
-    }
-
-    return [
-        sprintf(__('%s\'s vouchers'), htmlspecialchars($user_source->displayName)),
-        User_edit_vouchers_view($user_source),
-    ];
 }
 
 /**
