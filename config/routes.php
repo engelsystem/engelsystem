@@ -300,6 +300,15 @@ $route->addGroup(
                         );
                     }
                 );
+
+                // Vouchers
+                $route->addGroup(
+                    '/vouchers',
+                    function (RouteCollector $route): void {
+                        $route->get('', 'Admin\\UserVoucherController@editVoucher');
+                        $route->post('', 'Admin\\UserVoucherController@saveVoucher');
+                    }
+                );
             }
         );
 
