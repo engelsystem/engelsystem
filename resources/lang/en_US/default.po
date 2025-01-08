@@ -722,6 +722,30 @@ msgstr "Delete work log"
 msgid "worklog.delete.info"
 msgstr "Do you really want to delete the work log for %s?"
 
+msgid "voucher.vouchers"
+msgstr "Vouchers"
+
+msgid "voucher.edit"
+msgstr "Edit vouchers"
+
+msgid "voucher.save.success"
+msgstr "Saved the number of vouchers."
+
+msgid "voucher.eligable"
+msgstr "Angel can receive another %d vouchers."
+
+msgid "voucher.eligable.fa"
+msgstr "Angel can receive another %d vouchers and is FA."
+
+msgid "voucher.count"
+msgstr "Number of vouchers given out"
+
+msgid "user.state.vouchers"
+msgstr "Got %s of %s vouchers"
+
+msgid "user.state.vouchers.none"
+msgstr "Got no vouchers"
+
 msgid "angeltypes.angeltypes"
 msgstr "Angel types"
 
