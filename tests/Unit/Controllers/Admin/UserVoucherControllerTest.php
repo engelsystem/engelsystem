@@ -168,7 +168,7 @@ class UserVoucherControllerTest extends ControllerTest
         'hours_per_voucher'  => 2,
         // 'Y-m-d' formatted
         'voucher_start'      => null,
-        ],);
+        ]);
 
         $this->app->bind('http.urlGenerator', UrlGenerator::class);
 
