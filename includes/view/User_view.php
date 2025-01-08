@@ -196,7 +196,7 @@ EOT;
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
     if (config('enable_voucher')) {
-        $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Vouchers'), $order_by);
+        $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('voucher.vouchers'), $order_by);
     }
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
@@ -722,7 +722,7 @@ function User_view(
                                     '/users',
                                     ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
                                 ),
-                                icon('valentine') . __('Vouchers')
+                                icon('valentine') . __('voucher.vouchers')
                             )
                             : '',
                         (

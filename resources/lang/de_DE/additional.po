@@ -340,3 +340,9 @@ msgstr "Event Ende muss nach dem Event Start liegen."
 
 msgid "validation.teardown_end.after"
 msgstr "Abbau Ende muss nach dem Event Ende liegen."
+
+msgid "validation.vouchers.required"
+msgstr "Bitte gib eine korrekte Anzahl von Gutscheinen ein."
+
+msgid "validation.vouchers.int"
+msgstr "Die Gutscheine müssen eine Zahl sein."
