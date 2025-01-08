@@ -27,7 +27,6 @@ const sendEditVoucherRequest = async (userId, amount) => {
   const csrfToken = getCSRFToken();
 
   const data = new FormData();
-  data.append('user_id', userId);
   data.append('got_voucher', amount);
 
   const response = await fetch(`/admin/user/${userId}/voucher`, {

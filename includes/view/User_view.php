@@ -689,7 +689,7 @@ function User_view(
                             ], url('/admin-arrive'), 'float:left') : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(
-                                url('/admin/user/'. $user_source->id . '/voucher'),
+                                url('/admin/user/' . $user_source->id . '/voucher'),
                                 icon('valentine') . __('voucher.vouchers')
                             )
                             : '',
