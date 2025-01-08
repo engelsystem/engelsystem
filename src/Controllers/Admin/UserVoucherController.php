@@ -57,7 +57,7 @@ class UserVoucherController extends BaseController
             'admin/user/edit-voucher.twig',
             [
                 'userdata' => $user,
-                'gotVouchers' => $user->state->got_voucher ?? 0,
+                'gotVoucher' => $user->state->got_voucher ?? 0,
                 'forceActive' => $user->state->force_active && config('enable_force_active'),
                 'eligibleVoucherCount' => UserVouchers::eligibleVoucherCount($user),
             ]
@@ -75,7 +75,7 @@ class UserVoucherController extends BaseController
             'got_voucher' => 'required|int',
         ]);
 
-        $user->state->got_voucher = $data['got_voucher'];
+        $user->state->got_voucher =  $data['got_voucher'];
         $user->state->save();
 
         $this->log->info(

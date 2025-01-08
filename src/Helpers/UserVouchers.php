@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Helpers;
 
 use Carbon\Carbon;
@@ -15,7 +17,7 @@ class UserVouchers
             : null;
 
         $shiftEntries = $user->shiftEntries()
-            ->join('shifts', 'shift_entries.shift_id', '=','shifts.id')
+            ->join('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
             ->whereDate('shifts.end', '<', Carbon::now())
             ->whereDate('shifts.start', '>=', $start ?: 0)
             ->whereNull('freeloaded_by')
