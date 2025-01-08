@@ -11,6 +11,9 @@ class UserVouchers
 {
     public static function eligibleVoucherCount(User $user): int
     {
+        if (!config('enable_voucher')) {
+            return 0;
+        }
         $voucherSettings = config('voucher_settings');
         $start = $voucherSettings['voucher_start']
             ? Carbon::createFromFormat('Y-m-d', $voucherSettings['voucher_start'])->setTime(0, 0)
@@ -18,13 +21,13 @@ class UserVouchers
 
         $shiftEntries = $user->shiftEntries()
             ->join('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
-            ->whereDate('shifts.end', '<', Carbon::now())
-            ->whereDate('shifts.start', '>=', $start ?: 0)
+            ->where('shifts.end', '<', Carbon::now())
+            ->where('shifts.start', '>=', $start ?: 0)
             ->whereNull('freeloaded_by')
             ->get();
         $worklogs = $user->worklogs()
-            ->whereDate('worked_at', '>=', $start ?: 0)
-            ->whereDate('worked_at', '<=', Carbon::now())
+            ->where('worked_at', '>=', $start ?: 0)
+            ->where('worked_at', '<=', Carbon::now())
             ->get();
         $shiftsCount =
             $shiftEntries->count()
