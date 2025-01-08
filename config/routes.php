@@ -304,7 +304,7 @@ $route->addGroup(
 
                 // Vouchers
                 $route->addGroup(
-                    '/vouchers',
+                    '/voucher',
                     function (RouteCollector $route): void {
                         $route->get('', 'Admin\\UserVoucherController@editVoucher');
                         $route->post('', 'Admin\\UserVoucherController@saveVoucher');
