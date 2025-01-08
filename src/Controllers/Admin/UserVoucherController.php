@@ -13,6 +13,7 @@ use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Psr\Log\LoggerInterface;
@@ -85,7 +86,19 @@ class UserVoucherController extends BaseController
                 'got_voucher' => $user->state->got_voucher,
             ]
         );
-        $this->addNotification('user.voucher.save.success');
+
+        if (in_array('application/json', $request->getAcceptableContentTypes())) {
+            // This was an async request, send a JSON response.
+            return $this->response
+                ->withHeader('content-type', 'application/json')
+                ->withContent(json_encode([
+                'issued' => $user->state->got_voucher,
+                'eligible' => $user->state->got_voucher + UserVouchers::eligibleVoucherCount($user),
+                'total' => (int) State::query()->sum('got_voucher'),
+            ]));
+        }
+
+        $this->addNotification('voucher.save.success');
 
         return $this->redirect->to('/users?action=view&user_id=' . $user->id);
         // TODO Once User_view.php gets removed, change this to withView + getNotifications
