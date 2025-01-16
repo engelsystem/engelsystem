@@ -24,6 +24,7 @@ class WorklogTest extends ModelTest
         $worklog->hours = 4.2;
         $worklog->comment = 'Lorem ipsum';
         $worklog->worked_at = new Carbon();
+        $worklog->night_shift = false;
         $worklog->save();
 
         $savedWorklog = Worklog::first();

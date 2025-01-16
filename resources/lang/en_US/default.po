@@ -707,6 +707,9 @@ msgstr "Work hours"
 msgid "worklog.comment"
 msgstr "Comment"
 
+msgid "worklog.night_shift"
+msgstr "Work log is a night shift"
+
 msgid "worklog.delete"
 msgstr "Delete work log"
 

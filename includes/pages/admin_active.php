@@ -26,6 +26,7 @@ function admin_active()
 {
     $tshirt_sizes = config('tshirt_sizes');
     $shift_sum_formula = Goodie::shiftScoreQuery()->getValue(Db::connection()->getQueryGrammar());
+    $worklog_sum_formula = Goodie::worklogScoreQuery()->getValue(Db::connection()->getQueryGrammar());
     $request = request();
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
@@ -70,12 +71,13 @@ function admin_active()
                             users.*,
                             COUNT(shift_entries.id) AS shift_count,
                                 (%s + (
-                                    SELECT COALESCE(SUM(`hours`) * 3600, 0)
+                                    SELECT %s * 3600
                                     FROM `worklogs` WHERE `user_id`=`users`.`id`
                                     AND `worked_at` <= NOW()
                                 )) AS `shift_length`
                         ',
-                        $shift_sum_formula
+                        $shift_sum_formula,
+                        $worklog_sum_formula
                     )
                 )
                 ->leftJoin('shift_entries', 'users.id', '=', 'shift_entries.user_id')
@@ -185,12 +187,13 @@ function admin_active()
                     users.*,
                     COUNT(shift_entries.id) AS shift_count,
                         (%s + (
-                            SELECT COALESCE(SUM(`hours`) * 3600, 0)
+                            SELECT %s * 3600
                             FROM `worklogs` WHERE `user_id`=`users`.`id`
                             AND `worked_at` <= NOW()
                         )) AS `shift_length`
                 ',
-                $shift_sum_formula
+                $shift_sum_formula,
+                $worklog_sum_formula
             )
         )
         ->leftJoin('shift_entries', 'users.id', '=', 'shift_entries.user_id')

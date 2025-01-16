@@ -1880,6 +1880,9 @@ msgstr "Arbeitsstunden"
 msgid "worklog.comment"
 msgstr "Kommentar"
 
+msgid "worklog.night_shift"
+msgstr "Arbeitseinsatz ist eine Nachtschicht"
+
 msgid "worklog.delete"
 msgstr "Arbeitseinsatz löschen"
 
