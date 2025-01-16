@@ -81,6 +81,28 @@ class Goodie
         // @codeCoverageIgnoreEnd
     }
 
+    public static function worklogScoreQuery(): Expression
+    {
+        $nightShifts = config('night_shifts');
+
+        /** @var Database $db */
+        $db = app(Database::class);
+        $connection = $db->getConnection();
+
+        if (!$nightShifts['enabled']) {
+            return $connection->raw(
+                /** @lang MySQL */
+                'COALESCE(SUM(`hours`), 0)'
+            );
+        }
+
+        return $connection->raw(sprintf(
+            /** @lang MySQL */
+            'COALESCE(SUM(IF(`night_shift`, `hours` * %d, `hours`)), 0)',
+            $nightShifts['multiplier']
+        ));
+    }
+
     /**
      * Returns the goodie score (number of hours counted for goodie score)
      * Includes only ended shifts
@@ -115,7 +137,12 @@ class Goodie
 
         $worklogHours = $user->worklogs()
             ->where('worked_at', '<=', Carbon::Now())
-            ->sum('hours');
+            ->selectRaw(sprintf(
+                /** @lang MySQL */
+                '%s as `total_hours`',
+                self::worklogScoreQuery()->getValue($con->getQueryGrammar())
+            ))
+            ->value('total_hours');
 
         return $shiftHours + $worklogHours;
     }

@@ -40,6 +40,11 @@
                         'required': true,
                         'max_length': 200,
                     }) }}
+                    {% if attribute(config('night_shifts'), 'enabled') %}
+                        {{ f.checkbox('night_shift', __('worklog.night_shift'), {
+                            'checked': night_shift,
+                        }) }}
+                    {% endif %}
                     {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
                 </div>
             </div>

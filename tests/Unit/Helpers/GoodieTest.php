@@ -45,6 +45,6 @@ class GoodieTest extends TestCase
         parent::setUp();
 
         $this->initDatabase();
-        $this->app->instance('config', new Config(['night_shifts' => []]));
+        $this->app->instance('config', new Config(['night_shifts' => ['enabled' => false]]));
     }
 }
