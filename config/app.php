@@ -912,6 +912,11 @@ return [
                             'type' => 'light',
                             'navbar_classes' => 'navbar-light bg-light',
                         ],
+                        22 => [
+                            'name' => 'Engelsystem Pro',
+                            'type' => 'light',
+                            'navbar_classes' => 'navbar-light',
+                        ],
                         11 => [
                             'name' => 'Engelsystem high contrast',
                             'type' => 'dark',
