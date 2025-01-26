@@ -104,7 +104,7 @@ class FaqController extends BaseController
         return $this->redirect->to('/faq');
     }
 
-    protected function showEdit(?Faq $faq, string $tags = null): Response
+    protected function showEdit(?Faq $faq, ?string $tags = null): Response
     {
         return $this->response->withView(
             'pages/faq/edit.twig',

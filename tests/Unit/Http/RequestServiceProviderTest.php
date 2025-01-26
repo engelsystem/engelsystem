@@ -106,7 +106,7 @@ class RequestServiceProviderTest extends ServiceProviderTest
      * @covers       \Engelsystem\Http\RequestServiceProvider::createRequestWithoutPrefix
      * @dataProvider provideRequestPathPrefix
      */
-    public function testCreateRequestWithoutPrefix(string $requestUri, string $expected, string $url = null): void
+    public function testCreateRequestWithoutPrefix(string $requestUri, string $expected, ?string $url = null): void
     {
         $_SERVER['REQUEST_URI'] = $requestUri;
         $config = new Config([

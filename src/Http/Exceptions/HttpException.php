@@ -9,15 +9,12 @@ use Throwable;
 
 class HttpException extends RuntimeException
 {
-    /**
-     * @param Throwable|null $previous
-     */
     public function __construct(
         protected int $statusCode,
         string $message = '',
         protected array $headers = [],
         int $code = 0,
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
 
         parent::__construct($message, $code, $previous);
