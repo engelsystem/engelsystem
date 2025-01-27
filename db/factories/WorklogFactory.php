@@ -16,11 +16,12 @@ class WorklogFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'    => User::factory(),
-            'creator_id' => User::factory(),
-            'hours'      => $this->faker->randomFloat(2, 0.01, 10),
-            'comment'    => $this->faker->text(30),
-            'worked_at'  => $this->faker->dateTimeThisMonth(),
+            'user_id'     => User::factory(),
+            'creator_id'  => User::factory(),
+            'hours'       => $this->faker->randomFloat(2, 0.01, 10),
+            'comment'     => $this->faker->text(30),
+            'worked_at'   => $this->faker->dateTimeThisMonth(),
+            'night_shift' => $this->faker->boolean(),
         ];
     }
 }

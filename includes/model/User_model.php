@@ -33,10 +33,11 @@ function User_goodie_score(int $userId): float
         $result_shifts = ['goodie_score' => 0];
     }
 
-    $worklogHours = Worklog::query()
+    $worklogHours =  Worklog::query()
         ->where('user_id', $userId)
         ->where('worked_at', '<=', Carbon::Now())
-        ->sum('hours');
+        ->selectRaw(sprintf('%s as `total_hours`', User_get_worklog_sum_query()))
+        ->value('total_hours');
 
     return $result_shifts['goodie_score'] + $worklogHours;
 }
@@ -123,6 +124,20 @@ function User_get_shifts_sum_query()
         ',
         $nightShifts['start'],
         $nightShifts['end'],
+        $nightShifts['multiplier']
+    );
+}
+
+function User_get_worklog_sum_query(): string
+{
+    $nightShifts = config('night_shifts');
+
+    if (!$nightShifts['enabled']) {
+        return 'COALESCE(SUM(`hours`), 0)';
+    }
+
+    return sprintf(
+        'COALESCE(SUM(IF(`night_shift`, `hours` * %d, `hours`)), 0)',
         $nightShifts['multiplier']
     );
 }

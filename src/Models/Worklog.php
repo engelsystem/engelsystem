@@ -17,6 +17,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property float       $hours
  * @property string      $comment
  * @property Carbon      $worked_at
+ * @property bool        $night_shift
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -38,10 +39,11 @@ class Worklog extends BaseModel
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
-        'user_id'    => 'integer',
-        'creator_id' => 'integer',
-        'hours'      => 'float',
-        'worked_at'  => 'datetime',
+        'user_id'     => 'integer',
+        'creator_id'  => 'integer',
+        'hours'       => 'float',
+        'worked_at'   => 'datetime',
+        'night_shift' => 'boolean',
     ];
 
     /**
@@ -55,6 +57,7 @@ class Worklog extends BaseModel
         'hours',
         'comment',
         'worked_at',
+        'night_shift',
     ];
 
     public function creator(): BelongsTo

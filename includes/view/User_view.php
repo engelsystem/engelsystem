@@ -368,14 +368,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
 
     $night_shift = '';
     if ($shift->isNightShift() && $goodie_enabled) {
-        $night_shift = ' <span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
-            . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
-                $nightShiftsConfig['start'],
-                $nightShiftsConfig['end'],
-                $nightShiftsConfig['multiplier'],
-                ($goodie_tshirt ? __('T-shirt') : __('goodie')),
-            ])
-            . '"></span>';
+        $night_shift = render_night_shift_hint($nightShiftsConfig, $goodie_tshirt);
     }
     $myshift = [
         'date' => icon('calendar-event')
@@ -558,6 +551,10 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
 {
     $actions = '';
     $self_worklog = config('enable_self_worklog') || !$its_me;
+    $nightShiftsConfig = config('night_shifts');
+    $goodie = GoodieType::from(config('goodie_type'));
+    $goodie_enabled = $goodie !== GoodieType::None;
+    $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
     if ($admin_user_worklog_privilege && $self_worklog) {
         $actions = '<div class="text-end">' . table_buttons([
@@ -578,10 +575,15 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
         ]) . '</div>';
     }
 
+    $night_shift = '';
+    if ($worklog->night_shift && $goodie_enabled && $nightShiftsConfig['enabled']) {
+        $night_shift = render_night_shift_hint($nightShiftsConfig, $goodie_tshirt);
+    }
+
     return [
         'date' => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
         'duration' => sprintf('%.2f', $worklog->hours) . ' h',
-        'hints' => '',
+        'hints' => $night_shift,
         'location' => '',
         'shift_info' => __('Work log entry'),
         'comment' => htmlspecialchars($worklog->comment) . '<br>'
@@ -1198,4 +1200,16 @@ function render_user_mobile_hint()
     }
 
     return null;
+}
+
+function render_night_shift_hint(mixed $nightShiftsConfig, bool $goodie_tshirt): string
+{
+    return ' <span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
+        . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
+            $nightShiftsConfig['start'],
+            $nightShiftsConfig['end'],
+            $nightShiftsConfig['multiplier'],
+            ($goodie_tshirt ? __('T-shirt') : __('goodie')),
+        ])
+        . '"></span>';
 }
