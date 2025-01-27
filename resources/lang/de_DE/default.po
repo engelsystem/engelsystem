@@ -234,6 +234,9 @@ msgstr "Du bist nicht als angekommen markiert."
 msgid "You are not allowed to sign up yet."
 msgstr "Du darfst dich noch nicht anmelden."
 
+msgid "This Shift exceeds your maximum working time. Please get some rest."
+msgstr "Diese Schicht überschreitet deinen maximale Arbeitszeit. Bitte mach eine Pause."
+
 msgid "You are signed up for this shift."
 msgstr "Du bist für diese Schicht eingetragen."
 
@@ -984,6 +987,9 @@ msgstr "Komme an um dich einzutragen"
 
 msgid "not yet possible"
 msgstr "noch nicht möglich"
+
+msgid "rest period"
+msgstr "Ruhezeit"
 
 msgid "m-d"
 msgstr "d.m."

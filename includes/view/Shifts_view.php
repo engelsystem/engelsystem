@@ -206,6 +206,10 @@ function Shift_view(
                 : ''), true);
     }
 
+    if ($shift_signup_state->getState() === ShiftSignupStatus::OVERWORKED) {
+        $content[] = info(__('This Shift exceeds your maximum working time. Please get some rest.'), true);
+    }
+
     $signupAdvanceSeconds = ($shift->shiftType->signup_advance_hours ?: config('signup_advance_hours')) * 3600;
     if ($signupAdvanceSeconds && $shift->start->timestamp > time() + $signupAdvanceSeconds) {
         $content[] = info(sprintf(

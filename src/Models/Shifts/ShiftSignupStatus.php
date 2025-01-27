@@ -50,4 +50,9 @@ enum ShiftSignupStatus: string
      * User has to be arrived
      */
     case NOT_ARRIVED = 'NOT_ARRIVED';
+
+    /**
+     * User exceeds or would exceed maximum working time
+     */
+    case OVERWORKED = 'OVERWORKED';
 }

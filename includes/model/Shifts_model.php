@@ -388,6 +388,72 @@ function Shift_collides(Shift $shift, $shifts)
 }
 
 /**
+ * Check if a shift (in combination with other shifts) would exceed the max working time.
+ *
+ * @param Shift              $shift
+ * @param Collection|Shift[] $shifts
+ * @return bool
+ */
+function Shift_overworks(Shift $shift, Collection|array $shifts): bool
+{
+
+    $working_time_config = config('maximum_working_time');
+    $max_work_time = $working_time_config['max_working_hours'] * 3600;
+    $min_rest_time = $working_time_config['min_rest_hours'] * 3600;
+    $enforce_daily_rest = $working_time_config['enforce_daily_rest'];
+
+    $shifts[] = $shift;
+    $shifts = $shifts->sortBy('start');
+
+    //Merge consecutive shifts without sufficient breaks into 'blocks' of work until the block containing the relevant
+    //shift is completed. Then check if relevant block exceeds the maximum working time.
+    $block_of_work = null;
+    foreach ($shifts as $s) {
+        $is_block_to_check = $block_of_work != null && $block_of_work['block_to_check'];
+
+        //check if new block needs to be started, either because it is the first or because there was a break since the last
+        if ($block_of_work == null || $s->start->timestamp - $block_of_work['end'] >= $min_rest_time) {
+            //if the completed block contains the shift to check, then the loop can be exited as future shifts are not relevant
+            if ($is_block_to_check) {
+                break;
+            } else {
+                $block_of_work = [
+                    'start' => $s->start->timestamp,
+                    'end' => $s->end->timestamp,
+                    'working_time' => $s->end->timestamp - $s->start->timestamp,
+                    'block_to_check' => $s->id === $shift->id,
+                    'shifts' => 1,
+                ];
+            }
+        } else {
+            //otherwise extend current block to contain the shift
+            $block_of_work['shifts']++;
+            $block_of_work['end'] = max($block_of_work['end'], $s->end->timestamp);
+            $block_of_work['working_time'] += $s->end->timestamp - $s->start->timestamp;
+            if ($s->id === $shift->id) {
+                $block_of_work['block_to_check'] = true;
+            }
+        }
+    }
+
+    if ($block_of_work != null) {
+        //check if block would exceed the working time limit.
+        //exception for the first shift in a block, to allow sign-up to single shifts, which exceed the limit themselves
+        if ($block_of_work['working_time'] > $max_work_time && $block_of_work['shifts'] > 1) {
+            return true;
+        }
+
+        //if enabled, check if block would collide with daily enforced break
+        //exception for the first shift in a block, to allow sign-up to single shifts, which are longer then (24h - min_rest_time)
+        if ($enforce_daily_rest && $block_of_work['end'] - $block_of_work['start'] + $min_rest_time > 24 * 3600 && $block_of_work['shifts'] > 1) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
  * Returns the number of needed angels/free shift entries for an angeltype.
  *
  * @param AngelType               $needed_angeltype
@@ -488,6 +554,11 @@ function Shift_signup_allowed_angel(
 
     if (config('signup_requires_arrival') && !$user->state->arrived) {
         return new ShiftSignupState(ShiftSignupStatus::NOT_ARRIVED, $free_entries);
+    }
+
+    if (config('maximum_working_time')['enabled'] && Shift_overworks($shift, $user_shifts)) {
+        // you cannot join if consecutive working time is limited and user would exceed it
+        return new ShiftSignupState(ShiftSignupStatus::OVERWORKED, $free_entries);
     }
 
     // Hooray, shift is free for you!
