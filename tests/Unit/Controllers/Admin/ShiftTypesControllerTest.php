@@ -136,7 +136,7 @@ class ShiftTypesControllerTest extends ControllerTest
 
         $controller->save($this->request);
 
-        $this->assertTrue($this->log->hasInfoThatContains('Updated shift type'));
+        $this->assertTrue($this->log->hasInfoThatContains('Saved shift type'));
         $this->assertHasNotification('shifttype.edit.success');
         $this->assertCount(1, ShiftType::whereName('Test shift type')->get());
         $this->assertCount(1, ShiftType::whereDescription('Something')->get());

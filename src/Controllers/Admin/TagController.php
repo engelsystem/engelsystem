@@ -78,7 +78,7 @@ class TagController extends BaseController
 
         $tag->save();
 
-        $this->log->info('Updated tag "{name}"', ['name' => $tag->name]);
+        $this->log->info('Saved tag "{name}" ({id})', ['name' => $tag->name, 'id' => $tag->id]);
         $this->addNotification('tag.edit.success');
 
         return $this->redirect->to('/admin/tags');
@@ -88,7 +88,7 @@ class TagController extends BaseController
     {
         $tag->delete();
 
-        $this->log->info('Deleted tag "{name}"', ['tag' => $tag->name]);
+        $this->log->info('Deleted tag "{name}" ({id})', ['name' => $tag->name, 'id' => $tag->id]);
         $this->addNotification('tag.delete.success');
 
         return $this->redirect->to('/admin/tags');
