@@ -162,7 +162,7 @@ class UserWorklogControllerTest extends ControllerTest
         $this->controller->saveWorklog($request);
 
         $this->assertHasNotification('worklog.add.success');
-        $this->assertTrue($this->log->hasInfoThatContains('Added worklog for'));
+        $this->assertTrue($this->log->hasInfoThatContains('Saved worklog'));
 
         $this->assertEquals(1, $this->user->worklogs->count());
         $new_worklog = $this->user->worklogs[0];

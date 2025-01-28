@@ -112,8 +112,9 @@ class NewsController extends BaseController
         }
 
         $this->log->info(
-            'Updated {pinned}{type} "{news}": {text}',
+            'Saved {pinned}{highlighted}{type} "{news}" ({id}): {text}',
             [
+                'id'        => $news->id,
                 'pinned'    => $news->is_pinned ? 'pinned ' : '',
                 'highlighted' => $news->is_highlighted ? 'highlighted ' : '',
                 'type'      => $news->is_meeting ? 'meeting' : 'news',
@@ -132,8 +133,9 @@ class NewsController extends BaseController
         $news->delete();
 
         $this->log->info(
-            'Deleted {type} "{news}"',
+            'Deleted {type} "{news}" ({id})',
             [
+                'id' => $news->id,
                 'type' => $news->is_meeting ? 'meeting' : 'news',
                 'news' => $news->title,
             ]

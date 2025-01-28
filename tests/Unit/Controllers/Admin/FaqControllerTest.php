@@ -78,7 +78,7 @@ class FaqControllerTest extends ControllerTest
 
         $controller->save($this->request);
 
-        $this->assertTrue($this->log->hasInfoThatContains('Updated'));
+        $this->assertTrue($this->log->hasInfoThatContains('Saved'));
 
         $faq = (new Faq())->find(2);
         $this->assertEquals('Foo?', $faq->question);

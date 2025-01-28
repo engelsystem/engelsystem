@@ -157,7 +157,7 @@ class QuestionsControllerTest extends ControllerTest
 
         $controller->save($this->request);
 
-        $this->assertTrue($this->log->hasInfoThatContains('Updated'));
+        $this->assertTrue($this->log->hasInfoThatContains('Saved'));
         $this->assertHasNotification('question.edit.success');
 
         $question = Question::find(2);

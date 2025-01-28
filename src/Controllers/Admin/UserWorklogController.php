@@ -84,8 +84,9 @@ class UserWorklogController extends BaseController
         $worklog->save();
 
         $this->log->info(
-            (isset($worklogId) ? 'Edited' : 'Added') . ' worklog for {name} ({id}) at {time} spanning {hours}h: {text}',
+            'Saved worklog ({wl_id}) for {name} ({id}) at {time} spanning {hours}h: {text}',
             [
+                'wl_id' => $worklog->id,
                 'name' => $user->name,
                 'id' => $user->id,
                 'time' => $worklog->worked_at,
@@ -127,8 +128,9 @@ class UserWorklogController extends BaseController
         $worklog->delete();
 
         $this->log->info(
-            'Deleted worklog for {name} ({id}) at {time} spanning {hours}h: {text}',
+            'Deleted worklog ({wl_id}) for {name} ({id}) at {time} spanning {hours}h: {text}',
             [
+                'wl_id' => $worklog->id,
                 'name' => $worklog->user->name,
                 'id' => $worklog->user->id,
                 'time' => $worklog->worked_at,
