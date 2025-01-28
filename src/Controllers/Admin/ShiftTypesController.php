@@ -136,8 +136,9 @@ class ShiftTypesController extends BaseController
         }
 
         $this->log->info(
-            'Updated shift type "{name}": {description}, {signup_advance_hours}, {angels}',
+            'Saved shift type "{name}" ({id}): {description}, {signup_advance_hours}, {angels}',
             [
+                'id' => $shiftType->id,
                 'name' => $shiftType->name,
                 'description' => $shiftType->description,
                 'signup_advance_hours' => $shiftType->signup_advance_hours,
@@ -165,7 +166,7 @@ class ShiftTypesController extends BaseController
         }
         $shiftType->delete();
 
-        $this->log->info('Deleted shift type {name}', ['name' => $shiftType->name]);
+        $this->log->info('Deleted shift type {name} ({id})', ['name' => $shiftType->name, 'id' => $shiftType->id]);
         $this->addNotification('shifttype.delete.success');
 
         return $this->redirect->to('/admin/shifttypes');

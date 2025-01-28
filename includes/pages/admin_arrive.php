@@ -59,7 +59,7 @@ function admin_arrive()
                 $user_source->state->arrival_date = new Carbon\Carbon();
                 $user_source->state->save();
 
-                engelsystem_log('User set has arrived: ' . User_Nick_render($user_source, true));
+                engelsystem_log('User set as arrived: ' . User_Nick_render($user_source, true));
                 success(__('Angel has been marked as arrived.'));
 
                 throw_redirect(back()->getHeaderLine('location'));

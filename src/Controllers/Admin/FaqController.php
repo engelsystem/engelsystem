@@ -86,7 +86,10 @@ class FaqController extends BaseController
             $faq->tags()->attach($tag);
         }
 
-        $this->log->info('Updated faq "{question}": {text}', ['question' => $faq->question, 'text' => $faq->text]);
+        $this->log->info(
+            'Saved faq "{question}" ({id}): {text}',
+            ['question' => $faq->question, 'text' => $faq->text, 'id' => $faq->id]
+        );
 
         $this->addNotification('faq.edit.success');
 
@@ -97,7 +100,7 @@ class FaqController extends BaseController
     {
         $faq->delete();
 
-        $this->log->info('Deleted faq "{question}"', ['question' => $faq->question]);
+        $this->log->info('Deleted faq "{question}" ({id})', ['question' => $faq->question, 'id' => $faq->id]);
 
         $this->addNotification('faq.delete.success');
 

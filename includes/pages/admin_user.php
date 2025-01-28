@@ -312,7 +312,7 @@ function admin_user()
                 }
                 $old_nick = $user_source->name;
                 if ($nickValid && $user_nick_edit) {
-                    $changed_nick = ($user_source->name !== $nick) || User::whereName($nick)->exists();
+                    $changed_nick = $user_source->name !== $nick;
                     $user_source->name = $nick;
                 }
                 $user_source->save();
