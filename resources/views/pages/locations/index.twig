@@ -69,7 +69,7 @@
 
                                                 {{ m.edit(url('/admin/locations/edit/' ~ location.id), {'class': 'm-1'}) }}
 
-                                                <form method="post" class="ps-1">
+                                                <form method="post" action="{{ url('/admin/locations/edit/' ~ location.id) }}" class="ps-1">
                                                     {{ csrf() }}
                                                     {{ f.hidden('id', location.id) }}
                                                     {{ f.delete(null, {
