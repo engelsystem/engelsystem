@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http\Validation\Rules;
 
-use Respect\Validation\Rules\Date;
+use Respect\Validation\Rules\AbstractEnvelope;
+use Respect\Validation\Rules\DateTime as RespectDateTime;
 
-class DateTime extends Date
+class DateTime extends AbstractEnvelope
 {
     public function __construct(?string $format = null)
     {
@@ -14,6 +15,6 @@ class DateTime extends Date
             $format = 'Y-m-d\TH:i';
         }
 
-        parent::__construct($format);
+        parent::__construct(new RespectDateTime($format));
     }
 }
