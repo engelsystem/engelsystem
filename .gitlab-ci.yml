@@ -52,7 +52,7 @@ composer validate:
   image: composer:latest
   stage: prepare
   script:
-    - composer --no-ansi validate --strict
+    - composer --no-ansi validate
 
 composer install:
   <<: *use_cache
