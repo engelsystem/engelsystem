@@ -10,7 +10,7 @@
     <div class="container">
         <h1>
             {{ m.back(url('/admin-active')) }}
-            {{ block('title') }}: <small>{{ m.user(userdata) }}</small>
+            {{ block('title') }}: <small>{{ m.user(userdata, {'pronoun': true}) }} {{ m.user_info(userdata) }}</small>
         </h1>
 
         {% include 'layouts/parts/messages.twig' %}
