@@ -452,12 +452,6 @@ msgstr "Engel nicht gefunden."
 msgid "Angel has been marked as not active."
 msgstr "Engel wurde als nicht aktiv markiert."
 
-msgid "Angel has got a T-shirt."
-msgstr "Engel hat ein T-Shirt bekommen."
-
-msgid "Angel has got no T-shirt."
-msgstr "Engel hat kein T-Shirt bekommen."
-
 msgid "Angel has no valid T-shirt size. T-shirt was not set."
 msgstr "Engel hat keine valide T-Shirt Größe. T-Shirt wurde nicht gespeichert."
 
@@ -470,14 +464,8 @@ msgstr "Setze aktiv"
 msgid "Remove active"
 msgstr "Entferne aktiv"
 
-msgid "Remove T-shirt"
-msgstr "Entferne T-Shirt"
-
 msgid "Goodie actions"
 msgstr "Goodie Aktionen"
-
-msgid "T-shirt actions"
-msgstr "T-Shirt Aktionen"
 
 msgid "Sum"
 msgstr "Summe"
@@ -511,12 +499,6 @@ msgstr "Aktiv"
 
 msgid "Forced"
 msgstr "Erzwungen"
-
-msgid "T-shirt"
-msgstr "T-Shirt"
-
-msgid "T-shirt statistic"
-msgstr "T-Shirt Statistik"
 
 msgid "Given T-shirts"
 msgstr "Ausgegebene T-Shirts"
@@ -1130,9 +1112,6 @@ msgstr "Austragen"
 msgid "Sum:"
 msgstr "Summe:"
 
-msgid "T-shirt score"
-msgstr "T-Shirt Score"
-
 msgid "Work log entry"
 msgstr "Arbeitseinsatz"
 
@@ -1160,8 +1139,8 @@ msgstr "iCal Export"
 msgid "JSON Export"
 msgstr "JSON Export"
 
-msgid "Night shifts between %d and %d am are multiplied by %d for the %s score."
-msgstr "Nachtschichten zwischen %d und %d Uhr werden für den %4$s Score mit %3$d multipliziert."
+msgid "Night shifts between %d and %d am are multiplied by %d for the goodie score."
+msgstr "Nachtschichten zwischen %d und %d Uhr werden für den Goodie Score mit %3$d multipliziert."
 
 msgid ""
 "Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
@@ -1232,12 +1211,6 @@ msgstr ""
 "Hier kannst du den Benutzer Eintrag ändern. Unter dem Punkt 'Angekommen' wird der Engel als anwesend markiert, "
 "ein Ja bei Aktiv bedeutet, dass der Engel aktiv war."
 
-msgid ""
-"If the angel is active, it can claim a T-shirt. If T-shirt is set to 'Yes', the angel already got their T-shirt."
-msgstr ""
-"Ist der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, bedeutet dies, "
-"dass der Engel bereits sein T-Shirt erhalten hat."
-
 msgid "Here you can reset the password of this angel:"
 msgstr "Hier kannst du das Passwort für diesen Engel zurücksetzen:"
 
@@ -1290,10 +1263,10 @@ msgstr "Goodie Statistik"
 msgid "Remove goodie"
 msgstr "Goodie entfernen"
 
-msgid "Angel has got a goodie."
+msgid "Angel got a goodie."
 msgstr "Engel hat ein Goodie bekommen."
 
-msgid "Angel has got no goodie."
+msgid "Angel got no goodie."
 msgstr "Engel hat kein Goodie bekommen."
 
 msgid "page.404.text"
@@ -1571,9 +1544,6 @@ msgstr ""
 "Diese Zustimmung kann während des Events in den Profil-Einstellungen, sowie, auch nach dem Event, "
 "per E-Mail an <a href=\"mailto:%s\">%1$s</a>, widerrufen werden."
 
-msgid "settings.profile.shirt_size"
-msgstr "T-Shirt-Größe"
-
 msgid "settings.profile.shirt_size.hint"
 msgstr "Ein straight-cut T-Shirt hat breite Schultern und einen fast quadratischen Körper. "
 "Ein fitted-cut (tailliertes) T-Shirt hat eine geschwungene Seitennaht, die an der Taille schmaler "
@@ -1844,9 +1814,6 @@ msgstr "Tag erstellen"
 msgid "tag.delete.title"
 msgstr "Tag \"%s\" löschen"
 
-msgid "user.edit.shirt"
-msgstr "T-Shirt bearbeiten"
-
 msgid "user.edit.goodie"
 msgstr "Goodie bearbeiten"
 
@@ -1856,17 +1823,11 @@ msgstr "Genug"
 msgid "user.goodie_score.value"
 msgstr "%s h"
 
-msgid "user.tshirt_score"
-msgstr "T-Shirt Score: %s"
-
 msgid "user.goodie_score"
 msgstr "Goodie Score: %s"
 
-msgid "form.shirt"
-msgstr "T-Shirt"
-
 msgid "user.shirt_size"
-msgstr "T-Shirt größe"
+msgstr "T-Shirt-Größe"
 
 msgid "user.active"
 msgstr "Aktiv"
@@ -1879,9 +1840,6 @@ msgstr "Angekommen"
 
 msgid "user.arrive"
 msgstr "Ankommen"
-
-msgid "user.got_shirt"
-msgstr "T-Shirt bekommen"
 
 msgid "user.got_goodie"
 msgstr "Goodie bekommen"
