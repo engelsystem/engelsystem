@@ -8,10 +8,27 @@ use Engelsystem\Controllers\Api\Resources\UserDetailResource;
 use Engelsystem\Controllers\Api\Resources\UserResource;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\User\User;
 
 class UsersController extends ApiController
 {
     use UsesAuth;
+
+    public function index(): Response
+    {
+        $models = User::query()
+            ->orderBy('name')
+            ->get();
+
+        $models = $models->map(function (BaseModel $model) {
+            return UserResource::toIdentifierArray($model);
+        });
+
+        $data = ['data' => $models];
+        return $this->response
+            ->withContent(json_encode($data));
+    }
 
     public function user(Request $request): Response
     {
