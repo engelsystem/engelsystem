@@ -42,6 +42,7 @@
         "guzzlehttp/guzzle": "^7.10",
         "illuminate/container": "^12.39",
         "illuminate/database": "^12.39",
+        "illuminate/pagination": "^12.39",
         "illuminate/support": "^12.39",
         "laravel/serializable-closure": "^2.0",
         "league/commonmark": "^2.7",

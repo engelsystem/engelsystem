@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Models\User\User;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 /**
@@ -429,4 +430,39 @@ function user_info_icon(User $user): string
     }
     $infoIcon .= '></span></small>';
     return $infoIcon;
+}
+
+function pagination(LengthAwarePaginator $paginator, bool $withAll = false): string
+{
+    $items = '';
+    foreach ($paginator->getUrlRange(1, $paginator->lastPage()) as $page => $url) {
+        $active = '';
+
+        if ($paginator->currentPage() == $page) {
+            $active = ' active';
+        }
+
+        $items .= sprintf(
+            '<li class="page-item%s"><a class="page-link" href="%s">%u</a></li>',
+            $active,
+            $url,
+            $page
+        );
+    }
+
+    if ($withAll) {
+        $items .= sprintf(
+            '<li class="page-item"><a class="page-link" href="%s">%s</a></li>',
+            $paginator->url('all'),
+            __('All'),
+        );
+    }
+
+    return sprintf('
+        <nav>
+            <ul class="pagination">
+                %s
+            </ul>
+        </nav>
+    ', $items);
 }
