@@ -663,6 +663,30 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundError'
 
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get a list of all users
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Reference'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
   /users/{id}:
     parameters:
       - name: id
