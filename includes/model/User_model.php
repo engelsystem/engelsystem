@@ -10,7 +10,7 @@ use Engelsystem\Models\Worklog;
  */
 
 /**
- * Returns the goodie score (number of hours counted for tshirt).
+ * Returns the goodie score (number of hours counted for goodie).
  * Accounts only ended shifts.
  *
  * @param int $userId

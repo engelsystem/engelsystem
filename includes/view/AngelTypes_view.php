@@ -358,12 +358,8 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                 ? ($member->personalData->shirt_size ?: '-')
                 : '';
             $got_goodie_button_title = $member->state->got_goodie
-                ? ($goodie_tshirt
-                    ? __('Remove T-shirt')
-                    : __('Remove goodie'))
-                : ($goodie_tshirt
-                    ? __('user.got_shirt')
-                    : __('user.got_goodie'));
+                ? __('Remove goodie')
+                : __('user.got_goodie');
             $goodie_actions[] = ($shirtSize !== '-') ? form(
                 [
                     form_submit(
@@ -390,9 +386,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                 icon('pencil'),
                 'btn-secondary btn-sm',
                 false,
-                $goodie_tshirt
-                    ? __('user.edit.shirt')
-                    : __('user.edit.goodie'),
+                __('user.edit.goodie'),
             );
             if ($goodie_tshirt) {
                 $member['shirt_size'] = isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '-';
@@ -560,7 +554,6 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
     ) {
         $headers['goodie_actions'] = __('Goodie actions');
         if ($goodie_tshirt) {
-            $headers['goodie_actions'] = __('T-shirt actions');
             $headers['shirt_size'] = __('user.shirt_size');
         }
     }

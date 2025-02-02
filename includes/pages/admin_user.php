@@ -46,11 +46,7 @@ function admin_user()
 
         $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
         if ($goodie_enabled && $user_goodie_edit) {
-            if ($goodie_tshirt) {
-                $html .= ' ' . __('If the angel is active, it can claim a T-shirt. If T-shirt is set to \'Yes\', the angel already got their T-shirt.');
-            } else {
-                $html .= ' ' . __('If the angel is active, it can claim a goodie. If goodie is set to \'Yes\', the angel already got their goodie.');
-            }
+            $html .= ' ' . __('If the angel is active, it can claim a goodie. If goodie is set to \'Yes\', the angel already got their goodie.');
         }
         $html .= '<br><br>';
         $html .= '<form action="'
@@ -146,7 +142,7 @@ function admin_user()
         if ($goodie_enabled) {
             // got goodie?
             $html .= '  <tr><td>'
-                . ($goodie_tshirt ? __('T-shirt') : __('Goodie'))
+                . __('Goodie')
                 . '</td><td>' . "\n";
             $html .= $user_goodie_edit
                 ? html_options('eTshirt', $options, $user_source->state->got_goodie)
@@ -364,7 +360,7 @@ function admin_user()
                     . ', arrived: ' . $user_source->state->arrived
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
-                    . ($goodie_tshirt ? ', t-shirt: ' : ', goodie: ' . $user_source->state->got_goodie)
+                    . ', goodie: ' . $user_source->state->got_goodie
                     . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
                 );
                 $html .= success(__('Changes were saved.') . "\n", true);
