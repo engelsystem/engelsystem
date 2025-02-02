@@ -10,6 +10,7 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -36,7 +37,7 @@ function User_delete_view($user)
 }
 
 /**
- * @param User[] $users
+ * @param User[]|LengthAwarePaginator $users
  * @param string $order_by
  * @param int $arrived_count
  * @param int $active_count
@@ -208,10 +209,16 @@ EOT;
         unset($user_table_headers[$key]);
     }
 
+    $pagination = '';
+    if ($users instanceof LengthAwarePaginator && $users->total() > $users->perPage()) {
+        $pagination = pagination($users, true);
+    }
     $link = button(url('/register'), icon('plus-lg'), 'btn-sm add');
     return page_with_title(__('All users') . ' ' . $link, [
         msg(),
+        $pagination,
         table($user_table_headers, $usersList),
+        $pagination,
     ]);
 }
 

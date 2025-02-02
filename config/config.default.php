@@ -278,8 +278,11 @@ return [
     // Must be one of news, meetings, user_shifts, angel types, questions
     'home_site'               => env('HOME_SITE', 'news'),
 
-    // Number of News shown on one site and for feed readers (minimum 1)
+    // Number of news shown on one site and for feed readers (minimum 1)
     'display_news'            => env('DISPLAY_NEWS', 10),
+
+    // Number of users shown on one admin page table
+    'display_users'           => env('DISPLAY_USERS', 100),
 
     // Users are able to sign up
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
