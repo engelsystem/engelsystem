@@ -587,6 +587,9 @@ msgstr "Login using %s"
 msgid "form.connect"
 msgstr "Connect"
 
+msgid "form.all"
+msgstr "All"
+
 msgid "form.disconnect"
 msgstr "Disconnect"
 
