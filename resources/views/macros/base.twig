@@ -34,6 +34,19 @@
     </a>
 {% endmacro %}
 
+{% macro user_info(user, opt) %}
+    {% if user.state.user_info and can('admin_arrive') %}
+        <span
+        {% if can('user.info.show') %}
+            data-bs-toggle="tooltip"
+            title="{{ user.state.user_info|escape('html_attr') }}"
+        {% endif %}
+        >
+            {{ _self.icon('info-circle-fill', 'info') }}
+        </span>
+    {% endif %}
+{% endmacro %}
+
 {% macro button(label, url, opt) %}
     <a href="{{ url }}" class="btn btn-{{ opt.type|default('secondary') }}
         {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}
