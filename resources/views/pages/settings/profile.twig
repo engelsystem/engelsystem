@@ -150,7 +150,7 @@
         <div class="row g-4">
             {% if goodie_tshirt %}
                 <div class="col-12">
-                    {{ f.select('shirt_size', __('settings.profile.shirt_size'), config('tshirt_sizes'), {
+                    {{ f.select('shirt_size', __('user.shirt_size'), config('tshirt_sizes'), {
                         'selected': userdata.personalData.shirt_size,
                         'required': isTShirtSizeRequired,
                         'required_icon': isTShirtSizeRequired,

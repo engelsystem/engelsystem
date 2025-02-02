@@ -3,7 +3,7 @@
 {% import 'macros/form.twig' as f %}
 
 {% block title %}
-    {{ is_tshirt ? __('user.edit.shirt') : __('user.edit.goodie') }}
+    {{ __('user.edit.goodie') }}
 {%- endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
 
         <div class="row">
             {% set score = goodie_score == '~' ? __('user.goodie_score.enough') : __('user.goodie_score.value', [goodie_score])%}
-            <p>{{ is_tshirt ? __('user.tshirt_score', [score]) : __('user.goodie_score', [score]) }}</p>
+            <p>{{ __('user.goodie_score', [score]) }}</p>
         </div>
 
         <form method="post">
@@ -51,7 +51,7 @@
                         'checked': userdata.state.active,
                     }) }}
 
-                    {{ f.switch('got_goodie', is_tshirt ? __('user.got_shirt') : __('user.got_goodie'), {
+                    {{ f.switch('got_goodie', __('user.got_goodie'), {
                         'checked': userdata.state.got_goodie,
                     }) }}
                 </div>
