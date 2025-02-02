@@ -60,8 +60,11 @@ class LogEntry extends BaseModel
     /**
      * @return Builder[]|Collection|SupportCollection|LogEntry[]
      */
-    public static function filter(?string $keyword = null, ?int $userId = null): array|Collection|SupportCollection
-    {
+    public static function filter(
+        ?string $keyword = null,
+        ?int $userId = null,
+        ?string $level = null
+    ): array | Collection | SupportCollection {
         $query = self::with(['user', 'user.personalData', 'user.state'])
             ->orderByDesc('created_at')
             ->orderByDesc('id')
@@ -75,12 +78,12 @@ class LogEntry extends BaseModel
             });
         }
 
+        if (!empty($level)) {
+            $query->where('level', '=', $level);
+        }
+
         if (!empty($keyword)) {
-            $query
-                ->where(function (Builder $query) use ($keyword): void {
-                    $query->where('level', '=', $keyword)
-                        ->orWhere('message', 'LIKE', '%' . $keyword . '%');
-                });
+            $query->where('message', 'LIKE', '%' . $keyword . '%');
         }
 
         return $query->get();

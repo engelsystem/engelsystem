@@ -15,7 +15,7 @@
                         {{ csrf() }}
 
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 {{ f.input('search', __('form.search'), {
                                     'value': search,
                                 }) }}
@@ -26,6 +26,12 @@
                                     {{ f.select('search_user_id', __('general.user'), users, {
                                         'default_option': __('form.user_select'),
                                         'selected': search_user_id,
+                                    }) }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ f.select('level', __('log.level'), levels, {
+                                        'default_option': __('form.all'),
+                                        'selected': level,
                                     }) }}
                                 </div>
                             {% endif %}

@@ -37,6 +37,16 @@ class LogsControllerTest extends TestCase
         $this->setExpects($auth, 'can', ['logs.all'], true, 2);
 
         $response = $this->createMock(Response::class);
+        $levels = [
+            LogLevel::ALERT => 'Alert',
+            LogLevel::CRITICAL => 'Critical',
+            LogLevel::DEBUG => 'Debug',
+            LogLevel::EMERGENCY => 'Emergency',
+            LogLevel::ERROR => 'Error',
+            LogLevel::INFO => 'Info',
+            LogLevel::NOTICE  => 'Notice',
+            LogLevel::WARNING => 'Warning',
+        ];
         $response->expects($this->exactly(2))
             ->method('withView')
             ->withConsecutive(
@@ -45,12 +55,16 @@ class LogsControllerTest extends TestCase
                     'search' => null,
                     'users' => new Collection(),
                     'search_user_id' => null,
+                    'level' => null,
+                    'levels' => $levels,
                 ]],
                 ['admin/log.twig', [
                     'entries' => new Collection([$error]),
                     'search' => 'error',
                     'users' => new Collection(),
                     'search_user_id' => null,
+                    'level' => null,
+                    'levels' => $levels,
                 ]]
             )
             ->willReturn($response);
