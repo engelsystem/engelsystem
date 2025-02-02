@@ -175,11 +175,9 @@ EOT;
         $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
     }
     if ($goodie_enabled) {
+        $user_table_headers['got_goodie'] = Users_table_header_link('got_goodie', __('Goodie'), $order_by);
         if ($goodie_tshirt) {
-            $user_table_headers['got_goodie'] = Users_table_header_link('got_goodie', __('T-shirt'), $order_by);
             $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
-        } else {
-            $user_table_headers['got_goodie'] = Users_table_header_link('got_goodie', __('Goodie'), $order_by);
         }
     }
     $user_table_headers['arrival_date'] = Users_table_header_link(
@@ -327,7 +325,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
     $nightShiftsConfig = config('night_shifts');
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $supporter = auth()->user()->isAngelTypeSupporter(AngelType::findOrFail($shift->angel_type_id));
 
     $shift_info = '<a href="' . shift_link($shift) . '">' . htmlspecialchars($shift->shiftType->name) . '</a>';
     if ($shift->title) {
@@ -340,11 +338,10 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
     $night_shift = '';
     if ($shift->isNightShift() && $goodie_enabled) {
         $night_shift = ' <span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
-            . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
+            . __('Night shifts between %d and %d am are multiplied by %d for the goodie score.', [
                 $nightShiftsConfig['start'],
                 $nightShiftsConfig['end'],
                 $nightShiftsConfig['multiplier'],
-                ($goodie_tshirt ? __('T-shirt') : __('goodie')),
             ])
             . '"></span>';
     }
@@ -386,9 +383,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
         if (!$goodie_enabled) {
             $freeload_info = __('freeload.info');
         } else {
-            $freeload_info = __('freeload.info.goodie', [($goodie_tshirt
-                ? __('T-shirt score')
-                : __('Goodie score'))]);
+            $freeload_info = __('freeload.info.goodie', [__('Goodie score')]);
         }
         $myshift['hints'] .= ' <span class="bi bi-info-circle-fill text-danger" data-bs-toggle="tooltip" title="'
             . $freeload_info
@@ -444,11 +439,13 @@ function User_view_myshifts(
     $goodie_admin,
     $user_worklogs,
     $admin_user_worklog_privilege,
-    $supported_angeltypes,
 ) {
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
+    $supported_angeltypes = auth()->user()
+        ->userAngelTypes()
+        ->where('supporter', true)
+        ->pluck('angel_types.id');
     $show_sum = true;
 
     $myshifts_table = [];
@@ -503,7 +500,7 @@ function User_view_myshifts(
         }
         if ($goodie_enabled && ($its_me || $goodie_admin || auth()->can('admin_user'))) {
             $myshifts_table[] = [
-                'date' => '<b>' . ($goodie_tshirt ? __('T-shirt score') : __('Goodie score')) . '&trade;:</b>',
+                'date' => '<b>' . __('Goodie score') . '&trade;:</b>',
                 'duration' => '<b>' . $goodie_score . '</b>',
                 'hints' => '',
                 'location' => '',
@@ -600,7 +597,6 @@ function User_view(
 ) {
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $auth = auth();
     $nightShiftsConfig = config('night_shifts');
     $user_name = htmlspecialchars((string) $user_source->personalData->first_name) . ' '
@@ -675,7 +671,7 @@ function User_view(
                     table_buttons([
                         $auth->can('user.goodie.edit') && $goodie_enabled ? button(
                             url('/admin/user/' . $user_source->id . '/goodie'),
-                            icon('gift') . ($goodie_tshirt ? __('T-shirt') : __('Goodie'))
+                            icon('gift') . __('Goodie')
                         ) : '',
                         $admin_user_privilege ? button(
                             url('/admin-user', ['id' => $user_source->id]),
@@ -763,12 +759,11 @@ function User_view(
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
                 icon('moon-stars')
                 . __(
-                    'Night shifts between %d and %d am are multiplied by %d for the %s score.',
+                    'Night shifts between %d and %d am are multiplied by %d for the goodie score.',
                     [
                         $nightShiftsConfig['start'],
                         $nightShiftsConfig['end'],
                         $nightShiftsConfig['multiplier'],
-                        ($goodie_tshirt ? __('T-shirt') : __('goodie')),
                     ]
                 ),
                 true,
@@ -841,7 +836,6 @@ function User_view_state_admin($freeloader, $user_source)
     $state = [];
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $password_reset = PasswordReset::whereUserId($user_source->id)
         ->where('created_at', '>', $user_source->last_login_at ?: '')
         ->count();
@@ -866,7 +860,7 @@ function User_view_state_admin($freeloader, $user_source)
             $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
         if ($user_source->state->got_goodie && $goodie_enabled) {
-            $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-shirt') : __('Goodie')) . '</span>';
+            $state[] = '<span class="text-success">' . __('Goodie') . '</span>';
         }
     } else {
         $arrivalDate = $user_source->personalData->planned_arrival_date;

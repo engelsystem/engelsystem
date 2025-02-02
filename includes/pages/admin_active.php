@@ -152,11 +152,9 @@ function admin_active()
                 } else {
                     $user_source->state->got_goodie = true;
                     $user_source->state->save();
-                    engelsystem_log('User ' . User_Nick_render($user_source, true) . ($goodie_tshirt ? ' has T-shirt now.' : ' has goodie now.'));
+                    engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has goodie now.');
                     $msg = success(
-                        ($goodie_tshirt
-                            ? __('Angel has got a T-shirt.')
-                            : __('Angel has got a goodie.')),
+                        __('Angel got a goodie.'),
                         true
                     );
                 }
@@ -169,11 +167,9 @@ function admin_active()
             if ($user_source) {
                 $user_source->state->got_goodie = false;
                 $user_source->state->save();
-                engelsystem_log('User ' . User_Nick_render($user_source, true) . ($goodie_tshirt ? ' has NO T-shirt.' : ' has NO goodie.'));
+                engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO goodie.');
                 $msg = success(
-                    ($goodie_tshirt
-                        ? __('Angel has got no T-shirt.')
-                        : __('Angel has got no goodie.')),
+                    __('Angel got no goodie.'),
                     true
                 );
             } else {
@@ -351,7 +347,7 @@ function admin_active()
                     [form_submit(
                         'submit',
                         icon('gift')
-                        . ($goodie_tshirt ? __('user.got_shirt') : __('user.got_goodie')),
+                        . __('user.got_goodie'),
                         'btn-sm',
                         false,
                         'secondary'
@@ -376,7 +372,7 @@ function admin_active()
                     [form_submit(
                         'submit',
                         icon('gift')
-                        . ($goodie_tshirt ? __('Remove T-shirt') : __('Remove goodie')),
+                        . __('Remove goodie'),
                         'btn-sm',
                         false,
                         'secondary'
@@ -451,25 +447,22 @@ function admin_active()
                     'shift_count' => __('general.shifts'),
                     'work_time' => __('Length'),
                 ],
-                ($goodie_enabled ? ['score' => ($goodie_tshirt
-                    ? __('T-shirt score')
-                    : __('Goodie score')
-                )] : []),
+                ($goodie_enabled ? ['score' => __('Goodie score')] : []),
                 [
                     'active' => __('Active'),
                 ],
                 (config('enable_force_active') ? ['force_active' => __('Forced'),] : []),
-                ($goodie_enabled ? ['tshirt' => ($goodie_tshirt ? __('T-shirt') : __('Goodie'))] : []),
+                ($goodie_enabled ? ['tshirt' => __('Goodie')] : []),
                 [
                     'actions' => __('general.actions'),
                 ]
             ),
             $matched_users
         ),
-        $goodie_enabled ? '<h2>' . ($goodie_tshirt ? __('T-shirt statistic') : __('Goodie statistic')) . '</h2>' : '',
+        $goodie_enabled ? '<h2>' . __('Goodie statistic') . '</h2>' : '',
         $goodie_enabled ? table(array_merge(
             ($goodie_tshirt ? ['size' => __('Size')] : []),
-            ['given' => $goodie_tshirt ? __('Given T-shirts') : __('Given goodies')],
+            ['given' => __('Given goodies')],
             $goodie_tshirt ? ['total' => __('Configured T-shirts')] : [],
         ), $goodie_statistics) : '',
     ]);

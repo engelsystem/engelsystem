@@ -368,9 +368,6 @@ msgid "settings.profile.privacy"
 msgstr "You can withdraw your approval during the event in your profile settings as well "
 "as after the event via e-mail to <a href=\"mailto:%s\">%1$s</a>."
 
-msgid "settings.profile.shirt_size"
-msgstr "T-shirt size"
-
 msgid "settings.profile.shirt_size.hint"
 msgstr "A straight-cut shirt has wide shoulders and a body which is almost square. "
 "A fitted-cut t-shirt has a curved side seam which comes in at the waist "
@@ -647,9 +644,6 @@ msgstr "Create new tag"
 msgid "tag.delete.title"
 msgstr "Delete tag \"%s\""
 
-msgid "user.edit.shirt"
-msgstr "Edit T-shirt"
-
 msgid "user.edit.goodie"
 msgstr "Edit goodie"
 
@@ -658,9 +652,6 @@ msgstr "Enough"
 
 msgid "user.goodie_score.value"
 msgstr "%s h"
-
-msgid "user.tshirt_score"
-msgstr "T-shirt score: %s"
 
 msgid "user.goodie_score"
 msgstr "Goodie score: %s"
@@ -679,9 +670,6 @@ msgstr "Arrived"
 
 msgid "user.arrive"
 msgstr "Arrive"
-
-msgid "user.got_shirt"
-msgstr "Got T-shirt"
 
 msgid "user.got_goodie"
 msgstr "Got goodie"
