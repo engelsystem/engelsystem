@@ -18,6 +18,34 @@ use PHPUnit\Framework\MockObject\MockObject;
 class UsersControllerTest extends ApiBaseControllerTest
 {
     /**
+     * @covers \Engelsystem\Controllers\Api\UsersController::index
+     */
+    public function testIndex(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $controller = new UsersController(new Response());
+
+        $response = $controller->index();
+        $this->validateApiResponse('/users', 'get', $response);
+
+        $this->assertEquals(['application/json'], $response->getHeader('content-type'));
+        $this->assertJson($response->getContent());
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertArrayHasKey('data', $data);
+        $this->assertIsArray($data['data']);
+        $this->assertNotEmpty($data['data']);
+
+        $firstUser = $data['data'][0];
+        $this->assertArrayHasKey('id', $firstUser);
+        $this->assertEquals($user->id, $firstUser['id']);
+        $this->assertArrayHasKey('name', $firstUser);
+        $this->assertEquals($user->name, $firstUser['name']);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Api\UsersController::user
      * @covers \Engelsystem\Controllers\Api\Resources\UserDetailResource::toArray
      * @covers \Engelsystem\Controllers\Api\Resources\UserResource::toArray
