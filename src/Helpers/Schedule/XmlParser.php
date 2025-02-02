@@ -180,6 +180,7 @@ class XmlParser
                 $this->getFirstXpathContent('url', $event) ?: null,
                 $this->getFirstXpathContent('video_download_url', $event) ?: null,
                 $this->getFirstXpathContent('feedback_url', $event) ?: null,
+                $this->getFirstXpathContent('origin_url', $event) ?: null,
             );
         }
 
