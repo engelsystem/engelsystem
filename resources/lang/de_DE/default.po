@@ -1757,6 +1757,9 @@ msgstr "Login mit %s"
 msgid "form.connect"
 msgstr "Verbinden"
 
+msgid "form.all"
+msgstr "Alle"
+
 msgid "form.disconnect"
 msgstr "Trennen"
 

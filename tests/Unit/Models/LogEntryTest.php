@@ -22,7 +22,7 @@ class LogEntryTest extends ModelTest
                 'I\'m an info'            => LogLevel::INFO,
                 '*Insert explosion here*' => LogLevel::EMERGENCY,
                 'Tracing along'           => LogLevel::DEBUG,
-                'Oops,no notice given'    => LogLevel::NOTICE,
+                'Oops, no notice given'   => LogLevel::NOTICE,
                 'It\'s happening'         => LogLevel::INFO,
                 'Something is wrong'      => LogLevel::ERROR,
                 'Ohi'                     => LogLevel::INFO,
@@ -35,7 +35,7 @@ class LogEntryTest extends ModelTest
         }
 
         $this->assertCount(11, LogEntry::filter());
-        $this->assertCount(3, LogEntry::filter(LogLevel::INFO));
+        $this->assertCount(3, LogEntry::filter(null, null, LogLevel::INFO));
         $this->assertCount(1, LogEntry::filter('Oops'));
         $this->assertCount(1, LogEntry::filter(null, $user->id));
 
