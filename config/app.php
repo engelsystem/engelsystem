@@ -31,6 +31,7 @@ return [
         \Engelsystem\Middleware\RequestHandlerServiceProvider::class,
         \Engelsystem\Http\Validation\ValidationServiceProvider::class,
         \Engelsystem\Http\RedirectServiceProvider::class,
+        \Engelsystem\Http\PaginationServiceProvider::class,
 
         // Additional services
         \Engelsystem\Helpers\VersionServiceProvider::class,
