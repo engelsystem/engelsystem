@@ -43,6 +43,7 @@
                 <description>Any describing stuff?</description>
                 <url>https://foo.bar/baz/schedule/ipsum</url>
                 <feedback_url>https://foo.bar/baz/schedule/ipsum#feedback</feedback_url>
+                <origin_url>https://some.example/event/ipsum</origin_url>
                 <logo>https://lorem.ipsum/foo/bar.png</logo>
                 <persons>
                     <person id='1234'>Some Person</person>

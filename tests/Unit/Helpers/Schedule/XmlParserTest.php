@@ -113,6 +113,7 @@ class XmlParserTest extends TestCase
         $this->assertEquals('Any describing stuff?', $event->getDescription());
         $this->assertEquals('https://foo.bar/baz/schedule/ipsum', $event->getUrl());
         $this->assertEquals('https://foo.bar/baz/schedule/ipsum#feedback', $event->getFeedbackUrl());
+        $this->assertEquals('https://some.example/event/ipsum', $event->getOriginUrl());
         $this->assertEquals('https://lorem.ipsum/foo/bar.png', $event->getLogo());
         $this->assertEquals([1234 => 'Some Person', 1337 => 'Another Person'], $event->getPersons());
         $this->assertEquals([
