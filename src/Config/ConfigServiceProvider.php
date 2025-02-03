@@ -6,10 +6,16 @@ namespace Engelsystem\Config;
 
 use Engelsystem\Application;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\EventConfig;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Env;
+use Illuminate\Support\Str;
 
+/**
+ * Loads the configuration from files (for database connection and app config), database and environment
+ */
 class ConfigServiceProvider extends ServiceProvider
 {
     protected array $configFiles = ['app.php', 'config.default.php', 'config.php'];
@@ -25,6 +31,8 @@ class ConfigServiceProvider extends ServiceProvider
         'contact_options',
     ];
 
+    protected array $envConfig = [];
+
     public function __construct(Application $app, protected ?EventConfig $eventConfig = null)
     {
         parent::__construct($app);
@@ -32,11 +40,39 @@ class ConfigServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        /** @var Config $config */
         $config = $this->app->make(Config::class);
         $this->app->instance(Config::class, $config);
         $this->app->instance('config', $config);
 
-        // Load configuration from files
+        $this->loadConfigFromFiles($config);
+        $this->loadConfigFromEnv($config);
+
+        if (empty($config->get(null))) {
+            throw new Exception('Configuration not found');
+        }
+
+        // Prune values with null in file config to remove them
+        foreach ($this->configVarsToPruneNulls as $key) {
+            $config->set($key, array_filter($config->get($key, []), function ($v) {
+                return !is_null($v);
+            }));
+        }
+    }
+
+    public function boot(): void
+    {
+        /** @var Config $config */
+        $config = $this->app->get('config');
+
+        $this->loadConfigFromDb($config);
+        $this->loadConfigFromEnv($config);
+
+        $this->parseConfigTypes($config);
+    }
+
+    protected function loadConfigFromFiles(Config $config): void
+    {
         foreach ($this->configFiles as $file) {
             $file = $this->getConfigPath($file);
 
@@ -50,27 +86,47 @@ class ConfigServiceProvider extends ServiceProvider
             );
             $config->set($configuration);
         }
+    }
 
-        if (empty($config->get(null))) {
-            throw new Exception('Configuration not found');
-        }
+    protected function loadConfigFromEnv(Config $config): void
+    {
+        foreach ($config->get('config_options', []) as $options) {
+            foreach ($options['config'] as $name => $option) {
+                $value = $this->getEnvValue(empty($option['env']) ? $name : $option['env']);
+                if (is_null($value)) {
+                    continue;
+                }
 
-        // Prune values with null to remove them
-        foreach ($this->configVarsToPruneNulls as $key) {
-            $config->set($key, array_filter($config->get($key), function ($v) {
-                return !is_null($v);
-            }));
+                $config->set($name, $value);
+            }
         }
     }
 
-    public function boot(): void
+    protected function getEnvValue(string $name): mixed
+    {
+        $name = Str::upper($name);
+        if (isset($this->envConfig[$name])) {
+            return $this->envConfig[$name];
+        }
+
+        $file = Env::get($name  . '_FILE');
+        if (!is_null($file) && is_readable($file)) {
+            $value = file_get_contents($file);
+        } else {
+            $value = Env::get($name);
+        }
+
+        $this->envConfig[$name] = $value;
+
+        return $value;
+    }
+
+    protected function loadConfigFromDb(Config $config): void
     {
         if (!$this->eventConfig) {
             $this->eventConfig = $this->app->make(EventConfig::class);
         }
 
-        /** @var Config $config */
-        $config = $this->app->get('config');
         try {
             /** @var EventConfig[] $values */
             $values = $this->eventConfig->newQuery()->get(['name', 'value']);
@@ -89,6 +145,24 @@ class ConfigServiceProvider extends ServiceProvider
             }
 
             $config->set($option->name, $data);
+        }
+    }
+
+    protected function parseConfigTypes(Config $config): void
+    {
+        // Parse config types
+        foreach ($config->get('config_options', []) as $page) {
+            foreach ($page['config'] as $name => $options) {
+                $value = $config->get($name, $options['default'] ?? null);
+
+                $value = match ($options['type'] ?? null) {
+                    'datetime-local' => $value ? Carbon::createFromDatetime((string) $value) : $value,
+                    'boolean' => !empty($value),
+                    default => $value,
+                };
+
+                $config->set($name, $value);
+            }
         }
     }
 

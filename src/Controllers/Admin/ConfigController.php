@@ -26,49 +26,7 @@ class ConfigController extends BaseController
         'config.edit',
     ];
 
-    protected array $options = [
-        /**
-         *  '[name]' => [
-         *      'title' => '[title], # Optional, default config.[name]
-         *      'permission' => '[permission]' # Optional, string or array
-         *      'icon' => '[icon]', # Optional, default gear-fill
-         *      'validation' => callable, # Optional. callable to validate the request
-         *      'config' => [
-         *          '[name]' => [
-         *              'name' => 'some.value', # Optional, default: config.[name]
-         *              'type' => 'string', # string, text, datetime-local, ...
-         *              'default' => '[value]', # Optional
-         *              'required' => true, # Optional, default false
-         *              # Optional config.[name].info for information messages
-         *              # Optionally other options used by the correlating field
-         *          ],
-         *      ],
-         *  ],
-         */
-        'event' => [
-            'config' => [
-                'name' => [
-                    'type' => 'string',
-                ],
-                'welcome_msg' => [
-                    'type' => 'text',
-                    'rows' => 5,
-                ],
-                'buildup_start' => [
-                    'type' => 'datetime-local',
-                ],
-                'event_start' => [
-                    'type' => 'datetime-local',
-                ],
-                'event_end' => [
-                    'type' => 'datetime-local',
-                ],
-                'teardown_end' => [
-                    'type' => 'datetime-local',
-                ],
-            ],
-        ],
-    ];
+    protected array $options = [];
 
     public function __construct(
         protected Response $response,
@@ -76,9 +34,8 @@ class ConfigController extends BaseController
         protected Redirector $redirect,
         protected UrlGeneratorInterface $url,
         protected LoggerInterface $log,
-        array $options = [],
     ) {
-        $this->options += $options;
+        $this->options = $this->config->get('config_options', []);
         $this->parseOptions();
     }
 
@@ -110,10 +67,11 @@ class ConfigController extends BaseController
 
         $changes = [];
         foreach ($settings as $key => $options) {
-            $value = $data[$key] ?? $options['default'] ?? null;
+            $value = array_key_exists($key, $data) ? $data[$key] : $options['default'] ?? null;
 
             $value = match ($options['type']) {
                 'datetime-local' => $value ? Carbon::createFromDatetime($value) : $value,
+                'boolean' => !empty($value),
                 default => $value,
             };
 
@@ -157,8 +115,9 @@ class ConfigController extends BaseController
             match ($setting['type']) {
                 'string', 'text' => null, // Anything is valid here when optional
                 'datetime-local' => $validation[] = 'date_time',
+                'boolean' => $validation[] = 'checked',
                 default => throw new InvalidArgumentException(
-                    'Type ' . $setting['type'] . ' of ' . $key . ' not defined'
+                    'Type ' . $setting['type'] . ' of ' . $key . ' is not defined'
                 ),
             };
 

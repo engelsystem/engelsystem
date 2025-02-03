@@ -13,6 +13,7 @@ class Carbon extends \Carbon\Carbon
     public const DATETIME_FORMATS = [
         self::DATETIME_LOCAL,
         self::DATETIME_FALLBACK,
+        self::DEFAULT_TO_STRING_FORMAT,
     ];
 
     /**

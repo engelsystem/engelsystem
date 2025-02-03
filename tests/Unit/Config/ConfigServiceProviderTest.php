@@ -8,77 +8,135 @@ use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\ConfigServiceProvider;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\EventConfig;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\HasDatabase;
+use Engelsystem\Test\Unit\TestCase;
 use Exception;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Env;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ConfigServiceProviderTest extends ServiceProviderTest
+class ConfigServiceProviderTest extends TestCase
 {
     use ArraySubsetAsserts;
+    use HasDatabase;
 
     private array $configVarsWhereNullIsPruned =
         ['themes', 'tshirt_sizes', 'headers', 'header_items', 'footer_items', 'locales', 'contact_options'];
 
     /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::getConfigPath
      * @covers \Engelsystem\Config\ConfigServiceProvider::register
+     * @covers \Engelsystem\Config\ConfigServiceProvider::__construct
      */
     public function testRegister(): void
     {
-        /** @var Application|MockObject $app */
-        /** @var Config|MockObject $config */
-        list($app, $config) = $this->getConfiguredApp(__DIR__ . '/../../../config');
-
-        $config
-            ->expects($this->exactly(4 + sizeof($this->configVarsWhereNullIsPruned)))
-            ->method('get')
-            ->with($this->callback(function (mixed $arg) {
-                return is_null($arg) || in_array($arg, $this->configVarsWhereNullIsPruned);
-            }))
-            ->will($this->returnCallback(function (mixed $arg) {
-                if (in_array($arg, $this->configVarsWhereNullIsPruned)) {
-                    return [$arg . '_foo' => $arg . '_bar', $arg . '_willBePruned' => null];
-                } elseif (is_null($arg)) {
-                    return ['some' => 'value'];
-                } else {
-                    throw new Exception('Unexpected arg: ' . $arg);
-                }
-            }));
-
-        $config
-            ->expects($this->exactly(3 + sizeof($this->configVarsWhereNullIsPruned)))
-            ->method('set')
-            //With does not support a callback funtion with multiple args ...
-            //Therefore, we misuse will
-            ->will($this->returnCallback(function (mixed $key, mixed $value = null) {
-                if (is_array($key)) {
-                    return null;
-                }
-                if (in_array($key, $this->configVarsWhereNullIsPruned)) {
-                    if ($value == [$key . '_foo' => $key . '_bar']) {
-                        return null;
-                    }
-                    throw new Exception('Value for key ' . print_r($key, true) .
-                                        'is not as expected: ' . print_r($value, true));
-                }
-                throw new Exception('Unexpected key: ' . print_r($key, true));
-            }));
-
-        $configFile = __DIR__ . '/../../../config/config.php';
-        $configExists = file_exists($configFile);
-        if (!$configExists) {
-            file_put_contents($configFile, '<?php return ["lor"=>"em"];');
-        }
-
-        $serviceProvider = new ConfigServiceProvider($app);
+        $serviceProvider = new ConfigServiceProvider($this->app);
         $serviceProvider->register();
 
-        if (!$configExists) {
-            unlink($configFile);
+        $this->assertTrue($this->app->has('config'));
+        $this->assertTrue($this->app->has(Config::class));
+    }
+
+    /**
+     * @covers \Engelsystem\Config\ConfigServiceProvider::register
+     */
+    public function testRegisterRemovesNull(): void
+    {
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        foreach ($this->configVarsWhereNullIsPruned as $name) {
+            $this->assertTrue($config->has($name));
         }
+
+        $themes = $config->get('themes');
+        // Persisted
+        $this->assertArrayHasKey('foo', $themes);
+        // Overwritten in local config
+        $this->assertArrayNotHasKey('lorem', $themes);
+    }
+
+    /**
+     * @covers \Engelsystem\Config\ConfigServiceProvider::register
+     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromFiles
+     */
+    public function testLoadConfigFromFilesIgnoreNotFound(): void
+    {
+        $this->app->instance('path.config', __DIR__ . '/Stub/unconfigured');
+
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $this->assertArrayHasKey('unconfigured-config', $config->get(null));
+    }
+
+    /**
+     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromFiles
+     * @covers \Engelsystem\Config\ConfigServiceProvider::getConfigPath
+     */
+    public function testLoadConfigFromFileMerging(): void
+    {
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $conf = $config->get(null);
+        $this->assertArrayNotHasKey('unconfigured-config', $conf);
+        $this->assertArrayHasKey('app', $conf);
+        $this->assertArrayHasKey('config-default', $conf);
+        $this->assertArrayHasKey('config', $conf);
+        $this->assertArrayHasKey('file', $conf);
+
+        $this->assertEquals('config.php', $conf['file']);
+    }
+
+    /**
+     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromEnv
+     * @covers \Engelsystem\Config\ConfigServiceProvider::getEnvValue
+     */
+    public function testLoadConfigFromEnv(): void
+    {
+        $this->initDatabase();
+
+        Env::getRepository()->set('VALUE_FROM_ENV', 'env value');
+        Env::getRepository()->set('SOME_FOO', 'foo has a value');
+        Env::getRepository()->set('ANOTHER_BAR_FILE', $this->app->get('path.config') . '/secret_file');
+
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $conf = $config->get(null);
+        $this->assertArrayNotHasKey('unconfigured-config', $conf);
+        $this->assertArrayHasKey('from_env', $conf);
+
+        $this->assertEquals('env value', $conf['from_env']);
+        $this->assertEquals('foo has a value', $conf['some_foo']);
+        $this->assertEquals('something secret!' . PHP_EOL, $conf['another_bar']);
+        // Not existing value is not set yet
+        $this->assertArrayNotHasKey('not_set', $conf);
+
+        $serviceProvider->boot();
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $conf = $config->get(null);
+
+        // Is now defined
+        $this->assertArrayHasKey('not_set', $conf);
+        $this->assertTrue($conf['not_set']);
+
+        // Cleanup
+        Env::getRepository()->clear('VALUE_FROM_ENV');
+        Env::getRepository()->clear('SOME_FOO');
+        Env::getRepository()->clear('ANOTHER_BAR_FILE');
     }
 
     /**
@@ -86,103 +144,93 @@ class ConfigServiceProviderTest extends ServiceProviderTest
      */
     public function testRegisterException(): void
     {
-        /** @var Application|MockObject $app */
-        /** @var Config|MockObject $config */
-        list($app, $config) = $this->getConfiguredApp(__DIR__ . '/not_existing');
-
-        $this->setExpects($config, 'set', null, null, $this->never());
-        $this->setExpects($config, 'get', [null], []);
+        $this->app->instance('path.config', __DIR__ . '/Stub/not_existing');
 
         $this->expectException(Exception::class);
 
-        $serviceProvider = new ConfigServiceProvider($app);
+        $serviceProvider = new ConfigServiceProvider($this->app);
         $serviceProvider->register();
     }
 
     /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::__construct
      * @covers \Engelsystem\Config\ConfigServiceProvider::boot
+     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromDb
      */
-    public function testBoot(): void
+    public function testLoadConfigFromDb(): void
     {
-        $app = $this->getApp(['get', 'make']);
+        $this->initDatabase();
+        (new EventConfig(['name' => 'in_database', 'value' => 'content']))->save();
+        (new EventConfig(['name' => 'file', 'value' => 'database']))->save();
+        (new EventConfig(['name' => 'themes', 'value' => ['foo' => 'test', 'bar' => 'baz']]))->save();
 
-        /** @var EventConfig|MockObject $eventConfig */
-        $eventConfig = $this->createMock(EventConfig::class);
-        /** @var EloquentBuilder|MockObject $eloquentBuilder */
-        $eloquentBuilder = $this->getMockBuilder(EloquentBuilder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $config = new Config(['foo' => 'bar', 'lorem' => ['ipsum' => 'dolor', 'bla' => 'foo']]);
-
-        $configs = [
-            new EventConfig(['name' => 'test', 'value' => 'testing']),
-            new EventConfig(['name' => 'lorem', 'value' => ['ipsum' => 'tester']]),
-        ];
-
-        $returnValue = $eloquentBuilder;
-        $eventConfig
-            ->expects($this->exactly(3))
-            ->method('newQuery')
-            ->willReturnCallback(function () use (&$returnValue) {
-                if ($returnValue instanceof EloquentBuilder) {
-                    $return = $returnValue;
-                    $returnValue = null;
-                    return $return;
-                }
-
-                if (is_null($returnValue)) {
-                    throw new QueryException('', '', [], new Exception());
-                }
-
-                return null;
-            });
-
-        $this->setExpects($eloquentBuilder, 'get', [['name', 'value']], $configs);
-        $this->setExpects($app, 'get', ['config'], $config, $this->exactly(3));
-        $this->setExpects($app, 'make', [EventConfig::class], $eventConfig, $this->exactly(1));
-
-        $serviceProvider = new ConfigServiceProvider($app);
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
         $serviceProvider->boot();
 
-        $serviceProvider = new ConfigServiceProvider($app, $eventConfig);
-        $serviceProvider->boot();
-        $serviceProvider->boot();
+        /** @var Config $config */
+        $config = $this->app->get('config');
 
-        $this->assertArraySubset(
-            [
-                'foo'   => 'bar',
-                'lorem' => [
-                    'ipsum' => 'tester',
-                    'bla'   => 'foo',
-                ],
-                'test'  => 'testing',
-            ],
-            $config->get(null)
-        );
+        $conf = $config->get(null);
+        $this->assertArrayHasKey('in_database', $conf);
+        $this->assertArrayHasKey('file', $conf);
+        $this->assertArrayHasKey('themes', $conf);
+
+        $this->assertEquals('content', $conf['in_database']);
+        $this->assertEquals('database', $conf['file']);
+        $this->assertEquals(['foo' => 'test', 'bar' => 'baz'], $conf['themes']);
     }
 
     /**
-     * @return Application[]|Config[]
+     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromDb
      */
-    protected function getConfiguredApp(string $configPath): array
+    public function testLoadConfigFromDbIgnoreQueryError(): void
     {
         /** @var Config|MockObject $config */
-        $config = $this->getMockBuilder(Config::class)
+        $config = $this->getMockBuilder(EventConfig::class)
+            ->onlyMethods(['newQuery'])
+            ->addMethods(['get'])
             ->getMock();
+        $this->setExpects($config, 'newQuery', null, $config, $this->atLeastOnce());
+        $config->expects($this->once())
+            ->method('get')
+            ->with(['name', 'value'])
+            ->willReturnCallback(function (): void {
+                throw new QueryException('', '', [], new Exception());
+            });
 
-        $app = $this->getApp(['make', 'instance', 'get']);
-        Application::setInstance($app);
+        $serviceProvider = new ConfigServiceProvider($this->app, $config);
+        $serviceProvider->register();
+        $serviceProvider->boot();
+    }
 
-        $this->setExpects($app, 'make', [Config::class], $config);
-        $this->setExpects($app, 'get', ['path.config'], $configPath, $this->atLeastOnce());
-        $app->expects($this->exactly(2))
-            ->method('instance')
-            ->withConsecutive(
-                [Config::class, $config],
-                ['config', $config]
-            );
+    /**
+     * @covers \Engelsystem\Config\ConfigServiceProvider::parseConfigTypes
+     */
+    public function testParseConfigTypes(): void
+    {
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
+        $serviceProvider->boot();
 
-        return [$app, $config];
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $conf = $config->get(null);
+
+        $this->assertArrayHasKey('not_set', $conf);
+        $this->assertTrue($conf['not_set']);
+
+        $this->assertArrayHasKey('date_time', $conf);
+        $this->assertInstanceOf(Carbon::class, $conf['date_time']);
+
+        $this->assertArrayHasKey('bool', $conf);
+        $this->assertFalse($conf['bool']);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->instance('path.config', __DIR__ . '/Stub');
+        Application::setInstance($this->app);
     }
 }

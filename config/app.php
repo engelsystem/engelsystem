@@ -89,4 +89,59 @@ return [
 
         'shift.updating' => \Engelsystem\Events\Listener\Shifts::class . '@updatedSendEmail',
     ],
+
+    'config_options' => [
+        /**
+         *  '[name]' => [
+         *      'title' => '[title], # Optional, default config.[name]
+         *      'permission' => '[permission]' # Optional, string or array
+         *      'icon' => '[icon]', # Optional, default gear-fill
+         *      'validation' => callable, # Optional. callable to validate the request
+         *      'config' => [
+         *          '[name]' => [
+         *              'name' => 'some.value', # Optional, default: config.[name]
+         *              'type' => 'string', # string, text, datetime-local, boolean ...
+         *              'default' => '[value]', # Optional
+         *              'required' => true, # Optional, default false
+         *              'env' => '[]', # Optional, env var to load
+         *              'hidden' => false, # Optional, default false, hides the config in frontend # TODO
+         *              # Optional translation config.[name].info for information messages
+         *              # Optionally other options used by the correlating field template
+         *          ],
+         *      ],
+         *  ],
+         */
+        'event' => [
+            'config' => [
+                'name' => [
+                    'type' => 'string',
+                ],
+                'welcome_msg' => [
+                    'type' => 'text',
+                    'rows' => 5,
+                ],
+                'buildup_start' => [
+                    'type' => 'datetime-local',
+                ],
+                'event_start' => [
+                    'type' => 'datetime-local',
+                ],
+                'event_end' => [
+                    'type' => 'datetime-local',
+                ],
+                'teardown_end' => [
+                    'type' => 'datetime-local',
+                ],
+                'enable_day_of_event' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'event_has_day0' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'foo' => ['type' => 'string'], // ToDo: remove
+            ],
+        ],
+    ],
 ];

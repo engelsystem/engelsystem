@@ -320,13 +320,13 @@ msgid "config.name"
 msgstr "Event Name"
 
 msgid "config.name.info"
-msgstr "The event name is shown on the start page."
+msgstr "The event name is shown on the start page"
 
 msgid "config.welcome_msg"
 msgstr "Event Welcome Message"
 
 msgid "config.welcome_msg.info"
-msgstr "The welcome message is shown after successful registration. You can use markdown."
+msgstr "The welcome message is shown after successful registration. You can use markdown"
 
 msgid "config.buildup_start"
 msgstr "Buildup date"
@@ -339,6 +339,20 @@ msgstr "Event end date"
 
 msgid "config.teardown_end"
 msgstr "Teardown end date"
+
+msgid "config.enable_day_of_event"
+msgstr "Day of event"
+
+msgid "config.enable_day_of_event.info"
+msgstr ""
+"Whether to show the current day of the event (-2, -1, 0, 1, 2…) in the footer and on the dashboard. "
+"The event start date has to be set for it to appear."
+
+msgid "config.event_has_day0"
+msgstr "Event has day 0"
+
+msgid "config.event_has_day0.info"
+msgstr "If checked there will be a day 0 (-1, 0, 1…). If not there won't (-1, 1…)."
 
 msgid "validation.event_start.after"
 msgstr "Event start must be after buildup."

@@ -12,20 +12,71 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use InvalidArgumentException;
 
 class ConfigControllerTest extends ControllerTest
 {
     protected array $options = [
-        'config' => [
-            'foo' => [
-                'type' => 'text',
-                'required' => 'true',
-            ],
-            'bar' => [
-                'type' => 'datetime-local',
-                'name' => 'some.bar',
+        'test' => [
+            'config' => [
+                'foo' => [
+                    'type' => 'text',
+                    'required' => 'true',
+                ],
+                'bar' => [
+                    'type' => 'datetime-local',
+                    'name' => 'some.bar',
+                ],
             ],
         ],
+        'invalid' => [
+            'config' => [
+                'broken' => [
+                    'type' => 'not_existing_input_type',
+                ],
+            ],
+        ],
+        'event' => [
+            'config' => [
+                'name' => [
+                    'type' => 'string',
+                ],
+                'welcome_msg' => [
+                    'type' => 'text',
+                    'rows' => 5,
+                ],
+                'buildup_start' => [
+                    'type' => 'datetime-local',
+                ],
+                'event_start' => [
+                    'type' => 'datetime-local',
+                ],
+                'event_end' => [
+                    'type' => 'datetime-local',
+                ],
+                'teardown_end' => [
+                    'type' => 'datetime-local',
+                ],
+                'enable_day_of_event' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'needed_field' => [
+                    'type' => 'string',
+                    'required' => true,
+                ],
+            ],
+        ],
+    ];
+
+    protected array $validEventBody = [
+        'name' => '',
+        'welcome_msg' => '',
+        'buildup_start' => '',
+        'event_start' => '',
+        'event_end' => '',
+        'teardown_end' => '',
+        'needed_field' => 'some field value',
     ];
 
     /**
@@ -36,7 +87,7 @@ class ConfigControllerTest extends ControllerTest
         /** @var ConfigController $controller */
         $controller = $this->app->make(ConfigController::class);
 
-        $this->setExpects($this->response, 'redirectTo', ['http://localhost/admin/config/event'], $this->response);
+        $this->setExpects($this->response, 'redirectTo', ['http://localhost/admin/config/test'], $this->response);
 
         $response = $controller->index();
         $this->assertEquals($this->response, $response);
@@ -84,7 +135,7 @@ class ConfigControllerTest extends ControllerTest
             });
 
         /** @var ConfigController $controller */
-        $controller = $this->app->make(ConfigController::class, ['options' => ['test' => $this->options]]);
+        $controller = $this->app->make(ConfigController::class);
 
         $response = $controller->edit($this->request);
         $this->assertEquals($this->response, $response);
@@ -108,10 +159,63 @@ class ConfigControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\Admin\ConfigController::save
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
      */
+    public function testSaveTestValidateInvalidInputType(): void
+    {
+        $this->request->attributes->set('page', 'invalid');
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $this->expectException(InvalidArgumentException::class);
+        $controller->save($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
+    public function testSaveTestValidateSuccessful(): void
+    {
+        $this->request->attributes->set('page', 'test');
+        $this->request = $this->request->withParsedBody([
+            'foo' => 'some text',
+            'bar' => '2042-01-01T00:00',
+        ]);
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $controller->save($this->request);
+        $this->assertEquals('some text', EventConfig::whereName('foo')->first()->value);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
+    public function testSaveTestValidateRequiredError(): void
+    {
+        $this->request->attributes->set('page', 'test');
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $this->expectException(ValidationException::class);
+        $controller->save($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
     public function testSaveCreateInvalid(): void
     {
-        $this->request->attributes->set('page', 'event');
-        $this->request = $this->request->withParsedBody(['buildup_start' => 'invalid date']);
+        $this->request = $this->request->withParsedBody(array_merge($this->validEventBody, [
+            'buildup_start' => 'invalid date',
+        ]));
 
         /** @var ConfigController $controller */
         $controller = $this->app->make(ConfigController::class);
@@ -125,13 +229,12 @@ class ConfigControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validateEvent
      */
-    public function testSaveValidateEvent(): void
+    public function testSaveValidateEventDates(): void
     {
-        $this->request->attributes->set('page', 'event');
-        $this->request = $this->request->withParsedBody([
+        $this->request = $this->request->withParsedBody(array_merge($this->validEventBody, [
             'event_end' => '2042-01-01T00:00',
             'teardown_end' => '2000-01-01T00:00',
-        ]);
+        ]));
 
         /** @var ConfigController $controller */
         $controller = $this->app->make(ConfigController::class);
@@ -144,12 +247,10 @@ class ConfigControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
      */
-    public function testSaveTestEmpty(): void
+    public function testSaveEmpty(): void
     {
-        $this->request->attributes->set('page', 'test');
-
         /** @var ConfigController $controller */
-        $controller = $this->app->make(ConfigController::class, ['options' => ['test' => $this->options]]);
+        $controller = $this->app->make(ConfigController::class);
         $controller->setValidator(new Validator());
 
         $this->expectException(ValidationException::class);
@@ -161,19 +262,9 @@ class ConfigControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validateEvent
      */
-    public function testSaveEmpty(): void
+    public function testSaveEmptyValues(): void
     {
-        $this->request->attributes->set('page', 'event');
-        $body = [
-            'name' => '',
-            'welcome_msg' => '',
-            'buildup_start' => '',
-            'event_start' => '',
-            'event_end' => '',
-            'teardown_end' => '',
-        ];
-
-        $this->request = $this->request->withParsedBody($body);
+        $this->request = $this->request->withParsedBody($this->validEventBody);
         $this->app->instance(Request::class, $this->request);
         $this->response->expects($this->once())
             ->method('redirectTo')
@@ -186,7 +277,7 @@ class ConfigControllerTest extends ControllerTest
 
         $controller->save($this->request);
 
-        $this->assertEmpty(EventConfig::all());
+        $this->assertEmpty(EventConfig::where('name', '!=', 'needed_field')->get());
 
         $this->assertTrue($this->log->hasInfoThatContains('Updated'));
         $this->assertHasNotification('config.edit.success');
@@ -199,15 +290,15 @@ class ConfigControllerTest extends ControllerTest
      */
     public function testSave(): void
     {
-        $this->request->attributes->set('page', 'event');
-        $body = [
+        $body = array_merge($this->validEventBody, [
             'name' => 'TestEvent',
             'welcome_msg' => 'Welcome!',
             'buildup_start' => '2001-01-01T10:42',
             'event_start' => '2010-01-01T00:00',
             'event_end' => '2042-01-01T00:00',
             'teardown_end' => '2042-01-01T00:00',
-        ];
+            'enable_day_of_event' => true,
+        ]);
 
         $this->request = $this->request->withParsedBody($body)->withHeader('referer', 'http://localhost/test');
         $this->app->instance(Request::class, $this->request);
@@ -235,5 +326,13 @@ class ConfigControllerTest extends ControllerTest
 
         $this->assertTrue($this->log->hasInfoThatContains('Updated'));
         $this->assertHasNotification('config.edit.success');
+    }
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->config->set('config_options', $this->options);
+        $this->request->attributes->set('page', 'event');
     }
 }
