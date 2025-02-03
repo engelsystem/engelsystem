@@ -38,6 +38,7 @@ class EventTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Event::getAttachments
      * @covers \Engelsystem\Helpers\Schedule\Event::getUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getFeedbackUrl
+     * @covers \Engelsystem\Helpers\Schedule\Event::getOriginUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getVideoDownloadUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getEndDate
      */
@@ -83,6 +84,7 @@ class EventTest extends TestCase
         $this->assertNull($event->getUrl());
         $this->assertNull($event->getVideoDownloadUrl());
         $this->assertNull($event->getFeedbackUrl());
+        $this->assertNull($event->getOriginUrl());
         $this->assertEquals('2020-12-28T20:20:00+00:00', $event->getEndDate()->format(Carbon::RFC3339));
     }
 
@@ -111,6 +113,7 @@ class EventTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Event::getAttachments
      * @covers \Engelsystem\Helpers\Schedule\Event::getUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getFeedbackUrl
+     * @covers \Engelsystem\Helpers\Schedule\Event::getOriginUrl
      * @covers \Engelsystem\Helpers\Schedule\Event::getVideoDownloadUrl
      */
     public function testCreate(): void
@@ -140,7 +143,8 @@ class EventTest extends TestCase
             $attachments,
             'https://foo.bar/2-lorem',
             'https://videos.orem.ipsum/2-lorem.mp4',
-            'https://videos.orem.ipsum/2-lorem/feedback'
+            'https://videos.orem.ipsum/2-lorem/feedback',
+            'https://some.example/2-lorem/',
         );
 
         $this->assertEquals('/foo/bar.png', $event->getLogo());
@@ -154,6 +158,7 @@ class EventTest extends TestCase
         $this->assertEquals('https://foo.bar/2-lorem', $event->getUrl());
         $this->assertEquals('https://videos.orem.ipsum/2-lorem.mp4', $event->getVideoDownloadUrl());
         $this->assertEquals('https://videos.orem.ipsum/2-lorem/feedback', $event->getFeedbackUrl());
+        $this->assertEquals('https://some.example/2-lorem/', $event->getOriginUrl());
 
         $event->setTitle('Event title');
         $this->assertEquals('Event title', $event->getTitle());

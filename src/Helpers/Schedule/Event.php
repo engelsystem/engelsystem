@@ -48,6 +48,7 @@ class Event extends ScheduleData
         protected ?string $url = null,
         protected ?string $videoDownloadUrl = null,
         protected ?string $feedbackUrl = null,
+        protected ?string $originUrl = null,
     ) {
         $this->endDate = $this->date
             ->copy()
@@ -170,6 +171,11 @@ class Event extends ScheduleData
     public function getFeedbackUrl(): ?string
     {
         return $this->feedbackUrl;
+    }
+
+    public function getOriginUrl(): ?string
+    {
+        return $this->originUrl;
     }
 
     public function getVideoDownloadUrl(): ?string
