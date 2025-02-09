@@ -16,7 +16,7 @@ testing 'PHP ⚙️'
 composer validate
 composer phpcs
 composer phpstan
-./vendor/bin/phpunit
+php -d memory_limit=-1 ./vendor/bin/phpunit
 
 testing 'translations 🗺️'
 find resources/lang -type f -name '*.po' -exec sh -c 'msgfmt "${1%.*}.po" -o"${1%.*}.mo"' shell {} \;
