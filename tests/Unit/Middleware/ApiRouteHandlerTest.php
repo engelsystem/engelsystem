@@ -155,7 +155,7 @@ class ApiRouteHandlerTest extends TestCase
         /** @var RequestHandlerInterface|MockObject $handler */
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
         $errorHandler = $this->createMock(Handler::class);
-        $this->setExpects($errorHandler, 'exceptionHandler', [$e, true], '', $this->once());
+        $this->setExpects($errorHandler, 'exceptionHandler', [$e, false], '', $this->once());
         $this->app->instance('error.handler', $errorHandler);
 
         $handler->expects($this->once())

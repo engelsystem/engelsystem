@@ -70,7 +70,7 @@ class ApiRouteHandler implements MiddlewareInterface
         } catch (Throwable $e) {
             /** @var Handler $handler */
             $handler = app('error.handler');
-            $handler->exceptionHandler($e, true);
+            $handler->exceptionHandler($e, false);
             $response = new Response('', 500);
             $response->setContent($response->getReasonPhrase());
         }

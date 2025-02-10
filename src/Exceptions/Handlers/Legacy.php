@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Engelsystem\Exceptions\Handlers;
 
 use Engelsystem\Http\Request;
+use ErrorException;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Throwable;
 
 class Legacy implements HandlerInterface
@@ -39,8 +41,14 @@ class Legacy implements HandlerInterface
             return;
         }
 
+        $errorLevels = E_ERROR | E_RECOVERABLE_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR;
+        $logAsError = !$e instanceof ErrorException || $e->getSeverity() & $errorLevels;
         try {
-            $this->log->critical('', ['exception' => $e]);
+            $this->log->log(
+                $logAsError ? LogLevel::CRITICAL : LogLevel::WARNING,
+                '',
+                ['exception' => $e],
+            );
         } catch (Throwable) {
         }
     }
