@@ -37,7 +37,10 @@ class Handler
             return;
         }
 
-        set_error_handler([$this, 'errorHandler']);
+        $level = $this->environment == Environment::DEVELOPMENT
+            ? E_ALL
+            : E_RECOVERABLE_ERROR | E_COMPILE_ERROR;
+        set_error_handler([$this, 'errorHandler'], $level);
         set_exception_handler([$this, 'exceptionHandler']);
     }
 
