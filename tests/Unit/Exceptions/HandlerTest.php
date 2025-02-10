@@ -29,21 +29,49 @@ class HandlerTest extends TestCase
         $this->assertEquals(Environment::DEVELOPMENT, $anotherHandler->getEnvironment());
     }
 
+    public function errorHandlerProvider(): array
+    {
+        return [
+            // Environment, Error level, should display message or (if false) ignore the output by returning
+
+            [Environment::PRODUCTION, E_RECOVERABLE_ERROR, true],
+            [Environment::PRODUCTION, E_WARNING, false],
+            [Environment::PRODUCTION, E_NOTICE, false],
+            [Environment::PRODUCTION, E_DEPRECATED, false],
+            [Environment::PRODUCTION, E_COMPILE_ERROR, true],
+            [Environment::PRODUCTION, E_USER_WARNING, false],
+            [Environment::PRODUCTION, E_USER_NOTICE, false],
+            [Environment::PRODUCTION, E_USER_DEPRECATED, false],
+
+            [Environment::DEVELOPMENT, E_RECOVERABLE_ERROR, true],
+            [Environment::DEVELOPMENT, E_WARNING, true],
+            [Environment::DEVELOPMENT, E_NOTICE, true],
+            [Environment::DEVELOPMENT, E_DEPRECATED, true],
+            [Environment::DEVELOPMENT, E_COMPILE_ERROR, true],
+            [Environment::DEVELOPMENT, E_USER_WARNING, true],
+            [Environment::DEVELOPMENT, E_USER_NOTICE, true],
+            [Environment::DEVELOPMENT, E_USER_DEPRECATED, true],
+        ];
+    }
+
     /**
      * @covers \Engelsystem\Exceptions\Handler::errorHandler()
+     * @dataProvider errorHandlerProvider
      */
-    public function testErrorHandler(): void
+    public function testErrorHandler(Environment $env, int $level, bool $showError): void
     {
         /** @var Handler|MockObject $handler */
         $handler = $this->getMockBuilder(Handler::class)
+            ->setConstructorArgs([$env])
             ->onlyMethods(['exceptionHandler'])
             ->getMock();
 
         $handler->expects($this->once())
             ->method('exceptionHandler')
-            ->with($this->isInstanceOf(ErrorException::class));
+            ->with($this->isInstanceOf(ErrorException::class), $showError);
 
-        $handler->errorHandler(1, 'Foo and bar!', '/lo/rem.php', 123);
+        $return = $handler->errorHandler($level, 'Foo and bar!', '/lo/rem.php', 123);
+        $this->assertEquals($showError, $return);
     }
 
     /**
@@ -78,7 +106,7 @@ class HandlerTest extends TestCase
         $this->expectOutputString($errorMessage);
         $handler->exceptionHandler($exception);
 
-        $return = $handler->exceptionHandler($exception, true);
+        $return = $handler->exceptionHandler($exception, false);
         $this->assertEquals($errorMessage, $return);
     }
 

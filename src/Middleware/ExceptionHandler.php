@@ -32,7 +32,7 @@ class ExceptionHandler implements MiddlewareInterface
         } catch (Throwable $e) {
             /** @var ExceptionsHandler $handler */
             $handler = $this->container->get('error.handler');
-            $content = $handler->exceptionHandler($e, true);
+            $content = $handler->exceptionHandler($e, false);
 
             return response($content, 500);
         }

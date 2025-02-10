@@ -37,20 +37,25 @@ class Handler
             return;
         }
 
-        $level = $this->environment == Environment::DEVELOPMENT
-            ? E_ALL
-            : E_RECOVERABLE_ERROR | E_COMPILE_ERROR;
-        set_error_handler([$this, 'errorHandler'], $level);
+        set_error_handler([$this, 'errorHandler']);
         set_exception_handler([$this, 'exceptionHandler']);
     }
 
-    public function errorHandler(int $number, string $message, string $file, int $line): void
+    public function errorHandler(int $errorNumber, string $message, string $file, int $line): bool
     {
-        $exception = new ErrorException($message, 0, $number, $file, $line);
-        $this->exceptionHandler($exception);
+        $handleLevel = $this->environment == Environment::DEVELOPMENT
+            ? E_ALL
+            : E_RECOVERABLE_ERROR | E_COMPILE_ERROR;
+        // If error level should be intercepted or ignored (like warnings in prod)
+        $shouldHandle = (bool) ($errorNumber & $handleLevel);
+
+        $exception = new ErrorException($message, 0, $errorNumber, $file, $line);
+        $this->exceptionHandler($exception, $shouldHandle);
+
+        return $shouldHandle;
     }
 
-    public function exceptionHandler(Throwable $e, bool $return = false): string
+    public function exceptionHandler(Throwable $e, bool $showError = true): string
     {
         if (!$this->request instanceof Request) {
             $this->request = new Request();
@@ -61,7 +66,7 @@ class Handler
         ob_start();
         $handler->render($this->request, $e);
 
-        if ($return) {
+        if (!$showError) {
             $output = ob_get_contents();
             ob_end_clean();
             return $output;
