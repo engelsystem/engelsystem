@@ -25,7 +25,8 @@ class Legacy implements HandlerInterface
     {
         $previous = $e->getPrevious();
         error_log(sprintf(
-            'Exception: Code: %s, Message: %s, File: %s:%u, Previous: %s, Trace: %s',
+            '%s: Code: %s, Message: %s, File: %s:%u, Previous: %s, Trace: %s',
+            get_class($e),
             $e->getCode(),
             $e->getMessage(),
             $this->stripBasePath($e->getFile()),
