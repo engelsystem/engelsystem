@@ -37,9 +37,11 @@
 {% macro user_info(user, opt) %}
     {% if user.state.user_info and can('admin_arrive') %}
         <span
-        {% if can('user.info.show') %}
+        {% if can('user.info.hint') %}
             data-bs-toggle="tooltip"
-            title="{{ user.state.user_info|escape('html_attr') }}"
+            {% if can('user.info.view') %}
+                title="{{ user.state.user_info|escape('html_attr') }}"
+            {% endif %}
         {% endif %}
         >
             {{ _self.icon('info-circle-fill', 'info') }}
