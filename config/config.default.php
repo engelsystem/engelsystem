@@ -388,6 +388,18 @@ return [
     # Instruction only onsite in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)
     'ifsg_light_enabled'           => env('IFSG_LIGHT_ENABLED', false) && env('IFSG_ENABLED', false),
 
+    // Prevent Angles from overworking themselves by working too many consecutive shifts
+    'maximum_working_time' => [
+        // enable to enforce work time limit / disable to allow unlimited consecutive work
+        'enabled' => (bool) env('MAX_WORKING_TIME_ENABLED', false),
+        // maximum hours of work before a rest period is required
+        'max_working_hours' => env('MAX_WORKING_TIME_WORK_HOURS', 10),
+        // length of required rest period
+        'min_rest_hours' => env('MAX_WORKING_TIME_REST_HOURS', 11),
+        // enforce one rest period every 24h, even if max_working_hours limit is not reached
+        'enforce_daily_rest' => env('MAX_WORKING_TIME_ENFORCE_DAILY_REST', true),
+    ],
+
     // Available locales in /resources/lang/
     // To disable a locale in config.php, you can set its value to null
     'locales'                 => [
