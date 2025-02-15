@@ -133,6 +133,69 @@ class ShiftTest extends ModelTest
         $this->assertCount(5, $shift->shiftEntries);
     }
 
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::nextShift
+     */
+    public function testNextShift(): void
+    {
+        $location = Location::factory()->create();
+        $shiftType = ShiftType::factory()->create();
+        $shift = Shift::factory()->create([
+            'location_id' => $location->id,
+            'shift_type_id' => $shiftType->id,
+            'title' => 'Rocket start',
+            'start' => Carbon::now(),
+        ]);
+        $nextShift = Shift::factory()->create([
+            'location_id' => $location->id,
+            'shift_type_id' => $shiftType->id,
+            'title' => 'Rocket start',
+            'start' => Carbon::now()->addHour(),
+        ]);
+        $otherShift = Shift::factory()->create([
+            'location_id' => $location->id,
+            'shift_type_id' => $shiftType->id,
+            'title' => 'Rocket starts',
+            'start' => Carbon::now()->addHours(3),
+        ]);
+
+        $this->assertEquals($nextShift->id, $shift->nextShift()->id);
+        $this->assertEquals($otherShift->id, $nextShift->nextShift()->id);
+        $this->assertNull($otherShift->nextShift());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::previousShift
+     */
+    public function testPreviousShift(): void
+    {
+        $location = Location::factory()->create();
+        $shiftType = ShiftType::factory()->create();
+        $shift = Shift::factory()->create([
+            'location_id' => $location->id,
+            'shift_type_id' => $shiftType->id,
+            'title' => 'Rocket start',
+            'end' => Carbon::now(),
+        ]);
+        $previousShift = Shift::factory()->create([
+            'location_id' => $location->id,
+            'shift_type_id' => $shiftType->id,
+            'title' => 'Rocket start',
+            'end' => Carbon::now()->subHour(),
+        ]);
+        $otherShift = Shift::factory()->create([
+            'location_id' => $location->id,
+            'shift_type_id' => $shiftType->id,
+            'title' => 'Rocket starts',
+            'end' => Carbon::now()->subHours(3),
+        ]);
+
+        $this->assertEquals($previousShift->id, $shift->previousShift()->id);
+        $this->assertEquals($otherShift->id, $previousShift->previousShift()->id);
+        $this->assertNull($otherShift->previousShift());
+    }
+
     /**
      * @covers \Engelsystem\Models\Shifts\Shift::isNightShift
      */

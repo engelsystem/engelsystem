@@ -956,6 +956,9 @@ msgstr "Register"
 msgid "shift.next"
 msgstr "Next shift"
 
+msgid "shift.previous"
+msgstr "Previous shift"
+
 msgid "general.shift"
 msgstr "Shift"
 
