@@ -134,6 +134,40 @@ class Shift extends BaseModel
     }
 
     /**
+     * get next shift with same shift type and location
+     */
+    public function nextShift(): Shift|null
+    {
+        $query = Shift::query();
+        if (Shift::whereTitle($this->title)->where('start', '>', $this->start)->exists()) {
+            $query = $query->where('title', $this->title);
+        }
+        return $query
+            ->where('shift_type_id', $this->shiftType->id)
+            ->where('location_id', $this->location->id)
+            ->where('start', '>', $this->start)
+            ->orderBy('start')
+            ->first();
+    }
+
+    /**
+     * get previous shift with same shift type and location
+     */
+    public function previousShift(): Shift|null
+    {
+        $query = Shift::query();
+        if (Shift::whereTitle($this->title)->where('end', '<', $this->end)->exists()) {
+            $query = $query->where('title', $this->title);
+        }
+        return $query
+            ->where('shift_type_id', $this->shiftType->id)
+            ->where('location_id', $this->location->id)
+            ->where('end', '<', $this->end)
+            ->orderBy('end', 'desc')
+            ->first();
+    }
+
+    /**
      * Check if the shift is a night shift
      */
     public function isNightShift(): bool

@@ -238,7 +238,18 @@ function Shift_view(
         '<span class="icon-icon_angel"></span> ' . __('profile.my_shifts')
     );
 
-    $content[] = buttons($buttons);
+    $nextShift = $shift->nextShift();
+    $previousShift = $shift->previousShift();
+
+    $navigationButtons = '';
+    if ($nextShift || $previousShift) {
+        $navigationButtons = table_buttons([
+            $previousShift ? button(url('/shifts', ['action' => 'view', 'shift_id' => $previousShift->id]), __('shift.previous')) : '',
+            $nextShift ? button(url('/shifts', ['action' => 'view', 'shift_id' => $nextShift->id]), __('shift.next')) : '',
+        ], 'mb-2');
+    }
+
+    $content[] = $navigationButtons ? div('row', [div('col-md-12', [table_buttons($buttons, 'mb-2'), $navigationButtons])]) : buttons($buttons);
     $content[] = Shift_view_header($shift, $location);
 
     $content[] = div('row', [
