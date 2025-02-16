@@ -93,7 +93,7 @@ function user_delete_controller()
 
             mail_user_delete($user_source);
             success(__('User deleted.'));
-            engelsystem_log(sprintf('Deleted %s', User_Nick_render($user_source, true)));
+            engelsystem_log(sprintf('Deleted user %s', User_Nick_render($user_source, true)));
 
             throw_redirect(users_link());
         }
