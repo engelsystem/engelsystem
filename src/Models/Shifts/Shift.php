@@ -133,7 +133,7 @@ class Shift extends BaseModel
     {
         $config = config('night_shifts');
 
-        /** @see User_get_shifts_sum_query to keep it in sync */
+        /** @see \Engelsystem\Helpers\Goodie::nightShiftsSumQuery to keep them in sync */
         return $config['enabled'] && (
                 // Starts during night
                 $this->start->hour >= $config['start'] && $this->start->hour < $config['end']
