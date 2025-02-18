@@ -240,6 +240,11 @@ components:
           $ref: '#/components/schemas/Reference'
         shift_type:
           $ref: '#/components/schemas/Reference'
+        schedule_guid:
+          type: string
+          format: uuid
+          nullable: true
+          description: schedule.xml event guid
         created_at:
           $ref: '#/components/schemas/DateTimeOptional'
         updated_at:
@@ -261,6 +266,7 @@ components:
         - ends_at
         - location
         - shift_type
+        - schedule_guid
         - created_at
         - updated_at
         - needed_angel_types
@@ -650,6 +656,30 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Shift'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get a list of all users
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Reference'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':

@@ -20,6 +20,7 @@ use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
 class ShiftsControllerTest extends ApiBaseControllerTest
 {
@@ -241,9 +242,17 @@ class ShiftsControllerTest extends ApiBaseControllerTest
             'location_id' => $this->location->id,
         ]);
 
-        (new ScheduleShift(['shift_id' => $this->shiftB->id, 'schedule_id' => $this->schedule1->id, 'guid' => 'a']))
+        (new ScheduleShift([
+            'shift_id' => $this->shiftB->id,
+            'schedule_id' => $this->schedule1->id,
+            'guid' => Str::uuid(),
+        ]))
             ->save();
-        (new ScheduleShift(['shift_id' => $this->shiftC->id, 'schedule_id' => $this->schedule2->id, 'guid' => 'b']))
+        (new ScheduleShift([
+            'shift_id' => $this->shiftC->id,
+            'schedule_id' => $this->schedule2->id,
+            'guid' => Str::uuid(),
+        ]))
             ->save();
 
         // "Empty" entry to be skipped
