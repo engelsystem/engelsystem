@@ -67,15 +67,15 @@ class UserVoucherController extends BaseController
     public function saveVoucher(Request $request): Response
     {
         $this->checkActive();
-        $userId = (int) $request->getAttribute('user_id');
+        $userId = (int)$request->getAttribute('user_id');
         /** @var User $user */
         $user = $this->user->findOrFail($userId);
 
         $data = $this->validate($request, [
-            'got_voucher' => 'required|int',
+            'got_voucher' => 'int',
         ]);
 
-        $user->state->got_voucher =  $data['got_voucher'];
+        $user->state->got_voucher =  (int)$data['got_voucher'];
         $user->state->save();
 
         $this->log->info(
