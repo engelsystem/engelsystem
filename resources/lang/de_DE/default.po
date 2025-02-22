@@ -581,6 +581,9 @@ msgstr "Engeltyp"
 msgid "shift.next"
 msgstr "Nächste Schicht"
 
+msgid "shift.previous"
+msgstr "Vorherige Schicht"
+
 msgid "general.shift"
 msgstr "Schicht"
 
