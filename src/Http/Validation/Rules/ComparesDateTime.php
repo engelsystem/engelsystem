@@ -23,7 +23,7 @@ trait ComparesDateTime
     {
         $input = $this->toDateTime($input);
 
-        return $this->compare($input);
+        return $this->compare($input, $this->compareTo);
     }
 
     protected function toDateTime(mixed $value): mixed

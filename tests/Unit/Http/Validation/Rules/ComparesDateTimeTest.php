@@ -18,10 +18,13 @@ class ComparesDateTimeTest extends TestCase
     public function testValidate(): void
     {
         $rule = new UsesComparesDateTime('2024-01-02 13:37');
-        $rule->setCallback(function ($input) {
+        $rule->setCallback(function ($input, $comparison) {
             /** @var Carbon $input */
             $this->assertInstanceOf(Carbon::class, $input);
             $this->assertEquals('2042-10-11 00:00:00', $input->toDateTimeString());
+
+            $this->assertInstanceOf(Carbon::class, $comparison);
+            $this->assertEquals('2024-01-02 13:37:00', $comparison->toDateTimeString());
 
             return true;
         });
@@ -63,8 +66,9 @@ class ComparesDateTimeTest extends TestCase
         $b = Carbon::now();
 
         $rule = new UsesComparesDateTime($a);
-        $rule->setCallback(function ($input) use ($b) {
+        $rule->setCallback(function ($input, $comparison) use ($a, $b) {
             $this->assertEquals($b, $input);
+            $this->assertEquals($a, $comparison);
 
             return false;
         });
