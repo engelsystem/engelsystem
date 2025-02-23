@@ -12,11 +12,11 @@ class UsesComparesDateTime
 
     protected mixed $callback = null;
 
-    public function compare(mixed $input): bool
+    public function compare(mixed $left, mixed $right): bool
     {
         /** @var callable $callback */
         $callback = $this->callback;
-        return $callback($input);
+        return $callback($left, $right);
     }
 
     public function setCallback(callable $callback): void

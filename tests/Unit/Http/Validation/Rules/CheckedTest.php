@@ -10,14 +10,14 @@ use Engelsystem\Test\Unit\TestCase;
 class CheckedTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Http\Validation\Rules\Checked::validate
+     * @covers \Engelsystem\Http\Validation\Rules\Checked::isValid
      * @see TruthyTest
      */
-    public function testValidate(): void
+    public function testIsValid(): void
     {
         $rule = new Checked();
 
-        $this->assertTrue($rule->validate('on'));
-        $this->assertFalse($rule->validate(null));
+        $this->assertTrue($rule->isValid('on'));
+        $this->assertFalse($rule->isValid(null));
     }
 }
