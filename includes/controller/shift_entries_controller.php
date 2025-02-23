@@ -196,6 +196,7 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
         ShiftSignupStatus::NOT_ARRIVED => error(__('You are not marked as arrived.')),
         ShiftSignupStatus::NOT_YET     => error(__('You are not allowed to sign up yet.')),
         ShiftSignupStatus::SIGNED_UP   => error(__('You are signed up for this shift.')),
+        ShiftSignupStatus::OVERWORKED  => error(__('This Shift exceeds your maximum working time. Please get some rest.')),
         default => null, // ShiftSignupStatus::FREE|ShiftSignupStatus::ADMIN
     };
 }
