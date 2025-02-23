@@ -653,6 +653,18 @@ msgstr "Edit T-shirt"
 msgid "user.edit.goodie"
 msgstr "Edit goodie"
 
+msgid "user.goodie_score.enough"
+msgstr "Enough"
+
+msgid "user.goodie_score.value"
+msgstr "%s h"
+
+msgid "user.tshirt_score"
+msgstr "T-Shirt score: %s"
+
+msgid "user.goodie_score"
+msgstr "Goodie score: %s"
+
 msgid "user.shirt_size"
 msgstr "T-shirt size"
 
