@@ -200,25 +200,6 @@ function Shift_view(
 
     $content = [msg()];
 
-    if ($shift_signup_state->getState() === ShiftSignupStatus::COLLIDES) {
-        $content[] = warning(__('This shift collides with one of your shifts.'), true);
-    }
-
-    if ($shift_signup_state->getState() === ShiftSignupStatus::SIGNED_UP) {
-        $content[] = info(__('You are signed up for this shift.')
-            . (($shift->start->subHours(config('last_unsubscribe')) < Carbon::now() && $shift->end > Carbon::now())
-                ? ' ' . __('shift.sign_out.hint', [config('last_unsubscribe')])
-                : ''), true);
-    }
-
-    $signupAdvanceSeconds = ($shift->shiftType->signup_advance_hours ?: config('signup_advance_hours')) * 3600;
-    if ($signupAdvanceSeconds && $shift->start->timestamp > time() + $signupAdvanceSeconds) {
-        $content[] = info(sprintf(
-            __('This shift is in the far future. It becomes available for signup at %s.'),
-            date(__('general.datetime'), $shift->start->timestamp - $signupAdvanceSeconds)
-        ), true);
-    }
-
     $buttons = [];
     if ($shift_admin || $shiftTypesEdit || $locationsEdit) {
         $buttons = [
@@ -257,11 +238,13 @@ function Shift_view(
         user_link(auth()->user()->id),
         '<span class="icon-icon_angel"></span> ' . __('profile.my_shifts')
     );
-    $content[] = buttons($buttons);
 
+    $content[] = buttons($buttons);
     $content[] = Shift_view_header($shift, $location);
+
     $content[] = div('row', [
         div('col-sm-6', [
+            Shift_view_alert_render($shift, $shift_signup_state),
             '<h2>' . __('Needed angels') . '</h2>',
             '<div class="list-group">' . $needed_angels . '</div>',
         ]),
@@ -296,6 +279,42 @@ function Shift_view(
         . $night_shift_hint,
         $content
     );
+}
+
+/**
+ * Checks whether the user is elligible and able to sign up for this shift and
+ * generates an appropriate alert if not.
+ *
+ * @param Shift                  $shift
+ * @param Engelsystem\ShiftSignupState $shift_signup_state
+ * @return string                      '' if no alert is necessary, alert div otherwise
+ */
+function Shift_view_alert_render(
+    Shift $shift,
+    ShiftSignupState $shift_signup_state
+) {
+    $alert = '';
+
+    if ($shift_signup_state->getState() === ShiftSignupStatus::COLLIDES) {
+        $alert = warning(__('This shift collides with one of your shifts.'), true);
+    }
+
+    if ($shift_signup_state->getState() === ShiftSignupStatus::SIGNED_UP) {
+        $alert = info(__('You are signed up for this shift.')
+            . (($shift->start->subHours(config('last_unsubscribe')) < Carbon::now() && $shift->end > Carbon::now())
+                ? ' ' . __('shift.sign_out.hint', [config('last_unsubscribe')])
+                : ''), true);
+    }
+
+    $signupAdvanceSeconds = ($shift->shiftType->signup_advance_hours ?: config('signup_advance_hours')) * 3600;
+    if ($signupAdvanceSeconds && $shift->start->timestamp > time() + $signupAdvanceSeconds) {
+        $alert = info(sprintf(
+            __('This shift is in the far future. It becomes available for signup at %s.'),
+            date(__('general.datetime'), $shift->start->timestamp - $signupAdvanceSeconds)
+        ), true);
+    }
+
+    return $alert;
 }
 
 /**
