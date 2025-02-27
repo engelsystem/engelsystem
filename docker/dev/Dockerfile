@@ -11,7 +11,7 @@ FROM es_base AS es_webserver
 RUN apk add --no-cache nginx && \
     sed -i 's/9000/127.0.0.1:9000/' /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY docker/entrypoint.sh /
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/config/nginx.conf /etc/nginx/nginx.conf
 ENTRYPOINT /entrypoint.sh
 EXPOSE 80
 
