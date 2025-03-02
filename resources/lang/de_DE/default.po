@@ -395,9 +395,6 @@ msgstr "Anzahl der Gutscheine gespeichert."
 msgid "User not found."
 msgstr "Benutzer nicht gefunden."
 
-msgid "Enough"
-msgstr "Genug"
-
 msgid "All users"
 msgstr "Alle Benutzer"
 
@@ -1855,6 +1852,18 @@ msgstr "T-Shirt bearbeiten"
 
 msgid "user.edit.goodie"
 msgstr "Goodie bearbeiten"
+
+msgid "user.goodie_score.enough"
+msgstr "Genug"
+
+msgid "user.goodie_score.value"
+msgstr "%s h"
+
+msgid "user.tshirt_score"
+msgstr "T-Shirt Score: %s"
+
+msgid "user.goodie_score"
+msgstr "Goodie Score: %s"
 
 msgid "form.shirt"
 msgstr "T-Shirt"
