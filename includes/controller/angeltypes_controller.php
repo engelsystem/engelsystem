@@ -157,7 +157,7 @@ function angeltype_edit_controller()
     }
 
     return [
-        sprintf(__('Edit %s'), htmlspecialchars((string) $angeltype->name)),
+        sprintf(__('Edit %s'), (string) $angeltype->name),
         AngelType_edit_view($angeltype, $supporter_mode),
     ];
 }
@@ -200,7 +200,7 @@ function angeltype_controller()
 
     $isSupporter = !is_null($user_angeltype) && $user_angeltype->supporter;
     return [
-        sprintf(__('Team %s'), htmlspecialchars($angeltype->name)),
+        sprintf(__('Team %s'), $angeltype->name),
         AngelType_view(
             $angeltype,
             $members,

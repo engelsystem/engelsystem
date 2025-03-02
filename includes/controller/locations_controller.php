@@ -53,7 +53,7 @@ function location_controller(): array
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
     return [
-        htmlspecialchars($location->name),
+        $location->name,
         location_view($location, $shiftsFilterRenderer, $shiftCalendarRenderer),
     ];
 }
