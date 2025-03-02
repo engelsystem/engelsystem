@@ -205,7 +205,7 @@ EOT;
     }
     if ($goodie_enabled) {
         if ($goodie_tshirt) {
-            $user_table_headers['got_goodie'] = Users_table_header_link('got_goodie', __('T-Shirt'), $order_by);
+            $user_table_headers['got_goodie'] = Users_table_header_link('got_goodie', __('T-shirt'), $order_by);
             $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
         } else {
             $user_table_headers['got_goodie'] = Users_table_header_link('got_goodie', __('Goodie'), $order_by);

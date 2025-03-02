@@ -660,7 +660,7 @@ msgid "user.goodie_score.value"
 msgstr "%s h"
 
 msgid "user.tshirt_score"
-msgstr "T-Shirt score: %s"
+msgstr "T-shirt score: %s"
 
 msgid "user.goodie_score"
 msgstr "Goodie score: %s"
