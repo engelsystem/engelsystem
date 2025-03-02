@@ -1,0 +1,7 @@
+## Format: <path> <owner>
+
+# Securing the CODEOWNERS file against unauthorized changes
+/.github/CODEOWNERS @owner_username @Corborax
+
+# Enforces a code reviev
+/ @RustyBraze @Corborax @Balenty
