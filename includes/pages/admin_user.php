@@ -66,10 +66,10 @@ function admin_user()
             . '</p></td></tr>' . "\n";
         if (config('enable_full_name')) {
             $html .= '  <tr><td>' . __('settings.profile.firstname') . '</td><td>'
-                . '<input size="40" name="eName" value="' . htmlspecialchars((string) $user_source->personalData->last_name) . '" class="form-control" maxlength="64">'
+                . '<input size="40" name="eVorname" value="' . htmlspecialchars((string) $user_source->personalData->first_name) . '" class="form-control" maxlength="64">'
                 . '</td></tr>' . "\n";
             $html .= '  <tr><td>' . __('settings.profile.lastname') . '</td><td>'
-                . '<input size="40" name="eVorname" value="' . htmlspecialchars((string) $user_source->personalData->first_name) . '" class="form-control" maxlength="64">'
+                . '<input size="40" name="eName" value="' . htmlspecialchars((string) $user_source->personalData->last_name) . '" class="form-control" maxlength="64">'
                 . '</td></tr>' . "\n";
         }
         $html .= '  <tr><td>' . __('settings.profile.mobile') . '</td><td>'
