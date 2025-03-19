@@ -41,7 +41,7 @@
         >
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
                 {% for name,opt in menu() %}
                     {% set url = opt is iterable ? opt[0] : opt %}
