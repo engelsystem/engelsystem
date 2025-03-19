@@ -195,7 +195,7 @@ table .border-bottom {
 
 // prevent dropdown-menu from overflowing the view
 .dropdown-menu {
-  max-height: calc(100vh - 300px); // 300px: menu offset
+  max-height: 100dvh;
   overflow: auto;
 
   // Show above shifts headers
