@@ -315,7 +315,7 @@ function render_table($columns, $rows, $data = true)
         return info(__('No data found.'), true);
     }
 
-    $html = '<table class="table table-striped' . ($data ? ' data' : '') . '">';
+    $html = '<table class="table table-striped table-sticky-header' . ($data ? ' data' : '') . '">';
     $html .= '<thead><tr>';
     foreach ($columns as $key => $column) {
         $html .= '<th class="column_' . $key . '">' . $column . '</th>';
