@@ -398,7 +398,7 @@ return [
     // The default locale to use
     'default_locale'          => env('DEFAULT_LOCALE', 'en_US'),
 
-    // Available T-Shirt sizes
+    // Available T-shirt sizes
     // To disable a t-shirt size in config.php, you can set its value to null
     'tshirt_sizes'            => [
         'S'    => 'Small Straight-Cut',
