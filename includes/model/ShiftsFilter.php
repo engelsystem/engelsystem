@@ -22,6 +22,11 @@ class ShiftsFilter
     public const FILLED_FREE = 0;
 
     /**
+     * Always include own shifts.
+     */
+    public const FILLED_OWN = 2;
+
+    /**
      * Has the user "user shifts admin" privilege?
      *
      * @var boolean
