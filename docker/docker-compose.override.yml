@@ -35,7 +35,7 @@ services:
       MYSQL_USER: helferinnensystem
       MYSQL_PASSWORD: ""
       MYSQL_PASSWORD_FILE: /run/secrets/db_password
-      MYSQL_RANDOM_ROOT_PASSWORD: 0
+      MYSQL_RANDOM_ROOT_PASSWORD: ""
       MYSQL_ROOT_PASSWORD: ""
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_INITDB_SKIP_TZINFO: "yes"
