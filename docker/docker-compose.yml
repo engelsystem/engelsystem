@@ -24,7 +24,7 @@ services:
       MYSQL_DATABASE: engelsystem
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
-      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_RANDOM_ROOT_PASSWORD: "1"
       MYSQL_INITDB_SKIP_TZINFO: "yes"
     volumes:
       - db:/var/lib/mysql
