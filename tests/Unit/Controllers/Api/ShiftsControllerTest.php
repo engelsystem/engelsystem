@@ -89,7 +89,6 @@ class ShiftsControllerTest extends ApiBaseControllerTest
     {
         /** @var ShiftEntry $firstEntry */
         $firstEntry = $this->shiftB->shiftEntries->first();
-
         $request = new Request();
         $request = $request->withAttribute('angeltype_id', $firstEntry->angelType->id);
 
