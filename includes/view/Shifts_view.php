@@ -159,7 +159,6 @@ function Shift_view(
     $nightShiftsConfig = config('night_shifts');
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
-    $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
     $supportsAngelTypes = auth()->user()
         ->userAngelTypes()
@@ -281,11 +280,11 @@ function Shift_view(
     $night_shift_hint = '';
     if ($shift->isNightShift() && $goodie_enabled) {
         $night_shift_hint = ' <small><span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
-            . __('Night shifts between %d and %d am are multiplied by %d for the %s score.', [
+            . __('Night shifts between %d and %d am are multiplied by %d for the goodie score.', [
                 $nightShiftsConfig['start'],
                 $nightShiftsConfig['end'],
                 $nightShiftsConfig['multiplier'],
-                ($goodie_tshirt ? __('T-shirt') : __('goodie'))])
+            ])
             . '"></span></small>';
     }
     $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm', '', __('general.back'));

@@ -11,12 +11,24 @@ use Engelsystem\Http\Response;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Collection;
+use Psr\Log\LogLevel;
 
 class LogsController extends BaseController
 {
     /** @var array<string> */
     protected array $permissions = [
         'admin_log',
+    ];
+
+    protected array $levels = [
+        LogLevel::ALERT,
+        LogLevel::CRITICAL,
+        LogLevel::DEBUG,
+        LogLevel::EMERGENCY,
+        LogLevel::ERROR,
+        LogLevel::INFO,
+        LogLevel::NOTICE,
+        LogLevel::WARNING,
     ];
 
     public function __construct(protected LogEntry $log, protected Response $response, protected Authenticator $auth)
@@ -27,13 +39,18 @@ class LogsController extends BaseController
     {
         $searchUserId = (int) $request->input('search_user_id') ?: null;
         $search = $request->input('search');
+        $level = $request->input('level');
         $userId = $this->auth->user()?->id;
 
         if ($this->auth->can('logs.all')) {
             $userId = $searchUserId;
         }
 
-        $entries = $this->log->filter($search, $userId);
+        if (!in_array($level, $this->levels)) {
+            $level = null;
+        }
+
+        $entries = $this->log->filter($search, $userId, $level);
 
         /** @var Collection $users */
         $users = User::with('personalData')
@@ -45,7 +62,14 @@ class LogsController extends BaseController
 
         return $this->response->withView(
             'admin/log.twig',
-            ['entries' => $entries, 'search' => $search, 'users' => $users, 'search_user_id' => $searchUserId]
+            [
+                'entries' => $entries,
+                'search' => $search,
+                'users' => $users,
+                'search_user_id' => $searchUserId,
+                'level' => $level,
+                'levels' => array_combine($this->levels, $this->levels),
+            ]
         );
     }
 }

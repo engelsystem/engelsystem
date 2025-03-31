@@ -647,9 +647,6 @@ msgstr "Create new tag"
 msgid "tag.delete.title"
 msgstr "Delete tag \"%s\""
 
-msgid "user.edit.shirt"
-msgstr "Edit T-shirt"
-
 msgid "user.edit.goodie"
 msgstr "Edit goodie"
 
@@ -667,9 +664,6 @@ msgstr "Arrived"
 
 msgid "user.arrive"
 msgstr "Arrive"
-
-msgid "user.got_shirt"
-msgstr "Got T-shirt"
 
 msgid "user.got_goodie"
 msgstr "Got goodie"
