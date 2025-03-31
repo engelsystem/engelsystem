@@ -229,3 +229,11 @@ If unspecific issues appear try using Docker version >= 20.10.14.
 
 ### `service "es_workspace" is not running`
 Make sure you're running your docker commands from the `docker/dev` directory, not from `docker`
+
+### `main` is broken after pulling the latest commits from upstream
+Try running
+```bash
+composer install
+```
+from this repository's root directory.
+If dependencies have been updated in `composer.json` since you last synced `main`, this should fix it.
