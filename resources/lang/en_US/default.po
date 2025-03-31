@@ -260,7 +260,7 @@ msgid "news.edit.message"
 msgstr "Message"
 
 msgid "news.edit.hint"
-msgstr "You can use Markdown and the [more] tag"
+msgstr "You can use Markdown and the [more] tag to separate the preview from the main text."
 
 msgid "news.delete.title"
 msgstr "Delete news \"%s\""

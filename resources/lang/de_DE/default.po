@@ -1468,7 +1468,7 @@ msgid "news.edit.message"
 msgstr "Nachricht"
 
 msgid "news.edit.hint"
-msgstr "Du kannst Markdown und den [more] Tag benutzen"
+msgstr "Du kannst Markdown verwenden sowie den [more] Tag um die Vorschau vom Text zu trennen."
 
 msgid "news.delete.title"
 msgstr "News \"%s\" löschen"
