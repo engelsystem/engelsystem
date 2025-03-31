@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http\Validation\Rules;
 
-use Respect\Validation\Rules\AbstractRule;
+use Respect\Validation\Rules\Core\Simple;
 use Respect\Validation\Validator;
 use RuntimeException;
 
@@ -12,9 +12,9 @@ use RuntimeException;
  * Username validation.
  * Usernames must have 1-24 chars and NOT match the regular expression defined under the config key "username_regex".
  */
-class Username extends AbstractRule
+class Username extends Simple
 {
-    public function validate(mixed $input): bool
+    public function isValid(mixed $input): bool
     {
         $regex = config('username_regex');
 
