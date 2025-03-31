@@ -201,7 +201,7 @@ function Shift_view(
     $content = [msg()];
 
     if ($shift_signup_state->getState() === ShiftSignupStatus::COLLIDES) {
-        $content[] = info(__('This shift collides with one of your shifts.'), true);
+        $content[] = warning(__('This shift collides with one of your shifts.'), true);
     }
 
     if ($shift_signup_state->getState() === ShiftSignupStatus::SIGNED_UP) {
