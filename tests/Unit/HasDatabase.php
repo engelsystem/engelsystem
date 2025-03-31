@@ -18,7 +18,7 @@ trait HasDatabase
     protected Database $database;
 
     /**
-     * Setup in memory database
+     * Setup in memory database, cache migrated state between tests
      */
     protected function initDatabase(): void
     {
@@ -36,6 +36,17 @@ trait HasDatabase
 
         $this->app->instance(ServerRequestInterface::class, new Request());
 
+        $this->restoreDatabase($connection);
+
+        if (!$connection->getSchemaBuilder()->hasTable('migrations')) {
+            $this->runMigration();
+
+            $this->storeDatabase($connection);
+        }
+    }
+
+    protected function runMigration(): void
+    {
         /** @var Migrate $migration */
         $migration = $this->app->get('db.migration');
         $migration->initMigration();
@@ -46,7 +57,7 @@ trait HasDatabase
             ->insert(
                 [
                     // Migrations that can be skipped as they only use legacy tables
-                    // or only change data not available/relevant in migrations
+                    // or only change data not available/relevant in test migrations
                     ['migration' => '2018_01_01_000001_import_install_sql'],
                     ['migration' => '2018_01_01_000002_import_update_sql'],
                     ['migration' => '2018_01_01_000003_fix_old_tables'],
@@ -72,5 +83,56 @@ trait HasDatabase
             );
 
         $migration->run(__DIR__ . '/../../db/migrations');
+    }
+
+    protected function storeDatabase(Connection $connection): void
+    {
+        $schema = $connection->getSchemaBuilder();
+        $dbState = [];
+        foreach ($schema->getTables() as $table) {
+            // Get table structure
+            $name = $table['name'];
+            $sql = $connection
+                ->table('sqlite_master')
+                ->where('name', $name)
+                ->first()
+                ->sql;
+
+            // Save database content
+            $rows = [];
+            $data = $connection
+                ->table($name)
+                ->get();
+            foreach ($data as $row) {
+                $rows[] = (array) $row;
+            }
+
+            $dbState[$name] = [
+                'name' => $name,
+                'info' => $table,
+                'sql' => $sql,
+                'rows' => $rows,
+            ];
+        }
+
+        RuntimeTest::$dbState = $dbState;
+    }
+
+    protected function restoreDatabase(Connection $connection): void
+    {
+        // Create tables
+        foreach (RuntimeTest::$dbState as $table) {
+            $connection->statement($table['sql']);
+        }
+
+        // Restore data
+        $schema = $connection->getSchemaBuilder();
+        $schema->disableForeignKeyConstraints();
+        foreach (RuntimeTest::$dbState as $table) {
+            $connection
+                ->table($table['name'])
+                ->insert($table['rows']);
+        }
+        $schema->enableForeignKeyConstraints();
     }
 }
