@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
+use Engelsystem\Helpers\Uuid;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Test\Unit\Controllers\ControllerTest as TestCase;
+use Illuminate\Support\Str;
 use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
 use League\OpenAPIValidation\PSR7\Exception\ValidationFailed;
 use League\OpenAPIValidation\PSR7\OperationAddress as OpenApiAddress;
@@ -48,5 +50,7 @@ abstract class ApiBaseControllerTest extends TestCase
                 return $path . ($query ? '?' . $query : '');
             });
         $this->app->instance('http.urlGenerator', $url);
+
+        Str::createUuidsUsing(Uuid::class . '::uuid');
     }
 }
