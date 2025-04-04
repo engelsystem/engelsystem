@@ -428,7 +428,27 @@ ul.navbar-nav > li.nav-item > ul.dropdown-menu {
     &:has(> a.dropdown-item.active):active,
     &:has(> a.dropdown-item.active):focus,
     &:has(> a.dropdown-item.active):focus-within {
-      /* background-color: transparent; */
+      &.bg-danger {
+        > a.nav-link,
+        > a.dropdown-item {
+          border-color: var(--color-glow-primary);
+          filter: var(--filter-glow-primary);
+
+          &:visited,
+          &:focus,
+          &:active,
+          &:hover {
+            color: var(--color-glow-primary);
+          }
+        }
+      }
+
+      &:not(.bg-danger) {
+        > a.nav-link,
+        > a.dropdown-item {
+          filter: var(--filter-glow-secondary);
+        }
+      }
 
       > a.nav-link,
       > a.dropdown-item {
@@ -436,7 +456,6 @@ ul.navbar-nav > li.nav-item > ul.dropdown-menu {
         outline: none;
         box-shadow: none;
         background-color: transparent;
-        filter: var(--filter-glow-secondary);
         transition: var(--transition-glow);
 
         &:visited,
