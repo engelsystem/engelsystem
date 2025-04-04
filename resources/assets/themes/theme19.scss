@@ -1,0 +1,102 @@
+// eh22-dark
+
+@import 'dark';
+
+$dark: #0c011f;
+$gray-darker: #180736;
+$gray-dark: #26114b;
+$gray: #61468b;
+$gray-light: #b2a0cb;
+$gray-lighter: #d1c6e0;
+$light: #f2f0f5;
+
+$color-bg: $dark;
+$color-shade-bg-1: $gray-darker;
+$color-shade-bg-2: $gray-dark;
+$color-shade-bg-3: #371f60;
+$color-shade-bg-4: #4b3176;
+$color-shade-neutral: $gray;
+$color-shade-fg-4: #7a60a0;
+$color-shade-fg-3: #957eb5;
+$color-shade-fg-2: $gray-light;
+$color-shade-fg-1: $gray-lighter;
+$color-fg: $light;
+
+$primary: #c6257d;
+$secondary: #4badd8;
+$success: #54aa18;
+$info: #61468b;
+$warning: #efb100;
+$danger: #bb2626;
+
+$accent-1: #60a5f9;
+$accent-2: #d381f7;
+$accent-3: #ff7975;
+
+:root {
+  --color-white: #ffffff;
+  --color-foreground: #f2f0f5;
+  --color-background: #0c011f;
+  --color-shade-bg-1: #180736;
+  --color-shade-bg-2: #26114b;
+  --color-shade-bg-3: #371f60;
+  --color-shade-bg-4: #4b3176;
+  --color-neutral: #61468b;
+  --color-shade-fg-4: #7a60a0;
+  --color-shade-fg-3: #957eb5;
+  --color-shade-fg-2: #b2a0cb;
+  --color-shade-fg-1: #d1c6e0;
+  --color-background-image: var(--color-shade-bg-2);
+  --color-primary: #c6257d;
+  --color-primary-highlight: #c6257d60;
+  --color-secondary: #4badd8;
+  --color-secondary-highlight: #4badd860;
+  --color-accent-1: #60a5f9;
+  --color-accent-2: #d381f7;
+  --color-accent-3: #ff7975;
+  --color-success: #54aa18;
+  --color-success-highlight: #54aa1860;
+  --color-warning: #efb100;
+  --color-warning-highlight: #efb10060;
+  --color-error: #bb2626;
+  --color-error-highlight: #bb262660;
+
+  --filter-glow-primary: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-primary))
+    drop-shadow(0 0 0.25em var(--color-primary));
+  --filter-glow-secondary: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-secondary))
+    drop-shadow(0 0 0.25em var(--color-secondary));
+  --filter-glow-error: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-error))
+    drop-shadow(0 0 0.25em var(--color-error));
+  --filter-glow-success: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-success))
+    drop-shadow(0 0 0.25em var(--color-success));
+  --filter-glow-warning: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-warning))
+    drop-shadow(0 0 0.25em var(--color-warning));
+  --color-glow-primary: var(--color-white);
+  --color-glow-secondary: var(--color-white);
+  --color-glow-error: var(--color-white);
+  --color-glow-success: var(--color-white);
+  --color-glow-warning: var(--color-white);
+  --transition-glow: filter 150ms cubic-bezier(0, 1.7, 1, -0.3) 50ms,
+    border-color 150ms cubic-bezier(0, 1.7, 1, -0.3) 50ms;
+
+  @media (prefers-reduced-motion) {
+    --transition-glow: filter 150ms, border-color 150ms;
+  }
+
+  --text-glow-primary: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-primary))
+    drop-shadow(0 0 0.125em var(--color-primary));
+  --text-glow-secondary: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-secondary))
+    drop-shadow(0 0 0.125em var(--color-secondary));
+  --text-glow-error: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-error))
+    drop-shadow(0 0 0.125em var(--color-error));
+  --text-glow-success: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-success))
+    drop-shadow(0 0 0.125em var(--color-success));
+  --text-glow-warning: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-warning))
+    drop-shadow(0 0 0.125em var(--color-warning));
+}
+
+@import 'theme19/base';
+
+.text-dark {
+  color: var(--color-shade-bg-3) !important;
+}

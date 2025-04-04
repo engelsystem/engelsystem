@@ -1,0 +1,158 @@
+// eh22-light
+
+@import 'light';
+
+$dark: #0c011f;
+$gray-darker: #180736;
+$gray-dark: #26114b;
+$gray: #61468b;
+$gray-light: #b2a0cb;
+$gray-lighter: #d1c6e0;
+$light: #f2f0f5;
+
+$color-bg: $light;
+$color-shade-bg-1: $gray-lighter;
+$color-shade-bg-2: $gray-light;
+$color-shade-bg-3: #957eb5;
+$color-shade-bg-4: #7a60a0;
+$color-shade-neutral: $gray;
+$color-shade-fg-4: #4b3176;
+$color-shade-fg-3: #371f60;
+$color-shade-fg-2: $gray-dark;
+$color-shade-fg-1: $gray-darker;
+$color-fg: $dark;
+
+$primary: #9a0a61;
+$secondary: #167fac;
+$success: #47990f;
+$info: #61468b;
+$warning: #d08700;
+$danger: #b21010;
+
+$accent-1: #303ec0;
+$accent-2: #6c366c;
+$accent-3: #932f0a;
+
+:root {
+  --color-white: #ffffff;
+  --color-foreground: #0c011f;
+  --color-background: #f2f0f5;
+  --color-shade-bg-1: #d1c6e0;
+  --color-shade-bg-2: #b2a0cb;
+  --color-shade-bg-3: #957eb5;
+  --color-shade-bg-4: #7a60a0;
+  --color-neutral: #61468b;
+  --color-shade-fg-4: #4b3176;
+  --color-shade-fg-3: #371f60;
+  --color-shade-fg-2: #26114b;
+  --color-shade-fg-1: #180736;
+  --color-background-image: var(--color-shade-bg-1);
+  --color-primary: #9a0a61;
+  --color-primary-highlight: #9a0a6160;
+  --color-secondary: #167fac;
+  --color-secondary-highlight: #167fac60;
+  --color-accent-1: #303ec0;
+  --color-accent-2: #6c366c;
+  --color-accent-3: #932f0a;
+  --color-success: #47990f;
+  --color-success-highlight: #47990f60;
+  --color-warning: #d08700;
+  --color-warning-highlight: #d0870060;
+  --color-error: #b21010;
+  --color-error-highlight: #b2101060;
+
+  --filter-glow-primary: drop-shadow(0 0 0.0625em #3f012d);
+  --filter-glow-secondary: drop-shadow(0 0 0.0625em #012c3f);
+  --filter-glow-error: drop-shadow(0 0 0.0625em #3f0101);
+  --filter-glow-success: drop-shadow(0 0 0.0625em #122b01);
+  --filter-glow-warning: drop-shadow(0 0 0.0625em #432004);
+  --color-glow-primary: #6d0449;
+  --color-glow-secondary: #044c6b;
+  --color-glow-error: #780404;
+  --color-glow-success: #2b6206;
+  --color-glow-warning: #894b00;
+  --transition-glow: filter 150ms cubic-bezier(0, 2, 1, -0.7) 50ms, border-color 150ms cubic-bezier(0, 2, 1, -0.7) 50ms;
+
+  @media (prefers-reduced-motion) {
+    --transition-glow: filter 150ms, border-color 150ms;
+  }
+
+  --text-glow-primary: drop-shadow(0 0 0.03125em #3f012d);
+  --text-glow-secondary: drop-shadow(0 0 0.03125em #012c3f);
+  --text-glow-error: drop-shadow(0 0 0.03125em #3f0101);
+  --text-glow-success: drop-shadow(0 0 0.03125em #122b01);
+  --text-glow-warning: drop-shadow(0 0 0.03125em #432004);
+}
+
+@import 'theme19/base';
+
+.btn,
+a.btn,
+button.btn,
+.btn-group > .btn,
+.btn-group > a.btn,
+.btn-group > button.btn {
+  &.btn-primary {
+    color: var(--color-background); // use background color for better readability
+  }
+}
+
+.bg-primary {
+  --header-fg-color: var(--color-background);
+  color: var(--color-background) !important;
+}
+.bg-light {
+  --header-fg-color: var(--color-foreground);
+  --highlight-color: var(--color-shade-bg-1);
+  background-color: var(--color-background) !important;
+  color: var(--color-foreground) !important;
+}
+.bg-dark {
+  --header-fg-color: var(--color-background);
+  --highlight-color: var(--color-shade-fg-1);
+  background-color: var(--color-foreground) !important;
+  color: var(--color-background) !important;
+}
+
+.btn,
+a.btn,
+button.btn,
+.btn-group > .btn,
+.btn-group > a.btn,
+.btn-group > button.btn {
+  &.btn-dark {
+    border-color: var(--color-shade-fg-1);
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: solid 0.1rem var(--color-shade-fg-1);
+      outline: none;
+      box-shadow: none;
+      background-color: var(--color-shade-fg-4);
+      color: var(--color-background);
+    }
+  }
+
+  &.btn-light {
+    border-color: var(--color-shade-bg-1);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: solid 0.1rem var(--color-shade-bg-1);
+      outline: none;
+      box-shadow: none;
+      background-color: var(--color-shade-bg-4);
+      color: var(--color-foreground);
+    }
+  }
+}
+
+.text-light {
+  color: var(--color-shade-bg-3) !important;
+}

@@ -156,6 +156,16 @@ return [
     // Supported themes
     // To disable a theme in config.php, you can set its value to null
     'themes' => [
+        20 => [
+            'name' => 'Engelsystem eh22-light (2025)',
+            'type' => 'light',
+            'navbar_classes' => 'navbar-light',
+        ],
+        19 => [
+            'name' => 'Engelsystem eh22-dark (2025)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark',
+        ],
         18 => [
             'name' => 'Engelsystem 38c3 (2024) - Lila, Lachs und Kurven',
             'type' => 'dark',
