@@ -595,5 +595,5 @@ body::before {
   mask-repeat: no-repeat;
   mask-origin: padding-box;
   mask-image: url('background.svg');
-  background-color: var(--color-shade-bg-2);
+  background-color: var(--color-background-image);
 }
