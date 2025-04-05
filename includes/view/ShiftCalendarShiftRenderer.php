@@ -74,7 +74,7 @@ class ShiftCalendarShiftRenderer
         return match ($shiftSignupState->getState()) {
             ShiftSignupStatus::ADMIN, ShiftSignupStatus::OCCUPIED => 'success',
             ShiftSignupStatus::SIGNED_UP => 'primary',
-            ShiftSignupStatus::NOT_ARRIVED, ShiftSignupStatus::NOT_YET, ShiftSignupStatus::SHIFT_ENDED => 'secondary',
+            ShiftSignupStatus::NOT_ARRIVED, ShiftSignupStatus::NOT_YET, ShiftSignupStatus::SHIFT_ENDED, ShiftSignupStatus::OVERWORKED => 'secondary',
             ShiftSignupStatus::ANGELTYPE, ShiftSignupStatus::COLLIDES => 'warning',
             ShiftSignupStatus::FREE => 'danger',
             default => 'light',
@@ -212,6 +212,7 @@ class ShiftCalendarShiftRenderer
                 ),
             // Shift collides or user is already signed up: No signup allowed
             ShiftSignupStatus::COLLIDES, ShiftSignupStatus::SIGNED_UP => $inner_text,
+            ShiftSignupStatus::OVERWORKED => $inner_text . ' (' . __('rest period') . ')',
             // Shift is full
             ShiftSignupStatus::OCCUPIED => null,
             default => null,
