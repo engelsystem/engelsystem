@@ -8,11 +8,9 @@ $list-group-form-check-input-border-color: #999;
 
 $es-choices-highlight-color: #000;
 
-$invert-color-value: 1 !default;
-
-/* Invert the clock icon color for Chrome */
-input[type='time']::-webkit-calendar-picker-indicator {
-  filter: invert($invert-color-value);
+/* Make user-agent stylesheet follow dark theme */
+body {
+  color-scheme: dark;
 }
 
 .modal .bg-dark .modal-header .btn-close {
