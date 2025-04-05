@@ -544,6 +544,7 @@ div.choices__list--dropdown > div.choices__list > div.choices__item--selectable 
   border-color: var(--color-glow-primary);
   outline: none;
   box-shadow: none;
+  z-index: 1022;
   filter: var(--filter-glow-primary);
   transition: var(--transition-glow);
 }
