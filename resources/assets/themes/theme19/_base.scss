@@ -598,3 +598,23 @@ body::before {
   mask-image: url('background.svg');
   background-color: var(--color-background-image);
 }
+
+// easteregg: flying fairydust on own profile / "my shifts"
+// fall back to regular background if reduced motion is prefered
+@media (prefers-reduced-motion: no-preference) {
+  body:has(div.row .bi-calendar-week):has(div.user-info)::before {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-origin: padding-box;
+    mask-image: url('fairydust.svg');
+    background-color: var(--color-background-image);
+  }
+}
