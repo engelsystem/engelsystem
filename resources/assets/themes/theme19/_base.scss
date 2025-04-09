@@ -484,6 +484,11 @@ ul.navbar-nav > li.nav-item > ul.dropdown-menu {
   }
 }
 
+.table a:not(.btn),
+table a:not(.btn) {
+  color: initial;
+}
+
 .navbar-toggler {
   border: solid 0.1em var(--color-shade-bg-2);
   background-color: var(--color-shade-bg-1);
