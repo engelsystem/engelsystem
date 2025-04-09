@@ -82,4 +82,13 @@ btn-group > button.btn {
   }
 }
 
+.bg-info {
+  color: var(--color-background);
+
+  > .card-header *,
+  > .card-header a.text-inherit {
+    color: var(--color-background);
+  }
+}
+
 @import 'theme19/base';

@@ -319,9 +319,22 @@ a.badge.bg-info,
 .bg-secondary,
 .bg-success,
 .bg-warning,
-.bg-info,
 .bg-light {
-  color: var(--color-shade-bg-1);
+  color: var(--color-background);
+
+  > .card-header *,
+  > .card-header a.text-inherit {
+    color: var(--color-background);
+  }
+}
+
+.bg-info {
+  color: var(--color-foreground);
+
+  > .card-header *,
+  > .card-header a.text-inherit {
+    color: var(--color-foreground);
+  }
 }
 
 .bg-body,
