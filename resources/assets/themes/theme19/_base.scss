@@ -479,6 +479,10 @@ ul.navbar-nav > li.nav-item > ul.dropdown-menu {
         background-color: transparent;
         transition: var(--transition-glow);
 
+        > span.text-success {
+          color: var(--color-glow-primary) !important; // fix: don't color "free" green on hover
+        }
+
         span.icon-icon_angel {
           background-color: var(--color-glow-secondary);
         }
