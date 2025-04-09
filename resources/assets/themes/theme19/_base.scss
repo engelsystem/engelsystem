@@ -231,12 +231,16 @@ a {
   }
 }
 
+.btn-group > form {
+  z-index: 1; // fix form-button border being partially hidden behind other buttons
+}
+
 .btn,
 a.btn,
 button.btn,
-btn-group > .btn,
-btn-group > a.btn,
-btn-group > button.btn {
+.btn-group > .btn,
+.btn-group > a.btn,
+.btn-group > button.btn {
   border: solid 0.1rem var(--color-shade-bg-2);
   background-color: var(--color-shade-bg-1);
   color: var(--color-foreground);
