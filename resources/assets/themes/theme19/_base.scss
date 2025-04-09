@@ -413,6 +413,9 @@ ul.navbar-nav > li.nav-item > ul.dropdown-menu {
       font-size: 1.2em;
       box-sizing: border-box;
 
+      height: 100%; // fix alignment in full-width mode when
+      align-content: center; // nav-item content spans accros two lines
+
       transition-property: filter, border-color;
       transition-duration: 400ms;
       transition-timing-function: ease-in;
@@ -434,6 +437,7 @@ ul.navbar-nav > li.nav-item > ul.dropdown-menu {
     }
 
     &.bg-danger > a {
+      height: 100%; // fix height in full-width variant on medium screens
       width: 100%; // fix width in drop-down variant on small screens
     }
 
@@ -520,6 +524,12 @@ table a:not(.btn) {
     color: var(--color-glow-primary);
     transition: var(--transition-glow);
     filter: var(--filter-glow-primary);
+  }
+}
+
+@media (min-width: 1400px) {
+  .navbar-collapse {
+    gap: 0.5rem !important;
   }
 }
 
