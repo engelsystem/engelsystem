@@ -14,8 +14,8 @@
         {% include 'layouts/parts/messages.twig' %}
         {{ m.alert(
             forceActive
-            ? __('voucher.eligable.fa', [eligibleVoucherCount])
-            : __('voucher.eligable', [eligibleVoucherCount])
+            ? __('voucher.eligible.fa', [eligibleVoucherCount])
+            : __('voucher.eligible', [eligibleVoucherCount])
         ) }}
 
         <form method="post">

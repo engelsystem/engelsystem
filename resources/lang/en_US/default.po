@@ -728,17 +728,14 @@ msgstr "Vouchers"
 msgid "voucher.edit"
 msgstr "Edit vouchers"
 
-msgid "voucher.save.success"
-msgstr "Saved the number of vouchers."
-
-msgid "voucher.eligable"
+msgid "voucher.eligible"
 msgstr "Angel can receive another %d vouchers."
 
-msgid "voucher.eligable.fa"
+msgid "voucher.eligible.fa"
 msgstr "Angel can receive another %d vouchers and is FA."
 
 msgid "voucher.count"
-msgstr "Number of vouchers given out"
+msgstr "Number of vouchers handed out"
 
 msgid "user.state.vouchers"
 msgstr "Got %s of %s vouchers"
