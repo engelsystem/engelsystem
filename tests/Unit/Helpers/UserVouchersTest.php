@@ -15,7 +15,6 @@ use Engelsystem\Test\Unit\Controllers\ControllerTest;
 class UserVouchersTest extends ControllerTest
 {
     private User $user;
-    private User $user2;
 
     public function setUp(): void
     {
@@ -29,33 +28,79 @@ class UserVouchersTest extends ControllerTest
         ]);
 
         $this->user = User::factory()->create();
-        $this->user2 = User::factory()->create();
+        $user2 = User::factory()->create();
 
         // user
         // start more than 3 days ago and ended, 2 hours long
-        $shift1 = Shift::factory()->create(['start' => Carbon::now()->subDays(3)->subHour(), 'end' => Carbon::now()->subDays(3)->addHour()]);
-        $entry1 = ShiftEntry::factory()->create(['shift_id' => $shift1->id, 'user_id' => $this->user->id, 'freeloaded_by' => null]);
+        $shift1 = Shift::factory()->create([
+            'start' => Carbon::now()->subDays(3)->subHour(),
+            'end' => Carbon::now()->subDays(3)->addHour(),
+        ]);
+        ShiftEntry::factory()->create([
+            'shift_id' => $shift1->id,
+            'user_id' => $this->user->id,
+            'freeloaded_by' => null,
+        ]);
 
         // started less than 1 day ago and ended, 2 hours long
-        $shift2 = Shift::factory()->create(['start' => Carbon::now()->subHours(3), 'end' => Carbon::now()->subHour()]);
-        $entry2 = ShiftEntry::factory()->create(['shift_id' => $shift2->id, 'user_id' => $this->user->id, 'freeloaded_by' => null]);
+        $shift2 = Shift::factory()->create([
+            'start' => Carbon::now()->subHours(3),
+            'end' => Carbon::now()->subHour(),
+        ]);
+        ShiftEntry::factory()->create([
+            'shift_id' => $shift2->id,
+            'user_id' => $this->user->id,
+            'freeloaded_by' => null,
+        ]);
         // entry freeloaded
-        $entryFreeloaded = ShiftEntry::factory()->create(['shift_id' => $shift1->id, 'user_id' => $this->user->id, 'freeloaded_by' => $this->user2->id]);
+        ShiftEntry::factory()->create([
+            'shift_id' => $shift1->id,
+            'user_id' => $this->user->id,
+            'freeloaded_by' => $user2->id,
+        ]);
 
         // started less than 1 day ago and ended, 4 hours long
-        $shift3 = Shift::factory()->create(['start' => Carbon::now()->subHours(5), 'end' => Carbon::now()->subHour()]);
-        $entry3 = ShiftEntry::factory()->create(['shift_id' => $shift3->id, 'user_id' => $this->user->id, 'freeloaded_by' => null]);
+        $shift3 = Shift::factory()->create([
+            'start' => Carbon::now()->subHours(5),
+            'end' => Carbon::now()->subHour(),
+        ]);
+        ShiftEntry::factory()->create([
+            'shift_id' => $shift3->id,
+            'user_id' => $this->user->id,
+            'freeloaded_by' => null,
+        ]);
 
         // shifts still running, 2 hours long
-        $shift4 = Shift::factory()->create(['start' => Carbon::now()->subHour(), 'end' => Carbon::now()->addHour()]);
-        $entry4 = ShiftEntry::factory()->create(['shift_id' => $shift4->id, 'user_id' => $this->user->id, 'freeloaded_by' => null]);
+        $shift4 = Shift::factory()->create([
+            'start' => Carbon::now()->subHour(),
+            'end' => Carbon::now()->addHour(),
+        ]);
+        ShiftEntry::factory()->create([
+            'shift_id' => $shift4->id,
+            'user_id' => $this->user->id,
+            'freeloaded_by' => null,
+        ]);
 
         // worklog 3 days ago, 2 hours long
-        $worklog1 = Worklog::factory()->create(['user_id' => $this->user->id, 'creator_id' => $this->user2->id, 'hours' => 4, 'worked_at' => Carbon::today()->subDays(3)]);
+        Worklog::factory()->create([
+            'user_id' => $this->user->id,
+            'creator_id' => $user2->id,
+            'hours' => 4,
+            'worked_at' => Carbon::today()->subDays(3),
+        ]);
         // worklog today, 4 hours long
-        $worklog2 = Worklog::factory()->create(['user_id' => $this->user->id, 'creator_id' => $this->user2->id, 'hours' => 4, 'worked_at' => Carbon::today()]);
+        Worklog::factory()->create([
+            'user_id' => $this->user->id,
+            'creator_id' => $user2->id,
+            'hours' => 4, 'worked_at' => Carbon::today(),
+        ]);
         // worklog tomorrow, 2 hours long
-        $worklog3 = Worklog::factory()->create(['user_id' => $this->user->id, 'creator_id' => $this->user2->id, 'hours' => 4, 'worked_at' => Carbon::tomorrow()]);
+        Worklog::factory()->create([
+            'user_id' => $this->user->id,
+            'creator_id' => $user2->id,
+            'hours' => 4,
+            'worked_at' => Carbon::tomorrow(),
+        ]);
     }
 
     /**
