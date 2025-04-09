@@ -58,7 +58,7 @@ function admin_user()
         $html .= '<tr><td>' . "\n";
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>' . __('general.nick') . '</td><td>'
-            . '<input size="40" name="eNick" value="' . htmlspecialchars($user_source->name)
+            . '<input size="40" name="nick" value="' . htmlspecialchars($user_source->name)
             . '" class="form-control" maxlength="24" ' . ($user_nick_edit ? '' : 'disabled') . '>'
             . '</td></tr>' . "\n";
         $html .= '  <tr><td>' . __('Last login') . '</td><td><p class="help-block">'
@@ -66,30 +66,30 @@ function admin_user()
             . '</p></td></tr>' . "\n";
         if (config('enable_full_name')) {
             $html .= '  <tr><td>' . __('settings.profile.firstname') . '</td><td>'
-                . '<input size="40" name="eVorname" value="' . htmlspecialchars((string) $user_source->personalData->first_name) . '" class="form-control" maxlength="64">'
+                . '<input size="40" name="first_name" value="' . htmlspecialchars((string) $user_source->personalData->first_name) . '" class="form-control" maxlength="64">'
                 . '</td></tr>' . "\n";
             $html .= '  <tr><td>' . __('settings.profile.lastname') . '</td><td>'
-                . '<input size="40" name="eName" value="' . htmlspecialchars((string) $user_source->personalData->last_name) . '" class="form-control" maxlength="64">'
+                . '<input size="40" name="last_name" value="' . htmlspecialchars((string) $user_source->personalData->last_name) . '" class="form-control" maxlength="64">'
                 . '</td></tr>' . "\n";
         }
         $html .= '  <tr><td>' . __('settings.profile.mobile') . '</td><td>'
-            . '<input type= "tel" size="40" name="eHandy" value="' . htmlspecialchars((string) $user_source->contact->mobile) . '" class="form-control" maxlength="40">'
+            . '<input type= "tel" size="40" name="mobile" value="' . htmlspecialchars((string) $user_source->contact->mobile) . '" class="form-control" maxlength="40">'
             . '</td></tr>' . "\n";
         if (config('enable_dect')) {
             $html .= '  <tr><td>' . __('general.dect') . '</td><td>'
-                . '<input size="40" name="eDECT" value="' . htmlspecialchars((string) $user_source->contact->dect) . '" class="form-control" maxlength="40">'
+                . '<input size="40" name="dect" value="' . htmlspecialchars((string) $user_source->contact->dect) . '" class="form-control" maxlength="40">'
                 . '</td></tr>' . "\n";
         }
         if ($user_source->settings->email_human) {
             $html .= '  <tr><td>' . __('general.email') . '</td><td>'
-                . '<input type="email" size="40" name="eemail" value="' . htmlspecialchars($user_source->email) . '" class="form-control" maxlength="254">'
+                . '<input type="email" size="40" name="mail" value="' . htmlspecialchars($user_source->email) . '" class="form-control" maxlength="254">'
                 . '</td></tr>' . "\n";
         }
         if ($goodie_tshirt && $user_goodie_edit) {
             $html .= '  <tr><td>' . __('user.shirt_size') . '</td><td>'
                 . html_select_key(
                     'size',
-                    'eSize',
+                    'shirt_size',
                     $tshirt_sizes,
                     $user_source->personalData->shirt_size,
                     __('form.select_placeholder')
@@ -126,7 +126,7 @@ function admin_user()
         // Active?
         $html .= '  <tr><td>' . __('user.active') . '</td><td>' . "\n";
         $html .= $user_goodie_edit
-            ? html_options('eAktiv', $options, $user_source->state->active)
+            ? html_options('active', $options, $user_source->state->active)
             : icon_bool($user_source->state->active);
         $html .= '</td></tr>' . "\n";
 
@@ -145,7 +145,7 @@ function admin_user()
                 . __('Goodie')
                 . '</td><td>' . "\n";
             $html .= $user_goodie_edit
-                ? html_options('eTshirt', $options, $user_source->state->got_goodie)
+                ? html_options('goodie', $options, $user_source->state->got_goodie)
                 : icon_bool($user_source->state->got_goodie);
             $html .= '</td></tr>' . "\n";
         }
@@ -286,7 +286,7 @@ function admin_user()
                 $user_source = User::findOrFail($user_id);
 
                 $changed_email = false;
-                $email = $request->postData('eemail');
+                $email = $request->postData('mail');
                 if (
                     $user_source->email !== $email
                     && User::whereEmail($email)->whereNot('id', $user_source->id)->exists()
@@ -300,7 +300,7 @@ function admin_user()
                 }
 
                 $changed_nick = false;
-                $nick = trim((string) $request->get('eNick'));
+                $nick = trim((string) $request->get('nick'));
                 $nickValid = (new Username())->validate($nick);
                 if (
                     $user_source->name !== $nick
@@ -318,22 +318,22 @@ function admin_user()
                 $user_source->save();
 
                 if (config('enable_full_name')) {
-                    $user_source->personalData->first_name = $request->postData('eVorname');
-                    $user_source->personalData->last_name = $request->postData('eName');
+                    $user_source->personalData->first_name = $request->postData('first_name');
+                    $user_source->personalData->last_name = $request->postData('last_name');
                 }
                 if ($goodie_tshirt && $user_goodie_edit) {
-                    $user_source->personalData->shirt_size = $request->postData('eSize');
+                    $user_source->personalData->shirt_size = $request->postData('shirt_size');
                 }
                 $user_source->personalData->save();
 
-                $user_source->contact->mobile = $request->postData('eHandy');
+                $user_source->contact->mobile = $request->postData('mobile');
                 if (config('enable_dect')) {
-                    $user_source->contact->dect = $request->postData('eDECT');
+                    $user_source->contact->dect = $request->postData('dect');
                 }
                 $user_source->contact->save();
 
                 if ($goodie_enabled && $user_goodie_edit) {
-                    $user_source->state->got_goodie = $request->postData('eTshirt');
+                    $user_source->state->got_goodie = $request->postData('goodie');
                 }
                 if ($user_info_edit) {
                     $user_source->state->user_info = $request->postData('userInfo');
@@ -343,7 +343,7 @@ function admin_user()
                 }
 
                 if ($user_goodie_edit) {
-                    $user_source->state->active = $request->postData('eAktiv');
+                    $user_source->state->active = $request->postData('active');
                 }
                 if (auth()->can('user.fa.edit') && config('enable_force_active')) {
                     $user_source->state->force_active = $request->input('force_active');
@@ -352,15 +352,15 @@ function admin_user()
 
                 engelsystem_log(
                     'Updated user: ' . ($changed_nick
-                        ? ('nick modified form ' . $old_nick . ' to ' . $user_source->name)
+                        ? ('nick modified from ' . $old_nick . ' to ' . $user_source->name)
                         : $user_source->name)
                     . ' (' . $user_source->id . ')'
                     . ($changed_email ? ', email modified' : '')
-                    . ($goodie_tshirt ? ', t-shirt-size: ' . $user_source->personalData->shirt_size : '')
+                    . ($goodie_tshirt ? ', T-shirt size: ' . $user_source->personalData->shirt_size : '')
                     . ', arrived: ' . $user_source->state->arrived
                     . ', active: ' . $user_source->state->active
                     . ', force-active: ' . $user_source->state->force_active
-                    . ', goodie: ' . $user_source->state->got_goodie
+                    . ($goodie_enabled ? ', goodie: ' . $user_source->state->got_goodie : '')
                     . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
                 );
                 $html .= success(__('Changes were saved.') . "\n", true);
