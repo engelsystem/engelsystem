@@ -72,7 +72,7 @@ class UserVoucherController extends BaseController
         $user = $this->user->findOrFail($userId);
 
         $data = $this->validate($request, [
-            'got_voucher' => 'int',
+            'got_voucher' => 'int|min:0',
         ]);
 
         $user->state->got_voucher = (int) $data['got_voucher'];
