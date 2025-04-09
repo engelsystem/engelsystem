@@ -1091,13 +1091,10 @@ msgstr "Gutscheine"
 msgid "voucher.edit"
 msgstr "Gutscheine bearbeiten"
 
-msgid "voucher.save.success"
-msgstr "Anzahl der Gutscheine gespeichert."
-
-msgid "voucher.eligable"
+msgid "voucher.eligible"
 msgstr "Engel kann noch %d Gutscheine bekommen."
 
-msgid "voucher.eligable.fa"
+msgid "voucher.eligible.fa"
 msgstr "Engel kann noch %d Gutscheine bekommen und ist FA."
 
 msgid "voucher.count"

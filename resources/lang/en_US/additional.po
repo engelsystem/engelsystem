@@ -277,6 +277,9 @@ msgstr "Work log successfully updated."
 msgid "worklog.delete.success"
 msgstr "Work log successfully deleted."
 
+msgid "voucher.save.success"
+msgstr "Saved the number of vouchers."
+
 msgid "location.edit.success"
 msgstr "Location edited successfully."
 
@@ -339,9 +342,3 @@ msgstr "Event end must be after the event start."
 
 msgid "validation.teardown_end.after"
 msgstr "Teardown end must be after the event end."
-
-msgid "validation.vouchers.required"
-msgstr "Please enter a valid number of vouchers."
-
-msgid "validation.vouchers.int"
-msgstr "The vouchers have to be a number."

@@ -885,11 +885,11 @@ function User_view_state_admin($freeloader, $user_source)
         if ($user_source->state->got_voucher > 0) {
             $state[] = '<span class="text-success">'
                 . icon('valentine')
-                . __('Got %s of %s vouchers', [$voucherCount, $availableCount])
+                . __('user.state.vouchers', [$voucherCount, $availableCount])
                 . '</span>';
         } else {
             $state[] = '<span class="text-danger">'
-                . __('Got no vouchers')
+                . __('user.state.vouchers.none')
                 . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')
                 . '</span>';
         }
