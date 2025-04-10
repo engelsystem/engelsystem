@@ -47,39 +47,43 @@
                     </div>
                 {% endif %}
 
-                <table class="table table-striped">
-                    <tr>
-                        <th>{{ __('log.time') }}</th>
-                        <th>{{ __('log.level') }}</th>
-                        <th>{{ __('general.user') }}</th>
-                        <th>{{ __('log.message') }}</th>
-                    </tr>
-                    {% for entry in entries %}
-                        {%- set type = 'default' %}
-                        {%- if entry.level in ['notice', 'info'] %}
-                            {%- set type = 'info' %}
-                        {%- endif %}
-                        {%- if entry.level in ['error', 'warning'] %}
-                            {%- set type = 'warning' %}
-                        {%- endif %}
-                        {%- if entry.level in ['emergency', 'alert', 'critical'] %}
-                            {%- set type = 'danger' %}
-                        {%- endif %}
-
-                        {%- set td_type = '' %}
-                        {%- if type in ['warning', 'danger'] %}
-                            {%- set td_type = type %}
-                        {%- endif %}
-
+                <table class="table table-striped table-sticky-header">
+                    <thead>
                         <tr>
-                            <td class="table-{{ td_type }} text-nowrap">{{ entry.created_at.format(__('general.datetime')) }}</td>
-                            <td class="table-{{ td_type }} text-nowrap">
-                                <span class="badge bg-{{ type }}">{{ entry.level|capitalize }}</span> <!-- //todo bs5 -->
-                            </td>
-                            <td class="text-nowrap">{% if entry.user %}{{ m.user(entry.user) }}{% endif %}</td>
-                            <td>{{ entry.message|nl2br }}</td>
+                            <th>{{ __('log.time') }}</th>
+                            <th>{{ __('log.level') }}</th>
+                            <th>{{ __('general.user') }}</th>
+                            <th>{{ __('log.message') }}</th>
                         </tr>
-                    {% endfor %}
+                    </thead>
+                    <tbody>
+                        {% for entry in entries %}
+                            {%- set type = 'default' %}
+                            {%- if entry.level in ['notice', 'info'] %}
+                                {%- set type = 'info' %}
+                            {%- endif %}
+                            {%- if entry.level in ['error', 'warning'] %}
+                                {%- set type = 'warning' %}
+                            {%- endif %}
+                            {%- if entry.level in ['emergency', 'alert', 'critical'] %}
+                                {%- set type = 'danger' %}
+                            {%- endif %}
+
+                            {%- set td_type = '' %}
+                            {%- if type in ['warning', 'danger'] %}
+                                {%- set td_type = type %}
+                            {%- endif %}
+
+                            <tr>
+                                <td class="table-{{ td_type }} text-nowrap">{{ entry.created_at.format(__('general.datetime')) }}</td>
+                                <td class="table-{{ td_type }} text-nowrap">
+                                    <span class="badge bg-{{ type }}">{{ entry.level|capitalize }}</span> <!-- //todo bs5 -->
+                                </td>
+                                <td class="text-nowrap">{% if entry.user %}{{ m.user(entry.user) }}{% endif %}</td>
+                                <td>{{ entry.message|nl2br }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
