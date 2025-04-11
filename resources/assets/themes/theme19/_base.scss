@@ -660,6 +660,11 @@ div.choices__list--dropdown > div.choices__list > div.choices__item--selectable 
   }
 }
 
+.list-group-item {
+  background-color: var(--color-shade-bg-1);
+  border-color: var(--color-shade-bg-4);
+}
+
 .shift-calendar .lane {
   background-color: $body-bg;
 }
