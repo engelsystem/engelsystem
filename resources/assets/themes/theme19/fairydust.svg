@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1000" height="1000" viewBox="0 0 1000 1000" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <defs>
+    <path id="fairydust" fill="#f2f0f5" transform="rotate(90)" d="m 9.64e-4,-26.458333 c -1.459079,0 -2.917983,0.45905 -4.1411058,1.37635 l -1.761998,1.32163 c -3.146392,2.35978 -5.3596902,5.75367 -6.2504292,9.58446 l -0.207498,0.8936 c -0.593557,2.55398 -0.665897,5.2014538 -0.212693,7.7840448 l 1.593532,9.079603 c 0.210339,1.198166 1.3521322,1.998978 2.5503082,1.788693 1.198129,-0.210381 1.998892,-1.352159 1.788605,-2.550305 l -1.593622,-9.079599 c -0.350703,-1.998943 -0.294665,-4.0480868 0.164763,-6.0248768 l 0.207938,-0.89412 c 0.655585,-2.82094 2.285346,-5.32017 4.6023568,-7.05769 l 1.761998,-1.32163 c 0.895448,-0.67156 2.100246,-0.67156 2.995694,0 l 3.172089,2.37912 c 1.398831,1.04892 2.376132,2.56378 2.755158,4.27062 l 0.673854,3.03156 c 0.440775,1.9840397 0.480558,4.0361638 0.11701,6.0357958 l -0.941883,5.17990897 0.02607,-0.122295 C 6.70231,1.7015057 7.091275,4.3218838 8.386082,6.5257688 c 0.02108,0.03598 0.04317,0.07136 0.06626,0.106084 1.800395,2.700718 3.12308,5.6908572 3.910264,8.8397682 l 0.06564,0.263267 c 0.424823,1.698163 0.230001,3.492171 -0.549445,5.059555 l -0.482747,0.971045 c -0.21895,0.440368 -0.543898,0.440368 -0.762844,0 l -0.482751,-0.971045 -6.66e-4,-0.0013 C 9.1394553,18.821012 8.3105909,16.760767 7.610502,14.658398 l -6.66e-4,-0.002 C 6.648282,11.768849 3.925749,9.8083928 0.882121,9.8083928 h -1.743759 c -3.0194838,-0.02601 -5.7353468,1.8968042 -6.7148508,4.7532002 l -0.0059,0.01752 c -0.709758,2.128985 -1.567351,4.205796 -2.5665182,6.215273 l -0.482481,0.971135 c -0.21895,0.440368 -0.543897,0.440368 -0.762847,0 l -0.482747,-0.971135 c -0.779446,-1.567383 -0.974268,-3.36139 -0.549445,-5.059552 l 1.348327,-5.391811 c 0.294957,-1.1803902 -0.422959,-2.3763632 -1.603402,-2.6711042 -1.18015,-0.295127 -2.376104,0.422297 -2.67128,1.602434 l -1.347621,5.3919882 c -0.678713,2.71524 -0.36716,5.583506 0.878708,8.089697 l 0.482656,0.970342 c 1.714598,3.448397 6.9377672,3.448397 8.6523622,0 l 0.482573,-0.970342 c 1.090371,-2.193257 2.026219,-4.459994 2.8007108,-6.783665 l -0.0058,0.01825 c 0.36988,-1.078627 1.369647,-1.786138 2.509864,-1.776271 H 0.88214 c 1.164973,0 2.180511,0.732098 2.548982,1.837332 l 6.66e-4,0.0013 c 0.767566,2.296683 1.694671,4.536926 2.774543,6.704365 l 0.482044,0.96902 c 1.714594,3.44831 6.937763,3.44831 8.652448,0 l 0.482483,-0.970429 c 1.245907,-2.506144 1.557522,-5.374377 0.878885,-8.08961 l -0.06573,-0.263447 C 15.735885,10.800806 14.226671,7.3798958 12.178144,4.2838468 11.465851,3.0664788 11.2527,1.6205597 11.58341,0.24943672 c 0.0098,-0.04054 0.01848,-0.08135 0.02598,-0.122381 l 0.941883,-5.17982192 c 0.468675,-2.577531 0.417392,-5.2227468 -0.150837,-7.7801768 l -0.673944,-3.03085 c -0.607455,-2.7334 -2.172467,-5.15942 -4.412304,-6.83979 l -3.172089,-2.3784 c -1.223037,-0.9173 -2.68203,-1.37635 -4.14111,-1.37635 m -9.99e-4,11.10169 c -1.216526,0 -2.202715,0.98619 -2.202716,2.20272 -10e-7,1.21653 0.986189,2.20272 2.202716,2.20272 1.242687,0 2.20272,0.9601197 2.20272,2.2027178 0,1.242597 -0.960033,2.202716 -2.20272,2.202716 -1.242683,0 -2.202716,-0.960119 -2.202716,-2.202716 0,-1.2165281 -0.986185,-2.2027178 -2.2027088,-2.2027178 -1.216526,0 -2.202715,0.9861897 -2.202716,2.2027178 0,3.62347 2.9846818,6.608152 6.6081508,6.608152 3.62347,0 6.608151,-2.984682 6.608151,-6.608152 0,-3.6234678 -2.984594,-6.6081578 -6.608151,-6.6081578 m 0,31.773496 c -1.216527,-1e-6 -2.202718,0.986188 -2.202719,2.202716 v 5.636048 c -10e-7,1.216529 0.986191,2.202721 2.202719,2.20272 1.216528,-1e-6 2.202717,-0.986192 2.202716,-2.20272 V 18.619569 C 2.202716,17.403043 1.216526,16.416853 0,16.416853" />
+    <path id="line" d="m 216.64557,554.90506 c -22.15668,44.26199 -104.9786,-8.68083 -136.898735,29.90507 -31.920132,38.5859 -27.911391,63.26803 3.987342,108.98734 31.898733,45.71931 64.793623,51.7624 83.734173,21.26582 23.38299,-37.64944 -25.85935,-100.11726 -67.784807,-65.79113 -41.925458,34.32612 -53.164556,80.58902 -35.221517,122.94303 17.943038,42.35401 77.719624,12.99672 96.360754,55.82279 18.64113,42.82607 37.08385,88.05402 87.72152,102.34177 50.63767,14.28775 69.02406,-21.73798 89.71519,-71.1076 20.69113,-49.36962 -45.14699,-135.27947 -31.23417,-201.36076 13.91282,-66.08129 58.481,-126.44806 97.02531,-91.70886 38.54431,34.7392 5.31647,77.68185 38.54431,106.32912 33.22784,28.64727 62.23488,-0.60895 94.36709,12.62657 32.13221,13.23552 46.51898,73.5879 108.32278,70.44304 61.8038,-3.14485 58.27222,23.76749 83.73418,67.78482 25.46195,44.01732 7.97468,63.79746 -15.24506,73.76582 -23.21974,9.96836 -82.31955,-38.41874 -134.28026,-37.87975 -51.96071,0.53899 -83.04184,77.33289 -110.31646,9.3038 -27.27462,-68.02909 19.29314,-229.03698 73.10127,-282.43671 53.80813,-53.39973 103.69339,-14.5459 152.8481,-47.97674 49.15471,-33.43084 92.76433,-113.66114 123.6076,-152.71946 30.84327,-39.05832 45.61439,-79.86379 23.9638,-135.56962 -21.65059,-55.70583 -84.52062,-59.81013 -101.71697,-46.51899 -17.19635,13.29113 -34.91015,17.48101 -41.20253,57.1519 -6.29238,39.67089 50.55899,70.85021 91.7125,81.07595 41.15351,10.22574 103.30094,0.48771 130.91408,-38.54431 C 950.0182,264.00595 941.84226,196.61085 914.43038,152.8481 887.0185,109.08535 840.65481,78.604503 774.87342,75.759494 709.09203,72.914485 594.59621,117.53863 559.55696,171.4557 c -35.03925,53.91707 -13.5114,104.88881 0,150.18987 13.5114,45.30106 84.72038,60.07593 73.10127,111.64557 -11.61911,51.56964 -103.12342,111.12055 -156.83545,95.6962 -53.71203,-15.42435 -67.12025,-95.03165 -63.13291,-138.8924 3.98734,-43.86076 55.16536,-126.40761 41.86709,-197.37342 C 434.8127,134.64123 374.60957,95.299666 320.31646,81.075949 266.02335,66.852232 183.85707,66.35556 160.82278,110.31646 c -23.03429,43.9609 72.11484,88.46928 55.82279,123.60759 -16.29205,35.13831 -77.99822,-0.35803 -93.03798,26.58228 -15.03976,26.94031 37.61879,54.54313 23.92406,85.06329 -13.69473,30.52016 -100.187935,-7.05091 -101.012663,49.17722 -0.824728,56.22813 59.716403,72.10402 105.000003,55.32416 45.28359,-16.77986 87.28326,60.57207 65.12658,104.83406 z" />
+  </defs>
+  <circle cx="-20" r="2.5" fill="#f2f0f5" fill-opacity="1.0">
+    <animateMotion begin="0.0" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#f2f0f5" fill-opacity="0.975">
+    <animateMotion begin="0.025" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#f2f0f5" fill-opacity="0.95">
+    <animateMotion begin="0.05" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#f2f0f5" fill-opacity="0.925">
+    <animateMotion begin="0.07500000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#d1c6e0" fill-opacity="0.9">
+    <animateMotion begin="0.1" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#d1c6e0" fill-opacity="0.875">
+    <animateMotion begin="0.125" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#d1c6e0" fill-opacity="0.85">
+    <animateMotion begin="0.15000000000000002" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#d1c6e0" fill-opacity="0.825">
+    <animateMotion begin="0.17500000000000002" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#b2a0cb" fill-opacity="0.8">
+    <animateMotion begin="0.2" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#b2a0cb" fill-opacity="0.775">
+    <animateMotion begin="0.225" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#b2a0cb" fill-opacity="0.75">
+    <animateMotion begin="0.25" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#957eb5" fill-opacity="0.725">
+    <animateMotion begin="0.275" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#957eb5" fill-opacity="0.7">
+    <animateMotion begin="0.30000000000000004" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#957eb5" fill-opacity="0.675">
+    <animateMotion begin="0.325" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#957eb5" fill-opacity="0.65">
+    <animateMotion begin="0.35000000000000003" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#7a60a0" fill-opacity="0.625">
+    <animateMotion begin="0.375" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#7a60a0" fill-opacity="0.6">
+    <animateMotion begin="0.4" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#7a60a0" fill-opacity="0.575">
+    <animateMotion begin="0.42500000000000004" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#7a60a0" fill-opacity="0.55">
+    <animateMotion begin="0.45" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#61468b" fill-opacity="0.525">
+    <animateMotion begin="0.47500000000000003" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#61468b" fill-opacity="0.5">
+    <animateMotion begin="0.5" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#61468b" fill-opacity="0.475">
+    <animateMotion begin="0.525" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#4b3176" fill-opacity="0.45">
+    <animateMotion begin="0.55" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#4b3176" fill-opacity="0.425">
+    <animateMotion begin="0.5750000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#4b3176" fill-opacity="0.4">
+    <animateMotion begin="0.6000000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#4b3176" fill-opacity="0.375">
+    <animateMotion begin="0.625" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#371f60" fill-opacity="0.35">
+    <animateMotion begin="0.65" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#371f60" fill-opacity="0.325">
+    <animateMotion begin="0.675" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#371f60" fill-opacity="0.3">
+    <animateMotion begin="0.7000000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#371f60" fill-opacity="0.275">
+    <animateMotion begin="0.7250000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#26114b" fill-opacity="0.25">
+    <animateMotion begin="0.75" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#26114b" fill-opacity="0.225">
+    <animateMotion begin="0.775" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#26114b" fill-opacity="0.2">
+    <animateMotion begin="0.8" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#180736" fill-opacity="0.175">
+    <animateMotion begin="0.8250000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#180736" fill-opacity="0.15">
+    <animateMotion begin="0.8500000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#180736" fill-opacity="0.125">
+    <animateMotion begin="0.875" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#180736" fill-opacity="0.1">
+    <animateMotion begin="0.9" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#0c011f" fill-opacity="0.075">
+    <animateMotion begin="0.925" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#0c011f" fill-opacity="0.05">
+    <animateMotion begin="0.9500000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <circle cx="-20" r="2.5" fill="#0c011f" fill-opacity="0.025">
+    <animateMotion begin="0.9750000000000001" dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </circle>
+  <use href="#line" style="mix-blend-mode:soft-light;" stroke="#f2f0f5" stroke-opacity="0.25" fill="none" stroke-width="4.40981042" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.40981054,13.22943163" stroke-dashoffset="0" />
+  <use href="#fairydust">
+    <animateMotion dur="60s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#line" />
+    </animateMotion>
+  </use>
+</svg>
