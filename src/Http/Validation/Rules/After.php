@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http\Validation\Rules;
 
-use Respect\Validation\Rules\AbstractRule;
+use Respect\Validation\Rules\AbstractComparison;
 
-class After extends AbstractRule
+class After extends AbstractComparison
 {
     use ComparesDateTime;
 
-    protected function compare(mixed $input): bool
+    protected function compare(mixed $left, mixed $right): bool
     {
-        return $this->orEqual ? $input >= $this->compareTo : $input > $this->compareTo;
+        return $this->orEqual ? $left >= $right : $left > $right;
     }
 }
