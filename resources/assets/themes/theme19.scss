@@ -53,8 +53,11 @@ $accent-3: #ff7975;
   --color-accent-2: #d381f7;
   --color-accent-3: #ff7975;
   --color-success: #54aa18;
+  --color-success-highlight: #54aa1860;
   --color-warning: #efb100;
+  --color-warning-highlight: #efb10060;
   --color-error: #bb2626;
+  --color-error-highlight: #bb262660;
 
   --filter-glow-primary: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-primary))
     drop-shadow(0 0 0.25em var(--color-primary));

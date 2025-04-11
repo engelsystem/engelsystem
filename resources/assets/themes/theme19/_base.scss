@@ -314,22 +314,84 @@ a.badge.bg-info,
   }
 }
 
-.bg-danger a,
-.bg-dark a {
-  color: $state-danger-text;
+.bg-primary {
+  --highlight-color: var(--color-primary);
+  --header-fg-color: var(--color-foreground);
+  background-color: var(--color-primary) !important;
+  color: var(--color-foreground) !important;
+}
+.bg-secondary {
+  --highlight-color: var(--color-secondary);
+  --header-fg-color: var(--color-background);
+  background-color: var(--color-secondary) !important;
+  color: var(--color-background) !important;
+}
+.bg-success {
+  --highlight-color: var(--color-success-highlight);
+  --header-fg-color: var(--color-foreground);
+  background-color: var(--color-success-highlight) !important;
+  color: var(--color-foreground) !important;
+}
+.bg-danger {
+  --highlight-color: var(--color-error-highlight);
+  --header-fg-color: var(--color-foreground);
+  background-color: var(--color-error-highlight) !important;
+  color: var(--color-foreground) !important;
+}
+.bg-warning {
+  --highlight-color: var(--color-warning-highlight);
+  --header-fg-color: var(--color-foreground);
+  background-color: var(--color-warning-highlight) !important;
+  color: var(--color-foreground) !important;
+}
+.bg-light {
+  --highlight-color: var(--color-shade-fg-1);
+  --header-fg-color: var(--color-background);
+  background-color: var(--color-foreground) !important;
+  color: var(--color-background) !important;
+}
+.bg-dark {
+  --highlight-color: var(--color-shade-bg-1);
+  --header-fg-color: var(--color-foreground);
+  background-color: var(--color-shade-bg-1) !important;
+  color: var(--color-foreground) !important;
+}
+.bg-info {
+  --highlight-color: var(--color-shade-bg-2);
+  --header-fg-color: var(--color-foreground);
+  background-color: var(--color-shade-bg-2) !important;
+  color: var(--color-foreground) !important;
+}
+.bg-body {
+  --highlight-color: var(--color-background);
+  --header-fg-color: var(--color-foreground);
+  background-color: var(--color-background) !important;
+  color: var(--color-foreground) !important;
 }
 
-.bg-primary,
-.bg-secondary,
-.bg-success,
-.bg-warning,
-.bg-light {
-  color: var(--color-background);
+div.card {
+  > .card-header {
+    background-color: var(--highlight-color) !important;
+  }
+
+  > .card-header a {
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: underline;
+    }
+  }
 
   > .card-header *,
   > .card-header a.text-inherit {
-    color: var(--color-background);
+    color: var(--header-fg-color) !important;
   }
+
+  background-color: var(--color-background) !important;
+  color: var(--color-foreground) !important;
+  border: solid 0.1rem var(--highlight-color) !important;
 }
 
 .bg-info {

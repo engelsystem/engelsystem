@@ -54,8 +54,11 @@ $accent-3: #932f0a;
   --color-accent-2: #6c366c;
   --color-accent-3: #932f0a;
   --color-success: #47990f;
+  --color-success-highlight: #47990f60;
   --color-warning: #d08700;
+  --color-warning-highlight: #d0870060;
   --color-error: #b21010;
+  --color-error-highlight: #b2101060;
 
   --filter-glow-primary: drop-shadow(0 0 0.0625em #3f012d);
   --filter-glow-secondary: drop-shadow(0 0 0.0625em #012c3f);
@@ -82,13 +85,21 @@ btn-group > button.btn {
   }
 }
 
-.bg-info {
-  color: var(--color-background);
-
-  > .card-header *,
-  > .card-header a.text-inherit {
-    color: var(--color-background);
-  }
-}
-
 @import 'theme19/base';
+
+.bg-primary {
+  --header-fg-color: var(--color-background);
+  color: var(--color-background) !important;
+}
+.bg-light {
+  --header-fg-color: var(--color-foreground);
+  --highlight-color: var(--color-shade-bg-1);
+  background-color: var(--color-background) !important;
+  color: var(--color-foreground) !important;
+}
+.bg-dark {
+  --header-fg-color: var(--color-background);
+  --highlight-color: var(--color-shade-fg-1);
+  background-color: var(--color-foreground) !important;
+  color: var(--color-background) !important;
+}
