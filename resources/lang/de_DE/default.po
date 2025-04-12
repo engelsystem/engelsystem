@@ -738,6 +738,9 @@ msgstr "belegt"
 msgid "free"
 msgstr "frei"
 
+msgid "own"
+msgstr "eigene"
+
 msgid "Own"
 msgstr "Eigene"
 

@@ -12,14 +12,19 @@ use Engelsystem\Helpers\Carbon;
 class ShiftsFilter
 {
     /**
+     * Shift has some free slots.
+     */
+    public const FILLED_FREE = 0;
+
+    /**
      * Shift is completely full.
      */
     public const FILLED_FILLED = 1;
 
     /**
-     * Shift has some free slots.
+     * Always include own shifts.
      */
-    public const FILLED_FREE = 0;
+    public const FILLED_OWN = 2;
 
     /**
      * Has the user "user shifts admin" privilege?
