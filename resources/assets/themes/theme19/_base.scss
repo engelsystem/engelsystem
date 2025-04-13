@@ -34,8 +34,12 @@ $form-switch-color: $color-shade-neutral;
 
 //== changed Pagination
 
-$pagination-hover-color: $color-shade-fg-1;
-$pagination-active-color: $color-shade-fg-1;
+$pagination-color: $color-fg;
+$pagination-bg: $color-shade-bg-2;
+$pagination-border-color: $color-shade-bg-4;
+$pagination-disabled-color: $color-shade-fg-4;
+$pagination-disabled-bg: $color-bg;
+$pagination-disabled-border-color: $color-shade-bg-2;
 
 //== changed Form states and alerts
 
@@ -701,6 +705,20 @@ div.choices__list--dropdown > div.choices__list > div.choices__item--selectable 
     filter: var(--filter-glow-primary);
     transition: var(--transition-glow);
   }
+}
+
+.page-link {
+  border: solid 0.1rem;
+}
+.page-link:hover,
+.page-link:focus,
+.page-link:active {
+  color: var(--color-glow-primary);
+  border-color: var(--color-glow-primary);
+  background-color: transparent;
+  box-shadow: none;
+  transition: var(--transition-glow);
+  filter: var(--filter-glow-primary);
 }
 
 .form-check-input {
