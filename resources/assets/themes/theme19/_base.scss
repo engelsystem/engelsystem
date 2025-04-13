@@ -278,7 +278,8 @@ button.btn,
     }
   }
 
-  &.btn-secondary {
+  &.btn-secondary,
+  &.btn-info {
     border-color: var(--color-shade-bg-2);
     background-color: var(--color-shade-bg-1);
     color: var(--color-foreground);
