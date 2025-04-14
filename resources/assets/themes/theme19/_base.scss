@@ -247,6 +247,7 @@ button.btn,
 
   &.btn-danger {
     border-color: var(--color-error);
+    background-color: var(--color-error-highlight);
 
     &:hover,
     &:active,
@@ -258,6 +259,68 @@ button.btn,
       transition: var(--transition-glow);
       color: var(--color-glow-primary);
       filter: var(--filter-glow-primary);
+    }
+  }
+
+  &.btn-success {
+    border-color: var(--color-success);
+    background-color: var(--color-success-highlight);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: solid 0.1rem var(--color-success);
+      outline: none;
+      box-shadow: none;
+      background-color: transparent;
+      color: var(--color-foreground);
+    }
+  }
+
+  &.btn-warning {
+    border-color: var(--color-warning);
+    background-color: var(--color-warning-highlight);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: solid 0.1rem var(--color-warning);
+      outline: none;
+      box-shadow: none;
+      background-color: transparent;
+      color: var(--color-foreground);
+    }
+  }
+
+  &.btn-dark {
+    border-color: var(--color-shade-bg-1);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: solid 0.1rem var(--color-shade-bg-1);
+      outline: none;
+      box-shadow: none;
+      background-color: var(--color-shade-bg-4);
+      color: var(--color-foreground);
+    }
+  }
+
+  &.btn-light {
+    border-color: var(--color-shade-fg-1);
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: solid 0.1rem var(--color-shade-fg-1);
+      outline: none;
+      box-shadow: none;
+      background-color: var(--color-shade-fg-4);
+      color: var(--color-background);
     }
   }
 

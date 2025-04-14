@@ -103,3 +103,42 @@ btn-group > button.btn {
   background-color: var(--color-foreground) !important;
   color: var(--color-background) !important;
 }
+
+.btn,
+a.btn,
+button.btn,
+.btn-group > .btn,
+.btn-group > a.btn,
+.btn-group > button.btn {
+  &.btn-dark {
+    border-color: var(--color-shade-fg-1);
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: solid 0.1rem var(--color-shade-fg-1);
+      outline: none;
+      box-shadow: none;
+      background-color: var(--color-shade-fg-4);
+      color: var(--color-background);
+    }
+  }
+
+  &.btn-light {
+    border-color: var(--color-shade-bg-1);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: solid 0.1rem var(--color-shade-bg-1);
+      outline: none;
+      box-shadow: none;
+      background-color: var(--color-shade-bg-4);
+      color: var(--color-foreground);
+    }
+  }
+}
