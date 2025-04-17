@@ -48,7 +48,9 @@ $accent-3: #ff7975;
   --color-shade-fg-1: #d1c6e0;
   --color-background-image: var(--color-shade-bg-2);
   --color-primary: #c6257d;
+  --color-primary-highlight: #c6257d60;
   --color-secondary: #4badd8;
+  --color-secondary-highlight: #4badd860;
   --color-accent-1: #60a5f9;
   --color-accent-2: #d381f7;
   --color-accent-3: #ff7975;
@@ -63,8 +65,17 @@ $accent-3: #ff7975;
     drop-shadow(0 0 0.25em var(--color-primary));
   --filter-glow-secondary: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-secondary))
     drop-shadow(0 0 0.25em var(--color-secondary));
+  --filter-glow-error: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-error))
+    drop-shadow(0 0 0.25em var(--color-error));
+  --filter-glow-success: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-success))
+    drop-shadow(0 0 0.25em var(--color-success));
+  --filter-glow-warning: drop-shadow(0 0 0.0625em var(--color-white)) drop-shadow(0 0 0.125em var(--color-warning))
+    drop-shadow(0 0 0.25em var(--color-warning));
   --color-glow-primary: var(--color-white);
   --color-glow-secondary: var(--color-white);
+  --color-glow-error: var(--color-white);
+  --color-glow-success: var(--color-white);
+  --color-glow-warning: var(--color-white);
   --transition-glow: filter 150ms cubic-bezier(0, 1.7, 1, -0.3) 50ms,
     border-color 150ms cubic-bezier(0, 1.7, 1, -0.3) 50ms;
 
@@ -76,6 +87,12 @@ $accent-3: #ff7975;
     drop-shadow(0 0 0.125em var(--color-primary));
   --text-glow-secondary: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-secondary))
     drop-shadow(0 0 0.125em var(--color-secondary));
+  --text-glow-error: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-error))
+    drop-shadow(0 0 0.125em var(--color-error));
+  --text-glow-success: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-success))
+    drop-shadow(0 0 0.125em var(--color-success));
+  --text-glow-warning: drop-shadow(0 0 0.03125em var(--color-white)) drop-shadow(0 0 0.0625em var(--color-warning))
+    drop-shadow(0 0 0.125em var(--color-warning));
 }
 
 @import 'theme19/base';

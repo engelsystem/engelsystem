@@ -252,13 +252,13 @@ button.btn,
     &:hover,
     &:active,
     &:focus {
-      border: solid 0.1rem var(--color-glow-primary);
+      border: solid 0.1rem var(--color-glow-error);
       outline: none;
       box-shadow: none;
       background-color: transparent;
       transition: var(--transition-glow);
-      color: var(--color-glow-primary);
-      filter: var(--filter-glow-primary);
+      color: var(--color-glow-error);
+      filter: var(--filter-glow-error);
     }
   }
 
@@ -269,11 +269,13 @@ button.btn,
     &:hover,
     &:active,
     &:focus {
-      border: solid 0.1rem var(--color-success);
+      border: solid 0.1rem var(--color-glow-success);
       outline: none;
       box-shadow: none;
       background-color: transparent;
-      color: var(--color-foreground);
+      transition: var(--transition-glow);
+      color: var(--color-glow-success);
+      filter: var(--filter-glow-success);
     }
   }
 
@@ -284,11 +286,13 @@ button.btn,
     &:hover,
     &:active,
     &:focus {
-      border: solid 0.1rem var(--color-warning);
+      border: solid 0.1rem var(--color-glow-warning);
       outline: none;
       box-shadow: none;
       background-color: transparent;
-      color: var(--color-foreground);
+      transition: var(--transition-glow);
+      color: var(--color-glow-warning);
+      filter: var(--filter-glow-warning);
     }
   }
 
@@ -326,6 +330,7 @@ button.btn,
 
   &.btn-primary {
     border-color: var(--color-shade-fg-4);
+    color: var(--color-foreground);
     background-color: var(--color-neutral);
 
     &:hover,
@@ -341,12 +346,20 @@ button.btn,
     }
   }
 
-  &.btn-secondary,
+  &.btn-secondary {
+    border-color: var(--color-shade-bg-2);
+    color: var(--color-foreground);
+    background-color: var(--color-shade-bg-1);
+  }
+
   &.btn-info {
     border-color: var(--color-shade-bg-2);
-    background-color: var(--color-shade-bg-1);
     color: var(--color-foreground);
+    background-color: var(--color-shade-bg-1);
+  }
 
+  &.btn-secondary,
+  &.btn-info {
     &:hover,
     &:active,
     &:focus {
@@ -401,16 +414,16 @@ a.badge.bg-info,
 }
 
 .bg-primary {
-  --highlight-color: var(--color-primary);
+  --highlight-color: var(--color-primary-highlight);
   --header-fg-color: var(--color-foreground);
-  background-color: var(--color-primary) !important;
+  background-color: var(--color-primary-highlight) !important;
   color: var(--color-foreground) !important;
 }
 .bg-secondary {
-  --highlight-color: var(--color-secondary);
-  --header-fg-color: var(--color-background);
-  background-color: var(--color-secondary) !important;
-  color: var(--color-background) !important;
+  --highlight-color: var(--color-secondary-highlight);
+  --header-fg-color: var(--color-foreground);
+  background-color: var(--color-secondary-highlight) !important;
+  color: var(--color-foreground) !important;
 }
 .bg-success {
   --highlight-color: var(--color-success-highlight);
@@ -473,6 +486,37 @@ div.card {
   > .card-header *,
   > .card-header a.text-inherit {
     color: var(--header-fg-color) !important;
+  }
+
+  > .card-header .btn {
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: var(--highlight-color) !important;
+
+      &.btn-primary {
+        --header-fg-color: var(--color-glow-primary);
+      }
+      &.btn-secondary {
+        --header-fg-color: var(--color-glow-secondary);
+      }
+      &.btn-danger {
+        --header-fg-color: var(--color-glow-error);
+      }
+      &.btn-success {
+        --header-fg-color: var(--color-glow-success);
+      }
+      &.btn-warning {
+        --header-fg-color: var(--color-glow-warning);
+      }
+    }
+
+    &:not(:hover):not(:focus):not(:active) {
+      --header-fg-color: var(--color-foreground);
+      border-color: var(--color-shade-bg-4) !important;
+      color: var(--color-foreground) !important;
+      background-color: var(--color-shade-bg-2) !important;
+    }
   }
 
   background-color: var(--color-background) !important;
