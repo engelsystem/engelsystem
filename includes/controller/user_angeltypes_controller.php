@@ -314,6 +314,7 @@ function user_angeltype_update_controller(): array
  */
 function user_angeltype_add_controller(): array
 {
+    /** @var AngelType $angeltype */
     $angeltype = AngelType::findOrFail(request()->input('angeltype_id'));
 
     // User is joining by itself
@@ -354,11 +355,18 @@ function user_angeltype_add_controller(): array
     if ($request->hasPostData('submit')) {
         $user_source = load_user();
 
-        if (!$angeltype->userAngelTypes()->wherePivot('user_id', $user_source->id)->exists()) {
-            $userAngelType = new UserAngelType();
-            $userAngelType->user()->associate($user_source);
-            $userAngelType->angelType()->associate($angeltype);
-            $userAngelType->save();
+        if (
+            !$angeltype
+                ->userAngelTypes()
+                ->wherePivot('user_id', $user_source->id)
+                ->wherePivotNotNull('confirm_user_id')
+                ->exists()
+        ) {
+            /** @var UserAngelType $userAngelType */
+            $userAngelType = UserAngelType::firstOrCreate([
+                'user_id' => $user_source->id,
+                'angel_type_id' => $angeltype->id,
+            ]);
 
             engelsystem_log(sprintf(
                 'User %s added to %s.',
