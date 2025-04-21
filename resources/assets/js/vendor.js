@@ -5,4 +5,5 @@ import './countdown';
 import './dashboard';
 import './design';
 import './voucher';
+import './arrive';
 import './table-responsive-sticky-header';
