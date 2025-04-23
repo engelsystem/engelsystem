@@ -364,7 +364,7 @@ function admin_user()
 
                 engelsystem_log(
                     'Updated user: ' . ($changed_nick
-                        ? ('nick modified from ' . $old_nick . ' to ' . $user_source->name)
+                        ? ('nick modified from ' . $old_nick . ' (' . $user_source->id . ') to ' . $user_source->name)
                         : $user_source->name)
                     . ' (' . $user_source->id . ')'
                     . ($changed_email ? ', e-mail modified' : '')
