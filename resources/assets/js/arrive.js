@@ -11,6 +11,7 @@ ready(() => {
 /**
  * @typedef {Object} EditArrivalResponse
  * @property {boolean} state - user state arrived
+ * @property {string} arrival_date - user state arrival date
  */
 
 /**
@@ -70,25 +71,31 @@ const handleArriveClick = async (event) => {
 
     try {
         if (action) {
-            const icons = {
-                arrive: 'bi-house',
-                reset: 'bi-arrow-counterclockwise'
-            }
-            const btnType = {
-                arrive : 'btn-primary',
-                reset: 'btn-danger'
-            }
             const editArrivalState = await sendArrivalState(userId, action);
             const arrived = Boolean(editArrivalState.state);
-            element.dataset.arriveAction = arrived ? '' : 'arrive'
+            const arrivalDate = String(editArrivalState.arrival_date);
+            const tableRow = element.parentElement.parentElement;
+            const arrivalDateElement = tableRow.querySelector('.column_rendered_arrival_date');
+            const userNameElement = tableRow.querySelector('.column_name').firstElementChild;
+            const arriveIconElement = tableRow.querySelector('.column_arrived').firstElementChild;
+
+            element.dataset.arriveAction = arrived ? '' : 'arrive';
+            arrivalDateElement.innerHTML = arrivalDate;
+
             if (arrived){
-                element.classList.replace(btnType.arrive, btnType.reset)
-                element.firstElementChild.classList.replace(icons.arrive, icons.reset)
                 element.dataset.modalShow = '1';
+                handleActionButton(true, element);
+                handleArriveIcon(true, arriveIconElement);
+                // element.classList.replace(btnType.arrive, btnType.reset);
+                // element.firstElementChild.classList.replace(icons.arrive, icons.reset);
+                userNameElement.classList.remove('text-muted');
             } else {
-                element.classList.replace(btnType.reset, btnType.arrive)
-                element.firstElementChild.classList.replace(icons.reset, icons.arrive)
                 element.dataset.modalShow = '';
+                handleActionButton(false, element);
+                handleArriveIcon(true, arriveIconElement);
+                // element.classList.replace(btnType.reset, btnType.arrive);
+                // element.firstElementChild.classList.replace(icons.reset, icons.arrive);
+                userNameElement.classList.add('text-muted');
             }
         } else {
             element.dataset.arriveAction = 'reset';
@@ -99,3 +106,40 @@ const handleArriveClick = async (event) => {
         element.disabled = false;
     }
 };
+
+const handleActionButton = (arrived, buttonElement) => {
+    const iconElement = buttonElement.firstElementChild;
+    const icons = {
+        arrive: 'bi-house',
+        reset: 'bi-arrow-counterclockwise'
+    };
+    const btnType = {
+        arrive : 'btn-primary',
+        reset: 'btn-danger'
+    };
+    if (arrived) {
+        buttonElement.classList.replace(btnType.arrive, btnType.reset);
+        iconElement.classList.replace(icons.arrive, icons.reset);
+    } else {
+        buttonElement.classList.replace(btnType.reset, btnType.arrive);
+        iconElement.classList.replace(icons.reset, icons.arrive);
+    }
+}
+
+const handleArriveIcon = (arrived, element) => {
+    const iconElement = element.firstElementChild;
+    const icons = {
+        arrived: 'bi-check-lg',
+        away: 'bi-x-lg'
+    };
+    const textType = {
+        arrived : 'text-success',
+        away: 'text-danger'
+    };
+    if (arrived) {
+        element.classList.replace(textType.arrived, textType.away);
+        iconElement.classList.replace(icons.arrived, icons.away);
+    } else {
+        element.classList.replace(textType.away, textType.arrived);
+        iconElement.classList.replace(icons.away, icons.arrived);
+}}

@@ -69,6 +69,7 @@ class UserArriveController extends BaseController
                 ->withHeader('content-type', 'application/json')
                 ->withContent(json_encode([
                     'state' => $user->state->arrived,
+                    'arrival_date' => $user->state->arrival_date?->format(__('general.date')) ?: '-',
                 ]));
         }
 
