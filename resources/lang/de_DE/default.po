@@ -69,7 +69,7 @@ msgid "footer.eventinfo.start_end"
 msgstr "Event vom %1$s bis %2$s"
 
 msgid "footer.issues"
-msgstr "Bugs / Features"
+msgstr "Bugs/Features"
 
 msgid "footer.github"
 msgstr "Entwicklerplattform"
@@ -252,7 +252,7 @@ msgstr "Schichteintrag gelöscht."
 
 msgid "This shift was imported from a schedule so some changes will be overwritten with the next import."
 msgstr ""
-"Diese Schicht wurde aus einem Fahrplan importiert. "
+"Diese Schicht wurde aus einem Programm importiert. "
 "Dadurch werden einige Änderungen beim nächsten Import überschrieben."
 
 msgid "Please select a location."
@@ -932,8 +932,8 @@ msgstr "Meine Schicht"
 msgid "Help needed"
 msgstr "Hilfe benötigt"
 
-msgid "Other angel type needed / collides with my shifts"
-msgstr "Andere Engeltypen benötigt / kollidiert mit meinen Schichten"
+msgid "Other angel type needed/collides with my shifts"
+msgstr "Andere Engeltypen benötigt/kollidiert mit meinen Schichten"
 
 msgid "Shift is full"
 msgstr "Schicht ist voll"
@@ -1669,7 +1669,7 @@ msgid "settings.certificates.drive_confirmed.hint"
 msgstr "Dein Führerschein wurde bestätigt, du kannst deine Angaben nicht mehr selber ändern."
 
 msgid "settings.certificates.confirmation.info"
-msgstr "Du hast persönlich überprüft, dass die Zertifizierung / Bescheinigung den Anforderungen genügt."
+msgstr "Du hast persönlich überprüft, dass die Zertifizierung/Bescheinigung den Anforderungen genügt."
 
 msgid "settings.certificates.success"
 msgstr "Zertifikate wurden erfolgreich aktualisiert."
@@ -1920,7 +1920,7 @@ msgid "location.map_url"
 msgstr "Karte"
 
 msgid "location.required_angels"
-msgstr "Benötigte Engel (bei Fahrplan import)"
+msgstr "Benötigte Engel (bei Programmimport/-kopie)"
 
 msgid "location.map_url.info"
 msgstr "Die Karte wird auf der Ort-Seite als iframe eingebettet."
@@ -1947,7 +1947,7 @@ msgid "shifttype.delete.title"
 msgstr "Schichttyp \"%s\" löschen"
 
 msgid "shifttype.required_angels"
-msgstr "Benötigte Engel (bei Fahrplan import)"
+msgstr "Benötigte Engel (bei Programmimport/-kopie)"
 
 msgid "shifttype.edit.signup_advance_hours"
 msgstr "Selbsteintragen im voraus in Stunden"
