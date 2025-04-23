@@ -118,10 +118,13 @@ function admin_arrive()
 
         $arrive_template = <<<EOT
                 <button
-                    class="btn btn-sm {type} ms-2 js-only"
+                    class="btn btn-sm {type} ms-2 js-only {modal}"
                     data-arrive-action="{action}"
                     data-arrive-user-id="{user}"
                     title="{title}"
+                    data-confirm_submit_title="{confirm_submit_title}"
+                    data-confirm_button_text="{confirm_button_text}"
+                    data-modal-show="{modal}"
                 >
                     {icon}
                 </button>
@@ -130,12 +133,20 @@ function admin_arrive()
             '{user}' => $usr->id,
             '{icon}' =>  icon('house', 'pointer-events: none'),
             '{type}' =>  'btn-primary',
-            '{title}' => __('user.arrive'),];
-        $reset_attributes = ['{action}' => 'reset',
+            '{title}' => __('user.arrive'),
+            '{confirm_submit_title}' => htmlspecialchars(__('Reset arrival state for %s?', [$usr->name])),
+            '{confirm_button_text}' => __('Reset'),
+            '{modal}' => false,
+            ];
+        $reset_attributes = ['{action}' => '',
             '{user}' => $usr->id,
             '{icon}' =>  icon('arrow-counterclockwise', 'pointer-events: none'),
             '{type}' =>  'btn-danger',
-            '{title}' => __('Reset'),];
+            '{title}' => __('Reset'),
+            '{confirm_submit_title}' => htmlspecialchars(__('Reset arrival state for %s?', [$usr->name])),
+            '{confirm_button_text}' => __('Reset'),
+            '{modal}' => true,
+            ];
 
         $arrive_button = strtr($arrive_template, $usr->state->arrived ? $reset_attributes : $arrive_attributes);
         $usr['actions'] = $arrive_button;

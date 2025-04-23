@@ -60,7 +60,7 @@ const handleArriveClick = async (event) => {
         console.error('User ID is not an integer', userId);
         return;
     }
-    if (action !== 'arrive' && action !== 'reset') {
+    if (action !== 'arrive' && action !== 'reset' && action !== '') {
         console.error('Invalid action', action);
         return;
     }
@@ -69,27 +69,30 @@ const handleArriveClick = async (event) => {
     element.disabled = true;
 
     try {
-        const icons = {
-            arrive: 'bi-house',
-            reset: 'bi-arrow-counterclockwise'
+        if (action) {
+            const icons = {
+                arrive: 'bi-house',
+                reset: 'bi-arrow-counterclockwise'
+            }
+            const btnType = {
+                arrive : 'btn-primary',
+                reset: 'btn-danger'
+            }
+            const editArrivalState = await sendArrivalState(userId, action);
+            const arrived = Boolean(editArrivalState.state);
+            element.dataset.arriveAction = arrived ? '' : 'arrive'
+            if (arrived){
+                element.classList.replace(btnType.arrive, btnType.reset)
+                element.firstElementChild.classList.replace(icons.arrive, icons.reset)
+                element.dataset.modalShow = '1';
+            } else {
+                element.classList.replace(btnType.reset, btnType.arrive)
+                element.firstElementChild.classList.replace(icons.reset, icons.arrive)
+                element.dataset.modalShow = '';
+            }
+        } else {
+            element.dataset.arriveAction = 'reset';
         }
-        const btnType = {
-            arrive : 'btn-primary',
-            reset: 'btn-danger'
-        }
-        const editArrivalState = await sendArrivalState(userId, action);
-        const arrived = Boolean(editArrivalState.state);
-        element.dataset.arriveAction = arrived ? 'reset' : 'arrive'
-
-        // Update arrive button
-        element.classList.replace(
-            arrived ? btnType.arrive : btnType.reset,
-            arrived ? btnType.reset : btnType.arrive
-        );
-        element.firstElementChild.classList.replace(
-            arrived ? icons.arrive : icons.reset,
-            arrived ? icons.reset : icons.arrive
-        );
     } catch (error) {
         console.error('Error during update arrived request', error);
     } finally {
