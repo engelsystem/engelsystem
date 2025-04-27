@@ -341,7 +341,7 @@ function view_user_shifts()
                 ),
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => div('mt-3', ical_hint()),
-                'filter'        => __('Filter'),
+                'filter'        => __('Apply Filter'),
                 'filter_toggle' => __('shifts.filter.toggle'),
                 'set_yesterday' => __('Yesterday'),
                 'set_today'     => __('Today'),
