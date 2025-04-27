@@ -774,8 +774,8 @@ msgstr ""
 "Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
 "(Engeltypen/Aufgaben) abhängig!"
 
-msgid "Apply Filter"
-msgstr "Filter Anwenden"
+msgid "Look For Shifts"
+msgstr "Nach Schichten Suchen"
 
 msgid "Yesterday"
 msgstr "Gestern"
