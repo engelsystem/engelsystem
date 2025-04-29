@@ -307,7 +307,7 @@ function view_user_shifts()
                     $locations,
                     $shiftsFilter->getLocations(),
                     'locations',
-                    icon('pin-map-fill') . __('Locations')
+                    icon('pin-map-fill') . __('location.locations')
                 ),
                 'start_select'  => html_select_key(
                     'start_day',
