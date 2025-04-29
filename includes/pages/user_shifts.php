@@ -327,10 +327,9 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    icon('person-lines-fill') . __('angeltypes.angeltypes')
-                    . ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-                    . __('The tasks shown here are influenced by the angel types you joined already!')
-                    . '"></span></small>',
+                    icon('person-lines-fill') . __('angeltypes.angeltypes') . ' '
+                    . '<a class="icon-link" href="' . url('/angeltypes/about') . '" title="' . __('angeltypes.about') . '" target="_blank">'
+                    . icon('question-circle') . '</a>',
                     $ownAngelTypes
                 ),
                 'filled_select' => make_select(
