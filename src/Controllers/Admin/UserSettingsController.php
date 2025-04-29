@@ -181,6 +181,8 @@ class UserSettingsController extends BaseController
             array_merge([
                 'settings_menu' => $this->settingsMenu($user),
                 'is_admin' => true,
+                'ifsg' => $this->isIfsgSupporter() || $this->auth->can('user.ifsg.edit'),
+                'driver_license' => $this->isDriverLicenseSupporter() || $this->auth->can('user.drive.edit'),
                 'admin_user' => $user,
             ], $data)
         );
