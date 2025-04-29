@@ -120,9 +120,11 @@ const handleActionButton = (arrived, buttonElement) => {
     if (arrived) {
         buttonElement.classList.replace(btnType.arrive, btnType.reset);
         iconElement.classList.replace(icons.arrive, icons.reset);
+        buttonElement.title = buttonElement.dataset.resetTitle;
     } else {
         buttonElement.classList.replace(btnType.reset, btnType.arrive);
         iconElement.classList.replace(icons.reset, icons.arrive);
+        buttonElement.title = buttonElement.dataset.arriveTitle;
     }
 }
 

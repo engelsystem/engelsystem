@@ -125,6 +125,8 @@ function admin_arrive()
                     data-confirm_submit_title="{confirm_submit_title}"
                     data-confirm_button_text="{confirm_button_text}"
                     data-modal-show="{modal}"
+                    data-arrive-title="{arrive_title}"
+                    data-reset-title="{reset_title}"
                 >
                     {icon}
                 </button>
@@ -137,6 +139,8 @@ function admin_arrive()
             '{confirm_submit_title}' => htmlspecialchars(__('Reset arrival state for %s?', [$usr->name])),
             '{confirm_button_text}' => __('Reset'),
             '{modal}' => false,
+            '{arrive_title}' => __('user.arrive'),
+            '{reset_title}' => __('Reset'),
             ];
         $reset_attributes = ['{action}' => '',
             '{user}' => $usr->id,
@@ -146,6 +150,8 @@ function admin_arrive()
             '{confirm_submit_title}' => htmlspecialchars(__('Reset arrival state for %s?', [$usr->name])),
             '{confirm_button_text}' => __('Reset'),
             '{modal}' => true,
+            '{arrive_title}' => __('user.arrive'),
+            '{reset_title}' => __('Reset'),
             ];
 
         $arrive_button = strtr($arrive_template, $usr->state->arrived ? $reset_attributes : $arrive_attributes);
