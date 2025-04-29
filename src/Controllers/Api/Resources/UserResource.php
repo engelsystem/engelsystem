@@ -14,7 +14,7 @@ class UserResource extends BasicResource
 
     public function toArray(): array
     {
-        return [
+        $data = [
             'id' => $this->model->id,
             'name' => $this->model->name,
             'first_name' => $this->model->personalData->first_name,
@@ -23,5 +23,16 @@ class UserResource extends BasicResource
             'contact' => $this->model->contact->only(['dect', 'mobile']),
             'url' => url('/users', ['action' => 'view', 'user_id' => $this->model->id]),
         ];
+
+        // if current user has permission: inject got_voucher and got_goodie
+        $currentUser = auth()->user();
+        if($currentUser->privileges->where('name', 'voucher.edit')->first() || $currentUser->id === $this->model->id) {
+            $data['got_voucher'] = $this->model->state->got_voucher;
+        }
+        if($currentUser->privileges->where('name', 'user.goodie.edit')->first() || $currentUser->id === $this->model->id) {
+            $data['got_goodie'] = $this->model->state->got_goodie;
+        }
+
+        return $data;
     }
 }
