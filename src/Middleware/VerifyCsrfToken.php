@@ -22,6 +22,13 @@ class VerifyCsrfToken implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $uri = (string) $request->getUri();
+        $path = parse_url($uri, PHP_URL_PATH);
+
+        if (is_string($path) && str_starts_with($path, '/api')) {
+            return $handler->handle($request); // Skip CSRF for API routes
+        }
+
         if (
             $this->isReading($request)
             || $this->tokensMatch($request)
