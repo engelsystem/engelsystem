@@ -5,7 +5,7 @@
 {% block row_content %}
     <div class="row">
 
-        {% if config('ifsg_enabled') %}
+        {% if config('ifsg_enabled') and ifsg %}
             <form
                 action="{{ url('/users/' ~ admin_user.id ~ '/certificates/ifsg') }}"
                 enctype="multipart/form-data" method="post"
@@ -38,7 +38,7 @@
                 </div>
             </form>
         {% endif %}
-        {% if config('driving_license_enabled') %}
+        {% if config('driving_license_enabled') and driver_license %}
             <form
                 action="{{ url('/users/' ~ admin_user.id ~ '/certificates/driving') }}"
                 enctype="multipart/form-data" method="post"
