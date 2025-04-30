@@ -45,24 +45,4 @@ class CarbonTest extends TestCase
         $date = Carbon::createFromDatetime($value);
         self::assertNull($date);
     }
-
-    /**
-     * @covers \Engelsystem\Helpers\Carbon::createTimestampFromDatetime
-     * @dataProvider validDates
-     */
-    public function testCreateTimestampFromValidDatetime(string $value, Carbon $expected): void
-    {
-        $timestamp = Carbon::createTimestampFromDatetime($value);
-        self::assertSame($expected->timestamp, $timestamp);
-    }
-
-    /**
-     * @covers \Engelsystem\Helpers\Carbon::createTimestampFromDatetime
-     * @dataProvider invalidDates
-     */
-    public function testCreateTimestampFromInvalidDatetime(string $value): void
-    {
-        $timestamp = Carbon::createTimestampFromDatetime($value);
-        self::assertNull($timestamp);
-    }
 }
