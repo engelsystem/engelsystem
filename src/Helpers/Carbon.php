@@ -31,16 +31,4 @@ class Carbon extends \Carbon\Carbon
 
         return null;
     }
-
-    /**
-     * Parses HTML datetime-local and ISO date/time strings.
-     *
-     * @return int|null Timestamp if parseable, else null
-     * @see self::DATETIME_FORMATS
-     */
-    public static function createTimestampFromDatetime(string $value): ?int
-    {
-        $carbon = self::createFromDateTime($value);
-        return $carbon?->timestamp;
-    }
 }
