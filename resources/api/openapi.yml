@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  version: 0.1.2-beta
+  version: 0.2.0-beta
   title: Engelsystem
   description: >
     This API is as stable as a **beta** version might be.
@@ -110,7 +110,12 @@ components:
         - url
     UserAngelType:
       allOf:
-        - $ref: '#/components/schemas/AngelType'
+        - type: object
+          properties:
+            angeltype:
+              $ref: '#/components/schemas/Reference'
+          required:
+            - angeltype
         - $ref: '#/components/schemas/UserAngelTypeRelation'
     AngelTypeUser:
       allOf:
@@ -120,8 +125,6 @@ components:
                 $ref: '#/components/schemas/Reference'
           required:
             - user
-            - confirmed
-            - supporter
         - $ref: '#/components/schemas/UserAngelTypeRelation'
     UserAngelTypeRelation:
         properties:

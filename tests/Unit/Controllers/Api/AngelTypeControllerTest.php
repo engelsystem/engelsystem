@@ -63,7 +63,7 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('data', $data);
         $this->assertCount(3, $data['data']);
         $this->assertCount(1, collect($data['data'])->filter(function ($item) use ($items) {
-            return $item['name'] == $items->first()->angelType->name;
+            return $item['angeltype']['id'] == $items->first()->angelType->id;
         }));
     }
 
