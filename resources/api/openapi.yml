@@ -40,6 +40,8 @@ tags:
     description: Shift types
   - name: user
     description: Users
+  - name: worklog
+    description: Worklogs
 
 security:
   - bearer-auth: [ ]
@@ -404,6 +406,36 @@ components:
         - dates
         - language
         - arrived
+    Worklog:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        description:
+          type: string
+          example: Main stage build-up
+        hours:
+          type: number
+          format: float
+          example: 4.23
+          description: Hours worked with up to two decimals precision
+        created_by:
+          $ref: '#/components/schemas/Reference'
+        worked_at:
+          $ref: '#/components/schemas/DateTime'
+        created_at:
+          $ref: '#/components/schemas/DateTimeOptional'
+        updated_at:
+          $ref: '#/components/schemas/DateTimeOptional'
+      required:
+        - id
+        - description
+        - hours
+        - created_by
+        - worked_at
+        - created_at
+        - updated_at
 
     DateTime:
       type: string
@@ -836,6 +868,41 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Shift'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /users/{id}/worklogs:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The user identifier or `self`
+        example: 42
+        schema:
+          oneOf:
+            - type: string
+            - type: integer
+    get:
+      tags:
+        - worklog
+        - user
+      summary: Get all worklogs of the requested user
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Worklog'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
