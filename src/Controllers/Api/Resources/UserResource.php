@@ -6,11 +6,12 @@ namespace Engelsystem\Controllers\Api\Resources;
 
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Collection;
 
 class UserResource extends BasicResource
 {
-    protected Collection | BaseModel | User $model;
+    protected Collection | BaseModel | Pivot | User $model;
 
     public function toArray(): array
     {
