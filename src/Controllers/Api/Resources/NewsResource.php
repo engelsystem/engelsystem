@@ -6,11 +6,12 @@ namespace Engelsystem\Controllers\Api\Resources;
 
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\News;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Collection;
 
 class NewsResource extends BasicResource
 {
-    protected Collection | BaseModel | News $model;
+    protected Collection | BaseModel | Pivot | News $model;
 
     public function toArray(): array
     {

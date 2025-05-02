@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  version: 0.1.0-beta
+  version: 0.1.2-beta
   title: Engelsystem
   description: >
     This API is as stable as a **beta** version might be.
@@ -111,21 +111,33 @@ components:
     UserAngelType:
       allOf:
         - $ref: '#/components/schemas/AngelType'
+        - $ref: '#/components/schemas/UserAngelTypeRelation'
+    AngelTypeUser:
+      allOf:
         - type: object
           properties:
-            confirmed:
-              type: boolean
-              example: true
-              description: >
-                If the user is confirmed
-                (either by the angel type not requiring confirmation, being a supporter or being confirmed by one).
-            supporter:
-              type: boolean
-              example: false
-              description: If the user is a supporter of the angel type.
+              user:
+                $ref: '#/components/schemas/Reference'
           required:
+            - user
             - confirmed
             - supporter
+        - $ref: '#/components/schemas/UserAngelTypeRelation'
+    UserAngelTypeRelation:
+        properties:
+          confirmed:
+            type: boolean
+            example: true
+            description: >
+              If the user is confirmed
+              (either by the angel type not requiring confirmation, being a supporter or being confirmed by one).
+          supporter:
+            type: boolean
+            example: false
+            description: If the user is a supporter of the angel type.
+        required:
+          - confirmed
+          - supporter
     News:
       type: object
       properties:
@@ -530,6 +542,39 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Shift'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /angeltypes/{id}/users:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The angel type identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - angel type
+        - user
+      summary: Get all users of the requested angel type
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AngelTypeUser'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':

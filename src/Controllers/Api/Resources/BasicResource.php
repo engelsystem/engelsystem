@@ -7,13 +7,14 @@ namespace Engelsystem\Controllers\Api\Resources;
 use Engelsystem\Models\BaseModel;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Collection;
 use Stringable;
 
 /** @phpstan-consistent-constructor */
 abstract class BasicResource implements Arrayable, Jsonable, Stringable
 {
-    public function __construct(protected BaseModel | Collection $model)
+    public function __construct(protected Collection | BaseModel | Pivot $model)
     {
     }
 

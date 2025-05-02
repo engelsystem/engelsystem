@@ -141,6 +141,7 @@ $route->addGroup(
 
                 $route->get('/angeltypes', 'Api\AngelTypeController@index');
                 $route->get('/angeltypes/{angeltype_id:\d+}/shifts', 'Api\ShiftsController@entriesByAngeltype');
+                $route->get('/angeltypes/{angeltype_id:\d+}/users', 'Api\UsersController@entriesByAngeltype');
 
                 $route->get('/locations', 'Api\LocationsController@index');
                 $route->get('/locations/{location_id:\d+}/shifts', 'Api\ShiftsController@entriesByLocation');
