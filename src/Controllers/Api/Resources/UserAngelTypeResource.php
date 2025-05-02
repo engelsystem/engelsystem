@@ -9,7 +9,7 @@ class UserAngelTypeResource extends AngelTypeResource
     public function toArray(): array
     {
         return [
-            ...parent::toArray(),
+            'angeltype' => AngelTypeResource::toIdentifierArray($this->model),
             'confirmed' => !$this->model->restricted
                 || $this->model->pivot->supporter
                 || $this->model->pivot->confirm_user_id,
