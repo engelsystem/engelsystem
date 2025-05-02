@@ -155,6 +155,7 @@ $route->addGroup(
                 $route->get('/users/{user_id:(?:\d+|self)}', 'Api\UsersController@user');
                 $route->get('/users/{user_id:(?:\d+|self)}/angeltypes', 'Api\AngelTypeController@ofUser');
                 $route->get('/users/{user_id:(?:\d+|self)}/shifts', 'Api\ShiftsController@entriesByUser');
+                $route->get('/users/{user_id:(?:\d+|self)}/worklogs', 'Api\UsersController@worklogs');
 
                 $route->addRoute(
                     ['POST', 'PUT', 'DELETE', 'PATCH'],

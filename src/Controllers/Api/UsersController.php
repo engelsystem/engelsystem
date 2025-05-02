@@ -7,6 +7,7 @@ namespace Engelsystem\Controllers\Api;
 use Engelsystem\Controllers\Api\Resources\UserAngelTypeReferenceResource;
 use Engelsystem\Controllers\Api\Resources\UserDetailResource;
 use Engelsystem\Controllers\Api\Resources\UserResource;
+use Engelsystem\Controllers\Api\Resources\WorklogResource;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
@@ -65,6 +66,25 @@ class UsersController extends ApiController
 
         /** @var UserAngelTypeReferenceResource[]|Collection $models */
         $models = UserAngelTypeReferenceResource::collection($models);
+
+        $data = ['data' => $models];
+        return $this->response
+            ->withContent(json_encode($data));
+    }
+
+    public function worklogs(Request $request): Response
+    {
+        $id = (int) $request->getAttribute('user_id');
+        /** @var User $user */
+        $user = User::findOrFail($id);
+
+        $models = $user->worklogs();
+
+        $models = $models
+            ->orderBy('worked_at')
+            ->get();
+
+        $models = WorklogResource::collection($models);
 
         $data = ['data' => $models];
         return $this->response
