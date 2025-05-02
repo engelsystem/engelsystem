@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Api\Resources;
 
+use Engelsystem\Models\AngelType;
+
 class UserAngelTypeResource extends AngelTypeResource
 {
     public function toArray(): array
     {
+        /** @var AngelType $angelType */
+        $angelType = $this->model;
+        /** @var AngelType $angelType */
+        $userAngelType = $this->model->pivot;
+
         return [
-            ...parent::toArray(),
-            'confirmed' => !$this->model->restricted
-                || $this->model->pivot->supporter
-                || $this->model->pivot->confirm_user_id,
-            'supporter' => $this->model->pivot->supporter,
+            'angeltype' => AngelTypeResource::toIdentifierArray($angelType),
+            'confirmed' => !$angelType->restricted
+                || $userAngelType->supporter
+                || $userAngelType->confirm_user_id,
+            'supporter' => $userAngelType->supporter,
         ];
     }
 }
