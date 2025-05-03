@@ -351,7 +351,8 @@ function view_user_shifts()
                 'set_next_8h'   => __('next 8h'),
                 'random'        => auth()->can('user_shifts') && $canSignUpForShifts ? button(
                     url('/shifts/random'),
-                    icon('dice-4-fill') . __('shifts.random')
+                    icon('shuffle') . __('shifts.random'),
+                    'btn-primary'
                 ) : '',
                 'dashboard'     => button(
                     public_dashboard_link(),
