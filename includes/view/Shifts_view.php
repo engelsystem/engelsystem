@@ -85,18 +85,20 @@ function Shift_editor_info_render(Shift $shift)
             ? __(
                 'shift.angeltype_source.shift_type',
                 [
-                    '<a href="' . url('/admin/schedule/edit/' . $shift->schedule->id) . '">'
-                    . htmlspecialchars($shift->schedule->name)
-                    . '</a>',
+                    auth()->can('schedule.import') ?
+                        '<a href="' . url('/admin/schedule/edit/' . $shift->schedule->id) . '">'
+                        . htmlspecialchars($shift->schedule->name)
+                        . '</a>' : htmlspecialchars($shift->schedule->name),
                     '<a href="' . url('/admin/shifttypes/' . $shift->shift_type_id) . '">'
                     . htmlspecialchars($shift->shiftType->name)
                     . '</a>',
                 ]
             )
             : __('shift.angeltype_source.location', [
-                '<a href="' . url('/admin/schedule/edit/' . $shift->schedule->id) . '">'
-                . htmlspecialchars($shift->schedule->name)
-                . '</a>',
+                auth()->can('schedule.import') ?
+                    '<a href="' . url('/admin/schedule/edit/' . $shift->schedule->id) . '">'
+                    . htmlspecialchars($shift->schedule->name)
+                    . '</a>' : htmlspecialchars($shift->schedule->name),
                 location_name_render($shift->location),
             ]);
     } else {
