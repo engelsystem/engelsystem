@@ -45,15 +45,6 @@ class Goodie
                 COALESCE(SUM(
                     /* Shift length */
                     TIMESTAMPDIFF(MINUTE, shifts.start, shifts.end) * 60
-
-                    /* Handle freeloading */
-                    * (
-                        CASE WHEN `shift_entries`.`freeloaded_by` IS NULL
-                        THEN 1
-                        ELSE -2
-                        END
-                    )
-
                     /* Is night shift */
                     * (
                         CASE WHEN
@@ -67,8 +58,18 @@ class Goodie
                             /* Starts before and ends after night */
                             OR HOUR(shifts.start) <= %1$d AND HOUR(shifts.end) >= %2$d
                         /* Use multiplier */
-                        THEN %3$d
-                        ELSE 1
+                        THEN
+                            /* Handle freeloading */
+                            CASE WHEN `shift_entries`.`freeloaded_by` IS NULL
+                            THEN %3$d
+                            ELSE -%3$d
+                            END
+                        ELSE
+                            /* Handle freeloading */
+                            CASE WHEN `shift_entries`.`freeloaded_by` IS NULL
+                            THEN 1
+                            ELSE -2
+                            END
                         END
                     )
                 ), 0)
