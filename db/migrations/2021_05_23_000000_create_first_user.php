@@ -40,6 +40,6 @@ class CreateFirstUser extends Migration
         foreach (['users_contact', 'users_personal_data', 'users_state'] as $table) {
             $db->table($table)->insert(['user_id' => $admin->id]);
         }
-        $db->table('users_settings')->insert(['user_id' => $admin->id, 'language' => 'en_US', 'theme' => 0]);
+        $db->table('users_settings')->insert(['user_id' => $admin->id, 'language' => 'en_US', 'theme' => 1]);
     }
 }
