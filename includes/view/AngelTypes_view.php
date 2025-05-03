@@ -448,7 +448,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                             'supporter' => 0,
                         ]),
                         icon('person-fill-down'),
-                        'btn-sm',
+                        'btn-sm btn-danger',
                         '',
                         __('Remove supporter rights'),
                     ),
