@@ -148,6 +148,13 @@ table .border-bottom {
   padding: 0 2px;
 }
 
+table.table-sticky-header thead {
+  position: sticky;
+  top: 57px;
+  z-index: $zindex-sticky;
+  background-color: var(--es-table-sticky-bg, var(--bs-body-bg));
+}
+
 .stats {
   font-size: 20px;
   height: 150px;
