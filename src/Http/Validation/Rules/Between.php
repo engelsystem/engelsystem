@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http\Validation\Rules;
 
-use Respect\Validation\Rules\AbstractEnvelope;
 use Respect\Validation\Rules\Between as RespectBetween;
+use Respect\Validation\Rules\Core\Envelope;
 
-class Between extends AbstractEnvelope
+class Between extends Envelope
 {
     use StringInputLength;
 
