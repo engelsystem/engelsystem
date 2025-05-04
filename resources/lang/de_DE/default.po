@@ -1920,7 +1920,7 @@ msgid "location.map_url"
 msgstr "Karte"
 
 msgid "location.required_angels"
-msgstr "Benötigte Engel (bei Fahrplan import)"
+msgstr "Benötigte Engel (bei Fahrplan import / kopie)"
 
 msgid "location.map_url.info"
 msgstr "Die Karte wird auf der Ort-Seite als iframe eingebettet."
@@ -1947,7 +1947,7 @@ msgid "shifttype.delete.title"
 msgstr "Schichttyp \"%s\" löschen"
 
 msgid "shifttype.required_angels"
-msgstr "Benötigte Engel (bei Fahrplan import)"
+msgstr "Benötigte Engel (bei Fahrplan import / kopie)"
 
 msgid "shifttype.edit.signup_advance_hours"
 msgstr "Selbsteintragen im voraus in Stunden"

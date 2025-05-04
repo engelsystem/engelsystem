@@ -683,6 +683,11 @@ function User_view(
                                 form_hidden('user', $user_source->id),
                                 form_submit('submit', icon('house') . __('user.arrive'), '', false),
                             ], url('/admin-arrive'), 'float:left') : '',
+                        $auth->can(['admin_log', 'logs.all']) ?
+                            form([
+                                form_hidden('search_user_id', $user_source->id),
+                                form_submit('submit', icon('journal-text') . __('log.log'), '', false, 'secondary'),
+                            ], url('/admin/logs')) : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(
                                 url('/admin/user/' . $user_source->id . '/voucher'),

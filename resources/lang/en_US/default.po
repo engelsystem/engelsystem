@@ -785,7 +785,7 @@ msgid "location.map_url"
 msgstr "Map"
 
 msgid "location.required_angels"
-msgstr "Required angels (on schedule import)"
+msgstr "Required angels (on schedule import or copy)"
 
 msgid "location.map_url.info"
 msgstr "The map will be embedded on the location page as an iframe."
@@ -812,7 +812,7 @@ msgid "shifttype.delete.title"
 msgstr "Delete shift type \"%s\""
 
 msgid "shifttype.required_angels"
-msgstr "Required angels (on schedule import)"
+msgstr "Required angels (on schedule import or copy)"
 
 msgid "shifttype.edit.signup_advance_hours"
 msgstr "Self signup advance hours"
