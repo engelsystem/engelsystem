@@ -448,7 +448,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                             'supporter' => 0,
                         ]),
                         icon('person-fill-down'),
-                        'btn-sm',
+                        'btn-sm btn-danger',
                         '',
                         __('Remove supporter rights'),
                     ),
@@ -552,10 +552,10 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
         && auth()->can('angeltype.goodie.list')
         && auth()->can('user.goodie.edit')
     ) {
-        $headers['goodie_actions'] = __('Goodie actions');
         if ($goodie_tshirt) {
             $headers['shirt_size'] = __('user.shirt_size');
         }
+        $headers['goodie_actions'] = __('Goodie actions');
     }
     $headers['actions'] = '';
 

@@ -307,7 +307,7 @@ function view_user_shifts()
                     $locations,
                     $shiftsFilter->getLocations(),
                     'locations',
-                    icon('pin-map-fill') . __('Locations')
+                    icon('pin-map-fill') . __('location.locations')
                 ),
                 'start_select'  => html_select_key(
                     'start_day',
@@ -327,10 +327,9 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    icon('person-lines-fill') . __('angeltypes.angeltypes')
-                    . ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-                    . __('The tasks shown here are influenced by the angel types you joined already!')
-                    . '"></span></small>',
+                    icon('person-lines-fill') . __('angeltypes.angeltypes') . ' '
+                    . '<a class="icon-link" href="' . url('/angeltypes/about') . '" title="' . __('angeltypes.about') . '" target="_blank">'
+                    . icon('question-circle') . '</a>',
                     $ownAngelTypes
                 ),
                 'filled_select' => make_select(
@@ -352,7 +351,8 @@ function view_user_shifts()
                 'set_next_8h'   => __('next 8h'),
                 'random'        => auth()->can('user_shifts') && $canSignUpForShifts ? button(
                     url('/shifts/random'),
-                    icon('dice-4-fill') . __('shifts.random')
+                    icon('shuffle') . __('shifts.random'),
+                    'btn-primary'
                 ) : '',
                 'dashboard'     => button(
                     public_dashboard_link(),
