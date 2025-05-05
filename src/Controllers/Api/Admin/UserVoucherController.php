@@ -9,6 +9,7 @@ use Engelsystem\Controllers\Api\UsesAuth;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserVoucherController extends ApiController {
     use UsesAuth;
@@ -27,10 +28,10 @@ class UserVoucherController extends ApiController {
      * Set the voucher count of a user.
      */
     public function update(Request $request): Response {
-        $userId     = $request->getAttribute('user_id');
-        $targetUser = $this->getUser($userId);
-
-        if(!$targetUser) {
+        $userId = $request->getAttribute('user_id');
+        try {
+            $targetUser = $this->getUser($userId);
+        } catch(ModelNotFoundException) {
             return $this->response
                 ->withStatus(404)
                 ->withContent(json_encode(['message' => 'User not found']));
@@ -53,9 +54,9 @@ class UserVoucherController extends ApiController {
      */
     public function increment(Request $request): Response {
         $userId     = $request->getAttribute('user_id');
-        $targetUser = $this->getUser($userId);
-
-        if(!$targetUser) {
+        try {
+            $targetUser = $this->getUser($userId);
+        } catch(ModelNotFoundException) {
             return $this->response
                 ->withStatus(404)
                 ->withContent(json_encode(['message' => 'User not found']));
