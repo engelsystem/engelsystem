@@ -40,7 +40,6 @@ class UserVoucherControllerTest extends ApiBaseControllerTest {
 
     /**
      * @covers \Engelsystem\Controllers\Api\Admin\UserVoucherController::update
-     * @covers \Engelsystem\Controllers\Api\Admin\UserVoucherController::checkActive
      */
     public function testUpdateSuccess(): void {
         $user = User::factory()->create();
@@ -120,7 +119,6 @@ class UserVoucherControllerTest extends ApiBaseControllerTest {
 
     /**
      * @covers \Engelsystem\Controllers\Api\Admin\UserVoucherController::increment
-     * @covers \Engelsystem\Controllers\Api\Admin\UserVoucherController::checkActive
      */
     public function testIncrementSuccess(): void {
         $user = User::factory()->create();
