@@ -194,7 +194,14 @@ function load_types()
                         NOT `user_angel_type`.`confirm_user_id` IS NULL
                         OR `user_angel_type`.`id` IS NULL
                     )
-                ) AS `enabled`
+                ) AS `enabled`,
+                (
+                    `user_angel_type`.`id` IS NOT NULL
+                    AND (
+                        `angel_types`.`restricted`=0
+                        OR `user_angel_type`.`confirm_user_id` IS NOT NULL
+                    )
+                ) AS `own`
             FROM `angel_types`
             LEFT JOIN `user_angel_type`
                 ON (
@@ -204,7 +211,7 @@ function load_types()
             . ($isShico ? '' :
             'WHERE angel_types.hide_on_shift_view = 0
                 OR user_angel_type.user_id IS NOT NULL ') .
-            'ORDER BY `angel_types`.`name`
+            'ORDER BY `own` DESC, `angel_types`.`name`
         ',
         [
             $user->id,
@@ -411,14 +418,16 @@ function make_select($items, $selected, $name, $title = null, $ownSelect = [])
     $html .= '<div id="selection_' . $name . '" class="mb-3 selection ' . $name . '">' . "\n";
 
     $htmlItems = [];
-    foreach ($items as $i) {
-        $id = $name . '_' . $i['id'];
+    foreach ($items as $i => $item) {
+        $break = isset($item['own'], $items[$i + 1]) &&  $item['own'] && !$items[$i + 1]['own'];
+        $id = $name . '_' . $item['id'];
         $htmlItems[] = '<div class="form-check">'
-            . '<input class="form-check-input" type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $i['id'] . '" '
-            . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
-            . '><label class="form-check-label" for="' . $id . '">' . htmlspecialchars($i['name']) . '</label>'
-            . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('mortarboard-fill'))
-            . '</div>';
+            . '<input class="form-check-input" type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $item['id'] . '" '
+            . (in_array($item['id'], $selected) ? ' checked="checked"' : '')
+            . '><label class="form-check-label" for="' . $id . '">' . htmlspecialchars($item['name']) . '</label>'
+            . (!isset($item['enabled']) || $item['enabled'] ? '' : icon('mortarboard-fill'))
+            . '</div>'
+            . ($break ? '<hr class="border border-info border-2 opacity-75" id="angel_types_selection_hr">' : '');
     }
     $html .= implode("\n", $htmlItems);
 
