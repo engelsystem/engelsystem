@@ -141,10 +141,10 @@ return [
             // Auto join teams
             // Info groups field (optional)
             'groups' => 'groups',
-            // Groups to team (angeltype) mapping (optional)
+            // Groups to team (angel type) mapping (optional)
             'teams' => [
-                '/Lorem' => 4, // 4 being the ID of the team (angeltype)
-                '/Foo Mod' => ['id' => 5, 'supporter' => true], // 5 being the ID of the team (angeltype)
+                '/Lorem' => 4, // 4 being the ID of the team (angel type)
+                '/Foo Mod' => ['id' => 5, 'supporter' => true], // 5 being the ID of the team (angel type)
             ],
         ],
         */
@@ -264,7 +264,7 @@ return [
     ],
 
     // Redirect to this site after logging in or when clicking the page name
-    // Must be one of news, meetings, user_shifts, angeltypes, questions
+    // Must be one of news, meetings, user_shifts, angel types, questions
     'home_site'               => env('HOME_SITE', 'news'),
 
     // Number of News shown on one site and for feed readers (minimum 1)
@@ -292,7 +292,7 @@ return [
     // Whether newly-registered users should automatically be marked as arrived
     'autoarrive'              => (bool) env('AUTOARRIVE', false),
 
-    // Supporters of a team (angeltype) can promote other users of the team (angeltype) to supporter
+    // Supporters of a team (angel type) can promote other users of the team (angel type) to supporter
     'supporters_can_promote' => (bool) env('SUPPORTERS_CAN_PROMOTE', false),
 
     // Only allow shift signup this number of hours in advance
