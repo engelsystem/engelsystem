@@ -24,7 +24,8 @@ class UserVouchers
             ->where('shifts.end', '<', Carbon::now())
             ->where('shifts.start', '>=', $start ?: 0)
             ->whereNull('freeloaded_by')
-            ->get();
+            ->get()
+            ->load('shift');
         $worklogs = $user->worklogs()
             ->where('worked_at', '>=', $start ?: 0)
             ->where('worked_at', '<=', Carbon::now())

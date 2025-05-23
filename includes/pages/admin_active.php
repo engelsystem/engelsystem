@@ -178,7 +178,7 @@ function admin_active()
         }
     }
 
-    $query = User::with(['personalData', 'state', 'worklogs'])
+    $query = User::with(['personalData', 'state', 'worklogs', 'shiftEntries'])
         ->selectRaw(
             sprintf(
                 '
@@ -249,9 +249,8 @@ function admin_active()
 
         $timeSum = 0;
         /** @var ShiftEntry[] $shiftEntries */
-        $shiftEntries = $user->shiftEntries()
-            ->with('shift')
-            ->get();
+        $shiftEntries = $user->shiftEntries
+            ->load('shift');
         foreach ($shiftEntries as $entry) {
             if ($entry->freeloaded_by || $entry->shift->start > Carbon::now()) {
                 continue;
