@@ -280,6 +280,10 @@ function view_user_shifts()
             'id'   => '0',
             'name' => __('free'),
         ],
+        [
+            'id'   => '2',
+            'name' => __('own'),
+        ],
     ];
     $start_day = $shiftsFilter->getStart()->format('Y-m-d');
     $start_time = $shiftsFilter->getStart()->format('H:i');
