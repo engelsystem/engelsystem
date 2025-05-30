@@ -208,6 +208,12 @@ table .border-bottom {
   }
 }
 
+/* make selections scrollable and add a max height */
+.selection {
+  overflow: auto;
+  max-height: 20vh;
+}
+
 .selection .checkbox {
   display: block;
 }
