@@ -164,7 +164,7 @@ msgid "schedule.import.load.info"
 msgstr "Import \"%s\" (version \"%s\")"
 
 msgid "schedule.name"
-msgstr "Programm name"
+msgstr "Schedule name"
 
 msgid "schedule.url"
 msgstr "Schedule URL (schedule.xml)"
@@ -490,7 +490,7 @@ msgid "settings.certificates.drive_confirmed.hint"
 msgstr "Your driving license has been confirmed, you can no longer change it by yourself."
 
 msgid "settings.certificates.confirmation.info"
-msgstr "You personally checked that the certificate / license meets the requirements."
+msgstr "You personally checked that the certificate/license meets the requirements."
 
 msgid "settings.certificates.success"
 msgstr "Certificates were updated successfully."
@@ -785,7 +785,7 @@ msgid "location.map_url"
 msgstr "Map"
 
 msgid "location.required_angels"
-msgstr "Required angels (on schedule import)"
+msgstr "Required angels (on schedule import or copy)"
 
 msgid "location.map_url.info"
 msgstr "The map will be embedded on the location page as an iframe."
@@ -812,7 +812,7 @@ msgid "shifttype.delete.title"
 msgstr "Delete shift type \"%s\""
 
 msgid "shifttype.required_angels"
-msgstr "Required angels (on schedule import)"
+msgstr "Required angels (on schedule import or copy)"
 
 msgid "shifttype.edit.signup_advance_hours"
 msgstr "Self signup advance hours"
@@ -942,7 +942,7 @@ msgid "footer.eventinfo.start_end"
 msgstr "Event from %1$s to %2$s"
 
 msgid "footer.issues"
-msgstr "Bugs / Features"
+msgstr "Bugs/Features"
 
 msgid "footer.github"
 msgstr "Development Platform"

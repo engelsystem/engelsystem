@@ -696,6 +696,11 @@ function User_view(
                             url('/users/' . $user_source->id . '/certificates'),
                             icon('card-checklist') . __('settings.certificates')
                         ) : '',
+                        $auth->can(['admin_log', 'logs.all']) ?
+                            form([
+                                form_hidden('search_user_id', $user_source->id),
+                                form_submit('submit', icon('journal-text') . __('log.log'), '', false, 'secondary'),
+                            ], url('/admin/logs')) : '',
                         ($admin_user_worklog_privilege && $self_worklog) ? button(
                             url('/admin/user/' . $user_source->id . '/worklog'),
                             icon('clock-history') . __('worklog.add')
