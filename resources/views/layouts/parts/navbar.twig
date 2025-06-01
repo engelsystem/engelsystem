@@ -82,7 +82,7 @@
                 {% if is_guest() %}
                     {% include "layouts/parts/language_dropdown.twig" %}
 
-                    {% if can('register') and config('registration_enabled') %}
+                    {% if can('register') and config('registration_enabled') and config('enable_password') %}
                         {{ _self.toolbar_item(
                             __('general.register'),
                             config('external_registration_url') ?: url('/register'),
