@@ -98,13 +98,13 @@ return [
          *      'icon' => '[icon]', # Optional, default gear-fill
          *      'validation' => callable, # Optional. callable to validate the request
          *      'config' => [
-         *          '[name]' => [
+         *          '[name]' => [ # Name must be globally unique
          *              'name' => 'some.value', # Optional, default: config.[name]
          *              'type' => 'string', # string, text, datetime-local, boolean ...
          *              'default' => '[value]', # Optional
          *              'required' => true, # Optional, default false
          *              'env' => '[]', # Optional, env var to load
-         *              'hidden' => false, # Optional, default false, hides the config in frontend # TODO
+         *              'hidden' => false, # Optional, default false, hides the config in frontend
          *              # Optional translation config.[name].info for information messages
          *              # Optionally other options used by the correlating field template
          *          ],
@@ -140,7 +140,6 @@ return [
                     'type' => 'boolean',
                     'default' => true,
                 ],
-                'foo' => ['type' => 'string'], // ToDo: remove
             ],
         ],
     ],

@@ -150,6 +150,12 @@ class ConfigController extends BaseController
 
             // Iterate over settings
             foreach ($this->options[$key]['config'] as $name => $config) {
+                // Ignore hidden options
+                if (!empty($config['hidden'])) {
+                    unset($this->options[$key]['config'][$name]);
+                    continue;
+                }
+
                 // Set name for translation
                 if (empty($this->options[$key]['config'][$name]['name'])) {
                     $this->options[$key]['config'][$name]['name'] = 'config.' . $name;

@@ -27,6 +27,10 @@ class ConfigControllerTest extends ControllerTest
                     'type' => 'datetime-local',
                     'name' => 'some.bar',
                 ],
+                'something_to_hide' => [
+                    'type' => 'boolean',
+                    'hidden' => true,
+                ],
             ],
         ],
         'invalid' => [
@@ -130,6 +134,8 @@ class ConfigControllerTest extends ControllerTest
                 $this->assertArrayHasKey('title', $data['options']['test']);
                 $this->assertEquals('config.test', $data['options']['test']['title']);
                 $this->assertEquals('http://localhost/admin/config/test', $data['options']['test']['url']);
+
+                $this->assertArrayNotHasKey('something_to_hide', $data['config']);
 
                 return $this->response;
             });
