@@ -64,6 +64,7 @@ class ConfigController extends BaseController
         $page = $this->activePage($request);
         $data = $this->validation($page, $request);
         $settings = $this->options[$page]['config'];
+        $settings = array_filter($settings, fn($a) => empty($a['in_env']));
 
         $changes = [];
         foreach ($settings as $key => $options) {
@@ -106,6 +107,7 @@ class ConfigController extends BaseController
         $rules = [];
         $config = $this->options[$page];
         $settings = $config['config'];
+        $settings = array_filter($settings, fn($a) => empty($a['in_env']));
 
         // Generate validation rules
         foreach ($settings as $key => $setting) {
@@ -139,6 +141,8 @@ class ConfigController extends BaseController
 
     protected function parseOptions(): void
     {
+        $fromEnv = array_filter($this->config->get('env_config'), fn($a) => !is_null($a));
+
         foreach ($this->options as $key => $value) {
             // Add page URLs
             $this->options[$key]['url'] = $this->url->to('/admin/config/' . $key);
@@ -164,6 +168,11 @@ class ConfigController extends BaseController
                 // Configure required icon
                 if (!empty($this->options[$key]['config'][$name]['required'])) {
                     $this->options[$key]['config'][$name]['required_icon'] = true;
+                }
+
+                // Set if overwritten from ENV
+                if (isset($fromEnv[$config['env'] ?? Str::upper($name)])) {
+                    $this->options[$key]['config'][$name]['in_env'] = true;
                 }
             }
         }

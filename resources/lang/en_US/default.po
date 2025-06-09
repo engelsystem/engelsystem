@@ -1145,3 +1145,6 @@ msgstr "Config"
 
 msgid "config.edit.success"
 msgstr "Configuration updated successfully"
+
+msgid "config.warning_from_env"
+msgstr "Configuration option is overwritten from ENV!"

@@ -5,6 +5,11 @@
     {% if __(info) != info %}
         {% set options = options + {'info': __(info)} %}
     {% endif %}
+    {% if options.in_env|default(false) %}
+        {% set options = {
+            'warning': __('config.warning_from_env') ~ ' ' ~ options.warning|default(''), 'disabled': true
+        } + options %}
+    {% endif %}
 
     {% if options.type == 'string' %}
         {{ f.input(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}

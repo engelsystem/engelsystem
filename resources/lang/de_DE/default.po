@@ -2138,3 +2138,6 @@ msgstr "Konfiguration"
 
 msgid "config.edit.success"
 msgstr "Konfiguration erfolgreich angepasst"
+
+msgid "config.warning_from_env"
+msgstr "Konfiguration wird aus ENV variable überschrieben!"

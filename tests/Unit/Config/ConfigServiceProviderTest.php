@@ -174,6 +174,8 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertArrayHasKey('in_database', $conf);
         $this->assertArrayHasKey('file', $conf);
         $this->assertArrayHasKey('themes', $conf);
+        $this->assertArrayHasKey('env_config', $conf);
+        $this->assertIsArray($conf['env_config']);
 
         $this->assertEquals('content', $conf['in_database']);
         $this->assertEquals('database', $conf['file']);

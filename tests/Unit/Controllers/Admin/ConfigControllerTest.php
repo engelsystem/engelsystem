@@ -31,6 +31,9 @@ class ConfigControllerTest extends ControllerTest
                     'type' => 'boolean',
                     'hidden' => true,
                 ],
+                'some_config_from_env' => [
+                    'type' => 'text',
+                ],
             ],
         ],
         'invalid' => [
@@ -119,6 +122,7 @@ class ConfigControllerTest extends ControllerTest
 
                 $this->assertArrayHasKey('foo', $data['config']);
                 $this->assertArrayHasKey('bar', $data['config']);
+                $this->assertArrayHasKey('some_config_from_env', $data['config']);
 
                 $this->assertArrayHasKey('name', $data['config']['foo']);
                 $this->assertArrayHasKey('type', $data['config']['foo']);
@@ -128,6 +132,9 @@ class ConfigControllerTest extends ControllerTest
 
                 $this->assertArrayHasKey('name', $data['config']['bar']);
                 $this->assertEquals('some.bar', $data['config']['bar']['name']);
+
+                $this->assertArrayHasKey('in_env', $data['config']['some_config_from_env']);
+                $this->assertTrue($data['config']['some_config_from_env']['in_env']);
 
                 $this->assertArrayHasKey('test', $data['options']);
                 $this->assertArrayHasKey('url', $data['options']['test']);
@@ -187,6 +194,7 @@ class ConfigControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody([
             'foo' => 'some text',
             'bar' => '2042-01-01T00:00',
+            'some_config_from_env' => 'Lorem Ipsum',
         ]);
 
         /** @var ConfigController $controller */
@@ -195,6 +203,11 @@ class ConfigControllerTest extends ControllerTest
 
         $controller->save($this->request);
         $this->assertEquals('some text', EventConfig::whereName('foo')->first()->value);
+        $this->assertEquals(
+            '2042-01-01T00:00:00.000000Z',
+            EventConfig::whereName('bar')->first()->value
+        );
+        $this->assertNull(EventConfig::whereName('some_config_from_env')->first());
     }
 
     /**
@@ -339,6 +352,7 @@ class ConfigControllerTest extends ControllerTest
         parent::setUp();
 
         $this->config->set('config_options', $this->options);
+        $this->config->set('env_config', ['SOME_CONFIG_FROM_ENV' => 'I am the env!']);
         $this->request->attributes->set('page', 'event');
     }
 }

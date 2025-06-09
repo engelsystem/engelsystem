@@ -69,6 +69,8 @@ class ConfigServiceProvider extends ServiceProvider
         $this->loadConfigFromEnv($config);
 
         $this->parseConfigTypes($config);
+
+        $config->set('env_config', $this->envConfig);
     }
 
     protected function loadConfigFromFiles(Config $config): void
