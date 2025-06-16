@@ -33,5 +33,5 @@ jobs:
         with:
           file: "docker/Dockerfile"
           platforms: linux/amd64
-          tags: ghcr.io/oliverlorenz/engelsystem/engelsystem:latest
+          tags: ghcr.io/{{ github.repository }}/engelsystem:latest
           push: true
