@@ -92,24 +92,34 @@ return [
 
     'config_options' => [
         /**
-         *  '[name]' => [
-         *      'title' => '[title], # Optional, default config.[name]
-         *      'permission' => '[permission]' # Optional, string or array
-         *      'icon' => '[icon]', # Optional, default gear-fill
-         *      'validation' => callable, # Optional. callable to validate the request
-         *      'config' => [
-         *          '[name]' => [ # Name must be globally unique
-         *              'name' => 'some.value', # Optional, default: config.[name]
-         *              'type' => 'string', # string, text, datetime-local, boolean ...
-         *              'default' => '[value]', # Optional
-         *              'required' => true, # Optional, default false
-         *              'env' => '[]', # Optional, env var to load
-         *              'hidden' => false, # Optional, default false, hides the config in frontend
-         *              # Optional translation config.[name].info for information messages
-         *              # Optionally other options used by the correlating field template
-         *          ],
-         *      ],
-         *  ],
+         * List of pages (key is the name/url)
+         *
+         * Structure of a config page:
+         * '[key]' => [
+         *   'title' => '[title]', # Optional, default to config.[key]
+         *   'config' => [...], # The config options
+         *   'validation' => callable, # Optional, callable($request, $rules) to validate the page request
+         * ]
+         *
+         * Structure of a config option:
+         * '[name]' => [
+         *     'title' => '[title], # Optional, default config.[name]
+         *     'permission' => '[permission]' # Optional, string or array
+         *     'icon' => '[icon]', # Optional, default gear-fill
+         *     'config' => [
+         *         '[name]' => [ # Name must be globally unique
+         *             'name' => 'some.value', # Optional, default: config.[name]
+         *             'type' => 'string', # string, text, datetime-local, boolean ...
+         *             'default' => '[value]', # Optional
+         *             'required' => true, # Optional, default false
+         *             'env' => '[name]', # Optional, env var to load, default name in upper case
+         *             'hidden' => false, # Optional, default false, hides the config in frontend
+         *             'permission' => '[permission]' # Optional, string or array
+         *             # Optional translation: config.[name].info for information messages
+         *             # Optionally other options used by the correlating field template
+         *         ],
+         *     ],
+         * ],
          */
         'event' => [
             'config' => [

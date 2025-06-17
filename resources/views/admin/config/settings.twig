@@ -25,11 +25,13 @@
 <form method="post">
     {{ csrf() }}
     {% for name, option in config %}
-        <div class="row">
-            <div class="col-md-12">
-                {{ _self.field(name, option) }}
+        {% if not option.permission|default(false) or can(option.permission) %}
+            <div class="row">
+                <div class="col-md-12">
+                    {{ _self.field(name, option) }}
+                </div>
             </div>
-        </div>
+        {% endif %}
     {% endfor %}
 
     {{ f.save(__('form.save')) }}

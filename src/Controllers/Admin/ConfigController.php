@@ -7,7 +7,9 @@ namespace Engelsystem\Controllers\Admin;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -34,9 +36,11 @@ class ConfigController extends BaseController
         protected Redirector $redirect,
         protected UrlGeneratorInterface $url,
         protected LoggerInterface $log,
+        protected Authenticator $auth,
+        bool $withAll = false, # Used to get all config options, for example for docs
     ) {
         $this->options = $this->config->get('config_options', []);
-        $this->parseOptions();
+        $this->parseOptions($withAll);
     }
 
     public function index(): Response
@@ -63,8 +67,7 @@ class ConfigController extends BaseController
     {
         $page = $this->activePage($request);
         $data = $this->validation($page, $request);
-        $settings = $this->options[$page]['config'];
-        $settings = array_filter($settings, fn($a) => empty($a['in_env']));
+        $settings = $this->filterShownSettings($this->options[$page]['config']);
 
         $changes = [];
         foreach ($settings as $key => $options) {
@@ -80,7 +83,7 @@ class ConfigController extends BaseController
                 continue;
             }
 
-            $changes[] = sprintf('%s = "%s"', $key, $value);
+            $changes[] = sprintf('%s="%s"', $key, $value);
 
             (new EventConfig())
                 ->findOrNew($key)
@@ -102,12 +105,16 @@ class ConfigController extends BaseController
         return $this->redirect->back();
     }
 
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
     protected function validation(string $page, Request $request): array
     {
         $rules = [];
         $config = $this->options[$page];
-        $settings = $config['config'];
-        $settings = array_filter($settings, fn($a) => empty($a['in_env']));
+        $settings = $this->filterShownSettings($config['config']);
 
         // Generate validation rules
         foreach ($settings as $key => $setting) {
@@ -126,20 +133,14 @@ class ConfigController extends BaseController
             $rules[$key] = implode('|', $validation);
         }
 
-        if (!empty($config['validation']) || method_exists($this, 'validate' . Str::ucfirst($page))) {
-            $callback = $config['validation'] ?? null;
-            if (!is_callable($callback)) {
-                // Used until proper dynamic config loading is implemented
-                $callback = [$this, 'validate' . Str::ucfirst($page)];
-            }
-
-            return $callback($request, $rules);
+        if (!empty($config['validation']) && is_callable($config['validation'])) {
+            return $config['validation']($request, $rules);
         }
 
         return $this->validate($request, $rules);
     }
 
-    protected function parseOptions(): void
+    protected function parseOptions(bool $withAll = true): void
     {
         $fromEnv = array_filter($this->config->get('env_config'), fn($a) => !is_null($a));
 
@@ -152,10 +153,17 @@ class ConfigController extends BaseController
                 $this->options[$key]['title'] = 'config.' . $key;
             }
 
+            // Define internal validation action
+            $internalValidation = 'validate' . Str::ucfirst($key);
+            if (method_exists($this, $internalValidation)) {
+                // Used until proper dynamic config loading is implemented
+                $this->options[$key]['validation'] = [$this, $internalValidation];
+            }
+
             // Iterate over settings
             foreach ($this->options[$key]['config'] as $name => $config) {
                 // Ignore hidden options
-                if (!empty($config['hidden'])) {
+                if (!empty($config['hidden']) && !$withAll) {
                     unset($this->options[$key]['config'][$name]);
                     continue;
                 }
@@ -170,12 +178,26 @@ class ConfigController extends BaseController
                     $this->options[$key]['config'][$name]['required_icon'] = true;
                 }
 
+                // Set ENV name
+                if (empty($config['env'])) {
+                    $config['env'] = Str::upper($name);
+                    $this->options[$key]['config'][$name]['env'] = $config['env'];
+                }
+
                 // Set if overwritten from ENV
-                if (isset($fromEnv[$config['env'] ?? Str::upper($name)])) {
+                if (isset($fromEnv[$config['env']])) {
                     $this->options[$key]['config'][$name]['in_env'] = true;
                 }
             }
         }
+    }
+
+    protected function filterShownSettings(array $settings): array
+    {
+        // Ignore values from env
+        $settings = array_filter($settings, fn($a) => empty($a['in_env']));
+        // Skip if permissions don't match
+        return array_filter($settings, fn($a) => empty($a['permission']) || $this->auth->can($a['permission']));
     }
 
     protected function activePage(Request $request): string
@@ -186,9 +208,17 @@ class ConfigController extends BaseController
             throw new HttpNotFound();
         }
 
+        $permissions = $this->options[$page]['permission'] ?? null;
+        if (!empty($permissions) && !$this->auth->can($permissions)) {
+            throw new HttpForbidden();
+        }
+
         return $page;
     }
 
+    /**
+     * Validation for Event page
+     */
     protected function validateEvent(Request $request, array $rules): array
     {
         // Run general validation

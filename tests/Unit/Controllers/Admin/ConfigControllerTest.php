@@ -5,17 +5,22 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Engelsystem\Controllers\Admin\ConfigController;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\Stub\AccessibleAuthenticator;
 use InvalidArgumentException;
 
 class ConfigControllerTest extends ControllerTest
 {
+    protected AccessibleAuthenticator $auth;
+
     protected array $options = [
         'test' => [
             'config' => [
@@ -27,6 +32,11 @@ class ConfigControllerTest extends ControllerTest
                     'type' => 'datetime-local',
                     'name' => 'some.bar',
                 ],
+                'baz' => [
+                    'type' => 'text',
+                    'default' => 'default value',
+                    'permission' => 'another_test_permission',
+                ],
                 'something_to_hide' => [
                     'type' => 'boolean',
                     'hidden' => true,
@@ -35,6 +45,7 @@ class ConfigControllerTest extends ControllerTest
                     'type' => 'text',
                 ],
             ],
+            'permission' => 'some_test_permission',
         ],
         'invalid' => [
             'config' => [
@@ -169,6 +180,21 @@ class ConfigControllerTest extends ControllerTest
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::activePage
+     */
+    public function testActivePageNotAllowed(): void
+    {
+        $this->auth->setPermissions(['none']);
+        $this->request->attributes->set('page', 'test');
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+
+        $this->expectException(HttpForbidden::class);
+        $controller->edit($this->request);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::save
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
      */
@@ -187,6 +213,7 @@ class ConfigControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::save
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::filterShownSettings
      */
     public function testSaveTestValidateSuccessful(): void
     {
@@ -194,6 +221,7 @@ class ConfigControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody([
             'foo' => 'some text',
             'bar' => '2042-01-01T00:00',
+            'baz' => 'New value',
             'some_config_from_env' => 'Lorem Ipsum',
         ]);
 
@@ -208,6 +236,14 @@ class ConfigControllerTest extends ControllerTest
             EventConfig::whereName('bar')->first()->value
         );
         $this->assertNull(EventConfig::whereName('some_config_from_env')->first());
+        $this->assertNull(EventConfig::whereName('baz')->first());
+
+        // Save with additional permission
+        $this->auth->setPermissions(['some_test_permission', 'another_test_permission']);
+        $controller->save($this->request);
+        $baz = EventConfig::whereName('baz')->first();
+        $this->assertNotNull($baz);
+        $this->assertEquals('New value', $baz->value);
     }
 
     /**
@@ -347,6 +383,20 @@ class ConfigControllerTest extends ControllerTest
         $this->assertHasNotification('config.edit.success');
     }
 
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::getOptions
+     */
+    public function testGetOptions(): void
+    {
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $data = $controller->getOptions();
+
+        $this->assertArrayHasKey('test', $data);
+        $this->assertArrayHasKey('invalid', $data);
+        $this->assertArrayHasKey('event', $data);
+    }
+
     public function setUp(): void
     {
         parent::setUp();
@@ -354,5 +404,9 @@ class ConfigControllerTest extends ControllerTest
         $this->config->set('config_options', $this->options);
         $this->config->set('env_config', ['SOME_CONFIG_FROM_ENV' => 'I am the env!']);
         $this->request->attributes->set('page', 'event');
+
+        $this->auth = $this->app->make(AccessibleAuthenticator::class);
+        $this->app->instance(Authenticator::class, $this->auth);
+        $this->auth->setPermissions(['some_test_permission']);
     }
 }

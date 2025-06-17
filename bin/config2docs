@@ -1,0 +1,84 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Engelsystem\Application;
+use Engelsystem\Config\Config;
+use Engelsystem\Controllers\Admin\ConfigController;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+
+require_once __DIR__ . '/../includes/application.php';
+
+/** @var Application $app */
+$app = app();
+
+$script = array_shift($argv);
+$argv = array_map('strtolower', $argv);
+if (in_array('help', $argv) || in_array('--help', $argv) || in_array('-h', $argv)) {
+    echo 'Usage: ' . $script . PHP_EOL;
+    echo 'Create markdown output containing all config options for the documentation page' . PHP_EOL;
+    echo PHP_EOL;
+    echo '  -h, --help,  help   Show this help' . PHP_EOL;
+    echo PHP_EOL;
+    echo 'Examples:' . PHP_EOL;
+    echo '  ' . $script . PHP_EOL;
+    echo '  ' . $script . ' --help' . PHP_EOL;
+    echo PHP_EOL;
+    exit;
+}
+
+/** @var ConfigController $configController */
+$configController = $app->make(ConfigController::class, ['withAll' => true]);
+$options = $configController->getOptions();
+
+function toTypeValue($value): string
+{
+    return match (gettype($value)) {
+        'NULL' => 'null',
+        'boolean' => $value ? 'true' : 'false',
+        default => (string) $value,
+    };
+}
+
+function toType($type): string
+{
+    return match ($type) {
+        'string' => 'text',
+        default => $type,
+    };
+}
+
+foreach ($options as $option) {
+    echo '## ' . __($option['title']);
+    echo PHP_EOL . PHP_EOL;
+
+    foreach ($option['config'] as $name => $config) {
+        $state = new Collection([
+            'Name' => $name,
+            'Type' => toType($config['type']),
+            'Default' => $config['default'] ?? null,
+            'Required' => $config['required'] ?? false,
+            'Environment variable' => $config['env'],
+            'Hidden' => $config['hidden'] ?? false,
+        ]);
+        $state = $state->map(fn($v, $k) => $k . ': `' . toTypeValue($v) . '`');
+
+        echo '### ' . __($config['name']);
+        echo PHP_EOL;
+
+        echo implode(', ', $state->toArray()) . '  ';
+        echo PHP_EOL;
+
+        $info = 'config.' . $name . '.info';
+        if (__($info) !== $info) {
+            echo __($info);
+            echo PHP_EOL;
+        }
+
+        echo PHP_EOL;
+    }
+
+    echo PHP_EOL;
+}
