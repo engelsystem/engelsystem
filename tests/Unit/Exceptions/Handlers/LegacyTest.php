@@ -54,7 +54,7 @@ class LegacyTest extends TestCase
         $logger = new TestLogger();
         $logger2 = $this->createMock(TestLogger::class);
         $logger2->expects($this->once())
-            ->method('critical')
+            ->method('log')
             ->willReturnCallback(function (): void {
                 throw new ErrorException();
             });
