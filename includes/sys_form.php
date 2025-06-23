@@ -261,11 +261,11 @@ function form_textarea($name, $label, $value, $disabled = false)
  * @param string   $class
  * @return string
  */
-function form_select($name, $label, $values, $selected, $selectText = '', $class = '')
+function form_select($name, $label, $values, $selected, $selectText = '', $class = '', $id = '')
 {
     return form_element(
         $label,
-        html_select_key('form_' . $name, $name, $values, $selected, $selectText),
+        html_select_key('form_' . $id ?? $name, $name, $values, $selected, $selectText),
         'form_' . $name,
         $class
     );

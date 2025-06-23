@@ -423,3 +423,15 @@ ready(() => {
     });
   });
 });
+
+/**
+ * focus select at user angel types add action
+ */
+ready(() => {
+  document.querySelectorAll('form_user_angel_type_add_user_id, select').forEach((element) => {
+    const innerDiv = element.choices.containerOuter.element;
+    if (innerDiv) {
+      innerDiv.focus();
+    }
+  });
+});
