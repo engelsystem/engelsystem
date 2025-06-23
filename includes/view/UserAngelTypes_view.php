@@ -154,7 +154,7 @@ function UserAngelType_add_view(AngelType $angeltype, $users_select, $user_id)
             auth()->can('admin_angel_types') || config('supporters_can_promote')
                 ? form_checkbox('set_supporter', __('Supporter'), false)
                 : '',
-            form_select('user_id', __('general.user'), $users_select, $user_id),
+            form_select('user_id', __('general.user'), $users_select, $user_id, '', '', 'user_angel_type_add_user_id'),
             form_submit('submit', icon('plus-lg') . __('general.add')),
         ]),
     ]);
