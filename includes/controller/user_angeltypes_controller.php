@@ -368,37 +368,25 @@ function user_angeltype_add_controller(): array
                 'angel_type_id' => $angeltype->id,
             ]);
 
-            engelsystem_log(sprintf(
-                'User %s added to %s.',
-                User_Nick_render($user_source, true),
-                AngelType_name_render($angeltype, true)
-            ));
-            success(sprintf(__('User %s added to %s.'), $user_source->displayName, $angeltype->name));
-
             $setSupporter = $request->hasPostData('set_supporter')
                 && (auth()->can('admin_angel_types') || config('supporters_can_promote'));
             if ($setSupporter) {
                 $userAngelType->supporter = true;
-                $userAngelType->save();
-
-                engelsystem_log(sprintf(
-                    'User %s set as supporter for %s.',
-                    User_Nick_render($user_source, true),
-                    AngelType_name_render($angeltype, true)
-                ));
             }
-
             if ($request->hasPostData('auto_confirm_user') || $setSupporter) {
                 $userAngelType->confirmUser()->associate($user_source);
-                $userAngelType->save();
-
-                engelsystem_log(sprintf(
-                    'User %s confirmed as %s.',
-                    User_Nick_render($user_source, true),
-                    AngelType_name_render($angeltype, true)
-                ));
             }
+            $userAngelType->save();
 
+            engelsystem_log(sprintf(
+                'User %s added to angel type %s, confirmed: %s, supporter: %s.',
+                User_Nick_render($user_source, true),
+                AngelType_name_render($angeltype, true),
+                $userAngelType->confirm_user_id ? 'true' : 'false',
+                $userAngelType->supporter ? 'true' : 'false',
+            ));
+
+            success(sprintf(__('User %s added to %s.'), $user_source->displayName, $angeltype->name));
             user_angeltype_add_email($user_source, $angeltype);
 
             throw_redirect(url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
