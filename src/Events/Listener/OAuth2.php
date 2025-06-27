@@ -68,7 +68,7 @@ class OAuth2
 
         if (!$userAngeltype) {
             $this->log->info(
-                'SSO {provider}: Added to angeltype {angeltype}, confirmed: {confirmed}, supporter: {supporter}',
+                'SSO {provider}: Added to angel type {angeltype}, confirmed: {confirmed}, supporter: {supporter}',
                 [
                     'provider'  => $providerName,
                     'angeltype' => $angelType->name,

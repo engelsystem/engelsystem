@@ -266,7 +266,7 @@ function form_select($name, $label, $values, $selected, $selectText = '', $class
     return form_element(
         $label,
         html_select_key('form_' . $id ?? $name, $name, $values, $selected, $selectText),
-        'form_' . $name,
+        'form_' . $id ?? $name,
         $class
     );
 }
