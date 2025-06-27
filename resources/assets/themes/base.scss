@@ -208,6 +208,17 @@ table .border-bottom {
   }
 }
 
+/* make selections scrollable and add a max height of 4.5 entries */
+.selection {
+  overflow-y: auto;
+  max-height: ($form-check-min-height + $form-check-margin-bottom) * 4.5;
+}
+
+/* add devider for confusing sorting of angel types selection */
+#angel_types_selection_hr {
+  margin: 0;
+}
+
 .selection .checkbox {
   display: block;
 }
