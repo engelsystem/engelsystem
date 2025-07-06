@@ -4,6 +4,11 @@
 
 {% block title %}{{ __('registration.title') }}{% endblock %}
 
+{% set ssoSyncUserName  = f.formData('sso-sync-username', false) %}
+{% set ssoSyncEMail     = f.formData('sso-sync-email', false) %}
+{% set ssoSyncFirstName = f.formData('sso-sync-first_name', false) %}
+{% set ssoSyncLastName  = f.formData('sso-sync-last_name', false) %}
+
 {% block content %}
 <div class="container">
     <div class="mb-5">
@@ -37,7 +42,8 @@
                 {% endif %}
 
                 <div class="col-md-6">
-                    {{ f.input(
+                    {{
+                        f.input(
                         'username',
                         __('general.nick'),
                         {
@@ -45,7 +51,9 @@
                             'max_length': 24,
                             'required': true,
                             'required_icon': true,
-                            'value': f.formData('username', ''),
+                            'disabled': ssoSyncUserName,
+                            'info': ssoSyncUserName ? __('registration.fromsso') : null,
+                            'value': f.formData('username', '')
                         }
                     ) }}
                 </div>
@@ -86,6 +94,7 @@
                 {% endif %}
 
                 <div class="col-md-6">
+                    
                     {{ f.input(
                         'email',
                         __('general.email'),
@@ -94,7 +103,9 @@
                             'max_length': 254,
                             'required': true,
                             'required_icon': true,
-                            'value': f.formData('email', ''),
+                            'disabled': ssoSyncEMail,
+                            'info': ssoSyncEMail ? __('registration.fromsso') : null,
+                            'value': f.formData('email', '')
                         }
                     ) }}
                 </div>
@@ -165,6 +176,8 @@
                                 'max_length': 64,
                                 'required': isFirstnameRequired,
                                 'required_icon': isFirstnameRequired,
+                                'disabled': ssoSyncFirstName,
+                                'info': ssoSyncFirstName ? __('registration.fromsso') : null,
                                 'value': f.formData('firstname', ''),
                             }
                         ) }}
@@ -178,6 +191,8 @@
                                 'max_length': 64,
                                 'required': isLastnameRequired,
                                 'required_icon': isLastnameRequired,
+                                'disabled': ssoSyncLastName,
+                                'info': ssoSyncLastName ? __('registration.fromsso') : null,
                                 'value': f.formData('lastname', ''),
                             }
                         ) }}

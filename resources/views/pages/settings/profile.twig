@@ -21,6 +21,7 @@
                 {{ f.input('nick', __('general.nick'), {
                     'value': userdata.name,
                     'disabled': true,
+                    'info': ssoSyncUserName ? __('registration.fromsso') : null,
                 }) }}
             </div>
             {% if config('enable_pronoun') %}
@@ -44,6 +45,8 @@
                         'max_length': 64,
                         'required': isFirstnameRequired,
                         'required_icon': isFirstnameRequired,
+                        'disabled': ssoSyncFirstName,
+                        'info': ssoSyncFirstName ? __('registration.fromsso') : null,
                     }) }}
                 </div>
                 <div class="col-sm-6">
@@ -52,6 +55,8 @@
                         'max_length': 64,
                         'required': isLastnameRequired,
                         'required_icon': isLastnameRequired,
+                        'disabled': ssoSyncLastName,
+                        'info': ssoSyncLastName ? __('registration.fromsso') : null,
                     }) }}
                 </div>
             </div>
@@ -116,6 +121,8 @@
                     'max_length': 254,
                     'required': true,
                     'required_icon': true,
+                    'disabled': ssoSyncEMail,
+                    'info': ssoSyncEMail ? __('registration.fromsso') : null,
                 }) }}
             </div>
 

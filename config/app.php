@@ -633,6 +633,16 @@ return [
                     'hidden' => true,
                     'default' => false,
                 ],
+                'username_sync_pattern' => [
+                    'type' => 'string',
+                    'hidden' => true,
+                    'default' => '/[^\p{L}\p{N}_.-]/ui',
+                ],
+                'username_sync_replace' => [
+                    'type' => 'string',
+                    'hidden' => true,
+                    'default' => '-',
+                ],
                 'environment' => [
                     'type' => 'select',
                     'hidden' => true,
@@ -773,6 +783,8 @@ return [
                             'first_name' => 'first-name',
                             // Info last name field (optional)
                             'last_name' => 'last-name',
+                            // User-data fields to be updated from OAuth provider on each login (optional)
+                            'sso_fields_to_sync' => ['username', 'email', 'first_name', 'last_name'],
                             // User URL to provider, linked on provider settings page (optional)
                             'url' => '[provider page]',
                             // Whether info attributes are nested arrays (optional)
