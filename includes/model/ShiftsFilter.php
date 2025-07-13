@@ -22,11 +22,6 @@ class ShiftsFilter
     public const FILLED_FILLED = 1;
 
     /**
-     * Always include own shifts.
-     */
-    public const FILLED_OWN = 2;
-
-    /**
      * Has the user "user shifts admin" privilege?
      *
      * @var boolean
@@ -45,16 +40,25 @@ class ShiftsFilter
     /** @var int unix timestamp */
     private $endTime = null;
 
+    /** @var boolean */
+    private $ownShifts;
+
     /**
      * ShiftsFilter constructor.
      *
      * @param bool  $user_shifts_admin
      * @param int[] $locations
      * @param int[] $angelTypes
+     * @param bool $ownShifts
      */
-    public function __construct($user_shifts_admin = false, private $locations = [], $angelTypes = [])
-    {
+    public function __construct(
+        $user_shifts_admin = false,
+        private $locations = [],
+        $angelTypes = [],
+        $ownShifts = false
+    ) {
         $this->types = $angelTypes;
+        $this->ownShifts = $ownShifts;
 
         $this->filled = [
             ShiftsFilter::FILLED_FREE,
@@ -77,6 +81,7 @@ class ShiftsFilter
             'types'           => $this->types,
             'startTime'       => $this->startTime,
             'endTime'         => $this->endTime,
+            'own_shifts'      => $this->ownShifts,
         ];
     }
 
@@ -91,6 +96,7 @@ class ShiftsFilter
         $this->types = $data['types'] ?? [];
         $this->startTime = $data['startTime'] ?? null;
         $this->endTime = $data['endTime'] ?? null;
+        $this->ownShifts = $data['own_shifts'] ?? true;
     }
 
     /**
@@ -206,5 +212,22 @@ class ShiftsFilter
     public function setFilled($filled)
     {
         $this->filled = $filled;
+    }
+
+    /**
+     * @return boolean $includeOwn
+     */
+    public function getOwnShifts()
+    {
+        return $this->ownShifts;
+    }
+
+
+    /**
+     * @param boolean $ownShifts
+     */
+    public function setOwnShifts($ownShifts)
+    {
+        $this->ownShifts = $ownShifts;
     }
 }

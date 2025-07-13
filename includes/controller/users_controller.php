@@ -369,7 +369,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     }
 
     $own_shift_ids = [];
-    if (in_array(ShiftsFilter::FILLED_OWN, $shiftsFilter->getFilled())) {
+    if ($shiftsFilter->getOwnShifts()) {
         $own_shift_ids = Shifts_by_user(auth()->user()->id)->pluck('id')->toArray();
     }
 
@@ -413,11 +413,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
             $filtered_shifts[] = $shift;
             continue;
         }
-
-        if (
-            in_array(ShiftsFilter::FILLED_OWN, $shiftsFilter->getFilled())
-            && in_array($shift->id, $own_shift_ids)
-        ) {
+        if ($shiftsFilter->getOwnShifts() && in_array($shift->id, $own_shift_ids)) {
             $filtered_shifts[] = $shift;
         }
     }

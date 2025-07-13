@@ -738,8 +738,8 @@ msgstr "belegt"
 msgid "free"
 msgstr "frei"
 
-msgid "own"
-msgstr "eigene"
+msgid "Include own shifts"
+msgstr "Eigene Schichten immer anzeigen"
 
 msgid "Own"
 msgstr "Eigene"
