@@ -502,7 +502,7 @@ class SettingsControllerTest extends ControllerTest
                 $this->assertArrayHasKey('settings_menu', $data);
                 $this->assertArrayHasKey('languages', $data);
                 $this->assertArrayHasKey('current_language', $data);
-                $this->assertEquals(['en_US' => 'English', 'de_DE' => 'Deutsch'], $data['languages']);
+                $this->assertEquals(['en_US' => 'English', 'de_DE' => 'Deutsch', 'nl_NL' => 'Nederlands'], $data['languages']);
                 $this->assertEquals('en_US', $data['current_language']);
 
                 return $this->response;
@@ -1111,6 +1111,7 @@ class SettingsControllerTest extends ControllerTest
         $languages = [
             'en_US' => 'English',
             'de_DE' => 'Deutsch',
+            'nl_NL' => 'Nederlands',
         ];
         $tshirt_sizes = ['S' => 'Small'];
         $requiredFields = [
