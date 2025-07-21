@@ -39,20 +39,36 @@ class Schedule extends ScheduleData
 
     /**
      * @return Room[]
+     *
+     * Returns a list of all rooms for all days
      */
-    public function getRooms(): array
+    public function getAllRooms(): array
     {
         $rooms = [];
         foreach ($this->days as $day) {
             foreach ($day->getRooms() as $room) {
-                $name = $room->getName();
-                $rooms[$name] = $room;
+                $rooms[] = $room;
             }
         }
 
         return $rooms;
     }
 
+    /**
+     * @return Room[]
+     *
+     * Returns a list of rooms unique by name and thus the instance of the last day they are used
+     */
+    public function getRooms(): array
+    {
+        $rooms = [];
+        foreach ($this->getAllRooms() as $room) {
+            $name = $room->getName();
+            $rooms[$name] = $room;
+        }
+
+        return $rooms;
+    }
 
     public function getStartDateTime(): ?Carbon
     {
