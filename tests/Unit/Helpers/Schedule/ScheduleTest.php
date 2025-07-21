@@ -37,6 +37,7 @@ class ScheduleTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Helpers\Schedule\Schedule::getAllRooms
      * @covers \Engelsystem\Helpers\Schedule\Schedule::getRooms
      */
     public function testGetRooms(): void
@@ -45,25 +46,28 @@ class ScheduleTest extends TestCase
         $room1 = new Room('Test 1');
         $room2 = new Room('Test 2');
         $room3 = new Room('Test 3');
+        $room4 = new Room('Test 2');
         $days = [
             new Day(
                 '2042-01-01',
                 new Carbon('2042-01-01T00:00:00+00:00'),
                 new Carbon('2042-01-01T23:59:00+00:00'),
                 1,
-                [$room1, $room2]
+                [$room1, $room2],
             ),
             new Day(
                 '2042-01-02',
-                new Carbon('2042-02-01T00:00:00+00:00'),
-                new Carbon('2042-02-01T23:59:00+00:00'),
+                new Carbon('2042-02-02T00:00:00+00:00'),
+                new Carbon('2042-02-02T23:59:00+00:00'),
                 2,
-                [new Room('Test 2'), $room3]
+                [$room4, $room3],
             ),
         ];
         $schedule = new Schedule('Lorem 1.3.3.7', $conference, $days);
 
-        $this->assertEquals(['Test 1' => $room1, 'Test 2' => $room2, 'Test 3' => $room3], $schedule->getRooms());
+        $this->assertEquals(['Test 1' => $room1, 'Test 2' => $room4, 'Test 3' => $room3], $schedule->getRooms());
+        $this->assertEquals([$room1, $room2, $room4, $room3], $schedule->getAllRooms());
+        $this->assertTrue($room4 === $schedule->getRooms()['Test 2']); // Rooms should use last room occurrence
 
         $schedule = new Schedule('Lorem 1.3.3.0', $conference, []);
         $this->assertEquals([], $schedule->getRooms());

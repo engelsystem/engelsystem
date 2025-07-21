@@ -569,7 +569,7 @@ class ScheduleController extends BaseController
 
     protected function patchSchedule(Schedule $schedule): Schedule
     {
-        foreach ($schedule->getRooms() as $room) {
+        foreach ($schedule->getAllRooms() as $room) {
             $room->patch('name', Str::substr($room->getName(), 0, 35));
 
             foreach ($room->getEvents() as $event) {
