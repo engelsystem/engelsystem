@@ -27,6 +27,8 @@ services:
       MAIL_FROM_ADDRESS: helfen@froscon.org
       MAIL_HOST: mail.froscon.org
     restart: unless-stopped
+    volumes:
+      - ../config/config.php:/var/www/config/config.php:ro
     secrets:
       - db_password
   es_database:

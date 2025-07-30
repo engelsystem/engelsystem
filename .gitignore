@@ -30,7 +30,6 @@ _vimrc_local.vim
 /docker/secrets/
 
 # Project files
-/config/config.php
 /config/config.local.php
 /config/lang/
 /public/*.xml
