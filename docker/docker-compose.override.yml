@@ -11,15 +11,15 @@ services:
       CONTACT_EMAIL: "mailto:helfen@froscon.org"
       THEME: 0
       TSHIRT_SIZE_REQUIRED: 'false'
-      ANGEL_AUTOARRIVE: 'true'
       SUPPORTERS_CAN_PROMOTE: 'true'
       SIGNUP_POST_FRACTION: 1
       PASSWORD_MINIMUM_LENGTH: 5
       ENABLE_PLANNED_ARRIVAL: 'false'
       ENABLE_FORCE_ACTIVE: 'false'
-      GOODIE_TYPE: none
+      GOODIE_TYPE: 'none'
       ENABLE_VOUCHER: 'false'
       NIGHT_SHIFTS: 'false'
+      DRIVING_LICENSE_ENABLED: 'false'
       IFSG_ENABLED: 'true'
       IFSG_LIGHT_ENABLED: 'false'
       DEFAULT_LOCALE: de_DE
