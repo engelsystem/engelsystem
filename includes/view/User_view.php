@@ -623,7 +623,6 @@ function User_view(
             $goodie_admin,
             $user_worklogs,
             $admin_user_worklog_privilege,
-            $supported_angeltypes,
         );
         if (count($my_shifts) > 0) {
             $myshifts_table = div('table-responsive', table([
