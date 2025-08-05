@@ -155,6 +155,11 @@ $route->addGroup(
                 $route->get('/users/{user_id:(?:\d+|self)}/angeltypes', 'Api\AngelTypeController@ofUser');
                 $route->get('/users/{user_id:(?:\d+|self)}/shifts', 'Api\ShiftsController@entriesByUser');
 
+                $route->addGroup('/admin', function (RouteCollector $route): void {
+                    $route->post('/users/{user_id:(?:\d+|self)}/voucher', 'Api\Admin\UserVoucherController@update');
+                    $route->post('/users/{user_id:(?:\d+|self)}/voucher/increment', 'Api\Admin\UserVoucherController@increment');
+                });
+
                 $route->addRoute(
                     ['POST', 'PUT', 'DELETE', 'PATCH'],
                     '/[{resource:.+}]',
