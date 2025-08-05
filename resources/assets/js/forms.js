@@ -329,16 +329,22 @@ ready(() => {
         `
       );
 
+      console.log(element.dataset)
+      // if title of confirmation popup is empty don't open it
+      if (!element.dataset['confirm_submit_title'] || ('modalShow' in element.dataset && !element.dataset.modalShow)){
+        console.log('test')
+        return;
+      }
+
       const modal = document.getElementById('confirmation-modal');
       modal.addEventListener('hide.bs.modal', () => {
         modalOpen = false;
       });
 
+      modalOpen = true;
+      const bootstrapModal = new bootstrap.Modal(modal);
+      bootstrapModal.show();
       const modalSubmitButton = modal.querySelector('[data-submit]');
-      modalSubmitButton.addEventListener('click', () => {
-        element.type = oldType;
-        element.click();
-      });
 
       /**
        * After the modal has been shown, focus on the "Submit" button in the modal
@@ -348,9 +354,12 @@ ready(() => {
         modalSubmitButton.focus();
       });
 
-      modalOpen = true;
-      let bootstrapModal = new bootstrap.Modal(modal);
-      bootstrapModal.show();
+      modalSubmitButton.addEventListener('click', () => {
+        element.type = oldType;
+        element.click();
+        bootstrapModal.hide()
+      });
+
     });
   });
 });
