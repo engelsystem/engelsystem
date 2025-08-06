@@ -271,7 +271,7 @@ class ShiftCalendarShiftRenderer
                         form_submit(
                             'delete',
                             icon('trash'),
-                            'btn-' . $class . ' btn-sm border-light text-white ms-1',
+                            'btn-sm border-light text-white ms-1',
                             false,
                             'danger',
                             __('form.delete'),
