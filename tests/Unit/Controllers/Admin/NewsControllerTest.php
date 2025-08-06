@@ -163,9 +163,43 @@ class NewsControllerTest extends ControllerTest
 
         $this->assertHasNotification('news.edit.success');
 
-        $news = (new News())->find($id ?: 2);
+        /** @var News $news */
+        $news = News::find($id ?: 2);
         $this->assertEquals($text, $news->text);
         $this->assertEquals($isMeeting, (bool) $news->is_meeting);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\NewsController::save
+     */
+    public function testSaveNoContentChange(): void
+    {
+        /** @var News $news */
+        $news = News::factory()->create([
+            'is_pinned' => false,
+        ]);
+        $this->request->attributes->set('news_id', $news->id);
+        $body = [
+            'title' => $news->title,
+            'text' => $news->text,
+            'is_pinned' => '1',
+        ];
+        $this->addUser();
+        $this->request = $this->request->withParsedBody($body);
+
+        /** @var NewsController $controller */
+        $controller = $this->app->make(NewsController::class);
+        $controller->setValidator(new Validator());
+
+        $controller->save($this->request);
+
+        /** @var News $updatedNews */
+        $updatedNews = News::find($news->id);
+        $this->assertEquals($news->title, $updatedNews->title);
+        $this->assertEquals($news->text, $updatedNews->text);
+        $this->assertEquals($news->created_at, $updatedNews->created_at);
+        $this->assertEquals($news->updated_at, $updatedNews->updated_at);
+        $this->assertTrue($updatedNews->is_pinned);
     }
 
     /**
