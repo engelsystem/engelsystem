@@ -1452,6 +1452,9 @@ msgstr "Du kannst sie dir unter %3$s anschauen."
 msgid "form.search"
 msgstr "Suchen"
 
+msgid "form.exact_match"
+msgstr "Genaue Übereinstimmung"
+
 msgid "log.log"
 msgstr "Logs"
 

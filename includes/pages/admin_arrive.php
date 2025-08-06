@@ -2,6 +2,7 @@
 
 use Engelsystem\Helpers\BarChart;
 use Engelsystem\Models\User\User;
+use Illuminate\Support\Str;
 
 /**
  * @return string
@@ -21,6 +22,7 @@ function admin_arrive()
     $request = request();
     $admin_arrive = auth()->can('admin_arrive');
 
+    $exactSearch = $request->has('exact');
     if ($request->has('search')) {
         $search = strip_request_item('search');
         $search = trim($search);
@@ -82,24 +84,30 @@ function admin_arrive()
     }
     foreach ($users as $usr) {
         if (count($tokens) > 0) {
-            $match = false;
-            $data = collect($usr->toArray())->flatten()->filter(function ($value) {
-                // Remove empty values
-                return !empty($value) &&
-                    // Skip datetime
-                    !preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}Z$/', (string) $value);
-            });
-            $index = join(' ', $data->toArray());
-            foreach ($tokens as $token) {
-                $token = trim($token);
-                if (!empty($token) && stristr($index, $token)) {
-                    $match = true;
-                    break;
-                }
+            if ($exactSearch && Str::lower($usr->name) != Str::lower(implode(' ', $tokens))) {
+                continue;
             }
 
-            if (!$match) {
-                continue;
+            if (!$exactSearch) {
+                $match = false;
+                $data = collect($usr->toArray())->flatten()->filter(function ($value) {
+                    // Remove empty values
+                    return !empty($value) &&
+                        // Skip datetime
+                        !preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}Z$/', (string) $value);
+                });
+                $index = join(' ', $data->toArray());
+                foreach ($tokens as $token) {
+                    $token = trim($token);
+                    if (!empty($token) && stristr($index, $token)) {
+                        $match = true;
+                        break;
+                    }
+                }
+
+                if (!$match) {
+                    continue;
+                }
             }
         }
 
@@ -213,7 +221,10 @@ function admin_arrive()
         $msg . msg(),
         form([
             form_text('search', __('form.search'), $search),
-            form_submit('submit', icon('search') . __('form.search')),
+            div('row mb-3 align-items-center', [
+                div('col-sm-auto', [form_submit('submit', icon('search') . __('form.search'), '', false)]),
+                div('col', [form_checkbox('exact', __('form.exact_match'), $exactSearch)]),
+            ]),
         ], url('/admin-arrive')),
         table(array_merge(
             ['name' => __('general.name'),],
