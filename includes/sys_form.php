@@ -60,6 +60,9 @@ function form_datetime(string $name, string $label, $value)
 {
     $dom_id = $name . '-datetime';
     if ($value) {
+        if ($value instanceof DateTime) {
+            $value = Carbon::instance($value);
+        }
         $value = ($value instanceof Carbon) ? $value : Carbon::createFromTimestamp($value, Carbon::now()->timezone);
     }
 
