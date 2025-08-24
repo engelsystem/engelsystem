@@ -10,7 +10,7 @@ ready(() => {
     table.className += ' table-sticky-header';
 
     const update = () => {
-      const calcHeight =  navbar.getBoundingClientRect().height - element.getBoundingClientRect().top;
+      const calcHeight = navbar.getBoundingClientRect().height - element.getBoundingClientRect().top;
       header.style.top = `${calcHeight}px`;
     };
 
