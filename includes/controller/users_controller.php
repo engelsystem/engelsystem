@@ -188,7 +188,8 @@ function user_controller()
         auth()->resetApiKey($user_source);
     }
 
-    $goodie_score = sprintf('%.2f', Goodie::userScore($user_source)) . '&nbsp;h';
+    $goodie_score_raw = Goodie::userScore($user_source);
+    $goodie_score = sprintf("%02d:%02d", floor($goodie_score_raw / 3600), floor(($goodie_score_raw % 3600) / 60));
     if ($user_source->state->force_active && config('enable_force_active')) {
         $goodie_score = '<span title="' . $goodie_score . '">' . __('user.goodie_score.enough') . '</span>';
     }

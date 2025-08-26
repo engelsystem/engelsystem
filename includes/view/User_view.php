@@ -490,7 +490,7 @@ function User_view_myshifts(
         if ($show_sum) {
             $myshifts_table[] = [
                 'date' => '<b>' . __('Sum:') . '</b>',
-                'duration' => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
+                'duration' => '<b>' . sprintf("%02d:%02d", floor($timeSum / 3600), floor(($timeSum % 3600) / 60)) . '</b>',
                 'hints' => '',
                 'location' => '',
                 'shift_info' => '',
@@ -546,7 +546,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
 
     return [
         'date' => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
-        'duration' => sprintf('%.2f', $worklog->hours) . ' h',
+        'duration' => sprintf("%02d:%02d", floor($worklog->hours), floor($worklog->hours * 60) % 60),
         'hints' => '',
         'location' => '',
         'shift_info' => __('Work log entry'),
