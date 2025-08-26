@@ -19,7 +19,7 @@ function mail_shift_assign(User $user, Shift $shift)
     engelsystem_email_to_user($user, __('Assigned to Shift'), $message, true);
 }
 
-function mail_shift_removed(User $user, Shift $shift)
+function mail_shift_removed(User $user, Shift $shift, $reason)
 {
     if (!$user->settings->email_shiftinfo) {
         return;
@@ -30,6 +30,8 @@ function mail_shift_removed(User $user, Shift $shift)
     $message .= $shift->title . "\n";
     $message .= $shift->start->format(__('general.datetime')) . ' - ' . $shift->end->format(__('H:i')) . "\n";
     $message .= $shift->location->name . "\n";
+    $message .= __('Reason:') . "\n";
+    $message .= $reason . "\n";
 
     engelsystem_email_to_user($user, __('Removed from Shift'), $message, true);
 }

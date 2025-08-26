@@ -2096,3 +2096,6 @@ msgstr "Konfiguration"
 
 msgid "config.edit.success"
 msgstr "Konfiguration erfolgreich angepasst"
+
+msgid "Reason:"
+msgstr "Grund:"
