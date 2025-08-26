@@ -52,7 +52,7 @@ class UserGoodieController extends BaseController
         /** @var User $user */
         $user = $this->user->findOrFail($userId);
         $goodie_score_raw = Goodie::userScore($user);
-        $goodieScore = $user->state->force_active ? '~' : sprintf("%02d:%02d", floor($goodie_score_raw), ($goodie_score_raw-floor(($goodie_score_raw)) * 60));
+        $goodieScore = $user->state->force_active ? '~' : sprintf("%02d:%02d", floor($goodie_score_raw), (($goodie_score_raw-floor($goodie_score_raw)) * 60));
 
         return $this->response->withView(
             'admin/user/edit-goodie.twig',
