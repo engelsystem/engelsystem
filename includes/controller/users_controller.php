@@ -189,7 +189,7 @@ function user_controller()
     }
 
     $goodie_score_raw = Goodie::userScore($user_source);
-    $goodie_score = sprintf("%02d:%02d", floor($goodie_score_raw / 3600), floor(($goodie_score_raw % 3600) / 60));
+    $goodie_score = sprintf("%02d:%02d", floor($goodie_score_raw), ($goodie_score_raw-floor(($goodie_score_raw)) * 60));
     if ($user_source->state->force_active && config('enable_force_active')) {
         $goodie_score = '<span title="' . $goodie_score . '">' . __('user.goodie_score.enough') . '</span>';
     }

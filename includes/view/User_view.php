@@ -345,13 +345,14 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
             ])
             . '"></span>';
     }
+    $duration = $shift->end->timestamp - $shift->start->timestamp;
     $myshift = [
         'date' => icon('calendar-event')
             . $shift->start->format(__('general.date')) . '<br>'
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
             . $shift->end->format(__('H:i')),
-        'duration' => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
+        'duration' => sprintf("%02d:%02d", floor($duration / 3600), floor(($duration % 3600) / 60)),
         'hints' => $night_shift,
         'location' => location_name_render($shift->location),
         'shift_info' => $shift_info,
@@ -367,7 +368,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
 
     if ($shift->freeloaded_by) {
         $myshift['duration'] = '<p class="text-danger"><s>'
-            . sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h'
+            . sprintf("%02d:%02d", floor($duration / 3600), floor(($duration % 3600) / 60))
             . '</s></p>';
         if (auth()->can('user_shifts_admin') || $supporter) {
             $myshift['comment'] .= '<br />'
