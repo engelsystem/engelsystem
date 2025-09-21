@@ -556,7 +556,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: The angel type identifier
+        description: Angel type identifier
         example: 42
         schema:
           type: integer
@@ -589,7 +589,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: The angel type identifier
+        description: Angel type identifier
         example: 42
         schema:
           type: integer
@@ -666,7 +666,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: The locations identifier
+        description: Location identifier
         example: 42
         schema:
           type: integer
@@ -721,7 +721,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: The shift types identifier
+        description: Shift type identifier
         example: 42
         schema:
           type: integer
@@ -776,7 +776,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: The user identifier or `self`
+        description: User identifier or `self`
         example: 42
         schema:
           oneOf:
@@ -810,7 +810,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: The user identifier or `self`
+        description: User identifier or `self`
         example: 42
         schema:
           oneOf:
@@ -845,7 +845,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: The user identifier or `self`
+        description: User identifier or `self`
         example: 42
         schema:
           oneOf:
@@ -880,7 +880,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: The user identifier or `self`
+        description: User identifier or `self`
         example: 42
         schema:
           oneOf:
