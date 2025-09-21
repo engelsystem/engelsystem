@@ -19,33 +19,36 @@
         {% include 'layouts/parts/messages.twig' %}
 
         <div class="row">
-
-            <table class="table table-striped">
-                <tr>
-                    <th>{{ __('general.name') }}</th>
-                    <th></th>
-                </tr>
-
-                {% block row %}
-                    {% for item in items %}
+            <div class="col-md-12">
+                <table class="table table-striped table-sticky-header">
+                    <thead>
                         <tr>
-                            <td>{{ item.name }}</td>
-                            <td>
-                                <div class="d-flex ms-auto">
-                                    {{ m.edit(url('admin/tags/edit/' ~ item.id)) }}
-
-                                    <form method="post" enctype="multipart/form-data" action="{{ url('admin/tags/edit/' ~ item.id) }}" class="ps-1">
-                                        {{ csrf() }}
-                                        {{ f.delete(null, {'size': 'sm', 'confirm_title': __('tag.delete.title', [item.name[:40]|e])}) }}
-                                    </form>
-                                </div>
-                            </td>
+                            <th>{{ __('general.name') }}</th>
+                            <th></th>
                         </tr>
-                    {% endfor %}
-                {% endblock %}
+                    </thead>
 
-            </table>
+                    <tbody>
+                        {% block row %}
+                            {% for item in items %}
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td>
+                                        <div class="d-flex ms-auto">
+                                            {{ m.edit(url('admin/tags/edit/' ~ item.id)) }}
 
+                                            <form method="post" enctype="multipart/form-data" action="{{ url('admin/tags/edit/' ~ item.id) }}" class="ps-1">
+                                                {{ csrf() }}
+                                                {{ f.delete(null, {'size': 'sm', 'confirm_title': __('tag.delete.title', [item.name[:40]|e])}) }}
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endblock %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
