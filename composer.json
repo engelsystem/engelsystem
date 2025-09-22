@@ -41,6 +41,7 @@
         "guzzlehttp/guzzle": "^7.9",
         "illuminate/container": "^11.27",
         "illuminate/database": "^11.27",
+        "illuminate/pagination": "^11.27",
         "illuminate/support": "^11.27",
         "laravel/serializable-closure": "^1.3",
         "league/oauth2-client": "^2.7",
