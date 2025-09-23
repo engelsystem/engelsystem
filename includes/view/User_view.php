@@ -345,13 +345,14 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
             ])
             . '"></span>';
     }
+    $duration = $shift->end->timestamp - $shift->start->timestamp;
     $myshift = [
         'date' => icon('calendar-event')
             . $shift->start->format(__('general.date')) . '<br>'
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
             . $shift->end->format(__('H:i')),
-        'duration' => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
+        'duration' => sprintf("%02d:%02d", floor($duration / 3600), floor(($duration % 3600) / 60)),
         'hints' => $night_shift,
         'location' => location_name_render($shift->location),
         'shift_info' => $shift_info,
@@ -367,7 +368,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
 
     if ($shift->freeloaded_by) {
         $myshift['duration'] = '<p class="text-danger"><s>'
-            . sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h'
+            . sprintf("%02d:%02d", floor($duration / 3600), floor(($duration % 3600) / 60))
             . '</s></p>';
         if (auth()->can('user_shifts_admin') || $supporter) {
             $myshift['comment'] .= '<br />'
@@ -490,7 +491,7 @@ function User_view_myshifts(
         if ($show_sum) {
             $myshifts_table[] = [
                 'date' => '<b>' . __('Sum:') . '</b>',
-                'duration' => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
+                'duration' => '<b>' . sprintf("%02d:%02d", floor($timeSum / 3600), floor(($timeSum % 3600) / 60)) . '</b>',
                 'hints' => '',
                 'location' => '',
                 'shift_info' => '',
@@ -546,7 +547,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
 
     return [
         'date' => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
-        'duration' => sprintf('%.2f', $worklog->hours) . ' h',
+        'duration' => sprintf("%02d:%02d", floor($worklog->hours), floor($worklog->hours * 60) % 60),
         'hints' => '',
         'location' => '',
         'shift_info' => __('Work log entry'),
