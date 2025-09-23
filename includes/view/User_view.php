@@ -405,7 +405,8 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
 
     if (Shift_signout_allowed($shift, (new AngelType())->forceFill(['id' => $shift->angel_type_id]), $user_source->id)) {
         $myshift['actions'][] = button(
-            shift_entry_delete_link($shift),
+            # ToDo Add reason input
+            shift_entry_delete_link($shift, ''),
             icon('trash'),
             'btn-sm btn-danger',
             '',
