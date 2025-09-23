@@ -829,3 +829,112 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+
+  /admin/users/{id}/voucher:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The user identifier or `self`
+        example: 42
+        schema:
+          oneOf:
+            - type: string
+            - type: integer
+    post:
+      tags:
+        - user
+      summary: Set the voucher count for a user
+      security:
+        - bearer-auth: []
+        - api-key-header: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - got_voucher
+              properties:
+                got_voucher:
+                  type: integer
+                  minimum: 0
+                  example: 3
+      responses:
+        '200':
+          description: Voucher count updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User state updated successfully
+        '400':
+          $ref: '#/components/responses/NotImplementedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /admin/users/{id}/voucher/increment:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The user identifier or `self`
+        example: 42
+        schema:
+          oneOf:
+            - type: string
+            - type: integer
+    post:
+      tags:
+        - user
+      summary: Increment or decrement the voucher count for a user
+      security:
+        - bearer-auth: []
+        - api-key-header: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+              properties:
+                amount:
+                  type: integer
+                  description: Amount to increment (can be negative)
+                  example: 2
+      responses:
+        '200':
+          description: Voucher count incremented
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User voucher count updated
+                  got_voucher:
+                    type: integer
+                    example: 5
+        '400':
+          description: Resulting voucher count would be negative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
