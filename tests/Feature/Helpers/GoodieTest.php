@@ -34,7 +34,7 @@ class GoodieTest extends ApplicationFeatureTest
             'user_id' => $user->id,
             'hours' => 3.87,
             'creator_id' => $user->id,
-            'comment' => '',
+            'description' => '',
             'worked_at' => Carbon::now()->subHour(),
         ]);
         $workLog->save();

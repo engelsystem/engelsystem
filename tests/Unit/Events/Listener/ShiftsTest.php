@@ -53,7 +53,7 @@ class ShiftsTest extends TestCase
 
         $this->assertCount(1, $this->user->worklogs);
         $this->assertEquals($this->shift->isNightShift() ? 4 : 2, $this->user->worklogs[0]->hours);
-        $this->assertEquals('Text', $this->user->worklogs[0]->comment);
+        $this->assertEquals('Text', $this->user->worklogs[0]->description);
 
         $this->assertTrue($this->log->hasInfoThatContains('Created worklog entry'));
     }

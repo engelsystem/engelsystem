@@ -437,11 +437,11 @@ class UserTest extends ModelTest
     {
         ($user = new User($this->data))->save();
         $worklogEntry = Worklog::create([
-            'user_id'    => $user->id,
-            'creator_id' => $user->id,
-            'hours'      => 1,
-            'comment'    => '',
-            'worked_at'  => Carbon::now(),
+            'user_id'     => $user->id,
+            'creator_id'  => $user->id,
+            'hours'       => 1,
+            'description' => '',
+            'worked_at'   => Carbon::now(),
         ]);
 
         $worklogs = $user->worklogs;
@@ -457,11 +457,11 @@ class UserTest extends ModelTest
     {
         ($user = new User($this->data))->save();
         $worklogEntry = Worklog::create([
-            'user_id'    => $user->id,
-            'creator_id' => $user->id,
-            'hours'      => 1,
-            'comment'    => '',
-            'worked_at'  => Carbon::now(),
+            'user_id'     => $user->id,
+            'creator_id'  => $user->id,
+            'hours'       => 1,
+            'description' => '',
+            'worked_at'   => Carbon::now(),
         ]);
 
         $worklogs = $user->worklogsCreated;
