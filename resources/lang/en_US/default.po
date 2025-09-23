@@ -704,8 +704,8 @@ msgstr "Work date"
 msgid "worklog.hours"
 msgstr "Work hours"
 
-msgid "worklog.comment"
-msgstr "Comment"
+msgid "worklog.description"
+msgstr "Description"
 
 msgid "worklog.night_shift"
 msgstr "Work log is a night shift"

@@ -67,7 +67,7 @@ class UserWorklogControllerTest extends ControllerTest
                 $this->assertEquals($this->user->id, $data['userdata']->id);
                 $this->assertEquals(Carbon::today(), $data['work_date']);
                 $this->assertEquals(0, $data['work_hours']);
-                $this->assertEquals('', $data['comment']);
+                $this->assertEquals('', $data['description']);
                 $this->assertFalse($data['night_shift']);
                 $this->assertFalse($data['is_edit']);
                 return $this->response;
@@ -102,7 +102,7 @@ class UserWorklogControllerTest extends ControllerTest
             'user_id' => $this->user->id,
             'worked_at' => new Carbon('2022-01-01'),
             'hours' => 3.14,
-            'comment' => 'a comment',
+            'description' => 'a description',
             'night_shift' => true,
         ])->create();
 
@@ -115,7 +115,7 @@ class UserWorklogControllerTest extends ControllerTest
                 $this->assertEquals($this->user->id, $data['userdata']->id);
                 $this->assertEquals(new Carbon('2022-01-01'), $data['work_date']);
                 $this->assertEquals(3.14, $data['work_hours']);
-                $this->assertEquals('a comment', $data['comment']);
+                $this->assertEquals('a description', $data['description']);
                 $this->assertTrue($data['night_shift']);
                 $this->assertTrue($data['is_edit']);
                 return $this->response;
@@ -153,10 +153,14 @@ class UserWorklogControllerTest extends ControllerTest
     {
         $work_date = Carbon::today()->format('Y-m-d');
         $work_hours = 3.14;
-        $comment = str_repeat('X', 200);
+        $description = str_repeat('X', 200);
         $night_shift = true;
-        $body = ['work_date' => $work_date, 'work_hours' => $work_hours, 'comment' => $comment,
-            'night_shift' => $night_shift];
+        $body = [
+            'work_date' => $work_date,
+            'work_hours' => $work_hours,
+            'description' => $description,
+            'night_shift' => $night_shift,
+        ];
         $request = $this->request->withAttribute('user_id', $this->user->id)->withParsedBody($body);
         $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
         $this->redirect->expects($this->once())
@@ -174,7 +178,7 @@ class UserWorklogControllerTest extends ControllerTest
         $this->assertEquals($this->user->id, $new_worklog->user->id);
         $this->assertEquals($work_date, $new_worklog->worked_at->format('Y-m-d'));
         $this->assertEquals($work_hours, $new_worklog->hours);
-        $this->assertEquals($comment, $new_worklog->comment);
+        $this->assertEquals($description, $new_worklog->description);
         $this->assertEquals($night_shift, $new_worklog->night_shift);
     }
 
@@ -184,7 +188,11 @@ class UserWorklogControllerTest extends ControllerTest
      */
     public function testOverwriteWorklogWithUnknownWorklogIdThrows(): void
     {
-        $body = ['work_date' => Carbon::today()->format('Y-m-d'), 'work_hours' => 3.14, 'comment' => 'a comment'];
+        $body = [
+            'work_date' => Carbon::today()->format('Y-m-d'),
+            'work_hours' => 3.14,
+            'description' => 'a description',
+        ];
         $request = $this->request
             ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', 1234)
@@ -203,7 +211,11 @@ class UserWorklogControllerTest extends ControllerTest
         /** @var Worklog $worklog */
         $worklog = Worklog::factory(['user_id' => $user2->id])->create();
 
-        $body = ['work_date' => Carbon::today()->format('Y-m-d'), 'work_hours' => 3.14, 'comment' => 'a comment'];
+        $body = [
+            'work_date' => Carbon::today()->format('Y-m-d'),
+            'work_hours' => 3.14,
+            'description' => 'a description',
+        ];
         $request = $this->request
             ->withAttribute('user_id', $this->user->id)
             ->withAttribute('worklog_id', $worklog->id)
@@ -221,10 +233,14 @@ class UserWorklogControllerTest extends ControllerTest
         $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
         $work_date = Carbon::today()->format('Y-m-d');
         $work_hours = 3.14;
-        $comment = str_repeat('X', 200);
+        $description = str_repeat('X', 200);
         $night_shift = true;
-        $body = ['work_date' => $work_date, 'work_hours' => $work_hours, 'comment' => $comment,
-            'night_shift' => $night_shift];
+        $body = [
+            'work_date' => $work_date,
+            'work_hours' => $work_hours,
+            'description' => $description,
+            'night_shift' => $night_shift,
+        ];
 
         $request = $this->request
             ->withAttribute('user_id', $this->user->id)
@@ -242,7 +258,7 @@ class UserWorklogControllerTest extends ControllerTest
         $worklog = Worklog::find($worklog->id);
         $this->assertEquals($work_date, $worklog->worked_at->format('Y-m-d'));
         $this->assertEquals($work_hours, $worklog->hours);
-        $this->assertEquals($comment, $worklog->comment);
+        $this->assertEquals($description, $worklog->description);
         $this->assertEquals($night_shift, $worklog->night_shift);
     }
 
@@ -346,15 +362,15 @@ class UserWorklogControllerTest extends ControllerTest
         $today = Carbon::today()->format('Y-m-d');
         return [
             // missing work_date
-            [['work_hours' => 3.14, 'comment' => 'com']],
+            [['work_hours' => 3.14, 'description' => 'com']],
             // missing work_hours
-            [['work_date' => $today, 'comment' => 'com']],
-            // missing comment
+            [['work_date' => $today, 'description' => 'com']],
+            // missing description
             [['work_date' => $today, 'work_hours' => 3.14]],
             // too low work_hours
-            [['work_date' => $today, 'work_hours' => -.1, 'comment' => 'com']],
+            [['work_date' => $today, 'work_hours' => -.1, 'description' => 'com']],
             // too low work_hours
-            [['work_date' => $today, 'work_hours' => 3.14, 'comment' => str_repeat('X', 201)]],
+            [['work_date' => $today, 'work_hours' => 3.14, 'description' => str_repeat('X', 201)]],
         ];
     }
 

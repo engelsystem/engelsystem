@@ -1877,8 +1877,8 @@ msgstr "Einsatzdatum"
 msgid "worklog.hours"
 msgstr "Arbeitsstunden"
 
-msgid "worklog.comment"
-msgstr "Kommentar"
+msgid "worklog.description"
+msgstr "Beschreibung"
 
 msgid "worklog.night_shift"
 msgstr "Arbeitseinsatz ist eine Nachtschicht"

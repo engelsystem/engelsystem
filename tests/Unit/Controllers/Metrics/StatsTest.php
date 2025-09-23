@@ -152,11 +152,11 @@ class StatsTest extends TestCase
     {
         $this->addUsers();
         $worklogData = [
-            'user_id'    => 1,
-            'creator_id' => 1,
-            'hours'      => 2.4,
-            'comment'    => '',
-            'worked_at'  => new Carbon(),
+            'user_id'     => 1,
+            'creator_id'  => 1,
+            'hours'       => 2.4,
+            'description' => '',
+            'worked_at'   => new Carbon(),
         ];
         (new Worklog($worklogData))->save();
         (new Worklog(['hours' => 1.2, 'user_id' => 3] + $worklogData))->save();

@@ -35,7 +35,7 @@ class Shifts
             $worklog->hours =
                 (($shift->end->timestamp - $shift->start->timestamp) / 60 / 60)
                 * $shift->getNightShiftMultiplier();
-            $worklog->comment = Str::substr(sprintf(
+            $worklog->description = Str::substr(sprintf(
                 __('%s (%s as %s) in %s, %s - %s'),
                 $shift->shiftType->name,
                 $shift->title,
@@ -48,7 +48,7 @@ class Shifts
 
             $this->log->info(
                 'Created worklog entry from shift for {user} ({uid}): {worklog})',
-                ['user' => $worklog->user->name, 'uid' => $worklog->user->id, 'worklog' => $worklog->comment]
+                ['user' => $worklog->user->name, 'uid' => $worklog->user->id, 'worklog' => $worklog->description]
             );
         }
     }

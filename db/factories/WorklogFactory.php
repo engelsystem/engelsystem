@@ -19,7 +19,7 @@ class WorklogFactory extends Factory
             'user_id'     => User::factory(),
             'creator_id'  => User::factory(),
             'hours'       => $this->faker->randomFloat(2, 0.01, 10),
-            'comment'     => $this->faker->text(30),
+            'description' => $this->faker->text(30),
             'worked_at'   => $this->faker->dateTimeThisMonth(),
             'night_shift' => $this->faker->boolean(),
         ];
