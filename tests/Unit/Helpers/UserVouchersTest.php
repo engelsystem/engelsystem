@@ -92,7 +92,8 @@ class UserVouchersTest extends ControllerTest
         Worklog::factory()->create([
             'user_id' => $this->user->id,
             'creator_id' => $user2->id,
-            'hours' => 4, 'worked_at' => Carbon::today(),
+            'hours' => 4,
+            'worked_at' => Carbon::today(),
         ]);
         // worklog tomorrow, 2 hours long
         Worklog::factory()->create([

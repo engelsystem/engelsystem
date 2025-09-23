@@ -49,7 +49,7 @@ class UserWorklogController extends BaseController
             if ($worklog->user->id != $user->id) {
                 throw new HttpNotFound();
             }
-            return $this->showEditWorklog($user, $worklog->worked_at, $worklog->hours, $worklog->comment, true);
+            return $this->showEditWorklog($user, $worklog->worked_at, $worklog->hours, $worklog->description, true);
         } else {
             return $this->showEditWorklog($user, Carbon::today());
         }
@@ -63,7 +63,7 @@ class UserWorklogController extends BaseController
         $data = $this->validate($request, [
             'work_date' => 'required|date:Y-m-d',
             'work_hours' => 'float|min:0',
-            'comment' => 'required|max:200',
+            'description' => 'required|max:200',
         ]);
 
         // Search / create worklog
@@ -80,7 +80,7 @@ class UserWorklogController extends BaseController
         }
         $worklog->worked_at = $data['work_date'];
         $worklog->hours = $data['work_hours'];
-        $worklog->comment = $data['comment'];
+        $worklog->description = $data['description'];
         $worklog->save();
 
         $this->log->info(
@@ -91,7 +91,7 @@ class UserWorklogController extends BaseController
                 'id' => $user->id,
                 'time' => $worklog->worked_at,
                 'hours' => $worklog->hours,
-                'text' => $worklog->comment,
+                'text' => $worklog->description,
             ]
         );
         $this->addNotification(isset($worklogId) ? 'worklog.edit.success' : 'worklog.add.success');
@@ -135,7 +135,7 @@ class UserWorklogController extends BaseController
                 'id' => $worklog->user->id,
                 'time' => $worklog->worked_at,
                 'hours' => $worklog->hours,
-                'text' => $worklog->comment,
+                'text' => $worklog->description,
             ]
         );
         $this->addNotification('worklog.delete.success');
@@ -148,7 +148,7 @@ class UserWorklogController extends BaseController
         User $user,
         Carbon $work_date,
         float $work_hours = 0,
-        string $comment = '',
+        string $description = '',
         bool $is_edit = false
     ): Response {
         return $this->response->withView(
@@ -157,7 +157,7 @@ class UserWorklogController extends BaseController
                 'userdata' => $user,
                 'work_date' => $work_date,
                 'work_hours' => $work_hours,
-                'comment' => $comment,
+                'description' => $description,
                 'is_edit' => $is_edit,
             ]
         );

@@ -17,7 +17,7 @@ class WorklogResource extends BasicResource
     {
         return [
             'id' => $this->model->id,
-            'description' => $this->model->comment,
+            'description' => $this->model->description,
             'hours' => $this->model->hours,
             'created_by' => UserResource::toIdentifierArray($this->model->creator),
             'worked_at' => $this->model->worked_at,
