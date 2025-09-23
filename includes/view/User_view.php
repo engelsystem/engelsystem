@@ -550,7 +550,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
         'hints' => '',
         'location' => '',
         'shift_info' => __('Work log entry'),
-        'comment' => htmlspecialchars($worklog->comment) . '<br>'
+        'comment' => htmlspecialchars($worklog->description) . '<br>'
             . sprintf(
                 __('Added by %s at %s'),
                 User_Nick_render($worklog->creator),
@@ -631,7 +631,7 @@ function User_view(
                 'hints' => '',
                 'location' => __('Location'),
                 'shift_info' => __('Name & Workmates'),
-                'comment' => __('worklog.comment'),
+                'comment' => __('worklog.description'),
                 'actions' => __('general.actions'),
             ], $my_shifts));
         } elseif ($user_source->state->force_active && config('enable_force_active')) {
