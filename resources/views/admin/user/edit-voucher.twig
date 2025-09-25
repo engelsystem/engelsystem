@@ -13,10 +13,10 @@
 
         {% include 'layouts/parts/messages.twig' %}
         {{ m.alert(
-            forceActive
-            ? __('voucher.eligible.fa', [eligibleVoucherCount])
+            forceActive or forceFood
+            ? __('voucher.eligible.force', [eligibleVoucherCount])
             : __('voucher.eligible', [eligibleVoucherCount])
-        ) }}
+        , 'info', true) }}
 
         <form method="post">
             {{ csrf() }}

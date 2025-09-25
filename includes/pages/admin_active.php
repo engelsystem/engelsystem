@@ -280,6 +280,7 @@ function admin_active()
             . ' min (' . sprintf('%.2f', $user['shift_length'] / 3600) . '&nbsp;h)';
         $userData['active'] = icon_bool($user->state->active);
         $userData['force_active'] = icon_bool($user->state->force_active);
+        $userData['force_food'] = icon_bool($user->state->force_food);
         $userData['tshirt'] = icon_bool($user->state->got_goodie);
         $userData['shift_count'] = $user['shift_count'];
 

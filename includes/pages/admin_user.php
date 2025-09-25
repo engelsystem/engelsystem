@@ -139,6 +139,15 @@ function admin_user()
             $html .= '</td></tr>' . "\n";
         }
 
+        // Forced food?
+        if (config('enable_force_food')) {
+            $html .= '  <tr><td>' . __('Force food') . '</td><td>' . "\n";
+            $html .= auth()->can('user.ff.edit')
+                ? html_options('force_food', $options, $user_source->state->force_food)
+                : icon_bool($user_source->state->force_food);
+            $html .= '</td></tr>' . "\n";
+        }
+
         if ($goodie_enabled) {
             // got goodie?
             $html .= '  <tr><td>'
@@ -348,6 +357,9 @@ function admin_user()
                 if (auth()->can('user.fa.edit') && config('enable_force_active')) {
                     $user_source->state->force_active = $request->input('force_active');
                 }
+                if (auth()->can('user.ff.edit') && config('enable_force_food')) {
+                    $user_source->state->force_food = $request->input('force_food');
+                }
                 $user_source->state->save();
 
                 engelsystem_log(
@@ -355,11 +367,12 @@ function admin_user()
                         ? ('nick modified from ' . $old_nick . ' to ' . $user_source->name)
                         : $user_source->name)
                     . ' (' . $user_source->id . ')'
-                    . ($changed_email ? ', email modified' : '')
+                    . ($changed_email ? ', e-mail modified' : '')
                     . ($goodie_tshirt ? ', T-shirt size: ' . $user_source->personalData->shirt_size : '')
                     . ', arrived: ' . $user_source->state->arrived
                     . ', active: ' . $user_source->state->active
-                    . ', force-active: ' . $user_source->state->force_active
+                    . (config('enable_force_active') ? (', force-active: ' . $user_source->state->force_active) : '')
+                    . (config('enable_force_food') ? (', force-food: ' . $user_source->state->force_food) : '')
                     . ($goodie_enabled ? ', goodie: ' . $user_source->state->got_goodie : '')
                     . ($user_info_edit ? ', user-info: ' . $user_source->state->user_info : '')
                 );

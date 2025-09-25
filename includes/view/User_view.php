@@ -41,6 +41,7 @@ function User_delete_view($user)
  * @param int $arrived_count
  * @param int $active_count
  * @param int $force_active_count
+ * @param int $force_food_count
  * @param int $freeloads_count
  * @param int $goodies_count
  * @param int $voucher_count
@@ -53,6 +54,7 @@ function Users_view(
     $arrived_count,
     $active_count,
     $force_active_count,
+    $force_food_count,
     $freeloads_count,
     $goodies_count,
     $voucher_count,
@@ -116,7 +118,12 @@ EOT;
         }
         $u['freeloads'] = $user->getAttribute('freeloads');
         $u['active'] = icon_bool($user->state->active);
-        $u['force_active'] = icon_bool($user->state->force_active);
+        if (config('enable_force_active')) {
+            $u['force_active'] = icon_bool($user->state->force_active);
+        }
+        if (config('enable_force_food')) {
+            $u['force_food'] = icon_bool($user->state->force_food);
+        }
         if ($goodie_enabled) {
             $u['got_goodie'] = icon_bool($user->state->got_goodie);
             if ($goodie_tshirt) {
@@ -148,6 +155,7 @@ EOT;
         'got_voucher'  => '<div id="voucher-count" class="text-center">' . $voucher_count . '</div>',
         'active' => $active_count,
         'force_active' => $force_active_count,
+        'force_food' => $force_food_count,
         'freeloads' => $freeloads_count,
         'got_goodie' => $goodies_count,
         'actions' => '<strong>' . count($usersList) . '</strong>',
@@ -173,6 +181,9 @@ EOT;
     $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
     if (config('enable_force_active')) {
         $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
+    }
+    if (config('enable_force_food')) {
+        $user_table_headers['force_food'] = Users_table_header_link('force_food', __('Food'), $order_by);
     }
     if ($goodie_enabled) {
         $user_table_headers['got_goodie'] = Users_table_header_link('got_goodie', __('Goodie'), $order_by);
@@ -860,6 +871,9 @@ function User_view_state_admin($freeloader, $user_source)
         } elseif ($user_source->state->active) {
             $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
+        if ($user_source->state->force_food && config('enable_force_food')) {
+            $state[] = '<span class="text-success">' . __('user.force_food') . '</span>';
+        }
         if ($user_source->state->got_goodie && $goodie_enabled) {
             $state[] = '<span class="text-success">' . __('Goodie') . '</span>';
         }
@@ -876,18 +890,19 @@ function User_view_state_admin($freeloader, $user_source)
     if (config('enable_voucher')) {
         $voucherCount = $user_source->state->got_voucher;
         $availableCount = $voucherCount + UserVouchers::eligibleVoucherCount($user_source);
-        $availableCount = max($voucherCount, $availableCount);
-        if ($user_source->state->got_voucher > 0) {
-            $state[] = '<span class="text-success">'
-                . icon('valentine')
-                . __('user.state.vouchers', [$voucherCount, $availableCount])
-                . '</span>';
-        } else {
-            $state[] = '<span class="text-danger">'
-                . __('user.state.vouchers.none')
-                . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')
-                . '</span>';
+        $availableVoucher = $availableCount;
+        if (
+            (config('enable_force_active') && $user_source->state->force_active)
+            || config('enable_force_food') && $user_source->state->force_food
+        ) {
+            $availableVoucher = __('user.state.vouchers.force', [$availableCount]);
         }
+        $state[] = '<span class="'
+            . (($voucherCount > 0) ? 'text-success' : 'text-danger')
+            . '">'
+            . icon('valentine')
+            . __('user.state.vouchers', [$voucherCount, $availableVoucher])
+            . '</span>';
     }
 
     if ($password_reset) {
