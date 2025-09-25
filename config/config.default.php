@@ -350,6 +350,9 @@ return [
     // Whether force active should be enabled
     'enable_force_active' => (bool) env('ENABLE_FORCE_ACTIVE', true),
 
+    // Whether force food should be enabled
+    'enable_force_food' => (bool) env('ENABLE_FORCE_FOOD', false),
+
     // Allow users with sufficient permission to add worklogs for themselves
     'enable_self_worklog' => (bool) env('ENABLE_SELF_WORKLOG', true),
 

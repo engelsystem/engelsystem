@@ -104,6 +104,7 @@ class Controller extends BaseController
             ],
             'users_info' => ['type' => 'gauge', $this->stats->usersInfo()],
             'users_force_active'   => ['type' => 'gauge', $this->stats->forceActiveUsers()],
+            'users_force_food'   => ['type' => 'gauge', $this->stats->forceFoodUsers()],
             'users_pronouns'     => ['type' => 'gauge', $this->stats->usersPronouns()],
             'licenses'             => [
                 'type' => 'gauge',

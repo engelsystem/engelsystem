@@ -498,7 +498,10 @@ msgid "Active"
 msgstr "Aktiv"
 
 msgid "Forced"
-msgstr "Erzwungen"
+msgstr "Dauerhaft aktiv"
+
+msgid "Food"
+msgstr "Essen"
 
 msgid "Given T-shirts"
 msgstr "Ausgegebene T-Shirts"
@@ -699,7 +702,10 @@ msgid "No"
 msgstr "Nein"
 
 msgid "Force active"
-msgstr "Aktiv erzwingen"
+msgstr "Dauerhaft aktiv"
+
+msgid "Force food"
+msgstr "Unbegrenzt Essen"
 
 msgid "Edit user"
 msgstr "User bearbeiten"
@@ -1076,8 +1082,8 @@ msgstr "Gutscheine bearbeiten"
 msgid "voucher.eligible"
 msgstr "Engel kann noch %d Gutscheine bekommen."
 
-msgid "voucher.eligible.fa"
-msgstr "Engel kann noch %d Gutscheine bekommen und ist FA."
+msgid "voucher.eligible.force"
+msgstr "Engel kann <s>%d</s> unbegrenzt Gutscheine bekommen."
 
 msgid "voucher.count"
 msgstr "Anzahl Gutscheine bekommen"
@@ -1085,8 +1091,8 @@ msgstr "Anzahl Gutscheine bekommen"
 msgid "user.state.vouchers"
 msgstr "%s von %s Gutscheinen bekommen"
 
-msgid "user.state.vouchers.none"
-msgstr "Keine Gutscheine bekommen"
+msgid "user.state.vouchers.force"
+msgstr "<s>%d</s> unendlich"
 
 msgid "Freeloads"
 msgstr "Schwänzereien"
@@ -1836,7 +1842,10 @@ msgid "user.active"
 msgstr "Aktiv"
 
 msgid "user.force_active"
-msgstr "Aktiv (erzwungen)"
+msgstr "Dauerhaft aktiv"
+
+msgid "user.force_food"
+msgstr "Unbegrenzt Essen"
 
 msgid "user.arrived"
 msgstr "Angekommen"

@@ -666,7 +666,10 @@ msgid "user.active"
 msgstr "Active"
 
 msgid "user.force_active"
-msgstr "Active (forced)"
+msgstr "Always active"
+
+msgid "user.force_food"
+msgstr "Unlimited food"
 
 msgid "user.arrived"
 msgstr "Arrived"
@@ -725,8 +728,8 @@ msgstr "Edit vouchers"
 msgid "voucher.eligible"
 msgstr "Angel can receive another %d vouchers."
 
-msgid "voucher.eligible.fa"
-msgstr "Angel can receive another %d vouchers and is FA."
+msgid "voucher.eligible.force"
+msgstr "Angel can receive <s>%d</s> unlimited vouchers."
 
 msgid "voucher.count"
 msgstr "Number of vouchers handed out"
@@ -734,8 +737,8 @@ msgstr "Number of vouchers handed out"
 msgid "user.state.vouchers"
 msgstr "Got %s of %s vouchers"
 
-msgid "user.state.vouchers.none"
-msgstr "Got no vouchers"
+msgid "user.state.vouchers.force"
+msgstr "<s>%d</s> unlimited"
 
 msgid "angeltypes.angeltypes"
 msgstr "Angel types"
