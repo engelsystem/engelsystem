@@ -19,6 +19,8 @@
         {{ f.input(name, __(options['name']), options + {'type': 'datetime-local', 'value': config(name, options.default|default(null))}) }}
     {% elseif options.type == 'boolean' %}
         {{ f.checkbox(name, __(options['name']), options + {'checked': config(name, options.default|default(null))}) }}
+    {% elseif options.type == 'select' %}
+        {{ f.select(name, __(options['name']), options.data, options + {'selected': config(name, options.default|default(null)), 'translate': true}) }}
     {% endif %}
 {%- endmacro %}
 

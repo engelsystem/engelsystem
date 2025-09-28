@@ -44,6 +44,14 @@ class ConfigControllerTest extends ControllerTest
                 'some_config_from_env' => [
                     'type' => 'text',
                 ],
+                'selectable_option' => [
+                    'type' => 'select',
+                    'data' => [
+                        'first',
+                        'second' => 'second translated',
+                        'third',
+                    ],
+                ],
             ],
             'permission' => 'some_test_permission',
         ],
@@ -97,6 +105,14 @@ class ConfigControllerTest extends ControllerTest
         'needed_field' => 'some field value',
     ];
 
+    protected array $validTestBody = [
+        'foo' => 'some text',
+        'bar' => '2042-01-01T00:00',
+        'baz' => 'New value',
+        'some_config_from_env' => 'Lorem Ipsum',
+        'selectable_option' => 'third',
+    ];
+
     /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::index
      */
@@ -146,6 +162,16 @@ class ConfigControllerTest extends ControllerTest
 
                 $this->assertArrayHasKey('in_env', $data['config']['some_config_from_env']);
                 $this->assertTrue($data['config']['some_config_from_env']['in_env']);
+
+                $this->assertArrayHasKey('in_env', $data['config']['some_config_from_env']);
+                $this->assertEquals(
+                    [
+                        'first' => 'config.selectable_option.select.first',
+                        'second' => 'second translated',
+                        'third' => 'config.selectable_option.select.third',
+                    ],
+                    $data['config']['selectable_option']['data'],
+                );
 
                 $this->assertArrayHasKey('test', $data['options']);
                 $this->assertArrayHasKey('url', $data['options']['test']);
@@ -214,16 +240,12 @@ class ConfigControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\Admin\ConfigController::save
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
      * @covers \Engelsystem\Controllers\Admin\ConfigController::filterShownSettings
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::parseOptions
      */
     public function testSaveTestValidateSuccessful(): void
     {
         $this->request->attributes->set('page', 'test');
-        $this->request = $this->request->withParsedBody([
-            'foo' => 'some text',
-            'bar' => '2042-01-01T00:00',
-            'baz' => 'New value',
-            'some_config_from_env' => 'Lorem Ipsum',
-        ]);
+        $this->request = $this->request->withParsedBody($this->validTestBody);
 
         /** @var ConfigController $controller */
         $controller = $this->app->make(ConfigController::class);
@@ -237,6 +259,7 @@ class ConfigControllerTest extends ControllerTest
         );
         $this->assertNull(EventConfig::whereName('some_config_from_env')->first());
         $this->assertNull(EventConfig::whereName('baz')->first());
+        $this->assertEquals('third', EventConfig::whereName('selectable_option')->first()->value);
 
         // Save with additional permission
         $this->auth->setPermissions(['some_test_permission', 'another_test_permission']);
@@ -244,6 +267,24 @@ class ConfigControllerTest extends ControllerTest
         $baz = EventConfig::whereName('baz')->first();
         $this->assertNotNull($baz);
         $this->assertEquals('New value', $baz->value);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
+    public function testSaveTestValidateSelectError(): void
+    {
+        $this->request->attributes->set('page', 'test');
+        $data = $this->validTestBody;
+        $data['selectable_option'] = 'not selectable';
+        $this->request = $this->request->withParsedBody($data);
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $this->expectException(ValidationException::class);
+        $controller->save($this->request);
     }
 
     /**

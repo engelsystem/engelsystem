@@ -89,9 +89,6 @@ return [
     // Your privacy@ contact address
     'privacy_email' => env('PRIVACY_EMAIL'),
 
-    // Show opt-in on user profile and registration pages to save some personal data after the event
-    'enable_email_goodie' => (bool) env('ENABLE_EMAIL_GOODIE', false),
-
     // Initial admin password, configured on first migration
     'setup_admin_password'    => env_secret('SETUP_ADMIN_PASSWORD'),
 
@@ -372,12 +369,6 @@ return [
 
     // Allow users with sufficient permission to add worklogs for themselves
     'enable_self_worklog' => (bool) env('ENABLE_SELF_WORKLOG', true),
-
-    // Resembles the Goodie Type. There are three options:
-    // 'none' => no goodie at all
-    // 'goodie' => a goodie which has no sizing options
-    // 'tshirt' => goodie that is called tshirt and has sizing options
-    'goodie_type'             => env('GOODIE_TYPE', 'goodie'),
 
     // Enable (food) vouchers
     'enable_voucher'          => (bool) env('ENABLE_VOUCHER', true),

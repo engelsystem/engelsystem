@@ -109,8 +109,9 @@ return [
          *     'config' => [
          *         '[name]' => [ # Name must be globally unique
          *             'name' => 'some.value', # Optional, default: config.[name]
-         *             'type' => 'string', # string, text, datetime-local, boolean ...
+         *             'type' => 'string', # string, text, datetime-local, boolean, select ...
          *             'default' => '[value]', # Optional
+         *             'data' => ['[value]', '[key]' => '[value]'], # Optional, select data
          *             'required' => true, # Optional, default false
          *             'env' => '[name]', # Optional, env var to load, default name in upper case
          *             'hidden' => false, # Optional, default false, hides the config in frontend
@@ -121,6 +122,7 @@ return [
          *     ],
          * ],
          */
+
         'event' => [
             'config' => [
                 'name' => [
@@ -149,6 +151,24 @@ return [
                 'event_has_day0' => [
                     'type' => 'boolean',
                     'default' => true,
+                ],
+            ],
+        ],
+
+        'goodie' => [
+            'config' => [
+                'goodie_type' => [
+                    'type' => 'select',
+                    'default' => 'goodie',
+                    'data' => [
+                        'none',
+                        'goodie',
+                        'tshirt',
+                    ],
+                ],
+                'enable_email_goodie' => [
+                    'type' => 'boolean',
+                    'default' => false,
                 ],
             ],
         ],

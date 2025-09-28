@@ -363,3 +363,25 @@ msgstr "Event Ende muss nach dem Event Start liegen."
 
 msgid "validation.teardown_end.after"
 msgstr "Abbau Ende muss nach dem Event Ende liegen."
+
+msgid "config.goodie"
+msgstr "Goodie"
+
+msgid "config.goodie_type"
+msgstr "Goodie Typ"
+
+msgid "config.enable_email_goodie"
+msgstr "E-Mail Opt-In"
+
+msgid "config.enable_email_goodie.info"
+msgstr ""
+"Opt-In auf der Benutzer-Seite und Registrierung zum speichern einiger personenbezogener Daten über das Event hinaus."
+
+msgid "config.goodie_type.select.none"
+msgstr "Kein goodie (deaktiviert)"
+
+msgid "config.goodie_type.select.goodie"
+msgstr "Goodie ohne Größen-Optionen"
+
+msgid "config.goodie_type.select.tshirt"
+msgstr "T-Shirt als Goodie mit Größenauswahl"

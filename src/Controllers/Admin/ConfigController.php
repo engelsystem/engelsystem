@@ -125,6 +125,7 @@ class ConfigController extends BaseController
                 'string', 'text' => null, // Anything is valid here when optional
                 'datetime-local' => $validation[] = 'date_time',
                 'boolean' => $validation[] = 'checked',
+                'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
                 default => throw new InvalidArgumentException(
                     'Type ' . $setting['type'] . ' of ' . $key . ' is not defined'
                 ),
@@ -182,6 +183,19 @@ class ConfigController extends BaseController
                 if (empty($config['env'])) {
                     $config['env'] = Str::upper($name);
                     $this->options[$key]['config'][$name]['env'] = $config['env'];
+                }
+
+                // Configure select values
+                if ($config['type'] == 'select') {
+                    $data = [];
+                    foreach ($config['data'] ?? [] as $dataKey => $dataValue) {
+                        if (is_int($dataKey)) {
+                            $dataKey = $dataValue;
+                            $dataValue = 'config.' . $name . '.select.' . $dataKey;
+                        }
+                        $data[$dataKey] = $dataValue;
+                    }
+                    $this->options[$key]['config'][$name]['data'] = $data;
                 }
 
                 // Set if overwritten from ENV

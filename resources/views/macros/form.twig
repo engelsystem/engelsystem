@@ -218,6 +218,9 @@ Renders a select element wrapped in a DIV with mb-3.
                 <option value="">{{ opt.default_option }}</option>
             {% endif %}
             {% for value,decription in data -%}
+                {% if opt.translate|default(false) %}
+                    {% set decription = __(decription) %}
+                {% endif %}
                 <option value="{{ value }}"{% if opt.selected is defined and value == opt.selected %} selected{% endif %}>{{ decription }}</option>
             {% endfor %}
         </select>
