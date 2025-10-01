@@ -386,7 +386,7 @@ deploy:
 .kubectl_deployment: &kubectl_deployment
   stage: deploy
   image:
-    name: bitnami/kubectl:latest
+    name: bitnamisecure/kubectl:latest
     entrypoint: [ '' ]
   needs:
     - test
