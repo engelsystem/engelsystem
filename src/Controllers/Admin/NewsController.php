@@ -84,6 +84,7 @@ class NewsController extends BaseController
         if (!$news->user) {
             $news->user()->associate($this->auth->user());
         }
+        $contentChanged = $news->title != $data['title'] || $news->text != $data['text'];
         $news->title = $data['title'];
         $news->text = $data['text'];
         $news->is_meeting = !is_null($data['is_meeting']);
@@ -102,6 +103,9 @@ class NewsController extends BaseController
         if ($isNewNews && News::where('title', $news->title)->where('text', $news->text)->count()) {
             $this->addNotification('news.edit.duplicate', NotificationType::ERROR);
             return $this->showEdit($news, $notify);
+        }
+        if (!$isNewNews & !$contentChanged) {
+            $news->timestamps = false;
         }
         $news->save();
 
