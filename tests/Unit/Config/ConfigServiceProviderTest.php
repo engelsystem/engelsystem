@@ -49,7 +49,11 @@ class ConfigServiceProviderTest extends TestCase
         /** @var Config $config */
         $config = $this->app->get('config');
         foreach ($this->configVarsWhereNullIsPruned as $name) {
-            $this->assertTrue($config->has($name));
+            if (!$config->has($name)) {
+                continue;
+            }
+
+            $this->assertNotEmpty($config->get($name));
         }
 
         $themes = $config->get('themes');
