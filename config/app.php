@@ -155,6 +155,20 @@ return [
             ],
         ],
 
+        'system' => [
+            // Locale data is set based on /resources/lang/
+            'config' => [
+                'locales' => [
+                    'type' => 'select_multi',
+                    'data' => [],
+                ],
+                'default_locale' => [
+                    'type' => 'select',
+                    'data' => [],
+                ],
+            ],
+        ],
+
         'goodie' => [
             'config' => [
                 'goodie_type' => [

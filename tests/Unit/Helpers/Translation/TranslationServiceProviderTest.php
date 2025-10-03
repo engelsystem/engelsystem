@@ -17,12 +17,25 @@ class TranslationServiceProviderTest extends ServiceProviderTest
 {
     /**
      * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::register
+     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::boot
      */
-    public function testRegister(): void
+    public function testRegisterBoot(): void
     {
-        $locale = 'te_ST';
-        $locales = ['fo_OO' => 'Foo', 'fo_OO.BAR' => 'Foo (Bar)', 'te_ST' => 'WTF\'s Testing?'];
-        $config = new Config(['locales' => $locales, 'default_locale' => 'fo_OO']);
+        $languages = [
+            'ba_RR' => 'language.ba_RR',
+            'config' => 'language.config',
+            'fo_OO' => 'language.fo_OO',
+        ];
+        $config = new Config([
+            'config_options' => [
+                'system' => [
+                    'config' => [
+                        'locales' => [],
+                        'default_locale' => [],
+                    ],
+                ],
+            ],
+        ]);
 
         $app = $this->getApp(['make', 'singleton', 'alias', 'get']);
         /** @var Session|MockObject $session */
@@ -38,27 +51,20 @@ class TranslationServiceProviderTest extends ServiceProviderTest
 
         $request = (new Request())->withAddedHeader('Accept-Language', 'te_ST');
 
-        $app->expects($this->exactly(3))
+        $app->expects($this->exactly(6))
             ->method('get')
-            ->withConsecutive(['config'], ['session'], ['request'])
-            ->willReturnOnConsecutiveCalls($config, $session, $request);
+            ->withConsecutive(['config'], ['path.lang'], [Translator::class], ['config'], ['session'], ['request'])
+            ->willReturnOnConsecutiveCalls($config, __DIR__ . '/Assets', $translator, $config, $session, $request);
 
-        $session->expects($this->once())
-            ->method('get')
-            ->with('locale', 'te_ST')
-            ->willReturn($locale);
-        $session->expects($this->once())
-            ->method('set')
-            ->with('locale', $locale);
 
         $app->expects($this->once())
             ->method('make')
             ->with(
                 Translator::class,
                 [
-                    'locale'                => $locale,
-                    'locales'               => $locales,
-                    'fallbackLocale'        => 'en_US',
+                    'locale'                => 'ba_RR',
+                    'locales'               => ['ba_RR', 'config', 'fo_OO'],
+                    'fallbackLocale'        => 'ba_RR',
                     'getTranslatorCallback' => [$serviceProvider, 'getTranslator'],
                     'localeChangeCallback'  => [$serviceProvider, 'setLocale'],
                 ]
@@ -77,6 +83,29 @@ class TranslationServiceProviderTest extends ServiceProviderTest
             ->with(Translator::class, 'translator');
 
         $serviceProvider->register();
+
+        $this->assertEquals(
+            ['default' => ['ba_RR', 'config', 'fo_OO'], 'data' => $languages],
+            $config->get('config_options')['system']['config']['locales']
+        );
+        $this->assertEquals(
+            ['default' => 'ba_RR', 'data' => $languages],
+            $config->get('config_options')['system']['config']['default_locale']
+        );
+
+        $session->expects($this->once())
+            ->method('get')
+            ->with('locale', 'fo_OO')
+            ->willReturn('ba_RR');
+        $session->expects($this->once())
+            ->method('set')
+            ->with('locale', 'ba_RR');
+        $this->setExpects($translator, 'setLocale', ['ba_RR']);
+
+        $config->set('locales', ['ba_RR', 'fo_OO']);
+        $config->set('default_locale', 'fo_OO');
+
+        $serviceProvider->boot();
     }
 
     /**

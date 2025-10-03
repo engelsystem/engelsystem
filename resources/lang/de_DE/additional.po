@@ -364,6 +364,21 @@ msgstr "Event Ende muss nach dem Event Start liegen."
 msgid "validation.teardown_end.after"
 msgstr "Abbau Ende muss nach dem Event Ende liegen."
 
+msgid "language.de_DE"
+msgstr "Deutsch"
+
+msgid "language.en_US"
+msgstr "English"
+
+msgid "config.system"
+msgstr "System"
+
+msgid "config.locales"
+msgstr "Sprachen"
+
+msgid "config.default_locale"
+msgstr "Standardsprache"
+
 msgid "config.goodie"
 msgstr "Goodie"
 

@@ -190,12 +190,8 @@ class SettingsController extends BaseController
     public function saveTheme(Request $request): Response
     {
         $user = $this->auth->user();
-        $data = $this->validate($request, ['select_theme' => 'int']);
+        $data = $this->validate($request, ['select_theme' => 'int|in:' . implode(',', array_keys(config('themes')))]);
         $selectTheme = $data['select_theme'];
-
-        if (!isset(config('themes')[$selectTheme])) {
-            throw new HttpNotFound('Theme with id ' . $selectTheme . ' does not exist.');
-        }
 
         $user->settings->theme = $selectTheme;
         $user->settings->save();
@@ -207,7 +203,10 @@ class SettingsController extends BaseController
 
     public function language(): Response
     {
-        $languages = config('locales');
+        $languages = array_flip(config('locales'));
+        array_walk($languages, function (&$value, $key): void {
+            $value = 'language.' . $key;
+        });
 
         $currentLanguage = $this->auth->user()->settings->language;
 
@@ -224,12 +223,8 @@ class SettingsController extends BaseController
     public function saveLanguage(Request $request): Response
     {
         $user = $this->auth->user();
-        $data = $this->validate($request, ['select_language' => 'required']);
+        $data = $this->validate($request, ['select_language' => 'required|in:' . implode(',', config('locales'))]);
         $selectLanguage = $data['select_language'];
-
-        if (!isset(config('locales')[$selectLanguage])) {
-            throw new HttpNotFound('Language ' . $selectLanguage . ' does not exist.');
-        }
 
         $user->settings->language = $selectLanguage;
         $user->settings->save();

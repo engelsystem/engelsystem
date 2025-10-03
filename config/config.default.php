@@ -409,16 +409,6 @@ return [
     # Instruction only onsite in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)
     'ifsg_light_enabled'           => env('IFSG_LIGHT_ENABLED', false) && env('IFSG_ENABLED', false),
 
-    // Available locales in /resources/lang/
-    // To disable a locale in config.php, you can set its value to null
-    'locales'                 => [
-        'de_DE' => 'Deutsch',
-        'en_US' => 'English',
-    ],
-
-    // The default locale to use
-    'default_locale'          => env('DEFAULT_LOCALE', 'en_US'),
-
     // Available T-shirt sizes
     // To disable a t-shirt size in config.php, you can set its value to null
     'tshirt_sizes'            => [

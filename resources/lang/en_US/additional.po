@@ -363,6 +363,21 @@ msgstr "Event end must be after the event start."
 msgid "validation.teardown_end.after"
 msgstr "Teardown end must be after the event end."
 
+msgid "language.de_DE"
+msgstr "Deutsch"
+
+msgid "language.en_US"
+msgstr "English"
+
+msgid "config.system"
+msgstr "System"
+
+msgid "config.locales"
+msgstr "Languages"
+
+msgid "config.default_locale"
+msgstr "Default language"
+
 msgid "config.goodie"
 msgstr "Goodie"
 

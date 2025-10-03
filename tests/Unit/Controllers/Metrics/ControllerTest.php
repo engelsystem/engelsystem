@@ -173,8 +173,8 @@ class ControllerTest extends TestCase
             'XL' => 'X Large',
         ]);
         $config->set('locales', [
-            'de_DE' => 'German',
-            'en_US' => 'US English',
+            'de_DE',
+            'en_US',
         ]);
         $config->set('themes', [
             0 => ['name' => 'Nothing'],

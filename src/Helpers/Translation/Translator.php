@@ -102,7 +102,7 @@ class Translator
 
     public function hasLocale(string $locale): bool
     {
-        return isset($this->locales[$locale]);
+        return in_array($locale, $this->locales);
     }
 
     /**
