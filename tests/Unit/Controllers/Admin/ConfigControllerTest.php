@@ -52,6 +52,13 @@ class ConfigControllerTest extends ControllerTest
                         'third',
                     ],
                 ],
+                'multiselectable_option' => [
+                    'type' => 'select_multi',
+                    'data' => [
+                        'first',
+                        'second',
+                    ],
+                ],
             ],
             'permission' => 'some_test_permission',
         ],
@@ -111,6 +118,7 @@ class ConfigControllerTest extends ControllerTest
         'baz' => 'New value',
         'some_config_from_env' => 'Lorem Ipsum',
         'selectable_option' => 'third',
+        'multiselectable_option' => ['first', 'second'],
     ];
 
     /**
@@ -171,6 +179,13 @@ class ConfigControllerTest extends ControllerTest
                         'third' => 'config.selectable_option.select.third',
                     ],
                     $data['config']['selectable_option']['data'],
+                );
+                $this->assertEquals(
+                    [
+                        'first' => 'config.multiselectable_option.select.first',
+                        'second' => 'config.multiselectable_option.select.second',
+                    ],
+                    $data['config']['multiselectable_option']['data'],
                 );
 
                 $this->assertArrayHasKey('test', $data['options']);
@@ -260,6 +275,7 @@ class ConfigControllerTest extends ControllerTest
         $this->assertNull(EventConfig::whereName('some_config_from_env')->first());
         $this->assertNull(EventConfig::whereName('baz')->first());
         $this->assertEquals('third', EventConfig::whereName('selectable_option')->first()->value);
+        $this->assertEquals(['first', 'second'], EventConfig::whereName('multiselectable_option')->first()->value);
 
         // Save with additional permission
         $this->auth->setPermissions(['some_test_permission', 'another_test_permission']);
@@ -277,6 +293,42 @@ class ConfigControllerTest extends ControllerTest
         $this->request->attributes->set('page', 'test');
         $data = $this->validTestBody;
         $data['selectable_option'] = 'not selectable';
+        $this->request = $this->request->withParsedBody($data);
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $this->expectException(ValidationException::class);
+        $controller->save($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
+    public function testSaveTestValidateMultiSelectErrorType(): void
+    {
+        $this->request->attributes->set('page', 'test');
+        $data = $this->validTestBody;
+        $data['multiselectable_option'] = 'not array';
+        $this->request = $this->request->withParsedBody($data);
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $this->expectException(ValidationException::class);
+        $controller->save($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
+    public function testSaveTestValidateMultiSelectErrorValue(): void
+    {
+        $this->request->attributes->set('page', 'test');
+        $data = $this->validTestBody;
+        $data['multiselectable_option'] = ['not_in_values'];
         $this->request = $this->request->withParsedBody($data);
 
         /** @var ConfigController $controller */

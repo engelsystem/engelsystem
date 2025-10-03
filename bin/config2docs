@@ -38,6 +38,7 @@ function toTypeValue($value): string
     return match (gettype($value)) {
         'NULL' => 'null',
         'boolean' => $value ? 'true' : 'false',
+        'array' => json_encode($value),
         default => (string) $value,
     };
 }

@@ -21,6 +21,8 @@
         {{ f.checkbox(name, __(options['name']), options + {'checked': config(name, options.default|default(null))}) }}
     {% elseif options.type == 'select' %}
         {{ f.select(name, __(options['name']), options.data, options + {'selected': config(name, options.default|default(null)), 'translate': true}) }}
+    {% elseif options.type == 'select_multi' %}
+        {{ f.select(name, __(options['name']), options.data, options + {'selected': config(name, options.default|default(null)), 'translate': true, 'multiple': true}) }}
     {% endif %}
 {%- endmacro %}
 

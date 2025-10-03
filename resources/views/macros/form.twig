@@ -197,7 +197,7 @@ Renders a select element wrapped in a DIV with mb-3.
 {% macro select(name, label, data, opt) %}
     <div class="mb-3">
         {% if label -%}
-            <label class="form-label" for="{{ name }}">
+            <label class="form-label" for="{{ opt.id|default(name) }}">
                 {{ label }}
                 {% if opt.required_icon|default(false) %}
                     {{ _self.entry_required() }}
@@ -210,10 +210,12 @@ Renders a select element wrapped in a DIV with mb-3.
                 {% endif %}
             </label>
         {% endif %}
-        <select id="{{ name }}" name="{{ name }}"
+        <select id="{{ opt.id|default(name) }}" name="{{ name }}{%- if opt.multiple|default(false) %}[]{%- endif -%}"
             class="form-control {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
             {%- if opt.disabled|default(false) %} disabled{%- endif -%}
-            {%- if opt.required|default(false) %} required{%- endif -%}>
+            {%- if opt.required|default(false) %} required{%- endif -%}
+            {%- if opt.multiple|default(false) %} multiple{%- endif -%}
+        >
             {%- if opt.default_option is defined and opt.default_option %}
                 <option value="">{{ opt.default_option }}</option>
             {% endif %}
@@ -221,7 +223,7 @@ Renders a select element wrapped in a DIV with mb-3.
                 {% if opt.translate|default(false) %}
                     {% set decription = __(decription) %}
                 {% endif %}
-                <option value="{{ value }}"{% if opt.selected is defined and value == opt.selected %} selected{% endif %}>{{ decription }}</option>
+                <option value="{{ value }}"{% if opt.selected is defined and (value == opt.selected or value in opt.selected) %} selected{% endif %}>{{ decription }}</option>
             {% endfor %}
         </select>
         {% if opt.form_text|default('') %}

@@ -83,7 +83,7 @@ class ConfigController extends BaseController
                 continue;
             }
 
-            $changes[] = sprintf('%s="%s"', $key, $value);
+            $changes[] = sprintf('%s = %s', $key, json_encode($value));
 
             (new EventConfig())
                 ->findOrNew($key)
@@ -126,6 +126,7 @@ class ConfigController extends BaseController
                 'datetime-local' => $validation[] = 'date_time',
                 'boolean' => $validation[] = 'checked',
                 'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
+                'select_multi' => $validation[] = 'array_val|in_many:' . implode(',', array_keys($setting['data'])),
                 default => throw new InvalidArgumentException(
                     'Type ' . $setting['type'] . ' of ' . $key . ' is not defined'
                 ),
@@ -186,7 +187,7 @@ class ConfigController extends BaseController
                 }
 
                 // Configure select values
-                if ($config['type'] == 'select') {
+                if ($config['type'] == 'select' || $config['type'] == 'select_multi') {
                     $data = [];
                     foreach ($config['data'] ?? [] as $dataKey => $dataValue) {
                         if (is_int($dataKey)) {
