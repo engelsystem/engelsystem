@@ -76,6 +76,7 @@ class ConfigController extends BaseController
             $value = match ($options['type']) {
                 'datetime-local' => $value ? Carbon::createFromDatetime($value) : $value,
                 'boolean' => !empty($value),
+                'password' => $value === '**********' ? $this->config->get($key) : $value,
                 default => $value,
             };
 
@@ -83,13 +84,14 @@ class ConfigController extends BaseController
                 continue;
             }
 
-            $changes[] = sprintf('%s = %s', $key, json_encode($value));
-
             (new EventConfig())
                 ->findOrNew($key)
                 ->setAttribute('name', $key)
                 ->setAttribute('value', $value)
                 ->save();
+
+            $value = $options['type'] !== 'password' ? $value : '**********';
+            $changes[] = sprintf('%s = %s', $key, json_encode($value));
         }
 
         $this->log->info(
@@ -127,6 +129,11 @@ class ConfigController extends BaseController
                 'boolean' => $validation[] = 'checked',
                 'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
                 'select_multi' => $validation[] = 'array_val|in_many:' . implode(',', array_keys($setting['data'])),
+                'password' =>
+                    $request->postData($key) !== '**********'
+                    && (!empty($setting['required']) || $request->postData($key))
+                    ? $validation[] = 'length:' . $this->config->get('password_min_length')
+                    : null,
                 default => throw new InvalidArgumentException(
                     'Type ' . $setting['type'] . ' of ' . $key . ' is not defined'
                 ),

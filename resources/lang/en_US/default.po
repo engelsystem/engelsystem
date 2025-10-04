@@ -22,6 +22,9 @@ msgstr "Your password is incorrect. Please try it again."
 msgid "form.submit"
 msgstr "Submit"
 
+msgid "form.password.placeholder"
+msgstr "**********"
+
 msgid "form.send_notification"
 msgstr "Send %d notifications"
 

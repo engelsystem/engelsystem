@@ -59,6 +59,9 @@ class ConfigControllerTest extends ControllerTest
                         'second',
                     ],
                 ],
+                'password' => [
+                    'type' => 'password',
+                ],
             ],
             'permission' => 'some_test_permission',
         ],
@@ -119,6 +122,7 @@ class ConfigControllerTest extends ControllerTest
         'some_config_from_env' => 'Lorem Ipsum',
         'selectable_option' => 'third',
         'multiselectable_option' => ['first', 'second'],
+        'password' => 'FooBarBaz42!',
     ];
 
     /**
@@ -276,6 +280,7 @@ class ConfigControllerTest extends ControllerTest
         $this->assertNull(EventConfig::whereName('baz')->first());
         $this->assertEquals('third', EventConfig::whereName('selectable_option')->first()->value);
         $this->assertEquals(['first', 'second'], EventConfig::whereName('multiselectable_option')->first()->value);
+        $this->assertEquals('FooBarBaz42!', EventConfig::whereName('password')->first()->value);
 
         // Save with additional permission
         $this->auth->setPermissions(['some_test_permission', 'another_test_permission']);
@@ -329,6 +334,42 @@ class ConfigControllerTest extends ControllerTest
         $this->request->attributes->set('page', 'test');
         $data = $this->validTestBody;
         $data['multiselectable_option'] = ['not_in_values'];
+        $this->request = $this->request->withParsedBody($data);
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $this->expectException(ValidationException::class);
+        $controller->save($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
+    public function testSaveTestPasswordIgnorePlaceholder(): void
+    {
+        $this->request->attributes->set('page', 'test');
+        $data = $this->validTestBody;
+        $data['password'] = '**********';
+        $this->request = $this->request->withParsedBody($data);
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $controller->save($this->request);
+        $this->assertNull(EventConfig::whereName('password')->first());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
+    public function testSaveTestPasswordError(): void
+    {
+        $this->request->attributes->set('page', 'test');
+        $data = $this->validTestBody;
+        $data['password'] = 'short';
         $this->request = $this->request->withParsedBody($data);
 
         /** @var ConfigController $controller */
@@ -496,6 +537,7 @@ class ConfigControllerTest extends ControllerTest
 
         $this->config->set('config_options', $this->options);
         $this->config->set('env_config', ['SOME_CONFIG_FROM_ENV' => 'I am the env!']);
+        $this->config->set('password_min_length', 12);
         $this->request->attributes->set('page', 'event');
 
         $this->auth = $this->app->make(AccessibleAuthenticator::class);

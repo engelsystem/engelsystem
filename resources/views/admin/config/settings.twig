@@ -13,6 +13,12 @@
 
     {% if options.type == 'string' %}
         {{ f.input(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
+    {% elseif options.type == 'password' %}
+        {% set value = '' %}
+        {% if config(name, options.default|default(null)) %}
+            {% set value = '**********' %}
+        {% endif %}
+        {{ f.input(name, __(options['name']), options + {'type': 'password', 'value': value, 'placeholder': __('form.password.placeholder')}) }}
     {% elseif options.type == 'text' %}
         {{ f.textarea(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
     {% elseif options.type == 'datetime-local' %}

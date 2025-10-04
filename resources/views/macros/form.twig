@@ -60,6 +60,7 @@ Renders an input field wrapped in a DIV with mb-3.
             {%- if opt.min is defined %} min="{{ opt.min }}"{% endif %}
             {%- if opt.max is defined %} max="{{ opt.max }}"{% endif %}
             {%- if opt.step is defined %} step="{{ opt.step }}"{% endif %}
+            {%- if opt.placeholder is defined %} placeholder="{{ opt.placeholder }}"{% endif %}
             {%- if opt.autocomplete is defined %} autocomplete="{{ opt.autocomplete }}"{% endif %}
             {%- if opt.required|default(false) %} required{% endif -%}
             {%- if opt.disabled|default(false) %} disabled{% endif -%}
