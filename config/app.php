@@ -109,7 +109,8 @@ return [
          *     'config' => [
          *         '[name]' => [ # Name must be globally unique
          *             'name' => 'some.value', # Optional, default: config.[name]
-         *             'type' => 'string', # string, text, datetime-local, boolean, number, select, select_multi ...
+         *             'type' => 'string', # Possible types:
+         *                  string, text, datetime-local, boolean, number, url, select, select_multi
          *             'default' => '[value]', # Optional
          *             'data' => ['[value]', '[key]' => '[value]'], # Optional, select data
          *             'required' => true, # Optional, default false

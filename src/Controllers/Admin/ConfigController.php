@@ -71,7 +71,8 @@ class ConfigController extends BaseController
 
         $changes = [];
         foreach ($settings as $key => $options) {
-            $value = array_key_exists($key, $data) ? $data[$key] : $options['default'] ?? null;
+            $default = $options['default'] ?? null;
+            $value = array_key_exists($key, $data) ? $data[$key] : $default;
 
             $value = match ($options['type']) {
                 'datetime-local' => $value ? Carbon::createFromDatetime($value) : $value,
@@ -85,11 +86,17 @@ class ConfigController extends BaseController
                 continue;
             }
 
-            (new EventConfig())
-                ->findOrNew($key)
-                ->setAttribute('name', $key)
-                ->setAttribute('value', $value)
-                ->save();
+            if ($value !== $default && !is_null($value) && $value !== '') {
+                (new EventConfig())
+                    ->findOrNew($key)
+                    ->setAttribute('name', $key)
+                    ->setAttribute('value', $value)
+                    ->save();
+            } else {
+                (new EventConfig())
+                    ->whereName($key)
+                    ->delete();
+            }
 
             $value = $options['type'] !== 'password' ? $value : '**********';
             $changes[] = sprintf('%s = %s', $key, json_encode($value));
@@ -133,6 +140,7 @@ class ConfigController extends BaseController
                 'datetime-local' => $validation[] = 'date_time',
                 'boolean' => $validation[] = 'checked',
                 'number' => $validation[] = 'number',
+                'url' => $validation[] = 'url',
                 'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
                 'select_multi' => $validation[] = 'array_val|in_many:' . implode(',', array_keys($setting['data'])),
                 'password' =>

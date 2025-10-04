@@ -68,6 +68,9 @@ class ConfigControllerTest extends ControllerTest
                         'min:5',
                     ],
                 ],
+                'url' => [
+                    'type' => 'url',
+                ],
             ],
             'permission' => 'some_test_permission',
         ],
@@ -130,6 +133,7 @@ class ConfigControllerTest extends ControllerTest
         'multiselectable_option' => ['first', 'second'],
         'password' => 'FooBarBaz42!',
         'numeric' => 1337,
+        'url' => 'https://example.com/test',
     ];
 
     /**
@@ -289,6 +293,7 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals(['first', 'second'], EventConfig::whereName('multiselectable_option')->first()->value);
         $this->assertEquals('FooBarBaz42!', EventConfig::whereName('password')->first()->value);
         $this->assertEquals(1337, EventConfig::whereName('numeric')->first()->value);
+        $this->assertEquals('https://example.com/test', EventConfig::whereName('url')->first()->value);
 
         // Save with additional permission
         $this->auth->setPermissions(['some_test_permission', 'another_test_permission']);
@@ -298,50 +303,26 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals('New value', $baz->value);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
-    public function testSaveTestValidateSelectError(): void
+    public function validationErrorsProvider(): array
     {
-        $this->request->attributes->set('page', 'test');
-        $data = $this->validTestBody;
-        $data['selectable_option'] = 'not selectable';
-        $this->request = $this->request->withParsedBody($data);
-
-        /** @var ConfigController $controller */
-        $controller = $this->app->make(ConfigController::class);
-        $controller->setValidator(new Validator());
-
-        $this->expectException(ValidationException::class);
-        $controller->save($this->request);
+        return [
+            [['selectable_option' => 'not selectable']],
+            [['multiselectable_option' => 'not array']],
+            [['multiselectable_option' => ['not_in_values']]],
+            [['password' => 'short']],
+            [['url' => 'not an URL']],
+            [['numeric' => 3]],
+        ];
     }
 
     /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     * @dataProvider validationErrorsProvider
      */
-    public function testSaveTestValidateMultiSelectErrorType(): void
+    public function testSaveValidationError(array $errorData): void
     {
         $this->request->attributes->set('page', 'test');
-        $data = $this->validTestBody;
-        $data['multiselectable_option'] = 'not array';
-        $this->request = $this->request->withParsedBody($data);
-
-        /** @var ConfigController $controller */
-        $controller = $this->app->make(ConfigController::class);
-        $controller->setValidator(new Validator());
-
-        $this->expectException(ValidationException::class);
-        $controller->save($this->request);
-    }
-
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
-    public function testSaveTestValidateMultiSelectErrorValue(): void
-    {
-        $this->request->attributes->set('page', 'test');
-        $data = $this->validTestBody;
-        $data['multiselectable_option'] = ['not_in_values'];
+        $data = array_merge($this->validTestBody, $errorData);
         $this->request = $this->request->withParsedBody($data);
 
         /** @var ConfigController $controller */
@@ -368,42 +349,6 @@ class ConfigControllerTest extends ControllerTest
 
         $controller->save($this->request);
         $this->assertNull(EventConfig::whereName('password')->first());
-    }
-
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
-    public function testSaveTestPasswordError(): void
-    {
-        $this->request->attributes->set('page', 'test');
-        $data = $this->validTestBody;
-        $data['password'] = 'short';
-        $this->request = $this->request->withParsedBody($data);
-
-        /** @var ConfigController $controller */
-        $controller = $this->app->make(ConfigController::class);
-        $controller->setValidator(new Validator());
-
-        $this->expectException(ValidationException::class);
-        $controller->save($this->request);
-    }
-
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
-    public function testSaveTestAddedValidationError(): void
-    {
-        $this->request->attributes->set('page', 'test');
-        $data = $this->validTestBody;
-        $data['numeric'] = 3;
-        $this->request = $this->request->withParsedBody($data);
-
-        /** @var ConfigController $controller */
-        $controller = $this->app->make(ConfigController::class);
-        $controller->setValidator(new Validator());
-
-        $this->expectException(ValidationException::class);
-        $controller->save($this->request);
     }
 
     /**
@@ -541,6 +486,28 @@ class ConfigControllerTest extends ControllerTest
 
         $this->assertTrue($this->log->hasInfoThatContains('Updated'));
         $this->assertHasNotification('config.edit.success');
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
+     */
+    public function testSaveRemoveIfDefault(): void
+    {
+        (new EventConfig(['name' => 'baz', 'value' => 'foo']))->save();
+        $this->config->set('baz', 'foo');
+        $this->request->attributes->set('page', 'test');
+        $this->request = $this->request->withParsedBody(array_merge($this->validTestBody, [
+            'baz' => 'default value',
+        ]));
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $this->auth->setPermissions(['some_test_permission', 'another_test_permission']);
+        $controller->save($this->request);
+
+        $this->assertNull(EventConfig::whereName('baz')->first());
     }
 
     /**
