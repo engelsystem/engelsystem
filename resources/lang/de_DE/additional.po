@@ -327,19 +327,22 @@ msgid "config.welcome_msg"
 msgstr "Event Willkommens-Nachricht"
 
 msgid "config.welcome_msg.info"
-msgstr "Die Willkommens-Nachricht wird nach der Registrierung angezeigt. Du kannst Markdown benutzen"
+msgstr "Die Willkommens-Nachricht wird nach der Registrierung angezeigt. Es kann Markdown benutzt werden."
+
+msgid "config.registration_enabled"
+msgstr "Registrierung aktiv"
 
 msgid "config.buildup_start"
-msgstr "Aufbau Datum"
+msgstr "Aufbau"
 
 msgid "config.event_start"
-msgstr "Event Start Datum"
+msgstr "Event Start"
 
 msgid "config.event_end"
-msgstr "Event Ende Datum"
+msgstr "Event Ende"
 
 msgid "config.teardown_end"
-msgstr "Abbau Ende Datum"
+msgstr "Abbau Ende"
 
 msgid "config.enable_day_of_event"
 msgstr "Event Tag anzeigen"
@@ -354,6 +357,169 @@ msgstr "Event mit Tag 0"
 
 msgid "config.event_has_day0.info"
 msgstr "Wenn aktiv wird ein Tag 0 angezeigt (-1, 0, 1…). Wenn nicht wird er ausgeblendet (-1, 1…)."
+
+msgid "config.faq_text"
+msgstr "FAQ Text"
+
+msgid "config.faq_text.info"
+msgstr "Zusätzlicher Text auf der FAQ Seite. Es kann Markdown benutzt werden."
+
+msgid "config.tshirt_link"
+msgstr "T-Shirt Größen-Guide Link"
+
+msgid "config.privacy_email"
+msgstr "privacy@ Kontakt E-Mail"
+
+msgid "config.features"
+msgstr "Features"
+
+msgid "config.enable_dect"
+msgstr "DECT"
+
+msgid "config.enable_mobile_show"
+msgstr "Anzeigen der Handynummer"
+
+msgid "config.enable_mobile_show.info"
+msgstr "Soll die Mobilfunknummer für alle Benutzer sichtbar sein?"
+
+msgid "config.enable_full_name"
+msgstr "Vor-/Nachname"
+
+msgid "config.display_full_name"
+msgstr "Vollen Namen anzeigen"
+
+msgid "config.display_full_name.info"
+msgstr "Zeige den vollen Namen anstatt dem Benutzernamens"
+
+msgid "config.enable_pronoun"
+msgstr "Pronomen"
+
+msgid "config.enable_planned_arrival"
+msgstr "Geplante Ankunft / Abreise"
+
+msgid "config.enable_force_active"
+msgstr "Erzwungen Aktiv"
+
+msgid "config.enable_force_active.info"
+msgstr "Erlaubt das Setzen des Flags zum Erzwingen von Goodies"
+
+msgid "config.enable_force_food"
+msgstr "Unbegrenzte Essensgutscheine"
+
+msgid "config.enable_force_food.info"
+msgstr "Erlaubt es, unbegrenzt Essensgutscheine zu bekommen"
+
+msgid "config.enable_voucher"
+msgstr "(Essens-) Gutscheine"
+
+msgid "config.enable_self_worklog"
+msgstr "Eigene Arbeitseinsätze"
+
+msgid "config.enable_self_worklog.info"
+msgstr "Erlaubt es Benutzern, mit entsprechender Berechtigung, sich selber Arbeitseinsätze ein zu tragen"
+
+msgid "config.signup_requires_arrival"
+msgstr "Schichten eintragen benötigt Ankommen"
+
+msgid "config.signup_requires_arrival.info"
+msgstr "Nur angekommene benutzer können sich in Schichten eintragen"
+
+msgid "config.autoarrive"
+msgstr "Automatisches ankommen"
+
+msgid "config.autoarrive.info"
+msgstr "Setzt Benutzer automatisch bei Registrierung als angekommen"
+
+msgid "config.supporters_can_promote"
+msgstr "Supporter können befördern"
+
+msgid "config.supporters_can_promote.info"
+msgstr "Supporter eines Teams (Engel Typ) können andere Benutzer des Teams zu Supportern befördern"
+
+msgid "config.certificates"
+msgstr "Zertifikate"
+
+msgid "config.driving_license_enabled"
+msgstr "Führerschein"
+
+msgid "config.driving_license_enabled"
+msgstr "Führerschein"
+
+msgid "config.ifsg_enabled.info"
+msgstr "Infektionsschutzgesetz"
+
+msgid "config.ifsg_enabled.info"
+msgstr "Einweisung nach § 43 Abs. 1 des deutschen Infektionsschutzgesetzes (IfSG)"
+
+msgid "config.ifsg_light_enabled"
+msgstr "Infektionsschutzgesetz light"
+
+msgid "config.ifsg_light_enabled.info"
+msgstr "Einweisung nur vor Ort nach § 43 Abs. 1 des deutschen Infektionsschutzgesetzes (IfSG)"
+
+msgid "config.shifts"
+msgstr "Schichten"
+
+msgid "config.signup_advance_hours"
+msgstr "Eintragen n Stunden vorher"
+
+msgid "config.signup_advance_hours.info"
+msgstr "Erlaube das Eintragen in Schichten erst n Stunden vor begin. Ein Wert von 0 deaktiviert die Einschränkung."
+
+msgid "config.signup_post_minutes"
+msgstr "Eintragen n Minuten nach Start"
+
+msgid "config.signup_post_minutes.info"
+msgstr ""
+"Erlaubt das Eintragen in Schichten n Minuten nach Start der Schicht. "
+"Wenn \"Anteiliges Eintragen nach Start\" gesetzt ist, wird es vor dem addieren der Minuten angewendet."
+
+msgid "config.signup_post_fraction"
+msgstr "Anteiliges Eintragen nach Start"
+
+msgid "config.signup_post_fraction.info"
+msgstr ""
+"Erlaubt das spätere Eintragen in Schichten Anteiliges der Schichtlänge. "
+"Bei einem Wert von 1 ist das Eintragen während der gesamten Laufzeit einer Schicht erlaubt, "
+"bei 0.5 nur in der ersten Hälfte. "
+"Wenn \"Eintragen n Minuten nach Start\" gesetzt ist wird es anschließlich zusätzlich auf die Zeit addiert."
+
+msgid "config.last_unsubscribe"
+msgstr "Spätestes Austragen"
+
+msgid "config.last_unsubscribe.info"
+msgstr "Anzahl an Stunden in denen sich ein Benutzer vorher aus einer Schicht austragen kann"
+
+msgid "config.max_freeloadable_shifts"
+msgstr "Maximum schwänzbare Schichten"
+
+msgid "config.max_freeloadable_shifts.info"
+msgstr ""
+"Anzahl an Schichten die maximal geschwänzt werden können bis ein Benutzer "
+"sich nicht mehr in weitere eintragen kann"
+
+msgid "config.goodie"
+msgstr "Goodie"
+
+msgid "config.goodie_type"
+msgstr "Goodie Typ"
+
+msgid "config.enable_email_goodie"
+msgstr "E-Mail Opt-In"
+
+msgid "config.enable_email_goodie.info"
+msgstr ""
+"Opt-In auf der Benutzer-Seite und Registrierung zum speichern einiger personenbezogener Daten über das Event hinaus"
+
+msgid "config.goodie_type.select.none"
+msgstr "Kein goodie (deaktiviert)"
+
+msgid "config.goodie_type.select.goodie"
+msgstr "Goodie ohne Größen-Optionen"
+
+msgid "config.goodie_type.select.tshirt"
+msgstr "T-Shirt als Goodie mit Größenauswahl"
+
 
 msgid "validation.event_start.after"
 msgstr "Event Start muss nach dem Aufbau liegen."
@@ -373,30 +539,114 @@ msgstr "English"
 msgid "config.system"
 msgstr "System"
 
+msgid "config.app_name"
+msgstr "Anwendungsname (Nicht Eventname)"
+
 msgid "config.locales"
 msgstr "Sprachen"
 
 msgid "config.default_locale"
 msgstr "Standardsprache"
 
-msgid "config.goodie"
-msgstr "Goodie"
+msgid "config.home_site"
+msgstr "Startseite"
 
-msgid "config.goodie_type"
-msgstr "Goodie Typ"
+msgid "config.home_site.info"
+msgstr "Weiterleitungsziel nach dem Login oder Klick auf den Seitennamen"
 
-msgid "config.enable_email_goodie"
-msgstr "E-Mail Opt-In"
+msgid "config.display_news"
+msgstr "Angezeigte News"
 
-msgid "config.enable_email_goodie.info"
+msgid "config.display_news.info"
+msgstr "Anzahl angezeigter News auf einer Seite und in Feedreadern"
+
+msgid "config.filter_max_duration"
+msgstr "Maximale Shichten-Filter Zeit"
+
+msgid "config.filter_max_duration.info"
 msgstr ""
-"Opt-In auf der Benutzer-Seite und Registrierung zum speichern einiger personenbezogener Daten über das Event hinaus."
+"Setzt die maximale Anzahl an Stunden die auf ein mal auf der Schichten-Seite angezeigt werden können, "
+"0 deaktiviert die Limiitierung"
 
-msgid "config.goodie_type.select.none"
-msgstr "Kein goodie (deaktiviert)"
+msgid "config.password_min_length"
+msgstr "Minimale Passwortlänge"
 
-msgid "config.goodie_type.select.goodie"
-msgstr "Goodie ohne Größen-Optionen"
+msgid "config.enable_password"
+msgstr "Login mit Passwort"
 
-msgid "config.goodie_type.select.tshirt"
-msgstr "T-Shirt als Goodie mit Größenauswahl"
+msgid "config.enable_password.info"
+msgstr ""
+"Aktiviert den Login mit Passwort (wird ausgeblendet wenn nicht). "
+"Sinnvoll in Kombination mit OAuth, das asschalten deaktiviert auch die Registrierung ohne OAuth."
+
+msgid "config.external_registration_url"
+msgstr "Externe Registrierungs-URL"
+
+msgid "config.external_registration_url.info"
+msgstr "URL zur externen Registrierungs-Seite, auf der Login-Seite verlinkt"
+
+msgid "config.url"
+msgstr "Anwendungs-URL"
+
+msgid "config.url.info"
+msgstr "URL und Pfad der Installation, überschreibt die automatisch detektion"
+
+msgid "config.api_key"
+msgstr "API Key für /metrics"
+
+msgid "config.maintenance"
+msgstr "Wartungsmodus "
+
+msgid "config.maintenance.info"
+msgstr "Zeigt eine statische Seite bei allen Anfragen)"
+
+msgid "config.environment"
+msgstr "Umgebung"
+
+msgid "config.environment.info"
+msgstr "\"development\" zeigt mehr Debuggingmeldungen"
+
+msgid "config.documentation_url"
+msgstr "Dokumentations-URL"
+
+msgid "config.documentation_url.info"
+msgstr "Link zur Dokumentation/Hilfe"
+
+msgid "config.setup_admin_password"
+msgstr "Setup admin Password"
+
+msgid "config.setup_admin_password.info"
+msgstr "Initiales admin Password, verwendet beim datenbank aufsetzen"
+
+msgid "config.password_algorithm"
+msgstr "Password Algorithmus"
+
+msgid "config.password_algorithm.info"
+msgstr ""
+"Definiert den Algorithmus für `password_verify()`. "
+"Wen ein Benutzerpasswort mit einem alten Algorithmus gehasht wurde, "
+"wird es beim nächsten Login in das neue Format konvertiert. "
+"Siehe https://secure.php.net/manual/en/password.constants.php für eine vollständige Liste."
+
+msgid "config.username_regex"
+msgstr "Username Filter-Regex"
+
+msgid "config.username_regex.info"
+msgstr ""
+"Regulärer Ausdruck der einen nicht erlaubten Benutzernamen beschreibt. "
+"Standartmäßig sind nur Buchstaben artige Zeichen, Zahlen und \"-\", \"_\" sowie \".\" erlaubt."
+
+msgid "config.disabled_user_view_columns"
+msgstr "Versteckte User-Tabellen-Spalten"
+
+msgid "config.disabled_user_view_columns.info"
+msgstr "Versteckt dei Spalten in der Benutzer Tabelle im Adminbereich, möglich sind alle Sortierparameter"
+
+msgid "config.trusted_proxies"
+msgstr "Vertrauenswürdige Proxies"
+
+msgid "config.trusted_proxies.info"
+msgstr "IP Adressen von vertrauenswürdigen Reverse-Proxies als Array oder Kommaseparierte Liste"
+
+msgid "config.add_headers"
+msgstr "Wietere Header hinzufügen"

@@ -325,20 +325,23 @@ msgstr "The event name is shown on the start page"
 msgid "config.welcome_msg"
 msgstr "Event Welcome Message"
 
+msgid "config.registration_enabled"
+msgstr "Registration enabled"
+
 msgid "config.welcome_msg.info"
-msgstr "The welcome message is shown after successful registration. You can use markdown"
+msgstr "The welcome message is shown after successful registration. Markdown can be used."
 
 msgid "config.buildup_start"
-msgstr "Buildup date"
+msgstr "Buildup"
 
 msgid "config.event_start"
-msgstr "Event start date"
+msgstr "Event start"
 
 msgid "config.event_end"
-msgstr "Event end date"
+msgstr "Event end"
 
 msgid "config.teardown_end"
-msgstr "Teardown end date"
+msgstr "Teardown end"
 
 msgid "config.enable_day_of_event"
 msgstr "Day of event"
@@ -352,31 +355,141 @@ msgid "config.event_has_day0"
 msgstr "Event has day 0"
 
 msgid "config.event_has_day0.info"
-msgstr "If checked there will be a day 0 (-1, 0, 1…). If not there won't (-1, 1…)."
+msgstr "If enabled there will be a day 0 (-1, 0, 1…). If not there won't (-1, 1…)."
 
-msgid "validation.event_start.after"
-msgstr "Event start must be after buildup."
+msgid "config.faq_text"
+msgstr "FAQ text"
 
-msgid "validation.event_end.after"
-msgstr "Event end must be after the event start."
+msgid "config.faq_text.info"
+msgstr "Additional text displayed on the FAQ page. Markdown can be used."
 
-msgid "validation.teardown_end.after"
-msgstr "Teardown end must be after the event end."
+msgid "config.tshirt_link"
+msgstr "T-shirt size guide link"
 
-msgid "language.de_DE"
-msgstr "Deutsch"
+msgid "config.privacy_email"
+msgstr "privacy@ contact e-mail"
 
-msgid "language.en_US"
-msgstr "English"
+msgid "config.features"
+msgstr "Features"
 
-msgid "config.system"
-msgstr "System"
+msgid "config.enable_dect"
+msgstr "DECT"
 
-msgid "config.locales"
-msgstr "Languages"
+msgid "config.enable_mobile_show"
+msgstr "Display mobile number"
 
-msgid "config.default_locale"
-msgstr "Default language"
+msgid "config.enable_mobile_show.info"
+msgstr "Whether the mobile number will be shown to all users"
+
+msgid "config.enable_full_name"
+msgstr "First/last name"
+
+msgid "config.display_full_name"
+msgstr "Display full name"
+
+msgid "config.display_full_name.info"
+msgstr "Show a users first name and last name instead of username"
+
+msgid "config.enable_pronoun"
+msgstr "Pronouns"
+
+msgid "config.enable_planned_arrival"
+msgstr "Planned arrival / departure"
+
+msgid "config.enable_force_active"
+msgstr "Force active"
+
+msgid "config.enable_force_active.info"
+msgstr "Allows to enforce goodies"
+
+msgid "config.enable_force_food"
+msgstr "Unlimited food vouchers"
+
+msgid "config.enable_force_food.info"
+msgstr "Allows to get unlimited food vouchers"
+
+msgid "config.enable_voucher"
+msgstr "(Food-) vouchers"
+
+msgid "config.enable_self_worklog"
+msgstr "Own work logs"
+
+msgid "config.enable_self_worklog.info"
+msgstr "Allow users with sufficient permission to add worklogs for themselves"
+
+msgid "config.signup_requires_arrival"
+msgstr "Shift sign up requires arrival"
+
+msgid "config.signup_requires_arrival.info"
+msgstr "Only arrived users can sign up for shifts"
+
+msgid "config.autoarrive"
+msgstr "Auto arrive"
+
+msgid "config.autoarrive.info"
+msgstr "Set newly-registered users automatically as arrived"
+
+msgid "config.supporters_can_promote"
+msgstr "Supporters can promote"
+
+msgid "config.supporters_can_promote.info"
+msgstr "Supporters of a team (angel type) can promote other users of the team to supporter"
+
+msgid "config.certificates"
+msgstr "Certificates"
+
+msgid "config.driving_license_enabled"
+msgstr "Driving License"
+
+msgid "config.ifsg_enabled"
+msgstr "Infektionsschutzgesetz"
+
+msgid "config.ifsg_enabled.info"
+msgstr "Instruction in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)"
+
+msgid "config.ifsg_light_enabled"
+msgstr "Infektionsschutzgesetz light"
+
+msgid "config.ifsg_light_enabled.info"
+msgstr "Instruction only onsite in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)"
+
+msgid "config.shifts"
+msgstr "Shifts"
+
+msgid "config.signup_advance_hours"
+msgstr "Sign up n hours in advance"
+
+msgid "config.signup_advance_hours.info"
+msgstr "Only allow shift signup this number of hours in advance. Setting it to 0 disables the feature."
+
+msgid "config.signup_post_minutes"
+msgstr "Sign up minutes after start"
+
+msgid "config.signup_post_minutes.info"
+msgstr ""
+"Allow shift signup this number of minutes after start of shift. "
+"If \"Sign up after start fraction\" is set, it's first applied before adding the number of minutes specified here."
+
+msgid "config.signup_post_fraction"
+msgstr "Sign up after start fraction"
+
+msgid "config.signup_post_fraction.info"
+msgstr ""
+"Allow sign up this fraction of the shift length after the start of the shift. "
+"If its 1, sign up is allowed until end of shift, 0.5 means first half of the shift. "
+"If \"Sign up minutes after start\" is set, this is first applied and then the minutes added on top."
+
+msgid "config.last_unsubscribe"
+msgstr "Last unsubscribe"
+
+msgid "config.last_unsubscribe.info"
+msgstr "Number of hours that a user can sign out of own shifts beforehand"
+
+msgid "config.max_freeloadable_shifts"
+msgstr "Maximum freeloadable shifts"
+
+msgid "config.max_freeloadable_shifts.info"
+msgstr "Number of shifts to freeload until a user is locked from shift signup"
 
 msgid "config.goodie"
 msgstr "Goodie"
@@ -398,3 +511,130 @@ msgstr "Goodie without sizing options"
 
 msgid "config.goodie_type.select.tshirt"
 msgstr "T-shirt with sizing options"
+
+msgid "validation.event_start.after"
+msgstr "Event start must be after buildup."
+
+msgid "validation.event_end.after"
+msgstr "Event end must be after the event start."
+
+msgid "validation.teardown_end.after"
+msgstr "Teardown end must be after the event end."
+
+msgid "language.de_DE"
+msgstr "Deutsch"
+
+msgid "language.en_US"
+msgstr "English"
+
+msgid "config.system"
+msgstr "System"
+
+msgid "config.app_name"
+msgstr "Application name (not event name)"
+
+msgid "config.locales"
+msgstr "Languages"
+
+msgid "config.default_locale"
+msgstr "Default language"
+
+msgid "config.home_site"
+msgstr "Home site"
+
+msgid "config.home_site.info"
+msgstr "Redirects to this site after logging in or when clicking the page name"
+
+msgid "config.display_news"
+msgstr "Displayed news"
+
+msgid "config.display_news.info"
+msgstr "Number of news shown on one site and for feed readers"
+
+msgid "config.filter_max_duration"
+msgstr "Shift filter max duration"
+
+msgid "config.filter_max_duration.info"
+msgstr "Set max number of hours that can be shown at once on shifts overview, 0 means no limit"
+
+msgid "config.password_min_length"
+msgstr "Minimum password length"
+
+msgid "config.enable_password"
+msgstr "Login with Passwort"
+
+msgid "config.enable_password.info"
+msgstr ""
+"Whether the login and registration via password should be enabled (login will be hidden if false). "
+"This is useful when using OAuth, disabling it also disables normal registration without oauth."
+
+msgid "config.external_registration_url"
+msgstr "External registration URL"
+
+msgid "config.external_registration_url.info"
+msgstr "URL to external registration page, linked from login page"
+
+msgid "config.url"
+msgstr "Application URL"
+
+msgid "config.url.info"
+msgstr "URL and base path to use instead of the auto-detected one"
+
+msgid "config.api_key"
+msgstr "API key for /metrics"
+
+msgid "config.maintenance"
+msgstr "Maintenance mode"
+
+msgid "config.maintenance.info"
+msgstr "Shows a static page to all requests"
+
+msgid "config.environment"
+msgstr "Environment"
+
+msgid "config.environment.info"
+msgstr "Set to \"development\" to enable debugging messages"
+
+msgid "config.documentation_url"
+msgstr "Documentation URL"
+
+msgid "config.documentation_url.info"
+msgstr "Link to documentation/help"
+
+msgid "config.setup_admin_password"
+msgstr "Setup admin password"
+
+msgid "config.setup_admin_password.info"
+msgstr "Initial admin password, configured on first setup migration"
+
+msgid "config.password_algorithm"
+msgstr "Password algorithm"
+
+msgid "config.password_algorithm.info"
+msgstr ""
+"Define the algorithm to use for `password_verify()`. "
+"If a user password is hashed with an old algorithm, the password will be converted to the new format on login. "
+"See https://secure.php.net/manual/en/password.constants.php for a complete list."
+
+msgid "config.username_regex"
+msgstr "Username filter regex"
+
+msgid "config.username_regex.info"
+msgstr ""
+"Regular expression describing a FALSE username. "
+"Per default usernames must only contain alphanumeric chars, \"-\", \"_\" or \".\"."
+
+msgid "config.disabled_user_view_columns"
+msgstr "Hidden user table columns"
+
+msgid "config.disabled_user_view_columns.info"
+msgstr "Hide columns in backend user view, possible values are any sortable parameters of the table"
+
+msgid "config.trusted_proxies"
+msgstr "Trusted proxies"
+
+msgid "config.trusted_proxies.info"
+msgstr "IP addresses of reverse proxies that are trusted, can be an array or a comma separated list"
+
+msgid "config.add_headers"
+msgstr "Add additional headers"

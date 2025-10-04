@@ -126,6 +126,7 @@ return [
          */
 
         'event' => [
+            'icon' => 'calendar-heart',
             'config' => [
                 'name' => [
                     'type' => 'string',
@@ -133,6 +134,10 @@ return [
                 'welcome_msg' => [
                     'type' => 'text',
                     'rows' => 5,
+                ],
+                'registration_enabled' => [
+                    'type' => 'boolean',
+                    'default' => true,
                 ],
                 'buildup_start' => [
                     'type' => 'datetime-local',
@@ -154,24 +159,134 @@ return [
                     'type' => 'boolean',
                     'default' => true,
                 ],
+                'faq_text' => [
+                    'type' => 'text',
+                ],
+                'tshirt_link' => [
+                    'type' => 'url',
+                ],
+                'privacy_email' => [
+                    'type' => 'string',
+                ],
             ],
         ],
 
-        'system' => [
-            // Locale data is set based on /resources/lang/
+        'features' => [
+            'icon' => 'ui-checks',
             'config' => [
-                'locales' => [
-                    'type' => 'select_multi',
-                    'data' => [],
+                'enable_dect' => [
+                    'type' => 'boolean',
+                    'default' => false,
                 ],
-                'default_locale' => [
-                    'type' => 'select',
-                    'data' => [],
+                'enable_mobile_show' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'enable_full_name' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'display_full_name' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'enable_pronoun' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'enable_planned_arrival' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'enable_force_active' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'enable_voucher' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'enable_force_food' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'enable_self_worklog' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'signup_requires_arrival' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'autoarrive' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'supporters_can_promote' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+            ],
+        ],
+
+        'certificates' => [
+            'icon' => 'card-checklist',
+            'config' => [
+                'driving_license_enabled' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'ifsg_enabled' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'ifsg_light_enabled' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+            ],
+        ],
+
+        'shifts' => [
+            'icon' => 'calendar-week',
+            'config' => [
+                'signup_advance_hours' => [
+                    'type' => 'number',
+                    'default' => 0,
+                    'step' => .01,
+                    'min' => 0,
+                    'validation' => [
+                        'min:0'
+                    ],
+                ],
+                'signup_post_minutes' => [
+                    'type' => 'number',
+                    'default' => 0,
+                    'step' => .01,
+                ],
+                'signup_post_fraction' => [
+                    'type' => 'number',
+                    'default' => 0,
+                    'step' => .01,
+                ],
+                'last_unsubscribe' => [
+                    'type' => 'number',
+                    'default' => 3,
+                    'step' => .01,
+                    'min' => 0,
+                    'validation' => [
+                        'min:0'
+                    ],
+                ],
+                'max_freeloadable_shifts' => [
+                    'type' => 'number',
+                    'default' => 2,
                 ],
             ],
         ],
 
         'goodie' => [
+            'icon' => 'gift',
             'config' => [
                 'goodie_type' => [
                     'type' => 'select',
@@ -185,6 +300,125 @@ return [
                 'enable_email_goodie' => [
                     'type' => 'boolean',
                     'default' => false,
+                ],
+            ],
+        ],
+
+        'system' => [
+            'config' => [
+                'app_name' => [
+                    'type' => 'string',
+                    'default' => 'Engelsystem',
+                ],
+                // Locale data is set based on /resources/lang/
+                'locales' => [
+                    'type' => 'select_multi',
+                    'data' => [],
+                ],
+                'default_locale' => [
+                    'type' => 'select',
+                    'data' => [],
+                ],
+                'home_site' => [
+                    'type' => 'select',
+                    'default' => 'news',
+                    'data' => [
+                        'news' => '/news',
+                        'meetings' => '/meetings',
+                        'user-shifts' => '/user-shifts',
+                        'angeltypes' => '/angeltypes',
+                        'questions' => '/questions',
+                    ],
+                ],
+                'display_news' => [
+                    'type' => 'number',
+                    'default' => 10,
+                    'min' => 1,
+                    'validation' => [
+                        'int_val',
+                        'min:1',
+                    ],
+                ],
+                'filter_max_duration' => [
+                    'type' => 'number',
+                    'default' => 0,
+                    'min' => 0,
+                    'validation' => [
+                        'int_val',
+                        'min:0',
+                    ],
+                ],
+                'password_min_length' => [
+                    'type' => 'number',
+                    'default' => 8,
+                    'min' => 8,
+                    'validation' => [
+                        'int_val',
+                        'min:8',
+                    ],
+                ],
+                'enable_password' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'external_registration_url' => [
+                    'type' => 'url',
+                ],
+                'url' => [
+                    'type' => 'url',
+                    'env' => 'APP_URL',
+                ],
+                'api_key' => [
+                    'type' => 'string',
+                    'default' => '',
+                ],
+
+                // Hidden settings
+                'maintenance' => [
+                    'type' => 'boolean',
+                    'hidden' => true,
+                    'default' => false,
+                ],
+                'environment' => [
+                    'type' => 'select',
+                    'hidden' => true,
+                    'default' => 'production',
+                    'data' => ['production', 'development'],
+                ],
+                'documentation_url' => [
+                    'type' => 'url',
+                    'hidden' => true,
+                    'default' => 'https://engelsystem.de/doc/',
+                ],
+                'setup_admin_password' => [
+                    'type' => 'string',
+                    'hidden' => true,
+                ],
+                'password_algorithm' => [
+                    'type' => 'string',
+                    'default' => PASSWORD_DEFAULT,
+                    'hidden' => true,
+                ],
+                'username_regex' => [
+                    'type' => 'string',
+                    'default' => '/([^\p{L}\p{N}_.-]+)/ui',
+                    'hidden' => true,
+                ],
+                'disabled_user_view_columns' => [
+                    'type' => 'select',
+                    'default' => [],
+                    'hidden' => true,
+                ],
+                'trusted_proxies' => [
+                    'type' => 'select_multi',
+                    'add' => true,
+                    'default' => ['127.0.0.0/8', '::ffff:127.0.0.0/8', '::1/128'],
+                    'hidden' => true,
+                ],
+                'add_headers' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'hidden' => true,
                 ],
             ],
         ],
