@@ -76,6 +76,7 @@ class ConfigController extends BaseController
             $value = match ($options['type']) {
                 'datetime-local' => $value ? Carbon::createFromDatetime($value) : $value,
                 'boolean' => !empty($value),
+                'number' => (float) $value,
                 'password' => $value === '**********' ? $this->config->get($key) : $value,
                 default => $value,
             };
@@ -123,10 +124,15 @@ class ConfigController extends BaseController
             $validation = [];
             $validation[] = empty($setting['required']) ? 'optional' : 'required';
 
+            if (!empty($setting['validation'])) {
+                $validation = array_merge($validation, $setting['validation']);
+            }
+
             match ($setting['type']) {
                 'string', 'text' => null, // Anything is valid here when optional
                 'datetime-local' => $validation[] = 'date_time',
                 'boolean' => $validation[] = 'checked',
+                'number' => $validation[] = 'number',
                 'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
                 'select_multi' => $validation[] = 'array_val|in_many:' . implode(',', array_keys($setting['data'])),
                 'password' =>

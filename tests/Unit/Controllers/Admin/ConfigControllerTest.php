@@ -62,6 +62,12 @@ class ConfigControllerTest extends ControllerTest
                 'password' => [
                     'type' => 'password',
                 ],
+                'numeric' => [
+                    'type' => 'number',
+                    'validation' => [
+                        'min:5',
+                    ],
+                ],
             ],
             'permission' => 'some_test_permission',
         ],
@@ -123,6 +129,7 @@ class ConfigControllerTest extends ControllerTest
         'selectable_option' => 'third',
         'multiselectable_option' => ['first', 'second'],
         'password' => 'FooBarBaz42!',
+        'numeric' => 1337,
     ];
 
     /**
@@ -281,6 +288,7 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals('third', EventConfig::whereName('selectable_option')->first()->value);
         $this->assertEquals(['first', 'second'], EventConfig::whereName('multiselectable_option')->first()->value);
         $this->assertEquals('FooBarBaz42!', EventConfig::whereName('password')->first()->value);
+        $this->assertEquals(1337, EventConfig::whereName('numeric')->first()->value);
 
         // Save with additional permission
         $this->auth->setPermissions(['some_test_permission', 'another_test_permission']);
@@ -370,6 +378,24 @@ class ConfigControllerTest extends ControllerTest
         $this->request->attributes->set('page', 'test');
         $data = $this->validTestBody;
         $data['password'] = 'short';
+        $this->request = $this->request->withParsedBody($data);
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $this->expectException(ValidationException::class);
+        $controller->save($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     */
+    public function testSaveTestAddedValidationError(): void
+    {
+        $this->request->attributes->set('page', 'test');
+        $data = $this->validTestBody;
+        $data['numeric'] = 3;
         $this->request = $this->request->withParsedBody($data);
 
         /** @var ConfigController $controller */

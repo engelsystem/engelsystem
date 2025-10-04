@@ -109,13 +109,14 @@ return [
          *     'config' => [
          *         '[name]' => [ # Name must be globally unique
          *             'name' => 'some.value', # Optional, default: config.[name]
-         *             'type' => 'string', # string, text, datetime-local, boolean, select, select_multi ...
+         *             'type' => 'string', # string, text, datetime-local, boolean, number, select, select_multi ...
          *             'default' => '[value]', # Optional
          *             'data' => ['[value]', '[key]' => '[value]'], # Optional, select data
          *             'required' => true, # Optional, default false
          *             'env' => '[name]', # Optional, env var to load, default name in upper case
          *             'hidden' => false, # Optional, default false, hides the config in frontend
          *             'permission' => '[permission]' # Optional, string or array
+         *             'validation' => ['[validation]'] # Optional, array of validation options
          *             # Optional translation: config.[name].info for information messages
          *             # Optionally other options used by the correlating field template
          *         ],
