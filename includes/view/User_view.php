@@ -627,7 +627,7 @@ function User_view(
             $admin_user_worklog_privilege,
         );
         if (count($my_shifts) > 0) {
-            $myshifts_table = div('table-responsive', table([
+            $myshifts_table = div('', table([
                 'date' => __('Day & Time'),
                 'duration' => __('Duration'),
                 'hints' => '',
