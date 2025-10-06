@@ -277,6 +277,9 @@ msgstr "You can view it at %3$s"
 msgid "form.search"
 msgstr "Search"
 
+msgid "form.exact_match"
+msgstr "Exact match"
+
 msgid "log.log"
 msgstr "Logs"
 
