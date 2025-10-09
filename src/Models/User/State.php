@@ -18,6 +18,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property bool        $force_food
  * @property bool        $got_goodie
  * @property int         $got_voucher
+ * @property array|null  $meals
  *
  * @method static QueryBuilder|State[] whereArrived($value)
  * @method static QueryBuilder|State[] whereArrivalDate($value)
@@ -27,6 +28,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|State[] whereForceFood($value)
  * @method static QueryBuilder|State[] whereGotGoodie($value)
  * @method static QueryBuilder|State[] whereGotVoucher($value)
+ * @method static QueryBuilder|State[] whereMealVouchers($value)
  */
 class State extends HasUserModel
 {
@@ -37,24 +39,26 @@ class State extends HasUserModel
 
     /** @var array<string, bool|int|null> Default attributes */
     protected $attributes = [ // phpcs:ignore
-        'arrival_date' => null,
-        'user_info'    => null,
-        'active'       => false,
-        'force_active' => false,
-        'force_food' => false,
-        'got_goodie'   => false,
-        'got_voucher'  => 0,
+        'arrival_date'  => null,
+        'user_info'     => null,
+        'active'        => false,
+        'force_active'  => false,
+        'force_food'    => false,
+        'got_goodie'    => false,
+        'got_voucher'   => 0,
+        'meals'         => null,
     ];
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
-        'user_id'      => 'integer',
-        'arrival_date' => 'datetime',
-        'active'       => 'boolean',
-        'force_active' => 'boolean',
-        'force_food'   => 'boolean',
-        'got_goodie'   => 'boolean',
-        'got_voucher'  => 'integer',
+        'user_id'       => 'integer',
+        'arrival_date'  => 'datetime',
+        'active'        => 'boolean',
+        'force_active'  => 'boolean',
+        'force_food'    => 'boolean',
+        'got_goodie'    => 'boolean',
+        'got_voucher'   => 'integer',
+        'meals'         => 'array',
     ];
 
     /**
@@ -71,6 +75,7 @@ class State extends HasUserModel
         'force_food',
         'got_goodie',
         'got_voucher',
+        'meals',
     ];
 
     /**

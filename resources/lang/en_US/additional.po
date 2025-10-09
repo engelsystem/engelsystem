@@ -345,3 +345,12 @@ msgstr "Event end must be after the event start."
 
 msgid "validation.teardown_end.after"
 msgstr "Teardown end must be after the event end."
+
+msgid "validation.meal_id.in"
+msgstr "Food voucher is not available or has already been generated."
+
+msgid "user.food.no_food"
+msgstr "No vouchers left for this meal."
+
+msgid "user.food.request-error"
+msgstr "Something went wrong during the food voucher api request. Please try again later."

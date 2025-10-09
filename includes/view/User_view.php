@@ -719,6 +719,16 @@ function User_view(
                         ) : '',
                     ], 'mb-2'),
                     $its_me ? table_buttons([
+                        (config('enable_voucher') && config('enable_force_food') ? button(
+                            url('/food'),
+                            icon('qr-code') . __('user.food.voucher'),
+                            '',
+                            '',
+                            __('user.food.voucher'),
+                            UserVouchers::eligibleVoucherCount($user_source) <= 0
+                                && !$user_source->state->force_active
+                                && !$user_source->state->force_food
+                        ) : ''),
                         button(
                             url('/settings/profile'),
                             icon('person-fill-gear') . __('settings.settings')

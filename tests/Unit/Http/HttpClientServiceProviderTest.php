@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Application;
+use Engelsystem\Config\Config;
 use Engelsystem\Http\HttpClientServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use GuzzleHttp\Client as GuzzleClient;
@@ -17,6 +18,7 @@ class HttpClientServiceProviderTest extends ServiceProviderTest
     public function testRegister(): void
     {
         $app = new Application();
+        $app->instance('config', new Config([]));
 
         $serviceProvider = new HttpClientServiceProvider($app);
         $serviceProvider->register();

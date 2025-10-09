@@ -370,6 +370,9 @@ msgid "settings.profile.email_tshirt"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
 "that my nick, e-mail address, worked hours and T-shirt size will be stored until then."
 
+msgid "settings.profile.email_food"
+msgstr "Send me food vouchers by e-mail and not just display them once."
+
 msgid "settings.profile.privacy"
 msgstr "You can withdraw your approval during the event in your profile settings as well "
 "as after the event via e-mail to <a href=\"mailto:%s\">%1$s</a>."
@@ -735,7 +738,7 @@ msgid "voucher.eligible"
 msgstr "Angel can receive another %d vouchers."
 
 msgid "voucher.eligible.force"
-msgstr "Angel can receive <s>%d</s> unlimited vouchers."
+msgstr "Angel can receive <s>&thinsp;%d&thinsp;</s> unlimited vouchers."
 
 msgid "voucher.count"
 msgstr "Number of vouchers handed out"
@@ -744,7 +747,37 @@ msgid "user.state.vouchers"
 msgstr "Got %s of %s vouchers"
 
 msgid "user.state.vouchers.force"
-msgstr "<s>%d</s> unlimited"
+msgstr "<s>&thinsp;%d&thinsp;</s> unlimited"
+
+msgid "user.food.eligible"
+msgstr "You can generate another %d food voucher(s)."
+
+msgid "user.food.eligible.force"
+msgstr "You can generate <s>&thinsp;%d&thinsp;</s> unlimited food vouchers."
+
+msgid "user.food.email.info"
+msgstr ""
+"The generated voucher will not be saved. "
+"You will be redirected to a page with the QR code and will also receive it by e-mail."
+
+msgid "user.food.email.warning"
+msgstr ""
+"You have disabled the <a href=\"%s\">e-mail setting</a> for meal vouchers. "
+"The generated voucher will not be saved. "
+"You will be redirected to a page with the QR code. "
+"If you close the tab, the voucher will be lost."
+
+msgid "user.food.voucher"
+msgstr "Food voucher"
+
+msgid "user.food.voucher.title"
+msgstr "Generate food voucher"
+
+msgid "user.food.voucher.sold_out"
+msgstr "%s (None left)"
+
+msgid "user.food.vouchers.got_meals"
+msgstr "Generated food vouchers"
 
 msgid "angeltypes.angeltypes"
 msgstr "Angel types"
