@@ -10,6 +10,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 /**
  * @property string $language
  * @property int    $theme
+ * @property bool   $email_food
  * @property bool   $email_human
  * @property bool   $email_messages
  * @property bool   $email_goodie
@@ -19,6 +20,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  *
  * @method static QueryBuilder|Settings[] whereLanguage($value)
  * @method static QueryBuilder|Settings[] whereTheme($value)
+ * @method static QueryBuilder|Settings[] whereEmailFood($value)
  * @method static QueryBuilder|Settings[] whereEmailHuman($value)
  * @method static QueryBuilder|Settings[] whereEmailMessages($value)
  * @method static QueryBuilder|Settings[] whereEmailGoodie($value)
@@ -35,6 +37,7 @@ class Settings extends HasUserModel
 
     /** @var array<string, bool> Default attributes */
     protected $attributes = [ // phpcs:ignore
+        'email_food'      => true,
         'email_human'     => false,
         'email_messages'  => false,
         'email_goodie'    => false,
@@ -52,6 +55,7 @@ class Settings extends HasUserModel
         'user_id',
         'language',
         'theme',
+        'email_food',
         'email_human',
         'email_messages',
         'email_goodie',
@@ -64,6 +68,7 @@ class Settings extends HasUserModel
     protected $casts = [ // phpcs:ignore
         'user_id'         => 'integer',
         'theme'           => 'integer',
+        'email_food'      => 'boolean',
         'email_human'     => 'boolean',
         'email_messages'  => 'boolean',
         'email_goodie'    => 'boolean',

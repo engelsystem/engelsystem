@@ -49,6 +49,8 @@ class SettingsController extends BaseController
                 'goodie_enabled' => $this->config->get('goodie_type') !== GoodieType::None->value
                     && config('enable_email_goodie'),
                 'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
+                'voucherEnabled' =>  $this->config->get('enable_voucher'),
+                'forceFoodEnabled' => $this->config->get('enable_force_food'),
                 'tShirtLink' => $this->config->get('tshirt_link'),
                 'isPronounRequired' => $requiredFields['pronoun'],
                 'isFirstnameRequired' => $requiredFields['firstname'],
@@ -106,12 +108,15 @@ class SettingsController extends BaseController
         $user->settings->email_human = $data['email_human'] ?: false;
         $user->settings->email_messages = $data['email_messages'] ?: false;
 
+        if (config('enable_voucher') && config('enable_force_food')) {
+            $user->settings->email_food = $data['email_food'] ?: false;
+        }
+
         if ($goodie_enabled && config('enable_email_goodie')) {
             $user->settings->email_goodie = $data['email_goodie'] ?: false;
         }
 
-        if (
-            $goodie_tshirt
+        if ($goodie_tshirt
             && !$user->state->got_goodie
             && (isset(config('tshirt_sizes')[$data['shirt_size'] ?? '']) || is_null($data['shirt_size']))
         ) {
@@ -243,8 +248,7 @@ class SettingsController extends BaseController
 
     public function certificate(): Response
     {
-        if (
-            !(config('ifsg_enabled') && $this->checkIfsgCertificate())
+        if (!(config('ifsg_enabled') && $this->checkIfsgCertificate())
             && !(config('driving_license_enabled') && $this->checkDrivingLicense())
         ) {
             throw new HttpNotFound();
@@ -401,8 +405,7 @@ class SettingsController extends BaseController
             $menu[url('/settings/theme')] = 'settings.theme';
         }
 
-        if (
-            (config('ifsg_enabled') && $this->checkIfsgCertificate())
+        if ((config('ifsg_enabled') && $this->checkIfsgCertificate())
             || (config('driving_license_enabled') && $this->checkDrivingLicense())
         ) {
             $menu[url('/settings/certificates')] = ['title' => 'settings.certificates', 'icon' => 'card-checklist'];
@@ -480,6 +483,9 @@ class SettingsController extends BaseController
         }
         if ($goodie_tshirt && !$user->state->got_goodie) {
             $rules['shirt_size'] = $this->isRequired('tshirt_size') . '|shirt_size';
+        }
+        if (config('enable_voucher') && config('enable_force_food')) {
+            $rules['email_food'] = 'optional|checked';
         }
         return $rules;
     }

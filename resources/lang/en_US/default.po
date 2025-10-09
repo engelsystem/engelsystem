@@ -367,6 +367,9 @@ msgid "settings.profile.email_tshirt"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
 "that my nick, e-mail address, worked hours and T-shirt size will be stored until then."
 
+msgid "settings.profile.email_food"
+msgstr "Send me food vouchers by e-mail and not just display them once."
+
 msgid "settings.profile.privacy"
 msgstr "You can withdraw your approval during the event in your profile settings as well "
 "as after the event via e-mail to <a href=\"mailto:%s\">%1$s</a>."

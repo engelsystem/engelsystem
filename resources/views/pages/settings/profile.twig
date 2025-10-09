@@ -133,6 +133,11 @@
                 {{ f.checkbox('email_human', __('settings.profile.email_by_human_allowed'), {
                     'checked': userdata.settings.email_human,
                 }) }}
+                {% if voucherEnabled and forceFoodEnabled %}
+                    {{ f.checkbox('email_food', __('settings.profile.email_food'), {
+                        'checked': userdata.settings.email_food,
+                    }) }}
+                {% endif %}
                 {% if goodie_enabled %}
                     {% set privacy_email = config('privacy_email') %}
                     {% set email_goodie_label =

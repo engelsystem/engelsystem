@@ -128,6 +128,15 @@
                             ) }}
                         </li>
                     </ul>
+                    {% if isVoucherEnabled and isForceFoodEnabled %}
+                        <ul class="list-group pt-1">
+                            <li class="list-group-item">
+                                {{ f.checkbox('email_food', __('settings.profile.email_food'), {
+                                    'checked': f.formData('email_food', true),
+                                }) }}
+                            </li>
+                        </ul>
+                    {% endif %}
                     {% if isGoodieEnabled %}
                         <ul class="list-group pt-1">
                             <li class="list-group-item">

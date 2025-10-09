@@ -1548,6 +1548,9 @@ msgid "settings.profile.email_tshirt"
 msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "
 "dass mein Nick, E-Mail-Adresse, geleistete Arbeit und T-Shirt-Größe solange gespeichert werden."
 
+msgid "settings.profile.email_food"
+msgstr "Schicke mir Essensgutscheine per E-Mail und zeige sie nicht nur einmalig an."
+
 msgid "settings.profile.privacy"
 msgstr ""
 "Diese Zustimmung kann während des Events in den Profil-Einstellungen, sowie, auch nach dem Event, "
