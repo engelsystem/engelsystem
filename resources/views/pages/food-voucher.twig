@@ -1,0 +1,61 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}
+    {{ __('user.food.voucher.title') }}
+{%- endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ m.back(url('/users', {'action': 'view'})) }}
+            {{ block('title') }}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+        {% if emailFood %}
+            {{ m.alert(
+                __('user.food.email.info')
+                , 'info', true) }}
+        {% else %}
+            {{ m.alert(
+                __('user.food.email.warning', [url('/settings/profile')])
+                , 'warning', true) }}
+        {% endif %}
+        {{ m.alert(
+            crew
+            ? __('user.food.eligible.force', [eligibleVoucherCount])
+            : __('user.food.eligible', [eligibleVoucherCount])
+            , 'info', true) }}
+        <div class="col">
+            <div id="food_voucher_buttons">
+                <form method="post">
+                    {{ csrf() }}
+                    <div class="d-grid gap-2">
+                        {% for meal in meals %}
+                            {{ f.button((meal.sold_out ? __('user.food.voucher.sold_out', [meal.name]) : meal.name), {
+                                'type': 'submit',
+                                'name': 'meal_id',
+                                'value': meal.id,
+                                'disabled': meal.sold_out
+                            }) }}
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+            <div id="generated_vouchers_list" class="mt-4">
+                {% if userMealVouchers %}
+                    <h2>
+                        {{ __('user.food.vouchers.got_meals') }}
+                    </h2>
+                    <ul>
+                        {% for voucher in userMealVouchers %}
+                            <li>{{ voucher.name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

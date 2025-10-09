@@ -104,6 +104,8 @@ class RegistrationController extends BaseController
                 'isDECTEnabled' => $this->config->get('enable_dect'),
                 'isShowMobileEnabled' => $this->config->get('enable_mobile_show'),
                 'isGoodieEnabled' => $goodieType !== GoodieType::None && config('enable_email_goodie'),
+                'isVoucherEnabled' => $this->config->get('enable_voucher'),
+                'isForceFoodEnabled' => $this->config->get('enable_force_food'),
                 'isGoodieTShirt' => $goodieType === GoodieType::Tshirt,
                 'isPronounEnabled' => $this->config->get('enable_pronoun'),
                 'isFullNameEnabled' => $this->config->get('enable_full_name'),

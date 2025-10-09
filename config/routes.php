@@ -125,6 +125,16 @@ $route->addGroup(
     }
 );
 
+// User Food Vouchers
+$route->addGroup(
+    '/food',
+    function (RouteCollector $route): void {
+        $route->get('', 'FoodVoucherController@view');
+        $route->post('', 'FoodVoucherController@send');
+    }
+);
+
+
 // API
 $route->addGroup(
     '/api',

@@ -1083,7 +1083,7 @@ msgid "voucher.eligible"
 msgstr "Engel kann noch %d Gutscheine bekommen."
 
 msgid "voucher.eligible.force"
-msgstr "Engel kann <s>%d</s> unbegrenzt Gutscheine bekommen."
+msgstr "Engel kann <s>&thinsp;%d&thinsp;</s> unbegrenzt Gutscheine bekommen."
 
 msgid "voucher.count"
 msgstr "Anzahl Gutscheine bekommen"
@@ -1092,7 +1092,37 @@ msgid "user.state.vouchers"
 msgstr "%s von %s Gutscheinen bekommen"
 
 msgid "user.state.vouchers.force"
-msgstr "<s>%d</s> unendlich"
+msgstr "<s>&thinsp;%d&thinsp;</s> unendlich"
+
+msgid "user.food.eligible"
+msgstr "Du kannst noch %d Essensgutschein(e) generieren."
+
+msgid "user.food.eligible.force"
+msgstr "Du kannst <s>noch %d</s> unbegrenzt Essensgutscheine generieren."
+
+msgid "user.food.email.info"
+msgstr ""
+"Der generierte Gutschein wird nicht gespeichert. "
+"Du wirst auf eine Seite mit dem QR Code weiter geleitet und erhälst diesen zusätzlich per E-Mail."
+
+msgid "user.food.email.warning"
+msgstr ""
+"Du hast die <a href=\"%s\">E-Mail Einstellung</a> für Essensgutscheine deaktiviert. "
+"Der generierte Gutschein wird nicht gespeichert. "
+"Du wirst auf eine Seite mit dem QR Code weiter geleitet, "
+"wenn du den Tab geschlossen hast, ist der Gutschein verloren."
+
+msgid "user.food.voucher"
+msgstr "Essensgutschein"
+
+msgid "user.food.voucher.title"
+msgstr "Essensgutschein generieren"
+
+msgid "user.food.voucher.sold_out"
+msgstr "%s (Vergeben)"
+
+msgid "user.food.vouchers.got_meals"
+msgstr "Generierte Essensgutscheine"
 
 msgid "Freeloads"
 msgstr "Schwänzereien"
@@ -1547,6 +1577,9 @@ msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalt
 msgid "settings.profile.email_tshirt"
 msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "
 "dass mein Nick, E-Mail-Adresse, geleistete Arbeit und T-Shirt-Größe solange gespeichert werden."
+
+msgid "settings.profile.email_food"
+msgstr "Schicke mir Essensgutscheine per E-Mail und zeige sie nicht nur einmalig an."
 
 msgid "settings.profile.privacy"
 msgstr ""
