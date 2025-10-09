@@ -1092,7 +1092,7 @@ msgid "voucher.eligible"
 msgstr "Engel kann noch %d Gutscheine bekommen."
 
 msgid "voucher.eligible.force"
-msgstr "Engel kann <s>%d</s> unbegrenzt Gutscheine bekommen."
+msgstr "Engel kann <s>&thinsp;%d&thinsp;</s> unbegrenzt Gutscheine bekommen."
 
 msgid "voucher.count"
 msgstr "Anzahl Gutscheine bekommen"
@@ -1101,7 +1101,7 @@ msgid "user.state.vouchers"
 msgstr "%s von %s Gutscheinen bekommen"
 
 msgid "user.state.vouchers.force"
-msgstr "<s>%d</s> unendlich"
+msgstr "<s>&thinsp;%d&thinsp;</s> unendlich"
 
 msgid "Freeloads"
 msgstr "Geschwänzt"

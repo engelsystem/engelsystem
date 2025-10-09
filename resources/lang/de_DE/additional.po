@@ -747,5 +747,11 @@ msgstr "JWT Gültigkeit"
 msgid "config.jwt_expiration_time.info"
 msgstr "Anzahl an Minuten nach denen ein JWT abläuft, bspw für max. Zeit zum Engeltyp beitreten"
 
+msgid "config.guzzle_timeout"
+msgstr "HTTP Anfrage timeout"
+
+msgid "config.guzzle_timeout.info"
+msgstr "Anzahl Sekunden die bei externen Anfragen gewartet wird, zum Beispiel beim Aktualisieren des Programms"
+
 msgid "config.warning_logout"
 msgstr "Änderungen führen zum logout aller Benutzer!"
