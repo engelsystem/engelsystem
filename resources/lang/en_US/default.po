@@ -752,7 +752,7 @@ msgid "voucher.eligible"
 msgstr "Angel can receive another %d vouchers."
 
 msgid "voucher.eligible.force"
-msgstr "Angel can receive <s>%d</s> unlimited vouchers."
+msgstr "Angel can receive <s>&thinsp;%d&thinsp;</s> unlimited vouchers."
 
 msgid "voucher.count"
 msgstr "Number of vouchers handed out"
@@ -761,7 +761,7 @@ msgid "user.state.vouchers"
 msgstr "Got %s of %s vouchers"
 
 msgid "user.state.vouchers.force"
-msgstr "<s>%d</s> unlimited"
+msgstr "<s>&thinsp;%d&thinsp;</s> unlimited"
 
 msgid "angeltypes.angeltypes"
 msgstr "Angel types"

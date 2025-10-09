@@ -611,6 +611,16 @@ return [
                         'min:1',
                     ],
                 ],
+                'guzzle_timeout' => [
+                    'type' => 'number',
+                    'required' => true,
+                    'default' => 2.0,
+                    'min' => .01,
+                    'step' => .01,
+                    'validation' => [
+                        'min:.01',
+                    ],
+                ],
 
                 // Hidden settings
                 'maintenance' => [

@@ -740,6 +740,12 @@ msgstr "JWT expiration time in minutes"
 msgid "config.jwt_expiration_time.info"
 msgstr "Number of minutes after a JWT must expire, for example max angel type join time"
 
+msgid "config.guzzle_timeout"
+msgstr "HTTP request timeout"
+
+msgid "config.guzzle_timeout.info"
+msgstr "Number of seconds until timeout for requesting external resources, for example schedule data"
+
 msgid "config.warning_logout"
 msgstr "Changing this will log out all users!"
 
