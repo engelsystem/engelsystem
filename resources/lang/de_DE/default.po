@@ -1094,6 +1094,12 @@ msgstr "%s von %s Gutscheinen bekommen"
 msgid "user.state.vouchers.force"
 msgstr "<s>%d</s> unendlich"
 
+msgid "user.food.eligible"
+msgstr "Du kannst noch %d Essensgutscheine generieren."
+
+msgid "user.food.eligible.force"
+msgstr "Du kannst noch <s>%d</s> unbegrenzt Essensgutscheine generieren."
+
 msgid "Freeloads"
 msgstr "Schwänzereien"
 

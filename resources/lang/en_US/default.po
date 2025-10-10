@@ -746,6 +746,12 @@ msgstr "Got %s of %s vouchers"
 msgid "user.state.vouchers.force"
 msgstr "<s>%d</s> unlimited"
 
+msgid "user.food.eligible"
+msgstr "You can generate another %d food vouchers."
+
+msgid "user.food.eligible.force"
+msgstr "You can generate <s>%d</s> unlimited food vouchers."
+
 msgid "angeltypes.angeltypes"
 msgstr "Angel types"
 

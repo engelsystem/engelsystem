@@ -1,0 +1,40 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}
+    {{ __('user.food_voucher') }}
+{%- endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ m.back(url('/users', {'action': 'view'})) }}
+            {{ block('title') }}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+        {{ m.alert(
+            crew
+            ? __('user.food.eligible.force', [eligibleVoucherCount])
+            : __('user.food.eligible', [eligibleVoucherCount])
+            , 'info', true) }}
+        {% if not email_food %}
+            {{ m.alert(__('user.food.no_mail', [url('/settings/profile')]), 'warning', true) }}
+        {% endif %}
+
+        <form method="post">
+            {{ csrf() }}
+            <div class="row">
+                {% for meal in meals %}
+                    {{ f.button(meal.name, {
+                        'type': 'submit',
+                        'name': 'meal_id',
+                        'value': meal.id,
+                        'disabed': not meal.available
+                    }) }}
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+{% endblock %}

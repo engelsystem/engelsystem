@@ -365,6 +365,15 @@ return [
     // Enable (food) vouchers
     'enable_voucher'          => (bool) env('ENABLE_VOUCHER', true),
 
+    // Food Voucher Api
+    'food_voucher_api' => [
+        'info_url' => (string) env('FOOD_VOUCHER_API_INFO_URL'),
+        'post_url' => (string) env('FOOD_VOUCHER_API_POST_URL'),
+        'auth_token' => (string) env('FOOD_VOUCHER_API_AUTH_TOKEN'),
+        'default_email' => (string) env('FOOD_VOUCHER_API_DEFAULT_EMAIL'),
+        'redirect_url' => (string) env('FOOD_VOUCHER_API_REDIRECT_URL'),
+    ],
+
     // Number of shifts to freeload until a user is locked from shift signup.
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
 
