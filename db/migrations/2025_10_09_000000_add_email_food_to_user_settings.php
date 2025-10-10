@@ -27,6 +27,9 @@ class AddEmailFoodToUserSettings extends Migration
         $this->schema->table('users_settings', function (Blueprint $table): void {
             $table->boolean('email_food')->after('email_goodie')->default(true);
         });
+        $this->schema->table('users_state', function (Blueprint $table): void {
+            $table->json('meal_vouchers')->after('got_voucher')->nullable()->default(null);
+        });
     }
 
     /**
@@ -34,8 +37,11 @@ class AddEmailFoodToUserSettings extends Migration
      */
     public function down(): void
     {
-        $this->schema->table('users_state', function (Blueprint $table): void {
+        $this->schema->table('users_settings', function (Blueprint $table): void {
             $table->dropColumn('email_food');
+        });
+        $this->schema->table('users_state', function (Blueprint $table): void {
+            $table->dropColumn('meal_vouchers');
         });
     }
 }
