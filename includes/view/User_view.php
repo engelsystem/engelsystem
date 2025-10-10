@@ -802,89 +802,55 @@ function User_view(
  */
 function User_view_state($admin_user_privilege, $freeloader, $user_source)
 {
-    if ($admin_user_privilege) {
-        $state = User_view_state_admin($freeloader, $user_source);
-    } else {
-        $state = User_view_state_user($user_source);
-    }
-
-    return div('col-md-2', [
-        heading(__('State'), 4),
-        join('<br>', $state),
-    ]);
-}
-
-/**
- * Render the state section of user view for users.
- *
- * @param User $user_source
- * @return array
- */
-function User_view_state_user($user_source)
-{
-    $state = [
-        User_shift_state_render($user_source),
-    ];
-
-    if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
-    } else {
-        $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
-    }
-
-    return $state;
-}
-
-
-/**
- * Render the state section of user view for admins.
- *
- * @param bool $freeloader
- * @param User $user_source
- * @return array
- */
-function User_view_state_admin($freeloader, $user_source)
-{
-    $state = [];
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $password_reset = PasswordReset::whereUserId($user_source->id)
         ->where('created_at', '>', $user_source->last_login_at ?: '')
         ->count();
+    $state = [];
 
-    if ($freeloader) {
+    if ($freeloader && $admin_user_privilege) {
         $state[] = '<span class="text-danger">' . icon('exclamation-circle') . __('Freeloader') . '</span>';
     }
 
     $state[] = User_shift_state_render($user_source);
 
     if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . icon('house')
-            . sprintf(
-                __('Arrived at %s'),
-                $user_source->state->arrival_date ? $user_source->state->arrival_date->format(__('general.date')) : ''
-            )
-            . '</span>';
+        if ($admin_user_privilege) {
+            $state[] = '<span class="text-success">' . icon('house')
+                . sprintf(
+                    __('Arrived at %s'),
+                    $user_source->state->arrival_date
+                        ? $user_source->state->arrival_date->format(__('general.date')) : ''
+                )
+                . '</span>';
 
-        if ($user_source->state->force_active && config('enable_force_active')) {
-            $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
-        } elseif ($user_source->state->active) {
-            $state[] = '<span class="text-success">' . __('user.active') . '</span>';
-        }
-        if ($user_source->state->force_food && config('enable_force_food')) {
-            $state[] = '<span class="text-success">' . __('user.force_food') . '</span>';
-        }
-        if ($user_source->state->got_goodie && $goodie_enabled) {
-            $state[] = '<span class="text-success">' . __('Goodie') . '</span>';
+            if ($user_source->state->force_active && config('enable_force_active')) {
+                $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
+            } elseif ($user_source->state->active) {
+                $state[] = '<span class="text-success">' . __('user.active') . '</span>';
+            }
+            if ($user_source->state->force_food && config('enable_force_food')) {
+                $state[] = '<span class="text-success">' . __('user.force_food') . '</span>';
+            }
+            if ($user_source->state->got_goodie && $goodie_enabled) {
+                $state[] = '<span class="text-success">' . __('Goodie') . '</span>';
+            }
+        } else {
+            $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
         }
     } else {
-        $arrivalDate = $user_source->personalData->planned_arrival_date;
-        $state[] = '<span class="text-danger">'
-            . ($arrivalDate ? sprintf(
-                __('Not arrived (Planned: %s)'),
-                $arrivalDate->format(__('general.date'))
-            ) : __('Not arrived'))
-            . '</span>';
+        if ($admin_user_privilege) {
+            $arrivalDate = $user_source->personalData->planned_arrival_date;
+            $state[] = '<span class="text-danger">'
+                . ($arrivalDate ? sprintf(
+                    __('Not arrived (Planned: %s)'),
+                    $arrivalDate->format(__('general.date'))
+                ) : __('Not arrived'))
+                . '</span>';
+        } else {
+            $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
+        }
     }
 
     if (config('enable_voucher')) {
@@ -905,11 +871,14 @@ function User_view_state_admin($freeloader, $user_source)
             . '</span>';
     }
 
-    if ($password_reset) {
+    if ($password_reset && $admin_user_privilege) {
         $state[] = __('Password reset in progress');
     }
 
-    return $state;
+    return div('col-md-2', [
+        heading(__('State'), 4),
+        join('<br>', $state),
+    ]);
 }
 
 /**
