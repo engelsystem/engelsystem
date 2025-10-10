@@ -724,6 +724,10 @@ function User_view(
                             icon('qr-code') . __('user.food.voucher')
                         ) : ''),
                         button(
+                            url('/food'),
+                            icon('qr-code') . __('user.food.voucher')
+                        ),
+                        button(
                             url('/settings/profile'),
                             icon('person-fill-gear') . __('settings.settings')
                         ),

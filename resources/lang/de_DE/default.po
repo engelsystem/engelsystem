@@ -1100,6 +1100,9 @@ msgstr "Du kannst noch %d Essensgutscheine generieren."
 msgid "user.food.eligible.force"
 msgstr "Du kannst noch <s>%d</s> unbegrenzt Essensgutscheine generieren."
 
+msgid "user.food.voucher"
+msgstr "Essensgutschein"
+
 msgid "Freeloads"
 msgstr "Schwänzereien"
 
