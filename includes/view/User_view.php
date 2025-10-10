@@ -41,6 +41,7 @@ function User_delete_view($user)
  * @param int $arrived_count
  * @param int $active_count
  * @param int $force_active_count
+ * @param int $force_food_count
  * @param int $freeloads_count
  * @param int $goodies_count
  * @param int $voucher_count
@@ -53,6 +54,7 @@ function Users_view(
     $arrived_count,
     $active_count,
     $force_active_count,
+    $force_food_count,
     $freeloads_count,
     $goodies_count,
     $voucher_count,
@@ -116,7 +118,12 @@ EOT;
         }
         $u['freeloads'] = $user->getAttribute('freeloads');
         $u['active'] = icon_bool($user->state->active);
-        $u['force_active'] = icon_bool($user->state->force_active);
+        if (config('enable_force_active')) {
+            $u['force_active'] = icon_bool($user->state->force_active);
+        }
+        if (config('enable_force_food')) {
+            $u['force_food'] = icon_bool($user->state->force_food);
+        }
         if ($goodie_enabled) {
             $u['got_goodie'] = icon_bool($user->state->got_goodie);
             if ($goodie_tshirt) {
@@ -148,6 +155,7 @@ EOT;
         'got_voucher'  => '<div id="voucher-count" class="text-center">' . $voucher_count . '</div>',
         'active' => $active_count,
         'force_active' => $force_active_count,
+        'force_food' => $force_food_count,
         'freeloads' => $freeloads_count,
         'got_goodie' => $goodies_count,
         'actions' => '<strong>' . count($usersList) . '</strong>',
@@ -173,6 +181,9 @@ EOT;
     $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
     if (config('enable_force_active')) {
         $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
+    }
+    if (config('enable_force_food')) {
+        $user_table_headers['force_food'] = Users_table_header_link('force_food', __('Food'), $order_by);
     }
     if ($goodie_enabled) {
         $user_table_headers['got_goodie'] = Users_table_header_link('got_goodie', __('Goodie'), $order_by);
@@ -791,110 +802,83 @@ function User_view(
  */
 function User_view_state($admin_user_privilege, $freeloader, $user_source)
 {
-    if ($admin_user_privilege) {
-        $state = User_view_state_admin($freeloader, $user_source);
-    } else {
-        $state = User_view_state_user($user_source);
-    }
-
-    return div('col-md-2', [
-        heading(__('State'), 4),
-        join('<br>', $state),
-    ]);
-}
-
-/**
- * Render the state section of user view for users.
- *
- * @param User $user_source
- * @return array
- */
-function User_view_state_user($user_source)
-{
-    $state = [
-        User_shift_state_render($user_source),
-    ];
-
-    if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
-    } else {
-        $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
-    }
-
-    return $state;
-}
-
-
-/**
- * Render the state section of user view for admins.
- *
- * @param bool $freeloader
- * @param User $user_source
- * @return array
- */
-function User_view_state_admin($freeloader, $user_source)
-{
-    $state = [];
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
     $password_reset = PasswordReset::whereUserId($user_source->id)
         ->where('created_at', '>', $user_source->last_login_at ?: '')
         ->count();
+    $state = [];
 
-    if ($freeloader) {
+    if ($freeloader && $admin_user_privilege) {
         $state[] = '<span class="text-danger">' . icon('exclamation-circle') . __('Freeloader') . '</span>';
     }
 
     $state[] = User_shift_state_render($user_source);
 
     if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . icon('house')
-            . sprintf(
-                __('Arrived at %s'),
-                $user_source->state->arrival_date ? $user_source->state->arrival_date->format(__('general.date')) : ''
-            )
-            . '</span>';
+        if ($admin_user_privilege) {
+            $state[] = '<span class="text-success">' . icon('house')
+                . sprintf(
+                    __('Arrived at %s'),
+                    $user_source->state->arrival_date
+                        ? $user_source->state->arrival_date->format(__('general.date')) : ''
+                )
+                . '</span>';
 
-        if ($user_source->state->force_active && config('enable_force_active')) {
-            $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
-        } elseif ($user_source->state->active) {
-            $state[] = '<span class="text-success">' . __('user.active') . '</span>';
-        }
-        if ($user_source->state->got_goodie && $goodie_enabled) {
-            $state[] = '<span class="text-success">' . __('Goodie') . '</span>';
+            if ($user_source->state->force_active && config('enable_force_active')) {
+                $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
+            } elseif ($user_source->state->active) {
+                $state[] = '<span class="text-success">' . __('user.active') . '</span>';
+            }
+            if ($user_source->state->force_food && config('enable_force_food')) {
+                $state[] = '<span class="text-success">' . __('user.force_food') . '</span>';
+            }
+            if ($user_source->state->got_goodie && $goodie_enabled) {
+                $state[] = '<span class="text-success">' . __('Goodie') . '</span>';
+            }
+        } else {
+            $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
         }
     } else {
-        $arrivalDate = $user_source->personalData->planned_arrival_date;
-        $state[] = '<span class="text-danger">'
-            . ($arrivalDate ? sprintf(
-                __('Not arrived (Planned: %s)'),
-                $arrivalDate->format(__('general.date'))
-            ) : __('Not arrived'))
-            . '</span>';
+        if ($admin_user_privilege) {
+            $arrivalDate = $user_source->personalData->planned_arrival_date;
+            $state[] = '<span class="text-danger">'
+                . ($arrivalDate ? sprintf(
+                    __('Not arrived (Planned: %s)'),
+                    $arrivalDate->format(__('general.date'))
+                ) : __('Not arrived'))
+                . '</span>';
+        } else {
+            $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
+        }
     }
 
     if (config('enable_voucher')) {
         $voucherCount = $user_source->state->got_voucher;
         $availableCount = $voucherCount + UserVouchers::eligibleVoucherCount($user_source);
-        $availableCount = max($voucherCount, $availableCount);
-        if ($user_source->state->got_voucher > 0) {
-            $state[] = '<span class="text-success">'
-                . icon('valentine')
-                . __('user.state.vouchers', [$voucherCount, $availableCount])
-                . '</span>';
-        } else {
-            $state[] = '<span class="text-danger">'
-                . __('user.state.vouchers.none')
-                . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')
-                . '</span>';
+        $availableVoucher = $availableCount;
+        if (
+            (config('enable_force_active') && $user_source->state->force_active)
+            || config('enable_force_food') && $user_source->state->force_food
+        ) {
+            $availableVoucher = __('user.state.vouchers.force', [$availableCount]);
         }
+        $state[] = '<span class="'
+            . (($voucherCount > 0) ? 'text-success' : 'text-danger')
+            . '">'
+            . icon('valentine')
+            . __('user.state.vouchers', [$voucherCount, $availableVoucher])
+            . '</span>';
     }
 
-    if ($password_reset) {
+    if ($password_reset && $admin_user_privilege) {
         $state[] = __('Password reset in progress');
     }
 
-    return $state;
+    return div('col-md-2', [
+        heading(__('State'), 4),
+        join('<br>', $state),
+    ]);
 }
 
 /**

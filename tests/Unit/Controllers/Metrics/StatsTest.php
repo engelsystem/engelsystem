@@ -397,6 +397,17 @@ class StatsTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::forceFoodUsers
+     */
+    public function testForceFoodUsers(): void
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(2, $stats->forceFoodUsers());
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::usersPronouns
      */
     public function testUsersPronouns(): void
@@ -580,7 +591,7 @@ class StatsTest extends TestCase
             ['drive_car' => true, 'drive_12t' => true, 'drive_confirmed' => true, 'ifsg_certificate_light' => true]
         );
         $this->addUser(
-            ['arrived' => 1, 'got_voucher' => 3],
+            ['arrived' => 1, 'got_voucher' => 3, 'force_food' => true],
             ['pronoun' => 'per'],
             ['theme' => 1, 'email_human' => true],
             [
@@ -592,7 +603,11 @@ class StatsTest extends TestCase
             ]
         );
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_goodie' => true, 'force_active' => true]);
-        $this->addUser(['arrived' => 1, 'active' => 1, 'got_goodie' => true], ['shirt_size' => 'L'], ['theme' => 4]);
+        $this->addUser(
+            ['arrived' => 1, 'active' => 1, 'got_goodie' => true, 'force_food' => true],
+            ['shirt_size' => 'L'],
+            ['theme' => 4]
+        );
     }
 
     protected function addUser(
