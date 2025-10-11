@@ -9,6 +9,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Cache;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -156,6 +157,23 @@ class HelpersTest extends TestCase
 
         $return = back(303, ['test' => 'ing']);
         $this->assertEquals($response, $return);
+    }
+
+    /**
+     * @covers \cache
+     */
+    public function testCache(): void
+    {
+        $cache = $this->createMock(Cache::class);
+        $this->setExpects($cache, 'get', ['test', 'default', 42], 'default');
+
+        $app = new Application();
+        $app->instance('cache', $cache);
+
+        $this->assertEquals($cache, cache());
+
+        $return = cache('test', 'default', 42);
+        $this->assertEquals('default', $return);
     }
 
     /**
