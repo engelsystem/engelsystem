@@ -28,6 +28,7 @@ class GoodieTest extends TestCase
 
     /**
      * @covers \Engelsystem\Helpers\Goodie::userScore
+     * @covers \Engelsystem\Helpers\Goodie::worklogScoreQuery
      */
     public function testUserScore(): void
     {

@@ -24,10 +24,11 @@ class GoodieTest extends ApplicationFeatureTest
     /**
      * @covers \Engelsystem\Helpers\Goodie::userScore
      * @covers \Engelsystem\Helpers\Goodie::shiftScoreQuery
+     * @covers \Engelsystem\Helpers\Goodie::worklogScoreQuery
      */
     public function testUserScoreNightShift(): void
     {
-        $user = new User(['name' => '', 'email' => '', 'password' => '', 'api_key' => '']);
+        $user = new User(['name' => 'gn8', 'email' => 'g@n.8', 'password' => '', 'api_key' => '']);
         $user->save();
         $this->createdModels[] = $user;
         $workLog = new Worklog([
