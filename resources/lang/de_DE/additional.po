@@ -373,8 +373,8 @@ msgstr "privacy@ Kontakt E-Mail"
 msgid "config.features"
 msgstr "Features"
 
-msgid "config.enable_dect"
-msgstr "DECT"
+msgid "config.enable_dect.info"
+msgstr "Aktiviert DECT-Nummern für Benutzer, Orte und Engeltypen"
 
 msgid "config.enable_mobile_show"
 msgstr "Anzeigen der Handynummer"
@@ -383,7 +383,7 @@ msgid "config.enable_mobile_show.info"
 msgstr "Soll die Mobilfunknummer für alle Benutzer sichtbar sein?"
 
 msgid "config.enable_full_name"
-msgstr "Vor-/Nachname"
+msgstr "Vor- und Nachname"
 
 msgid "config.display_full_name"
 msgstr "Vollen Namen anzeigen"
@@ -434,25 +434,13 @@ msgid "config.supporters_can_promote"
 msgstr "Supporter können befördern"
 
 msgid "config.supporters_can_promote.info"
-msgstr "Supporter eines Teams (Engel Typ) können andere Benutzer des Teams zu Supportern befördern"
+msgstr "Supporter eines Engeltyps (Team) können andere Benutzer des Engeltyps zu Supportern befördern"
 
 msgid "config.certificates"
 msgstr "Zertifikate"
 
-msgid "config.driving_license_enabled"
-msgstr "Führerschein"
-
-msgid "config.driving_license_enabled"
-msgstr "Führerschein"
-
-msgid "config.ifsg_enabled.info"
-msgstr "Infektionsschutzgesetz"
-
 msgid "config.ifsg_enabled.info"
 msgstr "Einweisung nach § 43 Abs. 1 des deutschen Infektionsschutzgesetzes (IfSG)"
-
-msgid "config.ifsg_light_enabled"
-msgstr "Infektionsschutzgesetz light"
 
 msgid "config.ifsg_light_enabled.info"
 msgstr "Einweisung nur vor Ort nach § 43 Abs. 1 des deutschen Infektionsschutzgesetzes (IfSG)"
@@ -461,13 +449,13 @@ msgid "config.shifts"
 msgstr "Schichten"
 
 msgid "config.signup_advance_hours"
-msgstr "Eintragen n Stunden vorher"
+msgstr "Eintragen vor start"
 
 msgid "config.signup_advance_hours.info"
 msgstr "Erlaube das Eintragen in Schichten erst n Stunden vor begin. Ein Wert von 0 deaktiviert die Einschränkung."
 
 msgid "config.signup_post_minutes"
-msgstr "Eintragen n Minuten nach Start"
+msgstr "Eintragen nach Start"
 
 msgid "config.signup_post_minutes.info"
 msgstr ""
@@ -512,13 +500,13 @@ msgstr ""
 "Opt-In auf der Benutzer-Seite und Registrierung zum speichern einiger personenbezogener Daten über das Event hinaus"
 
 msgid "config.goodie_type.select.none"
-msgstr "Kein goodie (deaktiviert)"
+msgstr "Kein Goodie (deaktiviert)"
 
 msgid "config.goodie_type.select.goodie"
-msgstr "Goodie ohne Größen-Optionen"
+msgstr "Goodie"
 
 msgid "config.goodie_type.select.tshirt"
-msgstr "T-Shirt als Goodie mit Größenauswahl"
+msgstr "T-Shirt mit Größenauswahl"
 
 
 msgid "validation.event_start.after"
@@ -561,23 +549,23 @@ msgid "config.display_news.info"
 msgstr "Anzahl angezeigter News auf einer Seite und in Feedreadern"
 
 msgid "config.filter_max_duration"
-msgstr "Maximale Shichten-Filter Zeit"
+msgstr "Shichten-Filter"
 
 msgid "config.filter_max_duration.info"
 msgstr ""
 "Setzt die maximale Anzahl an Stunden die auf ein mal auf der Schichten-Seite angezeigt werden können, "
-"0 deaktiviert die Limiitierung"
+"0 deaktiviert die Limitierung"
 
 msgid "config.password_min_length"
 msgstr "Minimale Passwortlänge"
 
 msgid "config.enable_password"
-msgstr "Login mit Passwort"
+msgstr "Passwort"
 
 msgid "config.enable_password.info"
 msgstr ""
 "Aktiviert den Login mit Passwort (wird ausgeblendet wenn nicht). "
-"Sinnvoll in Kombination mit OAuth, das asschalten deaktiviert auch die Registrierung ohne OAuth."
+"Sinnvoll in Kombination mit OAuth, das ausschalten deaktiviert auch die Registrierung ohne OAuth."
 
 msgid "config.external_registration_url"
 msgstr "Externe Registrierungs-URL"

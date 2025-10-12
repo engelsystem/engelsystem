@@ -1,7 +1,7 @@
 {% extends 'layouts/app.twig' %}
 {% import 'macros/base.twig' as m %}
 
-{% block title %}{{ __(title|default(__('config.config'))) }}{% endblock %}
+{% block title %}{{ __(title|default(__('config.config'))) }} {{ __('config.config') }}{% endblock %}
 
 {% block content %}
     <div class="container user-settings">
@@ -9,7 +9,7 @@
             <h1>
                 {{ __('config.config') }}
                 <small class="text-muted">
-                    {{ block('title') }}
+                    {{ __(title|default(__('config.config'))) }}
                 </small>
             </h1>
         {% endblock %}

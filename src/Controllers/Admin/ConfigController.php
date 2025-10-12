@@ -102,15 +102,17 @@ class ConfigController extends BaseController
             $changes[] = sprintf('%s = %s', $key, json_encode($value));
         }
 
-        $this->log->info(
-            'Updated {page} configuration: {changes}',
-            [
-                'page' => $page,
-                'changes' => implode(', ', $changes),
-            ]
-        );
+        if ($changes) {
+            $this->log->info(
+                'Updated {page} configuration: {changes}',
+                [
+                    'page' => $page,
+                    'changes' => implode(', ', $changes),
+                ]
+            );
 
-        $this->addNotification('config.edit.success');
+            $this->addNotification('config.edit.success');
+        }
 
         return $this->redirect->back();
     }

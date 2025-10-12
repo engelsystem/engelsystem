@@ -92,30 +92,31 @@ return [
 
     'config_options' => [
         /**
-         * List of pages (key is the name/url)
+         * List of pages (key is the page name (url slug))
          *
          * Structure of a config page:
-         * '[key]' => [
-         *   'title' => '[title]', # Optional, default to config.[key]
-         *   'config' => [...], # The config options
+         * '[slug]' => [
+         *   'title' => '[title]', # Optional page title, default to config.[key]
          *   'validation' => callable, # Optional, callable($request, $rules) to validate the page request
+         *    'config' => [...], # A list of "config options" / config fields, see below
          * ]
          *
          * Structure of a config option:
-         * '[name]' => [
+         * '[name]' => [ # Config name
          *     'title' => '[title], # Optional, default config.[name]
          *     'permission' => '[permission]' # Optional, string or array
          *     'icon' => '[icon]', # Optional, default gear-fill
          *     'config' => [
          *         '[name]' => [ # Name must be globally unique
          *             'name' => 'some.value', # Optional, default: config.[name]
+         *             'info' => 'some.info', # Optional, default: config.[name].info if available
          *             'type' => 'string', # Possible types:
          *                  string, text, datetime-local, boolean, number, url, select, select_multi
          *             'default' => '[value]', # Optional
          *             'data' => ['[value]', '[key]' => '[value]'], # Optional, select data
          *             'required' => true, # Optional, default false
          *             'env' => '[name]', # Optional, env var to load, default name in upper case
-         *             'hidden' => false, # Optional, default false, hides the config in frontend
+         *             'hidden' => false, # Optional, default false, hides the config from frontend
          *             'permission' => '[permission]' # Optional, string or array
          *             'validation' => ['[validation]'] # Optional, array of validation options
          *             # Optional translation: config.[name].info for information messages
@@ -175,6 +176,7 @@ return [
             'icon' => 'ui-checks',
             'config' => [
                 'enable_dect' => [
+                    'name' => 'general.dect',
                     'type' => 'boolean',
                     'default' => false,
                 ],
@@ -233,14 +235,17 @@ return [
             'icon' => 'card-checklist',
             'config' => [
                 'driving_license_enabled' => [
+                    'name' => 'settings.certificates.driving_license',
                     'type' => 'boolean',
                     'default' => true,
                 ],
                 'ifsg_enabled' => [
+                    'name' => 'ifsg.certificate',
                     'type' => 'boolean',
                     'default' => false,
                 ],
                 'ifsg_light_enabled' => [
+                    'name' => 'ifsg.certificate_light',
                     'type' => 'boolean',
                     'default' => false,
                 ],
@@ -256,7 +261,7 @@ return [
                     'step' => .01,
                     'min' => 0,
                     'validation' => [
-                        'min:0'
+                        'min:0',
                     ],
                 ],
                 'signup_post_minutes' => [
@@ -275,7 +280,7 @@ return [
                     'step' => .01,
                     'min' => 0,
                     'validation' => [
-                        'min:0'
+                        'min:0',
                     ],
                 ],
                 'max_freeloadable_shifts' => [

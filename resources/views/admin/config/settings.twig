@@ -1,14 +1,14 @@
 {% import 'macros/form.twig' as f %}
 
 {% macro field(name, options) %}
-    {% set info = options['name'] ~ '.info' %}
+    {% set info = options['info']|default('config.' ~ name ~ '.info') %}
     {% if __(info) != info %}
-        {% set options = options + {'info': __(info)} %}
+        {% set options = options|merge({'info': __(info)}) %}
     {% endif %}
     {% if options.in_env|default(false) %}
         {% set options = {
             'warning': __('config.warning_from_env') ~ ' ' ~ options.warning|default(''), 'disabled': true
-        } + options %}
+        }|merge(options) %}
     {% endif %}
 
     {% if options.type == 'string' %}
@@ -22,7 +22,7 @@
     {% elseif options.type == 'text' %}
         {{ f.textarea(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
     {% elseif options.type == 'number' %}
-        {{ f.input(name, __(options['name']), options + {'type': 'number', 'value': config(name, options.default|default(null))}) }}
+        {{ f.number(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
     {% elseif options.type == 'url' %}
         {{ f.input(name, __(options['name']), options + {'type': 'url', 'value': config(name, options.default|default(null))}) }}
     {% elseif options.type == 'datetime-local' %}

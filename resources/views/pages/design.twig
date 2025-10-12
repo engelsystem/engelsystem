@@ -185,6 +185,10 @@
                     {{ f.button('Reset', {'icon_left': 'arrow-counterclockwise'}) }}<br class="mb-3">
                     {{ f.submit('Save', {'icon_left': 'save'}) }}<br class="mb-3">
                     {{ f.button('View', {'icon_left': 'eye', 'btn_type': 'info'}) }}
+                    <br><br>
+                    <code>f.entry_required()</code>: {{ f.entry_required() }}<br>
+                    <code>f.info(text)</code>: {{ f.info('Info text') }}<br>
+                    <code>f.warning()</code>: {{ f.warning('Warning text') }}<br>
                 </div>
                 <div class="col-md-6 col-lg-4 mb-4">
                     angel: {{ m.angel() }}<br>
@@ -200,7 +204,7 @@
                     language: {{ m.icon('translate') }}<br>
                     location: {{ m.icon('pin-map-fill') }}<br>
                     random / shuffle: {{ m.icon('shuffle') }}<br>
-                    remove / substract: {{ m.icon('dash-lg') }}<br>
+                    remove / subtract: {{ m.icon('dash-lg') }}<br>
                     requires introduction: {{ m.icon('mortarboard-fill') }}<br>
                     search: {{ m.icon('search') }}<br>
                     settings: {{ m.icon('gear-fill') }}<br>
@@ -305,7 +309,7 @@
                 <div class="row">
                     <div class="col-md-3 col-lg-2">
                         <h5>Text</h5>
-                        <code>f.input(id, label, opt)</code>
+                        <code>f.input(name, label, opt)</code>
                         {{ f.input('form-input-text', 'Text field', {
                             'value': 'Value',
                         }) }}
@@ -323,9 +327,13 @@
                             'value': 'Value',
                         }) }}
                         {{ f.input('form-input-text-readonly', null, {
-                            'type': 'Readonly',
+                            'type': 'readonly',
                             'readonly': true,
                             'value': 'w/o label',
+                        }) }}
+                        {{ f.input('form-input-url', 'Url', {
+                            'type': 'url',
+                            'value': 'https://example.com/test',
                         }) }}
                     </div>
 
@@ -335,12 +343,13 @@
                         {{ f.input('form-input-password', 'Password', {
                             'type': 'password',
                             'value': 'Value',
+                            'placeholder': __('form.password.placeholder'),
                         }) }}
                     </div>
 
                     <div class="col-md-3 col-lg-2">
                         <h5>Number</h5>
-                        <code>f.number(id, label, opt)</code>
+                        <code>f.number(name, label, opt)</code>
                         {{ f.number('form-input-number', 'Number field', {
                             'type': 'number',
                             'value': 42,
@@ -367,7 +376,7 @@
 
                     <div class="col-md-3 col-lg-2">
                         <h5>Textarea</h5>
-                        <code>f.textarea(id, label, opt)</code>
+                        <code>f.textarea(name, label, opt)</code>
                         {{ f.textarea('form-input-textarea', 'Textarea', {
                             'rows': 2,
                             'value': lipsum,
@@ -387,7 +396,7 @@
 
                     <div class="col-md-3 col-lg-2">
                         <h5>Select</h5>
-                        <code>f.textarea(id, label, data, opt)</code>
+                        <code>f.select(name, label, data, opt)</code>
                         {{ f.select('form-input-select-1', 'Select 1', {
                                 'opt1': 'Option 1',
                                 'opt2': 'Option 2',
@@ -411,6 +420,9 @@
                             'selected': 'option_7',
                         }) }}
                         {{ f.select('date-select', 'Date select', dateSelectOptions) }}
+                        {{ f.select('multi-select', 'Select multi', selectOptions, {
+                            'multiple': true,
+                        }) }}
                     </div>
 
                     <div class="col-md-3 col-lg-2">
@@ -431,6 +443,10 @@
                         <form class="prevent-default">
                             {{ f.submit('Go!') }}
                         </form>
+                        <code>f.save(label, opt)</code>
+                        <form class="prevent-default">
+                            {{ f.save('Save!') }}
+                        </form>
                         <code>f.delete(label, opt)</code>
                         <form id="delete-form">
                             {{ f.delete('Delete it', {'confirm_title': 'Delete some item'}) }}
@@ -439,7 +455,7 @@
 
                     <div id="checkboxes" class="col-md-3 col-lg-2">
                         <h5>Checkbox</h5>
-                        <code>f.checkbox(id, label, opt)</code>
+                        <code>f.checkbox(name, label, opt)</code>
                         {{ f.checkbox('form-input-checkbox', 'Checkbox 1', {
                             'checked': true, 'value': '1',
                         }) }}
@@ -483,10 +499,11 @@
 
                     <div class="col-md-3 col-lg-2">
                         <h5>Hidden</h5>
-                        <code>hidden(name, value)</code>
-                        <p>
-                        {{ f.hidden('hidden-name', 'hidden value') | escape }}
-                        </p>
+                        <code>hidden(name, value)</code><br>
+                        Creates<br>
+                        <code>
+                        {{ f.hidden('hidden-name', 'hidden_value') | escape }}
+                        </code>
                     </div>
 
                     <div class="col-md-3 col-lg-2 checkbox-inline">
@@ -595,7 +612,7 @@ Por scientie, musica, sport etc, litot Europa usa li sam vocabular.</code></pre>
                 </p>
             </div>
             <div class="col-md-3">
-                <h4><code>button(label, url, opt)</code></h4>
+                <h4><code>button(label, opt)</code></h4>
                 <p>{{ m.button('Label', '#', {'type': 'info', 'size': 'sm'}) }}</p>
             </div>
             <div class="col-md-3">
