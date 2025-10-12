@@ -11,6 +11,24 @@
 {%- endmacro %}
 
 {#
+Displays a describing text below a form if defined.
+
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
+@param {string} [opt.raw_form_text=false] - Disables text escaping.
+#}
+{% macro form_text(opt) %}
+    {% if opt.form_text|default('') %}
+        <div class="form-text">
+            {% if opt.raw_form_text|default(false) %}
+                {{ __(opt.form_text)|raw }}
+            {% else %}
+                {{ __(opt.form_text) }}
+            {% endif %}
+        </div>
+    {% endif %}
+{%- endmacro %}
+
+{#
 Renders an input field wrapped in a DIV with mb-3.
 
 @param {string} name - Will be used as value for "id" and "name" attributes.
@@ -34,6 +52,7 @@ Renders an input field wrapped in a DIV with mb-3.
 @param {bool} [opt.required=false] - Whether to add the "required" attribute. Defaults to false.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {bool} [opt.readonly=false] - Whether to add the "readonly" attribute. Defaults to false.
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
 #}
 {% macro input(name, label, opt) %}
     <div class="mb-3">
@@ -66,6 +85,7 @@ Renders an input field wrapped in a DIV with mb-3.
             {%- if opt.disabled|default(false) %} disabled{% endif -%}
             {%- if opt.readonly|default(false) %} readonly{% endif -%}
         >
+        {{ _self.form_text(opt) }}
     </div>
 {%- endmacro %}
 
@@ -88,6 +108,7 @@ Also adds buttons to increment / decrement the value.
 @param {bool} [opt.required=false] - Whether to add the "required" attribute. Defaults to false.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {bool} [opt.readonly=false] - Whether to add the "readonly" attribute. Defaults to false.
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
 #}
 {% macro number(name, label, opt) %}
     <div class="mb-3">
@@ -125,6 +146,7 @@ Also adds buttons to increment / decrement the value.
                 <span class="bi bi-plus-lg"></span>
             </button>
         </div>
+        {{ _self.form_text(opt) }}
     </div>
 {% endmacro %}
 
@@ -146,6 +168,7 @@ Also adds buttons to increment / decrement the value.
 @param {string} [opt.value=""] - Optional value to set. Defaults to empty string.
 @param {string} [opt.label_hidden=true] - Optionaly hide the label. Defaults to false.
 @param {string} [opt.no_div=false] - Optionaly don't add a div. Defaults to false.
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
 #}
 {% macro textarea(name, label, opt) %}
     {% if not opt.no_div|default(false) -%}
@@ -172,6 +195,7 @@ Also adds buttons to increment / decrement the value.
             {%- if opt.rows|default(0) %} rows="{{ opt.rows }}"{%- endif -%}
             {%- if opt.disabled|default(false) %} disabled{% endif %}
                 >{{ opt.value|default('') }}</textarea>
+        {{ _self.form_text(opt) }}
     {% if not opt.no_div|default(false) -%}
         </div>
     {%- endif %}
@@ -194,6 +218,7 @@ Renders a select element wrapped in a DIV with mb-3.
 @param {bool} [opt.required=false] - Whether to add the "required" attribute. Defaults to false.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {bool} [opt.default_option] - If set a default option with the param as label and an empty value will be added.
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
 #}
 {% macro select(name, label, data, opt) %}
     <div class="mb-3">
@@ -231,15 +256,7 @@ Renders a select element wrapped in a DIV with mb-3.
                 </option>
             {% endfor %}
         </select>
-        {% if opt.form_text|default('') %}
-            <div class="form-text">
-                {% if opt.raw_form_text|default(false) %}
-                    {{ opt.form_text|raw }}
-                {% else %}
-                    {{ opt.form_text }}
-                {% endif %}
-            </div>
-        {% endif %}
+        {{ _self.form_text(opt) }}
     </div>
 {%- endmacro %}
 
@@ -255,6 +272,7 @@ Renders a Bootstrap checkbox element with mb-3.
 @param {string} [opt.info] - If set an additional info icon will be added to the label with the text as tooltip.
 @param {string} [opt.warning] - If set an additional warning icon will be added to the label with the text as tooltip.
 @param {string} [opt.class="mb-3"] - CSS classes for the checkbox element. Defaults to "mb-3".
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
 #}
 {% macro checkbox(name, label, opt) %}
     <div class="form-check {{ opt.class is defined ? opt.class : 'mb-3' }}">
@@ -276,6 +294,7 @@ Renders a Bootstrap checkbox element with mb-3.
                 {{ _self.warning(opt.warning) }}
             {% endif %}
         </label>
+        {{ _self.form_text(opt) }}
     </div>
 {%- endmacro %}
 
@@ -310,6 +329,7 @@ Renders a button.
 @param {dictionary} [opt.attr] - Optional value for additional attributes like data fields.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
 #}
 {% macro button(label, opt) %}
     {%- set icon_left = opt.icon_left is defined ? '<span class="bi bi-' ~ opt.icon_left ~ '"></span>' : '' %}
@@ -334,6 +354,7 @@ Renders a button.
         {{ label }}
         {{ icon_right|raw }}
     </button>
+    {{ _self.form_text(opt) }}
 {%- endmacro %}
 
 {% macro submit(label, opt) %}
@@ -367,6 +388,7 @@ Renders a "checkbox" element that will be styled as switch.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {string} [opt.info] - If set an additional info icon will be added to the label with the text as tooltip.
 @param {string} [opt.warning] - If set an additional warning icon will be added to the label with the text as tooltip.
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
 #}
 {% macro switch(name, label, opt) %}
     <div class="form-check form-switch mb-3">
@@ -385,6 +407,7 @@ Renders a "checkbox" element that will be styled as switch.
                 {{ _self.warning(opt.warning) }}
             {% endif %}
         </label>
+        {{ _self.form_text(opt) }}
     </div>
 {%- endmacro %}
 
