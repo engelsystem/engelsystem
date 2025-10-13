@@ -59,6 +59,7 @@ class UserVoucherController extends BaseController
                 'userdata' => $user,
                 'gotVoucher' => $user->state->got_voucher ?? 0,
                 'forceActive' => $user->state->force_active && config('enable_force_active'),
+                'forceFood' => $user->state->force_food && config('enable_force_food'),
                 'eligibleVoucherCount' => UserVouchers::eligibleVoucherCount($user),
             ]
         );

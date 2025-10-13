@@ -84,6 +84,11 @@ class Stats
         return State::whereForceActive(true)->count();
     }
 
+    public function forceFoodUsers(): int
+    {
+        return State::whereForceFood(true)->count();
+    }
+
     public function usersPronouns(): int
     {
         return PersonalData::query()->where('pronoun', '!=', '')->count();
