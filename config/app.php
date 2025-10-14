@@ -119,6 +119,8 @@ return [
          *             'hidden' => false, # Optional, default false, hides the config from frontend
          *             'permission' => '[permission]' # Optional, string or array
          *             'validation' => ['[validation]'] # Optional, array of validation options
+         *             'write_back' => false, # Optional, writes the config to config.local.php
+         *                                                Only effective for single-server-installations
          *             # Optional translation: config.[name].info for information messages
          *             # Optionally other options used by the correlating field template
          *         ],
@@ -323,6 +325,13 @@ return [
                 'default_locale' => [
                     'type' => 'select',
                     'data' => [],
+                ],
+                'timezone' => [
+                    'type' => 'select',
+                    // Timezone data is set based on PHP config
+                    'data' => [],
+                    'default' => 'Europe/Berlin',
+                    'write_back' => true,
                 ],
                 'home_site' => [
                     'type' => 'select',

@@ -94,10 +94,33 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertArrayNotHasKey('unconfigured-config', $conf);
         $this->assertArrayHasKey('app', $conf);
         $this->assertArrayHasKey('config-default', $conf);
+        $this->assertArrayHasKey('config-local', $conf);
         $this->assertArrayHasKey('config', $conf);
         $this->assertArrayHasKey('file', $conf);
 
         $this->assertEquals('config.php', $conf['file']);
+    }
+
+    /**
+     * @covers \Engelsystem\Config\ConfigServiceProvider::initConfigOptions
+     */
+    public function testInitConfigOptions(): void
+    {
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $conf = $config->get(null);
+
+        $this->assertArrayHasKey('timezone', $conf);
+        $this->assertEquals('Test/Testing', $conf['timezone']);
+
+        $timezoneData = $conf['config_options']['system']['config']['timezone']['data'] ?? null;
+        $this->assertNotEmpty($timezoneData);
+
+        $firstKey = array_key_first($timezoneData);
+        $this->assertEquals($firstKey, $timezoneData[$firstKey]);
     }
 
     /**

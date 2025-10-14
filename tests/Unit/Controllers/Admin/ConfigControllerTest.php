@@ -511,6 +511,55 @@ class ConfigControllerTest extends ControllerTest
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
+     */
+    public function testSaveWriteBack(): void
+    {
+        $this->app->instance('path.config', __DIR__ . '/Stub');
+        $this->config->set(include $this->app->get('path.config') . '/app.php');
+
+        (new EventConfig(['name' => 'write_to_file', 'value' => 'test']))->save();
+        $this->config->set('write_to_file', 'stuff');
+        $this->request->attributes->set('page', 'test');
+        $this->request = $this->request->withParsedBody(array_merge($this->validTestBody, [
+            'write_to_file' => 'new value',
+            'normal_config' => 'normal value',
+        ]));
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        $controller->save($this->request);
+
+        $this->assertNull(EventConfig::whereName('write_to_file')->first());
+        $this->assertNull(EventConfig::whereName('another_write')->first());
+        $this->assertNotNull(EventConfig::whereName('normal_config')->first());
+
+        $content = file_get_contents($this->app->get('path.config') . '/config.local.php');
+        $this->assertStringContainsString('<?php', $content);
+        $this->assertStringContainsString('return', $content);
+        $this->assertStringContainsString('not edit', $content); // Warning about changes
+        $this->assertStringContainsString('write_to_file', $content);
+        $this->assertStringContainsString('new value', $content);
+        $this->assertStringNotContainsString('normal_config', $content);
+        $this->assertStringNotContainsString('another_write', $content);
+
+        // Write additional config
+        $this->request = $this->request->withParsedBody(array_merge($this->validTestBody, [
+            'write_to_file' => 'new value',
+            'another_write' => 'another value',
+        ]));
+        $controller->save($this->request);
+
+        $content = file_get_contents($this->app->get('path.config') . '/config.local.php');
+        $this->assertStringContainsString('write_to_file', $content);
+        $this->assertStringContainsString('new value', $content);
+        $this->assertStringContainsString('another_write', $content);
+        $this->assertStringContainsString('another value', $content);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::getOptions
      */
     public function testGetOptions(): void
@@ -536,5 +585,13 @@ class ConfigControllerTest extends ControllerTest
         $this->auth = $this->app->make(AccessibleAuthenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
         $this->auth->setPermissions(['some_test_permission']);
+    }
+
+    public function tearDown(): void
+    {
+        $configFile = __DIR__ . '/Stub/config.local.php';
+        if (file_exists($configFile)) {
+            unlink($configFile);
+        }
     }
 }

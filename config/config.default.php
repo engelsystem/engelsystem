@@ -260,9 +260,6 @@ return [
     // Allow joining angel type via generated QR code
     'join_qr_code'            => (bool) env('JOIN_QR_CODE', true),
 
-    // Local timezone
-    'timezone'                => env('TIMEZONE', 'Europe/Berlin'),
-
     // Multiply 'night shifts' between start and end (numbers as hours) by multiplier in goodie score
     // Goodies must be enabled to use this feature
     'night_shifts'            => [

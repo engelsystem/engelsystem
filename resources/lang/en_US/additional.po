@@ -530,6 +530,9 @@ msgstr "Languages"
 msgid "config.default_locale"
 msgstr "Default language"
 
+msgid "config.timezone"
+msgstr "Time zone"
+
 msgid "config.home_site"
 msgstr "Home site"
 

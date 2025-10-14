@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Config;
 
+use DateTimeZone;
 use Engelsystem\Application;
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Helpers\Carbon;
@@ -18,7 +19,7 @@ use Illuminate\Support\Str;
  */
 class ConfigServiceProvider extends ServiceProvider
 {
-    protected array $configFiles = ['app.php', 'config.default.php', 'config.php'];
+    protected array $configFiles = ['app.php', 'config.default.php', 'config.local.php', 'config.php'];
 
     // Remember to update ConfigServiceProviderTest, config.default.php, and README.md
     protected array $configVarsToPruneNulls = [
@@ -46,6 +47,7 @@ class ConfigServiceProvider extends ServiceProvider
         $this->app->instance('config', $config);
 
         $this->loadConfigFromFiles($config);
+        $this->initConfigOptions($config);
         $this->loadConfigFromEnv($config);
 
         if (empty($config->get(null))) {
@@ -92,6 +94,23 @@ class ConfigServiceProvider extends ServiceProvider
                 require $file
             );
             $config->set($configuration);
+        }
+    }
+
+    protected function initConfigOptions(Config $config): void
+    {
+        $configOptions = $config['config_options'];
+        if ($configOptions['system']['config']['timezone'] ?? null) {
+            // Timezone must be set for database connection
+            $configOptions['system']['config']['timezone']['data'] = array_combine(
+                DateTimeZone::listIdentifiers(),
+                DateTimeZone::listIdentifiers()
+            );
+            $config['timezone'] = $config['timezone']
+                ?? $configOptions['system']['config']['timezone']['default']
+                ?? 'UTC';
+
+            $config->set('config_options', $configOptions);
         }
     }
 

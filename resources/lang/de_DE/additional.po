@@ -536,6 +536,9 @@ msgstr "Sprachen"
 msgid "config.default_locale"
 msgstr "Standardsprache"
 
+msgid "config.timezone"
+msgstr "Zeitzone"
+
 msgid "config.home_site"
 msgstr "Startseite"
 

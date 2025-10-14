@@ -32,5 +32,13 @@ return [
                 ],
             ],
         ],
+        'system' => [
+            'config' => [
+                'timezone' => [
+                    'data' => [],
+                    'default' => 'Test/Testing',
+                ],
+            ],
+        ],
     ],
 ];
