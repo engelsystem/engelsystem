@@ -15,6 +15,7 @@ use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Renderer\Twig\Extensions\Legacy;
 use Engelsystem\Renderer\Twig\Extensions\Markdown;
 use Engelsystem\Renderer\Twig\Extensions\Notification;
+use Engelsystem\Renderer\Twig\Extensions\Qr;
 use Engelsystem\Renderer\Twig\Extensions\Session;
 use Engelsystem\Renderer\Twig\Extensions\StringExtension;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
@@ -42,6 +43,7 @@ class TwigServiceProvider extends ServiceProvider
         'string'         => StringExtension::class,
         'legacy'         => Legacy::class,
         'markdown'       => Markdown::class,
+        'qr'             => Qr::class,
         'translation'    => Translation::class,
         'url'            => Url::class,
         'uuid'           => Uuid::class,
