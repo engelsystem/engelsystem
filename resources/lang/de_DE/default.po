@@ -2099,3 +2099,6 @@ msgstr "Konfiguration"
 
 msgid "config.edit.success"
 msgstr "Konfiguration erfolgreich angepasst"
+
+msgid "duration.format"
+msgstr "%hh %Imin"

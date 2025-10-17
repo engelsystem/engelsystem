@@ -1115,3 +1115,6 @@ msgstr "Config"
 
 msgid "config.edit.success"
 msgstr "Configuration updated successfully"
+
+msgid "duration.format"
+msgstr "%hh %Im"
