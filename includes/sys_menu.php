@@ -30,6 +30,7 @@ function header_render_hints()
         $hints_renderer->addHint(render_user_goodie_hint(), true);
         $hints_renderer->addHint(render_user_dect_hint(), true);
         $hints_renderer->addHint(render_user_mobile_hint(), true);
+        $hints_renderer->addHint(render_user_food_no_mail_hint(), true);
 
         return $hints_renderer->render();
     }

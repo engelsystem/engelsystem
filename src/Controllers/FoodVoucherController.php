@@ -11,6 +11,7 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Helpers\UserVouchers;
+use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
@@ -96,31 +97,46 @@ class FoodVoucherController extends BaseController
             $this->log->error('Exception during food voucher api request', ['exception' => $e]);
             throw new ErrorException('user.food.request-error');
         }
+        if ($response->getStatusCode() !== 200) {
+            throw new HttpNotFound();
+        }
         $data = json_decode($response->getBody()->getContents(), true);
         $now = Carbon::now();
         $locale = $this->translator->getLocale();
         $futureMeals = [];
+        $gotMeals = [];
 
         foreach ($data as $id => $meal) {
             $endTime = Carbon::parse($meal['datetime']['date'] . ' ' . $meal['datetime']['end']);
             if ($now < $endTime) {
-                $available = false;
-                if ($userMealVouchers && !in_array($id, $userMealVouchers)) {
-                    $available = $crew
-                        ? $meal['availability']['crew']
-                        : $meal['availability']['regular'];
-                }
+                $sold_out = $crew
+                    ? $meal['availability']['crew']
+                    : $meal['availability']['regular'];
+                $sold_out = $sold_out === false || $sold_out === 'false';
 
                 $futureMeals[$id] = [
                     'id' => $id,
                     'name' => $locale === 'de_DE' ? $meal['name']['de'] : $meal['name']['en'],
                     'endtime' => $endTime,
-                    'available' => $available,
+                    'sold_out' => $sold_out,
+                    'hidden' => $userMealVouchers && in_array($id, $userMealVouchers)
+                ];
+            }
+            if ($userMealVouchers && in_array($id, $userMealVouchers)) {
+                $gotMeals[$id] = [
+                    'id' => $id,
+                    'name' => $locale === 'de_DE' ? $meal['name']['de'] : $meal['name']['en'],
+                    'endtime' => $endTime,
                 ];
             }
         }
+        uasort($futureMeals, fn($a, $b) => $a['endtime']->timestamp - $b['endtime']->timestamp);
+        uasort($gotMeals, fn($a, $b) => $a['endtime']->timestamp - $b['endtime']->timestamp);
+        $this->log->info(json_encode($data));
+        $this->log->info(json_encode(array_slice($futureMeals, 0, 3)));
 
-        return array_slice($futureMeals, 0, 3);
+        return ['futureMeals' => array_slice($futureMeals, 0, 3),
+            'gotMealVouchers' => $gotMeals,];
     }
 
     public function view(): Response
@@ -130,19 +146,23 @@ class FoodVoucherController extends BaseController
         /** @var User $user */
         $user = $this->auth->user();
         $crew = $this->userIsForced();
+        $getInfo = $this->getInfo($crew, $user->state->meal_vouchers);
 
         return $this->response->withView(
             'pages/food-voucher.twig',
             [
-                'meals' => $this->getInfo($crew, $user->state->meal_vouchers),
-                'email_food' => $user->settings->email_food,
-                'gotVoucher' => $user->state->got_voucher ?? 0,
+                'meals' => $getInfo['futureMeals'],
+                'emailFood' => $user->settings->email_food,
                 'crew' => $crew,
+                'userMealVouchers' => $getInfo['gotMealVouchers'],
                 'eligibleVoucherCount' => UserVouchers::eligibleVoucherCount($user),
             ]
         );
     }
 
+    /**
+     * @throws ErrorException
+     */
     public function send(Request $request): Response
     {
         $this->checkActive();
@@ -150,10 +170,11 @@ class FoodVoucherController extends BaseController
         $user = $this->auth->user();
         $postUrl = (string) $this->config->get('food_voucher_api')['post_url'];
         $crew = $this->userIsForced();
-        $meals = $this->getInfo($crew, $user->state->meal_vouchers);
+        $getInfo = $this->getInfo($crew, $user->state->meal_vouchers);
+        $meals = array_diff(array_keys($getInfo['futureMeals']), array_keys($getInfo['gotMealVouchers']));
 
         $data = $this->validate($request, [
-            'meal_id' => 'required|in:' . implode(',', array_keys($meals)),
+            'meal_id' => 'required|in:' . implode(',', array_values($meals)),
         ]);
 
         $email = $user->settings->email_food ? $user->email : $this->config->get('food_voucher_api')['default_email'];
@@ -181,9 +202,11 @@ class FoodVoucherController extends BaseController
             $this->log->error('Exception during food voucher api request', ['exception' => $e]);
             throw new ErrorException('user.food.request-error');
         }
-//        dd($response->getStatusCode(), $response);
+        if ($response->getStatusCode() === 418) {
+            throw new HttpException(418, __('user.food.tea_pod'));
+        }
         if ($response->getStatusCode() !== 200) {
-            throw new HttpForbidden();
+            throw new HttpNotFound();
         }
         $user->state->got_voucher += 1;
         $user->state->meal_vouchers = array_merge($user->state->meal_vouchers ?? [], [$data['meal_id']]);

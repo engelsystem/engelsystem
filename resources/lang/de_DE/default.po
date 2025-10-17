@@ -1095,13 +1095,37 @@ msgid "user.state.vouchers.force"
 msgstr "<s>%d</s> unendlich"
 
 msgid "user.food.eligible"
-msgstr "Du kannst noch %d Essensgutscheine generieren."
+msgstr "Du kannst noch %d Essensgutschein(e) generieren."
 
 msgid "user.food.eligible.force"
 msgstr "Du kannst noch <s>%d</s> unbegrenzt Essensgutscheine generieren."
 
+msgid "user.food.email.info"
+msgstr "Der generierte Gutschein wird nicht gespeichert. "
+    "Du wirst auf eine Seite mit dem QR Code weiter geleitet und erhälst diesen zusätzlich per E-Mail."
+
+msgid "user.food.email.warning"
+msgstr "Du hast die <a href=\"%s\">E-Mail Einstellung</a> für Essensgutscheine deaktiviert. "
+    "Der generierte Gutschein wird nicht gespeichert. "
+    "Du wirst auf eine Seite mit dem QR Code weiter geleitet, "
+    "wenn du den Tab geschlossen hast, ist der Gutschein verloren."
+
+msgid "user.food.no_email.hint"
+msgstr "Du hast die E-Mail Einstellung für Essensgutscheine deaktiviert. "
+    "Generierte Gutscheine werden nicht gespeichert. "
+    "Wenn du die QR Codes nicht speicherst, sind die Gutscheine verloren."
+
 msgid "user.food.voucher"
 msgstr "Essensgutschein"
+
+msgid "user.food.voucher.title"
+msgstr "Essensgutschein generieren"
+
+msgid "user.food.voucher.sold_out"
+msgstr "%s (Vergeben)"
+
+msgid "user.food.vouchers.got_meals"
+msgstr "Generierte Essensgutscheine"
 
 msgid "Freeloads"
 msgstr "Schwänzereien"

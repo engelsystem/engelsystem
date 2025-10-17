@@ -721,12 +721,12 @@ function User_view(
                     $its_me ? table_buttons([
                         (config('enable_voucher') && config('enable_force_food') ? button(
                             url('/food'),
-                            icon('qr-code') . __('user.food.voucher')
+                            icon('qr-code') . __('user.food.voucher'),
+                            '',
+                            '',
+                            __('user.food.voucher'),
+                            UserVouchers::eligibleVoucherCount($user_source) <= 0
                         ) : ''),
-                        button(
-                            url('/food'),
-                            icon('qr-code') . __('user.food.voucher')
-                        ),
                         button(
                             url('/settings/profile'),
                             icon('person-fill-gear') . __('settings.settings')
@@ -1029,6 +1029,19 @@ function render_user_departure_date_hint()
 {
     if (config('enable_planned_arrival') && !auth()->user()->personalData->planned_departure_date) {
         $text = __('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
+        return render_profile_link($text, null, 'text-danger');
+    }
+
+    return null;
+}
+
+/**
+ * @return string|null
+ */
+function render_user_food_no_mail_hint()
+{
+    if (config('enable_voucher') && config('enable_force_food') && !auth()->user()->settings->email_food) {
+        $text = __('user.food.no_email.hint');
         return render_profile_link($text, null, 'text-danger');
     }
 

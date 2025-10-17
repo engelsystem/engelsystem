@@ -3,7 +3,7 @@
 {% import 'macros/form.twig' as f %}
 
 {% block title %}
-    {{ __('user.food_voucher') }}
+    {{ __('user.food.voucher.title') }}
 {%- endblock %}
 
 {% block content %}
@@ -14,27 +14,50 @@
         </h1>
 
         {% include 'layouts/parts/messages.twig' %}
+        {% if emailFood %}
+            {{ m.alert(
+                __('user.food.email.info')
+                , 'info', true) }}
+        {% else %}
+            {{ m.alert(
+                __('user.food.email.warning', [url('/settings/profile')])
+                , 'warning', true) }}
+        {% endif %}
         {{ m.alert(
             crew
             ? __('user.food.eligible.force', [eligibleVoucherCount])
             : __('user.food.eligible', [eligibleVoucherCount])
             , 'info', true) }}
-        {% if not email_food %}
-            {{ m.alert(__('user.food.no_mail', [url('/settings/profile')]), 'warning', true) }}
-        {% endif %}
-
-        <form method="post">
-            {{ csrf() }}
-            <div class="row">
-                {% for meal in meals %}
-                    {{ f.button(meal.name, {
-                        'type': 'submit',
-                        'name': 'meal_id',
-                        'value': meal.id,
-                        'disabed': not meal.available
-                    }) }}
-                {% endfor %}
+        <div class="col">
+            <div id="food_voucher_buttons">
+                <form method="post">
+                    {{ csrf() }}
+                    <div class="d-grid gap-2">
+                        {% for meal in meals %}
+                            {% if not meal.hidden %}
+                                {{ f.button((meal.sold_out ? __('user.food.voucher.sold_out', [meal.name]) : meal.name), {
+                                    'type': 'submit',
+                                    'name': 'meal_id',
+                                    'value': meal.id,
+                                    'disabled': meal.sold_out
+                                }) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </form>
             </div>
-        </form>
+            <div id="generated_vouchers_list" class="mt-4">
+                {% if userMealVouchers %}
+                    <h2>
+                        {{ __('user.food.vouchers.got_meals') }}
+                    </h2>
+                    <ul>
+                        {% for voucher in userMealVouchers %}
+                            <li>{{ voucher.name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}

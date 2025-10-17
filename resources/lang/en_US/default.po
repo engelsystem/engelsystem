@@ -747,13 +747,37 @@ msgid "user.state.vouchers.force"
 msgstr "<s>%d</s> unlimited"
 
 msgid "user.food.eligible"
-msgstr "You can generate another %d food vouchers."
+msgstr "You can generate another %d food voucher(s)."
 
 msgid "user.food.eligible.force"
 msgstr "You can generate <s>%d</s> unlimited food vouchers."
 
+msgid "user.food.email.info"
+msgstr "The generated voucher will not be saved. "
+    "You will be redirected to a page with the QR code and will also receive it by e-mail."
+
+msgid "user.food.email.warning"
+msgstr "You have disabled the <a href=\"%s\">e-mail setting</a> for meal vouchers. "
+    "The generated voucher will not be saved. "
+    "You will be redirected to a page with the QR code. "
+    "If you close the tab, the voucher will be lost."
+
+msgid "user.food.no_email.hint"
+msgstr "You have disabled the e-mail setting for meal vouchers. "
+    "Generated vouchers will not be saved. "
+    "If you don't save the QR codes, the vouchers will be lost."
+
 msgid "user.food.voucher"
-msgstr "Food Voucher"
+msgstr "Food voucher"
+
+msgid "user.food.voucher.title"
+msgstr "Generate food voucher"
+
+msgid "user.food.voucher.sold_out"
+msgstr "%s (None left)"
+
+msgid "user.food.vouchers.got_meals"
+msgstr "Generated food vouchers"
 
 msgid "angeltypes.angeltypes"
 msgstr "Angel types"

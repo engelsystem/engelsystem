@@ -346,3 +346,12 @@ msgstr "Event Ende muss nach dem Event Start liegen."
 
 msgid "validation.teardown_end.after"
 msgstr "Abbau Ende muss nach dem Event Ende liegen."
+
+msgid "validation.meal_id.in"
+msgstr "Essensgutschein ist nicht verfügbar oder wurde bereits generiert."
+
+msgid "user.food.tea_pod"
+msgstr "No food left"
+
+msgid "user.food.request-error"
+msgstr "Die Food Voucher Api ist müde und muss schlafen. Bitte versuche es später nochmal."
