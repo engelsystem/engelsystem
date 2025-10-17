@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers;
 
+use Carbon\CarbonInterval;
 use Engelsystem\Database\Database;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Expression;
@@ -145,5 +146,12 @@ class Goodie
             ->value('total_hours');
 
         return $shiftHours + $worklogHours;
+    }
+
+    public static function userScoreAsDurationString(User $user): string
+    {
+        return CarbonInterval::minutes(round(self::userScore($user) * 60))
+            ->cascade()
+            ->format(__('duration.format'));
     }
 }

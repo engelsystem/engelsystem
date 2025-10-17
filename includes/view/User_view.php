@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\UserVouchers;
 use Engelsystem\Models\AngelType;
@@ -345,7 +346,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
             . $shift->end->format(__('H:i')),
-        'duration' => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
+        'duration' => CarbonInterval::diff($shift->start, $shift->end)->format(__('duration.format')),
         'hints' => $night_shift,
         'location' => location_name_render($shift->location),
         'shift_info' => $shift_info,
@@ -484,7 +485,8 @@ function User_view_myshifts(
         if ($show_sum) {
             $myshifts_table[] = [
                 'date' => '<b>' . __('Sum:') . '</b>',
-                'duration' => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
+                'duration' => '<b>' . CarbonInterval::seconds((int) $timeSum)->cascade()
+                        ->format(__('duration.format')) . '</b>',
                 'hints' => '',
                 'location' => '',
                 'shift_info' => '',
@@ -548,7 +550,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
 
     return [
         'date' => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
-        'duration' => sprintf('%.2f', $worklog->hours) . ' h',
+        'duration' => CarbonInterval::minutes(round($worklog->hours * 60))->cascade()->format(__('duration.format')),
         'hints' => $night_shift,
         'location' => '',
         'shift_info' => __('Work log entry'),
