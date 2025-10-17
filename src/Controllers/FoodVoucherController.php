@@ -48,6 +48,9 @@ class FoodVoucherController extends BaseController
         if (!$this->config->get('enable_voucher') || !$this->config->get('enable_force_food')) {
             throw new HttpNotFound();
         }
+        if (!$this->userIsForced() && UserVouchers::eligibleVoucherCount($this->auth->user()) == 0) {
+            throw new HttpForbidden();
+        }
     }
 
     private function checkConfig(): void
@@ -168,8 +171,9 @@ class FoodVoucherController extends BaseController
         $this->checkActive();
         /** @var User $user */
         $user = $this->auth->user();
-        $postUrl = (string) $this->config->get('food_voucher_api')['post_url'];
         $crew = $this->userIsForced();
+
+        $postUrl = (string) $this->config->get('food_voucher_api')['post_url'];
         $getInfo = $this->getInfo($crew, $user->state->meal_vouchers);
         $meals = array_diff(array_keys($getInfo['futureMeals']), array_keys($getInfo['gotMealVouchers']));
 
