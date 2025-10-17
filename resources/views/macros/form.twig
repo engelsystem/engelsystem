@@ -275,6 +275,7 @@ Renders a button.
 @param {string} [opt.confirm_text] - Optional value for the confirmation text.
 @param {string} [opt.confirm_button_text] - Optional value for the text on the button.
 @param {dictionary} [opt.attr] - Optional value for additional attributes like data fields.
+@param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 #}
 {% macro button(label, opt) %}
     {%- set icon_left = opt.icon_left is defined ? '<span class="bi bi-' ~ opt.icon_left ~ '"></span>' : '' %}
@@ -286,6 +287,7 @@ Renders a button.
         {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
         {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
         {%- if opt.title is defined %} title="{{ opt.title }}"{% endif %}
+        {%- if opt.disabled|default(false) %} disabled{% endif %}
         {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}
         {%- if opt.confirm_title is defined %} data-confirm_submit_title="{{ opt.confirm_title }}"{% endif -%}
         {%- if opt.confirm_text is defined %} data-confirm_submit_text="{{ opt.confirm_text }}"{% endif -%}
