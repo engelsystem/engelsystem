@@ -135,8 +135,6 @@ class FoodVoucherController extends BaseController
         }
         uasort($futureMeals, fn($a, $b) => $a['endtime']->timestamp - $b['endtime']->timestamp);
         uasort($gotMeals, fn($a, $b) => $a['endtime']->timestamp - $b['endtime']->timestamp);
-        $this->log->info(json_encode($data));
-        $this->log->info(json_encode(array_slice($futureMeals, 0, 3)));
 
         return ['futureMeals' => array_slice($futureMeals, 0, 3),
             'gotMealVouchers' => $gotMeals,];
