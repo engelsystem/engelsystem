@@ -39,9 +39,14 @@ ready(() => {
   document.querySelectorAll('[data-countdown-ts]').forEach((element) => {
     const timestamp = Number(element.dataset.countdownTs);
     const template = element.textContent;
+    const templateExpired = String(element.dataset.countdownExpiredTemplate);
     element.textContent = template.replace('%c', formatFromNow(timestamp));
     setInterval(() => {
-      element.textContent = template.replace('%c', formatFromNow(timestamp));
+      if (templateExpired !== 'undefined' && Date.now() / 1000 >= timestamp) {
+        element.textContent = templateExpired.replace('%c', formatFromNow(timestamp));
+      } else {
+        element.textContent = template.replace('%c', formatFromNow(timestamp));
+      }
     }, 1000);
   });
 });
