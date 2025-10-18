@@ -262,7 +262,7 @@ function User_shift_state_render($user)
             . '</span>';
     }
 
-    return '<span class="text-danger" title="' . $endFormat . '" data-countdown-ts="' . $endTimestamp . '">'
+    return '<span class="text-danger" title="' . $endFormat . '" data-countdown-ts="' . $endTimestamp . '" data-countdown-expired-template="' . htmlspecialchars(__('Shift ended %c'), ENT_QUOTES) . '">'
         . __('Shift ends %c')
         . '</span>';
 }
