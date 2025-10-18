@@ -74,7 +74,7 @@
 {% endmacro %}
 
 {% macro add(url, opt) %}
-    {{ _self.button(_self.icon('plus-lg'), url, {'title': __('general.add')}|merge(opt|default({}))) }}
+    {{ _self.button(_self.icon('plus-lg'), url, {'size': 'sm', 'title': __('general.add')}|merge(opt|default({}))) }}
 {% endmacro %}
 
 {% macro info(text, raw) %}
