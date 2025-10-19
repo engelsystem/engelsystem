@@ -192,6 +192,9 @@ msgstr "FAQ Eintrag erfolgreich gelöscht."
 msgid "faq.edit.success"
 msgstr "FAQ Eintrag erfolgreich aktualisiert."
 
+msgid "question.menu"
+msgstr "Frag den Himmel"
+
 msgid "question.delete.success"
 msgstr "Frage erfolgreich gelöscht."
 
