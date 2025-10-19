@@ -48,7 +48,7 @@ function make_navigation(): array
         'user_shifts'    => 'general.shifts',
         'angeltypes'     => 'angeltypes.angeltypes',
         'locations'      => ['location.locations', 'locations.view'],
-        'questions'      => ['Ask the Heaven', 'question.add'],
+        'questions'      => ['question.menu', 'question.add'],
     ];
 
     foreach ($pages as $menu_page => $options) {

@@ -716,9 +716,6 @@ msgstr "Gib bitte einen Schwänz-Kommentar ein!"
 msgid "Shift saved."
 msgstr "Schicht gespeichert."
 
-msgid "Ask the Heaven"
-msgstr "Frag den Himmel"
-
 msgid "The administration has not configured any locations yet."
 msgstr "Die Administratoren habe noch keine Orte eingerichtet."
 
