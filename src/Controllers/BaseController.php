@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers;
 
 use Engelsystem\Http\Validation\ValidatesRequest;
+use Psr\Http\Message\ServerRequestInterface;
 
 abstract class BaseController
 {
@@ -14,12 +15,22 @@ abstract class BaseController
     protected array $permissions = [];
 
     /**
-     * Returns the list of permissions
+     * Returns the list of permissions for instance / methods
      *
      * @return string[]|string[][]
      */
     public function getPermissions(): array
     {
         return $this->permissions;
+    }
+
+    /**
+     * Check if the request should be permitted
+     *
+     * $this->getPermissions will be interpreted on null return
+     */
+    public function hasPermission(ServerRequestInterface $request, string $method): ?bool
+    {
+        return null;
     }
 }
