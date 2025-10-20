@@ -37,6 +37,7 @@
         "ext-xml": "*",
         "bacon/bacon-qr-code": "^3.0",
         "erusev/parsedown": "1.7.x-dev#f7285e7b2c55039401e9d380741c2dc805edf980",
+        "firebase/php-jwt": "^6.11",
         "gettext/gettext": "^5.7",
         "gettext/translator": "^1.2",
         "guzzlehttp/guzzle": "^7.9",
