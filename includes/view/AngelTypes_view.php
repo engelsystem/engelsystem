@@ -284,6 +284,15 @@ function AngelType_view_buttons(
             '',
             __('form.edit')
         );
+        if (config('app_key') && config('join_qr_code', true)) {
+            $buttons[] = button(
+                url('/angeltypes/' . $angeltype->id . '/qr'),
+                icon('qr-code'),
+                '',
+                '',
+                __('general.qr')
+            );
+        }
     }
     if ($admin_angeltypes) {
         $buttons[] = button(
