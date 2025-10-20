@@ -79,6 +79,9 @@ $route->get('/stats', 'Metrics\\Controller@stats');
 // Angeltypes
 $route->addGroup('/angeltypes', function (RouteCollector $route): void {
     $route->get('/about', 'AngelTypesController@about');
+    $route->get('/{angel_type_id:\d+}/qr', 'AngelTypesController@qrCode');
+    $route->post('/{angel_type_id:\d+}/qr', 'AngelTypesController@qrCode');
+    $route->get('/{angel_type_id:\d+}/join', 'AngelTypesController@join');
 });
 
 // Shifts

@@ -1,0 +1,60 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('angeltypes.qr', [angel_type.name]) }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <h1>
+            {{ m.back(url('/angeltypes', {'action': 'view', 'angeltype_id': angel_type.id})) }}
+            {{ block('title') }}
+        </h1>
+
+        {% if qr_data %}
+            <div class="offset-md-4 col-md-4">
+                <div class="mb-3">
+                    {{ qr(qr_data, 400) }}
+                    {% set expires = session_get('form-data-expires') %}
+                    {% if expires %}
+                        <p>
+                            <span
+                                class="small"
+                                title="{{ expires.format(__('general.datetime')) }}"
+                                data-countdown-ts="{{ expires.getTimestamp() }}"
+                            >
+                                {{ __('angeltypes.qr.expires') }}
+                            </span>
+                        </p>
+                    {% endif %}
+                </div>
+
+                {{ f.input('url', __('general.url'), {'value': qr_data, 'readonly': true}) }}
+            </div>
+        {% endif %}
+
+        <div class="offset-md-4 col-md-4">
+            <form method="post" class="row row-cols-lg-auto g-3 align-items-center">
+                {{ csrf() }}
+
+                <div class="col-12">
+                    {{ f.input('minutes', __('angeltypes.qr.time'), {
+                        'type': 'number',
+                        'required': true,
+                        'value': f.formData('minutes', 5),
+                        'min': 1,
+                        'max': qr_max_expiration_minutes,
+                        'info': __('angeltypes.qr.time.info'),
+                    }) }}
+                </div>
+
+                <div class="col-12">
+                    {{ f.submit(__('form.generate'), {'icon_left': 'qr-code'}) }}
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+{% endblock %}
