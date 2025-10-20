@@ -1307,6 +1307,9 @@ msgstr "Alle löschen"
 msgid "form.updated"
 msgstr "Aktualisiert"
 
+msgid "form.generate"
+msgstr "Generieren"
+
 msgid "form.cancel"
 msgstr "Abbrechen"
 
@@ -1922,6 +1925,21 @@ msgid "angeltypes.hide_on_shift_view.info"
 msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
 "Schicht Seite die Filteroption für diesen Engeltyp sehen."
 
+msgid "angeltypes.qr"
+msgstr "Engeltyp \"%s\" beitreten QR Code"
+
+msgid "angeltypes.qr.expires"
+msgstr "Läuft ab %c"
+
+msgid "angeltypes.qr.expired"
+msgstr "Abgelaufen"
+
+msgid "angeltypes.qr.time"
+msgstr "Lebensdauer (Minuten)"
+
+msgid "angeltypes.qr.time.info"
+msgstr "Der Link ist für die gesamte angegebene Zeitspanne gültig und kann nicht zurückgezogen werden!"
+
 msgid "location.location"
 msgstr "Ort"
 
@@ -2007,6 +2025,9 @@ msgstr "Anzahl"
 
 msgid "general.created_at"
 msgstr "Erstellt am"
+
+msgid "general.url"
+msgstr "URL"
 
 msgid "shifts.history"
 msgstr "Schichten Historie"

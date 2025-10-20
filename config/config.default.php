@@ -152,6 +152,15 @@ return [
         */
     ],
 
+    // Random, long (at least 32 characters) alphanumeric or base64 encoded key, used for signing
+    'app_key' => env_secret('APP_KEY'),
+
+    // see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
+    'jwt_algorithm' => env('JWT_ALGORITHM', 'HS256'),
+
+    // Number of minutes after a JWT must expire for example max angel type join time
+    'jwt_expiration_time' => env('JWT_EXPIRATION_TIME', 60 * 24 * 7),
+
     // Default theme, 1 = theme1.scss etc.
     'theme'                   => env('THEME', 1),
 
@@ -287,6 +296,9 @@ return [
         'mobile'             => (bool) env('MOBILE_REQUIRED', false),
         'dect'               => (bool) env('DECT_REQUIRED', false),
     ],
+
+    // Allow joining angel type via generated QR code
+    'join_qr_code'            => (bool) env('JOIN_QR_CODE', true),
 
     // Only arrived users can sign up for shifts
     'signup_requires_arrival' => (bool) env('SIGNUP_REQUIRES_ARRIVAL', false),

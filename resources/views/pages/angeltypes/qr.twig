@@ -1,0 +1,59 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('angeltypes.qr', [angel_type.name]) }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <h1>
+            {{ m.back(url('/angeltypes', {'action': 'view', 'angeltype_id': angel_type.id})) }}
+            {{ block('title') }}
+        </h1>
+
+        <div class="offset-md-4 col-md-4 ">
+            {% if qr_data %}
+                    <div class="mb-3">
+                        <div class="text-center">
+                        {{ qr(qr_data, 400) }}
+                        {% set expires = session_get('form-data-expires') %}
+                        {% if expires %}
+                            <p>
+                                <span
+                                    class="small"
+                                    title="{{ expires.format(__('general.datetime')) }}"
+                                    data-countdown-ts="{{ expires.getTimestamp() }}"
+                                data-countdown-expired-template="{{ __('angeltypes.qr.expired') }}">
+                                    {{ __('angeltypes.qr.expires') }}
+                                </span>
+                            </p>
+                        {% endif %}
+                        </div>
+                    </div>
+
+            {% endif %}
+            {{ f.input('url', __('general.url'), {'value': qr_data, 'readonly': true, 'disabled': not qr_data}) }}
+
+            <form method="post" class="row">
+                {{ csrf() }}
+
+                <div class="col-md">
+                    {{ f.input('minutes', __('angeltypes.qr.time'), {
+                        'type': 'number',
+                        'required': true,
+                        'value': f.formData('minutes', 5),
+                        'min': 1,
+                        'max': qr_max_expiration_minutes,
+                        'info': __('angeltypes.qr.time.info'),
+                    }) }}
+                </div>
+
+                <div class="col-md-auto align-self-end">
+                    {{ f.submit(__('form.generate'), {'icon_left': 'qr-code', 'class': 'mb-3'}) }}
+                </div>
+            </form>
+        </div>
+
+    </div>
+{% endblock %}
