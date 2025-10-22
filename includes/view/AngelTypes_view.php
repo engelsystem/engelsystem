@@ -595,7 +595,7 @@ function AngelType_view(
     $add = (($admin_angeltypes || $admin_user_angeltypes) ? button(
         url('/user-angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
         icon('plus-lg'),
-        '',
+        'btn-sm',
         '',
         __('general.add')
     ) : '');
@@ -782,7 +782,7 @@ function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
     $add = button(
         url('/angeltypes', ['action' => 'edit']),
         icon('plus-lg'),
-        '',
+        'btn-sm',
         '',
         __('general.add')
     );
