@@ -303,7 +303,7 @@ function view_user_shifts()
         return dateWithEventDay(Carbon::make($value)->format('Y-m-d'));
     })->toArray();
 
-    $link = button(url('/admin-shifts'), icon('plus-lg'), 'add');
+    $link = button(url('/admin-shifts'), icon('plus-lg'), 'btn-sm add');
 
     return page([
         div('col-md-12', [

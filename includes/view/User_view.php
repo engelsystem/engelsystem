@@ -197,7 +197,7 @@ EOT;
         unset($user_table_headers[$key]);
     }
 
-    $link = button(url('/register'), icon('plus-lg'), 'add');
+    $link = button(url('/register'), icon('plus-lg'), 'btn-sm add');
     return page_with_title(__('All users') . ' ' . $link, [
         msg(),
         table($user_table_headers, $usersList),
