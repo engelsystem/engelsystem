@@ -445,6 +445,17 @@ blockquote {
   padding-left: 0.5em;
 }
 
+/* center buttons in titles */
+h1 {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+
+  & .btn {
+    align-self: center;
+  }
+}
+
 /* Hide the arrow up/down buttons rendered by the browser in the input field */
 /* Chrome, Safari, Edge, Opera */
 input[type='number']::-webkit-outer-spin-button,
