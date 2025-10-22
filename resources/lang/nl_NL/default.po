@@ -1,0 +1,2087 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Engelsystem 2.0\n"
+"POT-Creation-Date: 2025-07-18 20:35+0200\n"
+"PO-Revision-Date: 2025-07-18 20:35+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Last-Translator: Shiz <hi@shiz.me>\n"
+"Language: nl_NL\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "email.greeting"
+msgstr "Hi %s,"
+
+msgid "email.introduction"
+msgstr "hier is een bericht voor je van het %s:"
+
+msgid "email.footer"
+msgstr ""
+"Dit e-mailbericht is automatisch gegenereerd en is niet ondertekend. "
+"Je hebt dit e-mailbericht ontvangen omdat je in het %s aangemeld bent."
+
+msgid "password.email.message"
+msgstr "Bezoek alsjeblieft %s om je wachtwoord te resetten."
+
+msgid "page.error.title"
+msgstr "Fout %s"
+
+msgid "page.403.title"
+msgstr "Verboden"
+
+msgid "page.403.headline"
+msgstr "Je hebt geen toestemming om deze pagina op te vragen"
+
+msgid "page.404.title"
+msgstr "Pagina niet gevonden"
+
+msgid "page.404.not_found"
+msgstr "No sleep found"
+
+msgid "page.405.title"
+msgstr "405: Verzoektype niet toegestaan"
+
+msgid "page.419.title"
+msgstr "Authenticatie verlopen"
+
+msgid "page.419.text"
+msgstr "De opgegeven CSRF-token is ongeldig of verlopen. Probeer het nog eens."
+
+msgid "general.date"
+msgstr "Y-m-d"
+
+msgid "footer.eventinfo.name_start_end"
+msgstr "%1$s, van %2$s tot %3$s"
+
+msgid "footer.eventinfo.name_start"
+msgstr "%1$s, begint op %2$s"
+
+msgid "footer.eventinfo.start_end"
+msgstr "Evenement van %1$s tot %2$s"
+
+msgid "footer.issues"
+msgstr "Bugs / Features"
+
+msgid "footer.github"
+msgstr "Ontwikkelplatform"
+
+msgid "credits.title"
+msgstr "Colofon"
+
+msgid "general.register"
+msgstr "Registreer"
+
+msgid "general.login"
+msgstr "Log in"
+
+msgid "page.403.login"
+msgstr "Log alsjeblieft in."
+
+msgid "form.submit"
+msgstr "Stuur in"
+
+msgid "form.send_notification"
+msgstr "Stuur %d meldingen"
+
+msgid "credits.source"
+msgstr "Broncode"
+
+msgid "credits.version"
+msgstr "Versie: _%s_"
+
+msgid "credits.credit"
+msgstr ""
+"Het originele engelsystem was ontwikkeld door "
+"[cookie](https://github.com/cookieBerlin/engelsystem)"
+". Het is daarna compleet herschreven en verbeterd door "
+"[msquare](https://notrademark.de)"
+" (huidige maintainer) en "
+"[MyIgel](https://myigel.name)"
+"."
+
+msgid "credits.contributors"
+msgstr ""
+"Bekijk alsjeblieft de "
+"[bijdragenlijst op GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
+" voor een compleet overzicht."
+
+msgid "login.welcome"
+msgstr "Welkom bij het %s!"
+
+msgid "event.buildup.start"
+msgstr "Opbouw begint"
+
+msgid "event.starts"
+msgstr "Evenement begint"
+
+msgid "event.ends"
+msgstr "Evenement eindigt"
+
+msgid "event.teardown.ends"
+msgstr "Afbouw eindigt"
+
+msgid "login.password.reset"
+msgstr "Ik ben mijn wachtwoord vergeten"
+
+msgid "login.registration"
+msgstr "Registreer je als je ons wilt helpen!"
+
+msgid "login.registration.external"
+msgstr "Registraties zijn alleen mogelijk via externe login."
+
+msgid "login.registration.disabled"
+msgstr "Registraties zijn uitgeschakeld."
+
+msgid "login.do"
+msgstr "Wat kan ik doen?"
+
+msgid "login.jobs"
+msgstr "Lees over de taken die je kunt doen om ons te helpen."
+
+msgid "login.cookies"
+msgstr "Let op: je moet cookies inschakelen!"
+
+msgid "password.reset.confirm"
+msgstr "Bevestig wachtwoord"
+
+msgid "password.recovery.success"
+msgstr "We hebben je een e-mail gestuurd met een link om je wachtwoord te resetten."
+
+msgid "password.reset.title"
+msgstr "Wachtwoordreset"
+
+msgid "password.recovery.text"
+msgstr ""
+"We gaan je een e-mail sturen met een link om je wachtwoord te resetten. "
+"Vul alsjeblieft het e-mailadres in dat je bij je registratie hebt gebruikt."
+
+msgid "password.minimal_length"
+msgstr "Minimale lengte van %d tekens"
+
+msgid "form.recover"
+msgstr "Reset"
+
+msgid "Angel type %s deleted."
+msgstr "Angeltype %s met succes verwijderd."
+
+msgid "Delete angel type %s"
+msgstr "Verwijder angeltype %s"
+
+msgid "Please check the name. Maybe it already exists."
+msgstr "Controleer alsjebelieft de naam, misschien is deze al in gebruik."
+
+msgid "Angel type saved."
+msgstr "Angeltype met succes aangemaakt."
+
+msgid "Create angel type"
+msgstr "Maak angeltype aan"
+
+msgid "Edit %s"
+msgstr "%s bijwerken"
+
+msgid "Team %s"
+msgstr "Team %s"
+
+msgid "%s (not \"%s\")"
+msgstr "%s (niet \"%s\")"
+
+msgid "%s (already in shift)"
+msgstr "%s (al in dienst)"
+
+msgid "form.view"
+msgstr "Toon"
+
+msgid "Leave"
+msgstr "Verlaat"
+
+msgid "Join"
+msgstr "Doe mee"
+
+msgid "Public Dashboard"
+msgstr "Openbaar dashboard"
+
+msgid "shifts.random"
+msgstr "Willekeurige dienst"
+
+msgid "%s has been subscribed to the shift."
+msgstr "%s heeft zich aangemeld voor de dienst."
+
+msgid "User is not in angel type."
+msgstr "Gebruiker is niet van angeltype."
+
+msgid "This shift is already occupied."
+msgstr "Deze dienst is al vol."
+
+msgid "You need be accepted member of the angel type."
+msgstr "Je moet bevestigd zijn van dit angeltype."
+
+msgid "This shift collides with one of your shifts."
+msgstr "Deze dienst overlapt met een van je andere diensten."
+
+msgid "This shift ended already."
+msgstr "Deze dienst is al voorbij."
+
+msgid "You are not marked as arrived."
+msgstr "Je bent niet gemeld als aangekomen."
+
+msgid "You are not allowed to sign up yet."
+msgstr "Je kunt je nog niet aanmelden."
+
+msgid "You are signed up for this shift."
+msgstr "Je hebt jezelf al aangemeld voor deze dienst."
+
+msgid "You are subscribed. Thank you!"
+msgstr "Je hebt je aangemeld. Dankjewel!"
+
+msgid ""
+"You are not allowed to remove this shift entry. If necessary, ask your "
+"supporter or Heaven to do so."
+msgstr ""
+"Je kunt deze dienst niet verwijderen. Als dit nodig is, vraag je supporter "
+"of Heaven om dit voor je te doen."
+
+msgid "Shift entry removed."
+msgstr "Dienst verwijderd."
+
+msgid "This shift was imported from a schedule so some changes will be overwritten with the next import."
+msgstr ""
+"Deze dienst is geïmporteerd uit een rooster, dus sommige veranderingen zullen overgeschreven worden bij een volgende import."
+
+msgid "Please select a location."
+msgstr "Kies alsjeblieft een locatie."
+
+msgid "Please enter a valid starting time for the shifts."
+msgstr "Vul alsjeblieft een geldige begintijd voor de diensten in."
+
+msgid "Please enter a valid ending time for the shifts."
+msgstr "Vul alsjeblieft een geldige eindtijd voor de diensten in."
+
+msgid "The ending time has to be after the starting time."
+msgstr "De eindtijd moet ná de starttijd liggen."
+
+msgid "Please check your input for needed angels of type %s."
+msgstr "Controleer alsjeblieft je invoer voor de benodigde angels van type %s."
+
+msgid "Shift updated."
+msgstr "Dienst bijgewerkt."
+
+msgid "This page is much more comfortable with javascript."
+msgstr "Deze pagina werkt een stuk beter met JavaScript."
+
+msgid "Shift type"
+msgstr "Diensttype"
+
+msgid "title.title"
+msgstr "Titel"
+
+msgid "Location:"
+msgstr "Locatie:"
+
+msgid "Needed angels"
+msgstr "Benodigde angels"
+
+msgid "Shift deleted."
+msgstr "Dienst verwijderd."
+
+msgid "Do you want to delete the shift \"%s\" from %s to %s?"
+msgstr "Wil je de dienst \"%s\", van %s tot %s, verwijderen?"
+
+msgid "Shift could not be found."
+msgstr "Dienst kon niet gevonden worden."
+
+msgid "There are unconfirmed angels in %d angel type. Angel type that needs approval:"
+msgid_plural "There are unconfirmed angels in %d angel types. Angel types that need approvals:"
+msgstr[0] "Er zijn niet-bevestigde angels in %d angeltype! Angeltype dat bevestigingen nodig heeft:"
+msgstr[1] "Er zijn niet-bevestigde angels in %d angeltypes! Angeltypes die bevestigingen nodig hebben:"
+
+msgid "You are not allowed to delete all users for this angel type."
+msgstr "Je mag niet alle gebruikers voor dit angeltype verwijderen."
+
+msgid "Denied all users for angel type %s."
+msgstr "Alle gebruikers voor angeltype %s afgewezen."
+
+msgid "Deny all users"
+msgstr "Wijs alle gebruikers af"
+
+msgid "You are not allowed to confirm all users for this angel type."
+msgstr "Je mag niet alle gebruikers voor dit angeltype bevestigen."
+
+msgid "Confirmed all users for angel type %s."
+msgstr "Alle gebruikers voor angeltype %s bevestigd."
+
+msgid "Confirm all users"
+msgstr "Bevestig alle gebruikers"
+
+msgid "You are not allowed to confirm this users angel type."
+msgstr "Je mag deze gebruiker niet voor dit angeltype bevestigen."
+
+msgid "%s confirmed for angel type %s."
+msgstr "%s bevestigd voor angeltype %s."
+
+msgid "Confirm angel type for user"
+msgstr "Bevestig angeltype voor gebruiker"
+
+msgid "You are not allowed to delete this users angel type."
+msgstr "Je mag deze gebruiker niet van dit angeltype verwijderen."
+
+msgid "User \"%s\" removed from \"%s\"."
+msgstr "Gebruiker \"%s\" van \"%s\" verwijderd."
+
+msgid "Edit certificates"
+msgstr "Certificeringen bijwerken"
+
+msgid "You successfully left \"%2$s\"."
+msgstr "Je hebt met succes \"%2$s\" verlaten."
+
+msgid "Leave angel type"
+msgstr "Angeltype verlaten"
+
+msgid "No supporter update given."
+msgstr "Geen supporter-rechten bijgewerkt."
+
+msgid "Added supporter rights for %s to %s."
+msgstr "%s supporter-rechten voor %s gegeven."
+
+msgid "Removed supporter rights for %s from %s."
+msgstr "%s supporter-rechten voor %s afgenomen."
+
+msgid "Add supporter rights"
+msgstr "Supporter-rechten geven"
+
+msgid "Remove supporter rights"
+msgstr "Supporter-rechten afnemen"
+
+msgid "User %s added to %s."
+msgstr "Gebruiker %s aan %s toegevoegd."
+
+msgid "Add user to angel type"
+msgstr "Gebruiker aan angeltype toevoegen"
+
+msgid "You are already a %s."
+msgstr "Je bent al een %s."
+
+msgid "You joined %s."
+msgstr "Je bent nu een %s."
+
+msgid "Join %s"
+msgstr "Word %s"
+
+msgid "You cannot delete yourself."
+msgstr "Je kunt jezelf niet verwijderen."
+
+msgid "auth.password.error"
+msgstr "Je wachtwoord komt niet overeen. Probeer het alsjeblieft nog eens."
+
+msgid "User deleted."
+msgstr "Gebruiker verwijderd."
+
+msgid "Delete %s"
+msgstr "Verwijder %s"
+
+msgid "User not found."
+msgstr "Gebruiker niet gevonden."
+
+msgid "All users"
+msgstr "Alle gebruikers"
+
+msgid "User %s could not be notified by e-mail due to an error."
+msgstr ""
+"Door een fout kon gebruiker %s niet per e-mail een melding gestuurd worden."
+
+msgid "%s (%s as %s) in %s, %s - %s"
+msgstr "%s (%s als %s) in %s, %s - %s"
+
+msgid "You have been assigned to a Shift:"
+msgstr "Je bent een dienst toegewezen:"
+
+msgid "Assigned to Shift"
+msgstr "Toegewezen aan dienst"
+
+msgid "You have been removed from a Shift:"
+msgstr "Je bent verwijderd uit een dienst:"
+
+msgid "Removed from Shift"
+msgstr "Uit dienst verwijderd"
+
+msgid "Your account has been deleted."
+msgstr "Je account is verwijderd."
+
+msgid ""
+"Your %s account has been deleted. If you have any questions regarding your "
+"account deletion, please contact Heaven."
+msgstr ""
+"Je %s-account is verwijderd. Als je nog vragen hebt over deze verwijdering, "
+"neem dan alsjebelieft contact op met Heaven."
+
+msgid "Active angels"
+msgstr "Actieve angels"
+
+msgid ""
+"At least %s angels are forced to be active. The number has to be greater."
+msgstr ""
+"Ten minste %s angels zijn afgedwongen actief. Dit aantal moet hoger zijn."
+
+msgid "Please enter a number of angels to be marked as active."
+msgstr ""
+"Vul alsjeblieft een aantal angels in die als actief aangemerkt zullen worden."
+
+msgid "Marked angels."
+msgstr "Angels aangemerkt."
+
+msgid "general.back"
+msgstr "Terug"
+
+msgid "Apply"
+msgstr "Toepassen"
+
+msgid "Angel has been marked as active."
+msgstr "Angel is als actief aangemerkt."
+
+msgid "Angel not found."
+msgstr "Angel niet gevonden."
+
+msgid "Angel has been marked as not active."
+msgstr "Angel is als inactief aangemerkt."
+
+msgid "Angel has no valid T-shirt size. T-shirt was not set."
+msgstr "Angel heeft geen geldige T-shirtmaat ingesteld. T-shirt niet opgeslagen."
+
+msgid "This Angel has no valid T-shirt size, therefore it's not possible to hand out a T-shirt."
+msgstr "Deze angel heeft geen geldige T-shirtmaat ingesteld, dus kan geen T-shirt gegeven worden."
+
+msgid "Set active"
+msgstr "Markeer actief"
+
+msgid "Remove active"
+msgstr "Markeer inactief"
+
+msgid "Goodie actions"
+msgstr "Goodie-acties"
+
+msgid "Sum"
+msgstr "Totaal"
+
+msgid "Search angel:"
+msgstr "Zoek naar engel:"
+
+msgid "Show all shifts"
+msgstr "Toon alle diensten"
+
+msgid "How many angels should be active?"
+msgstr "Hoeveel angels moeten actief zijn?"
+
+msgid "Size"
+msgstr "Maat"
+
+msgid "No."
+msgstr "Nr."
+
+msgid "general.shifts"
+msgstr "Diensten"
+
+msgid "Length"
+msgstr "Lengte"
+
+msgid "Length (in minutes)"
+msgstr "Lengte (in minuten)"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Forced"
+msgstr "Gedwongen"
+
+msgid "Given T-shirts"
+msgstr "Uitgegeven T-shirts"
+
+msgid "Configured T-shirts"
+msgstr "Ingestelde T-shirts"
+
+msgid "Arrive angels"
+msgstr "Aankomende angels"
+
+msgid "Reset done. Angel has not arrived."
+msgstr "Reset uitgevoerd. Angel is niet aangekomen."
+
+msgid "Angel has been marked as arrived."
+msgstr "Angel is aangemerkt als aangekomen."
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Reset arrival state for %s?"
+msgstr "Reset aankomststatus voor %s?"
+
+msgid "Planned arrival"
+msgstr "Geplande aankomst"
+
+msgid "Arrival date"
+msgstr "Aankomstdatum"
+
+msgid "Planned departure"
+msgstr "Gepland vertrek"
+
+msgid "Planned arrival statistics"
+msgstr "Statistieken geplande vertrekken"
+
+msgid "arrived sum"
+msgstr "Aantal aangekomen"
+
+msgid "title.date"
+msgstr "Datum"
+
+msgid "Arrival statistics"
+msgstr "Aankomststatistieken"
+
+msgid "Planned departure statistics"
+msgstr "Statistieken geplande aankomsten"
+
+msgid "Free angels"
+msgstr "Beschikbare angels"
+
+msgid "Angel type"
+msgstr "Angeltype"
+
+msgid "shift.next"
+msgstr "Volgende dienst"
+
+msgid "shift.previous"
+msgstr "Vorige dienst"
+
+msgid "general.shift"
+msgstr "Dienst"
+
+msgid "shift.angeltype_source"
+msgstr "Angels benodigd uit: %s"
+
+msgid "shift.angeltype_source.shift_type"
+msgstr "Rooster %s via diensttype %s"
+
+msgid "shift.angeltype_source.location"
+msgstr "Rooster %s via locatie %s"
+
+msgid "Last shift"
+msgstr "Laatste dienst"
+
+msgid "general.dect"
+msgstr "DECT"
+
+msgid "Group rights"
+msgstr "Groeprechten"
+
+msgid "general.name"
+msgstr "Naam"
+
+msgid "Privileges"
+msgstr "Privileges"
+
+msgid "Edit group"
+msgstr "Groep bijwerken"
+
+msgid "Please select a shift type."
+msgstr "Kies alsjebelieft een diensttype."
+
+msgid "Reset to previous state"
+msgstr "Reset naar vorige staat"
+
+msgid "Location"
+msgstr "Locatie"
+
+msgid "Answer questions"
+msgstr "Beantwoord vragen"
+
+msgid "There are unanswered questions!"
+msgstr "Er zijn onbeantwoorde vragen!"
+
+msgid "general.description"
+msgstr "Beschrijving"
+
+msgid "Please use markdown for the description."
+msgstr "Markdown kan voor de beschrijving gebruikt worden."
+
+msgid "Needed angels:"
+msgstr "Benodigde angels:"
+
+msgid "Create shifts"
+msgstr "Maak diensten aan"
+
+msgid "Additional description"
+msgstr "Aanvullende beschrijving"
+
+msgid "This description is for single shifts, otherwise please use the description in shift type."
+msgstr "Deze beschrijving is voor individuele diensten. Gebruik anders de beschrijving in het diensttype."
+
+msgid "Please select a start time."
+msgstr "Kies alsjeblieft een starttijd."
+
+msgid "Please select an end time."
+msgstr "Kies alsjeblieft een eindtijd.."
+
+msgid "The shifts end has to be after its start."
+msgstr "De eindtijd van de dienst moet ná de starttijd liggen."
+
+msgid "Please enter a shift duration in minutes."
+msgstr "Vul alsjeblieft een diensttijd in minuten in."
+
+msgid "Please validate the change hour %s. It should be between 00:00 and 24:00."
+msgstr "Controleer alsjeblieft het overgangsuur %s. Het moet tussen 00:00 en 24:00 liggen."
+
+msgid "Please split the shift-change hours by colons."
+msgstr "Scheid alsjeblieft de overgangsuren van de dienst met een komma."
+
+msgid "Please select a mode."
+msgstr "Kies alsjeblieft een mode."
+
+msgid "Please check the needed angels for team %s."
+msgstr "Vul alsjebelieft het aantal benodigde angels voor team %s in."
+
+msgid "There are 0 angels needed. Please enter the amounts of needed angels."
+msgstr "Er zijn 0 angels nodig. Vul alsjeblieft het aantal benodige angels in."
+
+msgid "Please select a mode for needed angels."
+msgstr "Kies alsjeblieft een mode voor de benodigde angels."
+
+msgid "Please select needed angels."
+msgstr "Kies alsjebelieft de benodige angels."
+
+msgid "Time and location"
+msgstr "Tijd en locatie"
+
+msgid "Type and title"
+msgstr "Type en titel"
+
+msgid "Mode"
+msgstr "Mode"
+
+msgid "Create one shift"
+msgstr "Maak één dienst aan"
+
+msgid "Create multiple shifts"
+msgstr "Maak meerdere diensten aan"
+
+msgid "Create multiple shifts with variable length"
+msgstr "Maak meerdere diensten met verschillende lengtes aan"
+
+msgid "Shift change hours"
+msgstr "Overgangsuren dienst"
+
+msgid "Create a shift over midnight."
+msgstr "Maak een dienst over middernacht aan"
+
+msgid "Copy needed angels from location settings"
+msgstr "Kopieer benodigde angels van de locatie-instellingen"
+
+msgid "Copy needed angels from shift type settings"
+msgstr "Kopieer benodigde angels van de diensttype-instellingen"
+
+msgid "The following angels are needed"
+msgstr "De volgende angels zijn nodig"
+
+msgid "All Angels"
+msgstr "Alle angels"
+
+msgid "This user does not exist."
+msgstr "Deze gebruiker bestaat niet."
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "Force active"
+msgstr "Dwing actief af"
+
+msgid "Edit user"
+msgstr "Bewerk gebruiker"
+
+msgid "general.datetime"
+msgstr "Y-m-d H:i"
+
+msgid "API Settings"
+msgstr "API-instellingen"
+
+msgid "Please enter a freeload comment!"
+msgstr "Vul alsjebelieft een opmerking over het wegblijven in!"
+
+msgid "Shift saved."
+msgstr "Dienst opgeslagen."
+
+msgid "Ask the Heaven"
+msgstr "Vraag het Heaven"
+
+msgid "The administration has not configured any locations yet."
+msgstr "De administratoren hebben nog geen locaties aangemaakt."
+
+msgid "The administration has not configured any shifts yet."
+msgstr "De administratoren hebben nog geen diensten aangemaakt."
+
+msgid ""
+"The administration has not configured any angel types yet - or you are not "
+"subscribed to any angel type."
+msgstr ""
+"De administratoren hebben nog geen angeltypes aangemaakt - of je bent nog geen "
+"angeltype."
+
+msgid "occupied"
+msgstr "bezet"
+
+msgid "free"
+msgstr "beschikbaar"
+
+msgid "Own"
+msgstr "Eigen"
+
+msgid "Occupancy"
+msgstr "Bezetting"
+
+msgid ""
+"The tasks shown here are influenced by the angel types you joined already!"
+msgstr ""
+"De taken die hier getoond worden hangen af van je angeltypes!"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Yesterday"
+msgstr "Gisteren"
+
+msgid "Today"
+msgstr "Vandaag"
+
+msgid "Tomorrow"
+msgstr "Morgen"
+
+msgid "last 8h"
+msgstr "laatste 8u"
+
+msgid "last 4h"
+msgstr "laatste 4u"
+
+msgid "next 4h"
+msgstr "aankomende 4u"
+
+msgid "next 8h"
+msgstr "aankomende 8u"
+
+msgid "iCal export and API"
+msgstr "iCal-export en API"
+
+msgid ""
+"Export your own shifts formatted as <a href=\"%s\" target=\"_blank\">iCal</a> or "
+"<a href=\"%s\" target=\"_blank\">JSON</a> (please keep the link secret, otherwise you have to reset the api key "
+"<a href=\"%s\">in your settings</a>)."
+msgstr ""
+"Exporteer je diensten in <a href=\"%s\" target=\"_blank\">iCal-formaat</a> of "
+"<a href=\"%s\" target=\"_blank\">JSON-formaat</a> (houd de link alsjeblieft geheim, anders moet je je API-key "
+"<a href=\"%s\">in je instellingen</a> resetten)."
+
+msgid "All"
+msgstr "Alle"
+
+msgid "None"
+msgstr "Geen"
+
+msgid "general.logout"
+msgstr "Log uit"
+
+msgid "Admin"
+msgstr "Administrator"
+
+msgid "No data found."
+msgstr "Niets gevonden."
+
+msgid "Unconfirmed"
+msgstr "Onbevestigd"
+
+msgid "Supporter"
+msgstr "Supporter"
+
+msgid "Member"
+msgstr "Lid"
+
+msgid "Do you want to delete angel type %s?"
+msgstr "Wil je angeltype %s verwijderen?"
+
+msgid "angeltypes.restricted"
+msgstr "Introductie vereist"
+
+msgid "angeltypes.restricted.info"
+msgstr "Angeltypes die introductie vereisen kunnen alleen door angels gekozen worden "
+"met steun van een supporter (dubbele opt-in)."
+
+msgid "shift.self_signup"
+msgstr "Eigen dienstkeuze"
+
+msgid "shift.self_signup.allowed"
+msgstr "Eigen dienstkeuze toegestaan"
+
+msgid "angeltypes.shift.self_signup.info"
+msgstr "Angeltypes met eigen dienstkeuze staan angels toe zichzelf aan te melden voor hun diensten, "
+"anders kunnen alleen supporters en administratoren angels aanmelden voor diensten."
+
+msgid "Requires driver license"
+msgstr "Rijbewijs vereist"
+
+msgid "Show on dashboard"
+msgstr "Toon op het dashboard"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Primary contact person/desk for user questions."
+msgstr "Contactpersoon voor gebruikersvragen."
+
+msgid "My driving license"
+msgstr "Mijn rijbewijs"
+
+msgid "angeltype.ifsg.required.info.preview"
+msgstr "Dit angeltype vereist een hygiëneinstructie."
+
+msgid "angeltype.driving_license.required.info.preview"
+msgstr "Dit angeltype vereist een rijbewijs."
+
+msgid ""
+"This angel type requires a driver license. Please enter your driver license "
+"information!"
+msgstr ""
+"Dit angeltype vereist een rijbewijs. Vul alsjebelieft informatie over je rijbewijs in!"
+
+msgid ""
+"You are unconfirmed for this angel type. Please go to the introduction for %s "
+"to get confirmed."
+msgstr ""
+"Je bent nog niet bevestigd voor dit angeltype. Sluit je alsjeblieft aan bij de introductie voor %s "
+"om bevestigd te worden."
+
+msgid "Confirm"
+msgstr "Bevestig"
+
+msgid "Deny"
+msgstr "Wijs af"
+
+msgid "Remove"
+msgstr "Verwijder"
+
+msgid "Driver"
+msgstr "Bestuurder"
+
+msgid "Has car"
+msgstr "Heeft auto"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Supporters"
+msgstr "Supporter"
+
+msgid "Members"
+msgstr "Leden"
+
+msgid "general.add"
+msgstr "Voeg toe"
+
+msgid "Confirm all"
+msgstr "Iedereen bevestigen"
+
+msgid "Deny all"
+msgstr "Iedereen afwijzen"
+
+msgid "Membership"
+msgstr "Lidmaatschap"
+
+msgid "Angels needed in the next 3 hrs"
+msgstr "Benodigde angels voor de aankomende 3 uur"
+
+msgid "Angels needed for nightshifts"
+msgstr "Benodigde angels voor nachtdiensten"
+
+msgid "Angels currently working"
+msgstr "Angels momenteel aan het werk"
+
+msgid "Hours to be worked"
+msgstr "Te werken uren"
+
+msgid "Fullscreen"
+msgstr "Volledig scherm"
+
+msgid "Filtered"
+msgstr "Filteren"
+
+msgid "No shifts found."
+msgstr "Geen diensten gevonden."
+
+msgid "Your shift"
+msgstr "Mein dienst"
+
+msgid "Help needed"
+msgstr "Hulp nodig"
+
+msgid "Other angel type needed / collides with my shifts"
+msgstr "Andere angeltypes nodig / overlapt met mijn dienst"
+
+msgid "Shift is full"
+msgstr "Dienst zit vol"
+
+msgid "Shift is running/has ended, you have not arrived or signup is blocked otherwise"
+msgstr "Dienst is aan de gang of ten einde, je bent niet aangekomen of aanmeldingen zijn anderszins uitgeschakeld."
+
+msgid "Add more angels"
+msgstr "Voeg meer angels toe"
+
+msgid "%d helper needed"
+msgid_plural "%d helpers needed"
+msgstr[0] "%d helper benodigd"
+msgstr[1] "%d helpers benodigd"
+
+msgid "Sign up"
+msgstr "Meld aan"
+
+msgid "ended"
+msgstr "voorbij"
+
+msgid "please arrive for signup"
+msgstr "kom aan voor je aan te kunnen melden"
+
+msgid "not yet possible"
+msgstr "nog niet mogelijk"
+
+msgid "m-d"
+msgstr "m-d"
+
+msgid "Do you want to sign off %s from shift %s from %s to %s as %s?"
+msgstr "Wil je %s afmelden van dienst %s van %s tot %s als %s?"
+
+msgid "Do you want to sign off from your shift %s from %s to %s as %s?"
+msgstr "Wil je je afmelden van dienst %s van %s tot %s als %s?"
+
+msgid "Shift sign off"
+msgstr "Afmelden van dienst"
+
+msgid "Do you want to sign up the following user for this shift?"
+msgstr "Wil je de volgende gebruiker aanmelden voor deze dienst?"
+
+msgid "Do you want to sign up the following user for this shift as %s?"
+msgstr "Wil je de volgende gebruiker aanmelden als %s voor deze dienst?"
+
+msgid "Do you want to sign up for this shift as %s?"
+msgstr "Wil je je aanmelden voor deze dienst als %s?"
+
+msgid "Comment (for your eyes only):"
+msgstr "Opmerking (privé voor jou):"
+
+msgid "Shift signup"
+msgstr "Aanmelding dienst"
+
+msgid "Freeloaded"
+msgstr "Afwezig"
+
+msgid "Freeloaded by %s"
+msgstr "%s was afwezig"
+
+msgid "Freeload comment (Only for shift coordination and supporters):"
+msgstr "Afwezigheidsopmerking (privé voor shift-coördinatie en supporters):"
+
+msgid "Edit shift entry"
+msgstr "Werk shift bij"
+
+msgid "Angel:"
+msgstr "Angel:"
+
+msgid "Date, Duration:"
+msgstr "Datum, Duur:"
+
+msgid "Title:"
+msgstr "Titel:"
+
+msgid "Type:"
+msgstr "Type:"
+
+msgid "created at %s by %s"
+msgstr "aangemaakt op %s door %s"
+
+msgid "edited at %s by %s"
+msgstr "bijgewerkt op %s door %s"
+
+msgid "History ID: %s"
+msgstr "Geschiedenis-ID: %s"
+
+msgid "This shift is in the far future. It becomes available for signup at %s."
+msgstr "Deze dienst is in de verre toekomst, en is dus pas beschikbaar voor aanmelding op %s."
+
+msgid "Do you really want to add supporter rights for %s to %s?"
+msgstr "Wil je echt supporter-rechten voor %s aan %s verlenen?"
+
+msgid "Do you really want to remove supporter rights for %s from %s?"
+msgstr "Wil je echt de supporter-rechten voor %s van %s intrekken?"
+
+msgid "Do you really want to deny all users for %s?"
+msgstr "Wil je echt alle gebruikers voor %s afwijzen?"
+
+msgid "Do you really want to confirm all users for %s?"
+msgstr "Wil je echt alle gebruikers voor %s bevestigen?"
+
+msgid "Do you really want to confirm %s for %s?"
+msgstr "Wil je echt %s voor %s bevestigen?"
+
+msgid "Do you really want to remove \"%s\" from \"%s\"?"
+msgstr "Wil je echt \"%s\" uit \"%s\" verwijderen?"
+
+msgid "Do you really want to leave \"%2$s\"?"
+msgstr "Wil je echt weggaan bij \"%2$s\"?"
+
+msgid "Do you really want to add %s to %s?"
+msgstr "Wil je echt %s aan %s toevoegen?"
+
+msgid "Do you want to join %2$s?"
+msgstr "Wil je echt meedoen met %2$s?"
+
+msgid "Confirm user"
+msgstr "Bevestig gebruiker"
+
+msgid "Hide at Registration"
+msgstr "Verberg bij registratie"
+
+msgid "Back to profile"
+msgstr "Terug naar profiel"
+
+msgid "Your password"
+msgstr "Je wachtwoord"
+
+msgid ""
+"Do you really want to delete the user including all his shifts and every "
+"other piece of his data? All created shifts, news, answers etc. will be reassigned to you."
+msgstr ""
+"Wil je daadwerkelijk deze gebruiker, met al diens diensten en alle andere data,
+"verwijderen? Alle aangemelde diensten, nieuws, antwoorden etc. zullen aan jou toegewezen worden."
+
+msgid "voucher.vouchers"
+msgstr "Tegoedbonnen"
+
+msgid "voucher.edit"
+msgstr "Werk tegoedbon bij"
+
+msgid "voucher.eligible"
+msgstr "Angel kan nog %d tegoedbonnen ontvangen."
+
+msgid "voucher.eligible.fa"
+msgstr "Angel kan nog %d tegoedbonnen ontvangen en is gedwongen actief."
+
+msgid "voucher.count"
+msgstr "Aantal uitgegeven tegoedbonnen"
+
+msgid "user.state.vouchers"
+msgstr "Heeft %s van de %s tegoedbonnen"
+
+msgid "user.state.vouchers.none"
+msgstr "Heeft geen tegoedbonnen"
+
+msgid "Freeloads"
+msgstr "Afwezigheden"
+
+msgid "Last login"
+msgstr "Laatste login"
+
+msgid "Next shift %c"
+msgstr "Volgende dienst %c"
+
+msgid "Shift started %c"
+msgstr "Dienst begonnen %c"
+
+msgid "Shift ends %c"
+msgstr "Dienst geëindigd %c"
+
+msgid "Shift ended %c"
+msgstr "Dienst beëindigd %c"
+
+msgid "Sign off"
+msgstr "Meld af"
+
+msgid "Sum:"
+msgstr "Totaal:"
+
+msgid "Work log entry"
+msgstr "Werklogvermelding"
+
+msgid "Added by %s at %s"
+msgstr "Toegevoegd door %s op %s"
+
+msgid "Day & Time"
+msgstr "Dag & Tijd"
+
+msgid "Duration"
+msgstr "Duur"
+
+msgid "Name & Workmates"
+msgstr "Naam & Collega's"
+
+msgid "You have done enough."
+msgstr "Je hebt genoeg gedaan."
+
+msgid "%s has done enough."
+msgstr "%s heeft genoeg gedaan."
+
+msgid "iCal Export"
+msgstr "iCal-export"
+
+msgid "JSON Export"
+msgstr "JSON-export"
+
+msgid "Night shifts between %d and %d am are multiplied by %d for the goodie score."
+msgstr "Nachtdiensten tussen %d en %d uur tellen voor %d voor de goodie-score."
+
+msgid ""
+"Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
+"shifts."
+msgstr ""
+"Bezoek het <a href=\"%s\">dienstoverzicht</a> om je voor wat diensten aan te melden."
+
+msgid "State"
+msgstr "Status"
+
+msgid "Not arrived"
+msgstr "Niet aangekomen"
+
+msgid "Freeloader"
+msgstr "Afwezige"
+
+msgid "Arrived at %s"
+msgstr "Aangekomen op %s"
+
+msgid "Not arrived (Planned: %s)"
+msgstr "Niet aangekomen (Gepland: %s)"
+
+msgid "out of %s"
+msgstr "van de %s"
+
+msgid "Rights"
+msgstr "Rechten"
+
+msgid ""
+"You are not marked as arrived. Please go to Heaven, get your angel "
+"badge and/or tell them that you arrived already."
+msgstr ""
+"Je bent niet aangemerkt als aangekomen. Bezoek alsjeblieft Heaven en "
+"haal je angelbadge op en/of informeer ze over je aankomst!"
+
+msgid ""
+"Please enter your planned date of departure on your settings page to give us "
+"a feeling for teardown capacities."
+msgstr ""
+"Vul alsjeblieft je geplande vertrekdatum in bij je instellingen om ons een idee "
+"te geven voor de afbouwplanning."
+
+msgid "tshirt.required.hint"
+msgstr "Vul alsjeblieft je T-shirtmaat in bij je instellingen!"
+
+msgid "dect.required.hint"
+msgstr ""
+"Vul alsjeblieft je DECT-telefoonnummer in bij je instellingen! "
+"Als je geen DECT-telefoon hebt, vul dan '-' in."
+
+msgid "pronoun.required.hint"
+msgstr "Vul alsjeblieft een persoonlijk voornaamwoord in bij je instellingen!"
+
+msgid "firstname.required.hint"
+msgstr "Vul alsjeblieft je voornaam in bij je instellingen!"
+
+msgid "lastname.required.hint"
+msgstr "Vul alsjeblieft je achternaam in bij je instellingen!"
+
+msgid "mobile.required.hint"
+msgstr "Vul alsjeblieft een mobiel telefoonnummer in bij je instellingen!"
+
+msgid ""
+"Here you can change the user entry. Under the item 'Arrived' the angel is marked as present, "
+"a yes at Active means that the angel was active."
+msgstr ""
+"Hier kun je de gebruikersvermelding bijwerken. Onder het punt 'Aangekomen' wordt de angel als aanwezig aangemerkt, "
+"een Ja bij Actief betekent dat de angel actief is geweest."
+
+msgid "Here you can reset the password of this angel:"
+msgstr "Hier kun je het wachtwoord van deze angel resetten:"
+
+msgid "Here you can define the user groups of the angel:"
+msgstr "Hier kun je de gebruikersgroepen van deze angel aanpassen:"
+
+msgid "User groups saved."
+msgstr "Gebruikersgroepen bijgewerkt."
+
+msgid "You cannot edit angels with more rights."
+msgstr "Je kunt angels met meer rechten dan jij niet bewerken."
+
+msgid "You cannot edit your own rights."
+msgstr "Je kunt je eigen rechten niet bewerken."
+
+msgid "Changes were saved."
+msgstr "Veranderingen opgeslagen."
+
+msgid "Password reset done."
+msgstr "Wachtwoordreset uitgevoerd."
+
+msgid "The entries must match and must not be empty!"
+msgstr "De vermeldingen moeten overeenkomen en niet leeg zijn!"
+
+msgid "Number of shifts: %s"
+msgstr "Aantal diensten: %s"
+
+msgid "Shifts created."
+msgstr "Diensten aangemaakt."
+
+msgid "If the angel is active, it can claim a goodie. If goodie is set to 'Yes', the angel already got their goodie."
+msgstr "Als de angel actief is, kan deze een goodie claimen. Als goodie 'Ja' toont, heeft de angel deze al gekregen."
+
+msgid "Goodie"
+msgstr "Goodie"
+
+msgid "goodie"
+msgstr "goodie"
+
+msgid "Goodie score"
+msgstr "Goodiescore"
+
+msgid "Given goodies"
+msgstr "Uitgegeven goodies"
+
+msgid "Goodie statistic"
+msgstr "Goodiestatistieken"
+
+msgid "Remove goodie"
+msgstr "Verwijder goodie"
+
+msgid "Angel got a goodie."
+msgstr "Angel heeft een goodie gekregen"
+
+msgid "Angel got no goodie."
+msgstr "Angel heeft geen goodie gekregen."
+
+msgid "page.404.text"
+msgstr ""
+"Deze pagina bestaat niet of je hebt geen toestemming on deze op te vragen."
+"Je moet waarschijnlijk inloggen of je registreren om toegang te krijgen!"
+
+msgid "form.select_placeholder"
+msgstr "Kies alsjeblieft..."
+
+msgid "form.load_schedule"
+msgstr "Laad rooster"
+
+msgid "form.import"
+msgstr "Importeer"
+
+msgid "form.edit"
+msgstr "Werk bij"
+
+msgid "form.save"
+msgstr "Sla op"
+
+msgid "form.preview"
+msgstr "Voorproef"
+
+msgid "form.delete"
+msgstr "Verwijder"
+
+msgid "form.delete_all"
+msgstr "Verwijder alle"
+
+msgid "form.updated"
+msgstr "Bijgewerkt"
+
+msgid "form.cancel"
+msgstr "Annuleer"
+
+msgid "form.markdown"
+msgstr "Je kunt hier Markdown gebruiken"
+
+msgid "form.required"
+msgstr "Vereist"
+
+msgid "form.user_select"
+msgstr "Kies een gebruiker"
+
+msgid "form.tags"
+msgstr "Tags"
+
+msgid "form.tags.info"
+msgstr "Lijst van tags, gescheiden door een komma"
+
+msgid "schedule.import"
+msgstr "Importeer rooster"
+
+msgid "schedule.edit.title"
+msgstr "Werk rooster bij"
+
+msgid "schedule.delete.title"
+msgstr "Verwijder rooster met %u diensten"
+
+msgid "schedule.import.title"
+msgstr "Importeer rooster"
+
+msgid "schedule.last_update"
+msgstr "Laatst bijgewerkt: %s"
+
+msgid "schedule.import.text"
+msgstr "Imports maken locaties en diensten aan, en werken diensten bij aan de hand van een schedule.xml-export."
+
+msgid "schedule.import.load.title"
+msgstr "Importeer rooster: Voorproef"
+
+msgid "schedule.import.load.info"
+msgstr "Importeer \"%s\" (versie \"%s\")"
+
+msgid "schedule.name"
+msgstr "Roosternaam"
+
+msgid "schedule.url"
+msgstr "Rooster-URL (schedule.xml)"
+
+msgid "schedule.shift-type"
+msgstr "Diensttype"
+
+msgid "schedule.needed-from-shift-type"
+msgstr "Laad angeltypes uit diensttypes (anders uit locatie)"
+
+msgid "schedule.minutes-before"
+msgstr "Add minutes before talk begins"
+
+msgid "schedule.minutes-after"
+msgstr "Add minutes after talk ends"
+
+msgid "schedule.for_locations"
+msgstr "Voor locaties"
+
+msgid "schedule.import.locations.add"
+msgstr "Nieuwe locaties"
+
+msgid "schedule.import.shifts.add"
+msgstr "Nieuwe diensten"
+
+msgid "schedule.import.shifts.update"
+msgstr "Bij te werken diensten"
+
+msgid "schedule.import.shifts.delete"
+msgstr "Te verwijderen diensten"
+
+msgid "schedule.import.shift.dates"
+msgstr "Tijden"
+
+msgid "schedule.import.shift.type"
+msgstr "Types"
+
+msgid "schedule.import.shift.location"
+msgstr "Locatie"
+
+msgid "news.title"
+msgstr "Nieuws"
+
+msgid "news.title.meetings"
+msgstr "Bijeenkomsten"
+
+msgid "news.add"
+msgstr "+"
+
+msgid "news.is_meeting"
+msgstr "[Bijeenkomst]"
+
+msgid "news.edit.is_highlighted"
+msgstr "Uitgelicht"
+
+msgid "news.read_more"
+msgstr "Verderlezen"
+
+msgid "news.updated"
+msgstr "Bijgewerkt"
+
+msgid "news.comments"
+msgstr "Reacties"
+
+msgid "news.comments.new"
+msgstr "Nieuwe reactie"
+
+msgid "news.comments.message"
+msgstr "Bericht"
+
+msgid "news.edit.edit"
+msgstr "Werk nieuws bij"
+
+msgid "news.edit.add"
+msgstr "Maak nieuws aan"
+
+msgid "news.edit.subject"
+msgstr "Onderwerp"
+
+msgid "news.edit.is_meeting"
+msgstr "Bijeenkomst"
+
+msgid "news.edit.is_pinned"
+msgstr "Vastpinnen"
+
+msgid "news.edit.message"
+msgstr "Bericht"
+
+msgid "news.edit.hint"
+msgstr "Je kunt Markdown en de [meer]-tag gebruiken om de voorproef van de hoofdtekst te scheiden."
+
+msgid "news.delete.title"
+msgstr "Verwijder nieuws \"%s\""
+
+msgid "news.comments.delete.title"
+msgstr "Verwijder reactie \"%s\""
+
+msgid "notification.news.updated.introduction"
+msgstr "Het nieuws \"%1$s\" is bijgewerkt"
+
+msgid "notification.news.updated.text"
+msgstr "Je kunt het zien op %3$s"
+
+msgid "form.search"
+msgstr "Zoeken"
+
+msgid "log.log"
+msgstr "Logs"
+
+msgid "log.only_own"
+msgstr "Je kunt alleen je eigen logs inzien. Bureaucraten kunnen de logs van andere gebruikers nakijken."
+
+msgid "log.time"
+msgstr "Tijd"
+
+msgid "log.level"
+msgstr "Urgentie"
+
+msgid "log.message"
+msgstr "Bericht"
+
+msgid "settings.settings"
+msgstr "Instellingen"
+
+msgid "settings.profile.entry_required"
+msgstr "Verplicht veld"
+
+msgid "general.nick"
+msgstr "Gebruikersnaam"
+
+msgid "settings.profile.nick.already-taken"
+msgstr "Deze gebruikersnaam is al in gebruik."
+
+msgid "settings.profile.pronoun"
+msgstr "Persoonlijk voornaamwoord"
+
+msgid "settings.profile.pronoun.info"
+msgstr "Wordt getoond op je profielpagina en in angellijsten."
+
+msgid "settings.profile.firstname"
+msgstr "Voornaam"
+
+msgid "settings.profile.lastname"
+msgstr "Achternaam"
+
+msgid "settings.profile.planned_arrival_date"
+msgstr "Geplande aankomstdatum"
+
+msgid "settings.profile.planned_departure_date"
+msgstr "Geplande vertrekdatum"
+
+msgid "settings.profile.mobile"
+msgstr "Mobiel"
+
+msgid "settings.profile.mobile_show"
+msgstr "Toon mobiele nummer aan andere gebruikers."
+
+msgid "settings.profile.email-preferences"
+msgstr "E-mailvoorkeuren"
+
+msgid "general.email"
+msgstr "E-mail"
+
+msgid "settings.profile.email.already-taken"
+msgstr "Dit e-mailadres is al in gebruik."
+
+msgid "settings.profile.email_shiftinfo"
+msgstr "Het %s mag me een e-mail sturen (bijv. als mijn diensten veranderen)."
+
+msgid "registration.email_system"
+msgstr "Het %s mag me een email sturen "
+"(bijv. als mijn diensten veranderen, of bij privéberichten of nieuws)."
+
+msgid "registration.email_system.info"
+msgstr "Specifieke voorkeuren kunnen in je profiel ingesteld worden."
+
+msgid "settings.profile.email_news"
+msgstr "Houd me op de hoogte van nieuws."
+
+msgid "settings.profile.email_messages"
+msgstr "Houd me op de hoogte van nieuwe privéberichten."
+
+msgid "settings.profile.email_by_human_allowed"
+msgstr "Heaven-angels mogen me een e-mail sturen."
+
+msgid "settings.profile.email_goodie"
+msgstr "Om mogelijke vouchers voor het volgende soortgelijke evenement te ontvangen, stem ik in "
+"met het opslaan van mijn gebruikersnaam, e-mailadres en gewerkte uren tot die tijd."
+
+msgid "settings.profile.email_tshirt"
+msgstr "Om mogelijke vouchers voor het volgende soortgelijke evenement te ontvangen, stem ik in "
+"met het opslaan van mijn gebruikersnaam, e-mailadres, gewerkte uren en T-shirtmaat tot die tijd."
+
+msgid "settings.profile.privacy"
+msgstr "Je kunt je instemming tijdens het evenement in je profielinstellingen intrekken, "
+"en erna door een e-mail aan <a href=\"mailto:%s\">%1$s</a> te sturen."
+
+msgid "settings.profile.shirt_size.hint"
+msgstr "Een straight-cut T-shirt heeft brede schouders en een bijna-vierkante lichaamsvorm. "
+"Een fitted-cut T-shirt heeft een zijnaad die strakker rondom de taille en breder rondom "
+"de borstkas en heupen is."
+"Normaal zijn fitted-cut T-shirts kleiner dan straight-cut T-shirts van dezelfde maat, "
+"maar maten verschillen tussen de verschillende merken."
+
+msgid "settings.profile.shirt.link"
+msgstr "Meer informatie"
+
+msgid "settings.profile.angeltypes.info"
+msgstr "Je kunt je angeltypes bijwerken op de <a href=\"%s\">angeltypes-pagina</a>."
+
+msgid "profile.my_shifts"
+msgstr "Mijn diensten"
+
+msgid "settings.profile"
+msgstr "Profiel"
+
+msgid "settings.password"
+msgstr "Wachtwoord"
+
+msgid "settings.password.info"
+msgstr "Hier kun je je wachtwoord veranderen."
+
+msgid "settings.password.confirmation-does-not-match"
+msgstr "Wachtwoord en wachtwoordbevestiging komen niet overeen."
+
+msgid "settings.password.password"
+msgstr "Huidige wachtwoord"
+
+msgid "settings.password.new_password"
+msgstr "Nieuwe wachtwoord"
+
+msgid "settings.password.new_password2"
+msgstr "Bevestiging van nieuwe wachtwoord"
+
+msgid "settings.password.success"
+msgstr "Wachtwoord is met succes bijgewerkt."
+
+msgid "settings.sessions"
+msgstr "Sessies"
+
+msgid "settings.sessions.info"
+msgstr "Hier kun je je browsersessies inzien en intrekken."
+
+msgid "settings.sessions.current"
+msgstr "Huidige sessie"
+
+msgid "settings.sessions.id"
+msgstr "Sessie-ID"
+
+msgid "settings.sessions.last_activity"
+msgstr "Laatste handeling"
+
+msgid "settings.theme"
+msgstr "Thema"
+
+msgid "settings.theme.info"
+msgstr "Hier kun je je thema veranderen."
+
+msgid "settings.theme.success"
+msgstr "Thema is met success veranderd."
+
+msgid "settings.certificates"
+msgstr "Certificeringen"
+
+msgid "settings.certificates.info"
+msgstr "Deze informatie is alleen zichtbaar voor ondersteuners en beheerders."
+
+msgid "settings.certificates.title.ifsg"
+msgstr "Hygiëneinstructie"
+
+msgid "settings.certificates.driving_license"
+msgstr "Rijbewijs"
+
+msgid "settings.certificates.has_car"
+msgstr ""
+"Ik heb mijn eigen auto en ben bereid deze voor het evenement te gebruiken. "
+"(brandstofkosten worden vergoed)"
+
+msgid "settings.certificates.drive_car"
+msgstr "Auto"
+
+msgid "settings.certificates.drive_3_5t"
+msgstr "3,5-ton bakwagen"
+
+msgid "settings.certificates.drive_7_5t"
+msgstr "7,5-ton verwachtwagen"
+
+msgid "settings.certificates.drive_12t"
+msgstr "12-ton vrachtwagen"
+
+msgid "settings.certificates.drive_forklift"
+msgstr "Vorkheftruck"
+
+msgid "settings.certificates.ifsg_light"
+msgstr "Ik heb on-site instructie gehad over IfSG §43 (aka Frikadellendiplom light)."
+
+msgid "settings.certificates.ifsg_light_admin"
+msgstr "Heeft on-site instructie gehad over IfSG §43 (aka Frikadellendiplom light)."
+
+msgid "settings.certificates.ifsg"
+msgstr "Ik heb instructie van mijn gezondheidsafdeling gehad over IfSG §43 (aka Frikadellendiplom) "
+"en heb binnen 3 maanden een tweede instructie gehad van mijn werkgever/chef/vereniging gehad. "
+"Mijn laatste instructie was in de afgelopen 2 jaar."
+
+msgid "settings.certificates.ifsg_admin"
+msgstr "Heeft instructie van een gezondheidsafdeling gehad over §43 IfSG (aka Frikadellendiplom) "
+"en heeft binnen 3 maanden een tweede instructie gehad van ons of diens werkgever/chef/vereniging. "
+"De laatste instructie was in de afgelopen 2 jaar."
+
+msgid "settings.certificates.confirmed"
+msgstr "Certificeringen bevestigd"
+
+msgid "settings.certificates.ifsg_confirmed.hint"
+msgstr "Je hygiëneinstructie is bevestigd, je kunt deze niet meer zelf bijwerken."
+
+msgid "settings.certificates.drive_confirmed.hint"
+msgstr "Je rijbewijs is bevestigd, je kunt deze niet meer zelf bijwerken."
+
+msgid "settings.certificates.confirmation.info"
+msgstr "Je bent persoonlijk nagegaan dat de certificering aan de vereisten voldoet."
+
+msgid "settings.certificates.success"
+msgstr "Certificeringen zijn met success bijgewerkt."
+
+msgid "angeltype.ifsg.required"
+msgstr "Vereist hygiëneinstructie"
+
+msgid "ifsg.certificate"
+msgstr "Hygiëneinstructie"
+
+msgid "ifsg.certificate_light"
+msgstr "On-site hygiëneinstructie"
+
+msgid "angeltype.ifsg.own"
+msgstr "Mijn hygiëneinstructie"
+
+msgid "angeltype.ifsg.required.info"
+msgstr "Dit angeltype vereist een hygiëneinstructie. Vul alsjeblieft informatie in over je hygiëneinstructie!"
+
+msgid "angeltype.ifsg.required.info.here"
+msgstr "Je hebt een angeltype aangegeven dat een hygiëneinstructie vereist.  "
+"Vul alsjeblieft hier informatie in over je hygiëneinstructie: %s."
+
+msgid "angeltype.driving_license.required.info.here"
+msgstr ""
+"Je hebt een angeltype aangegeven dat een rijbewijs vereist. "
+"Vul alsjeblieft hier informatie in over je rijbewijs:  %s."
+
+msgid "ifsg.info"
+msgstr "Hygiëneinstructie-informatie"
+
+msgid "driving_license.info"
+msgstr "Rijbewijsinformatie"
+
+msgid "settings.language"
+msgstr "Taal"
+
+msgid "settings.language.info"
+msgstr "Hier kun je je taal veranderen."
+
+msgid "settings.language.success"
+msgstr "Taal is met succes veranderd."
+
+msgid "settings.api"
+msgstr "API"
+
+msgid "settings.api.about"
+msgstr ""
+"Met de API kun je met het %s werken door middel van externe programma's . "
+"Deze is niet compleet, maar we zijn bezig het uit te breiden.\n"
+"Het API-endpoint is te vinden op `%s` en beschreven in de [OpenAPI-specificatie](%s)."
+
+msgid "settings.api.about.warning"
+msgstr ""
+"Deel je persoonlijke API-key niet, deze kan gebruikt worden om je persoonlijke gegevens in te zien "
+"en veranderingen door te voeren in jouw naam!"
+
+msgid "settings.api.shifts_json_show"
+msgstr "Toon JSON-export van diensten"
+
+msgid "settings.api.ical_show"
+msgstr "Toon iCal-export"
+
+msgid "settings.api.news_show"
+msgstr "Toon nieuwsfeed"
+
+msgid "settings.api.key_show"
+msgstr "Toon API-key"
+
+msgid "settings.api.key_reset"
+msgstr "Reset API-key"
+
+msgid "settings.api.key_reset_confirm"
+msgstr "Als je de API-key reset, moet je deze in al je programm's bijwerken."
+
+msgid "settings.oauth"
+msgstr "Single sign-On"
+
+msgid "settings.oauth.identity-provider"
+msgstr "Loginprovider"
+
+msgid "oauth.login"
+msgstr "Log in met OAuth"
+
+msgid "oauth.login-using-provider"
+msgstr "Log in met %s"
+
+msgid "form.connect"
+msgstr "Koppel"
+
+msgid "form.all"
+msgstr "Alle"
+
+msgid "form.disconnect"
+msgstr "Ontkoppel"
+
+msgid "faq.faq"
+msgstr "FAQ"
+
+msgid "faq.questions_link"
+msgstr "Als je geen antwoord op je vraag kunt vinden, kun je deze <a href=\"%s\">aan Heaven vragen</a>."
+
+msgid "faq.edit"
+msgstr "Werk FAQ-vraag bij"
+
+msgid "faq.add"
+msgstr "Maak FAQ-vraag aan"
+
+msgid "faq.delete.title"
+msgstr "Verwijder FAQ-vraag \"%s\""
+
+msgid "question.questions"
+msgstr "Vragen"
+
+msgid "question.admin"
+msgstr "Beantwoord vragen"
+
+msgid "question.faq_link"
+msgstr "Bekijk onze <a href=\"%s\">FAQ</a> voor antwoorden op algemene vragen."
+
+msgid "question.add"
+msgstr "Stel een vraag"
+
+msgid "question.edit"
+msgstr "Werk vraag bij"
+
+msgid "question.question"
+msgstr "Vraag"
+
+msgid "question.answer"
+msgstr "Antwoord"
+
+msgid "question.delete.title"
+msgstr "Verwijder vraag \"%s\""
+
+msgid "question.contact_options"
+msgstr "Andere contactmogelijkheden: "
+
+msgid "tag.tags"
+msgstr "Tags"
+
+msgid "tag.edit"
+msgstr "Werk tag bij"
+
+msgid "tag.add"
+msgstr "Maak tag aan"
+
+msgid "tag.delete.title"
+msgstr "Verwijder tag \"%s\""
+
+msgid "user.edit.goodie"
+msgstr "Werk goodie bij"
+
+msgid "user.goodie_score.enough"
+msgstr "Genoeg"
+
+msgid "user.goodie_score.value"
+msgstr "%s u"
+
+msgid "user.goodie_score"
+msgstr "Goodiescore: %s"
+
+msgid "user.shirt_size"
+msgstr "T-shirtmaat"
+
+msgid "user.active"
+msgstr "Actief"
+
+msgid "user.force_active"
+msgstr "Actief (gedwongen)"
+
+msgid "user.arrived"
+msgstr "Aangekomen"
+
+msgid "user.arrive"
+msgstr "Meld aankomst"
+
+msgid "user.got_goodie"
+msgstr "Heeft goodie gekregen"
+
+msgid "message.title"
+msgstr "Berichten"
+
+msgid "message.choose_angel"
+msgstr "Kies een angel"
+
+msgid "message.to_conversation"
+msgstr "Naar gesprek"
+
+msgid "message.message"
+msgstr "Bericht"
+
+msgid "general.angel"
+msgstr "Angel"
+
+msgid "worklog.add"
+msgstr "Maak werklog aan"
+
+msgid "worklog.edit"
+msgstr "Werk werklog bij"
+
+msgid "worklog.date"
+msgstr "Werkdatum"
+
+msgid "worklog.hours"
+msgstr "Werkuren"
+
+msgid "worklog.comment"
+msgstr "Opmerking"
+
+msgid "worklog.delete"
+msgstr "Verwijder werklog"
+
+msgid "worklog.delete.info"
+msgstr "Wil je echt je werklog voor %s verwijderen?"
+
+msgid "angeltypes.angeltypes"
+msgstr "Angeltypes"
+
+msgid "angeltypes.about"
+msgstr "Teams- en taakbeschrijvingen"
+
+msgid "angeltypes.about.text"
+msgstr "Hier kun je een lijst van teams en hun taken vinden. Als je verdere vragen hebt, "
+"zou je de <a href=\"%s\">FAQ</a> kunnen bekijken."
+
+msgid "angeltypes.restricted.hint"
+msgstr "Dit angeltype vereist je aanwezigheid bij een introductiebijeenkomst. "
+"Meer informatie staat wellicht in de beschrijving."
+
+msgid "angeltypes.can-change-later"
+msgstr "Je kunt je keuze later in de instellingen bijwerken."
+
+msgid "angeltypes.hide_on_shift_view"
+msgstr "Verberg in dienstoverzicht"
+
+msgid "angeltypes.hide_on_shift_view.info"
+msgstr "Als dit is aangekruist kunnen alleen administratoren en angels van dit angeltype"
+"de filterkeuze voor dit angeltype zien op het dienstoverzicht"
+
+msgid "location.location"
+msgstr "Locatie"
+
+msgid "location.locations"
+msgstr "Locaties"
+
+msgid "location.map_url"
+msgstr "Kaart"
+
+msgid "location.required_angels"
+msgstr "Vereiste angels (bij roosterimport)"
+
+msgid "location.map_url.info"
+msgstr "De kaart wordt inbegrepen als iframe op de locatiepagina."
+
+msgid "location.create.title"
+msgstr "Maak locatie aan"
+
+msgid "location.edit.title"
+msgstr "Werk locatie bij"
+
+msgid "location.delete.title"
+msgstr "Verwijder locatie \"%s\""
+
+msgid "shifttype.shifttypes"
+msgstr "Diensttypes"
+
+msgid "shifttype.edit.title"
+msgstr "Werk diensttype bij"
+
+msgid "shifttype.create.title"
+msgstr "Maak diensttype aan"
+
+msgid "shifttype.delete.title"
+msgstr "Verwijder diensttype \"%s\""
+
+msgid "shifttype.required_angels"
+msgstr "Vereiste angels (bij roosterimport)"
+
+msgid "shifttype.edit.signup_advance_hours"
+msgstr "Aantal uren vooruit voor eigen dienstkeuze"
+
+msgid "shifttype.edit.signup_advance_hours.info"
+msgstr "Aantal uren vóór begin dienst waarin eigen keuze is toegestaan"
+
+msgid "event.day"
+msgstr "Dag %1$d"
+
+msgid "dashboard.day"
+msgstr "Dag"
+
+msgid "registration.title"
+msgstr "Angelregistratie"
+
+msgid "registration.login_data"
+msgstr "Gebruikerinfo"
+
+msgid "registration.event_data"
+msgstr "Evenementinfo"
+
+msgid "registration.what_todo"
+msgstr "Wat zou je willen doen?"
+
+msgid "registration.jobs"
+msgstr "Je kunt lezen over hoe je ons kunt helpen bij de "
+"<a href=\"%s\" target=\"_blank\">teams- en taakbeschrijvingen</a>."
+
+msgid "registration.register"
+msgstr "Registreer"
+
+msgid "confirmation.delete"
+msgstr "Wil je dit echt verwijderen?"
+
+msgid "general.id"
+msgstr "ID"
+
+msgid "general.user"
+msgstr "Gebruiker"
+
+msgid "general.count"
+msgstr "Aantal"
+
+msgid "general.created_at"
+msgstr "Aangemaakt op"
+
+msgid "shifts.history"
+msgstr "Dienstgeschiedenis"
+
+msgid "shifts.history.schedule"
+msgstr "Rooster: %s"
+
+msgid "shifts.history.delete_all.title"
+msgstr "Verwijder %u diensten"
+
+msgid "shifts.start"
+msgstr "Begin"
+
+msgid "shifts.end"
+msgstr "Einde"
+
+msgid "user.info"
+msgstr "Gebruikersinformatie"
+
+msgid "user.info.hint"
+msgstr ""
+"Is zichtbaar voor roostercoördinatoren en administratoren in het gebruikersoverzicht. "
+"Als een angel niet als aangekomen is gemeld, verwijdert gebruikersinformatie de niet-aangekomen-melding in het angel-systeemmenu."
+
+msgid "user_info.not_arrived_hint"
+msgstr "Als je je wilt aanmelden voor diensten, kom dan vooral langs bij Heaven."
+
+msgid "design.title"
+msgstr "Ontwerp"
+
+msgid "notification.shift.updated.introduction"
+msgstr "Je dienst is bijgewerkt:"
+
+msgid "notification.shift.updated.type"
+msgstr "Diensttype is bijgewerkt van %s naar %s"
+
+msgid "notification.shift.updated.title"
+msgstr "Diensttitle is bijgewerkt van %s naar %s"
+
+msgid "notification.shift.updated.description"
+msgstr "Dienstbeschrijving is bijgewerkt"
+
+msgid "notification.shift.updated.start"
+msgstr "Dienstbegintijd is bijgewerkt van %s naar %s"
+
+msgid "notification.shift.updated.end"
+msgstr "Diensteindtijd is bijgewerkt van %s naar %s"
+
+msgid "notification.shift.updated.location"
+msgstr "Dienstlocatie is bijgewerkt van %s naar %s"
+
+msgid "notification.shift.updated.shift"
+msgstr "De bijgewerkte dienst:"
+
+msgid "admin_shifts.no_locations"
+msgstr "Er zijn nog geen locaties. Je kunt geen diensten aanmaken zonder."
+
+msgid "admin_shifts.no_shifttypes"
+msgstr "Er zijn nog geen diensttypes. Je kunt geen diensten aanmaken zonder."
+
+msgid "admin_shifts.no_angeltypes"
+msgstr "Er zijn nog geen angeltypes. Je kunt geen diensten aanmaken zonder."
+
+msgid "shift.sign_out.hint"
+msgstr "Je kunt jezelf afmelden tot %d uur voor het begin van de dienst. "
+"Als je daarna niet je dienst kunst doen, vraag dan Heaven om je af te melden."
+
+msgid "Password reset in progress"
+msgstr "Wachtwoordreset wordt uitgevoerd"
+
+msgid "freeload.info.goodie"
+msgstr "Je was niet aanwezig bij je dienst. "
+"Tweemaal de lengte van de dienst is afgetrokken van je %s. Neem contact op met Heaven als je vragen hebt."
+
+msgid "freeload.info"
+msgstr "Je was niet aanwezig bij deze dienst. "
+"Neem contact op met Heaven als je vragen hebt."
+
+msgid "freeload.freeloader.info"
+msgstr "Je was niet aanwezig voor ten minste %s diensten. Dienstaanmelding is daarom uitgezet."
+"Neem contact op met Heaven om aanmelding weer te activeren."
+
+msgid "freeload.freeloaded.info.goodie"
+msgstr ""
+"Als een angel niet aanwezig was bij een dienst, wordt tweemaal de lengte van deze dienst afgetrokken van de %s. "
+"Als %s diensten worden gemist, zal dienstaanmelding worden uitgezet voor de angel."
+
+msgid "freeload.freeloaded.info"
+msgstr ""
+"De angel was niet aanwezig bij een dienst. "
+"Als %s diensten worden gemist, zal dienstaanmelding worden uitgezet voor de angel."
+
+msgid "config.config"
+msgstr "Instellingen"
+
+msgid "config.edit.success"
+msgstr "Instellingen met succes bijgewerkt"
+
+msgid "schedule.import.request_error"
+msgstr "Kan rooster niet loaden."
+
+msgid "angel"
+msgstr "Angel"
+
+msgid "general.actions"
+msgstr "Acties"
