@@ -30,6 +30,10 @@ return [
                 'bool' => [
                     'type' => 'boolean',
                 ],
+                'multi_val' => [
+                    'type' => 'select_multi',
+                    'data' => ['test'],
+                ],
             ],
         ],
         'system' => [

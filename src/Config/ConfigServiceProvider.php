@@ -118,7 +118,10 @@ class ConfigServiceProvider extends ServiceProvider
     {
         foreach ($config->get('config_options', []) as $options) {
             foreach ($options['config'] as $name => $option) {
-                $value = $this->getEnvValue(empty($option['env']) ? $name : $option['env']);
+                $value = $this->getEnvValue(
+                    empty($option['env']) ? $name : $option['env'],
+                    ($option['type'] ?? '') == 'select_multi',
+                );
                 if (is_null($value)) {
                     continue;
                 }
@@ -128,18 +131,22 @@ class ConfigServiceProvider extends ServiceProvider
         }
     }
 
-    protected function getEnvValue(string $name): mixed
+    protected function getEnvValue(string $name, bool $isList = false): mixed
     {
         $name = Str::upper($name);
         if (isset($this->envConfig[$name])) {
             return $this->envConfig[$name];
         }
 
-        $file = Env::get($name  . '_FILE');
+        $file = Env::get($name . '_FILE');
         if (!is_null($file) && is_readable($file)) {
             $value = file_get_contents($file);
         } else {
             $value = Env::get($name);
+        }
+
+        if ($isList && !is_null($value)) {
+            $value = empty($value) ? [] : explode(',', preg_replace('~\s+~', '', $value));
         }
 
         $this->envConfig[$name] = $value;

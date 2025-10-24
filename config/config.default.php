@@ -247,16 +247,6 @@ return [
     // Number of users shown on one admin page table
     'display_users'           => env('DISPLAY_USERS', 100),
 
-    // Required user fields
-    'required_user_fields' => [
-        'pronoun'            => (bool) env('PRONOUN_REQUIRED', false),
-        'firstname'          => (bool) env('FIRSTNAME_REQUIRED', false),
-        'lastname'           => (bool) env('LASTNAME_REQUIRED', false),
-        'tshirt_size'        => (bool) env('TSHIRT_SIZE_REQUIRED', true),
-        'mobile'             => (bool) env('MOBILE_REQUIRED', false),
-        'dect'               => (bool) env('DECT_REQUIRED', false),
-    ],
-
     // Allow joining angel type via generated QR code
     'join_qr_code'            => (bool) env('JOIN_QR_CODE', true),
 

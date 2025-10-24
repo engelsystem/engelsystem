@@ -198,6 +198,20 @@ return [
                     'type' => 'boolean',
                     'default' => true,
                 ],
+                'required_user_fields' => [
+                    'type' => 'select_multi',
+                    'data' => [
+                        'pronoun' => 'settings.profile.pronoun',
+                        'firstname' => 'settings.profile.firstname',
+                        'lastname' => 'settings.profile.lastname',
+                        'tshirt_size' => 'user.shirt_size',
+                        'mobile' => 'settings.profile.mobile',
+                        'dect' => 'general.dect',
+                    ],
+                    'default' => [
+                        'tshirt_size',
+                    ],
+                ],
                 'enable_planned_arrival' => [
                     'type' => 'boolean',
                     'default' => true,

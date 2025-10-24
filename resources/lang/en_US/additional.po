@@ -393,6 +393,9 @@ msgstr "Show a users first name and last name instead of username"
 msgid "config.enable_pronoun"
 msgstr "Pronouns"
 
+msgid "config.required_user_fields"
+msgstr "Required user fields"
+
 msgid "config.enable_planned_arrival"
 msgstr "Planned arrival / departure"
 

@@ -79,6 +79,7 @@ class ConfigController extends BaseController
                 'boolean' => !empty($value),
                 'number' => (float) $value,
                 'password' => $value === '**********' ? $this->config->get($key) : $value,
+                'select_multi' => is_null($value) ? [] : $value,
                 default => $value,
             };
 

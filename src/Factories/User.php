@@ -70,7 +70,7 @@ class User
     private function isRequired(string $key): string
     {
         $requiredFields = $this->config->get('required_user_fields');
-        return $requiredFields[$key] ? 'required' : 'optional';
+        return in_array($key, $requiredFields) ? 'required' : 'optional';
     }
 
     /**

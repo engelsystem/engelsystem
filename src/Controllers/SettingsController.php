@@ -50,12 +50,12 @@ class SettingsController extends BaseController
                     && config('enable_email_goodie'),
                 'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
                 'tShirtLink' => $this->config->get('tshirt_link'),
-                'isPronounRequired' => $requiredFields['pronoun'],
-                'isFirstnameRequired' => $requiredFields['firstname'],
-                'isLastnameRequired' => $requiredFields['lastname'],
-                'isTShirtSizeRequired' => $requiredFields['tshirt_size'],
-                'isMobileRequired' => $requiredFields['mobile'],
-                'isDectRequired' => $requiredFields['dect'],
+                'isPronounRequired' => in_array('pronoun', $requiredFields),
+                'isFirstnameRequired' => in_array('firstname', $requiredFields),
+                'isLastnameRequired' => in_array('lastname', $requiredFields),
+                'isTShirtSizeRequired' => in_array('tshirt_size', $requiredFields),
+                'isMobileRequired' => in_array('mobile', $requiredFields),
+                'isDectRequired' => in_array('dect', $requiredFields),
             ]
         );
     }
@@ -445,7 +445,7 @@ class SettingsController extends BaseController
     private function isRequired(string $key): string
     {
         $requiredFields = $this->config->get('required_user_fields');
-        return $requiredFields[$key] ? 'required' : 'optional';
+        return in_array($key, $requiredFields) ? 'required' : 'optional';
     }
 
     /**

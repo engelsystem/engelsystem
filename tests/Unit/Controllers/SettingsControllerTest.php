@@ -1113,14 +1113,7 @@ class SettingsControllerTest extends ControllerTest
             'de_DE',
         ];
         $tshirt_sizes = ['S' => 'Small'];
-        $requiredFields = [
-            'pronoun'     => false,
-            'firstname'   => false,
-            'lastname'    => false,
-            'tshirt_size' => true,
-            'mobile'      => false,
-            'dect'        => false,
-        ];
+        $requiredFields = ['tshirt_size'];
         $this->config = new Config([
             'password_min_length' => 6,
             'themes' => $themes,

@@ -133,6 +133,7 @@ class ConfigServiceProviderTest extends TestCase
 
         Env::getRepository()->set('VALUE_FROM_ENV', 'env value');
         Env::getRepository()->set('SOME_FOO', 'foo has a value');
+        Env::getRepository()->set('MULTI_VAL', 'some, test,value');
         Env::getRepository()->set('ANOTHER_BAR_FILE', $this->app->get('path.config') . '/secret_file');
 
         $serviceProvider = new ConfigServiceProvider($this->app);
@@ -146,6 +147,7 @@ class ConfigServiceProviderTest extends TestCase
 
         $this->assertEquals('env value', $conf['from_env']);
         $this->assertEquals('foo has a value', $conf['some_foo']);
+        $this->assertEquals(['some', 'test', 'value'], $conf['multi_val']);
         $this->assertEquals('something secret!' . PHP_EOL, $conf['another_bar']);
         // Not existing value is not set yet
         $this->assertArrayNotHasKey('not_set', $conf);

@@ -11,14 +11,7 @@ final class SignUpConfig
 {
     public static function setMaximumConfig(Config $config): void
     {
-        $requiredFields = [
-            'pronoun'     => false,
-            'firstname'   => false,
-            'lastname'    => false,
-            'tshirt_size' => true,
-            'mobile'      => false,
-            'dect'        => false,
-        ];
+        $requiredFields = ['tshirt_size'];
         $config->set('registration_enabled', true);
         $config->set('enable_password', true);
         $config->set('enable_pronoun', true);
@@ -41,14 +34,7 @@ final class SignUpConfig
 
     public static function setMinimumConfig(Config $config): void
     {
-        $requiredFields = [
-            'pronoun'     => false,
-            'firstname'   => false,
-            'lastname'    => false,
-            'tshirt_size' => true,
-            'mobile'      => false,
-            'dect'        => false,
-        ];
+        $requiredFields = ['tshirt_size'];
         $config->set('registration_enabled', true);
         $config->set('enable_password', true);
         $config->set('enable_pronoun', false);

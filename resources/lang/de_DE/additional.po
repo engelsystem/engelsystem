@@ -394,6 +394,9 @@ msgstr "Zeige den vollen Namen anstatt dem Benutzernamens"
 msgid "config.enable_pronoun"
 msgstr "Pronomen"
 
+msgid "config.required_user_fields"
+msgstr "Benutzer-Pflichtfelder"
+
 msgid "config.enable_planned_arrival"
 msgstr "Geplante Ankunft / Abreise"
 
