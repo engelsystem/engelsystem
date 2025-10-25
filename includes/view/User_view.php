@@ -840,15 +840,18 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
                 . '</span>';
 
             if ($user_source->state->force_active && config('enable_force_active')) {
-                $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
+                $state[] = '<span class="text-success">' . __('user.force_active') . ' '
+                    .  __('user.by', [User_Nick_render($user_source->state->forceActiveBy)]) . '</span>';
             } elseif ($user_source->state->active) {
                 $state[] = '<span class="text-success">' . __('user.active') . '</span>';
             }
             if ($user_source->state->force_food && config('enable_force_food')) {
-                $state[] = '<span class="text-success">' . __('user.force_food') . '</span>';
+                $state[] = '<span class="text-success">' . __('user.force_food') . ' '
+                    .  __('user.by', [User_Nick_render($user_source->state->forceFoodBy)]) . '</span>';
             }
             if ($user_source->state->got_goodie && $goodie_enabled) {
-                $state[] = '<span class="text-success">' . __('Goodie') . '</span>';
+                $state[] = '<span class="text-success">' . __('Goodie') . ' '
+                    .  __('user.by', [User_Nick_render($user_source->state->gotGoodieBy)]) . '</span>';
             }
         } else {
             $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';

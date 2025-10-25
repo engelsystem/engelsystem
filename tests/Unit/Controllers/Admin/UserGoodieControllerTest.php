@@ -125,11 +125,13 @@ class UserGoodieControllerTest extends ControllerTest
             ->has(PersonalData::factory())
             ->create();
 
+        $user = User::find(1);
         $auth
             ->expects($this->exactly(6))
             ->method('can')
             ->with('admin_arrive')
             ->willReturnOnConsecutiveCalls(true, true, false, false, true, true);
+        $this->setExpects($auth, 'user', null, $user, $this->any());
         $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(6));
 
         $controller = new UserGoodieController(
@@ -148,7 +150,6 @@ class UserGoodieControllerTest extends ControllerTest
         $this->assertHasNotification('user.edit.success');
         $this->assertTrue($this->log->hasInfoThatContains('Updated user goodie state'));
 
-        $user = User::find(1);
         $this->assertEquals('S', $user->personalData->shirt_size);
         $this->assertFalse($user->state->arrived);
         $this->assertFalse($user->state->active);

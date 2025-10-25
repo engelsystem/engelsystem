@@ -17,15 +17,18 @@ class StateFactory extends Factory
     public function definition(): array
     {
         $arrival = $this->faker->optional()->dateTimeThisMonth();
+        $force_active_by = $this->faker->optional(.1)->passthrough(User::factory());
+        $force_food_by = $this->faker->optional(.1)->passthrough(User::factory());
+        $got_goodie_by = $this->faker->optional(.3)->passthrough(User::factory());
 
         return [
             'user_id'      => User::factory(),
             'arrival_date' => $arrival ? Carbon::instance($arrival) : null,
             'user_info'    => $this->faker->optional(.1)->text(),
             'active'       => $this->faker->boolean(.3),
-            'force_active' => $this->faker->boolean(.1),
-            'force_food' => $this->faker->boolean(.1),
-            'got_goodie'   => $this->faker->boolean(),
+            'force_active_by' => $force_active_by,
+            'force_food_by' => $force_food_by,
+            'got_goodie_by'   => $got_goodie_by,
             'got_voucher'  => $this->faker->numberBetween(0, 10),
         ];
     }
