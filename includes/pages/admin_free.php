@@ -50,7 +50,7 @@ function admin_free()
                     ->where('shifts.start', '<', Carbon::now())
                     ->where('shifts.end', '>', Carbon::now());
             })
-            ->where('users_state.arrived', '=', 1)
+            ->whereNotNull('users_state.arrival_date')
             ->whereNull('shifts.id')
             ->orderBy('users.name')
             ->groupBy('users.id');

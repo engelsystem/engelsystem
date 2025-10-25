@@ -38,7 +38,6 @@ function admin_arrive()
             $user_id = $request->input('user');
             $user_source = User::find($user_id);
             if ($user_source) {
-                $user_source->state->arrived = false;
                 $user_source->state->arrival_date = null;
                 $user_source->state->save();
 
@@ -57,7 +56,6 @@ function admin_arrive()
             $user_id = $request->input('user');
             $user_source = User::find($user_id);
             if ($user_source) {
-                $user_source->state->arrived = true;
                 $user_source->state->arrival_date = new Carbon\Carbon();
                 $user_source->state->save();
 

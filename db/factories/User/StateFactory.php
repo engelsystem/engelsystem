@@ -20,7 +20,6 @@ class StateFactory extends Factory
 
         return [
             'user_id'      => User::factory(),
-            'arrived'      => (bool) $arrival,
             'arrival_date' => $arrival ? Carbon::instance($arrival) : null,
             'user_info'    => $this->faker->optional(.1)->text(),
             'active'       => $this->faker->boolean(.3),
@@ -39,7 +38,6 @@ class StateFactory extends Factory
         return $this->state(
             function (array $attributes) {
                 return [
-                    'arrived'      => true,
                     'arrival_date' => Carbon::instance($this->faker->dateTimeThisMonth()),
                 ];
             }
