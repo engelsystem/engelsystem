@@ -6,6 +6,7 @@ use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Cache;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -44,6 +45,18 @@ function back(int $status = 302, array $headers = []): Response
     $redirect = app('redirect');
 
     return $redirect->back($status, $headers);
+}
+
+function cache(string|null $key = null, mixed $default = null, int $seconds = 60 * 60): mixed
+{
+    /** @var Cache $cache */
+    $cache = app('cache');
+
+    if (empty($key)) {
+        return $cache;
+    }
+
+    return $cache->get($key, $default, $seconds);
 }
 
 /**
