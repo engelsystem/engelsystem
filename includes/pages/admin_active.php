@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\CarbonInterval;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
@@ -275,9 +276,12 @@ function admin_active()
                 . '"></span></small>'
             );
         }
-        $userData['work_time'] = sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h';
-        $userData['score'] = round($user['shift_length'] / 60)
-            . ' min (' . sprintf('%.2f', $user['shift_length'] / 3600) . '&nbsp;h)';
+        $userData['work_time'] =  CarbonInterval::seconds($timeSum)
+            ->cascade()
+            ->format(__('general.duration.format'));
+        $userData['score'] =  CarbonInterval::seconds((int) $user['shift_length'])
+            ->cascade()
+            ->format(__('general.duration.format'));
         $userData['active'] = icon_bool($user->state->active);
         $userData['force_active'] = icon_bool($user->state->force_active);
         $userData['force_food'] = icon_bool($user->state->force_food);

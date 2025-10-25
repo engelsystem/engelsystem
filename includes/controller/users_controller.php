@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\CarbonInterval;
 use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Goodie;
 use Engelsystem\Models\AngelType;
@@ -188,7 +189,9 @@ function user_controller()
         auth()->resetApiKey($user_source);
     }
 
-    $goodie_score = sprintf('%.2f', Goodie::userScore($user_source)) . '&nbsp;h';
+    $goodie_score = CarbonInterval::minutes(round(Goodie::userScore($user) * 60))
+        ->cascade()
+        ->format(__('general.duration.format'));
     if ($user_source->state->force_active && config('enable_force_active')) {
         $goodie_score = '<span title="' . $goodie_score . '">' . __('user.goodie_score.enough') . '</span>';
     }

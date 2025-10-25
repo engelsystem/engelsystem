@@ -656,9 +656,6 @@ msgstr "Edit goodie"
 msgid "user.goodie_score.enough"
 msgstr "Enough"
 
-msgid "user.goodie_score.value"
-msgstr "%s h"
-
 msgid "user.goodie_score"
 msgstr "Goodie score: %s"
 
@@ -1121,3 +1118,6 @@ msgstr "Config"
 
 msgid "config.edit.success"
 msgstr "Configuration updated successfully"
+
+msgid "general.duration.format"
+msgstr "%hh %Im"
