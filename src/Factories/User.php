@@ -275,7 +275,6 @@ class User
         $state = new State([]);
 
         if ($this->config->get('autoarrive')) {
-            $state->arrived = true;
             $state->arrival_date = CarbonImmutable::now();
         }
 

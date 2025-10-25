@@ -45,7 +45,7 @@ indent_size = 4
 [*.sh]
 indent_size = 2
 
-[{db/*.sql,includes/**}]
+[{db/*.sql,includes/**,*.json}]
 max_line_length = unset
 
 [*.{yml,yaml}]

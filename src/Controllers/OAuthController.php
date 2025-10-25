@@ -260,7 +260,6 @@ class OAuthController extends BaseController
             return;
         }
 
-        $userState->arrived = true;
         $userState->arrival_date = new Carbon();
         $userState->save();
 

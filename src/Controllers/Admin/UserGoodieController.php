@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Admin;
 
+use Carbon\Carbon;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\BaseController;
@@ -84,7 +85,13 @@ class UserGoodieController extends BaseController
         }
 
         if ($this->auth->can('admin_arrive')) {
-            $user->state->arrived = (bool) $data['arrived'];
+            if ($user->state->arrived != (bool) $data['arrived']) {
+                if ((bool) $data['arrived']) {
+                    $user->state->arrival_date = new Carbon();
+                } else {
+                    $user->state->arrival_date = null;
+                }
+            }
         }
 
         $user->state->active = (bool) $data['active'];

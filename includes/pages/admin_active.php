@@ -83,9 +83,9 @@ function admin_active()
                 ->leftJoin('shift_entries', 'users.id', '=', 'shift_entries.user_id')
                 ->leftJoin('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
                 ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
-                ->where('users_state.arrived', '=', true)
+                ->whereNotNull('users_state.arrival_date')
                 ->orWhere(function (EloquentBuilder $userinfo) {
-                    $userinfo->where('users_state.arrived', '=', false)
+                    $userinfo->whereNull('users_state.arrival_date')
                         ->whereNotNull('users_state.user_info')
                         ->whereNot('users_state.user_info', '');
                 })
@@ -209,9 +209,9 @@ function admin_active()
             }
         })
         ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
-        ->where('users_state.arrived', '=', true)
+        ->whereNotNull('users_state.arrival_date')
         ->orWhere(function (EloquentBuilder $userinfo) {
-            $userinfo->where('users_state.arrived', '=', false)
+            $userinfo->whereNull('users_state.arrival_date')
                 ->whereNotNull('users_state.user_info')
                 ->whereNot('users_state.user_info', '');
         })

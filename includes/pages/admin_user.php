@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Http\Validation\Rules\Username;
 use Engelsystem\Models\Group;
@@ -348,7 +349,13 @@ function admin_user()
                     $user_source->state->user_info = $request->postData('userInfo');
                 }
                 if ($admin_arrive) {
-                    $user_source->state->arrived = $request->postData('arrive');
+                    if ($user_source->state->arrived != $request->postData('arrive')) {
+                        if ($request->postData('arrive')) {
+                            $user_source->state->arrival_date = new Carbon();
+                        } else {
+                            $user_source->state->arrival_date = null;
+                        }
+                    }
                 }
 
                 if ($user_goodie_edit) {
