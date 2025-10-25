@@ -5,19 +5,15 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Controllers\BaseController;
-use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Helpers\UserVouchers;
-use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use ErrorException;
@@ -56,12 +52,14 @@ class FoodVoucherController extends BaseController
     private function checkConfig(): void
     {
         $conf = $this->config->get('food_voucher_api');
-        if (!(
+        if (
+            !(
             $conf
             && $conf['info_url']
             && $conf['auth_token']
             && $conf['post_url']
-        )) {
+            )
+        ) {
             throw new HttpNotFound();
         }
     }
@@ -81,28 +79,32 @@ class FoodVoucherController extends BaseController
     /**
      * @throws ErrorException
      */
-    private function getInfo(bool $crew, array $userMealVouchers = null): array
+    private function getInfo(bool $crew, ?array $userMealVouchers = null): array
     {
         $this->checkConfig();
-        $infoUrl = (string) $this->config->get('food_voucher_api')['info_url'];
 
-        try {
-            $response = $this->guzzle->get(
-                $infoUrl,
-                ['headers' => [
-                    'Authorization' => 'Bearer ' . $this->getAuthToken(),
-                    'Content-Type' => 'application/json'
+        $data = cache('foodVoucherInfo', function () {
+            $infoUrl = (string) $this->config->get('food_voucher_api')['info_url'];
+            try {
+                $response = $this->guzzle->get(
+                    $infoUrl,
+                    ['headers' =>
+                        [
+                            'Authorization' => 'Bearer ' . $this->getAuthToken(),
+                            'Content-Type' => 'application/json',
+                        ],
                     ]
-                ]
-            );
-        } catch (ConnectException | GuzzleException $e) {
-            $this->log->error('Exception during food voucher api request', ['exception' => $e]);
-            throw new ErrorException('user.food.request-error');
-        }
-        if ($response->getStatusCode() !== 200) {
-            throw new HttpNotFound();
-        }
-        $data = cache('foodVoucherInfo', fn() => json_decode($response->getBody()->getContents(), true), 60);
+                );
+            } catch (ConnectException | GuzzleException $e) {
+                $this->log->error('Exception during food voucher api request', ['exception' => $e]);
+                throw new ErrorException('user.food.request-error');
+            }
+            if ($response->getStatusCode() !== 200) {
+                throw new HttpNotFound('user.food.request-error');
+            }
+            return json_decode($response->getBody()->getContents(), true);
+        }, 60);
+
         $now = Carbon::now();
         $locale = $this->translator->getLocale();
         $futureMeals = [];
@@ -121,7 +123,7 @@ class FoodVoucherController extends BaseController
                     'name' => $locale === 'de_DE' ? $meal['name']['de'] : $meal['name']['en'],
                     'endtime' => $endTime,
                     'sold_out' => $sold_out,
-                    'hidden' => $userMealVouchers && in_array($id, $userMealVouchers)
+                    'hidden' => $userMealVouchers && in_array($id, $userMealVouchers),
                 ];
             }
             if ($userMealVouchers && in_array($id, $userMealVouchers)) {
@@ -184,9 +186,8 @@ class FoodVoucherController extends BaseController
         $postData = [
             'email' => $email,
             'type' => $crew ? 'crew' : 'regular',
-            'meal'=> $data['meal_id'],
+            'meal' => $data['meal_id'],
         ];
-
 
         try {
             $response = $this->guzzle->post(
@@ -194,9 +195,9 @@ class FoodVoucherController extends BaseController
                 [
                     'headers' => [
                         'Authorization' => 'Bearer ' . $this->getAuthToken(),
-                        'Content-Type' => 'application/json'
+                        'Content-Type' => 'application/json',
                     ],
-                    'body' => json_encode($postData)
+                    'body' => json_encode($postData),
                 ]
             );
         } catch (ConnectException | GuzzleException $e) {
@@ -205,24 +206,33 @@ class FoodVoucherController extends BaseController
         }
         if ($response->getStatusCode() === 418) {
             cache()->forget('foodVoucherInfo');
-            warning(__('user.food.tea_pod'));
+            warning(__('user.food.no_food'));
             return $this->redirect->to(url('/food'));
         }
         if ($response->getStatusCode() !== 200) {
-            throw new HttpNotFound();
+            throw new HttpNotFound('user.food.request-error');
         }
         $user->state->got_voucher += 1;
         $user->state->meal_vouchers = array_merge($user->state->meal_vouchers ?? [], [$data['meal_id']]);
         $user->state->save();
 
+        $logHelper = [];
+        if ($user->state->force_active) {
+            array_push($logHelper, 'fa');
+        }
+        if ($user->state->force_food) {
+            array_push($logHelper, 'ff');
+        }
+
         $this->log->info(
-            'Food Voucher generated. Got {got_voucher} vouchers.',
+            'Food Voucher {crew} generated. Got {got_voucher} vouchers.',
             [
                 'got_voucher' => $user->state->got_voucher,
+                'crew' => $crew ? '(' . join(', ', $logHelper) . ')' : '',
             ]
         );
 
         return $this->redirect->to($this->config->get('food_voucher_api')['redirect_url']
-            .'?qr=' . $response->getBody()->getContents() . '&meal=' . $data['meal_id']);
+            . '?qr=' . $response->getBody()->getContents() . '&meal=' . $data['meal_id']);
     }
 }
