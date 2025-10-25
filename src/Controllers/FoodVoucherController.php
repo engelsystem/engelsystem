@@ -85,8 +85,7 @@ class FoodVoucherController extends BaseController
     {
         $this->checkConfig();
         $infoUrl = (string) $this->config->get('food_voucher_api')['info_url'];
-        $this->log->info($infoUrl);
-        $this->log->info($this->getAuthToken());
+
         try {
             $response = $this->guzzle->get(
                 $infoUrl,
@@ -103,7 +102,7 @@ class FoodVoucherController extends BaseController
         if ($response->getStatusCode() !== 200) {
             throw new HttpNotFound();
         }
-        $data = json_decode($response->getBody()->getContents(), true);
+        $data = cache('foodVoucherInfo', fn() => json_decode($response->getBody()->getContents(), true), 60);
         $now = Carbon::now();
         $locale = $this->translator->getLocale();
         $futureMeals = [];
@@ -205,7 +204,9 @@ class FoodVoucherController extends BaseController
             throw new ErrorException('user.food.request-error');
         }
         if ($response->getStatusCode() === 418) {
-            throw new HttpException(418, __('user.food.tea_pod'));
+            cache()->forget('foodVoucherInfo');
+            warning(__('user.food.tea_pod'));
+            return $this->redirect->to(url('/food'));
         }
         if ($response->getStatusCode() !== 200) {
             throw new HttpNotFound();
