@@ -30,6 +30,7 @@ class ErrorHandler implements MiddlewareInterface
         'password',
         'password_confirmation',
         'password2',
+        'database_password',
         'new_password',
         'new_password2',
         'new_pw',

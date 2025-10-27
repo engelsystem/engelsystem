@@ -71,6 +71,9 @@ class ConfigControllerTest extends ControllerTest
                 'url' => [
                     'type' => 'url',
                 ],
+                'element.key' => [
+                    'type' => 'string',
+                ],
             ],
             'permission' => 'some_test_permission',
         ],
@@ -524,6 +527,7 @@ class ConfigControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody(array_merge($this->validTestBody, [
             'write_to_file' => 'new value',
             'normal_config' => 'normal value',
+            'element_key' => 'array-value',
         ]));
 
         /** @var ConfigController $controller */
@@ -542,6 +546,9 @@ class ConfigControllerTest extends ControllerTest
         $this->assertStringContainsString('not edit', $content); // Warning about changes
         $this->assertStringContainsString('write_to_file', $content);
         $this->assertStringContainsString('new value', $content);
+        $this->assertStringContainsString('\'element\'', $content);
+        $this->assertStringContainsString('\'key\'', $content);
+        $this->assertStringContainsString('\'array-value\'', $content);
         $this->assertStringNotContainsString('normal_config', $content);
         $this->assertStringNotContainsString('another_write', $content);
 
@@ -557,6 +564,7 @@ class ConfigControllerTest extends ControllerTest
         $this->assertStringContainsString('new value', $content);
         $this->assertStringContainsString('another_write', $content);
         $this->assertStringContainsString('another value', $content);
+        $this->assertStringNotContainsString('\'array-value\'', $content);
     }
 
     /**

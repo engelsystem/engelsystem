@@ -542,6 +542,27 @@ msgstr "Standardsprache"
 msgid "config.timezone"
 msgstr "Zeitzone"
 
+msgid "config.database.driver"
+msgstr "Datenbank Typ"
+
+msgid "config.database.driver.select.mysql"
+msgstr "MySQL"
+
+msgid "config.database.driver.select.mariadb"
+msgstr "MariaDB"
+
+msgid "config.database.host"
+msgstr "Datenbank Adresse"
+
+msgid "config.database.database"
+msgstr "Datenbank Name"
+
+msgid "config.database.username"
+msgstr "Datenbank Benutzername"
+
+msgid "config.database.password"
+msgstr "Datenbank Passwort"
+
 msgid "config.home_site"
 msgstr "Startseite"
 

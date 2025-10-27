@@ -5,15 +5,6 @@ declare(strict_types=1);
 // To change or overwrite some settings, create a config.php
 
 return [
-    // MySQL-Connection Settings
-    'database'                => [
-        'driver'   => env('MYSQL_TYPE', 'mysql'), // mysql or mariadb
-        'host'     => env('MYSQL_HOST', 'localhost'),
-        'database' => env('MYSQL_DATABASE', 'engelsystem'),
-        'username' => env('MYSQL_USER', 'root'),
-        'password' => env_secret('MYSQL_PASSWORD', ''),
-    ],
-
     // Header links
     // Available link placeholders: %lang%
     // To disable a header_item in config.php, you can set its value to null

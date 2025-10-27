@@ -347,6 +347,40 @@ return [
                     'default' => 'Europe/Berlin',
                     'write_back' => true,
                 ],
+                'database.driver' => [
+                    'type' => 'select',
+                    'default' => 'mysql',
+                    'data' => [
+                        'mysql',
+                        'mariadb',
+                    ],
+                    'env' => 'MYSQL_TYPE',
+                    'write_back' => true,
+                ],
+                'database.host' => [
+                    'type' => 'string',
+                    'default' => 'localhost',
+                    'env' => 'MYSQL_HOST',
+                    'write_back' => true,
+                ],
+                'database.database' => [
+                    'type' => 'string',
+                    'default' => 'engelsystem',
+                    'env' => 'MYSQL_DATABASE',
+                    'write_back' => true,
+                ],
+                'database.username' => [
+                    'type' => 'string',
+                    'default' => 'root',
+                    'env' => 'MYSQL_USER',
+                    'write_back' => true,
+                ],
+                'database.password' => [
+                    'type' => 'password',
+                    'default' => '',
+                    'env' => 'MYSQL_PASSWORD',
+                    'write_back' => true,
+                ],
                 'home_site' => [
                     'type' => 'select',
                     'default' => 'news',

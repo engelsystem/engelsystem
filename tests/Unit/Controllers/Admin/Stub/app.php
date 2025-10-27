@@ -17,6 +17,10 @@ return [
                 'normal_config' => [
                     'type' => 'string',
                 ],
+                'element.key' => [
+                    'type' => 'string',
+                    'write_back' => true,
+                ],
             ],
         ],
     ],

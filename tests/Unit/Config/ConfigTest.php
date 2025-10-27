@@ -17,8 +17,11 @@ class ConfigTest extends TestCase
         $config = new Config();
 
         $config->set('test', 'FooBar');
-        $this->assertEquals(['test' => 'FooBar'], $config->get(null));
+        $config->set('some', ['key' => 'value']);
+        $this->assertEquals(['test' => 'FooBar', 'some' => ['key' => 'value']], $config->get(null));
         $this->assertEquals('FooBar', $config->get('test'));
+        $this->assertEquals(['key' => 'value'], $config->get('some'));
+        $this->assertEquals('value', $config->get('some.key'));
 
         $this->assertEquals('defaultValue', $config->get('notExisting', 'defaultValue'));
 
@@ -41,6 +44,9 @@ class ConfigTest extends TestCase
         ]);
         $this->assertEquals('Engelsystem', $config->get('name'));
         $this->assertEquals(['user' => 'test'], $config->get('mail'));
+
+        $config->set('some.key', 'value');
+        $this->assertEquals('value', $config->get('some.key'));
     }
 
     /**
@@ -50,10 +56,11 @@ class ConfigTest extends TestCase
     {
         $config = new Config();
 
-        $this->assertFalse($config->has('test'));
+        $this->assertFalse($config->has('test.key'));
 
-        $config->set('test', 'FooBar');
+        $config->set('test.key', 'FooBar');
         $this->assertTrue($config->has('test'));
+        $this->assertTrue($config->has('test.key'));
     }
 
     /**
@@ -62,10 +69,10 @@ class ConfigTest extends TestCase
     public function testRemove(): void
     {
         $config = new Config();
-        $config->set(['foo' => 'bar', 'test' => '123']);
+        $config->set(['foo' => ['bar' => 'baz'], 'test' => '123']);
 
-        $config->remove('foo');
-        $this->assertEquals(['test' => '123'], $config->get(null));
+        $config->remove('foo.bar');
+        $this->assertEquals(['foo' => [], 'test' => '123'], $config->get(null));
     }
 
     /**
