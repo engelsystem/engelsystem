@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
+use Engelsystem\Helpers\Markdown as MarkdownRenderer;
 use Engelsystem\Renderer\Twig\Extensions\Markdown;
-use Parsedown;
 
 class MarkdownTest extends ExtensionTest
 {
@@ -14,7 +14,7 @@ class MarkdownTest extends ExtensionTest
      */
     public function testGetFilters(): void
     {
-        $extension = new Markdown(new Parsedown());
+        $extension = new Markdown(new MarkdownRenderer());
         $filters = $extension->getFilters();
 
         $this->assertFilterExists('markdown', [$extension, 'render'], $filters);
@@ -27,7 +27,7 @@ class MarkdownTest extends ExtensionTest
      */
     public function testRender(): void
     {
-        $extension = new Markdown(new Parsedown());
+        $extension = new Markdown(new MarkdownRenderer());
 
         $this->assertEquals(
             '<p>&lt;i&gt;Lorem&lt;/i&gt; <em>&quot;Ipsum&quot;</em></p>',
@@ -40,8 +40,7 @@ class MarkdownTest extends ExtensionTest
      */
     public function testRenderHtml(): void
     {
-        $renderer = new Parsedown();
-        $extension = new Markdown($renderer);
+        $extension = new Markdown(new MarkdownRenderer());
 
         $this->assertEquals(
             '<p><i>Lorem</i> <em>&quot;Ipsum&quot;</em></p>',

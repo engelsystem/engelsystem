@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Engelsystem\Renderer\Twig\Extensions;
 
-use Parsedown;
+use Engelsystem\Helpers\Markdown as MarkdownRenderer;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Twig\TwigFilter;
 
 class Markdown extends TwigExtension
 {
-    public function __construct(protected Parsedown $renderer)
+    public function __construct(protected MarkdownRenderer $renderer)
     {
     }
 
@@ -26,6 +26,7 @@ class Markdown extends TwigExtension
 
     public function render(string $text, bool $escapeHtml = true): string
     {
-        return $this->renderer->setSafeMode($escapeHtml)->text($text);
+        return $this->renderer
+            ->render($text, !$escapeHtml);
     }
 }
