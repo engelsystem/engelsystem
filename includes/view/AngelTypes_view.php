@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Helpers\Markdown;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\User;
@@ -677,9 +678,8 @@ function AngelType_view_info(
     }
 
     $info[] = '<h3>' . __('general.description') . '</h3>';
-    $parsedown = new Parsedown();
     if ($angeltype->description != '') {
-        $info[] = $parsedown->parse(htmlspecialchars($angeltype->description));
+        $info[] = (new Markdown())->render($angeltype->description);
     }
     if ($angeltype->requires_ifsg_certificate && $required_info_show) {
         $info[] = info(__('angeltype.ifsg.required.info.preview'), true);

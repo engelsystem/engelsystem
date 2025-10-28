@@ -2,6 +2,7 @@
 
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\Markdown;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
@@ -167,7 +168,7 @@ function Shift_view(
         ->where('supporter', true)
         ->pluck('angel_types.id');
 
-    $parsedown = new Parsedown();
+    $mdRenderer = new Markdown();
 
     $angeltypes = [];
     foreach ($angeltypes_source as $angeltype) {
@@ -262,8 +263,8 @@ function Shift_view(
         ]),
         div('col-sm-6', [
             '<h2>' . __('general.description') . '</h2>',
-            $parsedown->parse(htmlspecialchars($shifttype->description)),
-            $parsedown->parse(htmlspecialchars($shift->description)),
+            $mdRenderer->render($shifttype->description),
+            $mdRenderer->render($shift->description),
         ]),
     ]);
 

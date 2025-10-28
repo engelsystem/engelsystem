@@ -140,6 +140,10 @@
                         </div>
                     {% endfor %}
                 </div>
+
+                <span id="markdown" class="ref-id"></span>
+                <h4>Markdown <a href="#markdown" class="ref-link">{{ m.icon('link') }}</a></h4>
+                {{ 'In _texts_ you can use **Markdown**! (Can be [GitHub Flavoured](https://commonmark.thephpleague.com/2.x/extensions/github-flavored-markdown/) with [Attributes](https://commonmark.thephpleague.com/2.x/extensions/attributes/)).' | md }}
             </div>
         </div>
 

@@ -45,6 +45,7 @@
         "illuminate/database": "^12.39",
         "illuminate/support": "^12.39",
         "laravel/serializable-closure": "^2.0",
+        "league/commonmark": "^2.7",
         "league/oauth2-client": "^2.7",
         "league/openapi-psr7-validator": "^0.22.0",
         "nikic/fast-route": "^1.3",

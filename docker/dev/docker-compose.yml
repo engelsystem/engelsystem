@@ -20,7 +20,7 @@ services:
       APP_NAME: Engelsystem DEV
     env_file: deployment.env
     ports:
-      - "127.0.0.1:5080:80"
+      - "5080:80"
     depends_on:
       - es_database
   es_workspace:
