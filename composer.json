@@ -24,7 +24,7 @@
             "phpcbf -p"
         ],
         "phpstan": "phpstan",
-        "phpunit": "phpunit",
+        "phpunit": "php -d memory_limit=-1 vendor/bin/phpunit",
         "phpunit:coverage": "php -d memory_limit=-1 vendor/bin/phpunit --coverage-text --coverage-html ./public/coverage/"
     },
     "require": {
