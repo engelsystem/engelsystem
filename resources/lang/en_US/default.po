@@ -40,6 +40,9 @@ msgstr "Name"
 msgid "general.shifts"
 msgstr "Shifts"
 
+msgid "general.info"
+msgstr "Info"
+
 msgid "general.description"
 msgstr "Description"
 

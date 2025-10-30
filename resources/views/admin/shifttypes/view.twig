@@ -5,30 +5,93 @@
 {% block title %}{{ shifttype.name }}{% endblock %}
 
 {% block row_content %}
-    {% if shifttype.signup_advance_hours %}
-        <div class="col-md-12">
-            {{ __('shifttype.edit.signup_advance_hours') }} {{ f.info(__('shifttype.edit.signup_advance_hours.info')) }}: {{ shifttype.signup_advance_hours }}
-        </div>
-    {% endif %}
-
     <div class="col-md-12">
-        <h3>{{ __('general.description') }}</h3>{{ shifttype.description|md }}
-    </div>
+        <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link{% if not shifts_active %} active{% endif %}" id="home-tab" data-bs-toggle="tab"
+                        data-bs-target="#view-info" type="button" role="tab" aria-controls="view-info"
+                        aria-selected="{% if not shifts_active %}true{% else %}false{% endif %}"
+                >
+                    {{ __('general.info') }}
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link{% if shifts_active %} active{% endif %}" id="profile-tab" data-bs-toggle="tab"
+                        data-bs-target="#view-shifts" type="button" role="tab" aria-controls="view-shifts"
+                        aria-selected="{% if not shifts_active %}false{% else %}true{% endif %}"
+                >
+                    {{ __('general.shifts') }}
+                </button>
+            </li>
+        </ul>
 
-    {% if shifttype.neededAngelTypes.isNotEmpty() %}
-        <div class="col-md-12">
-            <h3>{{ __('location.required_angels') }}</h3>
-            <ul>
-                {% for neededAngelType in shifttype.neededAngelTypes %}
-                    {% if neededAngelType.count %}
-                        <li>
-                            <a href="{{ url('angeltypes', {'action':'view', 'angeltype_id': neededAngelType.angelType.id}) }}">
-                                {{ neededAngelType.angelType.name -}}
-                            </a>: {{ neededAngelType.count }}
-                        </li>
+        <div class="tab-content">
+            <div
+                class="tab-pane {% if not shifts_active %} show active{% endif %}"
+                id="view-info" role="tabpanel" aria-labelledby="home-tab" tabindex="0"
+            >
+
+                {% if shifttype.signup_advance_hours %}
+                    <div class="col-md-12 mb-3">
+                        {{ __('shifttype.edit.signup_advance_hours') }}
+                        {{ f.info(__('shifttype.edit.signup_advance_hours.info')) }}:
+                        {{ shifttype.signup_advance_hours }}
+                    </div>
+                {% endif %}
+
+                <div class="col-md-12">
+                    <h3>{{ __('general.description') }}</h3>{{ shifttype.description|md }}
+                </div>
+
+                {% if shifttype.neededAngelTypes.isNotEmpty() %}
+                    <div class="col-md-12">
+                        <h3>{{ __('location.required_angels') }}</h3>
+                        <ul>
+                            {% for neededAngelType in shifttype.neededAngelTypes %}
+                                {% if neededAngelType.count %}
+                                    <li>
+                                        <a href="{{ url('angeltypes', {'action':'view', 'angeltype_id': neededAngelType.angelType.id}) }}">
+                                            {{ neededAngelType.angelType.name -}}
+                                        </a>:
+                                        {{ neededAngelType.count }}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div
+                class="tab-pane {% if shifts_active %} show active{% endif %}"
+                id="view-shifts" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"
+            >
+
+                <div class="dropdown mb-3">
+                    {% if shifts|length %}
+                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false"
+                        >
+                            {{ selected_day|dateWithEventDay }}
+                        </button>
                     {% endif %}
-                {% endfor %}
-            </ul>
+                    <ul class="dropdown-menu">
+                        {% for day in days %}
+                            <li>
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ url('admin/shifttypes/' ~ shifttype.id, {'day': day}) }}"
+                                >
+                                    {{ day|dateWithEventDay }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {{ renderShifts(shifts) }}
+
+            </div>
         </div>
-    {% endif %}
+    </div>
 {% endblock %}

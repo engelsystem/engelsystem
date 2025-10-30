@@ -488,6 +488,9 @@ msgstr "Nr."
 msgid "general.shifts"
 msgstr "Schichten"
 
+msgid "general.info"
+msgstr "Info"
+
 msgid "Length"
 msgstr "Länge"
 
@@ -886,9 +889,6 @@ msgstr "Fahrer"
 
 msgid "Has car"
 msgstr "Hat Auto"
-
-msgid "Info"
-msgstr "Info"
 
 msgid "Supporters"
 msgstr "Supporter"

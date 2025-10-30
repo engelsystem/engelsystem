@@ -12,6 +12,7 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
@@ -52,14 +53,34 @@ class ShiftTypesControllerTest extends ControllerTest
     {
         /** @var ShiftTypesController $controller */
         $controller = $this->app->make(ShiftTypesController::class);
+        /** @var ShiftType $shiftType */
         $shiftType = ShiftType::factory()->create();
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create(['shift_type_id' => $shiftType->id]);
+        NeededAngelType::factory()->create(['angel_type_id' => $angelType->id, 'shift_id' => $shift->id]);
 
         $this->response->expects($this->once())
             ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) use ($shiftType) {
+            ->willReturnCallback(function (string $view, array $data) use ($shift) {
                 $this->assertEquals('admin/shifttypes/view', $view);
+
                 $this->assertArrayHasKey('shifttype', $data);
-                $this->assertEquals($shiftType->id, $data['shifttype']['id']);
+                $this->assertEquals($shift->shiftType->id, $data['shifttype']['id']);
+
+                $this->assertArrayHasKey('days', $data);
+                $this->assertArrayHasKey('selected_day', $data);
+                $day = $shift->start->format('Y-m-d');
+                $this->assertEquals([$day], $data['days']->toArray());
+                $this->assertEquals($shift->start->format('Y-m-d'), $data['selected_day']);
+
+                $this->assertArrayHasKey('shifts_active', $data);
+                $this->assertFalse($data['shifts_active']);
+
+                $this->assertArrayHasKey('shifts', $data);
+                $this->assertEquals($shift->id, $data['shifts']->first()->id);
+
                 return $this->response;
             });
 

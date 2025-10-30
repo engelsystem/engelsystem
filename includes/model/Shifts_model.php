@@ -614,6 +614,12 @@ function Shift_signup_allowed(
  */
 function Shifts_by_user($userId, $include_freeloaded_comments = false)
 {
+    # Cache static content per request
+    static $cached;
+    if (!empty($cached[$userId][$include_freeloaded_comments])) {
+        return $cached[$userId][$include_freeloaded_comments];
+    }
+
     $shiftsData = Db::select(
         '
         SELECT
@@ -647,6 +653,7 @@ function Shifts_by_user($userId, $include_freeloaded_comments = false)
         $shifts[] = (new Shift())->forceFill($data);
     }
     $shifts->load(['shiftType', 'location']);
+    $cached[$userId][$include_freeloaded_comments] = $shifts;
 
     return $shifts;
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Database;
 
 use Carbon\Carbon;
+use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
@@ -16,7 +17,9 @@ class DatabaseServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        /** @var Config $config */
         $config = $this->app->get('config');
+        /** @var CapsuleManager $capsule */
         $capsule = $this->app->make(CapsuleManager::class);
         $now = Carbon::now($config->get('timezone'));
 

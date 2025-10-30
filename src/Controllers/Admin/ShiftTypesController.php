@@ -69,11 +69,43 @@ class ShiftTypesController extends BaseController
     public function view(Request $request): Response
     {
         $shiftTypeId = (int) $request->getAttribute('shift_type_id');
+        /** @var ShiftType $shiftType */
         $shiftType = $this->shiftType->findOrFail($shiftTypeId);
+
+        $days = $shiftType->shifts()
+            ->scopes('needsUsers')
+            ->selectRaw('DATE(start) AS date')
+            ->orderBy('date')
+            ->groupBy('date')
+            ->pluck('date');
+
+        $day = $request->get('day');
+        $day = $days->contains($day) ? $day : $days->first();
+
+        $shifts = $shiftType->shifts()
+            ->with([
+                'neededAngelTypes.angelType',
+                'schedule',
+                'shiftEntries.user.personalData',
+                'shiftEntries.user.state',
+                'shiftEntries.angelType',
+                'shiftType.neededAngelTypes.angelType',
+                'location.neededAngelTypes.angelType',
+            ])
+            ->whereDate('start', $day)
+            ->orderBy('start')
+            ->get();
 
         return $this->response->withView(
             'admin/shifttypes/view',
-            ['shifttype' => $shiftType, 'is_view' => true]
+            [
+                'shifttype' => $shiftType,
+                'is_view' => true,
+                'shifts_active' => $request->has('shifts') || $request->get('day'),
+                'days' => $days,
+                'selected_day' => $day,
+                'shifts' => $shifts,
+            ]
         );
     }
 
