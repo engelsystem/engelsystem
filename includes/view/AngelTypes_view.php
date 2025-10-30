@@ -605,7 +605,7 @@ function AngelType_view(
             AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_license, $user),
             msg(),
             tabs([
-                __('Info') => AngelType_view_info(
+                __('general.info') => AngelType_view_info(
                     $angeltype,
                     $members,
                     $admin_user_angeltypes,
