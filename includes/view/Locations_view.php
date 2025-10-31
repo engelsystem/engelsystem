@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\Markdown;
 use Engelsystem\Models\Location;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilterRenderer;
@@ -23,8 +24,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
     $description = '';
     if ($location->description) {
         $description = '<h3>' . __('general.description') . '</h3>';
-        $parsedown = new Parsedown();
-        $description .= $parsedown->parse(htmlspecialchars($location->description));
+        $description .= (new Markdown())->render($location->description);
     }
 
     $neededAngelTypes = '';
