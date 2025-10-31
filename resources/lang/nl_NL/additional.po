@@ -1,0 +1,344 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Engelsystem 2.0\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: Shiz <hi@shiz.me>\n"
+"Language: nl_NL\n"
+
+msgid "auth.not-found"
+msgstr "Gebruiker bestaat niet of het opgegeven wachtwoord komt niet overeen. Probeer het nogmaals. "
+"Neem contact op met Heaven bij verdere problemen."
+
+msgid "validation.password.required"
+msgstr "Het wachtwoord is vereist."
+
+msgid "validation.password.length"
+msgstr "Het ingevoerde wachtwoord is te kort."
+
+msgid "validation.login.required"
+msgstr "De gebruikersnaam is vereist."
+
+msgid "validation.pronoun.required"
+msgstr "Vul alsjeblieft je voornaamwoord in."
+
+msgid "validation.firstname.required"
+msgstr "Vul alsjeblieft je voornaam in."
+
+msgid "validation.lastname.required"
+msgstr "Vul alsjeblieft je achternaam in."
+
+msgid "validation.mobile.required"
+msgstr "Vul alsjeblieft je mobiele telefoonnummer in."
+
+msgid "validation.dect.required"
+msgstr "Vul alsjeblieft je DECT-nummer in."
+
+msgid "validation.username.required"
+msgstr "Vul alsjeblieft je gebruikersnaam in."
+
+msgid "validation.username.username"
+msgstr ""
+"Voer alsjeblieft een gebruikersnaam van het volgende formaat in: "
+"Tot en met 24 tekens, bestaande uit letters, nummers en koppelpunctuatie (.-_)"
+
+msgid "validation.email.required"
+msgstr "Het e-mailadres is vereist."
+
+msgid "validation.email.email"
+msgstr "Dit e-mailadres is niet juist."
+
+msgid "validation.new_password.length"
+msgstr "Je nieuwe wachtwoord is te kort."
+
+msgid "validation.password.confirmed"
+msgstr "Deze wachtwoorden komen niet overeen."
+
+msgid "validation.password_confirmation.required"
+msgstr "Je moet je nieuwe wachtwoord bevestigen."
+
+msgid "validation.tshirt_size.required"
+msgstr "Vul alsjeblieft je T-shirtmaat in."
+
+msgid "validation.tshirt_size.shirtSize"
+msgstr "Vul alsjeblieft een geldige T-shirtmaat in."
+
+msgid "validation.planned_arrival_date.required"
+msgstr "Vul alsjeblieft je geplande aankomstdatum in."
+
+msgid "validation.planned_arrival_date.min"
+msgstr "De geplande aankomstdatum mag niet vóór de begindatum van de opbouw liggen."
+
+msgid "validation.planned_arrival_date.between"
+msgstr "De geplande aankomstdatum moet tussen de opbouw- en afbouwdatums liggen."
+
+msgid "schedule.edit.success"
+msgstr "Het rooster is met succes bijgewerkt."
+
+msgid "schedule.import.request-error"
+msgstr "Het rooster kon niet worden opgevraagd."
+
+msgid "schedule.import.read-error"
+msgstr "Kon rooster niet verwerken."
+
+msgid "schedule.import.success"
+msgstr "Roosterimport gelukt."
+
+msgid "schedule.delete.success"
+msgstr "Roosterverwijdering successful."
+
+msgid "shifts.filter.toggle"
+msgstr "verberg/toon filters"
+
+msgid "validation.schedule-url.required"
+msgstr "De rooster-URL is vereist."
+
+msgid "validation.schedule-url.url"
+msgstr "De rooster-URL moet geldig zijn."
+
+msgid "validation.shift-type.required"
+msgstr "Het diensttype is vereist."
+
+msgid "validation.shift-type.int"
+msgstr "Het diensttype moet een getal zijn."
+
+msgid "validation.minutes-before.int"
+msgstr "Het aantal minuten vóór de talk moet een getal zijn."
+
+msgid "validation.minutes-after.int"
+msgstr "Het aantal minuten na de talk moet een getal zijn."
+
+msgid "news.comment.success"
+msgstr "Opmerking opgeslagen."
+
+msgid "news.comment-delete.success"
+msgstr "Opmerking met succes verwijderd."
+
+msgid "news.edit.duplicate"
+msgstr "Dit nieuws bestaat al."
+
+msgid "news.edit.success"
+msgstr "Nieuws met succes bijgewerkt."
+
+msgid "news.delete.success"
+msgstr "Nieuws met succes verwijderd."
+
+msgid "oauth.invalid-state"
+msgstr "Ongeldige OAuth-staat"
+
+msgid "oauth.provider-error"
+msgstr "OAuth-providerfout"
+
+msgid "oauth.already-connected"
+msgstr "Deze OAuth-gebruiker is al gekoppeld aan een andere gebruiker!"
+
+msgid "oauth.connected"
+msgstr "Gekoppelde loginprovider!"
+
+msgid "oauth.disconnected"
+msgstr "Ontkoppelde loginprovider!"
+
+msgid "oauth.not-found"
+msgstr "Kan gebruiker niet vinden"
+
+msgid "oauth.provider-not-found"
+msgstr "Kan OAuth-provider niet vinden"
+
+msgid "oauth.invalid_request"
+msgstr "De OAuth-provider heeft het verzoek afgewezen vanwege een ontbrekende of onjuiste parameter."
+
+msgid "oauth.unauthorized_client"
+msgstr "Niet geauthoriseerd bij de OAuth-provider."
+
+msgid "oauth.access_denied"
+msgstr "De OAuth-provider wees toegang af."
+
+msgid "oauth.unsupported_response_type"
+msgstr "De OAuth-provider ondersteunt het verkrijgen van een authorisatiecode via deze methode niet."
+
+msgid "oauth.invalid_scope"
+msgstr "De verzochte scope is onjuist of onbekend."
+
+msgid "oauth.server_error"
+msgstr "De OAuth-provider onderging een onverwachte fout waardoor deze het verzoek niet kon beantwoorden."
+
+msgid "oauth.temporarily_unavailable"
+msgstr "De OAuth-provider is door een tijdelijke overbelasting of onderhoud niet in staat het verzoek te beantwoorden."
+
+msgid "settings.profile.planned_arrival_date.invalid"
+msgstr "Vul alsjeblieft je geplande aankomstdatum in. "
+"Deze moet tussen de begindatum van de opbouw en de einddatum van de afbouw liggen."
+
+msgid "settings.profile.planned_departure_date.invalid"
+msgstr "Vul alsjeblieft je geplande vertrekdatum in. "
+"Deze moet ná je aankomstdatum en tussen de begindatum van de opbouw en de einddatum van de afbouw liggen."
+
+msgid "settings.success"
+msgstr "Instellingen opgeslagen."
+
+msgid "settings.sessions.delete_success"
+msgstr "Sessie met succes ingetrokken."
+
+msgid "settings.api.key_reset_success"
+msgstr "API-key met succes gereset."
+
+msgid "faq.delete.success"
+msgstr "FAQ-vraag met succes verwijderd."
+
+msgid "faq.edit.success"
+msgstr "FAQ-vraag met succes bijgewerkt."
+
+msgid "question.delete.success"
+msgstr "Vraag met succes verwijderd."
+
+msgid "question.add.success"
+msgstr "Vraag met succes aangemaakt."
+
+msgid "question.edit.success"
+msgstr "Vraag met succes bijgewerkt."
+
+msgid "tag.edit.duplicate"
+msgstr "Er bestaat al een tag met deze naam!"
+
+msgid "tag.edit.success"
+msgstr "Tag met succes bijgewerkt."
+
+msgid "tag.delete.success"
+msgstr "Tag met succes verwijderd."
+
+msgid "notification.news.new"
+msgstr "Nieuw nieuws: %s"
+
+msgid "notification.news.new.introduction"
+msgstr "Er is nieuws beschikbaar: %1$s"
+
+msgid "notification.news.new.text"
+msgstr "Je kunt deze zien op %3$s"
+
+msgid "notification.news.updated"
+msgstr "Nieuws bijgewerkt: %s"
+
+msgid "notification.messages.new"
+msgstr "Nieuw privébericht van %s"
+
+msgid "notification.messages.new.text"
+msgstr "je hebt een nieuw privébericht van \"%s\". Je kunt deze zien op %s"
+
+msgid "notification.angeltype.confirmed"
+msgstr "Je bent nu bevestigd als een %s"
+
+msgid "notification.angeltype.confirmed.introduction"
+msgstr "Je bent nu bevestigd als een %1$s door een supporter."
+
+msgid "notification.angeltype.confirmed.text"
+msgstr "Je kunt een beschrijving vinden op %2$s"
+
+msgid "notification.angeltype.added"
+msgstr "Je bent toevoegd als een %s"
+
+msgid "notification.angeltype.added.introduction"
+msgstr "Je bent toegevoegd als %1$s door een supporter."
+
+msgid "notification.angeltype.added.text"
+msgstr "Je kunt een beschrijving vinden op %2$s"
+
+msgid "notification.shift.deleted"
+msgstr "Je dienst is verwijderd"
+
+msgid "notification.shift.deleted.introduction"
+msgstr "Een dienst waarvoor je je aangemeld had is verwijderd:"
+
+msgid "notification.shift.deleted.worklog"
+msgstr ""
+"Omdat de verwijderde dienst al geweest is, "
+"hebben we een werklog toegevoegd om je uren in stand te houden."
+
+msgid "notification.shift.updated"
+msgstr "Je dienst is bijgewerkt"
+
+msgid "notification.shift.no_next_found"
+msgstr "Er is geen dienst beschikbaar."
+
+msgid "user.edit.success"
+msgstr "Gebruiker met succes bijgewerkt."
+
+msgid "message.delete.success"
+msgstr "Bericht met succes verwijderd."
+
+msgid "worklog.add.success"
+msgstr "Werklog met succes aangemaakt."
+
+msgid "worklog.edit.success"
+msgstr "Werklog met succes bijgewerkt."
+
+msgid "worklog.delete.success"
+msgstr "Werklog met succes verwijderd."
+
+msgid "voucher.save.success"
+msgstr "Aantal tegoedbonnen opgeslagen."
+
+msgid "location.edit.success"
+msgstr "Locatie met succes bijgewerkt."
+
+msgid "location.delete.success"
+msgstr "Locatie met succes verwijderd."
+
+msgid "shifttype.edit.success"
+msgstr "Shifttype met succes bijgewerkt."
+
+msgid "shifttype.delete.success"
+msgstr "Shifttype met succes verwijderd."
+
+msgid "validation.name.exists"
+msgstr "Deze naam is al in gebruik."
+
+msgid "registration.disabled"
+msgstr "Registraties zijn uitgeschakeld."
+
+msgid "registration.successful.supporter"
+msgstr "Registratie doorgevoerd."
+
+msgid "registration.successful"
+msgstr "Registratie doorgevoerd. Je kunt nu inloggen!"
+
+msgid "shifts.history.delete.success"
+msgstr "Diensten met succes verwijderd."
+
+msgid "config.event"
+msgstr "Evenement"
+
+msgid "config.name"
+msgstr "Evenementnaam"
+
+msgid "config.name.info"
+msgstr "De evenementnaam wordt op de startpagina getoond."
+
+msgid "config.welcome_msg"
+msgstr "Evenement-welkomstbericht"
+
+msgid "config.welcome_msg.info"
+msgstr "Het welkomstbericht wordt getoond na een succesvolle registratie. Markdown kan gebruikt worden."
+
+msgid "config.buildup_start"
+msgstr "Opbouw-begindatum"
+
+msgid "config.event_start"
+msgstr "Evenement-begindatum"
+
+msgid "config.event_end"
+msgstr "Evenement-einddatum"
+
+msgid "config.teardown_end"
+msgstr "Afbouw-einddatum"
+
+msgid "validation.event_start.after"
+msgstr "Begin van evenement moet ná opbouw zijn."
+
+msgid "validation.event_end.after"
+msgstr "Einde van evenement moet vóór afbouw zijn."
+
+msgid "validation.teardown_end.after"
+msgstr "Einde van afbouw moet ná einde van evenement zijn."

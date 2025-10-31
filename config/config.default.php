@@ -406,6 +406,7 @@ return [
     'locales'                 => [
         'de_DE' => 'Deutsch',
         'en_US' => 'English',
+        'nl_NL' => 'Nederlands',
     ],
 
     // The default locale to use
