@@ -16,7 +16,7 @@
         {% include 'layouts/parts/messages.twig' %}
 
         <div class="row">
-            {% set score = goodie_score == '~' ? __('user.goodie_score.enough') : __('user.goodie_score.value', [goodie_score])%}
+            {% set score = goodie_score == '~' ? __('user.goodie_score.enough') : goodie_score %}
             <p>{{ __('user.goodie_score', [score]) }}</p>
         </div>
 
