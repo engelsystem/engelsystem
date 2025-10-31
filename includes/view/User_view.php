@@ -346,6 +346,8 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
         $shift_info .= User_view_shiftentries($needed_angel_type);
     }
 
+    $shift_info = div('table-myshifts-shift-info-limit-height', $shift_info);
+
     $night_shift = '';
     if ($shift->isNightShift() && $goodie_enabled) {
         $night_shift = render_night_shift_hint($nightShiftsConfig);
