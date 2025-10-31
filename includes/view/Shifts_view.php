@@ -424,7 +424,8 @@ function Shift_view_render_shift_entry(
         $signOutAllowed = Shift_signout_allowed($shift, $angeltype, $shift_entry->user_id, $isAngeltypeSupporter);
         $disabled = $signOutAllowed ? '' : ' btn-disabled';
         $entry .= button_icon(
-            shift_entry_delete_link($shift_entry),
+            # ToDo Add reason input
+            shift_entry_delete_link($shift_entry, ''),
             'trash',
             'btn-sm btn-danger' . $disabled,
             __('form.delete'),
