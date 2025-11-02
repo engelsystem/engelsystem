@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Models\Shifts;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Schedule;
@@ -133,6 +134,67 @@ class ShiftTest extends ModelTest
         $this->assertCount(5, $shift->shiftEntries);
     }
 
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::scopeNeedsUsers
+     */
+    public function testScopeNeedsUsers(): void
+    {
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+        Shift::factory()->create();
+
+        $this->assertCount(2, Shift::all());
+        $this->assertCount(0, Shift::scopes('needsUsers')->get());
+
+        NeededAngelType::factory()->create(['angel_type_id' => $angelType->id, 'shift_id' => $shift->id]);
+
+        $this->assertTrue(Shift::count() >= 2);
+        $this->assertCount(1, Shift::scopes('needsUsers')->get());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::scopeNeedsUsers
+     */
+    public function testScopeNeedsUsersFromSchedule(): void
+    {
+        /** @var Schedule $schedule1 */
+        $schedule1 = Schedule::factory()->create(['needed_from_shift_type' => true]);
+        /** @var Schedule $schedule2 */
+        $schedule2 = Schedule::factory()->create(['needed_from_shift_type' => false]);
+        $shiftType = $schedule1->shiftType;
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+        /** @var Shift $shift1 Via schedule shift type */
+        $shift1 = Shift::factory()->create(['shift_type_id' => $shiftType->id]);
+        /** @var Shift $shift2 Via schedule location */
+        $shift2 = Shift::factory()->create();
+        /** @var Shift $shift3 Direct */
+        $shift3 = Shift::factory()->create();
+        /** @var Shift $shift4 Via schedule location, no needed angel types */
+        $shift4 = Shift::factory()->create();
+        /** @var Shift $shift5 Empty shift */
+        $shift5 = Shift::factory()->create();
+        $location = $shift2->location;
+
+        ScheduleShift::factory()->create(['shift_id' => $shift1->id, 'schedule_id' => $schedule1->id]);
+        ScheduleShift::factory()->create(['shift_id' => $shift2->id, 'schedule_id' => $schedule2->id]);
+        ScheduleShift::factory()->create(['shift_id' => $shift4->id, 'schedule_id' => $schedule2->id]);
+
+        NeededAngelType::factory()->create(['angel_type_id' => $angelType->id, 'shift_type_id' => $shiftType->id]);
+        NeededAngelType::factory()->create(['angel_type_id' => $angelType->id, 'location_id' => $location->id]);
+        NeededAngelType::factory()->create(['angel_type_id' => $angelType->id, 'shift_id' => $shift3->id]);
+
+        $this->assertTrue(Shift::count() >= 5);
+
+        $shifts = Shift::scopes('needsUsers')->get()->pluck('id');
+        $this->assertContains($shift1->id, $shifts, 'Shift should be selected via schedule shift type');
+        $this->assertContains($shift2->id, $shifts, 'Shift should be selected via schedule location selected');
+        $this->assertContains($shift3->id, $shifts, 'Shift should be selected via direct requirement selected');
+        $this->assertNotContains($shift4->id, $shifts, 'Empty schedule location shift selected');
+        $this->assertNotContains($shift5->id, $shifts, 'Empty shift selected');
+    }
 
     /**
      * @covers \Engelsystem\Models\Shifts\Shift::nextShift

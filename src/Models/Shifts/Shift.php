@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Query\Grammars\SQLiteGrammar;
+use Illuminate\Database\Query\JoinClause;
 
 /**
  * @property int                               $id
@@ -131,6 +134,57 @@ class Shift extends BaseModel
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function scopeNeedsUsers(Builder $query): void
+    {
+        $query
+            ->addSelect([
+                // This is "hidden" behind an attribute to not "poison" the SELECT default with fields from added joins
+                'needs_users' => Shift::from('shifts as s2')
+                    ->leftJoin('schedule_shift', 'schedule_shift.shift_id', 's2.id')
+                    ->leftJoin('schedules', 'schedules.id', 'schedule_shift.schedule_id')
+                    ->leftJoin('needed_angel_types', function (JoinClause $join): void {
+                        // Directly
+                        $join->on('needed_angel_types.shift_id', 's2.id')
+                            // Via schedule location
+                            ->orOn('needed_angel_types.location_id', 's2.location_id')
+                            // Via schedule shift type
+                            ->orOn('needed_angel_types.shift_type_id', 'schedules.shift_type');
+                    })
+                    ->whereColumn('s2.id', 'shifts.id')
+                    ->where(function (Builder $query): void {
+                        $query
+                            ->where(function (Builder $query): void {
+                                $query
+                                    // Direct requirement
+                                    ->whereColumn('needed_angel_types.shift_id', 's2.id')
+                                    // Or has schedule & via location
+                                    ->orWhere(function (Builder $query): void {
+                                        $query
+                                            ->where('schedules.needed_from_shift_type', false)
+                                            ->whereColumn('needed_angel_types.location_id', 's2.location_id');
+                                    })
+                                    // Or has schedule & via type
+                                    ->orWhere(function (Builder $query): void {
+                                        $query
+                                            ->where('schedules.needed_from_shift_type', true)
+                                            ->whereColumn('needed_angel_types.shift_type_id', 's2.shift_type_id');
+                                    });
+                            });
+                    })
+                    ->selectRaw('COUNT(*) > 0'),
+            ]);
+
+        if ($query->getConnection()->getQueryGrammar() instanceof SQLiteGrammar) {
+            // SQLite does not support HAVING for non-aggregate queries
+            $query->where('needs_users', '>', 0);
+        } else {
+            // @codeCoverageIgnoreStart
+            // needs_users is defined on select and thus only available after select
+            $query->having('needs_users', '>', 0);
+            // @codeCoverageIgnoreEnd
+        }
     }
 
     /**
