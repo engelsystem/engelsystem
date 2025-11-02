@@ -14,7 +14,7 @@ return [
         'password' => env_secret('MYSQL_PASSWORD', ''),
     ],
 
-    // For accessing /metrics (and /stats)
+    // For accessing /metrics
     'api_key'                 => env('API_KEY', ''),
 
     // Enable maintenance mode (show a static page to all users)
