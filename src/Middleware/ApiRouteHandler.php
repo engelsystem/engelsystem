@@ -29,7 +29,6 @@ class ApiRouteHandler implements MiddlewareInterface
             '/ical',
             '/metrics',
             '/shifts-json-export',
-            '/stats',
         ]
     ) {
     }
