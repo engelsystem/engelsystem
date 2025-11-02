@@ -57,7 +57,15 @@ class QuestionsController extends BaseController
         $question = $this->question->findOrFail($data['id']);
         $question->delete();
 
-        $this->log->info('Deleted question {question} ({id})', ['question' => $question->text, 'id' => $question->id]);
+        $this->log->info(
+            'Deleted question "{text}" ({id}) by {user} ({user_id})',
+            [
+                'text' => $question->text,
+                'id' => $question->id,
+                'user' => $question->user->name,
+                'user_id' => $question->user->id,
+            ]
+        );
         $this->addNotification('question.delete.success');
 
         return $this->redirect->to('/admin/questions');
@@ -90,8 +98,13 @@ class QuestionsController extends BaseController
             $question->delete();
 
             $this->log->info(
-                'Deleted question {question} ({id})',
-                ['question' => $question->text, 'id' => $question->id]
+                'Deleted question "{text}" ({id}) by {user} ({user_id})',
+                [
+                    'text' => $question->text,
+                    'id' => $question->id,
+                    'user' => $question->user->name,
+                    'user_id' => $question->user->id,
+                ]
             );
 
             $this->addNotification('question.delete.success');
@@ -111,8 +124,14 @@ class QuestionsController extends BaseController
         $question->save();
 
         $this->log->info(
-            'Saved questions "{text}" ({id}): {answer}',
-            ['text' => $question->text, 'answer' => $question->answer, 'id' => $question->id]
+            'Saved questions "{text}" ({id}) by {user} ({user_id}): {answer}',
+            [
+                'text' => $question->text,
+                'answer' => $question->answer,
+                'id' => $question->id,
+                'user' => $question->user->name,
+                'user_id' => $question->user->id,
+            ]
         );
 
         $this->addNotification('question.edit.success');
