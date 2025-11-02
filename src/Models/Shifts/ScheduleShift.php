@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Models\Shifts;
 
 use Engelsystem\Models\BaseModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -22,6 +23,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class ScheduleShift extends BaseModel
 {
+    use HasFactory;
+
     /** @var string The primary key for the model */
     protected $primaryKey = 'shift_id'; // phpcs:ignore
 
