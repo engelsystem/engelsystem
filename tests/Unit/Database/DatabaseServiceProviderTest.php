@@ -36,9 +36,10 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
             ]
         );
 
-        $app->expects($this->exactly(7))
+        $app->expects($this->exactly(8))
             ->method('instance')
             ->withConsecutive(
+                [PDO::class, $pdo],
                 [CapsuleManager::class, $dbManager],
                 [Db::class, $dbManager],
                 [Connection::class, $connection],
