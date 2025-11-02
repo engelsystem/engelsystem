@@ -286,6 +286,14 @@ function user_angeltype_update_controller(): array
 
     if ($request->hasPostData('submit')) {
         $user_angeltype->supporter = $supporter;
+        if ($supporter && !$user_angeltype->confirm_user_id) {
+            $user_angeltype->confirmUser()->associate(auth()->user());
+            engelsystem_log(sprintf(
+                '%s confirmed for angel type %s',
+                User_Nick_render($user_source, true),
+                AngelType_name_render($angeltype, true)
+            ));
+        }
         $user_angeltype->save();
 
         $msg = $supporter
