@@ -194,6 +194,12 @@ class OAuthController extends BaseController
     {
         $providerName = $request->getAttribute('provider');
 
+        $this->requireProvider($providerName);
+
+        if (!($this->config->get('oauth')[$providerName]['allow_user_disconnect'] ?? true)) {
+            throw new HttpNotFound();
+        }
+
         $this->oauth
             ->whereUserId($this->auth->user()->id)
             ->where('provider', $providerName)
