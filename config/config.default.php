@@ -138,6 +138,8 @@ return [
             'enable_password' => false,
             // Allow registration even if disabled in config (optional)
             'allow_registration' => null,
+            // Allow disconnecting user accounts from the oauth provider (optional)
+            'allow_user_disconnect' => true,
             // Auto join teams
             // Info groups field (optional)
             'groups' => 'groups',
