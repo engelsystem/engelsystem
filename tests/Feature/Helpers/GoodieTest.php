@@ -91,15 +91,14 @@ class GoodieTest extends ApplicationFeatureTest
         parent::setUp();
 
         $this->createdModels = [];
-        config(
-            'night_shifts',
-            [
+        config([
+            'night_shifts' => [
                 'enabled' => true,
                 'start' => 2,
                 'end' => 6,
                 'multiplier' => 2,
-            ]
-        );
+            ],
+        ]);
     }
 
     public function tearDown(): void
