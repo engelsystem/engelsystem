@@ -10,29 +10,30 @@
             'warning': __('config.warning_from_env') ~ ' ' ~ options.warning|default(''), 'disabled': true
         }|merge(options) %}
     {% endif %}
+    {# same as f.formData but will return value, needed for arrays #}
+    {% set value = session_pop('form-data-' ~ name|replace({'.': '_'}), config(name, options.default|default(null))) %}
 
     {% if options.type == 'string' %}
-        {{ f.input(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
+        {{ f.input(name, __(options['name']), options + {'value': value}) }}
     {% elseif options.type == 'password' %}
-        {% set value = '' %}
-        {% if config(name, options.default|default(null)) %}
+        {% if value %}
             {% set value = '**********' %}
         {% endif %}
         {{ f.input(name, __(options['name']), options + {'type': 'password', 'value': value, 'placeholder': __('form.password.placeholder')}) }}
     {% elseif options.type == 'text' %}
-        {{ f.textarea(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
+        {{ f.textarea(name, __(options['name']), options + {'value': value}) }}
     {% elseif options.type == 'number' %}
-        {{ f.number(name, __(options['name']), options + {'value': config(name, options.default|default(null))}) }}
+        {{ f.number(name, __(options['name']), options + {'value': value}) }}
     {% elseif options.type == 'url' %}
-        {{ f.input(name, __(options['name']), options + {'type': 'url', 'value': config(name, options.default|default(null))}) }}
+        {{ f.input(name, __(options['name']), options + {'type': 'url', 'value': value}) }}
     {% elseif options.type == 'datetime-local' %}
-        {{ f.input(name, __(options['name']), options + {'type': 'datetime-local', 'value': config(name, options.default|default(null))}) }}
+        {{ f.input(name, __(options['name']), options + {'type': 'datetime-local', 'value': value}) }}
     {% elseif options.type == 'boolean' %}
-        {{ f.checkbox(name, __(options['name']), options + {'checked': config(name, options.default|default(null))}) }}
+        {{ f.checkbox(name, __(options['name']), options + {'checked': value}) }}
     {% elseif options.type == 'select' %}
-        {{ f.select(name, __(options['name']), options.data, options + {'selected': config(name, options.default|default(null)), 'translate': true}) }}
+        {{ f.select(name, __(options['name']), options.data, options + {'selected': value, 'translate': true}) }}
     {% elseif options.type == 'select_multi' %}
-        {{ f.select(name, __(options['name']), options.data, options + {'selected': config(name, options.default|default(null)), 'translate': true, 'multiple': true}) }}
+        {{ f.select(name, __(options['name']), options.data, options + {'selected': value, 'translate': true, 'multiple': true}) }}
     {% endif %}
 {%- endmacro %}
 

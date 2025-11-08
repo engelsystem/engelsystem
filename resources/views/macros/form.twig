@@ -384,5 +384,5 @@ Renders a "checkbox" element that will be styled as switch.
 {%- endmacro %}
 
 {% macro formData(name, default) -%}
-    {{ session_pop('form-data-' ~ name, default) }}
+    {{ session_pop('form-data-' ~ name|replace({'.': '_'}), default) }}
 {%- endmacro %}
