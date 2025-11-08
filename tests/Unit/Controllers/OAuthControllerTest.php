@@ -574,20 +574,71 @@ class OAuthControllerTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\OAuthController::disconnect
      */
-    public function testDisconnect(): void
+    public function testDisconnectIfAllowIsTrue(): void
     {
+        $oauthConfig = $this->config->get('oauth');
+        $oauthConfig['testprovider']['allow_user_disconnect'] = true;
+
+        $this->runDisconnectTest($oauthConfig, true);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::disconnect
+     */
+    public function testDisconnectIfAllowIsNull(): void
+    {
+        $oauthConfig = $this->config->get('oauth');
+        $oauthConfig['testprovider']['allow_user_disconnect'] = null;
+
+        $this->runDisconnectTest($oauthConfig, true);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::disconnect
+     */
+    public function testDisconnectIfAllowIsUnset(): void
+    {
+        $oauthConfig = $this->config->get('oauth');
+        unset($oauthConfig['testprovider']['allow_user_disconnect']);
+
+        $this->runDisconnectTest($oauthConfig, true);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::disconnect
+     */
+    public function testDisconnectIfAllowIsFalse(): void
+    {
+        $oauthConfig = $this->config->get('oauth');
+        $oauthConfig['testprovider']['allow_user_disconnect'] = false;
+
+        $this->runDisconnectTest($oauthConfig, false);
+    }
+
+    private function runDisconnectTest(mixed $oauthConfig, bool $shouldDisconnect): void
+    {
+        $this->config->set('oauth', $oauthConfig);
+
         $controller = $this->getMock(['addNotification']);
-        $this->setExpects($controller, 'addNotification', ['oauth.disconnected']);
+        $request = (new Request())->withAttribute('provider', 'testprovider');
 
-        $request = (new Request())
-            ->withAttribute('provider', 'testprovider');
-
-        $this->setExpects($this->auth, 'user', null, $this->authenticatedUser);
-        $this->setExpects($this->redirect, 'back', null, new Response());
+        if ($shouldDisconnect) {
+            $this->setExpects($controller, 'addNotification', ['oauth.disconnected']);
+            $this->setExpects($this->auth, 'user', null, $this->authenticatedUser);
+            $this->setExpects($this->redirect, 'back', null, new Response());
+        } else {
+            $this->expectException(HttpNotFound::class);
+        }
 
         $controller->disconnect($request);
-        $this->assertCount(1, OAuth::all());
-        $this->log->hasInfoThatContains('Disconnected');
+
+        if ($shouldDisconnect) {
+            $this->assertCount(1, OAuth::all());
+            $this->assertTrue($this->log->hasInfoThatContains('Disconnected'));
+        } else {
+            $this->assertCount(2, OAuth::all());
+            $this->assertFalse($this->log->hasInfoThatContains('Disconnected'));
+        }
     }
 
     protected function getMock(array $mockMethods = []): OAuthController | MockObject
