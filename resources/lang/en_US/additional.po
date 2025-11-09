@@ -557,6 +557,53 @@ msgstr "Database username"
 msgid "config.database.password"
 msgstr "Database password"
 
+msgid "config.email.driver"
+msgstr "E-mail driver"
+
+msgid "config.email.driver.info"
+msgstr ""
+"Configuring a symfony mailer dsn like smtps://[user]:[password]@smtp.[domain]:465 "
+"is possible via config file or env variable"
+
+msgid "config.email.driver.select.smtp"
+msgstr "SMTP"
+
+msgid "config.email.driver.select.sendmail"
+msgstr "System sendmail program"
+
+msgid "config.email.driver.select.mail"
+msgstr "PHP mail program"
+
+msgid "config.email.driver.select.log"
+msgstr "Write mails to log"
+
+msgid "config.email.from.name"
+msgstr "E-mail sender name"
+
+msgid "config.email.from.address"
+msgstr "E-mail sender address"
+
+msgid "config.email.host"
+msgstr "E-mail host"
+
+msgid "config.email.port"
+msgstr "E-mail port"
+
+msgid "config.email.port.info"
+msgstr "465 for TLS, 587 for STARTTLS"
+
+msgid "config.email.tls"
+msgstr "E-mail using TLS transport encryption"
+
+msgid "config.email.username"
+msgstr "E-mail username"
+
+msgid "config.email.password"
+msgstr "E-mail password"
+
+msgid "config.email.sendmail"
+msgstr "Sendmail command"
+
 msgid "config.home_site"
 msgstr "Home site"
 

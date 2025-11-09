@@ -563,6 +563,53 @@ msgstr "Datenbank Benutzername"
 msgid "config.database.password"
 msgstr "Datenbank Passwort"
 
+msgid "config.email.driver"
+msgstr "E-Mail Treiber"
+
+msgid "config.email.driver.info"
+msgstr ""
+"Die Konfiguration eines Symfony mailer DSNs wie smtps://[user]:[password]@smtp.[domain]:465 "
+"ist über die Konfigurationsdatei oder Umgebungsvariablen möglich."
+
+msgid "config.email.driver.select.smtp"
+msgstr "SMTP"
+
+msgid "config.email.driver.select.sendmail"
+msgstr "System sendmail Programm"
+
+msgid "config.email.driver.select.mail"
+msgstr "PHP mail Program"
+
+msgid "config.email.driver.select.log"
+msgstr "Schreibe E-Mails ins Log"
+
+msgid "config.email.from.name"
+msgstr "E-Mail Absendername"
+
+msgid "config.email.from.address"
+msgstr "E-Mail Absenderadresse"
+
+msgid "config.email.host"
+msgstr "E-Mail Server"
+
+msgid "config.email.port"
+msgstr "E-Mail Port"
+
+msgid "config.email.port.info"
+msgstr "465 für TLS, 587 für STARTTLS"
+
+msgid "config.email.tls"
+msgstr "E-Mail mit TLS Transportverschlüsselung"
+
+msgid "config.email.username"
+msgstr "E-Mail Benutzername"
+
+msgid "config.email.password"
+msgstr "E-Mail Passwort"
+
+msgid "config.email.sendmail"
+msgstr "Sendmail Kommando"
+
 msgid "config.home_site"
 msgstr "Startseite"
 

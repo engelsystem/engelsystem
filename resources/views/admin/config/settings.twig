@@ -26,6 +26,8 @@
         {{ f.number(name, __(options['name']), options + {'value': value}) }}
     {% elseif options.type == 'url' %}
         {{ f.input(name, __(options['name']), options + {'type': 'url', 'value': value}) }}
+    {% elseif options.type == 'email' %}
+        {{ f.input(name, __(options['name']), options + {'type': 'email', 'value': value}) }}
     {% elseif options.type == 'datetime-local' %}
         {{ f.input(name, __(options['name']), options + {'type': 'datetime-local', 'value': value}) }}
     {% elseif options.type == 'boolean' %}

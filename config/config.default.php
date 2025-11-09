@@ -37,25 +37,6 @@ return [
         'general.email' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
     ],
 
-    // Email config
-    'email'                   => [
-        // Can be mail, smtp, sendmail, log or an symfony mailer dsn string like smtps://[usr]:[pass]@smtp.foo.bar:465
-        'driver' => env('MAIL_DRIVER', 'mail'),
-        'from'   => [
-            // From address of all emails
-            'address' => env('MAIL_FROM_ADDRESS', 'noreply@example.com'),
-            'name'    => env('MAIL_FROM_NAME', env('APP_NAME', 'Engelsystem')),
-        ],
-
-        'host'       => env('MAIL_HOST', 'localhost'),
-        'port'       => env('MAIL_PORT', 587),
-        // If tls transport encryption should be enabled
-        'tls'        => env('MAIL_TLS'),
-        'username'   => env('MAIL_USERNAME'),
-        'password'   => env_secret('MAIL_PASSWORD'),
-        'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
-    ],
-
     // Setup external authentication providers
     'oauth'                   => [
         // '[name]' => [config]

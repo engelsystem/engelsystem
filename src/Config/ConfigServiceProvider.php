@@ -191,6 +191,7 @@ class ConfigServiceProvider extends ServiceProvider
                 $value = match ($options['type'] ?? null) {
                     'datetime-local' => $value ? Carbon::createFromDatetime((string) $value) : $value,
                     'boolean' => !empty($value),
+                    'number' => (float) $value,
                     default => $value,
                 };
 

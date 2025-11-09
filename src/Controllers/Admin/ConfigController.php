@@ -170,6 +170,7 @@ class ConfigController extends BaseController
                 'boolean' => $validation[] = 'checked',
                 'number' => $validation[] = 'number',
                 'url' => $validation[] = 'url',
+                'email' => $validation[] = 'email',
                 'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
                 'select_multi' => $validation[] = 'array_val|in_many:' . implode(',', array_keys($setting['data'])),
                 'password' =>

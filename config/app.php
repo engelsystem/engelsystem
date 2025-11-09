@@ -381,6 +381,63 @@ return [
                     'env' => 'MYSQL_PASSWORD',
                     'write_back' => true,
                 ],
+                'email.driver' => [
+                    'type' => 'select',
+                    'default' => 'mail',
+                    'env' => 'MAIL_DRIVER',
+                    'data' => [
+                        'smtp',
+                        'sendmail',
+                        'mail',
+                        'log',
+                    ],
+                ],
+                'email.from.name' => [
+                    'type' => 'string',
+                    'default' => 'Engelsystem',
+                    'env' => 'MAIL_FROM_NAME',
+                ],
+                'email.from.address' => [
+                    'type' => 'email',
+                    'default' => 'noreply@example.com',
+                    'env' => 'MAIL_FROM_ADDRESS',
+                ],
+                'email.host' => [
+                    'type' => 'string',
+                    'default' => 'localhost',
+                    'env' => 'MAIL_HOST',
+                ],
+                'email.port' => [
+                    'type' => 'number',
+                    'default' => 465,
+                    'env' => 'MAIL_PORT',
+                    'min' => 1,
+                    'max' => 65535,
+                    'validation' => [
+                        'int_val',
+                        'min:1',
+                        'max:65535',
+                    ],
+                ],
+                'email.tls' => [
+                    'type' => 'boolean',
+                    'env' => 'MAIL_TLS',
+                    'default' => true,
+                ],
+                'email.username' => [
+                    'type' => 'string',
+                    'env' => 'MAIL_USERNAME',
+                ],
+                'email.password' => [
+                    'type' => 'password',
+                    'env' => 'MAIL_PASSWORD',
+                ],
+                'email.sendmail' => [
+                    'type' => 'string',
+                    'hidden' => true,
+                    'default' => '/usr/sbin/sendmail -bs',
+                    'env' => 'MAIL_SENDMAIL',
+                ],
                 'home_site' => [
                     'type' => 'select',
                     'default' => 'news',
