@@ -9,6 +9,7 @@ use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\CarbonDay;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
@@ -78,6 +79,7 @@ class ConfigController extends BaseController
 
             $value = match ($options['type']) {
                 'datetime-local' => $value ? Carbon::createFromDatetime($value) : $value,
+                'date' => $value ? CarbonDay::createFromDay($value) : $value,
                 'boolean' => !empty($value),
                 'number' => (float) $value,
                 'password' => $value === '**********' ? $this->config->get($key) : $value,
@@ -167,6 +169,7 @@ class ConfigController extends BaseController
             match ($setting['type']) {
                 'string', 'text' => null, // Anything is valid here when optional
                 'datetime-local' => $validation[] = 'date_time',
+                'date' => $validation[] = 'date',
                 'boolean' => $validation[] = 'checked',
                 'number' => $validation[] = 'number',
                 'url' => $validation[] = 'url',

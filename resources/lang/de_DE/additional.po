@@ -415,6 +415,18 @@ msgstr "Erlaubt es, unbegrenzt Essensgutscheine zu bekommen"
 msgid "config.enable_voucher"
 msgstr "(Essens-) Gutscheine"
 
+msgid "config.voucher_settings.initial_vouchers"
+msgstr "Initiale Gutscheine"
+
+msgid "config.voucher_settings.shifts_per_voucher"
+msgstr "Schichten pro Gutschein"
+
+msgid "config.voucher_settings.hours_per_voucher"
+msgstr "Stunden pro Gutschein"
+
+msgid "config.voucher_settings.voucher_start"
+msgstr "Gutscheine ab"
+
 msgid "config.enable_self_worklog"
 msgstr "Eigene Arbeitseinsätze"
 

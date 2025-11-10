@@ -9,6 +9,7 @@ use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\ConfigServiceProvider;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\CarbonDay;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
@@ -252,6 +253,9 @@ class ConfigServiceProviderTest extends TestCase
 
         $this->assertArrayHasKey('date_time', $conf);
         $this->assertInstanceOf(Carbon::class, $conf['date_time']);
+
+        $this->assertArrayHasKey('date', $conf);
+        $this->assertInstanceOf(CarbonDay::class, $conf['date']);
 
         $this->assertArrayHasKey('bool', $conf);
         $this->assertFalse($conf['bool']);

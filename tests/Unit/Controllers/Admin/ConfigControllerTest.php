@@ -72,7 +72,7 @@ class ConfigControllerTest extends ControllerTest
                     'type' => 'url',
                 ],
                 'element.key' => [
-                    'type' => 'string',
+                    'type' => 'date',
                 ],
             ],
             'permission' => 'some_test_permission',
@@ -527,7 +527,7 @@ class ConfigControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody(array_merge($this->validTestBody, [
             'write_to_file' => 'new value',
             'normal_config' => 'normal value',
-            'element_key' => 'array-value',
+            'element_key' => '2042-02-03',
         ]));
 
         /** @var ConfigController $controller */
@@ -548,7 +548,7 @@ class ConfigControllerTest extends ControllerTest
         $this->assertStringContainsString('new value', $content);
         $this->assertStringContainsString('\'element\'', $content);
         $this->assertStringContainsString('\'key\'', $content);
-        $this->assertStringContainsString('\'array-value\'', $content);
+        $this->assertStringContainsString('\'2042-02-03\'', $content);
         $this->assertStringNotContainsString('normal_config', $content);
         $this->assertStringNotContainsString('another_write', $content);
 

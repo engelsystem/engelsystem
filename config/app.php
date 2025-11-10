@@ -111,7 +111,7 @@ return [
          *             'name' => 'some.value', # Optional, default: config.[name]
          *             'info' => 'some.info', # Optional, default: config.[name].info if available
          *             'type' => 'string', # Possible types:
-         *                  string, text, datetime-local, boolean, number, url, select, select_multi
+         *                  string, text, datetime-local, date, boolean, number, url, select, select_multi
          *             'default' => '[value]', # Optional
          *             'data' => ['[value]', '[key]' => '[value]'], # Optional, select data
          *             'required' => true, # Optional, default false
@@ -223,6 +223,25 @@ return [
                 'enable_voucher' => [
                     'type' => 'boolean',
                     'default' => true,
+                ],
+                'voucher_settings.initial_vouchers' => [
+                    'type' => 'number',
+                    'default' => 0,
+                    'env' => 'INITIAL_VOUCHERS',
+                ],
+                'voucher_settings.shifts_per_voucher' => [
+                    'type' => 'number',
+                    'default' => 0,
+                    'env' => 'SHIFTS_PER_VOUCHER',
+                ],
+                'voucher_settings.hours_per_voucher' => [
+                    'type' => 'number',
+                    'default' => 2,
+                    'env' => 'HOURS_PER_VOUCHER',
+                ],
+                'voucher_settings.voucher_start' => [
+                    'type' => 'date',
+                    'env' => 'VOUCHER_START',
                 ],
                 'enable_force_food' => [
                     'type' => 'boolean',

@@ -414,6 +414,18 @@ msgstr "Allows to get unlimited food vouchers"
 msgid "config.enable_voucher"
 msgstr "(Food-) vouchers"
 
+msgid "config.voucher_settings.initial_vouchers"
+msgstr "Initial vouchers"
+
+msgid "config.voucher_settings.shifts_per_voucher"
+msgstr "Shifts per voucher"
+
+msgid "config.voucher_settings.hours_per_voucher"
+msgstr "Hours per voucher"
+
+msgid "config.voucher_settings.voucher_start"
+msgstr "Voucher start"
+
 msgid "config.enable_self_worklog"
 msgstr "Own work logs"
 

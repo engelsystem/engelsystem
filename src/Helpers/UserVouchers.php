@@ -15,9 +15,7 @@ class UserVouchers
             return 0;
         }
         $voucherSettings = config('voucher_settings');
-        $start = $voucherSettings['voucher_start']
-            ? Carbon::createFromFormat('Y-m-d', $voucherSettings['voucher_start'])->setTime(0, 0)
-            : null;
+        $start = $voucherSettings['voucher_start'];
 
         $shiftEntries = $user->shiftEntries()
             ->join('shifts', 'shift_entries.shift_id', '=', 'shifts.id')

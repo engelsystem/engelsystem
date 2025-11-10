@@ -231,15 +231,6 @@ return [
         'multiplier' => env('NIGHT_SHIFTS_MULTIPLIER', 2),
     ],
 
-    // Voucher calculation
-    'voucher_settings'        => [
-        'initial_vouchers'   => env('INITIAL_VOUCHERS', 0),
-        'shifts_per_voucher' => env('SHIFTS_PER_VOUCHER', 0),
-        'hours_per_voucher'  => env('HOURS_PER_VOUCHER', 2),
-        // 'Y-m-d' formatted
-        'voucher_start'      => env('VOUCHER_START') ?: null,
-    ],
-
     // Available T-shirt sizes
     // To disable a t-shirt size in config.php, you can set its value to null
     'tshirt_sizes'            => [

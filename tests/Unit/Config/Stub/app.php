@@ -25,7 +25,9 @@ return [
                 ],
                 'date_time' => [
                     'type' => 'datetime-local',
-                    'default' => true,
+                ],
+                'date' => [
+                    'type' => 'date',
                 ],
                 'bool' => [
                     'type' => 'boolean',

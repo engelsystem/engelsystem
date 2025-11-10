@@ -8,6 +8,7 @@ use DateTimeZone;
 use Engelsystem\Application;
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\CarbonDay;
 use Engelsystem\Models\EventConfig;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -190,6 +191,7 @@ class ConfigServiceProvider extends ServiceProvider
 
                 $value = match ($options['type'] ?? null) {
                     'datetime-local' => $value ? Carbon::createFromDatetime((string) $value) : $value,
+                    'date' => $value ? CarbonDay::createFromDay($value) : $value,
                     'boolean' => !empty($value),
                     'number' => (float) $value,
                     default => $value,
