@@ -2,7 +2,7 @@
   "name": "engelsystem",
   "version": "1.1.0",
   "main": "index.js",
-  "repository": "https://github.com/engelsystem/engelsystem.git",
+  "repository": "github:engelsystem/engelsystem",
   "author": "https://github.com/engelsystem/engelsystem/contributors",
   "license": "GPL-2.0-or-later",
   "scripts": {
