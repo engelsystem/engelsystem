@@ -523,6 +523,23 @@ msgstr "Goodie"
 msgid "config.goodie_type.select.tshirt"
 msgstr "T-Shirt mit Größenauswahl"
 
+msgid "config.night_shifts.enabled"
+msgstr "Nachtschichten aktiv"
+
+msgid "config.night_shifts.enabled.info"
+msgstr ""
+"Multipliziert 'Nachtschichten' zwischen start und ende (Zahlen als Stunden) mit dem Multiplikator "
+"für den Goodie Score. "
+"Goodies müssen aktiv sein!"
+
+msgid "config.night_shifts.start"
+msgstr "Nachtschicht Startstunde"
+
+msgid "config.night_shifts.end"
+msgstr "Nachtschicht Endstunde (exklusiv)"
+
+msgid "config.night_shifts.multiplier"
+msgstr "Nachtschicht Multiplikator"
 
 msgid "validation.event_start.after"
 msgstr "Event Start muss nach dem Aufbau liegen."

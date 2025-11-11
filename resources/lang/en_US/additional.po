@@ -518,6 +518,23 @@ msgstr "Goodie"
 msgid "config.goodie_type.select.tshirt"
 msgstr "T-shirt with sizing options"
 
+msgid "config.night_shifts.enabled"
+msgstr "Night shifts enabled"
+
+msgid "config.night_shifts.enabled.info"
+msgstr ""
+"Multiplies 'night shifts' between start and end (numbers as hours) by multiplier for goodie score. "
+"Goodies must be enabled!"
+
+msgid "config.night_shifts.start"
+msgstr "Night shifts start hour"
+
+msgid "config.night_shifts.end"
+msgstr "Night shifts end (without including hour)"
+
+msgid "config.night_shifts.multiplier"
+msgstr "Night shifts multiplier"
+
 msgid "validation.event_start.after"
 msgstr "Event start must be after buildup."
 

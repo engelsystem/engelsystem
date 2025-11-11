@@ -341,6 +341,26 @@ return [
                     'type' => 'boolean',
                     'default' => false,
                 ],
+                'night_shifts.enabled' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'env' => 'NIGHT_SHIFTS',
+                ],
+                'night_shifts.start' => [
+                    'type' => 'number',
+                    'default' => 2,
+                    'env' => 'NIGHT_SHIFTS_START',
+                ],
+                'night_shifts.end' => [
+                    'type' => 'number',
+                    'default' => 8,
+                    'env' => 'NIGHT_SHIFTS_END',
+                ],
+                'night_shifts.multiplier' => [
+                    'type' => 'number',
+                    'default' => 2,
+                    'env' => 'NIGHT_SHIFTS_MULTIPLIER',
+                ],
             ],
         ],
 

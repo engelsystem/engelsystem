@@ -222,15 +222,6 @@ return [
     // Allow joining angel type via generated QR code
     'join_qr_code'            => (bool) env('JOIN_QR_CODE', true),
 
-    // Multiply 'night shifts' between start and end (numbers as hours) by multiplier in goodie score
-    // Goodies must be enabled to use this feature
-    'night_shifts'            => [
-        'enabled'    => (bool) env('NIGHT_SHIFTS', true), // Disable to weigh every shift the same
-        'start'      => env('NIGHT_SHIFTS_START', 2), // Starting from hour
-        'end'        => env('NIGHT_SHIFTS_END', 8), // Ends at (without including) hour
-        'multiplier' => env('NIGHT_SHIFTS_MULTIPLIER', 2),
-    ],
-
     // Available T-shirt sizes
     // To disable a t-shirt size in config.php, you can set its value to null
     'tshirt_sizes'            => [
