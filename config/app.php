@@ -525,10 +525,35 @@ return [
                 'url' => [
                     'type' => 'url',
                     'env' => 'APP_URL',
+                    'write_back' => true,
                 ],
                 'api_key' => [
                     'type' => 'string',
                     'default' => '',
+                ],
+                'session.driver' => [
+                    'type' => 'select',
+                    'default' => 'pdo',
+                    'env' => 'SESSION_DRIVER',
+                    'warning' => 'config.warning_logout',
+                    'write_back' => true,
+                    'data' => [
+                        'pdo',
+                        'native',
+                    ],
+                ],
+                'session.name' => [
+                    'type' => 'string',
+                    'default' => 'session',
+                    'env' => 'SESSION_NAME',
+                    'warning' => 'config.warning_logout',
+                    'write_back' => true,
+                ],
+                'session.lifetime' => [
+                    'type' => 'number',
+                    'default' => 30,
+                    'env' => 'SESSION_LIFETIME',
+                    'write_back' => true,
                 ],
 
                 // Hidden settings
@@ -542,6 +567,7 @@ return [
                     'hidden' => true,
                     'default' => 'production',
                     'data' => ['production', 'development'],
+                    'write_back' => true,
                 ],
                 'documentation_url' => [
                     'type' => 'url',
@@ -572,10 +598,23 @@ return [
                     'add' => true,
                     'default' => ['127.0.0.0/8', '::ffff:127.0.0.0/8', '::1/128'],
                     'hidden' => true,
+                    'write_back' => true,
                 ],
                 'add_headers' => [
                     'type' => 'boolean',
                     'default' => true,
+                    'hidden' => true,
+                ],
+                'metrics' => [
+                    'type' => 'static',
+                    'default' => [
+                        // User work buckets in seconds
+                        'work'    => [
+                            1 * 60 * 60, 1.5 * 60 * 60, 2 * 60 * 60, 3 * 60 * 60,
+                            5 * 60 * 60, 10 * 60 * 60, 20 * 60 * 60,
+                        ],
+                        'voucher' => [0, 1, 2, 3, 5, 10, 15, 20],
+                    ],
                     'hidden' => true,
                 ],
             ],

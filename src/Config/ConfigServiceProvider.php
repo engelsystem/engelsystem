@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Config;
 
+use Carbon\Carbon as CarbonCarbon;
 use DateTimeZone;
 use Engelsystem\Application;
 use Engelsystem\Container\ServiceProvider;
@@ -50,6 +51,7 @@ class ConfigServiceProvider extends ServiceProvider
         $this->loadConfigFromFiles($config);
         $this->initConfigOptions($config);
         $this->loadConfigFromEnv($config);
+        $this->parseConfigTypes($config);
 
         if (empty($config->get(null))) {
             throw new Exception('Configuration not found');
@@ -190,8 +192,12 @@ class ConfigServiceProvider extends ServiceProvider
                 $value = $config->get($name, $options['default'] ?? null);
 
                 $value = match ($options['type'] ?? null) {
-                    'datetime-local' => $value ? Carbon::createFromDatetime((string) $value) : $value,
-                    'date' => $value ? CarbonDay::createFromDay($value) : $value,
+                    'datetime-local' => $value && !$value instanceof CarbonCarbon
+                        ? Carbon::createFromDatetime((string) $value)
+                        : $value,
+                    'date' => $value && !$value instanceof CarbonCarbon
+                        ? CarbonDay::createFromDay((string) $value)
+                        : $value,
                     'boolean' => !empty($value),
                     'number' => (float) $value,
                     default => $value,

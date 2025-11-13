@@ -5,6 +5,11 @@
     {% if __(info) != info %}
         {% set options = options|merge({'info': __(info)}) %}
     {% endif %}
+    {% if options.warning|default(false) %}
+        {% set options = options|merge({
+            'warning': __(options.warning)
+        }) %}
+    {% endif %}
     {% if options.in_env|default(false) %}
         {% set options = {
             'warning': __('config.warning_from_env') ~ ' ' ~ options.warning|default(''), 'disabled': true

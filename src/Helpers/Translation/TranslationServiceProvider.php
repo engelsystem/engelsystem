@@ -39,6 +39,9 @@ class TranslationServiceProvider extends ServiceProvider
         $configOptions['system']['config']['default_locale']['default'] = $fallbackLocale;
         $configOptions['system']['config']['default_locale']['data'] = $namedLocales;
 
+        $config['locales'] = $configOptions['locales'] ?? $locales;
+        $config['default_locale'] = $configOptions['default_locale'] ?? $fallbackLocale;
+
         $config->set('config_options', $configOptions);
 
         $translator = $this->app->make(
@@ -67,7 +70,7 @@ class TranslationServiceProvider extends ServiceProvider
         /** @var Request $request */
         $request = $this->app->get('request');
 
-        $locales = $config->get('locales');
+        $locales = $config->get('locales', []);
         $defaultLocale = $config->get('default_locale');
         $locale = $request->getPreferredLanguage(array_merge([$defaultLocale], $locales));
 

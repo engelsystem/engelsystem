@@ -61,7 +61,7 @@ foreach ($options as $option) {
             'Type' => toType($config['type']),
             'Default' => $config['default'] ?? null,
             'Required' => $config['required'] ?? false,
-            'Environment variable' => $config['env'],
+            'Environment variable' => $config['type'] !== 'static' ? $config['env'] : '-',
             'Hidden' => $config['hidden'] ?? false,
         ]);
         $state = $state->map(fn($v, $k) => $k . ': `' . toTypeValue($v) . '`');

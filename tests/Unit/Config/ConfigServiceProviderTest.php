@@ -150,8 +150,6 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertEquals('foo has a value', $conf['some_foo']);
         $this->assertEquals(['some', 'test', 'value'], $conf['multi_val']);
         $this->assertEquals('something secret!' . PHP_EOL, $conf['another_bar']);
-        // Not existing value is not set yet
-        $this->assertArrayNotHasKey('not_set', $conf);
 
         $serviceProvider->boot();
 
@@ -159,7 +157,7 @@ class ConfigServiceProviderTest extends TestCase
         $config = $this->app->get('config');
         $conf = $config->get(null);
 
-        // Is now defined
+        // Not existing value is set from default
         $this->assertArrayHasKey('not_set', $conf);
         $this->assertTrue($conf['not_set']);
 

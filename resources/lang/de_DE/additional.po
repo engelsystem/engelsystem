@@ -685,6 +685,24 @@ msgstr "URL und Pfad der Installation, überschreibt die automatisch detektion"
 msgid "config.api_key"
 msgstr "API Key für /metrics"
 
+msgid "config.session.driver"
+msgstr "Session speicher"
+
+msgid "config.session.driver.select.pdo"
+msgstr "Datenbank"
+
+msgid "config.session.driver.select.native"
+msgstr "PHP Session"
+
+msgid "config.session.name"
+msgstr "Session Cookie Name"
+
+msgid "config.session.lifetime"
+msgstr "Session Laufzeit in Tagen"
+
+msgid "config.warning_logout"
+msgstr "Änderungen führen zum logout aller Benutzer!"
+
 msgid "config.maintenance"
 msgstr "Wartungsmodus "
 
@@ -725,7 +743,7 @@ msgstr "Username Filter-Regex"
 msgid "config.username_regex.info"
 msgstr ""
 "Regulärer Ausdruck der einen nicht erlaubten Benutzernamen beschreibt. "
-"Standartmäßig sind nur Buchstaben artige Zeichen, Zahlen und \"-\", \"_\" sowie \".\" erlaubt."
+"Standardmäßig sind nur Buchstaben artige Zeichen, Zahlen und \"-\", \"_\" sowie \".\" erlaubt."
 
 msgid "config.disabled_user_view_columns"
 msgstr "Versteckte User-Tabellen-Spalten"
@@ -740,4 +758,7 @@ msgid "config.trusted_proxies.info"
 msgstr "IP Adressen von vertrauenswürdigen Reverse-Proxies als Array oder Kommaseparierte Liste"
 
 msgid "config.add_headers"
-msgstr "Wietere Header hinzufügen"
+msgstr "Weitere Header hinzufügen"
+
+msgid "config.metrics"
+msgstr "/metrics buckets"

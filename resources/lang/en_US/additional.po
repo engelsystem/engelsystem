@@ -677,6 +677,24 @@ msgstr "URL and base path to use instead of the auto-detected one"
 msgid "config.api_key"
 msgstr "API key for /metrics"
 
+msgid "config.session.driver"
+msgstr "Session storage"
+
+msgid "config.session.driver.select.pdo"
+msgstr "Database"
+
+msgid "config.session.driver.select.native"
+msgstr "PHP session"
+
+msgid "config.session.name"
+msgstr "Session cookie name"
+
+msgid "config.session.lifetime"
+msgstr "Session lifetime in days"
+
+msgid "config.warning_logout"
+msgstr "Changing this will log out all users!"
+
 msgid "config.maintenance"
 msgstr "Maintenance mode"
 
@@ -732,3 +750,6 @@ msgstr "IP addresses of reverse proxies that are trusted, can be an array or a c
 
 msgid "config.add_headers"
 msgstr "Add additional headers"
+
+msgid "config.metrics"
+msgstr "/metrics buckets"

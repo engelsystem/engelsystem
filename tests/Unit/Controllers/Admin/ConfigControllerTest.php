@@ -528,6 +528,7 @@ class ConfigControllerTest extends ControllerTest
             'write_to_file' => 'new value',
             'normal_config' => 'normal value',
             'element_key' => '2042-02-03',
+            'write_with_default' => 'saved value',
         ]));
 
         /** @var ConfigController $controller */
@@ -549,6 +550,8 @@ class ConfigControllerTest extends ControllerTest
         $this->assertStringContainsString('\'element\'', $content);
         $this->assertStringContainsString('\'key\'', $content);
         $this->assertStringContainsString('\'2042-02-03\'', $content);
+        $this->assertStringContainsString('write_with_default', $content);
+        $this->assertStringContainsString('saved value', $content);
         $this->assertStringNotContainsString('normal_config', $content);
         $this->assertStringNotContainsString('another_write', $content);
 
@@ -556,6 +559,7 @@ class ConfigControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody(array_merge($this->validTestBody, [
             'write_to_file' => 'new value',
             'another_write' => 'another value',
+            'write_with_default' => 'default value',
         ]));
         $controller->save($this->request);
 
@@ -565,6 +569,8 @@ class ConfigControllerTest extends ControllerTest
         $this->assertStringContainsString('another_write', $content);
         $this->assertStringContainsString('another value', $content);
         $this->assertStringNotContainsString('\'array-value\'', $content);
+        $this->assertStringNotContainsString('write_with_default', $content);
+        $this->assertStringNotContainsString('default value', $content);
     }
 
     /**

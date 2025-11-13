@@ -238,24 +238,6 @@ return [
         '4XL'  => '4XLarge Straight-Cut',
     ],
 
-    'metrics'                 => [
-        // User work buckets in seconds
-        'work'    => [1 * 60 * 60, 1.5 * 60 * 60, 2 * 60 * 60, 3 * 60 * 60, 5 * 60 * 60, 10 * 60 * 60, 20 * 60 * 60],
-        'voucher' => [0, 1, 2, 3, 5, 10, 15, 20],
-    ],
-
-    // Session config
-    'session'                 => [
-        // Supported: pdo or native
-        'driver' => env('SESSION_DRIVER', 'pdo'),
-
-        // Cookie name
-        'name'   => env('SESSION_NAME', 'session'),
-
-        // Lifetime in days
-        'lifetime' => env('SESSION_LIFETIME', 30),
-    ],
-
     // Predefined headers
     // To disable a header in config.php, you can set its value to null
     'headers'                 => [

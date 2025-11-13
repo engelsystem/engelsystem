@@ -14,6 +14,11 @@ return [
                     'type' => 'string',
                     'write_back' => true,
                 ],
+                'write_with_default' => [
+                    'type' => 'string',
+                    'write_back' => true,
+                    'default' => 'default value',
+                ],
                 'normal_config' => [
                     'type' => 'string',
                 ],
