@@ -121,26 +121,47 @@ function admin_arrive()
         $usr['rendered_planned_arrival_date'] = $plannedArrivalDate ? $plannedArrivalDate->format(__('general.date')) : '-';
         $usr['rendered_arrival_date'] = $arrivalDate ? $arrivalDate->format(__('general.date')) : '-';
         $usr['arrived'] = icon_bool($usr->state->arrived);
-        $usr['actions'] = form([
-            form_hidden('action', $usr->state->arrived ? 'reset' : 'arrived'),
-            form_hidden('user', $usr->id),
-            form_submit(
-                'submit',
-                $usr->state->arrived
-                    ? icon('arrow-counterclockwise')
-                    : icon('house'),
-                'btn-sm',
-                true,
-                $usr->state->arrived ? 'danger' : 'primary',
-                $usr->state->arrived
-                    ? __('Reset')
-                    : __('user.arrive'),
-                $usr->state->arrived ? [
-                    'confirm_submit_title' => __('Reset arrival state for %s?', [$usr->name]),
-                    'confirm_button_text' => __('Reset'),
-                ] : [],
-            ),
-        ]);
+
+        $arrive_template = <<<EOT
+                <button
+                    class="btn btn-sm {type} ms-2 js-only {modal}"
+                    data-arrive-action="{action}"
+                    data-arrive-user-id="{user}"
+                    title="{title}"
+                    data-confirm_submit_title="{confirm_submit_title}"
+                    data-confirm_button_text="{confirm_button_text}"
+                    data-modal-show="{modal}"
+                    data-arrive-title="{arrive_title}"
+                    data-reset-title="{reset_title}"
+                >
+                    {icon}
+                </button>
+        EOT;
+        $arrive_attributes = ['{action}' => 'arrive',
+            '{user}' => $usr->id,
+            '{icon}' =>  icon('house', 'pointer-events: none'),
+            '{type}' =>  'btn-primary',
+            '{title}' => __('user.arrive'),
+            '{confirm_submit_title}' => htmlspecialchars(__('Reset arrival state for %s?', [$usr->name])),
+            '{confirm_button_text}' => __('Reset'),
+            '{modal}' => false,
+            '{arrive_title}' => __('user.arrive'),
+            '{reset_title}' => __('Reset'),
+            ];
+        $reset_attributes = ['{action}' => '',
+            '{user}' => $usr->id,
+            '{icon}' =>  icon('arrow-counterclockwise', 'pointer-events: none'),
+            '{type}' =>  'btn-danger',
+            '{title}' => __('Reset'),
+            '{confirm_submit_title}' => htmlspecialchars(__('Reset arrival state for %s?', [$usr->name])),
+            '{confirm_button_text}' => __('Reset'),
+            '{modal}' => true,
+            '{arrive_title}' => __('user.arrive'),
+            '{reset_title}' => __('Reset'),
+            ];
+
+        $arrive_button = strtr($arrive_template, $usr->state->arrived ? $reset_attributes : $arrive_attributes);
+        $usr['actions'] = $arrive_button;
 
         if ($usr->state->arrival_date) {
             $day = $usr->state->arrival_date->format('Y-m-d');
