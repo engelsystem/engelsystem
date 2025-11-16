@@ -351,6 +351,60 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
 }
 
 /**
+ * returns all days with shifts needing angels for a location
+ *
+ * @param int $location_id
+ * @return list<string>
+ */
+function Days_by_Location_id(int $location_id): array
+{
+    $sql = '
+        SELECT
+            DATE(`shifts`.`start`) AS `day`
+        FROM `shifts`
+        JOIN `needed_angel_types` ON `needed_angel_types`.`shift_id`=`shifts`.`id`
+        LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
+        WHERE `shifts`.`location_id` = ?
+        AND s.shift_id IS NULL
+
+        UNION
+
+        /* By shift type */
+        SELECT
+            DATE(`shifts`.`start`) AS `day`
+        FROM `shifts`
+        JOIN `needed_angel_types` ON `needed_angel_types`.`shift_type_id`=`shifts`.`shift_type_id`
+        LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
+        LEFT JOIN schedules AS se on s.schedule_id = se.id
+        WHERE `shifts`.`location_id` = ?
+        AND NOT s.shift_id IS NULL
+        AND se.needed_from_shift_type = TRUE
+
+        UNION
+
+        /* By location */
+        SELECT
+            DATE(`shifts`.`start`) AS `day`
+        FROM `shifts`
+        JOIN `needed_angel_types` ON `needed_angel_types`.`location_id`=`shifts`.`location_id`
+        LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
+        LEFT JOIN schedules AS se on s.schedule_id = se.id
+        WHERE `shifts`.`location_id` = ?
+        AND NOT s.shift_id IS NULL
+        AND se.needed_from_shift_type = FALSE
+    ';
+
+    return array_column(Db::select(
+        $sql,
+        [
+            $location_id,
+            $location_id,
+            $location_id,
+        ]
+    ), 'day');
+}
+
+/**
  * @param ShiftsFilter $shiftsFilter
  * @return ShiftEntry[]|Collection
  */

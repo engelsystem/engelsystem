@@ -24,10 +24,9 @@ function location_controller(): array
     $request = request();
     $location = load_location();
 
-    $all_shifts = $location->shifts->sortBy('start');
+    $days_list = Days_by_Location_id($location->id);
     $days = [];
-    foreach ($all_shifts as $shift) {
-        $day = $shift->start->format('Y-m-d');
+    foreach ($days_list as $day) {
         if (!isset($days[$day])) {
             $days[$day] = dateWithEventDay($day);
         }
