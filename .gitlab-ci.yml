@@ -34,7 +34,7 @@ stages:
   needs:
     - composer install
   before_script:
-    - composer install --no-ansi --no-progress
+    - composer install --no-ansi --no-progress --ignore-platform-req=php
 
 # for jobs that depend on yarn
 .use_yarn: &use_yarn
@@ -62,7 +62,7 @@ composer install:
     - composer audit
     - composer validate
   script:
-    - composer install --no-ansi --no-progress
+    - composer install --no-ansi --no-progress --ignore-platform-req=php
 
 composer audit:
   image: php:latest
