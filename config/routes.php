@@ -72,9 +72,8 @@ $route->addGroup(
     }
 );
 
-// Stats
+// Metrics
 $route->get('/metrics', 'Metrics\\Controller@metrics');
-$route->get('/stats', 'Metrics\\Controller@stats');
 
 // Angeltypes
 $route->addGroup('/angeltypes', function (RouteCollector $route): void {
