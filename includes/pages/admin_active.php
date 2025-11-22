@@ -83,6 +83,7 @@ function admin_active()
                 ->leftJoin('shift_entries', 'users.id', '=', 'shift_entries.user_id')
                 ->leftJoin('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
                 ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
+                #->addSelect('users_state.force_active IS NOT NULL AS force_active')
                 ->whereNotNull('users_state.arrival_date')
                 ->orWhere(function (EloquentBuilder $userinfo) {
                     $userinfo->whereNull('users_state.arrival_date')
@@ -217,7 +218,7 @@ function admin_active()
         })
         ->groupBy('users.id');
     if (config('enable_force_active')) {
-        $query->orderByDesc('force_active');
+        $query->orderByRaw('(users_state.force_active_by IS NOT NULL) DESC');
     }
     $query
         ->orderByDesc('shift_length')
