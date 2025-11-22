@@ -249,6 +249,9 @@ msgstr "Du wurdest von einem Supporter als %1$s hinzugefügt."
 msgid "notification.angeltype.added.text"
 msgstr "Eine Beschreibung findest du unter %2$s"
 
+msgid "angeltype.add.success"
+msgstr "Erfolgreich dem Engeltyp beigetreten"
+
 msgid "notification.shift.deleted"
 msgstr "Deine Schicht wurde gelöscht"
 
