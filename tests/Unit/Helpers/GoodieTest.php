@@ -10,7 +10,9 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Grammars\SQLiteGrammar;
+use PDO;
 
 class GoodieTest extends TestCase
 {
@@ -23,7 +25,7 @@ class GoodieTest extends TestCase
     {
         $result = Goodie::shiftScoreQuery();
 
-        $this->assertEquals('0', $result->getValue(new SQLiteGrammar()));
+        $this->assertEquals('0', $result->getValue(new SQLiteGrammar(new Connection(new PDO('sqlite::memory:')))));
     }
 
     /**
