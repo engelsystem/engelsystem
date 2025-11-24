@@ -242,6 +242,7 @@ function admin_user()
     } else {
         switch ($request->input('action')) {
             case 'save_groups':
+                /** @var User $angel */
                 $angel = User::findOrFail($user_id);
                 if ($angel->id != $user->id || auth()->can('admin_groups')) {
                     /** @var Group $my_highest_group */
@@ -267,6 +268,22 @@ function admin_user()
                         $groupsRequest = $request->input('groups');
                         if (!is_array($groupsRequest)) {
                             $groupsRequest = [];
+                        }
+
+                        $defaultGroup = auth()->getDefaultRole();
+                        if (
+                            !in_array($defaultGroup, $groupsRequest)
+                            && $angel->groups->where('id', $defaultGroup)->count()
+                        ) {
+                            if (!auth()->can('admin_groups') && !config('default_group_removable')) {
+                                $html .= error(__('You cannot remove the default group.'), true);
+                                break;
+                            } else {
+                                $html .= warning(
+                                    __('You removed the default group, this has unintended side effects!'),
+                                    true
+                                );
+                            }
                         }
 
                         $angel->groups()->detach();
