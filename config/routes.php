@@ -311,6 +311,12 @@ $route->addGroup(
                         $route->post('', 'Admin\\UserVoucherController@saveVoucher');
                     }
                 );
+                $route->addGroup(
+                    '/arrive',
+                    function (RouteCollector $route): void {
+                        $route->post('', 'Admin\\UserArriveController@saveArrive');
+                    }
+                );
             }
         );
 

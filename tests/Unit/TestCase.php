@@ -78,6 +78,7 @@ abstract class TestCase extends PHPUnitTestCase
         }
 
         $this->app->instance('translator', $translator);
+        $this->app->instance(Translator::class, $translator);
 
         return $translator;
     }
