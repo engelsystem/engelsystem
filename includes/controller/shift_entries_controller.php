@@ -336,8 +336,14 @@ function shift_entry_delete_controller()
     }
 
     if ($request->hasPostData('delete')) {
+        $reason = $request->postData('reason');
+        if (empty($reason)) {
+            error(__('Please provide a reason for removing the shift entry.'));
+            throw_redirect(user_link($signout_user->id));
+        }
+
         $shiftEntry->delete();
-        ShiftEntry_onDelete($shiftEntry);
+        ShiftEntry_onDelete($shiftEntry, $reason);
         success(__('Shift entry removed.'));
         throw_redirect(shift_link($shift));
     }
@@ -362,11 +368,12 @@ function shift_entry_delete_controller()
  * @param array            $params
  * @return string URL
  */
-function shift_entry_delete_link($shiftEntry, $params = [])
+function shift_entry_delete_link($shiftEntry, $reason, $params = [])
 {
     $params = array_merge([
         'action'         => 'delete',
         'shift_entry_id' => $shiftEntry['shift_entry_id'] ?? $shiftEntry['id'],
+        'reason'         => $reason,
     ], $params);
     return url('/shift-entries', $params);
 }

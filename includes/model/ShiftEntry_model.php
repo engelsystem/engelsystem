@@ -28,7 +28,7 @@ function ShiftEntry_onCreate(ShiftEntry $shiftEntry): void
  *
  * @param ShiftEntry $shiftEntry
  */
-function ShiftEntry_onDelete(ShiftEntry $shiftEntry): void
+function ShiftEntry_onDelete(ShiftEntry $shiftEntry, $reason): void
 {
     $signout_user = $shiftEntry->user;
     $shift = Shift($shiftEntry->shift);
@@ -44,9 +44,10 @@ function ShiftEntry_onDelete(ShiftEntry $shiftEntry): void
         . ' from ' . $shift->start->format('Y-m-d H:i')
         . ' to ' . $shift->end->format('Y-m-d H:i')
         . ' as ' . $angeltype->name
+        . ' reason: ' . $reason
     );
 
-    mail_shift_removed($signout_user, $shift);
+    mail_shift_removed($signout_user, $shift, $reason);
 }
 
 /**
