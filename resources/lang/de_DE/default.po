@@ -744,6 +744,9 @@ msgstr "belegt"
 msgid "free"
 msgstr "frei"
 
+msgid "Include own shifts"
+msgstr "Eigene Schichten immer anzeigen"
+
 msgid "Own"
 msgstr "Eigene"
 
