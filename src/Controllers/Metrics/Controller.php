@@ -76,6 +76,9 @@ class Controller extends BaseController
                 ], 'value' => $angelType['supporters'],
             ];
         }
+        $meals = $this->stats->meals()->map(function (int $count, string $key) {
+            return ['labels' => ['meal' => $key], 'value' => $count];
+        })?->toArray() ?? [];
 
         $data = [
             $this->config->get('app_name') . ' stats',
@@ -135,6 +138,7 @@ class Controller extends BaseController
                 ['labels' => ['type' => 'humans'], 'value' => $this->stats->email('humans')],
                 ['labels' => ['type' => 'goodie'], 'value' => $this->stats->email('goodie')],
                 ['labels' => ['type' => 'news'], 'value' => $this->stats->email('news')],
+                ['labels' => ['type' => 'food'], 'value' => $this->stats->email('food')],
             ],
             'users_working'        => [
                 'type' => 'gauge',
@@ -168,6 +172,10 @@ class Controller extends BaseController
                 'type' => 'histogram',
                 $this->stats->vouchersBuckets($metrics['voucher']) + ['sum' => $this->stats->vouchers()],
             ],
+            'meals' => [
+                'type' => 'gauge',
+                'help' => 'The meal vouchers generated',
+            ] + $meals,
             'goodies_issued'       => ['type' => 'counter', 'help' => 'Issued Goodies', $this->stats->goodies()],
             'tshirt_sizes'         => [
                 'type' => 'gauge',

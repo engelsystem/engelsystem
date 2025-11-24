@@ -25,7 +25,7 @@ class AddEmailFoodToUserSettings extends Migration
     public function up(): void
     {
         $this->schema->table('users_settings', function (Blueprint $table): void {
-            $table->boolean('email_food')->after('email_goodie')->default(true);
+            $table->boolean('email_food')->after('email_goodie')->default(false);
         });
         $this->schema->table('users_state', function (Blueprint $table): void {
             $table->json('meals')->after('got_voucher')->nullable()->default(null);

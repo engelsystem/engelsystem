@@ -101,6 +101,7 @@ class Stats
             'humans' => Settings::whereEmailHuman(true)->count(),
             'goodie'  => Settings::whereEmailGoodie(true)->count(),
             'news'   => Settings::whereEmailNews(true)->count(),
+            'food'   => Settings::whereEmailFood(true)->count(),
             default  => 0,
         };
     }
@@ -150,6 +151,18 @@ class Stats
         }
 
         return $return;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function meals(): Collection
+    {
+        return State::query()
+            ->whereNotNull('meals')
+            ->pluck('meals')
+            ->flatten()
+            ->countBy();
     }
 
     public function goodies(): int

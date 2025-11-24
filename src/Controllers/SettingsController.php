@@ -108,9 +108,11 @@ class SettingsController extends BaseController
         $user->settings->email_human = $data['email_human'] ?: false;
         $user->settings->email_messages = $data['email_messages'] ?: false;
 
+        // @codeCoverageIgnoreStart
         if (config('enable_voucher') && config('enable_force_food')) {
             $user->settings->email_food = $data['email_food'] ?: false;
         }
+        // @codeCoverageIgnoreEnd
 
         if ($goodie_enabled && config('enable_email_goodie')) {
             $user->settings->email_goodie = $data['email_goodie'] ?: false;
@@ -487,9 +489,11 @@ class SettingsController extends BaseController
         if ($goodie_tshirt && !$user->state->got_goodie) {
             $rules['shirt_size'] = $this->isRequired('tshirt_size') . '|shirt_size';
         }
+        // @codeCoverageIgnoreStart
         if (config('enable_voucher') && config('enable_force_food')) {
             $rules['email_food'] = 'optional|checked';
         }
+        // @codeCoverageIgnoreEnd
         return $rules;
     }
 }

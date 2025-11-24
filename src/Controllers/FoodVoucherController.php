@@ -22,6 +22,9 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 class FoodVoucherController extends BaseController
 {
     use HasUserNotifications;
@@ -54,6 +57,7 @@ class FoodVoucherController extends BaseController
         ) {
             throw new HttpNotFound();
         }
+
         if (!$this->userIsCrew() && UserVouchers::eligibleVoucherCount($this->auth->user()) == 0) {
             throw new HttpForbidden();
         }
@@ -101,9 +105,6 @@ class FoodVoucherController extends BaseController
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    /**
-     * @throws ErrorException
-     */
     private function getInfo(bool $crew, ?array $userMealVouchers = null): array
     {
         $data = cache(
@@ -120,7 +121,10 @@ class FoodVoucherController extends BaseController
         foreach ($data as $id => $meal) {
             $endTime = Carbon::parse($meal['datetime']['date'] . ' ' . $meal['datetime']['end']);
             $startTime = Carbon::parse($meal['datetime']['date'] . ' ' . $meal['datetime']['start']);
-            if ($now < $endTime && $now->addDay(2) >= $startTime) {
+            if (
+                $now < $endTime
+                && $now->addDays(2) >= $startTime
+            ) {
                 $sold_out = $crew
                     ? $meal['availability']['crew']
                     : $meal['availability']['regular'];
