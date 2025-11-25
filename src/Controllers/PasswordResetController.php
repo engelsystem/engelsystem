@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers;
 
+use Engelsystem\Helpers\Password as PasswordResetHelper;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -47,22 +48,7 @@ class PasswordResetController extends BaseController
         /** @var User $user */
         $user = User::whereEmail($data['email'])->first();
         if ($user) {
-            $reset = (new PasswordReset())->findOrNew($user->id);
-            $reset->user_id = $user->id;
-            $reset->token = bin2hex(random_bytes(16));
-            $reset->save();
-
-            $this->log->info(
-                sprintf('Password recovery for %s (%u)', $user->name, $user->id),
-                ['user' => $user->toJson()]
-            );
-
-            $this->mail->sendViewTranslated(
-                $user,
-                'Password recovery',
-                'emails/password-reset',
-                ['username' => $user->displayName, 'reset' => $reset]
-            );
+            PasswordResetHelper::triggerPasswordReset($user);
         }
 
         return $this->showView('pages/password/reset-success', ['type' => 'email']);
