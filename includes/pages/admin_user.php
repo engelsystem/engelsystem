@@ -137,6 +137,9 @@ function admin_user()
             $html .= auth()->can('user.fa.edit')
                 ? html_options('force_active', $options, $user_source->state->force_active)
                 : icon_bool($user_source->state->force_active);
+            if ($user_source->state->force_active) {
+                $html .= __('user.by', [User_Nick_render($user_source->state->forceActiveBy)]);
+            }
             $html .= '</td></tr>' . "\n";
         }
 
@@ -362,7 +365,13 @@ function admin_user()
                     $user_source->state->active = $request->postData('active');
                 }
                 if (auth()->can('user.fa.edit') && config('enable_force_active')) {
-                    $user_source->state->force_active = $request->input('force_active');
+                    if ($user_source->state->force_active != $request->input('force_active')) {
+                        if ($request->input('force_active')) {
+                            $user_source->state->force_active_by = auth()->user()->id;
+                        } else {
+                            $user_source->state->force_active_by = null;
+                        }
+                    }
                 }
                 if (auth()->can('user.ff.edit') && config('enable_force_food')) {
                     $user_source->state->force_food = $request->input('force_food');

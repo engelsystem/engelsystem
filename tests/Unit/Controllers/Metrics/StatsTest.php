@@ -579,7 +579,7 @@ class StatsTest extends TestCase
      */
     protected function addUsers(): void
     {
-        $this->addUser();
+        $user = $this->addUser();
         $this->addUser([], ['shirt_size' => 'L'], ['email_human' => true, 'email_shiftinfo' => true]);
         $this->addUser(
             ['arrival_date' => Carbon::now()],
@@ -597,7 +597,12 @@ class StatsTest extends TestCase
             ['language' => 'lo_RM']
         );
         $this->addUser(
-            ['arrival_date' => Carbon::now(), 'got_voucher' => 9, 'force_active' => true, 'user_info' => 'Info'],
+            [
+                'arrival_date' => Carbon::now(),
+                'got_voucher' => 9,
+                'force_active_by' => $user->id,
+                'user_info' => 'Info',
+            ],
             [],
             ['theme' => 1],
             ['drive_car' => true, 'drive_12t' => true, 'drive_confirmed' => true, 'ifsg_certificate_light' => true]
@@ -614,7 +619,9 @@ class StatsTest extends TestCase
                 'ifsg_confirmed' => true,
             ]
         );
-        $this->addUser(['arrival_date' => Carbon::now(), 'active' => 1, 'got_goodie' => true, 'force_active' => true]);
+        $this->addUser(
+            ['arrival_date' => Carbon::now(), 'active' => 1, 'got_goodie' => true, 'force_active_by' => $user->id],
+        );
         $this->addUser(
             ['arrival_date' => Carbon::now(), 'active' => 1, 'got_goodie' => true, 'force_food' => true],
             ['shirt_size' => 'L'],
