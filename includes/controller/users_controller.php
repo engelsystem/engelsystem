@@ -268,7 +268,11 @@ function users_list_controller()
         $order_by = $request->input('OrderBy');
     }
 
-    $perPage = $request->get('page') == 'all' ? PHP_INT_MAX : config('display_users');
+    $perPage = $request->get('c', config('display_users'));
+    if ($perPage == 'all') {
+        $perPage = PHP_INT_MAX;
+    }
+    $perPage = is_numeric($perPage) ? (int) $perPage : config('display_users');
 
     /** @var User[]|Collection|LengthAwarePaginator $users */
     $users = User::with(['contact', 'personalData', 'state', 'shiftEntries' => function (HasMany $query) {

@@ -210,8 +210,8 @@ EOT;
     }
 
     $pagination = '';
-    if ($users instanceof LengthAwarePaginator && $users->total() > $users->perPage()) {
-        $pagination = pagination($users, true);
+    if ($users instanceof LengthAwarePaginator) {
+        $pagination = pagination($users, config('display_users'));
     }
     $link = button(url('/register'), icon('plus-lg'), 'btn-sm add');
     return page_with_title(__('All users') . ' ' . $link, [
