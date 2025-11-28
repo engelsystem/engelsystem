@@ -432,8 +432,10 @@ function user_info_icon(User $user): string
     return $infoIcon;
 }
 
-function pagination(LengthAwarePaginator $paginator, bool $withAll = false): string
+function pagination(LengthAwarePaginator $paginator, ?int $selectionSteps = null): string
 {
+    $paginator->appends(request()->getQueryParams());
+
     $items = '';
     foreach ($paginator->getUrlRange(1, $paginator->lastPage()) as $page => $url) {
         $active = '';
@@ -450,10 +452,36 @@ function pagination(LengthAwarePaginator $paginator, bool $withAll = false): str
         );
     }
 
-    if ($withAll) {
+    if ($selectionSteps) {
+        $selections = [];
+        foreach ([$selectionSteps, $selectionSteps * 5, $selectionSteps * 10] as $selection) {
+            $url = $paginator->appends('c', $selection)->url(1);
+            $selections[] = sprintf(
+                '<li><a class="dropdown-item" href="%s">%s</a></li>',
+                $url,
+                $selection,
+            );
+        }
         $items .= sprintf(
-            '<li class="page-item"><a class="page-link" href="%s">%s</a></li>',
-            $paginator->url('all'),
+            '
+                <li class="page-item">
+                    <div class="dropdown">
+                        <button class="page-link dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown"
+                        >
+                            %s
+                        </button>
+                        <ul class="dropdown-menu">
+                            %s
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="%s">%s</a></li>
+                        </ul>
+                    </div>
+                </li>
+            ',
+            __('Per page'),
+            implode(PHP_EOL, $selections),
+            $paginator->appends('c', 'all')->url(1),
             __('All'),
         );
     }
