@@ -11,5 +11,5 @@ parameters:
     ignoreErrors:
         -
             message: '#.*#'
-            path: config/config.php
+            path: config/config.php*
             reportUnmatched: false
