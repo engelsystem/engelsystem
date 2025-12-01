@@ -677,6 +677,9 @@ msgstr "Active"
 msgid "user.force_active"
 msgstr "Always active"
 
+msgid "user.by"
+msgstr "(by %s)"
+
 msgid "user.force_food"
 msgstr "Unlimited food"
 
