@@ -21,6 +21,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\HasDatabase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -59,8 +60,10 @@ class PasswordResetControllerTest extends ControllerTest
         );
         /** @var TestLogger $log */
         $log = $this->args['log'];
+        $this->app->instance(LoggerInterface::class, $log);
         /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->args['mailer'];
+        $this->app->instance(EngelsystemMailer::class, $mailer);
         $this->setExpects($mailer, 'sendViewTranslated');
 
         $controller->postReset($request);

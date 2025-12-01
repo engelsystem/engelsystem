@@ -1058,6 +1058,9 @@ msgstr "Angel"
 msgid "title.date"
 msgstr "Date"
 
+msgid "password.recovery.send"
+msgstr "Send Password Recovery E-mail"
+
 msgid "password.reset.confirm"
 msgstr "Confirm password"
 
