@@ -305,10 +305,14 @@ function form_element($label, $input, $for = '', $class = '')
  * @param string   $style
  * @return string
  */
-function form($elements, $action = '', $style = '', $btnGroup = false)
+function form($elements, $action = '', $style = '', $btnGroup = false, $class = null)
 {
+    if ($btnGroup) {
+        $class .= ' btn-group';
+    }
+
     return '<form action="' . $action . '" enctype="multipart/form-data" method="post"'
-        . ($btnGroup ? ' class="btn-group"' : '')
+        . ($class ? ' class="' . $class . '"' : '')
         . ($style ? ' style="' . $style . '"' : '') . '>'
         . join($elements)
         . form_csrf()
