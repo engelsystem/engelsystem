@@ -92,7 +92,7 @@ msgid "schedule.delete.success"
 msgstr "Das Programm wurde erfolgreich gelöscht."
 
 msgid "shifts.filter.toggle"
-msgstr "Filter verstecken/anzeigen"
+msgstr "Zusätzliche Filter verstecken/anzeigen"
 
 msgid "validation.schedule-url.required"
 msgstr "Bitte gib eine Programm URL an."
