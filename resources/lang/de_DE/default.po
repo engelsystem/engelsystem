@@ -792,6 +792,9 @@ msgstr ""
 "\" target=\"_blank\">JSON</a> Format (Link bitte geheimhalten, sonst musst du den API-Key in "
 "<a href=\"%s\">deinen Einstellungen</a> zurücksetzen)."
 
+msgid "Per page"
+msgstr "Pro Seite"
+
 msgid "All"
 msgstr "Alle"
 
