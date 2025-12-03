@@ -1,7 +1,9 @@
 <?php
 
 use Engelsystem\Helpers\BarChart;
+use Engelsystem\Http\Response;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
@@ -33,7 +35,7 @@ function admin_arrive()
         if (
             $action == 'reset'
             && preg_match('/^\d+$/', $request->input('user'))
-            && $request->hasPostData('submit')
+            && $request->hasPostData('send')
         ) {
             $user_id = $request->input('user');
             $user_source = User::find($user_id);
@@ -42,6 +44,12 @@ function admin_arrive()
                 $user_source->state->save();
 
                 engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source, true));
+
+                if (in_array('application/json', $request->getAcceptableContentTypes())) {
+                    // This was an async request, send a JSON response.
+                    return arrive_respond_json($user_source);
+                }
+
                 success(__('Reset done. Angel has not arrived.'));
 
                 throw_redirect(back()->getHeaderLine('location'));
@@ -51,7 +59,7 @@ function admin_arrive()
         } elseif (
             $action == 'arrived'
             && preg_match('/^\d+$/', $request->input('user'))
-            && $request->hasPostData('submit')
+            && $request->hasPostData('send')
         ) {
             $user_id = $request->input('user');
             $user_source = User::find($user_id);
@@ -60,6 +68,12 @@ function admin_arrive()
                 $user_source->state->save();
 
                 engelsystem_log('User set as arrived: ' . User_Nick_render($user_source, true));
+
+                if (in_array('application/json', $request->getAcceptableContentTypes())) {
+                    // This was an async request, send a JSON response.
+                    return arrive_respond_json($user_source);
+                }
+
                 success(__('Angel has been marked as arrived.'));
 
                 throw_redirect(back()->getHeaderLine('location'));
@@ -125,7 +139,7 @@ function admin_arrive()
             form_hidden('action', $usr->state->arrived ? 'reset' : 'arrived'),
             form_hidden('user', $usr->id),
             form_submit(
-                'submit',
+                'send',
                 $usr->state->arrived
                     ? icon('arrow-counterclockwise')
                     : icon('house'),
@@ -140,7 +154,7 @@ function admin_arrive()
                     'confirm_button_text' => __('Reset'),
                 ] : [],
             ),
-        ]);
+        ], '', '', false, 'arrive_form');
 
         if ($usr->state->arrival_date) {
             $day = $usr->state->arrival_date->format('Y-m-d');
@@ -282,4 +296,32 @@ function admin_arrive()
             ]),
         ] : []),
     ]);
+}
+
+function arrive_respond_json(Model $user_source): Response
+{
+    return response()
+        ->withHeader('content-type', 'application/json')
+        ->withContent(json_encode([
+            'state' => $user_source->state->arrived ? 'arrived' : 'not_arrived',
+            'arrival_date' => $user_source->state->arrival_date?->format(
+                __('general.date')
+            ) ?: '-',
+            'button' => form_submit(
+                'send',
+                $user_source->state->arrived
+                    ? icon('arrow-counterclockwise')
+                    : icon('house'),
+                'btn-sm',
+                false,
+                $user_source->state->arrived ? 'danger' : 'primary',
+                $user_source->state->arrived
+                    ? __('Reset')
+                    : __('user.arrive'),
+                $user_source->state->arrived ? [
+                    'confirm_submit_title' => __('Reset arrival state for %s?', [$user_source->name]),
+                    'confirm_button_text' => __('Reset'),
+                ] : [],
+            ),
+        ]));
 }

@@ -79,4 +79,37 @@ class LegacyMiddlewareTest extends TestCase
 
         $middleware->process($request, $handler);
     }
+
+    /**
+     * @covers \Engelsystem\Middleware\LegacyMiddleware::process
+     */
+    public function testProcessResponseInterface(): void
+    {
+        /** @var RequestHandlerInterface|MockObject $handler */
+        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $auth->expects($this->exactly(2))
+            ->method('can')
+            ->withConsecutive(['users.arrive.list'], ['admin_arrive'])
+            ->willReturnOnConsecutiveCalls(true, false);
+
+        $request = new Request([], [], [], [], [], ['REQUEST_URI' => 'admin-arrive']);
+        $this->app->instance('request', $request);
+
+        $responseInstance = new Response();
+        /** @var LegacyMiddleware|MockObject $middleware */
+        $middleware = $this->getMockBuilder(LegacyMiddleware::class)
+            ->setConstructorArgs([$this->app, $auth])
+            ->onlyMethods(['loadPage', 'renderPage'])
+            ->getMock();
+        $middleware->expects($this->once())
+            ->method('loadPage')
+            ->with('admin_arrive')
+            ->willReturn(['', $responseInstance]);
+
+        $response = $middleware->process($request, $handler);
+        $this->assertEquals($responseInstance, $response);
+    }
 }

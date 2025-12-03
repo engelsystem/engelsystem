@@ -63,6 +63,10 @@ class LegacyMiddleware implements MiddlewareInterface
             list($title, $content) = $this->loadPage($page);
         }
 
+        if ($content instanceof ResponseInterface) {
+            return $content;
+        }
+
         if (empty($title) and empty($content)) {
             /** @var Translator $translator */
             $translator = $this->container->get('translator');
