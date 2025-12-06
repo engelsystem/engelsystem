@@ -121,6 +121,9 @@ msgstr "Delete"
 msgid "form.delete_all"
 msgstr "Delete all"
 
+msgid "form.generate"
+msgstr "Generate"
+
 msgid "form.updated"
 msgstr "Updated"
 
@@ -820,6 +823,21 @@ msgid "angeltypes.hide_on_shift_view.info"
 msgstr "If checked only admins and members of the angel type "
 "can see the filter option for this angel type on the shifts page"
 
+msgid "angeltypes.qr"
+msgstr "Join angel type \"%s\" QR code"
+
+msgid "angeltypes.qr.expires"
+msgstr "Expires %c"
+
+msgid "angeltypes.qr.expired"
+msgstr "Expired"
+
+msgid "angeltypes.qr.time"
+msgstr "Lifetime (minutes)"
+
+msgid "angeltypes.qr.time.info"
+msgstr "The link will be valid for the whole time span and can't be revoked!"
+
 msgid "location.location"
 msgstr "Location"
 
@@ -930,6 +948,9 @@ msgstr "Count"
 
 msgid "general.created_at"
 msgstr "Created at"
+
+msgid "general.url"
+msgstr "URL"
 
 msgid "shifts.random"
 msgstr "Random shift"

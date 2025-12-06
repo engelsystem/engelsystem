@@ -141,6 +141,8 @@ return [
             'enable_password' => false,
             // Allow registration even if disabled in config (optional)
             'allow_registration' => null,
+            // Allow disconnecting user accounts from the oauth provider (optional)
+            'allow_user_disconnect' => true,
             // Auto join teams
             // Info groups field (optional)
             'groups' => 'groups',
@@ -152,6 +154,15 @@ return [
         ],
         */
     ],
+
+    // Random, long (at least 32 characters) alphanumeric or base64 encoded key, used for signing
+    'app_key' => env_secret('APP_KEY'),
+
+    // see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
+    'jwt_algorithm' => env('JWT_ALGORITHM', 'HS256'),
+
+    // Number of minutes after a JWT must expire for example max angel type join time
+    'jwt_expiration_time' => env('JWT_EXPIRATION_TIME', 60 * 24 * 7),
 
     // Default theme, 1 = theme1.scss etc.
     'theme'                   => env('THEME', 1),
@@ -270,8 +281,11 @@ return [
     // Must be one of news, meetings, user_shifts, angel types, questions
     'home_site'               => env('HOME_SITE', 'news'),
 
-    // Number of News shown on one site and for feed readers (minimum 1)
+    // Number of news shown on one site and for feed readers (minimum 1)
     'display_news'            => env('DISPLAY_NEWS', 10),
+
+    // Number of users shown on one admin page table
+    'display_users'           => env('DISPLAY_USERS', 100),
 
     // Users are able to sign up
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
@@ -288,6 +302,9 @@ return [
         'mobile'             => (bool) env('MOBILE_REQUIRED', false),
         'dect'               => (bool) env('DECT_REQUIRED', false),
     ],
+
+    // Allow joining angel type via generated QR code
+    'join_qr_code'            => (bool) env('JOIN_QR_CODE', true),
 
     // Only arrived users can sign up for shifts
     'signup_requires_arrival' => (bool) env('SIGNUP_REQUIRES_ARRIVAL', false),

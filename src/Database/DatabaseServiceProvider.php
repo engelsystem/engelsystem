@@ -10,6 +10,7 @@ use Engelsystem\Container\ServiceProvider;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection as DatabaseConnection;
+use PDO;
 use PDOException;
 use Throwable;
 
@@ -47,6 +48,7 @@ class DatabaseServiceProvider extends ServiceProvider
             $this->exitOnError($e);
         }
 
+        $this->app->instance(PDO::class, $pdo);
         $this->app->instance(CapsuleManager::class, $capsule);
         $this->app->instance(Db::class, $capsule);
         Db::setDbManager($capsule);

@@ -792,6 +792,9 @@ msgstr ""
 "\" target=\"_blank\">JSON</a> Format (Link bitte geheimhalten, sonst musst du den API-Key in "
 "<a href=\"%s\">deinen Einstellungen</a> zurücksetzen)."
 
+msgid "Per page"
+msgstr "Pro Seite"
+
 msgid "All"
 msgstr "Alle"
 
@@ -1253,6 +1256,12 @@ msgstr "Hier kannst du das Passwort für diesen Engel zurücksetzen:"
 msgid "Here you can define the user groups of the angel:"
 msgstr "Hier kannst du die Benutzergruppen des Engels definieren:"
 
+msgid "You cannot remove the default group."
+msgstr "Du kannst die Standard-Benutzergruppe nicht entfernen."
+
+msgid "You removed the default group, this has unintended side effects!"
+msgstr "Du hast die Standard-Benutzergruppe entfernt, dies führt zu unerwarteten Nebeneffekten!"
+
 msgid "User groups saved."
 msgstr "Benutzergruppen gespeichert."
 
@@ -1336,6 +1345,9 @@ msgstr "Alle löschen"
 
 msgid "form.updated"
 msgstr "Aktualisiert"
+
+msgid "form.generate"
+msgstr "Generieren"
 
 msgid "form.cancel"
 msgstr "Abbrechen"
@@ -1955,6 +1967,21 @@ msgid "angeltypes.hide_on_shift_view.info"
 msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
 "Schicht Seite die Filteroption für diesen Engeltyp sehen."
 
+msgid "angeltypes.qr"
+msgstr "Engeltyp \"%s\" beitreten QR Code"
+
+msgid "angeltypes.qr.expires"
+msgstr "Läuft ab %c"
+
+msgid "angeltypes.qr.expired"
+msgstr "Abgelaufen"
+
+msgid "angeltypes.qr.time"
+msgstr "Lebensdauer (Minuten)"
+
+msgid "angeltypes.qr.time.info"
+msgstr "Der Link ist für die gesamte angegebene Zeitspanne gültig und kann nicht zurückgezogen werden!"
+
 msgid "location.location"
 msgstr "Ort"
 
@@ -2040,6 +2067,9 @@ msgstr "Anzahl"
 
 msgid "general.created_at"
 msgstr "Erstellt am"
+
+msgid "general.url"
+msgstr "URL"
 
 msgid "shifts.history"
 msgstr "Schichten Historie"

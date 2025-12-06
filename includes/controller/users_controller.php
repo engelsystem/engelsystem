@@ -10,6 +10,7 @@ use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 /**
@@ -267,12 +268,18 @@ function users_list_controller()
         $order_by = $request->input('OrderBy');
     }
 
-    /** @var User[]|Collection $users */
+    $perPage = $request->get('c', config('display_users'));
+    if ($perPage == 'all') {
+        $perPage = PHP_INT_MAX;
+    }
+    $perPage = is_numeric($perPage) ? (int) $perPage : config('display_users');
+
+    /** @var User[]|Collection|LengthAwarePaginator $users */
     $users = User::with(['contact', 'personalData', 'state', 'shiftEntries' => function (HasMany $query) {
         $query->whereNotNull('freeloaded_by');
     }])
         ->orderBy('name')
-        ->get();
+        ->paginate($perPage);
     foreach ($users as $user) {
         $user->setAttribute(
             'freeloads',
@@ -282,7 +289,7 @@ function users_list_controller()
         );
     }
 
-    $users = $users->sortBy(function (User $user) use ($order_by) {
+    $sortedUsers = $users->sortBy(function (User $user) use ($order_by) {
         $userData = $user->toArray();
         $data = [];
         array_walk_recursive($userData, function ($value, $key) use (&$data) {
@@ -291,6 +298,7 @@ function users_list_controller()
 
         return isset($data[$order_by]) ? Str::lower($data[$order_by]) : null;
     });
+    $users->setCollection($sortedUsers);
 
     return [
         __('All users'),

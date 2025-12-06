@@ -262,6 +262,34 @@ class RequestHandlerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
+    /**
+     * @covers \Engelsystem\Middleware\RequestHandler::checkPermissions
+     */
+    public function testCheckPermissionsHasPermission(): void
+    {
+        /** @var RequestHandlerInterface|MockObject $handler */
+        list(, , $handler) = $this->getMocks();
+        $this->app->instance('response', new Response());
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $this->app->instance('auth', $auth);
+
+        $controller = new ControllerImplementation();
+        $request = (new Request())
+            ->withAttribute('route-request-handler', [$controller, 'allow']);
+
+        $middleware = new RequestHandler($this->app);
+
+        $response = $middleware->process($request, $handler);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('yay', $response->getBody()->getContents());
+
+        $request = (new Request())
+            ->withAttribute('route-request-handler', [$controller, 'deny']);
+        $this->expectException(HttpForbidden::class);
+        $middleware->process($request, $handler);
+    }
+
     protected function getMocks(): array
     {
         /** @var Application|MockObject $container */

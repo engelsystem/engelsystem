@@ -307,6 +307,17 @@ table.table-sticky-header thead {
   text-align: right;
 }
 
+.column_shift_info:not(:hover) .table-myshifts-shift-info-limit-height {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+
+  @media (min-width: map-get($grid-breakpoints, 'lg')) {
+    -webkit-line-clamp: 4;
+  }
+}
+
 h1,
 h2,
 h3,

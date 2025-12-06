@@ -39,8 +39,12 @@ class RequestHandler implements MiddlewareInterface
         if ($requestHandler instanceof CallableHandler) {
             $callable = $requestHandler->getCallable();
 
-            if (is_array($callable) && $callable[0] instanceof BaseController) {
-                $this->checkPermissions($callable[0], $callable[1]);
+            if (
+                is_array($callable)
+                && $callable[0] instanceof BaseController
+                && !$this->checkPermissions($request, $callable[0], $callable[1])
+            ) {
+                throw new HttpForbidden();
             }
         }
 
@@ -87,8 +91,16 @@ class RequestHandler implements MiddlewareInterface
     /**
      * Check required page permissions
      */
-    protected function checkPermissions(BaseController $controller, string $method): bool
-    {
+    protected function checkPermissions(
+        ServerRequestInterface $request,
+        BaseController $controller,
+        string $method
+    ): bool {
+        $hasPermission = $controller->hasPermission($request, $method);
+        if (!is_null($hasPermission)) {
+            return $hasPermission;
+        }
+
         /** @var Authenticator $auth */
         $auth = $this->container->get('auth');
         $permissions = $controller->getPermissions();
@@ -110,7 +122,7 @@ class RequestHandler implements MiddlewareInterface
                         ? !$auth->canAny(explode('||', $value))
                         : !$auth->can($permission)
                 ) {
-                    throw new HttpForbidden();
+                    return false;
                 }
             }
         }

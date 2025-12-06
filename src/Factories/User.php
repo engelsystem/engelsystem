@@ -300,6 +300,15 @@ class User
             $this->session->remove('oauth2_access_token');
             $this->session->remove('oauth2_refresh_token');
             $this->session->remove('oauth2_expires_at');
+
+            $this->logger->info(
+                '{user} connected OAuth user {oauth_user} using {provider}',
+                [
+                    'provider' => $oauth->provider,
+                    'user' => sprintf('%s (%u)', $user->displayName, $user->id),
+                    'oauth_user' => $oauth->identifier,
+                ]
+            );
         }
 
         $defaultGroup = Group::find($this->authenticator->getDefaultRole());

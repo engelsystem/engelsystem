@@ -70,6 +70,31 @@ class RequestTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Http\Request::get
+     */
+    public function testGet(): void
+    {
+        $request = new Request([
+            // Query / GET
+            'a' => 'From query',
+            'g' => 'From query',
+        ], [
+            // Request / POST
+            'a' => 'From request',
+            'g' => 'From request',
+            'p' => 'From request',
+        ], [
+            // Attributes
+            'a' => 'From attributes',
+        ]);
+
+        $this->assertEquals('From attributes', $request->get('a'));
+        $this->assertEquals('From query', $request->get('g'));
+        $this->assertEquals('From request', $request->get('p'));
+        $this->assertEquals('default value', $request->get('not-existing', 'default value'));
+    }
+
+    /**
      * @covers \Engelsystem\Http\Request::hasPostData
      */
     public function testHasPostData(): void

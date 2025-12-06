@@ -248,6 +248,9 @@ msgstr "You have been added as an %1$s by a supporter."
 msgid "notification.angeltype.added.text"
 msgstr "You can find a description at %2$s"
 
+msgid "angeltype.add.success"
+msgstr "Successfully joined angel type"
+
 msgid "notification.shift.deleted"
 msgstr "Your Shift was deleted"
 
