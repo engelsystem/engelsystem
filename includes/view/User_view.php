@@ -735,7 +735,6 @@ function User_view(
                             '',
                             __('user.food.voucher'),
                             UserVouchers::eligibleVoucherCount($user_source) <= 0
-                                && !$user_source->state->force_active
                                 && !$user_source->state->force_food
                         ) : ''),
                         button(

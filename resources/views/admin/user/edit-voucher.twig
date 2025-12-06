@@ -13,7 +13,7 @@
 
         {% include 'layouts/parts/messages.twig' %}
         {{ m.alert(
-            forceActive or forceFood
+            forceFood
             ? __('voucher.eligible.force', [eligibleVoucherCount])
             : __('voucher.eligible', [eligibleVoucherCount])
         , 'info', true) }}
