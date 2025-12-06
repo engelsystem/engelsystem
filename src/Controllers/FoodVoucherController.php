@@ -71,8 +71,12 @@ class FoodVoucherController extends BaseController
     private function userIsCrew(): bool
     {
         $user = $this->auth->user();
-        return $user->state->force_active && $this->config->get('enable_force_active')
-            || $user->state->force_food && $this->config->get('enable_force_food');
+        return
+            $user
+            && (
+                $user->state->force_active && $this->config->get('enable_force_active')
+                || $user->state->force_food && $this->config->get('enable_force_food')
+            );
     }
 
     /**
