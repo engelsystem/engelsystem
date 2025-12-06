@@ -34,6 +34,7 @@ function public_dashboard_controller()
             'types'           => $angelTypes,
             'startTime'       => null,
             'endTime'         => null,
+            'own_shifts'      => false,
         ];
 
         $filter = new ShiftsFilter();

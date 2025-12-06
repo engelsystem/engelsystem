@@ -105,10 +105,14 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
  */
 function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $days)
 {
+    $request = request();
     $shiftsFilter->setUserShiftsAdmin($user_shifts_admin);
     $shiftsFilter->setFilled(check_request_int_array('filled', $shiftsFilter->getFilled()));
     $shiftsFilter->setLocations(check_request_int_array('locations', $shiftsFilter->getLocations()));
     $shiftsFilter->setTypes(check_request_int_array('types', $shiftsFilter->getTypes()));
+    if ($request->getRequestUri() !== '/user-shifts' ) {
+        $shiftsFilter->setOwnShifts($request->has('own_shifts'));
+    }
     update_ShiftsFilter_timerange($shiftsFilter, $days);
 }
 
@@ -263,7 +267,7 @@ function view_user_shifts()
 
     if (!$session->has('shifts-filter')) {
         $location_ids = $locations->pluck('id')->toArray();
-        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $location_ids, $ownAngelTypes);
+        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $location_ids, $ownAngelTypes, true);
         $session->set('shifts-filter', $shiftsFilter->sessionExport());
     }
 
@@ -292,6 +296,7 @@ function view_user_shifts()
     $start_time = $shiftsFilter->getStart()->format('H:i');
     $end_day = $shiftsFilter->getEnd()->format('Y-m-d');
     $end_time = $shiftsFilter->getEnd()->format('H:i');
+    $include_own_shifts = $shiftsFilter->getOwnShifts();
 
     $canSignUpForShifts = true;
     if (config('signup_requires_arrival') && !$user->state->arrived) {
@@ -365,6 +370,7 @@ function view_user_shifts()
                     public_dashboard_link(),
                     icon('speedometer2') . __('Public Dashboard')
                 ),
+                'own_shifts' => form_checkbox('own_shifts', __('Include own shifts'), $include_own_shifts),
             ]),
         ]),
     ]);
