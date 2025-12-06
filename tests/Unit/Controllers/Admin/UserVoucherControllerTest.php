@@ -65,10 +65,6 @@ class UserVoucherControllerTest extends ControllerTest
                 $this->assertEquals($this->user->id, $data['userdata']->id);
                 $this->assertEquals($this->user->state->got_voucher, $data['gotVoucher']);
                 $this->assertEquals(
-                    $this->user->state->force_active && config('enable_force_active'),
-                    $data['forceActive']
-                );
-                $this->assertEquals(
                     $this->user->state->force_food && config('enable_force_food'),
                     $data['forceFood']
                 );

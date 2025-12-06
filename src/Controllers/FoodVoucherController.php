@@ -74,8 +74,7 @@ class FoodVoucherController extends BaseController
         return
             $user
             && (
-                $user->state->force_active && $this->config->get('enable_force_active')
-                || $user->state->force_food && $this->config->get('enable_force_food')
+                $user->state->force_food && $this->config->get('enable_force_food')
             );
     }
 
@@ -242,19 +241,11 @@ class FoodVoucherController extends BaseController
         $user->state->meals = array_merge($user->state->meals ?? [], [$data['meal_id']]);
         $user->state->save();
 
-        $logHelper = [];
-        if ($user->state->force_active) {
-            $logHelper[] = 'fa';
-        }
-        if ($user->state->force_food) {
-            $logHelper[] = 'ff';
-        }
-
         $this->log->info(
-            'Food Voucher {crew} generated. Got {got_voucher} vouchers.',
+            'Food Voucher{crew} generated. Got {got_voucher} vouchers.',
             [
                 'got_voucher' => $user->state->got_voucher,
-                'crew' => $crew ? '(' . join(', ', $logHelper) . ')' : '',
+                'crew' => $crew ? ' (crew)' : '',
             ]
         );
 
