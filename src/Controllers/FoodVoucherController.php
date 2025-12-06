@@ -58,7 +58,10 @@ class FoodVoucherController extends BaseController
             throw new HttpNotFound();
         }
 
-        if (!$this->userIsCrew() && UserVouchers::eligibleVoucherCount($this->auth->user()) == 0) {
+        if (
+            !$this->auth->user()
+            || (!$this->userIsCrew() && UserVouchers::eligibleVoucherCount($this->auth->user()) == 0)
+        ) {
             throw new HttpForbidden();
         }
     }
@@ -71,11 +74,7 @@ class FoodVoucherController extends BaseController
     private function userIsCrew(): bool
     {
         $user = $this->auth->user();
-        return
-            $user
-            && (
-                $user->state->force_food && $this->config->get('enable_force_food')
-            );
+        return $user && $user->state->force_food && $this->config->get('enable_force_food');
     }
 
     /**
@@ -124,6 +123,7 @@ class FoodVoucherController extends BaseController
         foreach ($data as $id => $meal) {
             $endTime = Carbon::parse($meal['datetime']['date'] . ' ' . $meal['datetime']['end']);
             $startTime = Carbon::parse($meal['datetime']['date'] . ' ' . $meal['datetime']['start']);
+
             if (
                 $now < $endTime
                 && $now->copy()->addDays(2) >= $startTime
