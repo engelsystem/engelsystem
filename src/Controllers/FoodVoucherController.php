@@ -127,7 +127,7 @@ class FoodVoucherController extends BaseController
             $startTime = Carbon::parse($meal['datetime']['date'] . ' ' . $meal['datetime']['start']);
             if (
                 $now < $endTime
-                && $now->addDays(2) >= $startTime
+                && $now->copy()->addDays(2) >= $startTime
             ) {
                 $sold_out = $crew
                     ? $meal['availability']['crew']
