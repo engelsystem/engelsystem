@@ -19,6 +19,8 @@ class LocationResource extends BasicResource
             'id' => $this->model->id,
             'name' => $this->model->name,
             'description' => $this->model->description ?: '',
+            'dect' => $this->model->dect,
+            'map_url' => $this->model->map_url,
             'url' => url('/locations', ['action' => 'view', 'location_id' => $this->model->id]),
         ];
     }
