@@ -24,9 +24,9 @@ class Markdown extends TwigExtension
         ];
     }
 
-    public function render(string $text, bool $escapeHtml = true): string
+    public function render(mixed $text, bool $escapeHtml = true): string
     {
         return $this->renderer
-            ->render($text, !$escapeHtml);
+            ->render((string) $text, !$escapeHtml);
     }
 }
