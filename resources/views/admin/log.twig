@@ -54,6 +54,7 @@
                             <th>{{ __('log.level') }}</th>
                             <th>{{ __('general.user') }}</th>
                             <th>{{ __('log.message') }}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,10 +63,10 @@
                             {%- if entry.level in ['notice', 'info'] %}
                                 {%- set type = 'info' %}
                             {%- endif %}
-                            {%- if entry.level in ['error', 'warning'] %}
+                            {%- if entry.level in ['warning'] %}
                                 {%- set type = 'warning' %}
                             {%- endif %}
-                            {%- if entry.level in ['emergency', 'alert', 'critical'] %}
+                            {%- if entry.level in ['error', 'emergency', 'alert', 'critical'] %}
                                 {%- set type = 'danger' %}
                             {%- endif %}
 
@@ -75,12 +76,20 @@
                             {%- endif %}
 
                             <tr>
-                                <td class="table-{{ td_type }} text-nowrap">{{ entry.created_at.format(__('general.datetime')) }}</td>
+                                <td class="table-{{ td_type }} text-nowrap">
+                                    <span id="message-{{ entry.id }}" class="ref-id"></span>
+                                    {{ entry.created_at.format(__('general.datetime')) }}
+                                </td>
                                 <td class="table-{{ td_type }} text-nowrap">
                                     <span class="badge bg-{{ type }}">{{ entry.level|capitalize }}</span> <!-- //todo bs5 -->
                                 </td>
                                 <td class="text-nowrap">{% if entry.user %}{{ m.user(entry.user) }}{% endif %}</td>
                                 <td>{{ entry.message|nl2br }}</td>
+                                <td>
+                                    <small class="text-muted">
+                                        <a class="ref-link" href="#message-{{ entry.id }}">{{ m.icon('link') }}</a>
+                                    </small>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

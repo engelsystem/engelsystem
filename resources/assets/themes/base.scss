@@ -381,6 +381,10 @@ h6,
   padding-top: 3em;
 }
 
+.table-sticky-header .ref-id[id] {
+  padding-top: 7em;
+}
+
 // Cards
 .card > .card-body:first-child {
   border-top-left-radius: var(--bs-card-border-radius);
