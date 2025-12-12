@@ -79,6 +79,7 @@ trait HasDatabase
                     ['migration' => '2022_10_21_000000_add_hide_register_to_angeltypes'],
                     ['migration' => '2022_11_06_000000_shifttype_remove_angeltype'],
                     ['migration' => '2023_05_21_000001_cleanup_short_api_keys'],
+                    ['migration' => '2025_12_12_000000_change_oauth_identifier_database_encoding_to_bin'],
                 ]
             );
 
