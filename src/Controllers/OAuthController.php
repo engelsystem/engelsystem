@@ -13,6 +13,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Models\OAuth;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -140,9 +141,20 @@ class OAuthController extends BaseController
                 'refresh_token' => $accessToken->getRefreshToken(),
                 'expires_at'    => $expirationTime,
             ]);
-            $oauth->user()
-                ->associate($user)
-                ->save();
+
+            try {
+                $oauth->user()
+                    ->associate($user)
+                    ->save();
+            // @codeCoverageIgnoreStart
+            } catch (UniqueConstraintViolationException) {
+                $this->log->error(
+                    'Duplicate OAuth user {user} using {provider}: Database does not support unique with mixed case! ',
+                    ['provider' => $providerName, 'user' => $resourceId]
+                );
+                throw new HttpNotFound('oauth.provider-error');
+                // @codeCoverageIgnoreEnd
+            }
 
             $this->log->info(
                 'Connected OAuth user {user} using {provider}',
