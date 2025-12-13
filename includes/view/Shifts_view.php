@@ -277,7 +277,7 @@ function Shift_view(
     $night_shift_hint = '';
     if ($shift->isNightShift() && $goodie_enabled) {
         $night_shift_hint = ' <small><span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
-            . __('Night shifts between %d and %d am are multiplied by %d for the goodie score.', [
+            . __('night_shift.goodie_score.hint', [
                 $nightShiftsConfig['start'],
                 $nightShiftsConfig['end'],
                 $nightShiftsConfig['multiplier'],

@@ -1148,8 +1148,8 @@ msgstr "iCal Export"
 msgid "JSON Export"
 msgstr "JSON Export"
 
-msgid "Night shifts between %d and %d am are multiplied by %d for the goodie score."
-msgstr "Nachtschichten zwischen %d und %d Uhr werden für den Goodie Score mit %3$d multipliziert."
+msgid "night_shift.goodie_score.hint"
+msgstr "Gearbeitete Zeit zwischen %d und %d Uhr werden für den Goodie Score mit %3$d multipliziert."
 
 msgid ""
 "Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "

@@ -659,6 +659,9 @@ msgstr "Delete tag \"%s\""
 msgid "user.edit.goodie"
 msgstr "Edit goodie"
 
+msgid "night_shift.goodie_score.hint"
+msgstr "Time worked between %d and %d am are multiplied by %d for the goodie score."
+
 msgid "user.goodie_score.enough"
 msgstr "Enough"
 
