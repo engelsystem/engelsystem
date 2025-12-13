@@ -66,7 +66,7 @@ class ConfigServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (!$this->eventConfig) {
-            return;
+            $this->eventConfig = $this->app->make(EventConfig::class);
         }
 
         /** @var Config $config */

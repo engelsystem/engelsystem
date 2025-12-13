@@ -105,7 +105,7 @@ class ConfigServiceProviderTest extends ServiceProviderTest
      */
     public function testBoot(): void
     {
-        $app = $this->getApp(['get']);
+        $app = $this->getApp(['get', 'make']);
 
         /** @var EventConfig|MockObject $eventConfig */
         $eventConfig = $this->createMock(EventConfig::class);
@@ -140,12 +140,12 @@ class ConfigServiceProviderTest extends ServiceProviderTest
 
         $this->setExpects($eloquentBuilder, 'get', [['name', 'value']], $configs);
         $this->setExpects($app, 'get', ['config'], $config, $this->exactly(3));
+        $this->setExpects($app, 'make', [EventConfig::class], $eventConfig, $this->exactly(1));
 
         $serviceProvider = new ConfigServiceProvider($app);
         $serviceProvider->boot();
 
         $serviceProvider = new ConfigServiceProvider($app, $eventConfig);
-        $serviceProvider->boot();
         $serviceProvider->boot();
         $serviceProvider->boot();
 
