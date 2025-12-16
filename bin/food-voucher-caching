@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+use Engelsystem\Application;
+use Engelsystem\Controllers\FoodVoucherController;
+
+require_once __DIR__ . '/../includes/application.php';
+
+/** @var Application $app */
+$app = app();
+$controller = $app->make(FoodVoucherController::class);
+
+cache(
+    'foodVoucherInfo',
+    [$controller, 'cacheInfo'],
+    -1
+);
