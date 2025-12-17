@@ -702,7 +702,7 @@ function User_view(
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
-                                form_submit('submit', icon('house') . __('user.arrive'), '', false),
+                                form_submit('send', icon('house') . __('user.arrive'), '', false),
                             ], url('/admin-arrive'), 'float:left') : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(
