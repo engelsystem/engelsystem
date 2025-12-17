@@ -15,12 +15,20 @@ use Psr\Http\Message\ServerRequestInterface;
 class AuthenticatorServiceProviderTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Helpers\AuthenticatorServiceProvider::register()
+     * @covers \Engelsystem\Helpers\AuthenticatorServiceProvider::register
+     * @covers \Engelsystem\Helpers\AuthenticatorServiceProvider::boot
      */
-    public function testRegister(): void
+    public function testRegisterBoot(): void
     {
         $app = new Application();
         $app->bind(ServerRequestInterface::class, Request::class);
+
+        $serviceProvider = new AuthenticatorServiceProvider($app);
+        $serviceProvider->register();
+
+        $this->assertInstanceOf(Authenticator::class, $app->get(Authenticator::class));
+        $this->assertInstanceOf(Authenticator::class, $app->get('authenticator'));
+        $this->assertInstanceOf(Authenticator::class, $app->get('auth'));
 
         $config = new Config([
             'password_algorithm' => PASSWORD_DEFAULT,
@@ -29,12 +37,7 @@ class AuthenticatorServiceProviderTest extends ServiceProviderTest
         ]);
         $app->instance('config', $config);
 
-        $serviceProvider = new AuthenticatorServiceProvider($app);
-        $serviceProvider->register();
-
-        $this->assertInstanceOf(Authenticator::class, $app->get(Authenticator::class));
-        $this->assertInstanceOf(Authenticator::class, $app->get('authenticator'));
-        $this->assertInstanceOf(Authenticator::class, $app->get('auth'));
+        $serviceProvider->boot();
 
         /** @var Authenticator $auth */
         $auth = $app->get(Authenticator::class);
