@@ -232,7 +232,7 @@ class OAuthControllerTest extends TestCase
         }
 
         $this->assertFalse($this->session->has('oauth2_state'));
-        $this->log->hasWarningThatContains('Invalid');
+        $this->assertTrue($this->log->hasWarningThatContains('Invalid'));
         $this->assertNotNull($exception, 'Exception not thrown');
         $this->assertEquals('oauth.invalid-state', $exception->getMessage());
     }
@@ -241,37 +241,29 @@ class OAuthControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\OAuthController::index
      * @covers \Engelsystem\Controllers\OAuthController::handleOAuthError
      */
-    public function testIndexProviderError(): void
+    public function testIndexProviderErrorOnResourceInfo(): void
     {
         /** @var AccessToken|MockObject $accessToken */
         $accessToken = $this->createMock(AccessToken::class);
 
-        $thrown = false;
         /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
-        $provider->expects($this->exactly(2))
-            ->method('getAccessToken')
-            ->with('authorization_code', ['code' => 'lorem-ipsum-code'])
-            ->willReturnCallback(function () use (&$thrown, $accessToken) {
-                if (!$thrown) {
-                    $thrown = true;
-                    throw new IdentityProviderException(
-                        'Oops',
-                        42,
-                        ['error' => 'some_error', 'error_description' => 'Some kind of error']
-                    );
-                }
-
-                return $accessToken;
-            });
+        $this->setExpects(
+            $provider,
+            'getAccessToken',
+            ['authorization_code', ['code' => 'lorem-ipsum-code']],
+            $accessToken
+        );
         $provider->expects($this->once())
             ->method('getResourceOwner')
             ->with($accessToken)
-            ->willThrowException(new IdentityProviderException(
-                'Something\'s wrong!',
-                1337,
-                '500 Internal server error'
-            ));
+            ->willReturnCallback(function (): void {
+                throw new IdentityProviderException(
+                    'Something\'s wrong!',
+                    1337,
+                    '500 Internal server error'
+                );
+            });
 
         $this->session->set('oauth2_state', 'some-internal-state');
 
@@ -281,9 +273,8 @@ class OAuthControllerTest extends TestCase
             ->withQueryParams(['code' => 'lorem-ipsum-code', 'state' => 'some-internal-state']);
 
         $controller = $this->getMock(['getProvider']);
-        $this->setExpects($controller, 'getProvider', ['testprovider'], $provider, 2);
+        $this->setExpects($controller, 'getProvider', ['testprovider'], $provider, 1);
 
-        // Invalid state
         $exception = null;
         try {
             $controller->index($request);
@@ -291,10 +282,42 @@ class OAuthControllerTest extends TestCase
             $exception = $e;
         }
 
-        $this->log->hasErrorThatContains('Some kind of error');
-        $this->log->hasErrorThatContains('some_error');
+        $this->assertTrue($this->log->hasErrorThatPasses(function ($rec): bool {
+            return str_contains($rec['message'], 'identity provider error')
+                && $rec['context']['error'] == 'Something\'s wrong!';
+        }));
         $this->assertNotNull($exception, 'Exception not thrown');
         $this->assertEquals('oauth.provider-error', $exception->getMessage());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::index
+     * @covers \Engelsystem\Controllers\OAuthController::handleOAuthError
+     */
+    public function testIndexProviderErrorIdentityProvider(): void
+    {
+        /** @var GenericProvider|MockObject $provider */
+        $provider = $this->createMock(GenericProvider::class);
+        $provider->expects($this->once())
+            ->method('getAccessToken')
+            ->with('authorization_code', ['code' => 'lorem-ipsum-code'])
+            ->willReturnCallback(function (): void {
+                throw new IdentityProviderException(
+                    'Oops',
+                    42,
+                    ['error' => 'some_error', 'error_description' => 'Some kind of error']
+                );
+            });
+
+        $this->session->set('oauth2_state', 'some-internal-state');
+
+        $request = new Request();
+        $request = $request
+            ->withAttribute('provider', 'testprovider')
+            ->withQueryParams(['code' => 'lorem-ipsum-code', 'state' => 'some-internal-state']);
+
+        $controller = $this->getMock(['getProvider']);
+        $this->setExpects($controller, 'getProvider', ['testprovider'], $provider, 1);
 
         // Error while getting data
         $exception = null;
@@ -304,7 +327,11 @@ class OAuthControllerTest extends TestCase
             $exception = $e;
         }
 
-        $this->log->hasErrorThatContains('500');
+        $this->assertTrue($this->log->hasErrorThatPasses(function ($rec): bool {
+            return str_contains($rec['message'], 'identity provider error')
+                && $rec['context']['error'] == 'Oops'
+                && str_contains($rec['context']['description'], 'Some kind of error');
+        }));
         $this->assertNotNull($exception, 'Exception not thrown');
         $this->assertEquals('oauth.provider-error', $exception->getMessage());
     }
@@ -355,7 +382,7 @@ class OAuthControllerTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Controllers\OAuthController::index
+     * @covers       \Engelsystem\Controllers\OAuthController::index
      * @dataProvider oAuthErrorCodeProvider
      */
     public function testIndexOAuthErrorResponse(string $oauth_error_code): void
@@ -364,8 +391,8 @@ class OAuthControllerTest extends TestCase
 
         $request = new Request();
         $request = $request
-                    ->withAttribute('provider', 'testprovider')
-                    ->withQueryParams(['error' => $oauth_error_code]);
+            ->withAttribute('provider', 'testprovider')
+            ->withQueryParams(['error' => $oauth_error_code]);
 
         $exception = null;
         try {

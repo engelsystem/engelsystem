@@ -33,6 +33,11 @@ class MarkdownTest extends ExtensionTest
             '<p>&lt;i&gt;Lorem&lt;/i&gt; <em>&quot;Ipsum&quot;</em></p>',
             $extension->render('<i>Lorem</i> *"Ipsum"*'),
         );
+
+        $this->assertEquals(
+            '',
+            $extension->render(null),
+        );
     }
 
     /**
