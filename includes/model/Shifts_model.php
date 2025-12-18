@@ -392,6 +392,9 @@ function Days_by_Location_id(int $location_id): array
         WHERE `shifts`.`location_id` = ?
         AND NOT s.shift_id IS NULL
         AND se.needed_from_shift_type = FALSE
+
+        /* Order all results */
+        ORDER BY `day`
     ';
 
     return array_column(Db::select(
