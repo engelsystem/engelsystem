@@ -11,9 +11,14 @@
         }) %}
     {% endif %}
     {% if options.in_env|default(false) %}
-        {% set options = {
+        {% set options = options|merge({
             'warning': __('config.warning_from_env') ~ ' ' ~ options.warning|default(''), 'disabled': true
-        }|merge(options) %}
+        }) %}
+    {% endif %}
+    {% if not (options.writable ?? true) %}
+        {% set options = options|merge({
+            'warning': __('config.warning_file_not_writable') ~ ' ' ~ options.warning|default(''), 'disabled': true
+        }) %}
     {% endif %}
     {# same as f.formData but will return value, needed for arrays #}
     {% set value = session_pop('form-data-' ~ name|replace({'.': '_'}), config(name, options.default|default(null))) %}

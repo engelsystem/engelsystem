@@ -2144,3 +2144,6 @@ msgstr "Konfiguration erfolgreich angepasst"
 
 msgid "config.warning_from_env"
 msgstr "Konfiguration wird aus ENV variable überschrieben!"
+
+msgid "config.warning_file_not_writable"
+msgstr "Konfigurationsdatei config.local.php ist nicht beschreibbar!"

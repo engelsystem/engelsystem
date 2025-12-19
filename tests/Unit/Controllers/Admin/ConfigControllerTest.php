@@ -77,6 +77,11 @@ class ConfigControllerTest extends ControllerTest
                 'url' => [
                     'type' => 'url',
                 ],
+                'to_be_written_to_file' => [
+                    'type' => 'boolean',
+                    'write_back' => true,
+                    'default' => false,
+                ],
                 'element.key' => [
                     'type' => 'date',
                 ],
@@ -144,6 +149,7 @@ class ConfigControllerTest extends ControllerTest
         'password_validation' => '0123456789aBcDeF',
         'numeric' => 1337,
         'url' => 'https://example.com/test',
+        'to_be_written_to_file' => '1',
     ];
 
     /**
@@ -221,6 +227,32 @@ class ConfigControllerTest extends ControllerTest
 
                 $this->assertArrayNotHasKey('something_to_hide', $data['config']);
 
+                return $this->response;
+            });
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+
+        $response = $controller->edit($this->request);
+        $this->assertEquals($this->response, $response);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::isFileWritable
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::parseOptions
+     */
+    public function testEditNotWritable(): void
+    {
+        $notWritableDir = __DIR__ . '/Stub/SubDir/Not/Existing';
+        $this->app->instance('path.config', $notWritableDir);
+
+        $this->request->attributes->set('page', 'test');
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertArrayHasKey('to_be_written_to_file', $data['config']);
+                $this->assertArrayHasKey('writable', $data['config']['to_be_written_to_file']);
+                $this->assertFalse($data['config']['to_be_written_to_file']['writable']);
                 return $this->response;
             });
 
@@ -611,6 +643,7 @@ class ConfigControllerTest extends ControllerTest
         $this->auth = $this->app->make(AccessibleAuthenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
         $this->auth->setPermissions(['some_test_permission']);
+        $this->app->instance('path.config', __DIR__ . '/Stub');
     }
 
     public function tearDown(): void
