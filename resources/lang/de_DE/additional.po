@@ -451,6 +451,12 @@ msgstr "Supporter können befördern"
 msgid "config.supporters_can_promote.info"
 msgstr "Supporter eines Engeltyps (Team) können andere Benutzer des Engeltyps zu Supportern befördern"
 
+msgid "config.join_qr_code"
+msgstr "Beitreten QR Code"
+
+msgid "config.join_qr_code.info"
+msgstr "Erlaubt das beitreten zu einem Engeltypen mit einem QR Code, benötigt app_key"
+
 msgid "config.certificates"
 msgstr "Zertifikate"
 
@@ -571,6 +577,12 @@ msgstr "Standardsprache"
 msgid "config.timezone"
 msgstr "Zeitzone"
 
+msgid "config.app_key"
+msgstr "App Key"
+
+msgid "config.app_key.info"
+msgstr "Zufälliger, langer (min. 32 Zeichen) Alphanumerischer oder base64 enkodierter Schlüssel, zum Signieren benutzt"
+
 msgid "config.database.driver"
 msgstr "Datenbank Typ"
 
@@ -651,6 +663,12 @@ msgstr "Angezeigte News"
 msgid "config.display_news.info"
 msgstr "Anzahl angezeigter News auf einer Seite und in Feedreadern"
 
+msgid "config.display_users"
+msgstr "Angezeigte Benutzer"
+
+msgid "config.display_users.info"
+msgstr "Anzahl angezeigter Benutzer in einer Tabelle"
+
 msgid "config.filter_max_duration"
 msgstr "Shichten-Filter"
 
@@ -699,6 +717,12 @@ msgstr "Session Cookie Name"
 
 msgid "config.session.lifetime"
 msgstr "Session Laufzeit in Tagen"
+
+msgid "config.jwt_expiration_time"
+msgstr "JWT Gültigkeit"
+
+msgid "config.jwt_expiration_time.info"
+msgstr "Anzahl an Minuten nach denen ein JWT abläuft, bspw für max. Zeit zum Engeltyp beitreten"
 
 msgid "config.warning_logout"
 msgstr "Änderungen führen zum logout aller Benutzer!"
@@ -760,5 +784,11 @@ msgstr "IP Adressen von vertrauenswürdigen Reverse-Proxies als Array oder Komma
 msgid "config.add_headers"
 msgstr "Weitere Header hinzufügen"
 
+msgid "config.jwt_algorithm"
+msgstr "JWT Algorithms"
+
 msgid "config.metrics"
 msgstr "/metrics buckets"
+
+msgid "config.var_dump_server"
+msgstr "var_dump Server"

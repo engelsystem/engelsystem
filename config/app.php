@@ -263,6 +263,10 @@ return [
                     'type' => 'boolean',
                     'default' => false,
                 ],
+                'join_qr_code' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
             ],
         ],
 
@@ -386,6 +390,14 @@ return [
                     'default' => 'Europe/Berlin',
                     'write_back' => true,
                 ],
+                'app_key' => [
+                    'type' => 'password',
+                    'default' => '',
+                    'min_length' => 32,
+                    'validation' => [
+                        'length:32',
+                    ],
+                ],
                 'database.driver' => [
                     'type' => 'select',
                     'default' => 'mysql',
@@ -497,6 +509,15 @@ return [
                         'min:1',
                     ],
                 ],
+                'display_users' => [
+                    'type' => 'number',
+                    'default' => 100,
+                    'min' => 1,
+                    'validation' => [
+                        'int_val',
+                        'min:1',
+                    ],
+                ],
                 'filter_max_duration' => [
                     'type' => 'number',
                     'default' => 0,
@@ -555,6 +576,15 @@ return [
                     'env' => 'SESSION_LIFETIME',
                     'write_back' => true,
                 ],
+                'jwt_expiration_time' => [
+                    'type' => 'number',
+                    'default' => 60 * 24 * 7,
+                    'min' => 1,
+                    'validation' => [
+                        'int_val',
+                        'min:1',
+                    ],
+                ],
 
                 // Hidden settings
                 'maintenance' => [
@@ -605,6 +635,14 @@ return [
                     'default' => true,
                     'hidden' => true,
                 ],
+                'jwt_algorithm' => [
+                    'type' => 'select',
+                    // see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
+                    // and firebase/php-jwt/src/JWT.php
+                    'default' => 'HS256',
+                    'data' => ['HS256'],
+                    'hidden' => true,
+                ],
                 'metrics' => [
                     'type' => 'static',
                     'default' => [
@@ -616,6 +654,16 @@ return [
                         'voucher' => [0, 1, 2, 3, 5, 10, 15, 20],
                     ],
                     'hidden' => true,
+                ],
+                'var_dump_server' => [
+                    'type' => 'static',
+                    'default' => [
+                        'host' => '127.0.0.1',
+                        'port' => '9912',
+                        'enable' => false,
+                    ],
+                    'hidden' => true,
+                    'write_back' => true,
                 ],
             ],
         ],

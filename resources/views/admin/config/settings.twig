@@ -22,6 +22,7 @@
         {{ f.input(name, __(options['name']), options + {'value': value}) }}
     {% elseif options.type == 'password' %}
         {% if value %}
+            {# Set placeholder instead of password #}
             {% set value = '**********' %}
         {% endif %}
         {{ f.input(name, __(options['name']), options + {'type': 'password', 'value': value, 'placeholder': __('form.password.placeholder')}) }}

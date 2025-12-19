@@ -25,6 +25,8 @@ class ConfigController extends BaseController
 {
     use HasUserNotifications;
 
+    protected string $passwordPlaceholder = '**********';
+
     protected array $permissions = [
         'config.edit',
     ];
@@ -82,7 +84,7 @@ class ConfigController extends BaseController
                 'date' => $value ? CarbonDay::createFromDay($value) : $value,
                 'boolean' => !empty($value),
                 'number' => (float) $value,
-                'password' => $value === '**********' ? $this->config->get($key) : $value,
+                'password' => $value === $this->passwordPlaceholder ? $this->config->get($key) : $value,
                 'select_multi' => is_null($value) ? [] : $value,
                 default => $value,
             };
@@ -130,7 +132,7 @@ class ConfigController extends BaseController
                 }
             }
 
-            $value = $options['type'] !== 'password' ? $value : '**********';
+            $value = $options['type'] !== 'password' ? $value : $this->passwordPlaceholder;
             $changes[] = sprintf('%s = %s', $key, json_encode($value));
         }
 
@@ -167,7 +169,11 @@ class ConfigController extends BaseController
             # Request field names wih . are parsed with _
             $key = Str::replace('.', '_', $key);
 
-            if (!empty($setting['validation'])) {
+            if (
+                !empty($setting['validation'])
+                // Ignore unchanged passwords
+                && !($setting['type'] === 'password' && $request->postData($key) === $this->passwordPlaceholder)
+            ) {
                 $validation = array_merge($validation, $setting['validation']);
             }
 
@@ -182,7 +188,7 @@ class ConfigController extends BaseController
                 'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
                 'select_multi' => $validation[] = 'array_val|in_many:' . implode(',', array_keys($setting['data'])),
                 'password' =>
-                    $request->postData($key) !== '**********'
+                    $request->postData($key) !== $this->passwordPlaceholder
                     && (!empty($setting['required']) || $request->postData($key))
                     ? $validation[] = 'length:' . $this->config->get('password_min_length')
                     : null,

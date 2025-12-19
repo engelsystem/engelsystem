@@ -450,6 +450,12 @@ msgstr "Supporters can promote"
 msgid "config.supporters_can_promote.info"
 msgstr "Supporters of an angel type (team) can promote other users of the angel type to supporter"
 
+msgid "config.join_qr_code"
+msgstr "Join QR code"
+
+msgid "config.join_qr_code.info"
+msgstr "Allow joining angel type via generated QR code, requires app_key"
+
 msgid "config.certificates"
 msgstr "Certificates"
 
@@ -565,6 +571,12 @@ msgstr "Default language"
 msgid "config.timezone"
 msgstr "Time zone"
 
+msgid "config.app_key"
+msgstr "App key"
+
+msgid "config.app_key.info"
+msgstr "Random, long (at least 32 characters) alphanumeric or base64 encoded key, used for signing"
+
 msgid "config.database.driver"
 msgstr "Database type"
 
@@ -645,6 +657,12 @@ msgstr "Displayed news"
 msgid "config.display_news.info"
 msgstr "Number of news shown on one site and for feed readers"
 
+msgid "config.display_users"
+msgstr "Displayed users"
+
+msgid "config.display_users.info"
+msgstr "Number of users shown in a table"
+
 msgid "config.filter_max_duration"
 msgstr "Shifts filter"
 
@@ -691,6 +709,12 @@ msgstr "Session cookie name"
 
 msgid "config.session.lifetime"
 msgstr "Session lifetime in days"
+
+msgid "config.jwt_expiration_time"
+msgstr "JWT expiration time in minutes"
+
+msgid "config.jwt_expiration_time.info"
+msgstr "Number of minutes after a JWT must expire, for example max angel type join time"
 
 msgid "config.warning_logout"
 msgstr "Changing this will log out all users!"
@@ -751,5 +775,11 @@ msgstr "IP addresses of reverse proxies that are trusted, can be an array or a c
 msgid "config.add_headers"
 msgstr "Add additional headers"
 
+msgid "config.jwt_algorithm"
+msgstr "JWT algorithm"
+
 msgid "config.metrics"
 msgstr "/metrics buckets"
+
+msgid "config.var_dump_server"
+msgstr "var_dump server"

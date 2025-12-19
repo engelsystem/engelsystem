@@ -94,15 +94,6 @@ return [
         */
     ],
 
-    // Random, long (at least 32 characters) alphanumeric or base64 encoded key, used for signing
-    'app_key' => env_secret('APP_KEY'),
-
-    // see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
-    'jwt_algorithm' => env('JWT_ALGORITHM', 'HS256'),
-
-    // Number of minutes after a JWT must expire for example max angel type join time
-    'jwt_expiration_time' => env('JWT_EXPIRATION_TIME', 60 * 24 * 7),
-
     // Default theme, 1 = theme1.scss etc.
     'theme'                   => env('THEME', 1),
 
@@ -216,12 +207,6 @@ return [
         ],
     ],
 
-    // Number of users shown on one admin page table
-    'display_users'           => env('DISPLAY_USERS', 100),
-
-    // Allow joining angel type via generated QR code
-    'join_qr_code'            => (bool) env('JOIN_QR_CODE', true),
-
     // Available T-shirt sizes
     // To disable a t-shirt size in config.php, you can set its value to null
     'tshirt_sizes'            => [
@@ -259,12 +244,5 @@ return [
         'Contribution' => 'Please visit [engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
             . 'you want to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
             . 'or need help.',
-    ],
-
-    // var dump server
-    'var_dump_server'         => [
-        'host' => '127.0.0.1',
-        'port' => '9912',
-        'enable' => false,
     ],
 ];

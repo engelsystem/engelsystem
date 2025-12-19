@@ -62,6 +62,12 @@ class ConfigControllerTest extends ControllerTest
                 'password' => [
                     'type' => 'password',
                 ],
+                'password_validation' => [
+                    'type' => 'password',
+                    'validation' => [
+                        'length:16',
+                    ],
+                ],
                 'numeric' => [
                     'type' => 'number',
                     'validation' => [
@@ -135,6 +141,7 @@ class ConfigControllerTest extends ControllerTest
         'selectable_option' => 'third',
         'multiselectable_option' => ['first', 'second'],
         'password' => 'FooBarBaz42!',
+        'password_validation' => '0123456789aBcDeF',
         'numeric' => 1337,
         'url' => 'https://example.com/test',
     ];
@@ -295,6 +302,7 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals('third', EventConfig::whereName('selectable_option')->first()->value);
         $this->assertEquals(['first', 'second'], EventConfig::whereName('multiselectable_option')->first()->value);
         $this->assertEquals('FooBarBaz42!', EventConfig::whereName('password')->first()->value);
+        $this->assertEquals('0123456789aBcDeF', EventConfig::whereName('password_validation')->first()->value);
         $this->assertEquals(1337, EventConfig::whereName('numeric')->first()->value);
         $this->assertEquals('https://example.com/test', EventConfig::whereName('url')->first()->value);
 
@@ -313,6 +321,7 @@ class ConfigControllerTest extends ControllerTest
             [['multiselectable_option' => 'not array']],
             [['multiselectable_option' => ['not_in_values']]],
             [['password' => 'short']],
+            [['password_validation' => 'shorter']],
             [['url' => 'not an URL']],
             [['numeric' => 3]],
         ];
@@ -341,9 +350,11 @@ class ConfigControllerTest extends ControllerTest
      */
     public function testSaveTestPasswordIgnorePlaceholder(): void
     {
+        $passwordPlaceholder = '**********';
         $this->request->attributes->set('page', 'test');
         $data = $this->validTestBody;
-        $data['password'] = '**********';
+        $data['password'] = $passwordPlaceholder;
+        $data['password_validation'] = $passwordPlaceholder;
         $this->request = $this->request->withParsedBody($data);
 
         /** @var ConfigController $controller */
@@ -352,6 +363,7 @@ class ConfigControllerTest extends ControllerTest
 
         $controller->save($this->request);
         $this->assertNull(EventConfig::whereName('password')->first());
+        $this->assertNull(EventConfig::whereName('password_validation')->first());
     }
 
     /**

@@ -36,6 +36,7 @@ class ErrorHandler implements MiddlewareInterface
         'new_password2',
         'new_pw',
         'new_pw2',
+        'app_key',
         '_token',
     ];
 
