@@ -254,7 +254,9 @@ function Shift_view(
 
     $tags = [];
     foreach ($shift->tags as $tag) {
-        $tags[] = '<span class="badge bg-secondary">' . $tag->name . '</span>';
+        $tags[] = ' <a href="' . url('/user-shifts', ['tag' => $tag->id]) . '">'
+            . '<span class="badge bg-secondary">' . $tag->name . '</span>'
+            . '</a>';
     }
 
     $content[] = $navigationButtons ? div('row', [div('col-md-12', [table_buttons($buttons, 'mb-2'), $navigationButtons])]) : buttons($buttons);

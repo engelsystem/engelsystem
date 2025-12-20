@@ -17,7 +17,7 @@ class HtmlEngine extends Engine
         $template = file_get_contents($path);
 
         foreach ($data as $name => $content) {
-            $template = str_replace('%' . $name . '%', $content, $template);
+            $template = str_replace('%' . $name . '%', (string) $content, $template);
         }
 
         return $template;
