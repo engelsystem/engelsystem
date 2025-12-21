@@ -86,6 +86,7 @@ class ShiftTypesController extends BaseController
             ->with([
                 'neededAngelTypes.angelType',
                 'schedule',
+                'tags',
                 'shiftEntries.user.personalData',
                 'shiftEntries.user.state',
                 'shiftEntries.angelType',

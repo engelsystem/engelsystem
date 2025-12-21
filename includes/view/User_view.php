@@ -1092,7 +1092,7 @@ function render_user_goodie_hint()
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     if (
         $goodie_tshirt
-        && config('required_user_fields')['tshirt_size']
+        && in_array('tshirt_size', config('required_user_fields'))
         && !auth()->user()->personalData->shirt_size
     ) {
         $text = __('tshirt.required.hint');
@@ -1109,7 +1109,7 @@ function render_user_dect_hint()
 {
     $user = auth()->user();
     if (
-        (config('required_user_fields')['dect'] || $user->state->arrived)
+        (in_array('dect', config('required_user_fields')) || $user->state->arrived)
         && config('enable_dect') && !$user->contact->dect
     ) {
         $text = __('dect.required.hint');
@@ -1125,7 +1125,11 @@ function render_user_dect_hint()
 function render_user_pronoun_hint()
 {
     $user = auth()->user();
-    if (config('required_user_fields')['pronoun'] && config('enable_pronoun') && !$user->personalData->pronoun) {
+    if (
+        in_array('pronoun', config('required_user_fields'))
+        && config('enable_pronoun')
+        && !$user->personalData->pronoun
+    ) {
         $text = __('pronoun.required.hint');
         return render_profile_link($text);
     }
@@ -1139,7 +1143,11 @@ function render_user_pronoun_hint()
 function render_user_firstname_hint()
 {
     $user = auth()->user();
-    if (config('required_user_fields')['firstname'] && config('enable_full_name') && !$user->personalData->first_name) {
+    if (
+        in_array('firstname', config('required_user_fields'))
+        && config('enable_full_name')
+        && !$user->personalData->first_name
+    ) {
         $text = __('firstname.required.hint');
         return render_profile_link($text);
     }
@@ -1153,7 +1161,11 @@ function render_user_firstname_hint()
 function render_user_lastname_hint()
 {
     $user = auth()->user();
-    if (config('required_user_fields')['lastname'] && config('enable_full_name') && !$user->personalData->last_name) {
+    if (
+        in_array('lastname', config('required_user_fields'))
+        && config('enable_full_name')
+        && !$user->personalData->last_name
+    ) {
         $text = __('lastname.required.hint');
         return render_profile_link($text);
     }
@@ -1167,7 +1179,10 @@ function render_user_lastname_hint()
 function render_user_mobile_hint()
 {
     $user = auth()->user();
-    if (config('required_user_fields')['mobile'] && !$user->contact->mobile) {
+    if (
+        in_array('mobile', config('required_user_fields'))
+        && !$user->contact->mobile
+    ) {
         $text = __('mobile.required.hint');
         return render_profile_link($text);
     }

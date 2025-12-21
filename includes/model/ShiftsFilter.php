@@ -46,9 +46,14 @@ class ShiftsFilter
      * @param bool  $user_shifts_admin
      * @param int[] $locations
      * @param int[] $angelTypes
+     * @param ?int $tag
      */
-    public function __construct($user_shifts_admin = false, private $locations = [], $angelTypes = [])
-    {
+    public function __construct(
+        $user_shifts_admin = false,
+        private $locations = [],
+        $angelTypes = [],
+        private $tag = null
+    ) {
         $this->types = $angelTypes;
 
         $this->filled = [
@@ -72,6 +77,7 @@ class ShiftsFilter
             'types'           => $this->types,
             'startTime'       => $this->startTime,
             'endTime'         => $this->endTime,
+            'tag'             => $this->tag,
         ];
     }
 
@@ -86,6 +92,7 @@ class ShiftsFilter
         $this->types = $data['types'] ?? [];
         $this->startTime = $data['startTime'] ?? null;
         $this->endTime = $data['endTime'] ?? null;
+        $this->tag = $data['tag'] ?? null;
     }
 
     /**
@@ -139,6 +146,16 @@ class ShiftsFilter
         }
 
         $this->endTime = $endTime;
+    }
+
+    public function getTag(): ?int
+    {
+        return $this->tag;
+    }
+
+    public function setTag(?int $tag): void
+    {
+        $this->tag = $tag;
     }
 
     /**

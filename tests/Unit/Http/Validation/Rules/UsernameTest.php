@@ -21,10 +21,7 @@ class UsernameTest extends ServiceProviderTest
 
         $app = $this->createAndSetUpAppWithConfig([]);
         $this->config = $app->get('config');
-
-        // load "username_regex" from the default config
-        $defaultConfig = include __DIR__ . '/../../../../../config/config.default.php';
-        $this->config->set('username_regex', $defaultConfig['username_regex']);
+        $this->config->set('username_regex', '/([^\p{L}\p{N}_.-]+)/ui');
     }
 
     /**

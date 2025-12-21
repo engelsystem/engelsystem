@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Admin;
 
+use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\CarbonDay;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -22,53 +26,15 @@ class ConfigController extends BaseController
 {
     use HasUserNotifications;
 
+    protected string $localConfig;
+
+    protected string $passwordPlaceholder = '**********';
+
     protected array $permissions = [
         'config.edit',
     ];
 
-    protected array $options = [
-        /**
-         *  '[name]' => [
-         *      'title' => '[title], # Optional, default config.[name]
-         *      'permission' => '[permission]' # Optional, string or array
-         *      'icon' => '[icon]', # Optional, default gear-fill
-         *      'validation' => callable, # Optional. callable to validate the request
-         *      'config' => [
-         *          '[name]' => [
-         *              'name' => 'some.value', # Optional, default: config.[name]
-         *              'type' => 'string', # string, text, datetime-local, ...
-         *              'default' => '[value]', # Optional
-         *              'required' => true, # Optional, default false
-         *              # Optional config.[name].info for information messages
-         *              # Optionally other options used by the correlating field
-         *          ],
-         *      ],
-         *  ],
-         */
-        'event' => [
-            'config' => [
-                'name' => [
-                    'type' => 'string',
-                ],
-                'welcome_msg' => [
-                    'type' => 'text',
-                    'rows' => 5,
-                ],
-                'buildup_start' => [
-                    'type' => 'datetime-local',
-                ],
-                'event_start' => [
-                    'type' => 'datetime-local',
-                ],
-                'event_end' => [
-                    'type' => 'datetime-local',
-                ],
-                'teardown_end' => [
-                    'type' => 'datetime-local',
-                ],
-            ],
-        ],
-    ];
+    protected array $options = [];
 
     public function __construct(
         protected Response $response,
@@ -76,10 +42,13 @@ class ConfigController extends BaseController
         protected Redirector $redirect,
         protected UrlGeneratorInterface $url,
         protected LoggerInterface $log,
-        array $options = [],
+        protected Authenticator $auth,
+        Application $app,
+        bool $withAll = false, # Used to get all config options, for example for docs
     ) {
-        $this->options += $options;
-        $this->parseOptions();
+        $this->localConfig = $app->get('path.config') . '/config.local.php';
+        $this->options = $this->config->get('config_options', []);
+        $this->parseOptions($withAll);
     }
 
     public function index(): Response
@@ -106,14 +75,23 @@ class ConfigController extends BaseController
     {
         $page = $this->activePage($request);
         $data = $this->validation($page, $request);
-        $settings = $this->options[$page]['config'];
+        $settings = $this->filterShownSettings($this->options[$page]['config']);
+        $localConfigWritable = $this->isFileWritable($this->localConfig);
 
         $changes = [];
         foreach ($settings as $key => $options) {
-            $value = $data[$key] ?? $options['default'] ?? null;
+            # Request field names with . are parsed with _
+            $fieldKey = Str::replace('.', '_', $key);
+            $default = $options['default'] ?? null;
+            $value = array_key_exists($fieldKey, $data) ? $data[$fieldKey] : $default;
 
             $value = match ($options['type']) {
                 'datetime-local' => $value ? Carbon::createFromDatetime($value) : $value,
+                'date' => $value ? CarbonDay::createFromDay($value) : $value,
+                'boolean' => !empty($value),
+                'number' => (float) $value,
+                'password' => $value === $this->passwordPlaceholder ? $this->config->get($key) : $value,
+                'select_multi' => is_null($value) ? [] : $value,
                 default => $value,
             };
 
@@ -121,65 +99,131 @@ class ConfigController extends BaseController
                 continue;
             }
 
-            $changes[] = sprintf('%s = "%s"', $key, $value);
+            $writeBack = $options['write_back'] ?? false;
+            $setValue = $value !== $default && !is_null($value) && $value !== '';
+            if ($setValue && !$writeBack) {
+                (new EventConfig())
+                    ->findOrNew($key)
+                    ->setAttribute('name', $key)
+                    ->setAttribute('value', $value)
+                    ->save();
+            } else {
+                (new EventConfig())
+                    ->whereName($key)
+                    ->delete();
+            }
 
-            (new EventConfig())
-                ->findOrNew($key)
-                ->setAttribute('name', $key)
-                ->setAttribute('value', $value)
-                ->save();
+            $this->config->set($key, $value);
+
+            if ($writeBack && $localConfigWritable) {
+                $oldConfig = [];
+                if (file_exists($this->localConfig)) {
+                    $oldConfig = include $this->localConfig;
+                }
+                $config = new Config($oldConfig);
+                if ($setValue) {
+                    $config->set($key, $value);
+                } else {
+                    $config->remove($key);
+                }
+                $configContent =
+                    '<?php // !!! Do not edit this file, it will be overwritten on config change !!!' . PHP_EOL .
+                    'return ' . var_export($config->get(null), true) . ';' . PHP_EOL;
+                file_put_contents($this->localConfig, $configContent);
+
+                // Clear config file from PHPs OPcache to load it on next request
+                if (function_exists('opcache_invalidate')) {
+                    opcache_invalidate($this->localConfig, true);
+                }
+            }
+
+            $value = $options['type'] !== 'password' ? $value : $this->passwordPlaceholder;
+            $changes[] = sprintf('%s = %s', $key, json_encode($value));
         }
 
-        $this->log->info(
-            'Updated {page} configuration: {changes}',
-            [
-                'page' => $page,
-                'changes' => implode(', ', $changes),
-            ]
-        );
+        if ($changes) {
+            $this->log->info(
+                'Updated {page} configuration: {changes}',
+                [
+                    'page' => $page,
+                    'changes' => implode(', ', $changes),
+                ]
+            );
 
-        $this->addNotification('config.edit.success');
+            $this->addNotification('config.edit.success');
+        }
 
         return $this->redirect->back();
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    protected function isFileWritable(string $file): bool
+    {
+        return
+            (file_exists($file) && is_writable($file))
+            || (!file_exists($file) && is_writable(dirname($file)));
     }
 
     protected function validation(string $page, Request $request): array
     {
         $rules = [];
         $config = $this->options[$page];
-        $settings = $config['config'];
+        $settings = $this->filterShownSettings($config['config']);
 
         // Generate validation rules
         foreach ($settings as $key => $setting) {
             $validation = [];
             $validation[] = empty($setting['required']) ? 'optional' : 'required';
+            # Request field names wih . are parsed with _
+            $key = Str::replace('.', '_', $key);
+
+            if (
+                !empty($setting['validation'])
+                // Ignore unchanged passwords
+                && !($setting['type'] === 'password' && $request->postData($key) === $this->passwordPlaceholder)
+            ) {
+                $validation = array_merge($validation, $setting['validation']);
+            }
 
             match ($setting['type']) {
                 'string', 'text' => null, // Anything is valid here when optional
                 'datetime-local' => $validation[] = 'date_time',
+                'date' => $validation[] = 'date',
+                'boolean' => $validation[] = 'checked',
+                'number' => $validation[] = 'number',
+                'url' => $validation[] = 'url',
+                'email' => $validation[] = 'email',
+                'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
+                'select_multi' => $validation[] = 'array_val|in_many:' . implode(',', array_keys($setting['data'])),
+                'password' =>
+                    $request->postData($key) !== $this->passwordPlaceholder
+                    && (!empty($setting['required']) || $request->postData($key))
+                    ? $validation[] = 'length:' . $this->config->get('password_min_length')
+                    : null,
                 default => throw new InvalidArgumentException(
-                    'Type ' . $setting['type'] . ' of ' . $key . ' not defined'
+                    'Type ' . $setting['type'] . ' of ' . $key . ' is not defined'
                 ),
             };
 
             $rules[$key] = implode('|', $validation);
         }
 
-        if (!empty($config['validation']) || method_exists($this, 'validate' . Str::ucfirst($page))) {
-            $callback = $config['validation'] ?? null;
-            if (!is_callable($callback)) {
-                // Used until proper dynamic config loading is implemented
-                $callback = [$this, 'validate' . Str::ucfirst($page)];
-            }
-
-            return $callback($request, $rules);
+        if (!empty($config['validation']) && is_callable($config['validation'])) {
+            return $config['validation']($request, $rules);
         }
 
         return $this->validate($request, $rules);
     }
 
-    protected function parseOptions(): void
+    protected function parseOptions(bool $withAll = true): void
     {
+        $fromEnv = array_filter($this->config->get('env_config'), fn($a) => !is_null($a));
+        $localConfigWritable = $this->isFileWritable($this->localConfig);
+
         foreach ($this->options as $key => $value) {
             // Add page URLs
             $this->options[$key]['url'] = $this->url->to('/admin/config/' . $key);
@@ -189,8 +233,21 @@ class ConfigController extends BaseController
                 $this->options[$key]['title'] = 'config.' . $key;
             }
 
+            // Define internal validation action
+            $internalValidation = 'validate' . Str::ucfirst($key);
+            if (method_exists($this, $internalValidation)) {
+                // Used until proper dynamic config loading is implemented
+                $this->options[$key]['validation'] = [$this, $internalValidation];
+            }
+
             // Iterate over settings
             foreach ($this->options[$key]['config'] as $name => $config) {
+                // Ignore hidden options
+                if (!empty($config['hidden']) && !$withAll) {
+                    unset($this->options[$key]['config'][$name]);
+                    continue;
+                }
+
                 // Set name for translation
                 if (empty($this->options[$key]['config'][$name]['name'])) {
                     $this->options[$key]['config'][$name]['name'] = 'config.' . $name;
@@ -200,8 +257,45 @@ class ConfigController extends BaseController
                 if (!empty($this->options[$key]['config'][$name]['required'])) {
                     $this->options[$key]['config'][$name]['required_icon'] = true;
                 }
+
+                // Set ENV name
+                if (empty($config['env'])) {
+                    $config['env'] = Str::upper($name);
+                    $this->options[$key]['config'][$name]['env'] = $config['env'];
+                }
+
+                // Configure select values
+                if ($config['type'] == 'select' || $config['type'] == 'select_multi') {
+                    $data = [];
+                    foreach ($config['data'] ?? [] as $dataKey => $dataValue) {
+                        if (is_int($dataKey)) {
+                            $dataKey = $dataValue;
+                            $dataValue = 'config.' . $name . '.select.' . $dataKey;
+                        }
+                        $data[$dataKey] = $dataValue;
+                    }
+                    $this->options[$key]['config'][$name]['data'] = $data;
+                }
+
+                // Set if overwritten from ENV
+                if (isset($fromEnv[$config['env']])) {
+                    $this->options[$key]['config'][$name]['in_env'] = true;
+                }
+
+                // Set if local config can be written to
+                if (!$localConfigWritable && ($config['write_back'] ?? false)) {
+                    $this->options[$key]['config'][$name]['writable'] = false;
+                }
             }
         }
+    }
+
+    protected function filterShownSettings(array $settings): array
+    {
+        // Ignore values from env
+        $settings = array_filter($settings, fn($a) => empty($a['in_env']));
+        // Skip if permissions don't match
+        return array_filter($settings, fn($a) => empty($a['permission']) || $this->auth->can($a['permission']));
     }
 
     protected function activePage(Request $request): string
@@ -212,9 +306,17 @@ class ConfigController extends BaseController
             throw new HttpNotFound();
         }
 
+        $permissions = $this->options[$page]['permission'] ?? null;
+        if (!empty($permissions) && !$this->auth->can($permissions)) {
+            throw new HttpForbidden();
+        }
+
         return $page;
     }
 
+    /**
+     * Validation for Event page
+     */
     protected function validateEvent(Request $request, array $rules): array
     {
         // Run general validation

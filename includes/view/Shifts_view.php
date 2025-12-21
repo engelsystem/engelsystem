@@ -252,6 +252,13 @@ function Shift_view(
         ], 'mb-2');
     }
 
+    $tags = [];
+    foreach ($shift->tags as $tag) {
+        $tags[] = ' <a href="' . url('/user-shifts', ['tag' => $tag->id]) . '">'
+            . '<span class="badge bg-secondary">' . $tag->name . '</span>'
+            . '</a>';
+    }
+
     $content[] = $navigationButtons ? div('row', [div('col-md-12', [table_buttons($buttons, 'mb-2'), $navigationButtons])]) : buttons($buttons);
     $content[] = Shift_view_header($shift, $location);
 
@@ -262,9 +269,14 @@ function Shift_view(
             '<div class="list-group">' . $needed_angels . '</div>',
         ]),
         div('col-sm-6', [
-            '<h2>' . __('general.description') . '</h2>',
-            $mdRenderer->render($shifttype->description),
-            $mdRenderer->render($shift->description),
+            div('row', [
+                '<h2>' . __('general.description') . '</h2>',
+                $mdRenderer->render($shifttype->description),
+                $mdRenderer->render($shift->description),
+            ]),
+            div('row', [
+                div('col', $tags),
+            ]),
         ]),
     ]);
 

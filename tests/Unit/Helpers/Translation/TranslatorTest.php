@@ -42,7 +42,7 @@ class TranslatorTest extends ServiceProviderTest
         $translator->setLocale('fo_OO');
         $this->assertEquals('fo_OO', $translator->getLocale());
 
-        $newLocales = ['lo_RM' => 'Lorem', 'ip_SU-M' => 'Ipsum'];
+        $newLocales = ['lo_RM', 'ip_SU-M'];
         $translator->setLocales($newLocales);
         $this->assertEquals($newLocales, $translator->getLocales());
 

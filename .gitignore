@@ -30,6 +30,7 @@ _vimrc_local.vim
 
 # Project files
 /config/config.php
+/config/config.local.php
 /config/lang/
 /public/*.xml
 /public/coverage

@@ -27,6 +27,18 @@ class HtmlEngineTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Renderer\HtmlEngine::get
+     */
+    public function testGetEmpty(): void
+    {
+        $engine = new HtmlEngine();
+        $file = $this->createTempFile('"%empty%"');
+
+        $data = $engine->get($file, ['empty' => null]);
+        $this->assertEquals('""', $data);
+    }
+
+    /**
      * @covers \Engelsystem\Renderer\HtmlEngine::canRender
      */
     public function testCanRender(): void

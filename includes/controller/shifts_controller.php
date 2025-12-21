@@ -10,6 +10,7 @@ use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\Tag;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Str;
 
@@ -87,6 +88,11 @@ function shift_edit_controller()
         // Name/Bezeichnung der Schicht, darf leer sein
         $title = strip_request_item('title');
         $description = strip_request_item_nl('description');
+        $tagNames = collect(explode(',', strip_request_item('tags', '')))
+            ->transform(fn($value) => trim($value))
+            ->filter(fn($value) => $value != '')
+            ->unique()
+            ->toArray();
 
         // Auswahl der sichtbaren Locations für die Schichten
         if (
@@ -175,10 +181,17 @@ function shift_edit_controller()
                 }
             }
 
+            $shift->tags()->detach();
+            foreach ($tagNames as $tagName) {
+                $tag = Tag::whereName($tagName)->firstOrCreate(['name' => $tagName]);
+                $shift->tags()->attach($tag);
+            }
+
             engelsystem_log(
                 'Updated shift \'' . $shifttypes[$shifttype_id] . ', ' . $title
                 . '\' from ' . $start->format('Y-m-d H:i')
                 . ' to ' . $end->format('Y-m-d H:i')
+                . ' with tags ' . $shift->tags->implode('name', ', ')
                 . ' with angel types ' . join(', ', $needed_angel_types_info)
                 . ' and description ' . $description
             );
@@ -218,11 +231,25 @@ function shift_edit_controller()
                         form_select('rid', __('Location'), $locations, $rid),
                     ]),
                     div('col-md-6 col-xl-7', [
-                        form_textarea('description', __('Additional description'), $description),
-                        form_info(
-                            '',
-                            __('This description is for single shifts, otherwise please use the description in shift type.')
-                        ),
+                        div('row', [
+                            div('col', [
+                                form_textarea('description', __('Additional description'), $description),
+                                form_info(
+                                    '',
+                                    __('This description is for single shifts, otherwise please use the description in shift type.')
+                                ),
+                            ]),
+                        ]),
+                        div('row mt-2', [
+                            form_text(
+                                'tags',
+                                __('form.tags')
+                                . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+                                . htmlspecialchars(__('form.tags.info'))
+                                . '"></span>',
+                                $shift->tags->implode('name', ', ')
+                            ),
+                        ]),
                     ]),
                 ]),
                 div('row', [

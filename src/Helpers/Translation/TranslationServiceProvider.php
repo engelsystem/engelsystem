@@ -22,37 +22,65 @@ class TranslationServiceProvider extends ServiceProvider
     {
         /** @var Config $config */
         $config = $this->app->get('config');
+        $configOptions = $config['config_options'];
+
+        $langPath = $this->app->get('path.lang');
+        $locales = array_diff(scandir($langPath), ['.', '..']);
+        $locales = array_values(array_filter($locales, fn($lang) => is_dir($langPath . '/' . $lang)));
+
+        $fallbackLocale = in_array('en_US', $locales) ? 'en_US' : $locales[0];
+
+        $namedLocales = array_flip($locales);
+        array_walk($namedLocales, function (&$value, $key): void {
+            $value = 'language.' . $key;
+        });
+        $configOptions['system']['config']['locales']['default'] = $locales;
+        $configOptions['system']['config']['locales']['data'] = $namedLocales;
+        $configOptions['system']['config']['default_locale']['default'] = $fallbackLocale;
+        $configOptions['system']['config']['default_locale']['data'] = $namedLocales;
+
+        $config['locales'] = $configOptions['locales'] ?? $locales;
+        $config['default_locale'] = $configOptions['default_locale'] ?? $fallbackLocale;
+
+        $config->set('config_options', $configOptions);
+
+        $translator = $this->app->make(
+            Translator::class,
+            [
+                'locale'                => $fallbackLocale,
+                'locales'               => $locales,
+                'fallbackLocale'        => $fallbackLocale,
+                'getTranslatorCallback' => [$this, 'getTranslator'],
+                'localeChangeCallback'  => [$this, 'setLocale'],
+            ],
+        );
+        $this->app->singleton(Translator::class, fn() => $translator);
+        $this->app->alias(Translator::class, 'translator');
+    }
+
+    public function boot(): void
+    {
+        /** @var Translator $translator */
+        $translator = $this->app->get(Translator::class);
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
         /** @var Session $session */
         $session = $this->app->get('session');
         /** @var Request $request */
         $request = $this->app->get('request');
 
-        $locales = $config->get('locales');
+        $locales = $config->get('locales', []);
         $defaultLocale = $config->get('default_locale');
-        $fallbackLocale = $config->get('fallback_locale', 'en_US');
-        $locale = $request->getPreferredLanguage(array_merge([$defaultLocale], array_keys($locales)));
+        $locale = $request->getPreferredLanguage(array_merge([$defaultLocale], $locales));
 
         $sessionLocale = $session->get('locale', $locale);
-        if (isset($locales[$sessionLocale])) {
+        if (in_array($sessionLocale, $locales)) {
             $locale = $sessionLocale;
         }
 
         $session->set('locale', $locale);
-
-        $translator = $this->app->make(
-            Translator::class,
-            [
-                'locale'                => $locale,
-                'locales'               => $locales,
-                'fallbackLocale'        => $fallbackLocale,
-                'getTranslatorCallback' => [$this, 'getTranslator'],
-                'localeChangeCallback'  => [$this, 'setLocale'],
-            ]
-        );
-        $this->app->singleton(Translator::class, function () use ($translator) {
-            return $translator;
-        });
-        $this->app->alias(Translator::class, 'translator');
+        $translator->setLocale($locale);
     }
 
     /**

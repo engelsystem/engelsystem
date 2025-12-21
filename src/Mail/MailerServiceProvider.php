@@ -17,7 +17,7 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 
 class MailerServiceProvider extends ServiceProvider
 {
-    public function register(): void
+    public function boot(): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');

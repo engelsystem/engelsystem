@@ -6,6 +6,7 @@ use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\Tag;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
@@ -61,6 +62,13 @@ function admin_shifts()
     foreach ($shifttypes_source as $shifttype) {
         $shifttypes[$shifttype->id] = $shifttype->name;
     }
+
+    // The shifts tags, might be empty
+    $tags = collect(explode(',', strip_request_item('tags', '')))
+        ->transform(fn($value) => trim($value))
+        ->filter(fn($value) => $value != '')
+        ->unique()
+        ->toArray();
 
     if ($request->has('preview') || $request->has('back')) {
         if ($request->has('shifttype_id')) {
@@ -376,11 +384,20 @@ function admin_shifts()
             if ($shiftsCount >= 100) {
                 $shiftsCreationHint = '<span class="text-danger">' . $shiftsCreationHint . '</span>';
             }
+            $tagsList = '';
+            if ($tags) {
+                $tagsList = '<br>' . __('tag.tags') . ': ';
+                foreach ($tags as $tagName) {
+                    $tagsList .= ' <span class="badge bg-secondary">' . $tagName . '</span>';
+                }
+                $tagsList .= '<br><br>';
+            }
 
             // Save as previous state to be able to reuse it
             $previousEntries += [
                 'shifttype_id' => $shifttype_id,
                 'description' => $description,
+                'tags' => implode(', ', $tags),
                 'title' => $title,
                 'lid' => $lid,
                 'start' => $request->input('start'),
@@ -403,6 +420,7 @@ function admin_shifts()
                     $hidden_types,
                     form_submit('back', icon('chevron-left') . __('general.back')),
                     $shiftsCreationHint,
+                    $tagsList,
                     table([
                         'timeslot'      => __('Time and location'),
                         'title'         => __('Type and title'),
@@ -418,6 +436,11 @@ function admin_shifts()
             || !is_array($session->get('admin_shifts_types'))
         ) {
             throw_redirect(url('/admin-shifts'));
+        }
+
+        $tagList = collect();
+        foreach ($tags as $tagName) {
+            $tagList->add(Tag::whereName($tagName)->firstOrCreate(['name' => $tagName]));
         }
 
         $transactionId = Str::uuid();
@@ -442,11 +465,14 @@ function admin_shifts()
                 }
             }
 
+            $shift->tags()->attach($tagList);
+
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift->shift_type_id]
                 . ' (' . $shift->id . ')'
                 . ' with title ' . $shift->title
                 . ' and description ' . $shift->description
+                . ' and tags ' . $shift->tags->implode('name', ', ')
                 . ' from ' . $shift->start->format('Y-m-d H:i')
                 . ' to ' . $shift->end->format('Y-m-d H:i')
                 . ' in ' . $shift->location->name
@@ -516,8 +542,22 @@ function admin_shifts()
                         form_select('lid', __('Location'), $location_array, $lid),
                     ]),
                     div('col-md-6 col-xl-7', [
-                        form_textarea('description', __('Additional description'), $description),
-                        __('This description is for single shifts, otherwise please use the description in shift type.'),
+                        div('row', [
+                            div('col', [
+                                form_textarea('description', __('Additional description'), $description),
+                                __('This description is for single shifts, otherwise please use the description in shift type.'),
+                            ]),
+                        ]),
+                        div('row mt-2', [
+                            form_text(
+                                'tags',
+                                __('form.tags')
+                                . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+                                . htmlspecialchars(__('form.tags.info'))
+                                . '"></span>',
+                                implode(', ', $tags)
+                            ),
+                        ]),
                     ]),
                 ]),
                 div('row', [

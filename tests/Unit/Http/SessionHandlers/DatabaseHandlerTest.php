@@ -12,6 +12,7 @@ use Engelsystem\Models\Session;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use Exception;
 
 class DatabaseHandlerTest extends TestCase
 {
@@ -68,6 +69,28 @@ class DatabaseHandlerTest extends TestCase
 
             $userExists = true;
         }
+    }
+
+    /**
+     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::write
+     */
+    public function testWriteIgnoreUserErrors(): void
+    {
+        $auth = $this->createMock(Authenticator::class);
+        $auth->expects($this->once())
+            ->method('user')
+            ->willReturnCallback(function (): void {
+                throw new Exception();
+            });
+        $this->app->instance('authenticator', $auth);
+
+        $handler = new DatabaseHandler($this->database);
+
+        $handler->write('id-foo', 'test');
+
+        /** @var Session $session */
+        $session = Session::whereId('id-foo')->first();
+        $this->assertNull($session->user_id);
     }
 
     /**

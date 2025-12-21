@@ -110,12 +110,12 @@ class RegistrationController extends BaseController
                 'isPronounEnabled' => $this->config->get('enable_pronoun'),
                 'isFullNameEnabled' => $this->config->get('enable_full_name'),
                 'isPlannedArrivalDateEnabled' => $this->config->get('enable_planned_arrival'),
-                'isPronounRequired' => $requiredFields['pronoun'],
-                'isFirstnameRequired' => $requiredFields['firstname'],
-                'isLastnameRequired' => $requiredFields['lastname'],
-                'isTShirtSizeRequired' => $requiredFields['tshirt_size'],
-                'isMobileRequired' => $requiredFields['mobile'],
-                'isDectRequired' => $requiredFields['dect'],
+                'isPronounRequired' => in_array('pronoun', $requiredFields),
+                'isFirstnameRequired' => in_array('firstname', $requiredFields),
+                'isLastnameRequired' => in_array('lastname', $requiredFields),
+                'isTShirtSizeRequired' => in_array('tshirt_size', $requiredFields),
+                'isMobileRequired' => in_array('mobile', $requiredFields),
+                'isDectRequired' => in_array('dect', $requiredFields),
             ],
         );
     }

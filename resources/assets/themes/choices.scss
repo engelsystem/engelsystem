@@ -55,3 +55,8 @@ $choices-bg-color-disabled: $input-disabled-bg;
   box-shadow: none;
   color: $input-color !important;
 }
+
+.#{$choices-selector}[data-type*='select-multiple'] .#{$choices-selector}__button,
+.#{$choices-selector}[data-type*='text'] .#{$choices-selector}__button {
+  margin-right: 0;
+}

@@ -7,11 +7,13 @@ namespace Engelsystem\Models\Shifts;
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Location;
+use Engelsystem\Models\Tag;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
@@ -39,6 +41,7 @@ use Illuminate\Database\Query\JoinClause;
  * @property-read ScheduleShift                $scheduleShift
  * @property-read Collection|ShiftEntry[]      $shiftEntries
  * @property-read ShiftType                    $shiftType
+ * @property-read Collection|Tag[]             $tags
  * @property-read Location                     $location
  * @property-read User                         $createdBy
  * @property-read User|null                    $updatedBy
@@ -129,6 +132,11 @@ class Shift extends BaseModel
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'shift_tags');
     }
 
     public function updatedBy(): BelongsTo

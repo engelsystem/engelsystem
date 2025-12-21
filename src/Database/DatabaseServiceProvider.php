@@ -24,7 +24,6 @@ class DatabaseServiceProvider extends ServiceProvider
         $capsule = $this->app->make(CapsuleManager::class);
         $now = Carbon::now($config->get('timezone'));
 
-        $dbConfig = $config->get('database');
         $capsule->addConnection(array_merge([
             'driver'    => 'mysql',
             'host'      => '',
@@ -35,7 +34,7 @@ class DatabaseServiceProvider extends ServiceProvider
             'collation' => 'utf8mb4_unicode_ci',
             'timezone'  => $now->format('P'),
             'prefix'    => '',
-        ], $dbConfig));
+        ], $config->get('database', [])));
 
         $capsule->setAsGlobal();
         $capsule->bootEloquent();

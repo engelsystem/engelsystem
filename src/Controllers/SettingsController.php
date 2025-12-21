@@ -52,12 +52,12 @@ class SettingsController extends BaseController
                 'voucherEnabled' =>  $this->config->get('enable_voucher'),
                 'forceFoodEnabled' => $this->config->get('enable_force_food'),
                 'tShirtLink' => $this->config->get('tshirt_link'),
-                'isPronounRequired' => $requiredFields['pronoun'],
-                'isFirstnameRequired' => $requiredFields['firstname'],
-                'isLastnameRequired' => $requiredFields['lastname'],
-                'isTShirtSizeRequired' => $requiredFields['tshirt_size'],
-                'isMobileRequired' => $requiredFields['mobile'],
-                'isDectRequired' => $requiredFields['dect'],
+                'isPronounRequired' => in_array('pronoun', $requiredFields),
+                'isFirstnameRequired' => in_array('firstname', $requiredFields),
+                'isLastnameRequired' => in_array('lastname', $requiredFields),
+                'isTShirtSizeRequired' => in_array('tshirt_size', $requiredFields),
+                'isMobileRequired' => in_array('mobile', $requiredFields),
+                'isDectRequired' => in_array('dect', $requiredFields),
             ]
         );
     }
@@ -198,12 +198,8 @@ class SettingsController extends BaseController
     public function saveTheme(Request $request): Response
     {
         $user = $this->auth->user();
-        $data = $this->validate($request, ['select_theme' => 'int']);
+        $data = $this->validate($request, ['select_theme' => 'int|in:' . implode(',', array_keys(config('themes')))]);
         $selectTheme = $data['select_theme'];
-
-        if (!isset(config('themes')[$selectTheme])) {
-            throw new HttpNotFound('Theme with id ' . $selectTheme . ' does not exist.');
-        }
 
         $user->settings->theme = $selectTheme;
         $user->settings->save();
@@ -215,7 +211,10 @@ class SettingsController extends BaseController
 
     public function language(): Response
     {
-        $languages = config('locales');
+        $languages = array_flip(config('locales'));
+        array_walk($languages, function (&$value, $key): void {
+            $value = 'language.' . $key;
+        });
 
         $currentLanguage = $this->auth->user()->settings->language;
 
@@ -232,12 +231,8 @@ class SettingsController extends BaseController
     public function saveLanguage(Request $request): Response
     {
         $user = $this->auth->user();
-        $data = $this->validate($request, ['select_language' => 'required']);
+        $data = $this->validate($request, ['select_language' => 'required|in:' . implode(',', config('locales'))]);
         $selectLanguage = $data['select_language'];
-
-        if (!isset(config('locales')[$selectLanguage])) {
-            throw new HttpNotFound('Language ' . $selectLanguage . ' does not exist.');
-        }
 
         $user->settings->language = $selectLanguage;
         $user->settings->save();
@@ -458,7 +453,7 @@ class SettingsController extends BaseController
     private function isRequired(string $key): string
     {
         $requiredFields = $this->config->get('required_user_fields');
-        return $requiredFields[$key] ? 'required' : 'optional';
+        return in_array($key, $requiredFields) ? 'required' : 'optional';
     }
 
     /**
