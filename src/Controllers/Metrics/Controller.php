@@ -255,6 +255,10 @@ class Controller extends BaseController
     {
         $return = [];
         foreach ($this->config->get($config) as $name => $description) {
+            if (is_int($name) && $label) {
+                $name = $description;
+            }
+
             $count = $data->where($dataField, '=', $name)->sum('count');
             $return[] = [
                 'labels' => [($label ?: $dataField) => $name],

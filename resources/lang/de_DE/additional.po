@@ -321,25 +321,231 @@ msgid "config.name"
 msgstr "Event Name"
 
 msgid "config.name.info"
-msgstr "Der Event Name wird auf der Startseite angezeigt."
+msgstr "Der Event Name wird auf der Startseite angezeigt"
 
 msgid "config.welcome_msg"
 msgstr "Event Willkommens-Nachricht"
 
 msgid "config.welcome_msg.info"
-msgstr "Die Willkommens-Nachricht wird nach der Registrierung angezeigt. Du kannst Markdown benutzen."
+msgstr "Die Willkommens-Nachricht wird nach der Registrierung angezeigt. Es kann Markdown benutzt werden."
+
+msgid "config.registration_enabled"
+msgstr "Registrierung aktiv"
 
 msgid "config.buildup_start"
-msgstr "Aufbau Datum"
+msgstr "Aufbau"
 
 msgid "config.event_start"
-msgstr "Event Start Datum"
+msgstr "Event Start"
 
 msgid "config.event_end"
-msgstr "Event Ende Datum"
+msgstr "Event Ende"
 
 msgid "config.teardown_end"
-msgstr "Abbau Ende Datum"
+msgstr "Abbau Ende"
+
+msgid "config.enable_day_of_event"
+msgstr "Event Tag anzeigen"
+
+msgid "config.enable_day_of_event.info"
+msgstr ""
+"Anzeige des Event Tages (-2, -1, 0, 1, 2…) im Footer und auf dem Dashboard. "
+"Das Event Start Datum muss konfiguriert sein zur Anzeige."
+
+msgid "config.event_has_day0"
+msgstr "Event mit Tag 0"
+
+msgid "config.event_has_day0.info"
+msgstr "Wenn aktiv wird ein Tag 0 angezeigt (-1, 0, 1…). Wenn nicht wird er ausgeblendet (-1, 1…)."
+
+msgid "config.faq_text"
+msgstr "FAQ Text"
+
+msgid "config.faq_text.info"
+msgstr "Zusätzlicher Text auf der FAQ Seite. Es kann Markdown benutzt werden."
+
+msgid "config.tshirt_link"
+msgstr "T-Shirt Größen-Guide Link"
+
+msgid "config.privacy_email"
+msgstr "privacy@ Kontakt E-Mail"
+
+msgid "config.features"
+msgstr "Features"
+
+msgid "config.enable_dect.info"
+msgstr "Aktiviert DECT-Nummern für Benutzer, Orte und Engeltypen"
+
+msgid "config.enable_mobile_show"
+msgstr "Anzeigen der Handynummer"
+
+msgid "config.enable_mobile_show.info"
+msgstr "Soll die Mobilfunknummer für alle Benutzer sichtbar sein?"
+
+msgid "config.enable_full_name"
+msgstr "Vor- und Nachname"
+
+msgid "config.display_full_name"
+msgstr "Vollen Namen anzeigen"
+
+msgid "config.display_full_name.info"
+msgstr "Zeige den vollen Namen anstatt dem Benutzernamens"
+
+msgid "config.enable_pronoun"
+msgstr "Pronomen"
+
+msgid "config.required_user_fields"
+msgstr "Benutzer-Pflichtfelder"
+
+msgid "config.enable_planned_arrival"
+msgstr "Geplante Ankunft / Abreise"
+
+msgid "config.enable_force_active"
+msgstr "Erzwungen Aktiv"
+
+msgid "config.enable_force_active.info"
+msgstr "Erlaubt das Setzen des Flags zum Erzwingen von Goodies"
+
+msgid "config.enable_force_food"
+msgstr "Unbegrenzte Essensgutscheine"
+
+msgid "config.enable_force_food.info"
+msgstr "Erlaubt es, unbegrenzt Essensgutscheine zu bekommen"
+
+msgid "config.enable_voucher"
+msgstr "(Essens-) Gutscheine"
+
+msgid "config.voucher_settings.initial_vouchers"
+msgstr "Initiale Gutscheine"
+
+msgid "config.voucher_settings.shifts_per_voucher"
+msgstr "Schichten pro Gutschein"
+
+msgid "config.voucher_settings.hours_per_voucher"
+msgstr "Stunden pro Gutschein"
+
+msgid "config.voucher_settings.voucher_start"
+msgstr "Gutscheine ab"
+
+msgid "config.enable_self_worklog"
+msgstr "Eigene Arbeitseinsätze"
+
+msgid "config.enable_self_worklog.info"
+msgstr "Erlaubt es Benutzern, mit entsprechender Berechtigung, sich selber Arbeitseinsätze ein zu tragen"
+
+msgid "config.signup_requires_arrival"
+msgstr "Schichten eintragen benötigt Ankommen"
+
+msgid "config.signup_requires_arrival.info"
+msgstr "Nur angekommene benutzer können sich in Schichten eintragen"
+
+msgid "config.autoarrive"
+msgstr "Automatisches ankommen"
+
+msgid "config.autoarrive.info"
+msgstr "Setzt Benutzer automatisch bei Registrierung als angekommen"
+
+msgid "config.supporters_can_promote"
+msgstr "Supporter können befördern"
+
+msgid "config.supporters_can_promote.info"
+msgstr "Supporter eines Engeltyps (Team) können andere Benutzer des Engeltyps zu Supportern befördern"
+
+msgid "config.join_qr_code"
+msgstr "Beitreten QR Code"
+
+msgid "config.join_qr_code.info"
+msgstr "Erlaubt das beitreten zu einem Engeltypen mit einem QR Code, benötigt app_key"
+
+msgid "config.certificates"
+msgstr "Zertifikate"
+
+msgid "config.ifsg_enabled.info"
+msgstr "Einweisung nach § 43 Abs. 1 des deutschen Infektionsschutzgesetzes (IfSG)"
+
+msgid "config.ifsg_light_enabled.info"
+msgstr "Einweisung nur vor Ort nach § 43 Abs. 1 des deutschen Infektionsschutzgesetzes (IfSG)"
+
+msgid "config.shifts"
+msgstr "Schichten"
+
+msgid "config.signup_advance_hours"
+msgstr "Eintragen vor start"
+
+msgid "config.signup_advance_hours.info"
+msgstr "Erlaube das Eintragen in Schichten erst n Stunden vor begin. Ein Wert von 0 deaktiviert die Einschränkung."
+
+msgid "config.signup_post_minutes"
+msgstr "Eintragen nach Start"
+
+msgid "config.signup_post_minutes.info"
+msgstr ""
+"Erlaubt das Eintragen in Schichten n Minuten nach Start der Schicht. "
+"Wenn \"Anteiliges Eintragen nach Start\" gesetzt ist, wird es vor dem addieren der Minuten angewendet."
+
+msgid "config.signup_post_fraction"
+msgstr "Anteiliges Eintragen nach Start"
+
+msgid "config.signup_post_fraction.info"
+msgstr ""
+"Erlaubt das spätere Eintragen in Schichten Anteiliges der Schichtlänge. "
+"Bei einem Wert von 1 ist das Eintragen während der gesamten Laufzeit einer Schicht erlaubt, "
+"bei 0.5 nur in der ersten Hälfte. "
+"Wenn \"Eintragen n Minuten nach Start\" gesetzt ist wird es anschließlich zusätzlich auf die Zeit addiert."
+
+msgid "config.last_unsubscribe"
+msgstr "Spätestes Austragen"
+
+msgid "config.last_unsubscribe.info"
+msgstr "Anzahl an Stunden in denen sich ein Benutzer vorher aus einer Schicht austragen kann"
+
+msgid "config.max_freeloadable_shifts"
+msgstr "Maximum schwänzbare Schichten"
+
+msgid "config.max_freeloadable_shifts.info"
+msgstr ""
+"Anzahl an Schichten die maximal geschwänzt werden können bis ein Benutzer "
+"sich nicht mehr in weitere eintragen kann"
+
+msgid "config.goodie"
+msgstr "Goodie"
+
+msgid "config.goodie_type"
+msgstr "Goodie Typ"
+
+msgid "config.enable_email_goodie"
+msgstr "E-Mail Opt-In"
+
+msgid "config.enable_email_goodie.info"
+msgstr ""
+"Opt-In auf der Benutzer-Seite und Registrierung zum speichern einiger personenbezogener Daten über das Event hinaus"
+
+msgid "config.goodie_type.select.none"
+msgstr "Kein Goodie (deaktiviert)"
+
+msgid "config.goodie_type.select.goodie"
+msgstr "Goodie"
+
+msgid "config.goodie_type.select.tshirt"
+msgstr "T-Shirt mit Größenauswahl"
+
+msgid "config.night_shifts.enabled"
+msgstr "Nachtschichten aktiv"
+
+msgid "config.night_shifts.enabled.info"
+msgstr ""
+"Multipliziert 'Nachtschichten' zwischen start und ende (Zahlen als Stunden) mit dem Multiplikator "
+"für den Goodie Score. "
+"Goodies müssen aktiv sein!"
+
+msgid "config.night_shifts.start"
+msgstr "Nachtschicht Startstunde"
+
+msgid "config.night_shifts.end"
+msgstr "Nachtschicht Endstunde (exklusiv)"
+
+msgid "config.night_shifts.multiplier"
+msgstr "Nachtschicht Multiplikator"
 
 msgid "validation.event_start.after"
 msgstr "Event Start muss nach dem Aufbau liegen."
@@ -349,3 +555,240 @@ msgstr "Event Ende muss nach dem Event Start liegen."
 
 msgid "validation.teardown_end.after"
 msgstr "Abbau Ende muss nach dem Event Ende liegen."
+
+msgid "language.de_DE"
+msgstr "Deutsch"
+
+msgid "language.en_US"
+msgstr "English"
+
+msgid "config.system"
+msgstr "System"
+
+msgid "config.app_name"
+msgstr "Anwendungsname (Nicht Eventname)"
+
+msgid "config.locales"
+msgstr "Sprachen"
+
+msgid "config.default_locale"
+msgstr "Standardsprache"
+
+msgid "config.timezone"
+msgstr "Zeitzone"
+
+msgid "config.app_key"
+msgstr "App Key"
+
+msgid "config.app_key.info"
+msgstr "Zufälliger, langer (min. 32 Zeichen) Alphanumerischer oder base64 enkodierter Schlüssel, zum Signieren benutzt"
+
+msgid "config.database.driver"
+msgstr "Datenbank Typ"
+
+msgid "config.database.driver.select.mysql"
+msgstr "MySQL"
+
+msgid "config.database.driver.select.mariadb"
+msgstr "MariaDB"
+
+msgid "config.database.host"
+msgstr "Datenbank Adresse"
+
+msgid "config.database.database"
+msgstr "Datenbank Name"
+
+msgid "config.database.username"
+msgstr "Datenbank Benutzername"
+
+msgid "config.database.password"
+msgstr "Datenbank Passwort"
+
+msgid "config.email.driver"
+msgstr "E-Mail Treiber"
+
+msgid "config.email.driver.info"
+msgstr ""
+"Die Konfiguration eines Symfony mailer DSNs wie smtps://[user]:[password]@smtp.[domain]:465 "
+"ist über die Konfigurationsdatei oder Umgebungsvariablen möglich."
+
+msgid "config.email.driver.select.smtp"
+msgstr "SMTP"
+
+msgid "config.email.driver.select.sendmail"
+msgstr "System sendmail Programm"
+
+msgid "config.email.driver.select.mail"
+msgstr "PHP mail Program"
+
+msgid "config.email.driver.select.log"
+msgstr "Schreibe E-Mails ins Log"
+
+msgid "config.email.from.name"
+msgstr "E-Mail Absendername"
+
+msgid "config.email.from.address"
+msgstr "E-Mail Absenderadresse"
+
+msgid "config.email.host"
+msgstr "E-Mail Server"
+
+msgid "config.email.port"
+msgstr "E-Mail Port"
+
+msgid "config.email.port.info"
+msgstr "465 für TLS, 587 für STARTTLS"
+
+msgid "config.email.tls"
+msgstr "E-Mail mit TLS Transportverschlüsselung"
+
+msgid "config.email.username"
+msgstr "E-Mail Benutzername"
+
+msgid "config.email.password"
+msgstr "E-Mail Passwort"
+
+msgid "config.email.sendmail"
+msgstr "Sendmail Kommando"
+
+msgid "config.home_site"
+msgstr "Startseite"
+
+msgid "config.home_site.info"
+msgstr "Weiterleitungsziel nach dem Login oder Klick auf den Seitennamen"
+
+msgid "config.display_news"
+msgstr "Angezeigte News"
+
+msgid "config.display_news.info"
+msgstr "Anzahl angezeigter News auf einer Seite und in Feedreadern"
+
+msgid "config.display_users"
+msgstr "Angezeigte Benutzer"
+
+msgid "config.display_users.info"
+msgstr "Anzahl angezeigter Benutzer in einer Tabelle"
+
+msgid "config.filter_max_duration"
+msgstr "Shichten-Filter"
+
+msgid "config.filter_max_duration.info"
+msgstr ""
+"Setzt die maximale Anzahl an Stunden die auf ein mal auf der Schichten-Seite angezeigt werden können, "
+"0 deaktiviert die Limitierung"
+
+msgid "config.password_min_length"
+msgstr "Minimale Passwortlänge"
+
+msgid "config.enable_password"
+msgstr "Passwort"
+
+msgid "config.enable_password.info"
+msgstr ""
+"Aktiviert den Login mit Passwort (wird ausgeblendet wenn nicht). "
+"Sinnvoll in Kombination mit OAuth, das ausschalten deaktiviert auch die Registrierung ohne OAuth."
+
+msgid "config.external_registration_url"
+msgstr "Externe Registrierungs-URL"
+
+msgid "config.external_registration_url.info"
+msgstr "URL zur externen Registrierungs-Seite, auf der Login-Seite verlinkt"
+
+msgid "config.url"
+msgstr "Anwendungs-URL"
+
+msgid "config.url.info"
+msgstr "URL und Pfad der Installation, überschreibt die automatisch detektion"
+
+msgid "config.api_key"
+msgstr "API Key für /metrics"
+
+msgid "config.session.driver"
+msgstr "Session speicher"
+
+msgid "config.session.driver.select.pdo"
+msgstr "Datenbank"
+
+msgid "config.session.driver.select.native"
+msgstr "PHP Session"
+
+msgid "config.session.name"
+msgstr "Session Cookie Name"
+
+msgid "config.session.lifetime"
+msgstr "Session Laufzeit in Tagen"
+
+msgid "config.jwt_expiration_time"
+msgstr "JWT Gültigkeit"
+
+msgid "config.jwt_expiration_time.info"
+msgstr "Anzahl an Minuten nach denen ein JWT abläuft, bspw für max. Zeit zum Engeltyp beitreten"
+
+msgid "config.warning_logout"
+msgstr "Änderungen führen zum logout aller Benutzer!"
+
+msgid "config.maintenance"
+msgstr "Wartungsmodus "
+
+msgid "config.maintenance.info"
+msgstr "Zeigt eine statische Seite bei allen Anfragen)"
+
+msgid "config.environment"
+msgstr "Umgebung"
+
+msgid "config.environment.info"
+msgstr "\"development\" zeigt mehr Debuggingmeldungen"
+
+msgid "config.documentation_url"
+msgstr "Dokumentations-URL"
+
+msgid "config.documentation_url.info"
+msgstr "Link zur Dokumentation/Hilfe"
+
+msgid "config.setup_admin_password"
+msgstr "Setup admin Password"
+
+msgid "config.setup_admin_password.info"
+msgstr "Initiales admin Password, verwendet beim datenbank aufsetzen"
+
+msgid "config.password_algorithm"
+msgstr "Password Algorithmus"
+
+msgid "config.password_algorithm.info"
+msgstr ""
+"Definiert den Algorithmus für `password_verify()`. "
+"Wen ein Benutzerpasswort mit einem alten Algorithmus gehasht wurde, "
+"wird es beim nächsten Login in das neue Format konvertiert. "
+"Siehe https://secure.php.net/manual/en/password.constants.php für eine vollständige Liste."
+
+msgid "config.username_regex"
+msgstr "Username Filter-Regex"
+
+msgid "config.username_regex.info"
+msgstr ""
+"Regulärer Ausdruck der einen nicht erlaubten Benutzernamen beschreibt. "
+"Standardmäßig sind nur Buchstaben artige Zeichen, Zahlen und \"-\", \"_\" sowie \".\" erlaubt."
+
+msgid "config.disabled_user_view_columns"
+msgstr "Versteckte User-Tabellen-Spalten"
+
+msgid "config.disabled_user_view_columns.info"
+msgstr "Versteckt dei Spalten in der Benutzer Tabelle im Adminbereich, möglich sind alle Sortierparameter"
+
+msgid "config.trusted_proxies"
+msgstr "Vertrauenswürdige Proxies"
+
+msgid "config.trusted_proxies.info"
+msgstr "IP Adressen von vertrauenswürdigen Reverse-Proxies als Array oder Kommaseparierte Liste"
+
+msgid "config.add_headers"
+msgstr "Weitere Header hinzufügen"
+
+msgid "config.jwt_algorithm"
+msgstr "JWT Algorithms"
+
+msgid "config.metrics"
+msgstr "/metrics buckets"
+
+msgid "config.var_dump_server"
+msgstr "var_dump Server"

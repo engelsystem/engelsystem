@@ -113,8 +113,9 @@ function make_language_select()
     $activeLocale = session()->get('locale');
 
     $items = [];
-    foreach (config('locales') as $locale => $name) {
+    foreach (config('locales') as $locale) {
         $url = url($request->getPathInfo(), [...$request->getQueryParams(), 'set-locale' => $locale]);
+        $name = __('language.' . $locale);
 
         $items[] = toolbar_dropdown_item(
             htmlspecialchars($url),

@@ -89,6 +89,9 @@ msgstr "Bitte melde dich an."
 msgid "form.submit"
 msgstr "Absenden"
 
+msgid "form.password.placeholder"
+msgstr "**********"
+
 msgid "form.send_notification"
 msgstr "%d Benachrichtigungen versenden"
 
@@ -2138,3 +2141,9 @@ msgstr "Konfiguration"
 
 msgid "config.edit.success"
 msgstr "Konfiguration erfolgreich angepasst"
+
+msgid "config.warning_from_env"
+msgstr "Konfiguration wird aus ENV variable überschrieben!"
+
+msgid "config.warning_file_not_writable"
+msgstr "Konfigurationsdatei config.local.php ist nicht beschreibbar!"

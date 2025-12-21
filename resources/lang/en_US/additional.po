@@ -320,25 +320,226 @@ msgid "config.name"
 msgstr "Event Name"
 
 msgid "config.name.info"
-msgstr "The event name is shown on the start page."
+msgstr "The event name is shown on the start page"
 
 msgid "config.welcome_msg"
 msgstr "Event Welcome Message"
 
+msgid "config.registration_enabled"
+msgstr "Registration enabled"
+
 msgid "config.welcome_msg.info"
-msgstr "The welcome message is shown after successful registration. You can use markdown."
+msgstr "The welcome message is shown after successful registration. Markdown can be used."
 
 msgid "config.buildup_start"
-msgstr "Buildup date"
+msgstr "Buildup"
 
 msgid "config.event_start"
-msgstr "Event start date"
+msgstr "Event start"
 
 msgid "config.event_end"
-msgstr "Event end date"
+msgstr "Event end"
 
 msgid "config.teardown_end"
-msgstr "Teardown end date"
+msgstr "Teardown end"
+
+msgid "config.enable_day_of_event"
+msgstr "Day of event"
+
+msgid "config.enable_day_of_event.info"
+msgstr ""
+"Whether to show the current day of the event (-2, -1, 0, 1, 2…) in the footer and on the dashboard. "
+"The event start date has to be set for it to appear."
+
+msgid "config.event_has_day0"
+msgstr "Event has day 0"
+
+msgid "config.event_has_day0.info"
+msgstr "If enabled there will be a day 0 (-1, 0, 1…). If not there won't (-1, 1…)."
+
+msgid "config.faq_text"
+msgstr "FAQ text"
+
+msgid "config.faq_text.info"
+msgstr "Additional text displayed on the FAQ page. Markdown can be used."
+
+msgid "config.tshirt_link"
+msgstr "T-shirt size guide link"
+
+msgid "config.privacy_email"
+msgstr "privacy@ contact e-mail"
+
+msgid "config.features"
+msgstr "Features"
+
+msgid "config.enable_dect.info"
+msgstr "Enables DECT numbers for users, locations and angel types"
+
+msgid "config.enable_mobile_show"
+msgstr "Display mobile number"
+
+msgid "config.enable_mobile_show.info"
+msgstr "Whether the mobile number will be shown to all users"
+
+msgid "config.enable_full_name"
+msgstr "First / last name"
+
+msgid "config.display_full_name"
+msgstr "Display full name"
+
+msgid "config.display_full_name.info"
+msgstr "Show a users first name and last name instead of username"
+
+msgid "config.enable_pronoun"
+msgstr "Pronouns"
+
+msgid "config.required_user_fields"
+msgstr "Required user fields"
+
+msgid "config.enable_planned_arrival"
+msgstr "Planned arrival / departure"
+
+msgid "config.enable_force_active"
+msgstr "Force active"
+
+msgid "config.enable_force_active.info"
+msgstr "Allows to enforce goodies"
+
+msgid "config.enable_force_food"
+msgstr "Unlimited food vouchers"
+
+msgid "config.enable_force_food.info"
+msgstr "Allows to get unlimited food vouchers"
+
+msgid "config.enable_voucher"
+msgstr "(Food-) vouchers"
+
+msgid "config.voucher_settings.initial_vouchers"
+msgstr "Initial vouchers"
+
+msgid "config.voucher_settings.shifts_per_voucher"
+msgstr "Shifts per voucher"
+
+msgid "config.voucher_settings.hours_per_voucher"
+msgstr "Hours per voucher"
+
+msgid "config.voucher_settings.voucher_start"
+msgstr "Voucher start"
+
+msgid "config.enable_self_worklog"
+msgstr "Own work logs"
+
+msgid "config.enable_self_worklog.info"
+msgstr "Allow users with sufficient permission to add worklogs for themselves"
+
+msgid "config.signup_requires_arrival"
+msgstr "Shift sign up requires arrival"
+
+msgid "config.signup_requires_arrival.info"
+msgstr "Only arrived users can sign up for shifts"
+
+msgid "config.autoarrive"
+msgstr "Auto arrive"
+
+msgid "config.autoarrive.info"
+msgstr "Set newly registered users automatically as arrived"
+
+msgid "config.supporters_can_promote"
+msgstr "Supporters can promote"
+
+msgid "config.supporters_can_promote.info"
+msgstr "Supporters of an angel type (team) can promote other users of the angel type to supporter"
+
+msgid "config.join_qr_code"
+msgstr "Join QR code"
+
+msgid "config.join_qr_code.info"
+msgstr "Allow joining angel type via generated QR code, requires app_key"
+
+msgid "config.certificates"
+msgstr "Certificates"
+
+msgid "config.ifsg_enabled.info"
+msgstr "Instruction in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)"
+
+msgid "config.ifsg_light_enabled.info"
+msgstr "Instruction only onsite in accordance with § 43 Para. 1 of the German Infection Protection Act (IfSG)"
+
+msgid "config.shifts"
+msgstr "Shifts"
+
+msgid "config.signup_advance_hours"
+msgstr "Sign up before start"
+
+msgid "config.signup_advance_hours.info"
+msgstr "Only allow shift signup this number of hours in advance. Setting it to 0 disables the feature."
+
+msgid "config.signup_post_minutes"
+msgstr "Sign up after start"
+
+msgid "config.signup_post_minutes.info"
+msgstr ""
+"Allow shift signup this number of minutes after start of shift. "
+"If \"Sign up after start fraction\" is set, it's first applied before adding the number of minutes specified here."
+
+msgid "config.signup_post_fraction"
+msgstr "Sign up after start fraction"
+
+msgid "config.signup_post_fraction.info"
+msgstr ""
+"Allow sign up this fraction of the shift length after the start of the shift. "
+"If its 1, sign up is allowed until end of shift, 0.5 means first half of the shift. "
+"If \"Sign up minutes after start\" is set, this is first applied and then the minutes added on top."
+
+msgid "config.last_unsubscribe"
+msgstr "Last unsubscribe"
+
+msgid "config.last_unsubscribe.info"
+msgstr "Number of hours that a user can sign out of own shifts beforehand"
+
+msgid "config.max_freeloadable_shifts"
+msgstr "Maximum freeloadable shifts"
+
+msgid "config.max_freeloadable_shifts.info"
+msgstr "Number of shifts to freeload until a user is locked from shift signup"
+
+msgid "config.goodie"
+msgstr "Goodie"
+
+msgid "config.enable_email_goodie"
+msgstr "E-mail opt-in"
+
+msgid "config.goodie_type"
+msgstr "Goodie Type"
+
+msgid "config.enable_email_goodie.info"
+msgstr "Show opt-in on user profile and registration pages to save some personal data after the event"
+
+msgid "config.goodie_type.select.none"
+msgstr "No goodie (disabled)"
+
+msgid "config.goodie_type.select.goodie"
+msgstr "Goodie"
+
+msgid "config.goodie_type.select.tshirt"
+msgstr "T-shirt with sizing options"
+
+msgid "config.night_shifts.enabled"
+msgstr "Night shifts enabled"
+
+msgid "config.night_shifts.enabled.info"
+msgstr ""
+"Multiplies 'night shifts' between start and end (numbers as hours) by multiplier for goodie score. "
+"Goodies must be enabled!"
+
+msgid "config.night_shifts.start"
+msgstr "Night shifts start hour"
+
+msgid "config.night_shifts.end"
+msgstr "Night shifts end (without including hour)"
+
+msgid "config.night_shifts.multiplier"
+msgstr "Night shifts multiplier"
 
 msgid "validation.event_start.after"
 msgstr "Event start must be after buildup."
@@ -348,3 +549,237 @@ msgstr "Event end must be after the event start."
 
 msgid "validation.teardown_end.after"
 msgstr "Teardown end must be after the event end."
+
+msgid "language.de_DE"
+msgstr "Deutsch"
+
+msgid "language.en_US"
+msgstr "English"
+
+msgid "config.system"
+msgstr "System"
+
+msgid "config.app_name"
+msgstr "Application name (not event name)"
+
+msgid "config.locales"
+msgstr "Languages"
+
+msgid "config.default_locale"
+msgstr "Default language"
+
+msgid "config.timezone"
+msgstr "Time zone"
+
+msgid "config.app_key"
+msgstr "App key"
+
+msgid "config.app_key.info"
+msgstr "Random, long (at least 32 characters) alphanumeric or base64 encoded key, used for signing"
+
+msgid "config.database.driver"
+msgstr "Database type"
+
+msgid "config.database.driver.select.mysql"
+msgstr "MySQL"
+
+msgid "config.database.driver.select.mariadb"
+msgstr "MariaDB"
+
+msgid "config.database.host"
+msgstr "Database host"
+
+msgid "config.database.database"
+msgstr "Database name"
+
+msgid "config.database.username"
+msgstr "Database username"
+
+msgid "config.database.password"
+msgstr "Database password"
+
+msgid "config.email.driver"
+msgstr "E-mail driver"
+
+msgid "config.email.driver.info"
+msgstr ""
+"Configuring a symfony mailer dsn like smtps://[user]:[password]@smtp.[domain]:465 "
+"is possible via config file or env variable"
+
+msgid "config.email.driver.select.smtp"
+msgstr "SMTP"
+
+msgid "config.email.driver.select.sendmail"
+msgstr "System sendmail program"
+
+msgid "config.email.driver.select.mail"
+msgstr "PHP mail program"
+
+msgid "config.email.driver.select.log"
+msgstr "Write mails to log"
+
+msgid "config.email.from.name"
+msgstr "E-mail sender name"
+
+msgid "config.email.from.address"
+msgstr "E-mail sender address"
+
+msgid "config.email.host"
+msgstr "E-mail host"
+
+msgid "config.email.port"
+msgstr "E-mail port"
+
+msgid "config.email.port.info"
+msgstr "465 for TLS, 587 for STARTTLS"
+
+msgid "config.email.tls"
+msgstr "E-mail using TLS transport encryption"
+
+msgid "config.email.username"
+msgstr "E-mail username"
+
+msgid "config.email.password"
+msgstr "E-mail password"
+
+msgid "config.email.sendmail"
+msgstr "Sendmail command"
+
+msgid "config.home_site"
+msgstr "Home site"
+
+msgid "config.home_site.info"
+msgstr "Redirects to this site after logging in or when clicking the page name"
+
+msgid "config.display_news"
+msgstr "Displayed news"
+
+msgid "config.display_news.info"
+msgstr "Number of news shown on one site and for feed readers"
+
+msgid "config.display_users"
+msgstr "Displayed users"
+
+msgid "config.display_users.info"
+msgstr "Number of users shown in a table"
+
+msgid "config.filter_max_duration"
+msgstr "Shifts filter"
+
+msgid "config.filter_max_duration.info"
+msgstr "Set max number of hours that can be shown at once on shifts overview, 0 means no limit"
+
+msgid "config.password_min_length"
+msgstr "Minimum password length"
+
+msgid "config.enable_password"
+msgstr "Passwort"
+
+msgid "config.enable_password.info"
+msgstr ""
+"Whether the login and registration via password should be enabled (login will be hidden if false). "
+"This is useful when using OAuth, disabling it also disables normal registration without oauth."
+
+msgid "config.external_registration_url"
+msgstr "External registration URL"
+
+msgid "config.external_registration_url.info"
+msgstr "URL to external registration page, linked from login page"
+
+msgid "config.url"
+msgstr "Application URL"
+
+msgid "config.url.info"
+msgstr "URL and base path to use instead of the auto-detected one"
+
+msgid "config.api_key"
+msgstr "API key for /metrics"
+
+msgid "config.session.driver"
+msgstr "Session storage"
+
+msgid "config.session.driver.select.pdo"
+msgstr "Database"
+
+msgid "config.session.driver.select.native"
+msgstr "PHP session"
+
+msgid "config.session.name"
+msgstr "Session cookie name"
+
+msgid "config.session.lifetime"
+msgstr "Session lifetime in days"
+
+msgid "config.jwt_expiration_time"
+msgstr "JWT expiration time in minutes"
+
+msgid "config.jwt_expiration_time.info"
+msgstr "Number of minutes after a JWT must expire, for example max angel type join time"
+
+msgid "config.warning_logout"
+msgstr "Changing this will log out all users!"
+
+msgid "config.maintenance"
+msgstr "Maintenance mode"
+
+msgid "config.maintenance.info"
+msgstr "Shows a static page to all requests"
+
+msgid "config.environment"
+msgstr "Environment"
+
+msgid "config.environment.info"
+msgstr "Set to \"development\" to enable debugging messages"
+
+msgid "config.documentation_url"
+msgstr "Documentation URL"
+
+msgid "config.documentation_url.info"
+msgstr "Link to documentation/help"
+
+msgid "config.setup_admin_password"
+msgstr "Setup admin password"
+
+msgid "config.setup_admin_password.info"
+msgstr "Initial admin password, configured on first setup migration"
+
+msgid "config.password_algorithm"
+msgstr "Password algorithm"
+
+msgid "config.password_algorithm.info"
+msgstr ""
+"Define the algorithm to use for `password_verify()`. "
+"If a user password is hashed with an old algorithm, the password will be converted to the new format on login. "
+"See https://secure.php.net/manual/en/password.constants.php for a complete list."
+
+msgid "config.username_regex"
+msgstr "Username filter regex"
+
+msgid "config.username_regex.info"
+msgstr ""
+"Regular expression describing a FALSE username. "
+"Per default usernames must only contain alphanumeric chars, \"-\", \"_\" or \".\"."
+
+msgid "config.disabled_user_view_columns"
+msgstr "Hidden user table columns"
+
+msgid "config.disabled_user_view_columns.info"
+msgstr "Hide columns in backend user view, possible values are any sortable parameters of the table"
+
+msgid "config.trusted_proxies"
+msgstr "Trusted proxies"
+
+msgid "config.trusted_proxies.info"
+msgstr "IP addresses of reverse proxies that are trusted, can be an array or a comma separated list"
+
+msgid "config.add_headers"
+msgstr "Add additional headers"
+
+msgid "config.jwt_algorithm"
+msgstr "JWT algorithm"
+
+msgid "config.metrics"
+msgstr "/metrics buckets"
+
+msgid "config.var_dump_server"
+msgstr "var_dump server"

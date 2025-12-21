@@ -9,6 +9,7 @@
     <file>src</file>
     <file>tests</file>
     <exclude-pattern>/config/config.php</exclude-pattern>
+    <exclude-pattern>/config/config.local.php</exclude-pattern>
 
     <rule ref="PSR12" />
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">

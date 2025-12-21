@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Feature;
 
 use Engelsystem\Application;
+use Engelsystem\Config\ConfigServiceProvider;
+use Engelsystem\Database\DatabaseServiceProvider;
 use PHPUnit\Framework\TestCase;
 
 abstract class ApplicationFeatureTest extends TestCase
@@ -36,5 +38,14 @@ abstract class ApplicationFeatureTest extends TestCase
         parent::setUp();
 
         $this->app = app();
+
+        $csp = new ConfigServiceProvider($this->app);
+        $dbsp = new DatabaseServiceProvider($this->app);
+
+        $csp->register();
+        $dbsp->register();
+
+        $dbsp->boot();
+        $csp->boot();
     }
 }

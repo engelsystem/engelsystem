@@ -85,7 +85,7 @@ class EventConfig extends BaseModel
     }
 
     /**
-     * Check if the value has to be casted
+     * Check if the value has to be cast
      */
     protected function getValueCast(string $value): ?string
     {

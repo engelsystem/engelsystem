@@ -15,10 +15,11 @@ class DatabaseServiceProviderTest extends DatabaseTest
      */
     public function testRegister(): void
     {
-        $this->app->instance('config', new Config([
-            'database' => $this->getDbConfig(),
-            'timezone' => 'UTC',
-        ]));
+        $config = new Config($this->getDbConfig());
+        if (!$config->get('timezone')) {
+            $config->set('timezone', 'UTC');
+        }
+        $this->app->instance('config', $config);
 
         $serviceProvider = new DatabaseServiceProvider($this->app);
         $serviceProvider->register();

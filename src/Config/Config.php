@@ -11,20 +11,13 @@ class Config extends Fluent
      */
     protected $attributes = []; // phpcs:ignore
 
-    /**
-     * @param string|array $key
-     */
     public function get(mixed $key, mixed $default = null): mixed
     {
         if (is_null($key)) {
             return $this->attributes;
         }
 
-        if ($this->has($key)) {
-            return $this->attributes[$key];
-        }
-
-        return $default;
+        return parent::get($key, $default);
     }
 
     /**
@@ -40,7 +33,7 @@ class Config extends Fluent
             return;
         }
 
-        $this->attributes[$key] = $value;
+        parent::set($key, $value);
     }
 
     /**
@@ -48,7 +41,7 @@ class Config extends Fluent
      */
     public function has(mixed $key): bool
     {
-        return $this->offsetExists($key);
+        return data_has($this->attributes, $key);
     }
 
     /**
@@ -56,6 +49,6 @@ class Config extends Fluent
      */
     public function remove(mixed $key): void
     {
-        $this->offsetUnset($key);
+        data_forget($this->attributes, $key);
     }
 }

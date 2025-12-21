@@ -15,13 +15,19 @@ abstract class DatabaseTest extends TestCase
      */
     protected function getDbConfig(): array
     {
-        $configValues = require __DIR__ . '/../../../config/config.default.php';
-        $configFile = __DIR__ . '/../../../config/config.php';
+        $configValues = ['database' => [
+            'host' => env('MYSQL_HOST', 'localhost'),
+            'database' => env('MYSQL_DATABASE', 'engelsystem'),
+            'username' => env('MYSQL_USER', 'root'),
+            'password' => env('MYSQL_PASSWORD', ''),
+        ]];
 
-        if (file_exists($configFile)) {
-            $configValues = array_replace_recursive($configValues, require $configFile);
+        foreach ([__DIR__ . '/../../../config/config.php', __DIR__ . '/../../../config/config.local.php'] as $file) {
+            if (file_exists($file)) {
+                $configValues = array_replace_recursive($configValues, require $file);
+            }
         }
 
-        return $configValues['database'];
+        return $configValues;
     }
 }

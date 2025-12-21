@@ -461,7 +461,7 @@ class SettingsControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody(['select_theme' => 2]);
 
         $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
-        $this->expectException(HttpNotFound::class);
+        $this->expectException(ValidationException::class);
 
         $this->controller->saveTheme($this->request);
     }
@@ -502,7 +502,7 @@ class SettingsControllerTest extends ControllerTest
                 $this->assertArrayHasKey('settings_menu', $data);
                 $this->assertArrayHasKey('languages', $data);
                 $this->assertArrayHasKey('current_language', $data);
-                $this->assertEquals(['en_US' => 'English', 'de_DE' => 'Deutsch'], $data['languages']);
+                $this->assertEquals(['en_US' => 'language.en_US', 'de_DE' => 'language.de_DE'], $data['languages']);
                 $this->assertEquals('en_US', $data['current_language']);
 
                 return $this->response;
@@ -532,7 +532,7 @@ class SettingsControllerTest extends ControllerTest
         $this->request = $this->request->withParsedBody(['select_language' => 'unknown']);
 
         $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
-        $this->expectException(HttpNotFound::class);
+        $this->expectException(ValidationException::class);
 
         $this->controller->saveLanguage($this->request);
     }
@@ -1109,18 +1109,11 @@ class SettingsControllerTest extends ControllerTest
             1 => ['name' => 'Engelsystem dark'],
         ];
         $languages = [
-            'en_US' => 'English',
-            'de_DE' => 'Deutsch',
+            'en_US',
+            'de_DE',
         ];
         $tshirt_sizes = ['S' => 'Small'];
-        $requiredFields = [
-            'pronoun'     => false,
-            'firstname'   => false,
-            'lastname'    => false,
-            'tshirt_size' => true,
-            'mobile'      => false,
-            'dect'        => false,
-        ];
+        $requiredFields = ['tshirt_size'];
         $this->config = new Config([
             'password_min_length' => 6,
             'themes' => $themes,
