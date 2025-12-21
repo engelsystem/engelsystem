@@ -1,5 +1,6 @@
 <form class="form-inline" action="">
     <input type="hidden" name="p" value="user_shifts">
+    <input type="hidden" name="tag" value="%tag_id%">
     <div class="row">
         <div class="col-md-6">
             <h1>%title% %add_link%</h1>
@@ -83,6 +84,13 @@
     </div>
 </form>
 
+<div class="row">
+    <div class="col-md-10 offset-md-1 mb-3 text-end">
+        %tags%
+    </div>
+</div>
+
+%msg%
 %shifts_table%
 
 <div class="d-print-none">

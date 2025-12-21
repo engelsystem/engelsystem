@@ -6,6 +6,7 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
+use Engelsystem\Models\Tag;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -109,6 +110,8 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
     $shiftsFilter->setFilled(check_request_int_array('filled', $shiftsFilter->getFilled()));
     $shiftsFilter->setLocations(check_request_int_array('locations', $shiftsFilter->getLocations()));
     $shiftsFilter->setTypes(check_request_int_array('types', $shiftsFilter->getTypes()));
+    $tag = request()->input('tag', $shiftsFilter->getTag());
+    $shiftsFilter->setTag(is_numeric($tag) ? $tag : null);
     update_ShiftsFilter_timerange($shiftsFilter, $days);
 }
 
@@ -305,6 +308,22 @@ function view_user_shifts()
 
     $link = button(url('/admin-shifts'), icon('plus-lg'), 'btn-sm add');
 
+    $tagId = $shiftsFilter->getTag();
+    $tags = PHP_EOL;
+    foreach (Tag::whereHas('shifts')->get() as $tag) {
+        $active = $tag->id == $shiftsFilter->getTag();
+        $bg = $active ? 'danger' : 'secondary';
+        $tags .=
+            ' '
+            . '<a href="' . url(request()->getPathInfo(), [...request()->getQueryParams(), 'tag' => $active ? '' : $tag->id]) . '">'
+            . '<span class="badge bg-' . $bg . '">'
+            . $tag->name
+            . ($active ? ' <span class="bi bi-x-lg"></span>' : '')
+            . '</span>'
+            . '</a>' . PHP_EOL;
+    }
+    $tags .= PHP_EOL;
+
     return page([
         div('col-md-12', [
             view(__DIR__ . '/../../resources/views/pages/user-shifts.html', [
@@ -345,7 +364,10 @@ function view_user_shifts()
                     'filled',
                     icon('person-fill-slash') . __('Occupancy')
                 ),
-                'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
+                'tags'  => $tags,
+                'msg'  => msg(),
+                'tag_id'  => $tagId,
+                'shifts_table'  => $shiftCalendarRenderer->render(),
                 'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),
                 'filter_toggle' => __('shifts.filter.toggle'),

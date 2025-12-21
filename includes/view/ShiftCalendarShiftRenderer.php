@@ -130,6 +130,15 @@ class ShiftCalendarShiftRenderer
             );
             $html .= '</li>';
         }
+        if ($html && $shift->tags->count()) {
+            $html .= '<li class="list-group-item d-flex align-items-center">';
+            foreach ($shift->tags as $tag) {
+                $html .= ' <a href="' . url('/user-shifts', ['tag' => $tag->id]) . '">'
+                    . '<span class="badge bg-secondary me-1">' . $tag->name . '</span>'
+                    . '</a>';
+            }
+            $html .= '</li>';
+        }
         if ($html != '') {
             return [
                 $shift_signup_state,

@@ -14,6 +14,7 @@ use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\Tag;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Models\ModelTest;
 use Illuminate\Database\Eloquent\Collection;
@@ -354,5 +355,36 @@ class ShiftTest extends ModelTest
 
         $config->set('night_shifts', array_merge($config->get('night_shifts'), ['enabled' => false]));
         $this->assertEquals(1, $shift->getNightShiftMultiplier());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::tags
+     */
+    public function testTags(): void
+    {
+        $user = User::factory()->create();
+        $location = Location::factory()->create();
+        $shiftType = ShiftType::factory()->create();
+
+        $tag1 = Tag::factory()->create();
+        $tag2 = Tag::factory()->create();
+
+        $model = new Shift([
+            'title' => 'testing tags',
+            'location_id' => $location->id,
+            'shift_type_id' => $shiftType->id,
+            'created_by' => $user->id,
+            'start' => new Carbon('2042-01-01 09:00'),
+            'end' => new Carbon('2042-01-01 13:00'),
+        ]);
+        $model->save();
+
+        $model->tags()->attach($tag1);
+        $model->tags()->attach($tag2);
+
+        /** @var Shift $savedModel */
+        $savedModel = Shift::all()->last();
+        $this->assertEquals($tag1->name, $savedModel->tags[0]->name);
+        $this->assertEquals($tag2->name, $savedModel->tags[1]->name);
     }
 }
