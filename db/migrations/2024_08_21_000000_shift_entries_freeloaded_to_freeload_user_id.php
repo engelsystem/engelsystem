@@ -13,6 +13,7 @@ class ShiftEntriesFreeloadedToFreeloadUserId extends Migration
 
     private function boolToUserId(): void
     {
+        $user_id = $this->schema->getConnection()->table('users')->orderBy('id')->first()?->id;
         $connection = $this->schema->getConnection();
         $connection
             ->table('shift_entries')
@@ -24,7 +25,7 @@ class ShiftEntriesFreeloadedToFreeloadUserId extends Migration
             ->table('shift_entries')
             ->where('freeloaded', true)
             ->update([
-                'freeloaded_by' => $connection->raw('user_id'),
+                'freeloaded_by' => $user_id,
             ]);
     }
 
