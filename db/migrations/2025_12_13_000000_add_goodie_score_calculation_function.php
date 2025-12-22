@@ -6,6 +6,7 @@ namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Grammars\MySqlGrammar;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 
 class AddGoodieScoreCalculationFunction extends Migration
@@ -23,6 +24,11 @@ class AddGoodieScoreCalculationFunction extends Migration
      */
     public function up(): void
     {
+        $connection = $this->schema->getConnection();
+        if (!$connection->getQueryGrammar() instanceof MySqlGrammar) {
+            return;
+        }
+
         $this->db->statement(
         /** @lang MySQL */
             'CREATE DEFINER=`engelsystem`@`%` FUNCTION `goodie_score` (
@@ -100,6 +106,11 @@ class AddGoodieScoreCalculationFunction extends Migration
      */
     public function down(): void
     {
+        $connection = $this->schema->getConnection();
+        if (!$connection->getQueryGrammar() instanceof MySqlGrammar) {
+            return;
+        }
+
         $this->db->statement(
             /** @lang MySQL */
             'DROP FUNCTION `goodie_score`;'

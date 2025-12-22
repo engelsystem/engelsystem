@@ -52,7 +52,6 @@ class Goodie
                 $user->id,
                 $nightShifts['start'],
                 $nightShifts['end'],
-                // at the moment supports negative multipliers, on trouble add max(0, x)
                 $nightShifts['multiplier'],
                 Carbon::now(),
             ]
