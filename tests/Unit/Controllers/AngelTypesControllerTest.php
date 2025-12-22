@@ -212,6 +212,50 @@ class AngelTypesControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\AngelTypesController::join
      */
+    public function testJoinInvalidSignatureError(): void
+    {
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+
+        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger());
+        $controller->setValidator(new Validator());
+
+        $request = (new Request([
+            'token' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MiIsImlhdCI6MTIzNDU2Nzg5MH0.n0p3',
+        ]))
+            ->withAttribute('angel_type_id', $angelType->id);
+
+        $this->expectException(HttpNotFound::class);
+        $this->expectExceptionMessage('jwt.code_error');
+        $controller->join($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\AngelTypesController::join
+     */
+    public function testJoinDecodeErrorMissingParts(): void
+    {
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+
+        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger());
+        $controller->setValidator(new Validator());
+
+        $request = (new Request(['token' => 'missing.segment']))
+            ->withAttribute('angel_type_id', $angelType->id);
+
+        $this->expectException(HttpNotFound::class);
+        $this->expectExceptionMessage('jwt.wrong_format');
+        $controller->join($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\AngelTypesController::join
+     */
     public function testJoinDecodeExpired(): void
     {
         /** @var Authenticator|MockObject $auth */
@@ -231,6 +275,7 @@ class AngelTypesControllerTest extends ControllerTest
             ->withAttribute('angel_type_id', $angelType->id);
 
         $this->expectException(HttpNotFound::class);
+        $this->expectExceptionMessage('jwt.invalid');
         $controller->join($request);
     }
 
