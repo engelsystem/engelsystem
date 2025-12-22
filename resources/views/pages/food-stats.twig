@@ -1,0 +1,57 @@
+{% extends "pages/food-voucher.twig" %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}
+    Food Stats
+{%- endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ m.back(url('/users', {'action': 'view'})) }}
+            {{ block('title') }}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="col">
+
+            <h2>Force Food</h2>
+            <table class="table table-striped table-sticky-header data">
+                <thead>
+                <tr>
+                    <th>{{ __('general.angel') }}</th>
+                    <th>{{ __('general.actions') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for u in crewUsers %}
+                    <tr>
+                        <td>
+                            {{ m.user(u.user, {'pronoun': true}) }}
+                        </td>
+                        <td>
+                            <a
+                                href="{{ url('admin-user', {'id': u.user.id}) }}"
+                                class="btn btn-secondary btn-sm"
+                                title="{{ __('form.edit') }}"
+                            >
+                                {{ m.icon('pencil') }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td>
+                        {{ __("Sum:") }}
+                    </td>
+                    <td>
+                        {{ crewUsers.count }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+{% endblock %}

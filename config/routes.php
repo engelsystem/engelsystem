@@ -133,9 +133,10 @@ $route->addGroup(
     function (RouteCollector $route): void {
         $route->get('', 'FoodVoucherController@view');
         $route->post('', 'FoodVoucherController@send');
+        $route->get('/stats', 'FoodVoucherController@stats');
+        $route->get('/stats.txt', 'FoodVoucherController@statsTxt');
     }
 );
-
 
 // API
 $route->addGroup(

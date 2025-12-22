@@ -14,6 +14,7 @@ use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use ErrorException;
@@ -30,6 +31,11 @@ class FoodVoucherController extends BaseController
     use HasUserNotifications;
 
     protected array $foodVoucherApi;
+
+    protected array $permissions = [
+        'stats' => 'admin_user',
+        'statsTxt' => 'admin_user',
+    ];
 
     public function __construct(
         protected Authenticator $auth,
@@ -185,6 +191,42 @@ class FoodVoucherController extends BaseController
                 'eligibleVoucherCount' => UserVouchers::eligibleVoucherCount($user),
             ]
         );
+    }
+
+    public function stats(): Response
+    {
+        $this->checkActive();
+
+        $crewUsers = State::with('user')
+            ->where('force_food', true)
+            ->join('users', 'users.id', 'users_state.user_id')
+            ->orderBy('users.name')
+            ->get();
+
+        return $this->response->withView(
+            'pages/food-stats.twig',
+            [
+                'crewUsers' => $crewUsers,
+            ]
+        );
+    }
+
+    public function statsTxt(): Response
+    {
+        $this->checkActive();
+
+        $crewUsers = State::with('user')
+            ->where('force_food', true)
+            ->join('users', 'users.id', 'users_state.user_id')
+            ->orderBy('users.name')
+            ->get();
+        $crewList = $crewUsers
+            ->pluck('user.name')
+            ->implode(PHP_EOL);
+
+        return $this->response
+            ->withHeader('Content-Type', 'text/plain')
+            ->withContent($crewList);
     }
 
     /**
