@@ -881,8 +881,12 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
         $availableCount = $voucherCount + UserVouchers::eligibleVoucherCount($user_source);
         $availableVoucher = $availableCount;
         if (
-            (config('enable_force_active') && $user_source->state->force_active)
-            || config('enable_force_food') && $user_source->state->force_food
+            (
+                config('enable_force_active')
+                && $user_source->state->force_active
+                && !config('enable_force_food')
+            )
+            || (config('enable_force_food') && $user_source->state->force_food)
         ) {
             $availableVoucher = __('user.state.vouchers.force', [$availableCount]);
         }
