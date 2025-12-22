@@ -313,6 +313,15 @@ msgstr "Registration successful. You can now log in!"
 msgid "shifts.history.delete.success"
 msgstr "Shifts deleted successfully."
 
+msgid "jwt.invalid_time"
+msgstr "The opened link is not valid (yet)"
+
+msgid "jwt.wrong_format"
+msgstr "The opened link is not complete"
+
+msgid "jwt.code_error"
+msgstr "The opened link has some problems"
+
 msgid "config.event"
 msgstr "Event"
 
