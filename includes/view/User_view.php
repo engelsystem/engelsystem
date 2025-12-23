@@ -821,6 +821,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
     $password_reset = PasswordReset::whereUserId($user_source->id)
         ->where('created_at', '>', $user_source->last_login_at ?: '')
         ->count();
+    $its_me = auth()->user() === $user_source;
     $state = [];
 
     if ($freeloader && $admin_user_privilege) {
@@ -867,7 +868,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
         }
     }
 
-    if (config('enable_voucher')) {
+    if (config('enable_voucher') && ($admin_user_privilege || $its_me)) {
         $voucherCount = $user_source->state->got_voucher;
         $availableCount = $voucherCount + UserVouchers::eligibleVoucherCount($user_source);
         $availableVoucher = $availableCount;
