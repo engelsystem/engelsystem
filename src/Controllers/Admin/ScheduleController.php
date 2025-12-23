@@ -125,14 +125,15 @@ class ScheduleController extends BaseController
         }
 
         $this->log->info(
-            'Schedule {name}: Url {url}, Shift Type {shift_type_name} ({shift_type_id}), ({need}), '
+            'Schedule {name} ({id}): Url {url}, Shift Type {shift_type_name} ({shift_type_id}), ({need}), '
             . 'minutes before/after {before}/{after}, for: {locations}',
             [
                 'name' => $schedule->name,
-                'url' => $schedule->name,
+                'id' => $schedule->id,
+                'url' => $schedule->url,
                 'shift_type_name' => Shifttype::find($schedule->shift_type)->name,
                 'shift_type_id' => $schedule->shift_type,
-                'need'       => $schedule->needed_from_shift_type ? 'from shift type' : 'from room',
+                'need'       => $schedule->needed_from_shift_type ? 'from shift type' : 'from location',
                 'before' => $schedule->minutes_before,
                 'after' => $schedule->minutes_after,
                 'locations'  => $for->implode(', '),
