@@ -101,7 +101,7 @@ class FoodVoucherController extends BaseController
             );
         } catch (ConnectException | GuzzleException $e) {
             $this->log->error('Exception during food voucher api request', ['exception' => $e]);
-            throw new ErrorException('user.food.request-error');
+            throw new HttpNotFound('user.food.request-error');
         }
         if ($response->getStatusCode() !== 200) {
             $this->log->error(
