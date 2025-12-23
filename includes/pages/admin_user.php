@@ -137,6 +137,9 @@ function admin_user()
             $html .= auth()->can('user.fa.edit')
                 ? html_options('force_active', $options, $user_source->state->force_active)
                 : icon_bool($user_source->state->force_active);
+            if ($user_source->state->force_active) {
+                $html .= __('user.by', [User_Nick_render($user_source->state->forceActiveBy)]);
+            }
             $html .= '</td></tr>' . "\n";
         }
 
@@ -146,6 +149,9 @@ function admin_user()
             $html .= auth()->can('user.ff.edit')
                 ? html_options('force_food', $options, $user_source->state->force_food)
                 : icon_bool($user_source->state->force_food);
+            if ($user_source->state->force_food) {
+                $html .= __('user.by', [User_Nick_render($user_source->state->forceFoodBy)]);
+            }
             $html .= '</td></tr>' . "\n";
         }
 
@@ -157,6 +163,9 @@ function admin_user()
             $html .= $user_goodie_edit
                 ? html_options('goodie', $options, $user_source->state->got_goodie)
                 : icon_bool($user_source->state->got_goodie);
+            if ($user_source->state->got_goodie) {
+                $html .= __('user.by', [User_Nick_render($user_source->state->gotGoodieBy)]);
+            }
             $html .= '</td></tr>' . "\n";
         }
 
@@ -360,18 +369,16 @@ function admin_user()
                 $user_source->contact->save();
 
                 if ($goodie_enabled && $user_goodie_edit) {
-                    $user_source->state->got_goodie = $request->postData('goodie');
+                    if ($user_source->state->got_goodie != $request->postData('goodie')) {
+                        $user_source->state->got_goodie_by = $request->postData('goodie') ? $user->id : null;
+                    }
                 }
                 if ($user_info_edit) {
                     $user_source->state->user_info = $request->postData('userInfo');
                 }
                 if ($admin_arrive) {
                     if ($user_source->state->arrived != $request->postData('arrive')) {
-                        if ($request->postData('arrive')) {
-                            $user_source->state->arrival_date = new Carbon();
-                        } else {
-                            $user_source->state->arrival_date = null;
-                        }
+                        $user_source->state->arrival_date = $request->postData('arrive') ? new Carbon() : null;
                     }
                 }
 
@@ -379,10 +386,14 @@ function admin_user()
                     $user_source->state->active = $request->postData('active');
                 }
                 if (auth()->can('user.fa.edit') && config('enable_force_active')) {
-                    $user_source->state->force_active = $request->input('force_active');
+                    if ($user_source->state->force_active != $request->input('force_active')) {
+                        $user_source->state->force_active_by = $request->input('force_active') ? $user->id : null;
+                    }
                 }
                 if (auth()->can('user.ff.edit') && config('enable_force_food')) {
-                    $user_source->state->force_food = $request->input('force_food');
+                    if ($user_source->state->force_food != $request->input('force_food')) {
+                        $user_source->state->force_food_by = $request->input('force_food') ? $user->id : null;
+                    }
                 }
                 $user_source->state->save();
 

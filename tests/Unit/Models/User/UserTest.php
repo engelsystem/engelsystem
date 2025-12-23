@@ -76,8 +76,8 @@ class UserTest extends ModelTest
                 State::class,
                 'state',
                 [
-                    'force_active' => true,
-                    'force_food' => true,
+                    'force_active_by' => null,
+                    'force_food_by' => null,
                 ],
             ],
             [
@@ -152,6 +152,14 @@ class UserTest extends ModelTest
     {
         $user = new User($this->data);
         $user->save();
+
+        if ($class === State::class && isset($data['force_active_by'])) {
+            $data['force_active_by'] = $user->id;
+        }
+
+        if ($class === State::class && isset($data['force_food_by'])) {
+            $data['force_food_by'] = $user->id;
+        }
 
         /** @var HasUserModel $instance */
         $instance = new $class($data);

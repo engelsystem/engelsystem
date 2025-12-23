@@ -95,7 +95,9 @@ class UserGoodieController extends BaseController
         }
 
         $user->state->active = (bool) $data['active'];
-        $user->state->got_goodie = (bool) $data['got_goodie'];
+        if ($user->state->got_goodie != (bool) $data['got_goodie']) {
+            $user->state->got_goodie_by = $data['got_goodie'] ? $this->auth->user()->id : null;
+        }
         $user->state->save();
 
         $this->log->info(
