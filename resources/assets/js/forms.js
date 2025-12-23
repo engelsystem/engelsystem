@@ -368,22 +368,48 @@ ready(() => {
  * Uses DOMContentLoaded to prevent flickering
  */
 ready(() => {
+  const STATE = {
+    OPEN: 'open',
+    CLOSED: 'closed',
+    EXPANDED: 'expanded',
+  };
+
   const collapseElement = document.getElementById('collapseShiftsFilterSelect');
-  if (collapseElement) {
-    if (localStorage.getItem('collapseShiftsFilterSelect') === 'hidden.bs.collapse') {
-      collapseElement.classList.remove('show');
+  if (!collapseElement) {
+    return;
+  }
+
+  if (localStorage.getItem('collapseShiftsFilterSelect') === STATE.CLOSED) {
+    collapseElement.classList.remove('show');
+  }
+
+  if (localStorage.getItem('collapseShiftsFilterSelect') === STATE.EXPANDED) {
+    document
+      .querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height')
+      .forEach((e) => e.classList.remove('limit-height'));
+  }
+
+  /**
+   * @param {Event} event
+   */
+  const onChange = (event) => {
+    const heightLimited = document.querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height');
+    if (heightLimited.length > 0 && localStorage.getItem('collapseShiftsFilterSelect') === STATE.OPEN) {
+      heightLimited.forEach((e) => e.classList.remove('limit-height'));
+      localStorage.setItem('collapseShiftsFilterSelect', STATE.EXPANDED);
+      event.preventDefault();
+      return;
+    } else {
+      document
+        .querySelectorAll('#collapseShiftsFilterSelect .selection')
+        .forEach((e) => e.classList.add('limit-height'));
     }
 
-    /**
-     * @param {Event} event
-     */
-    const onChange = (event) => {
-      localStorage.setItem('collapseShiftsFilterSelect', event.type);
-    };
+    localStorage.setItem('collapseShiftsFilterSelect', event.type === 'hide.bs.collapse' ? STATE.CLOSED : STATE.OPEN);
+  };
 
-    collapseElement.addEventListener('hidden.bs.collapse', onChange);
-    collapseElement.addEventListener('shown.bs.collapse', onChange);
-  }
+  collapseElement.addEventListener('hide.bs.collapse', onChange);
+  collapseElement.addEventListener('show.bs.collapse', onChange);
 });
 
 /**
