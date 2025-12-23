@@ -876,7 +876,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
         }
     }
 
-    if (config('enable_voucher')) {
+    if (config('enable_voucher') && ($admin_user_privilege || $user_source->id === auth()->user()->id)) {
         $voucherCount = $user_source->state->got_voucher;
         $availableCount = $voucherCount + UserVouchers::eligibleVoucherCount($user_source);
         $availableVoucher = $availableCount;
