@@ -47,7 +47,7 @@ function NeededAngelTypes_by_shift($shift)
         ', [$shift->shift_type_id]);
     }
 
-    // Load from room
+    // Load from location
     if ($shift->schedule && !$shift->schedule->needed_from_shift_type) {
         $needed_angeltypes_source = Db::select('
         SELECT

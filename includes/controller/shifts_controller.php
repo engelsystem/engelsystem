@@ -298,7 +298,7 @@ function shift_delete_controller(): void
     $shift->delete();
 
     engelsystem_log(
-        'Deleted shift ' . $shift->title . ': ' . $shift->shiftType->name
+        'Deleted shift ' . $shift->title . ' (' . $shift->id . ')' . ': ' . $shift->shiftType->name
         . ' from ' . $shift->start->format('Y-m-d H:i')
         . ' to ' . $shift->end->format('Y-m-d H:i')
     );
