@@ -32,11 +32,7 @@ class Goodie
         ));
     }
 
-    /**
-     * Returns the goodie score (number of hours counted for goodie score)
-     * Includes only ended shifts
-     */
-    public static function userScore(User $user): float
+    public static function shiftScoreQuery(User $user): mixed
     {
         /** @var Database $db */
         $db = app(Database::class);
@@ -46,7 +42,7 @@ class Goodie
         $shiftScoreQuery = /** @lang MySQL */
             'SELECT goodie_score(?, ?, ?, ?, ?) / 3600.0 as goodie_score';
 
-        $state = $con->selectOne(
+        return $con->selectOne(
             $shiftScoreQuery,
             [
                 $user->id,
@@ -56,6 +52,18 @@ class Goodie
                 Carbon::now(),
             ]
         );
+    }
+
+    /**
+     * Returns the goodie score (number of hours counted for goodie score)
+     * Includes only ended shifts
+     */
+    public static function userScore(User $user): float
+    {
+        /** @var Database $db */
+        $db = app(Database::class);
+        $con = $db->getConnection();
+        $state = self::shiftScoreQuery($user);
 
         $shiftHours = 0;
         if ($state) {
