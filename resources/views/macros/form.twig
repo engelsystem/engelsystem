@@ -224,7 +224,7 @@ Renders a select element wrapped in a DIV with mb-3.
                 {% if opt.translate|default(false) %}
                     {% set decription = __(decription) %}
                 {% endif %}
-                <option value="{{ value }}"{% if opt.selected is defined and (value == opt.selected or value in opt.selected) %} selected{% endif %}>{{ decription }}</option>
+                <option value="{{ value }}"{% if opt.selected is defined and (value == opt.selected or (opt.selected is iterable and opt.selected[value] is defined)) %} selected{% endif %}>{{ decription }}</option>
             {% endfor %}
         </select>
         {% if opt.form_text|default('') %}
