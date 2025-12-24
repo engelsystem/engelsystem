@@ -86,3 +86,7 @@ code {
   background-color: $btn-default-bg;
   color: $input-color;
 }
+
+.badge.bg-secondary, .badge.bg-dark {
+  color: $text-color;
+}

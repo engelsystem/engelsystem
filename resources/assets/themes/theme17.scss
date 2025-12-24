@@ -167,9 +167,12 @@ h1,
 
 .bg-body,
 .bg-danger,
-.bg-secondary,
 .bg-dark {
   color: $state-danger-text;
+}
+
+.bg-secondary  {
+  color: $gray-darker;
 }
 
 .navbar {

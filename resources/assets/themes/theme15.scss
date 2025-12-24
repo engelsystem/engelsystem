@@ -114,8 +114,12 @@ $label-link-hover-color: $gray-dark;
 
 $badge-color: $black;
 
-.badge.bg-primary {
+.badge.bg-primary, .badge.bg-dark {
   color: #fff;
+}
+
+.badge.bg-light {
+  color: $badge-color !important;
 }
 
 .badge.bg-secondary {
