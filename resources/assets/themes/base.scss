@@ -464,6 +464,10 @@ blockquote {
   padding-left: 0.5em;
 }
 
+.badge.bg-light {
+  color: var(--bs-btn-color);
+}
+
 /* center buttons in titles */
 h1 {
   display: flex;

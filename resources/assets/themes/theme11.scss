@@ -110,7 +110,8 @@ code {
 .badge {
   color: #000 !important;
 
-  &.bg-dark {
+  &.bg-dark,
+  &.bg-secondary {
     color: #fff !important;
   }
 }
