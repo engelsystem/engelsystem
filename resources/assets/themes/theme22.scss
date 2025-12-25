@@ -1,0 +1,485 @@
+// engel-system-pro
+// any resemblance to erp systems is purely coincidental
+@import 'light';
+
+//<editor-fold desc="Colors">
+$erp-logo-bg: rgb(16, 41, 115);
+$erp-hierarchy-heading: rgb(255, 198, 107);
+$erp-hierarchy-info: rgb(255, 222, 198);
+$erp-background: rgb(148, 178, 198);
+$erp-menu-bg: rgb(189, 189, 189);
+$erp-content-bg: rgb(222, 215, 198);
+$erp-button-border: rgb(180, 180, 164);
+
+$erp-input-bg: white;
+$erp-input-blocked-bg: rgb(206, 203, 189);
+$erp-input-active-bg: rgb(255, 247, 156);
+
+$erp-table-row-bg: $erp-content-bg;
+$erp-table-row-bg-selected: rgb(198, 158, 74);
+$erp-table-border: rgb(153, 149, 138);
+$erp-table-header-bg: rgb(227, 225, 219);
+$erp-table-input: rgb(255, 255, 239);
+
+$body-bg: $erp-content-bg;
+
+$brand-primary: rgb(0, 0, 0);
+$primary: rgb(0, 0, 0);
+$secondary: rgb(139 147 167);
+$brand-success: rgb(49, 142, 52);
+$success: $brand-success;
+$brand-info: $erp-logo-bg;
+$info: $erp-logo-bg;
+$brand-warning: rgb(233, 188, 0);
+$warning: $brand-warning;
+//$warning-text should be same as $brand-warning but was darkened to have 4.5:1 contrast on $erp-content-bg
+$warning-text: rgb(112, 90, 0);
+$brand-danger: rgb(226, 0, 13);
+$danger: $brand-danger;
+
+$link-color: $brand-primary;
+$border-color: $erp-button-border;
+
+$state-success-text: darken($brand-success, 40%);
+$state-success-bg: lighten($brand-success, 40%);
+$state-success-border: $brand-success;
+
+$state-info-text: darken($brand-info, 40%);
+$state-info-bg: lighten($brand-info, 40%);
+$state-info-border: $brand-info;
+
+$state-warning-text: $erp-table-row-bg-selected;
+$state-warning-bg: $brand-warning;
+$state-warning-border: darken($brand-warning, 40%);
+
+$state-danger-text: darken($brand-danger, 40%);
+$state-danger-bg: lighten($brand-danger, 40%);
+$state-danger-border: $brand-danger;
+
+$table-bg: $erp-table-row-bg;
+$table-striped-bg: $table-bg;
+$table-border-color: $erp-table-border;
+
+$input-bg: $erp-input-bg;
+$input-disabled-bg: $erp-input-blocked-bg;
+$input-focus-bg: $erp-input-active-bg;
+$input-border-color: $erp-input-bg;
+
+$border-width: 2px;
+$border-color: $erp-button-border;
+$card-border-color: $border-color;
+
+$dropdown-bg: $erp-table-row-bg;
+$dropdown-link-active-bg: $erp-table-row-bg-selected;
+$dropdown-link-active-color: black;
+
+.badge.bg-warning {
+  color: #000;
+}
+
+//</editor-fold>
+
+@import 'base.scss';
+
+// no fancy round corners
+* {
+  border-radius: 0 !important;
+}
+
+//<editor-fold desc="color fixes">
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  &.bg-primary {
+    color: #fff;
+  }
+}
+
+.bg-primary,
+.bg-info {
+  color: white;
+}
+
+.bg-light {
+  color: black;
+}
+
+.text-warning {
+  color: $warning-text !important;
+}
+
+.bg-body {
+  color: black;
+}
+
+.card-body {
+  background-color: $erp-content-bg !important;
+  color: black !important;
+}
+
+.card-footer.bg-white {
+  background-color: $erp-content-bg !important;
+  color: black !important;
+}
+
+.card.text-bg-primary {
+  background-color: $erp-content-bg !important;
+  color: black !important;
+}
+
+.bg-warning {
+  color: black !important;
+
+  & .text-white {
+    color: black !important;
+  }
+
+  & .btn-danger {
+    color: white !important;
+  }
+}
+
+.bg-secondary {
+  & .btn-secondary {
+    color: black !important;
+  }
+}
+
+.list-group .list-group-item {
+  background-color: $erp-table-input !important;
+}
+//</editor-fold>
+
+//<editor-fold desc="main heading">
+body {
+  background: $erp-background;
+  padding-top: 60px;
+}
+
+h1 {
+  color: $erp-logo-bg;
+  background-color: white;
+  font-style: italic;
+  margin-left: calc(var(--bs-gutter-x) * -0.5);
+  margin-right: calc(var(--bs-gutter-x) * -0.5);
+  padding-left: var(--bs-gutter-x);
+  padding-right: var(--bs-gutter-x);
+  padding-bottom: 2px;
+}
+//</editor-fold>
+
+//<editor-fold desc="navbar">
+.navbar-brand {
+  color: white;
+
+  $triangle-width: 60px;
+
+  //adjust margin & padding to fill whole corner with background
+  padding: calc(var(--bs-navbar-brand-padding-y) + var(--bs-navbar-padding-y) + var(--bs-border-width) * 0.5 + 1px)
+    $triangle-width
+    calc(var(--bs-navbar-brand-padding-y) + var(--bs-navbar-padding-y) + var(--bs-border-width) * 0.5 + 1px)
+    calc(var(--bs-gutter-x) * 0.5);
+  margin: calc((var(--bs-navbar-padding-y) + var(--bs-border-width) * 0.5) * -1) 0
+    calc((var(--bs-navbar-padding-y) + var(--bs-border-width) * 0.5) * -1) calc(var(--bs-gutter-x) * -0.5);
+
+  //create 45degree background transition for logo
+  background-image: linear-gradient(-225deg, $erp-logo-bg 0 50%, transparent 50% 100%),
+    linear-gradient($erp-logo-bg 0 100%, $erp-logo-bg);
+  background-size: $triangle-width 100%, calc(100% - $triangle-width) 100%;
+  background-position: right top, left top;
+  background-repeat: no-repeat;
+
+  &:hover,
+  &:focus {
+    color: $erp-table-row-bg-selected;
+  }
+}
+
+.navbar-light {
+  background-color: $erp-menu-bg;
+}
+
+.navbar-brand > .icon-icon_angel {
+  background-color: white !important;
+}
+
+.nav-link {
+  color: $link-color;
+}
+
+.nav-link.active {
+  text-decoration: underline;
+}
+
+@media (min-width: 1400px) {
+  .navbar-nav > .nav-item {
+    border-right: dimgray;
+    border-right-width: 1px;
+    border-right-style: solid;
+
+    border-left: white;
+    border-left-width: 1px;
+    border-left-style: solid;
+
+    border-top: transparent;
+    border-top-width: 1px;
+    border-top-style: solid;
+
+    border-bottom: transparent;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+
+  .navbar-nav > .nav-item:first-child:not(:hover) {
+    border-left-color: transparent !important;
+  }
+
+  .navbar-nav > .nav-item:last-child:not(:hover) {
+    border-right-color: transparent !important;
+  }
+
+  .navbar-nav > .nav-item:hover {
+    border-color: black;
+    border-style: inset;
+  }
+}
+//</editor-fold>
+
+//<editor-fold desc="content background & padding">
+#content {
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+}
+
+#content > .container {
+  background: $erp-content-bg;
+  padding-bottom: calc(var(--bs-gutter-x) * 0.5);
+}
+
+//apply background for "fullscreen" views like /user-shifts
+#content:not(:has(> .container)) {
+  background: $erp-content-bg;
+  padding-bottom: calc(var(--bs-gutter-x) * 0.5);
+}
+//</editor-fold>
+
+//<editor-fold desc="table">
+table {
+  border-width: 2px !important;
+  border-color: $erp-table-border;
+  border-style: solid;
+}
+
+th,
+.header {
+  background-image: linear-gradient(
+    180deg,
+    white 0%,
+    $erp-table-header-bg 40%,
+    $erp-table-header-bg 75%,
+    rgba(196, 192, 181, 1) 100%
+  ) !important;
+}
+
+td,
+th,
+thead {
+  //TODO borders don't show between header columns
+  border-left-width: 2px !important;
+  border-right-width: 2px !important;
+  border-style: solid !important;
+  border-color: $erp-table-border !important;
+}
+
+.shift-calendar {
+  border-width: 2px;
+  border-style: solid;
+  border-color: $erp-table-border;
+  padding: 0;
+}
+//</editor-fold>
+
+//<editor-fold desc="erp sections and headings via .col">
+//
+// +----------+------+
+// | Heading /       |
+// +--------+        |
+// | Content         |
+// +-----------------+
+//
+// since .col elements have usually no borders, no gutters are implemented.
+// but when adding borders the need for gutters becomes apparent.
+// to add gutters without changing html a margin is added. as a result .col elements would not fit into the
+// bootstrap .row anymore. To fix this the width of used .col elements is recalculated.
+
+.col:has(> h4),
+.col-md-2:has(> h4),
+.col-sm-3:has(> h4),
+.col-sm-4:has(> h4),
+.col-md-4:has(> h3),
+.col-xl-4:has(> h4),
+.col-xxl-4:has(> h4),
+.col-lg-5:has(> h4),
+.col-xl-5:has(> h4),
+.col-xs-6:has(> h4),
+.col-sm-6:has(> h2, > h4),
+.col-md-6:has(> h4),
+.col-xl-7:has(> h4),
+.col-12:has(> h4),
+.col-md-12:has(> h4) {
+  border-width: 2px !important;
+  border-color: $erp-table-border;
+  border-style: solid;
+  margin: calc(var(--bs-gutter-x) * 0.5);
+}
+
+.col-12:has(> h4) {
+  width: calc(100% - var(--bs-gutter-x));
+}
+
+@media (min-width: 576px) {
+  .col-sm-3:has(> h4) {
+    width: calc(25% - var(--bs-gutter-x));
+  }
+
+  .col-sm-4:has(> h4) {
+    width: calc(33.33333333% - var(--bs-gutter-x));
+  }
+
+  .col-sm-6:has(> h2, > h4) {
+    width: calc(50% - var(--bs-gutter-x));
+  }
+}
+
+@media (min-width: 768px) {
+  .col-md-2:has(> h4) {
+    width: calc(16.66666667% - var(--bs-gutter-x));
+  }
+
+  .col-md-4:has(> h3) {
+    width: calc(33.33333333% - var(--bs-gutter-x));
+  }
+
+  .col-md-6:has(> h4) {
+    width: calc(50% - var(--bs-gutter-x));
+  }
+
+  .col-md-12:has(> h4) {
+    width: calc(100% - var(--bs-gutter-x));
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-5:has(> h4) {
+    width: calc(41.66666667% - var(--bs-gutter-x));
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-xl-4:has(> h4) {
+    width: calc(33.33333333% - var(--bs-gutter-x));
+  }
+
+  .col-xl-5:has(> h4) {
+    width: calc(41.66666667% - var(--bs-gutter-x));
+  }
+
+  .col-xl-7:has(> h4) {
+    width: calc(58.33333333% - var(--bs-gutter-x));
+  }
+}
+
+@media (min-width: 1400px) {
+  .col-xxl-4:has(> h4) {
+    width: calc(33.33333333% - var(--bs-gutter-x));
+  }
+}
+
+.col > h4,
+.col-md-2 > h4,
+.col-sm-3 > h4,
+.col-sm-4 > h4,
+.col-md-4 > h3,
+.col-xl-4 > h4,
+.col-xxl-4 > h4,
+.col-lg-5 > h4,
+.col-xs-6 > h4,
+.col-sm-6 > h2,
+.col-sm-6 > h4,
+.col-md-6 > h4,
+.col-xl-7 > h4,
+.col-12 > h4,
+.col-md-12 > h4 {
+  width: fit-content;
+
+  margin-top: -1px;
+  padding-top: 1px;
+
+  margin-left: calc(var(--bs-gutter-x) * -0.5 - 1px);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+
+  $triangle-width: 1.3em;
+  padding-bottom: 3px;
+  padding-right: $triangle-width;
+  // editorconfig-checker-disable-next-line svg is longer than max_line_length and linebreaks get removed by prettier
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><polygon points="0,0 200,0 0,200" fill="#{$erp-table-border}"/></svg>'),
+    linear-gradient($erp-table-border 0 100%, $erp-table-border);
+  background-size: $triangle-width 100%, calc(100% - $triangle-width) 100%;
+  background-position: right top, left top;
+  background-repeat: no-repeat;
+}
+//</editor-fold>
+
+//<editor-fold desc="dropdown">
+.choices__list--dropdown {
+  background-color: $dropdown-bg !important;
+}
+
+.choices__item.is-selected {
+  background-color: $erp-table-row-bg-selected !important;
+  color: black !important;
+}
+//</editor-fold>
+
+//<editor-fold desc="dashboard">
+.col.stats {
+  border-width: 2px !important;
+  border-color: $erp-table-border;
+  border-style: solid;
+  margin: calc(var(--bs-gutter-x) * 0.5);
+
+  text-align: left;
+
+  & > .number {
+    text-align: center;
+  }
+}
+//</editor-fold>
+
+//<editor-fold desc="edge cases & workarounds">
+
+//fix buttons hugging border on login page
+.col-sm-6.text-center {
+  padding-bottom: calc(var(--bs-gutter-x) * 0.5);
+}
+
+//fix padding on faq page
+.row > form > .col-md-12 {
+  padding: 0 calc(var(--bs-gutter-x) * 0.5) calc(var(--bs-gutter-x) * 0.5) calc(var(--bs-gutter-x) * 0.5);
+}
+
+//fix resized .cols to spill over to the right if no general or small .col class is used
+@media (max-width: 767px) {
+  div[class='col-md-2']:has(> h4) {
+    width: calc(100% - var(--bs-gutter-x));
+  }
+}
+//</editor-fold>
