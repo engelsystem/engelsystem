@@ -18,9 +18,11 @@ use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Firebase\JWT\SignatureInvalidException;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use UnexpectedValueException;
 
 class AngelTypesController extends BaseController
 {
@@ -109,7 +111,13 @@ class AngelTypesController extends BaseController
         try {
             $decoded = JWT::decode($jwt, new Key($key, $alg));
         } catch (BeforeValidException | ExpiredException) {
-            throw new HttpNotFound();
+            throw new HttpNotFound('jwt.invalid_time');
+        } catch (UnexpectedValueException | SignatureInvalidException $e) {
+            $this->log->warning('JWT: ' . $e->getMessage());
+            if ($e->getMessage() === 'Wrong number of segments') {
+                throw new HttpNotFound('jwt.wrong_format');
+            }
+            throw new HttpNotFound('jwt.code_error');
         } catch (Exception $e) {
             $this->log->error('JWT Error', ['exception' => $e]);
             throw new HttpNotFound();

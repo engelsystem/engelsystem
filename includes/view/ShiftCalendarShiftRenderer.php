@@ -44,6 +44,17 @@ class ShiftCalendarShiftRenderer
         $blocks = ceil(($shift->end->timestamp - $shift->start->timestamp) / ShiftCalendarRenderer::SECONDS_PER_ROW);
         $blocks = max(1, $blocks);
 
+        $tags = '';
+        if ($shift->tags->count()) {
+            $tags = '<li class="list-group-item d-flex align-items-center">';
+            foreach ($shift->tags as $tag) {
+                $tags .= ' <a href="' . url('/user-shifts', ['tag' => $tag->id]) . '">'
+                    . '<span class="badge bg-secondary me-1">' . $tag->name . '</span>'
+                    . '</a>';
+            }
+            $tags .= '</li>';
+        }
+
         return [
             $blocks,
             div(
@@ -57,6 +68,7 @@ class ShiftCalendarShiftRenderer
                         div('card-body ' . $this->classBg(), [
                             $info_text,
                             location_name_render($shift->location),
+                            $tags,
                         ]),
                         $shifts_row,
                     ]
@@ -94,7 +106,7 @@ class ShiftCalendarShiftRenderer
         foreach ($needed_angeltypes as $needed_angeltype) {
             $shift_entries_filtered[$needed_angeltype['id']] = [];
         }
-        foreach ($shift_entries as $shift_entry) {
+        foreach (collect($shift_entries)->sortBy('user.name') as $shift_entry) {
             $shift_entries_filtered[$shift_entry->angel_type_id][] = $shift_entry;
         }
 
@@ -117,6 +129,7 @@ class ShiftCalendarShiftRenderer
                 $html .= $angeltype_html;
             }
         }
+
         if (is_null($shift_signup_state)) {
             $shift_signup_state = new ShiftSignupState(ShiftSignupStatus::SHIFT_ENDED, 0);
         }
@@ -130,15 +143,7 @@ class ShiftCalendarShiftRenderer
             );
             $html .= '</li>';
         }
-        if ($html && $shift->tags->count()) {
-            $html .= '<li class="list-group-item d-flex align-items-center">';
-            foreach ($shift->tags as $tag) {
-                $html .= ' <a href="' . url('/user-shifts', ['tag' => $tag->id]) . '">'
-                    . '<span class="badge bg-secondary me-1">' . $tag->name . '</span>'
-                    . '</a>';
-            }
-            $html .= '</li>';
-        }
+
         if ($html != '') {
             return [
                 $shift_signup_state,

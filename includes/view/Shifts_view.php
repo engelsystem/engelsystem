@@ -386,7 +386,7 @@ function Shift_view_render_needed_angeltype(
     );
 
     $angels = [];
-    foreach ($shift->shiftEntries as $shift_entry) {
+    foreach ($shift->shiftEntries->sortBy('user.name') as $shift_entry) {
         if ($shift_entry->angel_type_id == $needed_angeltype['angel_type_id']) {
             $angels[] = Shift_view_render_shift_entry(
                 $shift_entry,

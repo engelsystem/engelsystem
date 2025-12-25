@@ -314,6 +314,15 @@ msgstr "Registrierung erfolgreich. Du kannst dich jetzt anmelden!"
 msgid "shifts.history.delete.success"
 msgstr "Schichten erfolgreich gelöscht."
 
+msgid "jwt.invalid_time"
+msgstr "Der aufgerufene Link ist nicht (mehr) gültig"
+
+msgid "jwt.wrong_format"
+msgstr "Der aufgerufene Link ist nicht vollständig"
+
+msgid "jwt.code_error"
+msgstr "Der aufgerufene Link hat probleme"
+
 msgid "config.event"
 msgstr "Event"
 

@@ -74,7 +74,7 @@ class ShiftsController extends BaseController
 
         $freeShifts = Shift::query()
             ->select('shifts.*')
-            // Load needed from shift if no schedule configured, else from room
+            // Load needed from shift if no schedule configured, else from location
             ->leftJoin('schedule_shift', 'schedule_shift.shift_id', 'shifts.id')
             ->leftJoin('schedules', 'schedules.id', 'schedule_shift.schedule_id')
 

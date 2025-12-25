@@ -316,7 +316,7 @@ function User_view_shiftentries($needed_angel_type)
         . '">' . htmlspecialchars($needed_angel_type['name']) . '</a>:</b> ';
 
     $shift_entries = [];
-    foreach ($needed_angel_type['users'] as $user_shift) {
+    foreach (collect($needed_angel_type['users'])->sortBy('name') as $user_shift) {
         $member = User_Nick_render($user_shift);
         if ($user_shift['freeloaded_by']) {
             $member = '<del>' . $member . '</del>';
@@ -830,6 +830,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
     $password_reset = PasswordReset::whereUserId($user_source->id)
         ->where('created_at', '>', $user_source->last_login_at ?: '')
         ->count();
+    $its_me = auth()->user() === $user_source;
     $state = [];
 
     if ($freeloader && $admin_user_privilege) {
@@ -876,7 +877,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
         }
     }
 
-    if (config('enable_voucher') && ($admin_user_privilege || $user_source->id === auth()->user()->id)) {
+    if (config('enable_voucher') && ($admin_user_privilege || $its_me)) {
         $voucherCount = $user_source->state->got_voucher;
         $availableCount = $voucherCount + UserVouchers::eligibleVoucherCount($user_source);
         $availableVoucher = $availableCount;
