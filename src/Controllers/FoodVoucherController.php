@@ -229,6 +229,15 @@ class FoodVoucherController extends BaseController
             ->withContent($crewList);
     }
 
+    protected function undoVoucher(User $user, string $mealId): void
+    {
+        $user->state->got_voucher -= 1;
+        $user->state->meals = in_array($mealId, $user->state->meals)
+            ? array_diff($user->state->meals, [$mealId])
+            : $user->state->meals;
+        $user->state->save();
+    }
+
     /**
      * @throws ErrorException
      */
@@ -248,13 +257,17 @@ class FoodVoucherController extends BaseController
         ]);
 
         $email = $user->settings->email_food ? $user->email : $this->foodVoucherApi['default_email'];
-
+        $mealId = $data['meal_id'];
 
         $postData = [
             'email' => $email,
             'type' => $crew ? 'crew' : 'regular',
             'meal' => $data['meal_id'],
         ];
+
+        $user->state->got_voucher += 1;
+        $user->state->meals = array_merge($user->state->meals ?? [], [$mealId]);
+        $user->state->save();
 
         try {
             $response = $this->guzzle->post(
@@ -269,19 +282,19 @@ class FoodVoucherController extends BaseController
             );
         } catch (ConnectException | GuzzleException $e) {
             $this->log->error('Exception during food voucher api request', ['exception' => $e]);
+            $this->undoVoucher($user, $mealId);
             throw new ErrorException('user.food.request-error');
         }
         if ($response->getStatusCode() === 418) {
             cache()->forget('foodVoucherInfo');
             warning(__('user.food.no_food'));
+            $this->undoVoucher($user, $mealId);
             return $this->redirect->to(url('/food'));
         }
         if ($response->getStatusCode() !== 200) {
+            $this->undoVoucher($user, $mealId);
             throw new HttpNotFound('user.food.request-error');
         }
-        $user->state->got_voucher += 1;
-        $user->state->meals = array_merge($user->state->meals ?? [], [$data['meal_id']]);
-        $user->state->save();
 
         $this->log->info(
             'Food Voucher{crew} generated. Got {got_voucher} vouchers.',
