@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Helpers;
 
+use Carbon\CarbonInterval;
 use Engelsystem\Helpers\Carbon;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Unit\TestCase;
 use Traversable;
 
 class CarbonTest extends TestCase
@@ -26,6 +27,14 @@ class CarbonTest extends TestCase
         yield '16.04.2022 11:24' => ['16.04.2022 11:24'];
     }
 
+    public function durations(): Traversable
+    {
+        yield '0h 00m' => [CarbonInterval::seconds(0), '0h 00m'];
+        yield '1h 00m' => [CarbonInterval::minutes(60), '1h 00m'];
+        yield '25h 42m' => [CarbonInterval::days(1)->addHours(1)->addMinutes(42), '25h 42m'];
+        yield '277h 46m' => [CarbonInterval::seconds(1_000_000), '277h 46m'];
+    }
+
     /**
      * @covers \Engelsystem\Helpers\Carbon::createFromDatetime
      * @dataProvider validDates
@@ -44,5 +53,15 @@ class CarbonTest extends TestCase
     {
         $date = Carbon::createFromDatetime($value);
         self::assertNull($date);
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Carbon::formatDuration
+     * @dataProvider durations
+     */
+    public function testFormatDuration(CarbonInterval $value, string $expected): void
+    {
+        $formatted = Carbon::formatDuration($value, '%dh %02dm');
+        self::assertSame($expected, $formatted);
     }
 }

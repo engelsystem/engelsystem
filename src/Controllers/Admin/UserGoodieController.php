@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers\Admin;
 
-use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\Goodie;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
@@ -52,7 +53,11 @@ class UserGoodieController extends BaseController
 
         /** @var User $user */
         $user = $this->user->findOrFail($userId);
-        $goodieScore = $user->state->force_active ? '~' : Goodie::userScore($user);
+        $goodieScore = $user->state->force_active ? '~' :
+            Carbon::formatDuration(
+                CarbonInterval::minutes(round(Goodie::userScore($user) * 60)),
+                __('general.duration')
+            );
 
         return $this->response->withView(
             'admin/user/edit-goodie.twig',

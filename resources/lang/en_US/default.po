@@ -665,9 +665,6 @@ msgstr "Edit goodie"
 msgid "user.goodie_score.enough"
 msgstr "Enough"
 
-msgid "user.goodie_score.value"
-msgstr "%s h"
-
 msgid "user.goodie_score"
 msgstr "Goodie score: %s"
 
@@ -906,6 +903,9 @@ msgstr "Y-m-d H:i"
 
 msgid "general.date"
 msgstr "Y-m-d"
+
+msgid "general.duration"
+msgstr "%dh %02dm"
 
 msgid "general.id"
 msgstr "ID"

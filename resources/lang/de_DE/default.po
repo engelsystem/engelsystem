@@ -719,6 +719,9 @@ msgstr "User bearbeiten"
 msgid "general.datetime"
 msgstr "d.m.Y H:i"
 
+msgid "general.duration"
+msgstr "%dh %02dmin"
+
 msgid "API Settings"
 msgstr "API Einstellungen"
 
@@ -1846,9 +1849,6 @@ msgstr "Goodie bearbeiten"
 
 msgid "user.goodie_score.enough"
 msgstr "Genug"
-
-msgid "user.goodie_score.value"
-msgstr "%s h"
 
 msgid "user.goodie_score"
 msgstr "Goodie Score: %s"

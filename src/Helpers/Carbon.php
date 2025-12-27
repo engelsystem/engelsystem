@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers;
 
+use Carbon\CarbonInterval;
+
 class Carbon extends \Carbon\Carbon
 {
     public const DATETIME_LOCAL = '!Y-m-d\TH:i';
@@ -31,5 +33,22 @@ class Carbon extends \Carbon\Carbon
         }
 
         return null;
+    }
+
+    /**
+     * Formats a CarbonInterval into a human-readable duration string consisting of hours and minutes.
+     * Format is defined in the localization files under 'general.duration.format'.
+     *
+     * @param CarbonInterval $interval The interval to format
+     * @param string $format The format string, e.g. '%dh %02dm'
+     * @return string The formatted duration string
+     */
+    public static function formatDuration(CarbonInterval $interval, string $format): string
+    {
+        $interval->cascade();
+        $hours = floor($interval->totalHours);
+        $minutes = $interval->minutes;
+
+        return sprintf($format, $hours, $minutes);
     }
 }
