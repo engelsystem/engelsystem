@@ -483,12 +483,14 @@ msgid "settings.certificates.ifsg_light_admin"
 msgstr "Received onsite instruction about IfSG §43 (Frikadellendiplom light / basic food hygiene certificate)."
 
 msgid "settings.certificates.ifsg"
-msgstr "I received the instruction about §43 IfSG (Frikadellendiplom / food hygiene certificate) from my Health Department "
+msgstr "I received the instruction about §43 IfSG (Frikadellendiplom / food hygiene certificate) from "
+"my Health Department "
 "and a second instruction from the event organizers or my employer/supervisor/association within 3 months. "
 "Additionally, my second instruction is not older than 2 years."
 
 msgid "settings.certificates.ifsg_admin"
-msgstr "Received the instruction about §43 IfSG (Frikadellendiplom / food hygiene certificate) from a Health Department "
+msgstr "Received the instruction about §43 IfSG (Frikadellendiplom / food hygiene certificate) from "
+"a Health Department "
 "and a second instruction from the event organizers or their employer/supervisor/association within 3 months. "
 "Additionally, the second instruction is not older than 2 years."
 
