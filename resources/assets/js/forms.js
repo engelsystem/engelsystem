@@ -121,6 +121,20 @@ ready(() => {
   });
 });
 
+ready(() => {
+  /**
+   * Disable every submit button after clicking (to prevent double-clicking)
+   */
+  document.querySelectorAll('form').forEach((formElement) => {
+    formElement.addEventListener('submit', () => {
+      document.querySelectorAll('input[type="submit"],button[type="submit"]').forEach((element) => {
+        element.readOnly = true;
+        element.classList.add('disabled');
+      });
+    });
+  });
+});
+
 /**
  * {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled#overview}
  */
