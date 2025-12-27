@@ -14,26 +14,26 @@
 
         <div class="offset-md-4 col-md-4 ">
             {% if qr_data %}
-                    <div class="mb-3">
-                        <div class="text-center">
-                        {{ qr(qr_data, 400) }}
-                        {% set expires = session_get('form-data-expires') %}
-                        {% if expires %}
-                            <p>
-                                <span
-                                    class="small"
-                                    title="{{ expires.format(__('general.datetime')) }}"
-                                    data-countdown-ts="{{ expires.getTimestamp() }}"
-                                data-countdown-expired-template="{{ __('angeltypes.qr.expired') }}">
-                                    {{ __('angeltypes.qr.expires') }}
-                                </span>
-                            </p>
-                        {% endif %}
-                        </div>
+                <div class="mb-3">
+                    <div class="text-center">
+                    {{ qr(qr_data, 400) }}
+                    {% set expires = session_get('form-data-expires') %}
+                    {% if expires %}
+                        <p>
+                            <span
+                                class="small"
+                                title="{{ expires.format(__('general.datetime')) }}"
+                                data-countdown-ts="{{ expires.getTimestamp() }}"
+                            data-countdown-expired-template="{{ __('angeltypes.qr.expired') }}">
+                                {{ __('angeltypes.qr.expires') }}
+                            </span>
+                        </p>
+                    {% endif %}
                     </div>
+                </div>
 
+                {{ f.input('url', __('general.url'), {'value': qr_data, 'readonly': true, 'disabled': not qr_data}) }}
             {% endif %}
-            {{ f.input('url', __('general.url'), {'value': qr_data, 'readonly': true, 'disabled': not qr_data}) }}
 
             <form method="post" class="row">
                 {{ csrf() }}
