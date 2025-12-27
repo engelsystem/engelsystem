@@ -51,14 +51,14 @@ $headings-font-weight: 100;
 
 $gray-darker: #141414;
 $gray-dark: #141414;
-$gray-light: #faf5f5;
+$gray-light: #979ca0;
 $gray-lighter: #faf5f5;
 
-$primary: #00ff00;
-$secondary: #faf5f5;
-$success: $primary;
-$info: #66f2ff;
-$warning: #9673ff;
+$primary: #d4c4fe;
+$secondary: #9673ff;
+$success: #66f2ff;
+$info: #00ea00;
+$warning: lighten(#ff3719, 25%);
 $danger: #ff3719;
 
 $text-muted: $gray-light;
@@ -80,6 +80,13 @@ $btn-link-disabled-color: $gray-light;
 
 $badge-color: $gray-darker;
 
+.badge.bg-light {
+  color: $gray-dark !important;
+}
+.badge.bg-dark {
+  color: $text-muted;
+}
+
 //== Dropdown
 
 $dropdown-border-color: $gray-light;
@@ -96,7 +103,7 @@ $navbar-dark-color: $text-color;
 $navbar-dark-active-color: $primary;
 $navbar-dark-hover-color: $primary;
 
-$navbar-dark-brand-color: $primary;
+$navbar-dark-brand-color: $info;
 
 //== changed Forms
 
@@ -126,8 +133,13 @@ code {
 $nav-pills-link-active-color: $gray-darker;
 $nav-tabs-link-active-color: $gray-darker;
 
-$card-cap-color: $gray-darker;
+$card-cap-color: $gray-lighter;
 
+.card-header {
+  color: $text-muted !important;
+}
+
+$headings-color: $info;
 $headings-small-color: $text-color;
 
 // dark
@@ -150,7 +162,7 @@ $headings-small-color: $text-color;
 
 .navbar-brand {
   font-stretch: 67%;
-  font-witdth: 67%;
+  font-width: 67%;
   font-weight: 42;
 
   font-family: $headings-font-family;
