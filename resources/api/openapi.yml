@@ -204,6 +204,16 @@ components:
           type: string
           example: Located behind room 42
           description: Description of the room
+        dect:
+          type: string
+          example: 1023
+          description: DECT number of the location (optional)
+          nullable: true
+        map_url:
+          type: string
+          example: https://39c3.c3nav.de/embed/l/heaven/@1,203.21,193.15,4.71
+          description: Map URL of the location (optional)
+          nullable: true
         url:
           type: string
           example: https://example.com/location/42
