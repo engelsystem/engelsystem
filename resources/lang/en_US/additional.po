@@ -41,8 +41,8 @@ msgstr "Please enter your nick."
 
 msgid "validation.username.username"
 msgstr ""
-"Please enter a valid nick:"
-"Use up to 24 letters, numbers or connecting punctuations (.-_) for your nickname."
+"Please enter a valid nick: "
+"Use up to 24 letters, numbers, or connecting punctuation (. - _) for your nickname."
 
 msgid "validation.email.required"
 msgstr "The e-mail address is required."
@@ -54,7 +54,7 @@ msgid "validation.new_password.length"
 msgstr "Your new password is too short."
 
 msgid "validation.password.confirmed"
-msgstr "Your passwords are not equal."
+msgstr "Your passwords do not match."
 
 msgid "validation.password_confirmation.required"
 msgstr "You have to confirm your password."
@@ -69,7 +69,7 @@ msgid "validation.planned_arrival_date.required"
 msgstr "Please enter your planned date of arrival."
 
 msgid "validation.planned_arrival_date.min"
-msgstr "The planned date of arrival must not be before the buil-up start date."
+msgstr "The planned date of arrival must not be before the build-up start date."
 
 msgid "validation.planned_arrival_date.between"
 msgstr "The planned date of arrival must be between the build-up and tear-down date."
@@ -96,13 +96,13 @@ msgid "validation.schedule-url.required"
 msgstr "The schedule URL is required."
 
 msgid "validation.schedule-url.url"
-msgstr "The schedule URL needs to be of type URL."
+msgstr "The schedule URL must be a valid URL."
 
 msgid "validation.shift-type.required"
 msgstr "The shift type is required."
 
 msgid "validation.shift-type.int"
-msgstr "The shift type has to ba a number."
+msgstr "The shift type has to be a number."
 
 msgid "validation.minutes-before.int"
 msgstr "The minutes before the talk have to be an integer."
@@ -117,7 +117,7 @@ msgid "news.comment-delete.success"
 msgstr "Comment successfully deleted."
 
 msgid "news.edit.duplicate"
-msgstr "This news has already been created."
+msgstr "This news item has already been created."
 
 msgid "news.edit.success"
 msgstr "News successfully updated."
@@ -192,7 +192,7 @@ msgid "faq.edit.success"
 msgstr "FAQ entry successfully updated."
 
 msgid "question.menu"
-msgstr "Ask the Heaven"
+msgstr "Ask Heaven"
 
 msgid "question.delete.success"
 msgstr "Question deleted successfully."
@@ -204,7 +204,7 @@ msgid "question.edit.success"
 msgstr "Question updated successfully."
 
 msgid "tag.edit.duplicate"
-msgstr "A tag with the name already exists!"
+msgstr "A tag with this name already exists!"
 
 msgid "tag.edit.success"
 msgstr "Tag updated successfully."
@@ -216,19 +216,19 @@ msgid "notification.news.new"
 msgstr "New news: %s"
 
 msgid "notification.news.new.introduction"
-msgstr "A new news is available: %1$s"
+msgstr "A news item is available: %1$s"
 
 msgid "notification.news.new.text"
 msgstr "You can view it at %3$s"
 
 msgid "notification.news.updated"
-msgstr "Updated News: %s"
+msgstr "Updated news: %s"
 
 msgid "notification.messages.new"
 msgstr "New private message from %s"
 
 msgid "notification.messages.new.text"
-msgstr "you've got a new private message from \"%s\". You can view it at %s"
+msgstr "You've got a new private message from \"%s\". You can view it at %s"
 
 msgid "notification.angeltype.confirmed"
 msgstr "You have been confirmed as an %s"
@@ -252,10 +252,10 @@ msgid "angeltype.add.success"
 msgstr "Successfully joined angel type"
 
 msgid "notification.shift.deleted"
-msgstr "Your Shift was deleted"
+msgstr "Your shift was deleted"
 
 msgid "notification.shift.deleted.introduction"
-msgstr "A Shift you are registered on was deleted:"
+msgstr "A shift you are registered for was deleted:"
 
 msgid "notification.shift.deleted.worklog"
 msgstr ""
@@ -299,10 +299,10 @@ msgid "shifttype.delete.success"
 msgstr "Shift type successfully deleted."
 
 msgid "validation.name.exists"
-msgstr "The name is already used."
+msgstr "The name is already in use."
 
 msgid "registration.disabled"
-msgstr "The registration is disabled."
+msgstr "Registration is disabled."
 
 msgid "registration.successful.supporter"
 msgstr "Registration successful."
@@ -320,7 +320,7 @@ msgid "jwt.wrong_format"
 msgstr "The opened link is not complete"
 
 msgid "jwt.code_error"
-msgstr "The opened link has some problems"
+msgstr "The link is invalid or corrupted"
 
 msgid "config.event"
 msgstr "Event"
@@ -397,7 +397,7 @@ msgid "config.display_full_name"
 msgstr "Display full name"
 
 msgid "config.display_full_name.info"
-msgstr "Show a users first name and last name instead of username"
+msgstr "Show a user's first name and last name instead of username"
 
 msgid "config.enable_pronoun"
 msgstr "Pronouns"
@@ -412,13 +412,13 @@ msgid "config.enable_force_active"
 msgstr "Force active"
 
 msgid "config.enable_force_active.info"
-msgstr "Allows to enforce goodies"
+msgstr "Allows enforcing goodies"
 
 msgid "config.enable_force_food"
 msgstr "Unlimited food vouchers"
 
 msgid "config.enable_force_food.info"
-msgstr "Allows to get unlimited food vouchers"
+msgstr "Allows getting unlimited food vouchers"
 
 msgid "config.enable_voucher"
 msgstr "(Food-) vouchers"
@@ -463,7 +463,7 @@ msgid "config.join_qr_code"
 msgstr "Join QR code"
 
 msgid "config.join_qr_code.info"
-msgstr "Allow joining angel type via generated QR code, requires app_key"
+msgstr "Allow joining an angel type via generated QR code, requires app_key"
 
 msgid "config.certificates"
 msgstr "Certificates"
@@ -489,7 +489,7 @@ msgstr "Sign up after start"
 msgid "config.signup_post_minutes.info"
 msgstr ""
 "Allow shift signup this number of minutes after start of shift. "
-"If \"Sign up after start fraction\" is set, it's first applied before adding the number of minutes specified here."
+"If \"Sign up after start fraction\" is set, it is applied first before adding the number of minutes specified here."
 
 msgid "config.signup_post_fraction"
 msgstr "Sign up after start fraction"
@@ -497,14 +497,14 @@ msgstr "Sign up after start fraction"
 msgid "config.signup_post_fraction.info"
 msgstr ""
 "Allow sign up this fraction of the shift length after the start of the shift. "
-"If its 1, sign up is allowed until end of shift, 0.5 means first half of the shift. "
-"If \"Sign up minutes after start\" is set, this is first applied and then the minutes added on top."
+"If it's 1, sign up is allowed until the end of the shift; 0.5 means the first half of the shift. "
+"If \"Sign up minutes after start\" is set, this is applied first and then the minutes are added on top."
 
 msgid "config.last_unsubscribe"
 msgstr "Last unsubscribe"
 
 msgid "config.last_unsubscribe.info"
-msgstr "Number of hours that a user can sign out of own shifts beforehand"
+msgstr "Number of hours that a user can sign out of their own shifts beforehand"
 
 msgid "config.max_freeloadable_shifts"
 msgstr "Maximum freeloadable shifts"
@@ -545,7 +545,7 @@ msgid "config.night_shifts.start"
 msgstr "Night shifts start hour"
 
 msgid "config.night_shifts.end"
-msgstr "Night shifts end (without including hour)"
+msgstr "Night shifts end hour (exclusive)"
 
 msgid "config.night_shifts.multiplier"
 msgstr "Night shifts multiplier"
@@ -673,7 +673,7 @@ msgid "config.display_news"
 msgstr "Displayed news"
 
 msgid "config.display_news.info"
-msgstr "Number of news shown on one site and for feed readers"
+msgstr "Number of news items shown on one page and for feed readers"
 
 msgid "config.display_users"
 msgstr "Displayed users"
@@ -691,7 +691,7 @@ msgid "config.password_min_length"
 msgstr "Minimum password length"
 
 msgid "config.enable_password"
-msgstr "Passwort"
+msgstr "Password"
 
 msgid "config.enable_password.info"
 msgstr ""
@@ -775,8 +775,8 @@ msgstr "Username filter regex"
 
 msgid "config.username_regex.info"
 msgstr ""
-"Regular expression describing a FALSE username. "
-"Per default usernames must only contain alphanumeric chars, \"-\", \"_\" or \".\"."
+"Regular expression describing an invalid username. "
+"By default, usernames must only contain alphanumeric characters, \"-\", \"_\", or \".\"."
 
 msgid "config.disabled_user_view_columns"
 msgstr "Hidden user table columns"

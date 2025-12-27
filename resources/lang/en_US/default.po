@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "auth.password.error"
-msgstr "Your password is incorrect. Please try it again."
+msgstr "Your password is incorrect. Please try again."
 
 msgid "form.submit"
 msgstr "Submit"
@@ -146,7 +146,7 @@ msgid "form.tags"
 msgstr "Tags"
 
 msgid "form.tags.info"
-msgstr "Comma seperated list of tags"
+msgstr "Comma-separated list of tags"
 
 msgid "schedule.import"
 msgstr "Import schedule"
@@ -164,7 +164,7 @@ msgid "schedule.last_update"
 msgstr "Last updated: %s"
 
 msgid "schedule.import.text"
-msgstr "Imports create locations and create, update and delete shifts according to a schedule.xml export."
+msgstr "Imports create locations and create, update, or delete shifts according to a schedule.xml export."
 
 msgid "schedule.import.load.title"
 msgstr "Import schedule: Preview"
@@ -293,7 +293,7 @@ msgid "log.log"
 msgstr "Logs"
 
 msgid "log.only_own"
-msgstr "You can view your own logs. The logs of other users can be checked by bureaucrats."
+msgstr "You can view your own logs. Logs of other users are visible to bureaucrats."
 
 msgid "log.time"
 msgstr "Time"
@@ -338,7 +338,7 @@ msgid "settings.profile.mobile"
 msgstr "Mobile"
 
 msgid "settings.profile.mobile_show"
-msgstr "Show mobile number to other users to contact me."
+msgstr "Show my mobile number to other users."
 
 msgid "settings.profile.email-preferences"
 msgstr "E-mail preferences"
@@ -350,11 +350,11 @@ msgid "settings.profile.email.already-taken"
 msgstr "This e-mail address is already taken."
 
 msgid "settings.profile.email_shiftinfo"
-msgstr "The %s is allowed to send me an e-mail (e.g. when my shifts change)."
+msgstr "The %s may send me e-mails (e.g., when my shifts change)."
 
 msgid "registration.email_system"
-msgstr "The %s is allowed to send me an e-mail "
-"(e.g. when my shifts change, on new private messages or there is new news)."
+msgstr "The %s may send me e-mails "
+"(e.g., when my shifts change, on new private messages, or when there is new news)."
 
 msgid "registration.email_system.info"
 msgstr "Detailed preferences can be set in your profile."
@@ -366,7 +366,7 @@ msgid "settings.profile.email_messages"
 msgstr "Notify me on new private messages."
 
 msgid "settings.profile.email_by_human_allowed"
-msgstr "Allow heaven angels to contact me by e-mail."
+msgstr "Allow Heaven Angels to contact me by e-mail."
 
 msgid "settings.profile.email_goodie"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
@@ -394,7 +394,7 @@ msgid "settings.profile.shirt.link"
 msgstr "More information"
 
 msgid "settings.profile.angeltypes.info"
-msgstr "You can manage your angel types <a href=\"%s\">on the angel types page</a>."
+msgstr "You can manage your angel types <a href=\"%s\">here</a>."
 
 msgid "profile.my_shifts"
 msgstr "My shifts"
@@ -480,20 +480,22 @@ msgid "settings.certificates.drive_forklift"
 msgstr "Forklift"
 
 msgid "settings.certificates.ifsg_light"
-msgstr "I was instructed about IfSG §43 (aka Frikadellendiplom light) on site."
+msgstr "I received onsite instruction about IfSG §43 (Frikadellendiplom light / basic food hygiene certificate)."
 
 msgid "settings.certificates.ifsg_light_admin"
-msgstr "Was instructed about IfSG §43 (aka Frikadellendiplom light) on site."
+msgstr "Received onsite instruction about IfSG §43 (Frikadellendiplom light / basic food hygiene certificate)."
 
 msgid "settings.certificates.ifsg"
-msgstr "I have gotten the instruction about §43 IfSG (aka Frikadellendiplom) from my Health Department "
-"and a second instruction from us or my employer/chef/association within 3 months. "
-"Additionally my second instruction is not older than 2 years."
+msgstr "I received the instruction about §43 IfSG (Frikadellendiplom / food hygiene certificate) from "
+"my Health Department "
+"and a second instruction from the event organizers or my employer/supervisor/association within 3 months. "
+"Additionally, my second instruction is not older than 2 years."
 
 msgid "settings.certificates.ifsg_admin"
-msgstr "Got the instruction about §43 IfSG (aka Frikadellendiplom) from a Health Department "
-"and a second instruction from us or his employer/chef/association within 3 months. "
-"Additionally the second instruction is not older than 2 years."
+msgstr "Received the instruction about §43 IfSG (Frikadellendiplom / food hygiene certificate) from "
+"a Health Department "
+"and a second instruction from the event organizers or their employer/supervisor/association within 3 months. "
+"Additionally, the second instruction is not older than 2 years."
 
 msgid "settings.certificates.confirmed"
 msgstr "Certificate confirmed"
@@ -612,7 +614,7 @@ msgid "faq.faq"
 msgstr "FAQ"
 
 msgid "faq.questions_link"
-msgstr "If you don't find an answer, you can <a href=\"%s\">ask the heaven</a>."
+msgstr "If you don't find an answer, you can <a href=\"%s\">ask Heaven</a>."
 
 msgid "faq.edit"
 msgstr "Edit FAQ entry"
@@ -789,7 +791,7 @@ msgid "angeltypes.angeltypes"
 msgstr "Angel types"
 
 msgid "angeltypes.about"
-msgstr "Teams-/Job description"
+msgstr "Team/Task description"
 
 msgid "angeltypes.about.text"
 msgstr "Here you can find the list of teams and their tasks. If you have further questions, "
@@ -799,32 +801,32 @@ msgid "angeltypes.restricted"
 msgstr "Requires introduction"
 
 msgid "angeltypes.restricted.info"
-msgstr "Angel types which require introduction can only be used by an angel "
-"if enabled by a supporter (double opt-in)."
+msgstr "Angel types that require introduction can only be joined by Angels "
+"after being enabled by a supporter (double opt-in)."
 
 msgid "angeltypes.restricted.hint"
-msgstr "This angel type requires the attendance at an introduction meeting. "
+msgstr "This angel type requires attendance at an introduction meeting. "
 "You might find additional information in the description."
 
 msgid "angeltypes.can-change-later"
 msgstr "You can change your selection later in the settings."
 
 msgid "angeltypes.shift.self_signup.info"
-msgstr "Angel types which have shift self signup enabled allow angels to self sign up for their shifts, "
-"if shift self signup is disabled only supporters and admins can sign angels into shifts of these angel types."
+msgstr "Angel types with shift self-signup enabled allow Angels to sign up for their own shifts. "
+"If shift self-signup is disabled, only supporters and admins can assign Angels to shifts for these angel types."
 
 msgid "shift.self_signup"
-msgstr "Shift self signup"
+msgstr "Shift self-signup"
 
 msgid "shift.self_signup.allowed"
-msgstr "Shift self signup allowed"
+msgstr "Shift self-signup allowed"
 
 msgid "angeltypes.hide_on_shift_view"
 msgstr "Hide on shift view"
 
 msgid "angeltypes.hide_on_shift_view.info"
-msgstr "If checked only admins and members of the angel type "
-"can see the filter option for this angel type on the shifts page"
+msgstr "If checked, only admins and members of the angel type "
+"can see the filter option for this angel type on the shifts page."
 
 msgid "angeltypes.qr"
 msgstr "Join angel type \"%s\" QR code"
@@ -906,7 +908,7 @@ msgstr "What do you want to do?"
 
 msgid "registration.jobs"
 msgstr "You can find more information about how to help us in the "
-"<a href=\"%s\" target=\"_blank\">Teams-/Job description</a>."
+"<a href=\"%s\" target=\"_blank\">Team/Task description</a>."
 
 msgid "registration.register"
 msgstr "Register"
@@ -982,10 +984,10 @@ msgstr "User info"
 msgid "user.info.hint"
 msgstr ""
 "Is displayed for shift coordinators and admins in the user view. "
-"If an angel is not marked as arrived a user-info removes the not-arrived notification in the angels sysmenu."
+"If an Angel is not marked as arrived, a user info removes the not-arrived notification in the Angel's system menu."
 
 msgid "user_info.not_arrived_hint"
-msgstr "If you want to sign up for shifts, feel free to drop by heaven."
+msgstr "If you want to sign up for shifts, feel free to drop by Heaven."
 
 msgid "email.greeting"
 msgstr "Hi %s,"
@@ -1074,7 +1076,7 @@ msgid "login.password.reset"
 msgstr "I forgot my password"
 
 msgid "login.registration"
-msgstr "Please sign up, if you want to help us!"
+msgstr "Please sign up if you want to help us!"
 
 msgid "login.registration.external"
 msgstr "Registration is only available via external login."
@@ -1145,39 +1147,39 @@ msgid "general.back"
 msgstr "Back"
 
 msgid "admin_shifts.no_locations"
-msgstr "No location has been created yet. Shifts can't be created without one."
+msgstr "No location has been created yet. Shifts cannot be created without one."
 
 msgid "admin_shifts.no_shifttypes"
-msgstr "No shift type has been created yet. Shifts can't be created without one."
+msgstr "No shift type has been created yet. Shifts cannot be created without one."
 
 msgid "admin_shifts.no_angeltypes"
-msgstr "No angel type has been created yet. Shifts can't be created without one."
+msgstr "No angel type has been created yet. Shifts cannot be created without one."
 
 msgid "shift.sign_out.hint"
-msgstr "You can self sign out up to %s hours before the start of the shift. "
-"If you can't attend your shift, ask heaven to sign you out."
+msgstr "You can sign yourself out up to %s hours before the start of the shift. "
+"If you can't attend your shift, ask Heaven to sign you out."
 
 msgid "freeload.info.goodie"
 msgstr "You were not present for this shift. "
-"The double length of the shift was deducted from your %s. Please contact heaven if you have questions."
+"The double length of the shift was deducted from your %s. Please contact Heaven if you have questions."
 
 msgid "freeload.info"
 msgstr "You were not present for this shift. "
-"Please contact heaven if you have questions."
+"Please contact Heaven if you have questions."
 
 msgid "freeload.freeloader.info"
 msgstr "You were not present for at least %s shifts. Therefore, shift registration is blocked. "
-"Please go to heaven to be unlocked again."
+"Please go to Heaven to be unlocked again."
 
 msgid "freeload.freeloaded.info.goodie"
 msgstr ""
-"If an angel was not present for a shift, the double length of the shift is deducted from the %s. "
-"If %s shifts are freeloaded, the shift registration is blocked for the angel."
+"If an Angel was not present for a shift, double the shift length is deducted from the %s. "
+"If %s shifts are freeloaded, shift registration is blocked for the Angel."
 
 msgid "freeload.freeloaded.info"
 msgstr ""
-"The angel was not present for a shift. "
-"If %s shifts are freeloaded, the shift registration is blocked for the angel."
+"The Angel was not present for a shift. "
+"If %s shifts are freeloaded, shift registration is blocked for the Angel."
 
 msgid "config.config"
 msgstr "Config"
