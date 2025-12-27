@@ -2041,6 +2041,9 @@ msgstr "Erstellt am"
 msgid "general.url"
 msgstr "URL"
 
+msgid "general.qr"
+msgstr "QR Code"
+
 msgid "shifts.history"
 msgstr "Schichten Historie"
 
