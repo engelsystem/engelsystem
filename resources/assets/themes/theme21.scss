@@ -136,7 +136,20 @@ $nav-tabs-link-active-color: $gray-darker;
 $card-cap-color: $gray-lighter;
 
 .card-header {
-  color: $text-muted !important;
+  color: $gray-lighter !important;
+}
+
+.card-header {
+  &.bg-primary,
+  &.bg-success,
+  &.bg-info,
+  &.bg-light {
+    color: #333 !important;
+  }
+}
+
+.bg-warning .card-header {
+  color: $gray-dark !important;
 }
 
 $headings-color: $info;
