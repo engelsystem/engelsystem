@@ -92,6 +92,9 @@ msgstr "Schedule deletion successful."
 msgid "shifts.filter.toggle"
 msgstr "collapse/show filters"
 
+msgid "shifts.toggle.title"
+msgstr "Show more / less"
+
 msgid "validation.schedule-url.required"
 msgstr "The schedule URL is required."
 

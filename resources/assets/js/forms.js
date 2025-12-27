@@ -123,9 +123,9 @@ ready(() => {
 
 ready(() => {
   /**
-   * Disable every submit button after clicking (to prevent double-clicking on specific pages)
+   * Disable every submit button after clicking (to prevent double-clicking)
    */
-  document.querySelectorAll('#food_voucher_buttons form').forEach((formElement) => {
+  document.querySelectorAll('form').forEach((formElement) => {
     formElement.addEventListener('submit', () => {
       document.querySelectorAll('input[type="submit"],button[type="submit"]').forEach((element) => {
         element.readOnly = true;
@@ -383,21 +383,45 @@ ready(() => {
  */
 ready(() => {
   const collapseElement = document.getElementById('collapseShiftsFilterSelect');
-  if (collapseElement) {
-    if (localStorage.getItem('collapseShiftsFilterSelect') === 'hidden.bs.collapse') {
-      collapseElement.classList.remove('show');
-    }
-
-    /**
-     * @param {Event} event
-     */
-    const onChange = (event) => {
-      localStorage.setItem('collapseShiftsFilterSelect', event.type);
-    };
-
-    collapseElement.addEventListener('hidden.bs.collapse', onChange);
-    collapseElement.addEventListener('shown.bs.collapse', onChange);
+  if (!collapseElement) {
+    return;
   }
+
+  const showMoreLess = document.getElementById('showMoreLess');
+  showMoreLess.addEventListener('click', (e) => {
+    const heightLimited = document.querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height');
+    if (heightLimited.length > 0) {
+      heightLimited.forEach((e) => e.classList.remove('limit-height'));
+      localStorage.setItem('collapseShiftsFilterExpand', 'opened');
+      collapseElement.classList.add('show');
+    } else {
+      document
+        .querySelectorAll('#collapseShiftsFilterSelect .selection')
+        .forEach((e) => e.classList.add('limit-height'));
+      localStorage.setItem('collapseShiftsFilterExpand', 'closed');
+    }
+    e.preventDefault();
+  });
+
+  if (localStorage.getItem('collapseShiftsFilterSelect') === 'hide.bs.collapse') {
+    collapseElement.classList.remove('show');
+  }
+
+  if (localStorage.getItem('collapseShiftsFilterExpand') === 'opened') {
+    document
+      .querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height')
+      .forEach((e) => e.classList.remove('limit-height'));
+  }
+
+  /**
+   * @param {Event} event
+   */
+  const onChange = (event) => {
+    localStorage.setItem('collapseShiftsFilterSelect', event.type);
+  };
+
+  collapseElement.addEventListener('hide.bs.collapse', onChange);
+  collapseElement.addEventListener('show.bs.collapse', onChange);
 });
 
 /**

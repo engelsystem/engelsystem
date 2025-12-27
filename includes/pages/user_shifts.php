@@ -333,7 +333,9 @@ function view_user_shifts()
                     $locations,
                     $shiftsFilter->getLocations(),
                     'locations',
-                    icon('pin-map-fill') . __('location.locations')
+                    icon('pin-map-fill') . __('location.locations'),
+                    [],
+                    'limit-height',
                 ),
                 'start_select'  => html_select_key(
                     'start_day',
@@ -356,13 +358,16 @@ function view_user_shifts()
                     icon('person-lines-fill') . __('angeltypes.angeltypes') . ' '
                     . '<a class="icon-link" href="' . url('/angeltypes/about') . '" title="' . __('angeltypes.about') . '" target="_blank">'
                     . icon('question-circle') . '</a>',
-                    $ownAngelTypes
+                    $ownAngelTypes,
+                    'limit-height',
                 ),
                 'filled_select' => make_select(
                     $filled,
                     $shiftsFilter->getFilled(),
                     'filled',
-                    icon('person-fill-slash') . __('Occupancy')
+                    icon('person-fill-slash') . __('Occupancy'),
+                    [],
+                    'limit-height',
                 ),
                 'tags'  => $tags,
                 'msg'  => msg(),
@@ -371,6 +376,7 @@ function view_user_shifts()
                 'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),
                 'filter_toggle' => __('shifts.filter.toggle'),
+                'expand_toggle_title' => __('shifts.toggle.title'),
                 'set_yesterday' => __('Yesterday'),
                 'set_today'     => __('Today'),
                 'set_tomorrow'  => __('Tomorrow'),
@@ -421,7 +427,7 @@ function ical_hint()
  * @param int[]  $ownSelect
  * @return string
  */
-function make_select($items, $selected, $name, $title = null, $ownSelect = [])
+function make_select($items, $selected, $name, $title = null, $ownSelect = [], $class = '')
 {
     $html = '';
     if (isset($title)) {
@@ -437,7 +443,7 @@ function make_select($items, $selected, $name, $title = null, $ownSelect = [])
     }
 
     $html .= buttons($buttons);
-    $html .= '<div id="selection_' . $name . '" class="mb-3 selection ' . $name . '">' . "\n";
+    $html .= '<div id="selection_' . $name . '" class="mb-3 selection ' . $name . ' ' . $class . '">' . "\n";
 
     $htmlItems = [];
     foreach ($items as $i => $item) {

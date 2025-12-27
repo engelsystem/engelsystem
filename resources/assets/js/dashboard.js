@@ -19,16 +19,24 @@ ready(() => {
     document.querySelector('#content .wrapper').innerHTML = dashboardContent.outerHTML;
   }, 60000);
 
-  // Handle fullscreen button
   // - Remove some elements from UI
   // - Add "Public Dashboard" to title
-  document.getElementById('dashboard-fullscreen')?.addEventListener('click', (event) => {
-    event.preventDefault();
+  function enableFullscreen() {
     const removeElementsSelector = '#navbar-collapse-1,.navbar-nav,.navbar-toggler,#footer,#fullscreen-button';
     document.querySelectorAll(removeElementsSelector).forEach((element) => {
       element.parentNode.removeChild(element);
     });
 
     document.querySelector('.navbar-brand')?.appendChild(document.createTextNode('Dashboard'));
+  }
+
+  if (new URLSearchParams(window.location.search).has('fullscreen')) {
+    enableFullscreen();
+  }
+
+  // Handle fullscreen button
+  document.getElementById('dashboard-fullscreen')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    enableFullscreen();
   });
 });

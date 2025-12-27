@@ -216,7 +216,7 @@ table.table-sticky-header thead {
 }
 
 /* make selections scrollable and add a max height of 4.5 entries */
-#collapseShiftsFilterSelect .selection {
+#collapseShiftsFilterSelect .limit-height.selection {
   overflow-y: auto;
   max-height: ($form-check-min-height + $form-check-margin-bottom) * 4.5;
 }
