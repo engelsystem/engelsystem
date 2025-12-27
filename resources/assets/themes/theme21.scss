@@ -1,0 +1,177 @@
+// 39C3
+
+// Variables
+// --------------------------------------------------
+
+@import 'dark';
+
+// Styleguide
+
+@font-face {
+  font-family: 'KarioDuplexVar';
+  src: URL('theme21/Kario39C3VarWEB-Roman.woff') format('woff');
+  src: URL('theme21/Kario39C3VarWEB-Roman.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'OfficerSans';
+  src: URL('theme21/OfficerSansWeb-Regular.woff') format('woff');
+  src: URL('theme21/OfficerSansWeb-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'OfficerSans';
+  font-weight: bold;
+  font-style: italic;
+  src: URL('theme21/OfficerSansWeb-BoldItalic.woff') format('woff');
+  src: URL('theme21/OfficerSansWeb-BoldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'OfficerSans';
+  font-weight: bold;
+  src: URL('theme21/OfficerSansWeb-Bold.woff') format('woff');
+  src: URL('theme21/OfficerSansWeb-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'OfficerSans';
+  font-style: italic;
+  src: URL('theme21/OfficerSansWeb-RegularItalic.woff') format('woff');
+  src: URL('theme21/OfficerSansWeb-RegularItalic.woff2') format('woff2');
+}
+
+// Typography
+
+$font-family-sans-serif: 'OfficerSans', Helvetica Neue, Helvetica, Arial, sans-serif;
+$headings-font-family: 'KarioDuplexVar', sans-serif;
+$headings-font-weight: 100;
+
+//== changed Colors
+
+$gray-darker: #141414;
+$gray-dark: #141414;
+$gray-light: #979ca0;
+$gray-lighter: #faf5f5;
+
+$primary: #d4c4fe;
+$secondary: #9673ff;
+$success: #66f2ff;
+$info: #00ea00;
+$warning: lighten(#ff3719, 25%);
+$danger: #ff3719;
+
+$text-muted: $gray-light;
+
+//== Scaffolding
+
+$body-bg: $gray-darker;
+$body-color: #faf5f5;
+$text-color: #faf5f5;
+
+//== Buttons
+
+$btn-color: $gray-darker;
+$btn-hover-color: $gray-darker;
+
+$btn-link-disabled-color: $gray-light;
+
+//== Badges
+
+$badge-color: $gray-darker;
+
+.badge.bg-light {
+  color: $gray-dark !important;
+}
+.badge.bg-dark {
+  color: $text-muted;
+}
+
+//== Dropdown
+
+$dropdown-border-color: $gray-light;
+
+$dropdown-link-active-bg: $gray-darker;
+$dropdown-link-active-color: $primary;
+$dropdown-link-hover-bg: $gray-darker;
+$dropdown-link-hover-color: $primary;
+
+//== Navbar
+
+$navbar-bg: $gray-darker;
+$navbar-dark-color: $text-color;
+$navbar-dark-active-color: $primary;
+$navbar-dark-hover-color: $primary;
+
+$navbar-dark-brand-color: $info;
+
+//== changed Forms
+
+$input-bg: $gray-darker;
+$input-bg-disabled: lighten($gray-lighter, 15%);
+
+$input-border-color: $text-color;
+$input-color: $text-color;
+
+$input-group-addon-bg: $gray-dark;
+
+$form-check-input-checked-color: $gray-darker;
+$form-switch-color: $text-color;
+$form-switch-checked-color: $gray-darker;
+
+//== changed Form states and alerts
+
+$alert-bg-scale: 100%;
+$alert-border-scale: 0%;
+$alert-color-scale: 0%;
+
+code {
+  background-color: $gray-darker;
+  color: $info;
+}
+
+$nav-pills-link-active-color: $gray-darker;
+$nav-tabs-link-active-color: $gray-darker;
+
+$card-cap-color: $gray-lighter;
+
+.card-header {
+  color: $text-muted !important;
+}
+
+$headings-color: $info;
+$headings-small-color: $text-color;
+
+// dark
+@import 'cyborg_variables';
+@import 'cyborg_styles';
+
+// Overrides
+
+.alert a {
+  color: $primary;
+}
+
+.navbar {
+  background-color: $navbar-bg;
+}
+
+.navbar .icon-icon_angel {
+  background-color: $navbar-dark-brand-color;
+}
+
+.navbar-brand {
+  font-stretch: 67%;
+  font-width: 67%;
+  font-weight: 42;
+
+  font-family: $headings-font-family;
+}
+
+.bg-info .nav-link {
+  color: $gray-darker !important;
+}
+
+small {
+  font-weight: 10;
+}
