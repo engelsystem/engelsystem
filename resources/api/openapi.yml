@@ -291,6 +291,10 @@ components:
     ShiftEntry:
       type: object
       properties:
+        id:
+          type: integer
+          example: 42
+          description: The shift entry ID
         user:
           $ref: '#/components/schemas/Reference'
         freeloaded_by:
@@ -301,6 +305,7 @@ components:
             Contains a reference to the user who has marked this shift entry as freeloaded, if
             for a user not arriving to their shift
       required:
+        - id
         - user
         - freeloaded_by
     ShiftType:
