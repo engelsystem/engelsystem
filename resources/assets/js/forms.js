@@ -368,22 +368,32 @@ ready(() => {
  * Uses DOMContentLoaded to prevent flickering
  */
 ready(() => {
-  const STATE = {
-    OPEN: 'open',
-    CLOSED: 'closed',
-    EXPANDED: 'expanded',
-  };
-
   const collapseElement = document.getElementById('collapseShiftsFilterSelect');
   if (!collapseElement) {
     return;
   }
 
-  if (localStorage.getItem('collapseShiftsFilterSelect') === STATE.CLOSED) {
+  const showMoreLess = document.getElementById('showMoreLess');
+  showMoreLess.addEventListener('click', (e) => {
+    const heightLimited = document.querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height');
+    if (heightLimited.length > 0) {
+      heightLimited.forEach((e) => e.classList.remove('limit-height'));
+      localStorage.setItem('collapseShiftsFilterExpand', 'opened');
+      collapseElement.classList.add('show');
+    } else {
+      document
+        .querySelectorAll('#collapseShiftsFilterSelect .selection')
+        .forEach((e) => e.classList.add('limit-height'));
+      localStorage.setItem('collapseShiftsFilterExpand', 'closed');
+    }
+    e.preventDefault();
+  });
+
+  if (localStorage.getItem('collapseShiftsFilterSelect') === 'hide.bs.collapse') {
     collapseElement.classList.remove('show');
   }
 
-  if (localStorage.getItem('collapseShiftsFilterSelect') === STATE.EXPANDED) {
+  if (localStorage.getItem('collapseShiftsFilterExpand') === 'opened') {
     document
       .querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height')
       .forEach((e) => e.classList.remove('limit-height'));
@@ -393,19 +403,7 @@ ready(() => {
    * @param {Event} event
    */
   const onChange = (event) => {
-    const heightLimited = document.querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height');
-    if (heightLimited.length > 0 && localStorage.getItem('collapseShiftsFilterSelect') === STATE.OPEN) {
-      heightLimited.forEach((e) => e.classList.remove('limit-height'));
-      localStorage.setItem('collapseShiftsFilterSelect', STATE.EXPANDED);
-      event.preventDefault();
-      return;
-    } else {
-      document
-        .querySelectorAll('#collapseShiftsFilterSelect .selection')
-        .forEach((e) => e.classList.add('limit-height'));
-    }
-
-    localStorage.setItem('collapseShiftsFilterSelect', event.type === 'hide.bs.collapse' ? STATE.CLOSED : STATE.OPEN);
+    localStorage.setItem('collapseShiftsFilterSelect', event.type);
   };
 
   collapseElement.addEventListener('hide.bs.collapse', onChange);
