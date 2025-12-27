@@ -94,6 +94,9 @@ msgstr "Das Programm wurde erfolgreich gelöscht."
 msgid "shifts.filter.toggle"
 msgstr "Filter verstecken/anzeigen"
 
+msgid "shifts.toggle.title"
+msgstr "Mehr / weniger anzeigen"
+
 msgid "validation.schedule-url.required"
 msgstr "Bitte gib eine Programm URL an."
 
