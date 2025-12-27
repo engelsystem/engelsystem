@@ -955,6 +955,9 @@ msgstr "Created at"
 msgid "general.url"
 msgstr "URL"
 
+msgid "general.qr"
+msgstr "QR code"
+
 msgid "shifts.random"
 msgstr "Random shift"
 
