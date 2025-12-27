@@ -103,15 +103,15 @@ return [
     // Supported themes
     // To disable a theme in config.php, you can set its value to null
     'themes' => [
-        22 => [
-            'name' => 'Engelsystem Pro',
-            'type' => 'light',
-            'navbar_classes' => 'navbar-light',
-        ],
         21 => [
             'name' => 'Engelsystem 39c3 (2025)',
             'type' => 'dark',
             'navbar_classes' => 'navbar-dark',
+        ],
+        22 => [
+            'name' => 'Engelsystem Enterprise',
+            'type' => 'light',
+            'navbar_classes' => 'navbar-light',
         ],
         20 => [
             'name' => 'Engelsystem eh22-light (2025)',
