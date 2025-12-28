@@ -30,7 +30,10 @@ class LocationsControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('data', $data);
         $this->assertCount(3, $data['data']);
         $this->assertCount(1, collect($data['data'])->filter(function ($item) use ($items) {
-            return $item['name'] == $items->first()->getAttribute('name');
+            return $item['name'] == $items->first()->getAttribute('name')
+                && $item['description'] == $items->first()->getAttribute('description')
+                && $item['map_url'] == $items->first()->getAttribute('map_url')
+                && $item['contact'] == ['dect' => $items->first()->getAttribute('dect')];
         }));
     }
 }
