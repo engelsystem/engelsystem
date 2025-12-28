@@ -73,7 +73,10 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $entry = $entriesC[1];
         $this->assertCount(3, $entry['entries']);
         $this->assertEquals(0, $entry['needs']);
-        $user = $entry['entries'][0]['user'];
+        $shiftEntry = $entry['entries'][0];
+        $this->assertArrayHasKey('id', $shiftEntry);
+        $this->assertIsInt($shiftEntry['id']);
+        $user = $shiftEntry['user'];
         $this->assertArrayHasKey('id', $user);
         $this->assertArrayHasKey('name', $user);
         $this->assertArrayNotHasKey('email', $user);

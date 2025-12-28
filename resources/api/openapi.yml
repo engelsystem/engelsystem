@@ -101,6 +101,11 @@ components:
           type: boolean
           example: false
           description: True if the angel type requires an introduction
+        contact:
+          allOf:
+            - $ref: '#/components/schemas/ContactName'
+            - $ref: '#/components/schemas/ContactEmail'
+            - $ref: '#/components/schemas/ContactDect'
         url:
           type: string
           example: https://example.com/angeltype/42
@@ -109,7 +114,37 @@ components:
         - id
         - name
         - description
+        - contact
         - url
+    ContactDect:
+      type: object
+      properties:
+        dect:
+          type: string
+          nullable: true
+          example: 4242
+          description: The DECT number is a short internal number where users can be easily reached
+    ContactEmail:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+          example: testteam@example.com
+    ContactMobile:
+      type: object
+      properties:
+        mobile:
+          type: string
+          nullable: true
+          example: +421234567890
+    ContactName:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          example: Testteam
     UserAngelType:
       allOf:
         - type: object
@@ -204,6 +239,13 @@ components:
           type: string
           example: Located behind room 42
           description: Description of the room
+        map_url:
+          type: string
+          example: https://nav.example.com/embed/l/heaven/@1,203.21,193.15,4.71
+          description: Map URL of the location
+          nullable: true
+        contact:
+          $ref: '#/components/schemas/ContactDect'
         url:
           type: string
           example: https://example.com/location/42
@@ -212,6 +254,7 @@ components:
         - id
         - name
         - description
+        - contact
         - url
     NeededAngelType:
       type: object
@@ -291,6 +334,10 @@ components:
     ShiftEntry:
       type: object
       properties:
+        id:
+          type: integer
+          example: 42
+          description: The shift entry ID
         user:
           $ref: '#/components/schemas/Reference'
         freeloaded_by:
@@ -301,6 +348,7 @@ components:
             Contains a reference to the user who has marked this shift entry as freeloaded, if
             for a user not arriving to their shift
       required:
+        - id
         - user
         - freeloaded_by
     ShiftType:
@@ -342,17 +390,9 @@ components:
           example: They/Them
           description: Should be displayed where possible to allow users to be addressed properly
         contact:
-          type: object
-          properties:
-            dect:
-              type: string
-              nullable: true
-              example: 4242
-              description: The DECT number is a short internal number where users can be easily reached
-            mobile:
-              type: string
-              nullable: true
-              example: 1234567890
+          allOf:
+            - $ref: '#/components/schemas/ContactDect'
+            - $ref: '#/components/schemas/ContactMobile'
         url:
           type: string
           example: https://example.com/users/42

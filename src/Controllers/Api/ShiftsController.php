@@ -186,6 +186,7 @@ class ShiftsController extends ApiController
                 }
 
                 $entries = $entries->map(fn(ShiftEntry $entry) => [
+                    'id' => $entry->id,
                     'user' => UserResource::toIdentifierArray($entry->user),
                     'freeloaded_by' => $entry->freeloaded_by
                         ? UserResource::toIdentifierArray($entry->freeloadedBy)
