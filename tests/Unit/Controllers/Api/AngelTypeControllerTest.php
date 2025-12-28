@@ -38,7 +38,12 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
             $first = $items->first();
             return $item['name'] == $first->getAttribute('name')
                 && $item['description'] == $first->getAttribute('description')
-                && $item['restricted'] == $first->getAttribute('restricted');
+                && $item['restricted'] == $first->getAttribute('restricted')
+                && $item['contact'] == [
+                    'name' => $first->getAttribute('contact_name'),
+                    'email' => $first->getAttribute('contact_email'),
+                    'dect' => $first->getAttribute('contact_dect'),
+                ];
         }));
     }
 

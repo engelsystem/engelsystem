@@ -20,6 +20,11 @@ class AngelTypeResource extends BasicResource
             'name' => $this->model->name,
             'description' => $this->model->description,
             'restricted' => $this->model->restricted,
+            'contact' => [
+                'name' => $this->model->contact_name,
+                'email' => $this->model->contact_email,
+                'dect' => $this->model->contact_dect,
+            ],
             'url' => url('/angeltypes', ['action' => 'view', 'angeltype_id' => $this->model->id]),
         ];
     }
