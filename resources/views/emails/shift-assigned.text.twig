@@ -1,0 +1,14 @@
+{% extends "emails/mail.text.twig" %}
+
+{% block introduction %}
+{{ __('You have been assigned to a Shift:') }}
+{% endblock %}
+
+{% block message %}
+{{ shift.shiftType.name }}
+{{ shift.title }}
+{{ shift.start.format(__('general.datetime')) }} - {{ shift.end.format(__('H:i')) }}
+{{ shift.location.name }}
+
+{{ url('/shifts', {'action': 'view', 'shift_id': shift.id}) }}
+{% endblock %}
