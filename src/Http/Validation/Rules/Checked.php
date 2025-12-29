@@ -8,10 +8,8 @@ use Respect\Validation\Rules\Core\Simple;
 
 class Checked extends Simple
 {
-    use Truthy;
-
     public function isValid(mixed $input): bool
     {
-        return $this->truthy($input);
+        return $input && $input !== 'false' && $input !== 'off' && $input !== 'no';
     }
 }
