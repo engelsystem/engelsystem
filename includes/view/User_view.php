@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Helpers\Language;
 use Engelsystem\Helpers\UserVouchers;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
@@ -778,6 +779,7 @@ function User_view(
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),
                 User_groups_render($user_groups),
+                User_languages_render($user_source),
                 $admin_user_privilege ? User_oauth_render($user_source) : '',
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . $my_shifts_title . '</h2>' : '',
@@ -931,6 +933,40 @@ function User_groups_render($user_groups)
 
     return div('col-md-2', [
         '<h4>' . __('Rights') . '</h4>',
+        join('<br>', $output),
+    ]);
+}
+
+/**
+ * Render user's spoken languages
+ *
+ * @param User $user
+ * @return string
+ */
+function User_languages_render(User $user)
+{
+    if (!config('enable_user_languages')) {
+        return '';
+    }
+
+    $languages = $user->languages;
+    if ($languages->isEmpty()) {
+        return '';
+    }
+
+    $output = [];
+    foreach ($languages as $lang) {
+        $name = Language::getName($lang->language_code);
+        if ($lang->is_native) {
+            $output[] = '<strong>' . htmlspecialchars($name) . '</strong>'
+                . ' <span class="badge bg-secondary">' . __('settings.spoken_languages.native') . '</span>';
+        } else {
+            $output[] = htmlspecialchars($name);
+        }
+    }
+
+    return div('col-md-2', [
+        heading(__('settings.spoken_languages'), 4),
         join('<br>', $output),
     ]);
 }

@@ -7,12 +7,14 @@ namespace Engelsystem\Controllers;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Language;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\User\UserLanguage;
 use Psr\Log\LoggerInterface;
 
 class SettingsController extends BaseController
@@ -236,6 +238,82 @@ class SettingsController extends BaseController
         return $this->redirect->to('/settings/language');
     }
 
+    public function spokenLanguages(): Response
+    {
+        if (!config('enable_user_languages')) {
+            throw new HttpNotFound();
+        }
+
+        $user = $this->auth->user();
+        $userLanguages = $user->languages->map(function (UserLanguage $lang) {
+            return [
+                'code' => $lang->language_code,
+                'name' => Language::getName($lang->language_code),
+                'is_native' => $lang->is_native,
+            ];
+        });
+
+        return $this->response->withView(
+            'pages/settings/spoken-languages',
+            [
+                'settings_menu' => $this->settingsMenu(),
+                'user_languages' => $userLanguages,
+                'language_options' => Language::getAllOptions(),
+            ]
+        );
+    }
+
+    public function saveSpokenLanguages(Request $request): Response
+    {
+        if (!config('enable_user_languages')) {
+            throw new HttpNotFound();
+        }
+
+        $user = $this->auth->user();
+        $data = $this->validate($request, [
+            'languages' => 'optional',
+            'native' => 'optional',
+        ]);
+
+        // Parse language codes from comma-separated string
+        $languageCodes = [];
+        if (!empty($data['languages'])) {
+            $languageCodes = array_filter(
+                array_map('trim', explode(',', $data['languages'])),
+                fn($code) => !empty($code)
+            );
+        }
+
+        // Get native language codes
+        $nativeCodes = [];
+        if (!empty($data['native'])) {
+            $nativeCodes = is_array($data['native']) ? $data['native'] : [$data['native']];
+        }
+
+        // Validate and normalize language codes
+        $validLanguages = [];
+        foreach ($languageCodes as $code) {
+            $normalized = Language::normalize($code);
+            if (Language::isValid($normalized)) {
+                $validLanguages[$normalized] = in_array($code, $nativeCodes) || in_array($normalized, $nativeCodes);
+            }
+        }
+
+        // Delete existing languages and insert new ones
+        $user->languages()->delete();
+
+        foreach ($validLanguages as $code => $isNative) {
+            $user->languages()->create([
+                'language_code' => $code,
+                'is_native' => $isNative,
+            ]);
+        }
+
+        $this->addNotification('settings.spoken_languages.success');
+
+        return $this->redirect->to('/settings/spoken-languages');
+    }
+
     public function certificate(): Response
     {
         if (
@@ -394,6 +472,10 @@ class SettingsController extends BaseController
 
         if (count(config('themes')) > 1) {
             $menu[url('/settings/theme')] = 'settings.theme';
+        }
+
+        if (config('enable_user_languages')) {
+            $menu[url('/settings/spoken-languages')] = ['title' => 'settings.spoken_languages', 'icon' => 'chat-dots'];
         }
 
         if (

@@ -566,6 +566,9 @@ msgstr "Nächste Schicht"
 msgid "shift.previous"
 msgstr "Vorherige Schicht"
 
+msgid "shift.team_languages"
+msgstr "Team spricht"
+
 msgid "general.shift"
 msgstr "Schicht"
 
@@ -1733,6 +1736,24 @@ msgstr "Hier kannst Du Deine Sprache ändern."
 
 msgid "settings.language.success"
 msgstr "Sprache wurde erfolgreich geändert."
+
+msgid "settings.spoken_languages"
+msgstr "Gesprochene Sprachen"
+
+msgid "settings.spoken_languages.info"
+msgstr "Füge die Sprachen hinzu, die du sprichst, um Schichten mit Teams zu finden, mit denen du kommunizieren kannst."
+
+msgid "settings.spoken_languages.add"
+msgstr "Sprache hinzufügen"
+
+msgid "settings.spoken_languages.placeholder"
+msgstr "Tippe, um Sprachen zu suchen..."
+
+msgid "settings.spoken_languages.native"
+msgstr "Muttersprache"
+
+msgid "settings.spoken_languages.success"
+msgstr "Gesprochene Sprachen wurden erfolgreich gespeichert."
 
 msgid "settings.api"
 msgstr "API"
