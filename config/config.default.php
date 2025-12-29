@@ -109,7 +109,7 @@ return [
             'navbar_classes' => 'navbar-dark',
         ],
         22 => [
-            'name' => 'Engelsystem Enterprise',
+            'name' => 'Engelsystem Pro',
             'type' => 'light',
             'navbar_classes' => 'navbar-light',
         ],
