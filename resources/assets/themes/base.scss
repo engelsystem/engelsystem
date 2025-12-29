@@ -307,8 +307,16 @@ table.table-sticky-header thead {
   }
 }
 
-.column_duration {
+.column_duration,
+.column_work_time,
+.column_score {
   text-align: right;
+}
+
+.column_active,
+.column_force_active,
+.column_tshirt {
+  text-align: center;
 }
 
 .column_shift_info:not(:hover) .table-myshifts-shift-info-limit-height {

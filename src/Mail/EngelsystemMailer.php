@@ -42,7 +42,7 @@ class EngelsystemMailer extends Mailer
         if (
             $locale
             && $this->translation
-            && isset($this->translation->getLocales()[$locale])
+            && in_array($locale, $this->translation->getLocales())
         ) {
             $activeLocale = $this->translation->getLocale();
             $this->translation->setLocale($locale);

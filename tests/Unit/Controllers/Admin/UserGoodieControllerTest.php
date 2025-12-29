@@ -30,6 +30,7 @@ class UserGoodieControllerTest extends ControllerTest
      */
     public function testIndex(): void
     {
+        $this->mockTranslator();
         $this->config->set('goodie_type', GoodieType::Tshirt->value);
         $this->config->set('night_shifts', ['enabled' => false]);
         $request = $this->request->withAttribute('user_id', 1);

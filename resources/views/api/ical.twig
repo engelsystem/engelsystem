@@ -4,6 +4,15 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//-/{{ config('app_name') | replace(replacement) | raw }}//DE
 CALSCALE:GREGORIAN
+BEGIN:VTIMEZONE
+TZID:UTC
+BEGIN:STANDARD
+DTSTART:{{ timezoneTransitionStart }}
+TZOFFSETFROM:0000
+TZOFFSETTO:0000
+TZNAME:UTC
+END:STANDARD
+END:VTIMEZONE
 {% for entry in shiftEntries %}
 BEGIN:VEVENT
 UID:{{ uuidBy(entry.id, '54117') }}

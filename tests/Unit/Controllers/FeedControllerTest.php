@@ -127,6 +127,47 @@ class FeedControllerTest extends ControllerTest
     }
 
     /**
+     * @covers \Engelsystem\Controllers\FeedController::ical
+     */
+    public function testIcalEmpty(): void
+    {
+        $this->request = $this->request->withQueryParams(['key' => 'fo0']);
+        $this->auth = new Authenticator(
+            $this->request,
+            new Session(new MockArraySessionStorage()),
+            new User(),
+        );
+        $controller = new FeedController($this->auth, $this->request, $this->response, $this->url);
+
+        User::factory()->create(['api_key' => 'fo0']);
+
+        $this->response->expects($this->exactly(2))
+            ->method('withHeader')
+            ->withConsecutive(
+                ['content-type', 'text/calendar; charset=utf-8'],
+                ['content-disposition', 'attachment; filename=shifts.ics']
+            )
+            ->willReturn($this->response);
+
+        $this->setExpects($this->response, 'setEtag', null, $this->response);
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertEquals('api/ical', $view);
+                $this->assertArrayHasKey('shiftEntries', $data);
+
+                /** @var ShiftEntry[]|Collection $shiftEntries */
+                $shiftEntries = $data['shiftEntries'];
+                $this->assertCount(0, $shiftEntries);
+
+                return $this->response;
+            });
+
+        $controller->ical();
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\FeedController::shifts
      * @covers \Engelsystem\Controllers\FeedController::getShifts
      */
