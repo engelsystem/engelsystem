@@ -1,0 +1,12 @@
+{% extends "emails/mail.text.twig" %}
+
+{% block introduction %}
+{{ __('You have been removed from a Shift:') }}
+{% endblock %}
+
+{% block message %}
+{{ shift.shiftType.name }}
+{{ shift.title }}
+{{ shift.start.format(__('general.datetime')) }} - {{ shift.end.format(__('H:i')) }}
+{{ shift.location.name }}
+{% endblock %}
