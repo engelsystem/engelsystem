@@ -6,6 +6,7 @@ namespace Engelsystem\Controllers;
 
 use Carbon\CarbonTimeZone;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
@@ -53,10 +54,17 @@ class FeedController extends BaseController
     {
         $shifts = $this->getShifts();
 
+        /* @var string $timezoneTransitionStart */
+        if ($shifts->isNotEmpty()) {
+            $timezoneTransitionStart = $shifts[0]->shift->start->utc()->isoFormat('YYYYMMDDTHHmmss');
+        } else {
+            $timezoneTransitionStart = Carbon::now()->startOfDay()->utc()->isoFormat('YYYYMMDDTHHmmss');
+        }
+
         return $this->withEtag($shifts)
             ->withHeader('content-type', 'text/calendar; charset=utf-8')
             ->withHeader('content-disposition', 'attachment; filename=shifts.ics')
-            ->withView('api/ical', ['shiftEntries' => $shifts]);
+            ->withView('api/ical', ['shiftEntries' => $shifts, 'timezoneTransitionStart' => $timezoneTransitionStart]);
     }
 
     public function shifts(): Response
