@@ -101,7 +101,8 @@
 
                     {% if can('user_messages') %}
                         {{ _self.toolbar_item(
-                            user_messages ? '<span class="badge bg-danger">' ~ user_messages ~ '</span>' : '',
+                            '<span class="d-xxl-none">' ~ __('message.title') ~ '</span>'
+                            ~ (user_messages ? ' <span class="badge bg-danger">' ~ user_messages ~ '</span>' : ''),
                             url('/messages'),
                             'messages',
                             'envelope'
