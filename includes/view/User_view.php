@@ -982,7 +982,7 @@ function User_Nick_render($user, $plain = false)
     }
 
     return render_profile_link(
-        '<span class="icon-icon_angel"></span>&nbsp;' . htmlspecialchars($user->displayName) . '</a>',
+        '<span class="user-nick">' . htmlspecialchars($user->displayName) . '</span>',
         $user->id,
         ($user->state->arrived ? '' : 'text-muted')
     );
