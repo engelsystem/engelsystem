@@ -7,7 +7,9 @@ class UserHintsRenderer
     /** @var string[] */
     private $hints = [];
 
-    private $important = false;
+    private bool $important = false;
+
+    private int $count = 0;
 
     /**
      * Add a hint to the list, if its not null and a not empty string.
@@ -15,9 +17,10 @@ class UserHintsRenderer
      * @param string  $hint      The hint
      * @param boolean $important Is the hint important?
      */
-    public function addHint($hint, $important = false)
+    public function addHint($hint, $important = false): void
     {
         if (!empty($hint)) {
+            $this->count++;
             if ($important) {
                 $this->important = true;
                 $this->hints[] = error($hint, true, true);
@@ -53,6 +56,7 @@ class UserHintsRenderer
             return '<li class="nav-item nav-item--userhints d-flex align-items-center bg-' . $class_hint . '">'
                 . '<a class="nav-link dropdown-toggle text-light" href="#" role="button"' . $attr . '>'
                 . icon($icon)
+                . '<span class="badge ps-0 pe-1">' . $this->count . '</span>'
                 . '</a>'
                 . '</li>';
         }
