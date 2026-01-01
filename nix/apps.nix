@@ -151,18 +151,28 @@ let
     exec ${pkgs.nginx}/bin/nginx -c "$NGINX_CONF" -g "daemon off;"
   '';
 
-  # Migration script
+  # Migration script (local dev only - doesn't trigger package build)
   migrate = pkgs.writeShellScriptBin "engelsystem-migrate" ''
     set -euo pipefail
 
     DIR="''${ENGELSYSTEM_DIR:-$(pwd)}"
 
-    if [ -f "$DIR/bin/migrate" ]; then
-      exec ${lib.php}/bin/php "$DIR/bin/migrate" "$@"
-    elif [ -f "${packages.engelsystem}/share/engelsystem/bin/migrate" ]; then
+    if [ ! -f "$DIR/bin/migrate" ]; then
+      echo "Error: bin/migrate not found. Run from engelsystem project root."
+      exit 1
+    fi
+
+    exec ${lib.php}/bin/php "$DIR/bin/migrate" "$@"
+  '';
+
+  # Migration script for production (uses packaged version)
+  migrateProd = pkgs.writeShellScriptBin "engelsystem-migrate-prod" ''
+    set -euo pipefail
+
+    if [ -f "${packages.engelsystem}/share/engelsystem/bin/migrate" ]; then
       exec ${lib.phpProd}/bin/php "${packages.engelsystem}/share/engelsystem/bin/migrate" "$@"
     else
-      echo "Error: migrate script not found"
+      echo "Error: packaged migrate script not found"
       exit 1
     fi
   '';
@@ -181,6 +191,80 @@ let
     else
       exec ${lib.php}/bin/php -d memory_limit=-1 vendor/bin/phpunit "$@"
     fi
+  '';
+
+  # Dev setup - starts everything needed for development
+  devSetup = pkgs.writeShellScriptBin "engelsystem-dev-setup" ''
+    set -euo pipefail
+
+    DIR="''${ENGELSYSTEM_DIR:-$(pwd)}"
+    cd "$DIR"
+
+    echo "=== Engelsystem Development Setup ==="
+    echo ""
+
+    # Check/start minikube database
+    echo "Step 1: Checking database..."
+    if ! ${pkgs.kubectl}/bin/kubectl -n engelsystem get deployment mariadb >/dev/null 2>&1; then
+      echo "Starting database in Minikube..."
+      ${pkgs.bash}/bin/bash -c "$(nix-build --no-out-link -A apps.db-start-minikube.program ${../flake.nix} 2>/dev/null || echo 'nix run .#db-start-minikube')" || {
+        echo "Please run: nix run .#db-start-minikube"
+        exit 1
+      }
+    else
+      echo "Database already running."
+    fi
+
+    # Get database connection info
+    NODE_PORT=$(${pkgs.kubectl}/bin/kubectl -n engelsystem get svc mariadb -o jsonpath='{.spec.ports[0].nodePort}' 2>/dev/null || echo "31402")
+    MINIKUBE_IP=$(${pkgs.minikube}/bin/minikube ip 2>/dev/null || echo "192.168.105.2")
+
+    export MYSQL_HOST="$MINIKUBE_IP"
+    export MYSQL_PORT="$NODE_PORT"
+    export MYSQL_DATABASE="''${MYSQL_DATABASE:-engelsystem}"
+    export MYSQL_USER="''${MYSQL_USER:-engelsystem}"
+    export MYSQL_PASSWORD="''${MYSQL_PASSWORD:-engelsystem}"
+
+    echo ""
+    echo "Database: $MYSQL_HOST:$MYSQL_PORT"
+    echo ""
+
+    # Run migrations
+    echo "Step 2: Running migrations..."
+    ${lib.php}/bin/php bin/migrate || echo "Migrations failed or already up to date"
+    echo ""
+
+    # Check dependencies
+    echo "Step 3: Checking dependencies..."
+    if [ ! -d "vendor" ]; then
+      echo "Installing composer dependencies..."
+      ${pkgs.php83Packages.composer}/bin/composer install
+    fi
+
+    if [ ! -d "node_modules" ]; then
+      echo "Installing node dependencies..."
+      ${pkgs.yarn}/bin/yarn install
+    fi
+
+    # Build assets if needed
+    if [ ! -d "public/assets" ]; then
+      echo "Building frontend assets..."
+      ${pkgs.yarn}/bin/yarn build
+    fi
+
+    echo ""
+    echo "=== Development Environment Ready ==="
+    echo ""
+    echo "Database:"
+    echo "  export MYSQL_HOST=$MYSQL_HOST"
+    echo "  export MYSQL_PORT=$MYSQL_PORT"
+    echo ""
+    echo "Commands:"
+    echo "  nix run .#dev         - Start dev server"
+    echo "  nix run .#test        - Run tests"
+    echo "  nix run .#migrate     - Run migrations"
+    echo "  nix run .#lint        - Run linters"
+    echo ""
   '';
 
   # Lint runner
@@ -225,12 +309,18 @@ in
   # Production server
   prod = mkApp prodServer;
 
-  # Database migration
+  # Database migration (local dev)
   migrate = mkApp migrate;
+
+  # Database migration (production package)
+  migrate-prod = mkApp migrateProd;
 
   # Test runner
   test = mkApp testRunner;
 
   # Lint runner
   lint = mkApp lintRunner;
+
+  # Dev setup (one-command development environment)
+  setup = mkApp devSetup;
 }

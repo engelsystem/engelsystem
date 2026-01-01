@@ -17,6 +17,7 @@ abstract class DatabaseTest extends TestCase
     {
         $configValues = ['database' => [
             'host' => env('MYSQL_HOST', 'localhost'),
+            'port' => (int) env('MYSQL_PORT', 3306),
             'database' => env('MYSQL_DATABASE', 'engelsystem'),
             'username' => env('MYSQL_USER', 'root'),
             'password' => env('MYSQL_PASSWORD', ''),

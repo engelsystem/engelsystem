@@ -19,6 +19,8 @@ _vimrc_local.vim
 /.idea/
 /.phpstorm.meta.php
 /.vscode
+/.envrc
+/.direnv
 
 # Docker .env files
 /docker/.env
