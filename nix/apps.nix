@@ -7,6 +7,20 @@ let
     program = "${drv}/bin/${drv.pname or drv.name}";
   };
 
+  # Helper to auto-detect minikube database
+  dbEnvSetup = ''
+    # Auto-detect minikube database if not configured
+    if [ -z "''${MYSQL_HOST:-}" ]; then
+      if ${pkgs.kubectl}/bin/kubectl -n engelsystem get svc mariadb >/dev/null 2>&1; then
+        export MYSQL_HOST="$(${pkgs.minikube}/bin/minikube ip 2>/dev/null)"
+        export MYSQL_PORT="$(${pkgs.kubectl}/bin/kubectl -n engelsystem get svc mariadb -o jsonpath='{.spec.ports[0].nodePort}' 2>/dev/null)"
+        export MYSQL_DATABASE="''${MYSQL_DATABASE:-engelsystem}"
+        export MYSQL_USER="''${MYSQL_USER:-engelsystem}"
+        export MYSQL_PASSWORD="''${MYSQL_PASSWORD:-engelsystem}"
+      fi
+    fi
+  '';
+
   # Development server script
   devServer = pkgs.writeShellScriptBin "engelsystem-dev" ''
     set -euo pipefail
@@ -19,7 +33,10 @@ let
       exit 1
     fi
 
+    ${dbEnvSetup}
+
     echo "Starting Engelsystem development server on http://localhost:$PORT"
+    [ -n "''${MYSQL_HOST:-}" ] && echo "Database: $MYSQL_HOST:$MYSQL_PORT"
     echo "Press Ctrl+C to stop"
     echo ""
 
@@ -162,6 +179,8 @@ let
       exit 1
     fi
 
+    ${dbEnvSetup}
+
     exec ${lib.php}/bin/php "$DIR/bin/migrate" "$@"
   '';
 
@@ -183,6 +202,8 @@ let
 
     DIR="''${ENGELSYSTEM_DIR:-$(pwd)}"
     cd "$DIR"
+
+    ${dbEnvSetup}
 
     TESTSUITE="''${1:-}"
 
