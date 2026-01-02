@@ -19,10 +19,13 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string         $user_comment
  * @property int|null       $freeloaded_by
  * @property string         $freeloaded_comment
+ * @property bool           $counts_toward_quota
+ * @property int|null       $supervised_by_user_id
  *
  * @property-read Shift     $shift
  * @property-read AngelType $angelType
  * @property-read User|null $freeloadedBy
+ * @property-read User|null $supervisedBy
  *
  * @method static QueryBuilder|ShiftEntry[] whereId($value)
  * @method static QueryBuilder|ShiftEntry[] whereShiftId($value)
@@ -30,17 +33,21 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|ShiftEntry[] whereUserComment($value)
  * @method static QueryBuilder|ShiftEntry[] whereFreeloadedBy($value)
  * @method static QueryBuilder|ShiftEntry[] whereFreeloadedComment($value)
+ * @method static QueryBuilder|ShiftEntry[] whereCountsTowardQuota($value)
+ * @method static QueryBuilder|ShiftEntry[] whereSupervisedByUserId($value)
  */
 class ShiftEntry extends BaseModel
 {
     use HasFactory;
     use UsesUserModel;
 
-    /** @var array<string, string|null> default attributes */
+    /** @var array<string, string|null|bool> default attributes */
     protected $attributes = [ // phpcs:ignore
-        'user_comment'       => '',
-        'freeloaded_by'      => null,
-        'freeloaded_comment' => '',
+        'user_comment'           => '',
+        'freeloaded_by'          => null,
+        'freeloaded_comment'     => '',
+        'counts_toward_quota'    => true,
+        'supervised_by_user_id'  => null,
     ];
 
     /** @var array<string> */
@@ -51,6 +58,8 @@ class ShiftEntry extends BaseModel
         'user_comment',
         'freeloaded_by',
         'freeloaded_comment',
+        'counts_toward_quota',
+        'supervised_by_user_id',
     ];
 
     /** @var array<string, string> */
@@ -58,7 +67,9 @@ class ShiftEntry extends BaseModel
         'shift_id' => 'integer',
         'angel_type_id' => 'integer',
         'user_id' => 'integer',
-        'freeloaded_by' => 'integer',
+        'freeloaded_by'          => 'integer',
+        'counts_toward_quota'    => 'boolean',
+        'supervised_by_user_id'  => 'integer',
     ];
 
     /** @var array<string> Attributes which should not be serialized */
@@ -79,5 +90,10 @@ class ShiftEntry extends BaseModel
     public function freeloadedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'freeloaded_by');
+    }
+
+    public function supervisedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supervised_by_user_id');
     }
 }

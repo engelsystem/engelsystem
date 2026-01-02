@@ -1,0 +1,302 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ minor.name }} - {{ __('guardian.minor_profile') }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% include 'layouts/parts/messages.twig' %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{ m.icon('person') }} {{ minor.name }}</h1>
+        <div>
+            <a href="{{ url('/guardian') }}" class="btn btn-outline-secondary">
+                {{ m.icon('arrow-left') }} {{ __('guardian.back_to_dashboard') }}
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {# Main profile card #}
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>{{ __('guardian.profile_overview') }}</span>
+                    <a href="{{ url('/guardian/minor/' ~ minor.id ~ '/edit') }}" class="btn btn-sm btn-outline-primary">
+                        {{ m.icon('pencil') }} {{ __('guardian.edit') }}
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl>
+                                <dt>{{ __('form.nick') }}</dt>
+                                <dd>{{ minor.name }}</dd>
+
+                                <dt>{{ __('form.email') }}</dt>
+                                <dd>{{ minor.email|default('-') }}</dd>
+
+                                {% if minor.personalData.first_name or minor.personalData.last_name %}
+                                    <dt>{{ __('guardian.full_name') }}</dt>
+                                    <dd>{{ minor.personalData.first_name }} {{ minor.personalData.last_name }}</dd>
+                                {% endif %}
+
+                                {% if minor.personalData.pronoun %}
+                                    <dt>{{ __('settings.profile.pronoun') }}</dt>
+                                    <dd>{{ minor.personalData.pronoun }}</dd>
+                                {% endif %}
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl>
+                                <dt>{{ __('guardian.category') }}</dt>
+                                <dd>
+                                    {% if category %}
+                                        <span class="badge bg-info">{{ category.name }}</span>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </dd>
+
+                                <dt>{{ __('guardian.consent_status') }}</dt>
+                                <dd>
+                                    {% if consentApproved %}
+                                        <span class="text-success">
+                                            {{ m.icon('check-circle-fill') }} {{ __('guardian.consent_approved') }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-warning">
+                                            {{ m.icon('exclamation-triangle-fill') }} {{ __('guardian.consent_pending') }}
+                                        </span>
+                                        <a href="{{ url('/guardian/minor/' ~ minor.id ~ '/consent') }}" class="btn btn-sm btn-outline-warning ms-2">
+                                            {{ __('guardian.generate_form') }}
+                                        </a>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Restrictions card #}
+            <div class="card mb-4">
+                <div class="card-header">
+                    {{ m.icon('shield-check') }} {{ __('guardian.restrictions') }}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl>
+                                {% if restrictions.maxHoursPerDay is not null %}
+                                    <dt>{{ __('guardian.max_hours_per_day') }}</dt>
+                                    <dd>{{ restrictions.maxHoursPerDay }}h</dd>
+                                {% endif %}
+
+                                {% if restrictions.maxShiftDuration is not null %}
+                                    <dt>{{ __('guardian.max_shift_duration') }}</dt>
+                                    <dd>{{ restrictions.maxShiftDuration }}h</dd>
+                                {% endif %}
+
+                                {% if restrictions.maxConsecutiveDays is not null %}
+                                    <dt>{{ __('guardian.max_consecutive_days') }}</dt>
+                                    <dd>{{ restrictions.maxConsecutiveDays }} {{ __('guardian.days') }}</dd>
+                                {% endif %}
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl>
+                                {% if restrictions.earliestStart is not null %}
+                                    <dt>{{ __('guardian.earliest_start') }}</dt>
+                                    <dd>{{ restrictions.earliestStart }}</dd>
+                                {% endif %}
+
+                                {% if restrictions.latestEnd is not null %}
+                                    <dt>{{ __('guardian.latest_end') }}</dt>
+                                    <dd>{{ restrictions.latestEnd }}</dd>
+                                {% endif %}
+
+                                <dt>{{ __('guardian.night_work') }}</dt>
+                                <dd>
+                                    {% if restrictions.canWorkNight %}
+                                        <span class="text-success">{{ __('guardian.allowed') }}</span>
+                                    {% else %}
+                                        <span class="text-danger">{{ __('guardian.not_allowed') }}</span>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    {% if dailyHoursMax %}
+                        <div class="progress mt-3" style="height: 25px;">
+                            {% set percentage = (dailyHoursUsed / dailyHoursMax * 100)|round %}
+                            <div class="progress-bar {{ percentage >= 100 ? 'bg-danger' : (percentage >= 80 ? 'bg-warning' : 'bg-success') }}"
+                                 role="progressbar"
+                                 style="width: {{ percentage }}%"
+                                 aria-valuenow="{{ dailyHoursUsed }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="{{ dailyHoursMax }}">
+                                {{ dailyHoursUsed|number_format(1) }}h / {{ dailyHoursMax }}h {{ __('guardian.today') }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Upcoming shifts #}
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>{{ m.icon('calendar-event') }} {{ __('guardian.upcoming_shifts') }}</span>
+                    <a href="{{ url('/guardian/minor/' ~ minor.id ~ '/shifts') }}" class="btn btn-sm btn-outline-primary">
+                        {{ __('guardian.view_all_shifts') }}
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if upcomingShifts|length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('shifts.shift') }}</th>
+                                        <th>{{ __('general.date') }}</th>
+                                        <th>{{ __('general.time') }}</th>
+                                        <th>{{ __('angeltypes.angeltype') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for entry in upcomingShifts|slice(0, 5) %}
+                                        <tr>
+                                            <td>{{ entry.shift.title }}</td>
+                                            <td>{{ entry.shift.start|date(__('general.date_format')) }}</td>
+                                            <td>{{ entry.shift.start|date('H:i') }} - {{ entry.shift.end|date('H:i') }}</td>
+                                            <td>{{ entry.angelType.name }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        {{ m.info(__('guardian.no_upcoming_shifts')) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Sidebar #}
+        <div class="col-lg-4">
+            {# Guardians card #}
+            <div class="card mb-4">
+                <div class="card-header">
+                    {{ m.icon('people') }} {{ __('guardian.guardians') }}
+                </div>
+                <div class="card-body">
+                    {% if guardianLinks|length > 0 %}
+                        <ul class="list-group list-group-flush">
+                            {% for link in guardianLinks %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        {{ link.guardian.name }}
+                                        {% if link.is_primary %}
+                                            <span class="badge bg-primary">{{ __('guardian.primary') }}</span>
+                                        {% endif %}
+                                        <br>
+                                        <small class="text-muted">
+                                            {{ __('guardian.relationship.' ~ link.relationship_type) }}
+                                        </small>
+                                    </div>
+                                    {% if isPrimary and not link.is_primary %}
+                                        <div class="btn-group btn-group-sm">
+                                            <form action="{{ url('/guardian/minor/' ~ minor.id ~ '/guardians/' ~ link.guardian.id ~ '/primary') }}" method="post" class="d-inline">
+                                                {{ csrf() }}
+                                                <button type="submit" class="btn btn-outline-primary btn-sm" title="{{ __('guardian.make_primary') }}">
+                                                    {{ m.icon('star') }}
+                                                </button>
+                                            </form>
+                                            <form action="{{ url('/guardian/minor/' ~ minor.id ~ '/guardians/' ~ link.guardian.id ~ '/remove') }}" method="post" class="d-inline">
+                                                {{ csrf() }}
+                                                <button type="submit" class="btn btn-outline-danger btn-sm" title="{{ __('guardian.remove') }}"
+                                                        onclick="return confirm('{{ __('guardian.confirm_remove_guardian') }}')">
+                                                    {{ m.icon('x') }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if isPrimary %}
+                        <hr>
+                        <h6>{{ __('guardian.add_guardian') }}</h6>
+                        <form action="{{ url('/guardian/minor/' ~ minor.id ~ '/guardians') }}" method="post">
+                            {{ csrf() }}
+                            {{ f.input('guardian_identifier', __('guardian.guardian_username_or_email'), {
+                                'required': true,
+                            }) }}
+                            {{ f.select('relationship_type', __('guardian.relationship_type'), {
+                                'parent': __('guardian.relationship.parent'),
+                                'legal_guardian': __('guardian.relationship.legal_guardian'),
+                                'delegated': __('guardian.relationship.delegated'),
+                            }, {
+                                'required': true,
+                            }) }}
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                {{ m.icon('plus') }} {{ __('guardian.add') }}
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Category change card (primary guardian only) #}
+            {% if isPrimary %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        {{ m.icon('tag') }} {{ __('guardian.change_category') }}
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ url('/guardian/minor/' ~ minor.id ~ '/category') }}" method="post">
+                            {{ csrf() }}
+                            <div class="mb-3">
+                                <select name="minor_category_id" class="form-select" required>
+                                    {% for cat in categories|default([]) %}
+                                        <option value="{{ cat.id }}" {{ cat.id == category.id ? 'selected' : '' }}>
+                                            {{ cat.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                {{ __('guardian.update_category') }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Quick actions #}
+            <div class="card">
+                <div class="card-header">
+                    {{ m.icon('lightning') }} {{ __('guardian.quick_actions') }}
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{{ url('/guardian/minor/' ~ minor.id ~ '/shifts') }}" class="list-group-item list-group-item-action">
+                        {{ m.icon('calendar-week') }} {{ __('guardian.view_shifts') }}
+                    </a>
+                    {% if not consentApproved %}
+                        <a href="{{ url('/guardian/minor/' ~ minor.id ~ '/consent') }}" class="list-group-item list-group-item-action">
+                            {{ m.icon('file-text') }} {{ __('guardian.consent_form') }}
+                        </a>
+                    {% endif %}
+                    <a href="{{ url('/guardian/minor/' ~ minor.id ~ '/edit') }}" class="list-group-item list-group-item-action">
+                        {{ m.icon('pencil') }} {{ __('guardian.edit_profile') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

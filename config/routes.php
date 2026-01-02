@@ -51,6 +51,38 @@ $route->addGroup(
     }
 );
 
+// Guardian management
+$route->addGroup(
+    '/guardian',
+    function (RouteCollector $route): void {
+        $route->get('', 'GuardianController@dashboard');
+
+        // Link existing minor
+        $route->get('/link', 'GuardianController@linkMinor');
+        $route->post('/link', 'GuardianController@saveLinkMinor');
+
+        // Register new minor
+        $route->get('/register', 'GuardianController@registerMinor');
+        $route->post('/register', 'GuardianController@saveRegisterMinor');
+
+        // Minor management
+        $route->addGroup(
+            '/minor/{minor_id:\d+}',
+            function (RouteCollector $route): void {
+                $route->get('', 'GuardianController@viewMinor');
+                $route->get('/edit', 'GuardianController@editMinor');
+                $route->post('/edit', 'GuardianController@saveMinor');
+                $route->post('/category', 'GuardianController@changeCategory');
+                $route->get('/consent', 'GuardianController@consentForm');
+                $route->get('/shifts', 'GuardianController@minorShifts');
+                $route->post('/guardians', 'GuardianController@addGuardian');
+                $route->post('/guardians/{guardian_id:\d+}/remove', 'GuardianController@removeGuardian');
+                $route->post('/guardians/{guardian_id:\d+}/primary', 'GuardianController@setPrimaryGuardian');
+            }
+        );
+    }
+);
+
 // User admin settings
 $route->addGroup(
     '/users/{user_id:\d+}',

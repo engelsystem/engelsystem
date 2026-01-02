@@ -1,0 +1,150 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __('guardian.consent_form') }} - {{ minor.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% include 'layouts/parts/messages.twig' %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4 d-print-none">
+        <h1>{{ m.icon('file-text') }} {{ __('guardian.consent_form') }}</h1>
+        <div>
+            <button onclick="window.print()" class="btn btn-primary">
+                {{ m.icon('printer') }} {{ __('guardian.print') }}
+            </button>
+            <a href="{{ url('/guardian/minor/' ~ minor.id) }}" class="btn btn-outline-secondary">
+                {{ m.icon('arrow-left') }} {{ __('guardian.back_to_profile') }}
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {# Printable consent form content #}
+            <div class="consent-form">
+                <div class="text-center mb-4">
+                    <h2>{{ __('guardian.consent_form_title') }}</h2>
+                    <p class="text-muted">{{ __('guardian.consent_form_subtitle') }}</p>
+                </div>
+
+                <hr>
+
+                <h5>{{ __('guardian.minor_information') }}</h5>
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 30%">{{ __('guardian.minor_name') }}</th>
+                        <td>{{ minor.name }}</td>
+                    </tr>
+                    {% if minor.personalData.first_name or minor.personalData.last_name %}
+                    <tr>
+                        <th>{{ __('guardian.full_name') }}</th>
+                        <td>{{ minor.personalData.first_name }} {{ minor.personalData.last_name }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th>{{ __('guardian.category') }}</th>
+                        <td>{{ category ? category.name : '-' }}</td>
+                    </tr>
+                </table>
+
+                <h5 class="mt-4">{{ __('guardian.guardian_information') }}</h5>
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 30%">{{ __('guardian.guardian_name') }}</th>
+                        <td>{{ guardian.name }}</td>
+                    </tr>
+                    {% if guardian.personalData.first_name or guardian.personalData.last_name %}
+                    <tr>
+                        <th>{{ __('guardian.full_name') }}</th>
+                        <td>{{ guardian.personalData.first_name }} {{ guardian.personalData.last_name }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th>{{ __('form.email') }}</th>
+                        <td>{{ guardian.email }}</td>
+                    </tr>
+                </table>
+
+                <h5 class="mt-4">{{ __('guardian.restrictions_applicable') }}</h5>
+                <table class="table table-bordered">
+                    {% if restrictions.maxHoursPerDay is not null %}
+                    <tr>
+                        <th style="width: 50%">{{ __('guardian.max_hours_per_day') }}</th>
+                        <td>{{ restrictions.maxHoursPerDay }} {{ __('guardian.hours') }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if restrictions.maxShiftDuration is not null %}
+                    <tr>
+                        <th>{{ __('guardian.max_shift_duration') }}</th>
+                        <td>{{ restrictions.maxShiftDuration }} {{ __('guardian.hours') }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if restrictions.earliestStart is not null %}
+                    <tr>
+                        <th>{{ __('guardian.earliest_start') }}</th>
+                        <td>{{ restrictions.earliestStart }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if restrictions.latestEnd is not null %}
+                    <tr>
+                        <th>{{ __('guardian.latest_end') }}</th>
+                        <td>{{ restrictions.latestEnd }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th>{{ __('guardian.night_work') }}</th>
+                        <td>{{ restrictions.canWorkNight ? __('guardian.allowed') : __('guardian.not_allowed') }}</td>
+                    </tr>
+                </table>
+
+                <div class="mt-5">
+                    <h5>{{ __('guardian.consent_declaration') }}</h5>
+                    <p>{{ __('guardian.consent_text_1') }}</p>
+                    <p>{{ __('guardian.consent_text_2') }}</p>
+                    <ul>
+                        <li>{{ __('guardian.consent_item_1') }}</li>
+                        <li>{{ __('guardian.consent_item_2') }}</li>
+                        <li>{{ __('guardian.consent_item_3') }}</li>
+                        <li>{{ __('guardian.consent_item_4') }}</li>
+                    </ul>
+                </div>
+
+                <div class="mt-5">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>{{ __('guardian.place_date') }}:</strong></p>
+                            <div class="border-bottom" style="height: 40px;"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>{{ __('guardian.signature') }}:</strong></p>
+                            <div class="border-bottom" style="height: 40px;"></div>
+                            <small class="text-muted">{{ __('guardian.signature_guardian') }}</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-muted small">
+                    <p>{{ __('guardian.consent_footer') }}</p>
+                    <p class="mb-0">{{ __('guardian.generated_on') }}: {{ "now"|date(__('general.datetime_format')) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media print {
+        .d-print-none {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .consent-form {
+            font-size: 12pt;
+        }
+    }
+</style>
+{% endblock %}

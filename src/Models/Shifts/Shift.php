@@ -33,6 +33,8 @@ use Illuminate\Database\Query\JoinClause;
  * @property string|null                       $transaction_id
  * @property int                               $created_by
  * @property int|null                          $updated_by
+ * @property bool                              $requires_supervisor_for_minors
+ * @property string|null                       $minor_supervision_notes
  * @property Carbon|null                       $created_at
  * @property Carbon|null                       $updated_at
  *
@@ -64,12 +66,14 @@ class Shift extends BaseModel
 {
     use HasFactory;
 
-    /** @var array<string, string|null> default attributes */
+    /** @var array<string, string|null|bool> default attributes */
     protected $attributes = [ // phpcs:ignore
-        'description'    => '',
-        'url'            => '',
-        'transaction_id' => null,
-        'updated_by'     => null,
+        'description'                   => '',
+        'url'                           => '',
+        'transaction_id'                => null,
+        'updated_by'                    => null,
+        'requires_supervisor_for_minors' => false,
+        'minor_supervision_notes'       => null,
     ];
 
     /** @var bool enable timestamps */
@@ -81,8 +85,9 @@ class Shift extends BaseModel
         'location_id'   => 'integer',
         'created_by'    => 'integer',
         'updated_by'    => 'integer',
-        'start'         => 'datetime',
-        'end'           => 'datetime',
+        'start'                          => 'datetime',
+        'end'                            => 'datetime',
+        'requires_supervisor_for_minors' => 'boolean',
     ];
 
     /** @var array<string> Values that are mass assignable */
@@ -97,6 +102,8 @@ class Shift extends BaseModel
         'transaction_id',
         'created_by',
         'updated_by',
+        'requires_supervisor_for_minors',
+        'minor_supervision_notes',
     ];
 
     public function neededAngelTypes(): HasMany
