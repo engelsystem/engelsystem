@@ -214,6 +214,71 @@ let
     fi
   '';
 
+  # Test coverage runner - generates coverage reports with summary
+  testCoverageRunner = pkgs.writeShellScriptBin "engelsystem-test-coverage" ''
+    set -euo pipefail
+
+    DIR="''${ENGELSYSTEM_DIR:-$(pwd)}"
+    cd "$DIR"
+
+    ${dbEnvSetup}
+
+    COVERAGE_DIR="coverage"
+    FILTER="''${1:-}"
+
+    # Create coverage directory
+    mkdir -p "$COVERAGE_DIR"
+
+    echo "=== Running Tests with Coverage ==="
+    echo ""
+
+    # Build phpunit command
+    CMD="${lib.php}/bin/php -d memory_limit=-1 vendor/bin/phpunit"
+    CMD="$CMD --coverage-text"
+    CMD="$CMD --coverage-html $COVERAGE_DIR/html"
+    CMD="$CMD --coverage-clover $COVERAGE_DIR/clover.xml"
+
+    if [ -n "$FILTER" ]; then
+      CMD="$CMD --filter $FILTER"
+      echo "Filter: $FILTER"
+      echo ""
+    fi
+
+    # Run tests and capture output
+    COVERAGE_OUTPUT=$($CMD 2>&1) || {
+      echo "$COVERAGE_OUTPUT"
+      echo ""
+      echo "=== TESTS FAILED ==="
+      exit 1
+    }
+
+    echo "$COVERAGE_OUTPUT"
+    echo ""
+
+    # Parse and highlight coverage issues
+    echo "=== Coverage Summary ==="
+    echo ""
+
+    # Extract classes with less than 100% coverage
+    echo "Classes with incomplete coverage:"
+    echo "$COVERAGE_OUTPUT" | grep -E "^\s+[A-Za-z\\\\]+" | grep -v "100.00%" | head -20 || echo "  None found (good!)"
+
+    echo ""
+    echo "Coverage reports generated:"
+    echo "  - Text: console output above"
+    echo "  - HTML: $COVERAGE_DIR/html/index.html"
+    echo "  - Clover: $COVERAGE_DIR/clover.xml"
+    echo ""
+
+    # Check for 100% coverage requirement
+    if echo "$COVERAGE_OUTPUT" | grep -qE "^\s+[A-Za-z\\\\]+" | grep -v "100.00%"; then
+      echo "WARNING: Some classes do not have 100% coverage!"
+      echo "Review the coverage report and add missing tests."
+    else
+      echo "All tested classes have 100% coverage."
+    fi
+  '';
+
   # Dev setup - starts everything needed for development
   devSetup = pkgs.writeShellScriptBin "engelsystem-dev-setup" ''
     set -euo pipefail
@@ -338,6 +403,9 @@ in
 
   # Test runner
   test = mkApp testRunner;
+
+  # Test coverage runner
+  test-coverage = mkApp testCoverageRunner;
 
   # Lint runner
   lint = mkApp lintRunner;
