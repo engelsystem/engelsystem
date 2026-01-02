@@ -440,12 +440,33 @@ components:
             arrived:
               type: boolean
               example: true
+            oauth:
+              type: array
+              description: OAuth/SSO provider identifiers linked to this user
+              items:
+                $ref: '#/components/schemas/OAuthIdentifier'
       required:
         - email
         - tshirt_size
         - dates
         - language
         - arrived
+        - oauth
+    OAuthIdentifier:
+      type: object
+      description: OAuth/SSO provider reference for a user
+      properties:
+        provider:
+          type: string
+          example: hub
+          description: The OAuth provider name as configured
+        identifier:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+          description: The user's unique identifier at the OAuth provider (sub claim)
+      required:
+        - provider
+        - identifier
     Worklog:
       type: object
       properties:
