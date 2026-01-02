@@ -24,6 +24,7 @@ let
     zip
     # Development extensions
     pcov
+    apcu  # Required for RateLimitMiddleware tests
   ])));
 
   # PHP for production (without dev extensions)

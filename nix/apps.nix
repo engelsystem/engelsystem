@@ -208,9 +208,9 @@ let
     TESTSUITE="''${1:-}"
 
     if [ -n "$TESTSUITE" ]; then
-      exec ${lib.php}/bin/php -d memory_limit=-1 vendor/bin/phpunit --testsuite "$TESTSUITE" "''${@:2}"
+      exec ${lib.php}/bin/php -d memory_limit=-1 -d apc.enable_cli=1 vendor/bin/phpunit --testsuite "$TESTSUITE" "''${@:2}"
     else
-      exec ${lib.php}/bin/php -d memory_limit=-1 vendor/bin/phpunit "$@"
+      exec ${lib.php}/bin/php -d memory_limit=-1 -d apc.enable_cli=1 vendor/bin/phpunit "$@"
     fi
   '';
 
@@ -233,7 +233,7 @@ let
     echo ""
 
     # Build phpunit command
-    CMD="${lib.php}/bin/php -d memory_limit=-1 vendor/bin/phpunit"
+    CMD="${lib.php}/bin/php -d memory_limit=-1 -d apc.enable_cli=1 vendor/bin/phpunit"
     CMD="$CMD --coverage-text"
     CMD="$CMD --coverage-html $COVERAGE_DIR/html"
     CMD="$CMD --coverage-clover $COVERAGE_DIR/clover.xml"
