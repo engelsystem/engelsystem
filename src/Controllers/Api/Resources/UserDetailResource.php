@@ -18,6 +18,10 @@ class UserDetailResource extends UserResource
                 'planned_departure' => $this->model->personalData->planned_departure_date,
                 'arrival' => $this->model->state->arrival_date,
             ],
+            'spoken_languages' => $this->model->languages->map(fn($lang) => [
+                'code' => $lang->language_code,
+                'is_native' => $lang->is_native,
+            ])->toArray(),
         ]);
     }
 }

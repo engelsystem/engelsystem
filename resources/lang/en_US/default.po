@@ -554,6 +554,24 @@ msgstr "Here you can change your language."
 msgid "settings.language.success"
 msgstr "Language was changed successfully."
 
+msgid "settings.spoken_languages"
+msgstr "Spoken Languages"
+
+msgid "settings.spoken_languages.info"
+msgstr "Add the languages you speak to help find shifts with teams you can communicate with."
+
+msgid "settings.spoken_languages.add"
+msgstr "Add a language"
+
+msgid "settings.spoken_languages.placeholder"
+msgstr "Type to search languages..."
+
+msgid "settings.spoken_languages.native"
+msgstr "Native"
+
+msgid "settings.spoken_languages.success"
+msgstr "Spoken languages saved successfully."
+
 msgid "settings.api"
 msgstr "API"
 
@@ -996,6 +1014,9 @@ msgstr "Next shift"
 
 msgid "shift.previous"
 msgstr "Previous shift"
+
+msgid "shift.team_languages"
+msgstr "Team speaks"
 
 msgid "general.shift"
 msgstr "Shift"
