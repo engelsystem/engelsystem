@@ -34,9 +34,10 @@ class GuardianService
             throw new \InvalidArgumentException('Target user is not a minor');
         }
 
-        if ($guardian->id === $minor->id) {
-            throw new \InvalidArgumentException('Guardian and minor cannot be the same user');
-        }
+        // Note: No need to check if guardian === minor since:
+        // - Guardian must pass validateGuardianEligibility (must be adult/non-minor)
+        // - Minor must pass isMinor() check (must have minor_category_id)
+        // A user can't satisfy both conditions simultaneously
 
         $existingLink = UserGuardian::where('guardian_user_id', $guardian->id)
             ->where('minor_user_id', $minor->id)

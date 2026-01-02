@@ -10,6 +10,9 @@ use FastRoute\RouteCollector;
 $route->get('/', 'HomeController@index');
 $route->get('/register', 'RegistrationController@view');
 $route->post('/register', 'RegistrationController@save');
+$route->get('/register/link-guardian', 'RegistrationController@linkGuardian');
+$route->post('/register/link-guardian', 'RegistrationController@saveLinkGuardian');
+$route->post('/register/skip-guardian', 'RegistrationController@skipLinkGuardian');
 $route->get('/credits', 'CreditsController@index');
 $route->get('/health', 'HealthController@index');
 

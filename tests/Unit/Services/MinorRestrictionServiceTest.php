@@ -17,6 +17,9 @@ use Engelsystem\Services\MinorRestrictions;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 
+/**
+ * @covers \Engelsystem\Services\MinorRestrictionService
+ */
 class MinorRestrictionServiceTest extends TestCase
 {
     use HasDatabase;
@@ -733,6 +736,98 @@ class MinorRestrictionServiceTest extends TestCase
         /** @var User $minor2 */
         $minor2 = User::factory()->create(['minor_category_id' => $categoryCannotFill->id]);
         $this->assertFalse($this->service->countsTowardQuota($minor2));
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::getDailyHoursRemaining
+     */
+    public function testGetDailyHoursRemainingForAdultReturnsMaxFloat(): void
+    {
+        /** @var User $adult */
+        $adult = User::factory()->create(['minor_category_id' => null]);
+
+        $remaining = $this->service->getDailyHoursRemaining($adult, Carbon::parse('2026-01-01'));
+
+        // Adults have no limit, so remaining should be PHP_FLOAT_MAX
+        $this->assertEquals(PHP_FLOAT_MAX, $remaining);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::shiftHasWillingSupervisor
+     */
+    public function testShiftHasWillingSupervisorSkipsMinorThemselves(): void
+    {
+        $category = MinorCategory::factory()->create();
+
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        /** @var User $supervisor */
+        $supervisor = User::factory()->create(['minor_category_id' => null]);
+        UserSupervisorStatus::factory()->willing()->create(['user_id' => $supervisor->id]);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+
+        // Minor is already signed up for the shift
+        ShiftEntry::factory()->create(['user_id' => $minor->id, 'shift_id' => $shift->id]);
+        // Supervisor is also on the shift
+        ShiftEntry::factory()->create(['user_id' => $supervisor->id, 'shift_id' => $shift->id]);
+
+        // Should still find the supervisor (skipping the minor themselves)
+        $this->assertTrue($this->service->shiftHasWillingSupervisor($shift, $minor));
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::shiftHasWillingSupervisor
+     */
+    public function testShiftHasWillingSupervisorSkipsOtherMinors(): void
+    {
+        $category = MinorCategory::factory()->create();
+
+        /** @var User $minor1 */
+        $minor1 = User::factory()->create(['minor_category_id' => $category->id]);
+        /** @var User $minor2 */
+        $minor2 = User::factory()->create(['minor_category_id' => $category->id]);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+
+        // Another minor is on the shift (should be skipped as potential supervisor)
+        ShiftEntry::factory()->create(['user_id' => $minor2->id, 'shift_id' => $shift->id]);
+
+        // No supervisor on the shift - should return false because the other minor can't supervise
+        $this->assertFalse($this->service->shiftHasWillingSupervisor($shift, $minor1));
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::shiftHasWillingSupervisor
+     */
+    public function testShiftHasWillingSupervisorWithMinorOnShiftAndSupervisor(): void
+    {
+        $category = MinorCategory::factory()->create();
+
+        /** @var User $minor1 */
+        $minor1 = User::factory()->create(['minor_category_id' => $category->id]);
+        /** @var User $minor2 */
+        $minor2 = User::factory()->create(['minor_category_id' => $category->id]);
+
+        /** @var User $supervisor */
+        $supervisor = User::factory()->create(['minor_category_id' => null]);
+        UserSupervisorStatus::factory()->willing()->create(['user_id' => $supervisor->id]);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+
+        // The minor themselves is on the shift
+        ShiftEntry::factory()->create(['user_id' => $minor1->id, 'shift_id' => $shift->id]);
+        // Another minor is on the shift (should be skipped)
+        ShiftEntry::factory()->create(['user_id' => $minor2->id, 'shift_id' => $shift->id]);
+        // A supervisor is also on the shift
+        ShiftEntry::factory()->create(['user_id' => $supervisor->id, 'shift_id' => $shift->id]);
+
+        // Should find the supervisor (after skipping both minors)
+        $this->assertTrue($this->service->shiftHasWillingSupervisor($shift, $minor1));
     }
 
     /**

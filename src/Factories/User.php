@@ -154,6 +154,12 @@ class User
             $validationRules['tshirt_size'] = $this->isRequired('tshirt_size') . '|shirt-size';
         }
 
+        // Minor registration support
+        $isMinorRegistrationEnabled = $this->config->get('enable_minor_registration', true);
+        if ($isMinorRegistrationEnabled) {
+            $validationRules['minor_category_id'] = 'optional|int';
+        }
+
         $data = $this->validate($rawData, $validationRules);
 
         // additional validations
@@ -222,11 +228,12 @@ class User
         $this->dbConnection->beginTransaction();
 
         $user = new EngelsystemUser([
-            'name'          => $data['username'],
-            'password'      => '',
-            'email'         => $data['email'],
-            'api_key'       => '',
-            'last_login_at' => null,
+            'name'              => $data['username'],
+            'password'          => '',
+            'email'             => $data['email'],
+            'api_key'           => '',
+            'last_login_at'     => null,
+            'minor_category_id' => $data['minor_category_id'] ?? null,
         ]);
         $user->save();
 

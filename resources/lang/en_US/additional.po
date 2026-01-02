@@ -795,3 +795,90 @@ msgstr "/metrics buckets"
 
 msgid "config.var_dump_server"
 msgstr "var_dump server"
+
+msgid "registration.age_category"
+msgstr "Age Category"
+
+msgid "registration.age_category_info"
+msgstr "Select your age category. Minors under 18 have additional protections and requirements."
+
+msgid "registration.minor_category"
+msgstr "I am..."
+
+msgid "registration.i_am_adult"
+msgstr "18 years or older (Adult)"
+
+msgid "registration.minor_category_hint"
+msgstr "Your category determines work hours and supervision requirements"
+
+msgid "registration.max_hours"
+msgstr "Maximum %hours% hours per day"
+
+msgid "registration.work_hours"
+msgstr "Work hours: %start% to %end%"
+
+msgid "registration.requires_supervisor"
+msgstr "Requires adult supervisor on shift"
+
+msgid "registration.minor.link_guardian"
+msgstr "Please link a guardian to complete your registration"
+
+msgid "registration.guardian_not_found"
+msgstr "Guardian account not found. Please check the username or email."
+
+msgid "registration.guardian_is_minor"
+msgstr "The specified user is also a minor and cannot be a guardian."
+
+msgid "registration.guardian_linked"
+msgstr "Guardian link request sent successfully."
+
+msgid "registration.guardian_link_skipped"
+msgstr "You can link a guardian later from your profile settings."
+
+msgid "registration.link_guardian.title"
+msgstr "Link Guardian"
+
+msgid "registration.link_guardian.welcome"
+msgstr "Welcome, %name%!"
+
+msgid "registration.link_guardian.info"
+msgstr "As a minor, you need a guardian linked to your account to sign up for shifts and participate fully in the event."
+
+msgid "registration.link_guardian.find_guardian"
+msgstr "Find Your Guardian"
+
+msgid "registration.link_guardian.find_guardian_hint"
+msgstr "Enter the username or email address of your parent or legal guardian who has an account."
+
+msgid "registration.link_guardian.guardian_identifier"
+msgstr "Guardian username or email"
+
+msgid "registration.link_guardian.guardian_identifier_hint"
+msgstr "Ask your guardian for their username or the email they registered with"
+
+msgid "registration.link_guardian.send_request"
+msgstr "Send Link Request"
+
+msgid "registration.link_guardian.skip_title"
+msgstr "Skip for Now"
+
+msgid "registration.link_guardian.skip_info"
+msgstr "You can skip this step and link a guardian later, but you won't be able to sign up for shifts until a guardian is linked and consent is provided."
+
+msgid "registration.link_guardian.skip"
+msgstr "Skip and Continue"
+
+msgid "registration.link_guardian.why_title"
+msgstr "Why Link a Guardian?"
+
+msgid "registration.link_guardian.why_text"
+msgstr "Linking a guardian ensures:"
+
+msgid "registration.link_guardian.why_item1"
+msgstr "Your safety during the event"
+
+msgid "registration.link_guardian.why_item2"
+msgstr "Compliance with youth protection laws"
+
+msgid "registration.link_guardian.why_item3"
+msgstr "A responsible adult can manage your shifts"

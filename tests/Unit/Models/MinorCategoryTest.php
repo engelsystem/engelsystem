@@ -7,6 +7,9 @@ namespace Engelsystem\Test\Unit\Models;
 use Engelsystem\Models\MinorCategory;
 use Engelsystem\Models\User\User;
 
+/**
+ * @covers \Engelsystem\Models\MinorCategory
+ */
 class MinorCategoryTest extends ModelTest
 {
     /**

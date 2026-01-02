@@ -8,6 +8,9 @@ use Carbon\Carbon;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserGuardian;
 
+/**
+ * @covers \Engelsystem\Models\UserGuardian
+ */
 class UserGuardianTest extends ModelTest
 {
     /**

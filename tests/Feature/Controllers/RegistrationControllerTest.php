@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @group registration-controller-tests
+ * @covers \Engelsystem\Controllers\RegistrationController
  */
 final class RegistrationControllerTest extends ApplicationFeatureTest
 {

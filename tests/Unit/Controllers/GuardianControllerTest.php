@@ -18,6 +18,13 @@ use Engelsystem\Services\MinorRestrictionService;
 use Engelsystem\Test\Unit\HasDatabase;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @covers \Engelsystem\Controllers\GuardianController
+ * @uses \Engelsystem\Models\MinorCategory
+ * @uses \Engelsystem\Models\UserGuardian
+ * @uses \Engelsystem\Services\GuardianService
+ * @uses \Engelsystem\Services\MinorRestrictionService
+ */
 class GuardianControllerTest extends ControllerTest
 {
     use HasDatabase;
@@ -37,6 +44,9 @@ class GuardianControllerTest extends ControllerTest
      */
     public function testDashboard(): void
     {
+        // First link guardian to minor so we have data to map
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
         $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
 
         $this->response->expects($this->once())
@@ -44,6 +54,16 @@ class GuardianControllerTest extends ControllerTest
             ->willReturnCallback(function ($view, $data) {
                 $this->assertEquals('pages/guardian/dashboard.twig', $view);
                 $this->assertArrayHasKey('minors', $data);
+                // Verify the minors data has the enriched fields
+                $this->assertCount(1, $data['minors']);
+                $minorData = $data['minors']->first();
+                $this->assertArrayHasKey('user', $minorData);
+                $this->assertArrayHasKey('category', $minorData);
+                $this->assertArrayHasKey('restrictions', $minorData);
+                $this->assertArrayHasKey('consentApproved', $minorData);
+                $this->assertArrayHasKey('upcomingShifts', $minorData);
+                $this->assertArrayHasKey('isPrimary', $minorData);
+                $this->assertArrayHasKey('dailyHoursUsed', $minorData);
                 return $this->response;
             });
 
@@ -444,7 +464,7 @@ class GuardianControllerTest extends ControllerTest
     {
         $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
 
-        $newCategory = MinorCategory::factory()->create(['name' => 'New Category']);
+        $newCategory = MinorCategory::factory()->active()->create(['name' => 'New Category']);
 
         $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
         $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
@@ -464,6 +484,428 @@ class GuardianControllerTest extends ControllerTest
     }
 
     /**
+     * @covers \Engelsystem\Controllers\GuardianController::changeCategory
+     */
+    public function testChangeCategoryInvalidCategory(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withParsedBody([
+                'minor_category_id' => 99999, // Non-existent
+            ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->changeCategory($this->request);
+
+        $this->assertHasNotification('guardian.invalid_category', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::changeCategory
+     */
+    public function testChangeCategoryInactiveCategory(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        $inactiveCategory = MinorCategory::factory()->create(['is_active' => false]);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withParsedBody([
+                'minor_category_id' => $inactiveCategory->id,
+            ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->changeCategory($this->request);
+
+        $this->assertHasNotification('Category is not active', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::changeCategory
+     */
+    public function testChangeCategoryNotLinked(): void
+    {
+        // Don't link guardian to minor
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withParsedBody(['minor_category_id' => $this->category->id]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->changeCategory($this->request);
+
+        $this->assertHasNotification('guardian.no_access', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::registerMinor
+     */
+    public function testRegisterMinorNotEligible(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->minor, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/'], $this->response);
+
+        $this->controller->registerMinor();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::saveRegisterMinor
+     */
+    public function testSaveRegisterMinorNotEligible(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->minor, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/'], $this->response);
+
+        $this->request = $this->request->withParsedBody([
+            'name'              => 'TestMinor',
+            'password'          => 'password123',
+            'minor_category_id' => $this->category->id,
+        ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->saveRegisterMinor($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::saveRegisterMinor
+     */
+    public function testSaveRegisterMinorInvalidCategory(): void
+    {
+        $inactiveCategory = MinorCategory::factory()->create(['is_active' => false]);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/register'], $this->response);
+
+        $this->request = $this->request->withParsedBody([
+            'name'              => 'UniqueTestMinor123',
+            'password'          => 'password123',
+            'minor_category_id' => $inactiveCategory->id,
+        ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->saveRegisterMinor($this->request);
+
+        $this->assertHasNotification('Invalid or inactive minor category', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::editMinor
+     */
+    public function testEditMinorNotLinked(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request->withAttribute('minor_id', $this->minor->id);
+        $this->controller->editMinor($this->request);
+
+        $this->assertHasNotification('guardian.no_access', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::saveMinor
+     */
+    public function testSaveMinorNotLinked(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withParsedBody(['email' => 'test@test.com']);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->saveMinor($this->request);
+
+        $this->assertHasNotification('guardian.no_access', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::consentForm
+     */
+    public function testConsentFormNotLinked(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request->withAttribute('minor_id', $this->minor->id);
+        $this->controller->consentForm($this->request);
+
+        $this->assertHasNotification('guardian.no_access', NotificationType::ERROR);
+    }
+
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::minorShifts
+     */
+    public function testMinorShiftsNotLinked(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request->withAttribute('minor_id', $this->minor->id);
+        $this->controller->minorShifts($this->request);
+
+        $this->assertHasNotification('guardian.no_access', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::addGuardian
+     */
+    public function testAddGuardianNotLinked(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withParsedBody([
+                'guardian_identifier' => 'someone',
+                'relationship_type'   => 'delegated',
+            ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->addGuardian($this->request);
+
+        $this->assertHasNotification('guardian.no_access', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::addGuardian
+     */
+    public function testAddGuardianNotFound(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withParsedBody([
+                'guardian_identifier' => 'nonexistent_user',
+                'relationship_type'   => 'delegated',
+            ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->addGuardian($this->request);
+
+        $this->assertHasNotification('guardian.guardian_not_found', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::addGuardian
+     */
+    public function testAddGuardianNotPrimary(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        /** @var User $secondaryGuardian */
+        $secondaryGuardian = User::factory()->create(['minor_category_id' => null]);
+        $this->guardianService->linkGuardianToMinor($secondaryGuardian, $this->minor);
+
+        /** @var User $newGuardian */
+        $newGuardian = User::factory()->create(['minor_category_id' => null]);
+
+        // Act as secondary guardian
+        $this->setExpects($this->auth, 'user', null, $secondaryGuardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withParsedBody([
+                'guardian_identifier' => $newGuardian->name,
+                'relationship_type'   => 'delegated',
+            ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->addGuardian($this->request);
+
+        $this->assertHasNotification('Only the primary guardian can add other guardians', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::removeGuardian
+     */
+    public function testRemoveGuardianNotLinked(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withAttribute('guardian_id', $this->guardian->id);
+
+        $this->controller->removeGuardian($this->request);
+
+        $this->assertHasNotification('guardian.no_access', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::removeGuardian
+     */
+    public function testRemoveGuardianNotFound(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withAttribute('guardian_id', 99999);
+
+        $this->controller->removeGuardian($this->request);
+
+        $this->assertHasNotification('guardian.guardian_not_found', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::removeGuardian
+     */
+    public function testRemoveGuardianPrimaryCannotRemoveSelf(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withAttribute('guardian_id', $this->guardian->id);
+
+        $this->controller->removeGuardian($this->request);
+
+        $this->assertHasNotification('Primary guardian cannot remove themselves', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::setPrimaryGuardian
+     */
+    public function testSetPrimaryGuardianNotLinked(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withAttribute('guardian_id', $this->guardian->id);
+
+        $this->controller->setPrimaryGuardian($this->request);
+
+        $this->assertHasNotification('guardian.no_access', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::setPrimaryGuardian
+     */
+    public function testSetPrimaryGuardianNotPrimary(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        /** @var User $secondaryGuardian */
+        $secondaryGuardian = User::factory()->create(['minor_category_id' => null]);
+        $this->guardianService->linkGuardianToMinor($secondaryGuardian, $this->minor);
+
+        // Act as secondary guardian
+        $this->setExpects($this->auth, 'user', null, $secondaryGuardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withAttribute('guardian_id', $this->guardian->id);
+
+        $this->controller->setPrimaryGuardian($this->request);
+
+        $this->assertHasNotification('guardian.not_primary', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::setPrimaryGuardian
+     */
+    public function testSetPrimaryGuardianNewPrimaryNotFound(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withAttribute('guardian_id', 99999);
+
+        $this->controller->setPrimaryGuardian($this->request);
+
+        $this->assertHasNotification('guardian.guardian_not_found', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::saveLinkMinor
+     */
+    public function testSaveLinkMinorNotEligible(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->minor, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/'], $this->response);
+
+        $this->request = $this->request->withParsedBody([
+            'minor_identifier'  => 'someone',
+            'relationship_type' => 'parent',
+        ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->saveLinkMinor($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::saveLinkMinor
+     */
+    public function testSaveLinkMinorAlreadyLinked(): void
+    {
+        // Create and link a minor first
+        /** @var User $linkedMinor */
+        $linkedMinor = User::factory()->create(['minor_category_id' => $this->category->id]);
+        $this->guardianService->linkGuardianToMinor($this->guardian, $linkedMinor);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/link'], $this->response);
+
+        $this->request = $this->request->withParsedBody([
+            'minor_identifier'  => $linkedMinor->name,
+            'relationship_type' => 'parent',
+        ]);
+
+        $this->controller->setValidator(new Validator());
+        $this->controller->saveLinkMinor($this->request);
+
+        $this->assertHasNotification('Guardian is already linked to this minor', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::viewMinor
+     */
+    public function testViewMinorMinorNotFound(): void
+    {
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian'], $this->response);
+
+        $this->request = $this->request->withAttribute('minor_id', 99999);
+        $this->controller->viewMinor($this->request);
+
+        $this->assertHasNotification('guardian.minor_not_found', NotificationType::ERROR);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\GuardianController::__construct
      */
     public function testPermissions(): void
@@ -471,9 +913,76 @@ class GuardianControllerTest extends ControllerTest
         $this->assertEquals(['user_guardian'], $this->controller->getPermissions());
     }
 
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::saveMinor
+     */
+    public function testSaveMinorServiceException(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        // Create a mock GuardianService that throws on updateMinorProfile
+        $mockGuardianService = $this->createMock(GuardianService::class);
+        $mockGuardianService->method('isEligibleGuardian')->willReturn(true);
+        $mockGuardianService->method('canManageMinor')->willReturn(true);
+        $mockGuardianService->method('updateMinorProfile')
+            ->willThrowException(new \InvalidArgumentException('Test exception'));
+
+        // Recreate controller with mock service
+        $this->app->instance(GuardianService::class, $mockGuardianService);
+        $controller = $this->app->make(GuardianController::class);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withParsedBody(['email' => 'test@test.com']);
+
+        $controller->setValidator(new Validator());
+        $controller->saveMinor($this->request);
+
+        $this->assertHasNotification('Test exception', NotificationType::ERROR);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\GuardianController::setPrimaryGuardian
+     */
+    public function testSetPrimaryGuardianServiceException(): void
+    {
+        $this->guardianService->linkGuardianToMinor($this->guardian, $this->minor);
+
+        /** @var User $secondaryGuardian */
+        $secondaryGuardian = User::factory()->create(['minor_category_id' => null]);
+        $this->guardianService->linkGuardianToMinor($secondaryGuardian, $this->minor);
+
+        // Create a mock GuardianService that throws on setPrimaryGuardian
+        $mockGuardianService = $this->createMock(GuardianService::class);
+        $mockGuardianService->method('isEligibleGuardian')->willReturn(true);
+        $mockGuardianService->method('canManageMinor')->willReturn(true);
+        $mockGuardianService->method('isPrimaryGuardian')->willReturn(true);
+        $mockGuardianService->method('setPrimaryGuardian')
+            ->willThrowException(new \InvalidArgumentException('Test set primary exception'));
+
+        // Recreate controller with mock service
+        $this->app->instance(GuardianService::class, $mockGuardianService);
+        $controller = $this->app->make(GuardianController::class);
+
+        $this->setExpects($this->auth, 'user', null, $this->guardian, $this->atLeastOnce());
+        $this->setExpects($this->redirector, 'to', ['/guardian/minor/' . $this->minor->id], $this->response);
+
+        $this->request = $this->request
+            ->withAttribute('minor_id', $this->minor->id)
+            ->withAttribute('guardian_id', $secondaryGuardian->id);
+
+        $controller->setPrimaryGuardian($this->request);
+
+        $this->assertHasNotification('Test set primary exception', NotificationType::ERROR);
+    }
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->initDatabase();
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);

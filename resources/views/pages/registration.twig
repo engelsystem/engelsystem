@@ -186,6 +186,75 @@
             </div>
         {% endif %}
 
+        {% if isMinorRegistrationEnabled and minorCategories|length > 0 %}
+        <div class="mb-5">
+            <h2>{{ __('registration.age_category') }}</h2>
+            <p class="text-muted">{{ __('registration.age_category_info') }}</p>
+
+            <div class="row">
+                <div class="col-md-8">
+                    {% set minorCategoryOptions = {} %}
+                    {% for category in minorCategories %}
+                        {% set minorCategoryOptions = minorCategoryOptions|merge({(category.id): category.name}) %}
+                    {% endfor %}
+                    {{ f.select(
+                        'minor_category_id',
+                        __('registration.minor_category'),
+                        minorCategoryOptions,
+                        {
+                            'default_option': __('registration.i_am_adult'),
+                            'selected': f.formData('minor_category_id', ''),
+                            'info': __('registration.minor_category_hint'),
+                        }
+                    ) }}
+                </div>
+            </div>
+
+            {# Show restriction info for each category #}
+            {% for category in minorCategories %}
+            <div class="minor-category-info" data-category-id="{{ category.id }}" style="display: none;">
+                <div class="alert alert-info">
+                    <strong>{{ category.name }}</strong>: {{ category.description }}
+                    <ul class="mb-0 mt-2">
+                        {% if category.max_hours_per_day %}
+                        <li>{{ __('registration.max_hours', {'hours': category.max_hours_per_day}) }}</li>
+                        {% endif %}
+                        {% if category.min_shift_start_hour is not null %}
+                        <li>{{ __('registration.work_hours', {'start': category.min_shift_start_hour ~ ':00', 'end': category.max_shift_end_hour ~ ':00'}) }}</li>
+                        {% endif %}
+                        {% if category.requires_supervisor %}
+                        <li>{{ __('registration.requires_supervisor') }}</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var select = document.querySelector('select[name="minor_category_id"]');
+            if (select) {
+                select.addEventListener('change', function() {
+                    document.querySelectorAll('.minor-category-info').forEach(function(el) {
+                        el.style.display = 'none';
+                    });
+                    if (this.value) {
+                        var info = document.querySelector('.minor-category-info[data-category-id="' + this.value + '"]');
+                        if (info) {
+                            info.style.display = 'block';
+                        }
+                    }
+                });
+                // Trigger change event on load if a value is already selected
+                if (select.value) {
+                    select.dispatchEvent(new Event('change'));
+                }
+            }
+        });
+        </script>
+        {% endif %}
+
         <div class="mb-5">
             <h2>{{ __('registration.event_data') }}</h2>
             <div class="row">

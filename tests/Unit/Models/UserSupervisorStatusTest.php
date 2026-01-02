@@ -7,6 +7,9 @@ namespace Engelsystem\Test\Unit\Models;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserSupervisorStatus;
 
+/**
+ * @covers \Engelsystem\Models\UserSupervisorStatus
+ */
 class UserSupervisorStatusTest extends ModelTest
 {
     /**

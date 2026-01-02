@@ -7,8 +7,10 @@ namespace Engelsystem\Test\Unit\Services;
 use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\MinorCategory;
+use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\UserSupervisorStatus;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserGuardian;
 use Engelsystem\Services\GuardianService;
@@ -17,6 +19,9 @@ use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use InvalidArgumentException;
 
+/**
+ * @covers \Engelsystem\Services\GuardianService
+ */
 class GuardianServiceTest extends TestCase
 {
     use HasDatabase;
@@ -648,6 +653,31 @@ class GuardianServiceTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Services\GuardianService::removeSecondaryGuardian
+     */
+    public function testRemoveSecondaryGuardianThrowsForNonPrimary(): void
+    {
+        $category = MinorCategory::factory()->create();
+        /** @var User $primaryGuardian */
+        $primaryGuardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $secondaryGuardian */
+        $secondaryGuardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $anotherGuardian */
+        $anotherGuardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        $this->service->linkGuardianToMinor($primaryGuardian, $minor);
+        $this->service->linkGuardianToMinor($secondaryGuardian, $minor);
+        $this->service->linkGuardianToMinor($anotherGuardian, $minor);
+
+        // Secondary guardian tries to remove another guardian
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Only the primary guardian can remove other guardians');
+        $this->service->removeSecondaryGuardian($secondaryGuardian, $minor, $anotherGuardian);
+    }
+
+    /**
      * @covers \Engelsystem\Services\GuardianService::getMinorUpcomingShifts
      */
     public function testGetMinorUpcomingShifts(): void
@@ -758,5 +788,306 @@ class GuardianServiceTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('User is not a minor');
         $this->service->generateMinorLinkCode($adult);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::signUpMinorForShift
+     */
+    public function testSignUpMinorForShift(): void
+    {
+        $category = MinorCategory::factory()->create([
+            'allowed_work_categories' => ['A', 'B', 'C'],
+            'requires_supervisor'     => false,
+        ]);
+
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+
+        /** @var User $approver */
+        $approver = User::factory()->create();
+
+        /** @var User $minor */
+        $minor = User::factory()->create([
+            'minor_category_id'           => $category->id,
+            'consent_approved_by_user_id' => $approver->id,
+            'consent_approved_at'         => Carbon::now(),
+        ]);
+
+        $this->service->linkGuardianToMinor($guardian, $minor);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::now()->addDays(1),
+            'end'                            => Carbon::now()->addDays(1)->addHours(2),
+            'requires_supervisor_for_minors' => false,
+        ]);
+
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create(['work_category' => 'A']);
+
+        $entry = $this->service->signUpMinorForShift($guardian, $minor, $shift, $angelType);
+
+        $this->assertInstanceOf(ShiftEntry::class, $entry);
+        $this->assertEquals($minor->id, $entry->user_id);
+        $this->assertEquals($shift->id, $entry->shift_id);
+        $this->assertEquals($angelType->id, $entry->angel_type_id);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::signUpMinorForShift
+     */
+    public function testSignUpMinorForShiftWithGuardianOnShift(): void
+    {
+        $category = MinorCategory::factory()->create([
+            'allowed_work_categories' => ['A', 'B', 'C'],
+            'requires_supervisor'     => false,
+        ]);
+
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+
+        /** @var User $approver */
+        $approver = User::factory()->create();
+
+        /** @var User $minor */
+        $minor = User::factory()->create([
+            'minor_category_id'           => $category->id,
+            'consent_approved_by_user_id' => $approver->id,
+            'consent_approved_at'         => Carbon::now(),
+        ]);
+
+        $this->service->linkGuardianToMinor($guardian, $minor);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::now()->addDays(1),
+            'end'                            => Carbon::now()->addDays(1)->addHours(2),
+            'requires_supervisor_for_minors' => false,
+        ]);
+
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create(['work_category' => 'A']);
+
+        // Add guardian to shift
+        ShiftEntry::factory()->create([
+            'shift_id'      => $shift->id,
+            'user_id'       => $guardian->id,
+            'angel_type_id' => $angelType->id,
+        ]);
+
+        $entry = $this->service->signUpMinorForShift($guardian, $minor, $shift, $angelType);
+
+        $this->assertEquals($guardian->id, $entry->supervised_by_user_id);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::signUpMinorForShift
+     */
+    public function testSignUpMinorForShiftThrowsWhenCannotManage(): void
+    {
+        $category = MinorCategory::factory()->create();
+
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        // Not linked
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Guardian cannot manage this minor');
+        $this->service->signUpMinorForShift($guardian, $minor, $shift, $angelType);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::signUpMinorForShift
+     */
+    public function testSignUpMinorForShiftThrowsWhenRestrictionsNotMet(): void
+    {
+        $category = MinorCategory::factory()->create([
+            'allowed_work_categories' => ['A'], // Only A allowed
+        ]);
+
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+
+        /** @var User $approver */
+        $approver = User::factory()->create();
+
+        /** @var User $minor */
+        $minor = User::factory()->create([
+            'minor_category_id'           => $category->id,
+            'consent_approved_by_user_id' => $approver->id,
+            'consent_approved_at'         => Carbon::now(),
+        ]);
+
+        $this->service->linkGuardianToMinor($guardian, $minor);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::now()->addDays(1),
+            'end'                            => Carbon::now()->addDays(1)->addHours(2),
+            'requires_supervisor_for_minors' => false,
+        ]);
+
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create(['work_category' => 'C']); // C not allowed
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->service->signUpMinorForShift($guardian, $minor, $shift, $angelType);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::removeMinorFromShift
+     */
+    public function testRemoveMinorFromShift(): void
+    {
+        $category = MinorCategory::factory()->create();
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        $this->service->linkGuardianToMinor($guardian, $minor);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+
+        $entry = ShiftEntry::factory()->create([
+            'shift_id'      => $shift->id,
+            'user_id'       => $minor->id,
+            'angel_type_id' => $angelType->id,
+        ]);
+
+        $this->service->removeMinorFromShift($guardian, $minor, $entry);
+
+        $this->assertNull(ShiftEntry::find($entry->id));
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::removeMinorFromShift
+     */
+    public function testRemoveMinorFromShiftThrowsWhenCannotManage(): void
+    {
+        $category = MinorCategory::factory()->create();
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        // Not linked
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+
+        $entry = ShiftEntry::factory()->create([
+            'shift_id'      => $shift->id,
+            'user_id'       => $minor->id,
+            'angel_type_id' => $angelType->id,
+        ]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Guardian cannot manage this minor');
+        $this->service->removeMinorFromShift($guardian, $minor, $entry);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::removeMinorFromShift
+     */
+    public function testRemoveMinorFromShiftThrowsWhenEntryNotBelongToMinor(): void
+    {
+        $category = MinorCategory::factory()->create();
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create(['minor_category_id' => null]);
+
+        $this->service->linkGuardianToMinor($guardian, $minor);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+
+        // Entry belongs to different user
+        $entry = ShiftEntry::factory()->create([
+            'shift_id'      => $shift->id,
+            'user_id'       => $otherUser->id,
+            'angel_type_id' => $angelType->id,
+        ]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Shift entry does not belong to this minor');
+        $this->service->removeMinorFromShift($guardian, $minor, $entry);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::setPrimaryGuardian
+     */
+    public function testSetPrimaryGuardianThrowsWhenNotLinked(): void
+    {
+        $category = MinorCategory::factory()->create();
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        // Not linked
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Guardian is not linked to this minor');
+        $this->service->setPrimaryGuardian($guardian, $minor);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::updateMinorProfile
+     */
+    public function testUpdateMinorProfileWithPronoun(): void
+    {
+        $category = MinorCategory::factory()->create();
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        $this->service->linkGuardianToMinor($guardian, $minor);
+
+        $updated = $this->service->updateMinorProfile($guardian, $minor, [
+            'email'      => 'pronoun_test@test.com',
+            'first_name' => 'TestFirst',
+            'last_name'  => 'TestLast',
+            'pronoun'    => 'they/them',
+        ]);
+
+        $this->assertEquals('pronoun_test@test.com', $updated->email);
+        $this->assertEquals('they/them', $updated->personalData->pronoun);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\GuardianService::changeMinorCategory
+     */
+    public function testChangeMinorCategoryThrowsWhenCannotManage(): void
+    {
+        $category1 = MinorCategory::factory()->active()->create();
+        $category2 = MinorCategory::factory()->active()->create();
+        /** @var User $guardian */
+        $guardian = User::factory()->create(['minor_category_id' => null]);
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category1->id]);
+
+        // Not linked
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Guardian cannot manage this minor');
+        $this->service->changeMinorCategory($guardian, $minor, $category2);
     }
 }
