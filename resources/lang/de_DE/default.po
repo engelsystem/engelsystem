@@ -149,6 +149,9 @@ msgstr "Informiere Dich über die Tätigkeiten bei denen Du uns helfen kannst."
 msgid "login.cookies"
 msgstr "Hinweis: Cookies müssen aktiviert sein!"
 
+msgid "password.recovery.send"
+msgstr "Passwort-zurücksetzen E-mail senden"
+
 msgid "password.reset.confirm"
 msgstr "Passwort wiederholen"
 
