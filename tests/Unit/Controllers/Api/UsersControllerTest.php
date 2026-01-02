@@ -9,6 +9,7 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
@@ -59,6 +60,7 @@ class UsersControllerTest extends ApiBaseControllerTest
             ->has(PersonalData::factory())
             ->has(Settings::factory())
             ->has(State::factory())
+            ->has(OAuth::factory())
             ->create();
 
         /** @var Authenticator|MockObject $auth */
@@ -86,6 +88,7 @@ class UsersControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('email', $data['data']);
         $this->assertArrayHasKey('dates', $data['data']);
         $this->assertArrayHasKey('contact', $data['data']);
+        $this->assertArrayHasKey('oauth', $data['data']);
     }
 
     /**
@@ -118,6 +121,7 @@ class UsersControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('id', $data['data']);
         $this->assertEquals($otherUser->id, $data['data']['id']);
         $this->assertArrayNotHasKey('dates', $data['data']);
+        $this->assertArrayNotHasKey('oauth', $data['data']);
     }
 
     /**

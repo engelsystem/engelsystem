@@ -18,6 +18,10 @@ class UserDetailResource extends UserResource
                 'planned_departure' => $this->model->personalData->planned_departure_date,
                 'arrival' => $this->model->state->arrival_date,
             ],
+            'oauth' => $this->model->oauth->map(fn($o) => [
+                'provider' => $o->provider,
+                'identifier' => $o->identifier,
+            ])->toArray(),
         ]);
     }
 }
