@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\User;
 
@@ -9,14 +10,18 @@ function mail_shift_assign(User $user, Shift $shift)
         return;
     }
 
-    $message = __('You have been assigned to a Shift:') . "\n";
-    $message .= $shift->shiftType->name . "\n";
-    $message .= $shift->title . "\n";
-    $message .= $shift->start->format(__('general.datetime')) . ' - ' . $shift->end->format(__('H:i')) . "\n";
-    $message .= $shift->location->name . "\n\n";
-    $message .= url('/shifts', ['action' => 'view', 'shift_id' => $shift->id]) . "\n";
+    if (auth()->user()?->id == $user->id) {
+        return;
+    }
 
-    engelsystem_email_to_user($user, __('Assigned to Shift'), $message, true);
+    /** @var EngelsystemMailer $mailer */
+    $mailer = app('mailer');
+    $mailer->sendViewTranslated(
+        $user,
+        'Assigned to Shift',
+        'emails/shift-assigned',
+        ['shift' => $shift, 'username' => $user->displayName]
+    );
 }
 
 function mail_shift_removed(User $user, Shift $shift)
@@ -25,11 +30,16 @@ function mail_shift_removed(User $user, Shift $shift)
         return;
     }
 
-    $message = __('You have been removed from a Shift:') . "\n";
-    $message .= $shift->shiftType->name . "\n";
-    $message .= $shift->title . "\n";
-    $message .= $shift->start->format(__('general.datetime')) . ' - ' . $shift->end->format(__('H:i')) . "\n";
-    $message .= $shift->location->name . "\n";
+    if (auth()->user()?->id == $user->id) {
+        return;
+    }
 
-    engelsystem_email_to_user($user, __('Removed from Shift'), $message, true);
+    /** @var EngelsystemMailer $mailer */
+    $mailer = app('mailer');
+    $mailer->sendViewTranslated(
+        $user,
+        'Removed from Shift',
+        'emails/shift-removed',
+        ['shift' => $shift, 'username' => $user->displayName]
+    );
 }

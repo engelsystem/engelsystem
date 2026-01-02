@@ -4,6 +4,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ m.icon('translate') }}
+            <span>{{ session_get('locale')|split('_')[0]|upper }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
             {{ menuLanguages()|join(" ")|raw }}
