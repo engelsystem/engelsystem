@@ -112,7 +112,15 @@ class ConfigServiceProvider extends ServiceProvider
             $config['timezone'] = $config['timezone']
                 ?? $configOptions['system']['config']['timezone']['default']
                 ?? 'UTC';
-
+            $config->set('config_options', $configOptions);
+        }
+        if ($configOptions['system']['config']['theme'] ?? null) {
+            foreach ($configOptions['system']['config']['themes']['default'] ?? [] as $id => $theme) {
+                $configOptions['system']['config']['theme']['data'][$id] = $theme['name'];
+            }
+            $configOptions['system']['config']['theme']['default'] = array_key_last(
+                $configOptions['system']['config']['theme']['data']
+            );
             $config->set('config_options', $configOptions);
         }
     }
