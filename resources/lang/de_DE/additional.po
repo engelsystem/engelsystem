@@ -586,6 +586,9 @@ msgstr "Sprachen"
 msgid "config.default_locale"
 msgstr "Standardsprache"
 
+msgid "config.theme"
+msgstr "Standard Theme"
+
 msgid "config.timezone"
 msgstr "Zeitzone"
 
@@ -738,69 +741,3 @@ msgstr "Anzahl an Minuten nach denen ein JWT abläuft, bspw für max. Zeit zum E
 
 msgid "config.warning_logout"
 msgstr "Änderungen führen zum logout aller Benutzer!"
-
-msgid "config.maintenance"
-msgstr "Wartungsmodus "
-
-msgid "config.maintenance.info"
-msgstr "Zeigt eine statische Seite bei allen Anfragen)"
-
-msgid "config.environment"
-msgstr "Umgebung"
-
-msgid "config.environment.info"
-msgstr "\"development\" zeigt mehr Debuggingmeldungen"
-
-msgid "config.documentation_url"
-msgstr "Dokumentations-URL"
-
-msgid "config.documentation_url.info"
-msgstr "Link zur Dokumentation/Hilfe"
-
-msgid "config.setup_admin_password"
-msgstr "Setup admin Password"
-
-msgid "config.setup_admin_password.info"
-msgstr "Initiales admin Password, verwendet beim datenbank aufsetzen"
-
-msgid "config.password_algorithm"
-msgstr "Password Algorithmus"
-
-msgid "config.password_algorithm.info"
-msgstr ""
-"Definiert den Algorithmus für `password_verify()`. "
-"Wen ein Benutzerpasswort mit einem alten Algorithmus gehasht wurde, "
-"wird es beim nächsten Login in das neue Format konvertiert. "
-"Siehe https://secure.php.net/manual/en/password.constants.php für eine vollständige Liste."
-
-msgid "config.username_regex"
-msgstr "Username Filter-Regex"
-
-msgid "config.username_regex.info"
-msgstr ""
-"Regulärer Ausdruck der einen nicht erlaubten Benutzernamen beschreibt. "
-"Standardmäßig sind nur Buchstaben artige Zeichen, Zahlen und \"-\", \"_\" sowie \".\" erlaubt."
-
-msgid "config.disabled_user_view_columns"
-msgstr "Versteckte User-Tabellen-Spalten"
-
-msgid "config.disabled_user_view_columns.info"
-msgstr "Versteckt dei Spalten in der Benutzer Tabelle im Adminbereich, möglich sind alle Sortierparameter"
-
-msgid "config.trusted_proxies"
-msgstr "Vertrauenswürdige Proxies"
-
-msgid "config.trusted_proxies.info"
-msgstr "IP Adressen von vertrauenswürdigen Reverse-Proxies als Array oder Kommaseparierte Liste"
-
-msgid "config.add_headers"
-msgstr "Weitere Header hinzufügen"
-
-msgid "config.jwt_algorithm"
-msgstr "JWT Algorithms"
-
-msgid "config.metrics"
-msgstr "/metrics buckets"
-
-msgid "config.var_dump_server"
-msgstr "var_dump Server"

@@ -1152,7 +1152,7 @@ msgid "config.edit.success"
 msgstr "Configuration updated successfully"
 
 msgid "config.warning_from_env"
-msgstr "Configuration option is overwritten from ENV!"
+msgstr "Configuration option is set from ENV!"
 
 msgid "config.warning_file_not_writable"
 msgstr "Configuration file config.local.php not writable!"
