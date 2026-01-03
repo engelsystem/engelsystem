@@ -268,7 +268,7 @@ class ConfigController extends BaseController
                 if ($config['type'] == 'select' || $config['type'] == 'select_multi') {
                     $data = [];
                     foreach ($config['data'] ?? [] as $dataKey => $dataValue) {
-                        if (is_int($dataKey)) {
+                        if (is_int($dataKey) && !($config['preserve_key'] ?? false)) {
                             $dataKey = $dataValue;
                             $dataValue = 'config.' . $name . '.select.' . $dataKey;
                         }
@@ -277,7 +277,7 @@ class ConfigController extends BaseController
                     $this->options[$key]['config'][$name]['data'] = $data;
                 }
 
-                // Set if overwritten from ENV
+                // Set if set from ENV
                 if (isset($fromEnv[$config['env']])) {
                     $this->options[$key]['config'][$name]['in_env'] = true;
                 }

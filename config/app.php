@@ -121,6 +121,7 @@ return [
          *             'validation' => ['[validation]'] # Optional, array of validation options
          *             'write_back' => false, # Optional, writes the config to config.local.php
          *                                                Only effective for single-server-installations
+         *             'preserve_key' => false, # Optional, preserves key in selects, disables auto translation
          *             # Optional translation: config.[name].info for information messages
          *             # Optionally other options used by the correlating field template
          *         ],
@@ -164,9 +165,6 @@ return [
                 ],
                 'faq_text' => [
                     'type' => 'text',
-                ],
-                'tshirt_link' => [
-                    'type' => 'url',
                 ],
                 'privacy_email' => [
                     'type' => 'string',
@@ -345,6 +343,9 @@ return [
                     'type' => 'boolean',
                     'default' => false,
                 ],
+                'tshirt_link' => [
+                    'type' => 'url',
+                ],
                 'night_shifts.enabled' => [
                     'type' => 'boolean',
                     'default' => true,
@@ -377,14 +378,24 @@ return [
                 // Locale data is set based on /resources/lang/
                 'locales' => [
                     'type' => 'select_multi',
+                    'required' => true,
                     'data' => [],
                 ],
                 'default_locale' => [
                     'type' => 'select',
+                    'required' => true,
                     'data' => [],
+                ],
+                'theme' => [
+                    'type' => 'select',
+                    'required' => true,
+                    // Data is set based on available themes
+                    'data' => [],
+                    'preserve_key' => true,
                 ],
                 'timezone' => [
                     'type' => 'select',
+                    'required' => true,
                     // Timezone data is set based on PHP config
                     'data' => [],
                     'default' => 'Europe/Berlin',
@@ -400,6 +411,7 @@ return [
                 ],
                 'database.driver' => [
                     'type' => 'select',
+                    'required' => true,
                     'default' => 'mysql',
                     'data' => [
                         'mysql',
@@ -410,30 +422,35 @@ return [
                 ],
                 'database.host' => [
                     'type' => 'string',
+                    'required' => true,
                     'default' => 'localhost',
                     'env' => 'MYSQL_HOST',
                     'write_back' => true,
                 ],
                 'database.database' => [
                     'type' => 'string',
+                    'required' => true,
                     'default' => 'engelsystem',
                     'env' => 'MYSQL_DATABASE',
                     'write_back' => true,
                 ],
                 'database.username' => [
                     'type' => 'string',
+                    'required' => true,
                     'default' => 'root',
                     'env' => 'MYSQL_USER',
                     'write_back' => true,
                 ],
                 'database.password' => [
                     'type' => 'password',
+                    'required' => true,
                     'default' => '',
                     'env' => 'MYSQL_PASSWORD',
                     'write_back' => true,
                 ],
                 'email.driver' => [
                     'type' => 'select',
+                    'required' => true,
                     'default' => 'mail',
                     'env' => 'MAIL_DRIVER',
                     'data' => [
@@ -450,6 +467,7 @@ return [
                 ],
                 'email.from.address' => [
                     'type' => 'email',
+                    'required' => true,
                     'default' => 'noreply@example.com',
                     'env' => 'MAIL_FROM_ADDRESS',
                 ],
@@ -491,6 +509,7 @@ return [
                 ],
                 'home_site' => [
                     'type' => 'select',
+                    'required' => true,
                     'default' => 'news',
                     'data' => [
                         'news' => '/news',
@@ -502,6 +521,7 @@ return [
                 ],
                 'display_news' => [
                     'type' => 'number',
+                    'required' => true,
                     'default' => 10,
                     'min' => 1,
                     'validation' => [
@@ -511,6 +531,7 @@ return [
                 ],
                 'display_users' => [
                     'type' => 'number',
+                    'required' => true,
                     'default' => 100,
                     'min' => 1,
                     'validation' => [
@@ -529,6 +550,7 @@ return [
                 ],
                 'password_min_length' => [
                     'type' => 'number',
+                    'required' => true,
                     'default' => 8,
                     'min' => 8,
                     'validation' => [
@@ -554,6 +576,7 @@ return [
                 ],
                 'session.driver' => [
                     'type' => 'select',
+                    'required' => true,
                     'default' => 'pdo',
                     'env' => 'SESSION_DRIVER',
                     'warning' => 'config.warning_logout',
@@ -565,6 +588,7 @@ return [
                 ],
                 'session.name' => [
                     'type' => 'string',
+                    'required' => true,
                     'default' => 'session',
                     'env' => 'SESSION_NAME',
                     'warning' => 'config.warning_logout',
@@ -572,12 +596,14 @@ return [
                 ],
                 'session.lifetime' => [
                     'type' => 'number',
+                    'required' => true,
                     'default' => 30,
                     'env' => 'SESSION_LIFETIME',
                     'write_back' => true,
                 ],
                 'jwt_expiration_time' => [
                     'type' => 'number',
+                    'required' => true,
                     'default' => 60 * 24 * 7,
                     'min' => 1,
                     'validation' => [
@@ -595,14 +621,61 @@ return [
                 'environment' => [
                     'type' => 'select',
                     'hidden' => true,
+                    'required' => true,
                     'default' => 'production',
                     'data' => ['production', 'development'],
                     'write_back' => true,
                 ],
+                'header_items' => [
+                    'type' => 'static',
+                    'default' => [
+                        // Name can be a translation string, permission is an engelsystem privilege
+                        // %lang% will be replaced with the users language
+                        // 'Name' => 'URL',
+                        // 'some.key' => ['URL', 'permission'],
+                        //'Foo' => ['https://foo.bar/batz-%lang%.html', 'logout'], // Permission: for logged-in users
+                    ],
+                    'hidden' => true,
+                ],
+                'footer_items' => [
+                    'type' => 'static',
+                    'default' => [
+                        // Name can be a translation string, permission is an engelsystem privilege
+                        // 'Name' => 'URL',
+                        // 'some.key' => ['URL', 'permission'],
+
+                        // URL to faq page
+                        'faq.faq' => ['/faq', 'faq.view'],
+
+                        // Contact email address, linked on every page
+                        //'Contact' => 'mailto:ticket@c3heaven.de',
+                    ],
+                    'hidden' => true,
+                ],
+                'contact_options' => [
+                    // Multiple contact options / links are possible, analogue to footer_items
+                    'type' => 'static',
+                    'default' => [
+                        // E-mail address
+                        //'general.email' => 'mailto:ticket@c3heaven.de',
+                    ],
+                    'hidden' => true,
+                ],
                 'documentation_url' => [
                     'type' => 'url',
-                    'hidden' => true,
                     'default' => 'https://engelsystem.de/doc/',
+                    'hidden' => true,
+                ],
+                'credits' => [
+                    'type' => 'static',
+                    'name' => 'credits.title',
+                    'default' => [
+                        'Contribution' => 'Please visit '
+                            . '[engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
+                            . 'you want to contribute, have found any '
+                            . '[bugs](https://github.com/engelsystem/engelsystem/issues) or need help.',
+                    ],
+                    'hidden' => true,
                 ],
                 'setup_admin_password' => [
                     'type' => 'string',
@@ -610,11 +683,13 @@ return [
                 ],
                 'password_algorithm' => [
                     'type' => 'string',
+                    'required' => true,
                     'default' => PASSWORD_DEFAULT,
                     'hidden' => true,
                 ],
                 'username_regex' => [
                     'type' => 'string',
+                    'required' => true,
                     'default' => '/([^\p{L}\p{N}_.-]+)/ui',
                     'hidden' => true,
                 ],
@@ -630,13 +705,224 @@ return [
                     'hidden' => true,
                     'write_back' => true,
                 ],
+                'headers' => [
+                    'type' => 'static',
+                    'default' => [
+                        'X-Content-Type-Options'  => 'nosniff',
+                        'X-Frame-Options'         => 'sameorigin',
+                        'Referrer-Policy'         => 'strict-origin-when-cross-origin',
+                        'Content-Security-Policy' =>
+                            'default-src \'self\'; '
+                            . ' style-src \'self\' \'unsafe-inline\'; '
+                            . 'img-src \'self\' data:;',
+                        'X-XSS-Protection'        => '1; mode=block',
+                        'Feature-Policy'          => 'autoplay \'none\'',
+                        //'Strict-Transport-Security' => 'max-age=7776000',
+                        //'Expect-CT' => 'max-age=7776000,enforce,report-uri="[uri]"',
+                    ],
+                    'hidden' => true,
+                ],
                 'add_headers' => [
                     'type' => 'boolean',
                     'default' => true,
                     'hidden' => true,
                 ],
+                'oauth' => [
+                    'type' => 'static',
+                    'default' => [
+                        // '[name]' => [config]
+                        /*
+                        '[name]' => [
+                            // Name shown to the user (optional)
+                            'name' => 'Some Provider',
+                            // Auth client ID
+                            'client_id' => 'engelsystem',
+                            // Auth client secret
+                            'client_secret' => '[generated by provider]',
+                            // Authentication URL
+                            'url_auth' => '[generated by provider]',
+                            // Token URL
+                            'url_token' => '[generated by provider]',
+                            // User info URL which provides userdata
+                            'url_info' => '[generated by provider]',
+                            // OAuth Scopes
+                            // 'scope' => ['openid'],
+                            // Info unique user id field
+                            'id' => 'uuid',
+                            // The following fields are used for registration
+                            // Info username field (optional)
+                            'username' => 'nickname',
+                            // Info email field (optional)
+                            'email' => 'email',
+                            // Info first name field (optional)
+                            'first_name' => 'first-name',
+                            // Info last name field (optional)
+                            'last_name' => 'last-name',
+                            // User URL to provider, linked on provider settings page (optional)
+                            'url' => '[provider page]',
+                            // Whether info attributes are nested arrays (optional)
+                            // For example {"user":{"name":"foo"}} can be accessed using user.name
+                            'nested_info' => false,
+                            // Only show after clicking the page title (optional)
+                            'hidden' => false,
+                            // Mark user as arrived when using this provider (optional)
+                            'mark_arrived' => false,
+                            // If the password field should be enabled on registration (optional)
+                            'enable_password' => false,
+                            // Allow registration even if disabled in config (optional)
+                            'allow_registration' => null,
+                            // Allow disconnecting user accounts from the oauth provider (optional)
+                            'allow_user_disconnect' => true,
+                            // Auto join teams
+                            // Info groups field (optional)
+                            'groups' => 'groups',
+                            // Groups to team (angel type) mapping (optional)
+                            'teams' => [
+                                '/Lorem' => 4, // 4 being the ID of the team (angel type)
+                                '/Foo Mod' => ['id' => 5, 'supporter' => true], // 5 = ID of the team (angel type)
+                            ],
+                        ],
+                        */
+                    ],
+                    'hidden' => true,
+                ],
+                'tshirt_sizes' => [
+                    'type' => 'static',
+                    'default' => [
+                        'S'    => 'Small Straight-Cut',
+                        'S-F'  => 'Small Fitted-Cut',
+                        'M'    => 'Medium Straight-Cut',
+                        'M-F'  => 'Medium Fitted-Cut',
+                        'L'    => 'Large Straight-Cut',
+                        'L-F'  => 'Large Fitted-Cut',
+                        'XL'   => 'XLarge Straight-Cut',
+                        'XL-F' => 'XLarge Fitted-Cut',
+                        '2XL'  => '2XLarge Straight-Cut',
+                        '3XL'  => '3XLarge Straight-Cut',
+                        '4XL'  => '4XLarge Straight-Cut',
+                    ],
+                    'hidden' => true,
+                ],
+                'themes' => [
+                    'type' => 'static',
+                    'default' => [
+                        // Index 1 loads theme1.scss etc.
+                        21 => [
+                            'name' => 'Engelsystem 39c3 (2025)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark',
+                        ],
+                        20 => [
+                            'name' => 'Engelsystem eh22-light (2025)',
+                            'type' => 'light',
+                            'navbar_classes' => 'navbar-light',
+                        ],
+                        19 => [
+                            'name' => 'Engelsystem eh22-dark (2025)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark',
+                        ],
+                        18 => [
+                            'name' => 'Engelsystem 38c3 (2024) - Lila, Lachs und Kurven',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark',
+                        ],
+                        17 => [
+                            'name' => 'Engelsystem 37c3 (2023)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark',
+                        ],
+                        16 => [
+                            'name' => 'Engelsystem cccamp23 (2023)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark',
+                        ],
+                        15 => [
+                            'name' => 'Engelsystem rC3 (2021)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark',
+                        ],
+                        14 => [
+                            'name' => 'Engelsystem rC3 teal (2020)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        13 => [
+                            'name' => 'Engelsystem rC3 violet (2020)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        12 => [
+                            'name' => 'Engelsystem 36c3 (2019)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        10 => [
+                            'name' => 'Engelsystem cccamp19 green (2019)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        9 => [
+                            'name' => 'Engelsystem cccamp19 yellow (2019)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        8 => [
+                            'name' => 'Engelsystem cccamp19 blue (2019)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        7 => [
+                            'name' => 'Engelsystem 35c3 dark (2018)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-primary navbar-dark bg-black border-primary',
+                        ],
+                        6 => [
+                            'name' => 'Engelsystem 34c3 dark (2017)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        5 => [
+                            'name' => 'Engelsystem 34c3 light (2017)',
+                            'type' => 'light',
+                            'navbar_classes' => 'navbar-light bg-light',
+                        ],
+                        4 => [
+                            'name' => 'Engelsystem 33c3 (2016)',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-body border-dark',
+                        ],
+                        3 => [
+                            'name' => 'Engelsystem 32c3 (2015)',
+                            'type' => 'light',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        2 => [
+                            'name' => 'Engelsystem cccamp15',
+                            'type' => 'light',
+                            'navbar_classes' => 'navbar-light bg-light',
+                        ],
+                        11 => [
+                            'name' => 'Engelsystem high contrast',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                        0 => [
+                            'name' => 'Engelsystem light',
+                            'type' => 'light',
+                            'navbar_classes' => 'navbar-light bg-light',
+                        ],
+                        1 => [
+                            'name' => 'Engelsystem dark',
+                            'type' => 'dark',
+                            'navbar_classes' => 'navbar-dark bg-black border-dark',
+                        ],
+                    ],
+                    'hidden' => true,
+                ],
                 'jwt_algorithm' => [
                     'type' => 'select',
+                    'required' => true,
                     // see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
                     // and firebase/php-jwt/src/JWT.php
                     'default' => 'HS256',
@@ -648,7 +934,7 @@ return [
                     'default' => [
                         // User work buckets in seconds
                         'work'    => [
-                            1 * 60 * 60, 1.5 * 60 * 60, 2 * 60 * 60, 3 * 60 * 60,
+                            1 * 60 * 60, (int) (1.5 * 60 * 60), 2 * 60 * 60, 3 * 60 * 60,
                             5 * 60 * 60, 10 * 60 * 60, 20 * 60 * 60,
                         ],
                         'voucher' => [0, 1, 2, 3, 5, 10, 15, 20],

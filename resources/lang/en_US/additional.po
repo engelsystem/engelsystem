@@ -580,6 +580,9 @@ msgstr "Languages"
 msgid "config.default_locale"
 msgstr "Default language"
 
+msgid "config.theme"
+msgstr "Default theme"
+
 msgid "config.timezone"
 msgstr "Time zone"
 
@@ -615,7 +618,7 @@ msgstr "E-mail driver"
 
 msgid "config.email.driver.info"
 msgstr ""
-"Configuring a symfony mailer dsn like smtps://[user]:[password]@smtp.[domain]:465 "
+"Configuring a Symfony mailer dsn like smtps://[user]:[password]@smtp.[domain]:465 "
 "is possible via config file or env variable"
 
 msgid "config.email.driver.select.smtp"
@@ -743,11 +746,32 @@ msgstr "Environment"
 msgid "config.environment.info"
 msgstr "Set to \"development\" to enable debugging messages"
 
+msgid "config.header_items"
+msgstr "Header menu links"
+
+msgid "config.header_items.info"
+msgstr "Available link placeholder: %lang%, see config/app.php for examples"
+
+msgid "config.footer_items"
+msgstr "Footer links"
+
+msgid "config.footer_items.info"
+msgstr "Available link placeholder: %lang%, see config/app.php for examples"
+
+msgid "config.contact_options"
+msgstr "Contact options"
+
+msgid "config.contact_options.info"
+msgstr "Other ways to ask heaven, see config/app.php for examples"
+
 msgid "config.documentation_url"
 msgstr "Documentation URL"
 
 msgid "config.documentation_url.info"
 msgstr "Link to documentation/help"
+
+msgid "config.credits.info"
+msgstr "A list of credits to be shown on the credits page, Markdown can be used, should not be changed"
 
 msgid "config.setup_admin_password"
 msgstr "Setup admin password"
@@ -784,8 +808,32 @@ msgstr "Trusted proxies"
 msgid "config.trusted_proxies.info"
 msgstr "IP addresses of reverse proxies that are trusted, can be an array or a comma separated list"
 
+msgid "config.headers"
+msgstr "HTTP response headers"
+
+msgid "config.headers.info"
+msgstr "See config/app.php for examples"
+
 msgid "config.add_headers"
 msgstr "Add additional headers"
+
+msgid "config.oauth"
+msgstr "OAuth providers"
+
+msgid "config.oauth.info"
+msgstr "Setup external authentication providers, see config/app.php for examples"
+
+msgid "config.tshirt_sizes"
+msgstr "Available T-shirt sizes"
+
+msgid "config.tshirt_sizes.info"
+msgstr "See config/app.php for examples"
+
+msgid "config.themes"
+msgstr "Supported themes"
+
+msgid "config.themes.info"
+msgstr "See config/app.php for examples"
 
 msgid "config.jwt_algorithm"
 msgstr "JWT algorithm"

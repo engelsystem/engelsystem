@@ -60,7 +60,7 @@ class ConfigServiceProviderTest extends TestCase
         $themes = $config->get('themes');
         // Persisted
         $this->assertArrayHasKey('foo', $themes);
-        // Overwritten in local config
+        // Set in local config
         $this->assertArrayNotHasKey('lorem', $themes);
     }
 
@@ -122,6 +122,14 @@ class ConfigServiceProviderTest extends TestCase
 
         $firstKey = array_key_first($timezoneData);
         $this->assertEquals($firstKey, $timezoneData[$firstKey]);
+
+        $this->assertArrayHasKey('theme', $conf);
+        $this->assertEquals(1, $conf['theme']);
+
+        $themeData = $conf['config_options']['system']['config']['theme']['data'] ?? null;
+        $this->assertNotEmpty($themeData);
+
+        $this->assertEquals([42 => 'test', 1 => 'first'], $themeData);
     }
 
     /**

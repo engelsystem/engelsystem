@@ -44,6 +44,15 @@ return [
                     'data' => [],
                     'default' => 'Test/Testing',
                 ],
+                'theme' => [
+                    'data' => [],
+                ],
+                'themes' => [
+                    'default' => [
+                        42 => ['name' => 'test'],
+                        1 => ['name' => 'first'],
+                    ],
+                ],
             ],
         ],
     ],
