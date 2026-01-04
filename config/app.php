@@ -40,6 +40,9 @@ return [
         \Engelsystem\Helpers\DumpServerServiceProvider::class,
         \Engelsystem\Helpers\UuidServiceProvider::class,
         \Engelsystem\Controllers\Api\UsesAuthServiceProvider::class,
+
+        // Plugins
+        \Engelsystem\Plugins\PluginServiceProvider::class,
     ],
 
     // Application middleware
@@ -60,6 +63,9 @@ return [
         \Engelsystem\Middleware\VerifyCsrfToken::class,
         \Engelsystem\Middleware\RouteDispatcher::class,
         \Engelsystem\Middleware\SessionHandler::class,
+
+        // Run middleware from plugins
+        \Engelsystem\Middleware\PluginDispatcher::class,
 
         // Handle request
         \Engelsystem\Middleware\RequestHandler::class,

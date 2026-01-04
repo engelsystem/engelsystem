@@ -1,0 +1,18 @@
+# Generic cache files
+*~
+.~*
+*.tmp
+*.temp
+*.DS_Store
+.*.swp
+*.out
+*.cache
+Thumbs.db
+.project
+.buildpath
+.settings
+_vimrc_local.vim
+.sass-cache
+
+# Project files
+/lang/*.mo

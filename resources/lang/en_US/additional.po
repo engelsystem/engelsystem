@@ -858,3 +858,18 @@ msgstr "/metrics buckets"
 
 msgid "config.var_dump_server"
 msgstr "var_dump server"
+
+msgid "plugin.install.success"
+msgstr "Plugin installed successfully"
+
+msgid "plugin.uninstall.success"
+msgstr "Plugin uninstalled successfully"
+
+msgid "plugin.update.success"
+msgstr "Plugin updated successfully"
+
+msgid "plugin.enable.success"
+msgstr "Plugin enabled successfully"
+
+msgid "plugin.disable.success"
+msgstr "Plugin disabled successfully"
