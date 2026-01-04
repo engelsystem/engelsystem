@@ -1,0 +1,157 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}
+    {{ __('plugin.admin') }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                {{ block('title') }}
+            </h1>
+        </div>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+            {% block row %}
+                <div class="col-md-12">
+                    {% block plugins %}
+                        <div class="table-responsive table-responsive-sticky-header">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>{{ __('general.name') }}</th>
+                                    <th>{{ __('plugin.version') }}</th>
+                                    <th>{{ __('plugin.description') }}</th>
+                                    <th>{{ __('plugin.state') }}</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for plugin in plugins %}
+                                    {% set installed = installedPlugins.get(plugin.pluginName) %}
+                                    <tr>
+                                        <td title="{{ plugin.name }}">
+                                            {% if plugin.homepage %}
+                                                <a href="{{ plugin.homepage }}" target="_blank">
+                                                    {{ plugin.pluginName }}
+                                                </a>
+                                            {% else %}
+                                                {{ plugin.pluginName }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if installed %}
+                                                {{ installed.version }}
+                                                {% if installed.version != plugin.version %}
+                                                    ({{ plugin.version }})
+                                                {% endif %}
+                                            {% else %}
+                                                {{ plugin.version }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ plugin.description }}{% if plugin.description %}<br>{% endif %}
+                                            {% if plugin.authors %}
+                                                {{ __('plugin.by') }}
+                                                {% for author in plugin.authors %}
+                                                    {% set email = author.email|default('') %}
+                                                    {% set name = author.name|default(email) %}
+                                                    {% if email %}
+                                                        <a href="mailto:{{ email }}">{{ name }}</a>
+                                                    {%- else %}
+                                                        {{ name }}
+                                                    {%- endif %}
+                                                    {%- if not loop.last %},{% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if installed %}
+                                                {% if installed.version != plugin.version %}
+                                                    {{ __('plugin.state.update') }}
+                                                {%- else %}
+                                                    {{ __('plugin.state.installed') }}
+                                                {%- endif %},
+                                                {% if installed.enabled %}
+                                                    {{ __('plugin.state.enabled') }}
+                                                {%- else %}
+                                                    {{ __('plugin.state.disabled') }}
+                                                {%- endif %}
+                                            {% else %}
+                                                {{ __('plugin.state.install') }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <form
+                                                method="post"
+                                                action="{{ url('/admin/plugins/' ~ plugin.pluginName) }}"
+                                            >
+                                                {{ csrf() }}
+
+                                                <div class="btn-group">
+                                                    {% if installed and installed.version != plugin.version %}
+                                                        {{ f.save(null, {
+                                                            'name': 'action',
+                                                            'value': 'update',
+                                                            'title': __('plugin.update'),
+                                                            'icon_left': 'arrow-up-square',
+                                                            'btn_type': 'success',
+                                                            'size': 'sm',
+                                                        }) }}
+                                                    {% endif %}
+
+                                                    {% if installed %}
+                                                        {% if not installed.enabled %}
+                                                            {{ f.save(null, {
+                                                                'name': 'action',
+                                                                'value': 'enable',
+                                                                'title': __('plugin.enable'),
+                                                                'icon_left': 'plus',
+                                                                'btn_type': 'info',
+                                                                'size': 'sm'
+                                                            }) }}
+                                                        {% else %}
+                                                            {{ f.save(null, {
+                                                                'name': 'action',
+                                                                'value': 'disable',
+                                                                'title': __('plugin.disable'),
+                                                                'icon_left': 'dash',
+                                                                'btn_type': 'info',
+                                                                'size': 'sm'
+                                                            }) }}
+                                                        {% endif %}
+                                                        {{ f.delete(null, {
+                                                            'name': 'action',
+                                                            'value': 'uninstall',
+                                                            'title': __('plugin.uninstall'),
+                                                            'confirm_text': __('plugin.uninstall.title', [plugin.pluginName|e]),
+                                                            'size': 'sm'
+                                                        }) }}
+                                                    {% else %}
+                                                        {{ f.save(null, {
+                                                            'name': 'action',
+                                                            'value': 'install',
+                                                            'title': __('plugin.install'),
+                                                            'size': 'sm'
+                                                        }) }}
+                                                    {% endif %}
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -53,17 +53,19 @@
     {% endif %}
 {%- endmacro %}
 
-<form method="post">
-    {{ csrf() }}
-    {% for name, option in config %}
-        {% if not option.permission|default(false) or can(option.permission) %}
-            <div class="row">
-                <div class="col-md-12">
-                    {{ _self.field(name, option) }}
+{% block form %}
+    <form method="post">
+        {{ csrf() }}
+        {% for name, option in config %}
+            {% if not option.permission|default(false) or can(option.permission) %}
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ _self.field(name, option) }}
+                    </div>
                 </div>
-            </div>
-        {% endif %}
-    {% endfor %}
+            {% endif %}
+        {% endfor %}
 
-    {{ f.save(__('form.save')) }}
-</form>
+        {{ f.save(__('form.save')) }}
+    </form>
+{% endblock %}

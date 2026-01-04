@@ -1,0 +1,14 @@
+{% extends "views/admin/config/settings.twig" %}
+
+{% import 'macros/base.twig' as m %}
+
+{% block form %}
+    {# Add info alert to event config page #}
+    {% if page == 'event' %}
+        <div class="mt-3">
+            {{ m.alert(__('demo.info'), 'info') }}
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

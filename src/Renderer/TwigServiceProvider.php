@@ -76,6 +76,21 @@ class TwigServiceProvider extends ServiceProvider
             $dev = $this->app->get('twig.extension.develop');
             $dev->setDumper($this->app->make(VarDumper::class));
         }
+
+        // Prepend views from plugins
+        foreach ($this->app->tagged('plugin.path') as $path) {
+            $viewsPath = $path . 'views/';
+            if (!is_dir($viewsPath)) {
+                continue;
+            }
+
+            foreach ($this->app->tagged('twig.loader') as $loader) {
+                if (!$loader instanceof FilesystemLoader) {
+                    continue;
+                }
+                $loader->prependPath($viewsPath);
+            }
+        }
     }
 
     protected function registerTwigEngine(): void

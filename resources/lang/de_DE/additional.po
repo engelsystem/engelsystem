@@ -755,3 +755,18 @@ msgstr "Anzahl Sekunden die bei externen Anfragen gewartet wird, zum Beispiel be
 
 msgid "config.warning_logout"
 msgstr "Änderungen führen zum logout aller Benutzer!"
+
+msgid "plugin.install.success"
+msgstr "Plugin erfolgreich installiert"
+
+msgid "plugin.uninstall.success"
+msgstr "Plugin erfolgreich deinstalliert"
+
+msgid "plugin.update.success"
+msgstr "Plugin erfolgreich aktualisiert"
+
+msgid "plugin.enable.success"
+msgstr "Plugin erfolgreich aktiviert"
+
+msgid "plugin.disable.success"
+msgstr "Plugin erfolgreich deaktiviert"

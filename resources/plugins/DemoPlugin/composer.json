@@ -1,0 +1,48 @@
+{
+    "type": "engelsystem-plugin",
+    "name": "demo/plugin",
+    "description": "This is a demo plugin",
+    "version": "0.0.1-beta",
+    "license": "LGPL-2.0-or-later",
+    "homepage": "https://engelsystem.de",
+    "authors": [
+        {
+            "name": "Demo Author",
+            "email": "test@example.com"
+        }
+    ],
+    "extra": {
+        "providers": [
+            "Demo\\Plugin\\ServiceProvider"
+        ],
+        "middleware": [
+            "Demo\\Plugin\\Middleware"
+        ],
+        "event_handlers": {
+            "news.created": "Demo\\Plugin\\EventHandler",
+            "news.updated": "Demo\\Plugin\\EventHandler"
+        },
+        "config_options": {
+            "event": {
+                "config": {
+                    "demo_option": {
+                        "type": "string",
+                        "default": "Demo config option!"
+                    }
+                }
+            }
+        },
+        "routes": {
+            "/demo": "Demo\\Plugin\\Controller@handle",
+            "/demo/save": [
+                "Demo\\Plugin\\Controller@save",
+                "POST"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Demo\\Plugin\\": "src/"
+        }
+    }
+}
