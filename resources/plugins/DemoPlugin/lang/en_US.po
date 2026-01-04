@@ -1,0 +1,14 @@
+msgid "config.demo_option"
+msgstr "Demo option"
+
+msgid "demo.info"
+msgstr "The demo plugin config option can be found at the end"
+
+msgid "demo.title"
+msgstr "Demo Plugin"
+
+msgid "demo.page"
+msgstr "Page"
+
+msgid "demo.input"
+msgstr "Update user info"

@@ -212,6 +212,15 @@ $route->addGroup(
             }
         );
 
+        // Plugins
+        $route->addGroup(
+            '/plugins',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\PluginsController@list');
+                $route->post('/{plugin:\w+}', 'Admin\\PluginsController@updateState');
+            }
+        );
+
         // Schedule
         $route->addGroup(
             '/schedule',

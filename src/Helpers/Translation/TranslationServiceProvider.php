@@ -114,6 +114,17 @@ class TranslationServiceProvider extends ServiceProvider
             $translations = $this->loadFile($file, $translations);
         }
 
+        foreach ($this->app->tagged('plugin.path') as $path) {
+            $filepath = $path . 'lang/' . $locale;
+            $file = $filepath . '.mo';
+
+            if (!file_exists($file)) {
+                $file = $filepath . '.po';
+            }
+
+            $translations = $this->loadFile($file, $translations);
+        }
+
         $file = $this->getFile($locale, $this->app->get('path.config') . '/lang', 'custom');
         $translations = $this->loadFile($file, $translations);
 
