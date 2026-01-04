@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Helpers\Translation;
 
-use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Translation\TranslationServiceProvider;
 use Engelsystem\Helpers\Translation\Translator;
@@ -116,9 +115,7 @@ class TranslationServiceProviderTest extends ServiceProviderTest
      */
     public function testGetTranslator(): void
     {
-        $app = $this->getConfiguredApp();
-
-        $serviceProvider = new TranslationServiceProvider($app);
+        $serviceProvider = new TranslationServiceProvider($this->app);
 
         // Get translator
         $translator = $serviceProvider->getTranslator('fo_OO');
@@ -137,9 +134,7 @@ class TranslationServiceProviderTest extends ServiceProviderTest
      */
     public function testGetTranslatorFromPo(): void
     {
-        $app = $this->getConfiguredApp();
-
-        $serviceProvider = new TranslationServiceProvider($app);
+        $serviceProvider = new TranslationServiceProvider($this->app);
 
         // Get translator using a .po file
         $translator = $serviceProvider->getTranslator('ba_RR');
@@ -152,9 +147,7 @@ class TranslationServiceProviderTest extends ServiceProviderTest
      */
     public function testGetTranslatorCustom(): void
     {
-        $app = $this->getConfiguredApp();
-
-        $serviceProvider = new TranslationServiceProvider($app);
+        $serviceProvider = new TranslationServiceProvider($this->app);
 
         // Get translation from the custom.po file
         $translator = $serviceProvider->getTranslator('ba_RR');
@@ -163,14 +156,29 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         $this->assertEquals('Custom overwritten', $translator->gettext('msg.overwritten'));
     }
 
-    private function getConfiguredApp(): Application|MockObject
+    /**
+     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getTranslator
+     */
+    public function testGetTranslatorPlugins(): void
     {
-        $app = $this->getApp(['get']);
-        $app->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(['path.lang'], ['path.config'])
-            ->willReturn(__DIR__ . '/Assets', __DIR__ . '/Assets/config');
+        $this->app->instance('a', __DIR__ . '/Stub/TestLangPlugin/');
+        $this->app->tag('a', 'plugin.path');
 
-        return $app;
+        $serviceProvider = new TranslationServiceProvider($this->app);
+
+        $translator = $serviceProvider->getTranslator('de_DE');
+        $this->assertEquals('from de po', $translator->gettext('some.test.content'));
+        $this->assertEquals('Plugin DE foo.bar', $translator->gettext('foo.bar'));
+
+        $translator = $serviceProvider->getTranslator('te_ST');
+        $this->assertEquals('from_mo', $translator->gettext('some.test.content'));
+    }
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->instance('path.lang', __DIR__ . '/Assets');
+        $this->app->instance('path.config', __DIR__ . '/Assets/config');
     }
 }

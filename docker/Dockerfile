@@ -27,6 +27,7 @@ COPY db/ /app/db
 COPY includes/ /app/includes
 COPY public/ /app/public
 COPY resources/api /app/resources/api
+COPY resources/plugins /app/resources/plugins
 COPY resources/views /app/resources/views
 COPY src/ /app/src
 COPY storage/ /app/storage

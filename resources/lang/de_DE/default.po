@@ -2159,3 +2159,51 @@ msgstr "Konfiguration wird aus ENV variable überschrieben!"
 
 msgid "config.warning_file_not_writable"
 msgstr "Konfigurationsdatei config.local.php ist nicht beschreibbar!"
+
+msgid "plugin.admin"
+msgstr "Plugins"
+
+msgid "plugin.version"
+msgstr "Version"
+
+msgid "plugin.description"
+msgstr "Beschreibung"
+
+msgid "plugin.state"
+msgstr "Status"
+
+msgid "plugin.by"
+msgstr "Von:"
+
+msgid "plugin.state.update"
+msgstr "Update ausstehend"
+
+msgid "plugin.state.installed"
+msgstr "Installiert"
+
+msgid "plugin.state.install"
+msgstr "Nicht installiert"
+
+msgid "plugin.state.enabled"
+msgstr "Aktiviert"
+
+msgid "plugin.state.disabled"
+msgstr "Deaktiviert"
+
+msgid "plugin.update"
+msgstr "Plugin aktualisieren"
+
+msgid "plugin.uninstall"
+msgstr "Plugin deinstallieren"
+
+msgid "plugin.uninstall.title"
+msgstr "Möchtest du wirklich das Plugin \"%s\" deinstallieren?"
+
+msgid "plugin.install"
+msgstr "Plugin installieren"
+
+msgid "plugin.enable"
+msgstr "Plugin aktivieren"
+
+msgid "plugin.disable"
+msgstr "Plugin deaktivieren"

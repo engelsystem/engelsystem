@@ -1174,3 +1174,51 @@ msgstr "Configuration option is set from ENV!"
 
 msgid "config.warning_file_not_writable"
 msgstr "Configuration file config.local.php not writable!"
+
+msgid "plugin.admin"
+msgstr "Plugins"
+
+msgid "plugin.version"
+msgstr "Version"
+
+msgid "plugin.description"
+msgstr "Description"
+
+msgid "plugin.state"
+msgstr "Status"
+
+msgid "plugin.by"
+msgstr "By:"
+
+msgid "plugin.state.update"
+msgstr "Update pending"
+
+msgid "plugin.state.installed"
+msgstr "Installed"
+
+msgid "plugin.state.install"
+msgstr "Not installed"
+
+msgid "plugin.state.enabled"
+msgstr "Enabled"
+
+msgid "plugin.state.disabled"
+msgstr "Disabled"
+
+msgid "plugin.update"
+msgstr "Update plugin"
+
+msgid "plugin.uninstall"
+msgstr "Uninstall plugin"
+
+msgid "plugin.uninstall.title"
+msgstr "Do you really want du uninstall the plugin \"%s\"?"
+
+msgid "plugin.install"
+msgstr "Install plugin"
+
+msgid "plugin.enable"
+msgstr "Enable plugin"
+
+msgid "plugin.disable"
+msgstr "Disable plugin"
