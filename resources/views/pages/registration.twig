@@ -217,10 +217,10 @@
                     <strong>{{ category.name }}</strong>: {{ category.description }}
                     <ul class="mb-0 mt-2">
                         {% if category.max_hours_per_day %}
-                        <li>{{ __('registration.max_hours', {'hours': category.max_hours_per_day}) }}</li>
+                        <li>{{ __('registration.max_hours', [category.max_hours_per_day]) }}</li>
                         {% endif %}
                         {% if category.min_shift_start_hour is not null %}
-                        <li>{{ __('registration.work_hours', {'start': category.min_shift_start_hour ~ ':00', 'end': category.max_shift_end_hour ~ ':00'}) }}</li>
+                        <li>{{ __('registration.work_hours', [category.min_shift_start_hour ~ ':00', category.max_shift_end_hour ~ ':00']) }}</li>
                         {% endif %}
                         {% if category.requires_supervisor %}
                         <li>{{ __('registration.requires_supervisor') }}</li>

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;
-use Illuminate\Database\Schema\Builder as SchemaBuilder;
-use Illuminate\Support\Facades\DB;
 
 class SeedDefaultMinorCategories extends Migration
 {
@@ -28,7 +26,7 @@ class SeedDefaultMinorCategories extends Migration
         $connection->table('minor_categories')->insert([
             [
                 'name'                    => 'Accompanying Child',
-                'description'             => 'Under 13, no volunteer work permitted. Must stay with guardian at all times.',
+                'description'             => 'Under 13, no work. Must stay with guardian.',
                 'min_shift_start_hour'    => null,
                 'max_shift_end_hour'      => null,
                 'max_hours_per_day'       => 0,
@@ -43,7 +41,7 @@ class SeedDefaultMinorCategories extends Migration
             ],
             [
                 'name'                    => 'Junior Angel',
-                'description'             => 'Ages 13-14, or 15-17 during school term. Max 2 hours/day, 8:00-18:00, light work only.',
+                'description'             => 'Ages 13-14, or 15-17 in school term. Max 2h/day, 8-18h, light work.',
                 'min_shift_start_hour'    => 8,
                 'max_shift_end_hour'      => 18,
                 'max_hours_per_day'       => 2,
@@ -58,7 +56,7 @@ class SeedDefaultMinorCategories extends Migration
             ],
             [
                 'name'                    => 'Teen Angel',
-                'description'             => 'Ages 15-17, post-school or during holidays. Max 8 hours/day, 6:00-20:00, light and medium work.',
+                'description'             => 'Ages 15-17, holidays. Max 8h/day, 6-20h.',
                 'min_shift_start_hour'    => 6,
                 'max_shift_end_hour'      => 20,
                 'max_hours_per_day'       => 8,

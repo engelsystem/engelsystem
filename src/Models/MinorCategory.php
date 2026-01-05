@@ -35,6 +35,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|MinorCategory[] whereId($value)
  * @method static QueryBuilder|MinorCategory[] whereName($value)
  * @method static QueryBuilder|MinorCategory[] whereIsActive($value)
+ * @method static Builder|MinorCategory active()
  */
 class MinorCategory extends BaseModel
 {

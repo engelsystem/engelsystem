@@ -23,7 +23,7 @@
             "composer phpcs:setup",
             "phpcbf -p"
         ],
-        "phpstan": "phpstan",
+        "phpstan": "phpstan --memory-limit=512M",
         "phpunit": "php -d memory_limit=-1 vendor/bin/phpunit",
         "phpunit:coverage": "php -d memory_limit=-1 vendor/bin/phpunit --coverage-text --coverage-html ./public/coverage/"
     },

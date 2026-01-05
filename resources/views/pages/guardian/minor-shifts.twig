@@ -25,11 +25,11 @@
                 <div class="progress" style="height: 20px;">
                     {% set percentage = (dailyHoursUsed / dailyHoursMax * 100)|round %}
                     <div class="progress-bar {{ percentage >= 100 ? 'bg-danger' : (percentage >= 80 ? 'bg-warning' : 'bg-success') }}"
-                         role="progressbar"
-                         style="width: {{ percentage }}%"
-                         aria-valuenow="{{ dailyHoursUsed }}"
-                         aria-valuemin="0"
-                         aria-valuemax="{{ dailyHoursMax }}">
+                        role="progressbar"
+                        style="width: {{ percentage }}%"
+                        aria-valuenow="{{ dailyHoursUsed }}"
+                        aria-valuemin="0"
+                        aria-valuemax="{{ dailyHoursMax }}">
                         {{ percentage }}%
                     </div>
                 </div>

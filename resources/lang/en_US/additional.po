@@ -812,10 +812,10 @@ msgid "registration.minor_category_hint"
 msgstr "Your category determines work hours and supervision requirements"
 
 msgid "registration.max_hours"
-msgstr "Maximum %hours% hours per day"
+msgstr "Maximum %d hours per day"
 
 msgid "registration.work_hours"
-msgstr "Work hours: %start% to %end%"
+msgstr "Work hours: %s to %s"
 
 msgid "registration.requires_supervisor"
 msgstr "Requires adult supervisor on shift"

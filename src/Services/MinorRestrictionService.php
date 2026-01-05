@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Engelsystem\Services;
 
 use Carbon\Carbon;
-use Engelsystem\Models\AngelType;
 use Engelsystem\Models\MinorCategory;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -38,17 +37,6 @@ class MinorRestrictionService
     }
 
     /**
-     * Check if a user can work a specific angel type.
-     */
-    public function canWorkAngelType(User $user, AngelType $angelType): bool
-    {
-        $restrictions = $this->getRestrictions($user);
-        $workCategory = $angelType->work_category ?? 'C';
-
-        return $restrictions->allowsWorkCategory($workCategory);
-    }
-
-    /**
      * Get the restrictions for a user based on their minor category.
      */
     public function getRestrictions(User $user): MinorRestrictions
@@ -73,11 +61,8 @@ class MinorRestrictionService
     /**
      * Validate whether a user can work a specific shift.
      */
-    public function canWorkShift(
-        User $user,
-        Shift $shift,
-        ?AngelType $angelType = null
-    ): ShiftValidationResult {
+    public function canWorkShift(User $user, Shift $shift): ShiftValidationResult
+    {
         if (!$this->isMinor($user)) {
             return ShiftValidationResult::success();
         }
@@ -90,17 +75,16 @@ class MinorRestrictionService
             $errors[] = 'Consent must be verified at arrival before signing up for shifts';
         }
 
-        // Check work category
-        if ($angelType !== null) {
-            $workCategory = $angelType->work_category ?? 'C';
-            if (!$restrictions->allowsWorkCategory($workCategory)) {
-                $errors[] = sprintf(
-                    'Angel type "%s" (category %s) is not permitted. Allowed: %s',
-                    $angelType->name,
-                    $workCategory,
-                    implode(', ', $restrictions->allowedWorkCategories)
-                );
-            }
+        // Check work category (from ShiftType with possible override)
+        $effectiveCategory = $shift->getEffectiveWorkCategory();
+        if (!$restrictions->allowsWorkCategory($effectiveCategory)) {
+            $shiftTypeName = $shift->shiftType->name ?? 'Unknown';
+            $errors[] = sprintf(
+                'This shift (%s) is category %s work. You are eligible for: %s',
+                $shiftTypeName,
+                $effectiveCategory,
+                implode(', ', $restrictions->allowedWorkCategories)
+            );
         }
 
         // Check shift start time
@@ -300,5 +284,13 @@ class MinorRestrictionService
     public function countsTowardQuota(User $user): bool
     {
         return $this->getRestrictions($user)->canFillSlot;
+    }
+
+    /**
+     * Check if a shift allows accompanying children.
+     */
+    public function shiftAllowsAccompanyingChildren(Shift $shift): bool
+    {
+        return $shift->getAllowsAccompanyingChildren();
     }
 }

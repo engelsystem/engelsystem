@@ -39,6 +39,28 @@
                     </div>
                 {% endif %}
 
+                <div class="col-md-12 mb-3">
+                    <h3>{{ __('shifttype.minor_settings') }}</h3>
+                    <p>
+                        <strong>{{ __('shifttype.edit.work_category') }}:</strong>
+                        {% if shifttype.work_category == 'A' %}
+                            {{ __('shifttype.edit.work_category.a') }}
+                        {% elseif shifttype.work_category == 'B' %}
+                            {{ __('shifttype.edit.work_category.b') }}
+                        {% else %}
+                            {{ __('shifttype.edit.work_category.c') }}
+                        {% endif %}
+                    </p>
+                    <p>
+                        <strong>{{ __('shifttype.edit.allows_accompanying_children') }}:</strong>
+                        {% if shifttype.allows_accompanying_children %}
+                            {{ m.icon('check-circle', 'text-success') }} {{ __('general.yes') }}
+                        {% else %}
+                            {{ m.icon('x-circle', 'text-muted') }} {{ __('general.no') }}
+                        {% endif %}
+                    </p>
+                </div>
+
                 <div class="col-md-12">
                     <h3>{{ __('general.description') }}</h3>{{ shifttype.description|md }}
                 </div>

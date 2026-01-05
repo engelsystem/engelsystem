@@ -20,7 +20,10 @@ class MinorCategoryFactory extends Factory
             'min_shift_start_hour'    => $this->faker->optional()->numberBetween(6, 10),
             'max_shift_end_hour'      => $this->faker->optional()->numberBetween(18, 22),
             'max_hours_per_day'       => $this->faker->optional()->numberBetween(4, 8),
-            'allowed_work_categories' => $this->faker->randomElements(['A', 'B', 'C'], $this->faker->numberBetween(1, 3)),
+            'allowed_work_categories' => $this->faker->randomElements(
+                ['A', 'B', 'C'],
+                $this->faker->numberBetween(1, 3)
+            ),
             'can_fill_slot'           => $this->faker->boolean(80),
             'requires_supervisor'     => $this->faker->boolean(70),
             'can_self_signup'         => $this->faker->boolean(60),

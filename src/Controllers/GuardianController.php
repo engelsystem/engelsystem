@@ -10,13 +10,9 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\MinorCategory;
-use Engelsystem\Models\Shifts\Shift;
-use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
-use Engelsystem\Models\UserGuardian;
 use Engelsystem\Services\GuardianService;
 use Engelsystem\Services\MinorRestrictionService;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class GuardianController extends BaseController

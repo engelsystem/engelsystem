@@ -18,6 +18,8 @@ class ShiftTypeFactory extends Factory
         return [
             'name' => $this->faker->unique()->firstName(),
             'description' => $this->faker->text(),
+            'work_category' => 'A',
+            'allows_accompanying_children' => false,
             'signup_advance_hours' => $advanceMinutes ? round($advanceMinutes) / 60 : null,
         ];
     }

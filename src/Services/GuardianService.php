@@ -24,7 +24,7 @@ class GuardianService
     /**
      * Link a guardian to a minor
      *
-     * @param array{relationship_type?: string, is_primary?: bool, can_manage_account?: bool, valid_from?: Carbon|null, valid_until?: Carbon|null} $options
+     * @param array<string, mixed> $options Guardian link options
      */
     public function linkGuardianToMinor(User $guardian, User $minor, array $options = []): UserGuardian
     {
@@ -192,7 +192,7 @@ class GuardianService
     /**
      * Register a new minor account
      *
-     * @param array{name: string, email?: string, password: string, minor_category_id: int, first_name?: string, last_name?: string, pronoun?: string} $data
+     * @param array<string, mixed> $data Minor registration data
      */
     public function registerMinor(User $guardian, array $data): User
     {
@@ -428,7 +428,7 @@ class GuardianService
     /**
      * Add a secondary guardian to a minor (only primary guardian can do this)
      *
-     * @param array{relationship_type?: string, can_manage_account?: bool, valid_from?: Carbon|null, valid_until?: Carbon|null} $options
+     * @param array<string, mixed> $options Guardian link options
      */
     public function addSecondaryGuardian(
         User $primaryGuardian,

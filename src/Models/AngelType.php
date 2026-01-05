@@ -28,7 +28,6 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property boolean                           $show_on_dashboard # Show on public dashboard
  * @property boolean                           $hide_register # Hide from registration page
  * @property boolean                           $hide_on_shift_view # Hide from shift page
- * @property string|null                        $work_category # Work category for minor restrictions (A, B, or C)
  *
  * @property-read Collection|NeededAngelType[] $neededBy
  * @property-read UserAngelType                $pivot
@@ -47,7 +46,6 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|AngelType[] whereNoSelfSignup($value)
  * @method static QueryBuilder|AngelType[] whereShowOnDashboard($value)
  * @method static QueryBuilder|AngelType[] whereHideRegister($value)
- * @method static QueryBuilder|AngelType[] whereWorkCategory($value)
  */
 class AngelType extends BaseModel
 {
@@ -66,7 +64,6 @@ class AngelType extends BaseModel
         'show_on_dashboard'         => true,
         'hide_register'             => false,
         'hide_on_shift_view'        => false,
-        'work_category'             => null,
     ];
 
     /**
@@ -89,7 +86,6 @@ class AngelType extends BaseModel
         'show_on_dashboard',
         'hide_register',
         'hide_on_shift_view',
-        'work_category',
     ];
 
     /** @var array<string, string> */

@@ -852,6 +852,30 @@ msgstr "Self signup advance hours"
 msgid "shifttype.edit.signup_advance_hours.info"
 msgstr "Number of hours before a shift starts where self sign up is allowed"
 
+msgid "shifttype.minor_settings"
+msgstr "Minor Settings"
+
+msgid "shifttype.edit.work_category"
+msgstr "Work Category"
+
+msgid "shifttype.edit.work_category.info"
+msgstr "Determines which minor age groups can work this shift type"
+
+msgid "shifttype.edit.work_category.a"
+msgstr "A - All Minors (13+)"
+
+msgid "shifttype.edit.work_category.b"
+msgstr "B - Teen Angels only (15-17)"
+
+msgid "shifttype.edit.work_category.c"
+msgstr "C - Adults only"
+
+msgid "shifttype.edit.allows_accompanying_children"
+msgstr "Allow accompanying children"
+
+msgid "shifttype.edit.allows_accompanying_children.info"
+msgstr "Parents can bring non-working children to shifts of this type"
+
 msgid "event.day"
 msgstr "Day %1$d"
 
@@ -917,6 +941,12 @@ msgstr "User"
 
 msgid "general.count"
 msgstr "Count"
+
+msgid "general.yes"
+msgstr "Yes"
+
+msgid "general.no"
+msgstr "No"
 
 msgid "general.created_at"
 msgstr "Created at"

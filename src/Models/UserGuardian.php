@@ -34,6 +34,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|UserGuardian[] whereGuardianUserId($value)
  * @method static QueryBuilder|UserGuardian[] whereIsPrimary($value)
  * @method static Builder|UserGuardian valid()
+ * @method static Builder|UserGuardian primary()
  */
 class UserGuardian extends BaseModel
 {

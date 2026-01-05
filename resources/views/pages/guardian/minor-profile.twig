@@ -133,11 +133,11 @@
                         <div class="progress mt-3" style="height: 25px;">
                             {% set percentage = (dailyHoursUsed / dailyHoursMax * 100)|round %}
                             <div class="progress-bar {{ percentage >= 100 ? 'bg-danger' : (percentage >= 80 ? 'bg-warning' : 'bg-success') }}"
-                                 role="progressbar"
-                                 style="width: {{ percentage }}%"
-                                 aria-valuenow="{{ dailyHoursUsed }}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="{{ dailyHoursMax }}">
+                                role="progressbar"
+                                style="width: {{ percentage }}%"
+                                aria-valuenow="{{ dailyHoursUsed }}"
+                                aria-valuemin="0"
+                                aria-valuemax="{{ dailyHoursMax }}">
                                 {{ dailyHoursUsed|number_format(1) }}h / {{ dailyHoursMax }}h {{ __('guardian.today') }}
                             </div>
                         </div>

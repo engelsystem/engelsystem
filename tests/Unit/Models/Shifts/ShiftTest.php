@@ -387,4 +387,130 @@ class ShiftTest extends ModelTest
         $this->assertEquals($tag1->name, $savedModel->tags[0]->name);
         $this->assertEquals($tag2->name, $savedModel->tags[1]->name);
     }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::getEffectiveWorkCategory
+     */
+    public function testGetEffectiveWorkCategoryDefault(): void
+    {
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['work_category' => 'A']);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'shift_type_id' => $shiftType->id,
+            'work_category_override' => null,
+        ]);
+
+        // Should use ShiftType's work_category
+        $this->assertEquals('A', $shift->getEffectiveWorkCategory());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::getEffectiveWorkCategory
+     */
+    public function testGetEffectiveWorkCategoryFromShiftType(): void
+    {
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['work_category' => 'C']);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'shift_type_id' => $shiftType->id,
+            'work_category_override' => null,
+        ]);
+
+        // Should inherit from ShiftType
+        $this->assertEquals('C', $shift->getEffectiveWorkCategory());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::getEffectiveWorkCategory
+     */
+    public function testGetEffectiveWorkCategoryWithOverride(): void
+    {
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['work_category' => 'C']);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'shift_type_id' => $shiftType->id,
+            'work_category_override' => 'A',
+        ]);
+
+        // Override should take precedence over ShiftType
+        $this->assertEquals('A', $shift->getEffectiveWorkCategory());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::getAllowsAccompanyingChildren
+     */
+    public function testGetAllowsAccompanyingChildrenDefault(): void
+    {
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['allows_accompanying_children' => false]);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'shift_type_id' => $shiftType->id,
+            'allows_accompanying_children_override' => null,
+        ]);
+
+        // Should use ShiftType's value (false)
+        $this->assertFalse($shift->getAllowsAccompanyingChildren());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::getAllowsAccompanyingChildren
+     */
+    public function testGetAllowsAccompanyingChildrenFromShiftType(): void
+    {
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['allows_accompanying_children' => true]);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'shift_type_id' => $shiftType->id,
+            'allows_accompanying_children_override' => null,
+        ]);
+
+        // Should inherit from ShiftType
+        $this->assertTrue($shift->getAllowsAccompanyingChildren());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::getAllowsAccompanyingChildren
+     */
+    public function testGetAllowsAccompanyingChildrenOverrideTrue(): void
+    {
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['allows_accompanying_children' => false]);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'shift_type_id' => $shiftType->id,
+            'allows_accompanying_children_override' => true,
+        ]);
+
+        // Override should take precedence (false -> true)
+        $this->assertTrue($shift->getAllowsAccompanyingChildren());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Shift::getAllowsAccompanyingChildren
+     */
+    public function testGetAllowsAccompanyingChildrenOverrideFalse(): void
+    {
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['allows_accompanying_children' => true]);
+
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'shift_type_id' => $shiftType->id,
+            'allows_accompanying_children_override' => false,
+        ]);
+
+        // Override should take precedence (true -> false)
+        $this->assertFalse($shift->getAllowsAccompanyingChildren());
+    }
 }

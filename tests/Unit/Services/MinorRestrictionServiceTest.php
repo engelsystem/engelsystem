@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Services;
 
 use Carbon\Carbon;
-use Engelsystem\Models\AngelType;
 use Engelsystem\Models\MinorCategory;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserGuardian;
 use Engelsystem\Models\UserSupervisorStatus;
-use Engelsystem\Services\MinorRestrictionService;
 use Engelsystem\Services\MinorRestrictions;
+use Engelsystem\Services\MinorRestrictionService;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 
@@ -76,54 +76,6 @@ class MinorRestrictionServiceTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Services\MinorRestrictionService::canWorkAngelType
-     */
-    public function testCanWorkAngelTypeForAdult(): void
-    {
-        /** @var User $adult */
-        $adult = User::factory()->create(['minor_category_id' => null]);
-
-        /** @var AngelType $angelTypeA */
-        $angelTypeA = AngelType::factory()->create(['work_category' => 'A']);
-        /** @var AngelType $angelTypeB */
-        $angelTypeB = AngelType::factory()->create(['work_category' => 'B']);
-        /** @var AngelType $angelTypeC */
-        $angelTypeC = AngelType::factory()->create(['work_category' => 'C']);
-
-        $this->assertTrue($this->service->canWorkAngelType($adult, $angelTypeA));
-        $this->assertTrue($this->service->canWorkAngelType($adult, $angelTypeB));
-        $this->assertTrue($this->service->canWorkAngelType($adult, $angelTypeC));
-    }
-
-    /**
-     * @covers \Engelsystem\Services\MinorRestrictionService::canWorkAngelType
-     */
-    public function testCanWorkAngelTypeForMinor(): void
-    {
-        $category = MinorCategory::factory()->create([
-            'allowed_work_categories' => ['A'],
-        ]);
-
-        /** @var User $minor */
-        $minor = User::factory()->create(['minor_category_id' => $category->id]);
-
-        /** @var AngelType $angelTypeA */
-        $angelTypeA = AngelType::factory()->create(['work_category' => 'A']);
-        /** @var AngelType $angelTypeB */
-        $angelTypeB = AngelType::factory()->create(['work_category' => 'B']);
-        /** @var AngelType $angelTypeC */
-        $angelTypeC = AngelType::factory()->create(['work_category' => 'C']);
-        /** @var AngelType $angelTypeNull */
-        $angelTypeNull = AngelType::factory()->create(['work_category' => null]);
-
-        $this->assertTrue($this->service->canWorkAngelType($minor, $angelTypeA));
-        $this->assertFalse($this->service->canWorkAngelType($minor, $angelTypeB));
-        $this->assertFalse($this->service->canWorkAngelType($minor, $angelTypeC));
-        // Null work_category defaults to 'C'
-        $this->assertFalse($this->service->canWorkAngelType($minor, $angelTypeNull));
-    }
-
-    /**
      * @covers \Engelsystem\Services\MinorRestrictionService::getRestrictions
      */
     public function testGetRestrictionsForAdult(): void
@@ -180,16 +132,17 @@ class MinorRestrictionServiceTest extends TestCase
         /** @var User $adult */
         $adult = User::factory()->create(['minor_category_id' => null]);
 
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['work_category' => 'C']);
+
         /** @var Shift $shift */
         $shift = Shift::factory()->create([
-            'start' => Carbon::parse('2026-01-01 02:00:00'),
-            'end'   => Carbon::parse('2026-01-01 06:00:00'),
+            'start'         => Carbon::parse('2026-01-01 02:00:00'),
+            'end'           => Carbon::parse('2026-01-01 06:00:00'),
+            'shift_type_id' => $shiftType->id,
         ]);
 
-        /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create(['work_category' => 'C']);
-
-        $result = $this->service->canWorkShift($adult, $shift, $angelType);
+        $result = $this->service->canWorkShift($adult, $shift);
 
         $this->assertTrue($result->isValid);
         $this->assertEmpty($result->errors);
@@ -245,20 +198,21 @@ class MinorRestrictionServiceTest extends TestCase
             'consent_approved_at'         => Carbon::now(),
         ]);
 
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create([
+            'name'          => 'Bar Service',
+            'work_category' => 'C',
+        ]);
+
         /** @var Shift $shift */
         $shift = Shift::factory()->create([
             'start'                          => Carbon::parse('2026-01-01 10:00:00'),
             'end'                            => Carbon::parse('2026-01-01 12:00:00'),
             'requires_supervisor_for_minors' => false,
+            'shift_type_id'                  => $shiftType->id,
         ]);
 
-        /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create([
-            'name'          => 'Bar Service',
-            'work_category' => 'C',
-        ]);
-
-        $result = $this->service->canWorkShift($minor, $shift, $angelType);
+        $result = $this->service->canWorkShift($minor, $shift);
 
         $this->assertFalse($result->isValid);
         $this->assertStringContainsString('Bar Service', $result->errors[0]);
@@ -857,21 +811,98 @@ class MinorRestrictionServiceTest extends TestCase
         $supervisor = User::factory()->create(['minor_category_id' => null]);
         UserSupervisorStatus::factory()->willing()->create(['user_id' => $supervisor->id]);
 
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['work_category' => 'A']);
+
         /** @var Shift $shift */
         $shift = Shift::factory()->create([
             'start'                          => Carbon::parse('2026-01-01 10:00:00'),
             'end'                            => Carbon::parse('2026-01-01 12:00:00'),
             'requires_supervisor_for_minors' => true,
+            'shift_type_id'                  => $shiftType->id,
         ]);
 
         ShiftEntry::factory()->create(['user_id' => $supervisor->id, 'shift_id' => $shift->id]);
 
-        /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create(['work_category' => 'A']);
-
-        $result = $this->service->canWorkShift($minor, $shift, $angelType);
+        $result = $this->service->canWorkShift($minor, $shift);
 
         $this->assertTrue($result->isValid);
         $this->assertEmpty($result->errors);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::canWorkShift
+     */
+    public function testCanWorkShiftWithWorkCategoryOverride(): void
+    {
+        $category = MinorCategory::factory()->create([
+            'allowed_work_categories' => ['A'],
+            'requires_supervisor'     => false,
+        ]);
+
+        /** @var User $approver */
+        $approver = User::factory()->create();
+
+        /** @var User $minor */
+        $minor = User::factory()->create([
+            'minor_category_id'           => $category->id,
+            'consent_approved_by_user_id' => $approver->id,
+            'consent_approved_at'         => Carbon::now(),
+        ]);
+
+        // ShiftType is category C (adults only)
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['work_category' => 'C']);
+
+        // But this specific shift overrides to category A
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::parse('2026-01-01 10:00:00'),
+            'end'                            => Carbon::parse('2026-01-01 12:00:00'),
+            'requires_supervisor_for_minors' => false,
+            'shift_type_id'                  => $shiftType->id,
+            'work_category_override'         => 'A',
+        ]);
+
+        $result = $this->service->canWorkShift($minor, $shift);
+
+        // Should succeed because override is A
+        $this->assertTrue($result->isValid);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::shiftAllowsAccompanyingChildren
+     */
+    public function testShiftAllowsAccompanyingChildren(): void
+    {
+        // Test ShiftType default (false)
+        /** @var ShiftType $shiftType1 */
+        $shiftType1 = ShiftType::factory()->create(['allows_accompanying_children' => false]);
+        /** @var Shift $shift1 */
+        $shift1 = Shift::factory()->create(['shift_type_id' => $shiftType1->id]);
+        $this->assertFalse($this->service->shiftAllowsAccompanyingChildren($shift1));
+
+        // Test ShiftType allows
+        /** @var ShiftType $shiftType2 */
+        $shiftType2 = ShiftType::factory()->create(['allows_accompanying_children' => true]);
+        /** @var Shift $shift2 */
+        $shift2 = Shift::factory()->create(['shift_type_id' => $shiftType2->id]);
+        $this->assertTrue($this->service->shiftAllowsAccompanyingChildren($shift2));
+
+        // Test Shift override (false -> true)
+        /** @var Shift $shift3 */
+        $shift3 = Shift::factory()->create([
+            'shift_type_id'                         => $shiftType1->id,
+            'allows_accompanying_children_override' => true,
+        ]);
+        $this->assertTrue($this->service->shiftAllowsAccompanyingChildren($shift3));
+
+        // Test Shift override (true -> false)
+        /** @var Shift $shift4 */
+        $shift4 = Shift::factory()->create([
+            'shift_type_id'                         => $shiftType2->id,
+            'allows_accompanying_children_override' => false,
+        ]);
+        $this->assertFalse($this->service->shiftAllowsAccompanyingChildren($shift4));
     }
 }

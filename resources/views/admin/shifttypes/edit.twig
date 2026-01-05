@@ -30,6 +30,23 @@
                     'step': 0.01,
                     'min': 0,
                 }) }}
+
+                <h4 class="mt-4">{{ __('shifttype.minor_settings') }}</h4>
+
+                {{ f.select('work_category', __('shifttype.edit.work_category'), {
+                    'options': {
+                        'A': __('shifttype.edit.work_category.a'),
+                        'B': __('shifttype.edit.work_category.b'),
+                        'C': __('shifttype.edit.work_category.c'),
+                    },
+                    'default': f.formData('work_category', shifttype ? shifttype.work_category : 'A'),
+                    'info': __('shifttype.edit.work_category.info'),
+                }) }}
+
+                {{ f.checkbox('allows_accompanying_children', __('shifttype.edit.allows_accompanying_children'), {
+                    'checked': f.formData('allows_accompanying_children', shifttype ? shifttype.allows_accompanying_children : false),
+                    'info': __('shifttype.edit.allows_accompanying_children.info'),
+                }) }}
             </div>
 
             <div class="col-lg-6">

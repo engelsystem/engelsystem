@@ -7,10 +7,8 @@ namespace Engelsystem\Test\Unit\Services;
 use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\MinorCategory;
-use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
-use Engelsystem\Models\UserSupervisorStatus;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserGuardian;
 use Engelsystem\Services\GuardianService;
@@ -798,6 +796,8 @@ class GuardianServiceTest extends TestCase
         $category = MinorCategory::factory()->create([
             'allowed_work_categories' => ['A', 'B', 'C'],
             'requires_supervisor'     => false,
+            'min_shift_start_hour'    => null,
+            'max_shift_end_hour'      => null,
         ]);
 
         /** @var User $guardian */
@@ -817,13 +817,13 @@ class GuardianServiceTest extends TestCase
 
         /** @var Shift $shift */
         $shift = Shift::factory()->create([
-            'start'                          => Carbon::now()->addDays(1),
-            'end'                            => Carbon::now()->addDays(1)->addHours(2),
+            'start'                          => Carbon::now()->addDays(1)->setTime(10, 0),
+            'end'                            => Carbon::now()->addDays(1)->setTime(12, 0),
             'requires_supervisor_for_minors' => false,
         ]);
 
         /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create(['work_category' => 'A']);
+        $angelType = AngelType::factory()->create();
 
         $entry = $this->service->signUpMinorForShift($guardian, $minor, $shift, $angelType);
 
@@ -841,6 +841,8 @@ class GuardianServiceTest extends TestCase
         $category = MinorCategory::factory()->create([
             'allowed_work_categories' => ['A', 'B', 'C'],
             'requires_supervisor'     => false,
+            'min_shift_start_hour'    => null,
+            'max_shift_end_hour'      => null,
         ]);
 
         /** @var User $guardian */
@@ -860,13 +862,13 @@ class GuardianServiceTest extends TestCase
 
         /** @var Shift $shift */
         $shift = Shift::factory()->create([
-            'start'                          => Carbon::now()->addDays(1),
-            'end'                            => Carbon::now()->addDays(1)->addHours(2),
+            'start'                          => Carbon::now()->addDays(1)->setTime(10, 0),
+            'end'                            => Carbon::now()->addDays(1)->setTime(12, 0),
             'requires_supervisor_for_minors' => false,
         ]);
 
         /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create(['work_category' => 'A']);
+        $angelType = AngelType::factory()->create();
 
         // Add guardian to shift
         ShiftEntry::factory()->create([
@@ -911,6 +913,8 @@ class GuardianServiceTest extends TestCase
     {
         $category = MinorCategory::factory()->create([
             'allowed_work_categories' => ['A'], // Only A allowed
+            'min_shift_start_hour'    => null,
+            'max_shift_end_hour'      => null,
         ]);
 
         /** @var User $guardian */
@@ -930,13 +934,14 @@ class GuardianServiceTest extends TestCase
 
         /** @var Shift $shift */
         $shift = Shift::factory()->create([
-            'start'                          => Carbon::now()->addDays(1),
-            'end'                            => Carbon::now()->addDays(1)->addHours(2),
+            'start'                          => Carbon::now()->addDays(1)->setTime(10, 0),
+            'end'                            => Carbon::now()->addDays(1)->setTime(12, 0),
             'requires_supervisor_for_minors' => false,
+            'work_category_override'         => 'C', // C not allowed for this minor
         ]);
 
         /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create(['work_category' => 'C']); // C not allowed
+        $angelType = AngelType::factory()->create();
 
         $this->expectException(InvalidArgumentException::class);
         $this->service->signUpMinorForShift($guardian, $minor, $shift, $angelType);

@@ -134,6 +134,8 @@ class ShiftTypesController extends BaseController
                 'name' => 'required|max:255',
                 'description' => 'optional',
                 'signup_advance_hours' => 'optional|float',
+                'work_category' => 'optional|in:A,B,C',
+                'allows_accompanying_children' => 'optional|checked',
             ] + $validation
         );
 
@@ -144,6 +146,8 @@ class ShiftTypesController extends BaseController
         $shiftType->name = $data['name'];
         $shiftType->description = $data['description'] ?? '';
         $shiftType->signup_advance_hours = $data['signup_advance_hours'] ?: null;
+        $shiftType->work_category = $data['work_category'] ?? 'A';
+        $shiftType->allows_accompanying_children = (bool) ($data['allows_accompanying_children'] ?? false);
 
         $shiftType->save();
         $shiftType->neededAngelTypes()->delete();
@@ -169,12 +173,15 @@ class ShiftTypesController extends BaseController
         }
 
         $this->log->info(
-            'Saved shift type "{name}" ({id}): {description}, {signup_advance_hours}, {angels}',
+            'Saved shift type "{name}" ({id}): {description}, {signup_advance_hours}, ' .
+            'work_category={work_category}, allows_children={allows_children}, {angels}',
             [
                 'id' => $shiftType->id,
                 'name' => $shiftType->name,
                 'description' => $shiftType->description,
                 'signup_advance_hours' => $shiftType->signup_advance_hours,
+                'work_category' => $shiftType->work_category,
+                'allows_children' => $shiftType->allows_accompanying_children ? 'yes' : 'no',
                 'angels' => $angelsInfo,
             ]
         );

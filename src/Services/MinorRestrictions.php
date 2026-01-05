@@ -11,7 +11,7 @@ namespace Engelsystem\Services;
  * @property-read int|null $minShiftStartHour Earliest shift start allowed (0-23), null = no restriction
  * @property-read int|null $maxShiftEndHour Latest shift end allowed (0-23), null = no restriction
  * @property-read int|null $maxHoursPerDay Maximum shift hours per day, null = no restriction
- * @property-read string[] $allowedWorkCategories Array of allowed work categories (e.g., ['A'], ['A','B'], or ['A','B','C'])
+ * @property-read string[] $allowedWorkCategories Allowed work categories (A/B/C)
  * @property-read bool $canFillSlot If false, participation is always non-counting (accompanying)
  * @property-read bool $requiresSupervisor If true, minor must have a supervisor on shift
  * @property-read bool $canSelfSignup If false, only guardian can sign up minor

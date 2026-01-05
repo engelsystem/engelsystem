@@ -35,6 +35,8 @@ use Illuminate\Database\Query\JoinClause;
  * @property int|null                          $updated_by
  * @property bool                              $requires_supervisor_for_minors
  * @property string|null                       $minor_supervision_notes
+ * @property string|null                       $work_category_override
+ * @property bool|null                         $allows_accompanying_children_override
  * @property Carbon|null                       $created_at
  * @property Carbon|null                       $updated_at
  *
@@ -61,6 +63,8 @@ use Illuminate\Database\Query\JoinClause;
  * @method static QueryBuilder|Shift[] whereUpdatedBy($value)
  * @method static QueryBuilder|Shift[] whereCreatedAt($value)
  * @method static QueryBuilder|Shift[] whereUpdatedAt($value)
+ * @method static QueryBuilder|Shift[] whereWorkCategoryOverride($value)
+ * @method static QueryBuilder|Shift[] whereAllowsAccompanyingChildrenOverride($value)
  */
 class Shift extends BaseModel
 {
@@ -68,12 +72,14 @@ class Shift extends BaseModel
 
     /** @var array<string, string|null|bool> default attributes */
     protected $attributes = [ // phpcs:ignore
-        'description'                   => '',
-        'url'                           => '',
-        'transaction_id'                => null,
-        'updated_by'                    => null,
-        'requires_supervisor_for_minors' => false,
-        'minor_supervision_notes'       => null,
+        'description'                            => '',
+        'url'                                    => '',
+        'transaction_id'                         => null,
+        'updated_by'                             => null,
+        'requires_supervisor_for_minors'         => false,
+        'minor_supervision_notes'                => null,
+        'work_category_override'                 => null,
+        'allows_accompanying_children_override'  => null,
     ];
 
     /** @var bool enable timestamps */
@@ -85,9 +91,10 @@ class Shift extends BaseModel
         'location_id'   => 'integer',
         'created_by'    => 'integer',
         'updated_by'    => 'integer',
-        'start'                          => 'datetime',
-        'end'                            => 'datetime',
-        'requires_supervisor_for_minors' => 'boolean',
+        'start'                                  => 'datetime',
+        'end'                                    => 'datetime',
+        'requires_supervisor_for_minors'         => 'boolean',
+        'allows_accompanying_children_override'  => 'boolean',
     ];
 
     /** @var array<string> Values that are mass assignable */
@@ -104,6 +111,8 @@ class Shift extends BaseModel
         'updated_by',
         'requires_supervisor_for_minors',
         'minor_supervision_notes',
+        'work_category_override',
+        'allows_accompanying_children_override',
     ];
 
     public function neededAngelTypes(): HasMany
@@ -149,6 +158,28 @@ class Shift extends BaseModel
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /**
+     * Get the effective work category for this shift.
+     * Returns the shift-level override if set, otherwise inherits from ShiftType, defaulting to 'A'.
+     */
+    public function getEffectiveWorkCategory(): string
+    {
+        return $this->work_category_override
+            ?? $this->shiftType->work_category
+            ?? 'A';
+    }
+
+    /**
+     * Check if this shift allows accompanying children.
+     * Returns the shift-level override if set, otherwise inherits from ShiftType, defaulting to false.
+     */
+    public function getAllowsAccompanyingChildren(): bool
+    {
+        return $this->allows_accompanying_children_override
+            ?? $this->shiftType->allows_accompanying_children
+            ?? false;
     }
 
     public function scopeNeedsUsers(Builder $query): void
