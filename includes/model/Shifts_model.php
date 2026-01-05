@@ -425,7 +425,7 @@ function Days_by_Location_id(int $location_id): array
  */
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    return ShiftEntry::with('user', 'user.state')
+    return ShiftEntry::with('user', 'user.state', 'supervisedBy')
         ->join('shifts', 'shifts.id', 'shift_entries.shift_id')
         ->whereIn('shifts.location_id', $shiftsFilter->getLocations())
         ->whereBetween('start', [$shiftsFilter->getStart(), $shiftsFilter->getEnd()])
@@ -458,6 +458,7 @@ function Shift_collides(Shift $shift, $shifts)
 
 /**
  * Returns the number of needed angels/free shift entries for an angeltype.
+ * Only counts entries that count toward the quota (excludes accompanying children).
  *
  * @param AngelType               $needed_angeltype
  * @param ShiftEntry[]|Collection $shift_entries
@@ -467,7 +468,8 @@ function Shift_free_entries(AngelType $needed_angeltype, $shift_entries)
 {
     $taken = 0;
     foreach ($shift_entries as $shift_entry) {
-        if (!$shift_entry->freeloaded_by) {
+        // Only count entries that are not freeloaded AND count toward quota
+        if (!$shift_entry->freeloaded_by && $shift_entry->counts_toward_quota) {
             $taken++;
         }
     }

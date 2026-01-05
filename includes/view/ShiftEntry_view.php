@@ -152,25 +152,46 @@ function ShiftEntry_create_view_supporter(
 /**
  * User joining a shift.
  *
- * @param Shift  $shift
- * @param Location $location
- * @param AngelType  $angeltype
- * @param string $comment
+ * @param Shift     $shift
+ * @param Location  $location
+ * @param AngelType $angeltype
+ * @param string    $comment
+ * @param array     $supervisors_select Optional array of available supervisors (user_id => display_name)
+ * @param int|null  $selected_supervisor_id Currently selected supervisor ID
  * @return string
  */
-function ShiftEntry_create_view_user(Shift $shift, Location $location, AngelType $angeltype, $comment)
-{
+function ShiftEntry_create_view_user(
+    Shift $shift,
+    Location $location,
+    AngelType $angeltype,
+    $comment,
+    array $supervisors_select = [],
+    ?int $selected_supervisor_id = null
+) {
     $start = $shift->start->format(__('general.datetime'));
+    $formFields = [];
+
+    // Add supervisor selection if supervisors are available (user is a minor requiring supervision)
+    if (!empty($supervisors_select)) {
+        $formFields[] = form_select(
+            'supervisor_id',
+            __('shift.supervisor.select'),
+            $supervisors_select,
+            $selected_supervisor_id ?? array_key_first($supervisors_select)
+        );
+        $formFields[] = info(__('shift.supervisor.select.info'), true, true);
+    }
+
+    $formFields[] = form_textarea('comment', __('Comment (for your eyes only):'), $comment);
+    $formFields[] = form_submit('submit', icon('save') . __('form.save'));
+
     return page_with_title(
         ShiftEntry_create_title() . ': ' . htmlspecialchars($shift->shiftType->name)
         . ' <small title="' . $start . '" data-countdown-ts="' . $shift->start->timestamp . '">%c</small>',
         [
             Shift_view_header($shift, $location),
             info(sprintf(__('Do you want to sign up for this shift as %s?'), $angeltype->name), true),
-            form([
-                form_textarea('comment', __('Comment (for your eyes only):'), $comment),
-                form_submit('submit', icon('save') . __('form.save')),
-            ]),
+            form($formFields),
         ]
     );
 }

@@ -423,6 +423,22 @@ function Shift_view_render_shift_entry(
     if ($shift_entry->freeloaded_by) {
         $entry = '<del>' . $entry . '</del>';
     }
+
+    // Show non-counting badge for accompanying children
+    if (!$shift_entry->counts_toward_quota) {
+        $entry .= ' <span class="badge bg-info ms-1" title="'
+            . __('shift.entry.accompanying')
+            . '"><i class="bi bi-person-hearts"></i></span>';
+    }
+
+    // Show supervisor info for minors with assigned supervision
+    if ($shift_entry->supervised_by_user_id && $shift_entry->supervisedBy) {
+        $entry .= ' <span class="text-muted small ms-1">('
+            . icon('shield-check')
+            . ' ' . __('shift.supervisor.supervised_by')
+            . ' ' . User_Nick_render($shift_entry->supervisedBy)
+            . ')</span>';
+    }
     $isUser = $shift_entry->user_id == auth()->user()->id;
     if ($user_shift_admin || $angeltype_supporter || $isUser) {
         $entry .= ' <div class="btn-group m-1">';

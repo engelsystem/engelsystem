@@ -173,7 +173,22 @@ class ShiftCalendarShiftRenderer
         $entry_list = [];
         foreach ($shift_entries as $entry) {
             $class = $entry->freeloaded_by ? 'text-decoration-line-through' : '';
-            $entry_list[] = '<span class="text-nowrap ' . $class . '">' . User_Nick_render($entry->user) . '</span>';
+            // Show indicator for non-counting entries (accompanying children)
+            $quotaIndicator = '';
+            if (!$entry->counts_toward_quota) {
+                $quotaIndicator = ' <span class="badge bg-info ms-1" title="'
+                    . __('shift.entry.accompanying')
+                    . '"><i class="bi bi-person-hearts"></i></span>';
+            }
+            // Show supervisor indicator for minors with assigned supervision
+            $supervisorIndicator = '';
+            if ($entry->supervised_by_user_id && $entry->supervisedBy) {
+                $supervisorIndicator = ' <span class="text-muted small" title="'
+                    . __('shift.supervisor.supervised_by') . ' ' . htmlspecialchars($entry->supervisedBy->displayName)
+                    . '"><i class="bi bi-shield-check"></i></span>';
+            }
+            $entry_list[] = '<span class="text-nowrap ' . $class . '">'
+                . User_Nick_render($entry->user) . $quotaIndicator . $supervisorIndicator . '</span>';
         }
         $shift_signup_state = Shift_signup_allowed(
             $user,
@@ -195,6 +210,18 @@ class ShiftCalendarShiftRenderer
         );
         $freeEntriesCount = $shift_signup_state->getFreeEntries();
         $inner_text = _e('%d helper needed', '%d helpers needed', $freeEntriesCount, [$freeEntriesCount]);
+
+        // Count accompanying (non-counting) entries for display
+        $accompanyingCount = 0;
+        foreach ($shift_entries as $entry) {
+            if (!$entry->counts_toward_quota && !$entry->freeloaded_by) {
+                $accompanyingCount++;
+            }
+        }
+        if ($accompanyingCount > 0) {
+            $inner_text .= ' <span class="text-info" title="' . __('shift.entry.accompanying') . '">'
+                . sprintf(' + %d <i class="bi bi-person-hearts"></i>', $accompanyingCount) . '</span>';
+        }
 
         $entry = match ($shift_signup_state->getState()) {
             // When admin or free display a link + button for sign up
