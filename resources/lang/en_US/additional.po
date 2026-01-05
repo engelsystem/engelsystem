@@ -795,3 +795,139 @@ msgstr "/metrics buckets"
 
 msgid "config.var_dump_server"
 msgstr "var_dump server"
+
+# OAuth2 Server (Identity Provider)
+msgid "oauth2.clients.title"
+msgstr "OAuth2 Clients"
+
+msgid "oauth2.clients.none"
+msgstr "No OAuth2 clients configured."
+
+msgid "oauth2.client.identifier"
+msgstr "Client ID"
+
+msgid "oauth2.client.redirect_uris"
+msgstr "Redirect URIs"
+
+msgid "oauth2.client.angel_types"
+msgstr "Restricted to Angel Types"
+
+msgid "oauth2.client.all_users"
+msgstr "All users"
+
+msgid "oauth2.client.active"
+msgstr "Active"
+
+msgid "oauth2.client.edit"
+msgstr "Edit OAuth2 Client"
+
+msgid "oauth2.client.create"
+msgstr "Create OAuth2 Client"
+
+msgid "oauth2.client.identifier_info"
+msgstr "This is the client_id used by external applications."
+
+msgid "oauth2.client.redirect_uris_info"
+msgstr "One URI per line. These are the allowed callback URLs."
+
+msgid "oauth2.client.grants"
+msgstr "Grant Types"
+
+msgid "oauth2.client.scopes"
+msgstr "Allowed Scopes"
+
+msgid "oauth2.client.scopes_info"
+msgstr "If none selected, all scopes are allowed."
+
+msgid "oauth2.client.angel_types_info"
+msgstr "If selected, only confirmed members of these angel types can use this client. Leave empty to allow all users."
+
+msgid "oauth2.client.confidential"
+msgstr "Confidential Client"
+
+msgid "oauth2.client.confidential_info"
+msgstr "Confidential clients have a secret. Public clients (mobile apps) do not."
+
+msgid "oauth2.client.regenerate_secret"
+msgstr "Regenerate Client Secret"
+
+msgid "oauth2.client.regenerate_secret_info"
+msgstr "Generate a new client secret. The old secret will no longer work."
+
+msgid "oauth2.client.secret_warning"
+msgstr "Client Secret Generated"
+
+msgid "oauth2.client.secret_info"
+msgstr "Copy this secret now! It will not be shown again."
+
+msgid "oauth2.client.saved"
+msgstr "OAuth2 client saved."
+
+msgid "oauth2.client.deleted"
+msgstr "OAuth2 client deleted."
+
+msgid "oauth2.client.delete.confirm"
+msgstr "Really delete OAuth2 client '%s'? All tokens will be revoked."
+
+msgid "oauth2.authorize.title"
+msgstr "Authorize Application"
+
+msgid "oauth2.authorize.request"
+msgstr "The application '%s' would like to access your account."
+
+msgid "oauth2.authorize.scopes_intro"
+msgstr "This application will be able to:"
+
+msgid "oauth2.authorize.approve"
+msgstr "Authorize"
+
+msgid "oauth2.authorize.deny"
+msgstr "Deny"
+
+msgid "oauth2.authorize.info"
+msgstr "You can revoke this access at any time in your settings."
+
+msgid "oauth2.error.session_expired"
+msgstr "Authorization session expired. Please try again."
+
+msgid "oauth2.scope.openid"
+msgstr "Identify you"
+
+msgid "oauth2.scope.profile"
+msgstr "Access your profile (name, username, pronoun)"
+
+msgid "oauth2.scope.email"
+msgstr "Access your email address"
+
+msgid "oauth2.scope.angeltypes"
+msgstr "Access your angel type memberships"
+
+msgid "oauth2.scope.groups"
+msgstr "Access your permission groups"
+
+msgid "oauth2.applications.title"
+msgstr "Authorized Applications"
+
+msgid "oauth2.applications.description"
+msgstr "These applications have been authorized to access your account."
+
+msgid "oauth2.applications.none"
+msgstr "No applications have been authorized to access your account."
+
+msgid "oauth2.applications.authorized"
+msgstr "Last authorized"
+
+msgid "oauth2.applications.permissions"
+msgstr "Permissions"
+
+msgid "oauth2.applications.revoke"
+msgstr "Revoke Access"
+
+msgid "oauth2.applications.revoke.confirm"
+msgstr "Revoke access for '%s'? The application will no longer be able to access your account."
+
+msgid "oauth2.application.revoked"
+msgstr "Application access revoked."
+
+msgid "form.copy"
+msgstr "Copy"

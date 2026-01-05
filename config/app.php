@@ -40,6 +40,9 @@ return [
         \Engelsystem\Helpers\DumpServerServiceProvider::class,
         \Engelsystem\Helpers\UuidServiceProvider::class,
         \Engelsystem\Controllers\Api\UsesAuthServiceProvider::class,
+
+        // OAuth2 Server (Identity Provider)
+        \Engelsystem\OAuth2Server\OAuth2ServerServiceProvider::class,
     ],
 
     // Application middleware

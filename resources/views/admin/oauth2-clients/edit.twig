@@ -1,0 +1,127 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ client ? __('oauth2.client.edit') : __('oauth2.client.create') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ m.back(url('/admin/oauth2-clients')) }}
+            {{ block('title') }}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        {% if new_secret is defined %}
+            <div class="alert alert-warning">
+                <h5>{{ m.icon('exclamation-triangle') }} {{ __('oauth2.client.secret_warning') }}</h5>
+                <p>{{ __('oauth2.client.secret_info') }}</p>
+                <div class="input-group">
+                    <input type="text" class="form-control font-monospace" value="{{ new_secret }}" readonly id="client-secret">
+                    <button class="btn btn-outline-secondary" type="button" onclick="navigator.clipboard.writeText(document.getElementById('client-secret').value)">
+                        {{ m.icon('clipboard') }} {{ __('form.copy') }}
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {{ csrf() }}
+
+            <div class="row">
+                <div class="col-lg-6">
+                    {{ f.input('name', __('general.name'), {
+                        'required': true,
+                        'required_icon': true,
+                        'value': f.formData('name', client ? client.name : ''),
+                        'max_length': 255,
+                    }) }}
+
+                    {% if client %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ __('oauth2.client.identifier') }}</label>
+                            <input type="text" class="form-control font-monospace" value="{{ client.identifier }}" readonly>
+                            <div class="form-text">{{ __('oauth2.client.identifier_info') }}</div>
+                        </div>
+                    {% endif %}
+
+                    {{ f.textarea('redirect_uris', __('oauth2.client.redirect_uris'), {
+                        'required': true,
+                        'required_icon': true,
+                        'value': f.formData('redirect_uris', client ? client.redirect_uris|join("\n") : ''),
+                        'rows': 3,
+                        'info': __('oauth2.client.redirect_uris_info'),
+                    }) }}
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ __('oauth2.client.grants') }}</label>
+                        {% for value, label in available_grants %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="grants[]" value="{{ value }}" id="grant-{{ value }}"
+                                    {{ (client and value in client.getGrantsArray()) or (not client and value == 'authorization_code') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="grant-{{ value }}">{{ label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {{ f.switch('confidential', __('oauth2.client.confidential'), {
+                        'checked': f.formData('confidential', client ? client.confidential : true),
+                        'info': __('oauth2.client.confidential_info'),
+                    }) }}
+
+                    {% if client and client.confidential %}
+                        {{ f.switch('regenerate_secret', __('oauth2.client.regenerate_secret'), {
+                            'checked': false,
+                            'info': __('oauth2.client.regenerate_secret_info'),
+                        }) }}
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="mb-3">
+                        <label class="form-label">{{ __('oauth2.client.scopes') }}</label>
+                        <div class="form-text mb-2">{{ __('oauth2.client.scopes_info') }}</div>
+                        {% for value, description in available_scopes %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="scopes[]" value="{{ value }}" id="scope-{{ value }}"
+                                    {{ client and client.scopes and value in client.scopes ? 'checked' : '' }}
+                                    {{ not client ? 'checked' : '' }}>
+                                <label class="form-check-label" for="scope-{{ value }}">
+                                    <strong>{{ value }}</strong> - {{ description }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ __('oauth2.client.angel_types') }}</label>
+                        <div class="form-text mb-2">{{ __('oauth2.client.angel_types_info') }}</div>
+                        {% for angelType in angel_types %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="angel_types[]" value="{{ angelType.id }}" id="at-{{ angelType.id }}"
+                                    {{ client and angelType.id in client.angelTypes.pluck('id').toArray() ? 'checked' : '' }}>
+                                <label class="form-check-label" for="at-{{ angelType.id }}">{{ angelType.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {{ f.switch('active', __('oauth2.client.active'), {
+                        'checked': f.formData('active', client ? client.active : true),
+                    }) }}
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+                        {% if client %}
+                            {{ f.delete(__('form.delete'), {'confirm_title': __('oauth2.client.delete.confirm', [client.name|e])}) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

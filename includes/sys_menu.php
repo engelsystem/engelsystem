@@ -78,6 +78,7 @@ function make_navigation(): array
         'admin/tags'         => ['tag.tags', 'tag.edit'],
         'admin/logs'         => ['log.log', 'admin_log'],
         'admin/config'       => ['config.config', 'config.edit'],
+        'admin/oauth2-clients' => ['OAuth2 Clients', 'oauth2.clients.edit'],
     ];
 
     if (config('autoarrive')) {
