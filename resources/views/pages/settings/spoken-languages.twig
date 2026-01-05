@@ -16,7 +16,10 @@
 
         <div class="row g-4">
             <div class="col-12">
-                <div id="language-editor" data-options="{{ language_options|json_encode }}">
+                <div id="language-editor"
+                     data-options="{{ language_options|json_encode }}"
+                     data-native-label="{{ __('settings.spoken_languages.native') }}"
+                     data-delete-label="{{ __('form.delete') }}">
                     <div class="mb-3">
                         <label for="language-input" class="form-label">{{ __('settings.spoken_languages.add') }}</label>
                         <div class="position-relative">
@@ -31,7 +34,7 @@
 
                     <div id="selected-languages" class="mb-3">
                         {% for lang in user_languages %}
-                            <div class="card mb-2" data-code="{{ lang.code }}">
+                            <div class="card mb-2 {% if theme.type == 'light' %}bg-white{% else %}bg-dark{% endif %}" data-code="{{ lang.code }}">
                                 <div class="card-body py-2 px-3 d-flex align-items-center justify-content-between">
                                     <div>
                                         <span class="badge bg-secondary me-2">{{ lang.code }}</span>
@@ -67,135 +70,4 @@
             </div>
         </div>
     </form>
-
-    <script>
-    (function() {
-        const editor = document.getElementById('language-editor');
-        const options = JSON.parse(editor.dataset.options);
-        const input = document.getElementById('language-input');
-        const dropdown = document.getElementById('language-dropdown');
-        const selectedContainer = document.getElementById('selected-languages');
-        const hiddenInput = document.getElementById('languages-hidden');
-
-        function getSelectedCodes() {
-            return hiddenInput.value ? hiddenInput.value.split(',').filter(c => c) : [];
-        }
-
-        function updateHiddenInput() {
-            const codes = Array.from(selectedContainer.querySelectorAll('[data-code]'))
-                .map(el => el.dataset.code);
-            hiddenInput.value = codes.join(',');
-        }
-
-        function addLanguage(code, name) {
-            const selected = getSelectedCodes();
-            if (selected.includes(code)) return;
-
-            const card = document.createElement('div');
-            card.className = 'card mb-2';
-            card.dataset.code = code;
-            card.innerHTML = `
-                <div class="card-body py-2 px-3 d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="badge bg-secondary me-2">${escapeHtml(code)}</span>
-                        <span>${escapeHtml(name)}</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="form-check">
-                            <input type="checkbox"
-                                   class="form-check-input"
-                                   name="native[]"
-                                   value="${escapeHtml(code)}"
-                                   id="native-${escapeHtml(code)}">
-                            <label class="form-check-label" for="native-${escapeHtml(code)}">
-                                {{ __('settings.spoken_languages.native') }}
-                            </label>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-danger remove-language" aria-label="{{ __('form.delete') }}">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            selectedContainer.appendChild(card);
-            updateHiddenInput();
-            input.value = '';
-            hideDropdown();
-        }
-
-        function removeLanguage(card) {
-            card.remove();
-            updateHiddenInput();
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function showDropdown(matches) {
-            dropdown.innerHTML = '';
-            matches.forEach(opt => {
-                const item = document.createElement('button');
-                item.type = 'button';
-                item.className = 'dropdown-item';
-                item.innerHTML = `<span class="badge bg-secondary me-2">${escapeHtml(opt.code)}</span>${escapeHtml(opt.name)}`;
-                item.addEventListener('click', () => addLanguage(opt.code, opt.name));
-                dropdown.appendChild(item);
-            });
-            dropdown.style.display = 'block';
-        }
-
-        function hideDropdown() {
-            dropdown.style.display = 'none';
-        }
-
-        input.addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            if (query.length < 1) {
-                hideDropdown();
-                return;
-            }
-
-            const selected = getSelectedCodes().map(c => c.toLowerCase());
-            const matches = options.filter(opt => {
-                const codeMatch = opt.code.toLowerCase().startsWith(query);
-                const nameMatch = opt.name.toLowerCase().includes(query);
-                const notSelected = !selected.includes(opt.code.toLowerCase());
-                return (codeMatch || nameMatch) && notSelected;
-            }).slice(0, 10);
-
-            if (matches.length > 0) {
-                showDropdown(matches);
-            } else {
-                hideDropdown();
-            }
-        });
-
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const firstItem = dropdown.querySelector('.dropdown-item');
-                if (firstItem) firstItem.click();
-            } else if (e.key === 'Escape') {
-                hideDropdown();
-            }
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!editor.contains(e.target)) {
-                hideDropdown();
-            }
-        });
-
-        selectedContainer.addEventListener('click', function(e) {
-            const removeBtn = e.target.closest('.remove-language');
-            if (removeBtn) {
-                const card = removeBtn.closest('[data-code]');
-                if (card) removeLanguage(card);
-            }
-        });
-    })();
-    </script>
 {% endblock %}
