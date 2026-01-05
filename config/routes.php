@@ -247,6 +247,15 @@ $route->addGroup(
             }
         );
 
+        // Minor Management
+        $route->addGroup(
+            '/minors',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\MinorManagementController@index');
+                $route->post('', 'Admin\\MinorManagementController@index');
+            }
+        );
+
         // Schedule
         $route->addGroup(
             '/schedule',

@@ -2163,6 +2163,9 @@ msgstr "Du kannst dich aufgrund der Jugendarbeitsschutz-Beschränkungen nicht f�
 msgid "shift.minor_restricted"
 msgstr "altersbeschränkt"
 
+msgid "shift.entry.accompanying"
+msgstr "Begleitkind (zählt nicht zum Kontingent)"
+
 msgid "minor.restriction.consent_required"
 msgstr "Die Einverständniserklärung muss bei der Ankunft überprüft werden, bevor Schichten gebucht werden können."
 
@@ -2180,3 +2183,72 @@ msgstr "Schicht ist %s Stunden lang, nur noch %s Stunden übrig (%s von %d Stund
 
 msgid "minor.restriction.supervisor_required"
 msgstr "Keine aufsichtswillige Person ist für diese Schicht eingetragen."
+
+msgid "shift.supervisor.select"
+msgstr "Aufsichtsperson auswählen"
+
+msgid "shift.supervisor.select.info"
+msgstr "Als Minderjähriger musst du eine Aufsichtsperson auswählen, die während dieser Schicht für dich verantwortlich ist."
+
+msgid "shift.supervisor.invalid"
+msgstr "Bitte wähle eine gültige Aufsichtsperson aus."
+
+msgid "shift.supervisor.guardian"
+msgstr "Erziehungsberechtigter"
+
+msgid "shift.supervisor.supervised_by"
+msgstr "beaufsichtigt von"
+
+msgid "minors.management"
+msgstr "Minderjährigen-Verwaltung"
+
+msgid "minors.total"
+msgstr "Gesamtzahl Minderjährige"
+
+msgid "minors.consent.approved"
+msgstr "Genehmigt"
+
+msgid "minors.consent.pending"
+msgstr "Ausstehend"
+
+msgid "minors.supervision_gaps"
+msgstr "Aufsichtslücken"
+
+msgid "minors.by_category"
+msgstr "Nach Kategorie"
+
+msgid "minors.supervision_gaps_alert"
+msgstr "Aufsichtslücken erkannt"
+
+msgid "minors.supervision_gaps_desc"
+msgstr "Die folgenden Schichten haben Minderjährige eingetragen, aber keine Aufsichtsperson zugewiesen:"
+
+msgid "minors.without_supervisor"
+msgstr "Minderjährige ohne Aufsichtsperson"
+
+msgid "minors.category"
+msgstr "Kategorie"
+
+msgid "minors.consent_status"
+msgstr "Einverständnisstatus"
+
+msgid "minors.registered"
+msgstr "Registrierte Minderjährige"
+
+msgid "minors.guardians"
+msgstr "Erziehungsberechtigte"
+
+msgid "minors.hours_today"
+msgstr "Stunden heute"
+
+msgid "minors.primary"
+msgstr "Primär"
+
+msgid "minors.no_guardian"
+msgstr "Kein Erziehungsberechtigter verknüpft"
+
+msgid "minors.no_limit"
+msgstr "Kein Limit"
+
+msgid "minors.none_found"
+msgstr "Keine Minderjährigen gefunden, die deinen Kriterien entsprechen."

@@ -1202,6 +1202,9 @@ msgstr "You cannot sign up for this shift due to minor volunteer restrictions."
 msgid "shift.minor_restricted"
 msgstr "age restricted"
 
+msgid "shift.entry.accompanying"
+msgstr "Accompanying (does not count toward quota)"
+
 msgid "minor.restriction.consent_required"
 msgstr "Consent must be verified at arrival before signing up for shifts."
 
@@ -1219,3 +1222,72 @@ msgstr "Shift is %s hours, only %s remaining (%s of %d used)."
 
 msgid "minor.restriction.supervisor_required"
 msgstr "No willing supervisor is signed up for this shift."
+
+msgid "shift.supervisor.select"
+msgstr "Select supervisor"
+
+msgid "shift.supervisor.select.info"
+msgstr "As a minor, you must select a supervisor who will be responsible for you during this shift."
+
+msgid "shift.supervisor.invalid"
+msgstr "Please select a valid supervisor."
+
+msgid "shift.supervisor.guardian"
+msgstr "Guardian"
+
+msgid "shift.supervisor.supervised_by"
+msgstr "supervised by"
+
+msgid "minors.management"
+msgstr "Minor Management"
+
+msgid "minors.total"
+msgstr "Total Minors"
+
+msgid "minors.consent.approved"
+msgstr "Approved"
+
+msgid "minors.consent.pending"
+msgstr "Pending"
+
+msgid "minors.supervision_gaps"
+msgstr "Supervision Gaps"
+
+msgid "minors.by_category"
+msgstr "By Category"
+
+msgid "minors.supervision_gaps_alert"
+msgstr "Supervision Gaps Detected"
+
+msgid "minors.supervision_gaps_desc"
+msgstr "The following shifts have minors signed up but no supervisor assigned:"
+
+msgid "minors.without_supervisor"
+msgstr "minor(s) without supervisor"
+
+msgid "minors.category"
+msgstr "Category"
+
+msgid "minors.consent_status"
+msgstr "Consent Status"
+
+msgid "minors.registered"
+msgstr "Registered Minors"
+
+msgid "minors.guardians"
+msgstr "Guardians"
+
+msgid "minors.hours_today"
+msgstr "Hours Today"
+
+msgid "minors.primary"
+msgstr "Primary"
+
+msgid "minors.no_guardian"
+msgstr "No guardian linked"
+
+msgid "minors.no_limit"
+msgstr "No limit"
+
+msgid "minors.none_found"
+msgstr "No minors found matching your criteria."
