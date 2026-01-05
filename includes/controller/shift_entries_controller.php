@@ -6,6 +6,7 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
+use Engelsystem\Services\MinorRestrictionService;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -101,6 +102,25 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
     }
 
     if ($request->hasPostData('submit')) {
+        // Log admin override if minor restrictions would have blocked this signup
+        if ($signup_user->isMinor()) {
+            /** @var MinorRestrictionService $minorService */
+            $minorService = app(MinorRestrictionService::class);
+            $validation = $minorService->canWorkShift($signup_user, $shift);
+            if (!$validation->isValid) {
+                $adminUser = auth()->user();
+                $errorList = implode(', ', $validation->errors);
+                engelsystem_log(sprintf(
+                    'Admin override: %s signed up minor %s (ID: %d) for shift %d despite restrictions: %s',
+                    $adminUser->name,
+                    $signup_user->name,
+                    $signup_user->id,
+                    $shift->id,
+                    $errorList
+                ));
+            }
+        }
+
         $shiftEntry = new ShiftEntry();
         $shiftEntry->shift()->associate($shift);
         $shiftEntry->angelType()->associate($angeltype);
@@ -196,8 +216,27 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
         ShiftSignupStatus::NOT_ARRIVED => error(__('You are not marked as arrived.')),
         ShiftSignupStatus::NOT_YET     => error(__('You are not allowed to sign up yet.')),
         ShiftSignupStatus::SIGNED_UP   => error(__('You are signed up for this shift.')),
+        ShiftSignupStatus::MINOR_RESTRICTED => shift_entry_minor_restriction_errors($shift_signup_state),
         default => null, // ShiftSignupStatus::FREE|ShiftSignupStatus::ADMIN
     };
+}
+
+/**
+ * Display minor restriction error messages.
+ *
+ * @param ShiftSignupState $shift_signup_state
+ */
+function shift_entry_minor_restriction_errors(ShiftSignupState $shift_signup_state)
+{
+    $errors = $shift_signup_state->getMinorErrors();
+    if (empty($errors)) {
+        error(__('shift.signup.minor_restricted'));
+    } else {
+        // Errors are already translated by MinorRestrictionService
+        foreach ($errors as $errorMessage) {
+            error($errorMessage);
+        }
+    }
 }
 
 /**

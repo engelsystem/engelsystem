@@ -50,4 +50,9 @@ enum ShiftSignupStatus: string
      * User has to be arrived
      */
     case NOT_ARRIVED = 'NOT_ARRIVED';
+
+    /**
+     * Minor volunteer restrictions prevent signup (age-based work rules)
+     */
+    case MINOR_RESTRICTED = 'MINOR_RESTRICTED';
 }

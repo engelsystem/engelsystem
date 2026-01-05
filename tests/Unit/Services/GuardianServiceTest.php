@@ -31,6 +31,7 @@ class GuardianServiceTest extends TestCase
     {
         parent::setUp();
         $this->initDatabase();
+        $this->mockTranslator();
         $this->minorService = new MinorRestrictionService();
         $this->service = new GuardianService($this->minorService);
     }

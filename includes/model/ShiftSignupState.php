@@ -18,9 +18,13 @@ class ShiftSignupState
      *
      * @param ShiftSignupStatus $state
      * @param int               $free_entries
+     * @param string[]          $minorErrors   Optional array of minor restriction error messages
      */
-    public function __construct(private ShiftSignupStatus $state, $free_entries)
-    {
+    public function __construct(
+        private ShiftSignupStatus $state,
+        $free_entries,
+        private array $minorErrors = []
+    ) {
         $this->freeEntries = $free_entries;
     }
 
@@ -48,6 +52,7 @@ class ShiftSignupState
             ShiftSignupStatus::NOT_ARRIVED, ShiftSignupStatus::NOT_YET, ShiftSignupStatus::SHIFT_ENDED => 100,
             ShiftSignupStatus::SIGNED_UP => 90,
             ShiftSignupStatus::FREE      => 80,
+            ShiftSignupStatus::MINOR_RESTRICTED => 75,
             ShiftSignupStatus::ANGELTYPE, ShiftSignupStatus::COLLIDES => 70,
             ShiftSignupStatus::OCCUPIED,  ShiftSignupStatus::ADMIN    => 60,
             default => 0,
@@ -85,5 +90,15 @@ class ShiftSignupState
     public function getFreeEntries()
     {
         return $this->freeEntries;
+    }
+
+    /**
+     * Get the minor restriction error messages (if any).
+     *
+     * @return string[]
+     */
+    public function getMinorErrors(): array
+    {
+        return $this->minorErrors;
     }
 }

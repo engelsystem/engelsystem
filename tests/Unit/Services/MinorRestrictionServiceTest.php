@@ -30,6 +30,7 @@ class MinorRestrictionServiceTest extends TestCase
     {
         parent::setUp();
         $this->initDatabase();
+        $this->mockTranslator();
         $this->service = new MinorRestrictionService();
     }
 
@@ -175,7 +176,7 @@ class MinorRestrictionServiceTest extends TestCase
         $result = $this->service->canWorkShift($minor, $shift);
 
         $this->assertFalse($result->isValid);
-        $this->assertStringContainsString('Consent', $result->errors[0]);
+        $this->assertStringContainsString('consent_required', $result->errors[0]);
     }
 
     /**
@@ -215,8 +216,7 @@ class MinorRestrictionServiceTest extends TestCase
         $result = $this->service->canWorkShift($minor, $shift);
 
         $this->assertFalse($result->isValid);
-        $this->assertStringContainsString('Bar Service', $result->errors[0]);
-        $this->assertStringContainsString('category C', $result->errors[0]);
+        $this->assertStringContainsString('work_category', $result->errors[0]);
     }
 
     /**
@@ -250,8 +250,7 @@ class MinorRestrictionServiceTest extends TestCase
         $result = $this->service->canWorkShift($minor, $shift);
 
         $this->assertFalse($result->isValid);
-        $this->assertStringContainsString('06:00', $result->errors[0]);
-        $this->assertStringContainsString('08:00', $result->errors[0]);
+        $this->assertStringContainsString('start_time', $result->errors[0]);
     }
 
     /**
@@ -285,8 +284,7 @@ class MinorRestrictionServiceTest extends TestCase
         $result = $this->service->canWorkShift($minor, $shift);
 
         $this->assertFalse($result->isValid);
-        $this->assertStringContainsString('20:00', $result->errors[0]);
-        $this->assertStringContainsString('18:00', $result->errors[0]);
+        $this->assertStringContainsString('end_time', $result->errors[0]);
     }
 
     /**
@@ -366,8 +364,7 @@ class MinorRestrictionServiceTest extends TestCase
         $result = $this->service->canWorkShift($minor, $newShift);
 
         $this->assertFalse($result->isValid);
-        $this->assertStringContainsString('1.0 hours', $result->errors[0]);
-        $this->assertStringContainsString('0.5 remaining', $result->errors[0]);
+        $this->assertStringContainsString('daily_hours', $result->errors[0]);
     }
 
     /**

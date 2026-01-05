@@ -87,7 +87,7 @@ class ShiftCalendarShiftRenderer
             ShiftSignupStatus::ADMIN, ShiftSignupStatus::OCCUPIED => 'success',
             ShiftSignupStatus::SIGNED_UP => 'primary',
             ShiftSignupStatus::NOT_ARRIVED, ShiftSignupStatus::NOT_YET, ShiftSignupStatus::SHIFT_ENDED => 'secondary',
-            ShiftSignupStatus::ANGELTYPE, ShiftSignupStatus::COLLIDES => 'warning',
+            ShiftSignupStatus::ANGELTYPE, ShiftSignupStatus::COLLIDES, ShiftSignupStatus::MINOR_RESTRICTED => 'warning',
             ShiftSignupStatus::FREE => 'danger',
             default => 'light',
         };
@@ -226,6 +226,8 @@ class ShiftCalendarShiftRenderer
                 ),
             // Shift collides or user is already signed up: No signup allowed
             ShiftSignupStatus::COLLIDES, ShiftSignupStatus::SIGNED_UP => $inner_text,
+            // Minor restrictions prevent signup (age-based work rules)
+            ShiftSignupStatus::MINOR_RESTRICTED => $inner_text . ' ' . icon('person-badge') . ' (' . __('shift.minor_restricted') . ')',
             // Shift is full
             ShiftSignupStatus::OCCUPIED => null,
             default => null,

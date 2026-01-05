@@ -2156,3 +2156,27 @@ msgstr "Konfiguration wird aus ENV variable überschrieben!"
 
 msgid "config.warning_file_not_writable"
 msgstr "Konfigurationsdatei config.local.php ist nicht beschreibbar!"
+
+msgid "shift.signup.minor_restricted"
+msgstr "Du kannst dich aufgrund der Jugendarbeitsschutz-Beschränkungen nicht für diese Schicht eintragen."
+
+msgid "shift.minor_restricted"
+msgstr "altersbeschränkt"
+
+msgid "minor.restriction.consent_required"
+msgstr "Die Einverständniserklärung muss bei der Ankunft überprüft werden, bevor Schichten gebucht werden können."
+
+msgid "minor.restriction.work_category"
+msgstr "Diese Schicht (%s) ist Arbeitskategorie %s. Du bist berechtigt für: %s"
+
+msgid "minor.restriction.start_time"
+msgstr "Schicht beginnt um %s, frühester erlaubter Beginn ist %s."
+
+msgid "minor.restriction.end_time"
+msgstr "Schicht endet um %s, spätestes erlaubtes Ende ist %s."
+
+msgid "minor.restriction.daily_hours"
+msgstr "Schicht ist %s Stunden lang, nur noch %s Stunden übrig (%s von %d Stunden bereits genutzt)."
+
+msgid "minor.restriction.supervisor_required"
+msgstr "Keine aufsichtswillige Person ist für diese Schicht eingetragen."

@@ -1195,3 +1195,27 @@ msgstr "Configuration option is overwritten from ENV!"
 
 msgid "config.warning_file_not_writable"
 msgstr "Configuration file config.local.php not writable!"
+
+msgid "shift.signup.minor_restricted"
+msgstr "You cannot sign up for this shift due to minor volunteer restrictions."
+
+msgid "shift.minor_restricted"
+msgstr "age restricted"
+
+msgid "minor.restriction.consent_required"
+msgstr "Consent must be verified at arrival before signing up for shifts."
+
+msgid "minor.restriction.work_category"
+msgstr "This shift (%s) is category %s work. You are eligible for: %s"
+
+msgid "minor.restriction.start_time"
+msgstr "Shift starts at %s, earliest permitted is %s."
+
+msgid "minor.restriction.end_time"
+msgstr "Shift ends at %s, latest permitted is %s."
+
+msgid "minor.restriction.daily_hours"
+msgstr "Shift is %s hours, only %s remaining (%s of %d used)."
+
+msgid "minor.restriction.supervisor_required"
+msgstr "No willing supervisor is signed up for this shift."

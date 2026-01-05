@@ -72,30 +72,28 @@ class MinorRestrictionService
 
         // Check consent approval
         if (!$user->hasConsentApproved()) {
-            $errors[] = 'Consent must be verified at arrival before signing up for shifts';
+            $errors[] = __('minor.restriction.consent_required');
         }
 
         // Check work category (from ShiftType with possible override)
         $effectiveCategory = $shift->getEffectiveWorkCategory();
         if (!$restrictions->allowsWorkCategory($effectiveCategory)) {
             $shiftTypeName = $shift->shiftType->name ?? 'Unknown';
-            $errors[] = sprintf(
-                'This shift (%s) is category %s work. You are eligible for: %s',
+            $errors[] = __('minor.restriction.work_category', [
                 $shiftTypeName,
                 $effectiveCategory,
-                implode(', ', $restrictions->allowedWorkCategories)
-            );
+                implode(', ', $restrictions->allowedWorkCategories),
+            ]);
         }
 
         // Check shift start time
         if ($restrictions->minShiftStartHour !== null) {
             $shiftStartHour = (int) $shift->start->format('H');
             if ($shiftStartHour < $restrictions->minShiftStartHour) {
-                $errors[] = sprintf(
-                    'Shift starts at %s, earliest permitted is %02d:00',
+                $errors[] = __('minor.restriction.start_time', [
                     $shift->start->format('H:i'),
-                    $restrictions->minShiftStartHour
-                );
+                    sprintf('%02d:00', $restrictions->minShiftStartHour),
+                ]);
             }
         }
 
@@ -107,11 +105,10 @@ class MinorRestrictionService
                 || ($shiftEndHour === $restrictions->maxShiftEndHour && $shiftEndMinute > 0);
 
             if ($exceedsLimit) {
-                $errors[] = sprintf(
-                    'Shift ends at %s, latest permitted is %02d:00',
+                $errors[] = __('minor.restriction.end_time', [
                     $shift->end->format('H:i'),
-                    $restrictions->maxShiftEndHour
-                );
+                    sprintf('%02d:00', $restrictions->maxShiftEndHour),
+                ]);
             }
         }
 
@@ -122,20 +119,19 @@ class MinorRestrictionService
 
             if ($shiftDuration > $remainingHours) {
                 $usedHours = $restrictions->maxHoursPerDay - $remainingHours;
-                $errors[] = sprintf(
-                    'Shift is %.1f hours, only %.1f remaining (%.1f of %d used)',
-                    $shiftDuration,
-                    $remainingHours,
-                    $usedHours,
-                    $restrictions->maxHoursPerDay
-                );
+                $errors[] = __('minor.restriction.daily_hours', [
+                    sprintf('%.1f', $shiftDuration),
+                    sprintf('%.1f', $remainingHours),
+                    sprintf('%.1f', $usedHours),
+                    $restrictions->maxHoursPerDay,
+                ]);
             }
         }
 
         // Check supervisor requirement
         if ($restrictions->requiresSupervisor && $shift->requires_supervisor_for_minors) {
             if (!$this->shiftHasWillingSupervisor($shift, $user)) {
-                $errors[] = 'No willing supervisor is signed up for this shift';
+                $errors[] = __('minor.restriction.supervisor_required');
             }
         }
 

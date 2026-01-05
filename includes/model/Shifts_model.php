@@ -8,6 +8,7 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
+use Engelsystem\Services\MinorRestrictionService;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Database\Eloquent\Collection;
@@ -556,6 +557,14 @@ function Shift_signup_allowed_angel(
 
     if (config('signup_requires_arrival') && !$user->state->arrived) {
         return new ShiftSignupState(ShiftSignupStatus::NOT_ARRIVED, $free_entries);
+    }
+
+    // Check minor volunteer restrictions (German youth labor protection law)
+    /** @var MinorRestrictionService $minorService */
+    $minorService = app(MinorRestrictionService::class);
+    $minorValidation = $minorService->canWorkShift($user, $shift);
+    if (!$minorValidation->isValid) {
+        return new ShiftSignupState(ShiftSignupStatus::MINOR_RESTRICTED, $free_entries, $minorValidation->errors);
     }
 
     // Hooray, shift is free for you!
