@@ -1,0 +1,72 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('oauth2.clients.title') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ block('title') }}
+            {{ m.add(url('/admin/oauth2-clients/edit')) }}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+            <div class="col-md-12">
+                {% if clients is empty %}
+                    {{ m.alert(__('oauth2.clients.none'), 'info') }}
+                {% else %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ __('general.name') }}</th>
+                                    <th>{{ __('oauth2.client.identifier') }}</th>
+                                    <th>{{ __('oauth2.client.redirect_uris') }}</th>
+                                    <th>{{ __('oauth2.client.angel_types') }}</th>
+                                    <th>{{ __('oauth2.client.active') }}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for client in clients %}
+                                    <tr>
+                                        <td>{{ client.name }}</td>
+                                        <td><code>{{ client.identifier }}</code></td>
+                                        <td>
+                                            {% for uri in client.redirect_uris %}
+                                                <small>{{ uri }}</small>{% if not loop.last %}<br>{% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% if client.angelTypes is empty %}
+                                                <span class="text-muted">{{ __('oauth2.client.all_users') }}</span>
+                                            {% else %}
+                                                {% for angelType in client.angelTypes %}
+                                                    <span class="badge bg-secondary">{{ angelType.name }}</span>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ m.iconBool(client.active) }}</td>
+                                        <td>
+                                            <div class="d-flex ms-auto">
+                                                {{ m.edit(url('/admin/oauth2-clients/edit/' ~ client.id)) }}
+                                                <form method="post" class="ps-1">
+                                                    {{ csrf() }}
+                                                    {{ f.hidden('id', client.id) }}
+                                                    {{ f.delete(null, {'size': 'sm', 'confirm_title': __('oauth2.client.delete.confirm', [client.name|e])}) }}
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

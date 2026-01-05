@@ -250,4 +250,29 @@ return [
             . 'you want to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
             . 'or need help.',
     ],
+
+    // OAuth2 Server configuration (Engelsystem as Identity Provider)
+    // Enable this to allow external applications to authenticate via Engelsystem
+    'oauth2_server'           => [
+        // Enable the OAuth2 server functionality
+        'enabled' => (bool) env('OAUTH2_SERVER_ENABLED', false),
+
+        // Path to RSA private key for signing tokens
+        // Generate with: openssl genrsa -out storage/oauth-private.key 2048
+        'private_key' => env('OAUTH2_PRIVATE_KEY', null),
+
+        // Path to RSA public key for verifying tokens
+        // Generate with: openssl rsa -in storage/oauth-private.key -pubout -out storage/oauth-public.key
+        'public_key' => env('OAUTH2_PUBLIC_KEY', null),
+
+        // Encryption key for auth codes and refresh tokens (32+ characters)
+        // Generate with: php -r "echo bin2hex(random_bytes(32));"
+        'encryption_key' => env('OAUTH2_ENCRYPTION_KEY', null),
+
+        // Access token lifetime in seconds (default: 1 hour)
+        'access_token_ttl' => (int) env('OAUTH2_ACCESS_TOKEN_TTL', 3600),
+
+        // Refresh token lifetime in seconds (default: 30 days)
+        'refresh_token_ttl' => (int) env('OAUTH2_REFRESH_TOKEN_TTL', 2592000),
+    ],
 ];

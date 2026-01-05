@@ -13,6 +13,15 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class VerifyCsrfToken implements MiddlewareInterface
 {
+    /**
+     * Paths that are exempt from CSRF verification
+     *
+     * @var array<string>
+     */
+    protected array $except = [
+        '/oauth2/token',
+    ];
+
     public function __construct(protected SessionInterface $session)
     {
     }
@@ -24,12 +33,27 @@ class VerifyCsrfToken implements MiddlewareInterface
     {
         if (
             $this->isReading($request)
+            || $this->isExempt($request)
             || $this->tokensMatch($request)
         ) {
             return $handler->handle($request);
         }
 
         throw new HttpAuthExpired('Authentication Token Mismatch');
+    }
+
+    protected function isExempt(ServerRequestInterface $request): bool
+    {
+        $path = '/' . ltrim($request->getRequestTarget(), '/');
+        $path = preg_replace('/\?.*/', '', $path); // Remove query string
+
+        foreach ($this->except as $exempt) {
+            if ($path === $exempt || str_starts_with($path, $exempt . '/')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function isReading(ServerRequestInterface $request): bool
