@@ -67,6 +67,12 @@ body {
   padding-top: 70px;
 }
 
+// Contain wide content within the main content area
+// so it doesn't cause page-level horizontal scroll that affects fixed navbar
+#content {
+  overflow-x: auto;
+}
+
 .footer a {
   color: $text-muted;
 }
@@ -366,8 +372,9 @@ h6,
   line-height: 2;
 }
 
+// Allow shift calendar to scroll horizontally within its container on mobile
 .shift-calendar.table-responsive {
-  overflow-x: inherit;
+  overflow-x: auto;
 }
 
 // Reference links
