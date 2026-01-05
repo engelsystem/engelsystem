@@ -1581,6 +1581,15 @@ msgstr "Ein straight-cut T-Shirt hat breite Schultern und einen fast quadratisch
 msgid "settings.profile.shirt.link"
 msgstr "Mehr Informationen"
 
+msgid "settings.profile.supervision"
+msgstr "Betreuung Minderjähriger"
+
+msgid "settings.profile.willing_to_supervise"
+msgstr "Ich bin bereit, minderjährige Freiwillige während meiner Schichten zu betreuen"
+
+msgid "settings.profile.willing_to_supervise.info"
+msgstr "Aktiviere diese Option, wenn Du bereit bist, die Aufsicht über Minderjährige während Schichten zu übernehmen. Betreuer stellen sicher, dass minderjährige Freiwillige die Sicherheitsrichtlinien und Veranstaltungsregeln einhalten."
+
 msgid "settings.profile.angeltypes.info"
 msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
 

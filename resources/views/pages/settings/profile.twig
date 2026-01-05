@@ -168,6 +168,16 @@
                 </div>
             {% endif %}
 
+            {% if not isMinor %}
+                <div class="col-12">
+                    <label class="form-label">{{ __('settings.profile.supervision') }}</label>
+                    {{ f.checkbox('willing_to_supervise', __('settings.profile.willing_to_supervise'), {
+                        'checked': willingToSupervise,
+                        'info': __('settings.profile.willing_to_supervise.info'),
+                    }) }}
+                </div>
+            {% endif %}
+
             <div class="col-12">
                 {{ m.info(__('settings.profile.angeltypes.info', [url('/angeltypes')]), true) }}
             </div>

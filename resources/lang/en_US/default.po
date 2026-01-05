@@ -390,6 +390,15 @@ msgstr "A straight-cut shirt has wide shoulders and a body which is almost squar
 msgid "settings.profile.shirt.link"
 msgstr "More information"
 
+msgid "settings.profile.supervision"
+msgstr "Minor supervision"
+
+msgid "settings.profile.willing_to_supervise"
+msgstr "I am willing to supervise minor volunteers during my shifts"
+
+msgid "settings.profile.willing_to_supervise.info"
+msgstr "Check this if you are willing to be responsible for supervising minors during shifts. Supervisors ensure minor volunteers follow safety guidelines and event policies."
+
 msgid "settings.profile.angeltypes.info"
 msgstr "You can manage your angel types <a href=\"%s\">here</a>."
 
