@@ -65,6 +65,13 @@ $navbar-height: 3.125rem;
 
 body {
   padding-top: 70px;
+  // Prevent horizontal scroll at body level so fixed navbar stays in place
+  overflow-x: clip;
+}
+
+#content {
+  // Allow wide content (e.g., shift calendar) to scroll horizontally within the content area
+  overflow-x: auto;
 }
 
 .footer a {
