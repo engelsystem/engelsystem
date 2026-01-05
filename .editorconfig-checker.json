@@ -1,0 +1,27 @@
+{
+    "Verbose": false,
+    "Debug": false,
+    "IgnoreDefaults": false,
+    "SpacesAfterTabs": false,
+    "NoColor": false,
+    "Exclude": [
+        "^\\.composer/",
+        "^\\.serena/",
+        "^nix/",
+        "^vendor/",
+        "^node_modules/",
+        "^coverage",
+        "^flake\\.",
+        "^doc/",
+        "\\.po$"
+    ],
+    "AllowedContentTypes": [],
+    "PassedFiles": [],
+    "Disable": {
+        "EndOfLine": false,
+        "Indentation": false,
+        "InsertFinalNewline": false,
+        "TrimTrailingWhitespace": false,
+        "MaxLineLength": false
+    }
+}

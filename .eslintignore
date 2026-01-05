@@ -1,3 +1,8 @@
 /public
 /node_modules
 /vendor
+/coverage
+/coverage-html
+/coverage-minor
+/coverage-report
+coverage.xml

@@ -22,6 +22,10 @@ _vimrc_local.vim
 /.phpstorm.meta.php
 /.vscode
 
+# Local tool caches
+/.composer/
+/.serena/
+
 # Docker .env files
 /docker/.env
 /docker/deployment.env
@@ -36,6 +40,10 @@ _vimrc_local.vim
 /public/coverage
 /test/coverage
 /coverage
+/coverage-html
+/coverage-minor
+/coverage-report
+/coverage.xml
 /unittests.xml
 /resources/lang/*/*.mo
 
