@@ -1,0 +1,73 @@
+{% extends 'pages/settings/settings.twig' %}
+{% import 'macros/form.twig' as f %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __('settings.spoken_languages') }}{% endblock %}
+
+{% block row_content %}
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ csrf() }}
+
+        <div class="row g-4">
+            <div class="col-12">
+                {{ m.info(__('settings.spoken_languages.info')) }}
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12">
+                <div id="language-editor"
+                     data-options="{{ language_options|json_encode }}"
+                     data-native-label="{{ __('settings.spoken_languages.native') }}"
+                     data-delete-label="{{ __('form.delete') }}">
+                    <div class="mb-3">
+                        <label for="language-input" class="form-label">{{ __('settings.spoken_languages.add') }}</label>
+                        <div class="position-relative">
+                            <input type="text"
+                                   id="language-input"
+                                   class="form-control"
+                                   placeholder="{{ __('settings.spoken_languages.placeholder') }}"
+                                   autocomplete="off">
+                            <div id="language-dropdown" class="dropdown-menu w-100" style="display: none; position: absolute; top: 100%; left: 0; max-height: 200px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
+
+                    <div id="selected-languages" class="mb-3">
+                        {% for lang in user_languages %}
+                            <div class="card mb-2 {% if theme.type == 'light' %}bg-white{% else %}bg-dark{% endif %}" data-code="{{ lang.code }}">
+                                <div class="card-body py-2 px-3 d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <span class="badge bg-secondary me-2">{{ lang.code }}</span>
+                                        <span>{{ lang.name }}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   name="native[]"
+                                                   value="{{ lang.code }}"
+                                                   id="native-{{ lang.code }}"
+                                                   {{ lang.is_native ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="native-{{ lang.code }}">
+                                                {{ __('settings.spoken_languages.native') }}
+                                            </label>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-language" aria-label="{{ __('form.delete') }}">
+                                            {{ m.icon('x-lg') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <input type="hidden" name="languages" id="languages-hidden" value="{{ user_languages|map(l => l.code)|join(',') }}">
+                </div>
+            </div>
+
+            <div class="col-12">
+                {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+            </div>
+        </div>
+    </form>
+{% endblock %}

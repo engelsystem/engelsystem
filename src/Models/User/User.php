@@ -66,6 +66,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|Message[]          $messages
  * @property-read Collection|Shift[]            $shiftsCreated
  * @property-read Collection|Shift[]            $shiftsUpdated
+ * @property-read Collection|UserLanguage[]     $languages
  *
  * @method static QueryBuilder|User[] whereId($value)
  * @method static QueryBuilder|User[] whereName($value)
@@ -288,6 +289,11 @@ class User extends BaseModel
     public function shiftsUpdated(): HasMany
     {
         return $this->hasMany(Shift::class, 'updated_by');
+    }
+
+    public function languages(): HasMany
+    {
+        return $this->hasMany(UserLanguage::class);
     }
 
     public function getDisplayNameAttribute(): string
