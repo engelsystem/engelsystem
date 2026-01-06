@@ -154,7 +154,7 @@ class Migrate
     {
         require_once $file;
 
-        $className = Str::studly(preg_replace('/\d+_/', '', $migration));
+        $className = Str::studly(preg_replace('/^(?:\d+_)+/', '', $migration));
         /** @var Migration $class */
         $class = $this->app->make('Engelsystem\\Migrations\\' . $className);
 
