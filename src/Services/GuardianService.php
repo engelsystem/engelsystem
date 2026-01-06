@@ -311,7 +311,7 @@ class GuardianService
         }
 
         // Validate using MinorRestrictionService
-        $result = $this->minorService->canWorkShift($minor, $shift, $angelType);
+        $result = $this->minorService->canWorkShift($minor, $shift);
         if (!$result->isValid) {
             throw new \InvalidArgumentException($result->getErrorsAsString());
         }
@@ -361,7 +361,9 @@ class GuardianService
                 $query->where('end', '<', Carbon::now());
             })
             ->with(['shift', 'angelType'])
-            ->orderBy('created_at', 'desc')
+            ->join('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
+            ->orderBy('shifts.start', 'desc')
+            ->select('shift_entries.*')
             ->get();
     }
 
@@ -377,7 +379,9 @@ class GuardianService
                 $query->where('start', '>=', Carbon::now());
             })
             ->with(['shift', 'angelType'])
-            ->orderBy('created_at', 'asc')
+            ->join('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
+            ->orderBy('shifts.start', 'asc')
+            ->select('shift_entries.*')
             ->get();
     }
 

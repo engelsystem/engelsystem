@@ -6,7 +6,10 @@ namespace Engelsystem\Controllers\Admin;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\BaseController;
+use Engelsystem\Controllers\HasUserNotifications;
+use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\MinorCategory;
@@ -18,6 +21,8 @@ use Illuminate\Support\Collection;
 
 class MinorManagementController extends BaseController
 {
+    use HasUserNotifications;
+
     /** @var array<string> */
     protected array $permissions = [
         'admin_arrive',
@@ -27,6 +32,7 @@ class MinorManagementController extends BaseController
         protected Response $response,
         protected Authenticator $auth,
         protected MinorRestrictionService $minorService,
+        protected Redirector $redirect,
     ) {
     }
 
@@ -171,5 +177,58 @@ class MinorManagementController extends BaseController
             ->orderBy('display_order')
             ->get()
             ->mapWithKeys(fn(MinorCategory $cat): array => [$cat->name => $cat->users_count ?? 0]);
+    }
+
+    /**
+     * Approve a minor's consent (marks paper consent form as verified).
+     */
+    public function approveConsent(Request $request): Response
+    {
+        $userId = (int) $request->getAttribute('user_id');
+        $minor = User::find($userId);
+
+        if (!$minor || !$minor->isMinor()) {
+            $this->addNotification('minors.not_found', NotificationType::ERROR);
+            return $this->redirect->to('/admin/minors');
+        }
+
+        if ($minor->hasConsentApproved()) {
+            $this->addNotification('minors.consent.already_approved', NotificationType::WARNING);
+            return $this->redirect->to('/admin/minors');
+        }
+
+        $approver = $this->auth->user();
+        $minor->consent_approved_by_user_id = $approver->id;
+        $minor->consent_approved_at = Carbon::now();
+        $minor->save();
+
+        $this->addNotification('minors.consent.approved_success');
+        return $this->redirect->to('/admin/minors');
+    }
+
+    /**
+     * Revoke a minor's consent approval.
+     */
+    public function revokeConsent(Request $request): Response
+    {
+        $userId = (int) $request->getAttribute('user_id');
+        $minor = User::find($userId);
+
+        if (!$minor || !$minor->isMinor()) {
+            $this->addNotification('minors.not_found', NotificationType::ERROR);
+            return $this->redirect->to('/admin/minors');
+        }
+
+        if (!$minor->hasConsentApproved()) {
+            $this->addNotification('minors.consent.not_approved', NotificationType::WARNING);
+            return $this->redirect->to('/admin/minors');
+        }
+
+        $minor->consent_approved_by_user_id = null;
+        $minor->consent_approved_at = null;
+        $minor->save();
+
+        $this->addNotification('minors.consent.revoked_success');
+        return $this->redirect->to('/admin/minors');
     }
 }

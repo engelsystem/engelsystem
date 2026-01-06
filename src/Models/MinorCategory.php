@@ -104,6 +104,15 @@ class MinorCategory extends BaseModel
     }
 
     /**
+     * Scope to filter only actual minor categories (excludes Adult category)
+     * Adult category is distinguished by requires_supervisor = false
+     */
+    public function scopeMinorOnly(Builder $query): Builder
+    {
+        return $query->where('requires_supervisor', true);
+    }
+
+    /**
      * Note: The arrow function causes PHPUnit/PCOV coverage attribution issues when tests
      * run together (shows 75% instead of 100%). This is a known quirk - do not refactor
      * to a named method as that makes coverage worse. The code is properly tested.

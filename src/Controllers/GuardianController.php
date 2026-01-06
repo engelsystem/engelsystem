@@ -139,7 +139,7 @@ class GuardianController extends BaseController
             return $this->redirect->to('/');
         }
 
-        $categories = MinorCategory::active()->get();
+        $categories = MinorCategory::active()->minorOnly()->get();
 
         return $this->response->withView('pages/guardian/register-minor.twig', [
             'categories' => $categories,
@@ -229,7 +229,7 @@ class GuardianController extends BaseController
             return $this->redirect->to('/guardian');
         }
 
-        $categories = MinorCategory::active()->get();
+        $categories = MinorCategory::active()->minorOnly()->get();
 
         return $this->response->withView('pages/guardian/edit-minor.twig', [
             'minor'      => $minor,

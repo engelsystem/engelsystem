@@ -253,6 +253,8 @@ $route->addGroup(
             function (RouteCollector $route): void {
                 $route->get('', 'Admin\\MinorManagementController@index');
                 $route->post('', 'Admin\\MinorManagementController@index');
+                $route->post('/{user_id:\d+}/approve', 'Admin\\MinorManagementController@approveConsent');
+                $route->post('/{user_id:\d+}/revoke', 'Admin\\MinorManagementController@revokeConsent');
             }
         );
 

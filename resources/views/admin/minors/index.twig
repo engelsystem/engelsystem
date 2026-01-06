@@ -190,11 +190,28 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{{ url('/users', { 'action': 'view', 'user_id': minor.id }) }}"
-                                       class="btn btn-sm btn-secondary"
-                                       title="{{ __('general.view') }}">
-                                        {{ m.icon('eye') }}
-                                    </a>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ url('/users', { 'action': 'view', 'user_id': minor.id }) }}"
+                                           class="btn btn-sm btn-secondary"
+                                           title="{{ __('general.view') }}">
+                                            {{ m.icon('eye') }}
+                                        </a>
+                                        {% if minor.consent_approved_by_user_id %}
+                                            <form method="post" action="{{ url('/admin/minors/' ~ minor.id ~ '/revoke') }}" class="d-inline" onsubmit="return confirm('{{ __('minors.consent.revoke_confirm') }}');">
+                                                {{ csrf() }}
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('minors.consent.revoke') }}">
+                                                    {{ m.icon('x-circle') }}
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <form method="post" action="{{ url('/admin/minors/' ~ minor.id ~ '/approve') }}" class="d-inline">
+                                                {{ csrf() }}
+                                                <button type="submit" class="btn btn-sm btn-success" title="{{ __('minors.consent.approve') }}">
+                                                    {{ m.icon('check-circle') }}
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
                                 </td>
                             </tr>
                         {% else %}

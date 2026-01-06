@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Admin\MinorManagementController;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Location;
@@ -20,6 +21,8 @@ use Engelsystem\Models\UserGuardian;
 use Engelsystem\Services\MinorRestrictionService;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * @covers \Engelsystem\Controllers\Admin\MinorManagementController
@@ -31,6 +34,7 @@ class MinorManagementControllerTest extends TestCase
     protected MinorRestrictionService $minorService;
     protected Response $response;
     protected Authenticator $auth;
+    protected Redirector $redirect;
     protected MinorManagementController $controller;
 
     protected function setUp(): void
@@ -39,15 +43,18 @@ class MinorManagementControllerTest extends TestCase
         $this->initDatabase();
         $this->mockTranslator();
         $this->app->instance('config', new Config([]));
+        $this->app->instance('session', new Session(new MockArraySessionStorage()));
 
         $this->minorService = new MinorRestrictionService();
         $this->response = $this->createMock(Response::class);
         $this->auth = $this->createMock(Authenticator::class);
+        $this->redirect = $this->createMock(Redirector::class);
 
         $this->controller = new MinorManagementController(
             $this->response,
             $this->auth,
-            $this->minorService
+            $this->minorService,
+            $this->redirect
         );
     }
 
@@ -633,5 +640,202 @@ class MinorManagementControllerTest extends TestCase
 
         $request = Request::create('/');
         $this->controller->index($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::approveConsent
+     */
+    public function testApproveConsentSuccess(): void
+    {
+        $category = MinorCategory::factory()->create(['is_active' => true]);
+
+        /** @var User $minor */
+        $minor = User::factory()->create([
+            'name' => 'pending_minor',
+            'minor_category_id' => $category->id,
+            'consent_approved_by_user_id' => null,
+            'consent_approved_at' => null,
+        ]);
+
+        /** @var User $approver */
+        $approver = User::factory()->create(['name' => 'heaven_user']);
+
+        $this->auth->expects($this->once())
+            ->method('user')
+            ->willReturn($approver);
+
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/admin/minors')
+            ->willReturn($this->response);
+
+        $request = Request::create('/admin/minors/' . $minor->id . '/approve', 'POST');
+        $request = $request->withAttribute('user_id', $minor->id);
+
+        $this->controller->approveConsent($request);
+
+        $minor->refresh();
+        $this->assertEquals($approver->id, $minor->consent_approved_by_user_id);
+        $this->assertNotNull($minor->consent_approved_at);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::approveConsent
+     */
+    public function testApproveConsentUserNotFound(): void
+    {
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/admin/minors')
+            ->willReturn($this->response);
+
+        $request = Request::create('/admin/minors/99999/approve', 'POST');
+        $request = $request->withAttribute('user_id', 99999);
+
+        $this->controller->approveConsent($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::approveConsent
+     */
+    public function testApproveConsentNotAMinor(): void
+    {
+        /** @var User $adult */
+        $adult = User::factory()->create([
+            'name' => 'adult_user',
+            'minor_category_id' => null,
+        ]);
+
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/admin/minors')
+            ->willReturn($this->response);
+
+        $request = Request::create('/admin/minors/' . $adult->id . '/approve', 'POST');
+        $request = $request->withAttribute('user_id', $adult->id);
+
+        $this->controller->approveConsent($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::approveConsent
+     */
+    public function testApproveConsentAlreadyApproved(): void
+    {
+        $category = MinorCategory::factory()->create(['is_active' => true]);
+        $approver = User::factory()->create();
+
+        /** @var User $minor */
+        $minor = User::factory()->create([
+            'name' => 'approved_minor',
+            'minor_category_id' => $category->id,
+            'consent_approved_by_user_id' => $approver->id,
+            'consent_approved_at' => Carbon::now(),
+        ]);
+
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/admin/minors')
+            ->willReturn($this->response);
+
+        $request = Request::create('/admin/minors/' . $minor->id . '/approve', 'POST');
+        $request = $request->withAttribute('user_id', $minor->id);
+
+        $this->controller->approveConsent($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::revokeConsent
+     */
+    public function testRevokeConsentSuccess(): void
+    {
+        $category = MinorCategory::factory()->create(['is_active' => true]);
+        $approver = User::factory()->create();
+
+        /** @var User $minor */
+        $minor = User::factory()->create([
+            'name' => 'approved_minor',
+            'minor_category_id' => $category->id,
+            'consent_approved_by_user_id' => $approver->id,
+            'consent_approved_at' => Carbon::now(),
+        ]);
+
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/admin/minors')
+            ->willReturn($this->response);
+
+        $request = Request::create('/admin/minors/' . $minor->id . '/revoke', 'POST');
+        $request = $request->withAttribute('user_id', $minor->id);
+
+        $this->controller->revokeConsent($request);
+
+        $minor->refresh();
+        $this->assertNull($minor->consent_approved_by_user_id);
+        $this->assertNull($minor->consent_approved_at);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::revokeConsent
+     */
+    public function testRevokeConsentUserNotFound(): void
+    {
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/admin/minors')
+            ->willReturn($this->response);
+
+        $request = Request::create('/admin/minors/99999/revoke', 'POST');
+        $request = $request->withAttribute('user_id', 99999);
+
+        $this->controller->revokeConsent($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::revokeConsent
+     */
+    public function testRevokeConsentNotAMinor(): void
+    {
+        /** @var User $adult */
+        $adult = User::factory()->create([
+            'name' => 'adult_user',
+            'minor_category_id' => null,
+        ]);
+
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/admin/minors')
+            ->willReturn($this->response);
+
+        $request = Request::create('/admin/minors/' . $adult->id . '/revoke', 'POST');
+        $request = $request->withAttribute('user_id', $adult->id);
+
+        $this->controller->revokeConsent($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::revokeConsent
+     */
+    public function testRevokeConsentNotYetApproved(): void
+    {
+        $category = MinorCategory::factory()->create(['is_active' => true]);
+
+        /** @var User $minor */
+        $minor = User::factory()->create([
+            'name' => 'pending_minor',
+            'minor_category_id' => $category->id,
+            'consent_approved_by_user_id' => null,
+            'consent_approved_at' => null,
+        ]);
+
+        $this->redirect->expects($this->once())
+            ->method('to')
+            ->with('/admin/minors')
+            ->willReturn($this->response);
+
+        $request = Request::create('/admin/minors/' . $minor->id . '/revoke', 'POST');
+        $request = $request->withAttribute('user_id', $minor->id);
+
+        $this->controller->revokeConsent($request);
     }
 }
