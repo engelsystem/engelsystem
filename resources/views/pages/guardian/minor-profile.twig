@@ -169,7 +169,7 @@
                                     {% for entry in upcomingShifts|slice(0, 5) %}
                                         <tr>
                                             <td>{{ entry.shift.title }}</td>
-                                            <td>{{ entry.shift.start|date(__('general.date_format')) }}</td>
+                                            <td>{{ entry.shift.start|date(__('general.date')) }}</td>
                                             <td>{{ entry.shift.start|date('H:i') }} - {{ entry.shift.end|date('H:i') }}</td>
                                             <td>{{ entry.angelType.name }}</td>
                                         </tr>

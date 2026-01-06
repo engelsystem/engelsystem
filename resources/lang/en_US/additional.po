@@ -1228,3 +1228,86 @@ msgstr "This form must be signed and presented to event staff before the minor c
 
 msgid "guardian.generated_on"
 msgstr "Generated on"
+
+# Guardian notification messages
+msgid "guardian.not_eligible"
+msgstr "You are not eligible to access the guardian area. Only non-minor users can be guardians."
+
+msgid "guardian.minor_not_found"
+msgstr "Minor account not found."
+
+msgid "guardian.user_not_minor"
+msgstr "The specified user is not a minor."
+
+msgid "guardian.link_successful"
+msgstr "Successfully linked as guardian."
+
+msgid "guardian.registration_successful"
+msgstr "Minor account created successfully."
+
+msgid "guardian.profile_updated"
+msgstr "Minor profile updated."
+
+msgid "guardian.invalid_category"
+msgstr "Invalid minor category selected."
+
+msgid "guardian.category_changed"
+msgstr "Minor category updated successfully."
+
+msgid "guardian.guardian_not_found"
+msgstr "Guardian account not found."
+
+msgid "guardian.guardian_added"
+msgstr "Guardian added successfully."
+
+msgid "guardian.guardian_removed"
+msgstr "Guardian removed successfully."
+
+msgid "guardian.not_primary"
+msgstr "Only the primary guardian can perform this action."
+
+msgid "guardian.primary_changed"
+msgstr "Primary guardian changed successfully."
+
+msgid "guardian.showing_recent"
+msgstr "Showing most recent %count% of %total% shifts"
+
+# Admin user minor consent translations
+msgid "admin.user.minor_consent"
+msgstr "Minor Consent"
+
+msgid "admin.user.minor_category"
+msgstr "Minor Category"
+
+msgid "admin.user.consent_status"
+msgstr "Consent Status"
+
+msgid "admin.user.consent_approved"
+msgstr "Approved"
+
+msgid "admin.user.consent_pending"
+msgstr "Pending"
+
+msgid "admin.user.consent_approved_by"
+msgstr "Approved By"
+
+msgid "admin.user.consent_approved_at"
+msgstr "Approved At"
+
+msgid "admin.user.consent_approve"
+msgstr "Approve Consent"
+
+msgid "admin.user.consent_revoke"
+msgstr "Revoke Consent"
+
+msgid "admin.user.consent_revoke_confirm"
+msgstr "Are you sure you want to revoke the consent for this minor?"
+
+msgid "admin.user.consent_approved_success"
+msgstr "Minor consent approved successfully."
+
+msgid "admin.user.consent_revoked_success"
+msgstr "Minor consent revoked successfully."
+
+msgid "admin.user.not_minor"
+msgstr "This user is not a minor."

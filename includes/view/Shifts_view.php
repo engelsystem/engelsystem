@@ -178,7 +178,13 @@ function Shift_view(
     $needed_angels = '';
     $neededAngels = new Collection($shift->neededAngels);
     foreach ($neededAngels as $needed_angeltype) {
-        $needed_angels .= Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin, $supportsAngelTypes);
+        $needed_angels .= Shift_view_render_needed_angeltype(
+            $needed_angeltype,
+            $angeltypes,
+            $shift,
+            $user_shift_admin,
+            $supportsAngelTypes
+        );
     }
 
     $shiftEntry = $shift->shiftEntries;
@@ -246,9 +252,15 @@ function Shift_view(
 
     $navigationButtons = '';
     if ($nextShift || $previousShift) {
+        $prevUrl = $previousShift
+            ? url('/shifts', ['action' => 'view', 'shift_id' => $previousShift->id])
+            : '';
+        $nextUrl = $nextShift
+            ? url('/shifts', ['action' => 'view', 'shift_id' => $nextShift->id])
+            : '';
         $navigationButtons = table_buttons([
-            $previousShift ? button(url('/shifts', ['action' => 'view', 'shift_id' => $previousShift->id]), __('shift.previous')) : '',
-            $nextShift ? button(url('/shifts', ['action' => 'view', 'shift_id' => $nextShift->id]), __('shift.next')) : '',
+            $previousShift ? button($prevUrl, __('shift.previous')) : '',
+            $nextShift ? button($nextUrl, __('shift.next')) : '',
         ], 'mb-2');
     }
 
@@ -259,7 +271,13 @@ function Shift_view(
             . '</a>';
     }
 
-    $content[] = $navigationButtons ? div('row', [div('col-md-12', [table_buttons($buttons, 'mb-2'), $navigationButtons])]) : buttons($buttons);
+    if ($navigationButtons) {
+        $content[] = div('row', [
+            div('col-md-12', [table_buttons($buttons, 'mb-2'), $navigationButtons]),
+        ]);
+    } else {
+        $content[] = buttons($buttons);
+    }
     $content[] = Shift_view_header($shift, $location);
 
     $content[] = div('row', [
@@ -322,6 +340,17 @@ function Shift_view_alert_render(
 
     if ($shift_signup_state->getState() === ShiftSignupStatus::COLLIDES) {
         $alert = warning(__('This shift collides with one of your shifts.'), true);
+    }
+
+    if ($shift_signup_state->getState() === ShiftSignupStatus::MINOR_RESTRICTED) {
+        $minorErrors = $shift_signup_state->getMinorErrors();
+        if (!empty($minorErrors)) {
+            $escapedErrors = array_map('htmlspecialchars', $minorErrors);
+            $errorList = '<ul class="mb-0"><li>' . implode('</li><li>', $escapedErrors) . '</li></ul>';
+            $alert = warning(__('shift.minor_restricted') . ':' . $errorList, true);
+        } else {
+            $alert = warning(__('shift.minor_restricted'), true);
+        }
     }
 
     if ($shift_signup_state->getState() === ShiftSignupStatus::SIGNED_UP) {

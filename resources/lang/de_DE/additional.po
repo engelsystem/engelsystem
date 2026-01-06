@@ -1238,3 +1238,86 @@ msgstr "Dieses Formular muss unterschrieben und dem Event-Personal vorgelegt wer
 
 msgid "guardian.generated_on"
 msgstr "Erstellt am"
+
+# Guardian notification messages
+msgid "guardian.not_eligible"
+msgstr "Du bist nicht berechtigt, den Erziehungsberechtigten-Bereich zu nutzen. Nur volljährige Benutzer können Erziehungsberechtigte sein."
+
+msgid "guardian.minor_not_found"
+msgstr "Minderjähriges Konto nicht gefunden."
+
+msgid "guardian.user_not_minor"
+msgstr "Der angegebene Benutzer ist kein Minderjähriger."
+
+msgid "guardian.link_successful"
+msgstr "Erfolgreich als Erziehungsberechtigter verknüpft."
+
+msgid "guardian.registration_successful"
+msgstr "Minderjähriges Konto erfolgreich erstellt."
+
+msgid "guardian.profile_updated"
+msgstr "Profil des Minderjährigen aktualisiert."
+
+msgid "guardian.invalid_category"
+msgstr "Ungültige Minderjährigen-Kategorie ausgewählt."
+
+msgid "guardian.category_changed"
+msgstr "Kategorie des Minderjährigen erfolgreich aktualisiert."
+
+msgid "guardian.guardian_not_found"
+msgstr "Erziehungsberechtigten-Konto nicht gefunden."
+
+msgid "guardian.guardian_added"
+msgstr "Erziehungsberechtigter erfolgreich hinzugefügt."
+
+msgid "guardian.guardian_removed"
+msgstr "Erziehungsberechtigter erfolgreich entfernt."
+
+msgid "guardian.not_primary"
+msgstr "Nur der primäre Erziehungsberechtigte kann diese Aktion durchführen."
+
+msgid "guardian.primary_changed"
+msgstr "Primärer Erziehungsberechtigter erfolgreich geändert."
+
+msgid "guardian.showing_recent"
+msgstr "Zeige die letzten %count% von %total% Schichten"
+
+# Admin user minor consent translations
+msgid "admin.user.minor_consent"
+msgstr "Einwilligung Minderjährige"
+
+msgid "admin.user.minor_category"
+msgstr "Altersgruppe"
+
+msgid "admin.user.consent_status"
+msgstr "Einwilligungsstatus"
+
+msgid "admin.user.consent_approved"
+msgstr "Genehmigt"
+
+msgid "admin.user.consent_pending"
+msgstr "Ausstehend"
+
+msgid "admin.user.consent_approved_by"
+msgstr "Genehmigt von"
+
+msgid "admin.user.consent_approved_at"
+msgstr "Genehmigt am"
+
+msgid "admin.user.consent_approve"
+msgstr "Einwilligung genehmigen"
+
+msgid "admin.user.consent_revoke"
+msgstr "Einwilligung widerrufen"
+
+msgid "admin.user.consent_revoke_confirm"
+msgstr "Bist du sicher, dass du die Einwilligung für diesen Minderjährigen widerrufen möchtest?"
+
+msgid "admin.user.consent_approved_success"
+msgstr "Einwilligung erfolgreich genehmigt."
+
+msgid "admin.user.consent_revoked_success"
+msgstr "Einwilligung erfolgreich widerrufen."
+
+msgid "admin.user.not_minor"
+msgstr "Dieser Benutzer ist kein Minderjähriger."

@@ -37,6 +37,12 @@ class ShiftSignupState
     {
         $this->freeEntries += $shiftSignupState->getFreeEntries();
 
+        // Merge minorErrors from both states to preserve all error messages
+        $this->minorErrors = array_unique(array_merge(
+            $this->minorErrors,
+            $shiftSignupState->getMinorErrors()
+        ));
+
         if ($this->valueForState($shiftSignupState->state) > $this->valueForState($this->state)) {
             $this->state = $shiftSignupState->state;
         }

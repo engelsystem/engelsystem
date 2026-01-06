@@ -149,4 +149,48 @@ class ShiftSignupStateTest extends TestCase
         // NOT_ARRIVED (100) > FREE (80) - state should become NOT_ARRIVED
         $this->assertEquals(ShiftSignupStatus::NOT_ARRIVED, $state1->getState());
     }
+
+    /**
+     * @covers \Engelsystem\ShiftSignupState::combineWith
+     * @covers \Engelsystem\ShiftSignupState::getMinorErrors
+     */
+    public function testCombineWithMergesMinorErrors(): void
+    {
+        // Test that minorErrors are merged when combining states
+        $errors1 = ['Shift exceeds daily hour limit', 'Shift starts too early'];
+        $errors2 = ['Shift ends too late', 'Shift exceeds daily hour limit']; // Duplicate should be removed
+
+        $state1 = new ShiftSignupState(ShiftSignupStatus::MINOR_RESTRICTED, 2, $errors1);
+        $state2 = new ShiftSignupState(ShiftSignupStatus::MINOR_RESTRICTED, 3, $errors2);
+
+        $state1->combineWith($state2);
+
+        $mergedErrors = $state1->getMinorErrors();
+
+        // Should have 3 unique errors (duplicate 'Shift exceeds daily hour limit' removed)
+        $this->assertCount(3, $mergedErrors);
+        $this->assertContains('Shift exceeds daily hour limit', $mergedErrors);
+        $this->assertContains('Shift starts too early', $mergedErrors);
+        $this->assertContains('Shift ends too late', $mergedErrors);
+    }
+
+    /**
+     * @covers \Engelsystem\ShiftSignupState::combineWith
+     * @covers \Engelsystem\ShiftSignupState::getMinorErrors
+     */
+    public function testCombineWithPreservesMinorErrorsWhenStateChanges(): void
+    {
+        // Test that minorErrors are preserved even when the state changes to FREE
+        $errors = ['Shift exceeds daily hour limit'];
+
+        $state1 = new ShiftSignupState(ShiftSignupStatus::MINOR_RESTRICTED, 2, $errors);
+        $state2 = new ShiftSignupState(ShiftSignupStatus::FREE, 3);
+
+        $state1->combineWith($state2);
+
+        // State should change to FREE (higher priority)
+        $this->assertEquals(ShiftSignupStatus::FREE, $state1->getState());
+        // But minorErrors should still be preserved
+        $this->assertContains('Shift exceeds daily hour limit', $state1->getMinorErrors());
+    }
 }

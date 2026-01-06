@@ -160,6 +160,59 @@ function admin_user()
             $html .= '</td></tr>' . "\n";
         }
 
+        // Minor consent approval section
+        if ($user_source->isMinor()) {
+            $html .= '</table>' . "\n";
+            $html .= '</td></tr></table>' . "\n";
+            $html .= '<button type="submit" class="btn btn-primary">'
+                . icon('save') . __('form.save') . '</button>' . "\n";
+            $html .= '</form>';
+
+            $html .= '<hr>';
+            $html .= '<h4>' . icon('shield-check') . ' ' . __('admin.user.minor_consent') . '</h4>';
+            $html .= '<table class="table">' . "\n";
+            $html .= '  <tr><td>' . __('admin.user.minor_category') . '</td><td>'
+                . htmlspecialchars($user_source->minorCategory->name ?? '-')
+                . '</td></tr>' . "\n";
+
+            if ($user_source->hasConsentApproved()) {
+                $html .= '  <tr><td>' . __('admin.user.consent_status') . '</td><td>'
+                    . '<span class="badge bg-success">' . icon('check-circle-fill') . ' ' . __('admin.user.consent_approved') . '</span>'
+                    . '</td></tr>' . "\n";
+                $html .= '  <tr><td>' . __('admin.user.consent_approved_by') . '</td><td>'
+                    . User_Nick_render($user_source->consentApprovedBy)
+                    . '</td></tr>' . "\n";
+                $html .= '  <tr><td>' . __('admin.user.consent_approved_at') . '</td><td>'
+                    . ($user_source->consent_approved_at ? $user_source->consent_approved_at->format(__('general.datetime')) : '-')
+                    . '</td></tr>' . "\n";
+            } else {
+                $html .= '  <tr><td>' . __('admin.user.consent_status') . '</td><td>'
+                    . '<span class="badge bg-warning text-dark">' . icon('exclamation-triangle-fill') . ' ' . __('admin.user.consent_pending') . '</span>'
+                    . '</td></tr>' . "\n";
+            }
+            $html .= '</table>' . "\n";
+
+            // Consent action buttons
+            if (auth()->can('user.info.edit')) {
+                $html .= '<form action="'
+                    . url('/admin-user', ['action' => 'consent', 'id' => $user_id])
+                    . '" method="post" class="d-inline">' . "\n";
+                $html .= form_csrf();
+                if ($user_source->hasConsentApproved()) {
+                    $html .= '<button type="submit" name="consent_action" value="revoke" class="btn btn-danger" '
+                        . 'onclick="return confirm(\'' . __('admin.user.consent_revoke_confirm') . '\')">'
+                        . icon('x-circle') . ' ' . __('admin.user.consent_revoke') . '</button>';
+                } else {
+                    $html .= '<button type="submit" name="consent_action" value="approve" class="btn btn-success">'
+                        . icon('check-circle') . ' ' . __('admin.user.consent_approve') . '</button>';
+                }
+                $html .= '</form>';
+            }
+
+            // Continue with remaining form sections
+            goto password_section;
+        }
+
         $html .= '</table>' . "\n" . '</td><td></td></tr>';
 
         $html .= '</td></tr>' . "\n";
@@ -168,8 +221,8 @@ function admin_user()
             . icon('save') . __('form.save') . '</button>' . "\n";
         $html .= '</form>';
 
+        password_section:
         $html .= '<hr>';
-
         $html .= __('Here you can reset the password of this angel:');
 
         $html .= '<form action="'
@@ -417,6 +470,40 @@ function admin_user()
                         __('The entries must match and must not be empty!'),
                         true
                     );
+                }
+                break;
+
+            case 'consent':
+                if (!auth()->can('user.info.edit')) {
+                    $html .= error(__('No permission to manage consent.'), true);
+                    break;
+                }
+
+                /** @var User $user_source */
+                $user_source = User::findOrFail($user_id);
+
+                if (!$user_source->isMinor()) {
+                    $html .= error(__('admin.user.not_minor'), true);
+                    break;
+                }
+
+                $consent_action = $request->postData('consent_action');
+                if ($consent_action === 'approve') {
+                    $user_source->consent_approved_by_user_id = $user->id;
+                    $user_source->consent_approved_at = Carbon::now();
+                    $user_source->save();
+                    engelsystem_log(
+                        'Approved minor consent for ' . User_Nick_render($user_source, true)
+                    );
+                    $html .= success(__('admin.user.consent_approved_success'), true);
+                } elseif ($consent_action === 'revoke') {
+                    $user_source->consent_approved_by_user_id = null;
+                    $user_source->consent_approved_at = null;
+                    $user_source->save();
+                    engelsystem_log(
+                        'Revoked minor consent for ' . User_Nick_render($user_source, true)
+                    );
+                    $html .= success(__('admin.user.consent_revoked_success'), true);
                 }
                 break;
         }
