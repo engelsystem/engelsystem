@@ -196,19 +196,20 @@ class MigrateTest extends TestCase
         $this->assertTrue($schema->hasTable('migrations'));
 
         $migrations = $db->table('migrations')->get();
-        $this->assertCount(3, $migrations);
+        $this->assertCount(4, $migrations);
         $this->assertFalse($migrations->contains('migration', 'lock'));
 
         $this->assertTrue($migrations->contains('migration', '2001_04_11_123456_create_lorem_ipsum_table'));
         $this->assertTrue($migrations->contains('migration', '2017_12_24_053300_another_stuff'));
         $this->assertTrue($migrations->contains('migration', '2022_12_22_221222_add_some_feature'));
+        $this->assertTrue($migrations->contains('migration', '2025_01_06_112911_oauth2_server_tables'));
 
         $this->assertTrue($schema->hasTable('lorem_ipsum'));
 
         $migration->run(__DIR__ . '/Stub', Direction::DOWN, true);
 
         $migrations = $db->table('migrations')->get();
-        $this->assertCount(2, $migrations);
+        $this->assertCount(3, $migrations);
 
         $migration->run(__DIR__ . '/Stub', Direction::DOWN);
 
