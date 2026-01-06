@@ -1,0 +1,64 @@
+#!/usr/bin/env php
+<?php
+
+use Composer\Autoload\ClassLoader;
+use Engelsystem\Application;
+use Engelsystem\Database\Seeders\TestDataSeeder;
+use Engelsystem\Environment;
+use Engelsystem\Exceptions\Handler;
+use Engelsystem\Exceptions\Handlers\NullHandler;
+
+require_once __DIR__ . '/../includes/application.php';
+
+/** @var $loader ClassLoader */
+
+/** @var Application $app */
+$app = app();
+
+/** @var Handler $errorHandler */
+$errorHandler = $app->get(Handler::class);
+$errorHandler->setHandler(Environment::PRODUCTION, new NullHandler());
+
+$script = array_shift($argv);
+$argv = array_map('strtolower', $argv);
+
+// Show help
+if (in_array('help', $argv) || in_array('--help', $argv) || in_array('-h', $argv)) {
+    echo 'Usage: ' . $script . ' [options]' . PHP_EOL;
+    echo 'Seed the database with test data for minor volunteer support testing.' . PHP_EOL;
+    echo PHP_EOL;
+    echo 'Options:' . PHP_EOL;
+    echo '  --clear, -c       Only clear test data, do not reseed' . PHP_EOL;
+    echo '  --quiet, -q       Suppress output messages' . PHP_EOL;
+    echo '  --help, -h        Show this help message' . PHP_EOL;
+    echo PHP_EOL;
+    echo 'All test data uses the "test_" prefix for easy identification.' . PHP_EOL;
+    echo 'Test user password: testpass123' . PHP_EOL;
+    echo PHP_EOL;
+    echo 'Examples:' . PHP_EOL;
+    echo '  ' . $script . '              # Seed test data (clears first)' . PHP_EOL;
+    echo '  ' . $script . ' --clear      # Only clear test data' . PHP_EOL;
+    echo '  ' . $script . ' -q           # Seed quietly (no output)' . PHP_EOL;
+    echo PHP_EOL;
+    exit(0);
+}
+
+// Parse options
+$clearOnly = in_array('clear', $argv) || in_array('--clear', $argv) || in_array('-c', $argv);
+$quiet = in_array('quiet', $argv) || in_array('--quiet', $argv) || in_array('-q', $argv);
+
+// Get database connection
+$db = $app->get('db.connection');
+
+// Create and run seeder
+$seeder = new TestDataSeeder($db, !$quiet);
+
+if ($clearOnly) {
+    $seeder->clear();
+    if (!$quiet) {
+        echo PHP_EOL;
+        echo 'Test data cleared successfully.' . PHP_EOL;
+    }
+} else {
+    $seeder->run();
+}
