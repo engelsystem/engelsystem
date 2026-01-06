@@ -222,6 +222,21 @@ table.table-sticky-header thead {
   }
 }
 
+// Expand user dropdown links on mobile devices. Subtraction needed to enforce state when viewport changes
+@media (max-width: map-get($grid-breakpoints, 'xxl') - 0.02px) {
+  .dropdown-user-menu {
+    .dropdown-toggle {
+      pointer-events: none;
+    }
+    .dropdown-toggle::after {
+      display: none;
+    }
+    .dropdown-menu {
+      display: block;
+    }
+  }
+}
+
 /* make selections scrollable and add a max height of 4.5 entries */
 #collapseShiftsFilterSelect .limit-height.selection {
   overflow-y: auto;
