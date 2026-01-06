@@ -215,6 +215,30 @@ table.table-sticky-header thead {
   }
 }
 
+// Always expand user dropdown on mobile (when navbar is collapsed).
+// Only the user menu is expanded (not language dropdown) because it contains
+// frequently-used items during event operation. Language is typically set once.
+// -0.02px avoids overlap at exactly 1400px where navbar switches to desktop mode
+@media (max-width: map-get($grid-breakpoints, 'xxl') - 0.02px) {
+  .dropdown--user-menu {
+    // On mobile, treat the user menu as always visible and non-interactive
+    .dropdown-toggle {
+      pointer-events: none;
+      cursor: default;
+    }
+    .dropdown-toggle::after {
+      display: none;
+    }
+    .dropdown-menu {
+      display: block;
+      position: static;
+      float: none;
+      box-shadow: none;
+      margin: 0;
+    }
+  }
+}
+
 /* make selections scrollable and add a max height of 4.5 entries */
 #collapseShiftsFilterSelect .limit-height.selection {
   overflow-y: auto;
