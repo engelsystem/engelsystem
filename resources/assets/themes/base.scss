@@ -215,6 +215,19 @@ table.table-sticky-header thead {
   }
 }
 
+// Always expand user dropdown on mobile (when navbar is collapsed)
+// -0.02px avoids overlap at exactly 1400px where navbar switches to desktop mode
+@media (max-width: map-get($grid-breakpoints, 'xxl') - 0.02px) {
+  .dropdown--user-menu {
+    .dropdown-toggle::after {
+      display: none;
+    }
+    .dropdown-menu {
+      display: block;
+    }
+  }
+}
+
 /* make selections scrollable and add a max height of 4.5 entries */
 #collapseShiftsFilterSelect .limit-height.selection {
   overflow-y: auto;
