@@ -56,3 +56,12 @@ _vimrc_local.vim
 /package-lock.json
 /yarn-error.log
 /.yarn-cache
+
+# E2E Testing (Playwright)
+/e2e/node_modules
+/e2e/e2e-report
+/e2e/e2e-results.xml
+/e2e/test-results
+/e2e/playwright-report
+/e2e/.playwright
+/e2e/dist
