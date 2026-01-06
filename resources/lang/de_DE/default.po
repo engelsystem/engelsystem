@@ -2252,3 +2252,27 @@ msgstr "Kein Limit"
 
 msgid "minors.none_found"
 msgstr "Keine Minderjährigen gefunden, die deinen Kriterien entsprechen."
+
+msgid "minors.not_found"
+msgstr "Minderjähriger nicht gefunden."
+
+msgid "minors.consent.approve"
+msgstr "Einwilligung genehmigen"
+
+msgid "minors.consent.revoke"
+msgstr "Einwilligung widerrufen"
+
+msgid "minors.consent.revoke_confirm"
+msgstr "Bist du sicher, dass du die Einwilligung für diesen Minderjährigen widerrufen möchtest? Er/Sie kann sich dann nicht mehr für Schichten anmelden."
+
+msgid "minors.consent.approved_success"
+msgstr "Einwilligung wurde erfolgreich genehmigt."
+
+msgid "minors.consent.revoked_success"
+msgstr "Einwilligung wurde erfolgreich widerrufen."
+
+msgid "minors.consent.already_approved"
+msgstr "Einwilligung ist für diesen Minderjährigen bereits genehmigt."
+
+msgid "minors.consent.not_approved"
+msgstr "Einwilligung ist für diesen Minderjährigen noch nicht genehmigt."

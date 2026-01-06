@@ -1291,3 +1291,27 @@ msgstr "No limit"
 
 msgid "minors.none_found"
 msgstr "No minors found matching your criteria."
+
+msgid "minors.not_found"
+msgstr "Minor not found."
+
+msgid "minors.consent.approve"
+msgstr "Approve Consent"
+
+msgid "minors.consent.revoke"
+msgstr "Revoke Consent"
+
+msgid "minors.consent.revoke_confirm"
+msgstr "Are you sure you want to revoke consent for this minor? They will no longer be able to sign up for shifts."
+
+msgid "minors.consent.approved_success"
+msgstr "Consent has been approved successfully."
+
+msgid "minors.consent.revoked_success"
+msgstr "Consent has been revoked successfully."
+
+msgid "minors.consent.already_approved"
+msgstr "Consent is already approved for this minor."
+
+msgid "minors.consent.not_approved"
+msgstr "Consent is not yet approved for this minor."
