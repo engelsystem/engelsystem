@@ -156,7 +156,7 @@ class MinorRestrictionServiceTest extends TestCase
     {
         $category = MinorCategory::factory()->create([
             'allowed_work_categories' => ['A', 'B', 'C'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
         ]);
 
         /** @var User $minor */
@@ -186,7 +186,7 @@ class MinorRestrictionServiceTest extends TestCase
     {
         $category = MinorCategory::factory()->create([
             'allowed_work_categories' => ['A'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
         ]);
 
         /** @var User $approver */
@@ -227,7 +227,7 @@ class MinorRestrictionServiceTest extends TestCase
         $category = MinorCategory::factory()->create([
             'min_shift_start_hour'    => 8,
             'allowed_work_categories' => ['A', 'B', 'C'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
         ]);
 
         /** @var User $approver */
@@ -261,7 +261,7 @@ class MinorRestrictionServiceTest extends TestCase
         $category = MinorCategory::factory()->create([
             'max_shift_end_hour'      => 18,
             'allowed_work_categories' => ['A', 'B', 'C'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
         ]);
 
         /** @var User $approver */
@@ -295,7 +295,7 @@ class MinorRestrictionServiceTest extends TestCase
         $category = MinorCategory::factory()->create([
             'max_shift_end_hour'      => 18,
             'allowed_work_categories' => ['A', 'B', 'C'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
         ]);
 
         /** @var User $approver */
@@ -329,7 +329,7 @@ class MinorRestrictionServiceTest extends TestCase
         $category = MinorCategory::factory()->create([
             'max_hours_per_day'       => 2,
             'allowed_work_categories' => ['A', 'B', 'C'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
         ]);
 
         /** @var User $approver */
@@ -834,7 +834,7 @@ class MinorRestrictionServiceTest extends TestCase
     {
         $category = MinorCategory::factory()->create([
             'allowed_work_categories' => ['A'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
         ]);
 
         /** @var User $approver */

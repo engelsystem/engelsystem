@@ -25,7 +25,7 @@ class MinorCategoryFactory extends Factory
                 $this->faker->numberBetween(1, 3)
             ),
             'can_fill_slot'           => $this->faker->boolean(80),
-            'requires_supervisor'     => $this->faker->boolean(70),
+            'requires_supervisor'     => true, // Default to true for minors; use adult() state for non-minors
             'can_self_signup'         => $this->faker->boolean(60),
             'display_order'           => $this->faker->numberBetween(0, 10),
             'is_active'               => $this->faker->boolean(90),
@@ -74,7 +74,24 @@ class MinorCategoryFactory extends Factory
             'max_shift_end_hour'      => 22,
             'max_hours_per_day'       => 8,
             'allowed_work_categories' => ['A', 'B'],
+            'requires_supervisor'     => true,
+        ]);
+    }
+
+    /**
+     * Configure category for adults (no restrictions, not treated as minor)
+     */
+    public function adult(): self
+    {
+        return $this->state(fn(array $attributes) => [
+            'name'                    => 'Adult',
+            'min_shift_start_hour'    => null,
+            'max_shift_end_hour'      => null,
+            'max_hours_per_day'       => null,
+            'allowed_work_categories' => ['A', 'B', 'C'],
             'requires_supervisor'     => false,
+            'can_fill_slot'           => true,
+            'can_self_signup'         => true,
         ]);
     }
 }

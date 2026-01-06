@@ -796,7 +796,7 @@ class GuardianServiceTest extends TestCase
     {
         $category = MinorCategory::factory()->create([
             'allowed_work_categories' => ['A', 'B', 'C'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
             'min_shift_start_hour'    => null,
             'max_shift_end_hour'      => null,
         ]);
@@ -841,7 +841,7 @@ class GuardianServiceTest extends TestCase
     {
         $category = MinorCategory::factory()->create([
             'allowed_work_categories' => ['A', 'B', 'C'],
-            'requires_supervisor'     => false,
+            'requires_supervisor'     => true,
             'min_shift_start_hour'    => null,
             'max_shift_end_hour'      => null,
         ]);
