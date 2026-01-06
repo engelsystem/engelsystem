@@ -341,11 +341,9 @@ class User extends BaseModel
 
     public function isMinor(): bool
     {
-        // A user is a minor if they have a minor category that requires supervision
-        // The Adult category exists but has requires_supervisor = false
-        return $this->minor_category_id !== null
-            && $this->minorCategory !== null
-            && $this->minorCategory->requires_supervisor;
+        // Adults are represented by minor_category_id = null
+        // Any user with a minor_category_id is a minor
+        return $this->minor_category_id !== null;
     }
 
     public function hasConsentApproved(): bool

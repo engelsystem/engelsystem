@@ -34,14 +34,14 @@ All test data uses the `test_` prefix for easy identification and cleanup.
 
 | Username | Role | Minor Category | Password |
 |----------|------|----------------|----------|
-| `test_shico` | ShiCo (60) | Adult | `testpass123` |
-| `test_bureaucrat` | Bureaucrat (80) | Adult | `testpass123` |
-| `test_angel_a` | Angel (20) | Adult | `testpass123` |
-| `test_angel_b` | Angel (20) | Adult | `testpass123` |
-| `test_supervisor_a` | Angel (20) | Adult | `testpass123` |
-| `test_supervisor_b` | Angel (20) | Adult | `testpass123` |
-| `test_guardian_a` | Angel (20) | Adult | `testpass123` |
-| `test_guardian_b` | Angel (20) | Adult | `testpass123` |
+| `test_shico` | ShiCo (60) | *(none - adult)* | `testpass123` |
+| `test_bureaucrat` | Bureaucrat (80) | *(none - adult)* | `testpass123` |
+| `test_angel_a` | Angel (20) | *(none - adult)* | `testpass123` |
+| `test_angel_b` | Angel (20) | *(none - adult)* | `testpass123` |
+| `test_supervisor_a` | Angel (20) | *(none - adult)* | `testpass123` |
+| `test_supervisor_b` | Angel (20) | *(none - adult)* | `testpass123` |
+| `test_guardian_a` | Angel (20) | *(none - adult)* | `testpass123` |
+| `test_guardian_b` | Angel (20) | *(none - adult)* | `testpass123` |
 | `test_minor_junior` | Angel (20) | Junior Angel | `testpass123` |
 | `test_minor_teen` | Angel (20) | Teen Angel | `testpass123` |
 | `test_minor_child` | Angel (20) | Accompanying Child | `testpass123` |

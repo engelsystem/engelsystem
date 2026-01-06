@@ -365,52 +365,52 @@ class TestDataSeeder
             [
                 'name' => 'test_shico',
                 'email' => 'test_shico@example.com',
-                'minor_category' => 'Adult',
+                'minor_category' => null,
                 'group_id' => 60, // ShiCo
             ],
             [
                 'name' => 'test_bureaucrat',
                 'email' => 'test_bureaucrat@example.com',
-                'minor_category' => 'Adult',
+                'minor_category' => null,
                 'group_id' => 80, // Bureaucrat
             ],
             // Regular adult angels
             [
                 'name' => 'test_angel_a',
                 'email' => 'test_angel_a@example.com',
-                'minor_category' => 'Adult',
+                'minor_category' => null,
                 'group_id' => 20, // Angel
             ],
             [
                 'name' => 'test_angel_b',
                 'email' => 'test_angel_b@example.com',
-                'minor_category' => 'Adult',
+                'minor_category' => null,
                 'group_id' => 20,
             ],
             // Supervisors
             [
                 'name' => 'test_supervisor_a',
                 'email' => 'test_supervisor_a@example.com',
-                'minor_category' => 'Adult',
+                'minor_category' => null,
                 'group_id' => 20,
             ],
             [
                 'name' => 'test_supervisor_b',
                 'email' => 'test_supervisor_b@example.com',
-                'minor_category' => 'Adult',
+                'minor_category' => null,
                 'group_id' => 20,
             ],
             // Guardians
             [
                 'name' => 'test_guardian_a',
                 'email' => 'test_guardian_a@example.com',
-                'minor_category' => 'Adult',
+                'minor_category' => null,
                 'group_id' => 20,
             ],
             [
                 'name' => 'test_guardian_b',
                 'email' => 'test_guardian_b@example.com',
-                'minor_category' => 'Adult',
+                'minor_category' => null,
                 'group_id' => 20,
             ],
             // Minor users

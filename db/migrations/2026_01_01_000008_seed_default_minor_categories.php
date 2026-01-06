@@ -69,21 +69,7 @@ class SeedDefaultMinorCategories extends Migration
                 'created_at'              => $now,
                 'updated_at'              => $now,
             ],
-            [
-                'name'                    => 'Adult',
-                'description'             => 'Ages 18+. No restrictions on work hours or categories.',
-                'min_shift_start_hour'    => null,
-                'max_shift_end_hour'      => null,
-                'max_hours_per_day'       => null,
-                'allowed_work_categories' => json_encode(['A', 'B', 'C']),
-                'can_fill_slot'           => true,
-                'requires_supervisor'     => false,
-                'can_self_signup'         => true,
-                'display_order'           => 4,
-                'is_active'               => true,
-                'created_at'              => $now,
-                'updated_at'              => $now,
-            ],
+            // Note: Adults are represented by minor_category_id = null, not by a category
         ]);
     }
 
@@ -99,7 +85,6 @@ class SeedDefaultMinorCategories extends Migration
                 'Accompanying Child',
                 'Junior Angel',
                 'Teen Angel',
-                'Adult',
             ])
             ->delete();
     }
