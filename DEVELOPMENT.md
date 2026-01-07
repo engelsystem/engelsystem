@@ -166,6 +166,81 @@ docker compose exec es_workspace composer phpunit:coverage
 
 A browsable HTML version is available at http://localhost:5080/coverage/index.html .
 
+## E2E Testing
+
+End-to-end tests use [Playwright](https://playwright.dev/) to test the application in real browsers.
+
+### Requirements
+
+* Node.js >= 18
+* npm
+* A running MySQL/MariaDB database
+* PHP development server or equivalent
+
+### Installation
+
+```bash
+cd e2e
+npm install
+npx playwright install --with-deps
+```
+
+This installs the Playwright test framework and downloads browser binaries (Chromium, Firefox, WebKit).
+
+### Running E2E Tests
+
+1. Ensure the database is running and configured
+2. Run migrations: `php bin/migrate`
+3. Seed test data: `php bin/seed-test-data`
+4. Start the PHP server: `php -S 0.0.0.0:5080 -t public/`
+5. Run the tests:
+
+```bash
+cd e2e
+
+# Run all tests on all browsers
+npx playwright test
+
+# Run on a specific browser
+npx playwright test --project=chromium-desktop
+npx playwright test --project=firefox-desktop
+npx playwright test --project=webkit-desktop
+
+# Run specific test file
+npx playwright test tests/smoke/
+npx playwright test tests/minor-volunteer/
+
+# Run in headed mode (see the browser)
+npx playwright test --headed
+
+# Run in debug mode
+npx playwright test --debug
+
+# Run with UI mode
+npx playwright test --ui
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `APP_URL` | `http://localhost:5080` | Base URL for tests |
+| `MYSQL_HOST` | `127.0.0.1` | Database host |
+| `MYSQL_PORT` | `3306` | Database port |
+| `MYSQL_DATABASE` | `engelsystem` | Database name |
+| `MYSQL_USER` | `engelsystem` | Database user |
+| `MYSQL_PASSWORD` | `engelsystem` | Database password |
+
+### Test Data
+
+The test data seeder (`bin/seed-test-data`) creates:
+- 11 test users with various roles (guardians, minors, supervisors)
+- Angel types with different work categories
+- Locations
+- Shifts spanning multiple days
+- Guardian relationships
+
+All test data uses the `test_` prefix. See `doc/test-data.md` for details.
 
 ### Var Dump server
 Symfony Var Dump server is configured to allow for easier debugging. It is not meant as a replacement for xdebug but can actually be used together with xdebug.
