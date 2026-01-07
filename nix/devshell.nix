@@ -145,6 +145,11 @@ pkgs.mkShell {
       find resources/lang/ -type f -name '*.po' -exec sh -c 'msgfmt "''${1%.*}.po" -o"''${1%.*}.mo"' shell {} \;
     }
 
+    function es-seed-test-data() {
+      echo "Seeding test data..."
+      ./bin/seed-test-data "$@"
+    }
+
     function es-db-start() {
       echo "Starting local MySQL database with Docker..."
       docker run -d \
@@ -205,7 +210,8 @@ pkgs.mkShell {
     echo "  nix run .#db-shell-minikube  - Connect to Minikube DB"
     echo ""
     echo "Other:"
-    echo "  es-translations - Compile .po to .mo files"
+    echo "  es-translations    - Compile .po to .mo files"
+    echo "  es-seed-test-data  - Seed database with test data"
     echo ""
   '';
 }
