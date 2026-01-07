@@ -4,6 +4,7 @@ let
   frontend = import ./frontend.nix { inherit pkgs lib; };
   composer = import ./composer.nix { inherit pkgs lib; };
   translations = import ./translations.nix { inherit pkgs lib; };
+  e2e = import ./e2e.nix { inherit pkgs lib; };
 
 in
 {
@@ -74,6 +75,9 @@ in
   inherit (frontend) assets;
   inherit (composer) vendorDir vendorDev;
   inherit translations;
+
+  # E2E test package (pre-built with dependencies)
+  inherit e2e;
 
   # Development package with dev dependencies
   engelsystem-dev = pkgs.stdenv.mkDerivation {
