@@ -13,8 +13,6 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\MinorCategory;
-use Engelsystem\Models\Shifts\Shift;
-use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Services\MinorRestrictionService;
 use Illuminate\Support\Collection;
@@ -88,7 +86,7 @@ class MinorManagementController extends BaseController
         });
 
         // Get supervision gaps (shifts with minors but no supervisor)
-        $supervisionGaps = $this->getSupervisionGaps();
+        $supervisionGaps = $this->minorService->getSupervisionGaps();
 
         // Get category statistics
         $categoryStats = $this->getCategoryStatistics();
@@ -123,44 +121,6 @@ class MinorManagementController extends BaseController
                 'today' => $today,
             ]
         );
-    }
-
-    /**
-     * Find shifts that have minors signed up but no willing supervisor.
-     *
-     * @return Collection<int, array{shift: Shift, minors: Collection<int, ShiftEntry>}>
-     */
-    protected function getSupervisionGaps(): Collection
-    {
-        $now = Carbon::now();
-
-        // Get future/ongoing shifts that require supervision for minors
-        $shifts = Shift::with(['shiftEntries.user.minorCategory', 'shiftEntries.supervisedBy', 'shiftType', 'location'])
-            ->where('requires_supervisor_for_minors', true)
-            ->where('end', '>', $now)
-            ->get();
-
-        $gaps = [];
-        foreach ($shifts as $shift) {
-            // Find minor entries on this shift that require supervision but don't have one
-            $minorEntries = $shift->shiftEntries->filter(function (ShiftEntry $entry): bool {
-                if (!$entry->user || !$entry->user->isMinor()) {
-                    return false;
-                }
-                $restrictions = $this->minorService->getRestrictions($entry->user);
-                // Check if this minor requires supervision and doesn't have one assigned
-                return $restrictions->requiresSupervisor && $entry->supervised_by_user_id === null;
-            });
-
-            if ($minorEntries->isNotEmpty()) {
-                $gaps[] = [
-                    'shift' => $shift,
-                    'minors' => $minorEntries,
-                ];
-            }
-        }
-
-        return collect($gaps);
     }
 
     /**

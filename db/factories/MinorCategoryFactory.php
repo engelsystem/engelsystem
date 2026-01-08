@@ -77,5 +77,4 @@ class MinorCategoryFactory extends Factory
             'requires_supervisor'     => true,
         ]);
     }
-
 }

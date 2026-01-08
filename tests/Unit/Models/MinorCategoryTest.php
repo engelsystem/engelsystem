@@ -95,6 +95,38 @@ class MinorCategoryTest extends ModelTest
     }
 
     /**
+     * @covers \Engelsystem\Models\MinorCategory::scopeMinorOnly
+     */
+    public function testScopeMinorOnly(): void
+    {
+        // Clear any seeded data first
+        MinorCategory::query()->delete();
+
+        MinorCategory::create([
+            'name'                    => 'Junior Angels',
+            'allowed_work_categories' => ['A'],
+            'requires_supervisor'     => true,
+            'display_order'           => 1,
+        ]);
+        MinorCategory::create([
+            'name'                    => 'Teen Helpers',
+            'allowed_work_categories' => ['A', 'B'],
+            'requires_supervisor'     => true,
+            'display_order'           => 2,
+        ]);
+        MinorCategory::create([
+            'name'                    => 'Adult Category',
+            'allowed_work_categories' => ['A', 'B', 'C'],
+            'requires_supervisor'     => false,
+            'display_order'           => 3,
+        ]);
+
+        $minorCategories = MinorCategory::minorOnly()->get();
+        $this->assertCount(2, $minorCategories);
+        $this->assertEquals(['Junior Angels', 'Teen Helpers'], $minorCategories->pluck('name')->toArray());
+    }
+
+    /**
      * @covers \Engelsystem\Models\MinorCategory::boot
      */
     public function testBoot(): void

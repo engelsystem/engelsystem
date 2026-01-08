@@ -9,6 +9,7 @@ use Engelsystem\Models\MinorCategory;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
+use Illuminate\Support\Collection;
 
 /**
  * Service for handling minor volunteer restrictions.
@@ -288,5 +289,43 @@ class MinorRestrictionService
     public function shiftAllowsAccompanyingChildren(Shift $shift): bool
     {
         return $shift->getAllowsAccompanyingChildren();
+    }
+
+    /**
+     * Find shifts that have minors signed up but no willing supervisor.
+     *
+     * @return Collection<int, array{shift: Shift, minors: Collection<int, ShiftEntry>}>
+     */
+    public function getSupervisionGaps(): Collection
+    {
+        $now = Carbon::now();
+
+        // Get future/ongoing shifts that require supervision for minors
+        $shifts = Shift::with(['shiftEntries.user.minorCategory', 'shiftEntries.supervisedBy', 'shiftType', 'location'])
+            ->where('requires_supervisor_for_minors', true)
+            ->where('end', '>', $now)
+            ->get();
+
+        $gaps = [];
+        foreach ($shifts as $shift) {
+            // Find minor entries on this shift that require supervision but don't have one
+            $minorEntries = $shift->shiftEntries->filter(function (ShiftEntry $entry): bool {
+                if (!$entry->user || !$entry->user->isMinor()) {
+                    return false;
+                }
+                $restrictions = $this->getRestrictions($entry->user);
+                // Check if this minor requires supervision and doesn't have one assigned
+                return $restrictions->requiresSupervisor && $entry->supervised_by_user_id === null;
+            });
+
+            if ($minorEntries->isNotEmpty()) {
+                $gaps[] = [
+                    'shift' => $shift,
+                    'minors' => $minorEntries,
+                ];
+            }
+        }
+
+        return collect($gaps);
     }
 }

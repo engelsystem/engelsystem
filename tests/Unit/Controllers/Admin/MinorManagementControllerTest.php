@@ -336,7 +336,7 @@ class MinorManagementControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\Admin\MinorManagementController::index
-     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::getSupervisionGaps
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
      */
     public function testIndexDetectsSupervisionGaps(): void
     {
@@ -386,7 +386,7 @@ class MinorManagementControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\Admin\MinorManagementController::index
-     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::getSupervisionGaps
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
      */
     public function testIndexNoGapWhenSupervisorAssigned(): void
     {
@@ -582,7 +582,7 @@ class MinorManagementControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\Admin\MinorManagementController::index
-     * @covers \Engelsystem\Controllers\Admin\MinorManagementController::getSupervisionGaps
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
      */
     public function testIndexSupervisionGapsIgnoresNonMinorUsers(): void
     {

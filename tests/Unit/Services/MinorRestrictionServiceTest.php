@@ -902,4 +902,215 @@ class MinorRestrictionServiceTest extends TestCase
         ]);
         $this->assertFalse($this->service->shiftAllowsAccompanyingChildren($shift4));
     }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
+     */
+    public function testGetSupervisionGapsReturnsEmptyWhenNoShiftsRequireSupervision(): void
+    {
+        // Create a shift that doesn't require supervision for minors
+        Shift::factory()->create([
+            'start'                          => Carbon::now()->addHour(),
+            'end'                            => Carbon::now()->addHours(3),
+            'requires_supervisor_for_minors' => false,
+        ]);
+
+        $gaps = $this->service->getSupervisionGaps();
+
+        $this->assertCount(0, $gaps);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
+     */
+    public function testGetSupervisionGapsReturnsEmptyWhenNoMinorsOnShift(): void
+    {
+        // Create a shift that requires supervision
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::now()->addHour(),
+            'end'                            => Carbon::now()->addHours(3),
+            'requires_supervisor_for_minors' => true,
+        ]);
+
+        // Add an adult to the shift (not a minor)
+        /** @var User $adult */
+        $adult = User::factory()->create(['minor_category_id' => null]);
+        ShiftEntry::factory()->create(['user_id' => $adult->id, 'shift_id' => $shift->id]);
+
+        $gaps = $this->service->getSupervisionGaps();
+
+        $this->assertCount(0, $gaps);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
+     */
+    public function testGetSupervisionGapsReturnsEmptyWhenMinorHasSupervisorAssigned(): void
+    {
+        $category = MinorCategory::factory()->create(['requires_supervisor' => true]);
+
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        /** @var User $supervisor */
+        $supervisor = User::factory()->create(['minor_category_id' => null]);
+
+        // Create a shift that requires supervision
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::now()->addHour(),
+            'end'                            => Carbon::now()->addHours(3),
+            'requires_supervisor_for_minors' => true,
+        ]);
+
+        // Add minor with supervisor assigned
+        ShiftEntry::factory()->create([
+            'user_id'               => $minor->id,
+            'shift_id'              => $shift->id,
+            'supervised_by_user_id' => $supervisor->id,
+        ]);
+
+        $gaps = $this->service->getSupervisionGaps();
+
+        $this->assertCount(0, $gaps);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
+     */
+    public function testGetSupervisionGapsReturnsGapWhenMinorNeedsSupervisor(): void
+    {
+        $category = MinorCategory::factory()->create(['requires_supervisor' => true]);
+
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        // Create a shift that requires supervision
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::now()->addHour(),
+            'end'                            => Carbon::now()->addHours(3),
+            'requires_supervisor_for_minors' => true,
+        ]);
+
+        // Add minor without supervisor assigned
+        ShiftEntry::factory()->create([
+            'user_id'               => $minor->id,
+            'shift_id'              => $shift->id,
+            'supervised_by_user_id' => null,
+        ]);
+
+        $gaps = $this->service->getSupervisionGaps();
+
+        $this->assertCount(1, $gaps);
+        $this->assertEquals($shift->id, $gaps[0]['shift']->id);
+        $this->assertCount(1, $gaps[0]['minors']);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
+     */
+    public function testGetSupervisionGapsIgnoresMinorsWhoDoNotRequireSupervision(): void
+    {
+        // Category does NOT require supervision
+        $category = MinorCategory::factory()->create(['requires_supervisor' => false]);
+
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        // Create a shift that requires supervision
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::now()->addHour(),
+            'end'                            => Carbon::now()->addHours(3),
+            'requires_supervisor_for_minors' => true,
+        ]);
+
+        // Add minor without supervisor
+        ShiftEntry::factory()->create([
+            'user_id'               => $minor->id,
+            'shift_id'              => $shift->id,
+            'supervised_by_user_id' => null,
+        ]);
+
+        $gaps = $this->service->getSupervisionGaps();
+
+        // No gap because this minor's category doesn't require supervision
+        $this->assertCount(0, $gaps);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
+     */
+    public function testGetSupervisionGapsIgnoresPastShifts(): void
+    {
+        $category = MinorCategory::factory()->create(['requires_supervisor' => true]);
+
+        /** @var User $minor */
+        $minor = User::factory()->create(['minor_category_id' => $category->id]);
+
+        // Create a shift in the past
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'start'                          => Carbon::now()->subHours(5),
+            'end'                            => Carbon::now()->subHours(3),
+            'requires_supervisor_for_minors' => true,
+        ]);
+
+        // Add minor without supervisor
+        ShiftEntry::factory()->create([
+            'user_id'               => $minor->id,
+            'shift_id'              => $shift->id,
+            'supervised_by_user_id' => null,
+        ]);
+
+        $gaps = $this->service->getSupervisionGaps();
+
+        // No gap because the shift is in the past
+        $this->assertCount(0, $gaps);
+    }
+
+    /**
+     * @covers \Engelsystem\Services\MinorRestrictionService::getSupervisionGaps
+     */
+    public function testGetSupervisionGapsReturnsMultipleGaps(): void
+    {
+        $category = MinorCategory::factory()->create(['requires_supervisor' => true]);
+
+        /** @var User $minor1 */
+        $minor1 = User::factory()->create(['minor_category_id' => $category->id]);
+        /** @var User $minor2 */
+        $minor2 = User::factory()->create(['minor_category_id' => $category->id]);
+
+        // Create two shifts that require supervision
+        /** @var Shift $shift1 */
+        $shift1 = Shift::factory()->create([
+            'start'                          => Carbon::now()->addHour(),
+            'end'                            => Carbon::now()->addHours(3),
+            'requires_supervisor_for_minors' => true,
+        ]);
+        /** @var Shift $shift2 */
+        $shift2 = Shift::factory()->create([
+            'start'                          => Carbon::now()->addHours(4),
+            'end'                            => Carbon::now()->addHours(6),
+            'requires_supervisor_for_minors' => true,
+        ]);
+
+        // Add minors without supervisors
+        ShiftEntry::factory()->create([
+            'user_id'               => $minor1->id,
+            'shift_id'              => $shift1->id,
+            'supervised_by_user_id' => null,
+        ]);
+        ShiftEntry::factory()->create([
+            'user_id'               => $minor2->id,
+            'shift_id'              => $shift2->id,
+            'supervised_by_user_id' => null,
+        ]);
+
+        $gaps = $this->service->getSupervisionGaps();
+
+        $this->assertCount(2, $gaps);
+    }
 }

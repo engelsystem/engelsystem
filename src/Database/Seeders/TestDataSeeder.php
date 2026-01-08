@@ -6,7 +6,6 @@ namespace Engelsystem\Database\Seeders;
 
 use Carbon\Carbon;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Group;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\MinorCategory;
 use Engelsystem\Models\Privilege;
@@ -43,7 +42,6 @@ class TestDataSeeder
     private const TEST_PASSWORD = 'testpass123';
     private const TEST_PREFIX = 'test_';
 
-    private Connection $db;
     private Carbon $today;
 
     /** @var array<string, int> Cached IDs for created entities */
@@ -54,12 +52,8 @@ class TestDataSeeder
     private array $shiftIds = [];
     private array $minorCategoryIds = [];
 
-    private bool $verbose;
-
-    public function __construct(Connection $db, bool $verbose = true)
+    public function __construct(private Connection $db, private bool $verbose = true)
     {
-        $this->db = $db;
-        $this->verbose = $verbose;
         $this->today = Carbon::today();
     }
 
@@ -112,18 +106,18 @@ class TestDataSeeder
 
         // Delete in reverse FK order
         $this->db->table('shift_entries')
-            ->whereIn('shift_id', function ($query) {
+            ->whereIn('shift_id', function ($query): void {
                 $query->select('id')->from('shifts')
                     ->where('title', 'like', self::TEST_PREFIX . '%');
             })
-            ->orWhereIn('user_id', function ($query) {
+            ->orWhereIn('user_id', function ($query): void {
                 $query->select('id')->from('users')
                     ->where('name', 'like', self::TEST_PREFIX . '%');
             })
             ->delete();
 
         $this->db->table('needed_angel_types')
-            ->whereIn('shift_id', function ($query) {
+            ->whereIn('shift_id', function ($query): void {
                 $query->select('id')->from('shifts')
                     ->where('title', 'like', self::TEST_PREFIX . '%');
             })
@@ -134,32 +128,32 @@ class TestDataSeeder
             ->delete();
 
         $this->db->table('user_guardian')
-            ->whereIn('minor_user_id', function ($query) {
+            ->whereIn('minor_user_id', function ($query): void {
                 $query->select('id')->from('users')
                     ->where('name', 'like', self::TEST_PREFIX . '%');
             })
-            ->orWhereIn('guardian_user_id', function ($query) {
+            ->orWhereIn('guardian_user_id', function ($query): void {
                 $query->select('id')->from('users')
                     ->where('name', 'like', self::TEST_PREFIX . '%');
             })
             ->delete();
 
         $this->db->table('user_supervisor_status')
-            ->whereIn('user_id', function ($query) {
+            ->whereIn('user_id', function ($query): void {
                 $query->select('id')->from('users')
                     ->where('name', 'like', self::TEST_PREFIX . '%');
             })
             ->delete();
 
         $this->db->table('user_angel_type')
-            ->whereIn('user_id', function ($query) {
+            ->whereIn('user_id', function ($query): void {
                 $query->select('id')->from('users')
                     ->where('name', 'like', self::TEST_PREFIX . '%');
             })
             ->delete();
 
         $this->db->table('users_groups')
-            ->whereIn('user_id', function ($query) {
+            ->whereIn('user_id', function ($query): void {
                 $query->select('id')->from('users')
                     ->where('name', 'like', self::TEST_PREFIX . '%');
             })
@@ -168,7 +162,7 @@ class TestDataSeeder
         // Delete user related tables
         foreach (['users_contact', 'users_personal_data', 'users_settings', 'users_state'] as $table) {
             $this->db->table($table)
-                ->whereIn('user_id', function ($query) {
+                ->whereIn('user_id', function ($query): void {
                     $query->select('id')->from('users')
                         ->where('name', 'like', self::TEST_PREFIX . '%');
                 })
@@ -898,9 +892,11 @@ class TestDataSeeder
         ];
 
         foreach ($entries as $entry) {
-            if (!isset($this->shiftIds[$entry['shift']]) ||
+            if (
+                !isset($this->shiftIds[$entry['shift']]) ||
                 !isset($this->userIds[$entry['user']]) ||
-                !isset($this->angelTypeIds[$entry['angel_type']])) {
+                !isset($this->angelTypeIds[$entry['angel_type']])
+            ) {
                 continue;
             }
 
