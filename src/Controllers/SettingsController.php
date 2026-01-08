@@ -56,6 +56,8 @@ class SettingsController extends BaseController
                 'isTShirtSizeRequired' => in_array('tshirt_size', $requiredFields),
                 'isMobileRequired' => in_array('mobile', $requiredFields),
                 'isDectRequired' => in_array('dect', $requiredFields),
+                'isMinor' => $user->isMinor(),
+                'willingToSupervise' => $user->supervisorStatus->willing_to_supervise,
             ]
         );
     }
@@ -116,6 +118,13 @@ class SettingsController extends BaseController
             && (isset(config('tshirt_sizes')[$data['shirt_size'] ?? '']) || is_null($data['shirt_size']))
         ) {
             $user->personalData->shirt_size = $data['shirt_size'];
+        }
+
+        // Only adults can set supervisor willingness
+        if (!$user->isMinor()) {
+            $user->supervisorStatus->user_id = $user->id;
+            $user->supervisorStatus->willing_to_supervise = (bool) ($data['willing_to_supervise'] ?? false);
+            $user->supervisorStatus->save();
         }
 
         $user->personalData->save();
@@ -468,6 +477,7 @@ class SettingsController extends BaseController
             'email_human' => 'optional|checked',
             'email_messages' => 'optional|checked',
             'email_goodie' => 'optional|checked',
+            'willing_to_supervise' => 'optional|checked',
         ];
         if (config('enable_planned_arrival')) {
             $rules['planned_arrival_date'] = 'required|date:Y-m-d';

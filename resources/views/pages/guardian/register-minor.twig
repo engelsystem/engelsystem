@@ -1,0 +1,116 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('guardian.register_minor') }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% include 'layouts/parts/messages.twig' %}
+
+    <h1>{{ m.icon('person-plus-fill') }} {{ __('guardian.register_minor') }}</h1>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    {{ __('guardian.new_minor_account') }}
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">{{ __('guardian.register_description_full') }}</p>
+
+                    <form action="{{ url('/guardian/register') }}" method="post">
+                        {{ csrf() }}
+
+                        <h5 class="mt-4">{{ __('guardian.account_details') }}</h5>
+
+                        {{ f.input('name', __('form.nick'), {
+                            'required': true,
+                            'minlength': 2,
+                            'maxlength': 24,
+                            'info': __('guardian.username_requirements'),
+                        }) }}
+
+                        {{ f.input('email', __('form.email'), {
+                            'type': 'email',
+                            'info': __('guardian.email_optional'),
+                        }) }}
+
+                        {{ f.input('password', __('form.password'), {
+                            'type': 'password',
+                            'required': true,
+                            'minlength': 8,
+                            'info': __('registration.password.info'),
+                        }) }}
+
+                        <h5 class="mt-4">{{ __('guardian.minor_category') }}</h5>
+
+                        <div class="mb-3">
+                            <label for="minor_category_id" class="form-label">
+                                {{ __('guardian.select_category') }} <span class="text-danger">*</span>
+                            </label>
+                            <select name="minor_category_id" id="minor_category_id" class="form-select" required>
+                                <option value="">{{ __('form.select') }}</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}">
+                                        {{ category.name }}
+                                        {% if category.min_age and category.max_age %}
+                                            ({{ category.min_age }}-{{ category.max_age }} {{ __('guardian.years') }})
+                                        {% elseif category.min_age %}
+                                            ({{ category.min_age }}+ {{ __('guardian.years') }})
+                                        {% elseif category.max_age %}
+                                            ({{ __('guardian.up_to') }} {{ category.max_age }} {{ __('guardian.years') }})
+                                        {% endif %}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">{{ __('guardian.category_determines_restrictions') }}</div>
+                        </div>
+
+                        <h5 class="mt-4">{{ __('guardian.personal_data') }}</h5>
+                        <p class="text-muted small">{{ __('guardian.personal_data_optional') }}</p>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ f.input('first_name', __('settings.profile.firstname'), {
+                                    'maxlength': 64,
+                                }) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ f.input('last_name', __('settings.profile.lastname'), {
+                                    'maxlength': 64,
+                                }) }}
+                            </div>
+                        </div>
+
+                        {{ f.input('pronoun', __('settings.profile.pronoun'), {
+                            'maxlength': 15,
+                            'info': __('settings.profile.pronoun.info'),
+                        }) }}
+
+                        <div class="mt-4">
+                            {{ f.submit(__('guardian.register_minor'), {'icon_left': 'person-plus-fill'}) }}
+                            <a href="{{ url('/guardian') }}" class="btn btn-outline-secondary">
+                                {{ __('form.cancel') }}
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    {{ m.icon('info-circle') }} {{ __('guardian.info') }}
+                </div>
+                <div class="card-body">
+                    <p>{{ __('guardian.register_info_1') }}</p>
+                    <p>{{ __('guardian.register_info_2') }}</p>
+                    <p class="mb-0">{{ __('guardian.register_info_3') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

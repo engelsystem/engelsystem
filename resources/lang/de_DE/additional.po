@@ -804,3 +804,520 @@ msgstr "/metrics buckets"
 
 msgid "config.var_dump_server"
 msgstr "var_dump Server"
+
+# Registration - Minor/Guardian translations
+msgid "registration.age_category"
+msgstr "Altersgruppe"
+
+msgid "registration.age_category_info"
+msgstr "Wähle deine Altersgruppe. Minderjährige unter 18 Jahren haben zusätzliche Schutzmaßnahmen und Anforderungen."
+
+msgid "registration.minor_category"
+msgstr "Ich bin..."
+
+msgid "registration.i_am_adult"
+msgstr "18 Jahre oder älter (Erwachsen)"
+
+msgid "registration.minor_category_hint"
+msgstr "Deine Kategorie bestimmt Arbeitszeiten und Aufsichtspflicht"
+
+msgid "registration.max_hours"
+msgstr "Maximal %d Stunden pro Tag"
+
+msgid "registration.work_hours"
+msgstr "Arbeitszeiten: %s bis %s"
+
+msgid "registration.requires_supervisor"
+msgstr "Benötigt erwachsene Aufsicht bei Schichten"
+
+msgid "registration.minor.link_guardian"
+msgstr "Bitte verknüpfe einen Erziehungsberechtigten, um deine Registrierung abzuschließen"
+
+msgid "registration.guardian_not_found"
+msgstr "Erziehungsberechtigten-Konto nicht gefunden. Bitte überprüfe den Benutzernamen oder die E-Mail."
+
+msgid "registration.guardian_is_minor"
+msgstr "Der angegebene Benutzer ist ebenfalls minderjährig und kann kein Erziehungsberechtigter sein."
+
+msgid "registration.guardian_linked"
+msgstr "Verknüpfungsanfrage für Erziehungsberechtigten erfolgreich gesendet."
+
+msgid "registration.guardian_link_skipped"
+msgstr "Du kannst später in deinen Profileinstellungen einen Erziehungsberechtigten verknüpfen."
+
+msgid "registration.link_guardian.title"
+msgstr "Erziehungsberechtigten verknüpfen"
+
+msgid "registration.link_guardian.welcome"
+msgstr "Willkommen, %name%!"
+
+msgid "registration.link_guardian.info"
+msgstr "Als Minderjähriger benötigst du einen verknüpften Erziehungsberechtigten, um dich für Schichten anzumelden und vollständig am Event teilzunehmen."
+
+msgid "registration.link_guardian.find_guardian"
+msgstr "Finde deinen Erziehungsberechtigten"
+
+msgid "registration.link_guardian.find_guardian_hint"
+msgstr "Gib den Benutzernamen oder die E-Mail-Adresse deines Elternteils oder gesetzlichen Vormunds ein, der ein Konto hat."
+
+msgid "registration.link_guardian.guardian_identifier"
+msgstr "Benutzername oder E-Mail des Erziehungsberechtigten"
+
+msgid "registration.link_guardian.guardian_identifier_hint"
+msgstr "Frage deinen Erziehungsberechtigten nach seinem Benutzernamen oder der E-Mail, mit der er sich registriert hat"
+
+msgid "registration.link_guardian.send_request"
+msgstr "Verknüpfungsanfrage senden"
+
+msgid "registration.link_guardian.skip_title"
+msgstr "Vorerst überspringen"
+
+msgid "registration.link_guardian.skip_info"
+msgstr "Du kannst diesen Schritt überspringen und später einen Erziehungsberechtigten verknüpfen, aber du kannst dich nicht für Schichten anmelden, bis ein Erziehungsberechtigter verknüpft und die Einwilligung erteilt wurde."
+
+msgid "registration.link_guardian.skip"
+msgstr "Überspringen und fortfahren"
+
+msgid "registration.link_guardian.why_title"
+msgstr "Warum einen Erziehungsberechtigten verknüpfen?"
+
+msgid "registration.link_guardian.why_text"
+msgstr "Die Verknüpfung eines Erziehungsberechtigten stellt sicher:"
+
+msgid "registration.link_guardian.why_item1"
+msgstr "Deine Sicherheit während des Events"
+
+msgid "registration.link_guardian.why_item2"
+msgstr "Einhaltung der Jugendschutzgesetze"
+
+msgid "registration.link_guardian.why_item3"
+msgstr "Ein verantwortlicher Erwachsener kann deine Schichten verwalten"
+
+# Guardian Dashboard translations
+msgid "guardian.dashboard"
+msgstr "Erziehungsberechtigten-Dashboard"
+
+msgid "guardian.register_minor"
+msgstr "Minderjährigen registrieren"
+
+msgid "guardian.link_existing"
+msgstr "Bestehendes Kind verknüpfen"
+
+msgid "guardian.primary"
+msgstr "Haupt"
+
+msgid "guardian.consent_approved"
+msgstr "Einwilligung genehmigt"
+
+msgid "guardian.consent_pending"
+msgstr "Einwilligung ausstehend"
+
+msgid "guardian.hours_today"
+msgstr "Stunden heute"
+
+msgid "guardian.view"
+msgstr "Ansehen"
+
+msgid "guardian.edit"
+msgstr "Bearbeiten"
+
+msgid "guardian.consent_form"
+msgstr "Einwilligungsformular"
+
+msgid "guardian.no_minors_yet"
+msgstr "Du hast noch keine verknüpften Minderjährigen. Registriere ein neues Konto oder verknüpfe ein bestehendes."
+
+msgid "guardian.no_access"
+msgstr "Du hast keine Berechtigung, auf das Profil dieses Minderjährigen zuzugreifen."
+
+# Guardian Register Minor translations
+msgid "guardian.new_minor_account"
+msgstr "Neues Minderjährigen-Konto"
+
+msgid "guardian.register_description_full"
+msgstr "Erstelle ein Konto für einen Minderjährigen unter deiner Obhut. Du wirst der Haupt-Erziehungsberechtigte, der für die Aktivitäten verantwortlich ist."
+
+msgid "guardian.account_details"
+msgstr "Kontodetails"
+
+msgid "guardian.username_requirements"
+msgstr "Wähle einen eindeutigen Benutzernamen für den Minderjährigen"
+
+msgid "guardian.email_optional"
+msgstr "Optional: Wenn leer, wird deine E-Mail für Benachrichtigungen verwendet"
+
+msgid "guardian.minor_category"
+msgstr "Alterskategorie"
+
+msgid "guardian.select_category"
+msgstr "Alterskategorie auswählen"
+
+msgid "guardian.years"
+msgstr "Jahre"
+
+msgid "guardian.up_to"
+msgstr "bis zu"
+
+msgid "guardian.category_determines_restrictions"
+msgstr "Die Kategorie bestimmt Arbeitszeitbeschränkungen und Aufsichtsanforderungen"
+
+msgid "guardian.personal_data"
+msgstr "Persönliche Daten"
+
+msgid "guardian.personal_data_optional"
+msgstr "Optionale Informationen über den Minderjährigen"
+
+msgid "guardian.info"
+msgstr "Information"
+
+msgid "guardian.register_info_1"
+msgstr "Als Erziehungsberechtigter bist du dafür verantwortlich, dass der Minderjährige alle Event-Regeln und Arbeitszeitbeschränkungen einhält."
+
+msgid "guardian.register_info_2"
+msgstr "Ein Einwilligungsformular muss ausgefüllt und vom Event-Personal genehmigt werden, bevor der Minderjährige an Schichten teilnehmen kann."
+
+msgid "guardian.register_info_3"
+msgstr "Du kannst die Schichten und das Profil des Minderjährigen von deinem Erziehungsberechtigten-Dashboard aus verwalten."
+
+# Guardian Minor Profile translations
+msgid "guardian.minor_profile"
+msgstr "Minderjährigen-Profil"
+
+msgid "guardian.back_to_dashboard"
+msgstr "Zurück zum Dashboard"
+
+msgid "guardian.profile_overview"
+msgstr "Profilübersicht"
+
+msgid "guardian.full_name"
+msgstr "Vollständiger Name"
+
+msgid "guardian.category"
+msgstr "Kategorie"
+
+msgid "guardian.consent_status"
+msgstr "Einwilligungsstatus"
+
+msgid "guardian.generate_form"
+msgstr "Formular generieren"
+
+msgid "guardian.restrictions"
+msgstr "Arbeitsbeschränkungen"
+
+msgid "guardian.max_hours_per_day"
+msgstr "Max. Stunden/Tag"
+
+msgid "guardian.max_shift_duration"
+msgstr "Max. Schichtdauer"
+
+msgid "guardian.max_consecutive_days"
+msgstr "Max. aufeinanderfolgende Tage"
+
+msgid "guardian.days"
+msgstr "Tage"
+
+msgid "guardian.earliest_start"
+msgstr "Frühester Beginn"
+
+msgid "guardian.latest_end"
+msgstr "Spätestes Ende"
+
+msgid "guardian.night_work"
+msgstr "Nachtarbeit"
+
+msgid "guardian.allowed"
+msgstr "Erlaubt"
+
+msgid "guardian.not_allowed"
+msgstr "Nicht erlaubt"
+
+msgid "guardian.today"
+msgstr "heute"
+
+msgid "guardian.upcoming_shifts"
+msgstr "Kommende Schichten"
+
+msgid "guardian.view_all_shifts"
+msgstr "Alle anzeigen"
+
+msgid "guardian.no_upcoming_shifts"
+msgstr "Keine kommenden Schichten geplant"
+
+msgid "guardian.guardians"
+msgstr "Erziehungsberechtigte"
+
+msgid "guardian.make_primary"
+msgstr "Als Haupt setzen"
+
+msgid "guardian.remove"
+msgstr "Entfernen"
+
+msgid "guardian.confirm_remove_guardian"
+msgstr "Bist du sicher, dass du diesen Erziehungsberechtigten entfernen möchtest?"
+
+msgid "guardian.add_guardian"
+msgstr "Weiteren Erziehungsberechtigten hinzufügen"
+
+msgid "guardian.guardian_username_or_email"
+msgstr "Benutzername oder E-Mail des Erziehungsberechtigten"
+
+msgid "guardian.relationship_type"
+msgstr "Beziehung"
+
+msgid "guardian.relationship.parent"
+msgstr "Elternteil"
+
+msgid "guardian.relationship.legal_guardian"
+msgstr "Gesetzlicher Vormund"
+
+msgid "guardian.relationship.delegated"
+msgstr "Delegiert (z.B. anderes Familienmitglied)"
+
+msgid "guardian.add"
+msgstr "Hinzufügen"
+
+msgid "guardian.change_category"
+msgstr "Kategorie ändern"
+
+msgid "guardian.update_category"
+msgstr "Kategorie aktualisieren"
+
+msgid "guardian.quick_actions"
+msgstr "Schnellaktionen"
+
+msgid "guardian.view_shifts"
+msgstr "Schichten ansehen"
+
+msgid "guardian.edit_profile"
+msgstr "Profil bearbeiten"
+
+# Guardian Edit Minor translations
+msgid "guardian.edit_minor"
+msgstr "Minderjährigen bearbeiten"
+
+msgid "guardian.back_to_profile"
+msgstr "Zurück zum Profil"
+
+msgid "guardian.contact_info"
+msgstr "Kontaktinformationen"
+
+msgid "guardian.edit_info"
+msgstr "Informationen bearbeiten"
+
+msgid "guardian.edit_info_1"
+msgstr "Änderungen an der E-Mail aktualisieren, wohin Benachrichtigungen gesendet werden."
+
+msgid "guardian.edit_info_2"
+msgstr "Persönliche Informationen sind optional, helfen aber bei der Identifizierung des Minderjährigen während des Events."
+
+# Guardian Minor Shifts translations
+msgid "guardian.shifts"
+msgstr "Schichten"
+
+msgid "guardian.work_restrictions"
+msgstr "Arbeitsbeschränkungen"
+
+msgid "guardian.shift_history"
+msgstr "Schichtverlauf"
+
+msgid "guardian.no_shift_history"
+msgstr "Keine vergangenen Schichten erfasst"
+
+# Guardian Link Minor translations
+msgid "guardian.link_minor"
+msgstr "Kind verknüpfen"
+
+msgid "guardian.link_existing_minor"
+msgstr "Bestehendes Minderjährigen-Konto verknüpfen"
+
+msgid "guardian.link_description"
+msgstr "Wenn ein Minderjähriger bereits ein Konto hat, kannst du dich als Erziehungsberechtigter verknüpfen."
+
+msgid "guardian.minor_username_or_email"
+msgstr "Benutzername oder E-Mail des Minderjährigen"
+
+msgid "guardian.enter_minor_identifier"
+msgstr "Gib den Benutzernamen oder die E-Mail des Kontos des Minderjährigen ein"
+
+msgid "guardian.or_register_new"
+msgstr "Oder neuen Minderjährigen registrieren"
+
+msgid "guardian.register_description"
+msgstr "Noch kein Konto für den Minderjährigen?"
+
+# Form field translations
+msgid "form.nick"
+msgstr "Nick"
+
+msgid "form.email"
+msgstr "E-Mail"
+
+msgid "form.password"
+msgstr "Passwort"
+
+msgid "form.select"
+msgstr "-- Bitte auswählen --"
+
+# Registration translations
+msgid "registration.password.info"
+msgstr "Mindestens 8 Zeichen"
+
+# Settings profile translations
+msgid "settings.profile.firstname"
+msgstr "Vorname"
+
+msgid "settings.profile.lastname"
+msgstr "Nachname"
+
+msgid "settings.profile.pronoun"
+msgstr "Pronomen"
+
+msgid "settings.profile.pronoun.info"
+msgstr "Wie möchtest du angesprochen werden? (z.B. er/ihm, sie/ihr, they/them)"
+
+# Guardian Consent Form translations
+msgid "guardian.print"
+msgstr "Drucken"
+
+msgid "guardian.consent_form_title"
+msgstr "Einwilligungserklärung für Erziehungsberechtigte"
+
+msgid "guardian.consent_form_subtitle"
+msgstr "Für die Teilnahme von Minderjährigen am Event"
+
+msgid "guardian.minor_information"
+msgstr "Angaben zum Minderjährigen"
+
+msgid "guardian.minor_name"
+msgstr "Benutzername"
+
+msgid "guardian.guardian_information"
+msgstr "Angaben zum Erziehungsberechtigten"
+
+msgid "guardian.guardian_name"
+msgstr "Name des Erziehungsberechtigten"
+
+msgid "guardian.restrictions_applicable"
+msgstr "Geltende Arbeitsbeschränkungen"
+
+msgid "guardian.hours"
+msgstr "Stunden"
+
+msgid "guardian.consent_declaration"
+msgstr "Einwilligungserklärung"
+
+msgid "guardian.consent_text_1"
+msgstr "Ich, der/die unterzeichnende Erziehungsberechtigte, willige hiermit in die Teilnahme des oben genannten Minderjährigen an ehrenamtlichen Tätigkeiten bei dieser Veranstaltung ein."
+
+msgid "guardian.consent_text_2"
+msgstr "Ich erkenne Folgendes an und stimme zu:"
+
+msgid "guardian.consent_item_1"
+msgstr "Der/Die Minderjährige wird alle Arbeitszeitbeschränkungen und Sicherheitsrichtlinien einhalten"
+
+msgid "guardian.consent_item_2"
+msgstr "Der/Die Minderjährige wird während der Schichtaktivitäten bei Bedarf von einem Erwachsenen beaufsichtigt"
+
+msgid "guardian.consent_item_3"
+msgstr "Ich werde während der Veranstaltung für Notfälle erreichbar sein"
+
+msgid "guardian.consent_item_4"
+msgstr "Ich verstehe und akzeptiere die geltenden Arbeitsbeschränkungen basierend auf der Alterskategorie des Minderjährigen"
+
+msgid "guardian.place_date"
+msgstr "Ort, Datum"
+
+msgid "guardian.signature"
+msgstr "Unterschrift"
+
+msgid "guardian.signature_guardian"
+msgstr "(Unterschrift des Erziehungsberechtigten)"
+
+msgid "guardian.consent_footer"
+msgstr "Dieses Formular muss unterschrieben und dem Event-Personal vorgelegt werden, bevor der/die Minderjährige an Schichten teilnehmen kann."
+
+msgid "guardian.generated_on"
+msgstr "Erstellt am"
+
+# Guardian notification messages
+msgid "guardian.not_eligible"
+msgstr "Du bist nicht berechtigt, den Erziehungsberechtigten-Bereich zu nutzen. Nur volljährige Benutzer können Erziehungsberechtigte sein."
+
+msgid "guardian.minor_not_found"
+msgstr "Minderjähriges Konto nicht gefunden."
+
+msgid "guardian.user_not_minor"
+msgstr "Der angegebene Benutzer ist kein Minderjähriger."
+
+msgid "guardian.link_successful"
+msgstr "Erfolgreich als Erziehungsberechtigter verknüpft."
+
+msgid "guardian.registration_successful"
+msgstr "Minderjähriges Konto erfolgreich erstellt."
+
+msgid "guardian.profile_updated"
+msgstr "Profil des Minderjährigen aktualisiert."
+
+msgid "guardian.invalid_category"
+msgstr "Ungültige Minderjährigen-Kategorie ausgewählt."
+
+msgid "guardian.category_changed"
+msgstr "Kategorie des Minderjährigen erfolgreich aktualisiert."
+
+msgid "guardian.guardian_not_found"
+msgstr "Erziehungsberechtigten-Konto nicht gefunden."
+
+msgid "guardian.guardian_added"
+msgstr "Erziehungsberechtigter erfolgreich hinzugefügt."
+
+msgid "guardian.guardian_removed"
+msgstr "Erziehungsberechtigter erfolgreich entfernt."
+
+msgid "guardian.not_primary"
+msgstr "Nur der primäre Erziehungsberechtigte kann diese Aktion durchführen."
+
+msgid "guardian.primary_changed"
+msgstr "Primärer Erziehungsberechtigter erfolgreich geändert."
+
+msgid "guardian.showing_recent"
+msgstr "Zeige die letzten %count% von %total% Schichten"
+
+# Admin user minor consent translations
+msgid "admin.user.minor_consent"
+msgstr "Einwilligung Minderjährige"
+
+msgid "admin.user.minor_category"
+msgstr "Altersgruppe"
+
+msgid "admin.user.consent_status"
+msgstr "Einwilligungsstatus"
+
+msgid "admin.user.consent_approved"
+msgstr "Genehmigt"
+
+msgid "admin.user.consent_pending"
+msgstr "Ausstehend"
+
+msgid "admin.user.consent_approved_by"
+msgstr "Genehmigt von"
+
+msgid "admin.user.consent_approved_at"
+msgstr "Genehmigt am"
+
+msgid "admin.user.consent_approve"
+msgstr "Einwilligung genehmigen"
+
+msgid "admin.user.consent_revoke"
+msgstr "Einwilligung widerrufen"
+
+msgid "admin.user.consent_revoke_confirm"
+msgstr "Bist du sicher, dass du die Einwilligung für diesen Minderjährigen widerrufen möchtest?"
+
+msgid "admin.user.consent_approved_success"
+msgstr "Einwilligung erfolgreich genehmigt."
+
+msgid "admin.user.consent_revoked_success"
+msgstr "Einwilligung erfolgreich widerrufen."
+
+msgid "admin.user.not_minor"
+msgstr "Dieser Benutzer ist kein Minderjähriger."

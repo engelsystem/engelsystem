@@ -6,6 +6,7 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftSignupStatus;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
+use Engelsystem\Services\MinorRestrictionService;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -101,10 +102,37 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
     }
 
     if ($request->hasPostData('submit')) {
+        // Log admin override if minor restrictions would have blocked this signup
+        if ($signup_user->isMinor()) {
+            /** @var MinorRestrictionService $minorService */
+            $minorService = app(MinorRestrictionService::class);
+            $validation = $minorService->canWorkShift($signup_user, $shift);
+            if (!$validation->isValid) {
+                $adminUser = auth()->user();
+                $errorList = implode(', ', $validation->errors);
+                engelsystem_log(sprintf(
+                    'Admin override: %s signed up minor %s (ID: %d) for shift %d despite restrictions: %s',
+                    $adminUser->name,
+                    $signup_user->name,
+                    $signup_user->id,
+                    $shift->id,
+                    $errorList
+                ));
+            }
+        }
+
         $shiftEntry = new ShiftEntry();
         $shiftEntry->shift()->associate($shift);
         $shiftEntry->angelType()->associate($angeltype);
         $shiftEntry->user()->associate($signup_user);
+
+        // Set counts_toward_quota based on user's minor category
+        if (!isset($minorService)) {
+            /** @var MinorRestrictionService $minorService */
+            $minorService = app(MinorRestrictionService::class);
+        }
+        $shiftEntry->counts_toward_quota = $minorService->countsTowardQuota($signup_user);
+
         $shiftEntry->save();
         ShiftEntry_onCreate($shiftEntry);
 
@@ -161,6 +189,12 @@ function shift_entry_create_controller_supporter(Shift $shift, AngelType $angelt
         $shiftEntry->shift()->associate($shift);
         $shiftEntry->angelType()->associate($angeltype);
         $shiftEntry->user()->associate($signup_user);
+
+        // Set counts_toward_quota based on user's minor category
+        /** @var MinorRestrictionService $minorService */
+        $minorService = app(MinorRestrictionService::class);
+        $shiftEntry->counts_toward_quota = $minorService->countsTowardQuota($signup_user);
+
         $shiftEntry->save();
         ShiftEntry_onCreate($shiftEntry);
 
@@ -196,8 +230,27 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
         ShiftSignupStatus::NOT_ARRIVED => error(__('You are not marked as arrived.')),
         ShiftSignupStatus::NOT_YET     => error(__('You are not allowed to sign up yet.')),
         ShiftSignupStatus::SIGNED_UP   => error(__('You are signed up for this shift.')),
+        ShiftSignupStatus::MINOR_RESTRICTED => shift_entry_minor_restriction_errors($shift_signup_state),
         default => null, // ShiftSignupStatus::FREE|ShiftSignupStatus::ADMIN
     };
+}
+
+/**
+ * Display minor restriction error messages.
+ *
+ * @param ShiftSignupState $shift_signup_state
+ */
+function shift_entry_minor_restriction_errors(ShiftSignupState $shift_signup_state)
+{
+    $errors = $shift_signup_state->getMinorErrors();
+    if (empty($errors)) {
+        error(__('shift.signup.minor_restricted'));
+    } else {
+        // Errors are already translated by MinorRestrictionService
+        foreach ($errors as $errorMessage) {
+            error($errorMessage);
+        }
+    }
 }
 
 /**
@@ -231,15 +284,50 @@ function shift_entry_create_controller_user(Shift $shift, AngelType $angeltype):
         throw_redirect(shift_link($shift));
     }
 
+    /** @var MinorRestrictionService $minorService */
+    $minorService = app(MinorRestrictionService::class);
+
+    // Check if user is a minor requiring supervision
+    $supervisors_select = [];
+    $selected_supervisor_id = null;
+    $requiresSupervision = false;
+
+    if ($signup_user->isMinor()) {
+        $restrictions = $minorService->getRestrictions($signup_user);
+        if ($restrictions->requiresSupervisor && $shift->requires_supervisor_for_minors) {
+            $requiresSupervision = true;
+            $supervisors_select = shift_entry_get_available_supervisors($shift, $signup_user, $minorService);
+        }
+    }
+
     $comment = '';
     if ($request->hasPostData('submit')) {
         $comment = strip_request_item_nl('comment');
+
+        // Validate supervisor selection if required
+        $supervisor_id = null;
+        if ($requiresSupervision) {
+            $supervisor_id = (int) $request->postData('supervisor_id');
+            if (!array_key_exists($supervisor_id, $supervisors_select)) {
+                error(__('shift.supervisor.invalid'));
+                throw_redirect(shift_entry_create_link($shift, $angeltype));
+            }
+        }
 
         $shiftEntry = new ShiftEntry();
         $shiftEntry->shift()->associate($shift);
         $shiftEntry->angelType()->associate($angeltype);
         $shiftEntry->user()->associate($signup_user);
         $shiftEntry->user_comment = $comment;
+
+        // Set counts_toward_quota based on user's minor category
+        $shiftEntry->counts_toward_quota = $minorService->countsTowardQuota($signup_user);
+
+        // Set supervisor if required
+        if ($supervisor_id !== null) {
+            $shiftEntry->supervised_by_user_id = $supervisor_id;
+        }
+
         $shiftEntry->save();
         ShiftEntry_onCreate($shiftEntry);
 
@@ -260,8 +348,57 @@ function shift_entry_create_controller_user(Shift $shift, AngelType $angeltype):
     $location = $shift->location;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_user($shift, $location, $angeltype, $comment),
+        ShiftEntry_create_view_user($shift, $location, $angeltype, $comment, $supervisors_select, $selected_supervisor_id),
     ];
+}
+
+/**
+ * Get available supervisors for a shift entry.
+ *
+ * @param Shift $shift
+ * @param User $minorUser
+ * @param MinorRestrictionService $minorService
+ * @return array<int, string> Map of user_id => display_name
+ */
+function shift_entry_get_available_supervisors(
+    Shift $shift,
+    User $minorUser,
+    MinorRestrictionService $minorService
+): array {
+    $supervisors = [];
+
+    // Get all entries for this shift
+    $entries = $shift->shiftEntries()->with('user')->get();
+
+    foreach ($entries as $entry) {
+        $user = $entry->user;
+
+        // Skip the minor themselves
+        if ($user->id === $minorUser->id) {
+            continue;
+        }
+
+        // Skip other minors
+        if ($minorService->isMinor($user)) {
+            continue;
+        }
+
+        // Check if this is a guardian of the minor
+        $isGuardian = $minorService->isGuardianOf($user, $minorUser);
+
+        // Check if this is a willing supervisor
+        $isWillingSupervisor = $minorService->isWillingSupervisor($user);
+
+        if ($isGuardian || $isWillingSupervisor) {
+            $label = $user->displayName;
+            if ($isGuardian) {
+                $label .= ' (' . __('shift.supervisor.guardian') . ')';
+            }
+            $supervisors[$user->id] = $label;
+        }
+    }
+
+    return $supervisors;
 }
 
 /**

@@ -1,0 +1,82 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('registration.link_guardian.title') }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="mb-5">
+        <h1>{{ __('registration.link_guardian.title') }}</h1>
+    </div>
+
+    {% include 'layouts/parts/messages.twig' %}
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ __('registration.link_guardian.welcome', {'name': minor.displayName}) }}</h5>
+                    <p class="card-text">{{ __('registration.link_guardian.info') }}</p>
+                </div>
+            </div>
+
+            <form method="post" action="{{ url('/register/link-guardian') }}" novalidate class="mb-4">
+                {{ csrf() }}
+
+                <div class="mb-4">
+                    <h2>{{ __('registration.link_guardian.find_guardian') }}</h2>
+                    <p class="text-muted">{{ __('registration.link_guardian.find_guardian_hint') }}</p>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            {{ f.input(
+                                'guardian_identifier',
+                                __('registration.link_guardian.guardian_identifier'),
+                                {
+                                    'required': true,
+                                    'required_icon': true,
+                                    'value': f.formData('guardian_identifier', ''),
+                                    'info': __('registration.link_guardian.guardian_identifier_hint'),
+                                }
+                            ) }}
+                        </div>
+                    </div>
+                </div>
+
+                {{ f.submit(__('registration.link_guardian.send_request'), {
+                    'icon_left': 'person-add'
+                }) }}
+            </form>
+
+            <hr class="my-4">
+
+            <div class="mb-4">
+                <h3>{{ __('registration.link_guardian.skip_title') }}</h3>
+                <p class="text-muted">{{ __('registration.link_guardian.skip_info') }}</p>
+                <form method="post" action="{{ url('/register/skip-guardian') }}">
+                    {{ csrf() }}
+                    {{ f.submit(__('registration.link_guardian.skip'), {
+                        'btn_type': 'outline-secondary',
+                        'icon_left': 'arrow-right'
+                    }) }}
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card bg-info-subtle">
+                <div class="card-body">
+                    <h5 class="card-title">{{ m.icon('info-circle') }} {{ __('registration.link_guardian.why_title') }}</h5>
+                    <p class="card-text">{{ __('registration.link_guardian.why_text') }}</p>
+                    <ul class="mb-0">
+                        <li>{{ __('registration.link_guardian.why_item1') }}</li>
+                        <li>{{ __('registration.link_guardian.why_item2') }}</li>
+                        <li>{{ __('registration.link_guardian.why_item3') }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

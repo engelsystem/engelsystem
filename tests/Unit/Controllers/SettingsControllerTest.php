@@ -17,11 +17,13 @@ use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\MinorCategory;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Session as SessionModel;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserSupervisorStatus;
 use Engelsystem\Test\Unit\HasDatabase;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -100,6 +102,58 @@ class SettingsControllerTest extends ControllerTest
                 $this->assertEquals('pages/settings/profile', $view);
                 $this->assertArrayHasKey('userdata', $data);
                 $this->assertEquals($this->user, $data['userdata']);
+                $this->assertArrayHasKey('isMinor', $data);
+                $this->assertArrayHasKey('willingToSupervise', $data);
+                $this->assertFalse($data['isMinor']);
+                $this->assertFalse($data['willingToSupervise']);
+                return $this->response;
+            });
+
+        $this->controller = $this->app->make(SettingsController::class);
+        $this->controller->profile();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::profile
+     */
+    public function testProfileForMinor(): void
+    {
+        // Make the user a minor
+        $minorCategory = MinorCategory::factory()->create();
+        $this->user->minor_category_id = $minorCategory->id;
+        $this->user->save();
+
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+        /** @var Response|MockObject $response */
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertEquals('pages/settings/profile', $view);
+                $this->assertArrayHasKey('isMinor', $data);
+                $this->assertTrue($data['isMinor']);
+                return $this->response;
+            });
+
+        $this->controller = $this->app->make(SettingsController::class);
+        $this->controller->profile();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::profile
+     */
+    public function testProfileWithExistingSupervisorStatus(): void
+    {
+        // Create supervisor status with willing_to_supervise = true
+        UserSupervisorStatus::factory()->willing()->create(['user_id' => $this->user->id]);
+        $this->user->refresh();
+
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->atLeastOnce());
+        /** @var Response|MockObject $response */
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertArrayHasKey('willingToSupervise', $data);
+                $this->assertTrue($data['willingToSupervise']);
                 return $this->response;
             });
 
@@ -239,6 +293,57 @@ class SettingsControllerTest extends ControllerTest
         $this->config->set('goodie_type', GoodieType::None->value);
         $this->controller->saveProfile($this->request);
         $this->assertEquals('', $this->user->personalData->shirt_size);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveProfile
+     */
+    public function testSaveProfileSavesSupervisorStatusForAdult(): void
+    {
+        $this->setUpProfileTest();
+
+        // Ensure user is NOT a minor (minor_category_id is null by default)
+        $this->assertNull($this->user->minor_category_id);
+        $this->assertFalse($this->user->isMinor());
+
+        // Add willing_to_supervise to the request body
+        $body = $this->request->getParsedBody();
+        $body['willing_to_supervise'] = true;
+        $this->request = $this->request->withParsedBody($body);
+
+        $this->controller->saveProfile($this->request);
+
+        // Reload the supervisor status from database
+        $this->user->refresh();
+        $supervisorStatus = UserSupervisorStatus::where('user_id', $this->user->id)->first();
+        $this->assertNotNull($supervisorStatus);
+        $this->assertTrue($supervisorStatus->willing_to_supervise);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::saveProfile
+     */
+    public function testSaveProfileIgnoresSupervisorStatusForMinor(): void
+    {
+        $this->setUpProfileTest();
+
+        // Create a minor category and assign it to the user to make them a minor
+        $minorCategory = MinorCategory::factory()->create();
+        $this->user->minor_category_id = $minorCategory->id;
+        $this->user->save();
+        $this->assertTrue($this->user->isMinor());
+
+        // Add willing_to_supervise to the request body
+        $body = $this->request->getParsedBody();
+        $body['willing_to_supervise'] = true;
+        $this->request = $this->request->withParsedBody($body);
+
+        $this->controller->saveProfile($this->request);
+
+        // Check that no supervisor status was created for the minor
+        $this->user->refresh();
+        $supervisorStatus = UserSupervisorStatus::where('user_id', $this->user->id)->first();
+        $this->assertNull($supervisorStatus);
     }
 
     /**

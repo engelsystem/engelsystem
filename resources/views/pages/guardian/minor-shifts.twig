@@ -1,0 +1,176 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __('guardian.shifts') }} - {{ minor.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% include 'layouts/parts/messages.twig' %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{ m.icon('calendar-week') }} {{ minor.name }} - {{ __('guardian.shifts') }}</h1>
+        <a href="{{ url('/guardian/minor/' ~ minor.id) }}" class="btn btn-outline-secondary">
+            {{ m.icon('arrow-left') }} {{ __('guardian.back_to_profile') }}
+        </a>
+    </div>
+
+    {# Daily hours status #}
+    {% if dailyHoursMax %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong>{{ __('guardian.hours_today') }}</strong>
+                    <span>{{ dailyHoursUsed|number_format(1) }}h / {{ dailyHoursMax }}h</span>
+                </div>
+                <div class="progress" style="height: 20px;">
+                    {% set percentage = (dailyHoursUsed / dailyHoursMax * 100)|round %}
+                    <div class="progress-bar {{ percentage >= 100 ? 'bg-danger' : (percentage >= 80 ? 'bg-warning' : 'bg-success') }}"
+                        role="progressbar"
+                        style="width: {{ percentage }}%"
+                        aria-valuenow="{{ dailyHoursUsed }}"
+                        aria-valuemin="0"
+                        aria-valuemax="{{ dailyHoursMax }}">
+                        {{ percentage }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {# Restrictions summary #}
+    <div class="card mb-4">
+        <div class="card-header">
+            {{ m.icon('shield-check') }} {{ __('guardian.work_restrictions') }}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% if restrictions.maxHoursPerDay is not null %}
+                    <div class="col-md-3 col-6 mb-2">
+                        <small class="text-muted d-block">{{ __('guardian.max_hours_per_day') }}</small>
+                        <strong>{{ restrictions.maxHoursPerDay }}h</strong>
+                    </div>
+                {% endif %}
+                {% if restrictions.maxShiftDuration is not null %}
+                    <div class="col-md-3 col-6 mb-2">
+                        <small class="text-muted d-block">{{ __('guardian.max_shift_duration') }}</small>
+                        <strong>{{ restrictions.maxShiftDuration }}h</strong>
+                    </div>
+                {% endif %}
+                {% if restrictions.earliestStart is not null %}
+                    <div class="col-md-3 col-6 mb-2">
+                        <small class="text-muted d-block">{{ __('guardian.earliest_start') }}</small>
+                        <strong>{{ restrictions.earliestStart }}</strong>
+                    </div>
+                {% endif %}
+                {% if restrictions.latestEnd is not null %}
+                    <div class="col-md-3 col-6 mb-2">
+                        <small class="text-muted d-block">{{ __('guardian.latest_end') }}</small>
+                        <strong>{{ restrictions.latestEnd }}</strong>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {# Upcoming shifts #}
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    {{ m.icon('calendar-event') }} {{ __('guardian.upcoming_shifts') }}
+                    {% if upcomingShifts|length > 0 %}
+                        <span class="badge bg-primary">{{ upcomingShifts|length }}</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if upcomingShifts|length > 0 %}
+                        <div class="list-group list-group-flush">
+                            {% for entry in upcomingShifts %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <strong>{{ entry.shift.title }}</strong>
+                                            <br>
+                                            <small class="text-muted">
+                                                {{ m.icon('calendar') }}
+                                                {{ entry.shift.start|date(__('general.date')) }}
+                                            </small>
+                                            <br>
+                                            <small class="text-muted">
+                                                {{ m.icon('clock') }}
+                                                {{ entry.shift.start|date('H:i') }} - {{ entry.shift.end|date('H:i') }}
+                                            </small>
+                                            <br>
+                                            <small>
+                                                <span class="badge bg-info">{{ entry.angelType.name }}</span>
+                                            </small>
+                                        </div>
+                                        <div>
+                                            {% set duration = ((entry.shift.end|date('U') - entry.shift.start|date('U')) / 3600)|round(1) %}
+                                            <span class="badge bg-secondary">{{ duration }}h</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ m.info(__('guardian.no_upcoming_shifts')) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Shift history #}
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    {{ m.icon('clock-history') }} {{ __('guardian.shift_history') }}
+                    {% if shiftHistory|length > 0 %}
+                        <span class="badge bg-secondary">{{ shiftHistory|length }}</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if shiftHistory|length > 0 %}
+                        <div class="list-group list-group-flush">
+                            {% for entry in shiftHistory|slice(0, 10) %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <strong>{{ entry.shift.title }}</strong>
+                                            <br>
+                                            <small class="text-muted">
+                                                {{ m.icon('calendar') }}
+                                                {{ entry.shift.start|date(__('general.date')) }}
+                                            </small>
+                                            <br>
+                                            <small class="text-muted">
+                                                {{ m.icon('clock') }}
+                                                {{ entry.shift.start|date('H:i') }} - {{ entry.shift.end|date('H:i') }}
+                                            </small>
+                                            <br>
+                                            <small>
+                                                <span class="badge bg-info">{{ entry.angelType.name }}</span>
+                                            </small>
+                                        </div>
+                                        <div>
+                                            {% set duration = ((entry.shift.end|date('U') - entry.shift.start|date('U')) / 3600)|round(1) %}
+                                            <span class="badge bg-secondary">{{ duration }}h</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if shiftHistory|length > 10 %}
+                            <p class="text-muted mt-3 mb-0 text-center">
+                                {{ __('guardian.showing_recent', {'count': 10, 'total': shiftHistory|length}) }}
+                            </p>
+                        {% endif %}
+                    {% else %}
+                        {{ m.info(__('guardian.no_shift_history')) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -151,6 +151,8 @@ class ShiftTypesControllerTest extends ControllerTest
             'name' => 'Test shift type',
             'description' => 'Something',
             'signup_advance_hours' => 42.5,
+            'work_category' => 'B',
+            'allows_accompanying_children' => '1',
             'angel_type_' . $angelType->id => 3,
             'angel_type_' . $angelType->id + 1 => 0,
         ]);
@@ -158,11 +160,61 @@ class ShiftTypesControllerTest extends ControllerTest
         $controller->save($this->request);
 
         $this->assertTrue($this->log->hasInfoThatContains('Saved shift type'));
+        $this->assertTrue($this->log->hasInfoThatContains('work_category={work_category}'));
+        $this->assertTrue($this->log->hasInfoThatContains('allows_children={allows_children}'));
         $this->assertHasNotification('shifttype.edit.success');
         $this->assertCount(1, ShiftType::whereName('Test shift type')->get());
         $this->assertCount(1, ShiftType::whereDescription('Something')->get());
         $this->assertCount(1, ShiftType::whereSignupAdvanceHours(42.5)->get());
+        $this->assertCount(1, ShiftType::whereWorkCategory('B')->get());
+        $this->assertCount(1, ShiftType::whereAllowsAccompanyingChildren(true)->get());
         $this->assertCount(1, ShiftType::first()->neededAngelTypes);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::save
+     */
+    public function testSaveWorkCategoryDefaults(): void
+    {
+        /** @var ShiftTypesController $controller */
+        $controller = $this->app->make(ShiftTypesController::class);
+        $controller->setValidator(new Validator());
+
+        $this->setExpects($this->redirect, 'to', ['/admin/shifttypes']);
+
+        // Save without specifying work_category or allows_accompanying_children
+        $this->request = $this->request->withParsedBody([
+            'name' => 'Default category test',
+        ]);
+
+        $controller->save($this->request);
+
+        $shiftType = ShiftType::whereName('Default category test')->first();
+        $this->assertEquals('A', $shiftType->work_category);
+        $this->assertFalse($shiftType->allows_accompanying_children);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::save
+     */
+    public function testSaveWorkCategoryC(): void
+    {
+        /** @var ShiftTypesController $controller */
+        $controller = $this->app->make(ShiftTypesController::class);
+        $controller->setValidator(new Validator());
+
+        $this->setExpects($this->redirect, 'to', ['/admin/shifttypes']);
+
+        $this->request = $this->request->withParsedBody([
+            'name' => 'Adults only shift type',
+            'work_category' => 'C',
+        ]);
+
+        $controller->save($this->request);
+
+        $shiftType = ShiftType::whereName('Adults only shift type')->first();
+        $this->assertEquals('C', $shiftType->work_category);
+        $this->assertTrue($this->log->hasInfoThatContains('work_category={work_category}'));
     }
 
     /**
