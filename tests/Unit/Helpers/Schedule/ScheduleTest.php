@@ -12,22 +12,25 @@ use Engelsystem\Helpers\Schedule\Schedule;
 use Engelsystem\Helpers\Schedule\ScheduleGenerator;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Schedule::class, '__construct')]
+#[CoversMethod(Schedule::class, 'getVersion')]
+#[CoversMethod(Schedule::class, 'getConference')]
+#[CoversMethod(Schedule::class, 'getDays')]
+#[CoversMethod(Schedule::class, 'getGenerator')]
+#[CoversMethod(Schedule::class, 'getAllRooms')]
+#[CoversMethod(Schedule::class, 'getRooms')]
+#[CoversMethod(Schedule::class, 'getStartDateTime')]
+#[CoversMethod(Schedule::class, 'getEndDateTime')]
 class ScheduleTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getVersion
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getConference
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getDays
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getGenerator
-     */
     public function testCreate(): void
     {
         $conference = new Conference('Foo Bar', 'FooB');
-        $days = [$this->createMock(Day::class)];
+        $days = [$this->createStub(Day::class)];
         $schedule = new Schedule('Foo\'ing stuff 1.0', $conference, $days);
 
         $this->assertEquals('Foo\'ing stuff 1.0', $schedule->getVersion());
@@ -36,10 +39,6 @@ class ScheduleTest extends TestCase
         $this->assertNull($schedule->getGenerator());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getAllRooms
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getRooms
-     */
     public function testGetRooms(): void
     {
         $conference = new Conference('Test', 'T');
@@ -73,10 +72,6 @@ class ScheduleTest extends TestCase
         $this->assertEquals([], $schedule->getRooms());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getStartDateTime
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getEndDateTime
-     */
     public function testGetDateTimes(): void
     {
         $conference = new Conference('Some Conference', 'SC');
@@ -110,10 +105,6 @@ class ScheduleTest extends TestCase
         $this->assertNull($schedule->getEndDateTime());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getGenerator
-     */
     public function testGetGenerator(): void
     {
         $conference = new Conference('Foo Bar', 'FooB');

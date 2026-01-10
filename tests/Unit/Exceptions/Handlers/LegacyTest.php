@@ -8,25 +8,23 @@ use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Http\Request;
 use ErrorException;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
 
+#[CoversMethod(Legacy::class, 'render')]
+#[CoversMethod(Legacy::class, 'report')]
+#[CoversMethod(Legacy::class, 'setLogger')]
+#[CoversMethod(Legacy::class, 'stripBasePath')]
 class LegacyTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Exceptions\Handlers\Legacy::render
-     */
     public function testRender(): void
     {
-        /** @var Legacy|MockObject $handler */
         $handler = $this->getMockBuilder(Legacy::class)
             ->onlyMethods(['isCli'])
             ->getMock();
-        /** @var Request|MockObject $request */
-        $request = $this->createMock(Request::class);
-        /** @var Exception|MockObject $exception */
-        $exception = $this->createMock(Exception::class);
+        $request = $this->createStub(Request::class);
+        $exception = $this->createStub(Exception::class);
 
         $handler->expects($this->exactly(2))
             ->method('isCli')
@@ -39,11 +37,6 @@ class LegacyTest extends TestCase
         $handler->render($request, $exception);
     }
 
-    /**
-     * @covers \Engelsystem\Exceptions\Handlers\Legacy::report
-     * @covers \Engelsystem\Exceptions\Handlers\Legacy::setLogger
-     * @covers \Engelsystem\Exceptions\Handlers\Legacy::stripBasePath
-     */
     public function testReport(): void
     {
         $handler = new Legacy();

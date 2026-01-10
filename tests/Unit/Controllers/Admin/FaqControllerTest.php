@@ -10,9 +10,17 @@ use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\Faq;
 use Engelsystem\Models\Tag;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class FaqControllerTest extends ControllerTest
+#[CoversMethod(FaqController::class, '__construct')]
+#[CoversMethod(FaqController::class, 'edit')]
+#[CoversMethod(FaqController::class, 'showEdit')]
+#[CoversMethod(FaqController::class, 'save')]
+#[CoversMethod(FaqController::class, 'delete')]
+#[AllowMockObjectsWithoutExpectations]
+class FaqControllerTest extends ControllerTestCase
 {
     protected array $data = [
         'question' => 'Foo?',
@@ -20,11 +28,6 @@ class FaqControllerTest extends ControllerTest
         'tags'     => 'Lorem, Lorem, Ipsum! ,',
     ];
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\FaqController::__construct
-     * @covers \Engelsystem\Controllers\Admin\FaqController::edit
-     * @covers \Engelsystem\Controllers\Admin\FaqController::showEdit
-     */
     public function testEdit(): void
     {
         $this->request->attributes->set('faq_id', 1);
@@ -45,9 +48,6 @@ class FaqControllerTest extends ControllerTest
         $this->assertHasNoNotifications(NotificationType::WARNING);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\FaqController::save
-     */
     public function testSaveCreateInvalid(): void
     {
         /** @var FaqController $controller */
@@ -58,9 +58,6 @@ class FaqControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers       \Engelsystem\Controllers\Admin\FaqController::save
-     */
     public function testSaveCreateEdit(): void
     {
         $this->request->attributes->set('faq_id', 2);
@@ -88,9 +85,6 @@ class FaqControllerTest extends ControllerTest
         $this->assertTrue(Tag::whereName('Ipsum!')->get()->isNotEmpty());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\FaqController::save
-     */
     public function testSavePreview(): void
     {
         $this->request->attributes->set('faq_id', 1);
@@ -129,10 +123,6 @@ class FaqControllerTest extends ControllerTest
         $this->assertEmpty(Tag::all());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\FaqController::save
-     * @covers \Engelsystem\Controllers\Admin\FaqController::delete
-     */
     public function testSaveDelete(): void
     {
         $this->request->attributes->set('faq_id', 1);

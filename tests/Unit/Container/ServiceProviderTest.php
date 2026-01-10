@@ -6,18 +6,17 @@ namespace Engelsystem\Test\Unit\Container;
 
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Test\Unit\Container\Stub\ServiceProviderImplementation;
-use Engelsystem\Test\Unit\ServiceProviderTest as ServiceProviderTestCase;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(ServiceProvider::class, '__construct')]
+#[CoversMethod(ServiceProvider::class, 'register')]
+#[CoversMethod(ServiceProvider::class, 'boot')]
 class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Container\ServiceProvider::__construct
-     * @covers \Engelsystem\Container\ServiceProvider::register
-     * @covers \Engelsystem\Container\ServiceProvider::boot
-     */
     public function testRegister(): void
     {
-        $app = $this->getApp();
+        $app = $this->getAppStub();
 
         $serviceProvider = new ServiceProviderImplementation($app);
 

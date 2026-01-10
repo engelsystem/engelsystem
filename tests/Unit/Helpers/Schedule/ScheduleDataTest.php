@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Helpers\Schedule;
 
 use Engelsystem\Helpers\Schedule\ScheduleData;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(ScheduleData::class, 'patch')]
 class ScheduleDataTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\ScheduleData::patch
-     */
     public function testPatch(): void
     {
         $instance = new class ('value') extends ScheduleData {

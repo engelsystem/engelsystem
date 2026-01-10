@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Metrics;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Metrics\Controller;
 use Engelsystem\Controllers\Metrics\MetricsEngine;
@@ -15,28 +14,27 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\ServerBag;
 
+#[CoversMethod(Controller::class, '__construct')]
+#[CoversMethod(Controller::class, 'metrics')]
+#[CoversMethod(Controller::class, 'formatStats')]
+#[CoversMethod(Controller::class, 'checkAuth')]
+#[AllowMockObjectsWithoutExpectations]
 class ControllerTest extends TestCase
 {
-    use ArraySubsetAsserts;
-
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Controller::__construct
-     * @covers \Engelsystem\Controllers\Metrics\Controller::metrics
-     * @covers \Engelsystem\Controllers\Metrics\Controller::formatStats
-     * @covers \Engelsystem\Controllers\Metrics\Controller::checkAuth
-     */
     public function testMetrics(): void
     {
-        /** @var Response|MockObject $response */
-        /** @var Request|MockObject $request */
-        /** @var MetricsEngine|MockObject $engine */
-        /** @var Stats|MockObject $stats */
+        /** @var Response&MockObject $response */
+        /** @var Request&MockObject $request */
+        /** @var MetricsEngine&MockObject $engine */
+        /** @var Stats&MockObject $stats */
         /** @var Config $config */
-        /** @var Version|MockObject $version */
+        /** @var Version&MockObject $version */
         list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
 
         $request->server = new ServerBag();
@@ -69,11 +67,11 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('log_entries', $data);
                 $this->assertArrayHasKey('scrape_duration_seconds', $data);
 
-                $this->assertArraySubset(['tshirt_sizes' => [
+                $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys([
                     'type' => 'gauge',
                     ['labels' => ['size' => 'L'], 2],
                     ['labels' => ['size' => 'XL'], 0],
-                ]], $data);
+                ], $data['tshirt_sizes'], ['type', 0, 1]);
 
                 return 'metrics return';
             });
@@ -87,59 +85,195 @@ class ControllerTest extends TestCase
             ->with('metrics return')
             ->willReturn($response);
 
-        $stats->expects($this->exactly(15))
-            ->method('licenses')
-            ->withConsecutive(
-                ['has_car'],
-                ['forklift'],
-                ['forklift'],
-                ['car'],
-                ['car', true],
-                ['3.5t'],
-                ['3.5t', true],
-                ['7.5t'],
-                ['7.5t', true],
-                ['12t'],
-                ['12t', true],
-                ['ifsg_light'],
-                ['ifsg_light', true],
-                ['ifsg'],
-                ['ifsg', true],
-            )
-            ->willReturnOnConsecutiveCalls(6, 3, 15, 9, 7, 1, 5, 4, 3, 5, 9, 2, 1, 7, 8);
-        $stats->expects($this->exactly(4))
-            ->method('usersState')
-            ->withConsecutive([false, false], [true, false], [false], [true])
-            ->willReturnOnConsecutiveCalls(7, 43, 42, 10);
-        $stats->expects($this->exactly(2))
-            ->method('currentlyWorkingUsers')
-            ->withConsecutive([false], [true])
-            ->willReturnOnConsecutiveCalls(10, 1);
-        $stats->expects($this->exactly(3))
-            ->method('workSeconds')
-            ->withConsecutive([true, false], [false, false], [null, true])
-            ->willReturnOnConsecutiveCalls(60 * 37, 60 * 251, 60 * 3);
-        $stats->expects($this->exactly(2))
-            ->method('announcements')
-            ->withConsecutive([false], [true])
-            ->willReturnOnConsecutiveCalls(18, 7);
-        $stats->expects($this->exactly(2))
-            ->method('questions')
-            ->withConsecutive([true], [false])
-            ->willReturnOnConsecutiveCalls(5, 0);
-        $stats->expects($this->exactly(8))
-            ->method('logEntries')
-            ->withConsecutive(
-                [LogLevel::EMERGENCY],
-                [LogLevel::ALERT],
-                [LogLevel::CRITICAL],
-                [LogLevel::ERROR],
-                [LogLevel::WARNING],
-                [LogLevel::NOTICE],
-                [LogLevel::INFO],
-                [LogLevel::DEBUG]
-            )
-            ->willReturnOnConsecutiveCalls(0, 1, 0, 5, 999, 4, 55, 3);
+        $matcher = $this->exactly(15);
+        $stats->expects($matcher)
+            ->method('licenses')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('has_car', $parameters[0]);
+                    return 6;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('forklift', $parameters[0]);
+                    return 3;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('forklift', $parameters[0]);
+                    return 15;
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame('car', $parameters[0]);
+                    return 9;
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame('car', $parameters[0]);
+                    $this->assertSame(true, $parameters[1]);
+                    return 7;
+                }
+                if ($matcher->numberOfInvocations() === 6) {
+                    $this->assertSame('3.5t', $parameters[0]);
+                    return 1;
+                }
+                if ($matcher->numberOfInvocations() === 7) {
+                    $this->assertSame('3.5t', $parameters[0]);
+                    $this->assertSame(true, $parameters[1]);
+                    return 5;
+                }
+                if ($matcher->numberOfInvocations() === 8) {
+                    $this->assertSame('7.5t', $parameters[0]);
+                    return 4;
+                }
+                if ($matcher->numberOfInvocations() === 9) {
+                    $this->assertSame('7.5t', $parameters[0]);
+                    $this->assertSame(true, $parameters[1]);
+                    return 3;
+                }
+                if ($matcher->numberOfInvocations() === 10) {
+                    $this->assertSame('12t', $parameters[0]);
+                    return 5;
+                }
+                if ($matcher->numberOfInvocations() === 11) {
+                    $this->assertSame('12t', $parameters[0]);
+                    $this->assertSame(true, $parameters[1]);
+                    return 9;
+                }
+                if ($matcher->numberOfInvocations() === 12) {
+                    $this->assertSame('ifsg_light', $parameters[0]);
+                    return 2;
+                }
+                if ($matcher->numberOfInvocations() === 13) {
+                    $this->assertSame('ifsg_light', $parameters[0]);
+                    $this->assertSame(true, $parameters[1]);
+                    return 1;
+                }
+                if ($matcher->numberOfInvocations() === 14) {
+                    $this->assertSame('ifsg', $parameters[0]);
+                    return 7;
+                }
+                if ($matcher->numberOfInvocations() === 15) {
+                    $this->assertSame('ifsg', $parameters[0]);
+                    $this->assertSame(true, $parameters[1]);
+                    return 8;
+                }
+            });
+
+        $matcher = $this->exactly(4);
+        $stats->expects($matcher)
+            ->method('usersState')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(false, $parameters[0]);
+                    $this->assertSame(false, $parameters[1]);
+                    return 7;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(true, $parameters[0]);
+                    $this->assertSame(false, $parameters[1]);
+                    return 43;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(false, $parameters[0]);
+                    return 42;
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame(true, $parameters[0]);
+                    return 10;
+                }
+            });
+
+        $matcher = $this->exactly(2);
+        $stats->expects($matcher)
+            ->method('currentlyWorkingUsers')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(false, $parameters[0]);
+                    return 10;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(true, $parameters[0]);
+                    return 1;
+                }
+            });
+
+        $matcher = $this->exactly(3);
+        $stats->expects($matcher)
+            ->method('workSeconds')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(true, $parameters[0]);
+                    $this->assertSame(false, $parameters[1]);
+                    return 60 * 37;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(false, $parameters[0]);
+                    $this->assertSame(false, $parameters[1]);
+                    return 60 * 251;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(null, $parameters[0]);
+                    $this->assertSame(true, $parameters[1]);
+                    return 60 * 3;
+                }
+            });
+
+        $matcher = $this->exactly(2);
+        $stats->expects($matcher)
+            ->method('announcements')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(false, $parameters[0]);
+                    return 18;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(true, $parameters[0]);
+                    return 7;
+                }
+            });
+        $matcher = $this->exactly(2);
+        $stats->expects($matcher)
+            ->method('questions')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(true, $parameters[0]);
+                    return 5;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(false, $parameters[0]);
+                    return 0;
+                }
+            });
+
+        $matcher = $this->exactly(8);
+        $stats->expects($matcher)
+            ->method('logEntries')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(LogLevel::EMERGENCY, $parameters[0]);
+                    return 0;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(LogLevel::ALERT, $parameters[0]);
+                    return 1;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(LogLevel::CRITICAL, $parameters[0]);
+                    return 0;
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame(LogLevel::ERROR, $parameters[0]);
+                    return 5;
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame(LogLevel::WARNING, $parameters[0]);
+                    return 999;
+                }
+                if ($matcher->numberOfInvocations() === 6) {
+                    $this->assertSame(LogLevel::NOTICE, $parameters[0]);
+                    return 4;
+                }
+                if ($matcher->numberOfInvocations() === 7) {
+                    $this->assertSame(LogLevel::INFO, $parameters[0]);
+                    return 55;
+                }
+                if ($matcher->numberOfInvocations() === 8) {
+                    $this->assertSame(LogLevel::DEBUG, $parameters[0]);
+                    return 3;
+                }
+            });
+
         $this->setExpects($stats, 'worklogSeconds', null, 39 * 60 * 60);
         $this->setExpects($stats, 'vouchers', null, 17);
         $this->setExpects($stats, 'goodies', null, 3);
@@ -194,17 +328,14 @@ class ControllerTest extends TestCase
         $controller->metrics();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Controller::checkAuth
-     */
     public function testCheckAuth(): void
     {
-        /** @var Response|MockObject $response */
-        /** @var Request|MockObject $request */
-        /** @var MetricsEngine|MockObject $engine */
-        /** @var Stats|MockObject $stats */
+        /** @var Response&MockObject $response */
+        /** @var Request&MockObject $request */
+        /** @var MetricsEngine&MockObject $engine */
+        /** @var Stats&MockObject $stats */
         /** @var Config $config */
-        /** @var Version|MockObject $version */
+        /** @var Version&MockObject $version */
         list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
 
         $request->expects($this->once())
@@ -223,13 +354,9 @@ class ControllerTest extends TestCase
 
     protected function getMocks(): array
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
-        /** @var MetricsEngine|MockObject $engine */
         $engine = $this->createMock(MetricsEngine::class);
-        /** @var Stats|MockObject $stats */
         $stats = $this->createMock(Stats::class);
         $config = new Config();
         $version = $this->createMock(Version::class);

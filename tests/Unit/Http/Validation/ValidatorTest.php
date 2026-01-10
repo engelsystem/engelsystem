@@ -6,16 +6,18 @@ namespace Engelsystem\Test\Unit\Http\Validation;
 
 use Engelsystem\Http\Validation\Validator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(Validator::class, 'validate')]
+#[CoversMethod(Validator::class, 'getData')]
+#[CoversMethod(Validator::class, 'getErrors')]
+#[CoversMethod(Validator::class, 'configureValidationFactory')]
+#[CoversMethod(Validator::class, 'map')]
+#[CoversMethod(Validator::class, 'mapBack')]
+#[CoversMethod(Validator::class, 'addErrors')]
 class ValidatorTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Validator::validate
-     * @covers \Engelsystem\Http\Validation\Validator::getData
-     * @covers \Engelsystem\Http\Validation\Validator::getErrors
-     * @covers \Engelsystem\Http\Validation\Validator::configureValidationFactory
-     */
     public function testValidate(): void
     {
         $val = new Validator();
@@ -56,9 +58,6 @@ class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Validator::validate
-     */
     public function testValidateChaining(): void
     {
         $val = new Validator();
@@ -83,9 +82,6 @@ class ValidatorTest extends TestCase
         ));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Validator::validate
-     */
     public function testValidateMultipleParameters(): void
     {
         $val = new Validator();
@@ -104,9 +100,6 @@ class ValidatorTest extends TestCase
         ));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Validator::validate
-     */
     public function testValidateNotImplemented(): void
     {
         $val = new Validator();
@@ -119,10 +112,6 @@ class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Validator::map
-     * @covers \Engelsystem\Http\Validation\Validator::mapBack
-     */
     public function testValidateMapping(): void
     {
         $val = new Validator();
@@ -172,9 +161,6 @@ class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Validator::validate
-     */
     public function testValidateNullable(): void
     {
         $val = new Validator();
@@ -225,9 +211,6 @@ class ValidatorTest extends TestCase
         $this->assertEquals([], $val->getData());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Validator::addErrors
-     */
     public function testAddErrors(): void
     {
         $val = new Validator();

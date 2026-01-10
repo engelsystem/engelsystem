@@ -13,20 +13,25 @@ use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class QuestionsControllerTest extends ControllerTest
+#[CoversMethod(QuestionsController::class, 'index')]
+#[CoversMethod(QuestionsController::class, '__construct')]
+#[CoversMethod(QuestionsController::class, 'delete')]
+#[CoversMethod(QuestionsController::class, 'edit')]
+#[CoversMethod(QuestionsController::class, 'showEdit')]
+#[CoversMethod(QuestionsController::class, 'save')]
+#[AllowMockObjectsWithoutExpectations]
+class QuestionsControllerTest extends ControllerTestCase
 {
-    protected Authenticator|MockObject $auth;
+    protected Authenticator&MockObject $auth;
 
     protected User $user;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::index
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::__construct
-     */
     public function testIndex(): void
     {
         $this->response->expects($this->once())
@@ -47,9 +52,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->index();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::delete
-     */
     public function testDeleteInvalidRequest(): void
     {
         /** @var QuestionsController $controller */
@@ -60,9 +62,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->delete($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::delete
-     */
     public function testDeleteNotFound(): void
     {
         $this->request = $this->request->withParsedBody(['id' => 42, 'delete' => '1']);
@@ -75,9 +74,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->delete($this->request);
     }
 
-        /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::delete
-     */
     public function testDelete(): void
     {
         $this->request = $this->request->withParsedBody(['id' => 1, 'delete' => '1']);
@@ -94,10 +90,6 @@ class QuestionsControllerTest extends ControllerTest
         $this->assertHasNotification('question.delete.success');
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::edit
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::showEdit
-     */
     public function testEdit(): void
     {
         $this->request->attributes->set('question_id', 1);
@@ -121,9 +113,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::edit
-     */
     public function testEditNotFound(): void
     {
         $this->request->attributes->set('question_id', 42);
@@ -135,9 +124,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::save
-     */
     public function testSaveNotFound(): void
     {
         $this->expectException(ModelNotFoundException::class);
@@ -148,9 +134,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::save
-     */
     public function testSaveCreateInvalid(): void
     {
         $this->request->attributes->set('question_id', 1);
@@ -162,9 +145,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::save
-     */
     public function testSaveCreateEdit(): void
     {
         $this->request->attributes->set('question_id', 2);
@@ -193,9 +173,6 @@ class QuestionsControllerTest extends ControllerTest
         $this->assertEquals('Bar!', $question->answer);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::save
-     */
     public function testSavePreview(): void
     {
         $this->request->attributes->set('question_id', 1);
@@ -230,9 +207,6 @@ class QuestionsControllerTest extends ControllerTest
         $this->assertEquals('Answer!', $question->answer);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\QuestionsController::save
-     */
     public function testSaveDelete(): void
     {
         $this->request->attributes->set('question_id', 1);

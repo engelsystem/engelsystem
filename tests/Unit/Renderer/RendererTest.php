@@ -6,30 +6,26 @@ namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\EngineInterface;
 use Engelsystem\Renderer\Renderer;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
+#[CoversMethod(Renderer::class, 'render')]
+#[CoversMethod(Renderer::class, 'addRenderer')]
 class RendererTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Renderer::render
-     * @covers \Engelsystem\Renderer\Renderer::addRenderer
-     */
     public function testGet(): void
     {
         $renderer = new Renderer();
 
-        /** @var EngineInterface|MockObject $nullRenderer */
-        $nullRenderer = $this->getMockForAbstractClass(EngineInterface::class);
+        $nullRenderer = $this->getMockBuilder(EngineInterface::class)->getMock();
 
         $nullRenderer->expects($this->atLeastOnce())
             ->method('canRender')
             ->willReturn(false);
         $renderer->addRenderer($nullRenderer);
 
-        /** @var EngineInterface|MockObject $mockRenderer */
-        $mockRenderer = $this->getMockForAbstractClass(EngineInterface::class);
+        $mockRenderer = $this->getMockBuilder(EngineInterface::class)->getMock();
 
         $mockRenderer->expects($this->atLeastOnce())
             ->method('canRender')
@@ -47,15 +43,11 @@ class RendererTest extends TestCase
         $this->assertEquals('Rendered content', $data);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Renderer::render
-     */
     public function testError(): void
     {
         $renderer = new Renderer();
 
-        /** @var LoggerInterface|MockObject $loggerMock */
-        $loggerMock = $this->getMockForAbstractClass(LoggerInterface::class);
+        $loggerMock = $this->getMockBuilder(LoggerInterface::class)->getMock();
         $loggerMock
             ->expects($this->once())
             ->method('critical');

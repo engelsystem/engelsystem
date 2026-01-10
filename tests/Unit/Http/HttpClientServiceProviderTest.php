@@ -6,14 +6,13 @@ namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Application;
 use Engelsystem\Http\HttpClientServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use GuzzleHttp\Client as GuzzleClient;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class HttpClientServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(HttpClientServiceProvider::class, 'register')]
+class HttpClientServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Http\HttpClientServiceProvider::register
-     */
     public function testRegister(): void
     {
         $app = new Application();

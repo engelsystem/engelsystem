@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
+use Engelsystem\Http\Validation\Rules\StringInputLength;
 use Engelsystem\Test\Unit\Http\Validation\Rules\Stub\UsesStringInputLength;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversMethod(StringInputLength::class, 'validate')]
+#[CoversMethod(StringInputLength::class, 'isDateTime')]
 class StringInputLengthTest extends TestCase
 {
-    /**
-     * @covers       \Engelsystem\Http\Validation\Rules\StringInputLength::validate
-     * @covers       \Engelsystem\Http\Validation\Rules\StringInputLength::isDateTime
-     * @dataProvider validateProvider
-     */
+    #[DataProvider('validateProvider')]
     public function testValidate(mixed $input, mixed $expectedInput): void
     {
         $rule = new UsesStringInputLength();
@@ -25,7 +26,7 @@ class StringInputLengthTest extends TestCase
     /**
      * @return array[]
      */
-    public function validateProvider(): array
+    public static function validateProvider(): array
     {
         return [
             ['TEST', 4],

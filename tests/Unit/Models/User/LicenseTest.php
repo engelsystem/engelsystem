@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Models\User;
 
 use Engelsystem\Models\User\License;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class LicenseTest extends ModelTest
+#[CoversMethod(License::class, 'wantsToDrive')]
+class LicenseTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\User\License::wantsToDrive
-     */
     public function testWantsToDrive(): void
     {
         $license = new License();

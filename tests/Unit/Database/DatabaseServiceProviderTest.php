@@ -9,26 +9,26 @@ use Engelsystem\Config\Config;
 use Engelsystem\Database\Database;
 use Engelsystem\Database\DatabaseServiceProvider;
 use Engelsystem\Database\Db;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection;
 use PDO;
 use PDOException;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class DatabaseServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(DatabaseServiceProvider::class, 'register')]
+#[CoversMethod(DatabaseServiceProvider::class, 'exitOnError')]
+class DatabaseServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
-     */
     public function testRegister(): void
     {
-        /** @var Application|MockObject $app */
-        /** @var CapsuleManager|MockObject $dbManager */
-        /** @var PDO|MockObject $pdo */
-        /** @var Database|MockObject $database */
-        /** @var Connection|MockObject $connection */
+        /** @var Application&MockObject $app */
+        /** @var CapsuleManager&MockObject $dbManager */
+        /** @var PDO&MockObject $pdo */
+        /** @var Database&MockObject $database */
+        /** @var Connection&MockObject $connection */
         list($app, $dbManager, $pdo, $database, $connection) = $this->prepare(
             [
                 'driver'   => 'sqlite',
@@ -36,27 +36,54 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
             ]
         );
 
-        $app->expects($this->exactly(8))
+        $matcher = $this->exactly(8);
+        $app->expects($matcher)
             ->method('instance')
-            ->withConsecutive(
-                [PDO::class, $pdo],
-                [CapsuleManager::class, $dbManager],
-                [Db::class, $dbManager],
-                [Connection::class, $connection],
-                [Database::class, $database],
-                ['db', $database],
-                ['db.pdo', $pdo],
-                ['db.connection', $connection]
-            );
+            ->willReturnCallback(function (...$parameters) use (
+                $matcher,
+                $pdo,
+                $dbManager,
+                $connection,
+                $database
+            ): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(PDO::class, $parameters[0]);
+                    $this->assertSame($pdo, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(CapsuleManager::class, $parameters[0]);
+                    $this->assertSame($dbManager, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(Db::class, $parameters[0]);
+                    $this->assertSame($dbManager, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame(Connection::class, $parameters[0]);
+                    $this->assertSame($connection, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame(Database::class, $parameters[0]);
+                    $this->assertEquals($database, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 6) {
+                    $this->assertSame('db', $parameters[0]);
+                    $this->assertSame($database, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 7) {
+                    $this->assertSame('db.pdo', $parameters[0]);
+                    $this->assertSame($pdo, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 8) {
+                    $this->assertSame('db.connection', $parameters[0]);
+                    $this->assertSame($connection, $parameters[1]);
+                }
+            });
 
         $serviceProvider = new DatabaseServiceProvider($app);
         $serviceProvider->register();
     }
 
-    /**
-     * @covers \Engelsystem\Database\DatabaseServiceProvider::exitOnError()
-     * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
-     */
     public function testRegisterError(): void
     {
         list($app) = $this->prepare([
@@ -77,43 +104,48 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
      */
     protected function prepare(array $dbConfigData, bool $getPdoThrowException = false): array
     {
-        /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(Config::class)
             ->getMock();
-        /** @var CapsuleManager|MockObject $config */
         $dbManager = $this->getMockBuilder(CapsuleManager::class)
             ->getMock();
-        /** @var Connection|MockObject $connection */
         $connection = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var PDO|MockObject $pdo */
-        $pdo = $this->getMockBuilder(PDO::class)
+        $pdo = $this->getStubBuilder(PDO::class)
             ->disableOriginalConstructor()
-            ->getMock();
-        /** @var Database|MockObject $database */
-        $database = $this->getMockBuilder(Database::class)
+            ->getStub();
+        $database = $this->getStubBuilder(Database::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getStub();
 
-        $app = $this->getApp(['get', 'make', 'instance']);
+        $app = $this->getAppMock(['get', 'make', 'instance']);
 
         $this->setExpects($app, 'get', ['config'], $config);
-        $config->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(['timezone'], ['database'])
-            ->willReturnOnConsecutiveCalls('UTC', $dbConfigData);
+        $matcher = $this->exactly(2);
+        $config->expects($matcher)
+            ->method('get')->willReturnCallback(function (...$parameters) use ($dbConfigData, $matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('timezone', $parameters[0]);
+                    return 'UTC';
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('database', $parameters[0]);
+                    return $dbConfigData;
+                }
+            });
 
-        $app->expects($this->atLeastOnce())
-            ->method('make')
-            ->withConsecutive(
-                [CapsuleManager::class],
-                [Database::class]
-            )
-            ->willReturn(
-                $dbManager,
-                $database
-            );
+        $matcher = $this->atLeastOnce();
+        $app->expects($matcher)
+            ->method('make')->willReturnCallback(function (...$parameters) use ($database, $matcher, $dbManager) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(CapsuleManager::class, $parameters[0]);
+                    return $dbManager;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(Database::class, $parameters[0]);
+                    return $database;
+                }
+            });
 
         $this->setExpects($dbManager, 'setAsGlobal');
         $this->setExpects($dbManager, 'bootEloquent');

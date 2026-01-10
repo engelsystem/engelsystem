@@ -29,17 +29,50 @@ use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\LogLevel;
 
+#[CoversMethod(Stats::class, 'vouchers')]
+#[CoversMethod(Stats::class, 'vouchersQuery')]
+#[CoversMethod(Stats::class, '__construct')]
+#[CoversMethod(Stats::class, 'vouchersBuckets')]
+#[CoversMethod(Stats::class, 'goodies')]
+#[CoversMethod(Stats::class, 'tshirtSizes')]
+#[CoversMethod(Stats::class, 'raw')]
+#[CoversMethod(Stats::class, 'languages')]
+#[CoversMethod(Stats::class, 'themes')]
+#[CoversMethod(Stats::class, 'licenses')]
+#[CoversMethod(Stats::class, 'worklogSeconds')]
+#[CoversMethod(Stats::class, 'worklogBuckets')]
+#[CoversMethod(Stats::class, 'getBuckets')]
+#[CoversMethod(Stats::class, 'locations')]
+#[CoversMethod(Stats::class, 'angelTypes')]
+#[CoversMethod(Stats::class, 'angelTypesSum')]
+#[CoversMethod(Stats::class, 'shiftTypes')]
+#[CoversMethod(Stats::class, 'shifts')]
+#[CoversMethod(Stats::class, 'announcements')]
+#[CoversMethod(Stats::class, 'comments')]
+#[CoversMethod(Stats::class, 'questions')]
+#[CoversMethod(Stats::class, 'usersState')]
+#[CoversMethod(Stats::class, 'usersInfo')]
+#[CoversMethod(Stats::class, 'forceActiveUsers')]
+#[CoversMethod(Stats::class, 'forceFoodUsers')]
+#[CoversMethod(Stats::class, 'usersPronouns')]
+#[CoversMethod(Stats::class, 'email')]
+#[CoversMethod(Stats::class, 'currentlyWorkingUsers')]
+#[CoversMethod(Stats::class, 'faq')]
+#[CoversMethod(Stats::class, 'messages')]
+#[CoversMethod(Stats::class, 'sessions')]
+#[CoversMethod(Stats::class, 'getQuery')]
+#[CoversMethod(Stats::class, 'oauth')]
+#[CoversMethod(Stats::class, 'databaseRead')]
+#[CoversMethod(Stats::class, 'databaseWrite')]
+#[CoversMethod(Stats::class, 'logEntries')]
+#[CoversMethod(Stats::class, 'passwordResets')]
 class StatsTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::vouchers
-     * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersQuery
-     * @covers \Engelsystem\Controllers\Metrics\Stats::__construct
-     */
     public function testVouchers(): void
     {
         $this->addUsers();
@@ -48,9 +81,6 @@ class StatsTest extends TestCase
         $this->assertEquals(14, $stats->vouchers());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersBuckets
-     */
     public function testVouchersBuckets(): void
     {
         $this->addUsers();
@@ -59,9 +89,6 @@ class StatsTest extends TestCase
         $this->assertEquals([1 => 6, 3 => 8, '+Inf' => 9], $stats->vouchersBuckets([1, 3, '+Inf']));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::goodies
-     */
     public function testGoodies(): void
     {
         $this->addUsers();
@@ -70,10 +97,6 @@ class StatsTest extends TestCase
         $this->assertEquals(2, $stats->goodies());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::tshirtSizes
-     * @covers \Engelsystem\Controllers\Metrics\Stats::raw
-     */
     public function testTshirtSizes(): void
     {
         $this->addUsers();
@@ -87,9 +110,6 @@ class StatsTest extends TestCase
         ], $sizes->toArray());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::languages
-     */
     public function testLanguages(): void
     {
         $this->addUsers();
@@ -103,9 +123,6 @@ class StatsTest extends TestCase
         ], $languages->toArray());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::themes
-     */
     public function testThemes(): void
     {
         $this->addUsers();
@@ -120,9 +137,6 @@ class StatsTest extends TestCase
         ], $themes->toArray());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::licenses
-     */
     public function testLicenses(): void
     {
         $this->addUsers();
@@ -145,9 +159,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->licenses('ifsg', true));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::worklogSeconds
-     */
     public function testWorklogSeconds(): void
     {
         $this->addUsers();
@@ -167,10 +178,6 @@ class StatsTest extends TestCase
         $this->assertEquals(2.4 * 60 * 60 + 1.2 * 60 * 60, $seconds);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::worklogBuckets
-     * @covers \Engelsystem\Controllers\Metrics\Stats::getBuckets
-     */
     public function testWorklogBuckets(): void
     {
         Worklog::factory()->create(['hours' => 1.2, 'worked_at' => Carbon::now()->subDay()]);
@@ -196,9 +203,6 @@ class StatsTest extends TestCase
         ], $buckets);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::locations
-     */
     public function testLocations(): void
     {
         (new Location(['name' => 'Location 1']))->save();
@@ -210,9 +214,6 @@ class StatsTest extends TestCase
         $this->assertEquals(4, $stats->locations());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::angelTypes
-     */
     public function testAngelTypes(): void
     {
         (new AngelType(['id' => 1, 'name' => 'AngelType 1', 'restricted' => true]))->save();
@@ -259,9 +260,6 @@ class StatsTest extends TestCase
             ], $stats->angelTypes());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::angelTypesSum
-     */
     public function testAngelTypesSum(): void
     {
         (new AngelType(['name' => 'AngelType 1']))->save();
@@ -273,9 +271,6 @@ class StatsTest extends TestCase
         $this->assertEquals(4, $stats->angelTypesSum());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::shiftTypes
-     */
     public function testShiftTypes(): void
     {
         (new ShiftType(['name' => 'ShiftType 1', 'description' => 'rtfm']))->save();
@@ -287,9 +282,6 @@ class StatsTest extends TestCase
         $this->assertEquals(4, $stats->shiftTypes());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::shifts
-     */
     public function testShifts(): void
     {
         Shift::factory(5)->create();
@@ -298,9 +290,6 @@ class StatsTest extends TestCase
         $this->assertEquals(5, $stats->shifts());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::announcements
-     */
     public function testAnnouncements(): void
     {
         $this->addUsers();
@@ -316,9 +305,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->announcements(true));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::comments
-     */
     public function testComments(): void
     {
         $user = $this->addUser();
@@ -337,9 +323,6 @@ class StatsTest extends TestCase
         $this->assertEquals(2, $stats->comments());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::questions
-     */
     public function testQuestions(): void
     {
         $this->addUsers();
@@ -355,9 +338,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->questions(true));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::usersState
-     */
     public function testUsersState(): void
     {
         $this->addUsers();
@@ -374,9 +354,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->usersState(false, false));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::usersInfo
-     */
     public function testUsersInfo(): void
     {
         $this->addUsers();
@@ -385,9 +362,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->usersInfo());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::forceActiveUsers
-     */
     public function testForceActiveUsers(): void
     {
         $this->addUsers();
@@ -396,9 +370,6 @@ class StatsTest extends TestCase
         $this->assertEquals(2, $stats->forceActiveUsers());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::forceFoodUsers
-     */
     public function testForceFoodUsers(): void
     {
         $this->addUsers();
@@ -407,9 +378,6 @@ class StatsTest extends TestCase
         $this->assertEquals(2, $stats->forceFoodUsers());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::usersPronouns
-     */
     public function testUsersPronouns(): void
     {
         $this->addUsers();
@@ -418,9 +386,6 @@ class StatsTest extends TestCase
         $this->assertEquals(2, $stats->usersPronouns());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::email
-     */
     public function testEmail(): void
     {
         $this->addUsers();
@@ -433,9 +398,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->email('news'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::currentlyWorkingUsers
-     */
     public function testCurrentlyWorkingUsers(): void
     {
         $this->addUsers();
@@ -454,9 +416,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->currentlyWorkingUsers(true));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::faq
-     */
     public function testFaq(): void
     {
         (new Faq(['question' => 'Foo?', 'text' => 'Bar!']))->save();
@@ -466,9 +425,6 @@ class StatsTest extends TestCase
         $this->assertEquals(2, $stats->faq());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::messages
-     */
     public function testMessages(): void
     {
         $this->addUsers();
@@ -481,10 +437,6 @@ class StatsTest extends TestCase
         $this->assertEquals(3, $stats->messages());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::sessions
-     * @covers \Engelsystem\Controllers\Metrics\Stats::getQuery
-     */
     public function testSessions(): void
     {
         $this->database
@@ -501,9 +453,6 @@ class StatsTest extends TestCase
         $this->assertEquals(4, $stats->sessions());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::oauth
-     */
     public function testOauth(): void
     {
         $this->addUsers();
@@ -525,10 +474,6 @@ class StatsTest extends TestCase
         ], $oauth->toArray());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::databaseRead
-     * @covers \Engelsystem\Controllers\Metrics\Stats::databaseWrite
-     */
     public function testDatabase(): void
     {
         $stats = new Stats($this->database);
@@ -542,9 +487,6 @@ class StatsTest extends TestCase
         $this->assertNotEmpty($write);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::logEntries
-     */
     public function testLogEntries(): void
     {
         (new LogEntry(['level' => LogLevel::INFO, 'message' => 'Some info']))->save();
@@ -560,9 +502,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->logEntries(LogLevel::DEBUG));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::passwordResets
-     */
     public function testPasswordResets(): void
     {
         $this->addUsers();

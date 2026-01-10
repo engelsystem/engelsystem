@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers;
 
+use Engelsystem\Controllers\BaseController;
 use Engelsystem\Http\Request;
 use Engelsystem\Test\Unit\Controllers\Stub\ControllerImplementation;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(BaseController::class, 'getPermissions')]
+#[CoversMethod(BaseController::class, 'hasPermission')]
 class BaseControllerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\BaseController::getPermissions
-     */
     public function testGetPermissions(): void
     {
         $controller = new ControllerImplementation();
@@ -28,9 +29,6 @@ class BaseControllerTest extends TestCase
         $this->assertTrue(method_exists($controller, 'setValidator'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\BaseController::hasPermission
-     */
     public function testHasPermission(): void
     {
         $request = new Request();

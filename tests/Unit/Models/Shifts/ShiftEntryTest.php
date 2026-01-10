@@ -8,15 +8,14 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ShiftEntryTest extends ModelTest
+#[CoversMethod(ShiftEntry::class, 'shift')]
+#[CoversMethod(ShiftEntry::class, 'angelType')]
+#[CoversMethod(ShiftEntry::class, 'freeloadedBy')]
+class ShiftEntryTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Shifts\ShiftEntry::shift
-     * @covers \Engelsystem\Models\Shifts\ShiftEntry::angelType
-     * @covers \Engelsystem\Models\Shifts\ShiftEntry::freeloadedBy
-     */
     public function testShift(): void
     {
         /** @var Shift $shift */

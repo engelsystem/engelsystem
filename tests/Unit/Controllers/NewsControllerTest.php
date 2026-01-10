@@ -15,13 +15,24 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\MockObject\Stub;
 
-class NewsControllerTest extends ControllerTest
+#[CoversMethod(NewsController::class, '__construct')]
+#[CoversMethod(NewsController::class, 'index')]
+#[CoversMethod(NewsController::class, 'meetings')]
+#[CoversMethod(NewsController::class, 'showOverview')]
+#[CoversMethod(NewsController::class, 'renderView')]
+#[CoversMethod(NewsController::class, 'show')]
+#[CoversMethod(NewsController::class, 'comment')]
+#[CoversMethod(NewsController::class, 'deleteComment')]
+#[AllowMockObjectsWithoutExpectations]
+class NewsControllerTest extends ControllerTestCase
 {
     use HasDatabase;
 
-    protected Authenticator|MockObject $auth;
+    protected Authenticator&Stub $auth;
 
     protected array $data = [
         [
@@ -68,13 +79,6 @@ class NewsControllerTest extends ControllerTest
         ],
     ];
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::__construct
-     * @covers \Engelsystem\Controllers\NewsController::index
-     * @covers \Engelsystem\Controllers\NewsController::meetings
-     * @covers \Engelsystem\Controllers\NewsController::showOverview
-     * @covers \Engelsystem\Controllers\NewsController::renderView
-     */
     public function testIndex(): void
     {
         $this->request->attributes->set('page', 2);
@@ -127,9 +131,6 @@ class NewsControllerTest extends ControllerTest
         $controller->index();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::show
-     */
     public function testShow(): void
     {
         $this->request->attributes->set('news_id', 1);
@@ -144,9 +145,6 @@ class NewsControllerTest extends ControllerTest
         $controller->show($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::show
-     */
     public function testShowNotFound(): void
     {
         $this->request->attributes->set('news_id', 42);
@@ -158,9 +156,6 @@ class NewsControllerTest extends ControllerTest
         $controller->show($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::comment
-     */
     public function testCommentInvalid(): void
     {
         /** @var NewsController $controller */
@@ -171,9 +166,6 @@ class NewsControllerTest extends ControllerTest
         $controller->comment($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::comment
-     */
     public function testCommentNewsNotFound(): void
     {
         $this->request->attributes->set('news_id', 42);
@@ -188,9 +180,6 @@ class NewsControllerTest extends ControllerTest
         $controller->comment($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::comment
-     */
     public function testComment(): void
     {
         $this->request->attributes->set('news_id', 1);
@@ -213,9 +202,6 @@ class NewsControllerTest extends ControllerTest
         $this->assertEquals('Foo bar!', $comment->text);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::deleteComment
-     */
     public function testDeleteCommentInvalidRequest(): void
     {
         /** @var NewsController $controller */
@@ -226,9 +212,6 @@ class NewsControllerTest extends ControllerTest
         $controller->deleteComment($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::deleteComment
-     */
     public function testDeleteCommentNotFound(): void
     {
         $this->request = $this->request->withAttribute('news_id', 42)->withParsedBody(['delete' => '1']);
@@ -241,9 +224,6 @@ class NewsControllerTest extends ControllerTest
         $controller->deleteComment($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::deleteComment
-     */
     public function testDeleteCommentNotAllowed(): void
     {
         $this->request = $this->request->withAttribute('comment_id', 2)->withParsedBody(['delete' => '1']);
@@ -256,9 +236,6 @@ class NewsControllerTest extends ControllerTest
         $controller->deleteComment($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\NewsController::deleteComment
-     */
     public function testDeleteComment(): void
     {
         $this->request = $this->request->withAttribute('comment_id', 1)->withParsedBody(['delete' => '1']);
@@ -284,7 +261,7 @@ class NewsControllerTest extends ControllerTest
 
         $this->config->set(['display_news' => 2]);
 
-        $this->auth = $this->createMock(Authenticator::class);
+        $this->auth = $this->createStub(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
 
         $this->addUser(1);
@@ -310,8 +287,7 @@ class NewsControllerTest extends ControllerTest
     {
         $user = User::factory()->create(['id' => $id]);
 
-        $this->auth->expects($this->any())
-            ->method('user')
+        $this->auth->method('user')
             ->willReturn($user);
     }
 }

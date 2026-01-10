@@ -6,18 +6,16 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class TranslationTest extends ExtensionTest
+#[CoversMethod(Translation::class, '__construct')]
+#[CoversMethod(Translation::class, 'getFilters')]
+#[CoversMethod(Translation::class, 'getFunctions')]
+class TranslationTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Translation::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Translation::getFilters
-     */
     public function testGetFilters(): void
     {
-        /** @var Translator|MockObject $translator */
-        $translator = $this->createMock(Translator::class);
+        $translator = $this->createStub(Translator::class);
 
         $extension = new Translation($translator);
         $filters = $extension->getFilters();
@@ -25,13 +23,9 @@ class TranslationTest extends ExtensionTest
         $this->assertFilterExists('trans', [$translator, 'translate'], $filters);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Translation::getFunctions
-     */
     public function testGetFunctions(): void
     {
-        /** @var Translator|MockObject $translator */
-        $translator = $this->createMock(Translator::class);
+        $translator = $this->createStub(Translator::class);
 
         $extension = new Translation($translator);
         $functions = $extension->getFunctions();

@@ -5,26 +5,23 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Config;
 
 use FastRoute\RouteCollector;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
+#[CoversNothing]
 class RoutesFileTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     * @coversNothing
-     */
+    #[DoesNotPerformAssertions]
     public function testLoadRoutes(): void
     {
-        /** @var RouteCollector|MockObject $route */
-        $route = $this->getMockBuilder(RouteCollector::class)
+        $route = $this->getStubBuilder(RouteCollector::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['addRoute'])
-            ->getMock();
+            ->getStub();
 
         /** @see RouteCollector::addRoute */
-        $route->expects($this->any())
-            ->method('addRoute')
+        $route->method('addRoute')
             ->willReturnCallback(function ($httpMethod, $route, $handler): void {
                 /**
                  * @param string|string[] $httpMethod

@@ -12,27 +12,26 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\NullLogger;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\RawMessage;
 
+#[CoversMethod(EngelsystemMailer::class, '__construct')]
+#[CoversMethod(EngelsystemMailer::class, 'sendView')]
+#[CoversMethod(EngelsystemMailer::class, 'sendViewTranslated')]
+#[CoversMethod(EngelsystemMailer::class, 'getSubjectPrefix')]
+#[CoversMethod(EngelsystemMailer::class, 'send')]
+#[CoversMethod(EngelsystemMailer::class, 'setSubjectPrefix')]
 class EngelsystemMailerTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Mail\EngelsystemMailer::__construct
-     * @covers \Engelsystem\Mail\EngelsystemMailer::sendView
-     */
     public function testSendView(): void
     {
-        /** @var Renderer|MockObject $view */
         $view = $this->createMock(Renderer::class);
-        /** @var MailerInterface|MockObject $symfonyMailer */
-        $symfonyMailer = $this->getMockForAbstractClass(MailerInterface::class);
-        /** @var EngelsystemMailer|MockObject $mailer */
+        $symfonyMailer = $this->getStubBuilder(MailerInterface::class)->getStub();
         $mailer = $this->getMockBuilder(EngelsystemMailer::class)
             ->setConstructorArgs(['log' => new NullLogger(), 'mailer' => $symfonyMailer, 'view' => $view])
             ->onlyMethods(['send'])
@@ -44,9 +43,6 @@ class EngelsystemMailerTest extends TestCase
         $this->assertTrue($status);
     }
 
-    /**
-     * @covers \Engelsystem\Mail\EngelsystemMailer::sendViewTranslated
-     */
     public function testSendViewTranslated(): void
     {
         $this->initDatabase();
@@ -56,14 +52,10 @@ class EngelsystemMailerTest extends TestCase
             ->has(Contact::factory(['email' => null]))
             ->create();
 
-        /** @var Renderer|MockObject $view */
-        $view = $this->createMock(Renderer::class);
-        /** @var MailerInterface|MockObject $symfonyMailer */
-        $symfonyMailer = $this->createMock(MailerInterface::class);
-        /** @var Translator|MockObject $translator */
+        $view = $this->createStub(Renderer::class);
+        $symfonyMailer = $this->createStub(MailerInterface::class);
         $translator = $this->createMock(Translator::class);
 
-        /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->getMockBuilder(EngelsystemMailer::class)
             ->setConstructorArgs([
                 'log' => new NullLogger(),
@@ -83,9 +75,16 @@ class EngelsystemMailerTest extends TestCase
         $this->setExpects($translator, 'getLocales', null, ['de_DE', 'en_US']);
         $this->setExpects($translator, 'getLocale', null, 'en_US');
         $this->setExpects($translator, 'translate', ['translatable.text', ['dev' => true]], 'Lorem dolor');
-        $translator->expects($this->exactly(2))
-            ->method('setLocale')
-            ->withConsecutive(['de_DE'], ['en_US']);
+        $matcher = $this->exactly(2);
+        $translator->expects($matcher)
+            ->method('setLocale')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('de_DE', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('en_US', $parameters[0]);
+                }
+            });
 
         $status = $mailer->sendViewTranslated(
             $user,
@@ -97,14 +96,8 @@ class EngelsystemMailerTest extends TestCase
         $this->assertTrue($status);
     }
 
-    /**
-     * @covers \Engelsystem\Mail\EngelsystemMailer::getSubjectPrefix
-     * @covers \Engelsystem\Mail\EngelsystemMailer::send
-     * @covers \Engelsystem\Mail\EngelsystemMailer::setSubjectPrefix
-     */
     public function testSend(): void
     {
-        /** @var MailerInterface|MockObject $symfonyMailer */
         $symfonyMailer = $this->createMock(MailerInterface::class);
 
         $symfonyMailer->expects($this->once())

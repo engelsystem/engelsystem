@@ -6,13 +6,12 @@ namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Application;
 use Engelsystem\Http\RedirectServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class RedirectServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(RedirectServiceProvider::class, 'register')]
+class RedirectServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Http\RedirectServiceProvider::register
-     */
     public function testRegister(): void
     {
         $app = new Application();

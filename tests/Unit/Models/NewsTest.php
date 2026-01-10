@@ -6,11 +6,16 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\News;
 use Engelsystem\Models\User\User;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * This class provides tests for the News model.
  */
-class NewsTest extends ModelTest
+#[CoversClass(News::class)]
+#[CoversMethod(News::class, 'comments')]
+#[CoversMethod(News::class, 'text')]
+class NewsTest extends ModelTestCase
 {
     private array $newsData;
 
@@ -30,8 +35,6 @@ class NewsTest extends ModelTest
 
     /**
      * Tests that creating a News item with default values works.
-     *
-     * @covers \Engelsystem\Models\News
      */
     public function testCreateDefault(): void
     {
@@ -46,8 +49,6 @@ class NewsTest extends ModelTest
 
     /**
      * Tests that accessing the NewsComments of a News works.
-     *
-     * @covers \Engelsystem\Models\News::comments
      */
     public function testNewsComments(): void
     {
@@ -61,8 +62,6 @@ class NewsTest extends ModelTest
 
     /**
      * Tests that text more tags work
-     *
-     * @covers \Engelsystem\Models\News::text
      */
     public function testTextMore(): void
     {
@@ -81,8 +80,6 @@ class NewsTest extends ModelTest
 
     /**
      * Tests that creating a News item with all fill values works.
-     *
-     * @covers \Engelsystem\Models\News
      */
     public function testCreate(): void
     {

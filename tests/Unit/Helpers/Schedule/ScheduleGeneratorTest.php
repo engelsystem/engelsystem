@@ -6,14 +6,13 @@ namespace Engelsystem\Test\Unit\Helpers\Schedule;
 
 use Engelsystem\Helpers\Schedule\ScheduleGenerator;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(ScheduleGenerator::class, '__construct')]
+#[CoversMethod(ScheduleGenerator::class, 'getName')]
+#[CoversMethod(ScheduleGenerator::class, 'getVersion')]
 class ScheduleGeneratorTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\ScheduleGenerator::__construct
-     * @covers \Engelsystem\Helpers\Schedule\ScheduleGenerator::getName
-     * @covers \Engelsystem\Helpers\Schedule\ScheduleGenerator::getVersion
-     */
     public function testCreateDefaults(): void
     {
         $conferenceColor = new ScheduleGenerator();
@@ -22,11 +21,6 @@ class ScheduleGeneratorTest extends TestCase
         $this->assertNull($conferenceColor->getVersion());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\ScheduleGenerator::__construct
-     * @covers \Engelsystem\Helpers\Schedule\ScheduleGenerator::getName
-     * @covers \Engelsystem\Helpers\Schedule\ScheduleGenerator::getVersion
-     */
     public function testCreate(): void
     {
         $conferenceColor = new ScheduleGenerator('Engelsystem', '1.2.3');

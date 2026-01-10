@@ -14,11 +14,24 @@ use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
 use Engelsystem\Test\Unit\HasDatabase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class UserSettingsControllerTest extends ControllerTest
+#[CoversMethod(UserSettingsController::class, 'certificate')]
+#[CoversMethod(UserSettingsController::class, 'isIfsgSupporter')]
+#[CoversMethod(UserSettingsController::class, 'isDriverLicenseSupporter')]
+#[CoversMethod(UserSettingsController::class, '__construct')]
+#[CoversMethod(UserSettingsController::class, 'checkPermission')]
+#[CoversMethod(UserSettingsController::class, 'getUser')]
+#[CoversMethod(UserSettingsController::class, 'view')]
+#[CoversMethod(UserSettingsController::class, 'saveIfsgCertificate')]
+#[CoversMethod(UserSettingsController::class, 'saveDrivingLicense')]
+#[CoversMethod(UserSettingsController::class, 'settingsMenu')]
+#[AllowMockObjectsWithoutExpectations]
+class UserSettingsControllerTest extends ControllerTestCase
 {
     use HasDatabase;
 
@@ -30,9 +43,6 @@ class UserSettingsControllerTest extends ControllerTest
 
     protected UserSettingsController $controller;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::certificate
-     */
     public function testCertificateDisabled(): void
     {
         config(['ifsg_enabled' => false]);
@@ -41,11 +51,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->certificate($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::certificate
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::isIfsgSupporter
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::isDriverLicenseSupporter
-     */
     public function testCertificateNotAllowed(): void
     {
         config(['ifsg_enabled' => true, 'driving_license_enabled' => true]);
@@ -54,13 +59,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->certificate($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::__construct
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::certificate
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::checkPermission
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::getUser
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::view
-     */
     public function testCertificateByPermission(): void
     {
         config(['ifsg_enabled' => true]);
@@ -81,11 +79,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->certificate($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::certificate
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::checkPermission
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::isIfsgSupporter
-     */
     public function testCertificateByAngelTypeSupporter(): void
     {
         config(['ifsg_enabled' => true]);
@@ -97,11 +90,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->certificate($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::certificate
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::checkPermission
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::isDriverLicenseSupporter
-     */
     public function testDriverLicenseByAngelTypeSupporter(): void
     {
         config(['driving_license_enabled' => true]);
@@ -113,9 +101,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->certificate($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveIfsgCertificate
-     */
     public function testSaveIfsgCertificateDisabled(): void
     {
         config(['ifsg_enabled' => false]);
@@ -124,10 +109,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->saveIfsgCertificate($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveIfsgCertificate
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::checkPermission
-     */
     public function testSaveIfsgCertificateNotAllowed(): void
     {
         config(['ifsg_enabled' => true]);
@@ -136,9 +117,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->saveIfsgCertificate($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveIfsgCertificate
-     */
     public function testSaveIfsgCertificateConfirmed(): void
     {
         config(['ifsg_enabled' => true]);
@@ -163,9 +141,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->assertTrue($this->userChanged->license->ifsg_confirmed);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveIfsgCertificate
-     */
     public function testSaveIfsgCertificate(): void
     {
         config(['ifsg_enabled' => true]);
@@ -188,9 +163,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->assertFalse($this->userChanged->license->ifsg_confirmed);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveIfsgCertificate
-     */
     public function testSaveIfsgCertificateLite(): void
     {
         config(['ifsg_enabled' => true, 'ifsg_light_enabled' => true]);
@@ -213,9 +185,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->assertFalse($this->userChanged->license->ifsg_confirmed);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveDrivingLicense
-     */
     public function testSaveDrivingLicenseDisabled(): void
     {
         config(['driving_license_enabled' => false]);
@@ -224,10 +193,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->saveDrivingLicense($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveDrivingLicense
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::checkPermission
-     */
     public function testSaveDrivingLicenseNotAllowed(): void
     {
         config(['driving_license_enabled' => true]);
@@ -236,9 +201,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->controller->saveDrivingLicense($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveDrivingLicense
-     */
     public function testSaveDrivingLicenseConfirmed(): void
     {
         config(['driving_license_enabled' => true]);
@@ -268,9 +230,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->assertTrue($this->userChanged->license->drive_confirmed);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::saveDrivingLicense
-     */
     public function testSaveDrivingLicense(): void
     {
         config(['driving_license_enabled' => true]);
@@ -298,9 +257,6 @@ class UserSettingsControllerTest extends ControllerTest
         $this->assertFalse($this->userChanged->license->drive_confirmed);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserSettingsController::settingsMenu
-     */
     public function testSettingsMenu(): void
     {
         $menu = $this->controller->settingsMenu($this->userChanged);

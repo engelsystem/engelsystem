@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Events;
 
 use Engelsystem\Events\EventDispatcher;
+use Engelsystem\Test\Unit\Events\Stub\TestEventDispatcher;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(EventDispatcher::class, 'listen')]
+#[CoversMethod(EventDispatcher::class, 'fire')]
+#[CoversMethod(EventDispatcher::class, 'forget')]
+#[CoversMethod(EventDispatcher::class, 'dispatch')]
 class EventDispatcherTest extends TestCase
 {
     protected array $firedEvents = [];
 
-    /**
-     * @covers \Engelsystem\Events\EventDispatcher::listen
-     * @covers \Engelsystem\Events\EventDispatcher::fire
-     */
     public function testListen(): void
     {
         $event = new EventDispatcher();
@@ -30,9 +32,6 @@ class EventDispatcherTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Engelsystem\Events\EventDispatcher::forget
-     */
     public function testForget(): void
     {
         $event = new EventDispatcher();
@@ -46,9 +45,6 @@ class EventDispatcherTest extends TestCase
         $this->assertEquals([], $this->firedEvents);
     }
 
-    /**
-     * @covers \Engelsystem\Events\EventDispatcher::dispatch
-     */
     public function testDispatchNotExistingEvent(): void
     {
         $event = new EventDispatcher();
@@ -57,9 +53,6 @@ class EventDispatcherTest extends TestCase
         $this->assertEquals([], $response);
     }
 
-    /**
-     * @covers \Engelsystem\Events\EventDispatcher::dispatch
-     */
     public function testDispatchObject(): void
     {
         $event = new EventDispatcher();
@@ -69,9 +62,6 @@ class EventDispatcherTest extends TestCase
         $this->assertEquals([static::class => ['count' => 1, [static::class, $this]]], $this->firedEvents);
     }
 
-    /**
-     * @covers \Engelsystem\Events\EventDispatcher::dispatch
-     */
     public function testDispatchHalt(): void
     {
         $event = new EventDispatcher();
@@ -88,9 +78,6 @@ class EventDispatcherTest extends TestCase
         $this->assertNull($response);
     }
 
-    /**
-     * @covers \Engelsystem\Events\EventDispatcher::dispatch
-     */
     public function testDispatchStopPropagation(): void
     {
         $event = new EventDispatcher();
@@ -103,13 +90,10 @@ class EventDispatcherTest extends TestCase
         $this->assertEquals([], $this->firedEvents);
     }
 
-    /**
-     * @covers \Engelsystem\Events\EventDispatcher::dispatch
-     */
     public function testDispatchFallbackHandleMethod(): void
     {
         $event = new EventDispatcher();
-        $event->listen('test', EventDispatcherTest::class);
+        $event->listen('test', TestEventDispatcher::class);
         $response = $event->dispatch('test', [], true);
 
         $this->assertEquals(['default' => 'handler'], $response);
@@ -138,11 +122,6 @@ class EventDispatcherTest extends TestCase
     public function returnData(): array
     {
         return ['example' => 'data'];
-    }
-
-    public function handle(): array
-    {
-        return ['default' => 'handler'];
     }
 
     public function setUp(): void

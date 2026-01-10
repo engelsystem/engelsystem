@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
+use Engelsystem\Controllers\Api\Resources\ShiftResource;
+use Engelsystem\Controllers\Api\Resources\ShiftTypeResource;
+use Engelsystem\Controllers\Api\Resources\ShiftWithEntriesResource;
 use Engelsystem\Controllers\Api\ShiftsController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
@@ -21,8 +24,20 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ShiftsControllerTest extends ApiBaseControllerTest
+#[CoversMethod(ShiftsController::class, 'entriesByLocation')]
+#[CoversMethod(ShiftsController::class, 'shiftEntriesResponse')]
+#[CoversMethod(ShiftResource::class, 'toArray')]
+#[CoversMethod(ShiftTypeResource::class, 'toArray')]
+#[CoversMethod(ShiftWithEntriesResource::class, 'toArray')]
+#[CoversMethod(ShiftsController::class, 'getNeededAngelTypes')]
+#[CoversMethod(ShiftsController::class, 'entriesByAngeltype')]
+#[CoversMethod(ShiftsController::class, 'entriesByShiftType')]
+#[CoversMethod(ShiftsController::class, 'entriesByUser')]
+#[AllowMockObjectsWithoutExpectations]
+class ShiftsControllerTest extends ApiBaseControllerTestCase
 {
     protected Location $location;
     protected Schedule $schedule1;
@@ -33,14 +48,6 @@ class ShiftsControllerTest extends ApiBaseControllerTest
     protected Shift $shiftD;
     protected ShiftType $shiftType;
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByLocation
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::shiftEntriesResponse
-     * @covers \Engelsystem\Controllers\Api\Resources\ShiftResource::toArray
-     * @covers \Engelsystem\Controllers\Api\Resources\ShiftTypeResource::toArray
-     * @covers \Engelsystem\Controllers\Api\Resources\ShiftWithEntriesResource::toArray
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::getNeededAngelTypes
-     */
     public function testEntriesByLocation(): void
     {
         $request = new Request();
@@ -84,10 +91,6 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertCount(3, $entriesC[1]['entries']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByAngeltype
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::getNeededAngelTypes
-     */
     public function testEntriesByAngelType(): void
     {
         /** @var ShiftEntry $firstEntry */
@@ -108,13 +111,9 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertCount(3, $data['data']);
 
         $shift = $data['data'][0];
-        $this->assertTrue(count($shift['needed_angel_types']) >= 1);
+        $this->assertNotEmpty($shift['needed_angel_types']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByShiftType
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::shiftEntriesResponse
-     */
     public function testEntriesByShiftType(): void
     {
         /** @var ShiftEntry $firstEntry */
@@ -136,7 +135,7 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertCount(1, $data['data']);
 
         $shift = $data['data'][0];
-        $this->assertTrue(count($shift['needed_angel_types']) >= 1);
+        $this->assertNotEmpty($shift['needed_angel_types']);
 
         $freeloaded = [];
         foreach ($shift['needed_angel_types'] as $needed) {
@@ -153,9 +152,6 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertEquals(User::first()->id, $freeloaded['id']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByUser
-     */
     public function testEntriesByUser(): void
     {
         /** @var ShiftEntry $firstEntry */
@@ -177,12 +173,9 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->assertCount(1, $data['data']);
 
         $shift = $data['data'][0];
-        $this->assertTrue(count($shift['needed_angel_types']) >= 1);
+        $this->assertNotEmpty($shift['needed_angel_types']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByUser
-     */
     public function testEntriesByUserSelf(): void
     {
         $user = User::query()->first();
@@ -200,9 +193,6 @@ class ShiftsControllerTest extends ApiBaseControllerTest
         $this->validateApiResponse('/users/{id}/shifts', 'get', $response);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\ShiftsController::entriesByUser
-     */
     public function testEntriesByUserNotFound(): void
     {
         $request = new Request();

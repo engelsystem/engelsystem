@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
 use Engelsystem\Controllers\Api\LocationsController;
+use Engelsystem\Controllers\Api\Resources\LocationResource;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Location;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class LocationsControllerTest extends ApiBaseControllerTest
+#[CoversMethod(LocationsController::class, 'index')]
+#[CoversMethod(LocationResource::class, 'toArray')]
+#[AllowMockObjectsWithoutExpectations]
+class LocationsControllerTest extends ApiBaseControllerTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\LocationsController::index
-     * @covers \Engelsystem\Controllers\Api\Resources\LocationResource::toArray
-     */
     public function testIndex(): void
     {
         $items = Location::factory(3)->create();

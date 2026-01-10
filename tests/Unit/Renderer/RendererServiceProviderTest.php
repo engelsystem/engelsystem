@@ -8,45 +8,58 @@ use Engelsystem\Renderer\EngineInterface;
 use Engelsystem\Renderer\HtmlEngine;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Renderer\RendererServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class RendererServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(RendererServiceProvider::class, 'register')]
+#[CoversMethod(RendererServiceProvider::class, 'registerHtmlEngine')]
+#[CoversMethod(RendererServiceProvider::class, 'registerRenderer')]
+#[CoversMethod(RendererServiceProvider::class, 'boot')]
+class RendererServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\RendererServiceProvider::register()
-     * @covers \Engelsystem\Renderer\RendererServiceProvider::registerHtmlEngine()
-     * @covers \Engelsystem\Renderer\RendererServiceProvider::registerRenderer()
-     */
     public function testRegister(): void
     {
-        /** @var Renderer|MockObject $renderer */
-        $renderer = $this->getMockBuilder(Renderer::class)
-            ->getMock();
-        /** @var HtmlEngine|MockObject $htmlEngine */
-        $htmlEngine = $this->getMockBuilder(HtmlEngine::class)
-            ->getMock();
+        $renderer = $this->getStubBuilder(Renderer::class)
+            ->getStub();
+        $htmlEngine = $this->getStubBuilder(HtmlEngine::class)
+            ->getStub();
 
-        $app = $this->getApp(['make', 'instance', 'tag']);
+        $app = $this->getAppMock(['make', 'instance', 'tag']);
 
-        $app->expects($this->exactly(2))
-            ->method('make')
-            ->withConsecutive(
-                [Renderer::class],
-                [HtmlEngine::class]
-            )->willReturnOnConsecutiveCalls(
-                $renderer,
-                $htmlEngine
-            );
+        $matcher = $this->exactly(2);
+        $app->expects($matcher)
+            ->method('make')->willReturnCallback(function (...$parameters) use ($htmlEngine, $renderer, $matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(Renderer::class, $parameters[0]);
+                    return $renderer;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(HtmlEngine::class, $parameters[0]);
+                    return $htmlEngine;
+                }
+            });
 
-        $app->expects($this->exactly(4))
+        $matcher = $this->exactly(4);
+        $app->expects($matcher)
             ->method('instance')
-            ->withConsecutive(
-                [Renderer::class, $renderer],
-                ['renderer', $renderer],
-                [HtmlEngine::class, $htmlEngine],
-                ['renderer.htmlEngine', $htmlEngine]
-            );
+            ->willReturnCallback(function (...$parameters) use ($matcher, $renderer, $htmlEngine): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(Renderer::class, $parameters[0]);
+                    $this->assertSame($renderer, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('renderer', $parameters[0]);
+                    $this->assertSame($renderer, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(HtmlEngine::class, $parameters[0]);
+                    $this->assertSame($htmlEngine, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame('renderer.htmlEngine', $parameters[0]);
+                    $this->assertSame($htmlEngine, $parameters[1]);
+                }
+            });
 
         $this->setExpects($app, 'tag', ['renderer.htmlEngine', ['renderer.engine']]);
 
@@ -54,28 +67,30 @@ class RendererServiceProviderTest extends ServiceProviderTest
         $serviceProvider->register();
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\RendererServiceProvider::boot()
-     */
     public function testBoot(): void
     {
-        /** @var Renderer|MockObject $renderer */
         $renderer = $this->getMockBuilder(Renderer::class)
             ->getMock();
-        /** @var EngineInterface|MockObject $engine1 */
-        $engine1 = $this->getMockForAbstractClass(EngineInterface::class);
-        /** @var EngineInterface|MockObject $engine2 */
-        $engine2 = $this->getMockForAbstractClass(EngineInterface::class);
+        $engine1 = $this->getStubBuilder(EngineInterface::class)->getStub();
+        $engine2 = $this->getStubBuilder(EngineInterface::class)->getStub();
 
-        $app = $this->getApp(['get', 'tagged']);
+        $app = $this->getAppMock(['get', 'tagged']);
 
         $this->setExpects($app, 'get', ['renderer'], $renderer);
         $this->setExpects($app, 'tagged', ['renderer.engine'], [$engine1, $engine2]);
 
+        $matcher = $this->exactly(2);
         $renderer
-            ->expects($this->exactly(2))
+            ->expects($matcher)
             ->method('addRenderer')
-            ->withConsecutive([$engine1], [$engine2]);
+            ->willReturnCallback(function (...$parameters) use ($matcher, $engine1, $engine2): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame($engine1, $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame($engine2, $parameters[0]);
+                }
+            });
 
         $serviceProvider = new RendererServiceProvider($app);
         $serviceProvider->boot();

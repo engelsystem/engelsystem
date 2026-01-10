@@ -10,14 +10,17 @@ use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Stringable;
 
+#[CoversMethod(BasicResource::class, '__construct')]
+#[CoversMethod(BasicResource::class, 'toArray')]
+#[CoversMethod(BasicResource::class, 'toIdentifierArray')]
+#[CoversMethod(BasicResource::class, 'toJson')]
+#[CoversMethod(BasicResource::class, '__toString')]
+#[CoversMethod(BasicResource::class, 'collection')]
 class BasicResourceTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::__construct
-     * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::toArray
-     */
     public function testToArray(): void
     {
         $model = $this->getModel();
@@ -27,9 +30,6 @@ class BasicResourceTest extends TestCase
         $this->assertEquals(['test' => 'value'], $resource->toArray());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::toIdentifierArray
-     */
     public function testToIdentifierArray(): void
     {
         $model = $this->getModel()->setAttribute('id', 42);
@@ -43,9 +43,6 @@ class BasicResourceTest extends TestCase
         $this->assertEquals(['id' => 42, 'name' => 'test'], $resource->toIdentifierArray($model));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::toJson
-     */
     public function testToJson(): void
     {
         $model = $this->getModel();
@@ -55,9 +52,6 @@ class BasicResourceTest extends TestCase
         $this->assertEquals('{"test":"value"}', $resource->toJson());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::toJson
-     */
     public function testToJsonOptions(): void
     {
         $resource = $this->getResource(new Collection());
@@ -66,9 +60,6 @@ class BasicResourceTest extends TestCase
         $this->assertEquals('{}', $resource->toJson(JSON_FORCE_OBJECT));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::__toString
-     */
     public function testToString(): void
     {
         $model = $this->getModel();
@@ -78,9 +69,6 @@ class BasicResourceTest extends TestCase
         $this->assertEquals('{"test":"value"}', (string) $resource);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\Resources\BasicResource::collection
-     */
     public function testCollection(): void
     {
         $resource = $this->getResource(new Collection());

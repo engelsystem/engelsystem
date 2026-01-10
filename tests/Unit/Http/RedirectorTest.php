@@ -8,15 +8,16 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(Redirector::class, '__construct')]
+#[CoversMethod(Redirector::class, 'to')]
+#[CoversMethod(Redirector::class, 'back')]
+#[CoversMethod(Redirector::class, 'getPreviousUrl')]
 class RedirectorTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Redirector::__construct
-     * @covers \Engelsystem\Http\Redirector::to
-     */
     public function testTo(): void
     {
         $request = new Request();
@@ -35,10 +36,6 @@ class RedirectorTest extends TestCase
         $this->assertEquals(['data'], $return->getHeader('test'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Redirector::back
-     * @covers \Engelsystem\Http\Redirector::getPreviousUrl
-     */
     public function testBack(): void
     {
         $request = new Request();
@@ -58,10 +55,9 @@ class RedirectorTest extends TestCase
         $this->assertEquals(['bar'], $return->getHeader('foo'));
     }
 
-    protected function getUrlGenerator(): UrlGeneratorInterface|MockObject
+    protected function getUrlGenerator(): UrlGeneratorInterface&MockObject
     {
-        /** @var UrlGeneratorInterface|MockObject $url */
-        $url = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
+        $url = $this->getMockBuilder(UrlGeneratorInterface::class)->getMock();
         $url->expects($this->atLeastOnce())
             ->method('to')
             ->willReturnCallback([$this, 'returnPath']);

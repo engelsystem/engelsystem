@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Http\Validation\Rules\ComparesDateTime;
 use Engelsystem\Test\Unit\Http\Validation\Rules\Stub\UsesComparesDateTime;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(ComparesDateTime::class, '__construct')]
+#[CoversMethod(ComparesDateTime::class, 'validate')]
+#[CoversMethod(ComparesDateTime::class, 'toDateTime')]
 class ComparesDateTimeTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\ComparesDateTime::__construct
-     * @covers \Engelsystem\Http\Validation\Rules\ComparesDateTime::validate
-     * @covers \Engelsystem\Http\Validation\Rules\ComparesDateTime::toDateTime
-     */
     public function testValidate(): void
     {
         $rule = new UsesComparesDateTime('2024-01-02 13:37');
@@ -32,9 +32,6 @@ class ComparesDateTimeTest extends TestCase
         $this->assertTrue($rule->validate('2042-10-11'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\ComparesDateTime::__construct
-     */
     public function testCompareTo(): void
     {
         $rule = new UsesComparesDateTime('2024-01-02 13:37');
@@ -45,9 +42,6 @@ class ComparesDateTimeTest extends TestCase
         $this->assertEquals('2024-01-02 13:37:00', $comparisonTarget->toDateTimeString());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\ComparesDateTime::__construct
-     */
     public function testOrEqual(): void
     {
         $rule = new UsesComparesDateTime('2024-01-02 13:37');
@@ -57,9 +51,6 @@ class ComparesDateTimeTest extends TestCase
         $this->assertTrue($rule->getOrEqual());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\ComparesDateTime::toDateTime
-     */
     public function testValidateDateTimeStaysSame(): void
     {
         $a = Carbon::now();

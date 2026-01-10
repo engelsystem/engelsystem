@@ -9,15 +9,14 @@ use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\AuthenticatorServiceProvider;
 use Engelsystem\Http\Request;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AuthenticatorServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(AuthenticatorServiceProvider::class, 'register')]
+#[CoversMethod(AuthenticatorServiceProvider::class, 'boot')]
+class AuthenticatorServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\AuthenticatorServiceProvider::register
-     * @covers \Engelsystem\Helpers\AuthenticatorServiceProvider::boot
-     */
     public function testRegisterBoot(): void
     {
         $app = new Application();

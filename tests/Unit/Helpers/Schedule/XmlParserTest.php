@@ -10,21 +10,20 @@ use Engelsystem\Helpers\Schedule\Room;
 use Engelsystem\Helpers\Schedule\XmlParser;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Arr;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(XmlParser::class, 'load')]
+#[CoversMethod(XmlParser::class, 'parseXml')]
+#[CoversMethod(XmlParser::class, 'parseGenerator')]
+#[CoversMethod(XmlParser::class, 'parseConferenceColor')]
+#[CoversMethod(XmlParser::class, 'parseTracks')]
+#[CoversMethod(XmlParser::class, 'parseEvents')]
+#[CoversMethod(XmlParser::class, 'parseRecording')]
+#[CoversMethod(XmlParser::class, 'getFirstXpathContent')]
+#[CoversMethod(XmlParser::class, 'getListFromSequence')]
+#[CoversMethod(XmlParser::class, 'getSchedule')]
 class XmlParserTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::load
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::parseXml
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::parseGenerator
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::parseConferenceColor
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::parseTracks
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::parseEvents
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::parseRecording
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::getFirstXpathContent
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::getListFromSequence
-     * @covers \Engelsystem\Helpers\Schedule\XmlParser::getSchedule
-     */
     public function testLoad(): void
     {
         $dateTimeFormat = 'Y-m-d\TH:i:sP';

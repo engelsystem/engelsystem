@@ -11,7 +11,7 @@ use Engelsystem\Middleware\Dispatcher;
 use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
 use InvalidArgumentException;
 use LogicException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,15 +20,15 @@ use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionClass as Reflection;
 use TypeError;
 
+#[CoversMethod(Dispatcher::class, '__construct')]
+#[CoversMethod(Dispatcher::class, 'process')]
+#[CoversMethod(Dispatcher::class, 'handle')]
+#[CoversMethod(Dispatcher::class, 'setContainer')]
 class DispatcherTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::__construct
-     */
     public function testInit(): void
     {
-        /** @var Application|MockObject $container */
-        $container = $this->createMock(Application::class);
+        $container = $this->createStub(Application::class);
 
         $dispatcher = new Dispatcher([], $container);
         $this->assertInstanceOf(MiddlewareInterface::class, $dispatcher);
@@ -39,19 +39,12 @@ class DispatcherTest extends TestCase
         $this->assertEquals($container, $property->getValue($dispatcher));
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::process
-     */
     public function testProcess(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->createMock(ResponseInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->createMock(RequestHandlerInterface::class);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
+        $handler = $this->createStub(RequestHandlerInterface::class);
 
-        /** @var Dispatcher|MockObject $dispatcher */
         $dispatcher = $this->getMockBuilder(Dispatcher::class)
             ->onlyMethods(['handle'])
             ->getMock();
@@ -69,16 +62,10 @@ class DispatcherTest extends TestCase
         $this->assertEquals($handler, $property->getValue($dispatcher));
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::handle
-     */
     public function testHandle(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->createMock(ResponseInterface::class);
-        /** @var MiddlewareInterface|MockObject $middleware */
+        $request = $this->createStub(ServerRequestInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
         $middleware = $this->createMock(MiddlewareInterface::class);
 
         $dispatcher = new Dispatcher([$middleware]);
@@ -91,16 +78,10 @@ class DispatcherTest extends TestCase
         $this->assertEquals($response, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::handle
-     */
     public function testHandleNext(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->createMock(ResponseInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
+        $request = $this->createStub(ServerRequestInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
 
         $dispatcher = new Dispatcher();
@@ -117,13 +98,9 @@ class DispatcherTest extends TestCase
         $this->assertEquals($response, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::handle
-     */
     public function testHandleNoMiddleware(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = $this->createStub(ServerRequestInterface::class);
 
         $this->expectException(LogicException::class);
 
@@ -131,19 +108,12 @@ class DispatcherTest extends TestCase
         $dispatcher->handle($request);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::handle
-     */
     public function testHandleCallResolve(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->createMock(ResponseInterface::class);
-        /** @var MiddlewareInterface|MockObject $middleware */
+        $request = $this->createStub(ServerRequestInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
         $middleware = $this->createMock(MiddlewareInterface::class);
 
-        /** @var Dispatcher|MockObject $dispatcher */
         $dispatcher = $this->getMockBuilder(Dispatcher::class)
             ->setConstructorArgs([[MiddlewareInterface::class, MiddlewareInterface::class]])
             ->onlyMethods(['resolveMiddleware'])
@@ -166,9 +136,6 @@ class DispatcherTest extends TestCase
         $dispatcher->handle($request);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::handle
-     */
     public function testHandleCallResolveInvalidTypeResolved(): void
     {
         $instance = new Dispatcher([new ReturnResponseMiddlewareHandler(new Response())]);
@@ -177,13 +144,9 @@ class DispatcherTest extends TestCase
         $instance->handle(new Request());
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::setContainer
-     */
     public function testSetContainer(): void
     {
-        /** @var Application|MockObject $container */
-        $container = $this->createMock(Application::class);
+        $container = $this->createStub(Application::class);
 
         $middleware = new Dispatcher();
         $middleware->setContainer($container);

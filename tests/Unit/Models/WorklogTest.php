@@ -7,12 +7,11 @@ namespace Engelsystem\Test\Unit\Models;
 use Carbon\Carbon;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class WorklogTest extends ModelTest
+#[CoversMethod(Worklog::class, 'creator')]
+class WorklogTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Worklog::creator
-     */
     public function testCreator(): void
     {
         $user1 = User::factory()->create();

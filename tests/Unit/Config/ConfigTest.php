@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Config;
 
 use Engelsystem\Config\Config;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(Config::class, 'get')]
+#[CoversMethod(Config::class, 'set')]
+#[CoversMethod(Config::class, 'has')]
+#[CoversMethod(Config::class, 'remove')]
 class ConfigTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Config\Config::get
-     */
     public function testGet(): void
     {
         $config = new Config();
@@ -28,9 +30,6 @@ class ConfigTest extends TestCase
         $this->assertNull($config->get('notExisting'));
     }
 
-    /**
-     * @covers \Engelsystem\Config\Config::set
-     */
     public function testSet(): void
     {
         $config = new Config();
@@ -49,9 +48,6 @@ class ConfigTest extends TestCase
         $this->assertEquals('value', $config->get('some.key'));
     }
 
-    /**
-     * @covers \Engelsystem\Config\Config::has
-     */
     public function testHas(): void
     {
         $config = new Config();
@@ -63,9 +59,6 @@ class ConfigTest extends TestCase
         $this->assertTrue($config->has('test.key'));
     }
 
-    /**
-     * @covers \Engelsystem\Config\Config::remove
-     */
     public function testRemove(): void
     {
         $config = new Config();
@@ -75,9 +68,6 @@ class ConfigTest extends TestCase
         $this->assertEquals(['foo' => [], 'test' => '123'], $config->get(null));
     }
 
-    /**
-     * @covers \Engelsystem\Config\Config::__get
-     */
     public function testMagicGet(): void
     {
         $config = new Config();
@@ -86,9 +76,6 @@ class ConfigTest extends TestCase
         $this->assertEquals('FooBar', $config->test);
     }
 
-    /**
-     * @covers \Engelsystem\Config\Config::__set
-     */
     public function testMagicSet(): void
     {
         $config = new Config();
@@ -97,9 +84,6 @@ class ConfigTest extends TestCase
         $this->assertEquals('FooBar', $config->get('test'));
     }
 
-    /**
-     * @covers \Engelsystem\Config\Config::__isset
-     */
     public function testMagicIsset(): void
     {
         $config = new Config();
@@ -110,9 +94,6 @@ class ConfigTest extends TestCase
         $this->assertTrue(isset($config->test));
     }
 
-    /**
-     * @covers \Engelsystem\Config\Config::__unset
-     */
     public function testMagicUnset(): void
     {
         $config = new Config();

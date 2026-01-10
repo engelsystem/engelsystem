@@ -9,23 +9,21 @@ use Engelsystem\Controllers\RegistrationController;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
-use Engelsystem\Test\Feature\ApplicationFeatureTest;
+use Engelsystem\Test\Feature\ApplicationFeatureTestCase;
 use Engelsystem\Test\Utils\FormFieldAssert;
 use Engelsystem\Test\Utils\SignUpConfig;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-/**
- * @group registration-controller-tests
- */
-final class RegistrationControllerTest extends ApplicationFeatureTest
+#[CoversClass(RegistrationController::class)]
+#[Group('registration-controller-tests')]
+final class RegistrationControllerTest extends ApplicationFeatureTestCase
 {
     private Config $config;
     private SessionInterface $session;
-    /**
-     * @var OAuth2&MockObject
-     */
-    private OAuth2 $oauth;
+    private OAuth2&Stub $oauth;
     /**
      * @var Array<BaseModel>
      */
@@ -37,9 +35,9 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
         parent::setUp();
         $this->modelsToBeDeleted = [];
         $app = app();
-        $this->oauth = $this->getMockBuilder(OAuth2::class)
+        $this->oauth = $this->getStubBuilder(OAuth2::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getStub();
         $app->instance(OAuth2::class, $this->oauth);
         $this->config = $app->get(Config::class);
         $this->session = $app->get(SessionInterface::class);
@@ -55,8 +53,6 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
     /**
      * Renders the registration page with a minimum fields config.
      * Asserts that the basic fields are there while the other fields are not there.
-     *
-     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewMinimumConfig(): void
     {
@@ -87,8 +83,6 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
     /**
      * Renders the registration page with a maximum fields config.
      * Asserts that all fields are there.
-     *
-     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewMaximumConfig(): void
     {
@@ -114,9 +108,6 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
         FormFieldAssert::assertContainsInputField('dect', $responseHTML);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\RegistrationController
-     */
     public function testViewAngelTypesOAuthPreselection(): void
     {
         SignUpConfig::setMinimumConfig($this->config);
@@ -151,9 +142,6 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
         FormFieldAssert::assertNotContainsInputField('angel_types_' . $angelTypes[3]->id, $responseHTML);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\RegistrationController
-     */
     public function testViewAngelTypesPreselection(): void
     {
         $angelTypes = $this->createAngelTypes();
@@ -177,8 +165,6 @@ final class RegistrationControllerTest extends ApplicationFeatureTest
 
     /**
      * Asserts that values are prefilled after submit
-     *
-     * @covers \Engelsystem\Controllers\RegistrationController
      */
     public function testViewValuesAfterSubmit(): void
     {

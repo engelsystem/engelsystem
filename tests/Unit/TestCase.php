@@ -11,6 +11,7 @@ use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 abstract class TestCase extends PHPUnitTestCase
@@ -59,20 +60,20 @@ abstract class TestCase extends PHPUnitTestCase
     }
 
     /**
-     * @return Translator&MockObject
+     * @return Translator&Stub
      */
-    protected function mockTranslator(bool|callable $mockImplementation = true): Translator
+    protected function stubTranslator(bool|callable $implementation = true): Stub
     {
-        $translator = $this->getMockBuilder(Translator::class)
+        $translator = $this->getStubBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['translate'])
-            ->getMock();
+            ->getStub();
 
-        if ($mockImplementation) {
+        if ($implementation) {
             $translator->method('translate')
                 ->willReturnCallback(
-                    is_callable($mockImplementation)
-                    ? $mockImplementation
+                    is_callable($implementation)
+                    ? $implementation
                     : fn(string $key, array $replace = []) => $key
                 );
         }
