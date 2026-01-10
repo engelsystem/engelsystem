@@ -7,12 +7,11 @@ namespace Engelsystem\Test\Feature\Database;
 use Engelsystem\Config\Config;
 use Engelsystem\Database\Database;
 use Engelsystem\Database\DatabaseServiceProvider;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class DatabaseServiceProviderTest extends DatabaseTest
+#[CoversMethod(DatabaseServiceProvider::class, 'register')]
+class DatabaseServiceProviderTest extends DatabaseTestCase
 {
-    /**
-     * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
-     */
     public function testRegister(): void
     {
         $config = new Config($this->getDbConfig());

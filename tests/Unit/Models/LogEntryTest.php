@@ -6,13 +6,12 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\User\User;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\LogLevel;
 
-class LogEntryTest extends ModelTest
+#[CoversMethod(LogEntry::class, 'filter')]
+class LogEntryTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\LogEntry::filter
-     */
     public function testFilter(): void
     {
         $user = User::factory()->create();

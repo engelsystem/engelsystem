@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
+use Engelsystem\Controllers\Api\Resources\ShiftTypeResource;
 use Engelsystem\Controllers\Api\ShiftTypeController;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Shifts\ShiftType;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ShiftTypeControllerTest extends ApiBaseControllerTest
+#[CoversMethod(ShiftTypeController::class, 'index')]
+#[CoversMethod(ShiftTypeResource::class, 'toArray')]
+#[AllowMockObjectsWithoutExpectations]
+class ShiftTypeControllerTest extends ApiBaseControllerTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\ShiftTypeController::index
-     * @covers \Engelsystem\Controllers\Api\Resources\ShiftTypeResource::toArray
-     */
     public function testIndex(): void
     {
         $items = ShiftType::factory(3)->create();

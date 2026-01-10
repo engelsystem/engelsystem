@@ -14,11 +14,26 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\EventConfig;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
 use Engelsystem\Test\Unit\Controllers\Stub\AccessibleAuthenticator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class ConfigControllerTest extends ControllerTest
+#[CoversMethod(ConfigController::class, 'index')]
+#[CoversMethod(ConfigController::class, '__construct')]
+#[CoversMethod(ConfigController::class, 'edit')]
+#[CoversMethod(ConfigController::class, 'activePage')]
+#[CoversMethod(ConfigController::class, 'parseOptions')]
+#[CoversMethod(ConfigController::class, 'isFileWritable')]
+#[CoversMethod(ConfigController::class, 'save')]
+#[CoversMethod(ConfigController::class, 'validation')]
+#[CoversMethod(ConfigController::class, 'filterShownSettings')]
+#[CoversMethod(ConfigController::class, 'validateEvent')]
+#[CoversMethod(ConfigController::class, 'getOptions')]
+#[AllowMockObjectsWithoutExpectations]
+class ConfigControllerTest extends ControllerTestCase
 {
     protected AccessibleAuthenticator $auth;
 
@@ -161,9 +176,6 @@ class ConfigControllerTest extends ControllerTest
         'to_be_written_to_file' => '1',
     ];
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::index
-     */
     public function testIndex(): void
     {
         /** @var ConfigController $controller */
@@ -175,11 +187,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals($this->response, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::__construct
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::edit
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::activePage
-     */
     public function testEdit(): void
     {
         $this->request->attributes->set('page', 'test');
@@ -245,9 +252,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals($this->response, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::isFileWritable
-     */
     public function testEditNotWritable(): void
     {
         $notWritableDir = __DIR__ . '/Stub/SubDir/Not/Existing';
@@ -270,9 +274,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals($this->response, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::edit
-     */
     public function testEditOverwrittenUrl(): void
     {
         $this->request->attributes->set('page', 'some-plugin');
@@ -286,9 +287,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals($this->response, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::activePage
-     */
     public function testActivePageNotFound(): void
     {
         $this->request->attributes->set('page', '404');
@@ -300,9 +298,6 @@ class ConfigControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::activePage
-     */
     public function testActivePageNotAllowed(): void
     {
         $this->auth->setPermissions(['none']);
@@ -315,10 +310,6 @@ class ConfigControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
     public function testSaveTestValidateInvalidInputType(): void
     {
         $this->request->attributes->set('page', 'invalid');
@@ -331,11 +322,6 @@ class ConfigControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::filterShownSettings
-     */
     public function testSaveTestValidateSuccessful(): void
     {
         $this->request->attributes->set('page', 'test');
@@ -368,7 +354,7 @@ class ConfigControllerTest extends ControllerTest
         $this->assertEquals('New value', $baz->value);
     }
 
-    public function validationErrorsProvider(): array
+    public static function validationErrorsProvider(): array
     {
         return [
             [['selectable_option' => 'not selectable']],
@@ -381,10 +367,7 @@ class ConfigControllerTest extends ControllerTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Controllers\Admin\ConfigController::validation
-     * @dataProvider validationErrorsProvider
-     */
+    #[DataProvider('validationErrorsProvider')]
     public function testSaveValidationError(array $errorData): void
     {
         $this->request->attributes->set('page', 'test');
@@ -399,9 +382,6 @@ class ConfigControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
     public function testSaveTestPasswordIgnorePlaceholder(): void
     {
         $passwordPlaceholder = '**********';
@@ -420,10 +400,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertNull(EventConfig::whereName('password_validation')->first());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
     public function testSaveTestValidateRequiredError(): void
     {
         $this->request->attributes->set('page', 'test');
@@ -436,10 +412,6 @@ class ConfigControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
     public function testSaveCreateInvalid(): void
     {
         $this->request = $this->request->withParsedBody(array_merge($this->validEventBody, [
@@ -454,10 +426,6 @@ class ConfigControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validateEvent
-     */
     public function testSaveValidateEventDates(): void
     {
         $this->request = $this->request->withParsedBody(array_merge($this->validEventBody, [
@@ -473,9 +441,6 @@ class ConfigControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     */
     public function testSaveEmpty(): void
     {
         /** @var ConfigController $controller */
@@ -486,11 +451,6 @@ class ConfigControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validateEvent
-     */
     public function testSaveEmptyValues(): void
     {
         $this->request = $this->request->withParsedBody($this->validEventBody);
@@ -512,11 +472,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertHasNotification('config.edit.success');
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validateEvent
-     */
     public function testSave(): void
     {
         $body = array_merge($this->validEventBody, [
@@ -557,9 +512,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertHasNotification('config.edit.success');
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
-     */
     public function testSaveRemoveIfDefault(): void
     {
         (new EventConfig(['name' => 'baz', 'value' => 'foo']))->save();
@@ -579,9 +531,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertNull(EventConfig::whereName('baz')->first());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::save
-     */
     public function testSaveWriteBack(): void
     {
         $this->app->instance('path.config', __DIR__ . '/Stub');
@@ -653,9 +602,8 @@ class ConfigControllerTest extends ControllerTest
         $this->auth->setPermissions(['some_test_permission']);
         $this->app->instance('path.config', __DIR__ . '/Stub');
 
-        $url = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
-        $url->expects($this->any())
-            ->method('to')
+        $url = $this->createStub(UrlGeneratorInterface::class);
+        $url->method('to')
             ->willReturnCallback(function (string $path, array $parameters = []) {
                 return $path . ($parameters ? '?' . http_build_query($parameters) : '');
             });

@@ -10,15 +10,20 @@ use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Mail\Mailer;
 use Engelsystem\Mail\MailerServiceProvider;
 use Engelsystem\Mail\Transport\LogTransport;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Mailer as SymfonyMailer;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 
-class MailerServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(MailerServiceProvider::class, 'boot')]
+#[CoversMethod(MailerServiceProvider::class, 'getTransport')]
+#[CoversMethod(MailerServiceProvider::class, 'getSmtpTransport')]
+class MailerServiceProviderTest extends ServiceProviderTestCase
 {
     protected array $defaultConfig = [
         'app_name' => 'Engelsystem App',
@@ -32,7 +37,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
         ],
     ];
 
-    protected array $smtpConfig = [
+    protected static array $smtpConfig = [
         'email' => [
             'driver'     => 'smtp',
             'host'       => 'mail.foo.bar',
@@ -43,9 +48,6 @@ class MailerServiceProviderTest extends ServiceProviderTest
         ],
     ];
 
-    /**
-     * @covers \Engelsystem\Mail\MailerServiceProvider::boot
-     */
     public function testBoot(): void
     {
         $app = $this->getApplication();
@@ -68,7 +70,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $this->assertInstanceOf(SendmailTransport::class, $transport);
     }
 
-    public function provideTransports(): array
+    public static function provideTransports(): array
     {
         return [
             [LogTransport::class, ['email' => ['driver' => 'log']]],
@@ -76,15 +78,12 @@ class MailerServiceProviderTest extends ServiceProviderTest
             [SendmailTransport::class, ['email' => ['driver' => 'sendmail']]],
             [
                 EsmtpTransport::class,
-                $this->smtpConfig,
+                static::$smtpConfig,
             ],
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Mail\MailerServiceProvider::getTransport
-     * @dataProvider provideTransports
-     */
+    #[DataProvider('provideTransports')]
     public function testGetTransport(string $class, array $emailConfig = []): void
     {
         $app = $this->getApplication($emailConfig);
@@ -96,9 +95,6 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $this->assertInstanceOf($class, $transport);
     }
 
-    /**
-     * @covers \Engelsystem\Mail\MailerServiceProvider::getTransport
-     */
     public function testGetTransportNotFound(): void
     {
         $app = $this->getApplication(['email' => ['driver' => 'foo-bar-batz']]);
@@ -108,12 +104,9 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $serviceProvider->boot();
     }
 
-    /**
-     * @covers \Engelsystem\Mail\MailerServiceProvider::getSmtpTransport
-     */
     public function testGetSmtpTransport(): void
     {
-        $app = $this->getApplication($this->smtpConfig);
+        $app = $this->getApplication(static::$smtpConfig);
 
         $serviceProvider = new MailerServiceProvider($app);
         $serviceProvider->boot();
@@ -121,8 +114,8 @@ class MailerServiceProviderTest extends ServiceProviderTest
         /** @var EsmtpTransport $transport */
         $transport = $app->get('mailer.transport');
 
-        $this->assertEquals($this->smtpConfig['email']['username'], $transport->getUsername());
-        $this->assertEquals($this->smtpConfig['email']['password'], $transport->getPassword());
+        $this->assertEquals(static::$smtpConfig['email']['username'], $transport->getUsername());
+        $this->assertEquals(static::$smtpConfig['email']['password'], $transport->getPassword());
     }
 
     protected function getApplication(array $configuration = []): Application
@@ -132,7 +125,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $configuration = new Config(array_replace_recursive($this->defaultConfig, $configuration));
         $app->instance('config', $configuration);
 
-        $logger = $this->getMockForAbstractClass(LoggerInterface::class);
+        $logger = $this->getStubBuilder(LoggerInterface::class)->getStub();
         $app->instance(LoggerInterface::class, $logger);
 
         return $app;

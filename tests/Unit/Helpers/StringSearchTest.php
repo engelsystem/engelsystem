@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Helpers;
 
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests for case-insensitive multibyte string search behavior.
@@ -12,12 +14,10 @@ use Engelsystem\Test\Unit\TestCase;
  * @see https://github.com/engelsystem/engelsystem/issues/1317
  * @see https://github.com/engelsystem/engelsystem/issues/606
  */
+#[CoversFunction('normalize_for_search')]
 class StringSearchTest extends TestCase
 {
-    /**
-     * @dataProvider provideUmlautSearchCases
-     * @coversNothing
-     */
+    #[DataProvider('provideUmlautSearchCases')]
     public function testMbStriposFindsUmlautsCaseInsensitively(
         string $haystack,
         string $needle,
@@ -27,7 +27,7 @@ class StringSearchTest extends TestCase
         $this->assertSame($expectedFound, $found);
     }
 
-    public function provideUmlautSearchCases(): array
+    public static function provideUmlautSearchCases(): array
     {
         return [
             'lowercase ä in uppercase Ä' => ['KRÄMER', 'ä', true],
@@ -43,10 +43,7 @@ class StringSearchTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAsciiFoldingCases
-     * @covers ::normalize_for_search
-     */
+    #[DataProvider('provideAsciiFoldingCases')]
     public function testAsciiFoldingSearch(
         string $haystack,
         string $needle,
@@ -56,7 +53,7 @@ class StringSearchTest extends TestCase
         $this->assertSame($expectedFound, $found);
     }
 
-    public function provideAsciiFoldingCases(): array
+    public static function provideAsciiFoldingCases(): array
     {
         return [
             'ASCII finds umlaut ü' => ['Müller', 'muller', true],

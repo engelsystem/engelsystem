@@ -13,6 +13,8 @@ use Engelsystem\Middleware\CallableHandler;
 use Engelsystem\Middleware\RequestHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ControllerImplementation;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,15 +23,16 @@ use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionClass as Reflection;
 use TypeError;
 
+#[CoversMethod(RequestHandler::class, '__construct')]
+#[CoversMethod(RequestHandler::class, 'process')]
+#[CoversMethod(RequestHandler::class, 'resolveRequestHandler')]
+#[CoversMethod(RequestHandler::class, 'checkPermissions')]
+#[AllowMockObjectsWithoutExpectations]
 class RequestHandlerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\RequestHandler::__construct
-     */
     public function testInit(): void
     {
-        /** @var Application|MockObject $container */
-        $container = $this->createMock(Application::class);
+        $container = $this->createStub(Application::class);
 
         $handler = new RequestHandler($container);
 
@@ -39,26 +42,17 @@ class RequestHandlerTest extends TestCase
         $this->assertEquals($container, $property->getValue($handler));
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\RequestHandler::process
-     */
     public function testProcess(): void
     {
-        /** @var Application|MockObject $container */
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var RequestHandlerInterface|MockObject $handler */
-        /** @var ResponseInterface|MockObject $response */
-        /** @var MiddlewareInterface|MockObject $middlewareInterface */
         list($container, $request, $handler, $response, $middlewareInterface) = $this->getMocks();
 
-        $requestHandlerInterface = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $requestHandlerInterface = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
 
         $request->expects($this->exactly(3))
             ->method('getAttribute')
             ->with('route-request-handler')
             ->willReturn('FooBarClass');
 
-        /** @var RequestHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(RequestHandler::class)
             ->setConstructorArgs([$container])
             ->onlyMethods(['resolveRequestHandler'])
@@ -91,16 +85,8 @@ class RequestHandlerTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\RequestHandler::resolveRequestHandler
-     */
     public function testResolveRequestHandler(): void
     {
-        /** @var Application|MockObject $container */
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var RequestHandlerInterface|MockObject $handler */
-        /** @var ResponseInterface|MockObject $response */
-        /** @var MiddlewareInterface|MockObject $middlewareInterface */
         list($container, $request, $handler, $response, $middlewareInterface) = $this->getMocks();
 
         $className = 'Engelsystem\\Controllers\\FooBarTestController';
@@ -110,7 +96,6 @@ class RequestHandlerTest extends TestCase
             ->with('route-request-handler')
             ->willReturn('FooBarTestController@process');
 
-        /** @var RequestHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(RequestHandler::class)
             ->setConstructorArgs([$container])
             ->onlyMethods(['resolveMiddleware'])
@@ -125,39 +110,40 @@ class RequestHandlerTest extends TestCase
             ->with($request, $handler)
             ->willReturn($response);
 
-        $container->expects($this->exactly(2))
+        $container
             ->method('has')
-            ->withConsecutive(['FooBarTestController'], [$className])
-            ->willReturnOnConsecutiveCalls(false, true);
+            ->willReturnMap([
+                ['FooBarTestController', false],
+                [$className, true],
+            ]);
         $container->expects($this->once())
             ->method('make')
             ->with($className)
             ->willReturn($middlewareInterface);
-        $container->expects($this->exactly(2))
-            ->method('instance')
-            ->withConsecutive([ServerRequestInterface::class, $request], ['request', $request]);
+        $matcher = $this->exactly(2);
+        $container->expects($matcher)
+            ->method('instance')->willReturnCallback(function (...$parameters) use ($matcher, $request): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(ServerRequestInterface::class, $parameters[0]);
+                    $this->assertSame($request, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('request', $parameters[0]);
+                    $this->assertSame($request, $parameters[1]);
+                }
+            });
 
         $return = $middleware->process($request, $handler);
         $this->assertEquals($return, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\RequestHandler::checkPermissions
-     * @covers \Engelsystem\Middleware\RequestHandler::process
-     */
     public function testCheckPermissions(): void
     {
-        /** @var Application|MockObject $container */
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var RequestHandlerInterface|MockObject $handler */
-        /** @var ResponseInterface|MockObject $response */
         list($container, $request, $handler, $response) = $this->getMocks();
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
 
         $class = new ControllerImplementation();
-        /** @var CallableHandler|MockObject $callable */
         $callable = $this->getMockBuilder(CallableHandler::class)
             ->setConstructorArgs([[$class, 'actionStub']])
             ->getMock();
@@ -176,8 +162,6 @@ class RequestHandlerTest extends TestCase
             ->with('route-request-handler')
             ->willReturn($callable);
 
-
-        /** @var RequestHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(RequestHandler::class)
             ->setConstructorArgs([$container])
             ->onlyMethods(['resolveRequestHandler'])
@@ -214,15 +198,10 @@ class RequestHandlerTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\RequestHandler::checkPermissions
-     */
     public function testCheckPermissionsAnyForbidden(): void
     {
-        /** @var RequestHandlerInterface|MockObject $handler */
         list(, , $handler) = $this->getMocks();
         $this->app->instance('response', new Response());
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->setExpects($auth, 'canAny', [['foo', 'bar', 'baz']], false);
         $this->app->instance('auth', $auth);
@@ -238,15 +217,10 @@ class RequestHandlerTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\RequestHandler::checkPermissions
-     */
     public function testCheckPermissionsAny(): void
     {
-        /** @var RequestHandlerInterface|MockObject $handler */
         list(, , $handler) = $this->getMocks();
         $this->app->instance('response', new Response());
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->setExpects($auth, 'canAny', [['foo', 'bar', 'baz']], true);
         $this->app->instance('auth', $auth);
@@ -262,15 +236,10 @@ class RequestHandlerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\RequestHandler::checkPermissions
-     */
     public function testCheckPermissionsHasPermission(): void
     {
-        /** @var RequestHandlerInterface|MockObject $handler */
         list(, , $handler) = $this->getMocks();
         $this->app->instance('response', new Response());
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->app->instance('auth', $auth);
 
@@ -290,18 +259,22 @@ class RequestHandlerTest extends TestCase
         $middleware->process($request, $handler);
     }
 
+    /**
+     * @return array{
+     *     Application&MockObject,
+     *     ServerRequestInterface&MockObject,
+     *     RequestHandlerInterface&MockObject,
+     *     ResponseInterface&MockObject,
+     *     MiddlewareInterface&MockObject,
+     * }
+     */
     protected function getMocks(): array
     {
-        /** @var Application|MockObject $container */
         $container = $this->createMock(Application::class);
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->getMockForAbstractClass(ResponseInterface::class);
-        /** @var MiddlewareInterface $middlewareInterface */
-        $middlewareInterface = $this->getMockForAbstractClass(MiddlewareInterface::class);
+        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
+        $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
+        $middlewareInterface = $this->getMockBuilder(MiddlewareInterface::class)->getMock();
 
         return [$container, $request, $handler, $response, $middlewareInterface];
     }

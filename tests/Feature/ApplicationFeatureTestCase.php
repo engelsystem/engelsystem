@@ -9,7 +9,7 @@ use Engelsystem\Config\ConfigServiceProvider;
 use Engelsystem\Database\DatabaseServiceProvider;
 use PHPUnit\Framework\TestCase;
 
-abstract class ApplicationFeatureTest extends TestCase
+abstract class ApplicationFeatureTestCase extends TestCase
 {
     protected Application $app;
 

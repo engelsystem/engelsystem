@@ -8,31 +8,34 @@ use Engelsystem\Config\Config;
 use Engelsystem\Middleware\LegacyMiddleware;
 use Engelsystem\Middleware\RouteDispatcher;
 use Engelsystem\Middleware\RouteDispatcherServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use FastRoute\Dispatcher as FastRouteDispatcher;
 use Illuminate\Contracts\Container\ContextualBindingBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Server\MiddlewareInterface;
 
-class RouteDispatcherServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(RouteDispatcherServiceProvider::class, 'register')]
+class RouteDispatcherServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\RouteDispatcherServiceProvider::register()
-     */
     public function testRegister(): void
     {
-        /** @var ContextualBindingBuilder|MockObject $bindingBuilder */
         $bindingBuilder = $this->createMock(ContextualBindingBuilder::class);
-        /** @var FastRouteDispatcher|MockObject $routeDispatcher */
-        $routeDispatcher = $this->getMockForAbstractClass(FastRouteDispatcher::class);
+        $routeDispatcher = $this->createStub(FastRouteDispatcher::class);
         $config = new Config(['environment' => 'development']);
 
-        $app = $this->getApp(['alias', 'when', 'get']);
+        $app = $this->getAppMock(['alias', 'when', 'get']);
 
-        $app->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(['config'], ['path.cache.routes'])
-            ->willReturn($config, '/foo/routes.cache');
+        $matcher = $this->exactly(2);
+        $app->expects($matcher)
+            ->method('get')->willReturnCallback(function (...$parameters) use ($matcher, $config) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('config', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('path.cache.routes', $parameters[0]);
+                }
+                return $config;
+            });
 
         $app->expects($this->once())
             ->method('alias')
@@ -43,13 +46,17 @@ class RouteDispatcherServiceProviderTest extends ServiceProviderTest
             ->with(RouteDispatcher::class)
             ->willReturn($bindingBuilder);
 
-        $bindingBuilder->expects($this->exactly(2))
-            ->method('needs')
-            ->withConsecutive(
-                [FastRouteDispatcher::class],
-                [MiddlewareInterface::class]
-            )
-            ->willReturn($bindingBuilder);
+        $matcher = $this->exactly(2);
+        $bindingBuilder->expects($matcher)
+            ->method('needs')->willReturnCallback(function (...$parameters) use ($matcher, $bindingBuilder) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(FastRouteDispatcher::class, $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(MiddlewareInterface::class, $parameters[0]);
+                }
+                return $bindingBuilder;
+            });
 
         $bindingBuilder->expects($this->exactly(2))
             ->method('give')
@@ -61,7 +68,6 @@ class RouteDispatcherServiceProviderTest extends ServiceProviderTest
                 return is_callable($subject) || $subject == LegacyMiddleware::class;
             }));
 
-        /** @var RouteDispatcherServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(RouteDispatcherServiceProvider::class)
             ->setConstructorArgs([$app])
             ->onlyMethods(['generateRouting'])

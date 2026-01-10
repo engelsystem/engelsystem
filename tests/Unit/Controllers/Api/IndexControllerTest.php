@@ -7,13 +7,20 @@ namespace Engelsystem\Test\Unit\Controllers\Api;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Api\IndexController;
 use Engelsystem\Http\Response;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class IndexControllerTest extends ApiBaseControllerTest
+#[CoversMethod(IndexController::class, 'index')]
+#[CoversMethod(IndexController::class, 'indexV0')]
+#[CoversMethod(IndexController::class, 'getApiSpecV0')]
+#[CoversMethod(IndexController::class, 'openApiV0')]
+#[CoversMethod(IndexController::class, 'info')]
+#[CoversMethod(IndexController::class, 'options')]
+#[CoversMethod(IndexController::class, 'notFound')]
+#[CoversMethod(IndexController::class, 'notImplemented')]
+#[AllowMockObjectsWithoutExpectations]
+class IndexControllerTest extends ApiBaseControllerTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\IndexController::__construct
-     * @covers \Engelsystem\Controllers\Api\IndexController::index
-     */
     public function testIndex(): void
     {
         $controller = new IndexController(new Response());
@@ -28,10 +35,6 @@ class IndexControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('versions', $data);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\IndexController::indexV0
-     * @covers \Engelsystem\Controllers\Api\IndexController::getApiSpecV0
-     */
     public function testIndexV0(): void
     {
         $controller = new IndexController(new Response());
@@ -45,10 +48,6 @@ class IndexControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('paths', $data);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\IndexController::openApiV0
-     * @covers \Engelsystem\Controllers\Api\IndexController::getApiSpecV0
-     */
     public function testOpenApiV0(): void
     {
         $controller = new IndexController(new Response());
@@ -64,9 +63,6 @@ class IndexControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('info', $data);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\IndexController::info
-     */
     public function testInfo(): void
     {
         $config = new Config(['name' => 'TestEvent', 'app_name' => 'TestSystem', 'timezone' => 'UTC']);
@@ -88,9 +84,6 @@ class IndexControllerTest extends ApiBaseControllerTest
         $this->assertEquals('UTC', $data['timezone']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\IndexController::info
-     */
     public function testInfoNotConfigured(): void
     {
         $config = new Config([]);
@@ -110,9 +103,6 @@ class IndexControllerTest extends ApiBaseControllerTest
         $this->assertEquals('', $data['data']['name']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\IndexController::options
-     */
     public function testOptions(): void
     {
         $controller = new IndexController(new Response());
@@ -123,9 +113,6 @@ class IndexControllerTest extends ApiBaseControllerTest
         $this->assertNotEmpty($response->getHeader('access-control-allow-headers'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\IndexController::notFound
-     */
     public function testNotFound(): void
     {
         $controller = new IndexController(new Response());
@@ -136,9 +123,6 @@ class IndexControllerTest extends ApiBaseControllerTest
         $this->assertJson($response->getContent());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\IndexController::notImplemented
-     */
     public function testNotImplemented(): void
     {
         $controller = new IndexController(new Response());

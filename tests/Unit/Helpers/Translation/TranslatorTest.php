@@ -7,32 +7,38 @@ namespace Engelsystem\Test\Unit\Helpers\Translation;
 use Engelsystem\Helpers\Translation\GettextTranslator;
 use Engelsystem\Helpers\Translation\TranslationNotFound;
 use Engelsystem\Helpers\Translation\Translator;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use Engelsystem\Test\Utils\ClosureMock;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class TranslatorTest extends ServiceProviderTest
+#[CoversMethod(Translator::class, '__construct')]
+#[CoversMethod(Translator::class, 'getLocale')]
+#[CoversMethod(Translator::class, 'getLocales')]
+#[CoversMethod(Translator::class, 'hasLocale')]
+#[CoversMethod(Translator::class, 'setLocale')]
+#[CoversMethod(Translator::class, 'setLocales')]
+#[CoversMethod(Translator::class, 'translate')]
+#[CoversMethod(Translator::class, 'translatePlural')]
+#[CoversMethod(Translator::class, 'translateText')]
+#[CoversMethod(Translator::class, 'replaceText')]
+class TranslatorTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Translation\Translator::__construct
-     * @covers \Engelsystem\Helpers\Translation\Translator::getLocale
-     * @covers \Engelsystem\Helpers\Translation\Translator::getLocales
-     * @covers \Engelsystem\Helpers\Translation\Translator::hasLocale
-     * @covers \Engelsystem\Helpers\Translation\Translator::setLocale
-     * @covers \Engelsystem\Helpers\Translation\Translator::setLocales
-     */
     public function testInit(): void
     {
         $locales = ['te_ST' => 'Tests', 'fo_OO' => 'SomeFOO'];
         $locale = 'te_ST';
 
-        /** @var callable|MockObject $localeChange */
-        $localeChange = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['__invoke'])
-            ->getMock();
-        $localeChange->expects($this->exactly(2))
-            ->method('__invoke')
-            ->withConsecutive(['te_ST'], ['fo_OO']);
+        $localeChange = $this->createPartialMock(ClosureMock::class, ['__invoke']);
+        $matcher = $this->exactly(2);
+        $localeChange->expects($matcher)
+            ->method('__invoke')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('te_ST', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('fo_OO', $parameters[0]);
+                }
+            });
 
         $translator = new Translator($locale, 'fo_OO', [$this, 'doNothing'], $locales, $localeChange);
 
@@ -50,20 +56,28 @@ class TranslatorTest extends ServiceProviderTest
         $this->assertFalse($translator->hasLocale('te_ST'));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Translation\Translator::translate
-     */
     public function testTranslate(): void
     {
-        /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
             ->setConstructorArgs(['de_DE', 'en_US', [$this, 'doNothing'], ['de_DE' => 'Deutsch']])
             ->onlyMethods(['translateText'])
             ->getMock();
-        $translator->expects($this->exactly(2))
-            ->method('translateText')
-            ->withConsecutive(['gettext', ['Hello!'], []], ['gettext', ['My favourite number is %u!'], [3]])
-            ->willReturnOnConsecutiveCalls('Hallo!', 'Meine Lieblingszahl ist die 3!');
+        $matcher = $this->exactly(2);
+        $translator->expects($matcher)
+            ->method('translateText')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('gettext', $parameters[0]);
+                    $this->assertSame(['Hello!'], $parameters[1]);
+                    $this->assertSame([], $parameters[2]);
+                    return 'Hallo!';
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('gettext', $parameters[0]);
+                    $this->assertSame(['My favourite number is %u!'], $parameters[1]);
+                    $this->assertSame([3], $parameters[2]);
+                    return 'Meine Lieblingszahl ist die 3!';
+                }
+            });
 
         $return = $translator->translate('Hello!');
         $this->assertEquals('Hallo!', $return);
@@ -72,12 +86,8 @@ class TranslatorTest extends ServiceProviderTest
         $this->assertEquals('Meine Lieblingszahl ist die 3!', $return);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Translation\Translator::translatePlural
-     */
     public function testTranslatePlural(): void
     {
-        /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
             ->setConstructorArgs(['de_DE', 'en_US', [$this, 'doNothing'], ['de_DE' => 'Deutsch']])
             ->onlyMethods(['translateText'])
@@ -91,23 +101,30 @@ class TranslatorTest extends ServiceProviderTest
         $this->assertEquals('2 Äpfel', $return);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Translation\Translator::translatePlural
-     * @covers \Engelsystem\Helpers\Translation\Translator::translateText
-     * @covers \Engelsystem\Helpers\Translation\Translator::replaceText
-     */
     public function testReplaceText(): void
     {
-        /** @var GettextTranslator|MockObject $gtt */
         $gtt = $this->createMock(GettextTranslator::class);
-        /** @var callable|MockObject $getTranslator */
-        $getTranslator = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['__invoke'])
-            ->getMock();
-        $getTranslator->expects($this->exactly(5))
-            ->method('__invoke')
-            ->withConsecutive(['te_ST'], ['fo_OO'], ['te_ST'], ['fo_OO'], ['te_ST'])
-            ->willReturn($gtt);
+        $getTranslator = $this->createPartialMock(ClosureMock::class, ['__invoke']);
+        $matcher = $this->exactly(5);
+        $getTranslator->expects($matcher)
+            ->method('__invoke')->willReturnCallback(function (...$parameters) use ($matcher, $gtt) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('te_ST', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('fo_OO', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('te_ST', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame('fo_OO', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame('te_ST', $parameters[0]);
+                }
+                return $gtt;
+            });
 
         $i = 0;
         $gtt->expects($this->exactly(4))

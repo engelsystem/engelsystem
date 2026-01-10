@@ -7,25 +7,33 @@ namespace Engelsystem\Test\Unit\Events;
 use Engelsystem\Config\Config;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Events\EventsServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class EventsServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(EventsServiceProvider::class, 'register')]
+#[CoversMethod(EventsServiceProvider::class, 'registerEvents')]
+class EventsServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Events\EventsServiceProvider::register
-     * @covers \Engelsystem\Events\EventsServiceProvider::registerEvents
-     */
     public function testRegister(): void
     {
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance(EventDispatcher::class, $dispatcher);
-        $dispatcher->expects($this->exactly(3))
-            ->method('listen')
-            ->withConsecutive(
-                ['test.event', 'someFunction'],
-                ['another.event', 'Foo\Bar@baz'],
-                ['another.event', [$this, 'testRegister']]
-            );
+        $matcher = $this->exactly(3);
+        $dispatcher->expects($matcher)
+            ->method('listen')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('test.event', $parameters[0]);
+                    $this->assertSame('someFunction', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('another.event', $parameters[0]);
+                    $this->assertSame('Foo\Bar@baz', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('another.event', $parameters[0]);
+                    $this->assertSame([$this, 'testRegister'], $parameters[1]);
+                }
+            });
 
         $config = new Config([
             'event-handlers' => [

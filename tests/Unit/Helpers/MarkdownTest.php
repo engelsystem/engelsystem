@@ -6,10 +6,14 @@ namespace Engelsystem\Test\Unit\Helpers;
 
 use Engelsystem\Helpers\Markdown;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversMethod(Markdown::class, 'render')]
+#[CoversMethod(Markdown::class, 'getRenderer')]
 class MarkdownTest extends TestCase
 {
-    public function mapping(): array
+    public static function mapping(): array
     {
         return [
             // $text, $expected, $withAllowHtml
@@ -30,7 +34,7 @@ class MarkdownTest extends TestCase
             [
                 '<script>alert("ho")</script>',
                 '&lt;script&gt;alert("ho")&lt;/script&gt;',
-                '&lt;script>alert("ho")&lt;/script>', // Looks kind of broken but thats fine
+                '&lt;script>alert("ho")&lt;/script>', // Looks kind of broken but that's fine
             ],
             [
                 'https://example.com/link',
@@ -40,12 +44,8 @@ class MarkdownTest extends TestCase
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Helpers\Markdown::render
-     * @covers       \Engelsystem\Helpers\Markdown::getRenderer
-     * @dataProvider mapping
-     */
-    public function testRender(string $text, string $expected): void
+    #[DataProvider('mapping')]
+    public function testRender(string $text, string $expected, string $withAllowHtml): void
     {
         $uuid = new Markdown();
         $result = $uuid->render($text);
@@ -53,11 +53,7 @@ class MarkdownTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @covers       \Engelsystem\Helpers\Markdown::render
-     * @covers       \Engelsystem\Helpers\Markdown::getRenderer
-     * @dataProvider mapping
-     */
+    #[DataProvider('mapping')]
     public function testRenderRaw(string $text, string $expected, string $withAllowHtml): void
     {
         $uuid = new Markdown();
@@ -66,10 +62,6 @@ class MarkdownTest extends TestCase
         $this->assertEquals($withAllowHtml, $result);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Markdown::render
-     * @covers \Engelsystem\Helpers\Markdown::getRenderer
-     */
     public function testRenderTable(): void
     {
         $text = '| test | value |' . PHP_EOL . '| --- | :--- |' . PHP_EOL . '| row | content |';

@@ -7,19 +7,21 @@ namespace Engelsystem\Test\Unit\Models;
 use Carbon\Carbon;
 use Engelsystem\Helpers\CarbonDay;
 use Engelsystem\Models\EventConfig;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class EventConfigTest extends ModelTest
+#[CoversMethod(EventConfig::class, 'setValueAttribute')]
+#[CoversMethod(EventConfig::class, 'getValueAttribute')]
+#[CoversMethod(EventConfig::class, 'getValueCast')]
+class EventConfigTest extends ModelTestCase
 {
-    /**
-     * @covers       \Engelsystem\Models\EventConfig::casts
-     */
     public function testCast(): void
     {
         $casts = (new EventConfig())->casts();
         $this->assertEquals(['value' => 'array'], $casts);
     }
 
-    public function dataCasts(): array
+    public static function dataCasts(): array
     {
         return [
             ['bar', '"bar"'],
@@ -36,10 +38,7 @@ class EventConfigTest extends ModelTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Models\EventConfig::casts
-     * @dataProvider dataCasts
-     */
+    #[DataProvider('dataCasts')]
     public function testCastCasting(mixed $setValue, mixed $expectedValueDb, mixed $expectedValueResult = null): void
     {
         (new EventConfig())

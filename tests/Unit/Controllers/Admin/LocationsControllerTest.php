@@ -16,17 +16,22 @@ use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class LocationsControllerTest extends ControllerTest
+#[CoversMethod(LocationsController::class, '__construct')]
+#[CoversMethod(LocationsController::class, 'index')]
+#[CoversMethod(LocationsController::class, 'edit')]
+#[CoversMethod(LocationsController::class, 'showEdit')]
+#[CoversMethod(LocationsController::class, 'save')]
+#[CoversMethod(LocationsController::class, 'delete')]
+#[AllowMockObjectsWithoutExpectations]
+class LocationsControllerTest extends ControllerTestCase
 {
-    protected Redirector|MockObject $redirect;
+    protected Redirector&MockObject $redirect;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::__construct
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::index
-     */
     public function testIndex(): void
     {
         /** @var LocationsController $controller */
@@ -45,10 +50,6 @@ class LocationsControllerTest extends ControllerTest
         $controller->index();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::edit
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::showEdit
-     */
     public function testEdit(): void
     {
         /** @var LocationsController $controller */
@@ -77,10 +78,6 @@ class LocationsControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::edit
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::showEdit
-     */
     public function testEditNew(): void
     {
         /** @var LocationsController $controller */
@@ -100,9 +97,6 @@ class LocationsControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::save
-     */
     public function testSave(): void
     {
         /** @var LocationsController $controller */
@@ -134,9 +128,6 @@ class LocationsControllerTest extends ControllerTest
         $this->assertCount(1, $neededAngelType);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::save
-     */
     public function testSaveUniqueName(): void
     {
         /** @var LocationsController $controller */
@@ -152,10 +143,6 @@ class LocationsControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::save
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::delete
-     */
     public function testSaveDelete(): void
     {
         /** @var LocationsController $controller */
@@ -173,12 +160,8 @@ class LocationsControllerTest extends ControllerTest
         $this->assertEmpty(Location::find($location->id));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::delete
-     */
     public function testDelete(): void
     {
-        /** @var EventDispatcher|MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance('events.dispatcher', $dispatcher);
         /** @var LocationsController $controller */

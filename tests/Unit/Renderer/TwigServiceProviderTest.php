@@ -11,27 +11,27 @@ use Engelsystem\Renderer\TwigEngine;
 use Engelsystem\Renderer\TwigLoader;
 use Engelsystem\Renderer\TwigServiceProvider;
 use Engelsystem\Renderer\TwigTextLoader;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\Renderer\Stub\AbstractExtensionWithSetTimezone;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use ReflectionClass as Reflection;
 use ReflectionException;
 use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as Twig;
-use Twig\Extension\AbstractExtension;
 use Twig\Extension\CoreExtension as TwigCore;
 use Twig\Extension\ExtensionInterface as ExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 
-class TwigServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(TwigServiceProvider::class, 'register')]
+#[CoversMethod(TwigServiceProvider::class, 'registerTwigExtensions')]
+#[CoversMethod(TwigServiceProvider::class, 'boot')]
+#[CoversMethod(TwigServiceProvider::class, 'registerTwigEngine')]
+class TwigServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\TwigServiceProvider::register
-     * @covers \Engelsystem\Renderer\TwigServiceProvider::registerTwigExtensions
-     */
     public function testRegister(): void
     {
-        $app = $this->getApp(['alias', 'tag']);
+        $app = $this->getAppMock(['alias', 'tag']);
 
         $className = 'Foo\Bar\Class';
         $classAlias = 'twig.extension.foo';
@@ -44,7 +44,6 @@ class TwigServiceProviderTest extends ServiceProviderTest
             ->method('tag')
             ->with($classAlias, ['twig.extension']);
 
-        /** @var TwigServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(TwigServiceProvider::class)
             ->setConstructorArgs([$app])
             ->onlyMethods(['registerTwigEngine'])
@@ -56,31 +55,21 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $serviceProvider->register();
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\TwigServiceProvider::boot
-     */
     public function testBoot(): void
     {
-        /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);
-        /** @var Twig|MockObject $textTwig */
         $textTwig = $this->createMock(Twig::class);
-        /** @var ExtensionInterface|MockObject $firsExtension */
-        $firsExtension = $this->getMockForAbstractClass(ExtensionInterface::class);
-        /** @var ExtensionInterface|MockObject $secondExtension */
-        $secondExtension = $this->getMockForAbstractClass(ExtensionInterface::class);
-        /** @var Develop|MockObject $devExtension */
+        $firstExtension = $this->getStubBuilder(ExtensionInterface::class)->getStub();
+        $secondExtension = $this->getStubBuilder(ExtensionInterface::class)->getStub();
         $devExtension = $this->createMock(Develop::class);
-        /** @var VarDumper|MockObject $dumper */
-        $dumper = $this->createMock(VarDumper::class);
-        /** @var FilesystemLoader|MockObject $loader1 */
-        $loader1 = $this->createMock(FilesystemLoader::class);
+        $dumper = $this->createStub(VarDumper::class);
+        $loader1 = $this->createStub(FilesystemLoader::class);
         $loader2 = (object) [];
 
         $this->app->instance('twig.environment', $twig);
         $this->app->instance('twig.textEnvironment', $textTwig);
         $this->app->instance('twig.extension.develop', $devExtension);
-        $this->app->instance('a', $firsExtension);
+        $this->app->instance('a', $firstExtension);
         $this->app->instance('b', $secondExtension);
         $this->app->tag(['a', 'b'], 'twig.extension');
         $this->app->instance('no-dir', '/this-dir-should-not-exist');
@@ -90,13 +79,29 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $this->app->instance('l2', $loader2);
         $this->app->tag(['l1', 'l2'], 'twig.loader');
 
-        $twig->expects($this->exactly(2))
+        $matcher = $this->exactly(2);
+        $twig->expects($matcher)
             ->method('addExtension')
-            ->withConsecutive([$firsExtension], [$secondExtension]);
+            ->willReturnCallback(function (...$parameters) use ($matcher, $firstExtension, $secondExtension): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame($firstExtension, $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame($secondExtension, $parameters[0]);
+                }
+            });
 
-        $textTwig->expects($this->exactly(2))
+        $matcher = $this->exactly(2);
+        $textTwig->expects($matcher)
             ->method('addExtension')
-            ->withConsecutive([$firsExtension], [$secondExtension]);
+            ->willReturnCallback(function (...$parameters) use ($matcher, $firstExtension, $secondExtension): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame($firstExtension, $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame($secondExtension, $parameters[0]);
+                }
+            });
 
         $devExtension->expects($this->once())
             ->method('setDumper')
@@ -106,76 +111,87 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $serviceProvider->boot();
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\TwigServiceProvider::registerTwigEngine
-     */
     public function testRegisterTwigEngine(): void
     {
-        /** @var TwigEngine|MockObject $twigEngine */
-        $twigEngine = $this->createMock(TwigEngine::class);
-        /** @var TwigLoader|MockObject $twigLoader */
-        $twigLoader = $this->createMock(TwigLoader::class);
-        /** @var TwigTextLoader|MockObject $twigTextLoader */
-        $twigTextLoader = $this->createMock(TwigTextLoader::class);
-        /** @var Twig|MockObject $twig */
+        $twigEngine = $this->createStub(TwigEngine::class);
+        $twigLoader = $this->createStub(TwigLoader::class);
+        $twigTextLoader = $this->createStub(TwigTextLoader::class);
         $twig = $this->createMock(Twig::class);
-        /** @var Config|MockObject $config */
-        $config = $this->createMock(Config::class);
-        /** @var TwigCore|MockObject $twigCore */
-        $twigCore = $this->getMockForAbstractClass(
-            AbstractExtension::class,
-            [],
-            '',
-            true,
-            true,
-            true,
-            ['setTimezone']
+        $config = $this->createStub(Config::class);
+        $twigCore = $this->createMock(
+            AbstractExtensionWithSetTimezone::class,
         );
-        /** @var Twig|MockObject $twigText */
-        $twigText = $this->createMock(Twig::class);
-        /** @var TwigEngine|MockObject $twigTextEngine */
-        $twigTextEngine = $this->createMock(TwigEngine::class);
-        /** @var ExtendsTokenParser|MockObject $extendsTokenParser */
-        $extendsTokenParser = $this->createMock(ExtendsTokenParser::class);
+        $twigText = $this->createStub(Twig::class);
+        $twigTextEngine = $this->createStub(TwigEngine::class);
+        $extendsTokenParser = $this->createStub(ExtendsTokenParser::class);
 
-        $app = $this->getApp(['make', 'instance', 'tag', 'get']);
+        $app = $this->getAppMock(['make', 'instance', 'tag', 'get']);
 
         $viewsPath = __DIR__ . '/Stub';
 
-        $app->expects($this->exactly(7))
+        $matcher = $this->exactly(7);
+        $app->expects($matcher)
             ->method('make')
-            ->withConsecutive(
-                [TwigLoader::class, ['paths' => [$viewsPath, $viewsPath . '/..']]],
-                [TwigTextLoader::class, ['paths' => [$viewsPath, $viewsPath . '/..']]],
-                [Twig::class, ['options' => [
+            ->willReturnCallback(function (...$parameters) use (
+                $twigTextEngine,
+                $twigEngine,
+                $twig,
+                $twigLoader,
+                $matcher,
+                $viewsPath,
+                $twigTextLoader,
+                $twigText,
+                $extendsTokenParser
+            ) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(TwigLoader::class, $parameters[0]);
+                    $this->assertSame(['paths' => [$viewsPath, $viewsPath . '/..']], $parameters[1]);
+                    return $twigLoader;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(TwigTextLoader::class, $parameters[0]);
+                    $this->assertSame(['paths' => [$viewsPath, $viewsPath . '/..']], $parameters[1]);
+                    return $twigTextLoader;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(Twig::class, $parameters[0]);
+                    $this->assertEquals(['options' => [
                     'cache'            => false,
                     'auto_reload'      => true,
                     'strict_variables' => true,
                     'debug'            => true,
-                ]]],
-                [TwigEngine::class],
-                [Twig::class, ['loader' => $twigTextLoader, 'options' => [
+                    ]], $parameters[1]);
+                    return $twig;
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame(TwigEngine::class, $parameters[0]);
+                    return $twigEngine;
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame(Twig::class, $parameters[0]);
+                    $this->assertEquals(['loader' => $twigTextLoader, 'options' => [
                     'cache'            => false,
                     'auto_reload'      => true,
                     'strict_variables' => true,
                     'debug'            => true,
                     'autoescape'       => false,
-                ]]],
-                [TwigEngine::class, ['twig' => $twigText]],
-                [ExtendsTokenParser::class],
-            )->willReturnOnConsecutiveCalls(
-                $twigLoader,
-                $twigTextLoader,
-                $twig,
-                $twigEngine,
-                $twigText,
-                $twigTextEngine,
-                $extendsTokenParser,
-            );
+                    ]], $parameters[1]);
+                    return $twigText;
+                }
+                if ($matcher->numberOfInvocations() === 6) {
+                    $this->assertSame(TwigEngine::class, $parameters[0]);
+                    $this->assertSame(['twig' => $twigText], $parameters[1]);
+                    return $twigTextEngine;
+                }
+                if ($matcher->numberOfInvocations() === 7) {
+                    $this->assertSame(ExtendsTokenParser::class, $parameters[0]);
+                    $this->assertSame(['basePath' => 'path/to/resources'], $parameters[1]);
+                    return $extendsTokenParser;
+                }
+            });
 
-        $app->expects($this->exactly(10))
-            ->method('instance')
-            ->withConsecutive(
+        $app->method('instance')
+            ->willReturnMap([
                 [TwigLoader::class, $twigLoader],
                 [FilesystemLoader::class, $twigLoader],
                 [TwigLoaderInterface::class, $twigLoader],
@@ -186,26 +202,30 @@ class TwigServiceProviderTest extends ServiceProviderTest
                 ['renderer.twigEngine', $twigEngine],
                 ['twig.textEnvironment', $twigText],
                 ['renderer.twigTextEngine', $twigTextEngine],
-            );
+            ]);
 
-        $app->expects($this->exactly(5))
-            ->method('get')
-            ->withConsecutive(['path.views'], ['path.views'], ['config'], ['path.cache.views'], ['path.resources'])
-            ->willReturnOnConsecutiveCalls($viewsPath, $viewsPath, $config, 'cache/views', '/resources');
+        $app->method('get')
+            ->willReturnMap([
+                ['path.views', $viewsPath],
+                ['config', $config],
+                ['path.cache.views', 'cache/views'],
+                ['path.resources', 'path/to/resources'],
+            ]);
 
-        $app->expects($this->exactly(4))
-            ->method('tag')
-            ->withConsecutive(
+        $app->method('tag')
+            ->willReturnMap([
                 ['twig.loader', ['twig.loader']],
                 ['twig.textLoader', ['twig.loader']],
                 ['renderer.twigTextEngine', ['renderer.engine']], // Text goes first to catch .text.twig files
                 ['renderer.twigEngine', ['renderer.engine']],
-            );
+            ]);
 
-        $config->expects($this->exactly(2))
+        $config
             ->method('get')
-            ->withConsecutive(['environment'], ['timezone'])
-            ->willReturnOnConsecutiveCalls('development', 'The/World');
+            ->willReturnMap([
+                ['environment', 'development'],
+                ['timezone', 'The/World'],
+            ]);
 
         $twig->expects($this->once())
             ->method('getExtension')
@@ -227,6 +247,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
     }
 
     /**
+     * @param array<string, string> $extensions
      * @throws ReflectionException
      */
     protected function setExtensionsTo(TwigServiceProvider $serviceProvider, array $extensions): void

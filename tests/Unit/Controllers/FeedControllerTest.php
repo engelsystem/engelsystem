@@ -12,20 +12,27 @@ use Engelsystem\Models\News;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class FeedControllerTest extends ControllerTest
+#[CoversMethod(FeedController::class, '__construct')]
+#[CoversMethod(FeedController::class, 'atom')]
+#[CoversMethod(FeedController::class, 'withEtag')]
+#[CoversMethod(FeedController::class, 'rss')]
+#[CoversMethod(FeedController::class, 'ical')]
+#[CoversMethod(FeedController::class, 'getShifts')]
+#[CoversMethod(FeedController::class, 'shifts')]
+#[CoversMethod(FeedController::class, 'getNews')]
+#[AllowMockObjectsWithoutExpectations]
+class FeedControllerTest extends ControllerTestCase
 {
-    protected Authenticator|MockObject $auth;
-    protected UrlGenerator|MockObject $url;
+    protected Authenticator $auth;
+    protected UrlGenerator&MockObject $url;
 
-    /**
-     * @covers \Engelsystem\Controllers\FeedController::__construct
-     * @covers \Engelsystem\Controllers\FeedController::atom
-     * @covers \Engelsystem\Controllers\FeedController::withEtag
-     */
     public function testAtom(): void
     {
         $controller = new FeedController($this->auth, $this->request, $this->response, $this->url);
@@ -54,9 +61,6 @@ class FeedControllerTest extends ControllerTest
         $controller->atom();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\FeedController::rss
-     */
     public function testRss(): void
     {
         $controller = new FeedController($this->auth, $this->request, $this->response, $this->url);
@@ -80,10 +84,6 @@ class FeedControllerTest extends ControllerTest
         $controller->rss();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\FeedController::ical
-     * @covers \Engelsystem\Controllers\FeedController::getShifts
-     */
     public function testIcal(): void
     {
         $this->request = $this->request->withQueryParams(['key' => 'fo0']);
@@ -98,13 +98,19 @@ class FeedControllerTest extends ControllerTest
         $user = User::factory()->create(['api_key' => 'fo0']);
         ShiftEntry::factory(3)->create(['user_id' => $user->id]);
 
-        $this->response->expects($this->exactly(2))
-            ->method('withHeader')
-            ->withConsecutive(
-                ['content-type', 'text/calendar; charset=utf-8'],
-                ['content-disposition', 'attachment; filename=shifts.ics']
-            )
-            ->willReturn($this->response);
+        $matcher = $this->exactly(2);
+        $this->response->expects($matcher)
+            ->method('withHeader')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('content-type', $parameters[0]);
+                    $this->assertSame('text/calendar; charset=utf-8', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('content-disposition', $parameters[0]);
+                    $this->assertSame('attachment; filename=shifts.ics', $parameters[1]);
+                }
+                return $this->response;
+            });
 
         $this->setExpects($this->response, 'setEtag', null, $this->response);
 
@@ -126,9 +132,6 @@ class FeedControllerTest extends ControllerTest
         $controller->ical();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\FeedController::ical
-     */
     public function testIcalEmpty(): void
     {
         $this->request = $this->request->withQueryParams(['key' => 'fo0']);
@@ -141,13 +144,19 @@ class FeedControllerTest extends ControllerTest
 
         User::factory()->create(['api_key' => 'fo0']);
 
-        $this->response->expects($this->exactly(2))
-            ->method('withHeader')
-            ->withConsecutive(
-                ['content-type', 'text/calendar; charset=utf-8'],
-                ['content-disposition', 'attachment; filename=shifts.ics']
-            )
-            ->willReturn($this->response);
+        $matcher = $this->exactly(2);
+        $this->response->expects($matcher)
+            ->method('withHeader')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('content-type', $parameters[0]);
+                    $this->assertSame('text/calendar; charset=utf-8', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('content-disposition', $parameters[0]);
+                    $this->assertSame('attachment; filename=shifts.ics', $parameters[1]);
+                }
+                return $this->response;
+            });
 
         $this->setExpects($this->response, 'setEtag', null, $this->response);
 
@@ -167,10 +176,6 @@ class FeedControllerTest extends ControllerTest
         $controller->ical();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\FeedController::shifts
-     * @covers \Engelsystem\Controllers\FeedController::getShifts
-     */
     public function testShifts(): void
     {
         $this->request = $this->request->withQueryParams(['key' => 'fo0']);
@@ -226,7 +231,7 @@ class FeedControllerTest extends ControllerTest
     }
 
 
-    public function getNewsMeetingsDataProvider(): array
+    public static function getNewsMeetingsDataProvider(): array
     {
         return [
             [true],
@@ -234,10 +239,7 @@ class FeedControllerTest extends ControllerTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Controllers\FeedController::getNews
-     * @dataProvider getNewsMeetingsDataProvider
-     */
+    #[DataProvider('getNewsMeetingsDataProvider')]
     public function testGetNewsMeetings(bool $isMeeting): void
     {
         $controller = new FeedController($this->auth, $this->request, $this->response, $this->url);
@@ -262,9 +264,6 @@ class FeedControllerTest extends ControllerTest
         $controller->rss();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\FeedController::getNews
-     */
     public function testGetNewsLimit(): void
     {
         News::query()->where('id', '<>', 1)->update(['updated_at' => Carbon::now()->subHour()]);

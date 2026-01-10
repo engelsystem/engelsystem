@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Mail;
 
 use Engelsystem\Mail\Mailer;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
@@ -14,20 +14,18 @@ use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\RawMessage;
 
+#[CoversMethod(Mailer::class, '__construct')]
+#[CoversMethod(Mailer::class, 'getFromAddress')]
+#[CoversMethod(Mailer::class, 'getFromName')]
+#[CoversMethod(Mailer::class, 'setFromAddress')]
+#[CoversMethod(Mailer::class, 'setFromName')]
+#[CoversMethod(Mailer::class, 'send')]
 class MailerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Mail\Mailer::__construct
-     * @covers \Engelsystem\Mail\Mailer::getFromAddress
-     * @covers \Engelsystem\Mail\Mailer::getFromName
-     * @covers \Engelsystem\Mail\Mailer::setFromAddress
-     * @covers \Engelsystem\Mail\Mailer::setFromName
-     */
     public function testInitAndSettersAndGetters(): void
     {
         $log = new NullLogger();
-        /** @var MailerInterface|MockObject $symfonyMailer */
-        $symfonyMailer = $this->createMock(MailerInterface::class);
+        $symfonyMailer = $this->createStub(MailerInterface::class);
 
         $mailer = new Mailer($log, $symfonyMailer);
 
@@ -38,13 +36,9 @@ class MailerTest extends TestCase
         $this->assertEquals('from@foo.bar', $mailer->getFromAddress());
     }
 
-    /**
-     * @covers \Engelsystem\Mail\Mailer::send
-     */
     public function testSend(): void
     {
         $log = new NullLogger();
-        /** @var MailerInterface|MockObject $symfonyMailer */
         $symfonyMailer = $this->createMock(MailerInterface::class);
         $symfonyMailer->expects($this->once())
             ->method('send')
@@ -65,13 +59,9 @@ class MailerTest extends TestCase
     }
 
 
-    /**
-     * @covers \Engelsystem\Mail\Mailer::send
-     */
     public function testSendException(): void
     {
         $log = new TestLogger();
-        /** @var MailerInterface|MockObject $symfonyMailer */
         $symfonyMailer = $this->createMock(MailerInterface::class);
         $symfonyMailer->expects($this->once())
             ->method('send')

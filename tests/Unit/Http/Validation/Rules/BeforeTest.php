@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\Before;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Before::class, 'compare')]
 class BeforeTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\Before::compare
-     */
     public function testCompare(): void
     {
         $date = '2024-01-02 13:37';

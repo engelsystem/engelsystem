@@ -7,7 +7,7 @@ namespace Engelsystem\Test\Unit;
 /**
  * Only used to store "global" state during test runtime
  */
-abstract class RuntimeTest
+abstract class RuntimeTestState
 {
     public static array $dbState = [];
 }

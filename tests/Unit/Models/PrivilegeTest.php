@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Privilege;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class PrivilegeTest extends ModelTest
+#[CoversMethod(Privilege::class, 'groups')]
+class PrivilegeTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Privilege::groups
-     */
     public function testGroups(): void
     {
         /** @var Group $group1 */

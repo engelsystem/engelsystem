@@ -8,26 +8,27 @@ use Engelsystem\Database\Database;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection as DatabaseConnection;
 use PDO;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(Database::class, '__construct')]
+#[CoversMethod(Database::class, 'getConnection')]
+#[CoversMethod(Database::class, 'getPdo')]
+#[CoversMethod(Database::class, 'select')]
+#[CoversMethod(Database::class, 'selectOne')]
+#[CoversMethod(Database::class, 'insert')]
+#[CoversMethod(Database::class, 'update')]
+#[CoversMethod(Database::class, 'delete')]
 class DatabaseTest extends TestCase
 {
     protected DatabaseConnection $connection;
 
-    /**
-     * @covers \Engelsystem\Database\Database::__construct()
-     * @covers \Engelsystem\Database\Database::getConnection()
-     * @covers \Engelsystem\Database\Database::getPdo()
-     */
     public function testInit(): void
     {
-        /** @var PDO|MockObject $pdo */
-        $pdo = $this->getMockBuilder(PDO::class)
+        $pdo = $this->getStubBuilder(PDO::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getStub();
 
-        /** @var DatabaseConnection|MockObject $databaseConnection */
         $databaseConnection = $this->getMockBuilder(DatabaseConnection::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -42,9 +43,6 @@ class DatabaseTest extends TestCase
         $this->assertInstanceOf(PDO::class, $db->getPdo());
     }
 
-    /**
-     * @covers \Engelsystem\Database\Database::select()
-     */
     public function testSelect(): void
     {
         $db = new Database($this->connection);
@@ -56,9 +54,6 @@ class DatabaseTest extends TestCase
         $this->assertCount(1, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Database::selectOne()
-     */
     public function testSelectOne(): void
     {
         $db = new Database($this->connection);
@@ -73,9 +68,6 @@ class DatabaseTest extends TestCase
         $this->assertIsNotArray($return);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Database::insert()
-     */
     public function testInsert(): void
     {
         $db = new Database($this->connection);
@@ -84,9 +76,6 @@ class DatabaseTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Database::update()
-     */
     public function testUpdate(): void
     {
         $db = new Database($this->connection);
@@ -98,9 +87,6 @@ class DatabaseTest extends TestCase
         $this->assertEquals(3, $count);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Database::delete()
-     */
     public function testDelete(): void
     {
         $db = new Database($this->connection);

@@ -7,21 +7,18 @@ namespace Engelsystem\Test\Unit\Exceptions\Handlers;
 use Engelsystem\Exceptions\Handlers\LegacyDevelopment;
 use Engelsystem\Http\Request;
 use ErrorException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(LegacyDevelopment::class, 'formatStackTrace')]
+#[CoversMethod(LegacyDevelopment::class, 'render')]
+#[CoversMethod(LegacyDevelopment::class, 'getDisplayNameOfValue')]
 class LegacyDevelopmentTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::formatStackTrace
-     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::render
-     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::getDisplayNameOfValue
-     */
     public function testRender(): void
     {
         $handler = new LegacyDevelopment();
-        /** @var Request|MockObject $request */
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $exception = new ErrorException('Lorem <b>Ipsum</b>', 4242, 1, 'foo.php', 9999);
 
         $regex = sprintf(

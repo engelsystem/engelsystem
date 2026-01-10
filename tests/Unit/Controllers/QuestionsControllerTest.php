@@ -15,18 +15,22 @@ use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class QuestionsControllerTest extends ControllerTest
+#[CoversMethod(QuestionsController::class, 'index')]
+#[CoversMethod(QuestionsController::class, '__construct')]
+#[CoversMethod(QuestionsController::class, 'add')]
+#[CoversMethod(QuestionsController::class, 'delete')]
+#[CoversMethod(QuestionsController::class, 'save')]
+#[AllowMockObjectsWithoutExpectations]
+class QuestionsControllerTest extends ControllerTestCase
 {
-    protected Authenticator|MockObject $auth;
+    protected Authenticator&MockObject $auth;
 
     protected User $user;
 
-    /**
-     * @covers \Engelsystem\Controllers\QuestionsController::index
-     * @covers \Engelsystem\Controllers\QuestionsController::__construct
-     */
     public function testIndex(): void
     {
         $this->response->expects($this->once())
@@ -45,9 +49,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->index();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\QuestionsController::add
-     */
     public function testAdd(): void
     {
         $this->response->expects($this->once())
@@ -67,9 +68,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->add();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\QuestionsController::delete
-     */
     public function testDeleteNotFound(): void
     {
         $this->request = $this->request->withParsedBody([
@@ -85,9 +83,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->delete($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\QuestionsController::delete
-     */
     public function testDeleteNotOwn(): void
     {
         $otherUser = User::factory()->create();
@@ -108,9 +103,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->delete($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\QuestionsController::delete
-     */
     public function testDelete(): void
     {
         $this->request = $this->request->withParsedBody([
@@ -133,9 +125,6 @@ class QuestionsControllerTest extends ControllerTest
         $this->assertHasNotification('question.delete.success');
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\QuestionsController::save
-     */
     public function testSaveInvalid(): void
     {
         /** @var QuestionsController $controller */
@@ -146,9 +135,6 @@ class QuestionsControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\QuestionsController::save
-     */
     public function testSave(): void
     {
         $this->request = $this->request->withParsedBody([

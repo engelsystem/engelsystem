@@ -16,10 +16,17 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
 
+#[CoversMethod(Shifts::class, 'deletingCreateWorklogs')]
+#[CoversMethod(Shifts::class, '__construct')]
+#[CoversMethod(Shifts::class, 'deletingSendEmails')]
+#[CoversMethod(Shifts::class, 'updatedSendEmail')]
+#[AllowMockObjectsWithoutExpectations]
 class ShiftsTest extends TestCase
 {
     use HasDatabase;
@@ -38,10 +45,6 @@ class ShiftsTest extends TestCase
 
     protected User $user;
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingCreateWorklogs
-     * @covers \Engelsystem\Events\Listener\Shifts::__construct
-     */
     public function testDeletingCreateWorklogs(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
@@ -58,9 +61,6 @@ class ShiftsTest extends TestCase
         $this->assertTrue($this->log->hasInfoThatContains('Created worklog entry'));
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingCreateWorklogs
-     */
     public function testDeletingCreateWorklogsIgnoreFreeload(): void
     {
         /** @var User $user1 */
@@ -75,9 +75,6 @@ class ShiftsTest extends TestCase
         $this->assertCount(0, $this->user->worklogs);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingCreateWorklogs
-     */
     public function testDeletingCreateWorklogsIgnoreNotStarted(): void
     {
         $this->shift->start = Carbon::now()->addMinutes(42);
@@ -90,9 +87,6 @@ class ShiftsTest extends TestCase
         $this->assertCount(0, $this->user->worklogs);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingSendEmails
-     */
     public function testDeletingSendEmailsNoNotification(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());
@@ -105,9 +99,6 @@ class ShiftsTest extends TestCase
         $listener->deletingSendEmails($this->shift);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingSendEmails
-     */
     public function testDeletingSendEmails(): void
     {
         $this->mailer->expects($this->once())
@@ -129,9 +120,6 @@ class ShiftsTest extends TestCase
         $listener->deletingSendEmails($this->shift);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::updatedSendEmail
-     */
     public function testUpdatedSendEmailNoRelevantChange(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());
@@ -144,9 +132,6 @@ class ShiftsTest extends TestCase
         $listener->updatedSendEmail($this->shift, $oldShift);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::updatedSendEmail
-     */
     public function testUpdatedSendEmailNoNotification(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());
@@ -162,9 +147,6 @@ class ShiftsTest extends TestCase
         $listener->updatedSendEmail($this->shift, $oldShift);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::updatedSendEmail
-     */
     public function testUpdatedSendEmailAlreadyEnded(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());
@@ -178,9 +160,6 @@ class ShiftsTest extends TestCase
         $listener->updatedSendEmail($this->shift, $oldShift);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Shifts::updatedSendEmail
-     */
     public function testUpdatedSendEmail(): void
     {
         $oldShift = Shift::find($this->shift->id);

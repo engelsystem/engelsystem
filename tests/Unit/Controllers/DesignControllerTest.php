@@ -8,24 +8,23 @@ use Engelsystem\Config\Config;
 use Engelsystem\Controllers\DesignController;
 use Engelsystem\Http\Response;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(DesignController::class, '__construct')]
+#[CoversMethod(DesignController::class, 'index')]
+#[AllowMockObjectsWithoutExpectations]
 class DesignControllerTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
         $this->mockRenderer();
-        $this->mockTranslator();
+        $this->stubTranslator();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\DesignController::__construct
-     * @covers \Engelsystem\Controllers\DesignController::index
-     */
     public function testIndex(): void
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
         $response->expects($this->once())
             ->method('withView')

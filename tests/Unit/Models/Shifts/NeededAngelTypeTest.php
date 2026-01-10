@@ -9,16 +9,15 @@ use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class NeededAngelTypeTest extends ModelTest
+#[CoversMethod(NeededAngelType::class, 'location')]
+#[CoversMethod(NeededAngelType::class, 'shift')]
+#[CoversMethod(NeededAngelType::class, 'shiftType')]
+#[CoversMethod(NeededAngelType::class, 'angelType')]
+class NeededAngelTypeTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Shifts\NeededAngelType::location
-     * @covers \Engelsystem\Models\Shifts\NeededAngelType::shift
-     * @covers \Engelsystem\Models\Shifts\NeededAngelType::shiftType
-     * @covers \Engelsystem\Models\Shifts\NeededAngelType::angelType
-     */
     public function testShift(): void
     {
         /** @var Location $location */

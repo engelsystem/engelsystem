@@ -11,37 +11,37 @@ use Engelsystem\Helpers\Schedule\EventRecording;
 use Engelsystem\Helpers\Schedule\Room;
 use Engelsystem\Helpers\Uuid;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Event::class, '__construct')]
+#[CoversMethod(Event::class, 'getGuid')]
+#[CoversMethod(Event::class, 'getId')]
+#[CoversMethod(Event::class, 'getRoom')]
+#[CoversMethod(Event::class, 'getTitle')]
+#[CoversMethod(Event::class, 'getSubtitle')]
+#[CoversMethod(Event::class, 'getType')]
+#[CoversMethod(Event::class, 'getDate')]
+#[CoversMethod(Event::class, 'getStart')]
+#[CoversMethod(Event::class, 'getDuration')]
+#[CoversMethod(Event::class, 'getDurationSeconds')]
+#[CoversMethod(Event::class, 'getAbstract')]
+#[CoversMethod(Event::class, 'getSlug')]
+#[CoversMethod(Event::class, 'getTrack')]
+#[CoversMethod(Event::class, 'getLogo')]
+#[CoversMethod(Event::class, 'getPersons')]
+#[CoversMethod(Event::class, 'getLanguage')]
+#[CoversMethod(Event::class, 'getDescription')]
+#[CoversMethod(Event::class, 'getRecording')]
+#[CoversMethod(Event::class, 'getLinks')]
+#[CoversMethod(Event::class, 'getAttachments')]
+#[CoversMethod(Event::class, 'getUrl')]
+#[CoversMethod(Event::class, 'getFeedbackUrl')]
+#[CoversMethod(Event::class, 'getOriginUrl')]
+#[CoversMethod(Event::class, 'getVideoDownloadUrl')]
+#[CoversMethod(Event::class, 'getEndDate')]
+#[CoversMethod(Event::class, 'setTitle')]
 class EventTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Event::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Event::getGuid
-     * @covers \Engelsystem\Helpers\Schedule\Event::getId
-     * @covers \Engelsystem\Helpers\Schedule\Event::getRoom
-     * @covers \Engelsystem\Helpers\Schedule\Event::getTitle
-     * @covers \Engelsystem\Helpers\Schedule\Event::getSubtitle
-     * @covers \Engelsystem\Helpers\Schedule\Event::getType
-     * @covers \Engelsystem\Helpers\Schedule\Event::getDate
-     * @covers \Engelsystem\Helpers\Schedule\Event::getStart
-     * @covers \Engelsystem\Helpers\Schedule\Event::getDuration
-     * @covers \Engelsystem\Helpers\Schedule\Event::getDurationSeconds
-     * @covers \Engelsystem\Helpers\Schedule\Event::getAbstract
-     * @covers \Engelsystem\Helpers\Schedule\Event::getSlug
-     * @covers \Engelsystem\Helpers\Schedule\Event::getTrack
-     * @covers \Engelsystem\Helpers\Schedule\Event::getLogo
-     * @covers \Engelsystem\Helpers\Schedule\Event::getPersons
-     * @covers \Engelsystem\Helpers\Schedule\Event::getLanguage
-     * @covers \Engelsystem\Helpers\Schedule\Event::getDescription
-     * @covers \Engelsystem\Helpers\Schedule\Event::getRecording
-     * @covers \Engelsystem\Helpers\Schedule\Event::getLinks
-     * @covers \Engelsystem\Helpers\Schedule\Event::getAttachments
-     * @covers \Engelsystem\Helpers\Schedule\Event::getUrl
-     * @covers \Engelsystem\Helpers\Schedule\Event::getFeedbackUrl
-     * @covers \Engelsystem\Helpers\Schedule\Event::getOriginUrl
-     * @covers \Engelsystem\Helpers\Schedule\Event::getVideoDownloadUrl
-     * @covers \Engelsystem\Helpers\Schedule\Event::getEndDate
-     */
     public function testCreateDefault(): void
     {
         $room = new Room('Foo');
@@ -88,34 +88,6 @@ class EventTest extends TestCase
         $this->assertEquals('2020-12-28T20:20:00+00:00', $event->getEndDate()->format(Carbon::RFC3339));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Event::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Event::getGuid
-     * @covers \Engelsystem\Helpers\Schedule\Event::getId
-     * @covers \Engelsystem\Helpers\Schedule\Event::getRoom
-     * @covers \Engelsystem\Helpers\Schedule\Event::getTitle
-     * @covers \Engelsystem\Helpers\Schedule\Event::setTitle
-     * @covers \Engelsystem\Helpers\Schedule\Event::getSubtitle
-     * @covers \Engelsystem\Helpers\Schedule\Event::getType
-     * @covers \Engelsystem\Helpers\Schedule\Event::getDate
-     * @covers \Engelsystem\Helpers\Schedule\Event::getStart
-     * @covers \Engelsystem\Helpers\Schedule\Event::getDuration
-     * @covers \Engelsystem\Helpers\Schedule\Event::getDurationSeconds
-     * @covers \Engelsystem\Helpers\Schedule\Event::getAbstract
-     * @covers \Engelsystem\Helpers\Schedule\Event::getSlug
-     * @covers \Engelsystem\Helpers\Schedule\Event::getTrack
-     * @covers \Engelsystem\Helpers\Schedule\Event::getLogo
-     * @covers \Engelsystem\Helpers\Schedule\Event::getPersons
-     * @covers \Engelsystem\Helpers\Schedule\Event::getLanguage
-     * @covers \Engelsystem\Helpers\Schedule\Event::getDescription
-     * @covers \Engelsystem\Helpers\Schedule\Event::getRecording
-     * @covers \Engelsystem\Helpers\Schedule\Event::getLinks
-     * @covers \Engelsystem\Helpers\Schedule\Event::getAttachments
-     * @covers \Engelsystem\Helpers\Schedule\Event::getUrl
-     * @covers \Engelsystem\Helpers\Schedule\Event::getFeedbackUrl
-     * @covers \Engelsystem\Helpers\Schedule\Event::getOriginUrl
-     * @covers \Engelsystem\Helpers\Schedule\Event::getVideoDownloadUrl
-     */
     public function testCreate(): void
     {
         $persons = [1337 => 'Some Person'];

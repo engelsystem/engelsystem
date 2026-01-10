@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers;
 
+use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Test\Unit\Controllers\Stub\HasUserNotificationsImplementation;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
+#[CoversMethod(HasUserNotifications::class, 'getNotifications')]
+#[CoversMethod(HasUserNotifications::class, 'addNotification')]
 class HasUserNotificationsTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\HasUserNotifications::getNotifications
-     * @covers \Engelsystem\Controllers\HasUserNotifications::addNotification
-     */
     public function testNotifications(): void
     {
         $session = new Session(new MockArraySessionStorage());

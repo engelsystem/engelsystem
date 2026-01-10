@@ -19,7 +19,7 @@ use Engelsystem\Middleware\ErrorHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -28,21 +28,17 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Twig\Loader\LoaderInterface as TwigLoader;
 
+#[CoversMethod(ErrorHandler::class, '__construct')]
+#[CoversMethod(ErrorHandler::class, 'process')]
+#[CoversMethod(ErrorHandler::class, 'selectView')]
+#[CoversMethod(ErrorHandler::class, 'redirectBack')]
 class ErrorHandlerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\ErrorHandler::__construct
-     * @covers \Engelsystem\Middleware\ErrorHandler::process
-     * @covers \Engelsystem\Middleware\ErrorHandler::selectView
-     */
     public function testProcess(): void
     {
-        /** @var TwigLoader|MockObject $twigLoader */
         $twigLoader = $this->createMock(TwigLoader::class);
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var ResponseInterface|MockObject $psrResponse */
-        $psrResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $psrResponse = $this->getMockBuilder(ResponseInterface::class)->getMock();
         $returnResponseHandler = new ReturnResponseMiddlewareHandler($psrResponse);
 
         $psrResponse->expects($this->once())
@@ -58,7 +54,6 @@ class ErrorHandlerTest extends TestCase
         $return = $errorHandler->process($request, $returnResponseHandler);
         $this->assertEquals($psrResponse, $return, 'Plain PSR-7 Response should be passed directly');
 
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
 
         $response->expects($this->exactly(4))
@@ -86,20 +81,26 @@ class ErrorHandlerTest extends TestCase
         $return = $errorHandler->process($request, $returnResponseHandler);
         $this->assertEquals($response, $return, 'Only Responses >= 400 should be processed');
 
-        $twigLoader->expects($this->exactly(4))
-            ->method('exists')
-            ->withConsecutive(
-                ['errors/418'],
-                ['errors/4'],
-                ['errors/400'],
-                ['errors/505']
-            )
-            ->willReturnOnConsecutiveCalls(
-                false,
-                false,
-                false,
-                true
-            );
+        $matcher = $this->exactly(4);
+        $twigLoader->expects($matcher)
+            ->method('exists')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('errors/418', $parameters[0]);
+                    return false;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('errors/4', $parameters[0]);
+                    return false;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('errors/400', $parameters[0]);
+                    return false;
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame('errors/505', $parameters[0]);
+                    return true;
+                }
+            });
 
         $response->expects($this->exactly(2))
             ->method('getContent')
@@ -108,29 +109,31 @@ class ErrorHandlerTest extends TestCase
                 'Internal Error!'
             );
 
-        $response->expects($this->exactly(2))
-            ->method('withView')
-            ->withConsecutive(
-                ['errors/default', ['status' => 418, 'content' => 'Teapot'], 418],
-                ['errors/505', ['status' => 505, 'content' => 'Internal Error!'], 505]
-            )
-            ->willReturn($response);
+        $matcher = $this->exactly(2);
+        $response->expects($matcher)
+            ->method('withView')->willReturnCallback(function (...$parameters) use ($matcher, $response) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('errors/default', $parameters[0]);
+                    $this->assertSame(['status' => 418, 'content' => 'Teapot'], $parameters[1]);
+                    $this->assertSame(418, $parameters[2]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('errors/505', $parameters[0]);
+                    $this->assertSame(['status' => 505, 'content' => 'Internal Error!'], $parameters[1]);
+                    $this->assertSame(505, $parameters[2]);
+                }
+                return $response;
+            });
 
         $errorHandler->process($request, $returnResponseHandler);
         $errorHandler->process($request, $returnResponseHandler);
         $errorHandler->process($request, $returnResponseHandler);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ErrorHandler::process
-     */
     public function testProcessHttpException(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var ResponseInterface|MockObject $psrResponse */
-        $psrResponse = $this->getMockForAbstractClass(ResponseInterface::class);
-        /** @var ReturnResponseMiddlewareHandler|MockObject $returnResponseHandler */
+        $request = $this->createStub(ServerRequestInterface::class);
+        $psrResponse = $this->getMockBuilder(ResponseInterface::class)->getMock();
         $returnResponseHandler = $this->getMockBuilder(ReturnResponseMiddlewareHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -149,7 +152,6 @@ class ErrorHandlerTest extends TestCase
                 throw new HttpException(300, 'Some response', ['lor' => 'em']);
             });
 
-        /** @var ErrorHandler|MockObject $errorHandler */
         $errorHandler = $this->getMockBuilder(ErrorHandler::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['createResponse'])
@@ -164,15 +166,10 @@ class ErrorHandlerTest extends TestCase
         $this->assertEquals($psrResponse, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ErrorHandler::process
-     * @covers \Engelsystem\Middleware\ErrorHandler::redirectBack
-     */
     public function testProcessValidationException(): void
     {
-        /** @var TwigLoader|MockObject $twigLoader */
-        $twigLoader = $this->createMock(TwigLoader::class);
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $twigLoader = $this->createStub(TwigLoader::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $validator = $this->createMock(Validator::class);
 
         $handler->expects($this->exactly(2))
@@ -230,16 +227,10 @@ class ErrorHandlerTest extends TestCase
         $this->assertEquals('http://localhost/foo/batz', $return->getHeaderLine('location'));
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ErrorHandler::process
-     */
     public function testProcessModelNotFoundException(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var ResponseInterface|MockObject $psrResponse */
-        $psrResponse = $this->getMockForAbstractClass(ResponseInterface::class);
-        /** @var ReturnResponseMiddlewareHandler|MockObject $returnResponseHandler */
+        $request = $this->createStub(ServerRequestInterface::class);
+        $psrResponse = $this->getMockBuilder(ResponseInterface::class)->getMock();
         $returnResponseHandler = $this->getMockBuilder(ReturnResponseMiddlewareHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -259,7 +250,6 @@ class ErrorHandlerTest extends TestCase
                 throw new ModelNotFoundException('Some model could not be found');
             });
 
-        /** @var ErrorHandler|MockObject $errorHandler */
         $errorHandler = $this->getMockBuilder(ErrorHandler::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['createResponse'])
@@ -274,19 +264,13 @@ class ErrorHandlerTest extends TestCase
         $this->assertEquals($psrResponse, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ErrorHandler::process
-     */
     public function testProcessContentTypeSniffer(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var TwigLoader|MockObject $twigLoader */
-        $twigLoader = $this->createMock(TwigLoader::class);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $twigLoader = $this->createStub(TwigLoader::class);
         $response = new Response('<!DOCTYPE html><html lang="en"><body><h1>Hi!</h1></body></html>', 500);
         $returnResponseHandler = new ReturnResponseMiddlewareHandler($response);
 
-        /** @var ErrorHandler|MockObject $errorHandler */
         $errorHandler = new ErrorHandler($twigLoader);
 
         $return = $errorHandler->process($request, $returnResponseHandler);

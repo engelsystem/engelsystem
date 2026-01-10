@@ -4,21 +4,30 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Http;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Engelsystem\Http\MessageTrait;
 use Engelsystem\Test\Unit\Http\Stub\MessageTraitResponseImplementation;
 use Nyholm\Psr7\Stream;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
+#[CoversTrait(MessageTrait::class)]
+#[CoversMethod(MessageTrait::class, 'getProtocolVersion')]
+#[CoversMethod(MessageTrait::class, 'withProtocolVersion')]
+#[CoversMethod(MessageTrait::class, 'getHeaders')]
+#[CoversMethod(MessageTrait::class, 'hasHeader')]
+#[CoversMethod(MessageTrait::class, 'getHeader')]
+#[CoversMethod(MessageTrait::class, 'getHeaderLine')]
+#[CoversMethod(MessageTrait::class, 'withHeader')]
+#[CoversMethod(MessageTrait::class, 'withAddedHeader')]
+#[CoversMethod(MessageTrait::class, 'withoutHeader')]
+#[CoversMethod(MessageTrait::class, 'getBody')]
+#[CoversMethod(MessageTrait::class, 'withBody')]
 class MessageTraitResponseTest extends TestCase
 {
-    use ArraySubsetAsserts;
-
-    /**
-     * @covers \Engelsystem\Http\MessageTrait
-     */
     public function testCreate(): void
     {
         $message = new MessageTraitResponseImplementation();
@@ -26,10 +35,6 @@ class MessageTraitResponseTest extends TestCase
         $this->assertInstanceOf(SymfonyResponse::class, $message);
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::getProtocolVersion
-     * @covers \Engelsystem\Http\MessageTrait::withProtocolVersion
-     */
     public function testGetProtocolVersion(): void
     {
         $message = new MessageTraitResponseImplementation();
@@ -38,24 +43,18 @@ class MessageTraitResponseTest extends TestCase
         $this->assertEquals('0.1', $newMessage->getProtocolVersion());
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::getHeaders
-     */
     public function testGetHeaders(): void
     {
         $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withHeader('Foo', 'bar');
 
         $this->assertNotEquals($message, $newMessage);
-        $this->assertArraySubset(['Foo' => ['bar']], $newMessage->getHeaders());
+        $this->assertEquals(['bar'], $newMessage->getHeaders()['Foo']);
 
         $newMessage = $message->withHeader('lorem', ['ipsum', 'dolor']);
-        $this->assertArraySubset(['lorem' => ['ipsum', 'dolor']], $newMessage->getHeaders());
+        $this->assertEquals(['ipsum', 'dolor'], $newMessage->getHeaders()['lorem']);
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::hasHeader
-     */
     public function testHasHeader(): void
     {
         $message = new MessageTraitResponseImplementation();
@@ -66,9 +65,6 @@ class MessageTraitResponseTest extends TestCase
         $this->assertTrue($newMessage->hasHeader('test'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::getHeader
-     */
     public function testGetHeader(): void
     {
         $message = new MessageTraitResponseImplementation();
@@ -83,9 +79,6 @@ class MessageTraitResponseTest extends TestCase
         $this->assertEquals(['bar', 'batz'], $newMessage->getHeader('foo'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::getHeaderLine
-     */
     public function testGetHeaderLine(): void
     {
         $message = new MessageTraitResponseImplementation();
@@ -95,39 +88,30 @@ class MessageTraitResponseTest extends TestCase
         $this->assertEquals('bar,bla', $newMessage->getHeaderLine('Foo'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::withHeader
-     */
     public function testWithHeader(): void
     {
         $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withHeader('foo', 'bar');
 
         $this->assertNotEquals($message, $newMessage);
-        $this->assertArraySubset(['foo' => ['bar']], $newMessage->getHeaders());
+        $this->assertEquals(['bar'], $newMessage->getHeaders()['foo']);
 
         $newMessage = $newMessage->withHeader('Foo', ['lorem', 'ipsum']);
-        $this->assertArraySubset(['Foo' => ['lorem', 'ipsum']], $newMessage->getHeaders());
+        $this->assertEquals(['lorem', 'ipsum'], $newMessage->getHeaders()['Foo']);
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::withAddedHeader
-     */
     public function testWithAddedHeader(): void
     {
         $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withHeader('foo', 'bar');
 
         $this->assertNotEquals($message, $newMessage);
-        $this->assertArraySubset(['foo' => ['bar']], $newMessage->getHeaders());
+        $this->assertEquals(['bar'], $newMessage->getHeaders()['foo']);
 
         $newMessage = $newMessage->withAddedHeader('Foo', ['lorem', 'ipsum']);
-        $this->assertArraySubset(['Foo' => ['bar', 'lorem', 'ipsum']], $newMessage->getHeaders());
+        $this->assertEquals(['bar', 'lorem', 'ipsum'], $newMessage->getHeaders()['Foo']);
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::withoutHeader
-     */
     public function testWithoutHeader(): void
     {
         $message = (new MessageTraitResponseImplementation())->withHeader('foo', 'bar');
@@ -138,9 +122,6 @@ class MessageTraitResponseTest extends TestCase
         $this->assertFalse($newMessage->hasHeader('foo'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::getBody
-     */
     public function testGetBody(): void
     {
         $message = (new MessageTraitResponseImplementation())->setContent('Foo bar!');
@@ -150,9 +131,6 @@ class MessageTraitResponseTest extends TestCase
         $this->assertEquals('Foo bar!', $body->getContents());
     }
 
-    /**
-     * @covers \Engelsystem\Http\MessageTrait::withBody
-     */
     public function testWithBody(): void
     {
         $stream = Stream::create('Test content');

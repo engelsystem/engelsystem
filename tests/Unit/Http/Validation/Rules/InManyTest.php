@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\InMany;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(InMany::class, 'validate')]
 class InManyTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\InMany::validate
-     */
     public function testValidate(): void
     {
         $rule = new InMany('foo,bar');

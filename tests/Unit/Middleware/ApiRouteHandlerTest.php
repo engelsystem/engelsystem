@@ -13,13 +13,17 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\TestCase;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+#[CoversMethod(ApiRouteHandler::class, 'process')]
+#[CoversMethod(ApiRouteHandler::class, 'processApi')]
+#[CoversMethod(ApiRouteHandler::class, '__construct')]
 class ApiRouteHandlerTest extends TestCase
 {
-    public function provideIsApi(): array
+    public static function provideIsApi(): array
     {
         return [
             ['/foo', false],
@@ -32,27 +36,21 @@ class ApiRouteHandlerTest extends TestCase
         ];
     }
 
-    public function provideIsApiAccessiblePath(): array
+    public static function provideIsApiAccessiblePath(): array
     {
         return [
-            ...$this->provideIsApi(),
+            ...static::provideIsApi(),
             ['/metrics', true, false],
             ['/metrics/test', false, false],
             ['/health', true, false],
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Middleware\ApiRouteHandler::process
-     * @covers       \Engelsystem\Middleware\ApiRouteHandler::processApi
-     * @covers       \Engelsystem\Middleware\ApiRouteHandler::__construct
-     * @dataProvider provideIsApi
-     */
+    #[DataProvider('provideIsApi')]
     public function testProcessIsApi(string $uri, bool $isApi): void
     {
         $request = Request::create($uri);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $response = new Response('response content');
 
         $handler->expects($this->once())
@@ -75,15 +73,11 @@ class ApiRouteHandlerTest extends TestCase
         }
     }
 
-    /**
-     * @covers       \Engelsystem\Middleware\ApiRouteHandler::process
-     * @dataProvider provideIsApiAccessiblePath
-     */
+    #[DataProvider('provideIsApiAccessiblePath')]
     public function testProcessIsApiAccessiblePath(string $uri, bool $isApiAccessible, bool $isOnlyApi = true): void
     {
         $request = Request::create($uri);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $response = new Response('response content');
 
         $handler->expects($this->once())
@@ -101,14 +95,10 @@ class ApiRouteHandlerTest extends TestCase
         }
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ApiRouteHandler::processApi
-     */
     public function testProcessApiModelNotFoundException(): void
     {
         $request = Request::create('/api/test');
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
 
         $handler->expects($this->once())
             ->method('handle')
@@ -123,14 +113,10 @@ class ApiRouteHandlerTest extends TestCase
         $this->assertEquals('{"message":"Not Found"}', (string) $response->getBody());
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ApiRouteHandler::processApi
-     */
     public function testProcessApiHttpException(): void
     {
         $request = Request::create('/api/test');
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
 
         $handler->expects($this->once())
             ->method('handle')
@@ -145,15 +131,11 @@ class ApiRouteHandlerTest extends TestCase
         $this->assertEquals('{"message":"Not Found"}', (string) $response->getBody());
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ApiRouteHandler::processApi
-     */
     public function testProcessGenericException(): void
     {
         $e = new Exception();
         $request = Request::create('/api/test');
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $errorHandler = $this->createMock(Handler::class);
         $this->setExpects($errorHandler, 'exceptionHandler', [$e, false], '', $this->once());
         $this->app->instance('error.handler', $errorHandler);

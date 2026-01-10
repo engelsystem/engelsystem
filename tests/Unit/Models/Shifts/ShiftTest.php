@@ -16,17 +16,27 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\Tag;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
 use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class ShiftTest extends ModelTest
+#[CoversMethod(Shift::class, 'shiftType')]
+#[CoversMethod(Shift::class, 'location')]
+#[CoversMethod(Shift::class, 'createdBy')]
+#[CoversMethod(Shift::class, 'updatedBy')]
+#[CoversMethod(Shift::class, 'neededAngelTypes')]
+#[CoversMethod(Shift::class, 'schedule')]
+#[CoversMethod(Shift::class, 'scheduleShift')]
+#[CoversMethod(Shift::class, 'shiftEntries')]
+#[CoversMethod(Shift::class, 'scopeNeedsUsers')]
+#[CoversMethod(Shift::class, 'nextShift')]
+#[CoversMethod(Shift::class, 'previousShift')]
+#[CoversMethod(Shift::class, 'isNightShift')]
+#[CoversMethod(Shift::class, 'getNightShiftMultiplier')]
+#[CoversMethod(Shift::class, 'tags')]
+class ShiftTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::shiftType
-     * @covers \Engelsystem\Models\Shifts\Shift::location
-     * @covers \Engelsystem\Models\Shifts\Shift::createdBy
-     * @covers \Engelsystem\Models\Shifts\Shift::updatedBy
-     */
     public function testShiftType(): void
     {
         /** @var User $user1 */
@@ -60,9 +70,6 @@ class ShiftTest extends ModelTest
         $this->assertEquals($user2->id, $model->updatedBy->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::neededAngelTypes
-     */
     public function testNeededAngelTypes(): void
     {
         /** @var Collection|Shift[] $shifts */
@@ -82,9 +89,6 @@ class ShiftTest extends ModelTest
         $this->assertEquals(4, Shift::find(3)->neededAngelTypes->first()->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::schedule
-     */
     public function testSchedule(): void
     {
         /** @var Schedule $schedule */
@@ -101,9 +105,6 @@ class ShiftTest extends ModelTest
         $this->assertEquals(1, Shift::find(3)->schedule->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::scheduleShift
-     */
     public function testScheduleShift(): void
     {
         /** @var Schedule $schedule */
@@ -121,9 +122,6 @@ class ShiftTest extends ModelTest
         $this->assertNull(Shift::find(4)->scheduleShift?->guid);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::shiftEntries
-     */
     public function testShiftEntries(): void
     {
         /** @var Shift $shift */
@@ -135,9 +133,6 @@ class ShiftTest extends ModelTest
         $this->assertCount(5, $shift->shiftEntries);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::scopeNeedsUsers
-     */
     public function testScopeNeedsUsers(): void
     {
         /** @var AngelType $angelType */
@@ -155,9 +150,6 @@ class ShiftTest extends ModelTest
         $this->assertCount(1, Shift::scopes('needsUsers')->get());
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::scopeNeedsUsers
-     */
     public function testScopeNeedsUsersFromSchedule(): void
     {
         /** @var Schedule $schedule1 */
@@ -197,9 +189,6 @@ class ShiftTest extends ModelTest
         $this->assertNotContains($shift5->id, $shifts, 'Empty shift selected');
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::nextShift
-     */
     public function testNextShift(): void
     {
         $location = Location::factory()->create();
@@ -228,9 +217,6 @@ class ShiftTest extends ModelTest
         $this->assertNull($otherShift->nextShift());
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::previousShift
-     */
     public function testPreviousShift(): void
     {
         $location = Location::factory()->create();
@@ -259,9 +245,6 @@ class ShiftTest extends ModelTest
         $this->assertNull($otherShift->previousShift());
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::isNightShift
-     */
     public function testIsNightShiftDisabled(): void
     {
         $config = new Config(['night_shifts' => [
@@ -284,7 +267,7 @@ class ShiftTest extends ModelTest
     /**
      * @return array{0: string, 1: string, 2: boolean}[]
      */
-    public function nightShiftData(): array
+    public static function nightShiftData(): array
     {
         // $start, $end, $isNightShift
         return [
@@ -311,10 +294,7 @@ class ShiftTest extends ModelTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Models\Shifts\Shift::isNightShift
-     * @dataProvider nightShiftData
-     */
+    #[DataProvider('nightShiftData')]
     public function testIsNightShiftEnabled(string $start, string $end, bool $isNightShift): void
     {
         $config = new Config(['night_shifts' => [
@@ -333,9 +313,6 @@ class ShiftTest extends ModelTest
         $this->assertEquals($isNightShift, $shift->isNightShift());
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::getNightShiftMultiplier
-     */
     public function testGetNightShiftMultiplier(): void
     {
         $config = new Config(['night_shifts' => [
@@ -357,9 +334,6 @@ class ShiftTest extends ModelTest
         $this->assertEquals(1, $shift->getNightShiftMultiplier());
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Shift::tags
-     */
     public function testTags(): void
     {
         $user = User::factory()->create();
