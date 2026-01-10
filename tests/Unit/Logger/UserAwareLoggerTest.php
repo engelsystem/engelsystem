@@ -10,35 +10,42 @@ use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\LogLevel;
 
+#[CoversMethod(UserAwareLogger::class, 'createEntry')]
+#[CoversMethod(UserAwareLogger::class, 'setAuth')]
 class UserAwareLoggerTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Logger\UserAwareLogger::createEntry
-     * @covers \Engelsystem\Logger\UserAwareLogger::setAuth
-     */
     public function testLog(): void
     {
         $this->initDatabase(); // To be able to run the test by itself
 
         $user = User::factory(['id' => 1, 'name' => 'admin'])->make();
 
-        /** @var LogEntry|MockObject $logEntry */
         $logEntry = $this->getMockBuilder(LogEntry::class)
-            ->addMethods(['create'])
+            ->onlyMethods(['__call'])
             ->getMock();
-        $logEntry->expects($this->exactly(2))
-            ->method('create')
-            ->withConsecutive(
-                [['level' => LogLevel::INFO, 'message' => 'Some more informational foo']],
-                [['level' => LogLevel::INFO, 'message' => 'Some even more informational bar', 'user_id' => 1]]
-            );
+        $matcher = $this->exactly(2);
+        $logEntry->expects($matcher)
+            ->method('__call')->willReturnCallback(function ($method, $parameters) use ($matcher): void {
+                $this->assertSame('create', $method);
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame([
+                        'level' => LogLevel::INFO,
+                        'message' => 'Some more informational foo',
+                    ], $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame([
+                        'level' => LogLevel::INFO,
+                        'message' => 'Some even more informational bar', 'user_id' => 1,
+                    ], $parameters[0]);
+                }
+            });
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $auth->expects($this->exactly(2))
             ->method('user')

@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Mail\Transport;
 
 use Engelsystem\Mail\Transport\LogTransport;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
 use Symfony\Component\Mime\Email;
 
+#[CoversMethod(LogTransport::class, '__construct')]
+#[CoversMethod(LogTransport::class, 'doSend')]
+#[CoversMethod(LogTransport::class, '__toString')]
 class LogTransportTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Mail\Transport\LogTransport::__construct
-     * @covers \Engelsystem\Mail\Transport\LogTransport::doSend
-     */
     public function testSend(): void
     {
         $logger = new TestLogger();
@@ -32,13 +31,9 @@ class LogTransportTest extends TestCase
         $this->assertTrue($logger->hasDebugThatContains('Send mail to'));
     }
 
-    /**
-     * @covers \Engelsystem\Mail\Transport\LogTransport::__toString
-     */
     public function testToString(): void
     {
-        /** @var LoggerInterface|MockObject $logger */
-        $logger = $this->getMockForAbstractClass(LoggerInterface::class);
+        $logger = $this->getStubBuilder(LoggerInterface::class)->getStub();
 
         $transport = new LogTransport($logger);
         $this->assertEquals('log://', (string) $transport);

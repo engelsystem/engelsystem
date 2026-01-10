@@ -5,29 +5,23 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Middleware\SessionHandler;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
+#[CoversMethod(SessionHandler::class, '__construct')]
+#[CoversMethod(SessionHandler::class, 'process')]
 class SessionHandlerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\SessionHandler::__construct
-     * @covers \Engelsystem\Middleware\SessionHandler::process
-     */
     public function testProcess(): void
     {
-        /** @var NativeSessionStorage|MockObject $sessionStorage */
         $sessionStorage = $this->createMock(NativeSessionStorage::class);
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->getMockForAbstractClass(ResponseInterface::class);
+        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
+        $response = $this->getStubBuilder(ResponseInterface::class)->getStub();
 
         $handler->expects($this->exactly(2))
             ->method('handle')
@@ -47,7 +41,6 @@ class SessionHandlerTest extends TestCase
             ->method('getName')
             ->willReturn('SESSION');
 
-        /** @var SessionHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(SessionHandler::class)
             ->setConstructorArgs([$sessionStorage, ['/foo']])
             ->onlyMethods(['destroyNative'])

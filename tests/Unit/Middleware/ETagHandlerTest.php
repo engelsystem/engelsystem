@@ -8,18 +8,15 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Middleware\ETagHandler;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Server\RequestHandlerInterface;
 
+#[CoversMethod(ETagHandler::class, 'process')]
 class ETagHandlerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\ETagHandler::process
-     */
     public function testRegister(): void
     {
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $request = Request::create('https://localhost')
             ->withHeader('If-None-Match', 'FooBarBaz');
         $originalResponse = (new Response())
@@ -38,13 +35,9 @@ class ETagHandlerTest extends TestCase
         $this->assertEquals('', (string) $response->getBody());
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ETagHandler::process
-     */
     public function testRegisterNoChange(): void
     {
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $request = Request::create('https://localhost');
         $originalResponse = new Response();
         $this->setExpects($handler, 'handle', [$request], $originalResponse);

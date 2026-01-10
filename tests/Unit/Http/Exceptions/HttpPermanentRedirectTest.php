@@ -6,13 +6,12 @@ namespace Engelsystem\Test\Unit\Http\Exceptions;
 
 use Engelsystem\Http\Exceptions\HttpPermanentRedirect;
 use Engelsystem\Http\Exceptions\HttpRedirect;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(HttpPermanentRedirect::class, '__construct')]
 class HttpPermanentRedirectTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Exceptions\HttpPermanentRedirect::__construct
-     */
     public function testConstruct(): void
     {
         $exception = new HttpPermanentRedirect('https://lorem.ipsum/foo/bar');

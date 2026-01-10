@@ -7,13 +7,12 @@ namespace Engelsystem\Test\Unit\Helpers;
 use Engelsystem\Application;
 use Engelsystem\Helpers\Version;
 use Engelsystem\Helpers\VersionServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class VersionServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(VersionServiceProvider::class, 'register')]
+class VersionServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\VersionServiceProvider::register
-     */
     public function testRegister(): void
     {
         $app = new Application();

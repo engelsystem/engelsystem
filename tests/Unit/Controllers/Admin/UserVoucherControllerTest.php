@@ -13,24 +13,28 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class UserVoucherControllerTest extends ControllerTest
+#[CoversMethod(UserVoucherController::class, 'editVoucher')]
+#[CoversMethod(UserVoucherController::class, 'checkActive')]
+#[CoversMethod(UserVoucherController::class, '__construct')]
+#[CoversMethod(UserVoucherController::class, 'saveVoucher')]
+#[AllowMockObjectsWithoutExpectations]
+class UserVoucherControllerTest extends ControllerTestCase
 {
-    protected Authenticator|MockObject $auth;
+    protected Authenticator&MockObject $auth;
 
-    protected Redirector|MockObject $redirect;
+    protected Redirector&MockObject $redirect;
 
     protected User $user;
 
     protected UserVoucherController $controller;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::editVoucher
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::checkActive
-     */
     public function testVoucherEnabled(): void
     {
         $this->config->set('enable_voucher', false);
@@ -39,9 +43,6 @@ class UserVoucherControllerTest extends ControllerTest
         $this->controller->editVoucher($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::editVoucher
-     */
     public function testShowEditVoucherWithUnknownUserIdThrows(): void
     {
         $request = $this->request->withAttribute('user_id', 1234);
@@ -49,12 +50,6 @@ class UserVoucherControllerTest extends ControllerTest
         $this->controller->editVoucher($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::editVoucher
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::__construct
-     *
-     * @uses \Engelsystem\Helpers\UserVouchers::eligibleVoucherCount
-     */
     public function testShowEditVoucher(): void
     {
         $request = $this->request->withAttribute('user_id', $this->user->id);
@@ -78,9 +73,6 @@ class UserVoucherControllerTest extends ControllerTest
         $this->controller->editVoucher($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::saveVoucher
-     */
     public function testSaveVoucherWithUnknownUserIdThrows(): void
     {
         $request = $this->request->withAttribute('user_id', 1234)->withParsedBody([]);
@@ -88,11 +80,7 @@ class UserVoucherControllerTest extends ControllerTest
         $this->controller->saveVoucher($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::saveVoucher
-     *
-     * @dataProvider invalidSaveVoucherParams
-     */
+    #[DataProvider('invalidSaveVoucherParams')]
     public function testSaveVoucherWithInvalidParamsThrows(array $body): void
     {
         $request = $this->request->withAttribute('user_id', $this->user->id)->withParsedBody($body);
@@ -100,9 +88,6 @@ class UserVoucherControllerTest extends ControllerTest
         $this->controller->saveVoucher($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::saveVoucher
-     */
     public function testSaveVoucher(): void
     {
         $got_voucher = 4;
@@ -122,9 +107,6 @@ class UserVoucherControllerTest extends ControllerTest
         $this->assertEquals(4, $this->user->state->got_voucher);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserVoucherController::saveVoucher
-     */
     public function testSaveVoucherJsonResponce(): void
     {
         $got_voucher = 4;
@@ -149,7 +131,7 @@ class UserVoucherControllerTest extends ControllerTest
     /**
      * @return array[]
      */
-    public function invalidSaveVoucherParams(): array
+    public static function invalidSaveVoucherParams(): array
     {
         return [
             // missing got_voucher

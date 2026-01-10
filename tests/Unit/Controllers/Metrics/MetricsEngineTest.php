@@ -6,17 +6,20 @@ namespace Engelsystem\Test\Unit\Controllers\Metrics;
 
 use Engelsystem\Controllers\Metrics\MetricsEngine;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(MetricsEngine::class, 'escape')]
+#[CoversMethod(MetricsEngine::class, 'formatData')]
+#[CoversMethod(MetricsEngine::class, 'formatValue')]
+#[CoversMethod(MetricsEngine::class, 'get')]
+#[CoversMethod(MetricsEngine::class, 'renderLabels')]
+#[CoversMethod(MetricsEngine::class, 'renderValue')]
+#[CoversMethod(MetricsEngine::class, 'expandData')]
+#[CoversMethod(MetricsEngine::class, 'formatHistogram')]
+#[CoversMethod(MetricsEngine::class, 'canRender')]
+#[CoversMethod(MetricsEngine::class, 'share')]
 class MetricsEngineTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::escape
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::formatData
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::formatValue
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::get
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::renderLabels
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::renderValue
-     */
     public function testGet(): void
     {
         $engine = new MetricsEngine();
@@ -57,11 +60,6 @@ class MetricsEngineTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::expandData
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::formatHistogram
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::get
-     */
     public function testGetHistogram(): void
     {
         $engine = new MetricsEngine();
@@ -140,9 +138,6 @@ EOD,
         );
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::canRender
-     */
     public function testCanRender(): void
     {
         $engine = new MetricsEngine();
@@ -152,9 +147,6 @@ EOD,
         $this->assertTrue($engine->canRender('/metrics'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::share
-     */
     public function testShare(): void
     {
         $engine = new MetricsEngine();

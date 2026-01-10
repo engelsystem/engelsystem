@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd"
     bootstrap="./includes/autoload.php"
-    forceCoversAnnotation="true"
     colors="true"
->
+    cacheDirectory=".phpunit.cache"
+    requireCoverageMetadata="true"
+    displayDetailsOnAllIssues="true"
+    failOnAllIssues="true">
     <testsuites>
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
@@ -14,9 +16,9 @@
             <directory>tests/Unit</directory>
         </testsuite>
     </testsuites>
-    <coverage>
+    <source>
         <include>
             <directory>src</directory>
         </include>
-    </coverage>
+    </source>
 </phpunit>

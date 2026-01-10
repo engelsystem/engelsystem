@@ -6,31 +6,33 @@ namespace Engelsystem\Test\Unit\Http\Validation;
 
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
+use Engelsystem\Http\Validation\ValidatesRequest;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Test\Unit\Http\Validation\Stub\ValidatesRequestImplementation;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(ValidatesRequest::class, 'validate')]
+#[CoversMethod(ValidatesRequest::class, 'setValidator')]
 class ValidatesRequestTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\ValidatesRequest::validate
-     * @covers \Engelsystem\Http\Validation\ValidatesRequest::setValidator
-     */
     public function testValidate(): void
     {
-        /** @var Validator|MockObject $validator */
         $validator = $this->createMock(Validator::class);
-        $validator->expects($this->exactly(2))
-            ->method('validate')
-            ->withConsecutive(
-                [['foo' => 'bar'], ['foo' => 'required']],
-                [[], ['foo' => 'required']]
-            )
-            ->willReturnOnConsecutiveCalls(
-                true,
-                false
-            );
+        $matcher = $this->exactly(2);
+        $validator->expects($matcher)
+            ->method('validate')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(['foo' => 'bar'], $parameters[0]);
+                    $this->assertSame(['foo' => 'required'], $parameters[1]);
+                    return true;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame([], $parameters[0]);
+                    $this->assertSame(['foo' => 'required'], $parameters[1]);
+                    return false;
+                }
+            });
         $validator->expects($this->once())
             ->method('getData')
             ->willReturn(['foo' => 'bar']);

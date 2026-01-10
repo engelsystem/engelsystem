@@ -6,15 +6,16 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Renderer\Twig\Extensions\Develop;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Symfony\Component\VarDumper\VarDumper;
 
-class DevelopTest extends ExtensionTest
+#[CoversMethod(Develop::class, '__construct')]
+#[CoversMethod(Develop::class, 'getFunctions')]
+#[CoversMethod(Develop::class, 'dump')]
+#[CoversMethod(Develop::class, 'setDumper')]
+#[CoversMethod(Develop::class, 'dd')]
+class DevelopTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::getFunctions
-     */
     public function testGetGlobals(): void
     {
         $config = new Config();
@@ -29,10 +30,6 @@ class DevelopTest extends ExtensionTest
         $this->assertExtensionExists('dd', [$extension, 'dd'], $functions);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::dump
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::setDumper
-     */
     public function testDump(): void
     {
         $config = new Config();
@@ -48,12 +45,8 @@ class DevelopTest extends ExtensionTest
         $this->assertEquals('Foo1234', $return);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Develop::dd
-     */
     public function testDD(): void
     {
-        /** @var Develop|MockObject $extension */
         $extension = $this->getMockBuilder(Develop::class)
             ->onlyMethods(['exit', 'flushBuffers', 'dump'])
             ->disableOriginalConstructor()

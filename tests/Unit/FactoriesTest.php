@@ -32,7 +32,10 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversNothing]
 class FactoriesTest extends TestCase
 {
     use HasDatabase;
@@ -40,7 +43,7 @@ class FactoriesTest extends TestCase
     /**
      * @return string[][]
      */
-    public function factoriesProvider(): array
+    public static function factoriesProvider(): array
     {
         return [
             [AngelType::class],
@@ -76,36 +79,9 @@ class FactoriesTest extends TestCase
     /**
      * Test all model factories
      *
-     * @covers       \Database\Factories\Engelsystem\Models\AngelTypeFactory
-     * @covers       \Database\Factories\Engelsystem\Models\FaqFactory
-     * @covers       \Database\Factories\Engelsystem\Models\GroupFactory
-     * @covers       \Database\Factories\Engelsystem\Models\LocationFactory
-     * @covers       \Database\Factories\Engelsystem\Models\LogEntryFactory
-     * @covers       \Database\Factories\Engelsystem\Models\MessageFactory
-     * @covers       \Database\Factories\Engelsystem\Models\NewsCommentFactory
-     * @covers       \Database\Factories\Engelsystem\Models\NewsFactory
-     * @covers       \Database\Factories\Engelsystem\Models\OAuthFactory
-     * @covers       \Database\Factories\Engelsystem\Models\PrivilegeFactory
-     * @covers       \Database\Factories\Engelsystem\Models\QuestionFactory
-     * @covers       \Database\Factories\Engelsystem\Models\SessionFactory
-     * @covers       \Database\Factories\Engelsystem\Models\Shifts\NeededAngelTypeFactory
-     * @covers       \Database\Factories\Engelsystem\Models\Shifts\ScheduleFactory
-     * @covers       \Database\Factories\Engelsystem\Models\Shifts\ShiftEntryFactory
-     * @covers       \Database\Factories\Engelsystem\Models\Shifts\ShiftFactory
-     * @covers       \Database\Factories\Engelsystem\Models\Shifts\ShiftTypeFactory
-     * @covers       \Database\Factories\Engelsystem\Models\TagFactory
-     * @covers       \Database\Factories\Engelsystem\Models\UserAngelTypeFactory
-     * @covers       \Database\Factories\Engelsystem\Models\User\ContactFactory
-     * @covers       \Database\Factories\Engelsystem\Models\User\LicenseFactory
-     * @covers       \Database\Factories\Engelsystem\Models\User\PasswordResetFactory
-     * @covers       \Database\Factories\Engelsystem\Models\User\PersonalDataFactory
-     * @covers       \Database\Factories\Engelsystem\Models\User\SettingsFactory
-     * @covers       \Database\Factories\Engelsystem\Models\User\StateFactory
-     * @covers       \Database\Factories\Engelsystem\Models\User\UserFactory
-     * @covers       \Database\Factories\Engelsystem\Models\WorklogFactory
      *
-     * @dataProvider factoriesProvider
      */
+    #[DataProvider('factoriesProvider')]
     public function testFactories(string $model): void
     {
         $this->initDatabase();
@@ -114,9 +90,6 @@ class FactoriesTest extends TestCase
         $this->assertInstanceOf(Model::class, $instance);
     }
 
-    /**
-     * @covers \Database\Factories\Engelsystem\Models\User\StateFactory
-     */
     public function testStateFactoryArrived(): void
     {
         $this->initDatabase();

@@ -10,22 +10,19 @@ use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\Test\TestLogger;
 
+#[CoversMethod(Users::class, 'created')]
+#[CoversMethod(Users::class, '__construct')]
 class UsersTest extends TestCase
 {
     use HasDatabase;
 
     protected TestLogger $log;
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Users::created
-     * @covers \Engelsystem\Events\Listener\Users::__construct
-     */
     public function testCreated(): void
     {
-        /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->createMock(EngelsystemMailer::class);
         /** @var User $user */
         $user = User::factory()->create();

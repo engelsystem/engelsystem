@@ -7,13 +7,13 @@ namespace Engelsystem\Test\Unit\Models\User;
 use Carbon\Carbon;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UserStateTest extends ModelTest
+#[CoversMethod(State::class, 'getArrivedAttribute')]
+#[CoversMethod(State::class, 'scopeWhereArrived')]
+class UserStateTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\User\State::getArrivedAttribute
-     */
     public function testGetArrivedAttribute(): void
     {
         $state = new State();
@@ -23,9 +23,6 @@ class UserStateTest extends ModelTest
         $this->assertTrue($state->arrived);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::scopeWhereArrived
-     */
     public function testScopeWhereArrived(): void
     {
         $state = State::factory()->create([
@@ -40,9 +37,6 @@ class UserStateTest extends ModelTest
         $this->assertCount(0, State::whereArrived(false)->get());
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::getForceActiveAttribute
-     */
     public function testGetForceActiveAttribute(): void
     {
 
@@ -54,9 +48,6 @@ class UserStateTest extends ModelTest
         $this->assertTrue($state->force_active);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::scopeWhereForceActive
-     */
     public function testScopeWhereForceActive(): void
     {
         $user = User::factory()->create();
@@ -72,9 +63,6 @@ class UserStateTest extends ModelTest
         $this->assertCount(0, State::whereForceActive(false)->get());
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::forceActiveBy
-     */
     public function testForceActiveBy(): void
     {
         $user = User::factory()->create();
@@ -92,9 +80,6 @@ class UserStateTest extends ModelTest
         $this->assertEquals($force_active_by->id, $model->forceActiveBy->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::getForceFoodAttribute
-     */
     public function testGetForceFoodAttribute(): void
     {
 
@@ -106,9 +91,6 @@ class UserStateTest extends ModelTest
         $this->assertTrue($state->force_food);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::scopeWhereForceFood
-     */
     public function testScopeWhereForceFood(): void
     {
         $user = User::factory()->create();
@@ -124,9 +106,6 @@ class UserStateTest extends ModelTest
         $this->assertCount(0, State::whereForceFood(false)->get());
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::forceFoodBy
-     */
     public function testForceFoodBy(): void
     {
         $user = User::factory()->create();
@@ -144,9 +123,6 @@ class UserStateTest extends ModelTest
         $this->assertEquals($force_food_by->id, $model->forceFoodBy->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::getGotGoodieAttribute
-     */
     public function testGetGotGoodieAttribute(): void
     {
 
@@ -158,9 +134,6 @@ class UserStateTest extends ModelTest
         $this->assertTrue($state->got_goodie);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::scopeWhereGotGoodie
-     */
     public function testScopeWhereGotGoodie(): void
     {
         $user = User::factory()->create();
@@ -176,9 +149,6 @@ class UserStateTest extends ModelTest
         $this->assertCount(0, State::whereGotGoodie(false)->get());
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::gotGoodieBy
-     */
     public function testGotGoodieBy(): void
     {
         $user = User::factory()->create();

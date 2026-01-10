@@ -8,14 +8,13 @@ use Engelsystem\Application;
 use Engelsystem\Http\Validation\ValidationServiceProvider;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Test\Unit\Http\Validation\Stub\ValidatesRequestImplementation;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use stdClass;
 
-class ValidationServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(ValidationServiceProvider::class, 'register')]
+class ValidationServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\ValidationServiceProvider::register
-     */
     public function testRegister(): void
     {
         $app = new Application();

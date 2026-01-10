@@ -20,22 +20,26 @@ use Engelsystem\Test\Unit\HasDatabase;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
 
-class AngelTypesControllerTest extends ControllerTest
+#[CoversMethod(AngelTypesController::class, 'hasPermission')]
+#[CoversMethod(AngelTypesController::class, '__construct')]
+#[CoversMethod(AngelTypesController::class, 'about')]
+#[CoversMethod(AngelTypesController::class, 'qrCode')]
+#[CoversMethod(AngelTypesController::class, 'join')]
+#[CoversMethod(AngelTypesController::class, 'qrJoinEnabled')]
+#[CoversMethod(AngelTypesController::class, 'getAngelType')]
+#[AllowMockObjectsWithoutExpectations]
+class AngelTypesControllerTest extends ControllerTestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::hasPermission
-     */
     public function testHasPermission(): void
     {
-        /** @var Response|MockObject $response */
-        $response = $this->createMock(Response::class);
-        /** @var Authenticator|MockObject $auth */
+        $response = $this->createStub(Response::class);
         $auth = $this->createMock(Authenticator::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
@@ -54,15 +58,9 @@ class AngelTypesControllerTest extends ControllerTest
         $this->assertTrue($controller->hasPermission($request, 'qrCode'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::__construct
-     * @covers \Engelsystem\Controllers\AngelTypesController::about
-     */
     public function testIndex(): void
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
 
         $this->setExpects(
@@ -75,14 +73,9 @@ class AngelTypesControllerTest extends ControllerTest
         $controller->about();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::qrCode
-     */
     public function testQrCode(): void
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
@@ -95,19 +88,10 @@ class AngelTypesControllerTest extends ControllerTest
         $controller->qrCode($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::qrCode
-     * @covers \Engelsystem\Controllers\AngelTypesController::join
-     * @covers \Engelsystem\Controllers\AngelTypesController::qrJoinEnabled
-     * @covers \Engelsystem\Controllers\AngelTypesController::getAngelType
-     */
     public function testQrCodePost(): void
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        /** @var UrlGenerator|MockObject $urlGenerator */
         $urlGenerator = $this->createMock(UrlGenerator::class);
         $this->app->instance('http.urlGenerator', $urlGenerator);
         /** @var User $user */
@@ -116,7 +100,6 @@ class AngelTypesControllerTest extends ControllerTest
         $user2 = User::factory()->create();
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
-        /** @var Redirector $redirect */
         $redirect = $this->createMock(Redirector::class);
         $this->app->instance('redirect', $redirect);
         $log = new TestLogger();
@@ -189,12 +172,8 @@ class AngelTypesControllerTest extends ControllerTest
         $this->assertEquals($user->id, $userAngelType->pivot->confirm_user_id);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::join
-     */
     public function testJoinDecodeError(): void
     {
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
@@ -209,12 +188,8 @@ class AngelTypesControllerTest extends ControllerTest
         $controller->join($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::join
-     */
     public function testJoinInvalidSignatureError(): void
     {
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
@@ -232,12 +207,8 @@ class AngelTypesControllerTest extends ControllerTest
         $controller->join($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::join
-     */
     public function testJoinDecodeErrorMissingParts(): void
     {
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
@@ -253,12 +224,8 @@ class AngelTypesControllerTest extends ControllerTest
         $controller->join($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::join
-     */
     public function testJoinDecodeExpired(): void
     {
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
@@ -279,12 +246,8 @@ class AngelTypesControllerTest extends ControllerTest
         $controller->join($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::join
-     */
     public function testJoinTokenMismatch(): void
     {
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
@@ -304,16 +267,10 @@ class AngelTypesControllerTest extends ControllerTest
         $controller->join($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::getAngelType
-     */
     public function testGetAngelTypeNotFound(): void
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
 
         $controller = new AngelTypesController($response, $this->app->get(Config::class), $auth, new NullLogger());
@@ -322,16 +279,10 @@ class AngelTypesControllerTest extends ControllerTest
         $controller->qrCode($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AngelTypesController::qrJoinEnabled
-     */
     public function testQrJoinEnabledDisabled(): void
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
         $this->config->set('join_qr_code', false);
 

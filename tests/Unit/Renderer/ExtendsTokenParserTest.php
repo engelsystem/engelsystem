@@ -6,29 +6,26 @@ namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\ExtendsTokenParser;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Twig\Environment as Twig;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 
+#[CoversMethod(ExtendsTokenParser::class, '__construct')]
+#[CoversMethod(ExtendsTokenParser::class, 'getTag')]
+#[CoversMethod(ExtendsTokenParser::class, 'parse')]
+#[CoversMethod(ExtendsTokenParser::class, 'getNextParentFile')]
 class ExtendsTokenParserTest extends TestCase
 {
     protected ExtendsTokenParser $parser;
     protected Twig $twig;
 
-    /**
-     * @covers \Engelsystem\Renderer\ExtendsTokenParser::__construct
-     * @covers \Engelsystem\Renderer\ExtendsTokenParser::getTag
-     */
     public function testGetTag(): void
     {
         $this->assertEquals('extends', $this->parser->getTag());
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\ExtendsTokenParser::parse
-     * @covers \Engelsystem\Renderer\ExtendsTokenParser::getNextParentFile
-     */
     public function testParseNormalExtends(): void
     {
         $template = $this->twig->load('extends.twig');
@@ -37,10 +34,6 @@ class ExtendsTokenParserTest extends TestCase
         $this->assertStringContainsString('Extended template content - Extends Content', $output);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\ExtendsTokenParser::parse
-     * @covers \Engelsystem\Renderer\ExtendsTokenParser::getNextParentFile
-     */
     public function testParseWithInheritance(): void
     {
         $template = $this->twig->load('inheritance.twig');
@@ -49,10 +42,6 @@ class ExtendsTokenParserTest extends TestCase
         $this->assertStringContainsString('Base template content - B Content - A Content', $output);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\ExtendsTokenParser::parse
-     * @covers \Engelsystem\Renderer\ExtendsTokenParser::getNextParentFile
-     */
     public function testParseExtendsThrowsError(): void
     {
         $this->expectException(SyntaxError::class);

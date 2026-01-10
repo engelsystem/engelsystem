@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
+use Engelsystem\Controllers\Admin\BaseConfigController;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Test\Unit\Controllers\Admin\Stub\BaseConfigControllerImplementation;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class BaseConfigControllerTest extends ControllerTest
+#[AllowMockObjectsWithoutExpectations]
+#[CoversMethod(BaseConfigController::class, '__construct')]
+#[CoversMethod(BaseConfigController::class, 'getPageData')]
+#[CoversMethod(BaseConfigController::class, 'parseOptions')]
+class BaseConfigControllerTest extends ControllerTestCase
 {
     protected array $options = [
         'test' => [
@@ -49,9 +56,6 @@ class BaseConfigControllerTest extends ControllerTest
         ],
     ];
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\BaseConfigController::__construct
-     */
     public function testConstruct(): void
     {
         $controller = new BaseConfigControllerImplementation();
@@ -59,18 +63,12 @@ class BaseConfigControllerTest extends ControllerTest
         $this->assertEquals(['test', 'bar', 'foo', 'lorem'], array_keys($controller->getOptions()));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\BaseConfigController::__construct
-     */
     public function testDefaultPermissions(): void
     {
         $controller = new BaseConfigControllerImplementation();
         $this->assertEquals(['config.edit'], $controller->getPermissions());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\BaseConfigController::getPageData
-     */
     public function testGetPageData(): void
     {
         $controller = new BaseConfigControllerImplementation();
@@ -90,9 +88,6 @@ class BaseConfigControllerTest extends ControllerTest
         $this->assertArrayHasKey('test', $pageData['options']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\BaseConfigController::parseOptions
-     */
     public function testParseOptions(): void
     {
         $controller = new BaseConfigControllerImplementation();
@@ -137,9 +132,8 @@ class BaseConfigControllerTest extends ControllerTest
         $this->config->set('config_options', $this->options);
         $this->config->set('env_config', ['SOME_CONFIG_FROM_ENV' => 'I am the env!']);
 
-        $url = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
-        $url->expects($this->any())
-            ->method('to')
+        $url = $this->createStub(UrlGeneratorInterface::class);
+        $url->method('to')
             ->willReturnCallback(function (string $path, array $parameters = []) {
                 return $path . ($parameters ? '?' . http_build_query($parameters) : '');
             });

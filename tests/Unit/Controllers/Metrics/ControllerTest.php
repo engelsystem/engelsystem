@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Metrics;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Metrics\Controller;
 use Engelsystem\Controllers\Metrics\MetricsEngine;
@@ -15,28 +14,27 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\ServerBag;
 
+#[CoversMethod(Controller::class, '__construct')]
+#[CoversMethod(Controller::class, 'metrics')]
+#[CoversMethod(Controller::class, 'formatStats')]
+#[CoversMethod(Controller::class, 'checkAuth')]
+#[AllowMockObjectsWithoutExpectations]
 class ControllerTest extends TestCase
 {
-    use ArraySubsetAsserts;
-
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Controller::__construct
-     * @covers \Engelsystem\Controllers\Metrics\Controller::metrics
-     * @covers \Engelsystem\Controllers\Metrics\Controller::formatStats
-     * @covers \Engelsystem\Controllers\Metrics\Controller::checkAuth
-     */
     public function testMetrics(): void
     {
-        /** @var Response|MockObject $response */
-        /** @var Request|MockObject $request */
-        /** @var MetricsEngine|MockObject $engine */
-        /** @var Stats|MockObject $stats */
+        /** @var Response&MockObject $response */
+        /** @var Request&MockObject $request */
+        /** @var MetricsEngine&MockObject $engine */
+        /** @var Stats&MockObject $stats */
         /** @var Config $config */
-        /** @var Version|MockObject $version */
+        /** @var Version&MockObject $version */
         list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
 
         $request->server = new ServerBag();
@@ -69,11 +67,11 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('log_entries', $data);
                 $this->assertArrayHasKey('scrape_duration_seconds', $data);
 
-                $this->assertArraySubset(['tshirt_sizes' => [
+                $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys([
                     'type' => 'gauge',
                     ['labels' => ['size' => 'L'], 2],
                     ['labels' => ['size' => 'XL'], 0],
-                ]], $data);
+                ], $data['tshirt_sizes'], ['type', 0, 1]);
 
                 return 'metrics return';
             });
@@ -89,57 +87,79 @@ class ControllerTest extends TestCase
 
         $stats->expects($this->exactly(15))
             ->method('licenses')
-            ->withConsecutive(
-                ['has_car'],
-                ['forklift'],
-                ['forklift'],
-                ['car'],
-                ['car', true],
-                ['3.5t'],
-                ['3.5t', true],
-                ['7.5t'],
-                ['7.5t', true],
-                ['12t'],
-                ['12t', true],
-                ['ifsg_light'],
-                ['ifsg_light', true],
-                ['ifsg'],
-                ['ifsg', true],
-            )
-            ->willReturnOnConsecutiveCalls(6, 3, 15, 9, 7, 1, 5, 4, 3, 5, 9, 2, 1, 7, 8);
+            ->willReturnMap([
+               ['has_car', false, 6],
+               ['forklift', false, 3],
+               ['forklift', true, 15],
+               ['car', false, 9],
+               ['car', true, 7],
+               ['3.5t', false, 1],
+               ['3.5t', true, 5],
+               ['7.5t', false, 4],
+               ['7.5t', true, 3],
+               ['12t', false, 5],
+               ['12t', true, 9],
+               ['ifsg_light', false, 2],
+               ['ifsg_light', true, 1],
+               ['ifsg', false, 7],
+               ['ifsg', true, 8],
+            ]);
+
         $stats->expects($this->exactly(4))
             ->method('usersState')
-            ->withConsecutive([false, false], [true, false], [false], [true])
-            ->willReturnOnConsecutiveCalls(7, 43, 42, 10);
+            ->willReturnMap([
+                [false, false, 7],
+                [true, false, 43],
+                [false, true, 42],
+                [true, true, 10],
+            ]);
+
         $stats->expects($this->exactly(2))
             ->method('currentlyWorkingUsers')
-            ->withConsecutive([false], [true])
-            ->willReturnOnConsecutiveCalls(10, 1);
-        $stats->expects($this->exactly(3))
+            ->willReturnMap([
+                [false, 10],
+                [true, 1],
+            ]);
+
+        $matcher = $this->exactly(3);
+        $stats->expects($matcher)
             ->method('workSeconds')
-            ->withConsecutive([true, false], [false, false], [null, true])
-            ->willReturnOnConsecutiveCalls(60 * 37, 60 * 251, 60 * 3);
-        $stats->expects($this->exactly(2))
+            ->willReturnMap([
+                [true, false, 60 * 37],
+                [false, false, 60 * 251],
+                [null, true, 60 * 3],
+            ]);
+
+        $matcher = $this->exactly(2);
+        $stats->expects($matcher)
             ->method('announcements')
-            ->withConsecutive([false], [true])
-            ->willReturnOnConsecutiveCalls(18, 7);
-        $stats->expects($this->exactly(2))
+            ->willReturnMap([
+               [false, 18],
+               [true, 7],
+            ]);
+
+        $matcher = $this->exactly(2);
+        $stats->expects($matcher)
             ->method('questions')
-            ->withConsecutive([true], [false])
-            ->willReturnOnConsecutiveCalls(5, 0);
-        $stats->expects($this->exactly(8))
+            ->willReturnMap([
+                [true, 5],
+                [false, 0],
+            ]);
+
+        $matcher = $this->exactly(8);
+        $stats->expects($matcher)
             ->method('logEntries')
-            ->withConsecutive(
-                [LogLevel::EMERGENCY],
-                [LogLevel::ALERT],
-                [LogLevel::CRITICAL],
-                [LogLevel::ERROR],
-                [LogLevel::WARNING],
-                [LogLevel::NOTICE],
-                [LogLevel::INFO],
-                [LogLevel::DEBUG]
-            )
-            ->willReturnOnConsecutiveCalls(0, 1, 0, 5, 999, 4, 55, 3);
+            ->willReturnMap([
+                [LogLevel::EMERGENCY, 0],
+                [LogLevel::ALERT, 1],
+                [LogLevel::CRITICAL, 0],
+                [LogLevel::ERROR, 5],
+                [LogLevel::WARNING, 999],
+                [LogLevel::NOTICE, 4],
+                [LogLevel::INFO, 55],
+                [LogLevel::DEBUG, 3],
+            ]);
+
         $this->setExpects($stats, 'worklogSeconds', null, 39 * 60 * 60);
         $this->setExpects($stats, 'vouchers', null, 17);
         $this->setExpects($stats, 'goodies', null, 3);
@@ -194,17 +214,14 @@ class ControllerTest extends TestCase
         $controller->metrics();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Controller::checkAuth
-     */
     public function testCheckAuth(): void
     {
-        /** @var Response|MockObject $response */
-        /** @var Request|MockObject $request */
-        /** @var MetricsEngine|MockObject $engine */
-        /** @var Stats|MockObject $stats */
+        /** @var Response&MockObject $response */
+        /** @var Request&MockObject $request */
+        /** @var MetricsEngine&MockObject $engine */
+        /** @var Stats&MockObject $stats */
         /** @var Config $config */
-        /** @var Version|MockObject $version */
+        /** @var Version&MockObject $version */
         list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
 
         $request->expects($this->once())
@@ -223,13 +240,9 @@ class ControllerTest extends TestCase
 
     protected function getMocks(): array
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
-        /** @var MetricsEngine|MockObject $engine */
         $engine = $this->createMock(MetricsEngine::class);
-        /** @var Stats|MockObject $stats */
         $stats = $this->createMock(Stats::class);
         $config = new Config();
         $version = $this->createMock(Version::class);

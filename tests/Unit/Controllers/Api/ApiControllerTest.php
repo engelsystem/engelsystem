@@ -6,12 +6,13 @@ namespace Engelsystem\Test\Unit\Controllers\Api;
 
 use Engelsystem\Controllers\Api\ApiController;
 use Engelsystem\Http\Response;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ApiControllerTest extends ApiBaseControllerTest
+#[CoversMethod(ApiController::class, '__construct')]
+#[AllowMockObjectsWithoutExpectations]
+class ApiControllerTest extends ApiBaseControllerTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\ApiController::__construct
-     */
     public function testConstruct(): void
     {
         $controller = new class (new Response('{"some":"json"}')) extends ApiController {

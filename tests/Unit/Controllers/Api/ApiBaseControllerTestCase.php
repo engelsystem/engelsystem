@@ -6,17 +6,16 @@ namespace Engelsystem\Test\Unit\Controllers\Api;
 
 use Engelsystem\Helpers\Uuid;
 use Engelsystem\Http\UrlGeneratorInterface;
-use Engelsystem\Test\Unit\Controllers\ControllerTest as TestCase;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase as TestCase;
 use Illuminate\Support\Str;
 use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
 use League\OpenAPIValidation\PSR7\Exception\ValidationFailed;
 use League\OpenAPIValidation\PSR7\OperationAddress as OpenApiAddress;
 use League\OpenAPIValidation\PSR7\ResponseValidator as OpenApiResponseValidator;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder as OpenApiValidatorBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class ApiBaseControllerTest extends TestCase
+abstract class ApiBaseControllerTestCase extends TestCase
 {
     protected OpenApiResponseValidator $validator;
 
@@ -41,10 +40,8 @@ abstract class ApiBaseControllerTest extends TestCase
             ->fromYamlFile($openApiDefinition)
             ->getResponseValidator();
 
-        /** @var UrlGeneratorInterface|MockObject $url */
-        $url = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
-        $url->expects($this->any())
-            ->method('to')
+        $url = $this->getMockBuilder(UrlGeneratorInterface::class)->getMock();
+        $url->method('to')
             ->willReturnCallback(function (string $path, array $params): string {
                 $query = http_build_query($params);
                 return $path . ($query ? '?' . $query : '');

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Models\User;
 
 use Carbon\Carbon;
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
@@ -28,15 +27,40 @@ use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\Models\Worklog;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class UserTest extends ModelTest
+#[CoversMethod(User::class, 'contact')]
+#[CoversMethod(User::class, 'license')]
+#[CoversMethod(User::class, 'personalData')]
+#[CoversMethod(User::class, 'settings')]
+#[CoversMethod(User::class, 'state')]
+#[CoversMethod(User::class, 'news')]
+#[CoversMethod(User::class, 'groups')]
+#[CoversMethod(User::class, 'isFreeloader')]
+#[CoversMethod(User::class, 'siftEntriesMarkedFreeloaded')]
+#[CoversMethod(User::class, 'userAngelTypes')]
+#[CoversMethod(User::class, 'isAngelTypeSupporter')]
+#[CoversMethod(User::class, 'logs')]
+#[CoversMethod(User::class, 'privileges')]
+#[CoversMethod(User::class, 'getPrivilegesAttribute')]
+#[CoversMethod(User::class, 'newsComments')]
+#[CoversMethod(User::class, 'oauth')]
+#[CoversMethod(User::class, 'shiftEntries')]
+#[CoversMethod(User::class, 'sessions')]
+#[CoversMethod(User::class, 'worklogs')]
+#[CoversMethod(User::class, 'worklogsCreated')]
+#[CoversMethod(User::class, 'questionsAsked')]
+#[CoversMethod(User::class, 'questionsAnswered')]
+#[CoversMethod(User::class, 'shiftsCreated')]
+#[CoversMethod(User::class, 'shiftsUpdated')]
+#[CoversMethod(User::class, 'getDisplayNameAttribute')]
+class UserTest extends ModelTestCase
 {
-    use ArraySubsetAsserts;
-
     /** @var string[] */
     protected array $data = [
         'name'     => 'lorem',
@@ -45,7 +69,7 @@ class UserTest extends ModelTest
         'api_key'  => '',
     ];
 
-    public function hasOneRelationsProvider(): array
+    public static function hasOneRelationsProvider(): array
     {
         return [
             [
@@ -94,7 +118,7 @@ class UserTest extends ModelTest
     /**
      * @return array[]
      */
-    public function hasManyRelationsProvider(): array
+    public static function hasManyRelationsProvider(): array
     {
         return [
             'news' => [
@@ -119,7 +143,7 @@ class UserTest extends ModelTest
     /**
      * @return array[]
      */
-    public function belongsToManyRelationsProvider(): array
+    public static function belongsToManyRelationsProvider(): array
     {
         return [
             'groups' => [
@@ -138,16 +162,11 @@ class UserTest extends ModelTest
     }
 
     /**
-     * @covers       \Engelsystem\Models\User\User::contact
-     * @covers       \Engelsystem\Models\User\User::license
-     * @covers       \Engelsystem\Models\User\User::personalData
-     * @covers       \Engelsystem\Models\User\User::settings
-     * @covers       \Engelsystem\Models\User\User::state
      *
-     * @dataProvider hasOneRelationsProvider
      *
      * @throws Exception
      */
+    #[DataProvider('hasOneRelationsProvider')]
     public function testHasOneRelations(string $class, string $name, array $data): void
     {
         $user = new User($this->data);
@@ -167,18 +186,19 @@ class UserTest extends ModelTest
             ->associate($user)
             ->save();
 
-        $this->assertArraySubset($data, (array) $user->{$name}->attributesToArray());
+        $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys(
+            $data,
+            (array) $user->{$name}->attributesToArray(),
+            array_keys($data)
+        );
     }
 
     /**
-     * @covers       \Engelsystem\Models\User\User::news()
-     *
-     * @dataProvider hasManyRelationsProvider
-     *
      * @param string $class Class name of the related models
      * @param string $name Name of the accessor for the related models
      * @param array  $modelData List of the related models
      */
+    #[DataProvider('hasManyRelationsProvider')]
     public function testHasManyRelations(string $class, string $name, array $modelData): void
     {
         $user = new User($this->data);
@@ -198,14 +218,11 @@ class UserTest extends ModelTest
 
 
     /**
-     * @covers       \Engelsystem\Models\User\User::groups
-     *
-     * @dataProvider belongsToManyRelationsProvider
-     *
      * @param string $class Class name of the related models
      * @param string $name Name of the accessor for the related models
      * @param array  $modelData List of the related models
      */
+    #[DataProvider('belongsToManyRelationsProvider')]
     public function testBelongsToManyRelations(string $class, string $name, array $modelData): void
     {
         $user = new User($this->data);
@@ -224,9 +241,6 @@ class UserTest extends ModelTest
         $this->assertEquals($relatedModelIds, $user->{$name}->modelKeys());
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::isFreeloader
-     */
     public function testIsFreeloader(): void
     {
         $this->app->instance('config', new Config([
@@ -255,9 +269,6 @@ class UserTest extends ModelTest
         $this->assertTrue($userSource->isFreeloader());
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::siftEntriesMarkedFreeloaded
-     */
     public function testSiftEntriesMarkedFreeloaded(): void
     {
         /** @var User $freeloader */
@@ -271,9 +282,6 @@ class UserTest extends ModelTest
         $this->assertCount(2, $user->siftEntriesMarkedFreeloaded);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::userAngelTypes
-     */
     public function testUserAngelTypes(): void
     {
         AngelType::factory(2)->create();
@@ -295,9 +303,6 @@ class UserTest extends ModelTest
         $this->assertCount(2, $angeltypes);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::isAngelTypeSupporter
-     */
     public function testIsAngelTypeSupporter(): void
     {
         /** @var AngelType $angelType1 */
@@ -315,9 +320,6 @@ class UserTest extends ModelTest
         $this->assertFalse($user->isAngelTypeSupporter($angelType2));
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::logs
-     */
     public function testLogs(): void
     {
         $user = new User($this->data);
@@ -328,10 +330,6 @@ class UserTest extends ModelTest
         $this->assertCount(2, $user->logs);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::privileges
-     * @covers \Engelsystem\Models\User\User::getPrivilegesAttribute
-     */
     public function testPrivileges(): void
     {
         $user = new User($this->data);
@@ -376,9 +374,7 @@ class UserTest extends ModelTest
     }
 
     /**
-     * Tests that accessing the NewsComments of an User works.
-     *
-     * @covers \Engelsystem\Models\User\User::newsComments
+     * Tests that accessing the NewsComments of a User works.
      */
     public function testNewsComments(): void
     {
@@ -393,9 +389,7 @@ class UserTest extends ModelTest
     }
 
     /**
-     * Tests that accessing OAuth of an User works
-     *
-     * @covers \Engelsystem\Models\User\User::oauth
+     * Tests that accessing OAuth of a User works
      */
     public function testOauth(): void
     {
@@ -410,9 +404,6 @@ class UserTest extends ModelTest
         $this->assertCount(1, $oauth);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::shiftEntries
-     */
     public function testShiftEntries(): void
     {
         $user = new User($this->data);
@@ -423,9 +414,6 @@ class UserTest extends ModelTest
         $this->assertCount(2, $user->shiftEntries);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::sessions
-     */
     public function testSessions(): void
     {
         $user = new User($this->data);
@@ -439,9 +427,6 @@ class UserTest extends ModelTest
         $this->assertCount(7, $user->sessions);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::worklogs
-     */
     public function testWorklogs(): void
     {
         ($user = new User($this->data))->save();
@@ -459,9 +444,6 @@ class UserTest extends ModelTest
         $this->assertSame($worklogEntry->id, $worklog->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::worklogsCreated
-     */
     public function testWorklogsCreated(): void
     {
         ($user = new User($this->data))->save();
@@ -479,9 +461,6 @@ class UserTest extends ModelTest
         $this->assertSame($worklogEntry->id, $worklog->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::questionsAsked
-     */
     public function testQuestionsAsked(): void
     {
         ($user = new User($this->data))->save();
@@ -499,9 +478,6 @@ class UserTest extends ModelTest
         $this->assertContains($question2->id, $questionIds);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::questionsAnswered
-     */
     public function testQuestionsAnswered(): void
     {
         ($user = new User($this->data))->save();
@@ -522,10 +498,6 @@ class UserTest extends ModelTest
         $this->assertContains($question2->id, $answers);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::shiftsCreated
-     * @covers \Engelsystem\Models\User\User::shiftsUpdated
-     */
     public function testShiftsCreatedAndUpdated(): void
     {
         ($user1 = new User($this->data))->save();
@@ -547,7 +519,7 @@ class UserTest extends ModelTest
         $this->assertCount(2, $user2->shiftsUpdated);
     }
 
-    public function getDisplayNameAttributeProvider(): array
+    public static function getDisplayNameAttributeProvider(): array
     {
         return [
             ['lorem'],
@@ -564,10 +536,7 @@ class UserTest extends ModelTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Models\User\User::getDisplayNameAttribute
-     * @dataProvider getDisplayNameAttributeProvider
-     */
+    #[DataProvider('getDisplayNameAttributeProvider')]
     public function testGetDisplayNameAttribute(
         string $expected,
         ?string $firstName = null,

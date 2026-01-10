@@ -12,10 +12,15 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
 
+#[CoversMethod(News::class, 'created')]
+#[CoversMethod(News::class, '__construct')]
+#[CoversMethod(News::class, 'sendMail')]
+#[CoversMethod(News::class, 'updated')]
 class NewsTest extends TestCase
 {
     use HasDatabase;
@@ -28,11 +33,6 @@ class NewsTest extends TestCase
 
     protected User $user;
 
-    /**
-     * @covers \Engelsystem\Events\Listener\News::created
-     * @covers \Engelsystem\Events\Listener\News::__construct
-     * @covers \Engelsystem\Events\Listener\News::sendMail
-     */
     public function testCreated(): void
     {
         $this->mailer->expects($this->once())
@@ -51,10 +51,6 @@ class NewsTest extends TestCase
         $listener->created($this->news);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\News::created
-     * @covers \Engelsystem\Events\Listener\News::sendMail
-     */
     public function testCreatedNoNotification(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());
@@ -64,10 +60,6 @@ class NewsTest extends TestCase
         $listener->created($this->news, false);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\News::updated
-     * @covers \Engelsystem\Events\Listener\News::sendMail
-     */
     public function testUpdated(): void
     {
         $this->mailer->expects($this->once())
@@ -86,10 +78,6 @@ class NewsTest extends TestCase
         $listener->updated($this->news);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\News::updated
-     * @covers \Engelsystem\Events\Listener\News::sendMail
-     */
     public function testUpdatedNoNotification(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());

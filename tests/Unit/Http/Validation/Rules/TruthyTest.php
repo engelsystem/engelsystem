@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\Truthy;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversTrait;
 
+#[CoversTrait(Truthy::class)]
 class TruthyTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\Truthy
-     */
     public function testValidate(): void
     {
         $rule = new class () {

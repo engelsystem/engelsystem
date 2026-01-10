@@ -12,9 +12,12 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Test\Unit\HasDatabase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class GlobalsTest extends ExtensionTest
+#[CoversMethod(Globals::class, '__construct')]
+#[CoversMethod(Globals::class, 'getGlobals')]
+#[CoversMethod(Globals::class, 'getGlobalValues')]
+class GlobalsTest extends ExtensionTestCase
 {
     use HasDatabase;
 
@@ -28,16 +31,10 @@ class GlobalsTest extends ExtensionTest
         Carbon::setTestNow();
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Globals::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Globals::getGlobals
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Globals::getGlobalValues
-     */
     public function testGetGlobals(): void
     {
         $this->initDatabase();
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $request = new Request();
         $theme = ['name' => 'Testtheme', 'navbar_classes' => 'something'];

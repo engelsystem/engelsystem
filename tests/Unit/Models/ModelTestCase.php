@@ -7,7 +7,7 @@ namespace Engelsystem\Test\Unit\Models;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 
-abstract class ModelTest extends TestCase
+abstract class ModelTestCase extends TestCase
 {
     use HasDatabase;
 

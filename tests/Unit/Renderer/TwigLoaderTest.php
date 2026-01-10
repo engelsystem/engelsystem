@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\TwigLoader;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(TwigLoader::class, 'findTemplate')]
 class TwigLoaderTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\TwigLoader::findTemplate
-     */
     public function testFindTemplate(): void
     {
         $loader = new TwigLoader();

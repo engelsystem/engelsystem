@@ -11,36 +11,28 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+#[CoversMethod(SetLocale::class, '__construct')]
+#[CoversMethod(SetLocale::class, 'process')]
 class SetLocaleTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Middleware\SetLocale::__construct
-     * @covers \Engelsystem\Middleware\SetLocale::process
-     */
     public function testRegister(): void
     {
         $this->initDatabase();
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        /** @var Translator|MockObject $translator */
         $translator = $this->createMock(Translator::class);
-        /** @var Session|MockObject $session */
         $session = $this->createMock(Session::class);
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->getMockForAbstractClass(ResponseInterface::class);
+        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
+        $response = $this->getStubBuilder(ResponseInterface::class)->getStub();
 
         /** @var User $user */
         $user = User::factory([
@@ -60,16 +52,12 @@ class SetLocaleTest extends TestCase
                 ['set-locale' => $locale]
             );
 
-        $translator->expects($this->exactly(2))
+        $translator
             ->method('hasLocale')
-            ->withConsecutive(
-                ['en_US'],
-                [$locale]
-            )
-            ->willReturnOnConsecutiveCalls(
-                false,
-                true
-            );
+            ->willReturnMap([
+                ['en_US', false],
+                [$locale, true],
+            ]);
         $translator->expects($this->once())
             ->method('setLocale')
             ->with($locale);

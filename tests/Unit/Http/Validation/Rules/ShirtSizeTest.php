@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\ShirtSize;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class ShirtSizeTest extends ServiceProviderTest
+#[CoversMethod(ShirtSize::class, '__construct')]
+class ShirtSizeTest extends ServiceProviderTestCase
 {
     private ShirtSize $subject;
 
@@ -24,7 +27,7 @@ class ShirtSizeTest extends ServiceProviderTest
     /**
      * @return array<string, array{string, bool}>
      */
-    public function provideTestValidateData(): array
+    public static function provideTestValidateData(): array
     {
         return [
             'empty string' => ['', false],
@@ -36,10 +39,7 @@ class ShirtSizeTest extends ServiceProviderTest
         ];
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\ShirtSize::__construct
-     * @dataProvider provideTestValidateData
-     */
+    #[DataProvider('provideTestValidateData')]
     public function testValidate(mixed $value, bool $expectedValid): void
     {
         self::assertSame($expectedValid, $this->subject->validate($value));

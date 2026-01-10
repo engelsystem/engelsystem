@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\Faq;
 use Engelsystem\Models\Tag;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class FaqTest extends ModelTest
+#[CoversMethod(Faq::class, 'tags')]
+class FaqTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Faq::tags
-     */
     public function testFaqs(): void
     {
         /** @var Tag $tag1 */

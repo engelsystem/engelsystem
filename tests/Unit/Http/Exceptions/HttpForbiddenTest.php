@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Http\Exceptions;
 
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(HttpForbidden::class, '__construct')]
 class HttpForbiddenTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Exceptions\HttpForbidden::__construct
-     */
     public function testConstruct(): void
     {
         $exception = new HttpForbidden();

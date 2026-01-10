@@ -7,13 +7,12 @@ namespace Engelsystem\Test\Unit\Exceptions\Handlers;
 use Engelsystem\Exceptions\Handlers\NullHandler;
 use Engelsystem\Http\Request;
 use ErrorException;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(NullHandler::class, 'render')]
 class NullHandlerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Exceptions\Handlers\NullHandler::render
-     */
     public function testRender(): void
     {
         $handler = new NullHandler();

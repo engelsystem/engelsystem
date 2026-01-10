@@ -6,12 +6,20 @@ namespace Engelsystem\Test\Unit\Controllers;
 
 use Carbon\Carbon;
 use Engelsystem\Config\Config;
+use Engelsystem\Controllers\ChecksArrivalsAndDepartures;
 use Engelsystem\Test\Unit\Controllers\Stub\ChecksArrivalsAndDeparturesImplementation;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversMethod(ChecksArrivalsAndDepartures::class, 'isArrivalDateValid')]
+#[CoversMethod(ChecksArrivalsAndDepartures::class, 'toCarbon')]
+#[CoversMethod(ChecksArrivalsAndDepartures::class, 'isBeforeBuildup')]
+#[CoversMethod(ChecksArrivalsAndDepartures::class, 'isAfterTeardown')]
+#[CoversMethod(ChecksArrivalsAndDepartures::class, 'isDepartureDateValid')]
 class ChecksArrivalsAndDeparturesTest extends TestCase
 {
-    public function invalidArrivalCombinations(): array
+    public static function invalidArrivalCombinations(): array
     {
         return [
             [null, null, null, null],                 # arrival being null
@@ -21,7 +29,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         ];
     }
 
-    public function invalidDepartureCombinations(): array
+    public static function invalidDepartureCombinations(): array
     {
         return [
             [null, null, '2022-01-16', '2022-01-15'], # departure smaller than arrival
@@ -30,7 +38,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         ];
     }
 
-    public function validArrivalCombinations(): array
+    public static function validArrivalCombinations(): array
     {
         return [
             [null, null, '2022-01-15', '2022-01-15'],                 # arrival equals departure
@@ -40,7 +48,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         ];
     }
 
-    public function validDepartureCombinations(): array
+    public static function validDepartureCombinations(): array
     {
         return [
             [null, null, '2022-01-15', null],                         # departure being null
@@ -51,13 +59,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isArrivalDateValid
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::toCarbon
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isBeforeBuildup
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isAfterTeardown
-     * @dataProvider invalidArrivalCombinations
-     */
+    #[DataProvider('invalidArrivalCombinations')]
     public function testCheckInvalidDatesForArrival(
         ?string $buildup,
         ?string $teardown,
@@ -71,13 +73,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         $this->assertFalse($check->checkArrival($arrival, $departure));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isDepartureDateValid
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::toCarbon
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isBeforeBuildup
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isAfterTeardown
-     * @dataProvider invalidDepartureCombinations
-     */
+    #[DataProvider('invalidDepartureCombinations')]
     public function testCheckInvalidDatesForDeparture(
         ?string $buildup,
         ?string $teardown,
@@ -91,13 +87,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         $this->assertFalse($check->checkDeparture($arrival, $departure));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isArrivalDateValid
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::toCarbon
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isBeforeBuildup
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isAfterTeardown
-     * @dataProvider validArrivalCombinations
-     */
+    #[DataProvider('validArrivalCombinations')]
     public function testCheckValidDatesForArrival(
         ?string $buildup,
         ?string $teardown,
@@ -111,13 +101,7 @@ class ChecksArrivalsAndDeparturesTest extends TestCase
         $this->assertTrue($check->checkArrival($arrival, $departure));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isDepartureDateValid
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::toCarbon
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isBeforeBuildup
-     * @covers \Engelsystem\Controllers\ChecksArrivalsAndDepartures::isAfterTeardown
-     * @dataProvider validDepartureCombinations
-     */
+    #[DataProvider('validDepartureCombinations')]
     public function testCheckValidDatesForDeparture(
         ?string $buildup,
         ?string $teardown,
