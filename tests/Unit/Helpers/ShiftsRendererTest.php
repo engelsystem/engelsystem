@@ -16,15 +16,13 @@ use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(ShiftsRenderer::class, 'render')]
 class ShiftsRendererTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Helpers\ShiftsRenderer::render
-     */
     public function testRender(): void
     {
         /** @var User $user */
@@ -61,7 +59,6 @@ class ShiftsRendererTest extends TestCase
             'user_id' => $user,
         ]);
 
-        /** @var ShiftsRenderer|MockObject $renderer */
         $renderer = $this->getMockBuilder(ShiftsRenderer::class)
             ->onlyMethods(['renderShiftCalendar'])
             ->getMock();

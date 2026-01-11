@@ -22,18 +22,33 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Session\Session as Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
+#[CoversMethod(OAuthController::class, '__construct')]
+#[CoversMethod(OAuthController::class, 'index')]
+#[CoversMethod(OAuthController::class, 'handleArrive')]
+#[CoversMethod(OAuthController::class, 'getId')]
+#[CoversMethod(OAuthController::class, 'getProvider')]
+#[CoversMethod(OAuthController::class, 'handleOAuthError')]
+#[CoversMethod(OAuthController::class, 'redirectRegister')]
+#[CoversMethod(OAuthController::class, 'connect')]
+#[CoversMethod(OAuthController::class, 'requireProvider')]
+#[CoversMethod(OAuthController::class, 'isValidProvider')]
+#[CoversMethod(OAuthController::class, 'disconnect')]
+#[AllowMockObjectsWithoutExpectations]
 class OAuthControllerTest extends TestCase
 {
     use HasDatabase;
 
-    protected Authenticator|MockObject $auth;
+    protected Authenticator&MockObject $auth;
 
-    protected AuthController|MockObject $authController;
+    protected AuthController&MockObject $authController;
 
     protected User $authenticatedUser;
 
@@ -47,11 +62,11 @@ class OAuthControllerTest extends TestCase
 
     protected OAuth $oauth;
 
-    protected Redirector|MockObject $redirect;
+    protected Redirector&MockObject $redirect;
 
     protected Session $session;
 
-    protected UrlGenerator|MockObject $url;
+    protected UrlGenerator&MockObject $url;
 
     /** @var string[][] */
     protected array $oauthConfig = [
@@ -71,12 +86,6 @@ class OAuthControllerTest extends TestCase
         ],
     ];
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::__construct
-     * @covers \Engelsystem\Controllers\OAuthController::index
-     * @covers \Engelsystem\Controllers\OAuthController::handleArrive
-     * @covers \Engelsystem\Controllers\OAuthController::getId
-     */
     public function testIndexArrive(): void
     {
         $request = new Request();
@@ -92,7 +101,6 @@ class OAuthControllerTest extends TestCase
         $this->setExpects($accessToken, 'getRefreshToken', null, 'test-refresh-token', $this->atLeastOnce());
         $this->setExpects($accessToken, 'getExpires', null, 4242424242, $this->atLeastOnce());
 
-        /** @var ResourceOwnerInterface|MockObject $resourceOwner */
         $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
         $this->setExpects($resourceOwner, 'toArray', null, [], $this->atLeastOnce());
         $resourceOwner->expects($this->exactly(5))
@@ -105,7 +113,6 @@ class OAuthControllerTest extends TestCase
                 'provider-user-identifier'
             );
 
-        /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
         $this->setExpects(
             $provider,
@@ -116,7 +123,6 @@ class OAuthControllerTest extends TestCase
         );
         $this->setExpects($provider, 'getResourceOwner', [$accessToken], $resourceOwner, $this->atLeastOnce());
 
-        /** @var EventDispatcher|MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance('events.dispatcher', $dispatcher);
         $this->setExpects($dispatcher, 'dispatch', ['oauth2.login'], $dispatcher, 4);
@@ -177,10 +183,6 @@ class OAuthControllerTest extends TestCase
         $this->assertFalse($this->log->hasInfoThatContains('as arrived'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::index
-     * @covers \Engelsystem\Controllers\OAuthController::getProvider
-     */
     public function testIndexRedirectToProvider(): void
     {
         $this->redirect->expects($this->once())
@@ -206,12 +208,8 @@ class OAuthControllerTest extends TestCase
         $this->assertNotEmpty($this->session->get('oauth2_state'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::index
-     */
     public function testIndexInvalidState(): void
     {
-        /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
 
         $this->session->set('oauth2_state', 'some-internal-state');
@@ -237,16 +235,10 @@ class OAuthControllerTest extends TestCase
         $this->assertEquals('oauth.invalid-state', $exception->getMessage());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::index
-     * @covers \Engelsystem\Controllers\OAuthController::handleOAuthError
-     */
     public function testIndexProviderErrorOnResourceInfo(): void
     {
-        /** @var AccessToken|MockObject $accessToken */
         $accessToken = $this->createMock(AccessToken::class);
 
-        /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
         $this->setExpects(
             $provider,
@@ -290,13 +282,8 @@ class OAuthControllerTest extends TestCase
         $this->assertEquals('oauth.provider-error', $exception->getMessage());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::index
-     * @covers \Engelsystem\Controllers\OAuthController::handleOAuthError
-     */
     public function testIndexProviderErrorIdentityProvider(): void
     {
-        /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
         $provider->expects($this->once())
             ->method('getAccessToken')
@@ -336,18 +323,13 @@ class OAuthControllerTest extends TestCase
         $this->assertEquals('oauth.provider-error', $exception->getMessage());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::index
-     */
     public function testIndexAlreadyConnectedToAUser(): void
     {
         $accessToken = $this->createMock(AccessToken::class);
 
-        /** @var ResourceOwnerInterface|MockObject $resourceOwner */
         $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
         $this->setExpects($resourceOwner, 'getId', null, 'provider-user-identifier', $this->atLeastOnce());
 
-        /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
         $this->setExpects(
             $provider,
@@ -381,10 +363,7 @@ class OAuthControllerTest extends TestCase
         $this->assertEquals('oauth.already-connected', $exception->getMessage());
     }
 
-    /**
-     * @covers       \Engelsystem\Controllers\OAuthController::index
-     * @dataProvider oAuthErrorCodeProvider
-     */
+    #[DataProvider('oAuthErrorCodeProvider')]
     public function testIndexOAuthErrorResponse(string $oauth_error_code): void
     {
         $controller = $this->getMock(['getProvider']);
@@ -405,7 +384,7 @@ class OAuthControllerTest extends TestCase
         $this->assertEquals('oauth.' . $oauth_error_code, $exception->getMessage());
     }
 
-    public function oAuthErrorCodeProvider(): array
+    public static function oAuthErrorCodeProvider(): array
     {
         return [
             ['invalid_request'],
@@ -418,10 +397,6 @@ class OAuthControllerTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::index
-     * @covers \Engelsystem\Controllers\OAuthController::redirectRegister
-     */
     public function testIndexRedirectRegister(): void
     {
         $accessToken = $this->createMock(AccessToken::class);
@@ -429,7 +404,6 @@ class OAuthControllerTest extends TestCase
         $this->setExpects($accessToken, 'getRefreshToken', null, 'test-refresh-token', $this->atLeastOnce());
         $this->setExpects($accessToken, 'getExpires', null, 4242424242, $this->atLeastOnce());
 
-        /** @var ResourceOwnerInterface|MockObject $resourceOwner */
         $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
         $this->setExpects(
             $resourceOwner,
@@ -452,7 +426,6 @@ class OAuthControllerTest extends TestCase
             $this->atLeastOnce()
         );
 
-        /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
         $this->setExpects(
             $provider,
@@ -496,11 +469,6 @@ class OAuthControllerTest extends TestCase
         $controller->index($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::index
-     * @covers \Engelsystem\Controllers\OAuthController::getId
-     * @covers \Engelsystem\Controllers\OAuthController::redirectRegister
-     */
     public function testIndexRedirectRegisterNestedInfo(): void
     {
         $accessToken = $this->createMock(AccessToken::class);
@@ -521,7 +489,6 @@ class OAuthControllerTest extends TestCase
 
         $this->config->set('registration_enabled', true);
 
-        /** @var ResourceOwnerInterface|MockObject $resourceOwner */
         $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
         $this->setExpects($resourceOwner, 'getId', null, null, $this->never());
         $this->setExpects(
@@ -540,7 +507,6 @@ class OAuthControllerTest extends TestCase
             $this->atLeastOnce()
         );
 
-        /** @var GenericProvider|MockObject $provider */
         $provider = $this->createMock(GenericProvider::class);
         $this->setExpects(
             $provider,
@@ -573,11 +539,6 @@ class OAuthControllerTest extends TestCase
     }
 
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::connect
-     * @covers \Engelsystem\Controllers\OAuthController::requireProvider
-     * @covers \Engelsystem\Controllers\OAuthController::isValidProvider
-     */
     public function testConnect(): void
     {
         $controller = $this->getMock(['index']);
@@ -598,9 +559,6 @@ class OAuthControllerTest extends TestCase
     }
 
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::disconnect
-     */
     public function testDisconnectIfAllowIsTrue(): void
     {
         $oauthConfig = $this->config->get('oauth');
@@ -609,9 +567,6 @@ class OAuthControllerTest extends TestCase
         $this->runDisconnectTest($oauthConfig, true);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::disconnect
-     */
     public function testDisconnectIfAllowIsNull(): void
     {
         $oauthConfig = $this->config->get('oauth');
@@ -620,9 +575,6 @@ class OAuthControllerTest extends TestCase
         $this->runDisconnectTest($oauthConfig, true);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::disconnect
-     */
     public function testDisconnectIfAllowIsUnset(): void
     {
         $oauthConfig = $this->config->get('oauth');
@@ -631,9 +583,6 @@ class OAuthControllerTest extends TestCase
         $this->runDisconnectTest($oauthConfig, true);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\OAuthController::disconnect
-     */
     public function testDisconnectIfAllowIsFalse(): void
     {
         $oauthConfig = $this->config->get('oauth');
@@ -666,9 +615,8 @@ class OAuthControllerTest extends TestCase
         $this->assertTrue($this->log->hasInfoThatContains('Disconnected'));
     }
 
-    protected function getMock(array $mockMethods = []): OAuthController | MockObject
+    protected function getMock(array $mockMethods = []): OAuthController & MockObject
     {
-        /** @var OAuthController|MockObject $controller */
         $controller = $this->getMockBuilder(OAuthController::class)
             ->setConstructorArgs([
                 $this->auth,

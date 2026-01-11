@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Helpers;
 
 use Engelsystem\Helpers\CarbonDay;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Traversable;
 
+#[CoversMethod(CarbonDay::class, '__construct')]
+#[CoversMethod(CarbonDay::class, 'createFromDay')]
 class CarbonDayTest extends TestCase
 {
-    public function validDates(): Traversable
+    public static function validDates(): Traversable
     {
         $format = 'Y-m-d H:i:s';
         yield '2025-09-23 00:00:00' => ['2025-09-23', CarbonDay::createFromFormat($format, '2025-09-23 00:00:00')];
@@ -18,10 +22,7 @@ class CarbonDayTest extends TestCase
         yield '2042-01-01 11:42:59' => ['2042-01-01', CarbonDay::createFromFormat($format, '2042-01-01 11:42:59')];
     }
 
-    /**
-     * @covers       \Engelsystem\Helpers\CarbonDay::__construct
-     * @dataProvider validDates
-     */
+    #[DataProvider('validDates')]
     public function testCreateFromValidDatetime(string $value, CarbonDay $expected): void
     {
         $timestamp = $expected->timestamp;
@@ -32,10 +33,7 @@ class CarbonDayTest extends TestCase
         self::assertSame($value, $date->jsonSerialize());
     }
 
-    /**
-     * @covers       \Engelsystem\Helpers\CarbonDay::createFromDay
-     * @dataProvider validDates
-     */
+    #[DataProvider('validDates')]
     public function testCreateFromDayFromValidDatetime(string $value, CarbonDay $expected): void
     {
         $expected->setHour(0)->setMinute(0)->setSecond(0);

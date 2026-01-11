@@ -8,10 +8,15 @@ use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversMethod(UrlGenerator::class, 'to')]
+#[CoversMethod(UrlGenerator::class, 'generateUrl')]
+#[CoversMethod(UrlGenerator::class, 'isValidUrl')]
 class UrlGeneratorTest extends TestCase
 {
-    public function provideLinksTo(): array
+    public static function provideLinksTo(): array
     {
         return [
             ['/foo/path', '/foo/path', 'https://foo.bar/foo/path', [], 'https://foo.bar/foo/path'],
@@ -21,12 +26,10 @@ class UrlGeneratorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideLinksTo
-     * @covers       \Engelsystem\Http\UrlGenerator::to
-     * @covers       \Engelsystem\Http\UrlGenerator::generateUrl
      *
      * @param string[] $arguments
      */
+    #[DataProvider('provideLinksTo')]
     public function testTo(
         string $urlToPath,
         string $path,
@@ -49,9 +52,6 @@ class UrlGeneratorTest extends TestCase
         $this->assertEquals($expectedUrl, $url);
     }
 
-    /**
-     * @covers \Engelsystem\Http\UrlGenerator::to
-     */
     public function testToWithValidUrl(): void
     {
         $url = new UrlGenerator();
@@ -63,10 +63,6 @@ class UrlGeneratorTest extends TestCase
         $this->assertEquals('#some-anchor', $url->to('#some-anchor'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\UrlGenerator::to
-     * @covers \Engelsystem\Http\UrlGenerator::generateUrl
-     */
     public function testToWithApplicationURL(): void
     {
         $this->app->instance('config', new Config(['url' => 'https://foo.bar/base/']));
@@ -82,9 +78,6 @@ class UrlGeneratorTest extends TestCase
         $this->assertEquals('https://foo.bar/base/test', $url->to('/test'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\UrlGenerator::isValidUrl
-     */
     public function testIsValidUrl(): void
     {
         $url = new UrlGenerator();

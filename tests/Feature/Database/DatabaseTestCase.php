@@ -6,7 +6,7 @@ namespace Engelsystem\Test\Feature\Database;
 
 use Engelsystem\Test\Unit\TestCase;
 
-abstract class DatabaseTest extends TestCase
+abstract class DatabaseTestCase extends TestCase
 {
     /**
      * Returns the database config

@@ -6,11 +6,12 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\Checked;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Checked::class, 'isValid')]
 class CheckedTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Http\Validation\Rules\Checked::isValid
      * @see TruthyTest
      */
     public function testIsValid(): void

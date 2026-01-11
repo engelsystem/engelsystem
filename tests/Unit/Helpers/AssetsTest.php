@@ -6,13 +6,12 @@ namespace Engelsystem\Test\Unit\Helpers;
 
 use Engelsystem\Helpers\Assets;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Assets::class, '__construct')]
+#[CoversMethod(Assets::class, 'getAssetPath')]
 class AssetsTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Assets::__construct
-     * @covers \Engelsystem\Helpers\Assets::getAssetPath
-     */
     public function testGetAssetPath(): void
     {
         $assets = new Assets('/foo/bar');

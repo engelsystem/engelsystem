@@ -6,16 +6,15 @@ namespace Engelsystem\Test\Unit\Helpers\Schedule;
 
 use Engelsystem\Helpers\Schedule\EventRecording;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(EventRecording::class, '__construct')]
+#[CoversMethod(EventRecording::class, 'getLicense')]
+#[CoversMethod(EventRecording::class, 'isOptOut')]
+#[CoversMethod(EventRecording::class, 'getUrl')]
+#[CoversMethod(EventRecording::class, 'getLink')]
 class EventRecordingTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::__construct
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::getLicense
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::isOptOut
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::getUrl
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::getLink
-     */
     public function testCreateDefaults(): void
     {
         $eventRecording = new EventRecording(
@@ -29,13 +28,6 @@ class EventRecordingTest extends TestCase
         $this->assertNull($eventRecording->getLink());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::__construct
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::getLicense
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::isOptOut
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::getUrl
-     * @covers \Engelsystem\Helpers\Schedule\EventRecording::getLink
-     */
     public function testCreate(): void
     {
         $eventRecording = new EventRecording(

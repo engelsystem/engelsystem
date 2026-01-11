@@ -8,15 +8,14 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Logger\Logger;
 use Engelsystem\Logger\LoggerServiceProvider;
 use Engelsystem\Logger\UserAwareLogger;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\LoggerInterface;
 
-class LoggerServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(LoggerServiceProvider::class, 'register')]
+#[CoversMethod(LoggerServiceProvider::class, 'boot')]
+class LoggerServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Logger\LoggerServiceProvider::register
-     */
     public function testRegister(): void
     {
         $serviceProvider = new LoggerServiceProvider($this->app);
@@ -28,16 +27,11 @@ class LoggerServiceProviderTest extends ServiceProviderTest
         $this->assertInstanceOf(UserAwareLogger::class, $this->app->get(UserAwareLogger::class));
     }
 
-    /**
-     * @covers \Engelsystem\Logger\LoggerServiceProvider::boot
-     */
     public function testBoot(): void
     {
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->getMockBuilder(Authenticator::class)
+        $auth = $this->getStubBuilder(Authenticator::class)
             ->disableOriginalConstructor()
-            ->getMock();
-        /** @var UserAwareLogger|MockObject $log */
+            ->getStub();
         $log = $this->getMockBuilder(UserAwareLogger::class)
             ->disableOriginalConstructor()
             ->getMock();

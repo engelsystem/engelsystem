@@ -6,10 +6,13 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Validation\Rules\Username;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 
-class UsernameTest extends ServiceProviderTest
+#[CoversMethod(Username::class, 'isValid')]
+class UsernameTest extends ServiceProviderTestCase
 {
     private Username $subject;
 
@@ -27,7 +30,7 @@ class UsernameTest extends ServiceProviderTest
     /**
      * @return array<string,array{string,bool}>
      */
-    public function provideIsValidWithDefaultConfigTestData(): array
+    public static function provideIsValidWithDefaultConfigTestData(): array
     {
         return [
             'empty string' => ['', false],
@@ -42,18 +45,12 @@ class UsernameTest extends ServiceProviderTest
         ];
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\Username::isValid
-     * @dataProvider provideIsValidWithDefaultConfigTestData
-     */
+    #[DataProvider('provideIsValidWithDefaultConfigTestData')]
     public function testIsValidWithDefaultConfig(mixed $value, bool $expectedValid): void
     {
         self::assertSame($expectedValid, $this->subject->isValid($value));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\Username::isValid
-     */
     public function testIsValidMissingConfigRaisesException(): void
     {
         $this->config->set('username_regex', null);

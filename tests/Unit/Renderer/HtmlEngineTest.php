@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\HtmlEngine;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(HtmlEngine::class, 'get')]
+#[CoversMethod(HtmlEngine::class, 'canRender')]
 class HtmlEngineTest extends TestCase
 {
     /** @var string[] */
     protected array $tmpFileNames = [];
 
-    /**
-     * @covers \Engelsystem\Renderer\HtmlEngine::get
-     */
     public function testGet(): void
     {
         $engine = new HtmlEngine();
@@ -26,9 +26,6 @@ class HtmlEngineTest extends TestCase
         $this->assertEquals('<div>Lorem ipsum dolor sit is a tester</div>', $data);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\HtmlEngine::get
-     */
     public function testGetEmpty(): void
     {
         $engine = new HtmlEngine();
@@ -38,9 +35,6 @@ class HtmlEngineTest extends TestCase
         $this->assertEquals('""', $data);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\HtmlEngine::canRender
-     */
     public function testCanRender(): void
     {
         $engine = new HtmlEngine();

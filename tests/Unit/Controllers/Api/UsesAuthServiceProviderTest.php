@@ -9,13 +9,11 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Controllers\Api\Stub\UsesAuthImplementation;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(UsesAuthServiceProvider::class, 'register')]
 class UsesAuthServiceProviderTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsesAuthServiceProvider::register
-     */
     public function testRegister(): void
     {
         $serviceProvider = new UsesAuthServiceProvider($this->app);
@@ -23,7 +21,6 @@ class UsesAuthServiceProviderTest extends TestCase
 
         $user = new User();
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->setExpects($auth, 'user', null, $user);
         $this->app->instance(Authenticator::class, $auth);

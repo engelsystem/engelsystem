@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\TwigTextLoader;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Twig\Error\LoaderError as TwigLoaderError;
 
+#[CoversMethod(TwigTextLoader::class, 'findTemplate')]
 class TwigTextLoaderTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\TwigTextLoader::findTemplate
-     */
     public function testFindTemplate(): void
     {
         $loader = new TwigTextLoader();

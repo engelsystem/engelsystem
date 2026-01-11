@@ -6,31 +6,37 @@ namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Http\Response;
 use Engelsystem\Http\ResponseServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
-class ResponseServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(ResponseServiceProvider::class, 'register')]
+class ResponseServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Http\ResponseServiceProvider::register()
-     */
     public function testRegister(): void
     {
-        /** @var Response|MockObject $response */
-        $response = $this->getMockBuilder(Response::class)
-            ->getMock();
+        $response = $this->getStubBuilder(Response::class)
+            ->getStub();
 
-        $app = $this->getApp();
+        $app = $this->getAppMock();
 
         $this->setExpects($app, 'make', [Response::class], $response);
-        $app->expects($this->exactly(3))
-            ->method('instance')
-            ->withConsecutive(
-                [Response::class, $response],
-                [SymfonyResponse::class, $response],
-                ['response', $response]
-            );
+        $matcher = $this->exactly(3);
+        $app->expects($matcher)
+            ->method('instance')->willReturnCallback(function (...$parameters) use ($matcher, $response): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(Response::class, $parameters[0]);
+                    $this->assertSame($response, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(SymfonyResponse::class, $parameters[0]);
+                    $this->assertSame($response, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('response', $parameters[0]);
+                    $this->assertSame($response, $parameters[1]);
+                }
+            });
 
         $serviceProvider = new ResponseServiceProvider($app);
         $serviceProvider->register();

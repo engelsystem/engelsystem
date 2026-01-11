@@ -6,15 +6,16 @@ namespace Engelsystem\Test\Unit\Helpers\Translation;
 
 use Engelsystem\Helpers\Translation\GettextTranslator;
 use Engelsystem\Helpers\Translation\TranslationNotFound;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use Gettext\Translation;
 use Gettext\Translations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class GettextTranslatorTest extends ServiceProviderTest
+#[CoversMethod(GettextTranslator::class, 'assertHasTranslation')]
+#[CoversMethod(GettextTranslator::class, 'translate')]
+#[CoversMethod(GettextTranslator::class, 'translatePlural')]
+class GettextTranslatorTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Translation\GettextTranslator::assertHasTranslation()
-     */
     public function testNoTranslation(): void
     {
         $translations = $this->getTranslations();
@@ -28,9 +29,6 @@ class GettextTranslatorTest extends ServiceProviderTest
         $translator->gettext('foo.bar');
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Translation\GettextTranslator::translate()
-     */
     public function testTranslate(): void
     {
         $translations = $this->getTranslations();
@@ -39,9 +37,6 @@ class GettextTranslatorTest extends ServiceProviderTest
         $this->assertEquals('Translation!', $translator->gettext('test.value'));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Translation\GettextTranslator::translatePlural
-     */
     public function testTranslatePlural(): void
     {
         $translations = $this->getTranslations();

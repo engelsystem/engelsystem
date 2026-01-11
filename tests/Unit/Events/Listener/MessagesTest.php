@@ -12,23 +12,20 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\Test\TestLogger;
 
+#[CoversMethod(Messages::class, 'created')]
+#[CoversMethod(Messages::class, '__construct')]
+#[CoversMethod(Messages::class, 'sendMail')]
 class MessagesTest extends TestCase
 {
     use HasDatabase;
 
     protected TestLogger $log;
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Messages::created
-     * @covers \Engelsystem\Events\Listener\Messages::__construct
-     * @covers \Engelsystem\Events\Listener\Messages::sendMail
-     */
     public function testCreated(): void
     {
-        /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->createMock(EngelsystemMailer::class);
         /** @var User $user */
         $user = User::factory()
@@ -59,12 +56,8 @@ class MessagesTest extends TestCase
         $handler->created($message);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\Messages::created
-     */
     public function testCreatedNoEmail(): void
     {
-        /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->createMock(EngelsystemMailer::class);
         /** @var User $user */
         $user = User::factory()

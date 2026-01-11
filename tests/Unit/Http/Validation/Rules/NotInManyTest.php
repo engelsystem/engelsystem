@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\NotInMany;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(NotInMany::class, 'validate')]
 class NotInManyTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\NotInMany::validate
-     */
     public function testValidate(): void
     {
         $rule = new NotInMany('foo,bar');

@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\RequestServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class RequestServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(RequestServiceProvider::class, 'register')]
+#[CoversMethod(RequestServiceProvider::class, 'createRequestWithoutPrefix')]
+class RequestServiceProviderTest extends ServiceProviderTestCase
 {
-    public function provideRegister(): array
+    public static function provideRegister(): array
     {
         return [
             ['', []],
@@ -27,32 +29,36 @@ class RequestServiceProviderTest extends ServiceProviderTest
         ];
     }
 
-    /**
-     * @dataProvider provideRegister
-     * @covers       \Engelsystem\Http\RequestServiceProvider::register
-     */
+    #[DataProvider('provideRegister')]
     public function testRegister(string|array $configuredProxies, array $trustedProxies): void
     {
         $config = new Config([
             'trusted_proxies' => $configuredProxies,
         ]);
-        /** @var Request|MockObject $request */
-        $request = $this->getMockBuilder(Request::class)->getMock();
+        $request = $this->getStubBuilder(Request::class)->getStub();
 
-        $app = $this->getApp(['call', 'get', 'instance']);
+        $app = $this->getAppMock(['call', 'get', 'instance']);
 
         $this->setExpects($app, 'call', [[Request::class, 'createFromGlobals']], $request);
         $this->setExpects($app, 'get', ['config'], $config);
 
-        $app->expects($this->exactly(3))
-            ->method('instance')
-            ->withConsecutive(
-                [Request::class, $request],
-                [SymfonyRequest::class, $request],
-                ['request', $request]
-            );
+        $matcher = $this->exactly(3);
+        $app->expects($matcher)
+            ->method('instance')->willReturnCallback(function (...$parameters) use ($matcher, $request): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(Request::class, $parameters[0]);
+                    $this->assertSame($request, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(SymfonyRequest::class, $parameters[0]);
+                    $this->assertSame($request, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('request', $parameters[0]);
+                    $this->assertSame($request, $parameters[1]);
+                }
+            });
 
-        /** @var ServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(RequestServiceProvider::class)
             ->setConstructorArgs([$app])
             ->onlyMethods(['setTrustedProxies'])
@@ -61,9 +67,6 @@ class RequestServiceProviderTest extends ServiceProviderTest
         $serviceProvider->register();
     }
 
-    /**
-     * @covers \Engelsystem\Http\RequestServiceProvider::register
-     */
     public function testRegisterRewritingPrefix(): void
     {
         $config = new Config([
@@ -72,7 +75,6 @@ class RequestServiceProviderTest extends ServiceProviderTest
         $this->app->instance('config', $config);
         $request = new Request();
 
-        /** @var ServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(RequestServiceProvider::class)
             ->setConstructorArgs([$this->app])
             ->onlyMethods(['createRequestWithoutPrefix'])
@@ -87,7 +89,7 @@ class RequestServiceProviderTest extends ServiceProviderTest
      *
      * @return string[][]
      */
-    public function provideRequestPathPrefix(): array
+    public static function provideRequestPathPrefix(): array
     {
         return [
             ['/', '/'],
@@ -102,10 +104,7 @@ class RequestServiceProviderTest extends ServiceProviderTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Http\RequestServiceProvider::createRequestWithoutPrefix
-     * @dataProvider provideRequestPathPrefix
-     */
+    #[DataProvider('provideRequestPathPrefix')]
     public function testCreateRequestWithoutPrefix(string $requestUri, string $expected, ?string $url = null): void
     {
         $_SERVER['REQUEST_URI'] = $requestUri;

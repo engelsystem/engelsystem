@@ -7,15 +7,14 @@ namespace Engelsystem\Test\Unit\Helpers;
 use Engelsystem\Application;
 use Engelsystem\Helpers\Uuid;
 use Engelsystem\Helpers\UuidServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use ReflectionProperty;
 
-class UuidServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(UuidServiceProvider::class, 'register')]
+class UuidServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\UuidServiceProvider::register
-     */
     public function testRegister(): void
     {
         $app = new Application();

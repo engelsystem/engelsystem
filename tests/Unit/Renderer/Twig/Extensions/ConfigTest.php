@@ -6,18 +6,15 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Config\Config as EngelsystemConfig;
 use Engelsystem\Renderer\Twig\Extensions\Config;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ConfigTest extends ExtensionTest
+#[CoversMethod(Config::class, '__construct')]
+#[CoversMethod(Config::class, 'getFunctions')]
+class ConfigTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Config::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Config::getFunctions
-     */
     public function testGetFunctions(): void
     {
-        /** @var EngelsystemConfig|MockObject $config */
-        $config = $this->createMock(EngelsystemConfig::class);
+        $config = $this->createStub(EngelsystemConfig::class);
 
         $extension = new Config($config);
         $functions = $extension->getFunctions();

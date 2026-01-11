@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
+use Engelsystem\Controllers\Api\Resources\UserAngelTypeReferenceResource;
+use Engelsystem\Controllers\Api\Resources\UserDetailResource;
+use Engelsystem\Controllers\Api\Resources\UserResource;
+use Engelsystem\Controllers\Api\Resources\WorklogResource;
 use Engelsystem\Controllers\Api\UsersController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
@@ -15,13 +19,20 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UsersControllerTest extends ApiBaseControllerTest
+#[CoversMethod(UsersController::class, 'index')]
+#[CoversMethod(UsersController::class, 'user')]
+#[CoversMethod(UserDetailResource::class, 'toArray')]
+#[CoversMethod(UserResource::class, 'toArray')]
+#[CoversMethod(UsersController::class, 'entriesByAngeltype')]
+#[CoversMethod(UserAngelTypeReferenceResource::class, 'toArray')]
+#[CoversMethod(UsersController::class, 'worklogs')]
+#[CoversMethod(WorklogResource::class, 'toArray')]
+#[AllowMockObjectsWithoutExpectations]
+class UsersControllerTest extends ApiBaseControllerTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsersController::index
-     */
     public function testIndex(): void
     {
         /** @var User $user */
@@ -47,11 +58,6 @@ class UsersControllerTest extends ApiBaseControllerTest
         $this->assertEquals($user->name, $firstUser['name']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsersController::user
-     * @covers \Engelsystem\Controllers\Api\Resources\UserDetailResource::toArray
-     * @covers \Engelsystem\Controllers\Api\Resources\UserResource::toArray
-     */
     public function testUser(): void
     {
         $user = User::factory()
@@ -61,7 +67,6 @@ class UsersControllerTest extends ApiBaseControllerTest
             ->has(State::factory())
             ->create();
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->setExpects($auth, 'user', null, $user, $this->atLeastOnce());
 
@@ -88,9 +93,6 @@ class UsersControllerTest extends ApiBaseControllerTest
         $this->assertArrayHasKey('contact', $data['data']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsersController::user
-     */
     public function testUserById(): void
     {
         $user = User::factory()->create();
@@ -101,7 +103,6 @@ class UsersControllerTest extends ApiBaseControllerTest
             ->has(State::factory())
             ->create();
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->setExpects($auth, 'user', null, $user, $this->atLeastOnce());
 
@@ -120,10 +121,6 @@ class UsersControllerTest extends ApiBaseControllerTest
         $this->assertArrayNotHasKey('dates', $data['data']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsersController::entriesByAngeltype
-     * @covers \Engelsystem\Controllers\Api\Resources\UserAngelTypeReferenceResource::toArray
-     */
     public function testEntriesByAngeltype(): void
     {
         /** @var User $user */
@@ -156,10 +153,6 @@ class UsersControllerTest extends ApiBaseControllerTest
         $this->assertEquals($user->id, $firstUser['id']);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsersController::worklogs
-     * @covers \Engelsystem\Controllers\Api\Resources\WorklogResource::toArray
-     */
     public function testWorklogs(): void
     {
         /** @var User $user */

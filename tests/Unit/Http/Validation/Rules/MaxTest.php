@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\Max;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
+#[CoversClass(Max::class)]
 class MaxTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\Max
-     */
     public function testValidate(): void
     {
         $rule = new Max(3);

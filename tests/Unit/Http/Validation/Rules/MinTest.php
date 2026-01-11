@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\Min;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
+#[CoversClass(Min::class)]
 class MinTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\Min
-     */
     public function testValidate(): void
     {
         $rule = new Min(3);

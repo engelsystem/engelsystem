@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Http\SessionHandlers;
 
+use Engelsystem\Http\SessionHandlers\AbstractHandler;
 use Engelsystem\Test\Unit\Http\SessionHandlers\Stub\ArrayHandler;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(AbstractHandler::class, 'open')]
+#[CoversMethod(AbstractHandler::class, 'close')]
+#[CoversMethod(AbstractHandler::class, 'gc')]
 class AbstractHandlerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\SessionHandlers\AbstractHandler::open
-     */
     public function testOpen(): void
     {
         $handler = new ArrayHandler();
@@ -22,9 +24,6 @@ class AbstractHandlerTest extends TestCase
         $this->assertEquals('/foo/bar', $handler->getSessionPath());
     }
 
-    /**
-     * @covers \Engelsystem\Http\SessionHandlers\AbstractHandler::close
-     */
     public function testClose(): void
     {
         $handler = new ArrayHandler();
@@ -33,9 +32,6 @@ class AbstractHandlerTest extends TestCase
         $this->assertTrue($return);
     }
 
-    /**
-     * @covers \Engelsystem\Http\SessionHandlers\AbstractHandler::gc
-     */
     public function testGc(): void
     {
         $handler = new ArrayHandler();

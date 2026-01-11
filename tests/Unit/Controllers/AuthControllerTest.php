@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\AuthController;
 use Engelsystem\Controllers\NotificationType;
@@ -17,29 +16,27 @@ use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class AuthControllerTest extends ControllerTest
+#[CoversMethod(AuthController::class, '__construct')]
+#[CoversMethod(AuthController::class, 'login')]
+#[CoversMethod(AuthController::class, 'showLogin')]
+#[CoversMethod(AuthController::class, 'postLogin')]
+#[CoversMethod(AuthController::class, 'loginUser')]
+#[CoversMethod(AuthController::class, 'logout')]
+#[AllowMockObjectsWithoutExpectations]
+class AuthControllerTest extends ControllerTestCase
 {
-    use ArraySubsetAsserts;
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Controllers\AuthController::__construct
-     * @covers \Engelsystem\Controllers\AuthController::login
-     * @covers \Engelsystem\Controllers\AuthController::showLogin
-     */
     public function testLogin(): void
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var SessionInterface|MockObject $session */
-        /** @var Redirector|MockObject $redirect */
-        /** @var Config $config */
-        /** @var Authenticator|MockObject $auth */
         list(, $session, $redirect, $config, $auth) = $this->getMocks();
 
         $response->expects($this->once())
@@ -51,23 +48,15 @@ class AuthControllerTest extends ControllerTest
         $controller->login();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AuthController::postLogin
-     */
     public function testPostLogin(): void
     {
         $this->initDatabase();
 
         $request = new Request();
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Redirector|MockObject $redirect */
-        /** @var Config $config */
-        /** @var Authenticator|MockObject $auth */
         list(, , $redirect, $config, $auth) = $this->getMocks();
         $this->session = new Session(new MockArraySessionStorage());
         $this->app->instance('session', $this->session);
-        /** @var Validator|MockObject $validator */
         $validator = new Validator();
         $user = $this->createUser();
 
@@ -83,7 +72,6 @@ class AuthControllerTest extends ControllerTest
                 return $response;
             });
 
-        /** @var AuthController|MockObject $controller */
         $controller = $this->getMockBuilder(AuthController::class)
             ->setConstructorArgs([$response, $this->session, $redirect, $config, $auth])
             ->onlyMethods(['loginUser'])
@@ -119,27 +107,27 @@ class AuthControllerTest extends ControllerTest
         $controller->postLogin($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AuthController::loginUser
-     */
     public function testLoginUser(): void
     {
         $this->initDatabase();
 
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
-        /** @var Redirector|MockObject $redirect */
-        /** @var Config $config */
-        /** @var Authenticator|MockObject $auth */
         list(, , $redirect, $config, $auth) = $this->getMocks();
         $session = new Session(new MockArraySessionStorage());
         $session->set('foo', 'bar');
         $user = $this->createUser();
 
-        $redirect->expects($this->exactly(2))
-            ->method('to')
-            ->withConsecutive(['news'], ['/test'])
-            ->willReturn($response);
+        $matcher = $this->exactly(2);
+        $redirect->expects($matcher)
+            ->method('to')->willReturnCallback(function (...$parameters) use ($matcher, $response) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('news', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('/test', $parameters[0]);
+                }
+                return $response;
+            });
 
         $controller = new AuthController($response, $session, $redirect, $config, $auth);
         $controller->loginUser($user);
@@ -153,16 +141,8 @@ class AuthControllerTest extends ControllerTest
         $controller->loginUser($user);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\AuthController::logout
-     */
     public function testLogout(): void
     {
-        /** @var Response $response */
-        /** @var SessionInterface|MockObject $session */
-        /** @var Redirector|MockObject $redirect */
-        /** @var Config $config */
-        /** @var Authenticator|MockObject $auth */
         list($response, $session, $redirect, $config, $auth) = $this->getMocks();
 
         $session->expects($this->once())
@@ -186,15 +166,15 @@ class AuthControllerTest extends ControllerTest
             ->create();
     }
 
+    /**
+     * @return array{Response, SessionInterface&MockObject, Redirector&MockObject, Authenticator&MockObject}
+     */
     protected function getMocks(): array
     {
         $response = new Response();
-        /** @var SessionInterface|MockObject $session */
-        $session = $this->getMockForAbstractClass(SessionInterface::class);
-        /** @var Redirector|MockObject $redirect */
+        $session = $this->getMockBuilder(SessionInterface::class)->getMock();
         $redirect = $this->createMock(Redirector::class);
         $config = new Config(['home_site' => 'news']);
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
 
         $this->app->instance('session', $session);

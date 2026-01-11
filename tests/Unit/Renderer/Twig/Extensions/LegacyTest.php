@@ -9,18 +9,19 @@ use Engelsystem\Http\Request;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Renderer\Twig\Extensions\Legacy;
 use Illuminate\Database\Eloquent\Collection;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class LegacyTest extends ExtensionTest
+#[CoversMethod(Legacy::class, 'getFunctions')]
+#[CoversMethod(Legacy::class, 'getFilters')]
+#[CoversMethod(Legacy::class, 'renderShifts')]
+#[CoversMethod(Legacy::class, '__construct')]
+#[CoversMethod(Legacy::class, 'getPage')]
+class LegacyTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::getFunctions
-     */
     public function testGetFunctions(): void
     {
         $isSafeHtml = ['is_safe' => ['html']];
-        /** @var Request|MockObject $request */
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
 
         $extension = new Legacy($request);
         $functions = $extension->getFunctions();
@@ -33,13 +34,9 @@ class LegacyTest extends ExtensionTest
         $this->assertExtensionExists('page', [$extension, 'getPage'], $functions);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::getFilters
-     */
     public function testGetFilters(): void
     {
-        /** @var Request|MockObject $request */
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
 
         $extension = new Legacy($request);
         $filters = $extension->getFilters();
@@ -47,15 +44,10 @@ class LegacyTest extends ExtensionTest
         $this->assertFilterExists('dateWithEventDay', 'dateWithEventDay', $filters);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::renderShifts
-     */
     public function testRenderShifts(): void
     {
-        /** @var Request|MockObject $request */
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $renderingShifts = [new Shift()];
-        /** @var ShiftsRenderer|MockObject $shiftsRenderer */
         $shiftsRenderer = $this->createMock(ShiftsRenderer::class);
         $shiftsRenderer->expects($this->once())
             ->method('render')
@@ -70,13 +62,8 @@ class LegacyTest extends ExtensionTest
         $this->assertEquals('rendered shifts', $output);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::getPage
-     */
     public function testGetPage(): void
     {
-        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
 
         $extension = new Legacy($request);

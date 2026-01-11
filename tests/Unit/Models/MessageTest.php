@@ -6,11 +6,17 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * This class provides tests covering the Message model and its relations.
  */
-class MessageTest extends ModelTest
+#[CoversMethod(Message::class, 'sender')]
+#[CoversMethod(Message::class, 'receiver')]
+#[CoversMethod(User::class, 'messagesSent')]
+#[CoversMethod(User::class, 'messagesReceived')]
+#[CoversMethod(User::class, 'messages')]
+class MessageTest extends ModelTestCase
 {
     private User $user1;
 
@@ -51,8 +57,6 @@ class MessageTest extends ModelTest
 
     /**
      * Tests that loading Messages works.
-     *
-     * @covers \Engelsystem\Models\Message::__construct
      */
     public function testLoad(): void
     {
@@ -71,9 +75,6 @@ class MessageTest extends ModelTest
 
     /**
      * Tests that the Messages have the correct senders.
-     *
-     * @covers \Engelsystem\Models\Message::user
-     * @covers \Engelsystem\Models\Message::sender
      */
     public function testSenders(): void
     {
@@ -88,8 +89,6 @@ class MessageTest extends ModelTest
 
     /**
      * Tests that the Messages have the correct receivers.
-     *
-     * @covers \Engelsystem\Models\Message::receiver
      */
     public function testReceivers(): void
     {
@@ -100,8 +99,6 @@ class MessageTest extends ModelTest
 
     /**
      * Tests that the Users have the correct sent Messages.
-     *
-     * @covers \Engelsystem\Models\User\User::messagesSent
      */
     public function testUserSentMessages(): void
     {
@@ -117,8 +114,6 @@ class MessageTest extends ModelTest
 
     /**
      * Tests that the Users have the correct received Messages.
-     *
-     * @covers \Engelsystem\Models\User\User::messagesReceived
      */
     public function testUserReceivedMessages(): void
     {
@@ -134,8 +129,6 @@ class MessageTest extends ModelTest
 
     /**
      * Tests that the user have the correct Messages.
-     *
-     * @covers \Engelsystem\Models\User\User::messages
      */
     public function testUserMessages(): void
     {

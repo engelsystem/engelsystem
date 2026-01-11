@@ -7,9 +7,12 @@ namespace Engelsystem\Test\Unit\Helpers;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\DayOfEvent;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class DayOfEventTest extends ServiceProviderTest
+#[CoversClass(DayOfEvent::class)]
+class DayOfEventTest extends ServiceProviderTestCase
 {
     private const FORMAT = 'Y-m-d H:i:s';
     private Config $config;
@@ -29,7 +32,7 @@ class DayOfEventTest extends ServiceProviderTest
     /**
      * @return Array<string, array>
      */
-    public function provideTestGetData(): array
+    public static function provideTestGetData(): array
     {
         return [
             'day -2 (10:00, with day 0)' => [-2, true, '2023-07-31 15:23:42', '2023-07-28 10:00:00'],
@@ -48,10 +51,7 @@ class DayOfEventTest extends ServiceProviderTest
         ];
     }
 
-    /**
-     * @dataProvider provideTestGetData
-     * @covers \Engelsystem\Helpers\DayOfEvent
-     */
+    #[DataProvider('provideTestGetData')]
     public function testGet(
         int | null $expected,
         bool $eventHasDay0,
@@ -66,10 +66,7 @@ class DayOfEventTest extends ServiceProviderTest
         Carbon::setTestNow(Carbon::createFromFormat(self::FORMAT, $now));
         $this->assertSame($expected, DayOfEvent::get());
     }
-    /**
-     * @dataProvider provideTestGetData
-     * @covers \Engelsystem\Helpers\DayOfEvent
-     */
+
     public function testGetDisabledShowDayOfEvent(): void
     {
         $this->config->set('enable_day_of_event', false);

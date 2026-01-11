@@ -7,13 +7,12 @@ namespace Engelsystem\Test\Unit\Helpers;
 use Engelsystem\Application;
 use Engelsystem\Helpers\Cache;
 use Engelsystem\Helpers\CacheServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class CacheServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(CacheServiceProvider::class, 'register')]
+class CacheServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\CacheServiceProvider::register
-     */
     public function testRegister(): void
     {
         $app = new Application();

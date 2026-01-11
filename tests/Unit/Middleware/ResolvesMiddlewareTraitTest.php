@@ -6,39 +6,43 @@ namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Application;
 use Engelsystem\Middleware\CallableHandler;
+use Engelsystem\Middleware\ResolvesMiddlewareTrait;
 use Engelsystem\Test\Unit\Middleware\Stub\HasStaticMethod;
 use Engelsystem\Test\Unit\Middleware\Stub\ResolvesMiddlewareTraitImplementation;
 use InvalidArgumentException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Server\MiddlewareInterface;
 use stdClass;
 
+#[CoversMethod(ResolvesMiddlewareTrait::class, 'isMiddleware')]
+#[CoversMethod(ResolvesMiddlewareTrait::class, 'resolveMiddleware')]
 class ResolvesMiddlewareTraitTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\ResolvesMiddlewareTrait::isMiddleware
-     * @covers \Engelsystem\Middleware\ResolvesMiddlewareTrait::resolveMiddleware
-     */
     public function testResolveMiddleware(): void
     {
-        /** @var Application|MockObject $container */
         $container = $this->createMock(Application::class);
-        $middlewareInterface = $this->getMockForAbstractClass(MiddlewareInterface::class);
+        $middlewareInterface = $this->getStubBuilder(MiddlewareInterface::class)->getStub();
         $callable = [HasStaticMethod::class, 'foo'];
+        $matcher = $this->exactly(3);
 
-        $container->expects($this->exactly(3))
+        $container->expects($matcher)
             ->method('make')
-            ->withConsecutive(
-                ['FooBarClass'],
-                [CallableHandler::class, ['callable' => $callable]],
-                ['UnresolvableClass']
-            )
-            ->willReturnOnConsecutiveCalls(
-                $middlewareInterface,
-                $middlewareInterface,
-                null
-            );
+            ->willReturnCallback(function (...$parameters) use ($middlewareInterface, $matcher, $callable) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('FooBarClass', $parameters[0]);
+                    return $middlewareInterface;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(CallableHandler::class, $parameters[0]);
+                    $this->assertSame(['callable' => $callable], $parameters[1]);
+                    return $middlewareInterface;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('UnresolvableClass', $parameters[0]);
+                    return null;
+                }
+            });
 
         $middleware = new ResolvesMiddlewareTraitImplementation($container);
 
@@ -52,13 +56,9 @@ class ResolvesMiddlewareTraitTest extends TestCase
         $middleware->callResolveMiddleware('UnresolvableClass');
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ResolvesMiddlewareTrait::resolveMiddleware
-     */
     public function testResolveMiddlewareNotCallable(): void
     {
-        /** @var Application|MockObject $container */
-        $container = $this->createMock(Application::class);
+        $container = $this->createStub(Application::class);
 
         $middleware = new ResolvesMiddlewareTraitImplementation($container);
 
@@ -66,12 +66,9 @@ class ResolvesMiddlewareTraitTest extends TestCase
         $middleware->callResolveMiddleware([new stdClass(), 'test']);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\ResolvesMiddlewareTrait::resolveMiddleware
-     */
     public function testResolveMiddlewareNoContainer(): void
     {
-        $middlewareInterface = $this->getMockForAbstractClass(MiddlewareInterface::class);
+        $middlewareInterface = $this->getStubBuilder(MiddlewareInterface::class)->getStub();
 
         $middleware = new ResolvesMiddlewareTraitImplementation();
         $return = $middleware->callResolveMiddleware($middlewareInterface);

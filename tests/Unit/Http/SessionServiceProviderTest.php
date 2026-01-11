@@ -8,7 +8,9 @@ use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\SessionHandlers\DatabaseHandler;
 use Engelsystem\Http\SessionServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -16,33 +18,31 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface as StorageInterface;
 
-class SessionServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(SessionServiceProvider::class, 'getSessionStorage')]
+#[CoversMethod(SessionServiceProvider::class, 'register')]
+#[CoversMethod(SessionServiceProvider::class, 'isCli')]
+#[AllowMockObjectsWithoutExpectations]
+class SessionServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Http\SessionServiceProvider::getSessionStorage()
-     * @covers \Engelsystem\Http\SessionServiceProvider::register()
-     */
     public function testRegister(): void
     {
-        $app = $this->getApp(['make', 'instance', 'bind', 'get']);
+        $app = $this->getAppMock(['make', 'instance', 'bind', 'get']);
 
-        $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
-        $sessionStorage2 = $this->getMockForAbstractClass(StorageInterface::class);
-        $databaseHandler = $this->getMockBuilder(DatabaseHandler::class)
+        $sessionStorage = $this->getStubBuilder(StorageInterface::class)->getStub();
+        $sessionStorage2 = $this->getStubBuilder(StorageInterface::class)->getStub();
+        $databaseHandler = $this->getStubBuilder(DatabaseHandler::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getStub();
 
         $session = $this->getSessionMock();
         $request = $this->getRequestMock();
         $request->server->set('HTTPS', 'on');
 
-        /** @var SessionServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(SessionServiceProvider::class)
             ->setConstructorArgs([$app])
             ->onlyMethods(['isCli'])
             ->getMock();
 
-        /** @var Config|MockObject $config */
         $config = new Config([
             'session' => ['driver' => 'native', 'name' => 'session', 'lifetime' => 2],
         ]);
@@ -51,81 +51,120 @@ class SessionServiceProviderTest extends ServiceProviderTest
             ->method('isCli')
             ->willReturnOnConsecutiveCalls(true, false, false);
 
-        $app->expects($this->exactly(7))
+        $matcher = $this->exactly(7);
+        $app->expects($matcher)
             ->method('make')
-            ->withConsecutive(
-                [MockArraySessionStorage::class],
-                [Session::class],
-                [
-                    NativeSessionStorage::class,
-                    [
-                        // 2 days
-                        'options' => [
-                            'cookie_secure' => true,
-                            'cookie_httponly' => true,
-                            'name' => 'session',
-                            'cookie_lifetime' => 172800,
-                        ],
-                        'handler' => null,
-                    ],
-                ],
-                [Session::class],
-                [DatabaseHandler::class],
-                [
-                    NativeSessionStorage::class,
-                    [
-                        // 5 days
-                        'options' => [
-                            'cookie_secure' => true,
-                            'cookie_httponly' => true,
-                            'name' => 'foobar',
-                            'cookie_lifetime' => 432000,
-                        ],
-                        'handler' => $databaseHandler,
-                    ],
-                ],
-                [Session::class]
-            )
-            ->willReturnOnConsecutiveCalls(
+            ->willReturnCallback(function (...$parameters) use (
+                $sessionStorage2,
+                $session,
                 $sessionStorage,
-                $session,
-                $sessionStorage2,
-                $session,
-                $databaseHandler,
-                $sessionStorage2,
-                $session
-            );
-        $app->expects($this->atLeastOnce())
+                $matcher,
+                $databaseHandler
+            ) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(MockArraySessionStorage::class, $parameters[0]);
+                    return $sessionStorage;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(Session::class, $parameters[0]);
+                    return $session;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(NativeSessionStorage::class, $parameters[0]);
+                    $this->assertEquals([
+                    // 2 days
+                    'options' => [
+                        'cookie_secure' => true,
+                        'cookie_httponly' => true,
+                        'name' => 'session',
+                        'cookie_lifetime' => 172800,
+                    ],
+                    'handler' => null,
+                    ], $parameters[1]);
+                    return $sessionStorage2;
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame(Session::class, $parameters[0]);
+                    return $session;
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame(DatabaseHandler::class, $parameters[0]);
+                    return $databaseHandler;
+                }
+                if ($matcher->numberOfInvocations() === 6) {
+                    $this->assertSame(NativeSessionStorage::class, $parameters[0]);
+                    $this->assertEquals([
+                    // 5 days
+                    'options' => [
+                        'cookie_secure' => true,
+                        'cookie_httponly' => true,
+                        'name' => 'foobar',
+                        'cookie_lifetime' => 432000,
+                    ],
+                    'handler' => $databaseHandler,
+                    ], $parameters[1]);
+                    return $sessionStorage2;
+                }
+                if ($matcher->numberOfInvocations() === 7) {
+                    $this->assertSame(Session::class, $parameters[0]);
+                    return $session;
+                }
+            });
+        $matcher = $this->atLeastOnce();
+        $app->expects($matcher)
             ->method('instance')
-            ->withConsecutive(
-                ['session.storage', $sessionStorage],
-                [Session::class, $session],
-                ['session', $session]
-            );
+            ->willReturnCallback(function (...$parameters) use ($matcher, $sessionStorage, $session): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('session.storage', $parameters[0]);
+                    $this->assertSame($sessionStorage, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(Session::class, $parameters[0]);
+                    $this->assertSame($session, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('session', $parameters[0]);
+                    $this->assertSame($session, $parameters[1]);
+                }
+            });
 
-        $app->expects($this->exactly(5))
-            ->method('get')
-            ->withConsecutive(
-                ['request'],
-                ['request'],
-                ['config'],
-                ['request'],
-                ['config'],
-            )
-            ->willReturnOnConsecutiveCalls(
-                $request,
-                $request,
-                $config,
-                $request,
-                $config,
-            );
+        $matcher = $this->exactly(5);
+        $app->expects($matcher)
+            ->method('get')->willReturnCallback(function (...$parameters) use ($config, $request, $matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('request', $parameters[0]);
+                    return $request;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('request', $parameters[0]);
+                    return $request;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('config', $parameters[0]);
+                    return $config;
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame('request', $parameters[0]);
+                    return $request;
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame('config', $parameters[0]);
+                    return $config;
+                }
+            });
 
-        $app->expects($this->atLeastOnce())
-            ->method('bind')
-            ->withConsecutive(
-                [StorageInterface::class, 'session.storage'],
-                [SessionInterface::class, Session::class]
-            );
+        $matcher = $this->atLeastOnce();
+        $app->expects($matcher)
+            ->method('bind')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(StorageInterface::class, $parameters[0]);
+                    $this->assertSame('session.storage', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(SessionInterface::class, $parameters[0]);
+                    $this->assertSame(Session::class, $parameters[1]);
+                }
+            });
 
         $this->setExpects($request, 'setSession', [$session], null, $this->atLeastOnce());
         $this->setExpects($session, 'has', ['_token'], false, $this->atLeastOnce());
@@ -138,41 +177,56 @@ class SessionServiceProviderTest extends ServiceProviderTest
         $serviceProvider->register(); // pdo handler
     }
 
-    /**
-     * @covers \Engelsystem\Http\SessionServiceProvider::isCli()
-     */
     public function testIsCli(): void
     {
-        $app = $this->getApp(['make', 'instance', 'bind', 'get']);
+        $app = $this->getAppMock(['make', 'instance', 'bind', 'get']);
 
-        $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
+        $sessionStorage = $this->getStubBuilder(StorageInterface::class)->getStub();
 
         $session = $this->getSessionMock();
         $request = $this->getRequestMock();
 
-        $app->expects($this->exactly(2))
-            ->method('make')
-            ->withConsecutive(
-                [MockArraySessionStorage::class],
-                [Session::class]
-            )
-            ->willReturnOnConsecutiveCalls(
-                $sessionStorage,
-                $session
-            );
-        $app->expects($this->exactly(3))
+        $matcher = $this->exactly(2);
+        $app->expects($matcher)
+            ->method('make')->willReturnCallback(function (...$parameters) use ($session, $sessionStorage, $matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(MockArraySessionStorage::class, $parameters[0]);
+                    return $sessionStorage;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(Session::class, $parameters[0]);
+                    return $session;
+                }
+            });
+        $matcher = $this->exactly(3);
+        $app->expects($matcher)
             ->method('instance')
-            ->withConsecutive(
-                ['session.storage', $sessionStorage],
-                [Session::class, $session],
-                ['session', $session]
-            );
-        $app->expects($this->atLeastOnce())
-            ->method('bind')
-            ->withConsecutive(
-                [StorageInterface::class, 'session.storage'],
-                [SessionInterface::class, Session::class]
-            );
+            ->willReturnCallback(function (...$parameters) use ($matcher, $sessionStorage, $session): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('session.storage', $parameters[0]);
+                    $this->assertSame($sessionStorage, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(Session::class, $parameters[0]);
+                    $this->assertSame($session, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('session', $parameters[0]);
+                    $this->assertSame($session, $parameters[1]);
+                }
+            });
+        $matcher = $this->atLeastOnce();
+        $app->expects($matcher)
+            ->method('bind')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(StorageInterface::class, $parameters[0]);
+                    $this->assertSame('session.storage', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(SessionInterface::class, $parameters[0]);
+                    $this->assertSame(Session::class, $parameters[1]);
+                }
+            });
 
         $this->setExpects($app, 'get', ['request'], $request);
         $this->setExpects($request, 'setSession', [$session]);
@@ -183,16 +237,16 @@ class SessionServiceProviderTest extends ServiceProviderTest
         $serviceProvider->register();
     }
 
-    private function getSessionMock(): MockObject
+    private function getSessionMock(): Session&MockObject
     {
-        $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
+        $sessionStorage = $this->getMockBuilder(StorageInterface::class)->getMock();
         return $this->getMockBuilder(Session::class)
             ->setConstructorArgs([$sessionStorage])
             ->onlyMethods(['start', 'has', 'set'])
             ->getMock();
     }
 
-    private function getRequestMock(): MockObject|Request
+    private function getRequestMock(): Request&MockObject
     {
         return $this->getMockBuilder(Request::class)
             ->onlyMethods(['setSession'])

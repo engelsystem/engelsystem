@@ -6,19 +6,16 @@ namespace Engelsystem\Test\Unit\Http\Exceptions;
 
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Validation\Validator;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(ValidationException::class, '__construct')]
+#[CoversMethod(ValidationException::class, 'getValidator')]
 class ValidationExceptionTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Exceptions\ValidationException::__construct
-     * @covers \Engelsystem\Http\Exceptions\ValidationException::getValidator
-     */
     public function testConstruct(): void
     {
-        /** @var Validator|MockObject $validator */
-        $validator = $this->createMock(Validator::class);
+        $validator = $this->createStub(Validator::class);
 
         $exception = new ValidationException($validator);
 

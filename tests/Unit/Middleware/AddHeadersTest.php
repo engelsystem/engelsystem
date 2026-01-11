@@ -4,29 +4,22 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Middleware;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Response;
 use Engelsystem\Middleware\AddHeaders;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+#[CoversMethod(AddHeaders::class, '__construct')]
+#[CoversMethod(AddHeaders::class, 'process')]
 class AddHeadersTest extends TestCase
 {
-    use ArraySubsetAsserts;
-
-    /**
-     * @covers \Engelsystem\Middleware\AddHeaders::__construct
-     * @covers \Engelsystem\Middleware\AddHeaders::process
-     */
     public function testRegister(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $request = $this->getStubBuilder(ServerRequestInterface::class)->getStub();
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $response = new Response();
 
         $handler->expects($this->atLeastOnce())
@@ -43,6 +36,6 @@ class AddHeadersTest extends TestCase
         $return = $middleware->process($request, $handler);
 
         $this->assertNotEquals($response, $return);
-        $this->assertArraySubset(['Foo-Header' => ['bar!']], $return->getHeaders());
+        $this->assertEquals(['bar!'], $return->getHeaders()['Foo-Header']);
     }
 }
