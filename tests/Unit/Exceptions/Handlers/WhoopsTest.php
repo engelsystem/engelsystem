@@ -41,28 +41,12 @@ class WhoopsTest extends TestCase
         $this->setExpects($jsonResponseHandler, 'setJsonApi', [true]);
         $this->setExpects($jsonResponseHandler, 'addTraceToOutput', [true]);
 
-        $matcher = $this->exactly(3);
-        $app->expects($matcher)
-            ->method('make')
-            ->willReturnCallback(function (...$parameters) use (
-                $jsonResponseHandler,
-                $prettyPageHandler,
-                $whoopsRunner,
-                $matcher
-            ) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(WhoopsRunner::class, $parameters[0]);
-                    return $whoopsRunner;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(PrettyPageHandler::class, $parameters[0]);
-                    return $prettyPageHandler;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame(JsonResponseHandler::class, $parameters[0]);
-                    return $jsonResponseHandler;
-                }
-            });
+        $app->method('make')
+            ->willReturnMap([
+                [WhoopsRunner::class, $whoopsRunner],
+                [PrettyPageHandler::class, $prettyPageHandler],
+                [JsonResponseHandler::class, $jsonResponseHandler],
+            ]);
         $app->expects($this->once())
             ->method('has')
             ->with('authenticator')

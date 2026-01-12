@@ -21,6 +21,7 @@ class ResponseServiceProviderTest extends ServiceProviderTestCase
         $app = $this->getAppMock();
 
         $this->setExpects($app, 'make', [Response::class], $response);
+
         $matcher = $this->exactly(3);
         $app->expects($matcher)
             ->method('instance')->willReturnCallback(function (...$parameters) use ($matcher, $response): void {

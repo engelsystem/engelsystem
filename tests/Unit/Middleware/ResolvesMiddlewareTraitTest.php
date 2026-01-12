@@ -21,28 +21,17 @@ class ResolvesMiddlewareTraitTest extends TestCase
 {
     public function testResolveMiddleware(): void
     {
-        $container = $this->createMock(Application::class);
+        $container = $this->createStub(Application::class);
         $middlewareInterface = $this->getStubBuilder(MiddlewareInterface::class)->getStub();
         $callable = [HasStaticMethod::class, 'foo'];
-        $matcher = $this->exactly(3);
 
-        $container->expects($matcher)
+        $container
             ->method('make')
-            ->willReturnCallback(function (...$parameters) use ($middlewareInterface, $matcher, $callable) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('FooBarClass', $parameters[0]);
-                    return $middlewareInterface;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(CallableHandler::class, $parameters[0]);
-                    $this->assertSame(['callable' => $callable], $parameters[1]);
-                    return $middlewareInterface;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame('UnresolvableClass', $parameters[0]);
-                    return null;
-                }
-            });
+            ->willReturnMap([
+                ['FooBarClass', [], $middlewareInterface],
+                [CallableHandler::class, ['callable' => $callable], $middlewareInterface],
+                ['UnresolvableClass', [], null],
+            ]);
 
         $middleware = new ResolvesMiddlewareTraitImplementation($container);
 

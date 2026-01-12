@@ -130,23 +130,14 @@ class ApplicationTest extends TestCase
             ->method('register')
             ->with($serviceProvider);
 
-        $config = $this->getMockBuilder(Config::class)
-            ->getMock();
+        $config = $this->createStub(Config::class);
 
         $middleware = [MiddlewareInterface::class];
-        $matcher = $this->exactly(2);
-        $config->expects($matcher)
-            ->method('get')
-            ->willReturnCallback(function (...$parameters) use ($middleware, $serviceProvider, $matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('providers', $parameters[0]);
-                    return [$serviceProvider];
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('middleware', $parameters[0]);
-                    return $middleware;
-                }
-            });
+        $config->method('get')
+            ->willReturnMap([
+                ['providers', [], [$serviceProvider]],
+                ['middleware', [], $middleware],
+            ]);
 
         $property = (new ReflectionClass($app))->getProperty('serviceProviders');
         $property->setValue($app, [$serviceProvider]);

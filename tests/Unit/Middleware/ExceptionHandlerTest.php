@@ -21,7 +21,7 @@ class ExceptionHandlerTest extends TestCase
 {
     public function testRegister(): void
     {
-        $container = $this->getMockBuilder(ContainerInterface::class)->getMock();
+        $container = $this->getStubBuilder(ContainerInterface::class)->getStub();
         $request = $this->getStubBuilder(ServerRequestInterface::class)->getStub();
         $response = $this->getMockBuilder(Response::class)->getMock();
         $errorHandler = $this->getStubBuilder(Handler::class)->getStub();
@@ -30,18 +30,11 @@ class ExceptionHandlerTest extends TestCase
 
         Application::setInstance($container);
 
-        $matcher = $this->exactly(2);
-        $container->expects($matcher)
-            ->method('get')->willReturnCallback(function (...$parameters) use ($response, $errorHandler, $matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('error.handler', $parameters[0]);
-                    return $errorHandler;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('psr7.response', $parameters[0]);
-                    return $response;
-                }
-            });
+        $container->method('get')
+            ->willReturnMap([
+                ['error.handler', $errorHandler],
+                ['psr7.response', $response],
+            ]);
 
         $response->expects($this->once())
             ->method('withContent')

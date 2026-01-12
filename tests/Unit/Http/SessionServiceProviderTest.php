@@ -128,34 +128,16 @@ class SessionServiceProviderTest extends ServiceProviderTestCase
                 }
             });
 
-        $matcher = $this->exactly(5);
-        $app->expects($matcher)
-            ->method('get')->willReturnCallback(function (...$parameters) use ($config, $request, $matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('request', $parameters[0]);
-                    return $request;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('request', $parameters[0]);
-                    return $request;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame('config', $parameters[0]);
-                    return $config;
-                }
-                if ($matcher->numberOfInvocations() === 4) {
-                    $this->assertSame('request', $parameters[0]);
-                    return $request;
-                }
-                if ($matcher->numberOfInvocations() === 5) {
-                    $this->assertSame('config', $parameters[0]);
-                    return $config;
-                }
-            });
+        $app->method('get')
+            ->willReturnMap([
+                ['request', $request],
+                ['config', $config],
+            ]);
 
         $matcher = $this->atLeastOnce();
         $app->expects($matcher)
-            ->method('bind')->willReturnCallback(function (...$parameters) use ($matcher): void {
+            ->method('bind')
+            ->willReturnCallback(function (...$parameters) use ($matcher): void {
                 if ($matcher->numberOfInvocations() === 1) {
                     $this->assertSame(StorageInterface::class, $parameters[0]);
                     $this->assertSame('session.storage', $parameters[1]);
@@ -186,18 +168,11 @@ class SessionServiceProviderTest extends ServiceProviderTestCase
         $session = $this->getSessionMock();
         $request = $this->getRequestMock();
 
-        $matcher = $this->exactly(2);
-        $app->expects($matcher)
-            ->method('make')->willReturnCallback(function (...$parameters) use ($session, $sessionStorage, $matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(MockArraySessionStorage::class, $parameters[0]);
-                    return $sessionStorage;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(Session::class, $parameters[0]);
-                    return $session;
-                }
-            });
+        $app->method('make')
+            ->willReturnMap([
+                [MockArraySessionStorage::class, [], $sessionStorage],
+                [Session::class, [], $session],
+            ]);
         $matcher = $this->exactly(3);
         $app->expects($matcher)
             ->method('instance')

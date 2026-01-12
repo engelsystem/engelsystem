@@ -28,7 +28,7 @@ class AssetsTest extends ExtensionTestCase
     public function testGetAsset(): void
     {
         $urlGenerator = $this->createMock(UrlGenerator::class);
-        $assets = $this->createMock(AssetsProvider::class);
+        $assets = $this->createStub(AssetsProvider::class);
 
         $matcher = $this->exactly(4);
         $urlGenerator->expects($matcher)
@@ -49,22 +49,13 @@ class AssetsTest extends ExtensionTestCase
                 return 'https://foo.bar/project' . $path;
             });
 
-        $matcher = $this->exactly(3);
-        $assets->expects($matcher)
-            ->method('getAssetPath')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('foo.css', $parameters[0]);
-                    return 'foo.css';
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('bar.css', $parameters[0]);
-                    return 'bar.css';
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame('lorem.js', $parameters[0]);
-                    return 'lorem-hashed.js';
-                }
-            });
+        $assets
+            ->method('getAssetPath')
+            ->willReturnMap([
+                ['foo.css', 'foo.css'],
+                ['bar.css', 'bar.css'],
+                ['lorem.js', 'lorem-hashed.js'],
+            ]);
 
         $extension = new Assets($assets, $urlGenerator);
 

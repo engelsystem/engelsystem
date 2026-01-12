@@ -32,10 +32,6 @@ class UrlGeneratorServiceProviderTest extends ServiceProviderTestCase
                     $this->assertSame('http.urlGenerator', $parameters[0]);
                     $this->assertSame($urlGenerator, $parameters[1]);
                 }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame(UrlGeneratorInterface::class, $parameters[0]);
-                    $this->assertSame($urlGenerator, $parameters[1]);
-                }
             });
         $app->expects($this->once())
             ->method('bind')

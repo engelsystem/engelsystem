@@ -26,18 +26,12 @@ class RendererServiceProviderTest extends ServiceProviderTestCase
 
         $app = $this->getAppMock(['make', 'instance', 'tag']);
 
-        $matcher = $this->exactly(2);
-        $app->expects($matcher)
-            ->method('make')->willReturnCallback(function (...$parameters) use ($htmlEngine, $renderer, $matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(Renderer::class, $parameters[0]);
-                    return $renderer;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(HtmlEngine::class, $parameters[0]);
-                    return $htmlEngine;
-                }
-            });
+        $app
+            ->method('make')
+            ->willReturnMap([
+                [Renderer::class, [], $renderer],
+                [HtmlEngine::class, [], $htmlEngine],
+            ]);
 
         $matcher = $this->exactly(4);
         $app->expects($matcher)

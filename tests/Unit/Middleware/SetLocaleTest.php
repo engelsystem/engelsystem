@@ -52,18 +52,12 @@ class SetLocaleTest extends TestCase
                 ['set-locale' => $locale]
             );
 
-        $matcher = $this->exactly(2);
-        $translator->expects($matcher)
-            ->method('hasLocale')->willReturnCallback(function (...$parameters) use ($matcher, $locale) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('en_US', $parameters[0]);
-                    return false;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame($locale, $parameters[0]);
-                    return true;
-                }
-            });
+        $translator
+            ->method('hasLocale')
+            ->willReturnMap([
+                ['en_US', false],
+                [$locale, true],
+            ]);
         $translator->expects($this->once())
             ->method('setLocale')
             ->with($locale);

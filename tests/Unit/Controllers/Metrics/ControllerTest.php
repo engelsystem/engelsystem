@@ -85,194 +85,80 @@ class ControllerTest extends TestCase
             ->with('metrics return')
             ->willReturn($response);
 
-        $matcher = $this->exactly(15);
-        $stats->expects($matcher)
-            ->method('licenses')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('has_car', $parameters[0]);
-                    return 6;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('forklift', $parameters[0]);
-                    return 3;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame('forklift', $parameters[0]);
-                    return 15;
-                }
-                if ($matcher->numberOfInvocations() === 4) {
-                    $this->assertSame('car', $parameters[0]);
-                    return 9;
-                }
-                if ($matcher->numberOfInvocations() === 5) {
-                    $this->assertSame('car', $parameters[0]);
-                    $this->assertSame(true, $parameters[1]);
-                    return 7;
-                }
-                if ($matcher->numberOfInvocations() === 6) {
-                    $this->assertSame('3.5t', $parameters[0]);
-                    return 1;
-                }
-                if ($matcher->numberOfInvocations() === 7) {
-                    $this->assertSame('3.5t', $parameters[0]);
-                    $this->assertSame(true, $parameters[1]);
-                    return 5;
-                }
-                if ($matcher->numberOfInvocations() === 8) {
-                    $this->assertSame('7.5t', $parameters[0]);
-                    return 4;
-                }
-                if ($matcher->numberOfInvocations() === 9) {
-                    $this->assertSame('7.5t', $parameters[0]);
-                    $this->assertSame(true, $parameters[1]);
-                    return 3;
-                }
-                if ($matcher->numberOfInvocations() === 10) {
-                    $this->assertSame('12t', $parameters[0]);
-                    return 5;
-                }
-                if ($matcher->numberOfInvocations() === 11) {
-                    $this->assertSame('12t', $parameters[0]);
-                    $this->assertSame(true, $parameters[1]);
-                    return 9;
-                }
-                if ($matcher->numberOfInvocations() === 12) {
-                    $this->assertSame('ifsg_light', $parameters[0]);
-                    return 2;
-                }
-                if ($matcher->numberOfInvocations() === 13) {
-                    $this->assertSame('ifsg_light', $parameters[0]);
-                    $this->assertSame(true, $parameters[1]);
-                    return 1;
-                }
-                if ($matcher->numberOfInvocations() === 14) {
-                    $this->assertSame('ifsg', $parameters[0]);
-                    return 7;
-                }
-                if ($matcher->numberOfInvocations() === 15) {
-                    $this->assertSame('ifsg', $parameters[0]);
-                    $this->assertSame(true, $parameters[1]);
-                    return 8;
-                }
-            });
+        $stats->expects($this->exactly(15))
+            ->method('licenses')
+            ->willReturnMap([
+               ['has_car', false, 6],
+               ['forklift', false, 3],
+               ['forklift', true, 15],
+               ['car', false, 9],
+               ['car', true, 7],
+               ['3.5t', false, 1],
+               ['3.5t', true, 5],
+               ['7.5t', false, 4],
+               ['7.5t', true, 3],
+               ['12t', false, 5],
+               ['12t', true, 9],
+               ['ifsg_light', false, 2],
+               ['ifsg_light', true, 1],
+               ['ifsg', false, 7],
+               ['ifsg', true, 8],
+            ]);
 
-        $matcher = $this->exactly(4);
-        $stats->expects($matcher)
-            ->method('usersState')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(false, $parameters[0]);
-                    $this->assertSame(false, $parameters[1]);
-                    return 7;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(true, $parameters[0]);
-                    $this->assertSame(false, $parameters[1]);
-                    return 43;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame(false, $parameters[0]);
-                    return 42;
-                }
-                if ($matcher->numberOfInvocations() === 4) {
-                    $this->assertSame(true, $parameters[0]);
-                    return 10;
-                }
-            });
+        $stats->expects($this->exactly(4))
+            ->method('usersState')
+            ->willReturnMap([
+                [false, false, 7],
+                [true, false, 43],
+                [false, true, 42],
+                [true, true, 10],
+            ]);
 
-        $matcher = $this->exactly(2);
-        $stats->expects($matcher)
-            ->method('currentlyWorkingUsers')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(false, $parameters[0]);
-                    return 10;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(true, $parameters[0]);
-                    return 1;
-                }
-            });
+        $stats->expects($this->exactly(2))
+            ->method('currentlyWorkingUsers')
+            ->willReturnMap([
+                [false, 10],
+                [true, 1],
+            ]);
 
         $matcher = $this->exactly(3);
         $stats->expects($matcher)
-            ->method('workSeconds')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(true, $parameters[0]);
-                    $this->assertSame(false, $parameters[1]);
-                    return 60 * 37;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(false, $parameters[0]);
-                    $this->assertSame(false, $parameters[1]);
-                    return 60 * 251;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame(null, $parameters[0]);
-                    $this->assertSame(true, $parameters[1]);
-                    return 60 * 3;
-                }
-            });
+            ->method('workSeconds')
+            ->willReturnMap([
+                [true, false, 60 * 37],
+                [false, false, 60 * 251],
+                [null, true, 60 * 3],
+            ]);
 
         $matcher = $this->exactly(2);
         $stats->expects($matcher)
-            ->method('announcements')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(false, $parameters[0]);
-                    return 18;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(true, $parameters[0]);
-                    return 7;
-                }
-            });
+            ->method('announcements')
+            ->willReturnMap([
+               [false, 18],
+               [true, 7],
+            ]);
+
         $matcher = $this->exactly(2);
         $stats->expects($matcher)
-            ->method('questions')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(true, $parameters[0]);
-                    return 5;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(false, $parameters[0]);
-                    return 0;
-                }
-            });
+            ->method('questions')
+            ->willReturnMap([
+                [true, 5],
+                [false, 0],
+            ]);
 
         $matcher = $this->exactly(8);
         $stats->expects($matcher)
-            ->method('logEntries')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(LogLevel::EMERGENCY, $parameters[0]);
-                    return 0;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(LogLevel::ALERT, $parameters[0]);
-                    return 1;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame(LogLevel::CRITICAL, $parameters[0]);
-                    return 0;
-                }
-                if ($matcher->numberOfInvocations() === 4) {
-                    $this->assertSame(LogLevel::ERROR, $parameters[0]);
-                    return 5;
-                }
-                if ($matcher->numberOfInvocations() === 5) {
-                    $this->assertSame(LogLevel::WARNING, $parameters[0]);
-                    return 999;
-                }
-                if ($matcher->numberOfInvocations() === 6) {
-                    $this->assertSame(LogLevel::NOTICE, $parameters[0]);
-                    return 4;
-                }
-                if ($matcher->numberOfInvocations() === 7) {
-                    $this->assertSame(LogLevel::INFO, $parameters[0]);
-                    return 55;
-                }
-                if ($matcher->numberOfInvocations() === 8) {
-                    $this->assertSame(LogLevel::DEBUG, $parameters[0]);
-                    return 3;
-                }
-            });
+            ->method('logEntries')
+            ->willReturnMap([
+                [LogLevel::EMERGENCY, 0],
+                [LogLevel::ALERT, 1],
+                [LogLevel::CRITICAL, 0],
+                [LogLevel::ERROR, 5],
+                [LogLevel::WARNING, 999],
+                [LogLevel::NOTICE, 4],
+                [LogLevel::INFO, 55],
+                [LogLevel::DEBUG, 3],
+            ]);
 
         $this->setExpects($stats, 'worklogSeconds', null, 39 * 60 * 60);
         $this->setExpects($stats, 'vouchers', null, 17);

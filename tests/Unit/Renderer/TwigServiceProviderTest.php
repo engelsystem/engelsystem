@@ -81,23 +81,12 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
 
         $app = $this->getAppMock(['get', 'tagged', 'make']);
 
-        $matcher = $this->exactly(3);
-        $app->expects($matcher)
-            ->method('get')
-            ->willReturnCallback(function (...$parameters) use ($matcher, $twig, $textTwig, $devExtension) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('twig.environment', $parameters[0]);
-                    return $twig;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('twig.textEnvironment', $parameters[0]);
-                    return $textTwig;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame('twig.extension.develop', $parameters[0]);
-                    return $devExtension;
-                }
-            });
+        $app->method('get')
+            ->willReturnMap([
+                ['twig.environment', $twig],
+                ['twig.textEnvironment', $textTwig],
+                ['twig.extension.develop', $devExtension],
+            ]);
         $app->expects($this->once())
             ->method('tagged')
             ->with('twig.extension')
@@ -145,7 +134,7 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
         $twigLoader = $this->createStub(TwigLoader::class);
         $twigTextLoader = $this->createStub(TwigTextLoader::class);
         $twig = $this->createMock(Twig::class);
-        $config = $this->createMock(Config::class);
+        $config = $this->createStub(Config::class);
         $twigCore = $this->createMock(
             AbstractExtensionWithSetTimezone::class,
         );
@@ -261,22 +250,12 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
                 }
             });
 
-        $matcher = $this->exactly(3);
-        $app->expects($matcher)
-            ->method('get')->willReturnCallback(function (...$parameters) use ($config, $viewsPath, $matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('path.views', $parameters[0]);
-                    return $viewsPath;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('config', $parameters[0]);
-                    return $config;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame('path.cache.views', $parameters[0]);
-                    return 'cache/views';
-                }
-            });
+        $app->method('get')
+            ->willReturnMap([
+                ['path.views', $viewsPath],
+                ['config', $config],
+                ['path.cache.views', 'cache/views'],
+            ]);
 
         $matcher = $this->exactly(2);
         $app->expects($matcher)
@@ -291,18 +270,12 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
                 }
             });
 
-        $matcher = $this->exactly(2);
-        $config->expects($matcher)
-            ->method('get')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('environment', $parameters[0]);
-                    return 'development';
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('timezone', $parameters[0]);
-                    return 'The/World';
-                }
-            });
+        $config
+            ->method('get')
+            ->willReturnMap([
+                ['environment', 'development'],
+                ['timezone', 'The/World'],
+            ]);
 
         $twig->expects($this->once())
             ->method('getExtension')

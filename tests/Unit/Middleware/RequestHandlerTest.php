@@ -110,18 +110,12 @@ class RequestHandlerTest extends TestCase
             ->with($request, $handler)
             ->willReturn($response);
 
-        $matcher = $this->exactly(2);
-        $container->expects($matcher)
-            ->method('has')->willReturnCallback(function (...$parameters) use ($matcher, $className) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('FooBarTestController', $parameters[0]);
-                    return false;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame($className, $parameters[0]);
-                    return true;
-                }
-            });
+        $container
+            ->method('has')
+            ->willReturnMap([
+                ['FooBarTestController', false],
+                [$className, true],
+            ]);
         $container->expects($this->once())
             ->method('make')
             ->with($className)

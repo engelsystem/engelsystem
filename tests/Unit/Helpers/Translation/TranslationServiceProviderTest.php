@@ -10,6 +10,7 @@ use Engelsystem\Helpers\Translation\TranslationServiceProvider;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 #[CoversMethod(TranslationServiceProvider::class, 'getFile')]
 #[CoversMethod(TranslationServiceProvider::class, 'getFileLoader')]
 #[CoversMethod(TranslationServiceProvider::class, 'loadFile')]
+#[AllowMockObjectsWithoutExpectations]
 class TranslationServiceProviderTest extends ServiceProviderTestCase
 {
     public function testRegisterBoot(): void
@@ -51,36 +53,14 @@ class TranslationServiceProviderTest extends ServiceProviderTestCase
 
         $request = (new Request())->withAddedHeader('Accept-Language', 'te_ST');
 
-        $matcher = $this->exactly(6);
-        $app->expects($matcher)
-            ->method('get')
-            ->willReturnCallback(function (...$parameters) use ($matcher, $config, $translator, $session, $request) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('config', $parameters[0]);
-                    return $config;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('path.lang', $parameters[0]);
-                    return __DIR__ . '/Assets';
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame(Translator::class, $parameters[0]);
-                    return $translator;
-                }
-                if ($matcher->numberOfInvocations() === 4) {
-                    $this->assertSame('config', $parameters[0]);
-                    return $config;
-                }
-                if ($matcher->numberOfInvocations() === 5) {
-                    $this->assertSame('session', $parameters[0]);
-                    return $session;
-                }
-                if ($matcher->numberOfInvocations() === 6) {
-                    $this->assertSame('request', $parameters[0]);
-                    return $request;
-                }
-            });
-
+        $app->method('get')
+            ->willReturnMap([
+                ['config', $config],
+                ['path.lang', __DIR__ . '/Assets'],
+                [Translator::class, $translator],
+                ['session', $session],
+                ['request', $request],
+            ]);
 
         $app->expects($this->once())
             ->method('make')
@@ -176,18 +156,11 @@ class TranslationServiceProviderTest extends ServiceProviderTestCase
     private function getConfiguredApp(): Application&MockObject
     {
         $app = $this->getAppMock(['get']);
-        $matcher = $this->exactly(2);
-        $app->expects($matcher)
-            ->method('get')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('path.lang', $parameters[0]);
-                    return __DIR__ . '/Assets';
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('path.config', $parameters[0]);
-                    return __DIR__ . '/Assets/config';
-                }
-            });
+        $app->method('get')
+            ->willReturnMap([
+                ['path.lang', __DIR__ . '/Assets'],
+                ['path.config', __DIR__ . '/Assets/config'],
+            ]);
 
         return $app;
     }

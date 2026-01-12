@@ -141,31 +141,13 @@ class ExceptionsServiceProviderTest extends ServiceProviderTestCase
             ->method('setLogger')
             ->with($log);
 
-        $app = $this->getAppMock(['get']);
-        $matcher = $this->exactly(5);
-        $app->expects($matcher)
-            ->method('get')->willReturnCallback(function (...$parameters) use ($log, $request, $handler, $matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('error.handler', $parameters[0]);
-                    return $handler;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('request', $parameters[0]);
-                    return $request;
-                }
-                if ($matcher->numberOfInvocations() === 3) {
-                    $this->assertSame('error.handler', $parameters[0]);
-                    return $handler;
-                }
-                if ($matcher->numberOfInvocations() === 4) {
-                    $this->assertSame('request', $parameters[0]);
-                    return $request;
-                }
-                if ($matcher->numberOfInvocations() === 5) {
-                    $this->assertSame(LoggerInterface::class, $parameters[0]);
-                    return $log;
-                }
-            });
+        $app = $this->getAppStub(['get']);
+        $app->method('get')
+            ->willReturnMap([
+                ['error.handler', $handler],
+                ['request', $request],
+                [LoggerInterface::class, $log],
+            ]);
 
         $provider = new ExceptionsServiceProvider($app);
         $provider->boot();

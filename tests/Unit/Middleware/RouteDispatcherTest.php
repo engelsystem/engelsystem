@@ -28,10 +28,10 @@ class RouteDispatcherTest extends TestCase
             ->with('HEAD', '/foo!bar')
             ->willReturn([FastRouteDispatcher::FOUND, $handler, ['foo' => 'bar', 'lorem' => 'ipsum']]);
 
-        $matcher = $this->exactly(4);
         $response->expects($this->never())
             ->method('withStatus');
 
+        $matcher = $this->exactly(4);
         $request->expects($matcher)
             ->method('withAttribute')->willReturnCallback(function (...$parameters) use ($matcher, $handler, $request) {
                 if ($matcher->numberOfInvocations() === 1) {

@@ -43,19 +43,12 @@ class LegacyMiddlewareTest extends TestCase
     {
         $handler = $this->getStubBuilder(RequestHandlerInterface::class)->getStub();
 
-        $auth = $this->createMock(Authenticator::class);
-        $matcher = $this->exactly(2);
-        $auth->expects($matcher)
-            ->method('can')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('users.arrive.list', $parameters[0]);
-                    return true;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('admin_arrive', $parameters[0]);
-                    return false;
-                }
-            });
+        $auth = $this->createStub(Authenticator::class);
+        $auth->method('can')
+            ->willReturnMap([
+                ['users.arrive.list', true],
+                ['admin_arrive', false],
+            ]);
 
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => 'admin-arrive']);
         $this->app->instance('request', $request);
@@ -81,19 +74,12 @@ class LegacyMiddlewareTest extends TestCase
     {
         $handler = $this->getStubBuilder(RequestHandlerInterface::class)->getStub();
 
-        $auth = $this->createMock(Authenticator::class);
-        $matcher = $this->exactly(2);
-        $auth->expects($matcher)
-            ->method('can')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('users.arrive.list', $parameters[0]);
-                    return true;
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('admin_arrive', $parameters[0]);
-                    return false;
-                }
-            });
+        $auth = $this->createStub(Authenticator::class);
+        $auth->method('can')
+            ->willReturnMap([
+                ['users.arrive.list', true],
+                ['admin_arrive', false],
+            ]);
 
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => 'admin-arrive']);
         $this->app->instance('request', $request);

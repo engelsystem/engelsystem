@@ -34,8 +34,8 @@ class DumpServerServiceProviderTest extends ServiceProviderTestCase
 
         // mock to test that the code has passed the enabled checks and started to configure the var dump server
         $app = $this->getAppMock(['get']);
-        $matcher = self::exactly(3);
 
+        $matcher = self::exactly(3);
         $app->expects($matcher)
             ->method('get')->willReturnCallback(function (...$parameters) use ($config, $matcher) {
                 if ($matcher->numberOfInvocations() === 1) {

@@ -139,30 +139,26 @@ class HelpersTest extends TestCase
 
     public function testBack(): void
     {
-        $response = new Response();
-        $redirect = $this->createMock(Redirector::class);
-        $matcher = $this->exactly(2);
-        $redirect->expects($matcher)
-            ->method('back')->willReturnCallback(function (...$parameters) use ($matcher, $response) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame(302, $parameters[0]);
-                    $this->assertSame([], $parameters[1]);
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame(303, $parameters[0]);
-                    $this->assertSame(['test' => 'ing'], $parameters[1]);
-                }
-                return $response;
-            });
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $urlGenerator
+            ->method('to')
+            ->willReturnArgument(0);
 
         $app = new Application();
-        $app->instance('redirect', $redirect);
+        $app->instance('redirect', new Redirector(
+            new Request(),
+            new Response(),
+            $urlGenerator,
+        ));
 
         $return = back();
-        $this->assertEquals($response, $return);
+        $this->assertEquals(302, $return->getStatusCode());
+        $this->assertEquals(['/'], $return->getHeader('Location'));
 
         $return = back(303, ['test' => 'ing']);
-        $this->assertEquals($response, $return);
+        $this->assertEquals(303, $return->getStatusCode());
+        $this->assertEquals(['/'], $return->getHeader('Location'));
+        $this->assertEquals(['ing'], $return->getHeader('test'));
     }
 
     public function testCache(): void
@@ -213,32 +209,26 @@ class HelpersTest extends TestCase
 
     public function testRedirect(): void
     {
-        $response = new Response();
-        $redirect = $this->createMock(Redirector::class);
-        $matcher = $this->exactly(2);
-        $redirect->expects($matcher)
-            ->method('to')->willReturnCallback(function (...$parameters) use ($matcher, $response) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('/lorem', $parameters[0]);
-                    $this->assertSame(302, $parameters[1]);
-                    $this->assertSame([], $parameters[2]);
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('/ipsum', $parameters[0]);
-                    $this->assertSame(303, $parameters[1]);
-                    $this->assertSame(['test' => 'er'], $parameters[2]);
-                }
-                return $response;
-            });
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $urlGenerator
+            ->method('to')
+            ->willReturnArgument(0);
 
         $app = new Application();
-        $app->instance('redirect', $redirect);
+        $app->instance('redirect', new Redirector(
+            new Request(),
+            new Response(),
+            $urlGenerator,
+        ));
 
         $return = redirect('/lorem');
-        $this->assertEquals($response, $return);
+        $this->assertEquals(302, $return->getStatusCode());
+        $this->assertEquals(['/lorem'], $return->getHeader('Location'));
 
         $return = redirect('/ipsum', 303, ['test' => 'er']);
-        $this->assertEquals($response, $return);
+        $this->assertEquals(303, $return->getStatusCode());
+        $this->assertEquals(['/ipsum'], $return->getHeader('Location'));
+        $this->assertEquals(['er'], $return->getHeader('test'));
     }
 
     public function testRequest(): void
