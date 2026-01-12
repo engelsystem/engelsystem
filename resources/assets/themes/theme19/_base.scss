@@ -743,7 +743,7 @@ table a:not(.btn) {
 
 $choices-primary-color: var(--color-shade-bg-2);
 
-div.choices__list--dropdown > div.choices__list > div.choices__item--selectable {
+div.#{$choices-selector}__list--dropdown > div.#{$choices-selector}__list > div.#{$choices-selector}__item--selectable {
   background-color: transparent;
   color: var(--color-foreground);
 
@@ -796,13 +796,13 @@ div.choices__list--dropdown > div.choices__list > div.choices__item--selectable 
   background-color: $body-bg;
 }
 
-.choices:focus,
-.choices.is-focused {
-  .choices__list.choices__list--dropdown {
+.#{$choices-selector}:focus,
+.#{$choices-selector}.is-focused {
+  .#{$choices-selector}__list.#{$choices-selector}__list--dropdown {
     border-color: var(--color-glow-primary);
   }
 
-  .choices__inner {
+  .#{$choices-selector}__inner {
     border-color: var(--color-glow-primary);
   }
 
@@ -817,7 +817,7 @@ div.choices__list--dropdown > div.choices__list > div.choices__item--selectable 
 .form-control {
   border-color: var(--color-shade-fg-4);
 
-  &.choices__inner {
+  &.#{$choices-selector}__inner {
     border-color: var(--color-shade-fg-4);
   }
 
