@@ -191,9 +191,10 @@ function shift_edit_controller()
                 'Updated shift \'' . $shifttypes[$shifttype_id] . ', ' . $title
                 . '\' from ' . $start->format('Y-m-d H:i')
                 . ' to ' . $end->format('Y-m-d H:i')
-                . ' with tags ' . $shift->tags->implode('name', ', ')
+                . ' in ' . $locations[$rid]
+                . ' with tags "' . $shift->tags->implode('name', ', ') . '"'
                 . ' with angel types ' . join(', ', $needed_angel_types_info)
-                . ' and description ' . $description
+                . ' and description "' . $description . '"'
             );
             success(__('Shift updated.'));
 
@@ -291,6 +292,7 @@ function shift_delete_controller(): void
     }
 
     $shift_id = $request->input('delete_shift');
+    /** @var Shift $shift */
     $shift = Shift::findOrFail($shift_id);
 
     event('shift.deleting', ['shift' => $shift]);
@@ -301,6 +303,9 @@ function shift_delete_controller(): void
         'Deleted shift ' . $shift->title . ' (' . $shift->id . ')' . ': ' . $shift->shiftType->name
         . ' from ' . $shift->start->format('Y-m-d H:i')
         . ' to ' . $shift->end->format('Y-m-d H:i')
+        . ' in ' . $shift->location->name
+        . ' with tags "' . $shift->tags->implode('name', ', ') . '"'
+        . ' and description "' . $shift->description . '"'
     );
     success(__('Shift deleted.'));
 
