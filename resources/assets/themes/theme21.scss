@@ -96,6 +96,8 @@ $dropdown-link-active-color: $primary;
 $dropdown-link-hover-bg: $gray-darker;
 $dropdown-link-hover-color: $primary;
 
+$component-active-bg: $secondary;
+
 //== Navbar
 
 $navbar-bg: $gray-darker;
@@ -139,8 +141,16 @@ $card-cap-color: $gray-lighter;
   color: $text-muted !important;
 }
 
+.card.bg-primary .card-header a,
+.card.bg-info .card-header a,
+.card.bg-warning .card-header a {
+  color: $gray-dark !important;
+}
+
 $headings-color: $info;
 $headings-small-color: $text-color;
+
+$progress-bar-color: $gray-dark;
 
 // dark
 @import 'cyborg_variables';
@@ -174,4 +184,16 @@ $headings-small-color: $text-color;
 
 small {
   font-weight: 10;
+}
+
+.progress-bar-danger {
+  background-color: $danger;
+}
+
+.progress-bar-warning {
+  background-color: $warning;
+}
+
+.#{$choices-selector}__list--multiple .#{$choices-selector}__item {
+  color: $gray-dark;
 }
