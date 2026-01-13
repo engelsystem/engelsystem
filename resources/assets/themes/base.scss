@@ -288,12 +288,14 @@ table.table-sticky-header thead {
       border-top: 2px solid $table-border-color;
       font-size: 0.9em;
       padding-left: 5px;
+      padding-right: 5px;
     }
 
     .tick.day {
       border-top: 2px solid $primary;
       font-size: 0.9em;
       padding-left: 5px;
+      padding-right: 5px;
     }
 
     .tick.now {
@@ -307,9 +309,9 @@ table.table-sticky-header thead {
     z-index: $zindex-sticky + 1;
     border-right: 1px solid $table-border-color;
     flex-grow: 0;
-    min-width: 50px;
-    width: 50px;
     flex-shrink: 0;
+    width: max-content;
+    min-width: max-content;
   }
 
   .shift-card {
