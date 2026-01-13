@@ -106,7 +106,7 @@ class ShiftCalendarShiftRenderer
         foreach ($needed_angeltypes as $needed_angeltype) {
             $shift_entries_filtered[$needed_angeltype['id']] = [];
         }
-        foreach (collect($shift_entries)->sortBy('user.name') as $shift_entry) {
+        foreach (collect($shift_entries)->sortBy('user.name', SORT_STRING | SORT_FLAG_CASE) as $shift_entry) {
             $shift_entries_filtered[$shift_entry->angel_type_id][] = $shift_entry;
         }
 
