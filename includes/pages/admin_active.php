@@ -241,7 +241,7 @@ function admin_active()
             $match = false;
             foreach ($tokens as $t) {
                 $t = trim($t);
-                if (!empty($t) && stristr($user->name, $t)) {
+                if (!empty($t) && mb_stripos($user->name, $t) !== false) {
                     $match = true;
                     break;
                 }

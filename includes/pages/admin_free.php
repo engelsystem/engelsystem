@@ -85,7 +85,7 @@ function admin_free()
             $index = join('', $usr->attributesToArray());
             foreach ($tokens as $token) {
                 $token = trim($token);
-                if (!empty($token) && stristr($index, $token)) {
+                if (!empty($token) && mb_stripos($index, $token) !== false) {
                     $match = true;
                     break;
                 }
