@@ -231,8 +231,15 @@ EOT;
  */
 function Users_table_header_link($column, $label, $order_by)
 {
+    // Preserve page size when changing sort order
+    $params = ['OrderBy' => $column];
+    $pageSize = request()->get('c');
+    if ($pageSize) {
+        $params['c'] = $pageSize;
+    }
+
     return '<a href="'
-        . url('/users', ['OrderBy' => $column])
+        . url('/users', $params)
         . '">'
         . $label . ($order_by == $column ? ' <span class="caret"></span>' : '')
         . '</a>';

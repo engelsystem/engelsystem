@@ -11,9 +11,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Str;
 
 /**
  * Route user actions.
@@ -250,26 +248,27 @@ function users_list_controller()
         throw_redirect(url('/'));
     }
 
+    // Map user-facing column names to actual database columns
+    $columnMap = [
+        'name' => 'users.name',
+        'first_name' => 'users_personal_data.first_name',
+        'last_name' => 'users_personal_data.last_name',
+        'dect' => 'users_contact.dect',
+        'arrived' => 'users_state.arrival_date',
+        'got_voucher' => 'users_state.got_voucher',
+        'active' => 'users_state.active',
+        'force_active' => 'users_state.force_active',
+        'force_food' => 'users_state.force_food',
+        'got_goodie' => 'users_state.got_goodie',
+        'shirt_size' => 'users_personal_data.shirt_size',
+        'planned_arrival_date' => 'users_personal_data.planned_arrival_date',
+        'planned_departure_date' => 'users_personal_data.planned_departure_date',
+        'last_login_at' => 'users.last_login_at',
+        'freeloads' => 'freeloads',
+    ];
+
     $order_by = 'name';
-    if (
-        $request->has('OrderBy') && in_array($request->input('OrderBy'), [
-            'name',
-            'first_name',
-            'last_name',
-            'dect',
-            'arrived',
-            'got_voucher',
-            'freeloads',
-            'active',
-            'force_active',
-            'force_food',
-            'got_goodie',
-            'shirt_size',
-            'planned_arrival_date',
-            'planned_departure_date',
-            'last_login_at',
-        ])
-    ) {
+    if ($request->has('OrderBy') && array_key_exists($request->input('OrderBy'), $columnMap)) {
         $order_by = $request->input('OrderBy');
     }
 
@@ -280,30 +279,26 @@ function users_list_controller()
     $perPage = is_numeric($perPage) ? (int) $perPage : config('display_users');
 
     /** @var User[]|Collection|LengthAwarePaginator $users */
-    $users = User::with(['contact', 'personalData', 'state', 'shiftEntries' => function (HasMany $query) {
-        $query->whereNotNull('freeloaded_by');
-    }])
-        ->orderBy('name')
+    $users = User::query()
+        ->select('users.*')
+        ->with(['contact', 'personalData', 'state'])
+        ->leftJoin('users_personal_data', 'users.id', '=', 'users_personal_data.user_id')
+        ->leftJoin('users_contact', 'users.id', '=', 'users_contact.user_id')
+        ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
+        ->selectSub(
+            ShiftEntry::selectRaw('COUNT(*)')
+                ->whereColumn('shift_entries.user_id', 'users.id')
+                ->whereNotNull('freeloaded_by'),
+            'freeloads'
+        )
+        ->orderBy($columnMap[$order_by])
+        ->orderBy('users.name')
         ->paginate($perPage);
+
+    // Set the freeloads attribute on each user from the query result
     foreach ($users as $user) {
-        $user->setAttribute(
-            'freeloads',
-            $user->shiftEntries
-                ->whereNotNull('freeloaded_by')
-                ->count()
-        );
+        $user->setAttribute('freeloads', $user->freeloads ?? 0);
     }
-
-    $sortedUsers = $users->sortBy(function (User $user) use ($order_by) {
-        $userData = $user->toArray();
-        $data = [];
-        array_walk_recursive($userData, function ($value, $key) use (&$data) {
-            $data[$key] = $value;
-        });
-
-        return isset($data[$order_by]) ? Str::lower($data[$order_by]) : null;
-    });
-    $users->setCollection($sortedUsers);
 
     return [
         __('All users'),
