@@ -324,7 +324,7 @@ function User_view_shiftentries($needed_angel_type)
         . '">' . htmlspecialchars($needed_angel_type['name']) . '</a>:</b> ';
 
     $shift_entries = [];
-    foreach (collect($needed_angel_type['users'])->sortBy('name') as $user_shift) {
+    foreach (collect($needed_angel_type['users'])->sortBy('name', SORT_STRING | SORT_FLAG_CASE) as $user_shift) {
         $member = User_Nick_render($user_shift);
         if ($user_shift['freeloaded_by']) {
             $member = '<del>' . $member . '</del>';
