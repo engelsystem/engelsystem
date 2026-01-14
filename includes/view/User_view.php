@@ -231,8 +231,13 @@ EOT;
  */
 function Users_table_header_link($column, $label, $order_by)
 {
+    $count = request()->query->get('c');
+    $params = ['OrderBy' => $column];
+    if ($count) {
+        $params['c'] = $count;
+    }
     return '<a href="'
-        . url('/users', ['OrderBy' => $column])
+        . url('/users', $params)
         . '">'
         . $label . ($order_by == $column ? ' <span class="caret"></span>' : '')
         . '</a>';

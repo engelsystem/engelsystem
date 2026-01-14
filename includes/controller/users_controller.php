@@ -11,9 +11,8 @@ use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Str;
 
 /**
  * Route user actions.
@@ -252,7 +251,7 @@ function users_list_controller()
 
     $order_by = 'name';
     if (
-        $request->has('OrderBy') && in_array($request->input('OrderBy'), [
+        $request->query->has('OrderBy') && in_array($request->query->get('OrderBy'), [
             'name',
             'first_name',
             'last_name',
@@ -272,38 +271,32 @@ function users_list_controller()
     ) {
         $order_by = $request->input('OrderBy');
     }
+    $orderDirection = in_array($order_by, ['name', 'first_name', 'last_name', 'dect', 'shirt_size']) ? 'asc' : 'desc';
 
-    $perPage = $request->get('c', config('display_users'));
+    $perPage = $request->query->get('c', config('display_users'));
     if ($perPage == 'all') {
         $perPage = PHP_INT_MAX;
     }
     $perPage = is_numeric($perPage) ? (int) $perPage : config('display_users');
 
     /** @var User[]|Collection|LengthAwarePaginator $users */
-    $users = User::with(['contact', 'personalData', 'state', 'shiftEntries' => function (HasMany $query) {
-        $query->whereNotNull('freeloaded_by');
-    }])
+    $users = User::with(['contact', 'personalData', 'state'])
+        ->addSelect([
+            'freeloads' => function (Builder $q) {
+                $q->selectRaw('count(*)')
+                    ->from('shift_entries')
+                    ->whereNotNull('shift_entries.freeloaded_by')
+                    ->where('shift_entries.user_id', $q->raw('users.id'));
+            },
+            'arrived' => fn(Builder $q) => $q->select($q->raw('users_state.arrival_date is not null')),
+            'dect' => fn(Builder $q) => $q->select($q->raw('users_contact.dect')),
+        ])
+        ->join('users_state', 'users_state.user_id', 'users.id')
+        ->join('users_personal_data', 'users_personal_data.user_id', 'users.id')
+        ->join('users_contact', 'users_contact.user_id', 'users.id')
+        ->orderBy($order_by, $orderDirection)
         ->orderBy('name')
         ->paginate($perPage);
-    foreach ($users as $user) {
-        $user->setAttribute(
-            'freeloads',
-            $user->shiftEntries
-                ->whereNotNull('freeloaded_by')
-                ->count()
-        );
-    }
-
-    $sortedUsers = $users->sortBy(function (User $user) use ($order_by) {
-        $userData = $user->toArray();
-        $data = [];
-        array_walk_recursive($userData, function ($value, $key) use (&$data) {
-            $data[$key] = $value;
-        });
-
-        return isset($data[$order_by]) ? Str::lower($data[$order_by]) : null;
-    });
-    $users->setCollection($sortedUsers);
 
     return [
         __('All users'),
