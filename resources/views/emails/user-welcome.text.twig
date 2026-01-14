@@ -1,0 +1,3 @@
+{% extends "emails/mail.text.twig" %}
+
+{% block message %}{{ __('email.user.welcome', [config('app_name')]) }}{% endblock %}

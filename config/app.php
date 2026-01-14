@@ -88,6 +88,8 @@ return [
         ],
 
         'shift.updating' => \Engelsystem\Events\Listener\Shifts::class . '@updatedSendEmail',
+
+        'user.created' => \Engelsystem\Events\Listener\Users::class . '@created',
     ],
 
     'config_options' => [
