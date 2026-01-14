@@ -671,6 +671,10 @@ function User_view(
         }
     }
 
+    if ($its_me && $freeloader) {
+        error(__('freeload.freeloader.info', [config('max_freeloadable_shifts')]));
+    }
+
     $needs_drivers_license = false;
     foreach ($user_angeltypes as $angeltype) {
         $needs_drivers_license = $needs_drivers_license || $angeltype->requires_driver_license;
