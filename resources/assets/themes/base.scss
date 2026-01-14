@@ -505,3 +505,18 @@ input[type='number']::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+/* Prevent shifts filter date/time values from being truncated */
+.choices:has(#start_day),
+.choices:has(#end_day) {
+  min-width: max-content;
+}
+
+.input-group.time {
+  min-width: max-content;
+  flex-wrap: nowrap;
+
+  input[type='time'] {
+    min-width: max-content;
+  }
+}
