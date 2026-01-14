@@ -13,14 +13,15 @@ use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Grammars\SQLiteGrammar;
 use PDO;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Goodie::class, 'shiftScoreQuery')]
+#[CoversMethod(Goodie::class, 'userScore')]
+#[CoversMethod(Goodie::class, 'worklogScoreQuery')]
 class GoodieTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Helpers\Goodie::shiftScoreQuery
-     */
     public function testShiftScoreQuery(): void
     {
         $result = Goodie::shiftScoreQuery();
@@ -28,10 +29,6 @@ class GoodieTest extends TestCase
         $this->assertEquals('0', $result->getValue(new SQLiteGrammar(new Connection(new PDO('sqlite::memory:')))));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Goodie::userScore
-     * @covers \Engelsystem\Helpers\Goodie::worklogScoreQuery
-     */
     public function testUserScore(): void
     {
         /** @var User $user */

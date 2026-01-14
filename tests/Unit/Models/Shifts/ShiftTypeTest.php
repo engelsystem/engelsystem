@@ -8,13 +8,14 @@ use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ShiftTypeTest extends ModelTest
+#[CoversMethod(ShiftType::class, 'neededAngelTypes')]
+#[CoversMethod(ShiftType::class, 'schedules')]
+#[CoversMethod(ShiftType::class, 'shifts')]
+class ShiftTypeTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Shifts\ShiftType::neededAngelTypes
-     */
     public function testNeededAngelTypes(): void
     {
         $shiftType = new ShiftType(['name' => 'Another type', 'description' => '']);
@@ -25,9 +26,6 @@ class ShiftTypeTest extends ModelTest
         $this->assertCount(1, ShiftType::find(1)->neededAngelTypes);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\ShiftType::schedules
-     */
     public function testSchedules(): void
     {
         ShiftType::factory()->create();
@@ -40,9 +38,6 @@ class ShiftTypeTest extends ModelTest
         $this->assertCount(2, ShiftType::find(1)->schedules);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\ShiftType::shifts
-     */
     public function testShifts(): void
     {
         $shiftType = new ShiftType(['name' => 'Another type', 'description' => '']);

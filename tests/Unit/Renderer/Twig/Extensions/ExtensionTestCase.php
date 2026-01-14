@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Test\Unit\TestCase;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use Twig\Node\Node as TwigNode;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-abstract class ExtensionTest extends TestCase
+abstract class ExtensionTestCase extends TestCase
 {
-    use ArraySubsetAsserts;
-
     /**
      * Assert that a twig filter was registered
      *
@@ -63,10 +59,13 @@ abstract class ExtensionTest extends TestCase
             }
 
             if (isset($options['is_save'])) {
-                /** @var TwigNode|MockObject $twigNode */
                 $twigNode = $this->createMock(TwigNode::class);
 
-                $this->assertArraySubset($options['is_save'], $function->getSafe($twigNode));
+                $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys(
+                    $options['is_save'],
+                    $function->getSafe($twigNode),
+                    array_keys($options['is_save']),
+                );
             }
 
             return;
@@ -84,7 +83,7 @@ abstract class ExtensionTest extends TestCase
     protected function assertGlobalsExists(string $name, mixed $value, array $globals): void
     {
         if (array_key_exists($name, $globals)) {
-            $this->assertArraySubset([$name => $value], $globals);
+            $this->assertEquals($value, $globals[$name]);
 
             return;
         }

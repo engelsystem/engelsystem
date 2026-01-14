@@ -116,20 +116,20 @@ trait HasDatabase
             ];
         }
 
-        RuntimeTest::$dbState = $dbState;
+        RuntimeTestState::$dbState = $dbState;
     }
 
     protected function restoreDatabase(Connection $connection): void
     {
         // Create tables
-        foreach (RuntimeTest::$dbState as $table) {
+        foreach (RuntimeTestState::$dbState as $table) {
             $connection->statement($table['sql']);
         }
 
         // Restore data
         $schema = $connection->getSchemaBuilder();
         $schema->disableForeignKeyConstraints();
-        foreach (RuntimeTest::$dbState as $table) {
+        foreach (RuntimeTestState::$dbState as $table) {
             $connection
                 ->table($table['name'])
                 ->insert($table['rows']);

@@ -9,12 +9,15 @@ use Engelsystem\Factories\User;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\User as EngelsystemUser;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @group registration-controller-tests
- */
-final class RegistrationControllerTest extends ControllerTest
+#[CoversClass(RegistrationController::class)]
+#[Group('registration-controller-tests')]
+#[AllowMockObjectsWithoutExpectations]
+final class RegistrationControllerTest extends ControllerTestCase
 {
     /**
      * @var Authenticator&MockObject
@@ -31,7 +34,7 @@ final class RegistrationControllerTest extends ControllerTest
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockTranslator();
+        $this->stubTranslator();
 
         $this->authenticator = $this->getMockBuilder(Authenticator::class)
             ->disableOriginalConstructor()
@@ -47,9 +50,6 @@ final class RegistrationControllerTest extends ControllerTest
         $this->subject = $this->app->make(RegistrationController::class);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\RegistrationController
-     */
     public function testSave(): void
     {
         $this->setPasswordRegistrationEnabledConfig();
@@ -85,15 +85,12 @@ final class RegistrationControllerTest extends ControllerTest
         $this->assertFalse($this->session->has('show_welcome'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\RegistrationController
-     */
     public function testSaveAlreadyLoggedIn(): void
     {
         $this->setPasswordRegistrationEnabledConfig();
         $request = $this->request->withParsedBody(['user' => 'data']);
 
-        // Fake logged in user
+        // Fake logged-in user
         $this->authenticator->method('user')->willReturn(new EngelsystemUser());
 
         // Assert that the user is redirected to /register again
@@ -105,9 +102,6 @@ final class RegistrationControllerTest extends ControllerTest
         $this->subject->save($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\RegistrationController
-     */
     public function testSaveOAuth(): void
     {
         $this->setPasswordRegistrationEnabledConfig();
@@ -135,9 +129,6 @@ final class RegistrationControllerTest extends ControllerTest
         $this->subject->save($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\RegistrationController
-     */
     public function testSaveWithWelcomeMesssage(): void
     {
         $this->setPasswordRegistrationEnabledConfig();
@@ -152,9 +143,6 @@ final class RegistrationControllerTest extends ControllerTest
         $this->assertTrue($this->session->get('show_welcome'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\RegistrationController
-     */
     public function testSaveRegistrationDisabled(): void
     {
         $this->config->set('registration_enabled', false);
@@ -182,9 +170,6 @@ final class RegistrationControllerTest extends ControllerTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\RegistrationController
-     */
     public function testViewRegistrationDisabled(): void
     {
         $this->config->set('registration_enabled', false);

@@ -8,26 +8,29 @@ use Engelsystem\Database\Db;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection as DatabaseConnection;
 use PDO;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(Db::class, 'connection')]
+#[CoversMethod(Db::class, 'setDbManager')]
+#[CoversMethod(Db::class, 'select')]
+#[CoversMethod(Db::class, 'selectOne')]
+#[CoversMethod(Db::class, 'insert')]
+#[CoversMethod(Db::class, 'update')]
+#[CoversMethod(Db::class, 'delete')]
+#[CoversMethod(Db::class, 'getPdo')]
+#[AllowMockObjectsWithoutExpectations]
 class DbTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Database\Db::connection()
-     * @covers \Engelsystem\Database\Db::setDbManager()
-     */
     public function testSetDbManager(): void
     {
-        /** @var PDO|MockObject $pdo */
         $pdo = $this->getMockBuilder(PDO::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var CapsuleManager|MockObject $dbManager */
         $dbManager = $this->getMockBuilder(CapsuleManager::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var DatabaseConnection|MockObject $dbManager */
         $databaseConnection = $this->getMockBuilder(DatabaseConnection::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -46,9 +49,6 @@ class DbTest extends TestCase
         $this->assertEquals($databaseConnection, Db::connection());
     }
 
-    /**
-     * @covers \Engelsystem\Database\Db::select()
-     */
     public function testSelect(): void
     {
         $return = Db::select('SELECT * FROM test_data');
@@ -58,9 +58,6 @@ class DbTest extends TestCase
         $this->assertCount(1, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Db::selectOne()
-     */
     public function testSelectOne(): void
     {
         $return = Db::selectOne('SELECT * FROM test_data');
@@ -74,18 +71,12 @@ class DbTest extends TestCase
         $this->assertIsNotArray($return);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Db::insert()
-     */
     public function testInsert(): void
     {
         $result = Db::insert("INSERT INTO test_data (id, data) VALUES (5, 'Some random text'), (6, 'another text')");
         $this->assertTrue($result);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Db::update()
-     */
     public function testUpdate(): void
     {
         $count = Db::update("UPDATE test_data SET data='NOPE' WHERE data LIKE '%Replaceme%'");
@@ -95,9 +86,6 @@ class DbTest extends TestCase
         $this->assertEquals(3, $count);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Db::delete()
-     */
     public function testDelete(): void
     {
         $count = Db::delete('DELETE FROM test_data WHERE id=1');
@@ -107,9 +95,6 @@ class DbTest extends TestCase
         $this->assertEquals(3, $count);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Db::getPdo()
-     */
     public function testGetPdo(): void
     {
         $pdo = Db::getPdo();

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
 use Engelsystem\Controllers\Api\AngelTypeController;
+use Engelsystem\Controllers\Api\Resources\AngelTypeResource;
+use Engelsystem\Controllers\Api\Resources\UserAngelTypeResource;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -12,13 +14,16 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class AngelTypeControllerTest extends ApiBaseControllerTest
+#[CoversMethod(AngelTypeController::class, 'index')]
+#[CoversMethod(AngelTypeResource::class, 'toArray')]
+#[CoversMethod(AngelTypeController::class, 'ofUser')]
+#[CoversMethod(UserAngelTypeResource::class, 'toArray')]
+#[AllowMockObjectsWithoutExpectations]
+class AngelTypeControllerTest extends ApiBaseControllerTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\AngelTypeController::index
-     * @covers \Engelsystem\Controllers\Api\Resources\AngelTypeResource::toArray
-     */
     public function testIndex(): void
     {
         $items = AngelType::factory(3)->create();
@@ -47,10 +52,6 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         }));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\AngelTypeController::ofUser
-     * @covers \Engelsystem\Controllers\Api\Resources\UserAngelTypeResource::toArray
-     */
     public function testOfUser(): void
     {
         $user = User::factory()->create();
@@ -72,9 +73,6 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         }));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\AngelTypeController::ofUser
-     */
     public function testEntriesOfUserSelf(): void
     {
         $user = User::factory()->create();
@@ -92,9 +90,6 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
         $this->validateApiResponse('/users/{id}/angeltypes', 'get', $response);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\AngelTypeController::ofUser
-     */
     public function testEntriesByUserNotFound(): void
     {
         $request = new Request();

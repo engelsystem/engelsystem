@@ -6,20 +6,17 @@ namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Middleware\RequestHandler;
 use Engelsystem\Middleware\RequestHandlerServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class RequestHandlerServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(RequestHandlerServiceProvider::class, 'register')]
+class RequestHandlerServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\RequestHandlerServiceProvider::register()
-     */
     public function testRegister(): void
     {
-        /** @var RequestHandler|MockObject $requestHandler */
-        $requestHandler = $this->createMock(RequestHandler::class);
+        $requestHandler = $this->createStub(RequestHandler::class);
 
-        $app = $this->getApp(['make', 'instance', 'bind']);
+        $app = $this->getAppMock(['make', 'instance', 'bind']);
 
         $app->expects($this->once())
             ->method('make')

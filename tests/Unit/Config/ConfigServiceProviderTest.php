@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Config;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\ConfigServiceProvider;
@@ -16,20 +15,25 @@ use Engelsystem\Test\Unit\TestCase;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Env;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(ConfigServiceProvider::class, 'register')]
+#[CoversMethod(ConfigServiceProvider::class, '__construct')]
+#[CoversMethod(ConfigServiceProvider::class, 'loadConfigFromFiles')]
+#[CoversMethod(ConfigServiceProvider::class, 'getConfigPath')]
+#[CoversMethod(ConfigServiceProvider::class, 'initConfigOptions')]
+#[CoversMethod(ConfigServiceProvider::class, 'loadConfigFromEnv')]
+#[CoversMethod(ConfigServiceProvider::class, 'getEnvValue')]
+#[CoversMethod(ConfigServiceProvider::class, 'boot')]
+#[CoversMethod(ConfigServiceProvider::class, 'loadConfigFromDb')]
+#[CoversMethod(ConfigServiceProvider::class, 'parseConfigTypes')]
 class ConfigServiceProviderTest extends TestCase
 {
-    use ArraySubsetAsserts;
     use HasDatabase;
 
     private array $configVarsWhereNullIsPruned =
         ['themes', 'tshirt_sizes', 'headers', 'header_items', 'footer_items', 'locales', 'contact_options'];
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::register
-     * @covers \Engelsystem\Config\ConfigServiceProvider::__construct
-     */
     public function testRegister(): void
     {
         $serviceProvider = new ConfigServiceProvider($this->app);
@@ -39,9 +43,6 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertTrue($this->app->has(Config::class));
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::register
-     */
     public function testRegisterRemovesNull(): void
     {
         $serviceProvider = new ConfigServiceProvider($this->app);
@@ -64,10 +65,6 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertArrayNotHasKey('lorem', $themes);
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::register
-     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromFiles
-     */
     public function testLoadConfigFromFilesIgnoreNotFound(): void
     {
         $this->app->instance('path.config', __DIR__ . '/Stub/unconfigured');
@@ -80,10 +77,6 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertArrayHasKey('unconfigured-config', $config->get(null));
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromFiles
-     * @covers \Engelsystem\Config\ConfigServiceProvider::getConfigPath
-     */
     public function testLoadConfigFromFileMerging(): void
     {
         $serviceProvider = new ConfigServiceProvider($this->app);
@@ -102,9 +95,6 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertEquals('config.php', $conf['file']);
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::initConfigOptions
-     */
     public function testInitConfigOptions(): void
     {
         $serviceProvider = new ConfigServiceProvider($this->app);
@@ -124,10 +114,6 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertEquals($firstKey, $timezoneData[$firstKey]);
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromEnv
-     * @covers \Engelsystem\Config\ConfigServiceProvider::getEnvValue
-     */
     public function testLoadConfigFromEnv(): void
     {
         $this->initDatabase();
@@ -167,9 +153,6 @@ class ConfigServiceProviderTest extends TestCase
         Env::getRepository()->clear('ANOTHER_BAR_FILE');
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::register
-     */
     public function testRegisterException(): void
     {
         $this->app->instance('path.config', __DIR__ . '/Stub/not_existing');
@@ -180,10 +163,6 @@ class ConfigServiceProviderTest extends TestCase
         $serviceProvider->register();
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::boot
-     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromDb
-     */
     public function testLoadConfigFromDb(): void
     {
         $this->initDatabase();
@@ -210,21 +189,16 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertEquals(['foo' => 'test', 'bar' => 'baz'], $conf['themes']);
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromDb
-     */
     public function testLoadConfigFromDbIgnoreQueryError(): void
     {
-        /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(EventConfig::class)
-            ->onlyMethods(['newQuery'])
-            ->addMethods(['get'])
+            ->onlyMethods(['newQuery', '__call'])
             ->getMock();
         $this->setExpects($config, 'newQuery', null, $config, $this->atLeastOnce());
         $config->expects($this->once())
-            ->method('get')
-            ->with(['name', 'value'])
-            ->willReturnCallback(function (): void {
+            ->method('__call')
+            ->willReturnCallback(function (...$parameters): void {
+                $this->assertEquals(['get', [['name', 'value']]], $parameters);
                 throw new QueryException('', '', [], new Exception());
             });
 
@@ -233,9 +207,6 @@ class ConfigServiceProviderTest extends TestCase
         $serviceProvider->boot();
     }
 
-    /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::parseConfigTypes
-     */
     public function testParseConfigTypes(): void
     {
         $serviceProvider = new ConfigServiceProvider($this->app);

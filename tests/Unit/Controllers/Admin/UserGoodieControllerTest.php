@@ -15,29 +15,29 @@ use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
 use Engelsystem\Test\Unit\HasDatabase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UserGoodieControllerTest extends ControllerTest
+#[CoversMethod(UserGoodieController::class, 'editGoodie')]
+#[CoversMethod(UserGoodieController::class, '__construct')]
+#[CoversMethod(UserGoodieController::class, 'checkActive')]
+#[CoversMethod(UserGoodieController::class, 'saveGoodie')]
+#[AllowMockObjectsWithoutExpectations]
+class UserGoodieControllerTest extends ControllerTestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::editGoodie
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::__construct
-     */
     public function testIndex(): void
     {
-        $this->mockTranslator();
+        $this->stubTranslator();
         $this->config->set('goodie_type', GoodieType::Tshirt->value);
         $this->config->set('night_shifts', ['enabled' => false]);
         $request = $this->request->withAttribute('user_id', 1);
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->createMock(Authenticator::class);
-        /** @var Redirector|MockObject $redirector */
-        $redirector = $this->createMock(Redirector::class);
+        $auth = $this->createStub(Authenticator::class);
+        $redirector = $this->createStub(Redirector::class);
         $user = new User();
         User::factory()->create();
 
@@ -48,16 +48,11 @@ class UserGoodieControllerTest extends ControllerTest
         $controller->editGoodie($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::editGoodie
-     */
     public function testIndexUserNotFound(): void
     {
         $this->config->set('goodie_type', GoodieType::Goodie->value);
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->createMock(Authenticator::class);
-        /** @var Redirector|MockObject $redirector */
-        $redirector = $this->createMock(Redirector::class);
+        $auth = $this->createStub(Authenticator::class);
+        $redirector = $this->createStub(Redirector::class);
         $user = new User();
 
         $controller = new UserGoodieController($auth, $this->config, $this->log, $redirector, $this->response, $user);
@@ -66,17 +61,11 @@ class UserGoodieControllerTest extends ControllerTest
         $controller->editGoodie($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::editGoodie
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::checkActive
-     */
     public function testEditShirtGoodieNone(): void
     {
         $this->config->set('goodie_type', GoodieType::None->value);
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->createMock(Authenticator::class);
-        /** @var Redirector|MockObject $redirector */
-        $redirector = $this->createMock(Redirector::class);
+        $auth = $this->createStub(Authenticator::class);
+        $redirector = $this->createStub(Redirector::class);
         $user = new User();
 
         $controller = new UserGoodieController($auth, $this->config, $this->log, $redirector, $this->response, $user);
@@ -85,17 +74,11 @@ class UserGoodieControllerTest extends ControllerTest
         $controller->editGoodie($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::saveGoodie
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::checkActive
-     */
     public function testSaveShirtGoodieNone(): void
     {
         $this->config->set('goodie_type', GoodieType::None->value);
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->createMock(Authenticator::class);
-        /** @var Redirector|MockObject $redirector */
-        $redirector = $this->createMock(Redirector::class);
+        $auth = $this->createStub(Authenticator::class);
+        $redirector = $this->createStub(Redirector::class);
         $user = new User();
 
         $controller = new UserGoodieController($auth, $this->config, $this->log, $redirector, $this->response, $user);
@@ -106,7 +89,6 @@ class UserGoodieControllerTest extends ControllerTest
 
     /**
      * @todo Factor out separate tests. Isolated User, Config and permissions per test.
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::saveGoodie
      */
     public function testSaveGoodie(): void
     {
@@ -116,10 +98,8 @@ class UserGoodieControllerTest extends ControllerTest
             ->withParsedBody([
                 'shirt_size' => 'S',
             ]);
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->config->set('tshirt_sizes', ['S' => 'Small', 'XS' => 'Extra Small']);
-        /** @var Redirector|MockObject $redirector */
         $redirector = $this->createMock(Redirector::class);
         User::factory()
             ->has(State::factory())
@@ -236,16 +216,11 @@ class UserGoodieControllerTest extends ControllerTest
         $this->assertFalse($user->state->arrived);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserGoodieController::saveGoodie
-     */
     public function testSaveGoodieUserNotFound(): void
     {
         $this->config->set('goodie_type', GoodieType::Goodie->value);
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->createMock(Authenticator::class);
-        /** @var Redirector|MockObject $redirector */
-        $redirector = $this->createMock(Redirector::class);
+        $auth = $this->createStub(Authenticator::class);
+        $redirector = $this->createStub(Redirector::class);
         $user = new User();
 
         $controller = new UserGoodieController($auth, $this->config, $this->log, $redirector, $this->response, $user);

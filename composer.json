@@ -63,12 +63,11 @@
         "vlucas/phpdotenv": "^5.6"
     },
     "require-dev": {
-        "dms/phpunit-arraysubset-asserts": "^0.5.0",
         "fakerphp/faker": "^1.24",
         "fig/log-test": "^1.2",
         "filp/whoops": "^2.18",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^12.5",
         "slevomat/coding-standard": "^8.25",
         "squizlabs/php_codesniffer": "^4.0",
         "symfony/var-dumper": "^7.3"

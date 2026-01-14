@@ -6,12 +6,13 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Carbon\Carbon;
 use Engelsystem\Models\EventConfig;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class EventConfigTest extends ModelTest
+#[CoversMethod(EventConfig::class, 'setValueAttribute')]
+#[CoversMethod(EventConfig::class, 'getValueAttribute')]
+#[CoversMethod(EventConfig::class, 'getValueCast')]
+class EventConfigTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\EventConfig::setValueAttribute
-     */
     public function testSetValueAttribute(): void
     {
         (new EventConfig())
@@ -49,9 +50,6 @@ class EventConfigTest extends ModelTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Models\EventConfig::getValueAttribute
-     */
     public function testGetValueAttribute(): void
     {
         $model = new EventConfig(['name', 'buildup_start', 'value' => '']);
@@ -86,9 +84,6 @@ class EventConfigTest extends ModelTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Models\EventConfig::getValueCast
-     */
     public function testGetValueCast(): void
     {
         $model = new EventConfig(['name' => 'foo', 'value' => 'bar']);

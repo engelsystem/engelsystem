@@ -6,12 +6,13 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Renderer\Twig\Extensions\Uuid;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UuidTest extends ExtensionTest
+#[CoversMethod(Uuid::class, 'getFunctions')]
+#[CoversMethod(Uuid::class, 'getUuid')]
+#[CoversMethod(Uuid::class, 'getUuidBy')]
+class UuidTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Uuid::getFunctions
-     */
     public function testGetGlobals(): void
     {
         $extension = new Uuid();
@@ -21,9 +22,6 @@ class UuidTest extends ExtensionTest
         $this->assertExtensionExists('uuidBy', [$extension, 'getUuidBy'], $functions);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Uuid::getUuid
-     */
     public function testGetUuid(): void
     {
         $extension = new Uuid();
@@ -33,9 +31,6 @@ class UuidTest extends ExtensionTest
     }
 
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Uuid::getUuidBy
-     */
     public function testGetUuidBy(): void
     {
         $extension = new Uuid();

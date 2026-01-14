@@ -6,15 +6,14 @@ namespace Engelsystem\Test\Unit\Helpers\Schedule;
 
 use Engelsystem\Helpers\Schedule\ConferenceColor;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(ConferenceColor::class, '__construct')]
+#[CoversMethod(ConferenceColor::class, 'getPrimary')]
+#[CoversMethod(ConferenceColor::class, 'getBackground')]
+#[CoversMethod(ConferenceColor::class, 'getOthers')]
 class ConferenceColorTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceColor::__construct
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceColor::getPrimary
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceColor::getBackground
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceColor::getOthers
-     */
     public function testCreateDefaults(): void
     {
         $conferenceColor = new ConferenceColor();
@@ -24,12 +23,6 @@ class ConferenceColorTest extends TestCase
         $this->assertEmpty($conferenceColor->getOthers());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceColor::__construct
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceColor::getPrimary
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceColor::getBackground
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceColor::getOthers
-     */
     public function testCreate(): void
     {
         $conferenceColor = new ConferenceColor(

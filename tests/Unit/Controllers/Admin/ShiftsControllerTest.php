@@ -11,17 +11,19 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ShiftsControllerTest extends ControllerTest
+#[CoversMethod(ShiftsController::class, '__construct')]
+#[CoversMethod(ShiftsController::class, 'history')]
+#[CoversMethod(ShiftsController::class, 'deleteTransaction')]
+#[AllowMockObjectsWithoutExpectations]
+class ShiftsControllerTest extends ControllerTestCase
 {
-    protected Redirector|MockObject $redirect;
+    protected Redirector&MockObject $redirect;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftsController::__construct
-     * @covers \Engelsystem\Controllers\Admin\ShiftsController::history
-     */
     public function testHistory(): void
     {
         $this->response->expects($this->once())
@@ -37,9 +39,6 @@ class ShiftsControllerTest extends ControllerTest
         $controller->history();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftsController::deleteTransaction
-     */
     public function testDeleteTransaction(): void
     {
         $this->database->getConnection()->getRawPdo()->exec('PRAGMA foreign_keys = ON');
@@ -51,7 +50,6 @@ class ShiftsControllerTest extends ControllerTest
         $shift = Shift::factory(3)->create(['transaction_id' => Uuid::uuid()])->last();
         ShiftEntry::factory(2)->create(['shift_id' => $shift->id]);
 
-        /** @var EventDispatcher|MockObject $event */
         $event = $this->createMock(EventDispatcher::class);
         $this->app->instance('events.dispatcher', $event);
         $this->setExpects($event, 'dispatch', ['shift.deleting'], [], $this->exactly(3));

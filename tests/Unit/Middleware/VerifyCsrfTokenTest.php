@@ -6,34 +6,30 @@ namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Http\Exceptions\HttpAuthExpired;
 use Engelsystem\Middleware\VerifyCsrfToken;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+#[CoversMethod(VerifyCsrfToken::class, 'isReading')]
+#[CoversMethod(VerifyCsrfToken::class, 'process')]
+#[CoversMethod(VerifyCsrfToken::class, '__construct')]
+#[CoversMethod(VerifyCsrfToken::class, 'tokensMatch')]
 class VerifyCsrfTokenTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\VerifyCsrfToken::isReading
-     * @covers \Engelsystem\Middleware\VerifyCsrfToken::process
-     */
     public function testProcess(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->getMockForAbstractClass(ResponseInterface::class);
+        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
+        $response = $this->getStubBuilder(ResponseInterface::class)->getStub();
 
         $handler->expects($this->exactly(2))
             ->method('handle')
             ->with($request)
             ->willReturn($response);
 
-        /** @var VerifyCsrfToken|MockObject $middleware */
         $middleware = $this->getMockBuilder(VerifyCsrfToken::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['tokensMatch'])
@@ -58,22 +54,13 @@ class VerifyCsrfTokenTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\VerifyCsrfToken::__construct
-     * @covers \Engelsystem\Middleware\VerifyCsrfToken::tokensMatch
-     */
     public function testTokensMatch(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->getMockForAbstractClass(ResponseInterface::class);
-        /** @var SessionInterface|MockObject $session */
-        $session = $this->getMockForAbstractClass(SessionInterface::class);
+        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
+        $response = $this->getStubBuilder(ResponseInterface::class)->getStub();
+        $session = $this->getMockBuilder(SessionInterface::class)->getMock();
 
-        /** @var VerifyCsrfToken|MockObject $middleware */
         $middleware = $this->getMockBuilder(VerifyCsrfToken::class)
             ->setConstructorArgs([$session])
             ->onlyMethods(['isReading'])

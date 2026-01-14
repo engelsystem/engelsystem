@@ -8,10 +8,13 @@ use Engelsystem\Http\Request;
 use Engelsystem\Middleware\TrimInput;
 use Engelsystem\Test\Unit\TestCase;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+#[CoversClass(TrimInput::class)]
 class TrimInputTest extends TestCase
 {
     private TrimInput $subject;
@@ -24,13 +27,13 @@ class TrimInputTest extends TestCase
     public function setUp(): void
     {
         $this->subject = new TrimInput();
-        $this->handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $this->handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
     }
 
     /**
      * @return Generator<string, array>
      */
-    public function provideTrimTestData(): Generator
+    public static function provideTrimTestData(): Generator
     {
         yield 'GET request' => ['GET', [], []];
 
@@ -69,10 +72,7 @@ class TrimInputTest extends TestCase
         }
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\TrimInput
-     * @dataProvider provideTrimTestData
-     */
+    #[DataProvider('provideTrimTestData')]
     public function testTrim(string $method, mixed $body, mixed $expectedBody): void
     {
         $request = (new Request())->withMethod($method)->withParsedBody($body);
@@ -87,12 +87,10 @@ class TrimInputTest extends TestCase
 
     /**
      * Special test case to cover null value parsed body.
-     *
-     * @covers \Engelsystem\Middleware\TrimInput
      */
     public function testTrimPostNull(): void
     {
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
+        $request = $this->getStubBuilder(ServerRequestInterface::class)->getStub();
         $request->method('getMethod')->willReturn('POST');
         $request->method('getParsedBody')->willReturn(null);
         $this->handler->expects(self::once())->method('handle')->with(

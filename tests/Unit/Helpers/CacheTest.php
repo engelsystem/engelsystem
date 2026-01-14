@@ -6,16 +6,17 @@ namespace Engelsystem\Test\Unit\Helpers;
 
 use Engelsystem\Helpers\Cache;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use stdClass;
 
+#[CoversMethod(Cache::class, '__construct')]
+#[CoversMethod(Cache::class, 'get')]
+#[CoversMethod(Cache::class, 'cacheFilePath')]
+#[CoversMethod(Cache::class, 'forget')]
 class CacheTest extends TestCase
 {
     protected string $cacheDir = __DIR__ . '/Stub/cache';
 
-    /**
-     * @covers \Engelsystem\Helpers\Cache::__construct
-     * @covers \Engelsystem\Helpers\Cache::get
-     */
     public function testGetDefaultValues(): void
     {
         $cache = new Cache($this->cacheDir);
@@ -30,9 +31,6 @@ class CacheTest extends TestCase
         $this->assertCount(0, $this->listCacheFiles());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Cache::get
-     */
     public function testGetDefaultCallback(): void
     {
         $cache = new Cache($this->cacheDir);
@@ -47,10 +45,6 @@ class CacheTest extends TestCase
         $this->assertCount(1, $this->listCacheFiles());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Cache::get
-     * @covers \Engelsystem\Helpers\Cache::cacheFilePath
-     */
     public function testGetReadFile(): void
     {
         $cache = new Cache($this->cacheDir);
@@ -61,9 +55,6 @@ class CacheTest extends TestCase
         $this->assertEquals('cached-value', $cache->get('cached'));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Cache::forget
-     */
     public function testForgetNotExisting(): void
     {
         $cache = new Cache($this->cacheDir);
@@ -72,10 +63,6 @@ class CacheTest extends TestCase
         $this->assertCount(0, $this->listCacheFiles());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Cache::forget
-     * @covers \Engelsystem\Helpers\Cache::cacheFilePath
-     */
     public function testForget(): void
     {
         $cache = new Cache($this->cacheDir);
@@ -88,11 +75,6 @@ class CacheTest extends TestCase
         $this->assertFileDoesNotExist($cacheFile);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Cache::get
-     * @covers \Engelsystem\Helpers\Cache::forget
-     * @covers \Engelsystem\Helpers\Cache::cacheFilePath
-     */
     public function testGetForgetOld(): void
     {
         $cache = new Cache($this->cacheDir);

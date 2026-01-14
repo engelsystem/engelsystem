@@ -8,15 +8,14 @@ use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ScheduleShiftTest extends ModelTest
+#[CoversMethod(ScheduleShift::class, 'schedule')]
+#[CoversMethod(ScheduleShift::class, 'shift')]
+class ScheduleShiftTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Shifts\ScheduleShift::schedule
-     * @covers \Engelsystem\Models\Shifts\ScheduleShift::shift
-     */
     public function testScheduleShifts(): void
     {
         ShiftType::factory()->create();

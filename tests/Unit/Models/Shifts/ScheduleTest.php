@@ -9,10 +9,15 @@ use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
 use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ScheduleTest extends ModelTest
+#[CoversMethod(Schedule::class, 'activeLocations')]
+#[CoversMethod(Schedule::class, 'scheduleShifts')]
+#[CoversMethod(Schedule::class, 'shifts')]
+#[CoversMethod(Schedule::class, 'shiftType')]
+class ScheduleTest extends ModelTestCase
 {
     protected array $data = [
         'url'            => 'https://foo.bar/schedule.xml',
@@ -30,9 +35,6 @@ class ScheduleTest extends ModelTest
         ShiftType::factory()->create(['id' => 1]);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Schedule::activeLocations
-     */
     public function testActiveLocations(): void
     {
         $schedule = new Schedule($this->data);
@@ -45,9 +47,6 @@ class ScheduleTest extends ModelTest
         $this->assertCount(1, $schedule->activeLocations);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Schedule::scheduleShifts
-     */
     public function testScheduleShifts(): void
     {
         Shift::factory(3)->create();
@@ -61,9 +60,6 @@ class ScheduleTest extends ModelTest
         $this->assertCount(3, $schedule->scheduleShifts);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Schedule::shifts
-     */
     public function testShifts(): void
     {
         $schedule = new Schedule($this->data);
@@ -79,9 +75,6 @@ class ScheduleTest extends ModelTest
         $this->assertCount(3, $schedule->shifts);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Shifts\Schedule::shiftType
-     */
     public function testShiftType(): void
     {
         $st = new ShiftType(['name' => 'Shift Type', 'description' => '']);

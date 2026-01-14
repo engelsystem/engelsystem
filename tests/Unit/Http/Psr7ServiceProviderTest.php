@@ -6,7 +6,8 @@ namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Application;
 use Engelsystem\Http\Psr7ServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
@@ -15,11 +16,9 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 
-class Psr7ServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(Psr7ServiceProvider::class, 'register')]
+class Psr7ServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Psr7ServiceProvider::register()
-     */
     public function testRegister(): void
     {
         $app = new Application();

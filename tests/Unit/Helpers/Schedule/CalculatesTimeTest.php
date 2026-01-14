@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Helpers\Schedule;
 
 use Engelsystem\Helpers\Schedule\CalculatesTime;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(CalculatesTime::class, 'secondsFromTime')]
 class CalculatesTimeTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\CalculatesTime::secondsFromTime
-     */
     public function testSecondsFromTime(): void
     {
         $calc = new class {

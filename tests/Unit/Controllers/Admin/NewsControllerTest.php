@@ -13,13 +13,22 @@ use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\News;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class NewsControllerTest extends ControllerTest
+#[CoversMethod(NewsController::class, '__construct')]
+#[CoversMethod(NewsController::class, 'edit')]
+#[CoversMethod(NewsController::class, 'showEdit')]
+#[CoversMethod(NewsController::class, 'save')]
+#[CoversMethod(NewsController::class, 'delete')]
+#[AllowMockObjectsWithoutExpectations]
+class NewsControllerTest extends ControllerTestCase
 {
-    protected Authenticator|MockObject $auth;
-    protected EventDispatcher|MockObject $eventDispatcher;
+    protected Authenticator&MockObject $auth;
+    protected EventDispatcher&MockObject $eventDispatcher;
 
     protected array $data = [
         [
@@ -29,11 +38,6 @@ class NewsControllerTest extends ControllerTest
         ],
     ];
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\NewsController::__construct
-     * @covers \Engelsystem\Controllers\Admin\NewsController::edit
-     * @covers \Engelsystem\Controllers\Admin\NewsController::showEdit
-     */
     public function testEdit(): void
     {
         $this->request->attributes->set('news_id', 1);
@@ -55,9 +59,6 @@ class NewsControllerTest extends ControllerTest
         $this->assertHasNoNotifications(NotificationType::WARNING);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\NewsController::edit
-     */
     public function testEditIsMeeting(): void
     {
         $isMeeting = false;
@@ -87,9 +88,6 @@ class NewsControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\NewsController::save
-     */
     public function testSaveCreateInvalid(): void
     {
         /** @var NewsController $controller */
@@ -100,7 +98,7 @@ class NewsControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    public function saveCreateEditProvider(): array
+    public static function saveCreateEditProvider(): array
     {
         return [
             // Text, isMeeting, id, sendNotification
@@ -113,11 +111,7 @@ class NewsControllerTest extends ControllerTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Controllers\Admin\NewsController::save
-     * @dataProvider saveCreateEditProvider
-     *
-     */
+    #[DataProvider('saveCreateEditProvider')]
     public function testSaveCreateEdit(
         string $text,
         bool $isMeeting,
@@ -169,9 +163,6 @@ class NewsControllerTest extends ControllerTest
         $this->assertEquals($isMeeting, (bool) $news->is_meeting);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\NewsController::save
-     */
     public function testSaveNoContentChange(): void
     {
         /** @var News $news */
@@ -202,9 +193,6 @@ class NewsControllerTest extends ControllerTest
         $this->assertTrue($updatedNews->is_pinned);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\NewsController::save
-     */
     public function testSavePreview(): void
     {
         $this->request->attributes->set('news_id', 1);
@@ -255,10 +243,6 @@ class NewsControllerTest extends ControllerTest
         $this->assertFalse($news->is_highlighted);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\NewsController::save
-     * @covers \Engelsystem\Controllers\Admin\NewsController::delete
-     */
     public function testSaveDelete(): void
     {
         $this->request->attributes->set('news_id', 1);
@@ -283,9 +267,6 @@ class NewsControllerTest extends ControllerTest
         $this->assertHasNotification('news.delete.success');
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\NewsController::save
-     */
     public function testSaveDuplicated(): void
     {
         $previousNews = News::first();
@@ -315,8 +296,7 @@ class NewsControllerTest extends ControllerTest
             ->has(Settings::factory(['email_news' => true]))
             ->create();
 
-        $this->auth->expects($this->any())
-            ->method('user')
+        $this->auth->method('user')
             ->willReturn($user);
     }
 
@@ -331,8 +311,7 @@ class NewsControllerTest extends ControllerTest
         $this->app->instance(Authenticator::class, $this->auth);
 
         $this->eventDispatcher = $this->createMock(EventDispatcher::class);
-        $this->eventDispatcher->expects(self::any())
-            ->method('dispatch')
+        $this->eventDispatcher->method('dispatch')
             ->willReturnSelf();
         $this->app->instance('events.dispatcher', $this->eventDispatcher);
 

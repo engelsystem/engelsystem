@@ -6,14 +6,13 @@ namespace Engelsystem\Test\Unit\Models\User;
 
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\User\UsesUserModel;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UsesUserModelTest extends ModelTest
+#[CoversMethod(UsesUserModel::class, 'user')]
+class UsesUserModelTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\User\UsesUserModel::user
-     */
     public function testHasOneRelations(): void
     {
         /** @var UsesUserModel $contact */

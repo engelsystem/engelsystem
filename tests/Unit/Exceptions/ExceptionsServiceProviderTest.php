@@ -12,94 +12,123 @@ use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Exceptions\Handlers\LegacyDevelopment;
 use Engelsystem\Exceptions\Handlers\Whoops;
 use Engelsystem\Http\Request;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\LoggerInterface;
 
-class ExceptionsServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(ExceptionsServiceProvider::class, 'addDevelopmentHandler')]
+#[CoversMethod(ExceptionsServiceProvider::class, 'addProductionHandler')]
+#[CoversMethod(ExceptionsServiceProvider::class, 'register')]
+#[CoversMethod(ExceptionsServiceProvider::class, 'boot')]
+#[CoversMethod(ExceptionsServiceProvider::class, 'addLogger')]
+class ExceptionsServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addDevelopmentHandler
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addProductionHandler
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::register
-     */
     public function testRegister(): void
     {
-        $app = $this->getApp(['make', 'instance', 'bind']);
+        $app = $this->getAppMock(['make', 'instance', 'bind']);
 
-        /** @var Handler|MockObject $handler */
         $handler = $this->createMock(Handler::class);
         $this->setExpects($handler, 'register');
-        /** @var Legacy|MockObject $legacyHandler */
-        $legacyHandler = $this->createMock(Legacy::class);
-        /** @var LegacyDevelopment|MockObject $developmentHandler */
-        $developmentHandler = $this->createMock(LegacyDevelopment::class);
+        $legacyHandler = $this->createStub(Legacy::class);
+        $developmentHandler = $this->createStub(LegacyDevelopment::class);
 
-        $whoopsHandler = $this->getMockBuilder(Whoops::class)
+        $whoopsHandler = $this->getStubBuilder(Whoops::class)
             ->setConstructorArgs([$app])
-            ->getMock();
+            ->getStub();
 
-        $app->expects($this->exactly(3))
+        $matcher = $this->exactly(3);
+        $app->expects($matcher)
             ->method('instance')
-            ->withConsecutive(
-                ['error.handler.production', $legacyHandler],
-                ['error.handler.development', $whoopsHandler],
-                ['error.handler', $handler]
-            );
-
-        $app->expects($this->exactly(4))
-            ->method('make')
-            ->withConsecutive(
-                [Handler::class],
-                [Legacy::class],
-                [LegacyDevelopment::class],
-                [Whoops::class]
-            )
-            ->willReturnOnConsecutiveCalls(
-                $handler,
+            ->willReturnCallback(function (...$parameters) use (
+                $matcher,
                 $legacyHandler,
+                $whoopsHandler,
+                $handler,
+            ): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('error.handler.production', $parameters[0]);
+                    $this->assertSame($legacyHandler, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('error.handler.development', $parameters[0]);
+                    $this->assertSame($whoopsHandler, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('error.handler', $parameters[0]);
+                    $this->assertSame($handler, $parameters[1]);
+                }
+            });
+
+        $matcher = $this->exactly(4);
+        $app->expects($matcher)
+            ->method('make')
+            ->willReturnCallback(function (...$parameters) use (
+                $whoopsHandler,
                 $developmentHandler,
-                $whoopsHandler
-            );
+                $legacyHandler,
+                $handler,
+                $matcher
+            ) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(Handler::class, $parameters[0]);
+                    return $handler;
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(Legacy::class, $parameters[0]);
+                    return $legacyHandler;
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(LegacyDevelopment::class, $parameters[0]);
+                    return $developmentHandler;
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame(Whoops::class, $parameters[0]);
+                    return $whoopsHandler;
+                }
+            });
 
-        $app->expects($this->exactly(2))
-            ->method('bind')
-            ->withConsecutive(
-                [HandlerInterface::class, 'error.handler.production'],
-                [Handler::class, 'error.handler']
-            );
+        $matcher = $this->exactly(2);
+        $app->expects($matcher)
+            ->method('bind')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(HandlerInterface::class, $parameters[0]);
+                    $this->assertSame('error.handler.production', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(Handler::class, $parameters[0]);
+                    $this->assertSame('error.handler', $parameters[1]);
+                }
+            });
 
-        $handler->expects($this->exactly(2))
+        $matcher = $this->exactly(2);
+        $handler->expects($matcher)
             ->method('setHandler')
-            ->withConsecutive(
-                [Environment::PRODUCTION, $legacyHandler],
-                [Environment::DEVELOPMENT, $whoopsHandler]
-            );
+            ->willReturnCallback(function (...$parameters) use ($matcher, $legacyHandler, $whoopsHandler): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(Environment::PRODUCTION, $parameters[0]);
+                    $this->assertSame($legacyHandler, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(Environment::DEVELOPMENT, $parameters[0]);
+                    $this->assertSame($whoopsHandler, $parameters[1]);
+                }
+            });
 
         $serviceProvider = new ExceptionsServiceProvider($app);
         $serviceProvider->register();
     }
 
-    /**
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::boot
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addLogger
-     */
     public function testBoot(): void
     {
-        /** @var HandlerInterface|MockObject $handlerImpl */
-        $handlerImpl = $this->getMockForAbstractClass(HandlerInterface::class);
+        $handlerImpl = $this->getStubBuilder(HandlerInterface::class)->getStub();
 
-        /** @var Legacy|MockObject $loggingHandler */
         $loggingHandler = $this->createMock(Legacy::class);
 
-        /** @var Handler|MockObject $handler */
         $handler = $this->createMock(Handler::class);
 
-        /** @var Request|MockObject $request */
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
 
-        /** @var LoggerInterface|MockObject $log */
-        $log = $this->getMockForAbstractClass(LoggerInterface::class);
+        $log = $this->getStubBuilder(LoggerInterface::class)->getStub();
 
         $handler->expects($this->exactly(2))
             ->method('setRequest')
@@ -112,23 +141,13 @@ class ExceptionsServiceProviderTest extends ServiceProviderTest
             ->method('setLogger')
             ->with($log);
 
-        $app = $this->getApp(['get']);
-        $app->expects($this->exactly(5))
-            ->method('get')
-            ->withConsecutive(
-                ['error.handler'],
-                ['request'],
-                ['error.handler'],
-                ['request'],
-                [LoggerInterface::class]
-            )
-            ->willReturnOnConsecutiveCalls(
-                $handler,
-                $request,
-                $handler,
-                $request,
-                $log
-            );
+        $app = $this->getAppStub(['get']);
+        $app->method('get')
+            ->willReturnMap([
+                ['error.handler', $handler],
+                ['request', $request],
+                [LoggerInterface::class, $log],
+            ]);
 
         $provider = new ExceptionsServiceProvider($app);
         $provider->boot();

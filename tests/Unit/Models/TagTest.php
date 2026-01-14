@@ -7,12 +7,12 @@ namespace Engelsystem\Test\Unit\Models;
 use Engelsystem\Models\Faq;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Tag;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class TagTest extends ModelTest
+#[CoversMethod(Tag::class, 'faqs')]
+#[CoversMethod(Tag::class, 'shifts')]
+class TagTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Tag::faqs
-     */
     public function testFaqs(): void
     {
         /** @var Faq $faq1 */
@@ -33,9 +33,6 @@ class TagTest extends ModelTest
         $this->assertEquals($faq2->question, $savedModel->faqs[1]->question);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Tag::shifts
-     */
     public function testShifts(): void
     {
         /** @var Shift $shift1 */

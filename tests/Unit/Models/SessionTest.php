@@ -7,16 +7,16 @@ namespace Engelsystem\Test\Unit\Models;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\Session;
 use Engelsystem\Models\User\User;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * This class provides tests for the Session model
  */
-class SessionTest extends ModelTest
+#[CoversClass(Session::class)]
+class SessionTest extends ModelTestCase
 {
     /**
      * Tests that a Session can be created and loaded
-     *
-     * @covers \Engelsystem\Models\Session
      */
     public function testCreate(): void
     {

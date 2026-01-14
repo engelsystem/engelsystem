@@ -16,19 +16,22 @@ use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ShiftsControllerTest extends ControllerTest
+#[CoversMethod(ShiftsController::class, 'random')]
+#[CoversMethod(ShiftsController::class, '__construct')]
+#[CoversMethod(ShiftsController::class, 'getNextFreeShifts')]
+#[CoversMethod(ShiftsController::class, 'queryShiftEntries')]
+#[AllowMockObjectsWithoutExpectations]
+class ShiftsControllerTest extends ControllerTestCase
 {
-    protected Authenticator|MockObject $auth;
-    protected Redirector|MockObject $redirect;
+    protected Authenticator&MockObject $auth;
+    protected Redirector&MockObject $redirect;
     protected UrlGeneratorInterface $url;
     protected User $user;
 
-    /**
-     * @covers \Engelsystem\Controllers\ShiftsController::random
-     * @covers \Engelsystem\Controllers\ShiftsController::__construct
-     */
     public function testRandomNonShiftsFound(): void
     {
         $this->createModels();
@@ -43,11 +46,6 @@ class ShiftsControllerTest extends ControllerTest
         $this->assertHasNotification('notification.shift.no_next_found', NotificationType::WARNING);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\ShiftsController::random
-     * @covers \Engelsystem\Controllers\ShiftsController::getNextFreeShifts
-     * @covers \Engelsystem\Controllers\ShiftsController::queryShiftEntries
-     */
     public function testRandom(): void
     {
         $this->createModels();

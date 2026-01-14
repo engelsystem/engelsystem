@@ -6,13 +6,13 @@ namespace Engelsystem\Test\Unit\Models\User;
 
 use Carbon\Carbon;
 use Engelsystem\Models\User\State;
-use Engelsystem\Test\Unit\Models\ModelTest;
+use Engelsystem\Test\Unit\Models\ModelTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UserStateTest extends ModelTest
+#[CoversMethod(State::class, 'getArrivedAttribute')]
+#[CoversMethod(State::class, 'scopeWhereArrived')]
+class UserStateTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\User\State::getArrivedAttribute
-     */
     public function testGetArrivedAttribute(): void
     {
         $state = new State();
@@ -22,9 +22,6 @@ class UserStateTest extends ModelTest
         $this->assertTrue($state->arrived);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\State::scopeWhereArrived
-     */
     public function testScopeWhereArrived(): void
     {
         $state = State::factory()->create([

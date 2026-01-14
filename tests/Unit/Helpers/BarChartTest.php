@@ -9,8 +9,17 @@ use Engelsystem\Helpers\BarChart;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\TestCase;
 use Generator;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
+#[CoversMethod(BarChart::class, 'render')]
+#[CoversMethod(BarChart::class, 'calculateChartGroups')]
+#[CoversMethod(BarChart::class, 'calculateYLabels')]
+#[CoversMethod(BarChart::class, 'generateChartDemoData')]
+#[CoversMethod(BarChart::class, 'calculateBarChartClass')]
+#[AllowMockObjectsWithoutExpectations]
 class BarChartTest extends TestCase
 {
     private const ROW_LABELS = [
@@ -37,10 +46,10 @@ class BarChartTest extends TestCase
     {
         parent::setUp();
         $this->rendererMock = $this->mockRenderer(false);
-        $this->mockTranslator(fn(string $key, array $replace = []) => $key == 'general.date' ? 'Y-m-d' : $key);
+        $this->stubTranslator(fn(string $key, array $replace = []) => $key == 'general.date' ? 'Y-m-d' : $key);
     }
 
-    public function provideRenderTestData(): Generator
+    public static function provideRenderTestData(): Generator
     {
         $yLabels = [
             [
@@ -109,13 +118,7 @@ class BarChartTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideRenderTestData
-     * @covers \Engelsystem\Helpers\BarChart::render
-     * @covers \Engelsystem\Helpers\BarChart::calculateChartGroups
-     * @covers \Engelsystem\Helpers\BarChart::calculateYLabels
-     * @covers \Engelsystem\Helpers\BarChart::generateChartDemoData
-     */
+    #[DataProvider('provideRenderTestData')]
     public function testRender(array $testData, array $expected): void
     {
         $this->rendererMock->expects(self::once())
@@ -128,7 +131,7 @@ class BarChartTest extends TestCase
         );
     }
 
-    public function provideBarChartClassTestData(): array
+    public static function provideBarChartClassTestData(): array
     {
         return [
             [5, ''],
@@ -138,10 +141,7 @@ class BarChartTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideBarChartClassTestData
-     * @covers       \Engelsystem\Helpers\BarChart::calculateBarChartClass
-     */
+    #[DataProvider('provideBarChartClassTestData')]
     public function testRenderBarChartClass(int $testDataCount, string $expectedClass): void
     {
         $this->rendererMock->expects(self::once())
@@ -155,9 +155,6 @@ class BarChartTest extends TestCase
         BarChart::render(...BarChart::generateChartDemoData($testDataCount));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\BarChart::generateChartDemoData
-     */
     public function testGenerateChartDemoData(): void
     {
         $first = CarbonImmutable::now()->subDays(2)->format('Y-m-d');

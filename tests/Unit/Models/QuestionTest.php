@@ -8,8 +8,12 @@ use Carbon\Carbon;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class QuestionTest extends ModelTest
+#[CoversMethod(Question::class, 'answerer')]
+#[CoversMethod(Question::class, 'unanswered')]
+#[CoversMethod(Question::class, 'answered')]
+class QuestionTest extends ModelTestCase
 {
     private User $user1;
 
@@ -23,9 +27,6 @@ class QuestionTest extends ModelTest
         $this->user2 = User::factory()->create();
     }
 
-    /**
-     * @covers \Engelsystem\Models\Question::answerer
-     */
     public function testAnswerer(): void
     {
         $question = $this->createQuestion($this->user1, $this->user2);
@@ -39,9 +40,6 @@ class QuestionTest extends ModelTest
         $this->assertSame($loadedQuestion->answer, $loadedQuestion->answer);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Question::unanswered
-     */
     public function testUnanswered(): void
     {
         $question1 = $this->createQuestion($this->user1);
@@ -58,9 +56,6 @@ class QuestionTest extends ModelTest
         $this->assertNull(Question::find($question1->id)->answered_at);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Question::answered
-     */
     public function testAnswered(): void
     {
         $question1 = $this->createQuestion($this->user1, $this->user2);

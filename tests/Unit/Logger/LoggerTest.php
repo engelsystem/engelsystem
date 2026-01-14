@@ -7,20 +7,26 @@ namespace Engelsystem\Test\Unit\Logger;
 use Engelsystem\Logger\Logger;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use Engelsystem\Test\Utils\ToStringMock;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use stdClass;
 
-class LoggerTest extends ServiceProviderTest
+#[CoversMethod(Logger::class, '__construct')]
+#[CoversMethod(Logger::class, 'log')]
+#[CoversMethod(Logger::class, 'createEntry')]
+#[CoversMethod(Logger::class, 'interpolate')]
+#[CoversMethod(Logger::class, 'checkLevel')]
+#[CoversMethod(Logger::class, 'formatException')]
+class LoggerTest extends ServiceProviderTestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Logger\Logger::__construct
-     */
     public function testImplements(): void
     {
         $this->assertInstanceOf(LoggerInterface::class, new Logger(new LogEntry()));
@@ -29,7 +35,7 @@ class LoggerTest extends ServiceProviderTest
     /**
      * @return string[][]
      */
-    public function provideLogLevels(): array
+    public static function provideLogLevels(): array
     {
         return [
             [LogLevel::ALERT],
@@ -43,11 +49,7 @@ class LoggerTest extends ServiceProviderTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Logger\Logger::log
-     * @covers       \Engelsystem\Logger\Logger::createEntry
-     * @dataProvider provideLogLevels
-     */
+    #[DataProvider('provideLogLevels')]
     public function testAllLevels(string $level): void
     {
         $logger = new Logger(new LogEntry());
@@ -59,9 +61,6 @@ class LoggerTest extends ServiceProviderTest
         $this->assertCount(2, $entries);
     }
 
-    /**
-     * @covers \Engelsystem\Logger\Logger::log
-     */
     public function testContextReplacement(): void
     {
         $logger = new Logger(new LogEntry());
@@ -77,7 +76,7 @@ class LoggerTest extends ServiceProviderTest
     /**
      * @return array<string|array<string|mixed>>
      */
-    public function provideContextReplaceValues(): array
+    public static function provideContextReplaceValues(): array
     {
         return [
             ['Data and {context}', [], 'Data and {context}'],
@@ -88,12 +87,10 @@ class LoggerTest extends ServiceProviderTest
     }
 
     /**
-     * @covers       \Engelsystem\Logger\Logger::interpolate
-     * @covers       \Engelsystem\Logger\Logger::log
-     * @dataProvider provideContextReplaceValues
      *
      * @param string[] $context
      */
+    #[DataProvider('provideContextReplaceValues')]
     public function testContextReplaceValues(string $message, array $context, string $expected): void
     {
         $logger = new Logger(new LogEntry());
@@ -104,20 +101,15 @@ class LoggerTest extends ServiceProviderTest
         $this->assertEquals($expected, $entry->message);
     }
 
-    /**
-     * @covers \Engelsystem\Logger\Logger::log
-     */
     public function testContextToString(): void
     {
         $logger = new Logger(new LogEntry());
 
-        $mock = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['__toString'])
-            ->getMock();
+        $mock = $this->createMock(ToStringMock::class);
 
         $mock->expects($this->atLeastOnce())
             ->method('__toString')
-            ->will($this->returnValue('FooBar'));
+            ->willReturn('FooBar');
 
         $logger->log(LogLevel::INFO, 'Some data and {context}', ['context' => $mock]);
 
@@ -126,10 +118,6 @@ class LoggerTest extends ServiceProviderTest
         $this->assertEquals('Some data and FooBar', $entry->message);
     }
 
-    /**
-     * @covers \Engelsystem\Logger\Logger::checkLevel
-     * @covers \Engelsystem\Logger\Logger::log
-     */
     public function testThrowExceptionOnInvalidLevel(): void
     {
         $logger = new Logger(new LogEntry());
@@ -138,10 +126,6 @@ class LoggerTest extends ServiceProviderTest
         $logger->log('This log level should never be defined', 'Some message');
     }
 
-    /**
-     * @covers \Engelsystem\Logger\Logger::formatException
-     * @covers \Engelsystem\Logger\Logger::log
-     */
     public function testWithException(): void
     {
         $logger = new Logger(new LogEntry());

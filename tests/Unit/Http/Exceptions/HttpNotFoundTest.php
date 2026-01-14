@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Http\Exceptions;
 
 use Engelsystem\Http\Exceptions\HttpNotFound;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(HttpNotFound::class, '__construct')]
 class HttpNotFoundTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Exceptions\HttpNotFound::__construct
-     */
     public function testConstruct(): void
     {
         $exception = new HttpNotFound();

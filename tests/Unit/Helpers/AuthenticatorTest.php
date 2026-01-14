@@ -11,14 +11,35 @@ use Engelsystem\Models\Privilege;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\Helpers\Stub\UserModelImplementation;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use Illuminate\Support\Str;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class AuthenticatorTest extends ServiceProviderTest
+#[CoversMethod(Authenticator::class, 'user')]
+#[CoversMethod(Authenticator::class, '__construct')]
+#[CoversMethod(Authenticator::class, 'userFromSession')]
+#[CoversMethod(Authenticator::class, 'userFromApi')]
+#[CoversMethod(Authenticator::class, 'userByHeaders')]
+#[CoversMethod(Authenticator::class, 'userByQueryParam')]
+#[CoversMethod(Authenticator::class, 'userByApiKey')]
+#[CoversMethod(Authenticator::class, 'resetApiKey')]
+#[CoversMethod(Authenticator::class, 'can')]
+#[CoversMethod(Authenticator::class, 'loadPermissions')]
+#[CoversMethod(Authenticator::class, 'isApiRequest')]
+#[CoversMethod(Authenticator::class, 'canAny')]
+#[CoversMethod(Authenticator::class, 'authenticate')]
+#[CoversMethod(Authenticator::class, 'verifyPassword')]
+#[CoversMethod(Authenticator::class, 'setPassword')]
+#[CoversMethod(Authenticator::class, 'setPasswordAlgorithm')]
+#[CoversMethod(Authenticator::class, 'getPasswordAlgorithm')]
+#[CoversMethod(Authenticator::class, 'setDefaultRole')]
+#[CoversMethod(Authenticator::class, 'getDefaultRole')]
+#[CoversMethod(Authenticator::class, 'setGuestRole')]
+#[CoversMethod(Authenticator::class, 'getGuestRole')]
+class AuthenticatorTest extends ServiceProviderTestCase
 {
     use HasDatabase;
 
@@ -30,15 +51,10 @@ class AuthenticatorTest extends ServiceProviderTest
         self::$passwordHashTesting = password_hash('testing', PASSWORD_ARGON2I, ['memory_cost' => 100]);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::user
-     * @covers \Engelsystem\Helpers\Authenticator::__construct
-     */
     public function testUserNotAuthorized(): void
     {
         $request = new Request();
         $session = new Session(new MockArraySessionStorage());
-        /** @var UserModelImplementation|MockObject $userRepository */
         $userRepository = new UserModelImplementation();
         $this->app->instance('request', $request);
 
@@ -48,10 +64,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertNull($user);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::user
-     * @covers \Engelsystem\Helpers\Authenticator::userFromSession
-     */
     public function testUserViaFromSession(): void
     {
         $this->initDatabase();
@@ -77,11 +89,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals($user, $user3);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::user
-     * @covers \Engelsystem\Helpers\Authenticator::userFromApi
-     * @covers \Engelsystem\Helpers\Authenticator::userByHeaders
-     */
     public function testUserViaFromApi(): void
     {
         $this->initDatabase();
@@ -105,9 +112,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals($user, $user2);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::userFromSession
-     */
     public function testUserFromSessionNotFound(): void
     {
         $this->initDatabase();
@@ -125,11 +129,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertNull($user2);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::userFromApi
-     * @covers \Engelsystem\Helpers\Authenticator::userByQueryParam
-     * @covers \Engelsystem\Helpers\Authenticator::userByApiKey
-     */
     public function testUserFromApiByQueryParam(): void
     {
         $this->initDatabase();
@@ -152,9 +151,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals('F00Bar', $user2->api_key);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::userByHeaders
-     */
     public function testUserByHeaders(): void
     {
         $this->initDatabase();
@@ -184,9 +180,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals('F00Bar', $user->api_key);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::userByHeaders
-     */
     public function testUserByHeadersBearerTrimApiKey(): void
     {
         $this->initDatabase();
@@ -204,9 +197,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals('F00Bar', $user->api_key);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::resetApiKey
-     */
     public function testResetApiKey(): void
     {
         $this->initDatabase();
@@ -225,11 +215,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals(64, Str::length($newApiKey));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::can
-     * @covers \Engelsystem\Helpers\Authenticator::loadPermissions
-     * @covers \Engelsystem\Helpers\Authenticator::isApiRequest
-     */
     public function testCan(): void
     {
         $this->initDatabase();
@@ -259,10 +244,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertFalse($auth->can(['nope']));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::can
-     * @covers \Engelsystem\Helpers\Authenticator::loadPermissions
-     */
     public function testCanUnauthorized(): void
     {
         $this->initDatabase();
@@ -280,9 +261,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertNull($session->get('user_id'));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::canAny
-     */
     public function testCanAny(): void
     {
         $this->initDatabase();
@@ -308,17 +286,12 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertFalse($auth->canAny(['lorem', 'ipsum']));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::authenticate
-     */
     public function testAuthenticate(): void
     {
         $this->initDatabase();
 
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var Session|MockObject $session */
-        $session = $this->createMock(Session::class);
+        $request = $this->getStubBuilder(ServerRequestInterface::class)->getStub();
+        $session = $this->createStub(Session::class);
         $userRepository = new User();
 
         User::factory([
@@ -338,9 +311,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertInstanceOf(User::class, $auth->authenticate('lorem@foo.bar', 'testing'));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::verifyPassword
-     */
     public function testVerifyPassword(): void
     {
         $this->initDatabase();
@@ -352,7 +322,6 @@ class AuthenticatorTest extends ServiceProviderTest
             'password' => $password,
         ])->create();
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->getMockBuilder(Authenticator::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['setPassword'])
@@ -367,9 +336,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertTrue($auth->verifyPassword($user, 'testing'));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::setPassword
-     */
     public function testSetPassword(): void
     {
         $this->initDatabase();
@@ -390,10 +356,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertFalse(password_needs_rehash($user->password, PASSWORD_BCRYPT));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::setPasswordAlgorithm
-     * @covers \Engelsystem\Helpers\Authenticator::getPasswordAlgorithm
-     */
     public function testPasswordAlgorithm(): void
     {
         $auth = $this->getAuthenticator();
@@ -402,10 +364,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals(PASSWORD_ARGON2I, $auth->getPasswordAlgorithm());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::setDefaultRole
-     * @covers \Engelsystem\Helpers\Authenticator::getDefaultRole
-     */
     public function testDefaultRole(): void
     {
         $auth = $this->getAuthenticator();
@@ -414,10 +372,6 @@ class AuthenticatorTest extends ServiceProviderTest
         $this->assertEquals(1337, $auth->getDefaultRole());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Authenticator::setGuestRole
-     * @covers \Engelsystem\Helpers\Authenticator::getGuestRole
-     */
     public function testGuestRole(): void
     {
         $auth = $this->getAuthenticator();

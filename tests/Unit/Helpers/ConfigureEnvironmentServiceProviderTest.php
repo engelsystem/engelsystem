@@ -9,15 +9,13 @@ use Engelsystem\Config\Config;
 use Engelsystem\Environment;
 use Engelsystem\Exceptions\Handler;
 use Engelsystem\Helpers\ConfigureEnvironmentServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ConfigureEnvironmentServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(ConfigureEnvironmentServiceProvider::class, 'register')]
+#[CoversMethod(ConfigureEnvironmentServiceProvider::class, 'setupDevErrorHandler')]
+class ConfigureEnvironmentServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\ConfigureEnvironmentServiceProvider::register
-     * @covers \Engelsystem\Helpers\ConfigureEnvironmentServiceProvider::setupDevErrorHandler
-     */
     public function testRegister(): void
     {
         $config = new Config(['timezone' => 'Australia/Eucla', 'environment' => 'production']);
@@ -26,7 +24,6 @@ class ConfigureEnvironmentServiceProviderTest extends ServiceProviderTest
         $handler = new Handler();
         $this->app->instance('error.handler', $handler);
 
-        /** @var ConfigureEnvironmentServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(ConfigureEnvironmentServiceProvider::class)
             ->setConstructorArgs([$this->app])
             ->onlyMethods(['setTimeZone', 'displayErrors', 'errorReporting'])
@@ -37,9 +34,19 @@ class ConfigureEnvironmentServiceProviderTest extends ServiceProviderTest
             ->willReturnCallback(function (CarbonTimeZone $timeZone): void {
                 $this->assertEquals('Australia/Eucla', $timeZone->getName());
             });
-        $serviceProvider->expects($this->exactly(3))
-            ->method('displayErrors')
-            ->withConsecutive([false], [false], [true]);
+        $matcher = $this->exactly(3);
+        $serviceProvider->expects($matcher)
+            ->method('displayErrors')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(false, $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame(false, $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame(true, $parameters[0]);
+                }
+            });
         $serviceProvider->expects($this->exactly(1))
             ->method('errorReporting')
             ->with(E_ALL);

@@ -10,17 +10,23 @@ use Engelsystem\Exceptions\Handlers\HandlerInterface;
 use Engelsystem\Http\Request;
 use ErrorException;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[CoversMethod(Handler::class, '__construct')]
+#[CoversMethod(Handler::class, 'errorHandler')]
+#[CoversMethod(Handler::class, 'exceptionHandler')]
+#[CoversMethod(Handler::class, 'getEnvironment')]
+#[CoversMethod(Handler::class, 'setEnvironment')]
+#[CoversMethod(Handler::class, 'getHandler')]
+#[CoversMethod(Handler::class, 'setHandler')]
+#[CoversMethod(Handler::class, 'getRequest')]
+#[CoversMethod(Handler::class, 'setRequest')]
 class HandlerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Exceptions\Handler::__construct()
-     */
     public function testCreate(): void
     {
-        /** @var Handler|MockObject $handler */
         $handler = new Handler();
         $this->assertInstanceOf(Handler::class, $handler);
         $this->assertEquals(Environment::PRODUCTION, $handler->getEnvironment());
@@ -29,7 +35,7 @@ class HandlerTest extends TestCase
         $this->assertEquals(Environment::DEVELOPMENT, $anotherHandler->getEnvironment());
     }
 
-    public function errorHandlerProvider(): array
+    public static function errorHandlerProvider(): array
     {
         return [
             // Environment, Error level, should display message or (if false) ignore the output by returning
@@ -54,13 +60,9 @@ class HandlerTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \Engelsystem\Exceptions\Handler::errorHandler()
-     * @dataProvider errorHandlerProvider
-     */
+    #[DataProvider('errorHandlerProvider')]
     public function testErrorHandler(Environment $env, int $level, bool $showError): void
     {
-        /** @var Handler|MockObject $handler */
         $handler = $this->getMockBuilder(Handler::class)
             ->setConstructorArgs([$env])
             ->onlyMethods(['exceptionHandler'])
@@ -74,16 +76,12 @@ class HandlerTest extends TestCase
         $this->assertEquals($showError, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Exceptions\Handler::exceptionHandler()
-     */
     public function testExceptionHandler(): void
     {
         $exception = new Exception();
         $errorMessage = 'Oh noes, an error!';
 
-        /** @var HandlerInterface|MockObject $handlerMock */
-        $handlerMock = $this->getMockForAbstractClass(HandlerInterface::class);
+        $handlerMock = $this->getMockBuilder(HandlerInterface::class)->getMock();
         $handlerMock->expects($this->atLeastOnce())
             ->method('report')
             ->with($exception);
@@ -94,7 +92,6 @@ class HandlerTest extends TestCase
                 echo $errorMessage;
             });
 
-        /** @var Handler|MockObject $handler */
         $handler = $this->getMockBuilder(Handler::class)
             ->onlyMethods(['terminateApplicationImmediately'])
             ->getMock();
@@ -110,10 +107,6 @@ class HandlerTest extends TestCase
         $this->assertEquals($errorMessage, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Exceptions\Handler::getEnvironment()
-     * @covers \Engelsystem\Exceptions\Handler::setEnvironment()
-     */
     public function testEnvironment(): void
     {
         $handler = new Handler();
@@ -125,17 +118,11 @@ class HandlerTest extends TestCase
         $this->assertEquals(Environment::PRODUCTION, $handler->getEnvironment());
     }
 
-    /**
-     * @covers \Engelsystem\Exceptions\Handler::getHandler()
-     * @covers \Engelsystem\Exceptions\Handler::setHandler()
-     */
     public function testHandler(): void
     {
         $handler = new Handler();
-        /** @var HandlerInterface|MockObject $devHandler */
-        $devHandler = $this->getMockForAbstractClass(HandlerInterface::class);
-        /** @var HandlerInterface|MockObject $prodHandler */
-        $prodHandler = $this->getMockForAbstractClass(HandlerInterface::class);
+        $devHandler = $this->getStubBuilder(HandlerInterface::class)->getStub();
+        $prodHandler = $this->getStubBuilder(HandlerInterface::class)->getStub();
 
         $handler->setHandler(Environment::DEVELOPMENT, $devHandler);
         $handler->setHandler(Environment::PRODUCTION, $prodHandler);
@@ -144,15 +131,10 @@ class HandlerTest extends TestCase
         $this->assertCount(2, $handler->getHandler());
     }
 
-    /**
-     * @covers \Engelsystem\Exceptions\Handler::getRequest()
-     * @covers \Engelsystem\Exceptions\Handler::setRequest()
-     */
     public function testRequest(): void
     {
         $handler = new Handler();
-        /** @var Request|MockObject $request */
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
 
         $handler->setRequest($request);
         $this->assertEquals($request, $handler->getRequest());

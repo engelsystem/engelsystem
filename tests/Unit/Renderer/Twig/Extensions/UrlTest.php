@@ -6,18 +6,17 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Renderer\Twig\Extensions\Url;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class UrlTest extends ExtensionTest
+#[CoversMethod(Url::class, '__construct')]
+#[CoversMethod(Url::class, 'getFunctions')]
+#[CoversMethod(Url::class, 'getUrl')]
+class UrlTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Url::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Url::getFunctions
-     */
     public function testGetGlobals(): void
     {
-        /** @var UrlGenerator|MockObject $urlGenerator */
-        $urlGenerator = $this->createMock(UrlGenerator::class);
+        $urlGenerator = $this->createStub(UrlGenerator::class);
 
         $extension = new Url($urlGenerator);
         $functions = $extension->getFunctions();
@@ -28,7 +27,7 @@ class UrlTest extends ExtensionTest
     /**
      * @return string[][]
      */
-    public function getUrls(): array
+    public static function getUrls(): array
     {
         return [
             ['/', '/', 'https://foo.bar/'],
@@ -38,14 +37,9 @@ class UrlTest extends ExtensionTest
         ];
     }
 
-    /**
-     * @dataProvider getUrls
-     *
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Url::getUrl
-     */
+    #[DataProvider('getUrls')]
     public function testGetUrl(string $url, string $urlTo, string $return, array $parameters = []): void
     {
-        /** @var UrlGenerator|MockObject $urlGenerator */
         $urlGenerator = $this->createMock(UrlGenerator::class);
 
         $urlGenerator->expects($this->once())
