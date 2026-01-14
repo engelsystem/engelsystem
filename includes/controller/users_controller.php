@@ -389,10 +389,8 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
         foreach ($needed_angeltypes[$shift->id] as $needed_angeltype) {
             $taken = 0;
 
-            if (
-                !in_array(ShiftsFilter::FILLED_FILLED, $shiftsFilter->getFilled())
-                && !in_array($needed_angeltype['angel_type_id'], $shiftsFilter->getTypes())
-            ) {
+            // Only count slots for angel types the user has selected
+            if (!in_array($needed_angeltype['angel_type_id'], $shiftsFilter->getTypes())) {
                 continue;
             }
 
