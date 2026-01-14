@@ -165,6 +165,15 @@ msgstr ""
 "zurücksetzen kannst. Bitte benutze die E-Mail-Adresse, die du bei der Anmeldung "
 "verwendet hast."
 
+msgid "email.user.welcome.subject"
+msgstr "Willkommen bei %s!"
+
+msgid "email.user.welcome"
+msgstr ""
+"Danke für deine Registrierung! Dein Konto wurde erfolgreich erstellt.\n"
+"\n"
+"Du kannst dich jetzt einloggen und für Schichten eintragen."
+
 msgid "password.minimal_length"
 msgstr "Mindestlänge %d Zeichen"
 
