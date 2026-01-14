@@ -74,6 +74,7 @@ function admin_free()
     }
 
     $free_users_table = [];
+    $normalize = fn($s) => transliterator_transliterate('Any-Latin; Latin-ASCII; Lower', $s) ?: mb_strtolower($s);
     if ($search == '') {
         $tokens = [];
     } else {
@@ -85,7 +86,7 @@ function admin_free()
             $index = join('', $usr->attributesToArray());
             foreach ($tokens as $token) {
                 $token = trim($token);
-                if (!empty($token) && mb_stripos($index, $token) !== false) {
+                if (!empty($token) && mb_stripos($normalize($index), $normalize($token)) !== false) {
                     $match = true;
                     break;
                 }

@@ -10,6 +10,7 @@ use Engelsystem\Test\Unit\TestCase;
  * Tests for case-insensitive multibyte string search behavior.
  *
  * @see https://github.com/engelsystem/engelsystem/issues/1317
+ * @see https://github.com/engelsystem/engelsystem/issues/606
  * @coversNothing
  */
 class StringSearchTest extends TestCase
@@ -39,6 +40,32 @@ class StringSearchTest extends TestCase
             'exact match' => ['Müller', 'Müller', true],
             'partial match' => ['Müller', 'üll', true],
             'no match' => ['Schmidt', 'ü', false],
+        ];
+    }
+
+    /**
+     * @dataProvider provideAsciiFoldingCases
+     */
+    public function testAsciiFoldingSearch(
+        string $haystack,
+        string $needle,
+        bool $expectedFound
+    ): void {
+        $normalize = fn($s) => transliterator_transliterate('Any-Latin; Latin-ASCII; Lower', $s) ?: mb_strtolower($s);
+        $found = mb_stripos($normalize($haystack), $normalize($needle)) !== false;
+        $this->assertSame($expectedFound, $found);
+    }
+
+    public function provideAsciiFoldingCases(): array
+    {
+        return [
+            'ASCII finds umlaut ü' => ['Müller', 'muller', true],
+            'ASCII finds umlaut ä' => ['Krämer', 'kramer', true],
+            'ASCII finds accented é' => ['céline', 'celine', true],
+            'ASCII finds Turkish ı' => ['yıldırım', 'yildirim', true],
+            'ASCII finds German ß' => ['Großmann', 'grossmann', true],
+            'partial ASCII match' => ['Tannhäuser', 'hauser', true],
+            'no match' => ['Schmidt', 'muller', false],
         ];
     }
 }

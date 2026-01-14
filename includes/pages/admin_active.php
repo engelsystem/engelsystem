@@ -231,6 +231,7 @@ function admin_active()
     /** @var User[] $users */
     $users = $query->get();
     $matched_users = [];
+    $normalize = fn($s) => transliterator_transliterate('Any-Latin; Latin-ASCII; Lower', $s) ?: mb_strtolower($s);
     if ($search == '') {
         $tokens = [];
     } else {
@@ -241,7 +242,7 @@ function admin_active()
             $match = false;
             foreach ($tokens as $t) {
                 $t = trim($t);
-                if (!empty($t) && mb_stripos($user->name, $t) !== false) {
+                if (!empty($t) && mb_stripos($normalize($user->name), $normalize($t)) !== false) {
                     $match = true;
                     break;
                 }
