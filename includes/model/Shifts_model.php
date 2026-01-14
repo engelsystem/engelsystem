@@ -554,7 +554,7 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupStatus::NOT_YET, $free_entries);
     }
 
-    if (config('signup_requires_arrival') && !$user->state->arrived) {
+    if (config('signup_requires_arrival') && !$user->state->arrived && !$angeltype->shift_signup_before_arrival) {
         return new ShiftSignupState(ShiftSignupStatus::NOT_ARRIVED, $free_entries);
     }
 

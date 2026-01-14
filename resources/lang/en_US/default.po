@@ -772,6 +772,12 @@ msgid "angeltypes.restricted.hint"
 msgstr "This angel type requires attendance at an introduction meeting. "
 "You might find additional information in the description."
 
+msgid "angeltypes.shift_signup_before_arrival"
+msgstr "Allow shift signup before arrival"
+
+msgid "angeltypes.shift_signup_before_arrival.info"
+msgstr "Allow users to sign up for shifts of this angel type before being marked as arrived."
+
 msgid "angeltypes.can-change-later"
 msgstr "You can change your selection later in the settings."
 
