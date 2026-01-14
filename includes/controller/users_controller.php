@@ -11,6 +11,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
@@ -254,7 +255,7 @@ function users_list_controller()
         'first_name' => 'users_personal_data.first_name',
         'last_name' => 'users_personal_data.last_name',
         'dect' => 'users_contact.dect',
-        'arrived' => 'users_state.arrival_date',
+        'arrived' => 'arrived',
         'got_voucher' => 'users_state.got_voucher',
         'active' => 'users_state.active',
         'force_active' => 'users_state.force_active',
@@ -271,6 +272,7 @@ function users_list_controller()
     if ($request->query->has('OrderBy') && array_key_exists($request->query->get('OrderBy'), $columnMap)) {
         $order_by = $request->query->get('OrderBy');
     }
+    $orderDirection = in_array($order_by, ['name', 'first_name', 'last_name', 'dect', 'shirt_size']) ? 'asc' : 'desc';
 
     $perPage = $request->query->get('c', config('display_users'));
     if ($perPage == 'all') {
@@ -279,26 +281,21 @@ function users_list_controller()
     $perPage = is_numeric($perPage) ? (int) $perPage : config('display_users');
 
     /** @var User[]|Collection|LengthAwarePaginator $users */
-    $users = User::query()
+    $users = User::with(['contact', 'personalData', 'state'])
         ->select('users.*')
-        ->with(['contact', 'personalData', 'state'])
         ->leftJoin('users_personal_data', 'users.id', '=', 'users_personal_data.user_id')
         ->leftJoin('users_contact', 'users.id', '=', 'users_contact.user_id')
         ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
         ->selectSub(
             ShiftEntry::selectRaw('COUNT(*)')
                 ->whereColumn('shift_entries.user_id', 'users.id')
-                ->whereNotNull('freeloaded_by'),
+                ->whereNotNull('shift_entries.freeloaded_by'),
             'freeloads'
         )
-        ->orderBy($columnMap[$order_by])
+        ->addSelect(['arrived' => fn(Builder $q) => $q->select($q->raw('users_state.arrival_date is not null'))])
+        ->orderBy($columnMap[$order_by], $orderDirection)
         ->orderBy('users.name')
         ->paginate($perPage);
-
-    // Set the freeloads attribute on each user from the query result
-    foreach ($users as $user) {
-        $user->setAttribute('freeloads', $user->freeloads ?? 0);
-    }
 
     return [
         __('All users'),

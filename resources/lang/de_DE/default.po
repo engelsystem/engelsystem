@@ -1104,7 +1104,7 @@ msgid "user.state.vouchers.force"
 msgstr "<s>%d</s> unendlich"
 
 msgid "Freeloads"
-msgstr "Schwänzereien"
+msgstr "Geschwänzt"
 
 msgid "Last login"
 msgstr "Letzter Login"

@@ -175,7 +175,7 @@ EOT;
     if (config('enable_dect')) {
         $user_table_headers['dect'] = Users_table_header_link('dect', __('general.dect'), $order_by);
     }
-    $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
+    $user_table_headers['arrived'] = Users_table_header_link('arrived', __('user.arrived'), $order_by);
     if (config('enable_voucher')) {
         $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('voucher.vouchers'), $order_by);
     }
@@ -231,13 +231,12 @@ EOT;
  */
 function Users_table_header_link($column, $label, $order_by)
 {
-    // Preserve page size when changing sort order
+    // Preserve pagination count when changing sort order
     $params = ['OrderBy' => $column];
-    $pageSize = request()->get('c');
-    if ($pageSize) {
-        $params['c'] = $pageSize;
+    $count = request()->query->get('c');
+    if ($count) {
+        $params['c'] = $count;
     }
-
     return '<a href="'
         . url('/users', $params)
         . '">'
