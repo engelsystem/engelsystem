@@ -89,6 +89,7 @@ function admin_arrive()
     $planned_arrival_count_at_day = [];
     $planned_departure_count_at_day = [];
     $users_matched = [];
+    $normalize = fn($s) => transliterator_transliterate('Any-Latin; Latin-ASCII; Lower', $s) ?: mb_strtolower($s);
     if ($search == '') {
         $tokens = [];
     } else {
@@ -111,7 +112,7 @@ function admin_arrive()
                 $index = join(' ', $data->toArray());
                 foreach ($tokens as $token) {
                     $token = trim($token);
-                    if (!empty($token) && mb_stripos($index, $token) !== false) {
+                    if (!empty($token) && mb_stripos($normalize($index), $normalize($token)) !== false) {
                         $match = true;
                         break;
                     }
