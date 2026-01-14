@@ -61,10 +61,18 @@ class FeedController extends BaseController
             $timezoneTransitionStart = Carbon::now()->startOfDay()->utc()->isoFormat('YYYYMMDDTHHmmss');
         }
 
-        return $this->withEtag($shifts)
-            ->withHeader('content-type', 'text/calendar; charset=utf-8')
-            ->withHeader('content-disposition', 'attachment; filename=shifts.ics')
-            ->withView('api/ical', ['shiftEntries' => $shifts, 'timezoneTransitionStart' => $timezoneTransitionStart]);
+        $response = $this->withEtag($shifts)
+            ->withHeader('content-type', 'text/calendar; charset=utf-8');
+
+        // When not subscribing, force download instead of opening in browser
+        if (!$this->request->get('subscribe')) {
+            $response = $response->withHeader('content-disposition', 'attachment; filename=shifts.ics');
+        }
+
+        return $response->withView(
+            'api/ical',
+            ['shiftEntries' => $shifts, 'timezoneTransitionStart' => $timezoneTransitionStart]
+        );
     }
 
     public function shifts(): Response
