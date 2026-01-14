@@ -16,6 +16,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property bool   $email_shiftinfo
  * @property bool   $email_news
  * @property bool   $mobile_show
+ * @property bool   $ical_alarms
  *
  * @method static QueryBuilder|Settings[] whereLanguage($value)
  * @method static QueryBuilder|Settings[] whereTheme($value)
@@ -25,6 +26,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Settings[] whereEmailShiftinfo($value)
  * @method static QueryBuilder|Settings[] whereEmailNews($value)
  * @method static QueryBuilder|Settings[] whereMobileShow($value)
+ * @method static QueryBuilder|Settings[] whereIcalAlarms($value)
  */
 class Settings extends HasUserModel
 {
@@ -41,6 +43,7 @@ class Settings extends HasUserModel
         'email_shiftinfo' => false,
         'email_news'      => false,
         'mobile_show'     => false,
+        'ical_alarms'     => false,
     ];
 
     /**
@@ -58,6 +61,7 @@ class Settings extends HasUserModel
         'email_shiftinfo',
         'email_news',
         'mobile_show',
+        'ical_alarms',
     ];
 
     /** @var string[] */
@@ -70,5 +74,6 @@ class Settings extends HasUserModel
         'email_shiftinfo' => 'boolean',
         'email_news'      => 'boolean',
         'mobile_show'     => 'boolean',
+        'ical_alarms'     => 'boolean',
     ];
 }

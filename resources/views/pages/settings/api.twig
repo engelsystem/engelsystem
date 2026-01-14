@@ -72,9 +72,18 @@
             {% endif %}
 
             {% if can('ical') %}
-                <p id="ical_hide" class="collapse" data-bs-parent="#exports_hide">
-                    <code>{{ url('/ical', {'key': user.api_key}) }}</code>
-                </p>
+                <div id="ical_hide" class="collapse" data-bs-parent="#exports_hide">
+                    <p>
+                        <code>{{ url('/ical', {'key': user.api_key}) }}</code>
+                    </p>
+                    <form method="post" action="{{ url('/settings/api/ical') }}" class="mt-2">
+                        {{ csrf() }}
+                        {{ f.checkbox('ical_alarms', __('settings.api.ical_alarms'), {
+                            'checked': user.settings.ical_alarms
+                        }) }}
+                        {{ f.submit(__('form.save'), {'size': 'sm'}) }}
+                    </form>
+                </div>
             {% endif %}
 
             {% if can('atom') %}

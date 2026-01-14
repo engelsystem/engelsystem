@@ -586,6 +586,12 @@ msgstr "Reset API key"
 msgid "settings.api.key_reset_confirm"
 msgstr "If you reset the API key you have to update it in all your applications."
 
+msgid "settings.api.ical_alarms"
+msgstr "Include reminder alarms (30 minutes before shift)"
+
+msgid "settings.api.ical_success"
+msgstr "iCal settings saved successfully."
+
 msgid "settings.oauth"
 msgstr "Single Sign-On"
 

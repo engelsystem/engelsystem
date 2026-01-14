@@ -45,6 +45,7 @@ $route->addGroup(
         $route->post('/certificates/driving', 'SettingsController@saveDrivingLicense');
         $route->get('/api', 'SettingsController@api');
         $route->post('/api', 'SettingsController@apiKeyReset');
+        $route->post('/api/ical', 'SettingsController@saveIcalSettings');
         $route->get('/oauth', 'SettingsController@oauth');
         $route->get('/sessions', 'SettingsController@sessions');
         $route->post('/sessions', 'SettingsController@sessionsDelete');
