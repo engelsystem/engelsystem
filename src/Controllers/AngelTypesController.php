@@ -113,13 +113,13 @@ class AngelTypesController extends BaseController
         } catch (BeforeValidException | ExpiredException) {
             throw new HttpNotFound('jwt.invalid_time');
         } catch (UnexpectedValueException | SignatureInvalidException $e) {
-            $this->log->warning('JWT: ' . $e->getMessage());
+            $this->log->warning('JWT: {message}, token: "{token}"', ['message' => $e->getMessage(), 'token' => $jwt]);
             if ($e->getMessage() === 'Wrong number of segments') {
                 throw new HttpNotFound('jwt.wrong_format');
             }
             throw new HttpNotFound('jwt.code_error');
         } catch (Exception $e) {
-            $this->log->error('JWT Error', ['exception' => $e]);
+            $this->log->error('JWT Error, token: "{token}"', ['exception' => $e, 'token' => $jwt]);
             throw new HttpNotFound();
         }
 
