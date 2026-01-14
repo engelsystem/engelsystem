@@ -1757,6 +1757,12 @@ msgstr "JSON Schichten Export anzeigen"
 msgid "settings.api.ical_show"
 msgstr "iCal export anzeigen"
 
+msgid "settings.api.ical_download"
+msgstr "Herunterladen"
+
+msgid "settings.api.ical_subscribe"
+msgstr "Abonnieren"
+
 msgid "settings.api.news_show"
 msgstr "News feeds anzeigen"
 

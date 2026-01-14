@@ -73,7 +73,10 @@
 
             {% if can('ical') %}
                 <p id="ical_hide" class="collapse" data-bs-parent="#exports_hide">
+                    {{ __('settings.api.ical_download') }}:<br>
                     <code>{{ url('/ical', {'key': user.api_key}) }}</code>
+                    <br>{{ __('settings.api.ical_subscribe') }}:<br>
+                    <code>{{ url('/ical', {'key': user.api_key, 'subscribe': 1}) }}</code>
                 </p>
             {% endif %}
 
