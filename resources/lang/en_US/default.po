@@ -16,6 +16,18 @@ msgstr ""
 "Language: en_US\n"
 "X-Poedit-SearchPath-0: .\n"
 
+# Translated plural form must exist to be shown
+msgid "There are unconfirmed angels in %d angel type. Angel type that needs approval:"
+msgid_plural "There are unconfirmed angels in %d angel types. Angel types that need approval:"
+msgstr[0] "There are unconfirmed angels in %d angel type. Angel type that needs approval:"
+msgstr[1] "There are unconfirmed angels in %d angel types. Angel types that need approval:"
+
+# Translated plural form must exist to be shown
+msgid "%d helper needed"
+msgid_plural "%d helpers needed"
+msgstr[0] "%d helper needed"
+msgstr[1] "%d helpers needed"
+
 msgid "auth.password.error"
 msgstr "Your password is incorrect. Please try again."
 
