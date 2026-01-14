@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Factories;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Engelsystem\Config\Config;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Factories\User;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -54,6 +55,10 @@ class UserTest extends ServiceProviderTest
         $this->app->instance(ServerRequestInterface::class, new Request());
         $this->app->instance(Authenticator::class, $this->app->make(Authenticator::class));
         $this->app->alias(Authenticator::class, 'authenticator');
+
+        $dispatcher = $this->createMock(EventDispatcher::class);
+        $dispatcher->method('dispatch')->willReturn([]);
+        $this->app->instance('events.dispatcher', $dispatcher);
 
         $this->subject = $this->app->make(User::class);
     }
