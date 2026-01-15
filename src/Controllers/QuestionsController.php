@@ -97,6 +97,8 @@ class QuestionsController extends BaseController
             ]
         );
 
+        event('question.created', ['question' => $question]);
+
         $this->addNotification('question.add.success');
 
         return $this->redirect->to('/questions');
