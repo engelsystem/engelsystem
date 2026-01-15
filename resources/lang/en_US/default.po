@@ -768,6 +768,33 @@ msgid "angeltypes.restricted.info"
 msgstr "Angel types that require introduction can only be joined by Angels "
 "after being enabled by a supporter (double opt-in)."
 
+msgid "angeltype.self_signup_token"
+msgstr "Self-signup token"
+
+msgid "angeltype.self_signup_token.info"
+msgstr "Optional token that allows users to auto-confirm when joining this restricted angel type."
+
+msgid "angeltype.signup_token"
+msgstr "Signup token"
+
+msgid "angeltype.signup_token.info"
+msgstr "If you have a signup token, enter it here to get auto-confirmed."
+
+msgid "angeltype.confirm_selected"
+msgstr "Confirm selected"
+
+msgid "angeltype.deny_selected"
+msgstr "Deny selected"
+
+msgid "angeltype.bulk.none_selected"
+msgstr "No users selected."
+
+msgid "angeltype.bulk.confirmed"
+msgstr "Confirmed %d user(s) for angel type %s."
+
+msgid "angeltype.bulk.denied"
+msgstr "Denied %d user(s) for angel type %s."
+
 msgid "angeltypes.restricted.hint"
 msgstr "This angel type requires attendance at an introduction meeting. "
 "You might find additional information in the description."
