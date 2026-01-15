@@ -494,7 +494,7 @@ function user_angeltypes_bulk_controller(): array
         throw_redirect(url('/angeltypes'));
     }
 
-    $selectedIds = $request->postData('selected_ids');
+    $selectedIds = $request->request->all('selected_ids');
     if (empty($selectedIds) || !is_array($selectedIds)) {
         error(__('angeltype.bulk.none_selected'));
         throw_redirect(url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));

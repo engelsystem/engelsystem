@@ -750,7 +750,10 @@ function AngelType_view_info(
                 continue;
             }
             $checkbox = '<input type="checkbox" name="selected_ids[]" value="' . $member->pivot->id . '" class="form-check-input user-select-checkbox">';
-            $unconfirmed_with_checkboxes[] = array_merge(['select' => $checkbox], (array) $member);
+            // Convert member to array preserving the dynamic 'name' property set earlier
+            $memberArray = (array) $member;
+            $memberArray['name'] = $member->name;
+            $unconfirmed_with_checkboxes[] = array_merge(['select' => $checkbox], $memberArray);
         }
 
         // Add select-all checkbox to headers
