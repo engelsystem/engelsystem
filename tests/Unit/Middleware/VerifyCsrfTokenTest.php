@@ -10,7 +10,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -148,8 +147,6 @@ class VerifyCsrfTokenTest extends TestCase
         $response = $this->getMockForAbstractClass(ResponseInterface::class);
         /** @var SessionInterface|MockObject $session */
         $session = $this->getMockForAbstractClass(SessionInterface::class);
-        /** @var UriInterface|MockObject $uri */
-        $uri = $this->getMockForAbstractClass(UriInterface::class);
 
         $middleware = new VerifyCsrfToken($session);
 
@@ -162,11 +159,7 @@ class VerifyCsrfTokenTest extends TestCase
             ->willReturn('POST');
 
         $request->expects($this->exactly(3))
-            ->method('getUri')
-            ->willReturn($uri);
-
-        $uri->expects($this->exactly(3))
-            ->method('getPath')
+            ->method('getRequestTarget')
             ->willReturnOnConsecutiveCalls(
                 '/oauth2/token',
                 '/oauth2/token/',
