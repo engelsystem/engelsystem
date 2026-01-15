@@ -666,7 +666,7 @@ function User_view(
         if (count($my_shifts) > 0) {
             $shift_filter_buttons = '<div class="btn-group mb-2" role="group" aria-label="' . __('profile.shifts.filter') . '">'
                 . '<button type="button" class="btn btn-outline-primary btn-sm active" data-filter="all">'
-                . __('general.all') . '</button>'
+                . __('form.all') . '</button>'
                 . '<button type="button" class="btn btn-outline-success btn-sm" data-filter="upcoming">'
                 . icon('calendar-plus') . ' ' . __('profile.shifts.upcoming') . '</button>'
                 . '<button type="button" class="btn btn-outline-info btn-sm" data-filter="running">'
