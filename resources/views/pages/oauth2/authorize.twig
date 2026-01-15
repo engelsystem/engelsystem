@@ -1,0 +1,64 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('oauth2.authorize.title') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card {% if theme.type == 'light' %}bg-light{% else %}bg-secondary{% endif %} mt-5">
+                    <div class="card-header">
+                        <h4 class="mb-0">{{ __('oauth2.authorize.title') }}</h4>
+                    </div>
+                    <div class="card-body {{ theme.type == 'light' ? 'bg-light' : 'bg-secondary' }}">
+                        <p class="lead">
+                            {{ __('oauth2.authorize.request', [client.name]) }}
+                        </p>
+
+                        {% if scopes is not empty %}
+                            <p class="text-muted">{{ __('oauth2.authorize.scopes_intro') }}</p>
+                            <ul class="list-group mb-4">
+                                {% for scope in scopes %}
+                                    <li class="list-group-item">
+                                        {{ m.icon('check-circle') }}
+                                        {% if scope.identifier == 'openid' %}
+                                            {{ __('oauth2.scope.openid') }}
+                                        {% elseif scope.identifier == 'profile' %}
+                                            {{ __('oauth2.scope.profile') }}
+                                        {% elseif scope.identifier == 'email' %}
+                                            {{ __('oauth2.scope.email') }}
+                                        {% elseif scope.identifier == 'angeltypes' %}
+                                            {{ __('oauth2.scope.angeltypes') }}
+                                        {% elseif scope.identifier == 'groups' %}
+                                            {{ __('oauth2.scope.groups') }}
+                                        {% else %}
+                                            {{ scope.identifier }}
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        <form method="post">
+                            {{ csrf() }}
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" name="approve" value="1" class="btn btn-primary">
+                                    {{ m.icon('check') }} {{ __('oauth2.authorize.approve') }}
+                                </button>
+                                <button type="submit" name="deny" value="1" class="btn btn-secondary">
+                                    {{ m.icon('x') }} {{ __('oauth2.authorize.deny') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer {{ theme.type == 'light' ? 'bg-light' : 'bg-secondary' }} text-muted small">
+                        {{ __('oauth2.authorize.info') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

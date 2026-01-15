@@ -66,6 +66,7 @@ class AuthController extends BaseController
     public function loginUser(User $user): Response
     {
         $previousPage = $this->session->get('previous_page');
+        $oauth2Params = $this->session->get('oauth2_auth_request_params');
 
         $this->session->invalidate();
         $this->session->set('user_id', $user->id);
@@ -73,6 +74,11 @@ class AuthController extends BaseController
 
         $user->last_login_at = new Carbon();
         $user->save(['touch' => false]);
+
+        // Redirect back to OAuth2 authorization if there was a pending request
+        if ($oauth2Params) {
+            return $this->redirect->to('/oauth2/authorize?' . http_build_query($oauth2Params));
+        }
 
         return $this->redirect->to($previousPage ?: $this->config->get('home_site'));
     }

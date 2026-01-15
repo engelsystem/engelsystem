@@ -18,13 +18,24 @@ $route->get('/login', 'AuthController@login');
 $route->post('/login', 'AuthController@postLogin');
 $route->get('/logout', 'AuthController@logout');
 
-// OAuth
+// OAuth (client - Engelsystem as consumer)
 $route->addGroup(
     '/oauth/{provider}',
     function (RouteCollector $route): void {
         $route->get('', 'OAuthController@index');
         $route->post('/connect', 'OAuthController@connect');
         $route->post('/disconnect', 'OAuthController@disconnect');
+    }
+);
+
+// OAuth2 Server (Engelsystem as identity provider)
+$route->addGroup(
+    '/oauth2',
+    function (RouteCollector $route): void {
+        $route->get('/authorize', 'OAuth2\\AuthorizationController@authorize');
+        $route->post('/authorize', 'OAuth2\\AuthorizationController@processAuthorization');
+        $route->post('/token', 'OAuth2\\TokenController@token');
+        $route->get('/userinfo', 'OAuth2\\UserInfoController@userinfo');
     }
 );
 
@@ -48,6 +59,8 @@ $route->addGroup(
         $route->get('/oauth', 'SettingsController@oauth');
         $route->get('/sessions', 'SettingsController@sessions');
         $route->post('/sessions', 'SettingsController@sessionsDelete');
+        $route->get('/oauth2-applications', 'OAuth2ApplicationsController@index');
+        $route->post('/oauth2-applications/revoke', 'OAuth2ApplicationsController@revoke');
     }
 );
 
@@ -323,6 +336,16 @@ $route->addGroup(
             function (RouteCollector $route): void {
                 $route->get('[/{news_id:\d+}]', 'Admin\\NewsController@edit');
                 $route->post('[/{news_id:\d+}]', 'Admin\\NewsController@save');
+            }
+        );
+
+        // OAuth2 Clients
+        $route->addGroup(
+            '/oauth2-clients',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\OAuth2ClientsController@index');
+                $route->get('/edit[/{client_id:\d+}]', 'Admin\\OAuth2ClientsController@edit');
+                $route->post('/edit[/{client_id:\d+}]', 'Admin\\OAuth2ClientsController@save');
             }
         );
     }

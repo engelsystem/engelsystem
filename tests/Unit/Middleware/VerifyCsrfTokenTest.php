@@ -36,12 +36,16 @@ class VerifyCsrfTokenTest extends TestCase
         /** @var VerifyCsrfToken|MockObject $middleware */
         $middleware = $this->getMockBuilder(VerifyCsrfToken::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['tokensMatch'])
+            ->onlyMethods(['tokensMatch', 'isExempt'])
             ->getMock();
 
         $middleware->expects($this->exactly(2))
             ->method('tokensMatch')
             ->willReturnOnConsecutiveCalls(true, false);
+
+        $middleware->expects($this->exactly(2))
+            ->method('isExempt')
+            ->willReturn(false);
 
         // Results in true, false, false
         $request->expects($this->exactly(3))
@@ -76,11 +80,15 @@ class VerifyCsrfTokenTest extends TestCase
         /** @var VerifyCsrfToken|MockObject $middleware */
         $middleware = $this->getMockBuilder(VerifyCsrfToken::class)
             ->setConstructorArgs([$session])
-            ->onlyMethods(['isReading'])
+            ->onlyMethods(['isReading', 'isExempt'])
             ->getMock();
 
         $middleware->expects($this->atLeastOnce())
             ->method('isReading')
+            ->willReturn(false);
+
+        $middleware->expects($this->atLeastOnce())
+            ->method('isExempt')
             ->willReturn(false);
 
         $handler->expects($this->exactly(3))
@@ -122,6 +130,47 @@ class VerifyCsrfTokenTest extends TestCase
         // Header and POST tokens
         $middleware->process($request, $handler);
         // No tokens
+        $this->expectException(HttpAuthExpired::class);
+        $middleware->process($request, $handler);
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\VerifyCsrfToken::isExempt
+     */
+    public function testIsExempt(): void
+    {
+        /** @var ServerRequestInterface|MockObject $request */
+        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
+        /** @var RequestHandlerInterface|MockObject $handler */
+        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        /** @var ResponseInterface|MockObject $response */
+        $response = $this->getMockForAbstractClass(ResponseInterface::class);
+        /** @var SessionInterface|MockObject $session */
+        $session = $this->getMockForAbstractClass(SessionInterface::class);
+
+        $middleware = new VerifyCsrfToken($session);
+
+        $handler->expects($this->exactly(2))
+            ->method('handle')
+            ->willReturn($response);
+
+        $request->expects($this->exactly(3))
+            ->method('getMethod')
+            ->willReturn('POST');
+
+        $request->expects($this->exactly(3))
+            ->method('getRequestTarget')
+            ->willReturnOnConsecutiveCalls(
+                '/oauth2/token',
+                '/oauth2/token/',
+                '/other/path'
+            );
+
+        // Exempt path - should pass without token check
+        $middleware->process($request, $handler);
+        // Exempt path with trailing slash - should pass
+        $middleware->process($request, $handler);
+        // Non-exempt path - should throw exception (no token)
         $this->expectException(HttpAuthExpired::class);
         $middleware->process($request, $handler);
     }
