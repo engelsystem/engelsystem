@@ -18,7 +18,7 @@ class ContactFactory extends Factory
         return [
             'user_id' => User::factory(),
             'dect'   => $this->faker->optional()->numberBetween(1000, 9999),
-            'email'  => $this->faker->unique()->optional()->safeEmail(),
+            'email'  => $this->faker->optional() ? $this->faker->unique()->safeEmail() : null,
             'mobile' => $this->faker->optional(.2)->phoneNumber(),
         ];
     }
