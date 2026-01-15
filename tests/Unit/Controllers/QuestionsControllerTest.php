@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\QuestionsController;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -179,6 +180,10 @@ class QuestionsControllerTest extends ControllerTest
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
+
+        $dispatcher = $this->createMock(EventDispatcher::class);
+        $dispatcher->method('dispatch')->willReturn([]);
+        $this->app->instance('events.dispatcher', $dispatcher);
 
         $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
 

@@ -1473,6 +1473,28 @@ msgstr "Die News \"%1$s\" wurde aktualisiert"
 msgid "notification.news.updated.text"
 msgstr "Du kannst sie dir unter %3$s anschauen."
 
+msgid "notification.news.comment.new"
+msgstr "Neuer Kommentar zu deiner News"
+
+msgid "notification.news.comment.new.text"
+msgstr ""
+"%1$s hat deine News \"%2$s\" kommentiert:\n"
+"\n"
+"%3$s\n"
+"\n"
+"Du kannst ihn dir unter %4$s anschauen."
+
+msgid "notification.question.new"
+msgstr "Neue Frage"
+
+msgid "notification.question.new.text"
+msgstr ""
+"%1$s hat eine Frage gestellt:\n"
+"\n"
+"%2$s\n"
+"\n"
+"Du kannst sie unter %3$s beantworten."
+
 msgid "form.search"
 msgstr "Suchen"
 
