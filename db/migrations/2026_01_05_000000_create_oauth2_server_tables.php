@@ -7,7 +7,7 @@ namespace Engelsystem\Migrations;
 use Engelsystem\Database\Migration\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateOauthserverTables extends Migration
+class CreateOauth2ServerTables extends Migration
 {
     use Reference;
 

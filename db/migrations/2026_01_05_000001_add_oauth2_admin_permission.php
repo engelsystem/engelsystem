@@ -6,7 +6,7 @@ namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;
 
-class AddOauthadminPermission extends Migration
+class AddOauth2AdminPermission extends Migration
 {
     public function up(): void
     {
