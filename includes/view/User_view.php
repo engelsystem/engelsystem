@@ -490,16 +490,32 @@ function User_view_myshifts(
         foreach ($myshifts_table as $i => &$shift) {
             $before = $myshifts_table[$i - 1] ?? null;
             $after = $myshifts_table[$i + 1] ?? null;
+            $now = Carbon::now();
+
+            // Determine shift state for filtering
+            $stateClass = '';
+            if (isset($shift['start']) && isset($shift['end'])) {
+                if ($now < $shift['start']) {
+                    $stateClass = 'shift-state-upcoming';
+                } elseif ($now > $shift['end']) {
+                    $stateClass = 'shift-state-completed';
+                } else {
+                    $stateClass = 'shift-state-running';
+                }
+            }
+
             if ($shift['freeloaded']) {
-                $shift['row-class'] = 'border border-danger border-2';
-            } elseif (Carbon::now() > $shift['start'] && Carbon::now() < $shift['end']) {
-                $shift['row-class'] = 'border border-info border-2';
-            } elseif ($after && Carbon::now() > $shift['end'] && Carbon::now() < $after['start']) {
-                $shift['row-class'] = 'border-bottom border-info';
-            } elseif (!$before && Carbon::now() < $shift['start']) {
-                $shift['row-class'] = 'border-top-info';
-            } elseif (!$after && Carbon::now() > $shift['end']) {
-                $shift['row-class'] = 'border-bottom border-info';
+                $shift['row-class'] = 'border border-danger border-2 ' . $stateClass;
+            } elseif ($now > $shift['start'] && $now < $shift['end']) {
+                $shift['row-class'] = 'border border-info border-2 ' . $stateClass;
+            } elseif ($after && $now > $shift['end'] && $now < $after['start']) {
+                $shift['row-class'] = 'border-bottom border-info ' . $stateClass;
+            } elseif (!$before && $now < $shift['start']) {
+                $shift['row-class'] = 'border-top-info ' . $stateClass;
+            } elseif (!$after && $now > $shift['end']) {
+                $shift['row-class'] = 'border-bottom border-info ' . $stateClass;
+            } else {
+                $shift['row-class'] = $stateClass;
             }
         }
         if ($show_sum) {
@@ -648,7 +664,17 @@ function User_view(
             $admin_user_worklog_privilege,
         );
         if (count($my_shifts) > 0) {
-            $myshifts_table = div('', table([
+            $shift_filter_buttons = '<div class="btn-group mb-2" role="group" aria-label="' . __('profile.shifts.filter') . '">'
+                . '<button type="button" class="btn btn-outline-primary btn-sm active" data-filter="all">'
+                . __('general.all') . '</button>'
+                . '<button type="button" class="btn btn-outline-success btn-sm" data-filter="upcoming">'
+                . icon('calendar-plus') . ' ' . __('profile.shifts.upcoming') . '</button>'
+                . '<button type="button" class="btn btn-outline-info btn-sm" data-filter="running">'
+                . icon('play-circle') . ' ' . __('profile.shifts.running') . '</button>'
+                . '<button type="button" class="btn btn-outline-secondary btn-sm" data-filter="completed">'
+                . icon('calendar-check') . ' ' . __('profile.shifts.completed') . '</button>'
+                . '</div>';
+            $shifts_table_html = table([
                 'date' => __('Day & Time'),
                 'duration' => __('Duration'),
                 'hints' => '',
@@ -656,7 +682,8 @@ function User_view(
                 'shift_info' => __('Name & Workmates'),
                 'comment' => __('worklog.description'),
                 'actions' => __('general.actions'),
-            ], $my_shifts));
+            ], $my_shifts);
+            $myshifts_table = div('', $shift_filter_buttons . '<div id="shifts-table-container">' . $shifts_table_html . '</div>');
         } elseif ($user_source->state->force_active && config('enable_force_active')) {
             $myshifts_table = success(
                 ($its_me ? __('You have done enough.') : (__('%s has done enough.', [$user_source->name]))),
