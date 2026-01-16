@@ -43,4 +43,56 @@ class ShiftEntryTest extends ModelTest
 
         $this->assertArrayNotHasKey('freeloaded_comment', $model->toArray());
     }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\ShiftEntry::supervisedBy
+     */
+    public function testSupervisedBy(): void
+    {
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $supervisor */
+        $supervisor = User::factory()->create();
+
+        $model = new ShiftEntry();
+        $model->shift()->associate($shift);
+        $model->angelType()->associate($angelType);
+        $model->user()->associate($user);
+        $model->supervisedBy()->associate($supervisor);
+        $model->save();
+
+        $model = ShiftEntry::find($model->id);
+        $this->assertEquals($supervisor->id, $model->supervisedBy->id);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\ShiftEntry
+     */
+    public function testCountsTowardQuota(): void
+    {
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create();
+        /** @var AngelType $angelType */
+        $angelType = AngelType::factory()->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $model = new ShiftEntry();
+        $model->shift()->associate($shift);
+        $model->angelType()->associate($angelType);
+        $model->user()->associate($user);
+        $model->counts_toward_quota = false;
+        $model->save();
+
+        $model = ShiftEntry::find($model->id);
+        $this->assertFalse($model->counts_toward_quota);
+
+        // Test default value
+        $model2 = new ShiftEntry();
+        $this->assertTrue($model2->counts_toward_quota);
+    }
 }

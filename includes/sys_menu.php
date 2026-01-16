@@ -77,6 +77,7 @@ function make_navigation(): array
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/tags'         => ['tag.tags', 'tag.edit'],
         'admin/logs'         => ['log.log', 'admin_log'],
+        'admin/minors'       => ['minors.management', 'admin_arrive'],
         'admin/config'       => ['config.config', 'config.edit'],
     ];
 

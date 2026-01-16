@@ -11,6 +11,7 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\LogEntry;
+use Engelsystem\Models\MinorCategory;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
@@ -27,6 +28,8 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
+use Engelsystem\Models\UserGuardian;
+use Engelsystem\Models\UserSupervisorStatus;
 use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\Models\ModelTest;
 use Exception;
@@ -575,5 +578,173 @@ class UserTest extends ModelTest
 
         config(['display_full_name' => true]);
         $this->assertEquals($expected, $user1->displayName);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::minorCategory
+     */
+    public function testMinorCategory(): void
+    {
+        $category = MinorCategory::create([
+            'name'                    => 'Test Minor Category',
+            'allowed_work_categories' => ['A'],
+        ]);
+
+        $user = new User($this->data);
+        $user->minorCategory()->associate($category);
+        $user->save();
+
+        $user = User::find($user->id);
+        $this->assertEquals($category->id, $user->minorCategory->id);
+        $this->assertEquals('Test Minor Category', $user->minorCategory->name);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::consentApprovedBy
+     */
+    public function testConsentApprovedBy(): void
+    {
+        $approver = User::factory()->create();
+
+        $user = new User($this->data);
+        $user->consentApprovedBy()->associate($approver);
+        $user->consent_approved_at = Carbon::now();
+        $user->save();
+
+        $user = User::find($user->id);
+        $this->assertEquals($approver->id, $user->consentApprovedBy->id);
+        $this->assertNotNull($user->consent_approved_at);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::guardians
+     */
+    public function testGuardians(): void
+    {
+        $user = new User($this->data);
+        $user->save();
+
+        /** @var User $guardian1 */
+        $guardian1 = User::factory()->create();
+        /** @var User $guardian2 */
+        $guardian2 = User::factory()->create();
+
+        UserGuardian::create([
+            'minor_user_id'    => $user->id,
+            'guardian_user_id' => $guardian1->id,
+        ]);
+        UserGuardian::create([
+            'minor_user_id'    => $user->id,
+            'guardian_user_id' => $guardian2->id,
+        ]);
+
+        $this->assertCount(2, $user->guardians);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::minorsGuarded
+     */
+    public function testMinorsGuarded(): void
+    {
+        $guardian = new User($this->data);
+        $guardian->save();
+
+        /** @var User $minor1 */
+        $minor1 = User::factory()->create();
+        /** @var User $minor2 */
+        $minor2 = User::factory()->create();
+        /** @var User $minor3 */
+        $minor3 = User::factory()->create();
+
+        UserGuardian::create([
+            'minor_user_id'    => $minor1->id,
+            'guardian_user_id' => $guardian->id,
+        ]);
+        UserGuardian::create([
+            'minor_user_id'    => $minor2->id,
+            'guardian_user_id' => $guardian->id,
+        ]);
+        UserGuardian::create([
+            'minor_user_id'    => $minor3->id,
+            'guardian_user_id' => $guardian->id,
+        ]);
+
+        $this->assertCount(3, $guardian->minorsGuarded);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::supervisorStatus
+     */
+    public function testSupervisorStatus(): void
+    {
+        $user = new User($this->data);
+        $user->save();
+
+        UserSupervisorStatus::create([
+            'user_id'                        => $user->id,
+            'willing_to_supervise'           => true,
+            'supervision_training_completed' => true,
+        ]);
+
+        $user = User::find($user->id);
+        $this->assertTrue($user->supervisorStatus->willing_to_supervise);
+        $this->assertTrue($user->supervisorStatus->supervision_training_completed);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::supervisorStatus
+     */
+    public function testSupervisorStatusDefault(): void
+    {
+        $user = new User($this->data);
+        $user->save();
+
+        // Access without creating record - should return default
+        $this->assertFalse($user->supervisorStatus->willing_to_supervise);
+        $this->assertFalse($user->supervisorStatus->supervision_training_completed);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::isMinor
+     */
+    public function testIsMinor(): void
+    {
+        $category = MinorCategory::create([
+            'name'                    => 'Test',
+            'allowed_work_categories' => ['A'],
+        ]);
+
+        $user1 = new User($this->data);
+        $user1->save();
+        $this->assertFalse($user1->isMinor());
+
+        $user2 = new User(array_merge($this->data, [
+            'name'              => 'minor_user',
+            'email'             => 'minor@test.com',
+            'minor_category_id' => $category->id,
+        ]));
+        $user2->save();
+        $this->assertTrue($user2->isMinor());
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::hasConsentApproved
+     */
+    public function testHasConsentApproved(): void
+    {
+        $approver = User::factory()->create();
+
+        $user1 = new User($this->data);
+        $user1->save();
+        $this->assertFalse($user1->hasConsentApproved());
+
+        $user2 = new User(array_merge($this->data, [
+            'name'                        => 'consent_user',
+            'email'                       => 'consent@test.com',
+            'consent_approved_by_user_id' => $approver->id,
+            'consent_approved_at'         => Carbon::now(),
+        ]));
+        $user2->save();
+        $this->assertTrue($user2->hasConsentApproved());
     }
 }

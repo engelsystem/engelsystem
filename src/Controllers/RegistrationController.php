@@ -13,6 +13,7 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\MinorCategory;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class RegistrationController extends BaseController
@@ -70,6 +71,13 @@ class RegistrationController extends BaseController
             return $this->redirect->to('/register');
         }
 
+        // If user registered as a minor, redirect to guardian linking page
+        if ($user->isMinor()) {
+            $this->session->set('pending_minor_user_id', $user->id);
+            $this->addNotification('registration.minor.link_guardian', NotificationType::INFORMATION);
+            return $this->redirect->to('/register/link-guardian');
+        }
+
         return $this->redirect->to('/');
     }
 
@@ -89,6 +97,15 @@ class RegistrationController extends BaseController
         // It will be used for instance to use the default angel types or the user selected ones.
         // Clear it before render to reset the marker state.
         $this->session->remove('form-data-register-submit');
+
+        // Get minor categories that allow self-signup
+        $isMinorRegistrationEnabled = $this->config->get('enable_minor_registration', true);
+        $minorCategories = $isMinorRegistrationEnabled
+            ? MinorCategory::active()
+                ->where('can_self_signup', true)
+                ->orderBy('display_order')
+                ->get()
+            : collect();
 
         return $this->response->withView(
             'pages/registration',
@@ -114,6 +131,8 @@ class RegistrationController extends BaseController
                 'isTShirtSizeRequired' => in_array('tshirt_size', $requiredFields),
                 'isMobileRequired' => in_array('mobile', $requiredFields),
                 'isDectRequired' => in_array('dect', $requiredFields),
+                'isMinorRegistrationEnabled' => $isMinorRegistrationEnabled,
+                'minorCategories' => $minorCategories,
             ],
         );
     }
@@ -199,5 +218,91 @@ class RegistrationController extends BaseController
             )
             // Password disabled and not oauth
             || (!$authUser && !$isPasswordEnabled && !$isOAuth);
+    }
+
+    /**
+     * Show the guardian linking page for newly registered minors
+     */
+    public function linkGuardian(): Response
+    {
+        $minorUserId = $this->session->get('pending_minor_user_id');
+
+        if (!$minorUserId) {
+            return $this->redirect->to('/');
+        }
+
+        $minor = \Engelsystem\Models\User\User::find($minorUserId);
+
+        if (!$minor || !$minor->isMinor()) {
+            $this->session->remove('pending_minor_user_id');
+            return $this->redirect->to('/');
+        }
+
+        return $this->response->withView('pages/register/link-guardian', [
+            'minor' => $minor,
+        ]);
+    }
+
+    /**
+     * Process the guardian linking request
+     */
+    public function saveLinkGuardian(Request $request): Response
+    {
+        $minorUserId = $this->session->get('pending_minor_user_id');
+
+        if (!$minorUserId) {
+            return $this->redirect->to('/');
+        }
+
+        $minor = \Engelsystem\Models\User\User::find($minorUserId);
+
+        if (!$minor || !$minor->isMinor()) {
+            $this->session->remove('pending_minor_user_id');
+            return $this->redirect->to('/');
+        }
+
+        $data = $this->validate($request, [
+            'guardian_identifier' => 'required',
+        ]);
+
+        // Find guardian by username or email
+        $guardian = \Engelsystem\Models\User\User::where('name', $data['guardian_identifier'])
+            ->orWhere('email', $data['guardian_identifier'])
+            ->first();
+
+        if (!$guardian) {
+            $this->addNotification('registration.guardian_not_found', NotificationType::ERROR);
+            return $this->redirect->to('/register/link-guardian');
+        }
+
+        if ($guardian->isMinor()) {
+            $this->addNotification('registration.guardian_is_minor', NotificationType::ERROR);
+            return $this->redirect->to('/register/link-guardian');
+        }
+
+        // Create guardian link request (pending approval)
+        \Engelsystem\Models\UserGuardian::create([
+            'guardian_user_id'   => $guardian->id,
+            'minor_user_id'      => $minor->id,
+            'relationship_type'  => 'parent',
+            'is_primary'         => true,
+            'can_manage_account' => true,
+        ]);
+
+        $this->session->remove('pending_minor_user_id');
+        $this->addNotification('registration.guardian_linked');
+
+        return $this->redirect->to('/');
+    }
+
+    /**
+     * Skip guardian linking (minor can link later)
+     */
+    public function skipLinkGuardian(): Response
+    {
+        $this->session->remove('pending_minor_user_id');
+        $this->addNotification('registration.guardian_link_skipped', NotificationType::WARNING);
+
+        return $this->redirect->to('/');
     }
 }

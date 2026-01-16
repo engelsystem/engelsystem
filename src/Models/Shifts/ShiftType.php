@@ -14,6 +14,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property int                        $id
  * @property string                     $name
  * @property string                     $description
+ * @property string                     $work_category
+ * @property bool                       $allows_accompanying_children
  * @property float|null                 $signup_advance_hours
  *
  * @property-read Collection|NeededAngelType[] $neededAngelTypes
@@ -23,6 +25,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|ShiftType[] whereId($value)
  * @method static QueryBuilder|ShiftType[] whereName($value)
  * @method static QueryBuilder|ShiftType[] whereDescription($value)
+ * @method static QueryBuilder|ShiftType[] whereWorkCategory($value)
+ * @method static QueryBuilder|ShiftType[] whereAllowsAccompanyingChildren($value)
  * @method static QueryBuilder|ShiftType[] whereSignupAdvanceHours($value)
  */
 class ShiftType extends BaseModel
@@ -33,12 +37,21 @@ class ShiftType extends BaseModel
     protected $fillable = [ // phpcs:ignore
         'name',
         'description',
+        'work_category',
+        'allows_accompanying_children',
         'signup_advance_hours',
     ];
 
-    /** @var array<string, null> default attributes */
+    /** @var array<string, mixed> default attributes */
     protected $attributes = [ // phpcs:ignore
+        'work_category' => 'A',
+        'allows_accompanying_children' => false,
         'signup_advance_hours' => null,
+    ];
+
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
+        'allows_accompanying_children' => 'boolean',
     ];
 
     public function neededAngelTypes(): HasMany

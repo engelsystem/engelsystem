@@ -795,3 +795,519 @@ msgstr "/metrics buckets"
 
 msgid "config.var_dump_server"
 msgstr "var_dump server"
+
+msgid "registration.age_category"
+msgstr "Age Category"
+
+msgid "registration.age_category_info"
+msgstr "Select your age category. Minors under 18 have additional protections and requirements."
+
+msgid "registration.minor_category"
+msgstr "I am..."
+
+msgid "registration.i_am_adult"
+msgstr "18 years or older (Adult)"
+
+msgid "registration.minor_category_hint"
+msgstr "Your category determines work hours and supervision requirements"
+
+msgid "registration.max_hours"
+msgstr "Maximum %d hours per day"
+
+msgid "registration.work_hours"
+msgstr "Work hours: %s to %s"
+
+msgid "registration.requires_supervisor"
+msgstr "Requires adult supervisor on shift"
+
+msgid "registration.minor.link_guardian"
+msgstr "Please link a guardian to complete your registration"
+
+msgid "registration.guardian_not_found"
+msgstr "Guardian account not found. Please check the username or email."
+
+msgid "registration.guardian_is_minor"
+msgstr "The specified user is also a minor and cannot be a guardian."
+
+msgid "registration.guardian_linked"
+msgstr "Guardian link request sent successfully."
+
+msgid "registration.guardian_link_skipped"
+msgstr "You can link a guardian later from your profile settings."
+
+msgid "registration.link_guardian.title"
+msgstr "Link Guardian"
+
+msgid "registration.link_guardian.welcome"
+msgstr "Welcome, %name%!"
+
+msgid "registration.link_guardian.info"
+msgstr "As a minor, you need a guardian linked to your account to sign up for shifts and participate fully in the event."
+
+msgid "registration.link_guardian.find_guardian"
+msgstr "Find Your Guardian"
+
+msgid "registration.link_guardian.find_guardian_hint"
+msgstr "Enter the username or email address of your parent or legal guardian who has an account."
+
+msgid "registration.link_guardian.guardian_identifier"
+msgstr "Guardian username or email"
+
+msgid "registration.link_guardian.guardian_identifier_hint"
+msgstr "Ask your guardian for their username or the email they registered with"
+
+msgid "registration.link_guardian.send_request"
+msgstr "Send Link Request"
+
+msgid "registration.link_guardian.skip_title"
+msgstr "Skip for Now"
+
+msgid "registration.link_guardian.skip_info"
+msgstr "You can skip this step and link a guardian later, but you won't be able to sign up for shifts until a guardian is linked and consent is provided."
+
+msgid "registration.link_guardian.skip"
+msgstr "Skip and Continue"
+
+msgid "registration.link_guardian.why_title"
+msgstr "Why Link a Guardian?"
+
+msgid "registration.link_guardian.why_text"
+msgstr "Linking a guardian ensures:"
+
+msgid "registration.link_guardian.why_item1"
+msgstr "Your safety during the event"
+
+msgid "registration.link_guardian.why_item2"
+msgstr "Compliance with youth protection laws"
+
+msgid "registration.link_guardian.why_item3"
+msgstr "A responsible adult can manage your shifts"
+
+# Guardian Dashboard translations
+msgid "guardian.dashboard"
+msgstr "Guardian Dashboard"
+
+msgid "guardian.register_minor"
+msgstr "Register Minor"
+
+msgid "guardian.link_existing"
+msgstr "Link Existing Minor"
+
+msgid "guardian.primary"
+msgstr "Primary"
+
+msgid "guardian.consent_approved"
+msgstr "Consent Approved"
+
+msgid "guardian.consent_pending"
+msgstr "Consent Pending"
+
+msgid "guardian.hours_today"
+msgstr "Hours Today"
+
+msgid "guardian.view"
+msgstr "View"
+
+msgid "guardian.edit"
+msgstr "Edit"
+
+msgid "guardian.consent_form"
+msgstr "Consent Form"
+
+msgid "guardian.no_minors_yet"
+msgstr "You don't have any linked minors yet. Register a new minor account or link an existing one."
+
+msgid "guardian.no_access"
+msgstr "You don't have permission to access this minor's profile."
+
+# Guardian Register Minor translations
+msgid "guardian.new_minor_account"
+msgstr "New Minor Account"
+
+msgid "guardian.register_description_full"
+msgstr "Create an account for a minor under your guardianship. You will be the primary guardian responsible for their activities."
+
+msgid "guardian.account_details"
+msgstr "Account Details"
+
+msgid "guardian.username_requirements"
+msgstr "Choose a unique username for the minor"
+
+msgid "guardian.email_optional"
+msgstr "Optional: If empty, your email will be used for notifications"
+
+msgid "guardian.minor_category"
+msgstr "Age Category"
+
+msgid "guardian.select_category"
+msgstr "Select age category"
+
+msgid "guardian.years"
+msgstr "years"
+
+msgid "guardian.up_to"
+msgstr "up to"
+
+msgid "guardian.category_determines_restrictions"
+msgstr "The category determines work hour restrictions and supervision requirements"
+
+msgid "guardian.personal_data"
+msgstr "Personal Information"
+
+msgid "guardian.personal_data_optional"
+msgstr "Optional information about the minor"
+
+msgid "guardian.info"
+msgstr "Information"
+
+msgid "guardian.register_info_1"
+msgstr "As a guardian, you are responsible for ensuring the minor follows all event rules and work hour restrictions."
+
+msgid "guardian.register_info_2"
+msgstr "A consent form must be completed and approved by event staff before the minor can participate in shifts."
+
+msgid "guardian.register_info_3"
+msgstr "You can manage the minor's shifts and profile from your Guardian Dashboard."
+
+# Guardian Minor Profile translations
+msgid "guardian.minor_profile"
+msgstr "Minor Profile"
+
+msgid "guardian.back_to_dashboard"
+msgstr "Back to Dashboard"
+
+msgid "guardian.profile_overview"
+msgstr "Profile Overview"
+
+msgid "guardian.full_name"
+msgstr "Full Name"
+
+msgid "guardian.category"
+msgstr "Category"
+
+msgid "guardian.consent_status"
+msgstr "Consent Status"
+
+msgid "guardian.generate_form"
+msgstr "Generate Form"
+
+msgid "guardian.restrictions"
+msgstr "Work Restrictions"
+
+msgid "guardian.max_hours_per_day"
+msgstr "Max Hours/Day"
+
+msgid "guardian.max_shift_duration"
+msgstr "Max Shift Duration"
+
+msgid "guardian.max_consecutive_days"
+msgstr "Max Consecutive Days"
+
+msgid "guardian.days"
+msgstr "days"
+
+msgid "guardian.earliest_start"
+msgstr "Earliest Start"
+
+msgid "guardian.latest_end"
+msgstr "Latest End"
+
+msgid "guardian.night_work"
+msgstr "Night Work"
+
+msgid "guardian.allowed"
+msgstr "Allowed"
+
+msgid "guardian.not_allowed"
+msgstr "Not Allowed"
+
+msgid "guardian.today"
+msgstr "today"
+
+msgid "guardian.upcoming_shifts"
+msgstr "Upcoming Shifts"
+
+msgid "guardian.view_all_shifts"
+msgstr "View All"
+
+msgid "guardian.no_upcoming_shifts"
+msgstr "No upcoming shifts scheduled"
+
+msgid "guardian.guardians"
+msgstr "Guardians"
+
+msgid "guardian.make_primary"
+msgstr "Make Primary"
+
+msgid "guardian.remove"
+msgstr "Remove"
+
+msgid "guardian.confirm_remove_guardian"
+msgstr "Are you sure you want to remove this guardian?"
+
+msgid "guardian.add_guardian"
+msgstr "Add Another Guardian"
+
+msgid "guardian.guardian_username_or_email"
+msgstr "Guardian username or email"
+
+msgid "guardian.relationship_type"
+msgstr "Relationship"
+
+msgid "guardian.relationship.parent"
+msgstr "Parent"
+
+msgid "guardian.relationship.legal_guardian"
+msgstr "Legal Guardian"
+
+msgid "guardian.relationship.delegated"
+msgstr "Delegated (e.g., other family member)"
+
+msgid "guardian.add"
+msgstr "Add"
+
+msgid "guardian.change_category"
+msgstr "Change Category"
+
+msgid "guardian.update_category"
+msgstr "Update Category"
+
+msgid "guardian.quick_actions"
+msgstr "Quick Actions"
+
+msgid "guardian.view_shifts"
+msgstr "View Shifts"
+
+msgid "guardian.edit_profile"
+msgstr "Edit Profile"
+
+# Guardian Edit Minor translations
+msgid "guardian.edit_minor"
+msgstr "Edit Minor"
+
+msgid "guardian.back_to_profile"
+msgstr "Back to Profile"
+
+msgid "guardian.contact_info"
+msgstr "Contact Information"
+
+msgid "guardian.edit_info"
+msgstr "Edit Information"
+
+msgid "guardian.edit_info_1"
+msgstr "Changes to email will update where notifications are sent."
+
+msgid "guardian.edit_info_2"
+msgstr "Personal information is optional but helps identify the minor during the event."
+
+# Guardian Minor Shifts translations
+msgid "guardian.shifts"
+msgstr "Shifts"
+
+msgid "guardian.work_restrictions"
+msgstr "Work Restrictions"
+
+msgid "guardian.shift_history"
+msgstr "Shift History"
+
+msgid "guardian.no_shift_history"
+msgstr "No past shifts recorded"
+
+# Guardian Link Minor translations
+msgid "guardian.link_minor"
+msgstr "Link Minor"
+
+msgid "guardian.link_existing_minor"
+msgstr "Link Existing Minor Account"
+
+msgid "guardian.link_description"
+msgstr "If a minor already has an account, you can link to become their guardian."
+
+msgid "guardian.minor_username_or_email"
+msgstr "Minor's username or email"
+
+msgid "guardian.enter_minor_identifier"
+msgstr "Enter the username or email of the minor's account"
+
+msgid "guardian.or_register_new"
+msgstr "Or Register New Minor"
+
+msgid "guardian.register_description"
+msgstr "Don't have an account for the minor yet?"
+
+# Form field translations
+msgid "form.nick"
+msgstr "Nick"
+
+msgid "form.email"
+msgstr "E-mail"
+
+msgid "form.password"
+msgstr "Password"
+
+msgid "form.select"
+msgstr "-- Please select --"
+
+# Registration translations
+msgid "registration.password.info"
+msgstr "Minimum 8 characters"
+
+# Settings profile translations
+msgid "settings.profile.firstname"
+msgstr "First name"
+
+msgid "settings.profile.lastname"
+msgstr "Last name"
+
+msgid "settings.profile.pronoun"
+msgstr "Pronoun"
+
+msgid "settings.profile.pronoun.info"
+msgstr "How would you like to be addressed? (e.g., he/him, she/her, they/them)"
+
+# Guardian Consent Form translations
+msgid "guardian.print"
+msgstr "Print"
+
+msgid "guardian.consent_form_title"
+msgstr "Parental/Guardian Consent Form"
+
+msgid "guardian.consent_form_subtitle"
+msgstr "For participation of minors at the event"
+
+msgid "guardian.minor_information"
+msgstr "Minor Information"
+
+msgid "guardian.minor_name"
+msgstr "Username"
+
+msgid "guardian.guardian_information"
+msgstr "Guardian Information"
+
+msgid "guardian.guardian_name"
+msgstr "Guardian Name"
+
+msgid "guardian.restrictions_applicable"
+msgstr "Applicable Work Restrictions"
+
+msgid "guardian.hours"
+msgstr "hours"
+
+msgid "guardian.consent_declaration"
+msgstr "Consent Declaration"
+
+msgid "guardian.consent_text_1"
+msgstr "I, the undersigned guardian, hereby consent to the participation of the above-named minor in volunteer activities at this event."
+
+msgid "guardian.consent_text_2"
+msgstr "I acknowledge and agree to the following:"
+
+msgid "guardian.consent_item_1"
+msgstr "The minor will adhere to all work hour restrictions and safety guidelines"
+
+msgid "guardian.consent_item_2"
+msgstr "The minor will be supervised by an adult during shift activities when required"
+
+msgid "guardian.consent_item_3"
+msgstr "I will be reachable during the event in case of emergency"
+
+msgid "guardian.consent_item_4"
+msgstr "I understand and accept the applicable work restrictions based on the minor's age category"
+
+msgid "guardian.place_date"
+msgstr "Place, Date"
+
+msgid "guardian.signature"
+msgstr "Signature"
+
+msgid "guardian.signature_guardian"
+msgstr "(Signature of Guardian)"
+
+msgid "guardian.consent_footer"
+msgstr "This form must be signed and presented to event staff before the minor can participate in shifts."
+
+msgid "guardian.generated_on"
+msgstr "Generated on"
+
+# Guardian notification messages
+msgid "guardian.not_eligible"
+msgstr "You are not eligible to access the guardian area. Only non-minor users can be guardians."
+
+msgid "guardian.minor_not_found"
+msgstr "Minor account not found."
+
+msgid "guardian.user_not_minor"
+msgstr "The specified user is not a minor."
+
+msgid "guardian.link_successful"
+msgstr "Successfully linked as guardian."
+
+msgid "guardian.registration_successful"
+msgstr "Minor account created successfully."
+
+msgid "guardian.profile_updated"
+msgstr "Minor profile updated."
+
+msgid "guardian.invalid_category"
+msgstr "Invalid minor category selected."
+
+msgid "guardian.category_changed"
+msgstr "Minor category updated successfully."
+
+msgid "guardian.guardian_not_found"
+msgstr "Guardian account not found."
+
+msgid "guardian.guardian_added"
+msgstr "Guardian added successfully."
+
+msgid "guardian.guardian_removed"
+msgstr "Guardian removed successfully."
+
+msgid "guardian.not_primary"
+msgstr "Only the primary guardian can perform this action."
+
+msgid "guardian.primary_changed"
+msgstr "Primary guardian changed successfully."
+
+msgid "guardian.showing_recent"
+msgstr "Showing most recent %count% of %total% shifts"
+
+# Admin user minor consent translations
+msgid "admin.user.minor_consent"
+msgstr "Minor Consent"
+
+msgid "admin.user.minor_category"
+msgstr "Minor Category"
+
+msgid "admin.user.consent_status"
+msgstr "Consent Status"
+
+msgid "admin.user.consent_approved"
+msgstr "Approved"
+
+msgid "admin.user.consent_pending"
+msgstr "Pending"
+
+msgid "admin.user.consent_approved_by"
+msgstr "Approved By"
+
+msgid "admin.user.consent_approved_at"
+msgstr "Approved At"
+
+msgid "admin.user.consent_approve"
+msgstr "Approve Consent"
+
+msgid "admin.user.consent_revoke"
+msgstr "Revoke Consent"
+
+msgid "admin.user.consent_revoke_confirm"
+msgstr "Are you sure you want to revoke the consent for this minor?"
+
+msgid "admin.user.consent_approved_success"
+msgstr "Minor consent approved successfully."
+
+msgid "admin.user.consent_revoked_success"
+msgstr "Minor consent revoked successfully."
+
+msgid "admin.user.not_minor"
+msgstr "This user is not a minor."

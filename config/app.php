@@ -414,6 +414,14 @@ return [
                     'env' => 'MYSQL_HOST',
                     'write_back' => true,
                 ],
+                'database.port' => [
+                    'type' => 'number',
+                    'default' => 3306,
+                    'env' => 'MYSQL_PORT',
+                    'write_back' => true,
+                    'min' => 1,
+                    'max' => 65535,
+                ],
                 'database.database' => [
                     'type' => 'string',
                     'default' => 'engelsystem',

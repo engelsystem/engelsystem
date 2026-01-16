@@ -10,6 +10,9 @@ use FastRoute\RouteCollector;
 $route->get('/', 'HomeController@index');
 $route->get('/register', 'RegistrationController@view');
 $route->post('/register', 'RegistrationController@save');
+$route->get('/register/link-guardian', 'RegistrationController@linkGuardian');
+$route->post('/register/link-guardian', 'RegistrationController@saveLinkGuardian');
+$route->post('/register/skip-guardian', 'RegistrationController@skipLinkGuardian');
 $route->get('/credits', 'CreditsController@index');
 $route->get('/health', 'HealthController@index');
 
@@ -48,6 +51,38 @@ $route->addGroup(
         $route->get('/oauth', 'SettingsController@oauth');
         $route->get('/sessions', 'SettingsController@sessions');
         $route->post('/sessions', 'SettingsController@sessionsDelete');
+    }
+);
+
+// Guardian management
+$route->addGroup(
+    '/guardian',
+    function (RouteCollector $route): void {
+        $route->get('', 'GuardianController@dashboard');
+
+        // Link existing minor
+        $route->get('/link', 'GuardianController@linkMinor');
+        $route->post('/link', 'GuardianController@saveLinkMinor');
+
+        // Register new minor
+        $route->get('/register', 'GuardianController@registerMinor');
+        $route->post('/register', 'GuardianController@saveRegisterMinor');
+
+        // Minor management
+        $route->addGroup(
+            '/minor/{minor_id:\d+}',
+            function (RouteCollector $route): void {
+                $route->get('', 'GuardianController@viewMinor');
+                $route->get('/edit', 'GuardianController@editMinor');
+                $route->post('/edit', 'GuardianController@saveMinor');
+                $route->post('/category', 'GuardianController@changeCategory');
+                $route->get('/consent', 'GuardianController@consentForm');
+                $route->get('/shifts', 'GuardianController@minorShifts');
+                $route->post('/guardians', 'GuardianController@addGuardian');
+                $route->post('/guardians/{guardian_id:\d+}/remove', 'GuardianController@removeGuardian');
+                $route->post('/guardians/{guardian_id:\d+}/primary', 'GuardianController@setPrimaryGuardian');
+            }
+        );
     }
 );
 
@@ -209,6 +244,17 @@ $route->addGroup(
             function (RouteCollector $route): void {
                 $route->get('', 'Admin\\LogsController@index');
                 $route->post('', 'Admin\\LogsController@index');
+            }
+        );
+
+        // Minor Management
+        $route->addGroup(
+            '/minors',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\MinorManagementController@index');
+                $route->post('', 'Admin\\MinorManagementController@index');
+                $route->post('/{user_id:\d+}/approve', 'Admin\\MinorManagementController@approveConsent');
+                $route->post('/{user_id:\d+}/revoke', 'Admin\\MinorManagementController@revokeConsent');
             }
         );
 

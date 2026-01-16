@@ -6,6 +6,9 @@
     forceCoversAnnotation="true"
     colors="true"
 >
+    <php>
+        <ini name="date.timezone" value="UTC"/>
+    </php>
     <testsuites>
         <testsuite name="Feature">
             <directory>tests/Feature</directory>

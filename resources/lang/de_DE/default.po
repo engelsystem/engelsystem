@@ -1581,6 +1581,15 @@ msgstr "Ein straight-cut T-Shirt hat breite Schultern und einen fast quadratisch
 msgid "settings.profile.shirt.link"
 msgstr "Mehr Informationen"
 
+msgid "settings.profile.supervision"
+msgstr "Betreuung Minderjähriger"
+
+msgid "settings.profile.willing_to_supervise"
+msgstr "Ich bin bereit, minderjährige Freiwillige während meiner Schichten zu betreuen"
+
+msgid "settings.profile.willing_to_supervise.info"
+msgstr "Aktiviere diese Option, wenn Du bereit bist, die Aufsicht über Minderjährige während Schichten zu übernehmen. Betreuer stellen sicher, dass minderjährige Freiwillige die Sicherheitsrichtlinien und Veranstaltungsregeln einhalten."
+
 msgid "settings.profile.angeltypes.info"
 msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> verwalten."
 
@@ -2147,3 +2156,123 @@ msgstr "Konfiguration wird aus ENV variable überschrieben!"
 
 msgid "config.warning_file_not_writable"
 msgstr "Konfigurationsdatei config.local.php ist nicht beschreibbar!"
+
+msgid "shift.signup.minor_restricted"
+msgstr "Du kannst dich aufgrund der Jugendarbeitsschutz-Beschränkungen nicht für diese Schicht eintragen."
+
+msgid "shift.minor_restricted"
+msgstr "altersbeschränkt"
+
+msgid "shift.entry.accompanying"
+msgstr "Begleitkind (zählt nicht zum Kontingent)"
+
+msgid "minor.restriction.consent_required"
+msgstr "Die Einverständniserklärung muss bei der Ankunft überprüft werden, bevor Schichten gebucht werden können."
+
+msgid "minor.restriction.work_category"
+msgstr "Diese Schicht (%s) ist Arbeitskategorie %s. Du bist berechtigt für: %s"
+
+msgid "minor.restriction.start_time"
+msgstr "Schicht beginnt um %s, frühester erlaubter Beginn ist %s."
+
+msgid "minor.restriction.end_time"
+msgstr "Schicht endet um %s, spätestes erlaubtes Ende ist %s."
+
+msgid "minor.restriction.daily_hours"
+msgstr "Schicht ist %s Stunden lang, nur noch %s Stunden übrig (%s von %d Stunden bereits genutzt)."
+
+msgid "minor.restriction.supervisor_required"
+msgstr "Keine aufsichtswillige Person ist für diese Schicht eingetragen."
+
+msgid "shift.supervisor.select"
+msgstr "Aufsichtsperson auswählen"
+
+msgid "shift.supervisor.select.info"
+msgstr "Als Minderjähriger musst du eine Aufsichtsperson auswählen, die während dieser Schicht für dich verantwortlich ist."
+
+msgid "shift.supervisor.invalid"
+msgstr "Bitte wähle eine gültige Aufsichtsperson aus."
+
+msgid "shift.supervisor.guardian"
+msgstr "Erziehungsberechtigter"
+
+msgid "shift.supervisor.supervised_by"
+msgstr "beaufsichtigt von"
+
+msgid "minors.management"
+msgstr "Minderjährigen-Verwaltung"
+
+msgid "minors.total"
+msgstr "Gesamtzahl Minderjährige"
+
+msgid "minors.consent.approved"
+msgstr "Genehmigt"
+
+msgid "minors.consent.pending"
+msgstr "Ausstehend"
+
+msgid "minors.supervision_gaps"
+msgstr "Aufsichtslücken"
+
+msgid "minors.by_category"
+msgstr "Nach Kategorie"
+
+msgid "minors.supervision_gaps_alert"
+msgstr "Aufsichtslücken erkannt"
+
+msgid "minors.supervision_gaps_desc"
+msgstr "Die folgenden Schichten haben Minderjährige eingetragen, aber keine Aufsichtsperson zugewiesen:"
+
+msgid "minors.without_supervisor"
+msgstr "Minderjährige ohne Aufsichtsperson"
+
+msgid "minors.category"
+msgstr "Kategorie"
+
+msgid "minors.consent_status"
+msgstr "Einverständnisstatus"
+
+msgid "minors.registered"
+msgstr "Registrierte Minderjährige"
+
+msgid "minors.guardians"
+msgstr "Erziehungsberechtigte"
+
+msgid "minors.hours_today"
+msgstr "Stunden heute"
+
+msgid "minors.primary"
+msgstr "Primär"
+
+msgid "minors.no_guardian"
+msgstr "Kein Erziehungsberechtigter verknüpft"
+
+msgid "minors.no_limit"
+msgstr "Kein Limit"
+
+msgid "minors.none_found"
+msgstr "Keine Minderjährigen gefunden, die deinen Kriterien entsprechen."
+
+msgid "minors.not_found"
+msgstr "Minderjähriger nicht gefunden."
+
+msgid "minors.consent.approve"
+msgstr "Einwilligung genehmigen"
+
+msgid "minors.consent.revoke"
+msgstr "Einwilligung widerrufen"
+
+msgid "minors.consent.revoke_confirm"
+msgstr "Bist du sicher, dass du die Einwilligung für diesen Minderjährigen widerrufen möchtest? Er/Sie kann sich dann nicht mehr für Schichten anmelden."
+
+msgid "minors.consent.approved_success"
+msgstr "Einwilligung wurde erfolgreich genehmigt."
+
+msgid "minors.consent.revoked_success"
+msgstr "Einwilligung wurde erfolgreich widerrufen."
+
+msgid "minors.consent.already_approved"
+msgstr "Einwilligung ist für diesen Minderjährigen bereits genehmigt."
+
+msgid "minors.consent.not_approved"
+msgstr "Einwilligung ist für diesen Minderjährigen noch nicht genehmigt."

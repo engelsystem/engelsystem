@@ -31,6 +31,7 @@
                             <thead>
                             <tr>
                                 <th>{{ __('general.name') }}</th>
+                                <th>{{ __('shifttype.edit.work_category') }}</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -40,6 +41,15 @@
                                 <tr>
                                     <td>
                                         <a href="{{ url('/admin/shifttypes/' ~ shifttype.id) }}">{{ shifttype.name }}</a>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-secondary">{{ shifttype.work_category }}</span>
+                                        {% if shifttype.allows_accompanying_children %}
+                                            <span class="badge bg-info" title="{{ __('shifttype.edit.allows_accompanying_children') }}">
+                                                {{ m.icon('people') }}
+                                            </span>
+                                        {% endif %}
                                     </td>
 
                                     <td>

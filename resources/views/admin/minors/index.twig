@@ -1,0 +1,229 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('minors.management') }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>{{ block('title') }}</h1>
+
+        {# Statistics Cards #}
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('minors.total') }}</h5>
+                        <p class="card-text display-6">{{ minors|length }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('minors.consent.approved') }}</h5>
+                        <p class="card-text display-6">{{ consentStats.approved }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('minors.consent.pending') }}</h5>
+                        <p class="card-text display-6">{{ consentStats.pending }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-bg-danger">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('minors.supervision_gaps') }}</h5>
+                        <p class="card-text display-6">{{ supervisionGaps|length }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Category Statistics #}
+        {% if categoryStats|length > 0 %}
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        {{ __('minors.by_category') }}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for name, count in categoryStats %}
+                            <div class="col-md-3">
+                                <strong>{{ name }}:</strong> {{ count }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {# Supervision Gaps Alert #}
+        {% if supervisionGaps|length > 0 %}
+        <div class="alert alert-danger mb-4">
+            <h5>{{ m.icon('exclamation-triangle') }} {{ __('minors.supervision_gaps_alert') }}</h5>
+            <p>{{ __('minors.supervision_gaps_desc') }}</p>
+            <ul class="mb-0">
+                {% for gap in supervisionGaps %}
+                <li>
+                    <a href="{{ url('/shifts', { 'shift_id': gap.shift.id }) }}">
+                        {{ gap.shift.shiftType.name }} @ {{ gap.shift.location.name }}
+                        ({{ gap.shift.start.format(__('general.datetime')) }})
+                    </a>
+                    - {{ gap.minors|length }} {{ __('minors.without_supervisor') }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {# Search and Filters #}
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="post" action="{{ url('/admin/minors') }}">
+                    {{ csrf() }}
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ f.input('search', __('form.search'), {
+                                'value': search,
+                            }) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ f.select('category', __('minors.category'), categories, {
+                                'default_option': __('form.all'),
+                                'selected': category,
+                            }) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ f.select('consent', __('minors.consent_status'), {
+                                'approved': __('minors.consent.approved'),
+                                'pending': __('minors.consent.pending'),
+                            }, {
+                                'default_option': __('form.all'),
+                                'selected': consent,
+                            }) }}
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            {{ f.submit(__('form.search'), {'icon_left': 'search'}) }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {# Minors Table #}
+        <div class="card">
+            <div class="card-header">
+                {{ __('minors.registered') }} ({{ minors|length }})
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped table-sticky-header mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ __('general.name') }}</th>
+                            <th>{{ __('minors.category') }}</th>
+                            <th>{{ __('minors.guardians') }}</th>
+                            <th>{{ __('minors.consent_status') }}</th>
+                            <th>{{ __('minors.hours_today') }}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in minors %}
+                            {% set minor = data.user %}
+                            <tr>
+                                <td>
+                                    {{ m.user(minor) }}
+                                </td>
+                                <td>
+                                    {% if minor.minorCategory %}
+                                        <span class="badge bg-secondary">{{ minor.minorCategory.name }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if minor.guardians|length > 0 %}
+                                        {% for rel in minor.guardians %}
+                                            {% if rel.guardian %}
+                                                {{ m.user(rel.guardian) }}
+                                                {% if rel.is_primary %}
+                                                    <span class="badge bg-primary">{{ __('minors.primary') }}</span>
+                                                {% endif %}
+                                                {% if not loop.last %}<br>{% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="text-muted">{{ __('minors.no_guardian') }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if minor.consent_approved_by_user_id %}
+                                        <span class="badge bg-success">{{ __('minors.consent.approved') }}</span>
+                                        {% if minor.consent_approved_at %}
+                                            <br><small class="text-muted">{{ minor.consent_approved_at.format(__('general.datetime')) }}</small>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-warning">{{ __('minors.consent.pending') }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if data.maxHours %}
+                                        <div class="progress" style="height: 20px; min-width: 100px;">
+                                            <div class="progress-bar {% if data.hoursPercent >= 80 %}bg-warning{% elseif data.hoursPercent >= 100 %}bg-danger{% endif %}"
+                                                 role="progressbar"
+                                                 style="width: {{ data.hoursPercent }}%;"
+                                                 aria-valuenow="{{ data.hoursUsed }}"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="{{ data.maxHours }}">
+                                                {{ data.hoursUsed|number_format(1) }}h / {{ data.maxHours }}h
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">{{ __('minors.no_limit') }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ url('/users', { 'action': 'view', 'user_id': minor.id }) }}"
+                                           class="btn btn-sm btn-secondary"
+                                           title="{{ __('general.view') }}">
+                                            {{ m.icon('eye') }}
+                                        </a>
+                                        {% if minor.consent_approved_by_user_id %}
+                                            <form method="post" action="{{ url('/admin/minors/' ~ minor.id ~ '/revoke') }}" class="d-inline" onsubmit="return confirm('{{ __('minors.consent.revoke_confirm') }}');">
+                                                {{ csrf() }}
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('minors.consent.revoke') }}">
+                                                    {{ m.icon('x-circle') }}
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <form method="post" action="{{ url('/admin/minors/' ~ minor.id ~ '/approve') }}" class="d-inline">
+                                                {{ csrf() }}
+                                                <button type="submit" class="btn btn-sm btn-success" title="{{ __('minors.consent.approve') }}">
+                                                    {{ m.icon('check-circle') }}
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">
+                                    {{ __('minors.none_found') }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

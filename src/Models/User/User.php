@@ -10,6 +10,7 @@ use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
+use Engelsystem\Models\MinorCategory;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
@@ -19,10 +20,13 @@ use Engelsystem\Models\Session;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\UserAngelType;
+use Engelsystem\Models\UserGuardian;
+use Engelsystem\Models\UserSupervisorStatus;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -35,6 +39,9 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property string                             $email
  * @property string                             $password
  * @property string                             $api_key
+ * @property int|null                           $minor_category_id
+ * @property int|null                           $consent_approved_by_user_id
+ * @property Carbon|null                        $consent_approved_at
  * @property Carbon|null                        $last_login_at
  * @property Carbon|null                        $created_at
  * @property Carbon|null                        $updated_at
@@ -45,6 +52,9 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read QueryBuilder|Settings         $settings
  * @property-read QueryBuilder|State            $state
  * @property-read string                        $displayName
+ * @property-read MinorCategory|null            $minorCategory
+ * @property-read User|null                     $consentApprovedBy
+ * @property-read UserSupervisorStatus          $supervisorStatus
  *
  * @property-read Collection|Group[]            $groups
  * @property-read Collection|LogEntry[]         $logs
@@ -66,12 +76,15 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|Message[]          $messages
  * @property-read Collection|Shift[]            $shiftsCreated
  * @property-read Collection|Shift[]            $shiftsUpdated
+ * @property-read Collection|UserGuardian[]     $guardians
+ * @property-read Collection|UserGuardian[]     $minorsGuarded
  *
  * @method static QueryBuilder|User[] whereId($value)
  * @method static QueryBuilder|User[] whereName($value)
  * @method static QueryBuilder|User[] whereEmail($value)
  * @method static QueryBuilder|User[] wherePassword($value)
  * @method static QueryBuilder|User[] whereApiKey($value)
+ * @method static QueryBuilder|User[] whereMinorCategoryId($value)
  * @method static QueryBuilder|User[] whereLastLoginAt($value)
  * @method static QueryBuilder|User[] whereCreatedAt($value)
  * @method static QueryBuilder|User[] whereUpdatedAt($value)
@@ -85,7 +98,10 @@ class User extends BaseModel
 
     /** @var array<string, null> default attributes */
     protected $attributes = [ // phpcs:ignore
-        'last_login_at' => null,
+        'minor_category_id'           => null,
+        'consent_approved_by_user_id' => null,
+        'consent_approved_at'         => null,
+        'last_login_at'               => null,
     ];
 
     /**
@@ -98,6 +114,9 @@ class User extends BaseModel
         'password',
         'email',
         'api_key',
+        'minor_category_id',
+        'consent_approved_by_user_id',
+        'consent_approved_at',
         'last_login_at',
     ];
 
@@ -109,7 +128,10 @@ class User extends BaseModel
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
-        'last_login_at' => 'datetime',
+        'minor_category_id'           => 'integer',
+        'consent_approved_by_user_id' => 'integer',
+        'consent_approved_at'         => 'datetime',
+        'last_login_at'               => 'datetime',
     ];
 
     public function contact(): HasOne
@@ -288,6 +310,45 @@ class User extends BaseModel
     public function shiftsUpdated(): HasMany
     {
         return $this->hasMany(Shift::class, 'updated_by');
+    }
+
+    public function minorCategory(): BelongsTo
+    {
+        return $this->belongsTo(MinorCategory::class);
+    }
+
+    public function consentApprovedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'consent_approved_by_user_id');
+    }
+
+    public function guardians(): HasMany
+    {
+        return $this->hasMany(UserGuardian::class, 'minor_user_id');
+    }
+
+    public function minorsGuarded(): HasMany
+    {
+        return $this->hasMany(UserGuardian::class, 'guardian_user_id');
+    }
+
+    public function supervisorStatus(): HasOne
+    {
+        return $this
+            ->hasOne(UserSupervisorStatus::class)
+            ->withDefault();
+    }
+
+    public function isMinor(): bool
+    {
+        // Adults are represented by minor_category_id = null
+        // Any user with a minor_category_id is a minor
+        return $this->minor_category_id !== null;
+    }
+
+    public function hasConsentApproved(): bool
+    {
+        return $this->consent_approved_by_user_id !== null;
     }
 
     public function getDisplayNameAttribute(): string
