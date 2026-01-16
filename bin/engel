@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Engelsystem\Application;
+use Engelsystem\Config\Config;
+use Engelsystem\Console\Application as ConsoleApplication;
+use Engelsystem\Environment;
+use Engelsystem\Exceptions\Handler;
+use Engelsystem\Exceptions\Handlers\NullHandler;
+
+require_once __DIR__ . '/../includes/application.php';
+
+/** @var Application $app */
+$app = app();
+
+/** @var Handler $errorHandler */
+$errorHandler = $app->get(Handler::class);
+$errorHandler->setHandler(Environment::PRODUCTION, new NullHandler());
+
+/** @var ConsoleApplication $console */
+$console = $app->make(ConsoleApplication::class);
+$console->run();
