@@ -321,7 +321,7 @@ function admin_user()
                     $html .= error(__('settings.profile.email.already-taken') . "\n", true);
                     break;
                 }
-                if ($user_source->settings->email_human) {
+                if ($user_source->settings->email_human && !is_null($email)) {
                     $changed_email = $user_source->email !== $email;
                     $user_source->email = $email;
                 }

@@ -48,7 +48,7 @@ function user_angeltypes_unconfirmed_hint()
     return
         _e(
             'There are unconfirmed angels in %d angel type. Angel type that needs approval:',
-            'There are unconfirmed angels in %d angel types. Angel types that need approvals:',
+            'There are unconfirmed angels in %d angel types. Angel types that need approval:',
             $count,
             [$count]
         )

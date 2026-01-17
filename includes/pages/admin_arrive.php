@@ -84,7 +84,7 @@ function admin_arrive()
     }
 
     /** @var User[] $users */
-    $users = User::with(['personalData', 'state'])->orderBy('name')->get();
+    $users = User::with(['personalData', 'state', 'contact'])->orderBy('name')->get();
     $arrival_count_at_day = [];
     $planned_arrival_count_at_day = [];
     $planned_departure_count_at_day = [];

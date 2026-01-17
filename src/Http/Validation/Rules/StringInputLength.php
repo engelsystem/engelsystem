@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http\Validation\Rules;
 
-use DateTime;
-use Exception;
+use Carbon\Exceptions\InvalidFormatException;
+use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\CarbonDay;
 use Illuminate\Support\Str;
 
 trait StringInputLength
@@ -29,15 +30,8 @@ trait StringInputLength
     protected function isDateTime(mixed $input): bool
     {
         try {
-            $inputDateTime = new DateTime($input);
-            $now = new DateTime();
-
-            // Min 1s diff to exclude any not auto-detected dates / times like ...
-            return abs($inputDateTime->getTimestamp() - $now->getTimestamp()) > 1
-                // Different timezone to prevent interpreting the value as a timezone which happens with H
-                && $inputDateTime->getTimezone()->getName() != $input;
-        } catch (Exception) {
-            // Ignore it
+            return !is_null(Carbon::createFromDatetime($input)) || !is_null(CarbonDay::createFromDay($input));
+        } catch (InvalidFormatException) {
         }
 
         return false;

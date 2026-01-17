@@ -301,7 +301,7 @@ msgid "Shift could not be found."
 msgstr "Schicht konnte nicht gefunden werden."
 
 msgid "There are unconfirmed angels in %d angel type. Angel type that needs approval:"
-msgid_plural "There are unconfirmed angels in %d angel types. Angel types that need approvals:"
+msgid_plural "There are unconfirmed angels in %d angel types. Angel types that need approval:"
 msgstr[0] "Es gibt nicht freigeschaltete Engel in %d Engeltypen! Engeltyp der bestätigt werden muss:"
 msgstr[1] "Es gibt nicht freigeschaltete Engel in %d Engeltypen! Engeltypen die bestätigt werden müssen:"
 
@@ -959,7 +959,7 @@ msgstr "Mehr Engel hinzufügen"
 msgid "%d helper needed"
 msgid_plural "%d helpers needed"
 msgstr[0] "%d Helfer benötigt"
-msgstr[1] "%d Helfer benötigt"
+msgstr[1] "%d Helfende benötigt"
 
 msgid "Sign up"
 msgstr "Eintragen"

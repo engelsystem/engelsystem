@@ -231,8 +231,13 @@ EOT;
  */
 function Users_table_header_link($column, $label, $order_by)
 {
+    $count = request()->query->get('c');
+    $params = ['OrderBy' => $column];
+    if ($count) {
+        $params['c'] = $count;
+    }
     return '<a href="'
-        . url('/users', ['OrderBy' => $column])
+        . url('/users', $params)
         . '">'
         . $label . ($order_by == $column ? ' <span class="caret"></span>' : '')
         . '</a>';
@@ -317,7 +322,7 @@ function User_view_shiftentries($needed_angel_type)
         . '">' . htmlspecialchars($needed_angel_type['name']) . '</a>:</b> ';
 
     $shift_entries = [];
-    foreach (collect($needed_angel_type['users'])->sortBy('name') as $user_shift) {
+    foreach (collect($needed_angel_type['users'])->sortBy('name', SORT_STRING | SORT_FLAG_CASE) as $user_shift) {
         $member = User_Nick_render($user_shift);
         if ($user_shift['freeloaded_by']) {
             $member = '<del>' . $member . '</del>';
@@ -663,6 +668,10 @@ function User_view(
                 true
             );
         }
+    }
+
+    if ($its_me && $freeloader) {
+        error(__('freeload.freeloader.info', [config('max_freeloadable_shifts')]));
     }
 
     $needs_drivers_license = false;
