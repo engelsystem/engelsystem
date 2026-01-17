@@ -95,7 +95,7 @@ class FeedControllerTest extends ControllerTestCase
         $controller = new FeedController($this->auth, $this->request, $this->response, $this->url);
 
         /** @var User $user */
-        $user = User::factory()->create(['api_key' => 'fo0']);
+        $user = User::factory()->create(['api_key' => 'fo0', 'name' => 'testuser']);
         ShiftEntry::factory(3)->create(['user_id' => $user->id]);
 
         $matcher = $this->exactly(2);
@@ -107,7 +107,7 @@ class FeedControllerTest extends ControllerTestCase
                 }
                 if ($matcher->numberOfInvocations() === 2) {
                     $this->assertSame('content-disposition', $parameters[0]);
-                    $this->assertSame('attachment; filename=shifts.ics', $parameters[1]);
+                    $this->assertSame('inline; filename=EngelsystemDEV-testuser-shifts.ics', $parameters[1]);
                 }
                 return $this->response;
             });
@@ -142,7 +142,7 @@ class FeedControllerTest extends ControllerTestCase
         );
         $controller = new FeedController($this->auth, $this->request, $this->response, $this->url);
 
-        User::factory()->create(['api_key' => 'fo0']);
+        User::factory()->create(['api_key' => 'fo0', 'name' => 'emptyuser']);
 
         $matcher = $this->exactly(2);
         $this->response->expects($matcher)
@@ -153,7 +153,7 @@ class FeedControllerTest extends ControllerTestCase
                 }
                 if ($matcher->numberOfInvocations() === 2) {
                     $this->assertSame('content-disposition', $parameters[0]);
-                    $this->assertSame('attachment; filename=shifts.ics', $parameters[1]);
+                    $this->assertSame('inline; filename=EngelsystemDEV-emptyuser-shifts.ics', $parameters[1]);
                 }
                 return $this->response;
             });
@@ -295,6 +295,7 @@ class FeedControllerTest extends ControllerTestCase
         $this->config->set([
             'display_news' => 10,
             'timezone' => 'UTC',
+            'app_name' => 'Engelsystem DEV',
         ]);
         $this->auth = $this->createMock(Authenticator::class);
         $this->url = $this->createMock(UrlGenerator::class);
