@@ -56,6 +56,7 @@
         "psr/log": "^3.0",
         "rcrowe/twigbridge": "^0.14",
         "respect/validation": "^2.4",
+        "symfony/console": "^7.3",
         "symfony/http-foundation": "^7.3",
         "symfony/mailer": "^7.3",
         "symfony/psr-http-message-bridge": "^7.3",
