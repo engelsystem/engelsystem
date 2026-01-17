@@ -26,8 +26,7 @@ class AngelTypeCreateCommand extends Command
             ->addArgument('name', InputArgument::REQUIRED, 'Angel type name')
             ->addOption('description', 'd', InputOption::VALUE_REQUIRED, 'Description')
             ->addOption('restricted', 'r', InputOption::VALUE_NONE, 'Requires introduction/confirmation')
-            ->addOption('hidden', null, InputOption::VALUE_NONE, 'Hide from registration')
-            ->addOption('token', 't', InputOption::VALUE_REQUIRED, 'Self-signup token');
+            ->addOption('hidden', null, InputOption::VALUE_NONE, 'Hide from registration');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

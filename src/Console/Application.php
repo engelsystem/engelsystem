@@ -7,6 +7,9 @@ namespace Engelsystem\Console;
 use Engelsystem\Application as EngelsystemApplication;
 use Engelsystem\Console\Commands\AngelTypeCreateCommand;
 use Engelsystem\Console\Commands\AngelTypeListCommand;
+use Engelsystem\Console\Commands\ConfigGetCommand;
+use Engelsystem\Console\Commands\ConfigListCommand;
+use Engelsystem\Console\Commands\ConfigSetCommand;
 use Engelsystem\Console\Commands\DatabaseMigrateCommand;
 use Engelsystem\Console\Commands\DatabaseSeedCommand;
 use Engelsystem\Console\Commands\GroupAddUserCommand;
@@ -46,6 +49,11 @@ class Application extends SymfonyApplication
         // Group commands
         GroupListCommand::class,
         GroupAddUserCommand::class,
+
+        // Config commands
+        ConfigListCommand::class,
+        ConfigGetCommand::class,
+        ConfigSetCommand::class,
 
         // Shift commands
         ShiftListCommand::class,
