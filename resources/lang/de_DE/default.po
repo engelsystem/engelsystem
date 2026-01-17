@@ -169,10 +169,13 @@ msgid "email.user.welcome.subject"
 msgstr "Willkommen bei %s!"
 
 msgid "email.user.welcome"
-msgstr ""
-"Danke für deine Registrierung! Dein Konto wurde erfolgreich erstellt.\n"
-"\n"
-"Du kannst dich jetzt einloggen und für Schichten eintragen."
+msgstr "Danke für deine Registrierung! Dein Konto wurde erfolgreich erstellt."
+
+msgid "email.user.welcome.can_signup"
+msgstr "Du kannst dich jetzt einloggen und für Schichten eintragen."
+
+msgid "email.user.welcome.arrive_first"
+msgstr "Du kannst dich jetzt einloggen. Um dich für Schichten eintragen zu können, melde dich bitte vor Ort, wenn du angekommen bist."
 
 msgid "password.minimal_length"
 msgstr "Mindestlänge %d Zeichen"
