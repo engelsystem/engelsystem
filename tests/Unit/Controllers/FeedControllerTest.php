@@ -95,15 +95,16 @@ class FeedControllerTest extends ControllerTest
         $controller = new FeedController($this->auth, $this->request, $this->response, $this->url);
 
         /** @var User $user */
-        $user = User::factory()->create(['api_key' => 'fo0']);
+        $user = User::factory()->create(['api_key' => 'fo0', 'name' => 'testuser']);
         ShiftEntry::factory(3)->create(['user_id' => $user->id]);
 
-        $this->setExpects(
-            $this->response,
-            'withHeader',
-            ['content-type', 'text/calendar; charset=utf-8'],
-            $this->response
-        );
+        $this->response->expects($this->exactly(2))
+            ->method('withHeader')
+            ->withConsecutive(
+                ['content-type', 'text/calendar; charset=utf-8'],
+                ['content-disposition', 'inline; filename=EngelsystemDEV-testuser-shifts.ics']
+            )
+            ->willReturn($this->response);
 
         $this->setExpects($this->response, 'setEtag', null, $this->response);
 
@@ -138,14 +139,15 @@ class FeedControllerTest extends ControllerTest
         );
         $controller = new FeedController($this->auth, $this->request, $this->response, $this->url);
 
-        User::factory()->create(['api_key' => 'fo0']);
+        User::factory()->create(['api_key' => 'fo0', 'name' => 'emptyuser']);
 
-        $this->setExpects(
-            $this->response,
-            'withHeader',
-            ['content-type', 'text/calendar; charset=utf-8'],
-            $this->response
-        );
+        $this->response->expects($this->exactly(2))
+            ->method('withHeader')
+            ->withConsecutive(
+                ['content-type', 'text/calendar; charset=utf-8'],
+                ['content-disposition', 'inline; filename=EngelsystemDEV-emptyuser-shifts.ics']
+            )
+            ->willReturn($this->response);
 
         $this->setExpects($this->response, 'setEtag', null, $this->response);
 
@@ -294,6 +296,7 @@ class FeedControllerTest extends ControllerTest
         $this->config->set([
             'display_news' => 10,
             'timezone' => 'UTC',
+            'app_name' => 'Engelsystem DEV',
         ]);
         $this->auth = $this->createMock(Authenticator::class);
         $this->url = $this->createMock(UrlGenerator::class);
