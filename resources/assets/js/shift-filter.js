@@ -3,7 +3,7 @@ import { ready } from './ready';
 /**
  * Progressive enhancement for shift filtering on user profile.
  * Server-side filtering works via links; this JS enhances by filtering client-side
- * without a page reload.
+ * without a page reload - but only when all data is present in the DOM.
  */
 ready(() => {
   const filterButtonsContainer = document.getElementById('shift-filter-buttons');
@@ -20,8 +20,19 @@ ready(() => {
     return;
   }
 
+  // Check if page was loaded with server-side filtering already applied.
+  // If so, not all rows are in the DOM, so we can't filter client-side.
+  const currentUrl = new URL(window.location.href);
+  const serverFiltered = currentUrl.searchParams.has('shift_filter');
+
   filterLinks.forEach((link) => {
     link.addEventListener('click', (e) => {
+      // If server already filtered the data, we need a full page load to get all rows.
+      // Only enhance to client-side filtering when viewing unfiltered (all) data.
+      if (serverFiltered) {
+        return; // Let the link navigate normally
+      }
+
       e.preventDefault();
 
       const filter = link.dataset.filter;
