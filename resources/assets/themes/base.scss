@@ -97,6 +97,13 @@ body {
   mask-size: cover;
 }
 
+.user-nick {
+  white-space: nowrap;
+  padding-left: 1.1em;
+  background: url(../icons/angel.svg) no-repeat left center;
+  background-size: 0.9em 0.9em;
+}
+
 .text-light .icon-icon_angel {
   background-color: map.get($theme-colors, 'light');
 }
