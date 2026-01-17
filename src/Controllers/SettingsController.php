@@ -25,7 +25,6 @@ class SettingsController extends BaseController
         'user_settings',
         'api' => 'api||shifts_json_export||ical||atom',
         'apiKeyReset' => 'api||shifts_json_export||ical||atom',
-        'saveIcalSettings' => 'ical',
     ];
 
     public function __construct(
@@ -314,10 +313,16 @@ class SettingsController extends BaseController
 
     public function api(): Response
     {
+        // Read iCal alarm settings from query params (for URL generation)
+        $icalAlarmEnabled = (bool) $this->request->get('ical_alarm_enabled', false);
+        $icalAlarmMinutes = max(0, (int) $this->request->get('ical_alarm_minutes', 30));
+
         return $this->response->withView(
             'pages/settings/api',
             [
                 'settings_menu' => $this->settingsMenu(),
+                'ical_alarm_enabled' => $icalAlarmEnabled,
+                'ical_alarm_minutes' => $icalAlarmMinutes,
             ],
         );
     }
@@ -328,21 +333,6 @@ class SettingsController extends BaseController
 
         $this->addNotification('settings.api.key_reset_success');
         return $this->redirect->back();
-    }
-
-    public function saveIcalSettings(Request $request): Response
-    {
-        $user = $this->auth->user();
-        $data = $this->validate($request, [
-            'ical_alarms' => 'optional|checked',
-        ]);
-
-        $user->settings->ical_alarms = (bool) $data['ical_alarms'];
-        $user->settings->save();
-
-        $this->addNotification('settings.api.ical_success');
-
-        return $this->redirect->to('/settings/api');
     }
 
     public function oauth(): Response

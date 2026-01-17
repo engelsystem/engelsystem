@@ -73,16 +73,55 @@
 
             {% if can('ical') %}
                 <div id="ical_hide" class="collapse" data-bs-parent="#exports_hide">
+                    {% set icalParams = {'key': user.api_key} %}
+                    {% if ical_alarm_enabled and ical_alarm_minutes > 0 %}
+                        {% set icalParams = icalParams|merge({'alarm': ical_alarm_minutes}) %}
+                    {% endif %}
                     <p>
-                        <code>{{ url('/ical', {'key': user.api_key}) }}</code>
+                        <code id="ical-url">{{ url('/ical', icalParams) }}</code>
                     </p>
-                    <form method="post" action="{{ url('/settings/api/ical') }}" class="mt-2">
-                        {{ csrf() }}
-                        {{ f.checkbox('ical_alarms', __('settings.api.ical_alarms'), {
-                            'checked': user.settings.ical_alarms
-                        }) }}
-                        {{ f.submit(__('form.save'), {'size': 'sm'}) }}
+                    <form method="get" action="{{ url('/settings/api') }}" class="mt-2" id="ical-alarm-form">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <div class="form-check mb-0">
+                                <input type="checkbox" class="form-check-input" name="ical_alarm_enabled"
+                                    id="ical_alarm_enabled" value="1"
+                                    {% if ical_alarm_enabled %}checked{% endif %}>
+                                <label class="form-check-label" for="ical_alarm_enabled">
+                                    {{ __('settings.api.ical_alarm_notify') }}
+                                </label>
+                            </div>
+                            <input type="number" class="form-control form-control-sm"
+                                style="width: 80px" name="ical_alarm_minutes" id="ical_alarm_minutes"
+                                value="{{ ical_alarm_minutes }}" min="1" max="1440">
+                            <span>{{ __('settings.api.ical_alarm_minutes') }}</span>
+                            <button type="submit" class="btn btn-sm btn-primary" id="ical-update-btn">
+                                {{ __('settings.api.ical_update_url') }}
+                            </button>
+                        </div>
                     </form>
+                    <script>
+                        (function() {
+                            const form = document.getElementById('ical-alarm-form');
+                            const btn = document.getElementById('ical-update-btn');
+                            const urlEl = document.getElementById('ical-url');
+                            const checkbox = document.getElementById('ical_alarm_enabled');
+                            const minutes = document.getElementById('ical_alarm_minutes');
+                            const baseUrl = '{{ url('/ical', {'key': user.api_key}) }}';
+
+                            btn.style.display = 'none';
+
+                            function updateUrl() {
+                                if (checkbox.checked && minutes.value > 0) {
+                                    urlEl.textContent = baseUrl + '&alarm=' + minutes.value;
+                                } else {
+                                    urlEl.textContent = baseUrl;
+                                }
+                            }
+
+                            checkbox.addEventListener('change', updateUrl);
+                            minutes.addEventListener('input', updateUrl);
+                        })();
+                    </script>
                 </div>
             {% endif %}
 
