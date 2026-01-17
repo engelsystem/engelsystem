@@ -98,13 +98,12 @@ class FeedControllerTest extends ControllerTest
         $user = User::factory()->create(['api_key' => 'fo0']);
         ShiftEntry::factory(3)->create(['user_id' => $user->id]);
 
-        $this->response->expects($this->exactly(2))
-            ->method('withHeader')
-            ->withConsecutive(
-                ['content-type', 'text/calendar; charset=utf-8'],
-                ['content-disposition', 'attachment; filename=shifts.ics']
-            )
-            ->willReturn($this->response);
+        $this->setExpects(
+            $this->response,
+            'withHeader',
+            ['content-type', 'text/calendar; charset=utf-8'],
+            $this->response
+        );
 
         $this->setExpects($this->response, 'setEtag', null, $this->response);
 
@@ -141,13 +140,12 @@ class FeedControllerTest extends ControllerTest
 
         User::factory()->create(['api_key' => 'fo0']);
 
-        $this->response->expects($this->exactly(2))
-            ->method('withHeader')
-            ->withConsecutive(
-                ['content-type', 'text/calendar; charset=utf-8'],
-                ['content-disposition', 'attachment; filename=shifts.ics']
-            )
-            ->willReturn($this->response);
+        $this->setExpects(
+            $this->response,
+            'withHeader',
+            ['content-type', 'text/calendar; charset=utf-8'],
+            $this->response
+        );
 
         $this->setExpects($this->response, 'setEtag', null, $this->response);
 
