@@ -160,6 +160,11 @@ function user_controller()
         }
     }
 
+    $shift_filter = $request->input('shift_filter', '');
+    if (!in_array($shift_filter, ['upcoming', 'running', 'completed'])) {
+        $shift_filter = '';
+    }
+
     $shifts = Shifts_by_user($user_source->id, true);
     foreach ($shifts as $shift) {
         // TODO: Move queries to model
@@ -233,6 +238,7 @@ function user_controller()
                 || $is_ifsg_supporter
                 || auth()->can('user.drive.edit')
                 || $is_drive_supporter,
+            $shift_filter,
         ),
     ];
 }
