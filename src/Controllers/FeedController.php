@@ -52,6 +52,7 @@ class FeedController extends BaseController
 
     public function ical(): Response
     {
+        $user = $this->auth->userFromApi();
         $shifts = $this->getShifts();
 
         /* @var string $timezoneTransitionStart */
@@ -61,8 +62,14 @@ class FeedController extends BaseController
             $timezoneTransitionStart = Carbon::now()->startOfDay()->utc()->isoFormat('YYYYMMDDTHHmmss');
         }
 
+        // Build filename: AppName-username-shifts.ics (sanitized for safe filenames)
+        $appName = preg_replace('/[^a-zA-Z0-9-_]/', '', config('app_name'));
+        $username = preg_replace('/[^a-zA-Z0-9-_]/', '', $user->name);
+        $filename = sprintf('%s-%s-shifts.ics', $appName, $username);
+
         $response = $this->withEtag($shifts)
-            ->withHeader('content-type', 'text/calendar; charset=utf-8');
+            ->withHeader('content-type', 'text/calendar; charset=utf-8')
+            ->withHeader('content-disposition', 'inline; filename=' . $filename);
 
         return $response->withView(
             'api/ical',
