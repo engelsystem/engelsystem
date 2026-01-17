@@ -58,13 +58,14 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
     $start_time = $shiftsFilter->getStartTime();
     if (is_null($start_time)) {
         $now = (new DateTime())->format('Y-m-d');
-        $first_day = DateTime::createFromFormat(
-            'Y-m-d',
-            in_array($now, $days) ? $now : ($days[0] ?? (new DateTime())->format('Y-m-d'))
-        )->getTimestamp();
-        if (time() < $first_day) {
-            $start_time = $first_day;
+        if (in_array($now, $days)) {
+            // Today has shifts, use current time
+            $start_time = time();
+        } elseif (!empty($days)) {
+            // Today has no shifts, default to first day with shifts
+            $start_time = DateTime::createFromFormat('Y-m-d', $days[0])->getTimestamp();
         } else {
+            // No days with shifts at all
             $start_time = time();
         }
     }
