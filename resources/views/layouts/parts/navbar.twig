@@ -114,7 +114,7 @@
                     {% include "layouts/parts/language_dropdown.twig" %}
                     <li class="nav-item dropdown dropdown-user-menu">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ m.angel() }} {{ user.displayName }}
+                            <span class="text-nowrap">{{ m.angel() }} {{ user.displayName }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             {% if can('user_myshifts') %}

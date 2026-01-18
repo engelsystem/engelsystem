@@ -26,7 +26,7 @@
     <a href="{{ opt.url|default(url('/users', {'action': 'view', 'user_id': user.id})) }}"
             {%- if not user.state.arrived %} class="text-muted"{% endif -%}
     >
-        {{ _self.angel() }}&nbsp;{{ user.displayName }}
+        <span class="text-nowrap">{{ _self.angel() }} {{ user.displayName }}</span>
         {%- if opt.pronoun|default(false) and config('enable_pronoun')
             and user.personalData.pronoun %}
             ({{ user.personalData.pronoun }})
