@@ -270,11 +270,11 @@ function users_list_controller()
     ];
 
     $order_by = 'name';
-    if ($request->has('OrderBy') && array_key_exists($request->input('OrderBy'), $columnMap)) {
-        $order_by = $request->input('OrderBy');
+    if ($request->query->has('OrderBy') && array_key_exists($request->query->get('OrderBy'), $columnMap)) {
+        $order_by = $request->query->get('OrderBy');
     }
 
-    $perPage = $request->get('c', config('display_users'));
+    $perPage = $request->query->get('c', config('display_users'));
     if ($perPage == 'all') {
         $perPage = PHP_INT_MAX;
     }
