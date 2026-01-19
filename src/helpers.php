@@ -228,3 +228,12 @@ function view(?string $template = null, array $data = []): Renderer|string
 
     return $renderer->render($template, $data);
 }
+
+/**
+ * Normalize a string for search comparison.
+ * Converts to ASCII and lowercase for diacritic-insensitive matching.
+ */
+function normalize_for_search(string $s): string
+{
+    return transliterator_transliterate('Any-Latin; Latin-ASCII; Lower', $s) ?: mb_strtolower($s);
+}

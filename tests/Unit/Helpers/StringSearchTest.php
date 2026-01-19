@@ -11,12 +11,12 @@ use Engelsystem\Test\Unit\TestCase;
  *
  * @see https://github.com/engelsystem/engelsystem/issues/1317
  * @see https://github.com/engelsystem/engelsystem/issues/606
- * @coversNothing
  */
 class StringSearchTest extends TestCase
 {
     /**
      * @dataProvider provideUmlautSearchCases
+     * @coversNothing
      */
     public function testMbStriposFindsUmlautsCaseInsensitively(
         string $haystack,
@@ -45,14 +45,14 @@ class StringSearchTest extends TestCase
 
     /**
      * @dataProvider provideAsciiFoldingCases
+     * @covers ::normalize_for_search
      */
     public function testAsciiFoldingSearch(
         string $haystack,
         string $needle,
         bool $expectedFound
     ): void {
-        $normalize = fn($s) => transliterator_transliterate('Any-Latin; Latin-ASCII; Lower', $s) ?: mb_strtolower($s);
-        $found = mb_stripos($normalize($haystack), $normalize($needle)) !== false;
+        $found = mb_stripos(normalize_for_search($haystack), normalize_for_search($needle)) !== false;
         $this->assertSame($expectedFound, $found);
     }
 
