@@ -8,25 +8,24 @@ use Engelsystem\Helpers\Schedule\Conference;
 use Engelsystem\Helpers\Schedule\ConferenceColor;
 use Engelsystem\Helpers\Schedule\ConferenceTrack;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Conference::class, '__construct')]
+#[CoversMethod(Conference::class, 'getTitle')]
+#[CoversMethod(Conference::class, 'getAcronym')]
+#[CoversMethod(Conference::class, 'getStart')]
+#[CoversMethod(Conference::class, 'getEnd')]
+#[CoversMethod(Conference::class, 'getDays')]
+#[CoversMethod(Conference::class, 'getTimeslotDuration')]
+#[CoversMethod(Conference::class, 'getTimeslotDurationSeconds')]
+#[CoversMethod(Conference::class, 'getBaseUrl')]
+#[CoversMethod(Conference::class, 'getLogo')]
+#[CoversMethod(Conference::class, 'getUrl')]
+#[CoversMethod(Conference::class, 'getTimeZoneName')]
+#[CoversMethod(Conference::class, 'getColor')]
+#[CoversMethod(Conference::class, 'getTracks')]
 class ConferenceTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Conference::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTitle
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getAcronym
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getStart
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getEnd
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getDays
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTimeslotDuration
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTimeslotDurationSeconds
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getBaseUrl
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getLogo
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getUrl
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTimeZoneName
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getColor
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTracks
-     */
     public function testCreateDefault(): void
     {
         $conference = new Conference('Doing stuff', 'DS');
@@ -45,22 +44,6 @@ class ConferenceTest extends TestCase
         $this->assertEmpty($conference->getTracks());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Conference::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTitle
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getAcronym
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getStart
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getEnd
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getDays
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTimeslotDuration
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTimeslotDurationSeconds
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getBaseUrl
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getLogo
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getUrl
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTimeZoneName
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getColor
-     * @covers \Engelsystem\Helpers\Schedule\Conference::getTracks
-     */
     public function testCreate(): void
     {
         $conference = new Conference(

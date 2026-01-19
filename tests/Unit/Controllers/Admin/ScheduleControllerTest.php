@@ -25,16 +25,41 @@ use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
 use Engelsystem\Test\Unit\HasDatabase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ScheduleControllerTest extends ControllerTest
+#[CoversMethod(ScheduleController::class, 'index')]
+#[CoversMethod(ScheduleController::class, '__construct')]
+#[CoversMethod(ScheduleController::class, 'edit')]
+#[CoversMethod(ScheduleController::class, 'save')]
+#[CoversMethod(ScheduleController::class, 'delete')]
+#[CoversMethod(ScheduleController::class, 'fireDeleteShiftEvents')]
+#[CoversMethod(ScheduleController::class, 'deleteEvent')]
+#[CoversMethod(ScheduleController::class, 'loadSchedule')]
+#[CoversMethod(ScheduleController::class, 'getScheduleData')]
+#[CoversMethod(ScheduleController::class, 'importSchedule')]
+#[CoversMethod(ScheduleController::class, 'patchSchedule')]
+#[CoversMethod(ScheduleController::class, 'newRooms')]
+#[CoversMethod(ScheduleController::class, 'shiftsDiff')]
+#[CoversMethod(ScheduleController::class, 'getScheduleShiftsByGuid')]
+#[CoversMethod(ScheduleController::class, 'getScheduleShiftsWhereNotGuid')]
+#[CoversMethod(ScheduleController::class, 'eventFromScheduleShift')]
+#[CoversMethod(ScheduleController::class, 'fireUpdateShiftUpdateEvent')]
+#[CoversMethod(ScheduleController::class, 'getAllLocations')]
+#[CoversMethod(ScheduleController::class, 'createLocation')]
+#[CoversMethod(ScheduleController::class, 'createEvent')]
+#[CoversMethod(ScheduleController::class, 'updateEvent')]
+#[AllowMockObjectsWithoutExpectations]
+class ScheduleControllerTest extends ControllerTestCase
 {
     use HasDatabase;
     use HasUserNotifications;
@@ -50,10 +75,6 @@ class ScheduleControllerTest extends ControllerTest
     protected User $user;
     protected Validator $validator;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::index
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::__construct
-     */
     public function testIndex(): void
     {
         $this->response->expects($this->once())
@@ -75,9 +96,6 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertEquals($this->response, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::edit
-     */
     public function testEdit(): void
     {
         $this->response->expects($this->once())
@@ -101,9 +119,6 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertEquals($this->response, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::save
-     */
     public function testSaveNew(): void
     {
         $newId = $this->schedule->id + 1;
@@ -140,9 +155,6 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertTrue($this->log->hasInfoThatContains('Schedule {name}'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::save
-     */
     public function testSaveEdit(): void
     {
         $this->setExpects($this->redirect, 'to', ['/admin/schedule/load/' . $this->schedule->id], $this->response);
@@ -175,9 +187,6 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertTrue($this->log->hasInfoThatContains('Schedule {name}'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::save
-     */
     public function testSaveInvalidShiftType(): void
     {
         $request = Request::create('', 'POST', [
@@ -196,12 +205,6 @@ class ScheduleControllerTest extends ControllerTest
         $controller->save($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::save
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::delete
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::fireDeleteShiftEvents
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::deleteEvent
-     */
     public function testSaveDelete(): void
     {
         $this->setExpects($this->redirect, 'to', ['/admin/schedule'], $this->response);
@@ -226,10 +229,6 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertTrue($this->log->hasInfoThatContains('Schedule {name}'));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::loadSchedule
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::getScheduleData
-     */
     public function testLoadSchedule(): void
     {
         $this->setScheduleResponses([new Response(file_get_contents($this->scheduleFile))]);
@@ -272,7 +271,7 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertEquals($this->response, $response);
     }
 
-    public function loadScheduleErrorsData(): array
+    public static function loadScheduleErrorsData(): array
     {
         return [
             // Server error
@@ -284,11 +283,7 @@ class ScheduleControllerTest extends ControllerTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Controllers\Admin\ScheduleController::loadSchedule
-     * @covers       \Engelsystem\Controllers\Admin\ScheduleController::getScheduleData
-     * @dataProvider loadScheduleErrorsData
-     */
+    #[DataProvider('loadScheduleErrorsData')]
     public function testScheduleResponseErrors(object $request, string $notification, bool $logWarning = false): void
     {
         $this->setScheduleResponses([$request]);
@@ -311,9 +306,6 @@ class ScheduleControllerTest extends ControllerTest
         }
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::getScheduleData
-     */
     public function testGetScheduleDataScheduleNotFound(): void
     {
         $request = Request::create('', 'POST', ['delete' => 'yes'])
@@ -326,21 +318,6 @@ class ScheduleControllerTest extends ControllerTest
         $controller->loadSchedule($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::importSchedule
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::getScheduleData
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::patchSchedule
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::newRooms
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::shiftsDiff
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::getScheduleShiftsByGuid
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::getScheduleShiftsWhereNotGuid
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::eventFromScheduleShift
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::fireUpdateShiftUpdateEvent
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::getAllLocations
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::createLocation
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::createEvent
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::updateEvent
-     */
     public function testImportSchedule(): void
     {
         $this->setScheduleResponses([new Response(file_get_contents($this->scheduleFile))]);
@@ -349,10 +326,17 @@ class ScheduleControllerTest extends ControllerTest
         $request = Request::create('', 'POST')
             ->withAttribute('schedule_id', $this->schedule->id);
 
-        $this->event->expects($this->exactly(3))
-            ->method('dispatch')
-            ->withConsecutive(['shift.updating'], ['shift.deleting'])
-            ->willReturn([]);
+        $matcher = $this->exactly(3);
+        $this->event->expects($matcher)
+            ->method('dispatch')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('shift.updating', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('shift.deleting', $parameters[0]);
+                }
+                return [];
+            });
 
         /** @var ScheduleController $controller */
         $controller = $this->app->make(ScheduleController::class);
@@ -425,10 +409,6 @@ class ScheduleControllerTest extends ControllerTest
         $this->assertStringNotContainsString('such a big thing', $shift->title);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::importSchedule
-     * @covers \Engelsystem\Controllers\Admin\ScheduleController::getScheduleData
-     */
     public function testImportScheduleError(): void
     {
         $this->setScheduleResponses([new Response('', 404)]);

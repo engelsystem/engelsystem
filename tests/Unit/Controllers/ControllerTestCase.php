@@ -12,7 +12,6 @@ use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
@@ -20,7 +19,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-abstract class ControllerTest extends TestCase
+abstract class ControllerTestCase extends TestCase
 {
     use HasDatabase;
 
@@ -28,7 +27,7 @@ abstract class ControllerTest extends TestCase
 
     protected TestLogger $log;
 
-    protected Response|MockObject $response;
+    protected Response $response;
 
     protected Request $request;
 

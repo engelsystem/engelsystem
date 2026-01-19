@@ -9,12 +9,13 @@ use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class LocationTest extends ModelTest
+#[CoversMethod(Location::class, 'activeForSchedules')]
+#[CoversMethod(Location::class, 'shifts')]
+#[CoversMethod(Location::class, 'neededAngelTypes')]
+class LocationTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Location::activeForSchedules
-     */
     public function testActiveForSchedules(): void
     {
         $location = new Location(['name' => 'Test location']);
@@ -27,9 +28,6 @@ class LocationTest extends ModelTest
         $this->assertCount(1, $location->activeForSchedules);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Location::shifts
-     */
     public function testShifts(): void
     {
         $location = new Location(['name' => 'Test location']);
@@ -42,9 +40,6 @@ class LocationTest extends ModelTest
         $this->assertCount(1, $location->shifts);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Location::neededAngelTypes
-     */
     public function testNeededAngelTypes(): void
     {
         /** @var Collection|Location[] $shifts */

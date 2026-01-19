@@ -8,18 +8,24 @@ use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
 use Engelsystem\Container\ServiceProvider;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use ReflectionClass;
 
+#[CoversMethod(Application::class, '__construct')]
+#[CoversMethod(Application::class, 'registerBaseBindings')]
+#[CoversMethod(Application::class, 'path')]
+#[CoversMethod(Application::class, 'registerPaths')]
+#[CoversMethod(Application::class, 'setAppPath')]
+#[CoversMethod(Application::class, 'register')]
+#[CoversMethod(Application::class, 'bootstrap')]
+#[CoversMethod(Application::class, 'getMiddleware')]
+#[CoversMethod(Application::class, 'isBooted')]
 class ApplicationTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Application::__construct
-     * @covers \Engelsystem\Application::registerBaseBindings
-     */
     public function testConstructor(): void
     {
         $app = new Application('.');
@@ -35,11 +41,6 @@ class ApplicationTest extends TestCase
         $this->assertSame($app, Container::getInstance());
     }
 
-    /**
-     * @covers \Engelsystem\Application::path
-     * @covers \Engelsystem\Application::registerPaths
-     * @covers \Engelsystem\Application::setAppPath
-     */
     public function testAppPath(): void
     {
         $app = new Application();
@@ -68,9 +69,6 @@ class ApplicationTest extends TestCase
         $this->assertEquals(realpath('../') . '/config', $app->get('path.config'));
     }
 
-    /**
-     * @covers \Engelsystem\Application::register
-     */
     public function testRegister(): void
     {
         $app = new Application();
@@ -91,9 +89,6 @@ class ApplicationTest extends TestCase
         $app->register($anotherServiceProvider);
     }
 
-    /**
-     * @covers \Engelsystem\Application::register
-     */
     public function testRegisterBoot(): void
     {
         $app = new Application();
@@ -108,35 +103,21 @@ class ApplicationTest extends TestCase
         $app->register($serviceProvider);
     }
 
-    /**
-     * @covers \Engelsystem\Application::register
-     */
     public function testRegisterClassName(): void
     {
         $app = new Application();
 
-        $mock = $this->createMock(ServiceProvider::class);
-        $mockClassName = get_class($mock);
-        $serviceProvider = $this->getMockBuilder($mockClassName)
-            ->setConstructorArgs([$app])
-            ->onlyMethods(['register'])
-            ->getMock();
+        $serviceProvider = $this->mockServiceProvider($app, ['register']);
 
         $serviceProvider->expects($this->once())
             ->method('register');
 
-        $app->instance($mockClassName, $serviceProvider);
-        $app->register($mockClassName);
+        $app->instance(ServiceProvider::class, $serviceProvider);
+        $app->register(ServiceProvider::class);
     }
 
-    /**
-     * @covers \Engelsystem\Application::bootstrap
-     * @covers \Engelsystem\Application::getMiddleware
-     * @covers \Engelsystem\Application::isBooted
-     */
     public function testBootstrap(): void
     {
-        /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Application::class)
             ->onlyMethods(['register'])
             ->getMock();
@@ -149,15 +130,14 @@ class ApplicationTest extends TestCase
             ->method('register')
             ->with($serviceProvider);
 
-        /** @var Config|MockObject $config */
-        $config = $this->getMockBuilder(Config::class)
-            ->getMock();
+        $config = $this->createStub(Config::class);
 
         $middleware = [MiddlewareInterface::class];
-        $config->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(['providers'], ['middleware'])
-            ->willReturnOnConsecutiveCalls([$serviceProvider], $middleware);
+        $config->method('get')
+            ->willReturnMap([
+                ['providers', [], [$serviceProvider]],
+                ['middleware', [], $middleware],
+            ]);
 
         $property = (new ReflectionClass($app))->getProperty('serviceProviders');
         $property->setValue($app, [$serviceProvider]);
@@ -171,11 +151,11 @@ class ApplicationTest extends TestCase
         $app->bootstrap($config);
     }
 
-    protected function mockServiceProvider(Application $app, array $methods = []): ServiceProvider|MockObject
+    protected function mockServiceProvider(Application $app, array $methods = []): ServiceProvider&MockObject
     {
         return $this->getMockBuilder(ServiceProvider::class)
             ->setConstructorArgs([$app])
             ->onlyMethods($methods)
-            ->getMockForAbstractClass();
+            ->getMock();
     }
 }

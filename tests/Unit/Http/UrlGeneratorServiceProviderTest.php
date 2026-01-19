@@ -7,30 +7,32 @@ namespace Engelsystem\Test\Unit\Http;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\UrlGeneratorServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit\Framework\MockObject\MockObject;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UrlGeneratorServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(UrlGeneratorServiceProvider::class, 'register')]
+class UrlGeneratorServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Http\UrlGeneratorServiceProvider::register()
-     */
     public function testRegister(): void
     {
-        /** @var UrlGenerator|MockObject $urlGenerator */
-        $urlGenerator = $this->getMockBuilder(UrlGenerator::class)
-            ->getMock();
+        $urlGenerator = $this->getStubBuilder(UrlGenerator::class)
+            ->getStub();
 
-        $app = $this->getApp(['make', 'instance', 'bind']);
+        $app = $this->getAppMock(['make', 'instance', 'bind']);
 
         $this->setExpects($app, 'make', [UrlGenerator::class], $urlGenerator);
-        $app->expects($this->exactly(2))
-            ->method('instance')
-            ->withConsecutive(
-                [UrlGenerator::class, $urlGenerator],
-                ['http.urlGenerator', $urlGenerator],
-                [UrlGeneratorInterface::class, $urlGenerator]
-            );
+        $matcher = $this->exactly(2);
+        $app->expects($matcher)
+            ->method('instance')->willReturnCallback(function (...$parameters) use ($matcher, $urlGenerator): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame(UrlGenerator::class, $parameters[0]);
+                    $this->assertSame($urlGenerator, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('http.urlGenerator', $parameters[0]);
+                    $this->assertSame($urlGenerator, $parameters[1]);
+                }
+            });
         $app->expects($this->once())
             ->method('bind')
             ->with(UrlGeneratorInterface::class, UrlGenerator::class);

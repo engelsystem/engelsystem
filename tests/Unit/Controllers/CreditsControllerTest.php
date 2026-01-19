@@ -9,20 +9,16 @@ use Engelsystem\Controllers\CreditsController;
 use Engelsystem\Helpers\Version;
 use Engelsystem\Http\Response;
 use Engelsystem\Test\Unit\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(CreditsController::class, '__construct')]
+#[CoversMethod(CreditsController::class, 'index')]
 class CreditsControllerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\CreditsController::__construct
-     * @covers \Engelsystem\Controllers\CreditsController::index
-     */
     public function testIndex(): void
     {
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
         $config = new Config(['foo' => 'bar', 'credits' => ['lor' => 'em']]);
-        /** @var Version|MockObject $version */
         $version = $this->createMock(Version::class);
 
         $this->setExpects(

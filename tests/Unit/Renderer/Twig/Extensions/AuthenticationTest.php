@@ -8,20 +8,19 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Twig\Extensions\Authentication;
 use Engelsystem\Test\Unit\HasDatabase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class AuthenticationTest extends ExtensionTest
+#[CoversMethod(Authentication::class, '__construct')]
+#[CoversMethod(Authentication::class, 'getFunctions')]
+#[CoversMethod(Authentication::class, 'isAuthenticated')]
+#[CoversMethod(Authentication::class, 'isGuest')]
+class AuthenticationTest extends ExtensionTestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Authentication::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Authentication::getFunctions
-     */
     public function testGetFunctions(): void
     {
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->createMock(Authenticator::class);
+        $auth = $this->createStub(Authenticator::class);
 
         $extension = new Authentication($auth);
         $functions = $extension->getFunctions();
@@ -32,14 +31,9 @@ class AuthenticationTest extends ExtensionTest
         $this->assertExtensionExists('canAny', [$auth, 'canAny'], $functions);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Authentication::isAuthenticated
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Authentication::isGuest
-     */
     public function testIsAuthenticated(): void
     {
         $this->initDatabase();
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $user = new User();
 

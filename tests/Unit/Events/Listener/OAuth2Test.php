@@ -12,10 +12,17 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
 
+#[CoversMethod(OAuth2::class, 'login')]
+#[CoversMethod(OAuth2::class, 'syncTeams')]
+#[CoversMethod(OAuth2::class, '__construct')]
+#[CoversMethod(OAuth2::class, 'getSsoTeams')]
+#[AllowMockObjectsWithoutExpectations]
 class OAuth2Test extends TestCase
 {
     use HasDatabase;
@@ -31,11 +38,6 @@ class OAuth2Test extends TestCase
 
     protected User $user;
 
-    /**
-     * @covers \Engelsystem\Events\Listener\OAuth2::login
-     * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
-     * @covers \Engelsystem\Events\Listener\OAuth2::__construct
-     */
     public function testLogin(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
@@ -62,9 +64,6 @@ class OAuth2Test extends TestCase
         $this->assertEquals($user->id, $lorem->pivot->confirm_user_id);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\OAuth2::login
-     */
     public function testLoginNoProvider(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
@@ -73,9 +72,6 @@ class OAuth2Test extends TestCase
         $instance->login('oauth2.login', 'unavailable-provider', collect(['foo' => 'bar']));
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\OAuth2::login
-     */
     public function testLoginNoMatchingGroups(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
@@ -84,10 +80,6 @@ class OAuth2Test extends TestCase
         $instance->login('oauth2.login', 'test-provider', collect(['groups_key' => ['/notMatching']]));
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\OAuth2::login
-     * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
-     */
     public function testLoginNoChanges(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
@@ -113,10 +105,6 @@ class OAuth2Test extends TestCase
         $this->assertEmpty($this->log->records);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\OAuth2::login
-     * @covers \Engelsystem\Events\Listener\OAuth2::syncTeams
-     */
     public function testLoginChangeSupport(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
@@ -135,9 +123,6 @@ class OAuth2Test extends TestCase
         $this->assertTrue($this->log->hasInfoThatContains('confirmed'));
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\OAuth2::getSsoTeams
-     */
     public function testGetSsoTeamsNotConfigured(): void
     {
         $instance = new OAuth2($this->config, $this->log, $this->auth);
@@ -146,9 +131,6 @@ class OAuth2Test extends TestCase
         $this->assertEquals([], $teams);
     }
 
-    /**
-     * @covers \Engelsystem\Events\Listener\OAuth2::getSsoTeams
-     */
     public function testGetSsoTeams(): void
     {
         $instance = new OAuth2($this->config, $this->log, $this->auth);

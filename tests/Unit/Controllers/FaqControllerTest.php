@@ -14,27 +14,25 @@ use Engelsystem\Models\Tag;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
+#[CoversMethod(FaqController::class, '__construct')]
+#[CoversMethod(FaqController::class, 'index')]
+#[CoversMethod(FaqController::class, 'showFaqs')]
+#[CoversMethod(FaqController::class, 'tagged')]
 class FaqControllerTest extends TestCase
 {
     use HasDatabase;
 
     protected Config $config;
 
-    /**
-     * @covers \Engelsystem\Controllers\FaqController::__construct
-     * @covers \Engelsystem\Controllers\FaqController::index
-     * @covers \Engelsystem\Controllers\FaqController::showFaqs
-     */
     public function testIndex(): void
     {
         $this->createFaq(['question' => 'Xyz', 'text' => 'Abc']);
         $this->createFaq(['question' => 'Something\'s wrong?', 'text' => 'Nah!'], ['SomeTag']);
 
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
         $response->expects($this->once())
             ->method('withView')
@@ -58,9 +56,6 @@ class FaqControllerTest extends TestCase
         $controller->index();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\FaqController::tagged
-     */
     public function testTagged(): void
     {
         $this->createFaq(['question' => 'Xyz', 'text' => 'Abc']);
@@ -69,7 +64,6 @@ class FaqControllerTest extends TestCase
 
         $request = (new Request())->withAttribute('tag_id', $tag->id);
 
-        /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
         $response->expects($this->once())
             ->method('withView')
@@ -89,9 +83,6 @@ class FaqControllerTest extends TestCase
         $controller->tagged($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\FaqController::tagged
-     */
     public function testTaggedNotFound(): void
     {
         $request = (new Request())->withAttribute('tag_id', 42);
@@ -102,9 +93,6 @@ class FaqControllerTest extends TestCase
         $controller->tagged($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\FaqController::tagged
-     */
     public function testTaggedNoFaqFound(): void
     {
         $tag = Tag::factory()->create();

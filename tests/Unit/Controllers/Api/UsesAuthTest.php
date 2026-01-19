@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Api;
 
+use Engelsystem\Controllers\Api\UsesAuth;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Controllers\Api\Stub\UsesAuthImplementation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UsesAuthTest extends ApiBaseControllerTest
+#[CoversMethod(UsesAuth::class, 'getUser')]
+#[CoversMethod(UsesAuth::class, 'setAuth')]
+#[AllowMockObjectsWithoutExpectations]
+class UsesAuthTest extends ApiBaseControllerTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsesAuth::getUser
-     */
     public function testGetUserNoAuthNotFound(): void
     {
         $usesAuth = $this->createInstance();
@@ -24,9 +26,6 @@ class UsesAuthTest extends ApiBaseControllerTest
         $usesAuth->user('self');
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsesAuth::getUser
-     */
     public function testGetUserNotFound(): void
     {
         $usesAuth = $this->createInstance();
@@ -35,9 +34,6 @@ class UsesAuthTest extends ApiBaseControllerTest
         $usesAuth->user(42);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsesAuth::getUser
-     */
     public function testGetUserWithoutAuth(): void
     {
         $user = User::factory()->create();
@@ -47,15 +43,10 @@ class UsesAuthTest extends ApiBaseControllerTest
         $this->assertInstanceOf(User::class, $usesAuth->user($user->id));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Api\UsesAuth::setAuth
-     * @covers \Engelsystem\Controllers\Api\UsesAuth::getUser
-     */
     public function testGetUser(): void
     {
         $user = User::factory()->create();
 
-        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
         $this->setExpects($auth, 'user', null, $user);
 

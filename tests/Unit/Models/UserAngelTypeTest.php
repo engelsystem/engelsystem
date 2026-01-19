@@ -8,8 +8,15 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class UserAngelTypeTest extends ModelTest
+#[CoversClass(UserAngelType::class)]
+#[CoversMethod(UserAngelType::class, 'angelType')]
+#[CoversMethod(UserAngelType::class, 'confirmUser')]
+#[CoversMethod(UserAngelType::class, 'getPivotAttributes')]
+#[CoversMethod(UserAngelType::class, 'getIsConfirmedAttribute')]
+class UserAngelTypeTest extends ModelTestCase
 {
     protected User|Model $user;
 
@@ -17,9 +24,6 @@ class UserAngelTypeTest extends ModelTest
 
     protected AngelType|Model $angeltype;
 
-    /**
-     * @covers \Engelsystem\Models\UserAngelType
-     */
     public function testCreateDefault(): void
     {
         $model = new UserAngelType();
@@ -36,11 +40,6 @@ class UserAngelTypeTest extends ModelTest
         $this->assertFalse($model->supporter);
     }
 
-    /**
-     * @covers \Engelsystem\Models\UserAngelType
-     * @covers \Engelsystem\Models\UserAngelType::angelType
-     * @covers \Engelsystem\Models\UserAngelType::confirmUser
-     */
     public function testCreateAssociation(): void
     {
         $this->user
@@ -56,9 +55,6 @@ class UserAngelTypeTest extends ModelTest
         $this->assertTrue($model->supporter);
     }
 
-    /**
-     * @covers \Engelsystem\Models\UserAngelType::confirmUser
-     */
     public function testConfirmUser(): void
     {
         $model = new UserAngelType();
@@ -72,9 +68,6 @@ class UserAngelTypeTest extends ModelTest
         $this->assertEquals($this->confirmed->id, $model->confirmUser->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\UserAngelType::angelType
-     */
     public function testAngelType(): void
     {
         $model = new UserAngelType();
@@ -87,9 +80,6 @@ class UserAngelTypeTest extends ModelTest
         $this->assertEquals($this->angeltype->id, $model->angelType->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\UserAngelType::getPivotAttributes
-     */
     public function testGetPivotAttributes(): void
     {
         $attributes = UserAngelType::getPivotAttributes();
@@ -99,9 +89,6 @@ class UserAngelTypeTest extends ModelTest
         $this->assertContains('confirm_user_id', $attributes);
     }
 
-    /**
-     * @covers \Engelsystem\Models\UserAngelType::getIsConfirmedAttribute
-     */
     public function testGetIsConfirmedAttribute(): void
     {
         $this->angeltype->restricted = false;

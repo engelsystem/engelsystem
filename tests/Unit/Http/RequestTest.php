@@ -6,7 +6,8 @@ namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Http\Request;
 use Nyholm\Psr7\UploadedFile;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -14,11 +15,33 @@ use Psr\Http\Message\UriInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyFile;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
+#[CoversClass(Request::class)]
+#[CoversMethod(Request::class, 'postData')]
+#[CoversMethod(Request::class, 'input')]
+#[CoversMethod(Request::class, 'has')]
+#[CoversMethod(Request::class, 'get')]
+#[CoversMethod(Request::class, 'hasPostData')]
+#[CoversMethod(Request::class, 'path')]
+#[CoversMethod(Request::class, 'url')]
+#[CoversMethod(Request::class, 'getRequestTarget')]
+#[CoversMethod(Request::class, 'withRequestTarget')]
+#[CoversMethod(Request::class, 'withMethod')]
+#[CoversMethod(Request::class, 'withUri')]
+#[CoversMethod(Request::class, 'getServerParams')]
+#[CoversMethod(Request::class, 'getCookieParams')]
+#[CoversMethod(Request::class, 'withCookieParams')]
+#[CoversMethod(Request::class, 'getQueryParams')]
+#[CoversMethod(Request::class, 'withQueryParams')]
+#[CoversMethod(Request::class, 'getUploadedFiles')]
+#[CoversMethod(Request::class, 'withUploadedFiles')]
+#[CoversMethod(Request::class, 'getParsedBody')]
+#[CoversMethod(Request::class, 'withParsedBody')]
+#[CoversMethod(Request::class, 'getAttributes')]
+#[CoversMethod(Request::class, 'getAttribute')]
+#[CoversMethod(Request::class, 'withAttribute')]
+#[CoversMethod(Request::class, 'withoutAttribute')]
 class RequestTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Request
-     */
     public function testCreate(): void
     {
         $response = new Request();
@@ -26,9 +49,6 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(RequestInterface::class, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::postData
-     */
     public function testPostData(): void
     {
         $request = new Request(
@@ -40,9 +60,6 @@ class RequestTest extends TestCase
         $this->assertEquals('LoremIpsum', $request->postData('test-key', 'LoremIpsum'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::input
-     */
     public function testInput(): void
     {
         $request = new Request(
@@ -54,9 +71,6 @@ class RequestTest extends TestCase
         $this->assertEquals('LoremIpsum', $request->input('test-key', 'LoremIpsum'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::has
-     */
     public function testHas(): void
     {
         $request = new Request([
@@ -69,9 +83,6 @@ class RequestTest extends TestCase
         $this->assertFalse($request->has('baz'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::get
-     */
     public function testGet(): void
     {
         $request = new Request([
@@ -94,9 +105,6 @@ class RequestTest extends TestCase
         $this->assertEquals('default value', $request->get('not-existing', 'default value'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::hasPostData
-     */
     public function testHasPostData(): void
     {
         $request = new Request([
@@ -112,12 +120,8 @@ class RequestTest extends TestCase
         $this->assertTrue($request->hasPostData('lorem'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::path
-     */
     public function testPath(): void
     {
-        /** @var Request|MockObject $request */
         $request = $this
             ->getMockBuilder(Request::class)
             ->onlyMethods(['getPathInfo'])
@@ -135,12 +139,8 @@ class RequestTest extends TestCase
         $this->assertEquals('/', $request->path());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::url
-     */
     public function testUrl(): void
     {
-        /** @var Request|MockObject $request */
         $request = $this
             ->getMockBuilder(Request::class)
             ->onlyMethods(['getUri'])
@@ -158,12 +158,8 @@ class RequestTest extends TestCase
         $this->assertEquals('https://lorem.ipsum/dolor/sit', $request->url());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::getRequestTarget
-     */
     public function testGetRequestTarget(): void
     {
-        /** @var Request|MockObject $request */
         $request = $this
             ->getMockBuilder(Request::class)
             ->onlyMethods(['getQueryString', 'path'])
@@ -180,9 +176,6 @@ class RequestTest extends TestCase
         $this->assertEquals('/foo/bar?foo=bar&lorem=ipsum', $request->getRequestTarget());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withRequestTarget
-     */
     public function testWithRequestTarget(): void
     {
         $request = new Request();
@@ -198,9 +191,6 @@ class RequestTest extends TestCase
         }
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withMethod
-     */
     public function testWithMethod(): void
     {
         $request = new Request();
@@ -211,13 +201,9 @@ class RequestTest extends TestCase
         $this->assertEquals('PUT', $new->getMethod());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withUri
-     */
     public function testWithUri(): void
     {
-        /** @var UriInterface|MockObject $uri */
-        $uri = $this->getMockForAbstractClass(UriInterface::class);
+        $uri = $this->getMockBuilder(UriInterface::class)->getMock();
 
         $uri->expects($this->atLeastOnce())
             ->method('__toString')
@@ -233,9 +219,6 @@ class RequestTest extends TestCase
         $this->assertEquals('https://lor.em/bla?foo=bar', $new->getUri());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::getServerParams
-     */
     public function testGetServerParams(): void
     {
         $server = ['foo' => 'bar'];
@@ -244,9 +227,6 @@ class RequestTest extends TestCase
         $this->assertEquals($server, $request->getServerParams());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::getCookieParams
-     */
     public function testGetCookieParams(): void
     {
         $cookies = ['session' => 'LoremIpsumDolorSit'];
@@ -255,9 +235,6 @@ class RequestTest extends TestCase
         $this->assertEquals($cookies, $request->getCookieParams());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withCookieParams
-     */
     public function testWithCookieParams(): void
     {
         $cookies = ['lor' => 'em'];
@@ -269,9 +246,6 @@ class RequestTest extends TestCase
         $this->assertEquals($cookies, $new->getCookieParams());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::getQueryParams
-     */
     public function testGetQueryParams(): void
     {
         $params = ['foo' => 'baz'];
@@ -280,9 +254,6 @@ class RequestTest extends TestCase
         $this->assertEquals($params, $request->getQueryParams());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withQueryParams
-     */
     public function testWithQueryParams(): void
     {
         $params = ['test' => 'ing'];
@@ -294,9 +265,6 @@ class RequestTest extends TestCase
         $this->assertEquals($params, $new->getQueryParams());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::getUploadedFiles
-     */
     public function testGetUploadedFiles(): void
     {
         $filename = tempnam(sys_get_temp_dir(), 'test');
@@ -316,9 +284,6 @@ class RequestTest extends TestCase
         $this->assertEquals(UPLOAD_ERR_PARTIAL, $file->getError());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withUploadedFiles
-     */
     public function testWithUploadedFiles(): void
     {
         $filename = tempnam(sys_get_temp_dir(), 'test');
@@ -338,9 +303,6 @@ class RequestTest extends TestCase
         $this->assertEquals(11, $file->getSize());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::getParsedBody
-     */
     public function testGetParsedBody(): void
     {
         $body = ['foo' => 'lorem'];
@@ -350,9 +312,6 @@ class RequestTest extends TestCase
         $this->assertEquals($body, $request->getParsedBody());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withParsedBody
-     */
     public function testWithParsedBody(): void
     {
         $data = ['test' => 'er'];
@@ -364,9 +323,6 @@ class RequestTest extends TestCase
         $this->assertEquals($data, $new->getParsedBody());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::getAttributes
-     */
     public function testGetAttributes(): void
     {
         $attributes = ['foo' => 'lorem', 'ipsum' => 'dolor'];
@@ -375,9 +331,6 @@ class RequestTest extends TestCase
         $this->assertEquals($attributes, $request->getAttributes());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::getAttribute
-     */
     public function testGetAttribute(): void
     {
         $attributes = ['foo' => 'lorem', 'ipsum' => 'dolor'];
@@ -388,9 +341,6 @@ class RequestTest extends TestCase
         $this->assertEquals(1234, $request->getAttribute('test', 1234));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withAttribute
-     */
     public function testWithAttribute(): void
     {
         $request = new Request();
@@ -401,9 +351,6 @@ class RequestTest extends TestCase
         $this->assertEquals('ipsum', $new->getAttribute('lorem'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Request::withoutAttribute
-     */
     public function testWithoutAttribute(): void
     {
         $attributes = ['foo' => 'lorem', 'ipsum' => 'dolor'];

@@ -6,15 +6,15 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Renderer\Twig\Extensions\Notification;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class NotificationTest extends ExtensionTest
+#[CoversMethod(Notification::class, '__construct')]
+#[CoversMethod(Notification::class, 'getFunctions')]
+#[CoversMethod(Notification::class, 'notifications')]
+class NotificationTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Notification::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Notification::getFunctions
-     */
     public function testGetFunctions(): void
     {
         $session = new Session(new MockArraySessionStorage());
@@ -25,9 +25,6 @@ class NotificationTest extends ExtensionTest
         $this->assertExtensionExists('notifications', [$extension, 'notifications'], $functions);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Notification::notifications
-     */
     public function testNotifications(): void
     {
         $session = new Session(new MockArraySessionStorage());

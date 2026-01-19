@@ -4,24 +4,28 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Http;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Http\Response;
 use Engelsystem\Renderer\Renderer;
 use InvalidArgumentException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
+#[CoversClass(Response::class)]
+#[CoversMethod(Response::class, 'getReasonPhrase')]
+#[CoversMethod(Response::class, 'withStatus')]
+#[CoversMethod(Response::class, 'withContent')]
+#[CoversMethod(Response::class, 'withView')]
+#[CoversMethod(Response::class, 'setRenderer')]
+#[CoversMethod(Response::class, 'redirectTo')]
+#[CoversMethod(Response::class, 'with')]
+#[CoversMethod(Response::class, 'withInput')]
 class ResponseTest extends TestCase
 {
-    use ArraySubsetAsserts;
-
-    /**
-     * @covers \Engelsystem\Http\Response
-     */
     public function testCreate(): void
     {
         $response = new Response();
@@ -29,10 +33,6 @@ class ResponseTest extends TestCase
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::getReasonPhrase
-     * @covers \Engelsystem\Http\Response::withStatus
-     */
     public function testWithStatus(): void
     {
         $response = new Response();
@@ -45,9 +45,6 @@ class ResponseTest extends TestCase
         $this->assertEquals('Foo', $newResponse->getReasonPhrase());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::withContent
-     */
     public function testWithContent(): void
     {
         $response = new Response();
@@ -57,13 +54,8 @@ class ResponseTest extends TestCase
         $this->assertEquals('Lorem Ipsum?', $newResponse->getContent());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::withView
-     * @covers \Engelsystem\Http\Response::setRenderer
-     */
     public function testWithView(): void
     {
-        /** @var Renderer|MockObject $renderer */
         $renderer = $this->createMock(Renderer::class);
 
         $renderer->expects($this->once())
@@ -77,9 +69,8 @@ class ResponseTest extends TestCase
         $this->assertNotEquals($response, $newResponse);
         $this->assertEquals('Foo ipsum!', $newResponse->getContent());
         $this->assertEquals(505, $newResponse->getStatusCode());
-        $this->assertArraySubset(['test' => ['er']], $newResponse->getHeaders());
+        $this->assertEquals(['er'], $newResponse->getHeaders()['test']);
 
-        /** @var Renderer|MockObject $renderer */
         $anotherRenderer = $this->createMock(Renderer::class);
         $anotherRenderer->expects($this->once())
             ->method('render')
@@ -91,9 +82,6 @@ class ResponseTest extends TestCase
         $this->assertEquals('Stuff', $response->getContent());
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::withView
-     */
     public function testWithViewNoRenderer(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -102,9 +90,6 @@ class ResponseTest extends TestCase
         $response->withView('foo');
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::redirectTo
-     */
     public function testRedirectTo(): void
     {
         $response = new Response();
@@ -112,18 +97,16 @@ class ResponseTest extends TestCase
 
         $this->assertNotEquals($response, $newResponse);
         $this->assertEquals(301, $newResponse->getStatusCode());
-        $this->assertArraySubset(
+        $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys(
             [
                 'location' => ['https://foo.bar/lorem'],
                 'test'     => ['ing'],
             ],
-            $newResponse->getHeaders()
+            $newResponse->getHeaders(),
+            ['location', 'test'],
         );
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::with
-     */
     public function testWith(): void
     {
         $session = new Session(new MockArraySessionStorage());
@@ -139,9 +122,6 @@ class ResponseTest extends TestCase
         $this->assertEquals(['ipsum', 'dolor' => ['foo' => 'bar', 'test' => 'er']], $session->get('lorem'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::with
-     */
     public function testWithNoSession(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -150,9 +130,6 @@ class ResponseTest extends TestCase
         $response->with('foo', 'bar');
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::withInput
-     */
     public function testWithInput(): void
     {
         $session = new Session(new MockArraySessionStorage());
@@ -165,9 +142,6 @@ class ResponseTest extends TestCase
         $this->assertEquals('ipsum', $session->get('form-data-lorem'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\Response::withInput
-     */
     public function testWithInputNoSession(): void
     {
         $this->expectException(InvalidArgumentException::class);

@@ -9,16 +9,21 @@ use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Translation\TranslationServiceProvider;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Request;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class TranslationServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(TranslationServiceProvider::class, 'register')]
+#[CoversMethod(TranslationServiceProvider::class, 'boot')]
+#[CoversMethod(TranslationServiceProvider::class, 'getTranslator')]
+#[CoversMethod(TranslationServiceProvider::class, 'getFile')]
+#[CoversMethod(TranslationServiceProvider::class, 'getFileLoader')]
+#[CoversMethod(TranslationServiceProvider::class, 'loadFile')]
+#[AllowMockObjectsWithoutExpectations]
+class TranslationServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::register
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::boot
-     */
     public function testRegisterBoot(): void
     {
         $languages = [
@@ -37,25 +42,25 @@ class TranslationServiceProviderTest extends ServiceProviderTest
             ],
         ]);
 
-        $app = $this->getApp(['make', 'singleton', 'alias', 'get']);
-        /** @var Session|MockObject $session */
+        $app = $this->getAppMock(['make', 'singleton', 'alias', 'get']);
         $session = $this->createMock(Session::class);
-        /** @var Translator|MockObject $translator */
         $translator = $this->createMock(Translator::class);
 
-        /** @var TranslationServiceProvider|MockObject $serviceProvider */
-        $serviceProvider = $this->getMockBuilder(TranslationServiceProvider::class)
+        $serviceProvider = $this->getStubBuilder(TranslationServiceProvider::class)
             ->setConstructorArgs([$app])
             ->onlyMethods(['setLocale'])
-            ->getMock();
+            ->getStub();
 
         $request = (new Request())->withAddedHeader('Accept-Language', 'te_ST');
 
-        $app->expects($this->exactly(6))
-            ->method('get')
-            ->withConsecutive(['config'], ['path.lang'], [Translator::class], ['config'], ['session'], ['request'])
-            ->willReturnOnConsecutiveCalls($config, __DIR__ . '/Assets', $translator, $config, $session, $request);
-
+        $app->method('get')
+            ->willReturnMap([
+                ['config', $config],
+                ['path.lang', __DIR__ . '/Assets'],
+                [Translator::class, $translator],
+                ['session', $session],
+                ['request', $request],
+            ]);
 
         $app->expects($this->once())
             ->method('make')
@@ -108,12 +113,6 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         $serviceProvider->boot();
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getTranslator
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getFile
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getFileLoader
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::loadFile
-     */
     public function testGetTranslator(): void
     {
         $app = $this->getConfiguredApp();
@@ -129,12 +128,6 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         $serviceProvider->getTranslator('fo_OO');
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getTranslator
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getFile
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getFileLoader
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::loadFile
-     */
     public function testGetTranslatorFromPo(): void
     {
         $app = $this->getConfiguredApp();
@@ -147,9 +140,6 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         $this->assertEquals('B Arr required!', $translator->gettext('validation.foo.bar'));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getTranslator
-     */
     public function testGetTranslatorCustom(): void
     {
         $app = $this->getConfiguredApp();
@@ -163,13 +153,14 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         $this->assertEquals('Custom overwritten', $translator->gettext('msg.overwritten'));
     }
 
-    private function getConfiguredApp(): Application|MockObject
+    private function getConfiguredApp(): Application&MockObject
     {
-        $app = $this->getApp(['get']);
-        $app->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(['path.lang'], ['path.config'])
-            ->willReturn(__DIR__ . '/Assets', __DIR__ . '/Assets/config');
+        $app = $this->getAppMock(['get']);
+        $app->method('get')
+            ->willReturnMap([
+                ['path.lang', __DIR__ . '/Assets'],
+                ['path.config', __DIR__ . '/Assets/config'],
+            ]);
 
         return $app;
     }

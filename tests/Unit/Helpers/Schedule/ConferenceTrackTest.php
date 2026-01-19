@@ -6,15 +6,14 @@ namespace Engelsystem\Test\Unit\Helpers\Schedule;
 
 use Engelsystem\Helpers\Schedule\ConferenceTrack;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(ConferenceTrack::class, '__construct')]
+#[CoversMethod(ConferenceTrack::class, 'getName')]
+#[CoversMethod(ConferenceTrack::class, 'getColor')]
+#[CoversMethod(ConferenceTrack::class, 'getSlug')]
 class ConferenceTrackTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceTrack::__construct
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceTrack::getName
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceTrack::getColor
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceTrack::getSlug
-     */
     public function testCreateDefaults(): void
     {
         $conferenceColor = new ConferenceTrack('Tracking');
@@ -24,12 +23,6 @@ class ConferenceTrackTest extends TestCase
         $this->assertNull($conferenceColor->getSlug());
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceTrack::__construct
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceTrack::getName
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceTrack::getColor
-     * @covers \Engelsystem\Helpers\Schedule\ConferenceTrack::getSlug
-     */
     public function testCreate(): void
     {
         $conferenceColor = new ConferenceTrack(

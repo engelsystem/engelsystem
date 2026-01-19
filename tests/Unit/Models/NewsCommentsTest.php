@@ -7,11 +7,15 @@ namespace Engelsystem\Test\Unit\Models;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\User\User;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * This class provides tests for the NewsComments model.
  */
-class NewsCommentsTest extends ModelTest
+#[CoversClass(NewsComment::class)]
+#[CoversMethod(NewsComment::class, 'news')]
+class NewsCommentsTest extends ModelTestCase
 {
     private User $user;
 
@@ -43,8 +47,6 @@ class NewsCommentsTest extends ModelTest
 
     /**
      * Tests that a NewsComment can be created and loaded.
-     *
-     * @covers \Engelsystem\Models\NewsComment
      */
     public function testCreate(): void
     {
@@ -59,8 +61,6 @@ class NewsCommentsTest extends ModelTest
 
     /**
      * Tests that accessing the User of a NewsComment works.
-     *
-     * @covers \Engelsystem\Models\NewsComment::user
      */
     public function testUser(): void
     {
@@ -71,8 +71,6 @@ class NewsCommentsTest extends ModelTest
 
     /**
      * Tests that accessing the News of a NewsComment works.
-     *
-     * @covers \Engelsystem\Models\NewsComment::news
      */
     public function testNews(): void
     {

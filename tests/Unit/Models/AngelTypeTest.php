@@ -9,13 +9,20 @@ use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class AngelTypeTest extends ModelTest
+#[CoversMethod(AngelType::class, 'hasContactInfo')]
+#[CoversMethod(AngelType::class, 'userAngelTypes')]
+#[CoversMethod(AngelType::class, 'shiftEntries')]
+#[CoversMethod(AngelType::class, 'neededBy')]
+#[CoversMethod(AngelType::class, 'boot')]
+class AngelTypeTest extends ModelTestCase
 {
     /**
      * @return array<array{boolean, string, string, string}>
      */
-    public function hasContactInfoDataProvider(): array
+    public static function hasContactInfoDataProvider(): array
     {
         return [
             [false, '', '', ''],
@@ -26,10 +33,7 @@ class AngelTypeTest extends ModelTest
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Models\AngelType::hasContactInfo
-     * @dataProvider hasContactInfoDataProvider
-     */
+    #[DataProvider('hasContactInfoDataProvider')]
     public function testHasContactInfo(bool $expected, ?string $name, ?string $dect, ?string $email): void
     {
         $model = new AngelType([
@@ -41,9 +45,6 @@ class AngelTypeTest extends ModelTest
         $this->assertEquals($expected, $model->hasContactInfo());
     }
 
-    /**
-     * @covers \Engelsystem\Models\AngelType::userAngelTypes
-     */
     public function testUserAngelTypes(): void
     {
         User::factory(2)->create();
@@ -64,9 +65,6 @@ class AngelTypeTest extends ModelTest
         $this->assertCount(2, $angeltypes);
     }
 
-    /**
-     * @covers \Engelsystem\Models\AngelType::shiftEntries
-     */
     public function testShiftEntries(): void
     {
         $angelType = AngelType::create(['name' => 'test type']);
@@ -77,9 +75,6 @@ class AngelTypeTest extends ModelTest
         $this->assertCount(3, $angelType->shiftEntries);
     }
 
-    /**
-     * @covers \Engelsystem\Models\AngelType::neededBy
-     */
     public function testNeededBy(): void
     {
         $angelType = AngelType::create(['name' => 'test type']);
@@ -92,9 +87,6 @@ class AngelTypeTest extends ModelTest
         $this->assertCount(4, $angelType->neededBy);
     }
 
-    /**
-     * @covers \Engelsystem\Models\AngelType::boot
-     */
     public function testBoot(): void
     {
         AngelType::factory()->create(['name' => 'foo']);

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Renderer\Twig\Extensions\Qr;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class QrTest extends ExtensionTest
+#[CoversMethod(Qr::class, 'getFunctions')]
+#[CoversMethod(Qr::class, 'getQr')]
+class QrTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Qr::getFunctions
-     */
     public function testGetGlobals(): void
     {
         $extension = new Qr();
@@ -19,9 +19,6 @@ class QrTest extends ExtensionTest
         $this->assertExtensionExists('qr', [$extension, 'getQr'], $functions, ['is_safe' => ['html']]);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Qr::getQr
-     */
     public function testGetQr(): void
     {
         $extension = new Qr();

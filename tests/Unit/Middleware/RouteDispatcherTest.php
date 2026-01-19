@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Middleware;
 use Engelsystem\Http\Request;
 use Engelsystem\Middleware\RouteDispatcher;
 use FastRoute\Dispatcher as FastRouteDispatcher;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -14,18 +15,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+#[CoversMethod(RouteDispatcher::class, '__construct')]
+#[CoversMethod(RouteDispatcher::class, 'process')]
 class RouteDispatcherTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\RouteDispatcher::__construct
-     * @covers \Engelsystem\Middleware\RouteDispatcher::process
-     */
     public function testProcess(): void
     {
-        /** @var FastRouteDispatcher|MockObject $dispatcher */
-        /** @var ResponseInterface|MockObject $response */
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var RequestHandlerInterface|MockObject $handler */
         list($dispatcher, $response, $request, $handler) = $this->getMocks();
 
         $dispatcher->expects($this->once())
@@ -33,15 +28,30 @@ class RouteDispatcherTest extends TestCase
             ->with('HEAD', '/foo!bar')
             ->willReturn([FastRouteDispatcher::FOUND, $handler, ['foo' => 'bar', 'lorem' => 'ipsum']]);
 
-        $request->expects($this->exactly(4))
-            ->method('withAttribute')
-            ->withConsecutive(
-                ['route-request-handler', $handler],
-                ['route-request-path', '/foo!bar'],
-                ['foo', 'bar'],
-                ['lorem', 'ipsum']
-            )
-            ->willReturn($request);
+        $response->expects($this->never())
+            ->method('withStatus');
+
+        $matcher = $this->exactly(4);
+        $request->expects($matcher)
+            ->method('withAttribute')->willReturnCallback(function (...$parameters) use ($matcher, $handler, $request) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('route-request-handler', $parameters[0]);
+                    $this->assertSame($handler, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('route-request-path', $parameters[0]);
+                    $this->assertSame('/foo!bar', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('foo', $parameters[0]);
+                    $this->assertSame('bar', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame('lorem', $parameters[0]);
+                    $this->assertSame('ipsum', $parameters[1]);
+                }
+                return $request;
+            });
 
         $handler->expects($this->once())
             ->method('handle')
@@ -53,17 +63,9 @@ class RouteDispatcherTest extends TestCase
         $this->assertEquals($response, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\RouteDispatcher::process
-     */
     public function testProcessNotFound(): void
     {
-        /** @var FastRouteDispatcher|MockObject $dispatcher */
-        /** @var ResponseInterface|MockObject $response */
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var RequestHandlerInterface|MockObject $handler */
         list($dispatcher, $response, $request, $handler) = $this->getMocks();
-        /** @var MiddlewareInterface|MockObject $notFound */
         $notFound = $this->createMock(MiddlewareInterface::class);
 
         $dispatcher->expects($this->exactly(2))
@@ -75,6 +77,9 @@ class RouteDispatcherTest extends TestCase
             ->method('withStatus')
             ->with(404)
             ->willReturn($response);
+
+        $handler->expects($this->never())
+            ->method('handle');
 
         $notFound->expects($this->once())
             ->method('process')
@@ -90,15 +95,8 @@ class RouteDispatcherTest extends TestCase
         $this->assertEquals($response, $return);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\RouteDispatcher::process
-     */
     public function testProcessNotAllowed(): void
     {
-        /** @var FastRouteDispatcher|MockObject $dispatcher */
-        /** @var ResponseInterface|MockObject $response */
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var RequestHandlerInterface|MockObject $handler */
         list($dispatcher, $response, $request, $handler) = $this->getMocks();
 
         $dispatcher->expects($this->once())
@@ -115,21 +113,28 @@ class RouteDispatcherTest extends TestCase
             ->with('Allow', 'POST, TEST')
             ->willReturn($response);
 
+        $handler->expects($this->never())
+            ->method('handle');
+
         $middleware = new RouteDispatcher($dispatcher, $response);
         $return = $middleware->process($request, $handler);
         $this->assertEquals($response, $return);
     }
 
+    /**
+     * @return array{
+     *     FastRouteDispatcher&MockObject,
+     *     ResponseInterface&MockObject,
+     *     ServerRequestInterface&MockObject,
+     *     RequestHandlerInterface&MockObject,
+     * }
+     */
     protected function getMocks(): array
     {
-        /** @var FastRouteDispatcher|MockObject $dispatcher */
-        $dispatcher = $this->getMockForAbstractClass(FastRouteDispatcher::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->getMockForAbstractClass(ResponseInterface::class);
-        /** @var ServerRequestInterface|MockObject $request */
+        $dispatcher = $this->getMockBuilder(FastRouteDispatcher::class)->getMock();
+        $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
         $request = $this->createMock(Request::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
 
         $request->expects($this->atLeastOnce())
             ->method('getMethod')

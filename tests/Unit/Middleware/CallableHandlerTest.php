@@ -8,31 +8,40 @@ use Engelsystem\Container\Container;
 use Engelsystem\Http\Response;
 use Engelsystem\Middleware\CallableHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\HasStaticMethod;
+use Engelsystem\Test\Utils\ClosureMock;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use stdClass;
 
+#[CoversMethod(CallableHandler::class, '__construct')]
+#[CoversMethod(CallableHandler::class, 'getCallable')]
+#[CoversMethod(CallableHandler::class, 'process')]
+#[CoversMethod(CallableHandler::class, 'handle')]
+#[CoversMethod(CallableHandler::class, 'execute')]
+#[AllowMockObjectsWithoutExpectations]
 class CallableHandlerTest extends TestCase
 {
-    public function provideCallable(): array
+    public static function provideCallable(): array
     {
         return [
             [function (): void {
             }],
-            [[$this, 'provideCallable']],
+            [[new class {
+                public function provideCallable(): void
+                {
+                }
+            }, 'provideCallable']],
             [[HasStaticMethod::class, 'foo']],
         ];
     }
 
-    /**
-     * @dataProvider provideCallable
-     * @covers       \Engelsystem\Middleware\CallableHandler::__construct
-     * @covers       \Engelsystem\Middleware\CallableHandler::getCallable
-     */
+    #[DataProvider('provideCallable')]
     public function testInit(callable $callable): void
     {
         $handler = new CallableHandler($callable);
@@ -40,15 +49,8 @@ class CallableHandlerTest extends TestCase
         $this->assertEquals($callable, $handler->getCallable());
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\CallableHandler::process
-     */
     public function testProcess(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var ResponseInterface|MockObject $response */
-        /** @var callable|MockObject $callable */
-        /** @var RequestHandlerInterface|MockObject $handler */
         list($request, $response, $callable, $handler) = $this->getMocks();
 
         $callable->expects($this->once())
@@ -60,14 +62,8 @@ class CallableHandlerTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\CallableHandler::handle
-     */
     public function testHandler(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var ResponseInterface|MockObject $response */
-        /** @var callable|MockObject $callable */
         list($request, $response, $callable) = $this->getMocks();
 
         $callable->expects($this->once())
@@ -79,16 +75,9 @@ class CallableHandlerTest extends TestCase
         $middleware->handle($request);
     }
 
-    /**
-     * @covers \Engelsystem\Middleware\CallableHandler::execute
-     */
     public function testExecute(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        /** @var Response|MockObject $response */
-        /** @var callable|MockObject $callable */
         list($request, $response, $callable) = $this->getMocks();
-        /** @var Container|MockObject $container */
         $container = $this->createMock(Container::class);
 
         $callable->expects($this->exactly(3))
@@ -120,18 +109,20 @@ class CallableHandlerTest extends TestCase
         $middleware->handle($request);
     }
 
+    /**
+     * @return array{
+     *     ServerRequestInterface&MockObject,
+     *     ResponseInterface&MockObject,
+     *     callable&MockObject,
+     *     RequestHandlerInterface&MockObject
+     * }
+     */
     protected function getMocks(): array
     {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
-        /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
-        /** @var Response|MockObject $response */
+        $request = $this->createMock(ServerRequestInterface::class);
+        $handler = $this->createMock(RequestHandlerInterface::class);
         $response = $this->createMock(Response::class);
-        /** @var callable|MockObject $callable */
-        $callable = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['__invoke'])
-            ->getMock();
+        $callable = $this->createPartialMock(ClosureMock::class, ['__invoke']);
         return [$request, $response, $callable, $handler];
     }
 }

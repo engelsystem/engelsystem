@@ -6,12 +6,11 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\Between;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
+#[CoversClass(Between::class)]
 class BetweenTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\Between
-     */
     public function testValidate(): void
     {
         $rule = new Between(3, 10);

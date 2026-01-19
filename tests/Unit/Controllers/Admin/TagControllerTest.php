@@ -9,14 +9,19 @@ use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\Tag;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class TagControllerTest extends ControllerTest
+#[CoversMethod(TagController::class, '__construct')]
+#[CoversMethod(TagController::class, 'list')]
+#[CoversMethod(TagController::class, 'edit')]
+#[CoversMethod(TagController::class, 'showEdit')]
+#[CoversMethod(TagController::class, 'save')]
+#[CoversMethod(TagController::class, 'delete')]
+#[AllowMockObjectsWithoutExpectations]
+class TagControllerTest extends ControllerTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Admin\TagController::__construct
-     * @covers \Engelsystem\Controllers\Admin\TagController::list
-     */
     public function testList(): void
     {
         /** @var TagController $controller */
@@ -35,10 +40,6 @@ class TagControllerTest extends ControllerTest
         $controller->list();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\TagController::edit
-     * @covers \Engelsystem\Controllers\Admin\TagController::showEdit
-     */
     public function testEdit(): void
     {
         $this->request->attributes->set('tag_id', 1);
@@ -58,9 +59,6 @@ class TagControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\TagController::save
-     */
     public function testSaveCreateInvalid(): void
     {
         /** @var TagController $controller */
@@ -71,9 +69,6 @@ class TagControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\TagController::save
-     */
     public function testSaveDuplicate(): void
     {
         $body = ['name' => 'Lorem'];
@@ -99,9 +94,6 @@ class TagControllerTest extends ControllerTest
         $this->assertCount(1, Tag::all());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\TagController::save
-     */
     public function testSaveCreateEdit(): void
     {
         $body = ['name' => 'Foo?'];
@@ -128,10 +120,6 @@ class TagControllerTest extends ControllerTest
         $this->assertTrue(Tag::whereName('Lorem')->get()->isNotEmpty());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\TagController::save
-     * @covers \Engelsystem\Controllers\Admin\TagController::delete
-     */
     public function testSaveDelete(): void
     {
         $this->request->attributes->set('tag_id', 1);

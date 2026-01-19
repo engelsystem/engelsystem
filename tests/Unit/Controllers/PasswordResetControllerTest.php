@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers;
 
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\PasswordResetController;
@@ -20,22 +19,27 @@ use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\HasDatabase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class PasswordResetControllerTest extends ControllerTest
+#[CoversMethod(PasswordResetController::class, 'reset')]
+#[CoversMethod(PasswordResetController::class, '__construct')]
+#[CoversMethod(PasswordResetController::class, 'postReset')]
+#[CoversMethod(PasswordResetController::class, 'resetPassword')]
+#[CoversMethod(PasswordResetController::class, 'requireToken')]
+#[CoversMethod(PasswordResetController::class, 'postResetPassword')]
+#[CoversMethod(PasswordResetController::class, 'showView')]
+#[AllowMockObjectsWithoutExpectations]
+class PasswordResetControllerTest extends ControllerTestCase
 {
-    use ArraySubsetAsserts;
     use HasDatabase;
 
     protected array $args = [];
 
-    /**
-     * @covers \Engelsystem\Controllers\PasswordResetController::reset
-     * @covers \Engelsystem\Controllers\PasswordResetController::__construct
-     */
     public function testReset(): void
     {
         $controller = $this->getController('pages/password/reset');
@@ -44,9 +48,6 @@ class PasswordResetControllerTest extends ControllerTest
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\PasswordResetController::postReset
-     */
     public function testPostReset(): void
     {
         $this->initDatabase();
@@ -59,7 +60,6 @@ class PasswordResetControllerTest extends ControllerTest
         );
         /** @var TestLogger $log */
         $log = $this->args['log'];
-        /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->args['mailer'];
         $this->setExpects($mailer, 'sendViewTranslated');
 
@@ -70,9 +70,6 @@ class PasswordResetControllerTest extends ControllerTest
         $this->assertHasNoNotifications();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\PasswordResetController::postReset
-     */
     public function testPostResetInvalidRequest(): void
     {
         $request = new Request();
@@ -83,9 +80,6 @@ class PasswordResetControllerTest extends ControllerTest
         $controller->postReset($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\PasswordResetController::postReset
-     */
     public function testPostResetNoUser(): void
     {
         $this->initDatabase();
@@ -100,10 +94,6 @@ class PasswordResetControllerTest extends ControllerTest
         $this->assertHasNoNotifications();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\PasswordResetController::resetPassword
-     * @covers \Engelsystem\Controllers\PasswordResetController::requireToken
-     */
     public function testResetPassword(): void
     {
         $this->initDatabase();
@@ -118,10 +108,6 @@ class PasswordResetControllerTest extends ControllerTest
         $controller->resetPassword($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\PasswordResetController::resetPassword
-     * @covers \Engelsystem\Controllers\PasswordResetController::requireToken
-     */
     public function testResetPasswordNoToken(): void
     {
         $this->initDatabase();
@@ -131,9 +117,6 @@ class PasswordResetControllerTest extends ControllerTest
         $controller->resetPassword(new Request());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\PasswordResetController::postResetPassword
-     */
     public function testPostResetPassword(): void
     {
         $this->initDatabase();
@@ -172,10 +155,6 @@ class PasswordResetControllerTest extends ControllerTest
         $this->assertCount(1, SessionModel::all()); // Another session should be still there
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\PasswordResetController::postResetPassword
-     * @covers \Engelsystem\Controllers\PasswordResetController::showView
-     */
     public function testPostResetPasswordNotMatching(): void
     {
         $this->initDatabase();
@@ -200,7 +179,6 @@ class PasswordResetControllerTest extends ControllerTest
     {
         $response = new Response();
         $session = new Session(new MockArraySessionStorage());
-        /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->createMock(EngelsystemMailer::class);
         $log = new TestLogger();
         $renderer = $this->createMock(Renderer::class);
@@ -225,9 +203,9 @@ class PasswordResetControllerTest extends ControllerTest
     {
         /** @var Response $response */
         /** @var Session $session */
-        /** @var EngelsystemMailer|MockObject $mailer */
+        /** @var EngelsystemMailer&MockObject $mailer */
         /** @var TestLogger $log */
-        /** @var Renderer|MockObject $renderer */
+        /** @var Renderer&MockObject $renderer */
         list($response, $session, $mailer, $log, $renderer) = array_values($this->getControllerArgs());
         $controller = new PasswordResetController($response, $session, $mailer, $log);
         $controller->setValidator(new Validator());
@@ -244,7 +222,11 @@ class PasswordResetControllerTest extends ControllerTest
                 ->willReturnCallback(function ($template, $data = []) use ($args) {
                     $this->assertEquals($args[0], $template);
                     if (isset($args[1])) {
-                        $this->assertArraySubset($args[1], $data);
+                        $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys(
+                            $args[1],
+                            $data,
+                            array_keys($args[1])
+                        );
                     }
 
                     return 'Foo';

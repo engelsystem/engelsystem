@@ -6,13 +6,11 @@ namespace Engelsystem\Test\Unit\Http\Validation\Rules;
 
 use Engelsystem\Http\Validation\Rules\DateTime;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(DateTime::class, '__construct')]
 class DateTimeTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Http\Validation\Rules\DateTime::__construct
-     * @covers \Engelsystem\Http\Validation\Rules\DateTime::validate
-     */
     public function testValidate(): void
     {
         $rule = new DateTime();

@@ -5,20 +5,18 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\TwigEngine;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment as Twig;
 use Twig\Loader\LoaderInterface as LoaderInterface;
 
+#[CoversMethod(TwigEngine::class, '__construct')]
+#[CoversMethod(TwigEngine::class, 'get')]
+#[CoversMethod(TwigEngine::class, 'canRender')]
 class TwigEngineTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\TwigEngine::__construct
-     * @covers \Engelsystem\Renderer\TwigEngine::get
-     */
     public function testGet(): void
     {
-        /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);
 
         $path = 'foo.twig';
@@ -35,15 +33,10 @@ class TwigEngineTest extends TestCase
     }
 
 
-    /**
-     * @covers \Engelsystem\Renderer\TwigEngine::canRender
-     */
     public function testCanRender(): void
     {
-        /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);
-        /** @var LoaderInterface|MockObject $loader */
-        $loader = $this->getMockForAbstractClass(LoaderInterface::class);
+        $loader = $this->getMockBuilder(LoaderInterface::class)->getMock();
 
         $path = 'foo.twig';
 

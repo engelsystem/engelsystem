@@ -11,36 +11,30 @@ use Engelsystem\Middleware\ExceptionHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ExceptionMiddlewareHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+#[CoversMethod(ExceptionHandler::class, '__construct')]
+#[CoversMethod(ExceptionHandler::class, 'process')]
 class ExceptionHandlerTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Middleware\ExceptionHandler::__construct
-     * @covers \Engelsystem\Middleware\ExceptionHandler::process
-     */
     public function testRegister(): void
     {
-        /** @var ContainerInterface|MockObject $container */
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
-        /** @var ResponseInterface|MockObject $response */
+        $container = $this->getStubBuilder(ContainerInterface::class)->getStub();
+        $request = $this->getStubBuilder(ServerRequestInterface::class)->getStub();
         $response = $this->getMockBuilder(Response::class)->getMock();
-        /** @var Handler|MockObject $errorHandler */
-        $errorHandler = $this->getMockBuilder(Handler::class)->getMock();
+        $errorHandler = $this->getStubBuilder(Handler::class)->getStub();
         $returnResponseHandler = new ReturnResponseMiddlewareHandler($response);
         $throwExceptionHandler = new ExceptionMiddlewareHandler();
 
         Application::setInstance($container);
 
-        $container->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(['error.handler'], ['psr7.response'])
-            ->willReturnOnConsecutiveCalls($errorHandler, $response);
+        $container->method('get')
+            ->willReturnMap([
+                ['error.handler', $errorHandler],
+                ['psr7.response', $response],
+            ]);
 
         $response->expects($this->once())
             ->method('withContent')

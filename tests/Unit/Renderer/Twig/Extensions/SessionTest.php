@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Renderer\Twig\Extensions\Session;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class SessionTest extends ExtensionTest
+#[CoversMethod(Session::class, '__construct')]
+#[CoversMethod(Session::class, 'getFunctions')]
+#[CoversMethod(Session::class, 'sessionPop')]
+class SessionTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Session::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Session::getFunctions
-     */
     public function testGetGlobals(): void
     {
         $session = new SymfonySession(new MockArraySessionStorage());
@@ -26,9 +26,6 @@ class SessionTest extends ExtensionTest
         $this->assertExtensionExists('session_pop', [$extension, 'sessionPop'], $functions);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Session::sessionPop
-     */
     public function testSessionPop(): void
     {
         $session = new SymfonySession(new MockArraySessionStorage());

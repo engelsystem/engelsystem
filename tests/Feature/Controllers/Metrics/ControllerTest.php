@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Feature\Controllers\Metrics;
 
 use Engelsystem\Controllers\Metrics\Controller;
-use Engelsystem\Test\Feature\ApplicationFeatureTest;
+use Engelsystem\Test\Feature\ApplicationFeatureTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class ControllerTest extends ApplicationFeatureTest
+#[CoversMethod(Controller::class, 'metrics')]
+class ControllerTest extends ApplicationFeatureTestCase
 {
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Controller::metrics
-     */
     public function testMetrics(): void
     {
         config([
@@ -20,7 +19,6 @@ class ControllerTest extends ApplicationFeatureTest
             'themes' => [1 => ['name' => 'Test']],
         ]);
 
-        /** @var Controller $controller */
         $controller = app()->make(Controller::class);
         $response = $controller->metrics();
 

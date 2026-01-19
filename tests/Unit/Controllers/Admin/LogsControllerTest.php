@@ -14,16 +14,15 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\LogLevel;
 
+#[CoversMethod(LogsController::class, 'index')]
+#[CoversMethod(LogsController::class, '__construct')]
 class LogsControllerTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LogsController::index
-     * @covers \Engelsystem\Controllers\Admin\LogsController::__construct
-     */
     public function testIndex(): void
     {
         $log = new LogEntry();
@@ -47,27 +46,34 @@ class LogsControllerTest extends TestCase
             LogLevel::NOTICE  => 'Notice',
             LogLevel::WARNING => 'Warning',
         ];
-        $response->expects($this->exactly(2))
+        $matcher = $this->exactly(2);
+        $response->expects($matcher)
             ->method('withView')
-            ->withConsecutive(
-                ['admin/log.twig', [
+            ->willReturnCallback(function (...$parameters) use ($matcher, $error, $alert, $levels, $response) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('admin/log.twig', $parameters[0]);
+                    $this->assertEquals([
                     'entries' => new Collection([$error, $alert]),
                     'search' => null,
                     'users' => new Collection(),
                     'search_user_id' => null,
                     'level' => null,
                     'levels' => $levels,
-                ]],
-                ['admin/log.twig', [
+                    ], $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('admin/log.twig', $parameters[0]);
+                    $this->assertEquals([
                     'entries' => new Collection([$error]),
                     'search' => 'error',
                     'users' => new Collection(),
                     'search_user_id' => null,
                     'level' => null,
                     'levels' => $levels,
-                ]]
-            )
-            ->willReturn($response);
+                    ], $parameters[1]);
+                }
+                return $response;
+            });
 
         $request = Request::create('/');
 
@@ -78,9 +84,6 @@ class LogsControllerTest extends TestCase
         $controller->index($request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LogsController::index
-     */
     public function testIndexUser(): void
     {
         User::factory()->create();

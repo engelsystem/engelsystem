@@ -13,15 +13,17 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(DatabaseHandler::class, '__construct')]
+#[CoversMethod(DatabaseHandler::class, 'read')]
+#[CoversMethod(DatabaseHandler::class, 'write')]
+#[CoversMethod(DatabaseHandler::class, 'destroy')]
+#[CoversMethod(DatabaseHandler::class, 'gc')]
 class DatabaseHandlerTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::__construct
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::read
-     */
     public function testRead(): void
     {
         $handler = new DatabaseHandler($this->database);
@@ -35,9 +37,6 @@ class DatabaseHandlerTest extends TestCase
         $this->assertEquals('Lorem Ipsum', $handler->read('id-foo'));
     }
 
-    /**
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::write
-     */
     public function testWrite(): void
     {
         $user = User::factory()->create();
@@ -71,9 +70,6 @@ class DatabaseHandlerTest extends TestCase
         }
     }
 
-    /**
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::write
-     */
     public function testWriteIgnoreUserErrors(): void
     {
         $auth = $this->createMock(Authenticator::class);
@@ -93,9 +89,6 @@ class DatabaseHandlerTest extends TestCase
         $this->assertNull($session->user_id);
     }
 
-    /**
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::destroy
-     */
     public function testDestroy(): void
     {
         $table = $this->database->getConnection()->table('sessions');
@@ -120,9 +113,6 @@ class DatabaseHandlerTest extends TestCase
         $this->assertEquals('id-foo', $return->id);
     }
 
-    /**
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::gc
-     */
     public function testGc(): void
     {
         $this->app->instance('config', new Config(['session' => ['lifetime' => 2]])); // 2 days

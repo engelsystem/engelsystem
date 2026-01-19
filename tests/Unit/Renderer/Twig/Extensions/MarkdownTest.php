@@ -6,12 +6,13 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use Engelsystem\Helpers\Markdown as MarkdownRenderer;
 use Engelsystem\Renderer\Twig\Extensions\Markdown;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class MarkdownTest extends ExtensionTest
+#[CoversMethod(Markdown::class, 'getFilters')]
+#[CoversMethod(Markdown::class, '__construct')]
+#[CoversMethod(Markdown::class, 'render')]
+class MarkdownTest extends ExtensionTestCase
 {
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::getFilters
-     */
     public function testGetFilters(): void
     {
         $extension = new Markdown(new MarkdownRenderer());
@@ -21,10 +22,6 @@ class MarkdownTest extends ExtensionTest
         $this->assertFilterExists('md', [$extension, 'render'], $filters);
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::__construct
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::render
-     */
     public function testRender(): void
     {
         $extension = new Markdown(new MarkdownRenderer());
@@ -40,9 +37,6 @@ class MarkdownTest extends ExtensionTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::render
-     */
     public function testRenderHtml(): void
     {
         $extension = new Markdown(new MarkdownRenderer());

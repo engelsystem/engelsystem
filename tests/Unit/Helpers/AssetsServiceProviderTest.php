@@ -7,13 +7,12 @@ namespace Engelsystem\Test\Unit\Helpers;
 use Engelsystem\Application;
 use Engelsystem\Helpers\Assets;
 use Engelsystem\Helpers\AssetsServiceProvider;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class AssetsServiceProviderTest extends ServiceProviderTest
+#[CoversMethod(AssetsServiceProvider::class, 'register')]
+class AssetsServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\AssetsServiceProvider::register
-     */
     public function testRegister(): void
     {
         $app = new Application();

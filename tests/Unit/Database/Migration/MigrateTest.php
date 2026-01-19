@@ -14,28 +14,31 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Migrate::class, '__construct')]
+#[CoversMethod(Migrate::class, 'getMigrations')]
+#[CoversMethod(Migrate::class, 'run')]
+#[CoversMethod(Migrate::class, 'setOutput')]
+#[CoversMethod(Migrate::class, 'mergeMigrations')]
+#[CoversMethod(Migrate::class, 'getMigrated')]
+#[CoversMethod(Migrate::class, 'getMigrationFiles')]
+#[CoversMethod(Migrate::class, 'getTableQuery')]
+#[CoversMethod(Migrate::class, 'initMigration')]
+#[CoversMethod(Migrate::class, 'migrate')]
+#[CoversMethod(Migrate::class, 'setMigrated')]
+#[CoversMethod(Migrate::class, 'lockTable')]
+#[CoversMethod(Migrate::class, 'unlockTable')]
 class MigrateTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Database\Migration\Migrate::__construct
-     * @covers \Engelsystem\Database\Migration\Migrate::getMigrations
-     * @covers \Engelsystem\Database\Migration\Migrate::run
-     * @covers \Engelsystem\Database\Migration\Migrate::setOutput
-     * @covers \Engelsystem\Database\Migration\Migrate::mergeMigrations
-     */
     public function testRun(): void
     {
-        /** @var Application|MockObject $app */
-        $app = $this->getMockBuilder(Application::class)
+        $app = $this->getStubBuilder(Application::class)
             ->onlyMethods(['instance'])
-            ->getMock();
-        /** @var SchemaBuilder|MockObject $builder */
-        $builder = $this->getMockBuilder(SchemaBuilder::class)
+            ->getStub();
+        $builder = $this->getStubBuilder(SchemaBuilder::class)
             ->disableOriginalConstructor()
-            ->getMock();
-        /** @var Migrate|MockObject $migration */
+            ->getStub();
         $migration = $this->getMockBuilder(Migrate::class)
             ->setConstructorArgs([$builder, $app])
             ->onlyMethods([
@@ -62,26 +65,68 @@ class MigrateTest extends TestCase
             ['id' => 1, 'migration' => '1234_01_23_123456_init_foo'],
             ['id' => 2, 'migration' => '4567_11_01_000000_do_stuff'],
         ]), $this->atLeastOnce());
-        $migration->expects($this->atLeastOnce())
-            ->method('migrate')
-            ->withConsecutive(
-                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Direction::UP],
-                ['foo/9999_99_99_999999_another_foo.php', '9999_99_99_999999_another_foo', Direction::UP],
-                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Direction::UP],
-                ['foo/9999_99_99_999999_another_foo.php', '9999_99_99_999999_another_foo', Direction::UP],
-                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Direction::UP],
-                ['foo/4567_11_01_000000_do_stuff.php', '4567_11_01_000000_do_stuff', Direction::DOWN]
-            );
-        $migration->expects($this->atLeastOnce())
-            ->method('setMigrated')
-            ->withConsecutive(
-                ['9876_03_22_210000_random_hack', Direction::UP],
-                ['9999_99_99_999999_another_foo', Direction::UP],
-                ['9876_03_22_210000_random_hack', Direction::UP],
-                ['9999_99_99_999999_another_foo', Direction::UP],
-                ['9876_03_22_210000_random_hack', Direction::UP],
-                ['4567_11_01_000000_do_stuff', Direction::DOWN]
-            );
+        $matcher = $this->atLeastOnce();
+        $migration->expects($matcher)
+            ->method('migrate')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('foo/9876_03_22_210000_random_hack.php', $parameters[0]);
+                    $this->assertSame('9876_03_22_210000_random_hack', $parameters[1]);
+                    $this->assertSame(Direction::UP, $parameters[2]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('foo/9999_99_99_999999_another_foo.php', $parameters[0]);
+                    $this->assertSame('9999_99_99_999999_another_foo', $parameters[1]);
+                    $this->assertSame(Direction::UP, $parameters[2]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('foo/9876_03_22_210000_random_hack.php', $parameters[0]);
+                    $this->assertSame('9876_03_22_210000_random_hack', $parameters[1]);
+                    $this->assertSame(Direction::UP, $parameters[2]);
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame('foo/9999_99_99_999999_another_foo.php', $parameters[0]);
+                    $this->assertSame('9999_99_99_999999_another_foo', $parameters[1]);
+                    $this->assertSame(Direction::UP, $parameters[2]);
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame('foo/9876_03_22_210000_random_hack.php', $parameters[0]);
+                    $this->assertSame('9876_03_22_210000_random_hack', $parameters[1]);
+                    $this->assertSame(Direction::UP, $parameters[2]);
+                }
+                if ($matcher->numberOfInvocations() === 6) {
+                    $this->assertSame('foo/4567_11_01_000000_do_stuff.php', $parameters[0]);
+                    $this->assertSame('4567_11_01_000000_do_stuff', $parameters[1]);
+                    $this->assertSame(Direction::DOWN, $parameters[2]);
+                }
+            });
+        $matcher = $this->atLeastOnce();
+        $migration->expects($matcher)
+            ->method('setMigrated')->willReturnCallback(function (...$parameters) use ($matcher): void {
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('9876_03_22_210000_random_hack', $parameters[0]);
+                    $this->assertSame(Direction::UP, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('9999_99_99_999999_another_foo', $parameters[0]);
+                    $this->assertSame(Direction::UP, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 3) {
+                    $this->assertSame('9876_03_22_210000_random_hack', $parameters[0]);
+                    $this->assertSame(Direction::UP, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 4) {
+                    $this->assertSame('9999_99_99_999999_another_foo', $parameters[0]);
+                    $this->assertSame(Direction::UP, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 5) {
+                    $this->assertSame('9876_03_22_210000_random_hack', $parameters[0]);
+                    $this->assertSame(Direction::UP, $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 6) {
+                    $this->assertSame('4567_11_01_000000_do_stuff', $parameters[0]);
+                    $this->assertSame(Direction::DOWN, $parameters[1]);
+                }
+            });
         $this->setExpects($migration, 'lockTable', null, null, $this->atLeastOnce());
         $this->setExpects($migration, 'unlockTable', null, null, $this->atLeastOnce());
 
@@ -123,20 +168,14 @@ class MigrateTest extends TestCase
         $migration->run('foo', Direction::DOWN, true);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Migration\Migrate::run
-     */
     public function testRunExceptionUnlockTable(): void
     {
-        /** @var Application|MockObject $app */
-        $app = $this->getMockBuilder(Application::class)
+        $app = $this->getStubBuilder(Application::class)
             ->onlyMethods(['instance'])
-            ->getMock();
-        /** @var SchemaBuilder|MockObject $builder */
-        $builder = $this->getMockBuilder(SchemaBuilder::class)
+            ->getStub();
+        $builder = $this->getStubBuilder(SchemaBuilder::class)
             ->disableOriginalConstructor()
-            ->getMock();
-        /** @var Migrate|MockObject $migration */
+            ->getStub();
         $migration = $this->getMockBuilder(Migrate::class)
             ->setConstructorArgs([$builder, $app])
             ->onlyMethods([
@@ -166,16 +205,6 @@ class MigrateTest extends TestCase
         $migration->run('');
     }
 
-    /**
-     * @covers \Engelsystem\Database\Migration\Migrate::getMigrated
-     * @covers \Engelsystem\Database\Migration\Migrate::getMigrationFiles
-     * @covers \Engelsystem\Database\Migration\Migrate::getTableQuery
-     * @covers \Engelsystem\Database\Migration\Migrate::initMigration
-     * @covers \Engelsystem\Database\Migration\Migrate::migrate
-     * @covers \Engelsystem\Database\Migration\Migrate::setMigrated
-     * @covers \Engelsystem\Database\Migration\Migrate::lockTable
-     * @covers \Engelsystem\Database\Migration\Migrate::unlockTable
-     */
     public function testRunIntegration(): void
     {
         $app = new Application();
@@ -223,9 +252,6 @@ class MigrateTest extends TestCase
         $migration->run(__DIR__ . '/Stub', Direction::UP);
     }
 
-    /**
-     * @covers \Engelsystem\Database\Migration\Migrate::run
-     */
     public function testRunPrune(): void
     {
         $dbManager = new CapsuleManager($this->app);

@@ -6,14 +6,13 @@ namespace Engelsystem\Test\Unit\Helpers;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Version;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class VersionTest extends ServiceProviderTest
+#[CoversMethod(Version::class, '__construct')]
+#[CoversMethod(Version::class, 'getVersion')]
+class VersionTest extends ServiceProviderTestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Version::__construct
-     * @covers \Engelsystem\Helpers\Version::getVersion
-     */
     public function testGetVersion(): void
     {
         $config = new Config();

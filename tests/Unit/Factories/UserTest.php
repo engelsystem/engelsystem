@@ -14,8 +14,9 @@ use Engelsystem\Http\Request;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User as UserModel;
 use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use Engelsystem\Test\Utils\SignUpConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -23,7 +24,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class UserTest extends ServiceProviderTest
+#[CoversClass(User::class)]
+class UserTest extends ServiceProviderTestCase
 {
     use HasDatabase;
 
@@ -65,8 +67,6 @@ class UserTest extends ServiceProviderTest
 
     /**
      * Minimal config with empty data.
-     *
-     * @covers \Engelsystem\Factories\User
      */
     public function testMinimumConfigEmpty(): void
     {
@@ -96,8 +96,6 @@ class UserTest extends ServiceProviderTest
 
     /**
      * Minimal config with valid data.
-     *
-     * @covers \Engelsystem\Factories\User
      */
     public function testMinimumConfigCreate(): void
     {
@@ -118,8 +116,6 @@ class UserTest extends ServiceProviderTest
 
     /**
      * Maximum config with empty data.
-     *
-     * @covers \Engelsystem\Factories\User
      */
     public function testMaximumConfigEmpty(): void
     {
@@ -158,8 +154,6 @@ class UserTest extends ServiceProviderTest
 
     /**
      * Maximum config with invalid data.
-     *
-     * @covers \Engelsystem\Factories\User
      */
     public function testMaximumConfigInvalid(): void
     {
@@ -218,8 +212,6 @@ class UserTest extends ServiceProviderTest
 
     /**
      * Minimal config with valid data.
-     *
-     * @covers \Engelsystem\Factories\User
      */
     public function testMaximumConfigCreate(): void
     {
@@ -251,9 +243,6 @@ class UserTest extends ServiceProviderTest
         $this->assertTrue($user->settings->email_news);
     }
 
-    /**
-     * @covers \Engelsystem\Factories\User
-     */
     public function testPasswordDoesNotMatchConfirmation(): void
     {
         SignUpConfig::setMinimumConfig($this->config);
@@ -273,9 +262,6 @@ class UserTest extends ServiceProviderTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Factories\User
-     */
     public function testUsernameAlreadyTaken(): void
     {
         SignUpConfig::setMinimumConfig($this->config);
@@ -296,9 +282,6 @@ class UserTest extends ServiceProviderTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Factories\User
-     */
     public function testEmailAlreadyTaken(): void
     {
         SignUpConfig::setMinimumConfig($this->config);
@@ -319,9 +302,6 @@ class UserTest extends ServiceProviderTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Factories\User
-     */
     public function testAngelTypeAssignment(): void
     {
         $angelTypes = $this->createAngelTypes();
@@ -349,9 +329,6 @@ class UserTest extends ServiceProviderTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Factories\User
-     */
     public function testDisablePasswortViaOAuth(): void
     {
         SignUpConfig::setMinimumConfig($this->config);
@@ -370,9 +347,6 @@ class UserTest extends ServiceProviderTest
         $this->assertTrue(password_verify('s3cret', $user->password));
     }
 
-    /**
-     * @covers \Engelsystem\Factories\User
-     */
     public function testAutoArrive(): void
     {
         SignUpConfig::setMinimumConfig($this->config);
@@ -397,8 +371,6 @@ class UserTest extends ServiceProviderTest
 
     /**
      * Covers the case where both, build-up and tear-down dates are configured.
-     *
-     * @covers \Engelsystem\Factories\User
      */
     public function testBuildUpAndTearDownDates(): void
     {
@@ -423,9 +395,6 @@ class UserTest extends ServiceProviderTest
         );
     }
 
-    /**
-     * @covers \Engelsystem\Factories\User
-     */
     public function testOAuth(): void
     {
         SignUpConfig::setMinimumConfig($this->config);

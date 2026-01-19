@@ -8,12 +8,13 @@ use Engelsystem\Helpers\Uuid;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversMethod(Uuid::class, 'uuid')]
+#[CoversMethod(Uuid::class, 'uuidBy')]
 class UuidTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Uuid::uuid
-     */
     public function testUuid(): void
     {
         $uuid = new Uuid();
@@ -22,7 +23,7 @@ class UuidTest extends TestCase
         $this->checkUuid4Format($result);
     }
 
-    public function generateUuidBy(): array
+    public static function generateUuidBy(): array
     {
         return [
             [42, 'a1d0c6e8-3f02-4327-9846-1063f4ac58a6'],
@@ -33,10 +34,7 @@ class UuidTest extends TestCase
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Helpers\Uuid::uuidBy
-     * @dataProvider generateUuidBy
-     */
+    #[DataProvider('generateUuidBy')]
     public function testUuidBy(mixed $value, string $expected): void
     {
         $uuid = new Uuid();
@@ -46,7 +44,7 @@ class UuidTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function generateUuidByNumbers(): array
+    public static function generateUuidByNumbers(): array
     {
         $numbers = [];
         foreach (range(0, 10) as $number) {
@@ -56,10 +54,7 @@ class UuidTest extends TestCase
         return $numbers;
     }
 
-    /**
-     * @covers       \Engelsystem\Helpers\Uuid::uuidBy
-     * @dataProvider generateUuidByNumbers
-     */
+    #[DataProvider('generateUuidByNumbers')]
     public function testUuidByNumbers(mixed $value): void
     {
         $uuid = new Uuid();
@@ -68,7 +63,7 @@ class UuidTest extends TestCase
         $this->checkUuid4Format($result);
     }
 
-    public function generateUuidByNamed(): array
+    public static function generateUuidByNamed(): array
     {
         return [
             ['42', 42, '42a1d0c6-e83f-4273-a7d8-461063f4ac58'],
@@ -81,10 +76,7 @@ class UuidTest extends TestCase
         ];
     }
 
-    /**
-     * @covers       \Engelsystem\Helpers\Uuid::uuidBy
-     * @dataProvider generateUuidByNamed
-     */
+    #[DataProvider('generateUuidByNamed')]
     public function testUuidByNamed(string $name, mixed $value, string $expected): void
     {
         $uuid = new Uuid();
@@ -94,9 +86,6 @@ class UuidTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Uuid::uuidBy
-     */
     public function testUuidByNamedTooLong(): void
     {
         $uuid = new Uuid();
@@ -106,9 +95,6 @@ class UuidTest extends TestCase
         $uuid->uuidBy('', '111111111111111111111');
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\Uuid::uuidBy
-     */
     public function testUuidByNamedNotHex(): void
     {
         $uuid = new Uuid();

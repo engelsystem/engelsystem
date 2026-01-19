@@ -8,17 +8,16 @@ use Carbon\Carbon;
 use Engelsystem\Helpers\Schedule\Day;
 use Engelsystem\Helpers\Schedule\Room;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Day::class, '__construct')]
+#[CoversMethod(Day::class, 'getDate')]
+#[CoversMethod(Day::class, 'getStart')]
+#[CoversMethod(Day::class, 'getEnd')]
+#[CoversMethod(Day::class, 'getIndex')]
+#[CoversMethod(Day::class, 'getRooms')]
 class DayTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Day::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Day::getDate
-     * @covers \Engelsystem\Helpers\Schedule\Day::getStart
-     * @covers \Engelsystem\Helpers\Schedule\Day::getEnd
-     * @covers \Engelsystem\Helpers\Schedule\Day::getIndex
-     * @covers \Engelsystem\Helpers\Schedule\Day::getRooms
-     */
     public function testCreate(): void
     {
         $day = new Day(

@@ -14,18 +14,17 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
-use Engelsystem\Test\Feature\ApplicationFeatureTest;
+use Engelsystem\Test\Feature\ApplicationFeatureTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class GoodieTest extends ApplicationFeatureTest
+#[CoversMethod(Goodie::class, 'userScore')]
+#[CoversMethod(Goodie::class, 'shiftScoreQuery')]
+#[CoversMethod(Goodie::class, 'worklogScoreQuery')]
+class GoodieTest extends ApplicationFeatureTestCase
 {
     /** @var BaseModel[] */
     protected array $createdModels = [];
 
-    /**
-     * @covers \Engelsystem\Helpers\Goodie::userScore
-     * @covers \Engelsystem\Helpers\Goodie::shiftScoreQuery
-     * @covers \Engelsystem\Helpers\Goodie::worklogScoreQuery
-     */
     public function testUserScoreNightShift(): void
     {
         $user = new User(['name' => 'gn8', 'email' => 'g@n.8', 'password' => '', 'api_key' => '']);

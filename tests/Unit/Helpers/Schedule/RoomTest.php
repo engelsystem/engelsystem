@@ -8,15 +8,15 @@ use Engelsystem\Helpers\Schedule\Event;
 use Engelsystem\Helpers\Schedule\Room;
 use Engelsystem\Helpers\Uuid;
 use Engelsystem\Test\Unit\TestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Room::class, '__construct')]
+#[CoversMethod(Room::class, 'getName')]
+#[CoversMethod(Room::class, 'getEvents')]
+#[CoversMethod(Room::class, 'getGuid')]
+#[CoversMethod(Room::class, 'setEvents')]
 class RoomTest extends TestCase
 {
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Room::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Room::getName
-     * @covers \Engelsystem\Helpers\Schedule\Room::getEvents
-     * @covers \Engelsystem\Helpers\Schedule\Room::getGuid
-     */
     public function testCreateDefault(): void
     {
         $room = new Room('Test');
@@ -24,18 +24,11 @@ class RoomTest extends TestCase
         $this->assertEquals([], $room->getEvents());
         $this->assertNull($room->getGuid());
     }
-    /**
-     * @covers \Engelsystem\Helpers\Schedule\Room::__construct
-     * @covers \Engelsystem\Helpers\Schedule\Room::getName
-     * @covers \Engelsystem\Helpers\Schedule\Room::getEvents
-     * @covers \Engelsystem\Helpers\Schedule\Room::setEvents
-     * @covers \Engelsystem\Helpers\Schedule\Room::getGuid
-     */
     public function testCreate(): void
     {
         $uuid = Uuid::uuid();
-        $events = [$this->createMock(Event::class), $this->createMock(Event::class)];
-        $events2 = [$this->createMock(Event::class)];
+        $events = [$this->createStub(Event::class), $this->createStub(Event::class)];
+        $events2 = [$this->createStub(Event::class)];
         $room = new Room('Test2', $uuid, $events);
         $this->assertEquals($events, $room->getEvents());
         $this->assertEquals($uuid, $room->getGuid());

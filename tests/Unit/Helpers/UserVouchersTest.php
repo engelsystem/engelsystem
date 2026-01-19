@@ -10,9 +10,14 @@ use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class UserVouchersTest extends ControllerTest
+#[CoversMethod(UserVouchers::class, 'eligibleVoucherCount')]
+#[AllowMockObjectsWithoutExpectations]
+class UserVouchersTest extends ControllerTestCase
 {
     private User $user;
 
@@ -107,7 +112,7 @@ class UserVouchersTest extends ControllerTest
     /**
      * @return Array<string, array>
      */
-    public function provideTestData(): array
+    public static function provideTestData(): array
     {
         return [
             // settings, userId, got_voucher, expected vouchers
@@ -121,10 +126,7 @@ class UserVouchersTest extends ControllerTest
         ];
     }
 
-    /**
-     * @dataProvider provideTestData
-     * @covers \Engelsystem\Helpers\UserVouchers::eligibleVoucherCount
-     */
+    #[DataProvider('provideTestData')]
     public function testEligibleVoucherCount(
         array | null $voucherSettings,
         int $userId,
@@ -145,9 +147,6 @@ class UserVouchersTest extends ControllerTest
         $this->assertEquals($expected, UserVouchers::eligibleVoucherCount($user));
     }
 
-    /**
-     * @covers \Engelsystem\Helpers\UserVouchers::eligibleVoucherCount
-     */
     public function testUserVouchersWithVouchersDisabled(): void
     {
         $this->config->set('enable_voucher', false);

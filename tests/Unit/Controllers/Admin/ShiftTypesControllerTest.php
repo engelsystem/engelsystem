@@ -17,17 +17,22 @@ use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\Controllers\ControllerTest;
+use Engelsystem\Test\Unit\Controllers\ControllerTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ShiftTypesControllerTest extends ControllerTest
+#[CoversMethod(ShiftTypesController::class, '__construct')]
+#[CoversMethod(ShiftTypesController::class, 'index')]
+#[CoversMethod(ShiftTypesController::class, 'view')]
+#[CoversMethod(ShiftTypesController::class, 'edit')]
+#[CoversMethod(ShiftTypesController::class, 'save')]
+#[CoversMethod(ShiftTypesController::class, 'delete')]
+#[AllowMockObjectsWithoutExpectations]
+class ShiftTypesControllerTest extends ControllerTestCase
 {
-    protected Redirector|MockObject $redirect;
+    protected Redirector&MockObject $redirect;
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::__construct
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::index
-     */
     public function testIndex(): void
     {
         /** @var ShiftTypesController $controller */
@@ -46,9 +51,6 @@ class ShiftTypesControllerTest extends ControllerTest
         $controller->index();
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::view
-     */
     public function testView(): void
     {
         /** @var ShiftTypesController $controller */
@@ -87,9 +89,6 @@ class ShiftTypesControllerTest extends ControllerTest
         $controller->view(new Request([], [], ['shift_type_id' => $shiftType->id]));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::edit
-     */
     public function testEdit(): void
     {
         /** @var ShiftTypesController $controller */
@@ -113,9 +112,6 @@ class ShiftTypesControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::edit
-     */
     public function testEditNew(): void
     {
         /** @var ShiftTypesController $controller */
@@ -134,9 +130,6 @@ class ShiftTypesControllerTest extends ControllerTest
         $controller->edit($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::save
-     */
     public function testSave(): void
     {
         $angelType = AngelType::factory(2)->create()->first();
@@ -165,9 +158,6 @@ class ShiftTypesControllerTest extends ControllerTest
         $this->assertCount(1, ShiftType::first()->neededAngelTypes);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::save
-     */
     public function testSaveUniqueName(): void
     {
         /** @var ShiftTypesController $controller */
@@ -183,10 +173,6 @@ class ShiftTypesControllerTest extends ControllerTest
         $controller->save($this->request);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::save
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::delete
-     */
     public function testSaveDelete(): void
     {
         /** @var ShiftTypesController $controller */
@@ -204,12 +190,8 @@ class ShiftTypesControllerTest extends ControllerTest
         $this->assertEmpty(ShiftType::find($shifttype->id));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ShiftTypesController::delete
-     */
     public function testDelete(): void
     {
-        /** @var EventDispatcher|MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance('events.dispatcher', $dispatcher);
         /** @var ShiftTypesController $controller */

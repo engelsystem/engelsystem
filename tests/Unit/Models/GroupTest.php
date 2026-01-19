@@ -7,12 +7,12 @@ namespace Engelsystem\Test\Unit\Models;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\User\User;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-class GroupTest extends ModelTest
+#[CoversMethod(Group::class, 'privileges')]
+#[CoversMethod(Group::class, 'users')]
+class GroupTest extends ModelTestCase
 {
-    /**
-     * @covers \Engelsystem\Models\Group::privileges
-     */
     public function testPrivileges(): void
     {
         /** @var Privilege $privilege1 */
@@ -34,9 +34,6 @@ class GroupTest extends ModelTest
         $this->assertEquals($privilege2->name, $savedModel->privileges[1]->name);
     }
 
-    /**
-     * @covers \Engelsystem\Models\Group::users
-     */
     public function testUsers(): void
     {
         /** @var User $user1 */
