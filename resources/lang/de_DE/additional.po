@@ -580,6 +580,9 @@ msgstr "System"
 msgid "config.app_name"
 msgstr "Anwendungsname (Nicht Eventname)"
 
+msgid "config.app_name.info"
+msgstr "Passt den Applikationsnamen des Engelsystems an"
+
 msgid "config.locales"
 msgstr "Sprachen"
 
@@ -696,7 +699,7 @@ msgid "config.password_min_length"
 msgstr "Minimale Passwortlänge"
 
 msgid "config.enable_password"
-msgstr "Passwort"
+msgstr "Passwortangabe bei Registrierung und Login"
 
 msgid "config.enable_password.info"
 msgstr ""
@@ -717,6 +720,11 @@ msgstr "URL und Pfad der Installation, überschreibt die automatisch detektion"
 
 msgid "config.api_key"
 msgstr "API Key für /metrics"
+
+msgid "config.api_key.info"
+msgstr ""
+"Der API Key wird verwendet, um den Zugriff auf /metrics einzugrenzen. "
+"Er hat keine Längen- oder Zeichenbeschränkung und muss als api_key parameter im der HTTP Anfrage übergeben werden."
 
 msgid "config.session.driver"
 msgstr "Session speicher"
