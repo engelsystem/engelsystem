@@ -507,7 +507,7 @@ msgid "config.last_unsubscribe"
 msgstr "Last unsubscribe"
 
 msgid "config.last_unsubscribe.info"
-msgstr "Number of hours that a user can sign out of their own shifts beforehand"
+msgstr "Minimum hours before a shift starts where a user can still sign out of their own shifts"
 
 msgid "config.max_freeloadable_shifts"
 msgstr "Maximum freeloadable shifts"
@@ -573,6 +573,9 @@ msgstr "System"
 
 msgid "config.app_name"
 msgstr "Application name (not event name)"
+
+msgid "config.app_name.info"
+msgstr "Customizes the application name displayed throughout the interface"
 
 msgid "config.locales"
 msgstr "Languages"
@@ -688,7 +691,7 @@ msgid "config.password_min_length"
 msgstr "Minimum password length"
 
 msgid "config.enable_password"
-msgstr "Password"
+msgstr "Use password for registration and login"
 
 msgid "config.enable_password.info"
 msgstr ""
@@ -709,6 +712,12 @@ msgstr "URL and base path to use instead of the auto-detected one"
 
 msgid "config.api_key"
 msgstr "API key for /metrics"
+
+msgid "config.api_key.info"
+msgstr ""
+"The API key is used to protect access to the Engelsystem /metrics endpoint. "
+"It has no restrictions on length or character classes and must be included in the HTTP request "
+"as the request parameter api_key."
 
 msgid "config.session.driver"
 msgstr "Session storage"
@@ -738,13 +747,13 @@ msgid "config.maintenance"
 msgstr "Maintenance mode"
 
 msgid "config.maintenance.info"
-msgstr "Shows a static page to all requests"
+msgstr "If enabled it takes the Engelsystem offline for maintenance and shows a static page to all requests"
 
 msgid "config.environment"
 msgstr "Environment"
 
 msgid "config.environment.info"
-msgstr "Set to \"development\" to enable debugging messages"
+msgstr "Use \"development\" to enable debugging messages (Might show sensitive content like passwords on requests!)"
 
 msgid "config.header_items"
 msgstr "Header menu links"
