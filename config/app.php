@@ -266,6 +266,10 @@ return [
                     'type' => 'boolean',
                     'default' => true,
                 ],
+                'shift_view.enable_compact_view' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
             ],
         ],
 
