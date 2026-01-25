@@ -282,6 +282,10 @@ return [
                     'type' => 'boolean',
                     'default' => false,
                 ],
+                'shift_view.enable_date_lane' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
             ],
         ],
 
