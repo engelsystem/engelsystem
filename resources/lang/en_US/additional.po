@@ -468,6 +468,12 @@ msgstr "Join QR code"
 msgid "config.join_qr_code.info"
 msgstr "Allow joining an angel type via generated QR code, requires app_key"
 
+msgid "config.shift_view.enable_compact_view"
+msgstr "Compact shift view"
+
+msgid "config.shift_view.enable_compact_view.info"
+msgstr "Limits the shift calendar to times with shifts."
+
 msgid "config.certificates"
 msgstr "Certificates"
 
