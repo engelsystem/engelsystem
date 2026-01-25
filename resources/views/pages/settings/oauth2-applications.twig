@@ -1,0 +1,72 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('oauth2.applications.title') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                {% include 'pages/settings/partials/menu.twig' %}
+            </div>
+            <div class="col-md-9">
+                <h1>{{ block('title') }}</h1>
+
+                {% include 'layouts/parts/messages.twig' %}
+
+                <p class="text-muted">{{ __('oauth2.applications.description') }}</p>
+
+                {% if applications is empty %}
+                    {{ m.alert(__('oauth2.applications.none'), 'info') }}
+                {% else %}
+                    <div class="list-group">
+                        {% for app in applications %}
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between align-items-start">
+                                    <div>
+                                        <h5 class="mb-1">{{ app.client.name }}</h5>
+                                        <p class="mb-1 text-muted small">
+                                            {{ __('oauth2.applications.authorized') }}:
+                                            {{ app.last_used|date(__('Y-m-d H:i')) }}
+                                        </p>
+                                        {% if app.scopes %}
+                                            <p class="mb-1">
+                                                <strong>{{ __('oauth2.applications.permissions') }}:</strong>
+                                                {% for scope in app.scopes %}
+                                                    <span class="badge bg-secondary">
+                                                        {% if scope == 'openid' %}
+                                                            {{ __('oauth2.scope.openid') }}
+                                                        {% elseif scope == 'profile' %}
+                                                            {{ __('oauth2.scope.profile') }}
+                                                        {% elseif scope == 'email' %}
+                                                            {{ __('oauth2.scope.email') }}
+                                                        {% elseif scope == 'angeltypes' %}
+                                                            {{ __('oauth2.scope.angeltypes') }}
+                                                        {% elseif scope == 'groups' %}
+                                                            {{ __('oauth2.scope.groups') }}
+                                                        {% else %}
+                                                            {{ scope }}
+                                                        {% endif %}
+                                                    </span>
+                                                {% endfor %}
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                    <form method="post" action="{{ url('/settings/oauth2-applications/revoke') }}">
+                                        {{ csrf() }}
+                                        {{ f.hidden('client_id', app.client.id) }}
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                onclick="return confirm('{{ __('oauth2.applications.revoke.confirm', [app.client.name|e]) }}')">
+                                            {{ m.icon('x-circle') }} {{ __('oauth2.applications.revoke') }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
