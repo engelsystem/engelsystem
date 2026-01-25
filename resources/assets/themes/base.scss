@@ -286,6 +286,17 @@ table.table-sticky-header thead {
       padding: 5px 5px 5px 16px;
     }
 
+    .dow {
+      border-top: 2px solid $primary;
+      writing-mode: sideways-lr;
+      text-align: center;
+      font-size: x-large;
+    }
+
+    .dow.today {
+      background: lighten($table-striped-bg, 25%);
+    }
+
     .tick {
       height: 30px;
       border-top: 1px solid darken($table-striped-bg, 2%);
@@ -308,6 +319,17 @@ table.table-sticky-header thead {
     .tick.now {
       border-top: 2px solid $info;
     }
+  }
+
+  .lane.date {
+    position: sticky;
+    left: 0;
+    z-index: $zindex-sticky + 1;
+    border-right: 1px solid $table-border-color;
+    min-width: max-content;
+    width: max-content;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 
   .lane.time {

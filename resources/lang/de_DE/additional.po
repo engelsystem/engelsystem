@@ -475,6 +475,12 @@ msgstr "Kompakter Schichtkalender"
 msgid "config.shift_view.enable_compact_view.info"
 msgstr "Versteckt Zeiten im Schichtkalender, zu denen keine Schichten konfiguriert sind."
 
+msgid "config.shift_view.enable_date_lane"
+msgstr "Dedizierte Datumsspalte im Schichtkalender"
+
+msgid "config.shift_view.enable_date_lane.info"
+msgstr "Zeigt zusätzlich Datum und Tag der Woche an."
+
 msgid "config.certificates"
 msgstr "Zertifikate"
 
@@ -761,3 +767,24 @@ msgstr "Anzahl Sekunden die bei externen Anfragen gewartet wird, zum Beispiel be
 
 msgid "config.warning_logout"
 msgstr "Änderungen führen zum logout aller Benutzer!"
+
+msgid "Monday"
+msgstr "Montag"
+
+msgid "Tuesday"
+msgstr "Dienstag"
+
+msgid "Wednesday"
+msgstr "Mittwoch"
+
+msgid "Thursday"
+msgstr "Donnerstag"
+
+msgid "Friday"
+msgstr "Freitag"
+
+msgid "Saturday"
+msgstr "Samstag"
+
+msgid "Sunday"
+msgstr "Sonntag"

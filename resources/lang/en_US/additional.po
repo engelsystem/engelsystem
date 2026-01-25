@@ -474,6 +474,12 @@ msgstr "Compact shift view"
 msgid "config.shift_view.enable_compact_view.info"
 msgstr "Limits the shift calendar to times with shifts."
 
+msgid "config.shift_view.enable_date_lane"
+msgstr "Dedicated date lane in the shift calendar"
+
+msgid "config.shift_view.enable_date_lane.info"
+msgstr "Shows a date and day of week in an additional lane."
+
 msgid "config.certificates"
 msgstr "Certificates"
 
@@ -864,3 +870,24 @@ msgstr "/metrics buckets"
 
 msgid "config.var_dump_server"
 msgstr "var_dump server"
+
+msgid "Monday"
+msgstr "Monday"
+
+msgid "Tuesday"
+msgstr "Tuesday"
+
+msgid "Wednesday"
+msgstr "Wednesday"
+
+msgid "Thursday"
+msgstr "Thursday"
+
+msgid "Friday"
+msgstr "Friday"
+
+msgid "Saturday"
+msgstr "Saturday"
+
+msgid "Sunday"
+msgstr "Sunday"
