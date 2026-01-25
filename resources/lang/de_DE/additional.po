@@ -469,6 +469,12 @@ msgstr "Beitreten QR Code"
 msgid "config.join_qr_code.info"
 msgstr "Erlaubt das beitreten zu einem Engeltypen mit einem QR Code, benötigt app_key"
 
+msgid "config.shift_view.enable_compact_view"
+msgstr "Kompakter Schichtkalender"
+
+msgid "config.shift_view.enable_compact_view.info"
+msgstr "Versteckt Zeiten im Schichtkalender, zu denen keine Schichten konfiguriert sind."
+
 msgid "config.certificates"
 msgstr "Zertifikate"
 
