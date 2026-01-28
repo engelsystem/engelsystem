@@ -15,9 +15,13 @@ class CarbonTest extends TestCase
     {
         $format = '!Y-m-d H:i';
         yield '2022-04-16T10:44' => ['2022-04-16T10:44', Carbon::createFromFormat($format, '2022-04-16 10:44')];
-        yield '2022-04-16 10:44' => ['2022-04-16T10:44', Carbon::createFromFormat($format, '2022-04-16 10:44')];
+        yield '2022-04-16 10:44' => ['2022-04-16 10:44', Carbon::createFromFormat($format, '2022-04-16 10:44')];
         yield '2020-12-24T13:37' => ['2020-12-24T13:37', Carbon::createFromFormat($format, '2020-12-24 13:37')];
-        yield '2020-12-24 13:37' => ['2020-12-24T13:37', Carbon::createFromFormat($format, '2020-12-24 13:37')];
+        yield '2020-12-24 13:37' => ['2020-12-24 13:37', Carbon::createFromFormat($format, '2020-12-24 13:37')];
+        yield '2020-12-25T09:34:49.987654Z (Database Zulu time)' => [
+            '2020-12-25T09:34:49.987654Z',
+            Carbon::createFromFormat($format . ':s', '2020-12-25 09:34:49'),
+        ];
     }
 
     public function invalidDates(): Traversable
