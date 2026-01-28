@@ -23,7 +23,7 @@ class ConfigServiceProvider extends ServiceProvider
 {
     protected array $configFiles = ['app.php', 'config.default.php', 'config.local.php', 'config.php'];
 
-    // Remember to update ConfigServiceProviderTest, config.default.php, and README.md
+    // Remember to update ConfigServiceProviderTest
     protected array $configVarsToPruneNulls = [
         'themes',
         'tshirt_sizes',
@@ -203,6 +203,7 @@ class ConfigServiceProvider extends ServiceProvider
                 $value = match ($options['type'] ?? null) {
                     'datetime-local' => $value && !$value instanceof CarbonCarbon
                         ? Carbon::createFromDatetime((string) $value)
+                            ->setTimezone($config['timezone'] ?? 'UTC')
                         : $value,
                     'date' => $value && !$value instanceof CarbonCarbon
                         ? CarbonDay::createFromDay((string) $value)

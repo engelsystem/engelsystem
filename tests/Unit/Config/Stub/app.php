@@ -42,7 +42,7 @@ return [
             'config' => [
                 'timezone' => [
                     'data' => [],
-                    'default' => 'Test/Testing',
+                    'default' => 'Europe/Berlin',
                 ],
                 'theme' => [
                     'data' => [],

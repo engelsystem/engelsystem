@@ -525,8 +525,8 @@ class ConfigControllerTest extends ControllerTest
             $config = EventConfig::find($field);
             $this->assertNotEmpty($config);
             $value = $config->value;
-            if ($value instanceof Carbon) {
-                $value = $value->format('Y-m-d\TH:i');
+            if (in_array($field, ['buildup_start', 'event_start', 'event_end', 'teardown_end'])) {
+                $value = Carbon::createFromDatetime($value)->format('Y-m-d\TH:i');
             }
             $this->assertEquals($body[$field], $value);
         }

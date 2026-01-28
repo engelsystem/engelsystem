@@ -5,109 +5,53 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Models;
 
 use Carbon\Carbon;
+use Engelsystem\Helpers\CarbonDay;
 use Engelsystem\Models\EventConfig;
 
 class EventConfigTest extends ModelTest
 {
     /**
-     * @covers \Engelsystem\Models\EventConfig::setValueAttribute
+     * @covers       \Engelsystem\Models\EventConfig::casts
      */
-    public function testSetValueAttribute(): void
+    public function testCast(): void
     {
-        (new EventConfig())
-            ->setAttribute('name', 'foo')
-            ->setAttribute('value', 'bar')
-            ->save();
-        $this->assertEquals(
-            '"bar"',
-            $this->database
-                ->selectOne("SELECT `value` FROM event_config WHERE name='foo'")
-                ->value
-        );
+        $casts = (new EventConfig())->casts();
+        $this->assertEquals(['value' => 'array'], $casts);
+    }
 
-        (new EventConfig())
-            ->setAttribute('name', 'buildup_start')
-            ->setAttribute('value', new Carbon('2000-01-01 10:20'))
-            ->save();
-        $this->assertEquals(
-            '"2000-01-01 10:20"',
-            $this->database
-                ->selectOne("SELECT `value` FROM event_config WHERE name='buildup_start'")
-                ->value
-        );
-
-        ($this->getEventConfig())
-            ->setAttribute('name', 'event_start')
-            ->setValueCast('event_start', 'datetime')
-            ->setAttribute('value', new Carbon('2010-11-11 20:22'))
-            ->save();
-        $this->assertEquals(
-            '"' . (new Carbon('2010-11-11 20:22'))->format(Carbon::ATOM) . '"',
-            $this->database
-                ->selectOne("SELECT `value` FROM event_config WHERE name='event_start'")
-                ->value
-        );
+    public function dataCasts(): array
+    {
+        return [
+            ['bar', '"bar"'],
+            [new Carbon('2000-01-01 10:20'), '"2000-01-01T10:20:00.000000Z"', '2000-01-01T10:20:00.000000Z'],
+            [
+                new Carbon('2042-01-01T13:00:00.000001+23:42'),
+                '"2041-12-31T13:18:00.000001Z"',
+                '2041-12-31T13:18:00.000001Z',
+            ],
+            [new CarbonDay('2000-01-01'), '"2000-01-01"', '2000-01-01'],
+            [false, 'false'],
+            [['test'], '["test"]'],
+            [['some' => 'test'], '{"some":"test"}'],
+        ];
     }
 
     /**
-     * @covers \Engelsystem\Models\EventConfig::getValueAttribute
+     * @covers       \Engelsystem\Models\EventConfig::casts
+     * @dataProvider dataCasts
      */
-    public function testGetValueAttribute(): void
+    public function testCastCasting(mixed $setValue, mixed $expectedValueDb, mixed $expectedValueResult = null): void
     {
-        $model = new EventConfig(['name', 'buildup_start', 'value' => '']);
-        $this->assertEquals('', $model->value);
-
         (new EventConfig())
-            ->setAttribute('name', 'buildup_start')
-            ->setAttribute('value', new Carbon('2001-02-03 11:12'))
+            ->setAttribute('name', 'config_name')
+            ->setAttribute('value', $setValue)
             ->save();
         $this->assertEquals(
-            '2001-02-03 11:12',
-            (new EventConfig())->find('buildup_start')
+            $expectedValueDb,
+            $this->database
+                ->selectOne("SELECT `value` FROM event_config WHERE name='config_name'")
                 ->value
-                ->format('Y-m-d H:i')
         );
-
-        ($this->getEventConfig())
-            ->setAttribute('name', 'event_start')
-            ->setValueCast('event_start', 'datetime')
-            ->setAttribute('value', new Carbon('2010-11-11 20:22'))
-            ->save();
-        $this->assertEquals(
-            '2010-11-11 20:22',
-            ($this->getEventConfig())->find('event_start')
-                ->setValueCast('event_start', 'datetime')
-                ->value
-                ->format('Y-m-d H:i')
-        );
-        $this->assertEquals(
-            null,
-            ($this->getEventConfig())->getValueAttribute(null)
-        );
-    }
-
-    /**
-     * @covers \Engelsystem\Models\EventConfig::getValueCast
-     */
-    public function testGetValueCast(): void
-    {
-        $model = new EventConfig(['name' => 'foo', 'value' => 'bar']);
-        $this->assertEquals('bar', $model->value);
-    }
-
-    /**
-     * Init a new EventConfig class
-     */
-    protected function getEventConfig(): EventConfig
-    {
-        return new class extends EventConfig
-        {
-            public function setValueCast(string $value, string $type): EventConfig
-            {
-                $this->valueCasts[$value] = $type;
-
-                return $this;
-            }
-        };
+        $this->assertEquals($expectedValueResult ?? $setValue, EventConfig::find('config_name')->value);
     }
 }

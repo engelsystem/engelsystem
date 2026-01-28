@@ -115,7 +115,7 @@ class ConfigServiceProviderTest extends TestCase
         $conf = $config->get(null);
 
         $this->assertArrayHasKey('timezone', $conf);
-        $this->assertEquals('Test/Testing', $conf['timezone']);
+        $this->assertEquals('Europe/Berlin', $conf['timezone']);
 
         $timezoneData = $conf['config_options']['system']['config']['timezone']['data'] ?? null;
         $this->assertNotEmpty($timezoneData);
@@ -278,7 +278,10 @@ class ConfigServiceProviderTest extends TestCase
         $this->assertTrue($conf['not_set']);
 
         $this->assertArrayHasKey('date_time', $conf);
-        $this->assertInstanceOf(Carbon::class, $conf['date_time']);
+        /** @var Carbon $dateTime */
+        $dateTime = $conf['date_time'];
+        $this->assertInstanceOf(Carbon::class, $dateTime);
+        $this->assertEquals('Europe/Berlin', $dateTime->getTimezone()->getName());
 
         $this->assertArrayHasKey('date', $conf);
         $this->assertInstanceOf(CarbonDay::class, $conf['date']);
