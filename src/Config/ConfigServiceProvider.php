@@ -181,7 +181,8 @@ class ConfigServiceProvider extends ServiceProvider
         foreach ($values as $option) {
             $data = $option->value;
 
-            if (is_array($data) && $config->has($option->name)) {
+            // Merge array data over defaults if it's dict with defaults
+            if (is_array($data) && !array_is_list($data) && $config->has($option->name)) {
                 $data = array_replace_recursive(
                     $config->get($option->name),
                     $data

@@ -53,6 +53,12 @@ return [
                         1 => ['name' => 'first'],
                     ],
                 ],
+                'array_with_default' => [
+                    'type' => 'select_multi',
+                    'default' => [
+                        'test',
+                    ],
+                ],
             ],
         ],
     ],
