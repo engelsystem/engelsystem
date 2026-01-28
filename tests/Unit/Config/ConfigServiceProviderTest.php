@@ -242,6 +242,26 @@ class ConfigServiceProviderTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Config\ConfigServiceProvider::loadConfigFromDb
+     */
+    public function testLoadConfigFromAllowEmptyOverwrite(): void
+    {
+        $this->initDatabase();
+        (new EventConfig(['name' => 'array_with_default', 'value' => []]))->save();
+
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
+        $serviceProvider->boot();
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+
+        $conf = $config->get(null);
+        $this->assertArrayHasKey('array_with_default', $conf);
+        $this->assertEquals([], $conf['array_with_default']);
+    }
+
+    /**
      * @covers \Engelsystem\Config\ConfigServiceProvider::parseConfigTypes
      */
     public function testParseConfigTypes(): void
