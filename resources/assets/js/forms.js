@@ -240,7 +240,7 @@ ready(() => {
       allowHTML: true,
       shouldSort: false,
       shouldSortItems: false,
-      removeItemButton: true,
+      removeItemButton: element.multiple,
       classNames: {
         containerInner: 'choices__inner form-control',
       },
