@@ -134,9 +134,6 @@ phpcs:
   image: composer:latest
   stage: validate
   script:
-    # tell phpcs the PHP version to check against
-    # we are using the min suppported version here
-    - ./vendor/bin/phpcs --config-set php_version 80200
     - ./vendor/bin/phpcs -p --no-colors --basepath="$PWD"
 
 phpstan:

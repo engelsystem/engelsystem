@@ -14,13 +14,10 @@
         }
     ],
     "scripts": {
-        "phpcs:setup": "phpcs --config-set php_version 80200",
         "phpcs": [
-            "composer phpcs:setup",
             "phpcs -p --cache"
         ],
         "phpcbf": [
-            "composer phpcs:setup",
             "phpcbf -p"
         ],
         "phpstan": "phpstan",
@@ -67,6 +64,7 @@
         "fakerphp/faker": "^1.24",
         "fig/log-test": "^1.2",
         "filp/whoops": "^2.18",
+        "phpcompatibility/php-compatibility": "^10.0.0-alpha2",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^9.6",
         "slevomat/coding-standard": "^8.25",

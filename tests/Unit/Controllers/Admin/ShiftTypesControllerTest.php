@@ -152,7 +152,7 @@ class ShiftTypesControllerTest extends ControllerTest
             'description' => 'Something',
             'signup_advance_hours' => 42.5,
             'angel_type_' . $angelType->id => 3,
-            'angel_type_' . $angelType->id + 1 => 0,
+            'angel_type_' . ($angelType->id + 1) => 0,
         ]);
 
         $controller->save($this->request);
