@@ -2,6 +2,9 @@
 <ruleset>
     <description>Engelsystem PHP coding standard</description>
 
+    <config name="php_version" value="80200"/>
+    <config name="testVersion" value="8.2-8.5"/>
+
     <file>config</file>
     <file>db</file>
     <file>includes</file>
@@ -12,6 +15,7 @@
     <exclude-pattern>/config/config.local.php</exclude-pattern>
 
     <rule ref="PSR12" />
+    <rule ref="PHPCompatibility"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
         <properties>
             <property name="searchAnnotations" value="true"/>
