@@ -1,5 +1,5 @@
-import { getCSRFToken } from './utils';
 import { ready } from './ready';
+import { getCSRFToken } from './utils';
 
 ready(() => {
   // Add plus 1 voucher click handler to all plus 1 voucher buttons
@@ -78,9 +78,8 @@ const handlePlus1VoucherClick = async (event) => {
     const editVoucherResponse = await sendEditVoucherRequest(userId, amount);
 
     // Update user voucher numbers
-    element.parentNode.querySelector(
-      '[data-field="voucher-status"]'
-    ).textContent = `${editVoucherResponse.issued} / ${editVoucherResponse.eligible}`;
+    element.parentNode.querySelector('[data-field="voucher-status"]').textContent =
+      `${editVoucherResponse.issued} / ${editVoucherResponse.eligible}`;
     element.dataset.voucherAmount = editVoucherResponse.issued + 1;
 
     // Update total voucher count

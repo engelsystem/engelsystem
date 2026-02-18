@@ -10,8 +10,15 @@
                     <div class="col-auto">
                         <div class="input-group time">
                             <input
-                                type="time" class="form-control" id="start_time" name="start_time" size="5"
-                                pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"
+                                type="time"
+                                class="form-control"
+                                id="start_time"
+                                name="start_time"
+                                size="5"
+                                pattern="^\d{1,2}:\d{2}$"
+                                placeholder="HH:MM"
+                                maxlength="5"
+                                value="%start_time%"
                             >
                             <button class="btn btn-secondary" title="Now" type="button">
                                 <span class="bi bi-arrow-counterclockwise"></span>
@@ -25,8 +32,15 @@
                     <div class="col-auto">
                         <div class="input-group time">
                             <input
-                                type="time" class="form-control" id="end_time" name="end_time" size="5"
-                                pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"
+                                type="time"
+                                class="form-control"
+                                id="end_time"
+                                name="end_time"
+                                size="5"
+                                pattern="^\d{1,2}:\d{2}$"
+                                placeholder="HH:MM"
+                                maxlength="5"
+                                value="%end_time%"
                             >
                             <button class="btn btn-secondary" title="Now" type="button">
                                 <span class="bi bi-arrow-counterclockwise"></span>
@@ -47,12 +61,8 @@
                     <button type="button" class="btn btn-secondary set-time" data-hours="4">%set_next_4h%</button>
                     <button type="button" class="btn btn-secondary set-time" data-hours="8">%set_next_8h%</button>
                 </div>
-                <div class="btn-group mb-1" role="group">
-                    %random%
-                </div>
-                <div class="btn-group mb-1" role="group">
-                    %dashboard%
-                </div>
+                <div class="btn-group mb-1" role="group">%random%</div>
+                <div class="btn-group mb-1" role="group">%dashboard%</div>
             </div>
             <div class="row d-print-none">
                 <div class="col-md-12">
@@ -61,9 +71,13 @@
             </div>
         </div>
         <div class="col-md-6">
-            <button class="btn btn-info btn-sm mb-3 d-print-none" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#collapseShiftsFilterSelect"
-                    aria-expanded="true" aria-controls="collapseShiftsFilterSelect"
+            <button
+                class="btn btn-info btn-sm mb-3 d-print-none"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseShiftsFilterSelect"
+                aria-expanded="true"
+                aria-controls="collapseShiftsFilterSelect"
             >
                 %filter_toggle%
             </button>
@@ -89,14 +103,7 @@
 </form>
 
 <div class="row">
-    <div class="col-md-10 offset-md-1 mb-3 text-end">
-        %tags%
-    </div>
+    <div class="col-md-10 offset-md-1 mb-3 text-end">%tags%</div>
 </div>
-
-%msg%
-%shifts_table%
-
-<div class="d-print-none">
-    %ical_text%
-</div>
+%msg% %shifts_table%
+<div class="d-print-none">%ical_text%</div>

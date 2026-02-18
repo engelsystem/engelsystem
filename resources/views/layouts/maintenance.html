@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>%APP_NAME% - Maintenance</title>
+    </head>
 
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>%APP_NAME% - Maintenance</title>
-</head>
-
-<style>
+    <style>
     body {
         font-family: sans-serif;
         color: #222;
@@ -16,7 +15,7 @@
 
     ul {
         list-style: none;
-        padding-left: .7em;
+        padding-left: 0.7em;
     }
 
     ul li::before {
@@ -25,49 +24,34 @@
 
     .container {
         margin: 1em;
+        display: flex;
+        justify-content: center;
     }
+    </style>
 
-    @media screen and (min-width: 1024px) {
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-</style>
+    <body>
+        <div class="container">
+            <div>
+                <h1>The <strong>%APP_NAME%</strong> is in maintenance mode</h1>
 
-<body>
+                <p>This may be due to</p>
 
-<div class="container">
+                <ul>
+                    <li>The gates of heaven were closed.</li>
+                    <li>Someone tried to do a simple maintenance task which did not go as planned.</li>
+                    <li>DHCP decided to give me another ip address.</li>
+                    <li>Somebody's stolen the power chord and now the battery is empty.</li>
+                    <li>It might be a good time to take a nap.</li>
+                </ul>
 
-    <div>
-        <h1>
-            The <strong>%APP_NAME%</strong> is in maintenance mode
-        </h1>
-
-        <p>This may be due to</p>
-
-        <ul>
-            <li>The gates of heaven were closed.</li>
-            <li>Someone tried to do a simple maintenance task which did not go as planned.</li>
-            <li>DHCP decided to give me another ip address.</li>
-            <li>Somebody's stolen the power chord and now the battery is empty.</li>
-            <li>It might be a good time to take a nap.</li>
-        </ul>
-    </div>
-
-
-    <div>
-        <iframe width="480" height="320"
-                src="https://www.youtube-nocookie.com/embed/0aV_vHcunSQ"
-                allow="autoplay; encrypted-media" allowfullscreen>
-        </iframe>
-    </div>
-
-    <div>
-        <a href="https://github.com/engelsystem/engelsystem/issues" target="_blank" rel="noopener">Bugs / Features</a>
-        · <a href="https://github.com/engelsystem/engelsystem/" target="_blank" rel="noopener">Development Platform</a>
-    </div>
-</div>
-
-</body>
+                <a href="https://github.com/engelsystem/engelsystem/issues" target="_blank" rel="noopener">
+                    Bugs / Features
+                </a>
+                ·
+                <a href="https://github.com/engelsystem/engelsystem/" target="_blank" rel="noopener">
+                    Development Platform
+                </a>
+            </div>
+        </div>
+    </body>
 </html>

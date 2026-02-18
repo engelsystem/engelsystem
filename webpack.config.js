@@ -1,5 +1,7 @@
+// biome-ignore-start lint/style/useNodejsImportProtocol: reason
 const fs = require('fs');
 const path = require('path');
+// biome-ignore-end lint/style/useNodejsImportProtocol: reason
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -8,7 +10,6 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 const nodeEnv = (process.env.NODE_ENV || 'development').trim();
 
-// eslint-disable-next-line
 const __DEV__ = nodeEnv !== 'production';
 
 const devtool = __DEV__ ? 'source-map' : undefined;
@@ -68,7 +69,10 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'babel-loader',
       },
-      { test: /\.(jpg|eot|ttf|otf|svg|woff2?)(\?.*)?$/, type: 'asset/resource' },
+      {
+        test: /\.(jpg|eot|ttf|otf|svg|woff2?)(\?.*)?$/,
+        type: 'asset/resource',
+      },
       { test: /\.json$/, loader: 'json-loader' },
       {
         test: /\.(scss|css)$/,

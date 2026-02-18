@@ -14,12 +14,8 @@
         }
     ],
     "scripts": {
-        "phpcs": [
-            "phpcs -p --cache"
-        ],
-        "phpcbf": [
-            "phpcbf -p"
-        ],
+        "phpcs": ["phpcs -p --cache"],
+        "phpcbf": ["phpcbf -p"],
         "phpstan": "phpstan",
         "phpunit": "php -d memory_limit=-1 vendor/bin/phpunit",
         "phpunit:coverage": "php -d memory_limit=-1 vendor/bin/phpunit --coverage-text --coverage-html ./public/coverage/"
@@ -76,9 +72,7 @@
             "Engelsystem\\": "src/"
         },
         "classmap": ["db/migrations"],
-        "files": [
-            "src/helpers.php"
-        ]
+        "files": ["src/helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {

@@ -2,7 +2,7 @@ import { ready } from './ready';
 
 ready(() => {
   [...document.getElementsByClassName('prevent-default')].forEach((element) => {
-    let preventDefault = (e) => {
+    const preventDefault = (e) => {
       e.preventDefault();
       return false;
     };
