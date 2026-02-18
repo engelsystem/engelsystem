@@ -154,7 +154,7 @@ ready(() => {
   document.querySelectorAll('input[type="radio"]').forEach((radioElement) => {
     // build selector and get all corresponding elements for this input-radio
     const selector = DISABLE_ELEMENTS.map(
-      (tagName) => `${tagName}[data-radio-name="${radioElement.name}"][data-radio-value]`
+      (tagName) => `${tagName}[data-radio-name="${radioElement.name}"][data-radio-value]`,
     ).join(',');
     const elements = Array.from(document.querySelectorAll(selector));
 
@@ -224,7 +224,6 @@ ready(() => {
       dayElements.forEach((dayElement) => {
         if (dayElement.value === yyyyMMDD) {
           daySelector.value = dayElement.value;
-          return false;
         }
       });
     });
@@ -261,6 +260,7 @@ ready(() => {
  * Init Bootstrap Popover
  */
 ready(() => {
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
   document.querySelectorAll('[data-bs-toggle="popover"]').forEach((element) => new bootstrap.Popover(element));
 });
 
@@ -268,6 +268,7 @@ ready(() => {
  * Init Bootstrap Tooltips
  */
 ready(() => {
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
   document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => new bootstrap.Tooltip(element));
 });
 
@@ -275,6 +276,7 @@ ready(() => {
  * Init Bootstrap Modals
  */
 ready(() => {
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
   document.querySelectorAll('.modal').forEach((element) => new bootstrap.Modal(element));
 });
 
@@ -290,7 +292,7 @@ ready(() => {
  */
 const confirmationModal = (element) => {
   let modalOpen = false;
-  let oldType = element.type;
+  const oldType = element.type;
   if (element.type !== 'submit') {
     return;
   }
@@ -326,11 +328,11 @@ const confirmationModal = (element) => {
             </div>
           </div>
         </div>
-      `
+      `,
     );
 
     const modal = document.getElementById('confirmation-modal');
-    let bootstrapModal = new bootstrap.Modal(modal);
+    const bootstrapModal = new bootstrap.Modal(modal);
     modal.addEventListener('hide.bs.modal', () => {
       modalOpen = false;
     });
@@ -391,12 +393,14 @@ ready(() => {
   showMoreLess.addEventListener('click', (e) => {
     const heightLimited = document.querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height');
     if (heightLimited.length > 0) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
       heightLimited.forEach((e) => e.classList.remove('limit-height'));
       localStorage.setItem('collapseShiftsFilterExpand', 'opened');
       collapseElement.classList.add('show');
     } else {
       document
         .querySelectorAll('#collapseShiftsFilterSelect .selection')
+        // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
         .forEach((e) => e.classList.add('limit-height'));
       localStorage.setItem('collapseShiftsFilterExpand', 'closed');
     }
@@ -410,6 +414,7 @@ ready(() => {
   if (localStorage.getItem('collapseShiftsFilterExpand') === 'opened') {
     document
       .querySelectorAll('#collapseShiftsFilterSelect .selection.limit-height')
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
       .forEach((e) => e.classList.remove('limit-height'));
   }
 
