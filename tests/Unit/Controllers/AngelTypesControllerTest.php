@@ -347,7 +347,7 @@ class AngelTypesControllerTest extends ControllerTest
         $this->initDatabase();
 
         $this->config->set([
-            'app_key' => 'S0me5ecUreTes1K3y',
+            'app_key' => 'S0me5ecUreTes1K3yThat1sLo0oooNg!',
             'jwt_algorithm' => 'HS256',
             'jwt_expiration_time' => 60 * 24 * 5,
         ]);
