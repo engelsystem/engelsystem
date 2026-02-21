@@ -1694,10 +1694,10 @@ domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
-editorconfig-checker@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/editorconfig-checker/-/editorconfig-checker-5.1.1.tgz#97b314647068b68bf1210f3d6b597c1fc9b20ded"
-  integrity sha512-IBE7K48+6jLlhfmJ0TOTjogvO9Asw+4B8CoKn71KtZ8Qrvc7/WgrMyJxQRSdq6VGdh+D65/6JuQuHioMs2O1sw==
+editorconfig-checker@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/editorconfig-checker/-/editorconfig-checker-6.1.1.tgz#0b452b796fe9f17221404d25fcec83b17c7d2a93"
+  integrity sha512-kiOb6qaWpMNt7Z/43ba0Pa1Inhr2/t9nKbvEKtCeXJ5AesztoM9AgLOOQVB4QUv/nGjgz3xkbx4pcogVRD2NWw==
 
 electron-to-chromium@^1.5.249, electron-to-chromium@^1.5.73:
   version "1.5.254"

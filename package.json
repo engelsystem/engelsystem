@@ -9,10 +9,11 @@
     "build": "NODE_ENV=production yarn build:webpack",
     "build:webpack": "webpack",
     "build:watch": "webpack --watch",
-    "lint": "yarn biome check",
+    "lint": "yarn lint:biome && yarn lint:ec",
+    "lint:biome": "biome check",
     "lint:ec": "ec",
-    "lint:fix": "yarn biome check --write",
-    "lint:fix:unsafe": "lint:fix --unsafe"
+    "lint:fix": "biome check --write",
+    "lint:fix:unsafe": "yarn lint:fix --unsafe"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
@@ -29,7 +30,7 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",
-    "editorconfig-checker": "^5.1.1",
+    "editorconfig-checker": "^6.1.1",
     "mini-css-extract-plugin": "^2.7.2",
     "postcss": "^8.4.31",
     "postcss-loader": "^7.0.2",

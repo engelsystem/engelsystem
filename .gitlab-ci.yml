@@ -164,6 +164,12 @@ translations lint:
     - find resources/lang -type f -name '*.po' -exec sh -c 'msgfmt "${1%.*}.po" -o"${1%.*}.mo"' shell {} \;
     - '[[ $(find resources/lang -type f -name "*.po" | wc -l) == $(find resources/lang -type f -name "*.mo" | wc -l) ]]'
 
+editorconfig check:
+  image: mstruebing/editorconfig-checker
+  stage: validate
+  script:
+    - ec -v
+
 #
 # Build
 #
@@ -184,6 +190,7 @@ build-image:
     - phpcs
     - phpstan
     - composer validate
+    - editorconfig check
     - yarn check
     - yarn lint
     - translations lint
