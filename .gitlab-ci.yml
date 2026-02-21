@@ -65,15 +65,10 @@ composer install:
     - composer install --no-ansi --no-progress --ignore-platform-req=php
 
 composer audit:
-  image: php:latest
+  image: composer:latest
   stage: prepare
-  needs:
-    - composer validate
-  before_script:
-    - curl -Ls https://github.com/symfony/cli/releases/latest/download/symfony_linux_amd64.gz | gzip -d > /bin/symfony
-    - chmod +x /bin/symfony
   script:
-    - symfony check:security --no-ansi
+    - composer audit --locked
 
 yarn-validate:
   image: node:alpine
