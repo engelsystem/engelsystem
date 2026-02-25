@@ -1,0 +1,11 @@
+{% extends "emails/mail.text.twig" %}
+
+{% block message %}
+{{ __('email.user.welcome') }}
+
+{% if not config('signup_requires_arrival') or config('autoarrive') %}
+{{ __('email.user.welcome.can_signup') }}
+{% else %}
+{{ __('email.user.welcome.arrive_first') }}
+{% endif %}
+{% endblock %}
