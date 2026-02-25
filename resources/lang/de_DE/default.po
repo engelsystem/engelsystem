@@ -836,6 +836,33 @@ msgstr ""
 "Engeltypen, welche eine Einführung benötigen, müssen von einem Supporter freigeschaltet werden "
 "(double-opt-in)."
 
+msgid "angeltype.self_signup_token"
+msgstr "Selbstanmeldungs-Token"
+
+msgid "angeltype.self_signup_token.info"
+msgstr "Optionaler Token, mit dem Benutzer sich automatisch bestätigen können, wenn sie diesem Engeltyp beitreten."
+
+msgid "angeltype.signup_token"
+msgstr "Anmeldungs-Token"
+
+msgid "angeltype.signup_token.info"
+msgstr "Falls du einen Anmeldungs-Token hast, gib ihn hier ein, um automatisch bestätigt zu werden."
+
+msgid "angeltype.confirm_selected"
+msgstr "Ausgewählte bestätigen"
+
+msgid "angeltype.deny_selected"
+msgstr "Ausgewählte ablehnen"
+
+msgid "angeltype.bulk.none_selected"
+msgstr "Keine Benutzer ausgewählt."
+
+msgid "angeltype.bulk.confirmed"
+msgstr "%d Benutzer für Engeltyp %s bestätigt."
+
+msgid "angeltype.bulk.denied"
+msgstr "%d Benutzer für Engeltyp %s abgelehnt."
+
 msgid "shift.self_signup"
 msgstr "Schichten selbst eintragen"
 

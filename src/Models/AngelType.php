@@ -22,6 +22,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string                            $contact_dect
  * @property string                            $contact_email
  * @property boolean                           $restricted # If users need an introduction
+ * @property string|null                        $self_signup_token # Token for auto-confirming on restricted types
  * @property boolean                           $requires_driver_license # If users must have a driver license
  * @property boolean                           $requires_ifsg_certificate # If users must have a ifsg certificate
  * @property boolean                           $shift_self_signup # Users can sign up for shifts
@@ -80,6 +81,7 @@ class AngelType extends BaseModel
         'contact_email',
 
         'restricted',
+        'self_signup_token',
         'requires_driver_license',
         'requires_ifsg_certificate',
         'shift_self_signup',
