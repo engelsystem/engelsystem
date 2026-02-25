@@ -284,7 +284,7 @@ class UserTest extends ServiceProviderTest
         $this->assertDataRaisesValidationException(
             [
                 'username' => 'fritz',
-                'email' => 'fritz@example.com',
+                'email' => 'different@example.com',  // Use different email to only test username uniqueness
                 'password' => 's3cret',
                 'password_confirmation' => 's3cret',
             ],
@@ -312,6 +312,33 @@ class UserTest extends ServiceProviderTest
                 'password_confirmation' => 's3cret',
             ],
             [
+                'email' => [
+                    'settings.profile.email.already-taken',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @covers \Engelsystem\Factories\User
+     */
+    public function testUsernameAndEmailAlreadyTaken(): void
+    {
+        SignUpConfig::setMinimumConfig($this->config);
+        $this->createFritz();
+
+        // Both username and email are taken - both errors should show together
+        $this->assertDataRaisesValidationException(
+            [
+                'username' => 'fritz',
+                'email' => 'fritz@example.com',
+                'password' => 's3cret',
+                'password_confirmation' => 's3cret',
+            ],
+            [
+                'username' => [
+                    'settings.profile.nick.already-taken',
+                ],
                 'email' => [
                     'settings.profile.email.already-taken',
                 ],
