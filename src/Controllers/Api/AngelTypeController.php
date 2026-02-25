@@ -9,10 +9,23 @@ use Engelsystem\Controllers\Api\Resources\UserAngelTypeResource;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AngelTypeController extends ApiController
 {
     use UsesAuth;
+
+    public function hasPermission(ServerRequestInterface $request, string $method): ?bool
+    {
+        if ($method === 'ofUser') {
+            $userId = $request->getAttribute('user_id');
+            if ($userId === 'self' || ($this->auth && (int) $userId === $this->auth->user()->id)) {
+                return true;
+            }
+        }
+
+        return null;
+    }
 
     public function index(): Response
     {

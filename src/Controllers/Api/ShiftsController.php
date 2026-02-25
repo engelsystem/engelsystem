@@ -18,10 +18,23 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
 use Illuminate\Contracts\Database\Query\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Collection;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ShiftsController extends ApiController
 {
     use UsesAuth;
+
+    public function hasPermission(ServerRequestInterface $request, string $method): ?bool
+    {
+        if ($method === 'entriesByUser') {
+            $userId = $request->getAttribute('user_id');
+            if ($userId === 'self' || ($this->auth && (int) $userId === $this->auth->user()->id)) {
+                return true;
+            }
+        }
+
+        return null;
+    }
 
     public function entriesByAngeltype(Request $request): Response
     {
