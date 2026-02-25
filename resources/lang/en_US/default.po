@@ -586,6 +586,9 @@ msgstr "Show JSON shifts export"
 msgid "settings.api.ical_show"
 msgstr "Show iCal export"
 
+msgid "settings.api.ical_feed"
+msgstr "iCal Feed"
+
 msgid "settings.api.news_show"
 msgstr "Show news feeds"
 

@@ -1757,6 +1757,9 @@ msgstr "JSON Schichten Export anzeigen"
 msgid "settings.api.ical_show"
 msgstr "iCal export anzeigen"
 
+msgid "settings.api.ical_feed"
+msgstr "iCal Feed"
+
 msgid "settings.api.news_show"
 msgstr "News feeds anzeigen"
 
