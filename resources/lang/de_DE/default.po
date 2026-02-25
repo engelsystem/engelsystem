@@ -1769,6 +1769,15 @@ msgstr "API Key zurücksetzen"
 msgid "settings.api.key_reset_confirm"
 msgstr "Wenn du den API Key zurücksetzt, musst ihn in allen deinen Anwendungen aktualisieren."
 
+msgid "settings.api.ical_alarm_notify"
+msgstr "Benachrichtige mich"
+
+msgid "settings.api.ical_alarm_minutes"
+msgstr "Minuten vor Schichtbeginn"
+
+msgid "settings.api.ical_update_url"
+msgstr "URL aktualisieren"
+
 msgid "settings.oauth"
 msgstr "Single Sign-On"
 

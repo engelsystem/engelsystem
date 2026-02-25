@@ -61,10 +61,17 @@ class FeedController extends BaseController
             $timezoneTransitionStart = Carbon::now()->startOfDay()->utc()->isoFormat('YYYYMMDDTHHmmss');
         }
 
+        // Read alarm minutes from query param (0 or empty = no alarm)
+        $alarmMinutes = max(0, (int) $this->request->get('alarm', 0));
+
         return $this->withEtag($shifts)
             ->withHeader('content-type', 'text/calendar; charset=utf-8')
             ->withHeader('content-disposition', 'attachment; filename=shifts.ics')
-            ->withView('api/ical', ['shiftEntries' => $shifts, 'timezoneTransitionStart' => $timezoneTransitionStart]);
+            ->withView('api/ical', [
+                'shiftEntries' => $shifts,
+                'timezoneTransitionStart' => $timezoneTransitionStart,
+                'alarmMinutes' => $alarmMinutes,
+            ]);
     }
 
     public function shifts(): Response

@@ -598,6 +598,15 @@ msgstr "Reset API key"
 msgid "settings.api.key_reset_confirm"
 msgstr "If you reset the API key you have to update it in all your applications."
 
+msgid "settings.api.ical_alarm_notify"
+msgstr "Notify me"
+
+msgid "settings.api.ical_alarm_minutes"
+msgstr "minutes before shifts"
+
+msgid "settings.api.ical_update_url"
+msgstr "Update URL"
+
 msgid "settings.oauth"
 msgstr "Single Sign-On"
 

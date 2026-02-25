@@ -113,6 +113,8 @@ class FeedControllerTest extends ControllerTest
             ->willReturnCallback(function ($view, $data) {
                 $this->assertEquals('api/ical', $view);
                 $this->assertArrayHasKey('shiftEntries', $data);
+                $this->assertArrayHasKey('alarmMinutes', $data);
+                $this->assertEquals(0, $data['alarmMinutes']);
 
                 /** @var ShiftEntry[]|Collection $shiftEntries */
                 $shiftEntries = $data['shiftEntries'];
