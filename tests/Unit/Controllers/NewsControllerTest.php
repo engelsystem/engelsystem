@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers;
 
 use Engelsystem\Controllers\NewsController;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -286,6 +287,10 @@ class NewsControllerTest extends ControllerTest
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
+
+        $dispatcher = $this->createMock(EventDispatcher::class);
+        $dispatcher->method('dispatch')->willReturn([]);
+        $this->app->instance('events.dispatcher', $dispatcher);
 
         $this->addUser(1);
         $this->addUser(2);

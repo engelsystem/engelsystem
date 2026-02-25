@@ -79,8 +79,11 @@ return [
 
         'news.created' => \Engelsystem\Events\Listener\News::class . '@created',
         'news.updated' => \Engelsystem\Events\Listener\News::class . '@updated',
+        'news.comment.created' => \Engelsystem\Events\Listener\News::class . '@commentCreated',
 
         'oauth2.login' => \Engelsystem\Events\Listener\OAuth2::class . '@login',
+
+        'question.created' => \Engelsystem\Events\Listener\Questions::class . '@created',
 
         'shift.deleting' => [
             \Engelsystem\Events\Listener\Shifts::class . '@deletingCreateWorklogs',

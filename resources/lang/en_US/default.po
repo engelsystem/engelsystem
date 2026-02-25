@@ -295,6 +295,28 @@ msgstr "The news \"%1$s\" was updated"
 msgid "notification.news.updated.text"
 msgstr "You can view it at %3$s"
 
+msgid "notification.news.comment.new"
+msgstr "New comment on your news"
+
+msgid "notification.news.comment.new.text"
+msgstr ""
+"%1$s commented on your news \"%2$s\":\n"
+"\n"
+"%3$s\n"
+"\n"
+"View it at %4$s"
+
+msgid "notification.question.new"
+msgstr "New question"
+
+msgid "notification.question.new.text"
+msgstr ""
+"%1$s asked a question:\n"
+"\n"
+"%2$s\n"
+"\n"
+"You can answer it at %3$s"
+
 msgid "form.search"
 msgstr "Search"
 
