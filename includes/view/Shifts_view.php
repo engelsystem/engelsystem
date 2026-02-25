@@ -2,6 +2,7 @@
 
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\Language;
 use Engelsystem\Helpers\Markdown;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
@@ -51,6 +52,64 @@ function Shift_view_header(Shift $shift, Location $location)
             '<h4>' . __('Location') . '</h4>',
             '<p class="lead">' . location_name_render($location) . '</p>',
         ]),
+    ]);
+}
+
+/**
+ * Render the languages spoken by the team signed up for this shift.
+ *
+ * @param Shift $shift
+ * @return string
+ */
+function Shift_team_languages_render(Shift $shift)
+{
+    if (!config('enable_user_languages')) {
+        return '';
+    }
+
+    $languageCounts = [];
+    $nativeLanguages = [];
+
+    foreach ($shift->shiftEntries as $entry) {
+        if ($entry->freeloaded_by) {
+            continue;
+        }
+
+        foreach ($entry->user->languages as $lang) {
+            $code = $lang->language_code;
+            if (!isset($languageCounts[$code])) {
+                $languageCounts[$code] = 0;
+                $nativeLanguages[$code] = 0;
+            }
+            $languageCounts[$code]++;
+            if ($lang->is_native) {
+                $nativeLanguages[$code]++;
+            }
+        }
+    }
+
+    if (empty($languageCounts)) {
+        return '';
+    }
+
+    // Sort by count descending
+    arsort($languageCounts);
+
+    $output = [];
+    foreach ($languageCounts as $code => $count) {
+        $name = Language::getName($code);
+        $native = $nativeLanguages[$code];
+        if ($native > 0) {
+            $output[] = '<span class="badge bg-secondary">' . htmlspecialchars($name)
+                . ' (' . $native . ' ' . __('settings.spoken_languages.native') . ')</span>';
+        } else {
+            $output[] = '<span class="badge bg-secondary">' . htmlspecialchars($name) . '</span>';
+        }
+    }
+
+    return div('mt-3', [
+        '<strong>' . icon('chat-dots') . ' ' . __('shift.team_languages') . ':</strong> ',
+        join(' ', $output),
     ]);
 }
 
@@ -267,6 +326,7 @@ function Shift_view(
             Shift_view_alert_render($shift, $shift_signup_state),
             '<h2>' . __('Needed angels') . '</h2>',
             '<div class="list-group">' . $needed_angels . '</div>',
+            Shift_team_languages_render($shift),
         ]),
         div('col-sm-6', [
             div('row', [

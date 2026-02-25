@@ -196,6 +196,10 @@ return [
                     'type' => 'boolean',
                     'default' => true,
                 ],
+                'enable_user_languages' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
                 'required_user_fields' => [
                     'type' => 'select_multi',
                     'data' => [
