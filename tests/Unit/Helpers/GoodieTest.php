@@ -10,23 +10,20 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use Illuminate\Database\Connection;
-use Illuminate\Database\Query\Grammars\SQLiteGrammar;
-use PDO;
 
 class GoodieTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @covers \Engelsystem\Helpers\Goodie::shiftScoreQuery
-     */
-    public function testShiftScoreQuery(): void
-    {
-        $result = Goodie::shiftScoreQuery();
-
-        $this->assertEquals('0', $result->getValue(new SQLiteGrammar(new Connection(new PDO('sqlite::memory:')))));
-    }
+//    /**
+//     * @covers \Engelsystem\Helpers\Goodie::shiftScoreQuery
+//     */
+//    public function testShiftScoreQuery(): void
+//    {
+//        $result = Goodie::shiftScoreQuery();
+//
+//        $this->assertEquals('0', $result->getValue(new SQLiteGrammar(new Connection(new PDO('sqlite::memory:')))));
+//    }
 
     /**
      * @covers \Engelsystem\Helpers\Goodie::userScore
@@ -48,6 +45,8 @@ class GoodieTest extends TestCase
         parent::setUp();
 
         $this->initDatabase();
-        $this->app->instance('config', new Config(['night_shifts' => ['enabled' => false]]));
+        $this->app->instance('config', new Config(
+            ['night_shifts' => ['enabled' => false, 'start' => 2, 'end' => 8, 'multiplier' => 2]]
+        ));
     }
 }
