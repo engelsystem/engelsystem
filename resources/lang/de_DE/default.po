@@ -1927,6 +1927,12 @@ msgid "angeltypes.restricted.hint"
 msgstr "Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen. "
 "Weitere Informationen findest du möglicherweise in der Beschreibung."
 
+msgid "angeltypes.shift_signup_before_arrival"
+msgstr "Schichteintragung vor Ankunft erlauben"
+
+msgid "angeltypes.shift_signup_before_arrival.info"
+msgstr "Erlaubt Benutzern, sich für Schichten dieses Engeltyps einzutragen, bevor sie als angekommen markiert sind."
+
 msgid "angeltypes.can-change-later"
 msgstr "Du kannst Deine Auswahl später in den Einstellungen ändern."
 
