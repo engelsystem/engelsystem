@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Helpers\Password;
 use Engelsystem\Http\Validation\Rules\Username;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
@@ -188,8 +189,14 @@ function admin_user()
             . '</td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '<br>' . "\n";
-        $html .= '<button type="submit" class="btn btn-primary">'
-            . icon('save') . __('form.save') . '</button>' . "\n";
+        $html .= buttons([
+            '<button type="submit" class="btn btn-primary">' . icon('save') . __('form.save') . '</button>',
+            button(
+                url('/admin-user', ['action' => 'reset_pw', 'id' => $user_id]),
+                icon('envelope-at') . __('password.recovery.send'),
+                'btn-warning'
+            ),
+        ]);
         $html .= '</form>';
 
         $html .= '<hr>';
@@ -418,6 +425,12 @@ function admin_user()
                         true
                     );
                 }
+                break;
+
+            case 'reset_pw':
+                $user_source = User::find($user_id);
+                Password::triggerPasswordReset($user_source);
+                $html .= success(__('Password reset triggered.'), true);
                 break;
         }
     }
