@@ -1862,6 +1862,9 @@ msgstr "Aktiv"
 msgid "user.force_active"
 msgstr "Dauerhaft aktiv"
 
+msgid "user.by"
+msgstr "(durch %s)"
+
 msgid "user.force_food"
 msgstr "Unbegrenzt Essen"
 

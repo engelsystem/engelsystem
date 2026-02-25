@@ -7,6 +7,7 @@ namespace Engelsystem\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -14,9 +15,12 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon|null $arrival_date
  * @property string|null $user_info
  * @property bool        $active
- * @property bool        $force_active
- * @property bool        $force_food
- * @property bool        $got_goodie
+ * @property-read bool   $force_active
+ * @property int|null    $force_active_by
+ * @property-read bool   $force_food
+ * @property int|null    $force_food_by
+ * @property-read bool   $got_goodie
+ * @property int|null    $got_goodie_by
  * @property int         $got_voucher
  *
  * @method static QueryBuilder|State[] whereArrived($value)
@@ -24,8 +28,11 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|State[] whereUserInfo($value)
  * @method static QueryBuilder|State[] whereActive($value)
  * @method static QueryBuilder|State[] whereForceActive($value)
+ * @method static QueryBuilder|State[] whereForceActiveBy($value)
  * @method static QueryBuilder|State[] whereForceFood($value)
+ * @method static QueryBuilder|State[] whereForceFoodBy($value)
  * @method static QueryBuilder|State[] whereGotGoodie($value)
+ * @method static QueryBuilder|State[] whereGotGoodieBy($value)
  * @method static QueryBuilder|State[] whereGotVoucher($value)
  */
 class State extends HasUserModel
@@ -40,9 +47,9 @@ class State extends HasUserModel
         'arrival_date' => null,
         'user_info'    => null,
         'active'       => false,
-        'force_active' => false,
-        'force_food' => false,
-        'got_goodie'   => false,
+        'force_active_by' => null,
+        'force_food_by' => null,
+        'got_goodie_by'   => null,
         'got_voucher'  => 0,
     ];
 
@@ -51,9 +58,9 @@ class State extends HasUserModel
         'user_id'      => 'integer',
         'arrival_date' => 'datetime',
         'active'       => 'boolean',
-        'force_active' => 'boolean',
-        'force_food'   => 'boolean',
-        'got_goodie'   => 'boolean',
+        'force_active_by' => 'integer',
+        'force_food_by'   => 'integer',
+        'got_goodie_by'   => 'integer',
         'got_voucher'  => 'integer',
     ];
 
@@ -67,11 +74,83 @@ class State extends HasUserModel
         'arrival_date',
         'user_info',
         'active',
-        'force_active',
-        'force_food',
-        'got_goodie',
+        'force_active_by',
+        'force_food_by',
+        'got_goodie_by',
         'got_voucher',
     ];
+
+    public function forceActiveBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'force_active_by');
+    }
+
+    /**
+     * Accessor: for forced_active property
+     * Derived from forced_active_by being not null
+     */
+    public function getForceActiveAttribute(): bool
+    {
+        return $this->force_active_by !== null;
+    }
+
+    /**
+     * provide WhereForceActive query scope
+     */
+    public static function scopeWhereForceActive(Builder $query, bool $value): Builder
+    {
+        return $value
+            ? $query->whereNotNull('force_active_by')
+            : $query->whereNull('force_active_by');
+    }
+
+    public function forceFoodBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'force_food_by');
+    }
+
+    /**
+     * Accessor: for forced_food property
+     * Derived from forced_food_by being not null
+     */
+    public function getForceFoodAttribute(): bool
+    {
+        return $this->force_food_by !== null;
+    }
+
+    /**
+     * provide WhereForceFood query scope
+     */
+    public static function scopeWhereForceFood(Builder $query, bool $value): Builder
+    {
+        return $value
+            ? $query->whereNotNull('force_food_by')
+            : $query->whereNull('force_food_by');
+    }
+
+    public function gotGoodieBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'got_goodie_by');
+    }
+
+    /**
+     * Accessor: for got_goodie property
+     * Derived from got_goodie_by being not null
+     */
+    public function getGotGoodieAttribute(): bool
+    {
+        return $this->got_goodie_by !== null;
+    }
+
+    /**
+     * provide WhereGotGoodie query scope
+     */
+    public static function scopeWhereGotGoodie(Builder $query, bool $value): Builder
+    {
+        return $value
+            ? $query->whereNotNull('got_goodie_by')
+            : $query->whereNull('got_goodie_by');
+    }
 
     /**
      * Accessor: for arrived property
