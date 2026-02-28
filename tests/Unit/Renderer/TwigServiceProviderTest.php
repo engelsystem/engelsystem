@@ -188,7 +188,7 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
                 }
                 if ($matcher->numberOfInvocations() === 7) {
                     $this->assertSame(ExtendsTokenParser::class, $parameters[0]);
-                    $this->assertSame(['basePath' => 'resources'], $parameters[1]);
+                    $this->assertSame(['basePath' => '/resources'], $parameters[1]);
                     return $extendsTokenParser;
                 }
             });
@@ -213,7 +213,7 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
                 ['path.views', $viewsPath],
                 ['config', $config],
                 ['path.cache.views', 'cache/views'],
-                ['path.resources', 'resources'],
+                ['path.resources', '/resources'],
             ]);
 
         $app->method('tag')

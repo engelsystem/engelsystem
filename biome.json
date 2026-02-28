@@ -11,11 +11,23 @@
     "formatter": {
         "enabled": true,
         "useEditorconfig": true,
-        "includes": ["**", "!./public", "!./node_modules", "!./vendor"]
+        "includes": [
+            "**",
+            "!./public",
+            "!./node_modules",
+            "!./vendor",
+            "!./resources/plugins"
+        ]
     },
     "linter": {
         "enabled": true,
-        "includes": ["**", "!./public", "!./node_modules", "!./vendor"]
+        "includes": [
+            "**",
+            "!./public",
+            "!./node_modules",
+            "!./vendor",
+            "!./resources/plugins"
+        ]
     },
     "javascript": {
         "formatter": {

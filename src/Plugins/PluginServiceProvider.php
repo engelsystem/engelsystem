@@ -35,6 +35,20 @@ class PluginServiceProvider extends ServiceProvider
 
             $this->addPlugin($pluginName, $pluginPath, $isEnabled);
         }
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $config->set('config_options', [
+            ...$config->get('config_options', []),
+            'plugins' => [
+                'title' => 'plugin.admin',
+                'icon' => 'puzzle-fill',
+                'order' => 80,
+                'url' => '/admin/plugins',
+                'permission' => ['plugin.edit'],
+                'config' => [],
+            ],
+        ]);
     }
 
     public function boot(): void
