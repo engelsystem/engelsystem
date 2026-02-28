@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Application;
-use Engelsystem\Controllers\BaseController;
-use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Database\Migration\Direction;
 use Engelsystem\Database\Migration\Migrate;
 use Engelsystem\Http\Exceptions\HttpNotFound;
@@ -20,10 +18,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
 
-class PluginsController extends BaseController
+class PluginsController extends BaseConfigController
 {
-    use HasUserNotifications;
-
     /** @var array<string> */
     protected array $permissions = [
         'plugin.edit',
@@ -35,8 +31,10 @@ class PluginsController extends BaseController
         protected Migrate $migration,
         protected Plugin $plugin,
         protected Redirector $redirect,
-        protected Response $response
+        protected Response $response,
     ) {
+        parent::__construct();
+        $this->parseOptions();
     }
 
     public function list(): Response
@@ -46,8 +44,9 @@ class PluginsController extends BaseController
         $installedPlugins = $this->plugin->all()->keyBy('name');
 
         return $this->response->withView(
-            'admin/plugin.twig',
+            'admin/plugins.twig',
             [
+                ...$this->getPageData('plugins'),
                 'plugins' => $plugins,
                 'installedPlugins' => $installedPlugins,
             ]
