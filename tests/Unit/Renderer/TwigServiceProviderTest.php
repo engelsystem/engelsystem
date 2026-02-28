@@ -191,7 +191,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
                 ['renderer.twigTextEngine', $twigTextEngine],
             );
 
-        $app->expects($this->exactly(4))
+        $app->expects($this->exactly(5))
             ->method('get')
             ->withConsecutive(['path.views'], ['path.views'], ['config'], ['path.cache.views'], ['path.resources'])
             ->willReturnOnConsecutiveCalls($viewsPath, $viewsPath, $config, 'cache/views', '/resources');

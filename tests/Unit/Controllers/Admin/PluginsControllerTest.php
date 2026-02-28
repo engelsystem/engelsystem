@@ -9,6 +9,7 @@ use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\Plugin as PluginModel;
 use Engelsystem\Plugins\Plugin;
@@ -34,7 +35,7 @@ class PluginsControllerTest extends ControllerTest
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data): Response {
-                $this->assertEquals('admin/plugin.twig', $view);
+                $this->assertEquals('admin/plugins.twig', $view);
                 $this->assertArrayHasKey('plugins', $data);
                 $this->assertArrayHasKey('installedPlugins', $data);
 
@@ -280,6 +281,14 @@ class PluginsControllerTest extends ControllerTest
     {
         parent::setUp();
         $this->initDatabase();
+
+        $url = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
+        $url->expects($this->any())
+            ->method('to')
+            ->willReturnCallback(function (string $path, array $parameters = []) {
+                return $path . ($parameters ? '?' . http_build_query($parameters) : '');
+            });
+        $this->app->instance('http.urlGenerator', $url);
 
         $this->app->instance('path.plugins', __DIR__ . '/../../Plugins/Stub');
 
