@@ -594,7 +594,7 @@ function admin_shifts()
                             false,
                             null,
                             null,
-                            '',
+                            'ms-4',
                             [
                                 'radio-name'  => 'mode',
                                 'radio-value' => 'multi',
@@ -615,7 +615,7 @@ function admin_shifts()
                             false,
                             null,
                             null,
-                            '',
+                            'ms-4',
                             [
                                 'radio-name'  => 'mode',
                                 'radio-value' => 'variable',
@@ -624,7 +624,14 @@ function admin_shifts()
                         form_checkbox(
                             'shift_over_midnight',
                             __('Create a shift over midnight.'),
-                            $shift_over_midnight
+                            $shift_over_midnight,
+                            'checked',
+                            null,
+                            'ms-0 mb-3',
+                            [
+                                'radio-name'  => 'mode',
+                                'radio-value' => 'variable',
+                            ],
                         ),
                     ]),
                     div('col-md-6 col-xl-7', [
