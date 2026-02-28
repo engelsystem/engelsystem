@@ -83,15 +83,28 @@ function form_datetime(string $name, string $label, $value)
  * @param string $html_id
  * @return string
  */
-function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = null)
-{
+function form_checkbox(
+    $name,
+    $label,
+    $selected,
+    $value = 'checked',
+    $html_id = null,
+    $class = '',
+    array $dataAttributes = [],
+) {
     if (is_null($html_id)) {
         $html_id = $name;
     }
 
+    $add = '';
+    foreach ($dataAttributes as $dataType => $dataValue) {
+        $add .= ' data-' . $dataType . '="' . htmlspecialchars($dataValue) . '"';
+    }
+
     return '<div class="form-check">'
-        . '<input class="form-check-input" type="checkbox" id="' . $html_id . '" '
+        . '<input class="form-check-input ' . $class . '" type="checkbox" id="' . $html_id . '" '
         . 'name="' . htmlspecialchars($name) . '" value="' . $value . '" '
+        . $add
         . ($selected ? ' checked="checked"' : '') . ' /><label class="form-check-label" for="' . $html_id . '">'
         . $label
         . '</label></div>';
@@ -288,10 +301,10 @@ function form_element($label, $input, $for = '', $class = '')
     $class = $class ? ' ' . $class : '';
 
     if (empty($label)) {
-        return '<div class="mb-3' . $class . '">' . $input . '</div>';
+        return '<div class="mb-3 ' . $class . '">' . $input . '</div>';
     }
 
-    return '<div class="mb-3' . $class . '">'
+    return '<div class="mb-3 ' . $class . '">'
         . '<label class="form-label" for="' . $for . '">' . $label . '</label>'
         . $input
         . '</div>';
