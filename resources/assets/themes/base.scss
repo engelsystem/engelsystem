@@ -70,7 +70,6 @@ body {
 // Keep navbar fixed at viewport width even when content is wider
 .navbar.fixed-top {
   max-width: 100vw;
-  overflow-x: clip;
 }
 
 .footer a {
