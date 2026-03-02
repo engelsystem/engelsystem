@@ -42,5 +42,8 @@
     "webpack": "^5.105.2",
     "webpack-cli": "^5.0.1",
     "webpack-manifest-plugin": "^5.0.0"
+  },
+  "resolutions": {
+    "serialize-javascript": ">=7.0.3"
   }
 }
