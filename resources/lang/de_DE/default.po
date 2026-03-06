@@ -1587,6 +1587,18 @@ msgstr "Du kannst deine Engeltypen <a href=\"%s\">auf der Engeltypen-Seite</a> v
 msgid "profile.my_shifts"
 msgstr "Meine Schichten"
 
+msgid "profile.shifts.filter"
+msgstr "Schichten filtern"
+
+msgid "profile.shifts.upcoming"
+msgstr "Kommende"
+
+msgid "profile.shifts.running"
+msgstr "Laufend"
+
+msgid "profile.shifts.completed"
+msgstr "Abgeschlossen"
+
 msgid "settings.profile"
 msgstr "Profil"
 
