@@ -32,13 +32,13 @@ class QuestionsTest extends TestCase
         /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->createMock(EngelsystemMailer::class);
 
-        // Create a user who can answer questions
+        // Create a user who can answer questions and has notifications enabled
         $admin = User::factory()
-            ->has(Settings::factory())
+            ->has(Settings::factory()->state(['email_questions' => true]))
             ->create();
 
         // Create the question.edit privilege and a group with it
-        $privilege = Privilege::create(['name' => 'question.edit', 'description' => 'Answer questions']);
+        $privilege = Privilege::firstOrCreate(['name' => 'question.edit'], ['description' => 'Answer questions']);
         $group = Group::create(['name' => 'Question Answerers']);
         $group->privileges()->attach($privilege);
         $admin->groups()->attach($group);
@@ -77,13 +77,13 @@ class QuestionsTest extends TestCase
         /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->createMock(EngelsystemMailer::class);
 
-        // Create a user who can answer questions
+        // Create a user who can answer questions and has notifications enabled
         $admin = User::factory()
-            ->has(Settings::factory())
+            ->has(Settings::factory()->state(['email_questions' => true]))
             ->create();
 
         // Give them the permission
-        $privilege = Privilege::create(['name' => 'question.edit', 'description' => 'Answer questions']);
+        $privilege = Privilege::firstOrCreate(['name' => 'question.edit'], ['description' => 'Answer questions']);
         $group = Group::create(['name' => 'Question Answerers']);
         $group->privileges()->attach($privilege);
         $admin->groups()->attach($group);
@@ -93,6 +93,32 @@ class QuestionsTest extends TestCase
             'user_id' => $admin->id,
             'text' => 'Testing my own question',
         ])->create();
+
+        $mailer->expects($this->never())->method('sendViewTranslated');
+
+        $handler = new Questions($this->log, $mailer);
+        $handler->created($question);
+    }
+
+    /**
+     * @covers \Engelsystem\Events\Listener\Questions::created
+     */
+    public function testCreatedNotificationsDisabled(): void
+    {
+        /** @var EngelsystemMailer|MockObject $mailer */
+        $mailer = $this->createMock(EngelsystemMailer::class);
+
+        $admin = User::factory()
+            ->has(Settings::factory()->state(['email_questions' => false]))
+            ->create();
+
+        $privilege = Privilege::firstOrCreate(['name' => 'question.edit'], ['description' => 'Answer questions']);
+        $group = Group::create(['name' => 'Question Answerers']);
+        $group->privileges()->attach($privilege);
+        $admin->groups()->attach($group);
+
+        $asker = User::factory()->create();
+        $question = Question::factory(['user_id' => $asker->id])->create();
 
         $mailer->expects($this->never())->method('sendViewTranslated');
 

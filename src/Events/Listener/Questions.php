@@ -30,6 +30,10 @@ class Questions
                 continue;
             }
 
+            if (!$recipient->settings->email_questions) {
+                continue;
+            }
+
             $this->mailer->sendViewTranslated(
                 $recipient,
                 'notification.question.new',

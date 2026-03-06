@@ -1574,6 +1574,9 @@ msgstr "Genauere Einstellungen sind in deinem Profil möglich."
 msgid "settings.profile.email_news"
 msgstr "Benachrichtige mich bei neuen News."
 
+msgid "settings.profile.email_questions"
+msgstr "Benachrichtige mich bei neuen Fragen."
+
 msgid "settings.profile.email_messages"
 msgstr "Benachrichtige mich bei neuen privaten Nachrichten."
 

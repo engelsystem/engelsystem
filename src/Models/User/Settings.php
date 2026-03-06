@@ -15,6 +15,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property bool   $email_goodie
  * @property bool   $email_shiftinfo
  * @property bool   $email_news
+ * @property bool   $email_questions
  * @property bool   $mobile_show
  *
  * @method static QueryBuilder|Settings[] whereLanguage($value)
@@ -24,6 +25,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Settings[] whereEmailGoodie($value)
  * @method static QueryBuilder|Settings[] whereEmailShiftinfo($value)
  * @method static QueryBuilder|Settings[] whereEmailNews($value)
+ * @method static QueryBuilder|Settings[] whereEmailQuestions($value)
  * @method static QueryBuilder|Settings[] whereMobileShow($value)
  */
 class Settings extends HasUserModel
@@ -40,6 +42,7 @@ class Settings extends HasUserModel
         'email_goodie'    => false,
         'email_shiftinfo' => false,
         'email_news'      => false,
+        'email_questions' => false,
         'mobile_show'     => false,
     ];
 
@@ -57,6 +60,7 @@ class Settings extends HasUserModel
         'email_goodie',
         'email_shiftinfo',
         'email_news',
+        'email_questions',
         'mobile_show',
     ];
 
@@ -69,6 +73,7 @@ class Settings extends HasUserModel
         'email_goodie'    => 'boolean',
         'email_shiftinfo' => 'boolean',
         'email_news'      => 'boolean',
+        'email_questions' => 'boolean',
         'mobile_show'     => 'boolean',
     ];
 }

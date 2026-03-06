@@ -384,6 +384,9 @@ msgstr "Detailed preferences can be set in your profile."
 msgid "settings.profile.email_news"
 msgstr "Notify me of new news."
 
+msgid "settings.profile.email_questions"
+msgstr "Notify me when a new question is asked."
+
 msgid "settings.profile.email_messages"
 msgstr "Notify me on new private messages."
 
