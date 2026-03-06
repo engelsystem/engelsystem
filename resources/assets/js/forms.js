@@ -271,6 +271,14 @@ ready(() => {
 });
 
 /**
+ * Remove links from popover buttons
+ */
+ready(() => {
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
+  document.querySelectorAll('[data-js-link-remove="true"]').forEach((element) => (element.href = '#'));
+});
+
+/**
  * Init Bootstrap Tooltips
  */
 ready(() => {

@@ -1169,6 +1169,9 @@ msgstr "%s hat genug gemacht."
 msgid "iCal Export"
 msgstr "iCal Export"
 
+msgid "Open"
+msgstr "Öffnen"
+
 msgid "JSON Export"
 msgstr "JSON Export"
 
