@@ -54,18 +54,18 @@ class AngelType extends BaseModel
 
     /** @var array Default attributes */
     protected $attributes = [ // phpcs:ignore
-        'description'               => '',
-        'contact_name'              => '',
-        'contact_dect'              => '',
-        'contact_email'             => '',
-        'restricted'                   => true,
-        'shift_signup_before_arrival'  => false,
-        'requires_driver_license'      => false,
-        'requires_ifsg_certificate' => false,
-        'shift_self_signup'         => true,
-        'show_on_dashboard'         => true,
-        'hide_register'             => false,
-        'hide_on_shift_view'        => false,
+        'description'                 => '',
+        'contact_name'                => '',
+        'contact_dect'                => '',
+        'contact_email'               => '',
+        'restricted'                  => true,
+        'shift_signup_before_arrival' => false,
+        'requires_driver_license'     => false,
+        'requires_ifsg_certificate'   => false,
+        'shift_self_signup'           => true,
+        'show_on_dashboard'           => true,
+        'hide_register'               => false,
+        'hide_on_shift_view'          => false,
     ];
 
     /**
@@ -76,11 +76,9 @@ class AngelType extends BaseModel
     protected $fillable = [ // phpcs:ignore
         'name',
         'description',
-
         'contact_name',
         'contact_dect',
         'contact_email',
-
         'restricted',
         'shift_signup_before_arrival',
         'requires_driver_license',
@@ -93,14 +91,14 @@ class AngelType extends BaseModel
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
-        'restricted'                   => 'boolean',
-        'shift_signup_before_arrival'  => 'boolean',
-        'requires_driver_license'      => 'boolean',
-        'requires_ifsg_certificate' => 'boolean',
-        'shift_self_signup'         => 'boolean',
-        'show_on_dashboard'         => 'boolean',
-        'hide_register'             => 'boolean',
-        'hide_on_shift_view'        => 'boolean',
+        'restricted'                  => 'boolean',
+        'shift_signup_before_arrival' => 'boolean',
+        'requires_driver_license'     => 'boolean',
+        'requires_ifsg_certificate'   => 'boolean',
+        'shift_self_signup'           => 'boolean',
+        'show_on_dashboard'           => 'boolean',
+        'hide_register'               => 'boolean',
+        'hide_on_shift_view'          => 'boolean',
     ];
 
     public function neededBy(): HasMany
