@@ -66,6 +66,8 @@ class StringSearchTest extends TestCase
             'ASCII finds German ß' => ['Großmann', 'grossmann', true],
             'partial ASCII match' => ['Tannhäuser', 'hauser', true],
             'no match' => ['Schmidt', 'muller', false],
+            'NFKC compatibility: superscript 2' => ['42m²', '42m2', true],
+            'NFKC compatibility: superscript 3' => ['10m³', '10m3', true],
         ];
     }
 }

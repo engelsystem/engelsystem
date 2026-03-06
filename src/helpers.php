@@ -231,9 +231,9 @@ function view(?string $template = null, array $data = []): Renderer|string
 
 /**
  * Normalize a string for search comparison.
- * Converts to ASCII and lowercase for diacritic-insensitive matching.
+ * Converts to ASCII and lowercase for diacritic- and compatibility-insensitive matching (e.g. "m²" → "m2").
  */
 function normalize_for_search(string $s): string
 {
-    return transliterator_transliterate('Any-Latin; Latin-ASCII; Lower', $s) ?: mb_strtolower($s);
+    return transliterator_transliterate('Any-NFKC; Any-Latin; Latin-ASCII; Lower', $s) ?: mb_strtolower($s);
 }
