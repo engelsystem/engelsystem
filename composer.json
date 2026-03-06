@@ -22,6 +22,7 @@
     },
     "require": {
         "php": ">=8.2.0",
+        "ext-intl": "*",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
