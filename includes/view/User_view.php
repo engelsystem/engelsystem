@@ -700,7 +700,7 @@ function User_view(
                 . icon('calendar-plus') . ' ' . __('profile.shifts.upcoming') . '</a>'
                 . '<a href="' . $filter_url_running . '" class="btn btn-outline-info btn-sm' . ($shift_filter === 'running' ? ' active' : '') . '" data-filter="running">'
                 . icon('play-circle') . ' ' . __('profile.shifts.running') . '</a>'
-                . '<a href="' . $filter_url_completed . '" class="btn btn-outline-secondary btn-sm' . ($shift_filter === 'completed' ? ' active' : '') . '" data-filter="completed">'
+                . '<a href="' . $filter_url_completed . '" class="btn btn-outline-dark btn-sm' . ($shift_filter === 'completed' ? ' active' : '') . '" data-filter="completed">'
                 . icon('calendar-check') . ' ' . __('profile.shifts.completed') . '</a>'
                 . '</div>';
             $shifts_table_html = table([
