@@ -32,6 +32,7 @@ class SettingsController extends BaseController
         protected Config $config,
         protected LoggerInterface $log,
         protected Redirector $redirect,
+        protected Request $request,
         protected Response $response
     ) {
     }

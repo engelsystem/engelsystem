@@ -922,6 +922,8 @@ class SettingsControllerTest extends ControllerTest
             ->willReturnCallback(function ($view, $data) {
                 $this->assertEquals('pages/settings/api', $view);
                 $this->assertArrayHasKey('settings_menu', $data);
+                $this->assertArrayHasKey('ical_alarm_enabled', $data);
+                $this->assertArrayHasKey('ical_alarm_minutes', $data);
                 return $this->response;
             });
 
