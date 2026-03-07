@@ -796,7 +796,7 @@ function User_view(
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
                 icon('moon-stars')
                 . __(
-                    'Night shifts between %d and %d am are multiplied by %d for the goodie score.',
+                    'night_shift.goodie_score.hint',
                     [
                         $nightShiftsConfig['start'],
                         $nightShiftsConfig['end'],
@@ -1197,7 +1197,7 @@ function render_user_mobile_hint()
 function render_night_shift_hint(mixed $nightShiftsConfig): string
 {
     return ' <span class="bi bi-moon-stars text-info" data-bs-toggle="tooltip" title="'
-        . __('Night shifts between %d and %d am are multiplied by %d for the goodie score.', [
+        . __('night_shift.goodie_score.hint', [
             $nightShiftsConfig['start'],
             $nightShiftsConfig['end'],
             $nightShiftsConfig['multiplier'],
