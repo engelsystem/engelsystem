@@ -27,12 +27,13 @@ class AngelTypeListCommand extends Command
                 $angelType->name,
                 $angelType->restricted ? 'Yes' : 'No',
                 $angelType->hide_register ? 'Yes' : 'No',
+                $angelType->hide_on_shift_view ? 'Yes' : 'No',
                 $angelType->user_angel_types_count,
             ];
         }
 
         $this->outputTable(
-            ['ID', 'Name', 'Restricted', 'Hidden', 'Members'],
+            ['ID', 'Name', 'Restricted', 'Hide Register', 'Hide Shift View', 'Members'],
             $rows
         );
 

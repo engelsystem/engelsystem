@@ -26,7 +26,8 @@ class AngelTypeCreateCommand extends Command
             ->addArgument('name', InputArgument::REQUIRED, 'Angel type name')
             ->addOption('description', 'd', InputOption::VALUE_REQUIRED, 'Description')
             ->addOption('restricted', 'r', InputOption::VALUE_NONE, 'Requires introduction/confirmation')
-            ->addOption('hidden', null, InputOption::VALUE_NONE, 'Hide from registration');
+            ->addOption('hide-register', null, InputOption::VALUE_NONE, 'Hide on registration page')
+            ->addOption('hide-on-shift-view', null, InputOption::VALUE_NONE, 'Hide on shift view');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -41,7 +42,8 @@ class AngelTypeCreateCommand extends Command
             'name' => $name,
             'description' => $input->getOption('description') ?? '',
             'restricted' => $input->getOption('restricted'),
-            'hide_register' => $input->getOption('hidden'),
+            'hide_register' => $input->getOption('hide-register'),
+            'hide_on_shift_view' => $input->getOption('hide-on-shift-view'),
             'contact_name' => '',
             'contact_dect' => '',
             'contact_email' => '',
@@ -51,10 +53,11 @@ class AngelTypeCreateCommand extends Command
             'id' => $angelType->id,
             'name' => $angelType->name,
             'restricted' => $angelType->restricted,
-            'hidden' => $angelType->hide_register,
+            'hide_register' => $angelType->hide_register,
+            'hide_on_shift_view' => $angelType->hide_on_shift_view,
         ]);
 
-        $this->success('Angel type \'' . $name . '\' created successfully');
+        $this->success('Angel type \'' . $name . '\' created');
 
         return self::SUCCESS;
     }
