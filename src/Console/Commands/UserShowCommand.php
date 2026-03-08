@@ -44,7 +44,7 @@ class UserShowCommand extends Command
             'email' => $user->email,
             'arrived' => $user->state->arrived,
             'active' => $user->state->active,
-            'got_shirt' => $user->state->got_shirt,
+            'got_goodie' => $user->state->got_goodie,
             'groups' => $user->groups->pluck('name')->toArray(),
             'angel_types' => $user->userAngelTypes->pluck('name')->toArray(),
             'shifts_count' => $user->shiftEntries->count(),
