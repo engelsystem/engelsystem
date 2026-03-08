@@ -24,8 +24,9 @@ class ShiftListCommand extends Command
 
         $this
             ->addOption('location', 'l', InputOption::VALUE_REQUIRED, 'Filter by location name')
-            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Filter by shift type name')
-            ->addOption('date', 'd', InputOption::VALUE_REQUIRED, 'Filter by date (Y-m-d)')
+            ->addOption('shifttype', 't', InputOption::VALUE_REQUIRED, 'Filter by shift type name')
+            ->addOption('angeltype', 'a', InputOption::VALUE_REQUIRED, 'Filter by needed angel type name')
+            ->addOption('startdate', 'd', InputOption::VALUE_REQUIRED, 'Filter by start date (Y-m-d)')
             ->addOption('upcoming', 'u', InputOption::VALUE_NONE, 'Show only upcoming shifts')
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Limit results', '50');
     }
@@ -33,25 +34,29 @@ class ShiftListCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $query = Shift::query()
-            ->with(['location', 'shiftType', 'shiftEntries', 'neededAngelTypes'])
+            ->with(['location', 'shiftType', 'shiftEntries', 'neededAngelTypes.angelType'])
             ->orderBy('start');
 
-        if ($input->getOption('location')) {
-            $locationFilter = $input->getOption('location');
+        if ($locationFilter = $input->getOption('location')) {
             $query->whereHas('location', function ($q) use ($locationFilter): void {
                 $q->where('name', 'like', '%' . $locationFilter . '%');
             });
         }
 
-        if ($input->getOption('type')) {
-            $typeFilter = $input->getOption('type');
-            $query->whereHas('shiftType', function ($q) use ($typeFilter): void {
-                $q->where('name', 'like', '%' . $typeFilter . '%');
+        if ($shiftTypeFilter = $input->getOption('shifttype')) {
+            $query->whereHas('shiftType', function ($q) use ($shiftTypeFilter): void {
+                $q->where('name', 'like', '%' . $shiftTypeFilter . '%');
             });
         }
 
-        if ($input->getOption('date')) {
-            $date = Carbon::parse($input->getOption('date'));
+        if ($angelTypeFilter = $input->getOption('angeltype')) {
+            $query->whereHas('neededAngelTypes.angelType', function ($q) use ($angelTypeFilter): void {
+                $q->where('name', 'like', '%' . $angelTypeFilter . '%');
+            });
+        }
+
+        if ($startDate = $input->getOption('startdate')) {
+            $date = Carbon::parse($startDate);
             $query->whereDate('start', $date);
         }
 
@@ -70,6 +75,7 @@ class ShiftListCommand extends Command
             $rows[] = [
                 $shift->id,
                 $shift->title,
+                $shift->shiftType->name,
                 $shift->location->name,
                 $shift->start->format('Y-m-d H:i'),
                 $shift->end->format('H:i'),
@@ -78,7 +84,7 @@ class ShiftListCommand extends Command
         }
 
         $this->outputTable(
-            ['ID', 'Title', 'Location', 'Start', 'End', 'Filled'],
+            ['ID', 'Title', 'Shift Type', 'Location', 'Start', 'End', 'Filled'],
             $rows
         );
 
