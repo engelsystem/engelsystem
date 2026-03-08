@@ -31,7 +31,7 @@ class ShiftSignupCommand extends Command
             ->addArgument('user', InputArgument::REQUIRED, 'Username or user ID')
             ->addArgument('angeltype', InputArgument::REQUIRED, 'Angel type name or ID')
             ->addOption('comment', 'c', InputOption::VALUE_REQUIRED, 'User comment')
-            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force signup even if shift is full');
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Ignore restrictions, allow duplicate signups');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -64,13 +64,18 @@ class ShiftSignupCommand extends Command
             return $this->error('Angel type \'' . $angelTypeIdentifier . '\' not found');
         }
 
-        // Check if user is already signed up for this shift
         $existingEntry = ShiftEntry::where('shift_id', $shift->id)
             ->where('user_id', $user->id)
             ->first();
 
+        if ($existingEntry && !$input->getOption('force')) {
+            return $this->error(
+                'User \'' . $user->name . '\' is already signed up for this shift (use --force to allow duplicates)'
+            );
+        }
+
         if ($existingEntry) {
-            return $this->error('User \'' . $user->name . '\' is already signed up for this shift');
+            $this->io->note('User is already signed up for this shift, adding another entry');
         }
 
         // Check if user is member of the angel type
@@ -105,11 +110,15 @@ class ShiftSignupCommand extends Command
             'user_comment' => $input->getOption('comment') ?? '',
         ]);
 
+        $shift->load('location');
+
         $this->success(sprintf(
-            'Signed up \'%s\' for shift \'%s\' at %s as \'%s\'',
+            'Signed up %s for shift %s at %s from %s to %s as %s',
             $user->name,
             $shift->title,
+            $shift->location->name,
             $shift->start->format('Y-m-d H:i'),
+            $shift->end->format('H:i'),
             $angelType->name
         ));
 
