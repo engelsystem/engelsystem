@@ -34,7 +34,15 @@ class ConfigSetCommand extends Command
         $rawValue = $input->getArgument('value');
         $type = $input->getOption('type');
 
-        // Parse value based on type
+        $validTypes = ['string', 'int', 'integer', 'bool', 'boolean', 'json'];
+        if (!in_array($type, $validTypes)) {
+            return $this->error('Invalid type \'' . $type . '\'. Valid types: string, int, bool, json');
+        }
+
+        if (($type === 'int' || $type === 'integer') && !is_numeric($rawValue)) {
+            return $this->error('Value \'' . $rawValue . '\' is not a valid integer');
+        }
+
         $value = match ($type) {
             'int', 'integer' => (int) $rawValue,
             'bool', 'boolean' => in_array(strtolower($rawValue), ['true', '1', 'yes', 'on']),
@@ -57,7 +65,7 @@ class ConfigSetCommand extends Command
             'type' => $type,
         ]);
 
-        $this->success('Configuration \'' . $key . '\' updated successfully');
+        $this->success('Configuration \'' . $key . '\' updated');
 
         return self::SUCCESS;
     }
