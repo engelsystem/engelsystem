@@ -982,6 +982,18 @@ msgstr ""
 msgid "password.email.message"
 msgstr "Please visit %s to recover your password."
 
+msgid "email.user.welcome.subject"
+msgstr "Welcome to %s!"
+
+msgid "email.user.welcome"
+msgstr "Hi %s, your account has been created."
+
+msgid "email.user.welcome.can_signup"
+msgstr "You can now log in and sign up for shifts."
+
+msgid "email.user.welcome.arrive_first"
+msgstr "You can now log in. To sign up for shifts, please check in when you arrive at the event."
+
 msgid "password.minimal_length"
 msgstr "Minimal length %d characters"
 
