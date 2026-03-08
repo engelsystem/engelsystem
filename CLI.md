@@ -1,4 +1,4 @@
-# Engelsystem CLI
+# Engelsystem CLI (BETA)
 
 The `bin/engel` script manages Engelsystem from the command line.
 
@@ -17,7 +17,7 @@ For usage see `./bin/engel list`
 
 #### user:create
 
-Create a new user.
+Create a new user. Assigns the default group when `--groups` is omitted.
 
 ```bash
 bin/engel user:create <nick> [options]
@@ -26,16 +26,20 @@ bin/engel user:create <nick> [options]
 Options:
 - `-P, --password <pass>` - Set password (auto-generated if omitted)
 - `-e, --email <email>` - Email address
-- `-g, --groups <names>` - Comma-separated group names (e.g., "Angel,Shift Coordinator")
+- `-g, --groups <names>` - Comma-separated group names (default group assigned if omitted)
 - `-A, --angeltypes <names>` - Comma-separated angel types to join
+- `--confirm-angeltypes` - Auto-confirm restricted angel type memberships
 
 Examples:
 ```bash
 # Create user with password and groups
 bin/engel user:create alice -P secret123 -g "Angel,Shift Coordinator"
 
-# Create user with auto-generated password
+# Create user with auto-generated password (gets default group)
 bin/engel user:create bob -e bob@example.com
+
+# Create user with confirmed restricted angel type
+bin/engel user:create charlie -A "Translation Angel" --confirm-angeltypes
 ```
 
 #### user:list
@@ -48,8 +52,10 @@ bin/engel user:list [options]
 
 Options:
 - `-g, --group <name>` - Filter by group name
-- `-a, --angeltype <name>` - Filter by angel type
+- `-a, --angeltype <name>` - Filter by angel type (adds status column)
 - `-l, --limit <n>` - Limit results (default: 50)
+
+When filtering by angel type, an additional "Angel Type Status" column shows whether each user is Unconfirmed, Member, or Supporter.
 
 Examples:
 ```bash
@@ -58,6 +64,9 @@ bin/engel user:list --json
 
 # List users in a specific group
 bin/engel user:list -g "Shift Coordinator"
+
+# List members of an angel type with their status
+bin/engel user:list -a "Translation Angel"
 ```
 
 #### user:show
@@ -89,7 +98,8 @@ bin/engel angeltype:create <name> [options]
 Options:
 - `-d, --description <text>` - Description
 - `-r, --restricted` - Require confirmation for membership
-- `--hidden` - Hide from registration page
+- `--hide-register` - Hide on registration page
+- `--hide-on-shift-view` - Hide on shift view
 
 ### Location Management
 
@@ -146,8 +156,9 @@ bin/engel shift:list [options]
 
 Options:
 - `-l, --location <name>` - Filter by location name
-- `-t, --type <name>` - Filter by shift type
-- `-d, --date <Y-m-d>` - Filter by date
+- `-t, --shifttype <name>` - Filter by shift type
+- `-a, --angeltype <name>` - Filter by needed angel type
+- `-d, --startdate <Y-m-d>` - Filter by start date
 - `-u, --upcoming` - Show only upcoming shifts
 - `--limit <n>` - Limit results (default: 50)
 
@@ -161,7 +172,7 @@ bin/engel shift:signup <shift_id> <user> <angeltype> [options]
 
 Options:
 - `-c, --comment <text>` - User comment
-- `-f, --force` - Force signup even if shift is full or user is not a member of the angel type
+- `-f, --force` - Force signup (ignore restrictions, allow duplicate signups)
 
 ### Configuration
 
