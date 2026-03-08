@@ -50,7 +50,7 @@ class LocationCreateCommand extends Command
             'dect' => $location->dect,
         ]);
 
-        $this->success('Location \'' . $name . '\' created successfully');
+        $this->success('Location \'' . $name . '\' created');
 
         return self::SUCCESS;
     }
