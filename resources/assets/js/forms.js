@@ -362,6 +362,35 @@ ready(() => {
 });
 
 /**
+ * Update iCal URL when alarm settings change (without page reload)
+ */
+ready(() => {
+  const form = document.getElementById('ical-alarm-form');
+  if (!form) return;
+
+  const urlEl = document.getElementById('ical-url');
+  const checkbox = document.getElementById('ical_alarm_enabled');
+  const minutes = document.getElementById('ical_alarm_minutes');
+  const baseUrl = form.dataset.baseUrl;
+
+  const updateUrl = () => {
+    if (checkbox.checked && minutes.value > 0) {
+      urlEl.textContent = baseUrl + '&alarm=' + minutes.value;
+    } else {
+      urlEl.textContent = baseUrl;
+    }
+  };
+
+  checkbox.addEventListener('change', updateUrl);
+  minutes.addEventListener('input', updateUrl);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    updateUrl();
+  });
+});
+
+/**
  * Show oauth buttons on welcome title click
  */
 ready(() => {

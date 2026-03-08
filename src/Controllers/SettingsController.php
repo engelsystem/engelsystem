@@ -32,6 +32,7 @@ class SettingsController extends BaseController
         protected Config $config,
         protected LoggerInterface $log,
         protected Redirector $redirect,
+        protected Request $request,
         protected Response $response
     ) {
     }
@@ -313,10 +314,16 @@ class SettingsController extends BaseController
 
     public function api(): Response
     {
+        // Read iCal alarm settings from query params (for URL generation)
+        $icalAlarmEnabled = (bool) $this->request->get('ical_alarm_enabled', false);
+        $icalAlarmMinutes = max(0, (int) $this->request->get('ical_alarm_minutes', 30));
+
         return $this->response->withView(
             'pages/settings/api',
             [
                 'settings_menu' => $this->settingsMenu(),
+                'ical_alarm_enabled' => $icalAlarmEnabled,
+                'ical_alarm_minutes' => $icalAlarmMinutes,
             ],
         );
     }
