@@ -57,7 +57,7 @@ class UserTest extends ServiceProviderTest
         $this->app->alias(Authenticator::class, 'authenticator');
 
         $dispatcher = $this->createMock(EventDispatcher::class);
-        $dispatcher->method('dispatch')->willReturn([]);
+        $dispatcher->method('dispatch')->willReturn(null);
         $this->app->instance('events.dispatcher', $dispatcher);
 
         $this->subject = $this->app->make(User::class);

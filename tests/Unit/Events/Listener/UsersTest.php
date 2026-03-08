@@ -41,6 +41,7 @@ class UsersTest extends TestCase
                 $this->assertEquals($user->id, $recipient->id);
                 $this->assertEquals('email.user.welcome.subject', $subject);
                 $this->assertEquals('emails/user-welcome', $template);
+                $this->assertArrayHasKey('app_name', $data);
                 $this->assertArrayHasKey('username', $data);
                 $this->assertEquals($user->displayName, $data['username']);
                 return true;
