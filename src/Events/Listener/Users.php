@@ -22,7 +22,7 @@ class Users
             $user,
             'email.user.welcome.subject',
             'emails/user-welcome',
-            ['username' => $user->displayName]
+            ['app_name' => config('app_name'), 'username' => $user->displayName]
         );
     }
 }

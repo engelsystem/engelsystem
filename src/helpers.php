@@ -101,7 +101,7 @@ function env_secret(string $var, mixed $default = null): string | null
     return env($var, $default);
 }
 
-function event(string|object|null $event = null, array $payload = []): array|EventDispatcher
+function event(string|object|null $event = null, array $payload = []): mixed
 {
     /** @var EventDispatcher $dispatcher */
     $dispatcher = app('events.dispatcher');
