@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Console\Commands;
 
 use Engelsystem\Console\Command;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
@@ -29,27 +30,25 @@ class UserCreateCommand extends Command
             ->addArgument('nick', InputArgument::REQUIRED, 'Username/nick')
             ->addOption('password', 'P', InputOption::VALUE_REQUIRED, 'Password')
             ->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'Email address')
-            ->addOption('groups', 'g', InputOption::VALUE_REQUIRED, 'Comma-separated group names')
-            ->addOption('angeltypes', 'A', InputOption::VALUE_REQUIRED, 'Comma-separated angel types to join');
+            ->addOption('groups', 'g', InputOption::VALUE_REQUIRED, 'Comma-separated group names (default if omitted)')
+            ->addOption('angeltypes', 'A', InputOption::VALUE_REQUIRED, 'Comma-separated angel types to join')
+            ->addOption('confirm-angeltypes', null, InputOption::VALUE_NONE, 'Auto-confirm restricted angel types');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $nick = $input->getArgument('nick');
 
-        // Check if user already exists
         if (User::whereName($nick)->exists()) {
             return $this->error('User \'' . $nick . '\' already exists');
         }
 
-        // Get or generate password
         $password = $input->getOption('password');
         if (!$password) {
             $password = bin2hex(random_bytes(8));
             $this->io->note('Generated password: ' . $password);
         }
 
-        // Create user with hashed password
         $user = new User([
             'name' => $nick,
             'email' => $input->getOption('email') ?? '',
@@ -58,9 +57,7 @@ class UserCreateCommand extends Command
         ]);
         $user->save();
 
-        // Add to groups
-        $groupNames = $input->getOption('groups');
-        if ($groupNames) {
+        if ($groupNames = $input->getOption('groups')) {
             $groups = [];
             foreach (explode(',', $groupNames) as $groupName) {
                 $groupName = trim($groupName);
@@ -74,25 +71,35 @@ class UserCreateCommand extends Command
             if ($groups) {
                 $user->groups()->attach($groups);
             }
+        } else {
+            $auth = app(Authenticator::class);
+            $defaultGroup = Group::find($auth->getDefaultRole());
+            if ($defaultGroup) {
+                $user->groups()->attach($defaultGroup);
+                $this->io->note('Assigned default group: ' . $defaultGroup->name);
+            }
         }
 
-        // Add angel types
-        $angelTypeNames = $input->getOption('angeltypes');
-        if ($angelTypeNames) {
+        $confirmAngeltypes = $input->getOption('confirm-angeltypes');
+
+        if ($angelTypeNames = $input->getOption('angeltypes')) {
             foreach (explode(',', $angelTypeNames) as $angelTypeName) {
                 $angelTypeName = trim($angelTypeName);
                 $angelType = AngelType::whereName($angelTypeName)->first();
                 if ($angelType) {
+                    $confirmUserId = (!$angelType->restricted || $confirmAngeltypes) ? $user->id : null;
                     UserAngelType::create([
                         'user_id' => $user->id,
                         'angel_type_id' => $angelType->id,
-                        'confirm_user_id' => $angelType->restricted ? null : $user->id,
+                        'confirm_user_id' => $confirmUserId,
                     ]);
                 } else {
                     $this->io->warning('Angel type \'' . $angelTypeName . '\' not found, skipping');
                 }
             }
         }
+
+        $user->load(['groups', 'userAngelTypes']);
 
         $this->outputItem([
             'id' => $user->id,
@@ -102,7 +109,7 @@ class UserCreateCommand extends Command
             'angel_types' => $user->userAngelTypes->pluck('name')->toArray(),
         ]);
 
-        $this->success('User \'' . $nick . '\' created successfully');
+        $this->success('User \'' . $nick . '\' created');
 
         return self::SUCCESS;
     }

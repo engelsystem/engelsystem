@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Console\Commands;
 
 use Engelsystem\Console\Command;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,15 +32,16 @@ class UserListCommand extends Command
     {
         $query = User::query()->with(['groups', 'userAngelTypes', 'state']);
 
-        $groupFilter = $input->getOption('group');
-        if ($groupFilter) {
+        if ($groupFilter = $input->getOption('group')) {
             $query->whereHas('groups', function ($q) use ($groupFilter): void {
                 $q->where('name', 'like', '%' . $groupFilter . '%');
             });
         }
 
         $angelTypeFilter = $input->getOption('angeltype');
+        $angelType = null;
         if ($angelTypeFilter) {
+            $angelType = AngelType::where('name', 'like', '%' . $angelTypeFilter . '%')->first();
             $query->whereHas('userAngelTypes', function ($q) use ($angelTypeFilter): void {
                 $q->where('name', 'like', '%' . $angelTypeFilter . '%');
             });
@@ -48,28 +50,59 @@ class UserListCommand extends Command
         $limit = (int) $input->getOption('limit');
         $users = $query->limit($limit)->orderBy('name')->get();
 
+        $showAngelTypeState = $angelType !== null;
+
+        $headers = ['ID', 'Nick', 'Email', 'Arrived', 'Groups'];
+        if ($showAngelTypeState) {
+            $headers[] = 'Angel Type Status';
+        }
+
         $rows = [];
         $jsonRows = [];
         foreach ($users as $user) {
             $groupNames = $user->groups->pluck('name');
-            $rows[] = [
+            $row = [
                 $user->id,
                 $user->name,
                 $user->email,
                 $user->state->arrived ? 'Yes' : 'No',
                 $groupNames->implode(', '),
             ];
-            $jsonRows[] = [
+            $jsonRow = [
                 $user->id,
                 $user->name,
                 $user->email,
                 $user->state->arrived,
                 $groupNames->toArray(),
             ];
+
+            if ($showAngelTypeState) {
+                $pivot = $user->userAngelTypes
+                    ->where('id', $angelType->id)
+                    ->first();
+
+                if ($pivot && $pivot->pivot) {
+                    if ($pivot->pivot->supporter) {
+                        $state = 'Supporter';
+                    } elseif ($pivot->pivot->confirm_user_id) {
+                        $state = 'Member';
+                    } else {
+                        $state = 'Unconfirmed';
+                    }
+                } else {
+                    $state = 'Member';
+                }
+
+                $row[] = $state;
+                $jsonRow[] = $state;
+            }
+
+            $rows[] = $row;
+            $jsonRows[] = $jsonRow;
         }
 
         $this->outputTable(
-            ['ID', 'Name', 'Email', 'Arrived', 'Groups'],
+            $headers,
             $rows,
             $jsonRows
         );
