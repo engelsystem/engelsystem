@@ -2,9 +2,10 @@
 
 {% macro field(name, options) %}
     {% set info = options['info']|default('config.' ~ name ~ '.info') %}
-    {% if __(info) != info %}
-        {% set options = options|merge({'info': __(info)}) %}
+    {% if __(info) != 'config.' ~ name ~ '.info' %}
+        {% set options = options|merge({'form_text': info}) %}
     {% endif %}
+    {% set options = options|filter((v, k) => k != 'info') %}
     {% if options.warning|default(false) %}
         {% set options = options|merge({
             'warning': __(options.warning)
