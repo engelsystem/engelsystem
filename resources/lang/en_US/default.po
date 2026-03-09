@@ -587,7 +587,7 @@ msgid "settings.api.ical_show"
 msgstr "Show iCal export"
 
 msgid "settings.api.ical_feed"
-msgstr "iCal Feed"
+msgstr "Subscription feed"
 
 msgid "settings.api.news_show"
 msgstr "Show news feeds"

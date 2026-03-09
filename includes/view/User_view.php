@@ -754,13 +754,13 @@ function User_view(
                                 'js-link-remove' => 'true',
                                 'bs-toggle' => 'popover',
                                 'bs-placement' => 'bottom',
-                                'bs-content' => '
+                                'bs-content' =>  __('settings.api.ical_feed') . ':<br>
                                     <code>' . url('/ical', ['key' => $user_source->api_key]) . '</code><br>
                                     <a
                                         href="' . url('/ical', ['key' => $user_source->api_key]) . '"
                                         class="btn btn-secondary btn-sm mt-3"
                                     >
-                                        ' . __('Open') . '
+                                        ' . __('Download iCal') . '
                                     </a>
                                 ',
                                 'bs-html' => 'true',

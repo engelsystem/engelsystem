@@ -1151,8 +1151,11 @@ msgstr "%s hat genug gemacht."
 msgid "iCal Export"
 msgstr "iCal Export"
 
-msgid "Open"
-msgstr "Öffnen"
+msgid "Download iCal"
+msgstr "iCal herunterladen"
+
+msgid "settings.api.ical_feed"
+msgstr "Abonnement Link"
 
 msgid "JSON Export"
 msgstr "JSON Export"
