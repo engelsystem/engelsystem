@@ -382,7 +382,6 @@ function view_user_shifts()
                 'msg'  => msg(),
                 'tag_id'  => $tagId,
                 'shifts_table'  => $shiftCalendarRenderer->render(),
-                'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),
                 'filter_toggle' => __('shifts.filter.toggle'),
                 'expand_toggle_title' => __('shifts.toggle.title'),
@@ -405,27 +404,6 @@ function view_user_shifts()
             ]),
         ]),
     ]);
-}
-
-/**
- * Returns a hint for the user how the ical feature works.
- *
- * @return string
- */
-function ical_hint()
-{
-    $user = auth()->user();
-    if (!auth()->can('ical')) {
-        return '';
-    }
-
-    return heading(__('iCal export and API') . ' ' . button_help('user/ical'), 2)
-        . '<p>' . sprintf(
-            __('Export your own shifts formatted as <a href="%s" target="_blank">iCal</a> or <a href="%s" target="_blank">JSON</a> (please keep the link secret, otherwise you have to reset the api key <a href="%s">in your settings</a>).'),
-            url('/ical', ['key' => $user->api_key]),
-            url('/shifts-json-export', ['key' => $user->api_key]),
-            url('/settings/api')
-        ) . '</p>';
 }
 
 /**

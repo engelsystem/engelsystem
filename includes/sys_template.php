@@ -348,16 +348,22 @@ function render_table($columns, $rows, $data = true)
  * @param string $id
  * @return string
  */
-function button($href, $label, $class = '', $id = '', $title = '', $disabled = false)
+function button($href, $label, $class = '', $id = '', $title = '', $disabled = false, $dataAttrs = [])
 {
     if (!Str::contains(str_replace(['btn-sm', 'btn-xl'], '', $class), 'btn-')) {
         $class = 'btn-secondary' . ($class ? ' ' . $class : '');
     }
 
     $idAttribute = $id ? 'id="' . $id . '"' : '';
+    $dataAttributes = '';
+    foreach ($dataAttrs as $key => $value) {
+        $dataAttributes .= sprintf(' data-%s="%s"', $key, htmlspecialchars($value));
+    }
 
     return '<a ' . $idAttribute . ' href="' . $href
-        . '" class="btn ' . $class . ($disabled ? ' disabled' : '') . '" title="' . $title . '">' . $label . '</a>';
+        . '" class="btn ' . $class . ($disabled ? ' disabled' : '') . '" title="' . $title . '"' . $dataAttributes . '>'
+        . $label
+        . '</a>';
 }
 
 /**
