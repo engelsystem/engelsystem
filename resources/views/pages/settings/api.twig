@@ -77,7 +77,7 @@
                     {{ __('settings.api.ical_feed') }}:<br>
                     <code>{{ url('/ical', {'key': user.api_key}) }}</code>
                     <br>
-                    {{ m.button(__('Download export'), url('/ical', {'key': user.api_key}, {'size': 'sm'})) }}
+                    {{ m.button(__('settings.api.ical_download'), url('/ical', {'key': user.api_key}, {'size': 'sm'})) }}
                 </p>
             {% endif %}
 
