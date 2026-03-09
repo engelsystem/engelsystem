@@ -760,7 +760,7 @@ function User_view(
                                         href="' . url('/ical', ['key' => $user_source->api_key]) . '"
                                         class="btn btn-secondary btn-sm mt-3"
                                     >
-                                        ' . __('Download iCal') . '
+                                        ' . __('settings.api.ical_download') . '
                                     </a>
                                 ',
                                 'bs-html' => 'true',
