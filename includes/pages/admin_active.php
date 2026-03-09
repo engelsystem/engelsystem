@@ -62,7 +62,7 @@ function admin_active()
 
         if ($request->hasPostData('ack')) {
             State::query()
-                ->where('got_goodie', '=', false)
+                ->whereNull('got_goodie_by')
                 ->update(['active' => false]);
 
             $query = User::query()
@@ -92,7 +92,7 @@ function admin_active()
                 })
                 ->groupBy('users.id');
             if (config('enable_force_active')) {
-                $query->orderByDesc('force_active');
+                $query->orderByRaw('(users_state.force_active_by IS NOT NULL) DESC');
             }
             $query
                 ->orderByDesc('shift_length')
@@ -153,7 +153,7 @@ function admin_active()
                 ) {
                     $msg = error(__('Angel has no valid T-shirt size. T-shirt was not set.'), true);
                 } else {
-                    $user_source->state->got_goodie = true;
+                    $user_source->state->got_goodie_by = auth()->user()->id;
                     $user_source->state->save();
                     engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has goodie now.');
                     $msg = success(
@@ -168,7 +168,7 @@ function admin_active()
             $user_id = $request->input('not_tshirt');
             $user_source = User::find($user_id);
             if ($user_source) {
-                $user_source->state->got_goodie = false;
+                $user_source->state->got_goodie_by = null;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO goodie.');
                 $msg = success(
@@ -218,7 +218,7 @@ function admin_active()
         })
         ->groupBy('users.id');
     if (config('enable_force_active')) {
-        $query->orderByDesc('force_active');
+        $query->orderByRaw('(users_state.force_active_by IS NOT NULL) DESC');
     }
     $query
         ->orderByDesc('shift_length')
@@ -413,8 +413,8 @@ function admin_active()
                 ->leftJoin('users_personal_data', 'users_state.user_id', '=', 'users_personal_data.user_id')
                 ->where('users_personal_data.shirt_size', '=', $size)
             ;
-            $given = $query->clone()->where('users_state.got_goodie', true)->count();
-            $notGiven = $query->clone()->where('users_state.got_goodie', false)->count();
+            $given = $query->clone()->whereNotNull('users_state.got_goodie_by')->count();
+            $notGiven = $query->clone()->whereNull('users_state.got_goodie_by')->count();
 
             $totalSum = $given + $notGiven;
             $total += $totalSum;
