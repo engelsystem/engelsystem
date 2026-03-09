@@ -831,7 +831,6 @@ function User_view(
                     url('/user-shifts')
                 ), true, true)
                 : '',
-            $its_me ? ical_hint() : '',
         ]
     );
 }

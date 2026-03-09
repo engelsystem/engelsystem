@@ -786,18 +786,6 @@ msgstr "nächste 4h"
 msgid "next 8h"
 msgstr "nächste 8h"
 
-msgid "iCal export and API"
-msgstr "iCal Export und API"
-
-msgid ""
-"Export your own shifts formatted as <a href=\"%s\" target=\"_blank\">iCal</a> or "
-"<a href=\"%s\" target=\"_blank\">JSON</a> (please keep the link secret, otherwise you have to reset the api key "
-"<a href=\"%s\">in your settings</a>)."
-msgstr ""
-"Exportiere Deine Schichten im <a href=\"%s\" target=\"_blank\">iCal</a> oder <a href=\"%s"
-"\" target=\"_blank\">JSON</a> Format (Link bitte geheimhalten, sonst musst du den API-Key in "
-"<a href=\"%s\">deinen Einstellungen</a> zurücksetzen)."
-
 msgid "Per page"
 msgstr "Pro Seite"
 
