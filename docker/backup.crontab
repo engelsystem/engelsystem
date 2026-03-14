@@ -1,0 +1,7 @@
+SHELL=/bin/bash
+
+# m	h	d	m	wd	command
+*   *   *   *   *   /usr/bin/mariadb-dump --host=${MYSQL_HOST} --skip-ssl --password=`cat \${MYSQL_ROOT_PASSWORD_FILE}` --single-transaction --ignore-table-data=${MYSQL_DATABASE}.sessions --ignore-table-data=${MYSQL_DATABASE}.log_entries ${MYSQL_DATABASE} > /backup/backup_`date "+\%Y-\%m-\%d-\%H-\%M"`_daily.sql
+17  1   *   *   0   /usr/bin/mariadb-dump --host=${MYSQL_HOST} --skip-ssl --password=`cat ${MYSQL_ROOT_PASSWORD_FILE}` --all-databases --single-transaction > /backup/backup_`date "+\%Y-\%m-\%d-\%H-\%M"`_weekly.sql
+41  3   *   *   *   /usr/bin/find /backup/ -type f -mtime +3 -name '*_daily.sql' -delete
+42  3   *   *   *   /usr/bin/find /backup/ -type f -mtime +15 -name '*_weekly.sql' -delete
