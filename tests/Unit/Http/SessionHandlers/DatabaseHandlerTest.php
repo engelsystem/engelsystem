@@ -125,7 +125,7 @@ class DatabaseHandlerTest extends TestCase
      */
     public function testGc(): void
     {
-        $this->app->instance('config', new Config(['session' => ['lifetime' => 2]])); // 2 days
+        $this->app->instance('config', new Config(['session' => ['lifetime' => 2 * 24 * 60 * 60]])); // 2 days
 
         $table = $this->database->getConnection()->table('sessions');
         $table
