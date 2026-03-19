@@ -396,6 +396,7 @@ ready(() => {
       // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
       heightLimited.forEach((e) => e.classList.remove('limit-height'));
       localStorage.setItem('collapseShiftsFilterExpand', 'opened');
+      localStorage.setItem('collapseShiftsFilterSelect', 'show.bs.collapse');
       collapseElement.classList.add('show');
     } else {
       document
@@ -407,8 +408,8 @@ ready(() => {
     e.preventDefault();
   });
 
-  if (localStorage.getItem('collapseShiftsFilterSelect') === 'hide.bs.collapse') {
-    collapseElement.classList.remove('show');
+  if ((localStorage.getItem('collapseShiftsFilterSelect') || 'hide.bs.collapse') !== 'hide.bs.collapse') {
+    collapseElement.classList.add('show');
   }
 
   if (localStorage.getItem('collapseShiftsFilterExpand') === 'opened') {
