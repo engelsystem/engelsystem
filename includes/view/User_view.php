@@ -745,7 +745,26 @@ function User_view(
                         ),
                         $auth->can('ical') ? button(
                             url('/ical', ['key' => $user_source->api_key]),
-                            icon('calendar-week') . __('iCal Export')
+                            icon('calendar-week') . __('iCal Export'),
+                            '',
+                            '',
+                            '',
+                            false,
+                            [
+                                'js-link-remove' => 'true',
+                                'bs-toggle' => 'popover',
+                                'bs-placement' => 'bottom',
+                                'bs-content' =>  __('settings.api.ical_feed') . ':<br>
+                                    <code>' . url('/ical', ['key' => $user_source->api_key]) . '</code><br>
+                                    <a
+                                        href="' . url('/ical', ['key' => $user_source->api_key]) . '"
+                                        class="btn btn-secondary btn-sm mt-3"
+                                    >
+                                        ' . __('settings.api.ical_download') . '
+                                    </a>
+                                ',
+                                'bs-html' => 'true',
+                            ],
                         ) : '',
                         $auth->can('shifts_json_export') ? button(
                             url('/shifts-json-export', ['key' => $user_source->api_key]),
@@ -812,7 +831,6 @@ function User_view(
                     url('/user-shifts')
                 ), true, true)
                 : '',
-            $its_me ? ical_hint() : '',
         ]
     );
 }
