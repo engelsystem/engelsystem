@@ -373,7 +373,7 @@ ready(() => {
 
   const updateUrl = () => {
     if (checkbox.checked && minutes.value > 0) {
-      urlEl.textContent = baseUrl + '&alarm=' + minutes.value;
+      urlEl.textContent = `${baseUrl}&alarm=${minutes.value}`;
     } else {
       urlEl.textContent = baseUrl;
     }
