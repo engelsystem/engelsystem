@@ -96,12 +96,24 @@ module.exports = {
               sourceMap: true,
               sassOptions: {
                 quietDeps: true,
+                // See https://sass-lang.com/d/[deprecation]
+                silenceDeprecations: [
+                  'import',
+                  'global-builtin',
+                  'legacy-js-api',
+                  'color-functions',
+                  'if-function',
+                  'duplicate-var-flags',
+                ],
               },
             },
           },
         ],
       },
     ],
+  },
+  performance: {
+    hints: false,
   },
   plugins,
   devtool,
