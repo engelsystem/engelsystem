@@ -77,6 +77,14 @@ body {
   color: $text-muted;
 }
 
+.container {
+  &.config {
+    .form-check-label {
+      font-weight: $form-label-font-weight;
+    }
+  }
+}
+
 .text-inherit {
   color: inherit;
 
