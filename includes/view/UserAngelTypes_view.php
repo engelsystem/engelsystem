@@ -177,6 +177,9 @@ function UserAngelType_join_view($user, AngelType $angeltype)
         ), true),
         form([
             auth()->can('admin_user_angeltypes') ? form_checkbox('auto_confirm_user', __('Confirm user'), true) : '',
+            $angeltype->restricted
+                ? form_text('signup_token', __('angeltype.signup_token'), '', false, 0, 'signup_token', __('angeltype.signup_token.info'))
+                : '',
             buttons([
                 button(angeltype_link($angeltype->id), icon('x-lg') . __('form.cancel')),
                 form_submit('submit', icon('save') . __('form.save'), 'btn-primary', false),
