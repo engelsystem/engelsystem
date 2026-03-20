@@ -90,7 +90,7 @@ msgid "schedule.delete.success"
 msgstr "Schedule deletion successful."
 
 msgid "shifts.filter.toggle"
-msgstr "collapse/show filters"
+msgstr "collapse/show additional filters"
 
 msgid "shifts.toggle.title"
 msgstr "Show more / less"

@@ -383,7 +383,7 @@ function view_user_shifts()
                 'tag_id'  => $tagId,
                 'shifts_table'  => $shiftCalendarRenderer->render(),
                 'ical_text'     => div('mt-3', ical_hint()),
-                'filter'        => __('Filter'),
+                'filter'        => __('Filter shifts'),
                 'filter_toggle' => __('shifts.filter.toggle'),
                 'expand_toggle_title' => __('shifts.toggle.title'),
                 'set_yesterday' => __('Yesterday'),
