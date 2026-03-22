@@ -82,6 +82,7 @@ class PluginServiceProviderTest extends ServiceProviderTest
 
         $this->assertContains(__DIR__ . '/Stub/TestPluginStateful/', $pluginPaths);
         $this->assertContains(__DIR__ . '/Stub/NotEnabledPlugin/', $pluginPathsDisabled);
+        $this->assertContains(__DIR__ . '/Stub/NoNamespace/', $pluginPathsDisabled);
 
         $this->assertEquals('TestPluginStateful', $plugin->getPluginName());
         $this->assertEquals(__DIR__ . '/Stub/TestPluginStateful/', $plugin->getPath());
@@ -92,6 +93,12 @@ class PluginServiceProviderTest extends ServiceProviderTest
         $this->assertFalse(class_exists('Test\PluginStateful\NotExisting'));
 
         $this->assertEquals($plugin, $this->app->get('TestPluginStateful'));
+
+        $noNamespace = $this->app->get('NoNamespace');
+        $this->assertEquals('NoNamespace', $noNamespace->getPluginName());
+        $this->assertEquals(__DIR__ . '/Stub/NoNamespace/', $noNamespace->getPath());
+        $this->assertEquals('NoNamespace\\', $noNamespace->getNamespace());
+        $this->assertEquals(__DIR__ . '/Stub/NoNamespace/', $noNamespace->getNamespacePath());
     }
 
     /**
@@ -102,7 +109,7 @@ class PluginServiceProviderTest extends ServiceProviderTest
      */
     public function testRegisterDisabledOrBroken(): void
     {
-        $invalidPlugins = ['EmptyDir', 'InvalidConfig', 'NoNamespace'];
+        $invalidPlugins = ['EmptyDir', 'InvalidConfig'];
         $this->app->instance('path.plugins', __DIR__ . '/Stub');
 
         /** @var PluginServiceProvider $provider */

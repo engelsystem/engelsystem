@@ -8,8 +8,7 @@ use DirectoryIterator;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Events\EventDispatcher;
-use Engelsystem\Models\Plugin;
-use Engelsystem\Plugins\Plugin as AbstractPlugin;
+use Engelsystem\Models\Plugin as PluginModel;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 
@@ -19,7 +18,7 @@ class PluginServiceProvider extends ServiceProvider
     {
         $pluginPath = $this->app->get('path.plugins');
         try {
-            $enabledPlugins = Plugin::whereEnabled(true)->get();
+            $enabledPlugins = PluginModel::whereEnabled(true)->get();
         } catch (QueryException) {
             return;
         }
@@ -31,7 +30,7 @@ class PluginServiceProvider extends ServiceProvider
 
             $pluginName = $fileInfo->getFilename();
             $pluginPath = $fileInfo->getPath() . '/' . $pluginName . '/';
-            $isEnabled = $enabledPlugins->filter(fn(Plugin $p) => $p->name === $pluginName)->isNotEmpty();
+            $isEnabled = $enabledPlugins->filter(fn(PluginModel $p) => $p->name === $pluginName)->isNotEmpty();
 
             $this->addPlugin($pluginName, $pluginPath, $isEnabled);
         }
@@ -53,7 +52,7 @@ class PluginServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        /** @var AbstractPlugin $plugin */
+        /** @var Plugin $plugin */
         foreach ($this->app->tagged('plugin') as $plugin) {
             foreach ($plugin->getProviders() as $providerName) {
                 /** @var ServiceProvider $provider */
@@ -83,7 +82,8 @@ class PluginServiceProvider extends ServiceProvider
             $pluginPath
         );
         if (!$pluginNamespace) {
-            return;
+            $pluginNamespace = $pluginName . '\\';
+            $pluginNamespacePath = $pluginPath;
         }
 
         $pluginInfo['plugin_name'] = $pluginName;
@@ -112,7 +112,7 @@ class PluginServiceProvider extends ServiceProvider
             return [$namespace, $path];
         }
 
-        return null;
+        return [null, null];
     }
 
     protected function registerNamespaces(array $autoload, string $pluginPath): void
@@ -143,7 +143,7 @@ class PluginServiceProvider extends ServiceProvider
         array $pluginInfo,
         string $pluginPath,
         bool $isEnabled
-    ): AbstractPlugin {
+    ): Plugin {
         $namespacedPlugin = $pluginNamespace . $pluginName;
         if ($this->app->bound($namespacedPlugin)) {
             // This is a rebind, reset previous singleton instance
@@ -154,7 +154,10 @@ class PluginServiceProvider extends ServiceProvider
             $this->app->alias(DisabledPlugin::class, $namespacedPlugin);
         }
 
-        $plugin = $this->app->make($namespacedPlugin, ['pluginInfo' => $pluginInfo]);
+        $plugin = $this->app->make(
+            class_exists($namespacedPlugin) ? $namespacedPlugin : Plugin::class,
+            ['pluginInfo' => $pluginInfo],
+        );
 
         // Set and tag plugin instance
         $this->app->singleton($namespacedPlugin, fn() => $plugin);
@@ -168,7 +171,7 @@ class PluginServiceProvider extends ServiceProvider
         return $plugin;
     }
 
-    protected function registerPluginProviders(AbstractPlugin $plugin): void
+    protected function registerPluginProviders(Plugin $plugin): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');
@@ -183,14 +186,14 @@ class PluginServiceProvider extends ServiceProvider
         $config->set('providers', $providers);
     }
 
-    protected function registerPluginMiddleware(AbstractPlugin $plugin): void
+    protected function registerPluginMiddleware(Plugin $plugin): void
     {
         foreach ($plugin->getMiddleware() as $middleware) {
             $this->app->tag($middleware, 'plugin.middleware');
         }
     }
 
-    protected function registerPluginEventHandlers(AbstractPlugin $plugin): void
+    protected function registerPluginEventHandlers(Plugin $plugin): void
     {
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->app->get(EventDispatcher::class);
@@ -201,7 +204,7 @@ class PluginServiceProvider extends ServiceProvider
         }
     }
 
-    protected function registerPluginConfigOptions(AbstractPlugin $plugin): void
+    protected function registerPluginConfigOptions(Plugin $plugin): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');
