@@ -6,7 +6,7 @@ namespace Engelsystem\Plugins;
 
 use FastRoute\RouteCollector;
 
-abstract class Plugin
+class Plugin
 {
     protected string $name;
     protected string $pluginName;
