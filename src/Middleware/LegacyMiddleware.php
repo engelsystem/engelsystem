@@ -50,10 +50,11 @@ class LegacyMiddleware implements MiddlewareInterface
             $page = str_replace('-', '_', $page);
         }
 
-        $allowPage = false;
-        if ($page === 'admin_arrive') {
-            $allowPage = $this->auth->can('users.arrive.list');
-        }
+        $allowPage = match ($page) {
+            'admin_arrive' => $this->auth->can('users.arrive.list'),
+            'user_angeltypes' => $this->auth->can('angeltypes.join'),
+            default => false,
+        };
 
         $title = $content = '';
         if (

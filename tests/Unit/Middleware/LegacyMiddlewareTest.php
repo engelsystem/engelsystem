@@ -77,11 +77,11 @@ class LegacyMiddlewareTest extends TestCase
         $auth = $this->createStub(Authenticator::class);
         $auth->method('can')
             ->willReturnMap([
-                ['users.arrive.list', true],
-                ['admin_arrive', false],
+                ['angeltypes.join', true],
+                ['user_angeltypes', false],
             ]);
 
-        $request = new Request([], [], [], [], [], ['REQUEST_URI' => 'admin-arrive']);
+        $request = new Request([], [], [], [], [], ['REQUEST_URI' => 'user-angeltypes']);
         $this->app->instance('request', $request);
 
         $responseInstance = new Response();
@@ -91,7 +91,7 @@ class LegacyMiddlewareTest extends TestCase
             ->getMock();
         $middleware->expects($this->once())
             ->method('loadPage')
-            ->with('admin_arrive')
+            ->with('user_angeltypes')
             ->willReturn(['', $responseInstance]);
 
         $response = $middleware->process($request, $handler);
