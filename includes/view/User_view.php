@@ -927,7 +927,7 @@ function User_angeltypes_render($user_angeltypes)
             . '</a>';
     }
     return div('col-md-2', [
-        heading(__('angeltypes.angeltypes'), 4),
+        heading(__('angeltype.angeltypes'), 4),
         join('<br>', $output),
     ]);
 }
