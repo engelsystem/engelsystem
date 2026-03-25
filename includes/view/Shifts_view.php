@@ -124,7 +124,7 @@ function Shift_signup_button_render(Shift $shift, AngelType $angeltype)
     if (
         $angeltype->shift_signup_state?->isSignupAllowed()
         || auth()->user()->isAngelTypeSupporter($angeltype)
-        || auth()->can('admin_user_angeltypes')
+        || auth()->can('userangeltypes.edit')
     ) {
         return button(shift_entry_create_link($shift, $angeltype), __('Sign up'));
     } elseif (empty($user_angeltype)) {
@@ -359,7 +359,7 @@ function Shift_view_render_needed_angeltype(
 ) {
     $angeltype = $angeltypes[$needed_angeltype['angel_type_id']];
     $angeltype_supporter = $supportsAngelTypes->contains($needed_angeltype['angel_type_id'])
-        || auth()->can('admin_user_angeltypes');
+        || auth()->can('userangeltypes.edit');
 
     $needed_angels = '';
 

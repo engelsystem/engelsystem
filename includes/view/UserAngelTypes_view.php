@@ -151,7 +151,7 @@ function UserAngelType_add_view(AngelType $angeltype, $users_select, $user_id)
             $angeltype->restricted
                 ? form_checkbox('auto_confirm_user', __('Confirm user'), true)
                 : '',
-            auth()->can('admin_user_angel_types') || config('supporters_can_promote')
+            auth()->can('userangeltypes.edit') || config('supporters_can_promote')
                 ? form_checkbox('set_supporter', __('angeltype.supporter'), false)
                 : '',
             form_select('user_id', __('general.user'), $users_select, $user_id, '', '', 'user_angel_type_add_user_id'),
@@ -176,7 +176,7 @@ function UserAngelType_join_view($user, AngelType $angeltype)
             $angeltype->name
         ), true),
         form([
-            auth()->can('admin_user_angeltypes') ? form_checkbox('auto_confirm_user', __('Confirm user'), true) : '',
+            auth()->can('userangeltypes.edit') ? form_checkbox('auto_confirm_user', __('Confirm user'), true) : '',
             buttons([
                 button(angeltype_link($angeltype->id), icon('x-lg') . __('form.cancel')),
                 form_submit('submit', icon('save') . __('form.save'), 'btn-primary', false),
