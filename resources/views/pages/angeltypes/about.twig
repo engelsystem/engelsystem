@@ -1,7 +1,7 @@
 {% extends "layouts/app.twig" %}
 {% import 'macros/base.twig' as m %}
 
-{% block title %}{{ __('angeltypes.about') }}{% endblock %}
+{% block title %}{{ __('angeltype.about') }}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -11,7 +11,7 @@
             <div class="btn-group mb-3" role="group">
                 {% if is_user() %}
                     <a href="{{ url('/angeltypes') }}" class="btn btn-secondary back">
-                        {{ __('angeltypes.angeltypes') }}
+                        {{ __('angeltype.angeltypes') }}
                     </a>
                 {% else %}
                     {% if can('register') and config('registration_enabled') %}
@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-md-12">
-            <p>{{ __('angeltypes.about.text', [url('/faq')])|raw }}</p>
+            <p>{{ __('angeltype.about.text', [url('/faq')])|raw }}</p>
         </div>
 
         <div class="row">
@@ -61,7 +61,7 @@
                         {% if angeltype.restricted %}
                             <button type="button" class="btn btn-info float-end"
                                 data-bs-toggle="popover" data-bs-title="{{ angeltype.name | e('html_attr') }}"
-                                data-bs-content="{{ __('angeltypes.restricted.hint') | e('html_attr') }}"
+                                data-bs-content="{{ __('angeltype.restricted.hint') | e('html_attr') }}"
                             >
                                 {{ m.icon('info-circle-fill') }}
                             </button>
