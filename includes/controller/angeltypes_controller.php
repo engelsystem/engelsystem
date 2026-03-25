@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
  */
 function angeltypes_title()
 {
-    return __('angeltypes.angeltypes');
+    return __('angeltype.angeltypes');
 }
 
 /**
@@ -319,18 +319,18 @@ function angeltypes_list_controller()
                     '/user-angeltypes',
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype->user_angel_type_id]
                 ),
-                icon('box-arrow-right') . ($admin_angeltypes ? '' : __('Leave')),
+                icon('box-arrow-right') . ($admin_angeltypes ? '' : __('angeltype.leave')),
                 'btn-sm',
                 '',
-                ($admin_angeltypes ? __('Leave') : '')
+                ($admin_angeltypes ? __('angeltype.leave') : '')
             );
         } else {
             $actions[] = button(
                 url('/user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
-                icon('box-arrow-in-right') . ($admin_angeltypes ? '' : __('Join')),
+                icon('box-arrow-in-right') . ($admin_angeltypes ? '' : __('angeltype.join')),
                 'btn-sm' . ($admin_angeltypes ? ' btn-success' : ''),
                 '',
-                ($admin_angeltypes ? __('Join') : '')
+                ($admin_angeltypes ? __('angeltype.join') : '')
             );
         }
 
