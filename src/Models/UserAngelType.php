@@ -97,6 +97,6 @@ class UserAngelType extends Pivot
         if ($this->supporter) {
             return __('angeltype.supporter');
         }
-        return __('angeltype.member');
+        return '';
     }
 }
