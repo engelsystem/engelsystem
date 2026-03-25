@@ -151,7 +151,7 @@ function UserAngelType_add_view(AngelType $angeltype, $users_select, $user_id)
             $angeltype->restricted
                 ? form_checkbox('auto_confirm_user', __('Confirm user'), true)
                 : '',
-            auth()->can('admin_angel_types') || config('supporters_can_promote')
+            auth()->can('admin_user_angel_types') || config('supporters_can_promote')
                 ? form_checkbox('set_supporter', __('angeltype.supporter'), false)
                 : '',
             form_select('user_id', __('general.user'), $users_select, $user_id, '', '', 'user_angel_type_add_user_id'),
