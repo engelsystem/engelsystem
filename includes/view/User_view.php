@@ -983,7 +983,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
     $state = event()->dispatch('user_view_states', ['states' => $state, 'user' => $user_source], true) ?? $state;
 
     return div('col-md-2', [
-        heading(__('State'), 4),
+        heading(__('general.state'), 4),
         join('<br>', $state),
     ]);
 }
