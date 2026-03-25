@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
  */
 function angeltypes_title()
 {
-    return __('angeltypes.angeltypes');
+    return __('angeltype.angeltypes');
 }
 
 /**

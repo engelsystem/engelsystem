@@ -127,7 +127,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
         [
             $angeltype->id ?
                 buttons([
-                    button(url('/angeltypes'), icon('person-lines-fill') . __('angeltypes.angeltypes'), 'back'),
+                    button(url('/angeltypes'), icon('person-lines-fill') . __('angeltype.angeltypes'), 'back'),
                 ]) : '',
             msg(),
             form([
@@ -151,12 +151,12 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                     div('col-md-3', [
                         heading(__('State'), 3),
                         $supporter_mode
-                            ? form_info(__('angeltypes.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
+                            ? form_info(__('angeltype.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
                             : form_checkbox(
                                 'restricted',
-                                __('angeltypes.restricted') .
+                                __('angeltype.restricted') .
                                 ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                                __('angeltypes.restricted.info') . '"></span>',
+                                __('angeltype.restricted.info') . '"></span>',
                                 $angeltype->restricted
                             ),
                         $supporter_mode
@@ -165,7 +165,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                                 'shift_self_signup',
                                 __('shift.self_signup') .
                                 ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                                __('angeltypes.shift.self_signup.info') . '"></span>',
+                                __('angeltype.shift.self_signup.info') . '"></span>',
                                 $angeltype->shift_self_signup
                             ),
                         $requires_driving_license,
@@ -178,14 +178,14 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                             : form_checkbox('hide_register', __('Hide at Registration'), $angeltype->hide_register),
                         $supporter_mode
                             ? form_info(
-                                __('angeltypes.hide_on_shift_view'),
+                                __('angeltype.hide_on_shift_view'),
                                 $angeltype->hide_on_shift_view ? __('Yes') : __('No')
                             )
                             : form_checkbox(
                                 'hide_on_shift_view',
-                                __('angeltypes.hide_on_shift_view') .
+                                __('angeltype.hide_on_shift_view') .
                                 ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
-                                __('angeltypes.hide_on_shift_view.info') . '"></span>',
+                                __('angeltype.hide_on_shift_view.info') . '"></span>',
                                 $angeltype->hide_on_shift_view
                             ),
                     ]),
@@ -800,11 +800,11 @@ function AngelTypes_list_view($angeltypes, bool $admin_angeltypes)
         [
             msg(),
             buttons([
-                button(url('/angeltypes/about'), __('angeltypes.about')),
+                button(url('/angeltypes/about'), __('angeltype.about')),
             ]),
             table([
                 'name' => __('general.name'),
-                'is_restricted' => icon('mortarboard-fill') . __('angeltypes.restricted'),
+                'is_restricted' => icon('mortarboard-fill') . __('angeltype.restricted'),
                 'shift_self_signup_allowed' => icon('pencil-square') . __('shift.self_signup.allowed'),
                 'membership' => __('Membership'),
                 'actions' => '',
