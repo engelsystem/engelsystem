@@ -33,6 +33,7 @@ class AngelTypesController extends BaseController
         protected Config $config,
         protected Authenticator $auth,
         protected LoggerInterface $log,
+        protected AngelType $angelType,
     ) {
     }
 
@@ -54,6 +55,24 @@ class AngelTypesController extends BaseController
         return $this->response->withView(
             'pages/angeltypes/about',
             ['angeltypes' => $angeltypes]
+        );
+    }
+
+    public function index(): Response
+    {
+        $angelTypes = $this->angelType
+            ->with(['userAngelTypes' => function ($query): void {
+                $query->where('user_id', '=', auth()->user()->id);
+            }])
+            ->orderBy('name')
+            ->get();
+
+        return $this->response->withView(
+            'pages/angeltypes/index',
+            [
+                'angelTypes' => $angelTypes,
+                'is_index' => true,
+            ]
         );
     }
 

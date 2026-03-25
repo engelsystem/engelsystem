@@ -346,13 +346,13 @@ function user_angeltype_add_controller(): array
         /** @var AngelType|null $userAngelType */
         $userAngelType = $user->userAngelTypes->where('id', $angeltype->id)->first();
         if ($userAngelType) {
-            $membershipState = __('Member');
+            $membershipState = __('angeltype.member');
             if ($userAngelType->pivot->supporter) {
-                $membershipState = __('Supporter');
+                $membershipState = __('angeltype.supporter');
             } elseif (
                 !$userAngelType->pivot->isConfirmed
             ) {
-                $membershipState = __('Unconfirmed');
+                $membershipState = __('angeltype.unconfirmed');
             }
             $name = __('%s (%s)', [$name, $membershipState]);
         }
