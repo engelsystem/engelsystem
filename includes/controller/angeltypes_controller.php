@@ -57,7 +57,7 @@ function angeltype_link($angeltype_id, $params = [])
  */
 function angeltype_delete_controller()
 {
-    if (!auth()->can('admin_angel_types')) {
+    if (!auth()->can('angeltypes.edit')) {
         throw_redirect(url('/angeltypes'));
     }
 
@@ -84,14 +84,14 @@ function angeltype_delete_controller()
 function angeltype_edit_controller()
 {
     // In supporter mode only allow to modify description
-    $supporter_mode = !auth()->can('admin_angel_types');
+    $supporter_mode = !auth()->can('angeltypes.edit');
     $request = request();
 
     if ($request->has('angeltype_id')) {
         // Edit existing angeltype
         $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
 
-        if (!auth()->user()?->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
+        if (!auth()->user()?->isAngelTypeSupporter($angeltype) && !auth()->can('userangeltypes.edit')) {
             throw_redirect(url('/angeltypes'));
         }
     } else {
@@ -171,7 +171,7 @@ function angeltype_controller()
 {
     $user = auth()->user();
 
-    if (!auth()->can('angeltypes')) {
+    if (!auth()->can('angeltypes.view')) {
         throw_redirect(url('/'));
     }
 
@@ -205,8 +205,8 @@ function angeltype_controller()
             $angeltype,
             $members,
             $user_angeltype,
-            auth()->can('admin_user_angeltypes') || $isSupporter,
-            auth()->can('admin_angel_types'),
+            auth()->can('userangeltypes.edit') || $isSupporter,
+            auth()->can('angeltypes.edit'),
             $isSupporter,
             $user->license,
             $user,
@@ -277,9 +277,9 @@ function angeltype_controller_shiftsFilter(AngelType $angeltype, $days)
 function angeltypes_list_controller()
 {
     $user = auth()->user();
-    $admin_angeltypes = auth()->can('admin_angel_types');
+    $admin_angeltypes = auth()->can('angeltypes.edit');
 
-    if (!auth()->can('angeltypes')) {
+    if (!auth()->can('angeltypes.view')) {
         throw_redirect(url('/'));
     }
 
@@ -348,7 +348,7 @@ function angeltypes_list_controller()
 
     return [
         angeltypes_title(),
-        AngelTypes_list_view($angeltypes, auth()->can('admin_angel_types')),
+        AngelTypes_list_view($angeltypes, auth()->can('angeltypes.edit')),
     ];
 }
 
