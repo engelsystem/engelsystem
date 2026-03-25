@@ -620,7 +620,7 @@ function Shift_signout_allowed(Shift $shift, AngelType $angeltype, $signout_user
     $isAngeltypeSupporter = !is_null($isAngeltypeSupporter)
         ? $isAngeltypeSupporter
         : $user->isAngelTypeSupporter($angeltype);
-    if ($isAngeltypeSupporter || auth()->can('admin_user_angeltypes')) {
+    if ($isAngeltypeSupporter || auth()->can('userangeltypes.edit')) {
         return true;
     }
 
@@ -657,7 +657,7 @@ function Shift_signup_allowed(
     }
 
     if (
-        auth()->user()->isAngelTypeSupporter($angeltype) || auth()->can('admin_user_angeltypes')
+        auth()->user()->isAngelTypeSupporter($angeltype) || auth()->can('userangeltypes.edit')
     ) {
         return Shift_signup_allowed_angeltype_supporter($needed_angeltype, $shift_entries);
     }
