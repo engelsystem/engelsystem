@@ -70,7 +70,7 @@ function user_angeltypes_delete_all_controller(): array
     }
 
     $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
-    if (!auth()->user()->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
+    if (!auth()->user()->isAngelTypeSupporter($angeltype) && !auth()->can('userangeltypes.edit')) {
         error(__('You are not allowed to delete all users for this angel type.'));
         throw_redirect(url('/angeltypes'));
     }
@@ -107,7 +107,7 @@ function user_angeltypes_confirm_all_controller(): array
     }
 
     $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
-    if (!auth()->can('admin_user_angeltypes') && !$user->isAngelTypeSupporter($angeltype)) {
+    if (!auth()->can('userangeltypes.edit') && !$user->isAngelTypeSupporter($angeltype)) {
         error(__('You are not allowed to confirm all users for this angel type.'));
         throw_redirect(url('/angeltypes'));
     }
@@ -152,7 +152,7 @@ function user_angeltype_confirm_controller(): array
     /** @var UserAngelType $user_angeltype */
     $user_angeltype = UserAngelType::findOrFail($request->input('user_angeltype_id'));
     $angeltype = $user_angeltype->angelType;
-    if (!$user->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
+    if (!$user->isAngelTypeSupporter($angeltype) && !auth()->can('userangeltypes.edit')) {
         error(__('You are not allowed to confirm this users angel type.'));
         throw_redirect(url('/angeltypes'));
     }
@@ -234,7 +234,7 @@ function user_angeltype_delete_controller(): array
     if (
         !$isOwnAngelType
         && !$user->isAngelTypeSupporter($angeltype)
-        && !auth()->can('admin_user_angeltypes')
+        && !auth()->can('userangeltypes.edit')
     ) {
         error(__('You are not allowed to delete this users angel type.'));
         throw_redirect(url('/angeltypes'));
@@ -268,7 +268,7 @@ function user_angeltype_update_controller(): array
     if (!$request->has('user_angeltype_id')) {
         throw new HttpNotFound();
     }
-    if (!auth()->can('admin_user_angel_types') && !config('supporters_can_promote')) {
+    if (!auth()->can('userangeltypes.edit') && !config('supporters_can_promote')) {
         throw new HttpForbidden();
     }
 
@@ -326,7 +326,7 @@ function user_angeltype_add_controller(): array
     $angeltype = AngelType::findOrFail(request()->input('angeltype_id'));
 
     // User is joining by itself
-    if (!auth()->user()->isAngelTypeSupporter($angeltype) && !auth()->can('admin_user_angeltypes')) {
+    if (!auth()->user()->isAngelTypeSupporter($angeltype) && !auth()->can('userangeltypes.edit')) {
         return user_angeltype_join_controller($angeltype);
     }
 
@@ -438,7 +438,7 @@ function user_angeltype_join_controller(AngelType $angeltype)
         ));
         success(sprintf(__('You joined %s.'), $angeltype->name));
 
-        if (auth()->can('admin_user_angeltypes') && $request->hasPostData('auto_confirm_user')) {
+        if (auth()->can('userangeltypes.edit') && $request->hasPostData('auto_confirm_user')) {
             $userAngelType->confirmUser()->associate($user);
             $userAngelType->save();
 
