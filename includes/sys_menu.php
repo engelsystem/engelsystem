@@ -46,7 +46,7 @@ function make_navigation(): array
         'news'           => 'news.title',
         'meetings'       => ['news.title.meetings', 'user_meetings'],
         'user_shifts'    => 'general.shifts',
-        'angeltypes'     => 'angeltypes.angeltypes',
+        'angeltypes'     => 'angeltype.angeltypes',
         'locations'      => ['location.locations', 'locations.view'],
         'questions'      => ['question.menu', 'question.add'],
     ];

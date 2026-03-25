@@ -16,6 +16,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @mixin Builder
  *
  * @property int            $id
+ * @property int            $user_id
  * @property int            $angel_type_id
  * @property int|null       $confirm_user_id
  * @property bool           $supporter
@@ -23,6 +24,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read AngelType $angelType
  * @property-read User|null $confirmUser
  * @property-read bool      $isConfirmed
+ * @property-read string    $membership
  *
  * @method static QueryBuilder|UserAngelType[] whereId($value)
  * @method static QueryBuilder|UserAngelType[] whereAngelTypeId($value)
@@ -85,5 +87,16 @@ class UserAngelType extends Pivot
     public function getIsConfirmedAttribute(): bool
     {
         return !$this->angelType->restricted || $this->confirm_user_id;
+    }
+
+    public function getMembershipAttribute(): string
+    {
+        if (!$this->isConfirmed) {
+            return __('angeltype.unconfirmed');
+        }
+        if ($this->supporter) {
+            return __('angeltype.supporter');
+        }
+        return '';
     }
 }
