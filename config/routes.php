@@ -246,6 +246,11 @@ $route->addGroup(
             }
         );
 
+        // Angel type
+        $route->addGroup('/angeltypes', function (RouteCollector $route): void {
+            $route->post('', 'Admin\\AngeltypesController@delete');
+        });
+
         // Tag
         $route->addGroup(
             '/tags',

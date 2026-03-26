@@ -75,10 +75,6 @@ class LocationsController extends BaseController
             $validation['angel_type_' . $angelType->id] = 'optional|int';
         }
 
-        if ($request->request->has('delete')) {
-            return $this->delete($request);
-        }
-
         $data = $this->validate(
             $request,
             [
