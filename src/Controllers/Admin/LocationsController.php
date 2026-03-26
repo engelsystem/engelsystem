@@ -37,22 +37,6 @@ class LocationsController extends BaseController
     ) {
     }
 
-    public function index(): Response
-    {
-        $locations = $this->location
-            ->withCount('shifts')
-            ->orderBy('name')
-            ->get();
-
-        return $this->response->withView(
-            'pages/locations/index',
-            [
-                'locations' => $locations,
-                'is_index' => true,
-            ]
-        );
-    }
-
     public function edit(Request $request): Response
     {
         $locationId = (int) $request->getAttribute('location_id');
