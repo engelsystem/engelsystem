@@ -8,6 +8,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpNotFound;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
@@ -34,6 +35,7 @@ class AngelTypesController extends BaseController
         protected Authenticator $auth,
         protected AngelType $angelType,
         protected LoggerInterface $log,
+        protected Redirector $redirect,
     ) {
     }
 

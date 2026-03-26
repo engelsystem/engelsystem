@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Controllers\Admin\LocationsController;
+use Engelsystem\Controllers\LocationsController;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\ShiftsFilter;
