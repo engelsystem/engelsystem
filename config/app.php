@@ -83,10 +83,12 @@ return [
         'oauth2.login' => \Engelsystem\Events\Listener\OAuth2::class . '@login',
 
         'shift.deleting' => [
-            \Engelsystem\Events\Listener\Shifts::class . '@deletingCreateWorklogs',
-            \Engelsystem\Events\Listener\Shifts::class . '@deletingSendEmails',
+            \Engelsystem\Events\Listener\Shifts::class . '@deletingShift',
         ],
-
+        'shift.entry.deleting' => [
+            \Engelsystem\Events\Listener\Shifts::class . '@deletingShiftEntryCreateWorklog',
+            \Engelsystem\Events\Listener\Shifts::class . '@deletingShiftEntrySendEmail',
+        ],
         'shift.updating' => \Engelsystem\Events\Listener\Shifts::class . '@updatedSendEmail',
 
         'user.created' => \Engelsystem\Events\Listener\Users::class . '@created',

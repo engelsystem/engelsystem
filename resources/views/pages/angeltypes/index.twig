@@ -68,7 +68,7 @@
 
                                                 {{ m.edit(url('/admin/angeltypes/edit/' ~ angelType.id), {'class': 'm-1'}) }}
 
-                                                <form method="post" action="{{ url('/admin/angeltypes/edit/' ~ angelType.id) }}">
+                                                <form method="post" action="{{ url('/admin/angeltypes') }}">
                                                     {{ csrf() }}
                                                     {{ f.hidden('id', angelType.id) }}
                                                     {{ f.delete(null, {
