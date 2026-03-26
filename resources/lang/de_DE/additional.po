@@ -296,6 +296,9 @@ msgstr "Ort erfolgreich bearbeitet."
 msgid "location.delete.success"
 msgstr "Ort erfolgreich gelöscht."
 
+msgid "angeltype.delete.success"
+msgstr "Engeltyp erfolgreich gelöscht."
+
 msgid "shifttype.edit.success"
 msgstr "Schichttyp erfolgreich bearbeitet."
 
