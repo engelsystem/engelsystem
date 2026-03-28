@@ -14,7 +14,6 @@ use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass as Reflection;
 use ReflectionException;
-use stdClass;
 use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as Twig;
 use Twig\Extension\AbstractExtension;
@@ -30,23 +29,14 @@ class TwigServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister(): void
     {
-        $app = $this->getApp(['make', 'instance', 'tag']);
-        $class = $this->createMock(stdClass::class);
+        $app = $this->getApp(['alias', 'tag']);
 
         $className = 'Foo\Bar\Class';
         $classAlias = 'twig.extension.foo';
 
         $app->expects($this->once())
-            ->method('make')
-            ->with('Foo\Bar\Class')
-            ->willReturn($class);
-
-        $app->expects($this->exactly(2))
-            ->method('instance')
-            ->withConsecutive(
-                [$className, $class],
-                [$classAlias, $class]
-            );
+            ->method('alias')
+            ->with($className, $classAlias);
 
         $app->expects($this->once())
             ->method('tag')
