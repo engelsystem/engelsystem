@@ -134,11 +134,7 @@ class TwigServiceProvider extends ServiceProvider
     protected function registerTwigExtensions(string $class, string $alias): void
     {
         $alias = 'twig.extension.' . $alias;
-
-        $extension = $this->app->make($class);
-
-        $this->app->instance($class, $extension);
-        $this->app->instance($alias, $extension);
+        $this->app->alias($class, $alias);
 
         $this->app->tag($alias, ['twig.extension']);
     }
