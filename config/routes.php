@@ -77,7 +77,6 @@ $route->get('/metrics', 'Metrics\\Controller@metrics');
 
 // Angeltypes
 $route->addGroup('/angeltypes', function (RouteCollector $route): void {
-    $route->get('/new', 'AngelTypesController@index');
     $route->get('/about', 'AngelTypesController@about');
     $route->get('/{angel_type_id:\d+}/qr', 'AngelTypesController@qrCode');
     $route->post('/{angel_type_id:\d+}/qr', 'AngelTypesController@qrCode');
