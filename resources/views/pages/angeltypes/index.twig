@@ -22,9 +22,11 @@
 
         {% include 'layouts/parts/messages.twig' %}
 
-        <div class="mb-3">
-            {{ m.button(__('angeltype.about'), url('/angeltypes/about')) }}
-        </div>
+        {% if is_index|default(false) %}
+            <div class="mb-3">
+                {{ m.button(__('angeltype.about'), url('/angeltypes/about')) }}
+            </div>
+        {% endif %}
 
         <div class="row">
 
