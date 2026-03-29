@@ -15,7 +15,8 @@ use Engelsystem\ShiftsFilterRenderer;
  */
 function angeltypes_controller()
 {
-    $action = request()->input('action');;
+    $action = request()->input('action');
+    ;
 
     return match ($action) {
         'view'   => angeltype_controller(),
