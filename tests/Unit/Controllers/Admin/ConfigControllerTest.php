@@ -11,6 +11,7 @@ use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
+use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
@@ -88,14 +89,6 @@ class ConfigControllerTest extends ControllerTest
             ],
             'permission' => 'some_test_permission',
         ],
-        'foo' => [
-            'order' => 20,
-            'config' => [],
-        ],
-        'bar' => [
-            'order' => 10,
-            'config' => [],
-        ],
         'invalid' => [
             'config' => [
                 'broken' => [
@@ -134,6 +127,14 @@ class ConfigControllerTest extends ControllerTest
                 ],
             ],
         ],
+        'some-plugin' => [
+            'url' => '/config/plugin',
+            'config' => [
+                'test' => [
+                    'type' => 'text',
+                ],
+            ],
+        ],
     ];
 
     protected array $validEventBody = [
@@ -161,17 +162,6 @@ class ConfigControllerTest extends ControllerTest
     ];
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::__construct
-     */
-    public function testConstruct(): void
-    {
-        /** @var ConfigController $controller */
-        $controller = $this->app->make(ConfigController::class);
-        // Ensure order
-        $this->assertEquals(['test', 'bar', 'foo', 'invalid', 'event'], array_keys($controller->getOptions()));
-    }
-
-    /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::index
      */
     public function testIndex(): void
@@ -189,7 +179,6 @@ class ConfigControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\Admin\ConfigController::__construct
      * @covers \Engelsystem\Controllers\Admin\ConfigController::edit
      * @covers \Engelsystem\Controllers\Admin\ConfigController::activePage
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::parseOptions
      */
     public function testEdit(): void
     {
@@ -242,7 +231,7 @@ class ConfigControllerTest extends ControllerTest
                 $this->assertArrayHasKey('url', $data['options']['test']);
                 $this->assertArrayHasKey('title', $data['options']['test']);
                 $this->assertEquals('config.test', $data['options']['test']['title']);
-                $this->assertEquals('http://localhost/admin/config/test', $data['options']['test']['url']);
+                $this->assertEquals('/admin/config/test', $data['options']['test']['url']);
 
                 $this->assertArrayNotHasKey('something_to_hide', $data['config']);
 
@@ -258,7 +247,6 @@ class ConfigControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::isFileWritable
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::parseOptions
      */
     public function testEditNotWritable(): void
     {
@@ -274,6 +262,22 @@ class ConfigControllerTest extends ControllerTest
                 $this->assertFalse($data['config']['to_be_written_to_file']['writable']);
                 return $this->response;
             });
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+
+        $response = $controller->edit($this->request);
+        $this->assertEquals($this->response, $response);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::edit
+     */
+    public function testEditOverwrittenUrl(): void
+    {
+        $this->request->attributes->set('page', 'some-plugin');
+
+        $this->setExpects($this->response, 'redirectTo', ['http://localhost/config/plugin'], $this->response);
 
         /** @var ConfigController $controller */
         $controller = $this->app->make(ConfigController::class);
@@ -331,7 +335,6 @@ class ConfigControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\Admin\ConfigController::save
      * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
      * @covers \Engelsystem\Controllers\Admin\ConfigController::filterShownSettings
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::parseOptions
      */
     public function testSaveTestValidateSuccessful(): void
     {
@@ -379,7 +382,7 @@ class ConfigControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::validation
+     * @covers       \Engelsystem\Controllers\Admin\ConfigController::validation
      * @dataProvider validationErrorsProvider
      */
     public function testSaveValidationError(array $errorData): void
@@ -636,20 +639,6 @@ class ConfigControllerTest extends ControllerTest
         $this->assertStringNotContainsString('default value', $content);
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Admin\ConfigController::getOptions
-     */
-    public function testGetOptions(): void
-    {
-        /** @var ConfigController $controller */
-        $controller = $this->app->make(ConfigController::class);
-        $data = $controller->getOptions();
-
-        $this->assertArrayHasKey('test', $data);
-        $this->assertArrayHasKey('invalid', $data);
-        $this->assertArrayHasKey('event', $data);
-    }
-
     public function setUp(): void
     {
         parent::setUp();
@@ -663,6 +652,14 @@ class ConfigControllerTest extends ControllerTest
         $this->app->instance(Authenticator::class, $this->auth);
         $this->auth->setPermissions(['some_test_permission']);
         $this->app->instance('path.config', __DIR__ . '/Stub');
+
+        $url = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
+        $url->expects($this->any())
+            ->method('to')
+            ->willReturnCallback(function (string $path, array $parameters = []) {
+                return $path . ($parameters ? '?' . http_build_query($parameters) : '');
+            });
+        $this->app->instance('http.urlGenerator', $url);
     }
 
     public function tearDown(): void

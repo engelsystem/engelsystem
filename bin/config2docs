@@ -4,10 +4,8 @@
 declare(strict_types=1);
 
 use Engelsystem\Application;
-use Engelsystem\Config\Config;
-use Engelsystem\Controllers\Admin\ConfigController;
+use Engelsystem\Controllers\Admin\BaseConfigController;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 require_once __DIR__ . '/../includes/application.php';
 
@@ -31,9 +29,19 @@ if (in_array('help', $argv) || in_array('--help', $argv) || in_array('-h', $argv
     exit;
 }
 
-/** @var ConfigController $configController */
-$configController = $app->make(ConfigController::class, ['withAll' => true]);
-$options = $configController->getOptions();
+$configExtractor = new class extends BaseConfigController {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->parseOptions(true, true);
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
+};
+$options = $configExtractor->getOptions();
 
 function toTypeValue($value): string
 {
