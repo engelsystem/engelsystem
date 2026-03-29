@@ -855,10 +855,10 @@ msgstr "Benötigt Führerschein"
 msgid "Show on dashboard"
 msgstr "Auf dem Dashboard anzeigen"
 
-msgid "Contact"
+msgid "angeltype.contact"
 msgstr "Kontakt"
 
-msgid "Primary contact person/desk for user questions."
+msgid "angeltype.contact.info"
 msgstr "Ansprechpartner für Fragen."
 
 msgid "My driving license"
@@ -1164,7 +1164,7 @@ msgstr ""
 "Gehe zur <a href=\"%s\">Schicht-Tabelle</a>, um Dich für Schichten "
 "einzutragen."
 
-msgid "State"
+msgid "general.state"
 msgstr "Status"
 
 msgid "Not arrived"
@@ -1954,6 +1954,12 @@ msgstr "Lebensdauer (Minuten)"
 
 msgid "angeltype.qr.time.info"
 msgstr "Der Link ist für die gesamte angegebene Zeitspanne gültig und kann nicht zurückgezogen werden!"
+
+msgid "angeltype.create.title"
+msgstr "Engeltyp erstellen"
+
+msgid "angeltype.edit.title"
+msgstr "Engeltyp bearbeiten"
 
 msgid "location.location"
 msgstr "Ort"

@@ -12,6 +12,7 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 class AngelTypesController extends BaseController
@@ -20,8 +21,6 @@ class AngelTypesController extends BaseController
 
     /** @var array<string> */
     protected array $permissions = [
-        'edit' => 'angeltypes.edit',
-        'save' => 'angeltypes.edit',
         'delete' => 'angeltypes.edit',
     ];
     public function __construct(
@@ -33,20 +32,35 @@ class AngelTypesController extends BaseController
         protected Redirector $redirect,
     ) {
     }
-    public function edit(): Response
+    public function hasPermission(ServerRequestInterface $request, string $method): ?bool
     {
-        $angelTypes = $this->angelType
-            ->with(['userAngelTypes' => function ($query): void {
-                $query->where('user_id', '=', auth()->user()->id);
-            }])
-            ->orderBy('name')
-            ->get();
+        $canEdit = $this->auth->user()?->isAngelTypeSupporter($this->getAngelType($request))
+            || $this->auth->can('angeltypes.edit');
+        return match ($method) {
+            'edit' => $canEdit,
+            'save' => $canEdit,
+            default => parent::hasPermission($request, $method),
+        };
+    }
+
+    public function edit(Request $request): Response
+    {
+        $angelTypeId = (int) $request->getAttribute('angel_type_id');
+
+        $angelType = $this->angelType->find($angelTypeId);
+
+        return $this->showEdit($angelType);
+    }
+
+    protected function showEdit(?AngelType $angelType): Response
+    {
+        $isSupporter = $this->auth->user()->isAngelTypeSupporter($angelType) && !$this->auth->can('angeltypes.edit');
 
         return $this->response->withView(
-            'pages/angeltypes/index',
+            'admin/angeltypes/edit',
             [
-                'angelTypes' => $angelTypes,
-                'is_index' => true,
+                'angelType' => $angelType,
+                'isSupporter' => $isSupporter,
             ]
         );
     }
@@ -70,5 +84,13 @@ class AngelTypesController extends BaseController
         $this->addNotification('angeltype.delete.success');
 
         return $this->redirect->to('/angeltypes/new');
+    }
+
+    protected function getAngelType(ServerRequestInterface $request): AngelType
+    {
+        $angelTypeId = (int) $request->getAttribute('angel_type_id');
+        /** @var AngelType $angelType */
+        $angelType = AngelType::findOrFail($angelTypeId);
+        return $angelType;
     }
 }

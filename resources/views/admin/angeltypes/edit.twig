@@ -1,0 +1,121 @@
+{% extends 'pages/angeltypes/index.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ angelType ? __('angeltype.edit.title') : __('angeltype.create.title') }}{% endblock %}
+
+{% block row_content %}
+    <form method="post">
+        {{ csrf() }}
+        {{ f.hidden('id', angelType ? angelType.id : '') }}
+
+        <div class="row">
+            <div class="col-md-9">
+                {{ f.input('name', __('general.name'), {
+                    'required': true,
+                    'required_icon': true,
+                    'value': f.formData('angeltype', angelType ? angelType.name : ''),
+                    'max_length': 255,
+                }) }}
+
+                {{ f.textarea('description', __('general.description'), {
+                    'value': f.formData('description', angelType ? angelType.description : ''),
+                    'rows': 5,
+                    'info': __('form.markdown')
+                }) }}
+                <h3>{{ __('angeltype.contact') }}</h3>
+                {{ f.input('contact_name', __('general.name'), {
+                    'value': f.formData('angeltype', angelType ? angelType.contact_name : ''),
+                    'info': __('angeltype.contact.info'),
+                    'max_length': 255,
+                }) }}
+                {% if config('enable_dect') %}
+                    {{ f.input('contact_dect', __('general.dect'), {
+                        'value': f.formData('angeltype', angelType ? angelType.contact_dect : ''),
+                        'max_length': 255,
+                    }) }}
+                {% endif %}
+                {{ f.input('contact_email', __('general.email'), {
+                    'value': f.formData('angeltype', angelType ? angelType.contact_email : ''),
+                    'max_length': 255,
+                }) }}
+            </div>
+            <div class="col-md-3">
+                <h3>{{ __('general.state') }}</h3>
+                {{ f.checkbox(
+                    'restricted',
+                    __('angeltype.restricted'),
+                    {
+                        'checked': f.formData('restricted', angelType ? angelType.restricted : true),
+                        'info': __('angeltype.restricted.info'),
+                        'disabled': isSupporter,
+                    },
+                ) }}
+                {{ f.checkbox(
+                    'shift_self_signup',
+                    __('shift.self_signup'),
+                    {
+                        'checked': f.formData('shift_self_signup', angelType ? angelType.shift_self_signup : true),
+                        'info': __('angeltype.shift.self_signup.info'),
+                        'disabled': isSupporter,
+                    },
+                ) }}
+                {{ f.checkbox(
+                    'show_on_dashboard',
+                    __('Show on dashboard'),
+                    {
+                        'checked': f.formData('show_on_dashboard', angelType ? angelType.show_on_dashboard : true),
+                        'disabled': isSupporter,
+                    },
+                ) }}
+                {{ f.checkbox(
+                    'hide_register',
+                    __('Hide at Registration'),
+                    {
+                        'checked': f.formData('hide_register', angelType ? angelType.hide_register : false),
+                        'disabled': isSupporter,
+                    },
+                ) }}
+                {{ f.checkbox(
+                    'hide_on_shift_view',
+                    __('angeltype.hide_on_shift_view') ,
+                    {
+                        'checked': f.formData('hide_on_shift_view', angelType ? angelType.hide_on_shift_view : true),
+                        'info': __('angeltype.hide_on_shift_view.info') ,
+                        'disabled': isSupporter,
+                    },
+                ) }}
+                {% if config('driving_license_enabled') %}
+                    {{ f.checkbox(
+                        'requires_driver_license',
+                        __('Requires driver license'),
+                        {
+                            'checked': f.formData('requires_driver_license', angelType ? angelType.requires_driver_license : false),
+                            'disabled': isSupporter,
+                        },
+                    ) }}
+                {% endif %}
+                {% if config('ifsg_enabled') %}
+                    {{ f.checkbox(
+                        'requires_ifsg_certificate',
+                        __('angeltype.ifsg.required'),
+                        {
+                            'checked': f.formData('requires_ifsg_certificate', angelType ? angelType.requires_ifsg_certificate : false),
+                            'disabled': isSupporter,
+                        },
+                    ) }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="btn-group">
+                {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
+                {% if angelType %}
+                    {{ f.delete(__('form.delete'), {'confirm_title': __('angeltype.delete.title', [angelType.name|e])}) }}
+                {% endif %}
+            </div>
+        </div>
+
+    </form>
+{% endblock %}

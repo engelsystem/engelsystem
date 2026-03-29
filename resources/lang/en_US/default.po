@@ -843,6 +843,18 @@ msgstr "Join"
 msgid "angeltype.delete.title"
 msgstr "Delete angel type \"%s\""
 
+msgid "angeltype.create.title"
+msgstr "Create angel type"
+
+msgid "angeltype.edit.title"
+msgstr "Edit angel type"
+
+msgid "angeltype.contact"
+msgstr "Contact"
+
+msgid "angeltype.contact.info"
+msgstr "Primary contact person/desk for user questions."
+
 msgid "location.location"
 msgstr "Location"
 
@@ -962,6 +974,9 @@ msgstr "URL"
 
 msgid "general.qr"
 msgstr "QR code"
+
+msgid "general.state"
+msgstr "State"
 
 msgid "shifts.random"
 msgstr "Random shift"
