@@ -295,6 +295,9 @@ msgstr "Location edited successfully."
 msgid "location.delete.success"
 msgstr "Location successfully deleted."
 
+msgid "angeltype.edit.success"
+msgstr "Angel type edited successfully."
+
 msgid "angeltype.delete.success"
 msgstr "Angel type successfully deleted."
 
