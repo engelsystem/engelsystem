@@ -6,8 +6,6 @@ namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
-use Engelsystem\Controllers\BaseController;
-use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\CarbonDay;
@@ -16,44 +14,29 @@ use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Models\EventConfig;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
-class ConfigController extends BaseController
+class ConfigController extends BaseConfigController
 {
-    use HasUserNotifications;
-
     protected string $localConfig;
 
     protected string $passwordPlaceholder = '**********';
 
-    protected array $permissions = [
-        'config.edit',
-    ];
-
-    protected array $options = [];
-
     public function __construct(
-        protected Response $response,
-        protected Config $config,
-        protected Redirector $redirect,
-        protected UrlGeneratorInterface $url,
-        protected LoggerInterface $log,
-        protected Authenticator $auth,
         Application $app,
-        bool $withAll = false, # Used to get all config options, for example for docs
+        protected Config $config,
+        protected Authenticator $auth,
+        protected Redirector $redirect,
+        protected Response $response,
+        protected LoggerInterface $log,
     ) {
+        parent::__construct();
         $this->localConfig = $app->get('path.config') . '/config.local.php';
-        $this->options = $this->config->get('config_options', []);
-        // Sort by order ascending, ignore missing
-        uasort(
-            $this->options,
-            fn($a, $b) => ($a['order'] ?? $b['order'] ?? 0) <=> ($b['order'] ?? $a['order'] ?? 0)
-        );
-        $this->parseOptions($withAll);
+        $localConfigWriteable = $this->isFileWritable($this->localConfig);
+        $this->parseOptions($localConfigWriteable);
     }
 
     public function index(): Response
@@ -65,13 +48,14 @@ class ConfigController extends BaseController
     {
         $page = $this->activePage($request);
 
+        if (empty($this->options[$page]['url_added'])) {
+            return $this->redirect->to($this->options[$page]['url']);
+        }
+
         return $this->response->withView(
             'admin/config/index',
             [
-                'page' => $page,
-                'title' => $this->options[$page]['title'],
-                'config' => $this->options[$page]['config'],
-                'options' => $this->options,
+                ...$this->getPageData($page),
             ]
         );
     }
@@ -161,11 +145,6 @@ class ConfigController extends BaseController
         return $this->redirect->back();
     }
 
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
     protected function isFileWritable(string $file): bool
     {
         return
@@ -205,8 +184,8 @@ class ConfigController extends BaseController
                 'select' => $validation[] = 'in:' . implode(',', array_keys($setting['data'])),
                 'select_multi' => $validation[] = 'array_val|in_many:' . implode(',', array_keys($setting['data'])),
                 'password' =>
-                    $request->postData($key) !== $this->passwordPlaceholder
-                    && (!empty($setting['required']) || $request->postData($key))
+                $request->postData($key) !== $this->passwordPlaceholder
+                && (!empty($setting['required']) || $request->postData($key))
                     ? $validation[] = 'length:' . $this->config->get('password_min_length')
                     : null,
                 default => throw new InvalidArgumentException(
@@ -224,77 +203,6 @@ class ConfigController extends BaseController
         return $this->validate($request, $rules);
     }
 
-    protected function parseOptions(bool $withAll = true): void
-    {
-        $fromEnv = array_filter($this->config->get('env_config'), fn($a) => !is_null($a));
-        $localConfigWritable = $this->isFileWritable($this->localConfig);
-
-        foreach ($this->options as $key => $value) {
-            // Add page URLs
-            $this->options[$key]['url'] = $this->url->to('/admin/config/' . $key);
-
-            // Configure page translation names
-            if (empty($this->options[$key]['title'])) {
-                $this->options[$key]['title'] = 'config.' . $key;
-            }
-
-            // Define internal validation action
-            $internalValidation = 'validate' . Str::ucfirst($key);
-            if (method_exists($this, $internalValidation)) {
-                // Used until proper dynamic config loading is implemented
-                $this->options[$key]['validation'] = [$this, $internalValidation];
-            }
-
-            // Iterate over settings
-            foreach ($this->options[$key]['config'] as $name => $config) {
-                // Ignore hidden options
-                if (!empty($config['hidden']) && !$withAll) {
-                    unset($this->options[$key]['config'][$name]);
-                    continue;
-                }
-
-                // Set name for translation
-                if (empty($this->options[$key]['config'][$name]['name'])) {
-                    $this->options[$key]['config'][$name]['name'] = 'config.' . $name;
-                }
-
-                // Configure required icon
-                if (!empty($this->options[$key]['config'][$name]['required'])) {
-                    $this->options[$key]['config'][$name]['required_icon'] = true;
-                }
-
-                // Set ENV name
-                if (empty($config['env'])) {
-                    $config['env'] = Str::upper($name);
-                    $this->options[$key]['config'][$name]['env'] = $config['env'];
-                }
-
-                // Configure select values
-                if ($config['type'] == 'select' || $config['type'] == 'select_multi') {
-                    $data = [];
-                    foreach ($config['data'] ?? [] as $dataKey => $dataValue) {
-                        if (is_int($dataKey) && !($config['preserve_key'] ?? false)) {
-                            $dataKey = $dataValue;
-                            $dataValue = 'config.' . $name . '.select.' . $dataKey;
-                        }
-                        $data[$dataKey] = $dataValue;
-                    }
-                    $this->options[$key]['config'][$name]['data'] = $data;
-                }
-
-                // Set if set from ENV
-                if (isset($fromEnv[$config['env']])) {
-                    $this->options[$key]['config'][$name]['in_env'] = true;
-                }
-
-                // Set if local config can be written to
-                if (!$localConfigWritable && ($config['write_back'] ?? false)) {
-                    $this->options[$key]['config'][$name]['writable'] = false;
-                }
-            }
-        }
-    }
-
     protected function filterShownSettings(array $settings): array
     {
         // Ignore values from env
@@ -307,7 +215,7 @@ class ConfigController extends BaseController
     {
         $page = $request->getAttribute('page');
 
-        if (empty($this->options[$page])) {
+        if (!$page || empty($this->options[$page])) {
             throw new HttpNotFound();
         }
 
