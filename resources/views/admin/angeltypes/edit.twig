@@ -88,7 +88,7 @@
                 {% if config('driving_license_enabled') %}
                     {{ f.checkbox(
                         'requires_driver_license',
-                        __('Requires driver license'),
+                        __('angeltype.drivers_license.required'),
                         {
                             'checked': f.formData('requires_driver_license', angelType ? angelType.requires_driver_license : false),
                             'disabled': isSupporter,
