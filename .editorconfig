@@ -13,7 +13,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 max_line_length = 120
 
-[{.babelrc,package.json}]
+[{.babelrc,package.json,composer.json}]
 indent_size = 2
 
 [docker/**.conf]
