@@ -524,6 +524,9 @@ msgstr "Certificates were updated successfully."
 msgid "angeltype.ifsg.required"
 msgstr "Requires health instruction"
 
+msgid "angeltype.drivers_license.required"
+msgstr "Requires driver license"
+
 msgid "ifsg.certificate"
 msgstr "Health instruction"
 
