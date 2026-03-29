@@ -48,6 +48,11 @@ class ConfigController extends BaseController
     ) {
         $this->localConfig = $app->get('path.config') . '/config.local.php';
         $this->options = $this->config->get('config_options', []);
+        // Sort by order ascending, ignore missing
+        uasort(
+            $this->options,
+            fn($a, $b) => ($a['order'] ?? $b['order'] ?? 0) <=> ($b['order'] ?? $a['order'] ?? 0)
+        );
         $this->parseOptions($withAll);
     }
 

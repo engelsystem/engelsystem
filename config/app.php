@@ -97,40 +97,38 @@ return [
          * Structure of a config page:
          * '[slug]' => [
          *   'title' => '[title]', # Optional page title, default to config.[key]
+         *   'icon' => '[icon]', # Optional, default gear-fill
+         *   'order' => 42, # Optional, menu position
+         *   'url' => '[path]', # Optional, path to config page
+         *   'permission' => '[permission]' # Optional, string or array
          *   'validation' => callable, # Optional, callable($request, $rules) to validate the page request
-         *    'config' => [...], # A list of "config options" / config fields, see below
+         *   'config' => [...], # A list of "config options" / config fields, see below
          * ]
          *
          * Structure of a config option:
-         * '[name]' => [ # Config name
-         *     'title' => '[title], # Optional, default config.[name]
-         *     'permission' => '[permission]' # Optional, string or array
-         *     'icon' => '[icon]', # Optional, default gear-fill
-         *     'config' => [
-         *         '[name]' => [ # Name must be globally unique
-         *             'name' => 'some.value', # Optional, default: config.[name]
-         *             'info' => 'some.info', # Optional, default: config.[name].info if available
-         *             'type' => 'string', # Possible types:
-         *                  string, text, datetime-local, date, boolean, number, url, select, select_multi
-         *             'default' => '[value]', # Optional
-         *             'data' => ['[value]', '[key]' => '[value]'], # Optional, select data
-         *             'required' => true, # Optional, default false
-         *             'env' => '[name]', # Optional, env var to load, default name in upper case
-         *             'hidden' => false, # Optional, default false, hides the config from frontend
-         *             'permission' => '[permission]' # Optional, string or array
-         *             'validation' => ['[validation]'] # Optional, array of validation options
-         *             'write_back' => false, # Optional, writes the config to config.local.php
-         *                                                Only effective for single-server-installations
-         *             'preserve_key' => false, # Optional, preserves key in selects, disables auto translation
-         *             # Optional translation: config.[name].info for information messages
-         *             # Optionally other options used by the correlating field template
-         *         ],
-         *     ],
+         * '[name]' => [ # Config name, must be globally unique
+         *   'name' => 'some.value', # Optional, default: config.[name]
+         *   'info' => 'some.info', # Optional, default: config.[name].info if available
+         *   'type' => 'string', # Possible types:
+         *        string, text, datetime-local, date, boolean, number, url, select, select_multi
+         *   'default' => '[value]', # Optional
+         *   'data' => ['[value]', '[key]' => '[value]'], # Optional, select data
+         *   'required' => true, # Optional, default false
+         *   'env' => '[name]', # Optional, env var to load, default name in upper case
+         *   'hidden' => false, # Optional, default false, hides the config from frontend
+         *   'permission' => '[permission]' # Optional, string or array
+         *   'validation' => ['[validation]'] # Optional, array of validation options
+         *   'write_back' => false, # Optional, writes the config to config.local.php
+         *                                      Only effective for single-server-installations
+         *   'preserve_key' => false, # Optional, preserves key in selects, disables auto translation
+         *   # Optional translation: config.[name].info for information messages
+         *   # Optionally other options used by the correlating field template
          * ],
          */
 
         'event' => [
             'icon' => 'calendar-heart',
+            'order' => 10,
             'config' => [
                 'name' => [
                     'type' => 'string',
@@ -174,6 +172,7 @@ return [
 
         'features' => [
             'icon' => 'ui-checks',
+            'order' => 20,
             'config' => [
                 'enable_dect' => [
                     'name' => 'general.dect',
@@ -270,6 +269,7 @@ return [
 
         'certificates' => [
             'icon' => 'card-checklist',
+            'order' => 30,
             'config' => [
                 'driving_license_enabled' => [
                     'name' => 'settings.certificates.driving_license',
@@ -291,6 +291,7 @@ return [
 
         'shifts' => [
             'icon' => 'calendar-week',
+            'order' => 50,
             'config' => [
                 'signup_advance_hours' => [
                     'type' => 'number',
@@ -329,6 +330,7 @@ return [
 
         'goodie' => [
             'icon' => 'gift',
+            'order' => 60,
             'config' => [
                 'goodie_type' => [
                     'type' => 'select',
@@ -370,6 +372,7 @@ return [
         ],
 
         'system' => [
+            'order' => 90,
             'config' => [
                 'app_name' => [
                     'type' => 'string',
