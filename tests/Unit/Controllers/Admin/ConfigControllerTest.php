@@ -88,6 +88,14 @@ class ConfigControllerTest extends ControllerTest
             ],
             'permission' => 'some_test_permission',
         ],
+        'foo' => [
+            'order' => 20,
+            'config' => [],
+        ],
+        'bar' => [
+            'order' => 10,
+            'config' => [],
+        ],
         'invalid' => [
             'config' => [
                 'broken' => [
@@ -151,6 +159,17 @@ class ConfigControllerTest extends ControllerTest
         'url' => 'https://example.com/test',
         'to_be_written_to_file' => '1',
     ];
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\ConfigController::__construct
+     */
+    public function testConstruct(): void
+    {
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        // Ensure order
+        $this->assertEquals(['test', 'bar', 'foo', 'invalid', 'event'], array_keys($controller->getOptions()));
+    }
 
     /**
      * @covers \Engelsystem\Controllers\Admin\ConfigController::index
