@@ -176,7 +176,7 @@ class AngelTypesController extends BaseController
         $this->log->info('Deleted angel type {angelType}', ['angelType' => $angelType->name]);
         $this->addNotification('angeltype.delete.success');
 
-        return $this->redirect->to('/angeltypes/new');
+        return $this->redirect->to('/angeltypes');
     }
 
     protected function getAngelType(ServerRequestInterface $request): AngelType | null
