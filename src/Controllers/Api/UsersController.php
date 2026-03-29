@@ -15,10 +15,23 @@ use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Illuminate\Database\Eloquent\Collection;
+use Psr\Http\Message\ServerRequestInterface;
 
 class UsersController extends ApiController
 {
     use UsesAuth;
+
+    public function hasPermission(ServerRequestInterface $request, string $method): ?bool
+    {
+        if (in_array($method, ['user', 'worklogs'])) {
+            $userId = $request->getAttribute('user_id');
+            if ($userId === 'self' || ($this->auth && (int) $userId === $this->auth->user()->id)) {
+                return true;
+            }
+        }
+
+        return null;
+    }
 
     public function index(): Response
     {
