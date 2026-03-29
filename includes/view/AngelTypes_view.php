@@ -149,7 +149,7 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                     ]),
 
                     div('col-md-3', [
-                        heading(__('State'), 3),
+                        heading(__('general.state'), 3),
                         $supporter_mode
                             ? form_info(__('angeltype.restricted'), $angeltype->restricted ? __('Yes') : __('No'))
                             : form_checkbox(

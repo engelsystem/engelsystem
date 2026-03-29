@@ -8,9 +8,9 @@
     <div class="container">
         <h1>
             {% if not is_index|default(false) %}
-                {{ m.back(location
-                    ? url('/angeltypes', {'action': 'view', 'angeltype_id': angel_type.id})
-                    : url('/locations')) }}
+                {{ m.back(angelType
+                    ? url('/angeltypes', {'action': 'view', 'angeltype_id': angelType.id})
+                    : url('/angeltypes')) }}
             {% endif %}
 
             {{ block('title') }}
