@@ -24,6 +24,7 @@ class MigrateTest extends TestCase
      * @covers \Engelsystem\Database\Migration\Migrate::run
      * @covers \Engelsystem\Database\Migration\Migrate::setOutput
      * @covers \Engelsystem\Database\Migration\Migrate::mergeMigrations
+     * @covers \Engelsystem\Database\Migration\Migrate::setNamespace
      */
     public function testRun(): void
     {
@@ -85,6 +86,7 @@ class MigrateTest extends TestCase
         $this->setExpects($migration, 'lockTable', null, null, $this->atLeastOnce());
         $this->setExpects($migration, 'unlockTable', null, null, $this->atLeastOnce());
 
+        $migration->setNamespace('Engelsystem\\Test\\Unit\\Database\\Migration\\Stub\\');
         $migration->run('foo', Direction::UP);
 
         $messages = [];
@@ -190,6 +192,7 @@ class MigrateTest extends TestCase
         $app->bind(SchemaBuilder::class, 'schema');
 
         $migration = new Migrate($schema, $app);
+        $migration->setNamespace('Engelsystem\\Test\\Unit\\Database\\Migration\\Stub\\');
 
         $migration->run(__DIR__ . '/Stub', Direction::UP);
 
@@ -239,6 +242,7 @@ class MigrateTest extends TestCase
         $this->app->bind(SchemaBuilder::class, 'schema');
 
         $migration = new Migrate($schema, $this->app);
+        $migration->setNamespace('Engelsystem\\Test\\Unit\\Database\\Migration\\Stub\\');
 
         $messages = [];
         $migration->setOutput(function ($msg) use (&$messages): void {

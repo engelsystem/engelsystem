@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Engelsystem\Migrations;
+namespace Engelsystem\Test\Unit\Database\Migration\Stub;
 
 use Engelsystem\Database\Migration\Migration;
 

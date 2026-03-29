@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Database\Migration;
 
-use Engelsystem\Migrations\AnotherStuff;
+use Engelsystem\Test\Unit\Database\Migration\Stub\AnotherStuff;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
