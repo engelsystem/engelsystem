@@ -848,8 +848,7 @@ msgstr "Engeltypen, welche Schichten selbst eintragen erlaubt haben, "
 "ist Schichten selbst eintragen nicht erlaubt können nur Supporter "
 "oder Admins Engel in die Schichten des Engeltyps eintragen."
 
-
-msgid "Requires driver license"
+msgid "angeltype.drivers_license.required"
 msgstr "Benötigt Führerschein"
 
 msgid "Show on dashboard"
