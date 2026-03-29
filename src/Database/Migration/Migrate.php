@@ -20,6 +20,8 @@ class Migrate
 
     protected string $table = 'migrations';
 
+    protected string $namespace = 'Engelsystem\\Migrations\\';
+
     /**
      * Migrate constructor
      */
@@ -65,8 +67,11 @@ class Migrate
                 /** @var array $migration */
                 $name = $migration['migration'];
 
+                // id is set if migration was migrated before
+                // path is set when migration class is found
                 if (
-                    ($direction === Direction::UP && isset($migration['id']))
+                    !isset($migration['path'])
+                    || ($direction === Direction::UP && isset($migration['id']))
                     || ($direction === Direction::DOWN && !isset($migration['id']))
                 ) {
                     ($this->output)('Skipping ' . $name);
@@ -117,7 +122,7 @@ class Migrate
         $return->transform(function ($migration) use ($migrations) {
             $migration = (array) $migration;
             if ($migrations->contains('migration', $migration['migration'])) {
-                $migration += $migrations
+                $migration += (array) $migrations
                     ->where('migration', $migration['migration'])
                     ->first();
             }
@@ -156,7 +161,7 @@ class Migrate
 
         $className = Str::studly(preg_replace('/^(?:\d+_)+/', '', $migration));
         /** @var Migration $class */
-        $class = $this->app->make('Engelsystem\\Migrations\\' . $className);
+        $class = $this->app->make($this->namespace . $className);
 
         if (method_exists($class, $direction->value)) {
             $class->{$direction->value}();
@@ -254,5 +259,13 @@ class Migrate
     public function setOutput(callable $output): void
     {
         $this->output = $output;
+    }
+
+    /**
+     * Set the namespace to load migrations from
+     */
+    public function setNamespace(string $namespace): void
+    {
+        $this->namespace = $namespace;
     }
 }
