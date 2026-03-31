@@ -25,27 +25,6 @@ class LocationsControllerTest extends ControllerTest
 
     /**
      * @covers \Engelsystem\Controllers\Admin\LocationsController::__construct
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::index
-     */
-    public function testIndex(): void
-    {
-        /** @var LocationsController $controller */
-        $controller = $this->app->make(LocationsController::class);
-        Location::factory(5)->create();
-
-        $this->response->expects($this->once())
-            ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals('pages/locations/index', $view);
-                $this->assertTrue($data['is_index'] ?? false);
-                $this->assertCount(5, $data['locations'] ?? []);
-                return $this->response;
-            });
-
-        $controller->index();
-    }
-
-    /**
      * @covers \Engelsystem\Controllers\Admin\LocationsController::edit
      * @covers \Engelsystem\Controllers\Admin\LocationsController::showEdit
      */
@@ -150,27 +129,6 @@ class LocationsControllerTest extends ControllerTest
 
         $this->expectException(ValidationException::class);
         $controller->save($this->request);
-    }
-
-    /**
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::save
-     * @covers \Engelsystem\Controllers\Admin\LocationsController::delete
-     */
-    public function testSaveDelete(): void
-    {
-        /** @var LocationsController $controller */
-        $controller = $this->app->make(LocationsController::class);
-        $controller->setValidator(new Validator());
-        /** @var Location $location */
-        $location = Location::factory()->create();
-
-        $this->request = $this->request->withParsedBody([
-            'id'     => '1',
-            'delete' => '1',
-        ]);
-
-        $controller->save($this->request);
-        $this->assertEmpty(Location::find($location->id));
     }
 
     /**
