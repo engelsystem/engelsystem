@@ -24,6 +24,7 @@ use Engelsystem\Renderer\Twig\Extensions\Uuid;
 use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as Twig;
 use Twig\Extension\CoreExtension as TwigCore;
+use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 use TwigBridge\Extension\Laravel\Model as TwigModel;
 
@@ -79,17 +80,21 @@ class TwigServiceProvider extends ServiceProvider
 
     protected function registerTwigEngine(): void
     {
-        $viewsPath = $this->app->get('path.views');
+        // Paths are added twice to allow "more specific" overwrites with "views/" prefix from plugin templates
+        $viewsPath = [$this->app->get('path.views'), $this->app->get('path.views') . '/..'];
         /** @var EngelsystemConfig $config */
         $config = $this->app->get('config');
 
         $twigLoader = $this->app->make(TwigLoader::class, ['paths' => $viewsPath]);
         $this->app->instance(TwigLoader::class, $twigLoader);
+        $this->app->instance(FilesystemLoader::class, $twigLoader);
         $this->app->instance(TwigLoaderInterface::class, $twigLoader);
         $this->app->instance('twig.loader', $twigLoader);
+        $this->app->tag('twig.loader', ['twig.loader']);
 
         $twigTextLoader = $this->app->make(TwigTextLoader::class, ['paths' => $viewsPath]);
         $this->app->instance('twig.textLoader', $twigTextLoader);
+        $this->app->tag('twig.textLoader', ['twig.loader']);
 
         $cache = $this->app->get('path.cache.views');
         $twigDebug = false;
@@ -129,6 +134,13 @@ class TwigServiceProvider extends ServiceProvider
         // Text is tagged first to catch .text.twig files
         $this->app->tag('renderer.twigTextEngine', ['renderer.engine']);
         $this->app->tag('renderer.twigEngine', ['renderer.engine']);
+
+        // Add token parsers
+        $extendsTokenParser = $this->app->make(
+            ExtendsTokenParser::class,
+            ['basePath' => $this->app->get('path.resources')],
+        );
+        $twig->addTokenParser($extendsTokenParser);
     }
 
     protected function registerTwigExtensions(string $class, string $alias): void
