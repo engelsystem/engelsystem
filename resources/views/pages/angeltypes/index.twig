@@ -57,8 +57,19 @@
                                     <td>{{ angelType.restricted ? m.icon('mortarboard-fill'): ''}}</td>
 
                                     <td>{{ m.iconBool(angelType.shift_self_signup) }}</td>
-
-                                    <td>{{ (userAngelType and not userAngelType.isConfirmed ? m.icon('mortarboard-fill') : m.iconBool(userAngelType)) }} {{ userAngelType ? userAngelType.membership: '' }}</td>
+                                    {% set userAngelTypeMembership = enum('Engelsystem\\Models\\UserAngelTypeMembership') %}
+                                    <td>
+                                        {% if userAngelType %}
+                                            {{ (userAngelType.membership == userAngelTypeMembership.UNCONFIRMED ? m.icon('mortarboard-fill') : m.iconBool(true)) }}
+                                            {% if userAngelType.membership == userAngelTypeMembership.UNCONFIRMED %}
+                                                {{ __('angeltype.unconfirmed') }}
+                                            {% elseif userAngelType.membership == userAngelTypeMembership.SUPPORTER %}
+                                                {{ __('angeltype.supporter') }}
+                                            {% endif %}
+                                        {% else %}
+                                            {{ m.iconBool(false) }}
+                                        {% endif %}
+                                    </td>
 
                                     <td>
                                         <div class="d-flex ms-auto">

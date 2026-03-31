@@ -89,14 +89,14 @@ class UserAngelType extends Pivot
         return !$this->angelType->restricted || $this->confirm_user_id;
     }
 
-    public function getMembershipAttribute(): string
+    public function getMembershipAttribute(): UserAngelTypeMembership
     {
         if (!$this->isConfirmed) {
-            return __('angeltype.unconfirmed');
+            return UserAngelTypeMembership::UNCONFIRMED;
         }
         if ($this->supporter) {
-            return __('angeltype.supporter');
+            return UserAngelTypeMembership::SUPPORTER;
         }
-        return '';
+        return UserAngelTypeMembership::MEMBER;
     }
 }
