@@ -8,6 +8,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -36,7 +37,9 @@ class AngelTypesController extends BaseController
     }
     public function hasPermission(ServerRequestInterface $request, string $method): ?bool
     {
-        $angelType = $this->getAngelType($request);
+        $angelTypeId = (int) $request->getAttribute('angel_type_id');
+        /** @var AngelType $angelType */
+        $angelType = AngelType::find($angelTypeId);
         $canEdit = ($angelType && $this->auth->user()?->isAngelTypeSupporter($angelType))
             || $this->auth->can('angeltypes.edit');
         return match ($method) {
@@ -55,8 +58,8 @@ class AngelTypesController extends BaseController
 
     protected function showEdit(?AngelType $angelType): Response
     {
-        $isSupporter = $angelType &&
-            $this->auth->user()->isAngelTypeSupporter($angelType) && !$this->auth->can('angeltypes.edit');
+        $isSupporter = !$this->auth->can('angeltypes.edit') && $angelType &&
+            $this->auth->user()->isAngelTypeSupporter($angelType);
 
         return $this->response->withView(
             'admin/angeltypes/edit',
@@ -80,7 +83,7 @@ class AngelTypesController extends BaseController
                 $angelType = new AngelType();
                 $new = true;
             } else {
-                throw_redirect('/angeltypes');
+                throw new HttpForbidden();
             }
         }
 
@@ -167,8 +170,8 @@ class AngelTypesController extends BaseController
 
         $angelType = $this->angelType->findOrFail($data['id']);
 
-        $shiftsEnties = $angelType->shiftEntries();
-        foreach ($shiftsEnties as $entry) {
+        $shiftsEntries = $angelType->shiftEntries;
+        foreach ($shiftsEntries as $entry) {
             event('shift.entry.deleting', ['entry' => $entry]);
         }
         $angelType->delete();
@@ -177,13 +180,5 @@ class AngelTypesController extends BaseController
         $this->addNotification('angeltype.delete.success');
 
         return $this->redirect->to('/angeltypes');
-    }
-
-    protected function getAngelType(ServerRequestInterface $request): AngelType | null
-    {
-        $angelTypeId = (int) $request->getAttribute('angel_type_id');
-        /** @var AngelType $angelType */
-        $angelType = AngelType::find($angelTypeId);
-        return $angelType;
     }
 }
