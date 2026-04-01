@@ -366,6 +366,33 @@ msgstr ""
 msgid "config.event_has_day0"
 msgstr "Event has day 0"
 
+msgid "config.enable_date_day"
+msgstr "Day of the week"
+
+msgid "config.enable_date_day.info"
+msgstr "Show day of the week on dates"
+
+msgid "general.date.dow_0"
+msgstr "Su"
+
+msgid "general.date.dow_1"
+msgstr "Mo"
+
+msgid "general.date.dow_2"
+msgstr "Tu"
+
+msgid "general.date.dow_3"
+msgstr "We"
+
+msgid "general.date.dow_4"
+msgstr "Th"
+
+msgid "general.date.dow_5"
+msgstr "Fr"
+
+msgid "general.date.dow_6"
+msgstr "Sa"
+
 msgid "config.event_has_day0.info"
 msgstr "If enabled there will be a day 0 (-1, 0, 1…). If not there won't (-1, 1…)."
 
