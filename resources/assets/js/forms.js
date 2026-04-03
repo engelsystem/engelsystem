@@ -132,6 +132,12 @@ ready(() => {
         element.classList.add('disabled');
       });
     });
+    formElement.addEventListener('reset', () => {
+      document.querySelectorAll('input[type="submit"],button[type="submit"]').forEach((element) => {
+        element.readOnly = false;
+        element.classList.remove('disabled');
+      });
+    });
   });
 });
 
@@ -518,6 +524,7 @@ ready(() => {
         arrived.innerHTML = '<span class="text-danger"><span class="bi bi-x-lg"></span></span>';
         form.querySelector('[name="action"]').value = 'arrived';
       }
+      form.dispatchEvent(new Event('reset'));
     });
   });
 });
