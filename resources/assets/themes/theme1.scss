@@ -62,11 +62,8 @@ $alert-border-scale: 0%;
 $alert-color-scale: 0%;
 
 .alert {
-  color: #fff !important;
-
-  .text-danger,
-  .text-info {
-    color: #fff !important;
+  .alert-link, a {
+    color: $primary !important;
   }
 }
 
