@@ -183,9 +183,6 @@ function angeltype_controller()
         ->load(['state', 'personalData', 'contact']);
     $days = angeltype_controller_shiftsFilterDays($angeltype);
     $shiftsFilter = angeltype_controller_shiftsFilter($angeltype, $days);
-    if (request()->input('showFilledShifts')) {
-        $shiftsFilter->setFilled([ShiftsFilter::FILLED_FREE, ShiftsFilter::FILLED_FILLED]);
-    }
 
     $shiftsFilterRenderer = new ShiftsFilterRenderer($shiftsFilter);
     $shiftsFilterRenderer->enableDaySelection($days);
@@ -252,7 +249,12 @@ function angeltype_controller_shiftsFilter(AngelType $angeltype, $days)
         ->pluck('id')
         ->toArray();
     $shiftsFilter = new ShiftsFilter(
-        auth()->can('user_shifts_admin'),
+        $request->get(
+            'showFilledShifts',
+            auth()->can('user_shifts_admin')
+            || auth()->can('admin_user_angeltypes')
+            || auth()->user()?->isAngelTypeSupporter($angeltype)
+        ),
         $locationIds,
         [$angeltype->id]
     );
