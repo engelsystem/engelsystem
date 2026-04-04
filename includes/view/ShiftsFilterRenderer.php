@@ -2,6 +2,8 @@
 
 namespace Engelsystem;
 
+use Illuminate\Support\Str;
+
 class ShiftsFilterRenderer
 {
     /**
@@ -53,26 +55,24 @@ class ShiftsFilterRenderer
             $day_dropdown_items = [];
             foreach ($this->days as $value => $day) {
                 $link = $page_link . '&shifts_filter_day=' . $value;
-                $day_dropdown_items[] = toolbar_item_link($link, '', $day);
+                $day_dropdown_items[] = toolbar_dropdown_item($link, $day, Str::startsWith($day, $selected_day));
             }
             $toolbar[] = toolbar_dropdown($selected_day_formatted, $day_dropdown_items, true);
 
             if ($dashboardFilter) {
-                $toolbar[] = sprintf(
-                    '<li role="presentation"><a class="nav-link" href="%s">%s</a></li>',
+                $toolbar[] = button(
                     url('/public-dashboard', ['filtered' => true] + $dashboardFilter),
                     icon('speedometer2') . __('Dashboard')
                 );
             }
             $showFilledShifts = in_array(ShiftsFilter::FILLED_FILLED, $this->shiftsFilter->getFilled());
-            $toolbar[] = sprintf(
-                '<li role="presentation"><a class="nav-link" href="%s">%s</a></li>',
+            $toolbar[] = button(
                 $page_link . '&showFilledShifts=' . (int) (!$showFilledShifts) . '&showShiftsTab=1&shifts_filter_day=' . request('shifts_filter_day', $selected_day),
                 $showFilledShifts ? (icon('eye-slash') . __('Show free shifts')) : (icon('eye') . __('Show all shifts'))
             );
         }
         return div('mb-3', [
-            toolbar_pills($toolbar),
+            toolbar_pills($toolbar, 'gap-2'),
         ]);
     }
 
