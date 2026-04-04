@@ -160,30 +160,10 @@ function heading($content, $number = 1)
  * @param string[] $items
  * @return string
  */
-function toolbar_pills($items)
+function toolbar_pills($items, $class = '')
 {
-    return '<ul class="nav nav-pills">' . join("\n", $items) . '</ul>';
+    return '<ul class="nav nav-pills ' . $class . '">' . join("\n", $items) . '</ul>';
 }
-
-/**
- * Render a link for a toolbar.
- *
- * @param string $href
- * @param string $icon
- * @param string $label
- * @param bool   $active
- * @return string
- */
-function toolbar_item_link($href, $icon, $label, $active = false)
-{
-    return '<li class="nav-item">'
-        . '<a class="nav-link ' . ($active ? 'active" aria-current="page"' : '"') . ' href="' . $href . '">'
-        . ($icon != '' ? '<span class="bi bi-' . $icon . '"></span> ' : '')
-        . htmlspecialchars($label)
-        . '</a>'
-        . '</li>';
-}
-
 function toolbar_dropdown_item(string $href, string $label, bool $active, ?string $icon = null): string
 {
     return strtr(
