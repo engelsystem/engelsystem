@@ -43,13 +43,13 @@ class ShiftsFilter
     /**
      * ShiftsFilter constructor.
      *
-     * @param bool  $user_shifts_admin
+     * @param bool  $showFilledShifts
      * @param int[] $locations
      * @param int[] $angelTypes
      * @param ?int $tag
      */
     public function __construct(
-        $user_shifts_admin = false,
+        $showFilledShifts = false,
         private $locations = [],
         $angelTypes = [],
         private $tag = null
@@ -60,7 +60,7 @@ class ShiftsFilter
             ShiftsFilter::FILLED_FREE,
         ];
 
-        if ($user_shifts_admin) {
+        if ($showFilledShifts) {
             $this->filled[] = ShiftsFilter::FILLED_FILLED;
         }
     }

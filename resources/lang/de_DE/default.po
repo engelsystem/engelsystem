@@ -479,6 +479,9 @@ msgstr "Suche Engel:"
 msgid "Show all shifts"
 msgstr "Alle Schichten anzeigen"
 
+msgid "Show free shifts"
+msgstr "Freie Schichten anzeigen"
+
 msgid "How many angels should be active?"
 msgstr "Wie viele Engel sollten aktiv sein?"
 
