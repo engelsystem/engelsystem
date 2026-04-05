@@ -195,6 +195,9 @@ msgstr "Team %s"
 msgid "%s (not \"%s\")"
 msgstr "%s (kein \"%s\")"
 
+msgid "%s (unconfirmed \"%s\")"
+msgstr "%s (\"%s\" unbestätigt)"
+
 msgid "%s (already in shift)"
 msgstr "%s (bereits eingetragen)"
 
