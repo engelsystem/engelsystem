@@ -119,6 +119,8 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
         $name = $user->displayName;
         if ($user->userAngelTypes->where('id', $angeltype->id)->isEmpty()) {
             $name = __('%s (not "%s")', [$name, $angeltype->name]);
+        } elseif (!$user->userAngelTypes->where('id', $angeltype->id)->first()->pivot->isConfirmed) {
+            $name = __('%s (unconfirmed "%s")', [$name, $angeltype->name]);
         }
         if ($user->shiftEntries->where('shift_id', $shift->id)->isNotEmpty()) {
             $name = __('%s (already in shift)', [$name]);
