@@ -436,7 +436,7 @@ $state-danger-border: $danger !default;
 $popover-bg: lighten($body-bg, 10%) !default;
 $popover-max-width: 276px !default;
 $popover-border-color: rgba(0, 0, 0, 0.2) !default;
-$popover-fallback-border-color: #999 !default !default;
+$popover-fallback-border-color: #999 !default;
 
 //** Popover title background color
 $popover-title-bg: darken($popover-bg, 3%) !default;

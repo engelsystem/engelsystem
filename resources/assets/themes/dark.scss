@@ -11,6 +11,10 @@ $es-choices-highlight-color: #000;
 /* Make user-agent stylesheet follow dark theme */
 body {
   color-scheme: dark;
+
+  .tooltip {
+    --bs-tooltip-bg: #{$list-group-form-check-input-border-color};
+  }
 }
 
 .modal .bg-dark .modal-header .btn-close {
