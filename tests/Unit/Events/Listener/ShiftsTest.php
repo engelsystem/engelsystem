@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Events\Listener\Shifts;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
@@ -56,6 +57,20 @@ class ShiftsTest extends TestCase
         $this->assertEquals('Text', $this->user->worklogs[0]->description);
 
         $this->assertTrue($this->log->hasInfoThatContains('Created worklog entry'));
+    }
+
+    /**
+     * @covers \Engelsystem\Events\Listener\Shifts::deletingShift
+     */
+    public function testDeletingShift(): void
+    {
+        $dispatcher = $this->createMock(EventDispatcher::class);
+        $this->setExpects($dispatcher, 'dispatch', ['shift.entry.deleting'], []);
+        $this->app->instance('events.dispatcher', $dispatcher);
+
+        /** @var Shifts $listener */
+        $listener = $this->app->make(Shifts::class);
+        $listener->deletingShift($this->shift);
     }
 
     /**

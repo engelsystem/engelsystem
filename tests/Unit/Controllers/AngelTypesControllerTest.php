@@ -64,7 +64,7 @@ class AngelTypesControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\AngelTypesController::__construct
      * @covers \Engelsystem\Controllers\AngelTypesController::about
      */
-    public function testIndex(): void
+    public function testAbout(): void
     {
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
@@ -81,6 +81,32 @@ class AngelTypesControllerTest extends ControllerTest
 
         $controller = new AngelTypesController($response, new Config(), $auth, new NullLogger(), $angelType);
         $controller->about();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\AngelTypesController::__construct
+     * @covers \Engelsystem\Controllers\AngelTypesController::index
+     */
+    public function testIndex(): void
+    {
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $this->app->instance('authenticator', $auth);
+        $this->setExpects($auth, 'user', [], User::factory()->create());
+        /** @var AngelTypesController $controller */
+        $controller = $this->app->make(AngelTypesController::class);
+        AngelType::factory(5)->create();
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function (string $view, array $data) {
+                $this->assertEquals('pages/angeltypes/index', $view);
+                $this->assertTrue($data['is_index'] ?? false);
+                $this->assertCount(5, $data['angelTypes'] ?? []);
+                return $this->response;
+            });
+
+        $controller->index();
     }
 
     /**
