@@ -1,0 +1,136 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('angeltype.angeltypes') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {% if not is_index|default(false) %}
+                {{ m.back(angelType
+                    ? url('/angeltypes', {'action': 'view', 'angeltype_id': angelType.id})
+                    : url('/angeltypes')) }}
+            {% endif %}
+
+            {{ block('title') }}
+
+            {% if is_index|default(false) and can('angeltypes.edit') %}
+                {{ m.add(url('/admin/angeltypes/edit')) }}
+            {% endif %}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        {% if is_index|default(false) %}
+            <div class="mb-3">
+                {{ m.button(__('angeltype.about'), url('/angeltypes/about')) }}
+            </div>
+        {% endif %}
+
+        <div class="row">
+
+            {% block row_content %}
+                <div class="col-md-12">
+                    <div class="table-responsive table-responsive-sticky-header">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{ __('general.name') }}</th>
+                                <th>{{ m.icon('mortarboard-fill') }} {{ __('angeltype.restricted') }}</th>
+                                <th>{{ m.icon('pencil-square') }} {{ __('shift.self_signup.allowed') }}</th>
+                                <th>{{ __('angeltype.membership') }}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for angelType in angelTypes %}
+                                {% set userAngelType = angelType.userAngelTypes.first ? angelType.userAngelTypes.first.pivot : angelType.userAngelTypes.first %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url('/angeltypes', {'action': 'view', 'angeltype_id': angelType.id}) }}">
+                                            {{ angelType.name }}
+                                        </a>
+                                    </td>
+
+                                    <td>{{ angelType.restricted ? m.icon('mortarboard-fill'): ''}}</td>
+
+                                    <td>{{ m.iconBool(angelType.shift_self_signup) }}</td>
+
+                                    <td>{{ (userAngelType and not userAngelType.isConfirmed ? m.icon('mortarboard-fill') : m.iconBool(userAngelType)) }} {{ userAngelType ? userAngelType.membership: '' }}</td>
+
+                                    <td>
+                                        <div class="d-flex ms-auto">
+                                            {% if can('angeltypes.edit') %}
+                                                {{ m.view(
+                                                    url('/angeltypes', {'action': 'view', 'angeltype_id': angelType.id}),
+                                                    {'class': 'm-1'}
+                                                ) }}
+
+                                                {{ m.edit(url('/admin/angeltypes/edit/' ~ angelType.id), {'class': 'm-1'}) }}
+
+                                                <form method="post" action="{{ url('/admin/angeltypes') }}">
+                                                    {{ csrf() }}
+                                                    {{ f.hidden('id', angelType.id) }}
+                                                    {{ f.delete(null, {
+                                                        'size': 'sm',
+                                                        'confirm_title': __('angeltype.delete.title', [angelType.name|e]),
+                                                        'confirm_button_text': __('form.delete'),
+                                                        'class': 'm-1',
+                                                    }) }}
+                                                </form>
+
+                                                {% if userAngelType %}
+                                                    {{ m.button(
+                                                        m.icon('box-arrow-right'),
+                                                        url('/user-angeltypes',{'action': 'delete', 'user_angeltype_id': userAngelType.id}),
+                                                        {'title': __('angeltype.leave'), 'size': 'sm', 'class': 'm-1'}
+                                                    ) }}
+                                                {% else %}
+                                                    {{ m.button(
+                                                        m.icon('box-arrow-in-right'),
+                                                        url('/user-angeltypes',{'action': 'add', 'angeltype_id': angelType.id}),
+                                                        {'title': __('angeltype.join'), 'size': 'sm', 'type': 'success', 'class': 'm-1'}
+                                                    ) }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ m.button(
+                                                    __('form.view'),
+                                                    url('/angeltypes', {'action': 'view', 'angeltype_id': angelType.id}),
+                                                    {'icon_left': 'eye', 'size': 'sm', 'type': 'info', 'class': 'm-1'}
+                                                ) }}
+                                                {% if userAngelType %}
+                                                    {% if userAngelType.supporter %}
+                                                        {{ m.button(
+                                                            __('form.edit'),
+                                                            url('/admin/angeltypes/edit/' ~ angelType.id),
+                                                            {'icon_left': 'pencil', 'size': 'sm', 'class': 'm-1'}
+                                                        ) }}
+                                                    {% endif %}
+                                                    {{ m.button(
+                                                        __('angeltype.leave'),
+                                                        url('/user-angeltypes',{'action': 'delete', 'user_angeltype_id': userAngelType.id}),
+                                                        {'icon_left': 'box-arrow-right', 'size': 'sm', 'class': 'm-1'}
+                                                    ) }}
+                                                {% else %}
+                                                    {{ m.button(
+                                                        __('angeltype.join'),
+                                                        url('/user-angeltypes',{'action': 'add', 'angeltype_id': angelType.id}),
+                                                        {'icon_left': 'box-arrow-in-right', 'size': 'sm', 'type': 'success', 'class': 'm-1'}
+                                                    ) }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endblock %}
+
+        </div>
+    </div>
+{% endblock %}
