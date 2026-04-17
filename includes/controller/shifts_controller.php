@@ -216,7 +216,7 @@ function shift_edit_controller()
             . '</div>';
     }
 
-    $link = button(url('/shifts', ['action' => 'view', 'shift_id' => $shift_id]), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $link = back_button(url('/shifts', ['action' => 'view', 'shift_id' => $shift_id]));
     return page_with_title(
         $link . ' ' . shifts_title(),
         [

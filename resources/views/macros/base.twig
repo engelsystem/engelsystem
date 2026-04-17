@@ -54,6 +54,7 @@
         {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}
         {%- if opt.class is defined %} {{ opt.class }}{% endif %}"
         {%- if opt.title is defined %} title="{{ opt.title }}"{% endif -%}
+        {% for name,value in opt.data|default({}) -%} data-{{ name }}="{{ value }}"{% endfor -%}
     >
         {%- if opt.icon_left is defined %}{{ _self.icon(opt.icon_left) }}{% endif %}
         {{ label }}
@@ -70,7 +71,7 @@
 {% endmacro %}
 
 {% macro back(url, opt) %}
-    {{ _self.button(_self.icon('chevron-left'), url, {'size': 'sm', 'title': __('general.back')}|merge(opt|default({}))) }}
+    {{ _self.button(_self.icon('chevron-left'), url, {'size': 'sm', 'title': __('general.back'), 'data': {'back': 'true'}}|merge(opt|default({}))) }}
 {% endmacro %}
 
 {% macro add(url, opt) %}

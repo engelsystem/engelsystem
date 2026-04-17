@@ -137,13 +137,7 @@ function UserAngelType_delete_view(UserAngelType $user_angeltype, User $user, An
  */
 function UserAngelType_add_view(AngelType $angeltype, $users_select, $user_id)
 {
-    $link = button(
-        url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]),
-        icon('chevron-left'),
-        'btn-sm',
-        '',
-        __('general.back')
-    );
+    $link = back_button(url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
     return page_with_title($link . ' ' . __('Add user to angel type'), [
         msg(),
         form([
