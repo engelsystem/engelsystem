@@ -507,7 +507,7 @@ function admin_shifts()
             . '</div>';
     }
 
-    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $link = back_button(url('/user-shifts'));
     $reset = '';
     if ($session->has('admin_shifts_previous')) {
         $reset = form_submit(

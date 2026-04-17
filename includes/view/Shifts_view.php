@@ -296,7 +296,7 @@ function Shift_view(
             ])
             . '"></span></small>';
     }
-    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $link = back_button(url('/user-shifts'));
     return page_with_title(
         $link . ' '
         . htmlspecialchars($shift->shiftType->name)
