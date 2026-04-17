@@ -27,7 +27,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversMethod(UserWorklogController::class, '__construct')]
 #[CoversMethod(UserWorklogController::class, 'showEditWorklog')]
 #[CoversMethod(UserWorklogController::class, 'saveWorklog')]
-#[CoversMethod(UserWorklogController::class, 'showDeleteWorklog')]
 #[CoversMethod(UserWorklogController::class, 'deleteWorklog')]
 #[AllowMockObjectsWithoutExpectations]
 class UserWorklogControllerTest extends ControllerTestCase
@@ -231,37 +230,6 @@ class UserWorklogControllerTest extends ControllerTestCase
         $this->assertEquals($work_hours, $worklog->hours);
         $this->assertEquals($description, $worklog->description);
         $this->assertEquals($night_shift, $worklog->night_shift);
-    }
-
-    public function testShowDeleteWorklogWithWorklogNotAssociatedToUserThrows(): void
-    {
-        /** @var User $user2 */
-        $user2 = User::factory()->create();
-        /** @var Worklog $worklog */
-        $worklog = Worklog::factory(['user_id' => $user2->id])->create();
-
-        $request = $this->request
-            ->withAttribute('user_id', $this->user->id)
-            ->withAttribute('worklog_id', $worklog->id);
-        $this->expectException(HttpNotFound::class);
-        $this->controller->showDeleteWorklog($request);
-    }
-
-    public function testShowDeleteWorklog(): void
-    {
-        /** @var Worklog $worklog */
-        $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
-
-        $request = $this->request
-            ->withAttribute('user_id', $this->user->id)
-            ->withAttribute('worklog_id', $worklog->id);
-        $this->response->expects($this->once())
-            ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals($this->user->id, $data['userdata']->id);
-                return $this->response;
-            });
-        $this->controller->showDeleteWorklog($request);
     }
 
     public function testDeleteWorklogWithUnknownWorklogIdThrows(): void
