@@ -558,12 +558,22 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
                 '',
                 __('form.edit')
             ),
-            button(
+            form(
+                [
+                    form_submit(
+                        'delete',
+                        icon('trash'),
+                        'btn-sm',
+                        false,
+                        'danger',
+                        __('form.delete'),
+                        [
+                            'confirm_submit_title' => __('worklog.delete.info', [$worklog->user->displayName]),
+                            'confirm_button_text' => icon('trash') . __('form.delete'),
+                        ]
+                    ),
+                ],
                 url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id . '/delete'),
-                icon('trash'),
-                'btn-sm btn-danger',
-                '',
-                __('form.delete')
             ),
         ]) . '</div>';
     }

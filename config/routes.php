@@ -295,10 +295,6 @@ $route->addGroup(
                     function (RouteCollector $route): void {
                         $route->get('[/{worklog_id:\d+}]', 'Admin\\UserWorklogController@editWorklog');
                         $route->post('[/{worklog_id:\d+}]', 'Admin\\UserWorklogController@saveWorklog');
-                        $route->get(
-                            '/{worklog_id:\d+}/delete',
-                            'Admin\\UserWorklogController@showDeleteWorklog'
-                        );
                         $route->post(
                             '/{worklog_id:\d+}/delete',
                             'Admin\\UserWorklogController@deleteWorklog'
