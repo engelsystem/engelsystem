@@ -536,3 +536,15 @@ ready(() => {
     });
   });
 });
+
+/**
+ * Use browser history for back button
+ */
+ready(() => {
+  document.querySelectorAll('[data-back="true"]').forEach((element) => {
+    element.addEventListener('click', (e) => {
+      e.preventDefault();
+      history.back();
+    });
+  });
+});

@@ -433,7 +433,7 @@ function admin_user()
         }
     }
 
-    $link = button(url('/users', ['action' => 'view', 'user_id' => $user_id]), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $link = back_button(url('/users', ['action' => 'view', 'user_id' => $user_id]));
     return page_with_title(
         $link . ' ' . __('Edit user'),
         [

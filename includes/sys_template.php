@@ -320,7 +320,7 @@ function render_table($columns, $rows, $data = true)
 }
 
 /**
- * Rendert einen Knopf
+ * Renders a button
  *
  * @param string $href
  * @param string $label
@@ -341,9 +341,28 @@ function button($href, $label, $class = '', $id = '', $title = '', $disabled = f
     }
 
     return '<a ' . $idAttribute . ' href="' . $href
-        . '" class="btn ' . $class . ($disabled ? ' disabled' : '') . '" title="' . $title . '"' . $dataAttributes . '>'
+        . '" class="btn ' . $class . ($disabled ? ' disabled' : '')
+        . '" title="' . $title . '"'
+        . $dataAttributes
+        . '>'
         . $label
         . '</a>';
+}
+
+/**
+ * Renders a back button
+ */
+function back_button(string $href): string
+{
+    return button(
+        $href,
+        icon('chevron-left'),
+        'btn-sm',
+        '',
+        __('general.back'),
+        false,
+        ['back' => 'true'],
+    );
 }
 
 /**

@@ -14,7 +14,7 @@
     <div class="container">
         <h1>
             {% if tag|default(null) %}
-                {{ m.button(m.icon('chevron-left'), url('/faq'), null, 'sm', __('general.back')) }}
+                {{ m.back(url('/faq')) }}
             {% endif %}
 
             {{ __('faq.faq') }}

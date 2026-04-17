@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
  */
 function User_delete_view($user)
 {
-    $link = button(user_edit_link($user->id), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $link = back_button(user_edit_link($user->id));
     return page_with_title($link . ' ' . sprintf(__('Delete %s'), User_Nick_render($user)), [
         msg(),
         error(
