@@ -240,13 +240,7 @@ function ShiftEntry_edit_view(
         $comment = '';
     }
 
-    $link = button(
-        url('/users', ['action' => 'view', 'user_id' => $angel->id]),
-        icon('chevron-left'),
-        'btn-sm',
-        '',
-        __('general.back'),
-    );
+    $link = back_button(url('/users', ['action' => 'view', 'user_id' => $angel->id]));
 
     return page_with_title(
         $link . ' ' . __('Edit shift entry'),
