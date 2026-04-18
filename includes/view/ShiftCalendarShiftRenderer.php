@@ -290,7 +290,8 @@ class ShiftCalendarShiftRenderer
                             'danger',
                             __('form.delete'),
                             [
-                                'confirm_submit_title' => __('Do you want to delete the shift "%s" from %s to %s?', [
+                                'confirm_submit_title' => __('Shift deletion'),
+                                'confirm_submit_text' => __('Do you really want to delete the shift "%s" from %s to %s?', [
                                     $shift->shiftType->name,
                                     $shift->start->format(__('general.datetime')),
                                     $shift->end->format(__('H:i')),
