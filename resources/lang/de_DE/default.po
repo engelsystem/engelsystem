@@ -834,8 +834,8 @@ msgstr "Supporter"
 msgid "Member"
 msgstr "Mitglied"
 
-msgid "Do you want to delete angel type %s?"
-msgstr "Möchtest Du den Engeltypen %s löschen?"
+msgid "Do you really want to delete the angel type %s?"
+msgstr "Möchtest Du wirklich den Engeltypen %s löschen?"
 
 msgid "angeltypes.restricted"
 msgstr "Benötigt Einführung"
