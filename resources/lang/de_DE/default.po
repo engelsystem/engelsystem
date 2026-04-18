@@ -1747,7 +1747,7 @@ msgid "settings.language.success"
 msgstr "Sprache wurde erfolgreich geändert."
 
 msgid "settings.api"
-msgstr "API"
+msgstr "Exporte / API"
 
 msgid "settings.api.about"
 msgstr ""
