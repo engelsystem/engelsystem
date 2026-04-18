@@ -216,7 +216,8 @@ function Shift_view(
                     'danger',
                     __('form.delete'),
                     [
-                        'confirm_submit_title' => __('Do you want to delete the shift "%s" from %s to %s?', [
+                        'confirm_submit_title' => __('Shift deletion'),
+                        'confirm_submit_text' => __('Do you really want to delete the shift "%s" from %s to %s?', [
                             $shift->shiftType->name,
                             $shift->start->format(__('general.datetime')),
                             $shift->end->format(__('H:i')),
@@ -438,9 +439,9 @@ function Shift_view_render_shift_entry(
         $disabled = $signOutAllowed ? '' : ' btn-disabled';
         $entry .= button_icon(
             shift_entry_delete_link($shift_entry),
-            'trash',
+            'box-arrow-right',
             'btn-sm btn-danger' . $disabled,
-            __('form.delete'),
+            __('Sign off'),
             !$signOutAllowed
         );
         $entry .= '</div>';
