@@ -66,7 +66,7 @@ function AngelType_delete_view(AngelType $angeltype)
         ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
         : url('/angeltypes'));
     return page_with_title($link . ' ' . sprintf(__('Delete angel type %s'), htmlspecialchars($angeltype->name)), [
-        info(sprintf(__('Do you want to delete angel type %s?'), $angeltype->name), true),
+        info(sprintf(__('Do you really want to delete the angel type %s?'), $angeltype->name), true),
         form([
             buttons([
                 button(url('/angeltypes'), icon('x-lg') . __('form.cancel')),
@@ -491,7 +491,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                             'action' => 'delete',
                             'user_angeltype_id' => $member->pivot->id,
                         ]),
-                        icon('trash'),
+                        icon('box-arrow-right'),
                         'btn-sm btn-danger',
                         '',
                         __('Remove'),
