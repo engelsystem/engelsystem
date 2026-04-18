@@ -29,7 +29,7 @@ function ShiftEntry_delete_view_admin(Shift $shift, AngelType $angeltype, User $
         form([
             buttons([
                 button(user_link($signoff_user->id), icon('x-lg') . __('form.cancel')),
-                form_submit('delete', icon('trash'), 'btn-danger', false, 'primary', __('Sign off')),
+                form_submit('delete', icon('box-arrow-right') . __('Sign off'), 'btn-danger', false, 'primary'),
             ]),
         ]),
     ]);
@@ -60,11 +60,10 @@ function ShiftEntry_delete_view(Shift $shift, AngelType $angeltype, User $signof
                 button(user_link($signoff_user->id), icon('x-lg') . __('form.cancel')),
                 form_submit(
                     'delete',
-                    icon('trash'),
+                    icon('box-arrow-right') . __('Sign off'),
                     'btn-danger',
                     false,
                     'danger',
-                    __('Sign off')
                 ),
             ]),
         ]),
