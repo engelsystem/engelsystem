@@ -307,12 +307,16 @@ table.table-sticky-header thead {
     position: sticky;
     left: 0;
     z-index: $zindex-sticky + 1;
+    background-color: var(--es-table-sticky-bg, var(--bs-body-bg));
     border-right: 1px solid $table-border-color;
     flex-grow: 0;
     flex-shrink: 0;
     width: max-content;
     min-width: max-content;
-    padding-right: 0.5rem;
+
+    .tick {
+      padding-right: 0.5rem;
+    }
   }
 
   .shift-card {
