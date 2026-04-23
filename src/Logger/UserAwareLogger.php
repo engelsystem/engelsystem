@@ -6,9 +6,9 @@ namespace Engelsystem\Logger;
 
 use Engelsystem\Helpers\Authenticator;
 
-class UserAwareLogger extends Logger
+class UserAwareLogger extends UrlAwareLogger
 {
-    protected ?Authenticator $auth;
+    protected ?Authenticator $auth = null;
 
     /**
      * Adds the authenticated user to the log message
