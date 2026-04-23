@@ -18,6 +18,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property int|null    $user_id
  * @property string      $level
  * @property string      $message
+ * @property string      $url
  * @property Carbon|null $created_at
  *
  * @property-read User|null $user
@@ -25,6 +26,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @method static QueryBuilder|LogEntry[] whereId($value)
  * @method static QueryBuilder|LogEntry[] whereLevel($value)
  * @method static QueryBuilder|LogEntry[] whereMessage($value)
+ * @method static QueryBuilder|LogEntry[] whereUrl($value)
  * @method static QueryBuilder|LogEntry[] whereCreatedAt($value)
  */
 class LogEntry extends BaseModel
@@ -54,6 +56,7 @@ class LogEntry extends BaseModel
     protected $fillable = [ // phpcs:ignore
         'level',
         'message',
+        'url',
         'user_id',
     ];
 
@@ -83,7 +86,11 @@ class LogEntry extends BaseModel
         }
 
         if (!empty($keyword)) {
-            $query->where('message', 'LIKE', '%' . $keyword . '%');
+            $query
+                ->where(function (Builder $query) use ($keyword): void {
+                    $query->where('message', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('url', 'LIKE', '%' . $keyword . '%');
+                });
         }
 
         return $query->get();
