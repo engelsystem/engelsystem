@@ -2,9 +2,9 @@
     <span class="icon-icon_angel"></span>
 {%- endmacro %}
 
-{% macro icon(icon, color) %}
+{% macro icon(icon, color) -%}
     <span class="bi bi-{{ icon }} {% if color %} text-{{ color }} {% endif %}"></span>
-{% endmacro %}
+{%- endmacro %}
 
 {% macro iconBool(value) %}
     <span class="text-{% if value %}success{% else %}danger{% endif %}">
