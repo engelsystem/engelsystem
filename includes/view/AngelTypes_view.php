@@ -159,6 +159,17 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                                 __('angeltypes.restricted.info') . '"></span>',
                                 $angeltype->restricted
                             ),
+                        !$supporter_mode
+                            ? form_text(
+                                'self_signup_token',
+                                __('angeltype.self_signup_token'),
+                                $angeltype->self_signup_token ?? '',
+                                false,
+                                255,
+                                'self_signup_token',
+                                __('angeltype.self_signup_token.info')
+                            )
+                            : '',
                         $supporter_mode
                             ? form_info(__('shift.self_signup'), $angeltype->shift_self_signup ? __('Yes') : __('No'))
                             : form_checkbox(
@@ -729,17 +740,52 @@ function AngelType_view_info(
 
     if ($admin_user_angeltypes && $angeltype->restricted && count($members_unconfirmed) > 0) {
         $info[] = '<h3>' . __('Unconfirmed') . '</h3>';
-        $info[] = buttons([
-            button(
-                url('/user-angeltypes', ['action' => 'confirm_all', 'angeltype_id' => $angeltype->id]),
-                icon('check-lg') . __('Confirm all')
-            ),
-            button(
-                url('/user-angeltypes', ['action' => 'delete_all', 'angeltype_id' => $angeltype->id]),
-                icon('trash') . __('Deny all')
-            ),
-        ]);
-        $info[] = table($table_headers, $members_unconfirmed);
+
+        // Add checkboxes to unconfirmed members for bulk selection
+        $unconfirmed_with_checkboxes = [];
+        foreach ($members_unconfirmed as $member) {
+            // Skip the summary row (has 'Sum' as name)
+            if (isset($member['name']) && $member['name'] === __('Sum')) {
+                $unconfirmed_with_checkboxes[] = array_merge(['select' => ''], $member);
+                continue;
+            }
+            $checkbox = '<input type="checkbox" name="selected_ids[]" value="' . $member->pivot->id . '" class="form-check-input user-select-checkbox">';
+            // Convert member to array preserving the dynamic 'name' property set earlier
+            $memberArray = (array) $member;
+            $memberArray['name'] = $member->name;
+            $unconfirmed_with_checkboxes[] = array_merge(['select' => $checkbox], $memberArray);
+        }
+
+        // Add select-all checkbox to headers
+        $unconfirmed_headers = array_merge(
+            ['select' => '<input type="checkbox" class="form-check-input" id="select-all-users">'],
+            $table_headers
+        );
+
+        $info[] = form([
+            buttons([
+                '<button type="submit" name="confirm_selected" class="btn btn-primary">' . icon('check-lg') . __('angeltype.confirm_selected') . '</button>',
+                '<button type="submit" name="deny_selected" class="btn btn-danger">' . icon('trash') . __('angeltype.deny_selected') . '</button>',
+                button(
+                    url('/user-angeltypes', ['action' => 'confirm_all', 'angeltype_id' => $angeltype->id]),
+                    icon('check-all') . __('Confirm all')
+                ),
+                button(
+                    url('/user-angeltypes', ['action' => 'delete_all', 'angeltype_id' => $angeltype->id]),
+                    icon('trash') . __('Deny all')
+                ),
+            ]),
+            table($unconfirmed_headers, $unconfirmed_with_checkboxes),
+        ], url('/user-angeltypes', ['action' => 'bulk', 'angeltype_id' => $angeltype->id]));
+
+        // JavaScript for select-all functionality
+        $info[] = '<script>
+            document.getElementById("select-all-users")?.addEventListener("change", function() {
+                document.querySelectorAll(".user-select-checkbox").forEach(function(cb) {
+                    cb.checked = this.checked;
+                }.bind(this));
+            });
+        </script>';
     }
 
     return join($info);
