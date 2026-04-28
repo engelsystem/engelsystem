@@ -188,4 +188,35 @@ class UsersControllerTest extends ApiBaseControllerTest
 
         $this->assertEquals($worklog->hours, $firstEntry['hours']);
     }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\OwnAuth::hasPermission
+     */
+    public function testHasPermissionSelfWithApiOwn(): void
+    {
+        $user = User::factory()->create();
+
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $auth->method('user')->willReturn($user);
+        $auth->method('can')->with('api.own')->willReturn(true);
+
+        $controller = new UsersController(new Response());
+        $controller->setAuth($auth);
+        $request = (new Request())->withAttribute('user_id', 'self');
+
+        $this->assertTrue($controller->hasPermission($request, 'user'));
+        $this->assertTrue($controller->hasPermission($request, 'worklogs'));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\OwnAuth::hasPermission
+     */
+    public function testHasPermissionFallsThroughForUnrelatedMethods(): void
+    {
+        $controller = new UsersController(new Response());
+        $request = new Request();
+
+        $this->assertNull($controller->hasPermission($request, 'index'));
+    }
 }

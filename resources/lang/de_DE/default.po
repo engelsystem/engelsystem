@@ -1746,6 +1746,12 @@ msgstr ""
 "Sie ist noch nicht vollständig, wir arbeiten aber daran sie zu erweitern.\n"
 "Der Einstiegspunkt der API befindet sich unter `%s` und ist in der [OpenAPI Spezifikation](%s) beschrieben."
 
+msgid "settings.api.about.own"
+msgstr ""
+"Du kannst über die API auf deine eigenen Daten im %s zugreifen. "
+"Der Einstiegspunkt befindet sich unter `%s` und ist in der [OpenAPI Spezifikation](%s) beschrieben. "
+"Endpunkte, die auf den eigenen Benutzer beschränkt sind, akzeptieren `self` als Benutzer-ID."
+
 msgid "settings.api.about.warning"
 msgstr ""
 "Teile deinen persönlichen API Key mit niemandem, er erlaubt es deine persönlichen Daten einzusehen "
