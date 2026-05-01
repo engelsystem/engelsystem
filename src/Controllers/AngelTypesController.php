@@ -8,6 +8,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpNotFound;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
@@ -32,7 +33,9 @@ class AngelTypesController extends BaseController
         protected Response $response,
         protected Config $config,
         protected Authenticator $auth,
+        protected AngelType $angelType,
         protected LoggerInterface $log,
+        protected Redirector $redirect,
     ) {
     }
 
@@ -41,7 +44,7 @@ class AngelTypesController extends BaseController
         return match ($method) {
             'qrCode' =>
                 $this->auth->user()?->isAngelTypeSupporter($this->getAngelType($request))
-                || $this->auth->can('admin_user_angeltypes'),
+                || $this->auth->can('userangeltypes.edit'),
             'join' => (bool) $this->auth->user(),
             default => parent::hasPermission($request, $method),
         };
@@ -54,6 +57,24 @@ class AngelTypesController extends BaseController
         return $this->response->withView(
             'pages/angeltypes/about',
             ['angeltypes' => $angeltypes]
+        );
+    }
+
+    public function index(): Response
+    {
+        $angelTypes = $this->angelType
+            ->with(['userAngelTypes' => function ($query): void {
+                $query->where('user_id', '=', auth()->user()->id);
+            }])
+            ->orderBy('name')
+            ->get();
+
+        return $this->response->withView(
+            'pages/angeltypes/index',
+            [
+                'angelTypes' => $angelTypes,
+                'is_index' => true,
+            ]
         );
     }
 

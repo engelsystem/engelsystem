@@ -524,6 +524,9 @@ msgstr "Certificates were updated successfully."
 msgid "angeltype.ifsg.required"
 msgstr "Requires health instruction"
 
+msgid "angeltype.drivers_license.required"
+msgstr "Requires driver license"
+
 msgid "ifsg.certificate"
 msgstr "Health instruction"
 
@@ -766,31 +769,31 @@ msgstr "Got %s of %s vouchers"
 msgid "user.state.vouchers.force"
 msgstr "<s>&thinsp;%d&thinsp;</s> unlimited"
 
-msgid "angeltypes.angeltypes"
+msgid "angeltype.angeltypes"
 msgstr "Angel types"
 
-msgid "angeltypes.about"
+msgid "angeltype.about"
 msgstr "Team/Task description"
 
-msgid "angeltypes.about.text"
+msgid "angeltype.about.text"
 msgstr "Here you can find the list of teams and their tasks. If you have further questions, "
 "have a look at the <a href=\"%s\">FAQ</a>."
 
-msgid "angeltypes.restricted"
+msgid "angeltype.restricted"
 msgstr "Requires introduction"
 
-msgid "angeltypes.restricted.info"
+msgid "angeltype.restricted.info"
 msgstr "Angel types that require introduction can only be joined by Angels "
 "after being enabled by a supporter (double opt-in)."
 
-msgid "angeltypes.restricted.hint"
+msgid "angeltype.restricted.hint"
 msgstr "This angel type requires attendance at an introduction meeting. "
 "You might find additional information in the description."
 
-msgid "angeltypes.can-change-later"
+msgid "angeltype.can-change-later"
 msgstr "You can change your selection later in the settings."
 
-msgid "angeltypes.shift.self_signup.info"
+msgid "angeltype.shift.self_signup.info"
 msgstr "Angel types with shift self-signup enabled allow Angels to sign up for their own shifts. "
 "If shift self-signup is disabled, only supporters and admins can assign Angels to shifts for these angel types."
 
@@ -800,27 +803,60 @@ msgstr "Shift self-signup"
 msgid "shift.self_signup.allowed"
 msgstr "Shift self-signup allowed"
 
-msgid "angeltypes.hide_on_shift_view"
+msgid "angeltype.hide_on_shift_view"
 msgstr "Hide on shift view"
 
-msgid "angeltypes.hide_on_shift_view.info"
+msgid "angeltype.hide_on_shift_view.info"
 msgstr "If checked, only admins and members of the angel type "
 "can see the filter option for this angel type on the shifts page."
 
-msgid "angeltypes.qr"
+msgid "angeltype.qr"
 msgstr "Join angel type \"%s\" QR code"
 
-msgid "angeltypes.qr.expires"
+msgid "angeltype.qr.expires"
 msgstr "Expires %c"
 
-msgid "angeltypes.qr.expired"
+msgid "angeltype.qr.expired"
 msgstr "Expired"
 
-msgid "angeltypes.qr.time"
+msgid "angeltype.qr.time"
 msgstr "Lifetime (minutes)"
 
-msgid "angeltypes.qr.time.info"
+msgid "angeltype.qr.time.info"
 msgstr "The link will be valid for the whole time span and can't be revoked!"
+
+msgid "angeltype.membership"
+msgstr "Membership"
+
+msgid "angeltype.unconfirmed"
+msgstr "Unconfirmed"
+
+msgid "angeltype.supporter"
+msgstr "Supporter"
+
+msgid "angeltype.member"
+msgstr "Member"
+
+msgid "angeltype.leave"
+msgstr "Leave"
+
+msgid "angeltype.join"
+msgstr "Join"
+
+msgid "angeltype.delete.title"
+msgstr "Delete angel type \"%s\""
+
+msgid "angeltype.create.title"
+msgstr "Create angel type"
+
+msgid "angeltype.edit.title"
+msgstr "Edit angel type"
+
+msgid "angeltype.contact"
+msgstr "Contact"
+
+msgid "angeltype.contact.info"
+msgstr "Primary contact person/desk for user questions."
 
 msgid "location.location"
 msgstr "Location"
@@ -941,6 +977,9 @@ msgstr "URL"
 
 msgid "general.qr"
 msgstr "QR code"
+
+msgid "general.state"
+msgstr "State"
 
 msgid "shifts.random"
 msgstr "Random shift"
