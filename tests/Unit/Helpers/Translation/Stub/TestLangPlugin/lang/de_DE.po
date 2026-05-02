@@ -1,0 +1,6 @@
+# Test content
+msgid "some.test.content"
+msgstr "from de po"
+
+msgid "foo.bar"
+msgstr "Plugin DE foo.bar"

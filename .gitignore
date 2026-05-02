@@ -38,6 +38,8 @@ _vimrc_local.vim
 /coverage
 /unittests.xml
 /resources/lang/*/*.mo
+/resources/plugins/*
+!/resources/plugins/DemoPlugin
 
 # Composer files
 /vendor/

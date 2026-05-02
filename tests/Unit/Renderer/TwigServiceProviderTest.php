@@ -85,10 +85,13 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $this->app->tag(['a', 'b'], 'twig.extension');
         $this->app->instance('no-dir', '/this-dir-should-not-exist');
         $this->app->instance('other-dir', __DIR__ . '/Stub/');
+        $this->app->tag(['no-dir', 'other-dir'], 'plugin.path');
         $this->app->singleton(VarDumper::class, fn () => $dumper);
         $this->app->instance('l1', $loader1);
         $this->app->instance('l2', $loader2);
         $this->app->tag(['l1', 'l2'], 'twig.loader');
+
+        $this->setExpects($loader1, 'prependPath', [__DIR__ . '/Stub/views/']);
 
         $twig->expects($this->exactly(2))
             ->method('addExtension')

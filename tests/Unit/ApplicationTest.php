@@ -60,6 +60,7 @@ class ApplicationTest extends TestCase
         $this->assertTrue($app->has('path.cache.views'));
         $this->assertTrue($app->has('path.public'));
         $this->assertTrue($app->has('path.assets.public'));
+        $this->assertTrue($app->has('path.plugins'));
 
         $this->assertEquals(realpath('.'), $app->path());
         $this->assertEquals(realpath('.') . '/config', $app->get('path.config'));

@@ -74,7 +74,7 @@ docker compose exec es_workspace yarn build
 docker compose exec -e THEMES=0,1 es_workspace yarn build
 
 # Update the translation files
-docker compose exec es_workspace find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'msgfmt "${1%.*}.po" -o"${1%.*}.mo"' shell {} \;
+docker compose exec es_workspace find /var/www/resources -type f -name '*.po' -exec sh -c 'msgfmt "${1%.*}.po" -o"${1%.*}.mo"' shell {} \;
 
 # Run the migrations
 docker compose exec es_workspace bin/migrate
