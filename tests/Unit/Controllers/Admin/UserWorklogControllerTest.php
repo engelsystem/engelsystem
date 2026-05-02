@@ -263,43 +263,6 @@ class UserWorklogControllerTest extends ControllerTest
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::showDeleteWorklog
-     */
-    public function testShowDeleteWorklogWithWorklogNotAssociatedToUserThrows(): void
-    {
-        /** @var User $user2 */
-        $user2 = User::factory()->create();
-        /** @var Worklog $worklog */
-        $worklog = Worklog::factory(['user_id' => $user2->id])->create();
-
-        $request = $this->request
-            ->withAttribute('user_id', $this->user->id)
-            ->withAttribute('worklog_id', $worklog->id);
-        $this->expectException(HttpNotFound::class);
-        $this->controller->showDeleteWorklog($request);
-    }
-
-    /**
-     * @covers \Engelsystem\Controllers\Admin\UserWorklogController::showDeleteWorklog
-     */
-    public function testShowDeleteWorklog(): void
-    {
-        /** @var Worklog $worklog */
-        $worklog = Worklog::factory(['user_id' => $this->user->id])->create();
-
-        $request = $this->request
-            ->withAttribute('user_id', $this->user->id)
-            ->withAttribute('worklog_id', $worklog->id);
-        $this->response->expects($this->once())
-            ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals($this->user->id, $data['userdata']->id);
-                return $this->response;
-            });
-        $this->controller->showDeleteWorklog($request);
-    }
-
-    /**
      * @covers \Engelsystem\Controllers\Admin\UserWorklogController::deleteWorklog
      * @covers \Engelsystem\Controllers\Admin\UserWorklogController::needsUser
      */

@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
  */
 function User_delete_view($user)
 {
-    $link = button(user_edit_link($user->id), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $link = back_button(user_edit_link($user->id));
     return page_with_title($link . ' ' . sprintf(__('Delete %s'), User_Nick_render($user)), [
         msg(),
         error(
@@ -427,7 +427,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
     if (Shift_signout_allowed($shift, (new AngelType())->forceFill(['id' => $shift->angel_type_id]), $user_source->id)) {
         $myshift['actions'][] = button(
             shift_entry_delete_link($shift),
-            icon('trash'),
+            icon('box-arrow-right'),
             'btn-sm btn-danger',
             '',
             __('Sign off')
@@ -558,12 +558,22 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
                 '',
                 __('form.edit')
             ),
-            button(
+            form(
+                [
+                    form_submit(
+                        'delete',
+                        icon('trash'),
+                        'btn-sm',
+                        false,
+                        'danger',
+                        __('form.delete'),
+                        [
+                            'confirm_submit_title' => __('worklog.delete.info', [$worklog->user->displayName]),
+                            'confirm_button_text' => icon('trash') . __('form.delete'),
+                        ]
+                    ),
+                ],
                 url('/admin/user/' . $worklog->user->id . '/worklog/' . $worklog->id . '/delete'),
-                icon('trash'),
-                'btn-sm btn-danger',
-                '',
-                __('form.delete')
             ),
         ]) . '</div>';
     }

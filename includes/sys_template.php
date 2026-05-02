@@ -320,7 +320,7 @@ function render_table($columns, $rows, $data = true)
 }
 
 /**
- * Rendert einen Knopf
+ * Renders a button
  *
  * @param string $href
  * @param string $label
@@ -328,16 +328,41 @@ function render_table($columns, $rows, $data = true)
  * @param string $id
  * @return string
  */
-function button($href, $label, $class = '', $id = '', $title = '', $disabled = false)
+function button($href, $label, $class = '', $id = '', $title = '', $disabled = false, array $data = [])
 {
     if (!Str::contains(str_replace(['btn-sm', 'btn-xl'], '', $class), 'btn-')) {
         $class = 'btn-secondary' . ($class ? ' ' . $class : '');
     }
 
     $idAttribute = $id ? 'id="' . $id . '"' : '';
+    $dataAttributes = '';
+    foreach ($data as $key => $value) {
+        $dataAttributes .= ' data-' . $key . '="' . $value . '"';
+    }
 
     return '<a ' . $idAttribute . ' href="' . $href
-        . '" class="btn ' . $class . ($disabled ? ' disabled' : '') . '" title="' . $title . '">' . $label . '</a>';
+        . '" class="btn ' . $class . ($disabled ? ' disabled' : '')
+        . '" title="' . $title . '"'
+        . $dataAttributes
+        . '>'
+        . $label
+        . '</a>';
+}
+
+/**
+ * Renders a back button
+ */
+function back_button(string $href): string
+{
+    return button(
+        $href,
+        icon('chevron-left'),
+        'btn-sm',
+        '',
+        __('general.back'),
+        false,
+        ['back' => 'true'],
+    );
 }
 
 /**
