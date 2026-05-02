@@ -155,6 +155,10 @@ return [
                 'teardown_end' => [
                     'type' => 'datetime-local',
                 ],
+                'enable_date_day' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
                 'enable_day_of_event' => [
                     'type' => 'boolean',
                     'default' => false,
