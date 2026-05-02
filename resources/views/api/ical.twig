@@ -32,6 +32,13 @@ DESCRIPTION:{{
     | replace(replacement) | raw
 }}
 URL:{{ url('/shifts', {'action': 'view', 'shift_id': entry.shift.id}) | raw }}
+{% if alarmMinutes > 0 %}
+BEGIN:VALARM
+TRIGGER:-PT{{ alarmMinutes }}M
+ACTION:DISPLAY
+DESCRIPTION:{{ (entry.shift.shiftType.name ~ ' (' ~ entry.shift.title ~ ')') | replace(replacement) | raw }}
+END:VALARM
+{% endif %}
 END:VEVENT
 {% endfor %}
 END:VCALENDAR
