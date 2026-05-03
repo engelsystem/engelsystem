@@ -18,7 +18,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class UsersController extends ApiController
 {
+    use OwnAuth;
     use UsesAuth;
+
+    protected array $ownRoutes = ['user', 'worklogs'];
 
     public function index(): Response
     {

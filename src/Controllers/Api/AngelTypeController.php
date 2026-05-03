@@ -12,7 +12,10 @@ use Engelsystem\Models\AngelType;
 
 class AngelTypeController extends ApiController
 {
+    use OwnAuth;
     use UsesAuth;
+
+    protected array $ownRoutes = ['ofUser'];
 
     public function index(): Response
     {

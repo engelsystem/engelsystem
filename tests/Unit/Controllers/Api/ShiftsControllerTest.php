@@ -21,6 +21,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ShiftsControllerTest extends ApiBaseControllerTest
 {
@@ -212,6 +213,25 @@ class ShiftsControllerTest extends ApiBaseControllerTest
 
         $this->expectException(ModelNotFoundException::class);
         $controller->entriesByUser($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\OwnAuth::hasPermission
+     */
+    public function testHasPermissionSelfWithApiOwn(): void
+    {
+        $user = User::factory()->create();
+
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $auth->method('user')->willReturn($user);
+        $auth->method('can')->with('api.own')->willReturn(true);
+
+        $controller = new ShiftsController(new Response());
+        $controller->setAuth($auth);
+        $request = (new Request())->withAttribute('user_id', 'self');
+
+        $this->assertTrue($controller->hasPermission($request, 'entriesByUser'));
     }
 
     public function setUp(): void

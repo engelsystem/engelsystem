@@ -575,6 +575,12 @@ msgstr ""
 "It's not complete but we are working on extending it.\n"
 "The endpoint of the API is located at `%s` and described in the [OpenAPI specification](%s)."
 
+msgid "settings.api.about.own"
+msgstr ""
+"You can use the API to access your own data on the %s. "
+"The endpoint is located at `%s` and described in the [OpenAPI specification](%s). "
+"Endpoints scoped to your own user accept `self` as the user id."
+
 msgid "settings.api.about.warning"
 msgstr ""
 "Don't share your personal API key with anyone as it can be used to view your personal data "

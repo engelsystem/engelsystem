@@ -21,7 +21,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ShiftsController extends ApiController
 {
+    use OwnAuth;
     use UsesAuth;
+
+    protected array $ownRoutes = ['entriesByUser'];
 
     public function entriesByAngeltype(Request $request): Response
     {
