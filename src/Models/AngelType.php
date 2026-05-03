@@ -22,6 +22,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string                            $contact_dect
  * @property string                            $contact_email
  * @property boolean                           $restricted # If users need an introduction
+ * @property boolean                           $shift_signup_before_arrival # If users can sign up before arrival
  * @property boolean                           $requires_driver_license # If users must have a driver license
  * @property boolean                           $requires_ifsg_certificate # If users must have a ifsg certificate
  * @property boolean                           $shift_self_signup # Users can sign up for shifts
@@ -57,8 +58,9 @@ class AngelType extends BaseModel
         'contact_name'              => '',
         'contact_dect'              => '',
         'contact_email'             => '',
-        'restricted'                => true,
-        'requires_driver_license'   => false,
+        'restricted'                   => true,
+        'shift_signup_before_arrival'  => false,
+        'requires_driver_license'      => false,
         'requires_ifsg_certificate' => false,
         'shift_self_signup'         => true,
         'show_on_dashboard'         => true,
@@ -80,6 +82,7 @@ class AngelType extends BaseModel
         'contact_email',
 
         'restricted',
+        'shift_signup_before_arrival',
         'requires_driver_license',
         'requires_ifsg_certificate',
         'shift_self_signup',
@@ -90,8 +93,9 @@ class AngelType extends BaseModel
 
     /** @var array<string, string> */
     protected $casts = [ // phpcs:ignore
-        'restricted'                => 'boolean',
-        'requires_driver_license'   => 'boolean',
+        'restricted'                   => 'boolean',
+        'shift_signup_before_arrival'  => 'boolean',
+        'requires_driver_license'      => 'boolean',
         'requires_ifsg_certificate' => 'boolean',
         'shift_self_signup'         => 'boolean',
         'show_on_dashboard'         => 'boolean',
