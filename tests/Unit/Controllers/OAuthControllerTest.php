@@ -18,12 +18,14 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use Illuminate\Support\Collection;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\Test\TestLogger;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Session\Session as Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -175,6 +177,324 @@ class OAuthControllerTest extends TestCase
         $controller->index($request);
         $this->assertTrue((bool) User::find(1)->state->arrived);
         $this->assertFalse($this->log->hasInfoThatContains('as arrived'));
+    }
+
+    /**
+     * Helper method to invoke private methods using reflection
+     */
+    private function invokePrivateMethod(object $object, string $methodName, array $args = []): mixed
+    {
+        $reflection = new ReflectionClass($object);
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+        return $method->invokeArgs($object, $args);
+    }
+
+    /**
+     * Helper method to create OAuthController with custom config
+     */
+    private function createControllerWithConfig(array $config): OAuthController
+    {
+        $fullConfig = array_merge(['oauth' => $this->oauthConfig], $config);
+        return new OAuthController(
+            $this->auth,
+            $this->authController,
+            new Config($fullConfig),
+            $this->log,
+            $this->oauth,
+            $this->redirect,
+            $this->session,
+            $this->url,
+        );
+    }
+
+    /**
+     * Helper method to create a user with personal data for SSO tests
+     */
+    private function createUserWithPersonalData(): User
+    {
+        $userData = $this->getInitialUserData();
+
+        $user = User::factory()->create([
+            'name' => $userData['username'],
+            'email' => $userData['email'],
+        ]);
+
+        $user->personalData()->create([
+            'first_name' => $userData['first_name'],
+            'last_name' => $userData['last_name'],
+        ]);
+
+        return $user;
+    }
+
+    /**
+     * @return array Of test user data - names reflect the internal naming.
+     */
+    private function getInitialUserData(): array
+    {
+        return [
+            'username' => 'testuser',
+            'email' => 'test@example.com',
+            'first_name' => 'Test',
+            'last_name' => 'User',
+        ];
+    }
+
+    /**
+     * @return array Of "new" user data as OAuth would - names reflect the SSO naming scheme.
+     */
+    private function getUpdatedSsoUserData(array $missingFields): array
+    {
+        $data = [
+            'name' => 'updateduser',
+            'mail' => 'updated@example.com',
+            'given_name' => 'UpdatedFirst',
+            'family_name' => 'UpdatedLast',
+        ];
+        return array_diff_key($data, array_flip($missingFields));
+    }
+
+    private function getOAuthConfig(array $customConfig = []): array
+    {
+        return array_merge([
+            'username' => 'name',
+            'email' => 'mail',
+            'first_name' => 'given_name',
+            'last_name' => 'family_name',
+            'sso_fields_to_sync' => [],
+        ], $customConfig);
+    }
+
+    /**
+     * Helper method to test transformUserName with given parameters
+     */
+    private function assertTransformUserName(OAuthController $controller, string $input, string $expected): void
+    {
+        $result = $this->invokePrivateMethod($controller, 'transformUserName', [$input]);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::transformUserName
+     */
+    public function testTransformUserNameWithoutPattern(): void
+    {
+        $controller = $this->getMock();
+
+        // Test without pattern/replace config
+        $this->assertTransformUserName($controller, 'john.doe@example.com', 'john.doe@example.com');
+
+        // Test with long username (should truncate to 24 chars)
+        $longUsername = 'this_is_a_very_long_username_that_exceeds_24_characters';
+        $result = $this->invokePrivateMethod($controller, 'transformUserName', [$longUsername]);
+        $this->assertEquals('this_is_a_very_long_user', $result);
+        $this->assertEquals(24, strlen($result));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::transformUserName
+     */
+    public function testTransformUserNameWithPattern(): void
+    {
+        $controller = $this->createControllerWithConfig([
+            'username_sync_pattern' => '/@.*$/',
+            'username_sync_replace' => '',
+        ]);
+
+        // Test email transformation (remove domain)
+        $this->assertTransformUserName($controller, 'john.doe@example.com', 'john.doe');
+
+        // Test username without @ symbol
+        $this->assertTransformUserName($controller, 'johndoe', 'johndoe');
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::transformUserName
+     */
+    public function testTransformUserNameWithComplexPattern(): void
+    {
+        $controller = $this->createControllerWithConfig([
+            'username_sync_pattern' => '/[^a-zA-Z0-9._-]/',
+            'username_sync_replace' => '_',
+        ]);
+
+        // Test special character replacement
+        $this->assertTransformUserName($controller, 'john doe@#%', 'john_doe___');
+
+        // Test already valid username
+        $this->assertTransformUserName($controller, 'john.doe-123', 'john.doe-123');
+    }
+
+
+    private function testUpdateUserDataFromSSO(array $fields, array $missingSsoFields = []): void
+    {
+        $user = $this->createUserWithPersonalData();
+        $config = $this->getOAuthConfig(['sso_fields_to_sync' => $fields]);
+
+        $oldUserData = $this->getInitialUserData();
+        $ssoData = $this->getUpdatedSsoUserData($missingSsoFields);
+
+        $expectedUserData = $oldUserData;
+        foreach ($fields as $field) {
+            if (!in_array($config[$field], $missingSsoFields)) {
+                $expectedUserData[$field] = $ssoData[$config[$field]];
+            }
+        }
+
+
+        $controller = $this->getMock();
+
+        // Reset log to have clean state for this test
+        $this->log->reset();
+
+        $this->invokePrivateMethod($controller, 'updateUserDataFromSSO', [$user, $config, new Collection($ssoData)]);
+
+        $user->refresh();
+        $user->personalData->refresh();
+
+        foreach ($expectedUserData as $field => $expectedValue) {
+            if (in_array($field, ['first_name', 'last_name'])) {
+                $this->assertEquals(
+                    $expectedValue,
+                    $user->personalData->$field,
+                    'Personal data field ' . $field . " should be '" . $expectedValue . "'"
+                );
+            } else {
+                // The config 'username' field is mapped to User's 'name'
+                if (in_array($field, ['username'])) {
+                    $field = 'name';
+                }
+
+                $this->assertEquals(
+                    $expectedValue,
+                    $user->$field,
+                    "User's " . $field . " should be '" . $expectedValue . "'"
+                );
+            }
+        }
+
+        foreach (array_diff_key($this->getOAuthConfig(), ['sso_fields_to_sync' => []]) as $configKey => $ssoKey) {
+            // Check if there was an error log entry in case the SSO field is missing,
+            // and verify there is no log entry otherwise
+            $logHasMissingFieldError = $this->log->hasError([
+                'message' => 'Cannot update {key} for user ID {id}: SSO field missing - fix your SSO config!',
+                'context' => [
+                    'key' => $configKey,
+                    'id' => $user->id,
+                ],
+            ]);
+
+            $expectMissingFieldError = in_array($configKey, $config['sso_fields_to_sync'] ?? [])
+                && in_array($ssoKey, $missingSsoFields);
+
+            if ($expectMissingFieldError) {
+                $this->assertTrue(
+                    $logHasMissingFieldError,
+                    'Should have an error message for missing SSO field ' . $ssoKey
+                );
+            } else {
+                $this->assertFalse(
+                    $logHasMissingFieldError,
+                    'Should not have an error message for non-missing SSO field ' . $ssoKey
+                );
+            }
+
+            // Check if there was an info log entry in case the user data was updated,
+            // and verify there is no log entry otherwise
+            $logHasUpdateInfo = $this->log->hasInfo([
+                'message' => 'Updating {key} for user ID {id} from {old} to {new} via SSO sync',
+                'context' => [
+                    'key' => $configKey,
+                    'id' => $user->id,
+                    'old' => $oldUserData[$configKey],
+                    'new' => $expectedUserData[$configKey] ?? null,
+                ],
+            ]);
+
+            $expectUpdateInfo = in_array($configKey, $config['sso_fields_to_sync'] ?? [])
+                && !in_array($ssoKey, $missingSsoFields)
+                && $oldUserData[$configKey] != $ssoData[$ssoKey];
+
+            if ($expectUpdateInfo) {
+                $this->assertTrue(
+                    $logHasUpdateInfo,
+                    'Should have an info message for updated SSO field ' . $ssoKey
+                );
+            } else {
+                $this->assertFalse(
+                    $logHasUpdateInfo,
+                    'Should not have an info message for non-updated SSO field ' . $ssoKey
+                );
+            }
+        }
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::updateUserDataFromSSO
+     */
+    public function testUpdateUserDataFromSSOWithEmailSync(): void
+    {
+        $this->testUpdateUserDataFromSSO(['email']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::updateUserDataFromSSO
+     */
+    public function testUpdateUserDataFromSSOWithUserNameSync(): void
+    {
+        $this->testUpdateUserDataFromSSO(['username']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::updateUserDataFromSSO
+     */
+    public function testUpdateUserDataFromSSOWithFirstNameSync(): void
+    {
+        $this->testUpdateUserDataFromSSO(['first_name']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::updateUserDataFromSSO
+     */
+    public function testUpdateUserDataFromSSOWithLastNameSync(): void
+    {
+        $this->testUpdateUserDataFromSSO(['last_name']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::updateUserDataFromSSO
+     */
+    public function testUpdateUserDataFromSSOForAllFields(): void
+    {
+        $this->testUpdateUserDataFromSSO(['first_name', 'last_name', 'email', 'username']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::updateUserDataFromSSO
+     */
+    public function testUpdateUserDataFromSSOForNoFields(): void
+    {
+        $this->testUpdateUserDataFromSSO([]);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::updateUserDataFromSSO
+     */
+    public function testUpdateUserDataFromSSOForAllFieldsMissingLastName(): void
+    {
+        $this->testUpdateUserDataFromSSO(['first_name', 'last_name', 'email', 'username'], ['family_name']);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::updateUserDataFromSSO
+     */
+    public function testUpdateUserDataFromSSOForAllFieldsMissingAllFields(): void
+    {
+        $this->testUpdateUserDataFromSSO(
+            ['first_name', 'last_name', 'email', 'username'],
+            ['given_name', 'family_name', 'mail', 'name']
+        );
     }
 
     /**
