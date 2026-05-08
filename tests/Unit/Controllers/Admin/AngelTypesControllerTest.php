@@ -4,23 +4,57 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Admin\AngelTypesController;
 use Engelsystem\Events\EventDispatcher;
-use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
+use Engelsystem\Http\Request;
+use Engelsystem\Http\Response;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Shifts\NeededAngelType;
-use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Controllers\ControllerTest;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\NullLogger;
 
 class AngelTypesControllerTest extends ControllerTest
 {
     protected Redirector|MockObject $redirect;
+    protected Authenticator|MockObject $auth;
+    protected User $user;
+    protected User $supporter;
+    protected AngelType $angelType;
+    protected AngelTypesController $controller;
+
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\AngelTypesController::hasPermission
+     */
+    public function testHasPermission(): void
+    {
+        /** @var Response|MockObject $response */
+        $response = $this->createMock(Response::class);
+        $request = (new Request())->withAttribute('angel_type_id', $this->angelType->id);
+
+        $controller = new AngelTypesController(
+            $response,
+            $this->app->get(Config::class),
+            $this->auth,
+            $this->angelType,
+            new NullLogger(),
+            $this->redirect
+        );
+        $this->assertFalse($controller->hasPermission($request, 'save'));
+        $this->assertFalse($controller->hasPermission($request, 'edit'));
+
+        $this->setExpects($this->auth, 'can', ['angeltypes.edit'], true, $this->atLeastOnce());
+        $this->assertTrue($controller->hasPermission($request, 'save'));
+        $this->assertTrue($controller->hasPermission($request, 'edit'));
+    }
 
     /**
      * @covers \Engelsystem\Controllers\Admin\AngelTypesController::__construct
@@ -29,29 +63,22 @@ class AngelTypesControllerTest extends ControllerTest
      */
     public function testEdit(): void
     {
-        /** @var AngelTypesController $controller */
-        $controller = $this->app->make(AngelTypesController::class);
-        /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create();
-        $angelTypes = AngelType::factory(3)->create();
-        (new NeededAngelType([
-            'angel_type_id' => $angelType->id,
-            'angel_type_id' => $angelTypes[0]->id,
-            'count' => 3,
-        ]))->save();
+        $angelType = $this->angelType;
+        $this->setExpects($this->auth, 'can', ['angeltypes.edit'], true);
 
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) use ($angelType) {
                 $this->assertEquals('admin/angeltypes/edit', $view);
+                $this->assertFalse($this->user->isAngelTypeSupporter($angelType));
                 $this->assertEquals($angelType->id, $data['angelType']?->id);
-                $this->assertCount(3, $data['angel_types'] ?? []);
+                $this->assertFalse($data['isSupporter']);
                 return $this->response;
             });
 
-        $this->request = $this->request->withAttribute('angel_type_id', 1);
+        $this->request = $this->request->withAttribute('angel_type_id', $angelType->id);
 
-        $controller->edit($this->request);
+        $this->controller->edit($this->request);
     }
 
     /**
@@ -60,20 +87,18 @@ class AngelTypesControllerTest extends ControllerTest
      */
     public function testEditNew(): void
     {
-        /** @var AngelTypesController $controller */
-        $controller = $this->app->make(AngelTypesController::class);
-        AngelType::factory(3)->create();
+        $this->setExpects($this->auth, 'can', ['angeltypes.edit'], true);
 
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function (string $view, array $data) {
                 $this->assertEquals('admin/angeltypes/edit', $view);
                 $this->assertEmpty($data['angelType'] ?? []);
-                $this->assertCount(3, $data['angel_types'] ?? []);
+                $this->assertEquals(false, $data['isSupporter']);
                 return $this->response;
             });
 
-        $controller->edit($this->request);
+        $this->controller->edit($this->request);
     }
 
     /**
@@ -81,33 +106,79 @@ class AngelTypesControllerTest extends ControllerTest
      */
     public function testSave(): void
     {
-        /** @var AngelTypesController $controller */
-        $controller = $this->app->make(AngelTypesController::class);
-        $controller->setValidator(new Validator());
-        AngelType::factory(3)->create();
+        $this->setExpects($this->auth, 'can', ['angeltypes.edit'], true, $this->any());
 
         $this->setExpects($this->redirect, 'to', ['/angeltypes']);
 
         $this->request = $this->request->withParsedBody([
-            'name'         => 'Testlocation',
-            'description'  => 'Something',
-            'dect'         => 'DECTNR',
-            'map_url'      => 'https://osm.url/#map=h/x/y',
-            'angel_type_1' => '0',
-            'angel_type_2' => '3',
+            'name' => 'SomeTestAngelType',
+            'description' => 'Something',
+            'contact_name' => 'Foo',
+            'contact_dect' => 'DECTNR',
+            'contact_email' => '42@example.invalid',
+            'restricted' => 'checked',
+            'shift_self_signup' => 'checked',
+            'show_on_dashboard' => 'checked',
+            'hide_register' => 'checked',
         ]);
 
-        $controller->save($this->request);
+        $this->controller->save($this->request);
 
-        $this->assertTrue($this->log->hasInfoThatContains('Updated location'));
-        $this->assertHasNotification('location.edit.success');
-        $this->assertCount(1, AngelType::whereName('Testlocation')->get());
+        $this->assertTrue($this->log->hasInfoThatContains('angel type'));
+        $this->assertHasNotification('angeltype.edit.success');
+    }
 
-        $neededAngelType = NeededAngelType::whereAngelTypeId(1)
-            ->where('angel_type_id', 2)
-            ->where('count', 3)
-            ->get();
-        $this->assertCount(1, $neededAngelType);
+    /**
+     * @covers \Engelsystem\Controllers\Admin\AngelTypesController::hasPermission
+     * @covers \Engelsystem\Controllers\Admin\AngelTypesController::save
+     */
+    public function testSaveWithConfig(): void
+    {
+        $this->setExpects($this->auth, 'can', ['angeltypes.edit'], true, $this->any());
+        $this->config->set('driving_license_enabled', true);
+        $this->config->set('ifsg_enabled', true);
+
+        $this->setExpects($this->redirect, 'to', ['/angeltypes']);
+
+        $this->request = $this->request->withParsedBody([
+            'name' => 'SomeTestAngelType',
+            'description' => 'Something',
+            'contact_name' => 'Foo',
+            'contact_dect' => 'DECTNR',
+            'contact_email' => '42@example.invalid',
+            'restricted' => 'checked',
+            'shift_self_signup' => 'checked',
+            'show_on_dashboard' => 'checked',
+            'hide_register' => 'checked',
+            'requires_driver_license' => 'checked',
+            'requires_ifsg_certificate' => 'checked',
+        ]);
+
+        $this->controller->save($this->request);
+
+        $this->assertTrue($this->log->hasInfoThatContains('angel type'));
+        $this->assertHasNotification('angeltype.edit.success');
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\AngelTypesController::save
+     */
+    public function testSaveWithoutPermission(): void
+    {
+        $this->request = $this->request->withParsedBody([
+            'name' => 'SomeTestAngelType',
+            'description' => 'Something',
+            'contact_name' => 'Foo',
+            'contact_dect' => 'DECTNR',
+            'contact_email' => '42@example.invalid',
+            'restricted' => 'checked',
+            'shift_self_signup' => 'checked',
+            'show_on_dashboard' => 'checked',
+            'hide_register' => 'checked',
+        ]);
+
+        $this->expectException(HttpForbidden::class);
+        $this->controller->save($this->request);
     }
 
     /**
@@ -115,17 +186,15 @@ class AngelTypesControllerTest extends ControllerTest
      */
     public function testSaveUniqueName(): void
     {
-        /** @var AngelTypesController $controller */
-        $controller = $this->app->make(AngelTypesController::class);
-        $controller->setValidator(new Validator());
-        AngelType::factory()->create(['name' => 'Testlocation']);
+        $this->setExpects($this->auth, 'can', ['angeltypes.edit'], true, $this->any());
+        AngelType::factory()->create(['name' => 'TestAngelType']);
 
         $this->request = $this->request->withParsedBody([
-            'name' => 'Testlocation',
+            'name' => 'TestAngelType',
         ]);
 
         $this->expectException(ValidationException::class);
-        $controller->save($this->request);
+        $this->controller->save($this->request);
     }
 
     /**
@@ -136,37 +205,31 @@ class AngelTypesControllerTest extends ControllerTest
         /** @var EventDispatcher|MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcher::class);
         $this->app->instance('events.dispatcher', $dispatcher);
-        /** @var AngelTypesController $controller */
-        $controller = $this->app->make(AngelTypesController::class);
-        $controller->setValidator(new Validator());
-        /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create();
-        /** @var Shift $shift */
-        $shift = Shift::factory()->create(['angel_type_id' => $angelType->id, 'start' => Carbon::create()->subHour()]);
-        /** @var User $user */
-        $user = User::factory()->create(['name' => 'foo', 'email' => 'lorem@ipsum']);
         /** @var ShiftEntry $shiftEntry */
-        ShiftEntry::factory()->create(['shift_id' => $shift->id, 'user_id' => $user->id]);
+        ShiftEntry::factory()->create(['user_id' => $this->user->id, 'angel_type_id' => $this->angelType->id]);
+        $angelType = $this->angelType;
+        $user = $this->user;
 
+        $this->setExpects($this->auth, 'can', ['angeltypes.edit'], true, $this->any());
         $this->setExpects($this->redirect, 'to', ['/angeltypes'], $this->response);
 
-        $dispatcher->expects($this->once())
+        $dispatcher->expects($this->atLeastOnce())
             ->method('dispatch')
             ->willReturnCallback(function (string $event, array $data) use ($angelType, $user) {
-                $this->assertEquals('shift.deleting', $event);
-                $this->assertEquals($angelType->id, $data['shift']->location->id);
-                $this->assertEquals($user->id, $data['shift']->shiftEntries[0]->user->id);
+                $this->assertEquals('shift.entry.deleting', $event);
+                $this->assertEquals($angelType->id, $data['entry']->angelType->id);
+                $this->assertEquals($user->id, $data['entry']->user->id);
 
                 return [];
             });
 
         $this->request = $this->request->withParsedBody(['id' => 1, 'delete' => '1']);
 
-        $controller->delete($this->request);
+        $this->controller->delete($this->request);
 
         $this->assertNull(AngelType::find($angelType->id));
-        $this->assertTrue($this->log->hasInfoThatContains('Deleted location'));
-        $this->assertHasNotification('location.delete.success');
+        $this->assertTrue($this->log->hasInfoThatContains('Deleted angel type'));
+        $this->assertHasNotification('angeltype.delete.success');
     }
 
     public function setUp(): void
@@ -174,6 +237,14 @@ class AngelTypesControllerTest extends ControllerTest
         parent::setUp();
 
         $this->redirect = $this->createMock(Redirector::class);
+        $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Redirector::class, $this->redirect);
+        $this->app->instance(Authenticator::class, $this->auth);
+        $this->controller = $this->app->make(AngelTypesController::class);
+        $this->controller->setValidator(new Validator());
+
+        $this->user = User::factory()->create();
+        $this->angelType = AngelType::factory()->create();
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->any());
     }
 }
