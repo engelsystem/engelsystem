@@ -42,6 +42,7 @@ stages:
   needs:
     - yarn install
   before_script:
+    - npm add --silent --global yarn
     - yarn install --check-frontend --cache-folder .yarn-cache
 
 #
@@ -74,6 +75,7 @@ yarn-validate:
   image: node:alpine
   stage: prepare
   before_script:
+    - npm add --silent --global yarn
     - yarn global add package-json-validator-cli
   script:
     - package-json-validator-cli
@@ -85,6 +87,8 @@ yarn install:
   needs:
     - yarn-validate
     - yarn audit
+  before_script:
+    - npm add --silent --global yarn
   script:
     - yarn install --check-frontend --cache-folder .yarn-cache
 
@@ -93,6 +97,8 @@ yarn audit:
   stage: prepare
   needs:
     - yarn-validate
+  before_script:
+    - npm add --silent --global yarn
   script:
     - yarn audit
 
