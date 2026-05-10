@@ -170,8 +170,8 @@ class AngelTypesController extends BaseController
 
         $angelType = $this->angelType->findOrFail($data['id']);
 
-        $shiftsEnties = $angelType->shiftEntries();
-        foreach ($shiftsEnties as $entry) {
+        $shiftsEntries = $angelType->shiftEntries;
+        foreach ($shiftsEntries as $entry) {
             event('shift.entry.deleting', ['entry' => $entry]);
         }
         $angelType->delete();
