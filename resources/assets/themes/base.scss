@@ -453,6 +453,10 @@ code {
   @include border-radius($input-border-radius);
 }
 
+code a {
+  color: inherit;
+}
+
 @keyframes pulse {
   0% {
     transform: rotate(0deg);
