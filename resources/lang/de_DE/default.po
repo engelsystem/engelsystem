@@ -1768,7 +1768,7 @@ msgid "settings.api.ical_download"
 msgstr "iCal herunterladen"
 
 msgid "settings.api.ical_feed"
-msgstr "Abonnement Link"
+msgstr "Kalender abonnement Link"
 
 msgid "settings.api.news_show"
 msgstr "News feeds anzeigen"
