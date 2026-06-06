@@ -61,14 +61,14 @@ function Shift_view_header(Shift $shift, Location $location)
 function Shift_editor_info_render(Shift $shift)
 {
     $info = [];
-    if (!empty($shift->created_by)) {
+    if (!empty($shift->created_by) && !empty($shift->created_at)) {
         $info[] = sprintf(
             icon('plus-lg') . __('created at %s by %s'),
             $shift->created_at->format(__('general.datetime')),
             User_Nick_render($shift->createdBy)
         );
     }
-    if (!empty($shift->updated_by)) {
+    if (!empty($shift->updated_by) && !empty($shift->updated_at)) {
         $info[] = sprintf(
             icon('pencil') . __('edited at %s by %s'),
             $shift->updated_at->format(__('general.datetime')),
