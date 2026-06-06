@@ -37,7 +37,7 @@
 {% macro user_info(user, opt) %}
     {% if user.state.user_info and can('admin_arrive') %}
         <span
-        {% if can('user.info.hint') %}
+        {% if can('user.info.hint') or can('user.info.view') %}
             data-bs-toggle="tooltip"
             {% if can('user.info.view') %}
                 title="{{ user.state.user_info|escape('html_attr') }}"
