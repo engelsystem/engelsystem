@@ -685,6 +685,7 @@ function User_view(
         $needs_ifsg_certificate = $needs_ifsg_certificate || $angeltype->requires_ifsg_certificate;
     }
     $my_shifts_title = $its_me ? __('profile.my_shifts') : __('general.shifts');
+    $iCalUrl = url('/ical', ['key' => $user_source->api_key]);
 
     $self_worklog = config('enable_self_worklog') || !$its_me;
 
@@ -744,8 +745,21 @@ function User_view(
                             icon('person-fill-gear') . __('settings.settings')
                         ),
                         $auth->can('ical') ? button(
-                            url('/ical', ['key' => $user_source->api_key]),
-                            icon('calendar-week') . __('iCal Export')
+                            $iCalUrl,
+                            icon('calendar-week') . __('iCal Export'),
+                            '',
+                            '',
+                            '',
+                            false,
+                            [
+                                'js-link-remove' => 'true',
+                                'bs-toggle' => 'popover',
+                                'bs-placement' => 'bottom',
+                                'bs-content' =>  __('settings.api.ical_feed') . ':<br>
+                                    <code><a href="' . $iCalUrl . '">' . $iCalUrl . '</a></code>
+                                ',
+                                'bs-html' => 'true',
+                            ],
                         ) : '',
                         $auth->can('shifts_json_export') ? button(
                             url('/shifts-json-export', ['key' => $user_source->api_key]),
@@ -812,7 +826,6 @@ function User_view(
                     url('/user-shifts')
                 ), true, true)
                 : '',
-            $its_me ? ical_hint() : '',
         ]
     );
 }
