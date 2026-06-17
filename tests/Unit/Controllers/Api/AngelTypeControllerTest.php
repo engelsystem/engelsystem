@@ -12,6 +12,7 @@ use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class AngelTypeControllerTest extends ApiBaseControllerTest
 {
@@ -104,5 +105,24 @@ class AngelTypeControllerTest extends ApiBaseControllerTest
 
         $this->expectException(ModelNotFoundException::class);
         $controller->ofUser($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Api\OwnAuth::hasPermission
+     */
+    public function testHasPermissionSelfWithApiOwn(): void
+    {
+        $user = User::factory()->create();
+
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $auth->method('user')->willReturn($user);
+        $auth->method('can')->with('api.own')->willReturn(true);
+
+        $controller = new AngelTypeController(new Response());
+        $controller->setAuth($auth);
+        $request = (new Request())->withAttribute('user_id', 'self');
+
+        $this->assertTrue($controller->hasPermission($request, 'ofUser'));
     }
 }

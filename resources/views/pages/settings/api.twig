@@ -101,6 +101,12 @@
                     url('/api/v0-beta'),
                     url('/api/v0-beta/openapi')
                 ])|markdown|nl2br }}
+            {% elseif can('api.own') %}
+                {{ __('settings.api.about.own', [
+                    config('app_name'),
+                    url('/api/v0-beta'),
+                    url('/api/v0-beta/openapi')
+                ])|markdown|nl2br }}
             {% endif %}
 
             {{ __('settings.api.about.warning')|markdown|nl2br }}
