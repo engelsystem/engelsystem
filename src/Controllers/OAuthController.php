@@ -13,6 +13,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Models\OAuth;
+use Engelsystem\Models\User\User;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -38,6 +39,93 @@ class OAuthController extends BaseController
         protected Session $session,
         protected UrlGenerator $url
     ) {
+    }
+
+    /**
+     * Apply optional username transformation to make usernames from OAuth provider
+     * compatible with username requirements.
+     *
+     * @param string $username The original (non-transformed) OAuth username
+     * @return string The length-capped and transformed username
+     */
+    private function transformUserName(string $username): string
+    {
+        $pattern = $this->config->get('username_sync_pattern', null);
+        $replace = $this->config->get('username_sync_replace', null);
+
+        if ($pattern !== null && $replace !== null) {
+            $username = preg_replace($pattern, $replace, $username);
+        } elseif ($pattern !== null || $replace !== null) {
+            $this->log->error(
+                'username_sync_pattern or replace is set, but not both. Ignoring transformation.',
+                ['username' => $username, 'pattern' => $pattern, 'replace' => $replace]
+            );
+        }
+
+        return substr($username, 0, 24);
+    }
+
+    private function checkForUpdate(
+        User $user,
+        array $config,
+        string $key,
+        string|null $currentValue,
+        Collection $userdata,
+        mixed $transformer = null
+    ): mixed {
+        if (in_array($key, $config['sso_fields_to_sync'] ?? [])) {
+            if (!$userdata->has($config[$key])) {
+                $this->log->error(
+                    'Cannot update {key} for user ID {id}: SSO field missing - fix your SSO config!',
+                    [
+                        'key' => $key,
+                        'id' => $user->id,
+                    ]
+                );
+
+                return [$currentValue, false];
+            }
+
+            $rawNewValue = $userdata[$config[$key]];
+            $newValue = $transformer ? $transformer($rawNewValue) : $rawNewValue;
+
+            if ($currentValue != $newValue) {
+                $this->log->info(
+                    'Updating {key} for user ID {id} from {old} to {new} via SSO sync',
+                    [
+                        'key' => $key,
+                        'id' => $user->id,
+                        'old' => $currentValue,
+                        'new' => $newValue,
+                    ]
+                );
+
+                return [$newValue, true];
+            }
+        }
+        return [$currentValue, false];
+    }
+
+    private function updateUserDataFromSSO(User $user, array $config, Collection $userdata): void
+    {
+        [$user->name, $nameUpdated] =
+            $this->checkForUpdate($user, $config, 'username', $user->name, $userdata, [$this, 'transformUserName']);
+
+        [$user->email, $emailUpdated] = $this->checkForUpdate($user, $config, 'email', $user->email, $userdata);
+
+        [$user->personalData->first_name, $firstNameUpdated] =
+            $this->checkForUpdate($user, $config, 'first_name', $user->personalData->first_name, $userdata);
+
+        [$user->personalData->last_name, $lastNameUpdated] =
+            $this->checkForUpdate($user, $config, 'last_name', $user->personalData->last_name, $userdata);
+
+        if ($nameUpdated || $emailUpdated) {
+            $user->save();
+        }
+
+        if ($firstNameUpdated || $lastNameUpdated) {
+            $user->personalData->save();
+        }
     }
 
     public function index(Request $request): Response
@@ -185,6 +273,7 @@ class OAuthController extends BaseController
             $this->handleArrive($providerName, $oauth, $resourceOwner);
         }
 
+        $this->updateUserDataFromSSO($oauth->user, $config, $userdata);
         $response = $this->authController->loginUser($oauth->user);
         event('oauth2.login', ['provider' => $providerName, 'data' => $userdata]);
 
@@ -321,13 +410,14 @@ class OAuthController extends BaseController
     ): Response {
         $config = array_merge(
             [
-                'username'           => null,
-                'email'              => null,
-                'first_name'         => null,
-                'last_name'          => null,
-                'enable_password'    => false,
-                'allow_registration' => null,
-                'groups'             => null,
+                'username'             => null,
+                'email'                => null,
+                'first_name'           => null,
+                'last_name'            => null,
+                'enable_password'      => false,
+                'allow_registration'   => null,
+                'groups'               => null,
+                'sso_fields_to_sync'   => [],
             ],
             $config
         );
@@ -337,10 +427,31 @@ class OAuthController extends BaseController
         }
 
         // Set registration form field data
-        $this->session->set('form-data-username', $userdata->get($config['username']));
+        $username = $this->transformUserName($userdata->get($config['username']));
+        $this->session->set('form-data-username', $username);
+
         $this->session->set('form-data-email', $userdata->get($config['email']));
         $this->session->set('form-data-firstname', $userdata->get($config['first_name']));
         $this->session->set('form-data-lastname', $userdata->get($config['last_name']));
+
+        // Additionally keep user information from SSO in session
+        $fieldsToSync = $config['sso_fields_to_sync'] ?? [];
+        foreach (['username', 'email', 'first_name', 'last_name'] as $field) {
+            $this->session->set('form-data-sso-sync-' . $field, in_array($field, $fieldsToSync));
+        }
+
+        if (in_array('username', $fieldsToSync)) {
+            $this->session->set('oauth2_data_username', $username);
+        }
+        if (in_array('email', $fieldsToSync)) {
+            $this->session->set('oauth2_data_email', $userdata->get($config['email']));
+        }
+        if (in_array('first_name', $fieldsToSync)) {
+            $this->session->set('oauth2_data_firstname', $userdata->get($config['first_name']));
+        }
+        if (in_array('last_name', $fieldsToSync)) {
+            $this->session->set('oauth2_data_lastname', $userdata->get($config['last_name']));
+        }
 
         // Define OAuth state
         $this->session->set('oauth2_groups', $userdata->get($config['groups'], []));

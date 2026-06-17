@@ -1567,6 +1567,9 @@ msgstr "Das %s darf mir E-Mails senden "
 msgid "registration.email_system.info"
 msgstr "Genauere Einstellungen sind in deinem Profil möglich."
 
+msgid "registration.fromsso"
+msgstr "Dieser Wert kommt aus dem SSO und kann nicht geändert werden!"
+
 msgid "settings.profile.email_news"
 msgstr "Benachrichtige mich bei neuen News."
 
