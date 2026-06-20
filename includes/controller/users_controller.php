@@ -10,6 +10,7 @@ use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
+use Engelsystem\ShiftTableRenderer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -414,6 +415,87 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     }
 
     return new ShiftCalendarRenderer($filtered_shifts, $needed_angeltypes, $shift_entries, $shiftsFilter);
+}
+
+/**
+ * @param ShiftsFilter $shiftsFilter
+ * @return ShiftTableRenderer
+ */
+function shiftTableRendererByShiftFilter(ShiftsFilter $shiftsFilter)
+{
+    $shifts = Shifts_by_ShiftsFilter($shiftsFilter);
+    $needed_angeltypes_source = NeededAngeltypes_by_ShiftsFilter($shiftsFilter);
+    $shift_entries_source = ShiftEntries_by_ShiftsFilter($shiftsFilter);
+
+    $needed_angeltypes = [];
+    /** @var ShiftEntry[][] $shift_entries */
+    $shift_entries = [];
+    foreach ($shifts as $shift) {
+        $needed_angeltypes[$shift->id] = [];
+        $shift_entries[$shift->id] = [];
+    }
+
+    foreach ($shift_entries_source as $shift_entry) {
+        if (isset($shift_entries[$shift_entry->shift_id])) {
+            $shift_entries[$shift_entry->shift_id][] = $shift_entry;
+        }
+    }
+
+    foreach ($needed_angeltypes_source as $needed_angeltype) {
+        if (isset($needed_angeltypes[$needed_angeltype['shift_id']])) {
+            $needed_angeltypes[$needed_angeltype['shift_id']][] = $needed_angeltype;
+        }
+    }
+
+    unset($needed_angeltypes_source);
+    unset($shift_entries_source);
+
+    if (
+        in_array(ShiftsFilter::FILLED_FREE, $shiftsFilter->getFilled())
+        && in_array(ShiftsFilter::FILLED_FILLED, $shiftsFilter->getFilled())
+    ) {
+        return new ShiftTableRenderer($shifts, $needed_angeltypes, $shift_entries, $shiftsFilter);
+    }
+
+    $filtered_shifts = [];
+    foreach ($shifts as $shift) {
+        $needed_angels_count = 0;
+        foreach ($needed_angeltypes[$shift->id] as $needed_angeltype) {
+            $taken = 0;
+
+            // Only count slots for angel types the user has selected
+            if (!in_array($needed_angeltype['angel_type_id'], $shiftsFilter->getTypes())) {
+                continue;
+            }
+
+            foreach ($shift_entries[$shift->id] as $shift_entry) {
+                if (
+                    $needed_angeltype['angel_type_id'] == $shift_entry->angel_type_id
+                    && !$shift_entry->freeloaded_by
+                ) {
+                    $taken++;
+                }
+            }
+
+            $needed_angels_count += max(0, $needed_angeltype['count'] - $taken);
+        }
+
+        if (
+            in_array(ShiftsFilter::FILLED_FREE, $shiftsFilter->getFilled())
+            && $needed_angels_count > 0
+        ) {
+            $filtered_shifts[] = $shift;
+        }
+
+        if (
+            in_array(ShiftsFilter::FILLED_FILLED, $shiftsFilter->getFilled())
+            && $needed_angels_count == 0
+        ) {
+            $filtered_shifts[] = $shift;
+        }
+    }
+
+    return new ShiftTableRenderer($filtered_shifts, $needed_angeltypes, $shift_entries, $shiftsFilter);
 }
 
 /**
