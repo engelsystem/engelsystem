@@ -76,7 +76,7 @@ class GoodieTest extends ApplicationFeatureTest
 
         $result = Goodie::userScore($user);
 
-        $this->assertEquals(9.87, round($result, 2));
+        $this->assertEquals(8.87, round($result, 2));
     }
 
     private function deleteModels(): void

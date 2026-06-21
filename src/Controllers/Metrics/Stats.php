@@ -99,7 +99,7 @@ class Stats
         return match ($type) {
             'system' => Settings::whereEmailShiftinfo(true)->count(),
             'humans' => Settings::whereEmailHuman(true)->count(),
-            'goodie'  => Settings::whereEmailGoodie(true)->count(),
+            'goodie' => Settings::whereEmailGoodie(true)->count(),
             'news'   => Settings::whereEmailNews(true)->count(),
             default  => 0,
         };

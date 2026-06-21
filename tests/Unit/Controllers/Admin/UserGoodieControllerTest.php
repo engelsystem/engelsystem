@@ -32,7 +32,7 @@ class UserGoodieControllerTest extends ControllerTest
     {
         $this->mockTranslator();
         $this->config->set('goodie_type', GoodieType::Tshirt->value);
-        $this->config->set('night_shifts', ['enabled' => false]);
+        $this->config->set('night_shifts', ['enabled' => false, 'start' => 2, 'end' => 8, 'multiplier' => 2]);
         $request = $this->request->withAttribute('user_id', 1);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
