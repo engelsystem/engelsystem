@@ -10,9 +10,7 @@ use Engelsystem\Models\EventConfig;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-#[CoversMethod(EventConfig::class, 'setValueAttribute')]
-#[CoversMethod(EventConfig::class, 'getValueAttribute')]
-#[CoversMethod(EventConfig::class, 'getValueCast')]
+#[CoversMethod(EventConfig::class, 'casts')]
 class EventConfigTest extends ModelTestCase
 {
     public function testCast(): void

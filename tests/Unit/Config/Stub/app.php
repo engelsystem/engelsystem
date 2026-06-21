@@ -59,6 +59,10 @@ return [
                         'test',
                     ],
                 ],
+                'number' => [
+                    'type' => 'number',
+                    'default' => '1',
+                ],
             ],
         ],
     ],

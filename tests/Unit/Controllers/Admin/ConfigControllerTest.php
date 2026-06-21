@@ -25,13 +25,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversMethod(ConfigController::class, '__construct')]
 #[CoversMethod(ConfigController::class, 'edit')]
 #[CoversMethod(ConfigController::class, 'activePage')]
-#[CoversMethod(ConfigController::class, 'parseOptions')]
 #[CoversMethod(ConfigController::class, 'isFileWritable')]
 #[CoversMethod(ConfigController::class, 'save')]
 #[CoversMethod(ConfigController::class, 'validation')]
 #[CoversMethod(ConfigController::class, 'filterShownSettings')]
 #[CoversMethod(ConfigController::class, 'validateEvent')]
-#[CoversMethod(ConfigController::class, 'getOptions')]
 #[AllowMockObjectsWithoutExpectations]
 class ConfigControllerTest extends ControllerTestCase
 {
@@ -83,6 +81,9 @@ class ConfigControllerTest extends ControllerTestCase
                     'validation' => [
                         'length:16',
                     ],
+                ],
+                'email' => [
+                    'type' => 'email',
                 ],
                 'numeric' => [
                     'type' => 'number',
@@ -172,6 +173,7 @@ class ConfigControllerTest extends ControllerTestCase
         'password' => 'FooBarBaz42!',
         'password_validation' => '0123456789aBcDeF',
         'numeric' => 1337,
+        'email' => 'test@example.com',
         'url' => 'https://example.com/test',
         'to_be_written_to_file' => '1',
     ];
@@ -344,6 +346,7 @@ class ConfigControllerTest extends ControllerTestCase
         $this->assertEquals('FooBarBaz42!', EventConfig::whereName('password')->first()->value);
         $this->assertEquals('0123456789aBcDeF', EventConfig::whereName('password_validation')->first()->value);
         $this->assertEquals(1337, EventConfig::whereName('numeric')->first()->value);
+        $this->assertEquals('test@example.com', EventConfig::whereName('email')->first()->value);
         $this->assertEquals('https://example.com/test', EventConfig::whereName('url')->first()->value);
 
         // Save with additional permission
@@ -364,6 +367,7 @@ class ConfigControllerTest extends ControllerTestCase
             [['password_validation' => 'shorter']],
             [['url' => 'not an URL']],
             [['numeric' => 3]],
+            [['email' => 'foo']],
         ];
     }
 
