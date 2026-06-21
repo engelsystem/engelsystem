@@ -62,7 +62,7 @@ class RenameAngelTypesPermissions extends Migration
         $this->db->table('privileges')
             ->where('name', 'angeltypes.edit')
             ->update([
-                'name' => 'admin_angeltypes',
+                'name' => 'admin_angel_types',
                 'description' => 'Edit angel types',
             ]);
         $this->db->table('privileges')
