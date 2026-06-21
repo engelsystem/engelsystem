@@ -88,21 +88,21 @@ class ControllerTest extends TestCase
         $stats->expects($this->exactly(15))
             ->method('licenses')
             ->willReturnMap([
-               ['has_car', false, 6],
-               ['forklift', false, 3],
-               ['forklift', true, 15],
-               ['car', false, 9],
-               ['car', true, 7],
-               ['3.5t', false, 1],
-               ['3.5t', true, 5],
-               ['7.5t', false, 4],
-               ['7.5t', true, 3],
-               ['12t', false, 5],
-               ['12t', true, 9],
-               ['ifsg_light', false, 2],
-               ['ifsg_light', true, 1],
-               ['ifsg', false, 7],
-               ['ifsg', true, 8],
+                ['has_car', false, 6],
+                ['forklift', false, 3],
+                ['forklift', true, 15],
+                ['car', false, 9],
+                ['car', true, 7],
+                ['3.5t', false, 1],
+                ['3.5t', true, 5],
+                ['7.5t', false, 4],
+                ['7.5t', true, 3],
+                ['12t', false, 5],
+                ['12t', true, 9],
+                ['ifsg_light', false, 2],
+                ['ifsg_light', true, 1],
+                ['ifsg', false, 7],
+                ['ifsg', true, 8],
             ]);
 
         $stats->expects($this->exactly(4))
@@ -134,8 +134,8 @@ class ControllerTest extends TestCase
         $stats->expects($matcher)
             ->method('announcements')
             ->willReturnMap([
-               [false, 18],
-               [true, 7],
+                [false, 18],
+                [true, 7],
             ]);
 
         $matcher = $this->exactly(2);
