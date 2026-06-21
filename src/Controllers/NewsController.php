@@ -83,6 +83,8 @@ class NewsController extends BaseController
             ]
         );
 
+        event('news.comment.created', ['comment' => $comment]);
+
         $this->addNotification('news.comment.success');
 
         return $this->redirect->back();
