@@ -124,6 +124,10 @@ function angeltype_edit_controller()
 
             $angeltype->requires_driver_license = $request->has('requires_driver_license');
             $angeltype->requires_ifsg_certificate = $request->has('requires_ifsg_certificate');
+
+            // Self-signup token for auto-confirming restricted angeltype joins
+            $token = strip_request_item('self_signup_token');
+            $angeltype->self_signup_token = $token !== '' ? $token : null;
         }
 
         $angeltype->description = strip_request_item_nl('description', $angeltype->description);
