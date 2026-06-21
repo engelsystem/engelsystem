@@ -599,10 +599,17 @@ return [
                     'warning' => 'config.warning_logout',
                     'write_back' => true,
                 ],
+                'session.anonymous_lifetime' => [
+                    'type' => 'number',
+                    'required' => true,
+                    'default' => 30 * 60,
+                    'env' => 'SESSION_ANONYMOUS_LIFETIME',
+                    'write_back' => true,
+                ],
                 'session.lifetime' => [
                     'type' => 'number',
                     'required' => true,
-                    'default' => 30,
+                    'default' => 30 * 60 * 60 * 24,
                     'env' => 'SESSION_LIFETIME',
                     'write_back' => true,
                 ],
