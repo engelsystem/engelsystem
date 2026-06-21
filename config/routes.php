@@ -40,6 +40,8 @@ $route->addGroup(
         $route->post('/theme', 'SettingsController@saveTheme');
         $route->get('/language', 'SettingsController@language');
         $route->post('/language', 'SettingsController@saveLanguage');
+        $route->get('/spoken-languages', 'SettingsController@spokenLanguages');
+        $route->post('/spoken-languages', 'SettingsController@saveSpokenLanguages');
         $route->get('/certificates', 'SettingsController@certificate');
         $route->post('/certificates/ifsg', 'SettingsController@saveIfsgCertificate');
         $route->post('/certificates/driving', 'SettingsController@saveDrivingLicense');
