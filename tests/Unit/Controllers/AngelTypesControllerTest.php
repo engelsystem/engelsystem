@@ -42,7 +42,13 @@ class AngelTypesControllerTest extends ControllerTest
         $request = (new Request())->withAttribute('angel_type_id', $angelType->id);
         $user = User::factory()->create();
 
-        $controller = new AngelTypesController($response, $this->app->get(Config::class), $auth, new NullLogger());
+        $controller = new AngelTypesController(
+            $response,
+            $this->app->get(Config::class),
+            $auth,
+            new NullLogger(),
+            $angelType
+        );
         $this->assertFalse($controller->hasPermission($request, 'qrCode'));
         $this->assertFalse($controller->hasPermission($request, 'join'));
         $this->assertNull($controller->hasPermission($request, 'about'));
@@ -50,7 +56,7 @@ class AngelTypesControllerTest extends ControllerTest
         $this->setExpects($auth, 'user', [], $user, $this->atLeastOnce());
         $this->assertTrue($controller->hasPermission($request, 'join'));
 
-        $this->setExpects($auth, 'can', ['admin_user_angeltypes'], true);
+        $this->setExpects($auth, 'can', ['userangeltypes.edit'], true);
         $this->assertTrue($controller->hasPermission($request, 'qrCode'));
     }
 
@@ -58,12 +64,14 @@ class AngelTypesControllerTest extends ControllerTest
      * @covers \Engelsystem\Controllers\AngelTypesController::__construct
      * @covers \Engelsystem\Controllers\AngelTypesController::about
      */
-    public function testIndex(): void
+    public function testAbout(): void
     {
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
+        /** @var AngelType|MockObject $angelType */
+        $angelType = $this->createMock(AngelType::class);
 
         $this->setExpects(
             $response,
@@ -71,8 +79,34 @@ class AngelTypesControllerTest extends ControllerTest
             ['pages/angeltypes/about']
         );
 
-        $controller = new AngelTypesController($response, new Config(), $auth, new NullLogger());
+        $controller = new AngelTypesController($response, new Config(), $auth, new NullLogger(), $angelType);
         $controller->about();
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\AngelTypesController::__construct
+     * @covers \Engelsystem\Controllers\AngelTypesController::index
+     */
+    public function testIndex(): void
+    {
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $this->app->instance('authenticator', $auth);
+        $this->setExpects($auth, 'user', [], User::factory()->create());
+        /** @var AngelTypesController $controller */
+        $controller = $this->app->make(AngelTypesController::class);
+        AngelType::factory(5)->create();
+
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function (string $view, array $data) {
+                $this->assertEquals('pages/angeltypes/index', $view);
+                $this->assertTrue($data['is_index'] ?? false);
+                $this->assertCount(5, $data['angelTypes'] ?? []);
+                return $this->response;
+            });
+
+        $controller->index();
     }
 
     /**
@@ -91,7 +125,13 @@ class AngelTypesControllerTest extends ControllerTest
         $this->setExpects($response, 'withInput', [], $response);
         $this->setExpects($response, 'withView', ['pages/angeltypes/qr'], $response);
 
-        $controller = new AngelTypesController($response, $this->app->get(Config::class), $auth, new NullLogger());
+        $controller = new AngelTypesController(
+            $response,
+            $this->app->get(Config::class),
+            $auth,
+            new NullLogger(),
+            $angelType
+        );
         $controller->qrCode($request);
     }
 
@@ -170,7 +210,7 @@ class AngelTypesControllerTest extends ControllerTest
             });
         $this->setExpects($redirect, 'to', ['/angeltypes..'], $response);
 
-        $controller = new AngelTypesController($response, $this->config, $auth, $log);
+        $controller = new AngelTypesController($response, $this->config, $auth, $log, $angelType);
         $controller->setValidator(new Validator());
 
         $controller->qrCode($request);
@@ -199,7 +239,7 @@ class AngelTypesControllerTest extends ControllerTest
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
 
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger());
+        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
         $controller->setValidator(new Validator());
 
         $request = (new Request(['token' => 'some.test.code']))
@@ -219,7 +259,7 @@ class AngelTypesControllerTest extends ControllerTest
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
 
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger());
+        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
         $controller->setValidator(new Validator());
 
         $request = (new Request([
@@ -242,7 +282,7 @@ class AngelTypesControllerTest extends ControllerTest
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
 
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger());
+        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
         $controller->setValidator(new Validator());
 
         $request = (new Request(['token' => 'missing.segment']))
@@ -268,7 +308,7 @@ class AngelTypesControllerTest extends ControllerTest
             $this->config->get('jwt_algorithm'),
         );
 
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger());
+        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
         $controller->setValidator(new Validator());
 
         $request = (new Request(['token' => $token]))
@@ -294,7 +334,7 @@ class AngelTypesControllerTest extends ControllerTest
             $this->config->get('jwt_algorithm'),
         );
 
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger());
+        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
         $controller->setValidator(new Validator());
 
         $request = (new Request(['token' => $token]))
@@ -315,8 +355,16 @@ class AngelTypesControllerTest extends ControllerTest
         $auth = $this->createMock(Authenticator::class);
         /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
+        /** @var AngelType|MockObject $angelType */
+        $angelType = $this->createMock(AngelType::class);
 
-        $controller = new AngelTypesController($response, $this->app->get(Config::class), $auth, new NullLogger());
+        $controller = new AngelTypesController(
+            $response,
+            $this->app->get(Config::class),
+            $auth,
+            new NullLogger(),
+            $angelType
+        );
 
         $this->expectException(ModelNotFoundException::class);
         $controller->qrCode($request);
@@ -333,9 +381,11 @@ class AngelTypesControllerTest extends ControllerTest
         $auth = $this->createMock(Authenticator::class);
         /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
+        /** @var AngelType|MockObject $angelType */
+        $angelType = $this->createMock(AngelType::class);
         $this->config->set('join_qr_code', false);
 
-        $controller = new AngelTypesController($response, $this->config, $auth, new NullLogger());
+        $controller = new AngelTypesController($response, $this->config, $auth, new NullLogger(), $angelType);
 
         $this->expectException(HttpNotFound::class);
         $controller->qrCode($request);

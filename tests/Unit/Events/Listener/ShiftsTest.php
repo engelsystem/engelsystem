@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Events\Listener\Shifts;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
@@ -39,17 +40,17 @@ class ShiftsTest extends TestCase
     protected User $user;
 
     /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingCreateWorklogs
+     * @covers \Engelsystem\Events\Listener\Shifts::deletingShiftEntryCreateWorklog
      * @covers \Engelsystem\Events\Listener\Shifts::__construct
      */
-    public function testDeletingCreateWorklogs(): void
+    public function testDeletingShiftEntryCreateWorklogs(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
         $this->setExpects($this->translator, 'translate', null, 'Text', $this->atLeastOnce());
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingCreateWorklogs($this->shift);
+        $listener->deletingShiftEntryCreateWorklog($this->entry);
 
         $this->assertCount(1, $this->user->worklogs);
         $this->assertEquals($this->shift->isNightShift() ? 4 : 2, $this->user->worklogs[0]->hours);
@@ -59,9 +60,23 @@ class ShiftsTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingCreateWorklogs
+     * @covers \Engelsystem\Events\Listener\Shifts::deletingShift
      */
-    public function testDeletingCreateWorklogsIgnoreFreeload(): void
+    public function testDeletingShift(): void
+    {
+        $dispatcher = $this->createMock(EventDispatcher::class);
+        $this->setExpects($dispatcher, 'dispatch', ['shift.entry.deleting'], []);
+        $this->app->instance('events.dispatcher', $dispatcher);
+
+        /** @var Shifts $listener */
+        $listener = $this->app->make(Shifts::class);
+        $listener->deletingShift($this->shift);
+    }
+
+    /**
+     * @covers \Engelsystem\Events\Listener\Shifts::deletingShiftEntryCreateWorklog
+     */
+    public function testDeletingShiftEntryCreateWorklogsIgnoreFreeload(): void
     {
         /** @var User $user1 */
         $user1 = User::factory()->create();
@@ -70,30 +85,30 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingCreateWorklogs($this->shift);
+        $listener->deletingShiftEntryCreateWorklog($this->entry);
 
         $this->assertCount(0, $this->user->worklogs);
     }
 
     /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingCreateWorklogs
+     * @covers \Engelsystem\Events\Listener\Shifts::deletingShiftEntryCreateWorklog
      */
-    public function testDeletingCreateWorklogsIgnoreNotStarted(): void
+    public function testDeletingShiftEntryCreateWorklogsIgnoreNotStarted(): void
     {
         $this->shift->start = Carbon::now()->addMinutes(42);
         $this->shift->save();
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingCreateWorklogs($this->shift);
+        $listener->deletingShiftEntryCreateWorklog($this->entry);
 
         $this->assertCount(0, $this->user->worklogs);
     }
 
     /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingSendEmails
+     * @covers \Engelsystem\Events\Listener\Shifts::deletingShiftEntrySendEmail
      */
-    public function testDeletingSendEmailsNoNotification(): void
+    public function testDeletingShiftEntrySendEmailNoNotification(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());
 
@@ -102,13 +117,13 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingSendEmails($this->shift);
+        $listener->deletingShiftEntrySendEmail($this->entry);
     }
 
     /**
-     * @covers \Engelsystem\Events\Listener\Shifts::deletingSendEmails
+     * @covers \Engelsystem\Events\Listener\Shifts::deletingShiftEntrySendEmail
      */
-    public function testDeletingSendEmails(): void
+    public function testDeletingShiftEntrySendEmail(): void
     {
         $this->mailer->expects($this->once())
             ->method('sendViewTranslated')
@@ -117,7 +132,7 @@ class ShiftsTest extends TestCase
                 $this->assertEquals('notification.shift.deleted', $subject);
                 $this->assertEquals('emails/worklog-from-shift', $template);
                 $this->assertArrayHasKey('shift', $data);
-                $this->assertEquals($this->shift, $data['shift']);
+                $this->assertEquals($this->entry->shift, $data['shift']);
                 $this->assertArrayHasKey('entry', $data);
                 $this->assertEquals($this->entry->id, $data['entry']->id);
 
@@ -126,7 +141,7 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingSendEmails($this->shift);
+        $listener->deletingShiftEntrySendEmail($this->entry);
     }
 
     /**

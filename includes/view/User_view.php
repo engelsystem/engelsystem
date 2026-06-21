@@ -905,7 +905,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
     }
 
     return div('col-md-2', [
-        heading(__('State'), 4),
+        heading(__('general.state'), 4),
         join('<br>', $state),
     ]);
 }
@@ -927,7 +927,7 @@ function User_angeltypes_render($user_angeltypes)
             . '</a>';
     }
     return div('col-md-2', [
-        heading(__('angeltypes.angeltypes'), 4),
+        heading(__('angeltype.angeltypes'), 4),
         join('<br>', $output),
     ]);
 }

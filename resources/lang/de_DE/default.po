@@ -186,8 +186,8 @@ msgstr "Wiederherstellen"
 msgid "Angel type %s deleted."
 msgstr "Engeltyp %s gelöscht."
 
-msgid "Delete angel type %s"
-msgstr "Lösche Engeltyp %s"
+msgid "angeltype.delete.title"
+msgstr "Lösche Engeltyp \"%s\""
 
 msgid "Please check the name. Maybe it already exists."
 msgstr "Bitte überprüfe den Namen. Vielleicht ist er bereits vergeben."
@@ -216,10 +216,10 @@ msgstr "%s (bereits eingetragen)"
 msgid "form.view"
 msgstr "Ansehen"
 
-msgid "Leave"
+msgid "angeltype.leave"
 msgstr "Verlassen"
 
-msgid "Join"
+msgid "angeltype.join"
 msgstr "Beitreten"
 
 msgid "Public Dashboard"
@@ -834,22 +834,22 @@ msgstr "Admin"
 msgid "No data found."
 msgstr "Nichts gefunden."
 
-msgid "Unconfirmed"
+msgid "angeltype.unconfirmed"
 msgstr "Unbestätigt"
 
-msgid "Supporter"
+msgid "angeltype.supporter"
 msgstr "Supporter"
 
-msgid "Member"
+msgid "angeltype.member"
 msgstr "Mitglied"
 
 msgid "Do you want to delete angel type %s?"
 msgstr "Möchtest Du den Engeltypen %s löschen?"
 
-msgid "angeltypes.restricted"
+msgid "angeltype.restricted"
 msgstr "Benötigt Einführung"
 
-msgid "angeltypes.restricted.info"
+msgid "angeltype.restricted.info"
 msgstr ""
 "Engeltypen, welche eine Einführung benötigen, müssen von einem Supporter freigeschaltet werden "
 "(double-opt-in)."
@@ -860,23 +860,22 @@ msgstr "Schichten selbst eintragen"
 msgid "shift.self_signup.allowed"
 msgstr "Schichten selbst eintragen erlaubt"
 
-msgid "angeltypes.shift.self_signup.info"
+msgid "angeltype.shift.self_signup.info"
 msgstr "Engeltypen, welche Schichten selbst eintragen erlaubt haben, "
 "erlauben Engeln sich selbst in ihre Schichten einzutragen, "
 "ist Schichten selbst eintragen nicht erlaubt können nur Supporter "
 "oder Admins Engel in die Schichten des Engeltyps eintragen."
 
-
-msgid "Requires driver license"
+msgid "angeltype.drivers_license.required"
 msgstr "Benötigt Führerschein"
 
 msgid "Show on dashboard"
 msgstr "Auf dem Dashboard anzeigen"
 
-msgid "Contact"
+msgid "angeltype.contact"
 msgstr "Kontakt"
 
-msgid "Primary contact person/desk for user questions."
+msgid "angeltype.contact.info"
 msgstr "Ansprechpartner für Fragen."
 
 msgid "My driving license"
@@ -932,7 +931,7 @@ msgstr "Alle bestätigen"
 msgid "Deny all"
 msgstr "Alle ablehnen"
 
-msgid "Membership"
+msgid "angeltype.membership"
 msgstr "Mitgliedschaft"
 
 msgid "Angels needed in the next 3 hrs"
@@ -1182,7 +1181,7 @@ msgstr ""
 "Gehe zur <a href=\"%s\">Schicht-Tabelle</a>, um Dich für Schichten "
 "einzutragen."
 
-msgid "State"
+msgid "general.state"
 msgstr "Status"
 
 msgid "Not arrived"
@@ -1934,44 +1933,50 @@ msgstr "Arbeitseinsatz löschen"
 msgid "worklog.delete.info"
 msgstr "Möchtest du den Arbeitseinsatz von %s wirklich löschen?"
 
-msgid "angeltypes.angeltypes"
+msgid "angeltype.angeltypes"
 msgstr "Engeltypen"
 
-msgid "angeltypes.about"
+msgid "angeltype.about"
 msgstr "Teams-/Aufgabenbeschreibung"
 
-msgid "angeltypes.about.text"
+msgid "angeltype.about.text"
 msgstr "Hier findest Du die Liste der Teams und ihrer Aufgaben. Wenn Du weitere Fragen hast, "
 "schaue in den <a href=\"%s\">FAQ</a> nach."
 
-msgid "angeltypes.restricted.hint"
+msgid "angeltype.restricted.hint"
 msgstr "Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen. "
 "Weitere Informationen findest du möglicherweise in der Beschreibung."
 
-msgid "angeltypes.can-change-later"
+msgid "angeltype.can-change-later"
 msgstr "Du kannst Deine Auswahl später in den Einstellungen ändern."
 
-msgid "angeltypes.hide_on_shift_view"
+msgid "angeltype.hide_on_shift_view"
 msgstr "Auf Schicht-Ansicht ausblenden"
 
-msgid "angeltypes.hide_on_shift_view.info"
+msgid "angeltype.hide_on_shift_view.info"
 msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
 "Schicht Seite die Filteroption für diesen Engeltyp sehen."
 
-msgid "angeltypes.qr"
+msgid "angeltype.qr"
 msgstr "Engeltyp \"%s\" beitreten QR Code"
 
-msgid "angeltypes.qr.expires"
+msgid "angeltype.qr.expires"
 msgstr "Läuft ab %c"
 
-msgid "angeltypes.qr.expired"
+msgid "angeltype.qr.expired"
 msgstr "Abgelaufen"
 
-msgid "angeltypes.qr.time"
+msgid "angeltype.qr.time"
 msgstr "Lebensdauer (Minuten)"
 
-msgid "angeltypes.qr.time.info"
+msgid "angeltype.qr.time.info"
 msgstr "Der Link ist für die gesamte angegebene Zeitspanne gültig und kann nicht zurückgezogen werden!"
+
+msgid "angeltype.create.title"
+msgstr "Engeltyp erstellen"
+
+msgid "angeltype.edit.title"
+msgstr "Engeltyp bearbeiten"
 
 msgid "location.location"
 msgstr "Ort"
