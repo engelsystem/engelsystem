@@ -159,6 +159,20 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
                                 __('angeltypes.restricted.info') . '"></span>',
                                 $angeltype->restricted
                             ),
+                        config('signup_requires_arrival')
+                            ? ($supporter_mode
+                                ? form_info(
+                                    __('angeltypes.shift_signup_before_arrival'),
+                                    $angeltype->shift_signup_before_arrival ? __('Yes') : __('No')
+                                )
+                                : form_checkbox(
+                                    'shift_signup_before_arrival',
+                                    __('angeltypes.shift_signup_before_arrival') .
+                                    ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="' .
+                                    __('angeltypes.shift_signup_before_arrival.info') . '"></span>',
+                                    $angeltype->shift_signup_before_arrival
+                                ))
+                            : '',
                         $supporter_mode
                             ? form_info(__('shift.self_signup'), $angeltype->shift_self_signup ? __('Yes') : __('No'))
                             : form_checkbox(
