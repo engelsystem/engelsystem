@@ -68,7 +68,7 @@ class LegacyDevelopment extends Legacy
     {
         return match (gettype($arg)) {
             'string', 'integer', 'double' => (string) $arg,
-            'boolean'  => $arg ? 'true' : 'false',
+            'boolean'  => $arg ? 'true' : 'false', // @codeCoverageIgnore
             'object'   => get_class($arg),
             'resource' => get_resource_type($arg), // @codeCoverageIgnore
             default    => gettype($arg),

@@ -256,6 +256,9 @@ class ConfigServiceProviderTest extends TestCase
 
         $this->assertArrayHasKey('bool', $conf);
         $this->assertFalse($conf['bool']);
+
+        $this->assertArrayHasKey('number', $conf);
+        $this->assertIsFloat($conf['number']);
     }
 
     protected function setUp(): void

@@ -10,6 +10,15 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\Models\ModelTestCase;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(State::class, 'forceActiveBy')]
+#[CoversMethod(State::class, 'getForceActiveAttribute')]
+#[CoversMethod(State::class, 'scopeWhereForceActive')]
+#[CoversMethod(State::class, 'forceFoodBy')]
+#[CoversMethod(State::class, 'getForceFoodAttribute')]
+#[CoversMethod(State::class, 'scopeWhereForceFood')]
+#[CoversMethod(State::class, 'gotGoodieBy')]
+#[CoversMethod(State::class, 'getGotGoodieAttribute')]
+#[CoversMethod(State::class, 'scopeWhereGotGoodie')]
 #[CoversMethod(State::class, 'getArrivedAttribute')]
 #[CoversMethod(State::class, 'scopeWhereArrived')]
 class UserStateTest extends ModelTestCase
