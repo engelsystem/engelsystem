@@ -111,6 +111,7 @@ class Application extends Container
         $this->instance('path.cache', $this->get('path.storage') . DIRECTORY_SEPARATOR . 'cache');
         $this->instance('path.cache.routes', $this->get('path.cache') . DIRECTORY_SEPARATOR . 'routes.cache.php');
         $this->instance('path.cache.views', $this->get('path.cache') . DIRECTORY_SEPARATOR . 'views');
+        $this->instance('path.plugins', $this->get('path.resources') . DIRECTORY_SEPARATOR . 'plugins');
     }
 
     /**

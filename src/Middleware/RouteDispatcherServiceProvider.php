@@ -6,6 +6,7 @@ namespace Engelsystem\Middleware;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Plugins\Plugin;
 use FastRoute\Dispatcher as FastRouteDispatcher;
 use FastRoute\RouteCollector;
 use Psr\Http\Server\MiddlewareInterface;
@@ -61,6 +62,11 @@ class RouteDispatcherServiceProvider extends ServiceProvider
 
         return FRCashedDispatcher(function (RouteCollector $route): void {
             require config_path('routes.php');
+
+            /** @var Plugin $plugin */
+            foreach ($this->app->tagged('plugin') as $plugin) {
+                $plugin->loadRoutes($route);
+            }
         }, $options);
     }
 }

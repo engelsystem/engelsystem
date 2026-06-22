@@ -63,7 +63,7 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
         $secondExtension = $this->getStubBuilder(ExtensionInterface::class)->getStub();
         $devExtension = $this->createMock(Develop::class);
         $dumper = $this->createStub(VarDumper::class);
-        $loader1 = $this->createStub(FilesystemLoader::class);
+        $loader1 = $this->createMock(FilesystemLoader::class);
         $loader2 = (object) [];
 
         $this->app->instance('twig.environment', $twig);
@@ -74,10 +74,13 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
         $this->app->tag(['a', 'b'], 'twig.extension');
         $this->app->instance('no-dir', '/this-dir-should-not-exist');
         $this->app->instance('other-dir', __DIR__ . '/Stub/');
+        $this->app->tag(['no-dir', 'other-dir'], 'plugin.path');
         $this->app->singleton(VarDumper::class, fn () => $dumper);
         $this->app->instance('l1', $loader1);
         $this->app->instance('l2', $loader2);
         $this->app->tag(['l1', 'l2'], 'twig.loader');
+
+        $this->setExpects($loader1, 'prependPath', [__DIR__ . '/Stub/views/']);
 
         $matcher = $this->exactly(2);
         $twig->expects($matcher)
@@ -185,7 +188,7 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
                 }
                 if ($matcher->numberOfInvocations() === 7) {
                     $this->assertSame(ExtendsTokenParser::class, $parameters[0]);
-                    $this->assertSame(['basePath' => 'path/to/resources'], $parameters[1]);
+                    $this->assertSame(['basePath' => '/resources'], $parameters[1]);
                     return $extendsTokenParser;
                 }
             });
@@ -207,9 +210,10 @@ class TwigServiceProviderTest extends ServiceProviderTestCase
         $app->method('get')
             ->willReturnMap([
                 ['path.views', $viewsPath],
+                ['path.views', $viewsPath],
                 ['config', $config],
                 ['path.cache.views', 'cache/views'],
-                ['path.resources', 'path/to/resources'],
+                ['path.resources', '/resources'],
             ]);
 
         $app->method('tag')
