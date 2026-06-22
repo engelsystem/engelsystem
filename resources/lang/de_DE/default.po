@@ -306,11 +306,14 @@ msgstr "Ort:"
 msgid "Needed angels"
 msgstr "Benötigte Engel"
 
+msgid "Shift deletion"
+msgstr "Schicht löschen"
+
 msgid "Shift deleted."
 msgstr "Schicht gelöscht."
 
-msgid "Do you want to delete the shift \"%s\" from %s to %s?"
-msgstr "Möchtest Du die Schicht \"%s\" von %s bis %s löschen?"
+msgid "Do you really want to delete the shift \"%s\" from %s to %s?"
+msgstr "Möchtest Du wirklich die Schicht \"%s\" von %s bis %s löschen?"
 
 msgid "Shift could not be found."
 msgstr "Schicht konnte nicht gefunden werden."
@@ -843,8 +846,8 @@ msgstr "Supporter"
 msgid "Member"
 msgstr "Mitglied"
 
-msgid "Do you want to delete angel type %s?"
-msgstr "Möchtest Du den Engeltypen %s löschen?"
+msgid "Do you really want to delete the angel type %s?"
+msgstr "Möchtest Du wirklich den Engeltypen %s löschen?"
 
 msgid "angeltypes.restricted"
 msgstr "Benötigt Einführung"
@@ -1756,7 +1759,7 @@ msgid "settings.language.success"
 msgstr "Sprache wurde erfolgreich geändert."
 
 msgid "settings.api"
-msgstr "API"
+msgstr "Exporte / API"
 
 msgid "settings.api.about"
 msgstr ""

@@ -62,11 +62,11 @@ function AngelType_render_membership(AngelType $user_angeltype)
  */
 function AngelType_delete_view(AngelType $angeltype)
 {
-    $link = button($angeltype->id
+    $link = back_button($angeltype->id
         ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
-        : url('/angeltypes'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+        : url('/angeltypes'));
     return page_with_title($link . ' ' . sprintf(__('Delete angel type %s'), htmlspecialchars($angeltype->name)), [
-        info(sprintf(__('Do you want to delete angel type %s?'), $angeltype->name), true),
+        info(sprintf(__('Do you really want to delete the angel type %s?'), $angeltype->name), true),
         form([
             buttons([
                 button(url('/angeltypes'), icon('x-lg') . __('form.cancel')),
@@ -114,9 +114,9 @@ function AngelType_edit_view(AngelType $angeltype, bool $supporter_mode)
             );
     }
 
-    $link = button($angeltype->id
+    $link = back_button($angeltype->id
         ? url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id])
-        : url('/angeltypes'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+        : url('/angeltypes'));
 
     return page_with_title(
         $link . ' ' . (
@@ -491,7 +491,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
                             'action' => 'delete',
                             'user_angeltype_id' => $member->pivot->id,
                         ]),
-                        icon('trash'),
+                        icon('box-arrow-right'),
                         'btn-sm btn-danger',
                         '',
                         __('Remove'),
@@ -601,7 +601,7 @@ function AngelType_view(
     ShiftCalendarRenderer $shiftCalendarRenderer,
     $tab
 ) {
-    $back = button(url('/angeltypes'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $back = back_button(url('/angeltypes'));
     $add = (($admin_angeltypes || $admin_user_angeltypes) ? button(
         url('/user-angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype->id]),
         icon('plus-lg'),

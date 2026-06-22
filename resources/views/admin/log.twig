@@ -84,7 +84,12 @@
                                     <span class="badge bg-{{ type }}">{{ entry.level|capitalize }}</span> <!-- //todo bs5 -->
                                 </td>
                                 <td class="text-nowrap">{% if entry.user %}{{ m.user(entry.user) }}{% endif %}</td>
-                                <td>{{ entry.message|nl2br }}</td>
+                                <td>
+                                    {% if entry.url %}
+                                        <small><a href="{{ entry.url }}">{{ m.icon('bug') }}</a></small>
+                                    {% endif %}
+                                    {{ entry.message|nl2br }}
+                                </td>
                                 <td>
                                     <small class="text-muted">
                                         <a class="ref-link" href="#message-{{ entry.id }}">{{ m.icon('link') }}</a>

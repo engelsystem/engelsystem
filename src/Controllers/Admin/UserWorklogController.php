@@ -110,22 +110,6 @@ class UserWorklogController extends BaseController
         // TODO Once User_view.php gets removed, change this to withView + getNotifications
     }
 
-    public function showDeleteWorklog(Request $request): Response
-    {
-        $user = $this->needsUser($request);
-        $worklogId = $request->getAttribute('worklog_id');
-        $worklog = $this->worklog->findOrFail($worklogId);
-
-        if ($worklog->user->id != $user->id) {
-            throw new HttpNotFound();
-        }
-
-        return $this->response->withView(
-            'admin/user/delete-worklog.twig',
-            ['userdata' => $user]
-        );
-    }
-
     public function deleteWorklog(Request $request): Response
     {
         $user = $this->needsUser($request);

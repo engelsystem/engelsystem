@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Logger;
 
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Request;
 use Engelsystem\Logger\Logger;
 use Engelsystem\Logger\LoggerServiceProvider;
+use Engelsystem\Logger\UrlAwareLogger;
 use Engelsystem\Logger\UserAwareLogger;
 use Engelsystem\Test\Unit\ServiceProviderTestCase;
 use PHPUnit\Framework\Attributes\CoversMethod;
@@ -24,6 +26,7 @@ class LoggerServiceProviderTest extends ServiceProviderTestCase
         $this->assertInstanceOf(UserAwareLogger::class, $this->app->get('logger'));
         $this->assertInstanceOf(UserAwareLogger::class, $this->app->get(LoggerInterface::class));
         $this->assertInstanceOf(UserAwareLogger::class, $this->app->get(Logger::class));
+        $this->assertInstanceOf(UserAwareLogger::class, $this->app->get(UrlAwareLogger::class));
         $this->assertInstanceOf(UserAwareLogger::class, $this->app->get(UserAwareLogger::class));
     }
 
@@ -32,16 +35,22 @@ class LoggerServiceProviderTest extends ServiceProviderTestCase
         $auth = $this->getStubBuilder(Authenticator::class)
             ->disableOriginalConstructor()
             ->getStub();
+        $request = $this->createStub(Request::class);
         $log = $this->getMockBuilder(UserAwareLogger::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->app->instance(Authenticator::class, $auth);
+        $this->app->instance(Request::class, $request);
         $this->app->instance(UserAwareLogger::class, $log);
 
         $log->expects($this->once())
             ->method('setAuth')
             ->with($auth);
+
+        $log->expects($this->once())
+            ->method('setRequest')
+            ->with($request);
 
         $serviceProvider = new LoggerServiceProvider($this->app);
         $serviceProvider->boot();

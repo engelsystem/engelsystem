@@ -76,7 +76,7 @@ function location_view(Location $location, ShiftsFilterRenderer $shiftsFilterRen
         $selected_tab = count($tabs) - 1;
     }
 
-    $link = button(url('/locations'), icon('chevron-left'), 'btn-sm', '', __('general.back'));
+    $link = back_button(url('/locations'));
     return page_with_title(
         $link .
         icon('pin-map-fill') . htmlspecialchars($location->name),
