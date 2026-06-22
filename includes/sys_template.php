@@ -401,7 +401,7 @@ function table_buttons($buttons = [], $additionalClass = '')
 
 function user_info_icon(User $user): string
 {
-    if (!auth()->can('user.info.hint') || !$user->state->user_info) {
+    if ((!auth()->can('user.info.hint') && !auth()->can('user.info.view')) || !$user->state->user_info) {
         return '';
     }
     $infoIcon = ' <small><span class="bi bi-info-circle-fill text-info" ';
