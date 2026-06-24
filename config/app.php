@@ -327,6 +327,15 @@ return [
                     'type' => 'number',
                     'default' => 2,
                 ],
+                'shift_view_seconds_per_row' => [
+                    'type' => 'number',
+                    'default' => 900,
+                    'step' => 1,
+                    'min' => 1,
+                    'validation' => [
+                        'min:1',
+                    ],
+                ],
             ],
         ],
 
