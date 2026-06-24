@@ -285,6 +285,7 @@ function view_user_shifts()
     $session->set('shifts-filter', $shiftsFilter->sessionExport());
 
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
+    $shiftTableRenderer = shiftTableRendererByShiftFilter($shiftsFilter);
 
     if (empty($user->api_key)) {
         auth()->resetApiKey($user);
@@ -381,7 +382,10 @@ function view_user_shifts()
                 'tags'  => $tags,
                 'msg'  => msg(),
                 'tag_id'  => $tagId,
-                'shifts_table'  => $shiftCalendarRenderer->render(),
+                'shifts_calendar' => $shiftCalendarRenderer->render(),
+                'shifts_table'  => $shiftTableRenderer->render(),
+                'calendar_view_text' => __('Calendar View'),
+                'table_view_text' => __('Table View'),
                 'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter shifts'),
                 'filter_toggle' => __('shifts.filter.toggle'),
