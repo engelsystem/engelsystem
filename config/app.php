@@ -266,6 +266,14 @@ return [
                     'type' => 'boolean',
                     'default' => true,
                 ],
+                'shift_view.enable_compact_view' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'shift_view.enable_date_lane' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
             ],
         ],
 
