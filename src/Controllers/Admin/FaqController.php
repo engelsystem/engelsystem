@@ -71,8 +71,7 @@ class FaqController extends BaseController
         if (!is_null($data['preview'])) {
             $faq['tags'] = new Collection();
             foreach ($tags as $tagName) {
-                $tag = new Tag(['name' => $tagName]);
-                $faq['tags'][] = $tag;
+                $faq['tags'][] = Tag::whereName($tagName)->first() ?? new Tag(['name' => $tagName]);
             }
 
             return $this->showEdit($faq, $data['tags']);
