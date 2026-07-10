@@ -46,13 +46,13 @@ class ShiftCalendarShiftRenderer
 
         $tags = '';
         if ($shift->tags->count()) {
-            $tags = '<li class="list-group-item d-flex align-items-center">';
+            $tags = '<div>';
             foreach ($shift->tags as $tag) {
                 $tags .= ' <a href="' . url('/user-shifts', ['tag' => $tag->id]) . '">'
-                    . '<span class="badge bg-secondary me-1">' . $tag->name . '</span>'
+                    . coloredBadge($tag->color, htmlspecialchars($tag->name))
                     . '</a>';
             }
-            $tags .= '</li>';
+            $tags .= '</div>';
         }
 
         return [
