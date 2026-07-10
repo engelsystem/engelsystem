@@ -552,6 +552,10 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+input[type='color' i] {
+  block-size: $input-height;
+}
+
 /* Prevent shifts filter date/time values from being truncated */
 .choices:has(#start_day),
 .choices:has(#end_day) {

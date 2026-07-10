@@ -321,14 +321,10 @@ function view_user_shifts()
     $tags = PHP_EOL;
     foreach (Tag::whereHas('shifts')->get() as $tag) {
         $active = $tag->id == $shiftsFilter->getTag();
-        $bg = $active ? 'danger' : 'secondary';
         $tags .=
             ' '
             . '<a href="' . url(request()->getPathInfo(), [...request()->getQueryParams(), 'tag' => $active ? '' : $tag->id]) . '">'
-            . '<span class="badge bg-' . $bg . '">'
-            . $tag->name
-            . ($active ? ' <span class="bi bi-x-lg"></span>' : '')
-            . '</span>'
+            . coloredBadge($tag->color, htmlspecialchars($tag->name) . ($active ? ' <span class="bi bi-x-lg"></span>' : ''))
             . '</a>' . PHP_EOL;
     }
     $tags .= PHP_EOL;
