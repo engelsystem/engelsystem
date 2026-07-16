@@ -30,7 +30,7 @@ class RenameAngelTypesPermissions extends Migration
                 'description' => 'View angel types',
             ]);
         $this->db->table('privileges')
-            ->where('name', 'admin_angeltypes')
+            ->where('name', 'admin_angel_types')
             ->update([
                 'name' => 'angeltypes.edit',
                 'description' => 'Edit angel types',
@@ -38,7 +38,7 @@ class RenameAngelTypesPermissions extends Migration
         $this->db->table('privileges')
             ->where('name', 'admin_user_angeltypes')
             ->update([
-                'name' => 'userangeltypes.edit',
+                'name' => 'user.angeltypes.edit',
                 'description' => 'Edit user angel types (confirm and promote to supporter)',
             ]);
         $this->db->table('privileges')
@@ -66,7 +66,7 @@ class RenameAngelTypesPermissions extends Migration
                 'description' => 'Edit angel types',
             ]);
         $this->db->table('privileges')
-            ->where('name', 'userangeltypes.edit')
+            ->where('name', 'user.angeltypes.edit')
             ->update([
                 'name' => 'admin_user_angeltypes',
                 'description' => 'Confirm restricted angel types',

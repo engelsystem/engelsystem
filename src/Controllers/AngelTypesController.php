@@ -42,7 +42,7 @@ class AngelTypesController extends BaseController
         return match ($method) {
             'qrCode' =>
                 $this->auth->user()?->isAngelTypeSupporter($this->getAngelType($request))
-                || $this->auth->can('userangeltypes.edit'),
+                || $this->auth->can('user.angeltypes.edit'),
             'join' => (bool) $this->auth->user(),
             default => parent::hasPermission($request, $method),
         };
