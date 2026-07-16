@@ -62,7 +62,7 @@ function shift_entry_create_controller(): array
         throw_redirect(user_link($user->id));
     }
 
-    if ($user->isAngelTypeSupporter($angeltype) || auth()->can('userangeltypes.edit')) {
+    if ($user->isAngelTypeSupporter($angeltype) || auth()->can('user.angeltypes.edit')) {
         return shift_entry_create_controller_supporter($shift, $angeltype);
     }
 

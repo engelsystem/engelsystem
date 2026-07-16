@@ -78,7 +78,7 @@ function angeltype_controller()
             $angeltype,
             $members,
             $user_angeltype,
-            auth()->can('userangeltypes.edit') || $isSupporter,
+            auth()->can('user.angeltypes.edit') || $isSupporter,
             auth()->can('angeltypes.edit'),
             $isSupporter,
             $user->license,

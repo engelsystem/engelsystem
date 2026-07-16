@@ -61,7 +61,7 @@ class AngelTypesControllerTest extends ControllerTestCase
         $this->setExpects($auth, 'user', [], $user, $this->atLeastOnce());
         $this->assertTrue($controller->hasPermission($request, 'join'));
 
-        $this->setExpects($auth, 'can', ['userangeltypes.edit'], true);
+        $this->setExpects($auth, 'can', ['user.angeltypes.edit'], true);
         $this->assertTrue($controller->hasPermission($request, 'qrCode'));
     }
 
