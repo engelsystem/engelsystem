@@ -1,5 +1,6 @@
 {% extends 'pages/settings/settings.twig' %}
 {% import 'macros/form.twig' as f %}
+{% import 'macros/base.twig' as m %}
 
 {% block title %}{{ __('settings.api') }}{% endblock %}
 
@@ -73,7 +74,10 @@
 
             {% if can('ical') %}
                 <p id="ical_hide" class="collapse" data-bs-parent="#exports_hide">
+                    {{ __('settings.api.ical_feed') }}:<br>
                     <code>{{ url('/ical', {'key': user.api_key}) }}</code>
+                    <br>
+                    {{ m.button(__('settings.api.ical_download'), url('/ical', {'key': user.api_key}, {'size': 'sm'})) }}
                 </p>
             {% endif %}
 
