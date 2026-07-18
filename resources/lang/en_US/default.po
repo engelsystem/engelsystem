@@ -408,6 +408,18 @@ msgstr "You can manage your angel types <a href=\"%s\">here</a>."
 msgid "profile.my_shifts"
 msgstr "My shifts"
 
+msgid "profile.shifts.filter"
+msgstr "Filter shifts"
+
+msgid "profile.shifts.upcoming"
+msgstr "Upcoming"
+
+msgid "profile.shifts.running"
+msgstr "Running"
+
+msgid "profile.shifts.completed"
+msgstr "Completed"
+
 msgid "settings.profile"
 msgstr "Profile"
 
