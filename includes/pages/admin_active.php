@@ -277,7 +277,7 @@ function admin_active()
             );
         }
         $duration_format = __('general.duration');
-        $userData['work_time'] = Carbon::formatDuration(CarbonInterval::seconds($timeSum), $duration_format);
+        $userData['work_time'] = Carbon::formatDuration(CarbonInterval::seconds((int)$timeSum), $duration_format);
         $userData['score'] =  Carbon::formatDuration(
             CarbonInterval::seconds((int) $user['shift_length']),
             $duration_format
