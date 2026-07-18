@@ -58,6 +58,7 @@ $route->addGroup(
             $route->get('/certificates', 'Admin\\UserSettingsController@certificate');
             $route->post('/certificates/ifsg', 'Admin\\UserSettingsController@saveIfsgCertificate');
             $route->post('/certificates/driving', 'Admin\\UserSettingsController@saveDrivingLicense');
+            $route->post('/password/reset', 'PasswordResetController@postResetByUserId');
     }
 );
 
