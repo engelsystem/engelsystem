@@ -28,12 +28,32 @@ function theme_type(): string
 function dateWithEventDay(string $day): string
 {
     $date = Carbon::createFromFormat('Y-m-d', $day);
-    $dayOfEvent = DayOfEvent::get($date);
     $dateFormatted = $date->format(__('general.date'));
+    $info = eventAndWeekDayFormat($date);
 
-    if (is_null($dayOfEvent)) {
+    if (is_null($info)) {
         return $dateFormatted;
     }
 
-    return $dateFormatted . ' (' . $dayOfEvent . ')';
+    return $dateFormatted . ' (' . $info . ')';
+}
+
+function eventAndWeekDayFormat(Carbon $date): ?string
+{
+    $info = [];
+    $dayOfEvent = DayOfEvent::get($date);
+
+    if (config('enable_date_day')) {
+        $info[] = __('general.date.dow_' . $date->dayOfWeek);
+    }
+
+    if (!is_null($dayOfEvent)) {
+        $info[] = $dayOfEvent;
+    }
+
+    if (empty($info)) {
+        return null;
+    }
+
+    return implode(', ', $info);
 }
