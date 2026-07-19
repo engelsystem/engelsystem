@@ -6,6 +6,7 @@ namespace Engelsystem\Events\Listener;
 
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\News as NewsModel;
+use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\User\Settings as UserSettings;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Log\LoggerInterface;
@@ -27,6 +28,33 @@ class News
     public function updated(NewsModel $news, bool $sendNotification = true): void
     {
         $this->sendMail($news, 'notification.news.updated', 'emails/news-updated', $sendNotification);
+    }
+
+    public function commentCreated(NewsComment $comment): void
+    {
+        $news = $comment->news;
+        $author = $news->user;
+
+        // Don't notify if the author commented on their own news
+        if ($comment->user_id === $author->id) {
+            return;
+        }
+
+        // Don't notify if author has email_news disabled
+        if (!$author->settings->email_news) {
+            return;
+        }
+
+        $this->mailer->sendViewTranslated(
+            $author,
+            'notification.news.comment.new',
+            'emails/news-comment-new',
+            [
+                'news' => $news,
+                'comment' => $comment,
+                'username' => $author->displayName,
+            ]
+        );
     }
 
     protected function sendMail(NewsModel $news, string $subject, string $template, bool $sendNotification = true): void

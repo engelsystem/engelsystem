@@ -24,6 +24,7 @@ class SettingsFactory extends Factory
             'email_goodie'     => $this->faker->boolean(),
             'email_shiftinfo' => $this->faker->boolean(),
             'email_news'      => $this->faker->boolean(),
+            'email_questions' => $this->faker->boolean(),
             'mobile_show'     => $this->faker->boolean(),
         ];
     }
