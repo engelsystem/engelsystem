@@ -429,16 +429,31 @@ function user_angeltype_join_controller(AngelType $angeltype)
         $userAngelType = new UserAngelType();
         $userAngelType->user()->associate($user);
         $userAngelType->angelType()->associate($angeltype);
+
+        // Check if token matches for auto-confirmation
+        $autoConfirmed = false;
+        $submittedToken = $request->postData('signup_token');
+        if (
+            $angeltype->restricted
+            && !empty($angeltype->self_signup_token)
+            && !empty($submittedToken)
+            && $submittedToken === $angeltype->self_signup_token
+        ) {
+            $userAngelType->confirmUser()->associate($user);
+            $autoConfirmed = true;
+        }
+
         $userAngelType->save();
 
         engelsystem_log(sprintf(
-            'User %s joined %s.',
+            'User %s joined %s%s.',
             User_Nick_render($user, true),
-            AngelType_name_render($angeltype, true)
+            AngelType_name_render($angeltype, true),
+            $autoConfirmed ? ' (auto-confirmed via token)' : ''
         ));
         success(sprintf(__('You joined %s.'), $angeltype->name));
 
-        if (auth()->can('admin_user_angeltypes') && $request->hasPostData('auto_confirm_user')) {
+        if (!$autoConfirmed && auth()->can('admin_user_angeltypes') && $request->hasPostData('auto_confirm_user')) {
             $userAngelType->confirmUser()->associate($user);
             $userAngelType->save();
 
@@ -459,6 +474,63 @@ function user_angeltype_join_controller(AngelType $angeltype)
 }
 
 /**
+ * Bulk confirm or deny selected users for an angeltype.
+ *
+ * @return array
+ */
+function user_angeltypes_bulk_controller(): array
+{
+    $user = auth()->user();
+    $request = request();
+
+    if (!$request->has('angeltype_id')) {
+        error(__('Angeltype doesn\'t exist.'));
+        throw_redirect(url('/angeltypes'));
+    }
+
+    $angeltype = AngelType::findOrFail($request->input('angeltype_id'));
+    if (!auth()->can('admin_user_angeltypes') && !$user->isAngelTypeSupporter($angeltype)) {
+        error(__('You are not allowed to manage users for this angel type.'));
+        throw_redirect(url('/angeltypes'));
+    }
+
+    $selectedIds = $request->request->all('selected_ids');
+    if (empty($selectedIds) || !is_array($selectedIds)) {
+        error(__('angeltype.bulk.none_selected'));
+        throw_redirect(url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
+    }
+
+    // Filter to only unconfirmed memberships of this angeltype
+    $userAngelTypes = UserAngelType::whereIn('id', $selectedIds)
+        ->where('angel_type_id', $angeltype->id)
+        ->whereNull('confirm_user_id')
+        ->get();
+
+    if ($userAngelTypes->isEmpty()) {
+        error(__('angeltype.bulk.none_selected'));
+        throw_redirect(url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
+    }
+
+    if ($request->hasPostData('confirm_selected')) {
+        foreach ($userAngelTypes as $userAngelType) {
+            $userAngelType->confirmUser()->associate($user);
+            $userAngelType->save();
+            user_angeltype_confirm_email($userAngelType->user, $angeltype);
+        }
+        $count = $userAngelTypes->count();
+        engelsystem_log(sprintf('Confirmed %d users for angel type %s', $count, AngelType_name_render($angeltype, true)));
+        success(sprintf(__('angeltype.bulk.confirmed'), $count, $angeltype->name));
+    } elseif ($request->hasPostData('deny_selected')) {
+        $count = $userAngelTypes->count();
+        UserAngelType::whereIn('id', $userAngelTypes->pluck('id')->toArray())->delete();
+        engelsystem_log(sprintf('Denied %d users for angel type %s', $count, AngelType_name_render($angeltype, true)));
+        success(sprintf(__('angeltype.bulk.denied'), $count, $angeltype->name));
+    }
+
+    throw_redirect(url('/angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype->id]));
+}
+
+/**
  * Route UserAngelType actions.
  *
  * @return array
@@ -471,6 +543,7 @@ function user_angeltypes_controller(): array
     }
 
     return match ($request->input('action')) {
+        'bulk'        => user_angeltypes_bulk_controller(),
         'delete_all'  => user_angeltypes_delete_all_controller(),
         'confirm_all' => user_angeltypes_confirm_all_controller(),
         'confirm'     => user_angeltype_confirm_controller(),
