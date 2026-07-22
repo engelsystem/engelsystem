@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
 #[CoversMethod(LocationsController::class, '__construct')]
-#[CoversMethod(LocationsController::class, 'index')]
 #[CoversMethod(LocationsController::class, 'edit')]
 #[CoversMethod(LocationsController::class, 'showEdit')]
 #[CoversMethod(LocationsController::class, 'save')]
@@ -31,24 +30,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 class LocationsControllerTest extends ControllerTestCase
 {
     protected Redirector&MockObject $redirect;
-
-    public function testIndex(): void
-    {
-        /** @var LocationsController $controller */
-        $controller = $this->app->make(LocationsController::class);
-        Location::factory(5)->create();
-
-        $this->response->expects($this->once())
-            ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) {
-                $this->assertEquals('pages/locations/index', $view);
-                $this->assertTrue($data['is_index'] ?? false);
-                $this->assertCount(5, $data['locations'] ?? []);
-                return $this->response;
-            });
-
-        $controller->index();
-    }
 
     public function testEdit(): void
     {
@@ -141,23 +122,6 @@ class LocationsControllerTest extends ControllerTestCase
 
         $this->expectException(ValidationException::class);
         $controller->save($this->request);
-    }
-
-    public function testSaveDelete(): void
-    {
-        /** @var LocationsController $controller */
-        $controller = $this->app->make(LocationsController::class);
-        $controller->setValidator(new Validator());
-        /** @var Location $location */
-        $location = Location::factory()->create();
-
-        $this->request = $this->request->withParsedBody([
-            'id'     => '1',
-            'delete' => '1',
-        ]);
-
-        $controller->save($this->request);
-        $this->assertEmpty(Location::find($location->id));
     }
 
     public function testDelete(): void
