@@ -1,0 +1,4 @@
+# Test content
+msgid "some.test.content"
+# was: msgstr "from_mo"
+msgstr "from_po"

@@ -1,0 +1,10 @@
+{
+  "type": "engelsystem-plugin",
+  "version": "0.0.1",
+  "name": "currently/enabled-plugin",
+  "autoload": {
+    "psr-4": {
+      "Engelsystem\\Test\\Unit\\Plugins\\Stub\\CurrentlyEnabledPlugin\\": "/"
+    }
+  }
+}
