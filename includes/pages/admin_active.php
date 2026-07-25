@@ -270,7 +270,7 @@ function admin_active()
         $userData['no'] = count($matched_users) + 1;
         $userData['nick'] = User_Nick_render($user) . User_Pronoun_render($user) . user_info_icon($user);
         if ($goodie_tshirt) {
-            $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize]
+            $userData['shirt_size'] = ($shirtSize && isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize]
                 : '<small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
                 . __("This Angel has no valid T-shirt size, therefore it's not possible to hand out a T-shirt.")
                 . '"></span></small>'
