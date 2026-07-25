@@ -148,7 +148,7 @@ class UserSettingsController extends BaseController
     {
         $menu = [
             url('/users', ['action' => 'view', 'user_id' => $user->id]) => [
-                'title' => 'general.back', 'icon' => 'chevron-left',
+                'title' => 'profile.my_shifts', 'icon' => 'chevron-left',
             ],
         ];
 
