@@ -16,7 +16,7 @@ ready(() => {
   const filterLinks = filterButtonsContainer.querySelectorAll('a[data-filter]');
   const table = shiftsContainer.querySelector('table');
 
-  if (!filterLinks.length || !table) {
+  if (filterLinks.length <= 0|| !table) {
     return;
   }
 
@@ -42,6 +42,7 @@ ready(() => {
       history.replaceState(null, '', newUrl);
 
       // Update active button state
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: ...
       filterLinks.forEach((l) => l.classList.remove('active'));
       link.classList.add('active');
 
