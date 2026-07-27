@@ -448,7 +448,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me, $supporter)
  * @param bool $goodie_admin
  * @param Worklog[]|Collection $user_worklogs
  * @param bool $admin_user_worklog_privilege
- * @param Collection|int[] $supported_angeltypes
+ * @param string $shift_filter Filter: '', 'upcoming', 'running', 'completed'
  *
  * @return array
  */
@@ -460,6 +460,7 @@ function User_view_myshifts(
     $goodie_admin,
     $user_worklogs,
     $admin_user_worklog_privilege,
+    $shift_filter = '',
 ) {
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
@@ -471,6 +472,7 @@ function User_view_myshifts(
 
     $myshifts_table = [];
     $timeSum = 0;
+    $now = Carbon::now();
     foreach ($shifts as $shift) {
         $key = $shift->start->timestamp . '-shift-' . $shift->shift_entry_id . $shift->id;
         $supporter = $supported_angeltypes->contains($shift->angel_type_id);
@@ -478,15 +480,38 @@ function User_view_myshifts(
             $show_sum = false;
             continue;
         }
+
+        // Determine shift state for server-side filtering
+        $shift_state = '';
+        if ($now < $shift->start) {
+            $shift_state = 'upcoming';
+        } elseif ($now > $shift->end) {
+            $shift_state = 'completed';
+        } else {
+            $shift_state = 'running';
+        }
+
+        // Apply server-side filter if set
+        if ($shift_filter !== '' && $shift_state !== $shift_filter) {
+            continue;
+        }
+
         $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me, $supporter);
+        $myshifts_table[$key]['shift_state'] = $shift_state;
         if (!$shift->freeloaded_by) {
             $timeSum += ($shift->end->timestamp - $shift->start->timestamp);
         }
     }
 
     foreach ($user_worklogs as $worklog) {
+        // Worklogs are always in the past, so they're always "completed"
+        if ($shift_filter !== '' && $shift_filter !== 'completed') {
+            continue;
+        }
+
         $key = $worklog->worked_at->timestamp . '-worklog-' . $worklog->id;
         $myshifts_table[$key] = User_view_worklog($worklog, $admin_user_worklog_privilege, $its_me);
+        $myshifts_table[$key]['shift_state'] = 'completed';
         $timeSum += $worklog->hours * 3600;
     }
 
@@ -496,17 +521,21 @@ function User_view_myshifts(
         foreach ($myshifts_table as $i => &$shift) {
             $before = $myshifts_table[$i - 1] ?? null;
             $after = $myshifts_table[$i + 1] ?? null;
+
+            $shift['row-class'] = '';
             if ($shift['freeloaded']) {
                 $shift['row-class'] = 'border border-danger border-2';
-            } elseif (Carbon::now() > $shift['start'] && Carbon::now() < $shift['end']) {
+            } elseif ($shift['shift_state'] === 'running') {
                 $shift['row-class'] = 'border border-info border-2';
-            } elseif ($after && Carbon::now() > $shift['end'] && Carbon::now() < $after['start']) {
+            } elseif ($after && $shift['shift_state'] === 'completed' && ($after['shift_state'] ?? '') === 'upcoming') {
                 $shift['row-class'] = 'border-bottom border-info';
-            } elseif (!$before && Carbon::now() < $shift['start']) {
+            } elseif (!$before && $shift['shift_state'] === 'upcoming') {
                 $shift['row-class'] = 'border-top-info';
-            } elseif (!$after && Carbon::now() > $shift['end']) {
+            } elseif (!$after && $shift['shift_state'] === 'completed') {
                 $shift['row-class'] = 'border-bottom border-info';
             }
+            // Use stored shift_state for CSS class (for JS progressive enhancement)
+            $shift['row-class'] .= $shift['shift_state'] ? ' shift-state-' . $shift['shift_state'] : '';
         }
         if ($show_sum) {
             $myshifts_table[] = [
@@ -617,6 +646,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege, $its
  * @param bool $admin_user_worklog_privilege
  * @param Worklog[]|Collection $user_worklogs
  * @param bool $admin_certificates
+ * @param string $shift_filter Filter: '', 'upcoming', 'running', 'completed'
  *
  * @return string
  */
@@ -632,7 +662,8 @@ function User_view(
     $goodie_admin,
     $admin_user_worklog_privilege,
     $user_worklogs,
-    $admin_certificates
+    $admin_certificates,
+    $shift_filter = ''
 ) {
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
@@ -662,9 +693,27 @@ function User_view(
             $goodie_admin,
             $user_worklogs,
             $admin_user_worklog_privilege,
+            $shift_filter,
         );
+        // Build filter URLs, preserving user_id if viewing another user
+        $filter_base_params = ['action' => 'view'];
+        if (!$its_me) {
+            $filter_base_params['user_id'] = $user_source->id;
+        }
+
+        $filter_url_all = url('/users', $filter_base_params);
+        $filter_url_upcoming = url('/users', array_merge($filter_base_params, ['shift_filter' => 'upcoming']));
+        $filter_url_running = url('/users', array_merge($filter_base_params, ['shift_filter' => 'running']));
+        $filter_url_completed = url('/users', array_merge($filter_base_params, ['shift_filter' => 'completed']));
+
+        $shift_filter_buttons = '<div class="btn-group mb-2" role="group" aria-label="' . __('profile.shifts.filter') . '" id="shift-filter-buttons">'
+            . button($filter_url_all, __('form.all'), 'btn-outline-primary btn-sm' . (!$shift_filter ? ' active' : ''), '', '', false, ['filter' => 'all'])
+            . button($filter_url_upcoming, icon('calendar-plus') . ' ' . __('profile.shifts.upcoming'), 'btn-outline-success btn-sm' . ($shift_filter === 'upcoming' ? ' active' : ''), '', '', false, ['filter' => 'upcoming'])
+            . button($filter_url_running, icon('play-circle') . ' ' . __('profile.shifts.running'), 'btn-outline-info btn-sm' . ($shift_filter === 'running' ? ' active' : ''), '', '', false, ['filter' => 'running'])
+            . button($filter_url_completed, icon('calendar-check') . ' ' . __('profile.shifts.completed'), 'btn-outline-' . (theme_type() == 'dark' ? 'light' : 'dark') . ' btn-sm' . ($shift_filter === 'completed' ? ' active' : ''), '', '', false, ['filter' => 'completed'])
+            . '</div>';
         if (count($my_shifts) > 0) {
-            $myshifts_table = div('', table([
+            $shifts_table_html = table([
                 'date' => __('Day & Time'),
                 'duration' => __('Duration'),
                 'hints' => '',
@@ -672,12 +721,15 @@ function User_view(
                 'shift_info' => __('Name & Workmates'),
                 'comment' => __('worklog.description'),
                 'actions' => __('general.actions'),
-            ], $my_shifts));
+            ], $my_shifts);
+            $myshifts_table = $shift_filter_buttons . '<div id="shifts-table-container">' . $shifts_table_html . '</div>';
         } elseif ($user_source->state->force_active && config('enable_force_active')) {
-            $myshifts_table = success(
+            $myshifts_table = ($its_me ? $shift_filter_buttons : '') . success(
                 ($its_me ? __('You have done enough.') : (__('%s has done enough.', [$user_source->name]))),
                 true
             );
+        } elseif ($shift_filter) {
+            $myshifts_table = $shift_filter_buttons;
         }
     }
 
