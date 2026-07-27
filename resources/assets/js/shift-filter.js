@@ -16,7 +16,7 @@ ready(() => {
   const filterLinks = filterButtonsContainer.querySelectorAll('a[data-filter]');
   const table = shiftsContainer.querySelector('table');
 
-  if (filterLinks.length <= 0|| !table) {
+  if (filterLinks.length <= 0 || !table) {
     return;
   }
 
