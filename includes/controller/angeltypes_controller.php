@@ -16,7 +16,6 @@ use Engelsystem\ShiftsFilterRenderer;
 function angeltypes_controller()
 {
     $action = request()->input('action');
-    ;
 
     return match ($action) {
         'view'   => angeltype_controller(),
@@ -128,7 +127,7 @@ function angeltype_controller_shiftsFilter(AngelType $angeltype, $days)
         $request->get(
             'showFilledShifts',
             auth()->can('user_shifts_admin')
-            || auth()->can('admin_user_angeltypes')
+            || auth()->can('user.angeltypes.edit')
             || auth()->user()?->isAngelTypeSupporter($angeltype)
         ),
         $locationIds,

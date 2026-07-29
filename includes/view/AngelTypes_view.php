@@ -185,7 +185,7 @@ function AngelType_view_members(AngelType $angeltype, $members, $admin_user_ange
         }
         $goodie_actions = [];
         if (
-            auth()->can('angeltype.goodie.list')
+            auth()->can('angeltypes.goodie.list')
             && auth()->can('user.goodie.edit')
             && $goodie_enabled
         ) {
@@ -384,7 +384,7 @@ function AngelType_view_table_headers(AngelType $angeltype, $supporter, $admin_a
     }
     if (
         $goodie_enabled
-        && auth()->can('angeltype.goodie.list')
+        && auth()->can('angeltypes.goodie.list')
         && auth()->can('user.goodie.edit')
     ) {
         if ($goodie_tshirt) {
