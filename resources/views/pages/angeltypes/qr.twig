@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('angeltypes.qr', [angel_type.name]) }}{% endblock %}
+{% block title %}{{ __('angeltype.qr', [angel_type.name]) }}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -24,8 +24,8 @@
                                 class="small"
                                 title="{{ expires.format(__('general.datetime')) }}"
                                 data-countdown-ts="{{ expires.getTimestamp() }}"
-                            data-countdown-expired-template="{{ __('angeltypes.qr.expired') }}">
-                                {{ __('angeltypes.qr.expires') }}
+                            data-countdown-expired-template="{{ __('angeltype.qr.expired') }}">
+                                {{ __('angeltype.qr.expires') }}
                             </span>
                         </p>
                     {% endif %}
@@ -39,13 +39,13 @@
                 {{ csrf() }}
 
                 <div class="col-md">
-                    {{ f.input('minutes', __('angeltypes.qr.time'), {
+                    {{ f.input('minutes', __('angeltype.qr.time'), {
                         'type': 'number',
                         'required': true,
                         'value': f.formData('minutes', 5),
                         'min': 1,
                         'max': qr_max_expiration_minutes,
-                        'info': __('angeltypes.qr.time.info'),
+                        'info': __('angeltype.qr.time.info'),
                     }) }}
                 </div>
 

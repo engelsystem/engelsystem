@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Controllers\Admin\LocationsController;
+use Engelsystem\Controllers\LocationsController;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\ShiftsFilter;
@@ -35,7 +35,7 @@ function location_controller(): array
     $shiftsFilter = new ShiftsFilter(
         $request->get(
             'showFilledShifts',
-            auth()->can('user_shifts_admin') || auth()->can('admin_user_angeltypes'),
+            auth()->can('user_shifts_admin') || auth()->can('user.angeltypes.edit'),
         ),
         [$location->id],
         AngelType::query()->get('id')->pluck('id')->toArray()
