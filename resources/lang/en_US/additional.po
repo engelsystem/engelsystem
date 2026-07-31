@@ -731,8 +731,11 @@ msgstr "PHP session"
 msgid "config.session.name"
 msgstr "Session cookie name"
 
+msgid "config.session.anonymous_lifetime"
+msgstr "Anonymous session lifetime in seconds"
+
 msgid "config.session.lifetime"
-msgstr "Session lifetime in days"
+msgstr "Session lifetime in seconds"
 
 msgid "config.jwt_expiration_time"
 msgstr "JWT expiration time in minutes"

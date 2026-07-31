@@ -70,6 +70,7 @@ class AuthController extends BaseController
         $this->session->invalidate();
         $this->session->set('user_id', $user->id);
         $this->session->set('locale', $user->settings->language);
+        $this->session->migrate(true, (int)($this->config->get('session')['lifetime']));
 
         $user->last_login_at = new Carbon();
         $user->save(['touch' => false]);
