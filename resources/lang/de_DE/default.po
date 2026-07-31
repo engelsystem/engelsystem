@@ -149,12 +149,18 @@ msgstr "Informiere Dich über die Tätigkeiten bei denen Du uns helfen kannst."
 msgid "login.cookies"
 msgstr "Hinweis: Cookies müssen aktiviert sein!"
 
+msgid "password.recovery.send"
+msgstr "Passwort-zurücksetzen E-mail senden"
+
 msgid "password.reset.confirm"
 msgstr "Passwort wiederholen"
 
 msgid "password.recovery.success"
 msgstr ""
 "Wir haben dir eine E-Mail mit einem Link zum Passwort-zurücksetzen geschickt."
+
+msgid "password.recovery.success.admin"
+msgstr "Passwort-zurücksetzen E-mail versendet."
 
 msgid "password.reset.title"
 msgstr "Passwort wiederherstellen"

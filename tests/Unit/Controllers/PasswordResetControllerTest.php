@@ -10,6 +10,7 @@ use Engelsystem\Controllers\PasswordResetController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\Validation\Validator;
@@ -22,6 +23,7 @@ use Engelsystem\Test\Unit\HasDatabase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -33,6 +35,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 #[CoversMethod(PasswordResetController::class, 'requireToken')]
 #[CoversMethod(PasswordResetController::class, 'postResetPassword')]
 #[CoversMethod(PasswordResetController::class, 'showView')]
+#[CoversMethod(PasswordResetController::class, 'postResetByUserId')]
+#[CoversMethod(PasswordResetController::class, 'triggerPasswordReset')]
 #[AllowMockObjectsWithoutExpectations]
 class PasswordResetControllerTest extends ControllerTestCase
 {
@@ -60,7 +64,10 @@ class PasswordResetControllerTest extends ControllerTestCase
         );
         /** @var TestLogger $log */
         $log = $this->args['log'];
+        $this->app->instance(LoggerInterface::class, $log);
+        /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->args['mailer'];
+        $this->app->instance(EngelsystemMailer::class, $mailer);
         $this->setExpects($mailer, 'sendViewTranslated');
 
         $controller->postReset($request);
@@ -173,6 +180,32 @@ class PasswordResetControllerTest extends ControllerTestCase
 
         $controller->postResetPassword($request);
         $this->assertHasNotification('validation.password.confirmed', NotificationType::ERROR);
+    }
+
+    public function testPostResetByUserId(): void
+    {
+        $this->initDatabase();
+        $this->stubTranslator();
+        $redirect = $this->createMock(Redirector::class);
+        $this->app->instance('redirect', $redirect);
+
+        $user = $this->createUser();
+        $request = new Request([], [], ['user_id' => $user->id]);
+
+        $controller = $this->getController();
+        /** @var TestLogger $log */
+        $log = $this->args['log'];
+        $this->app->instance(LoggerInterface::class, $log);
+        /** @var EngelsystemMailer|MockObject $mailer */
+        $mailer = $this->args['mailer'];
+        $this->app->instance(EngelsystemMailer::class, $mailer);
+        $this->setExpects($mailer, 'sendViewTranslated');
+
+        $controller->postResetByUserId($request);
+
+        $this->assertNotEmpty((new PasswordReset())->find($user->id)->first());
+        $this->assertTrue($log->hasInfoThatContains($user->name));
+        $this->assertHasNoNotifications();
     }
 
     protected function getControllerArgs(): array
