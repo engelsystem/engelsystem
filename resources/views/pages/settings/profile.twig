@@ -130,6 +130,11 @@
                 {{ f.checkbox('email_messages', __('settings.profile.email_messages'), {
                     'checked': userdata.settings.email_messages,
                 }) }}
+                {% if can('question.edit') %}
+                    {{ f.checkbox('email_questions', __('settings.profile.email_questions'), {
+                        'checked': userdata.settings.email_questions,
+                    }) }}
+                {% endif %}
                 {{ f.checkbox('email_human', __('settings.profile.email_by_human_allowed'), {
                     'checked': userdata.settings.email_human,
                 }) }}

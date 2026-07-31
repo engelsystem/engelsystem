@@ -1,0 +1,5 @@
+{% extends "emails/mail.text.twig" %}
+
+{% block message %}
+{{ __('notification.question.new.text', [question.user.displayName, question.text, url('/admin/questions')]) }}
+{% endblock %}
