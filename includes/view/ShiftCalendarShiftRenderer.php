@@ -41,7 +41,7 @@ class ShiftCalendarShiftRenderer
 
         $class = $this->classForSignupState($shift_signup_state);
 
-        $blocks = ceil(($shift->end->timestamp - $shift->start->timestamp) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+        $blocks = ceil(($shift->end->timestamp - $shift->start->timestamp) / ShiftCalendarRenderer::secondsPerRow());
         $blocks = max(1, $blocks);
 
         $tags = '';
