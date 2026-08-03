@@ -96,3 +96,10 @@
 {% macro type_text_class() -%}
     {% if theme.type == 'light' %}text-dark{% else %}text-light{% endif %}
 {%- endmacro %}
+
+{% macro colored_badge(color, text) -%}
+    <span
+        class="badge {% if color(color).isLight %}text-dark{% else %}text-light{% endif %}"
+        style="background-color: {{ color(color) }}"
+    >{{ text }}</span>
+{%- endmacro %}

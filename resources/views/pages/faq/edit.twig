@@ -83,9 +83,7 @@
                             <div class="card-footer">
                                 <div class="me-3">
                                     {% for tag in faq.tags %}
-                                        <a href="#" class="badge bg-secondary">
-                                            {{ tag.name }}
-                                        </a>
+                                        {{ m.colored_badge(tag.color, tag.name) }}
                                     {% endfor %}
                                 </div>
                             </div>

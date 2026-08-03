@@ -8,6 +8,7 @@ use Engelsystem\Config\Config as EngelsystemConfig;
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Renderer\Twig\Extensions\Assets;
 use Engelsystem\Renderer\Twig\Extensions\Authentication;
+use Engelsystem\Renderer\Twig\Extensions\Color;
 use Engelsystem\Renderer\Twig\Extensions\Config;
 use Engelsystem\Renderer\Twig\Extensions\Csrf;
 use Engelsystem\Renderer\Twig\Extensions\Develop;
@@ -34,6 +35,7 @@ class TwigServiceProvider extends ServiceProvider
     protected array $extensions = [
         'assets'         => Assets::class,
         'authentication' => Authentication::class,
+        'color'          => Color::class,
         'config'         => Config::class,
         'csrf'           => Csrf::class,
         'develop'        => Develop::class,

@@ -71,7 +71,7 @@ class TagControllerTest extends ControllerTestCase
 
     public function testSaveDuplicate(): void
     {
-        $body = ['name' => 'Lorem'];
+        $body = ['name' => 'Lorem', 'color' => '#000000'];
 
         $this->request = $this->request->withParsedBody($body);
         $this->response->expects($this->once())
@@ -96,7 +96,7 @@ class TagControllerTest extends ControllerTestCase
 
     public function testSaveCreateEdit(): void
     {
-        $body = ['name' => 'Foo?'];
+        $body = ['name' => 'Foo?', 'color' => '#000000'];
 
         $this->request = $this->request->withParsedBody($body);
         $this->response->expects($this->once())
