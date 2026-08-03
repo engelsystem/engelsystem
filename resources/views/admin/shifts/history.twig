@@ -46,7 +46,10 @@
                         </td>
                         <td>{{ shift.location.name }}</td>
                         <td>{{ shift.count }}</td>
-                        <td>{{ shift.start.format(__('general.datetime')) }}</td>
+                        <td>
+                            {{ shift.start.format(__('general.datetime')) }}
+                            <a href="{{ url('/shifts', {'action': 'view', 'shift_id': shift.id}) }}">{{ m.icon('link') }}</a>
+                        </td>
                         <td>{{ shift.end.format(__('general.datetime')) }}</td>
                         <td>{{ m.user(shift.createdBy) }}</td>
                         <td>{{ shift.created_at.format(__('general.datetime')) }}</td>
