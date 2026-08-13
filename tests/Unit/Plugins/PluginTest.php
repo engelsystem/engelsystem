@@ -76,6 +76,10 @@ class PluginTest extends TestCase
                 'routes' => [
                     '/test' => 'Test\\Plugin\\Controller',
                     '/demo' => ['Test\\Plugin\\Controller@post', 'POST'],
+                    '/foo' => [
+                        ['Test\\Plugin\\Controller@get2'],
+                        ['Test\\Plugin\\Controller@post2', 'POST'],
+                    ],
                 ],
             ],
         ]);
@@ -83,8 +87,8 @@ class PluginTest extends TestCase
         simpleDispatcher(function (RouteCollector $route) use ($plugin): void {
             $plugin->loadRoutes($route);
             $this->assertEquals([[
-                'GET' => ['/test' => 'Test\\Plugin\\Controller'],
-                'POST' => ['/demo' => 'Test\\Plugin\\Controller@post'],
+                'GET' => ['/test' => 'Test\\Plugin\\Controller', '/foo' => 'Test\\Plugin\\Controller@get2'],
+                'POST' => ['/demo' => 'Test\\Plugin\\Controller@post', '/foo' => 'Test\\Plugin\\Controller@post2'],
             ], []], $route->getData());
         });
     }
