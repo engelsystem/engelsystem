@@ -4,18 +4,25 @@ declare(strict_types=1);
 
 namespace Engelsystem\Events;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\StoppableEventInterface;
 
-class EventDispatcher
+class EventDispatcher implements EventDispatcherInterface
 {
     /** @var callable[] */
-    protected array $listeners;
+    protected array $listeners = [];
+    /** @var callable[] */
+    protected array $wildcards = [];
 
     public function listen(array|string $events, callable|string $listener): void
     {
         foreach ((array) $events as $event) {
-            $this->listeners[$event][] = $listener;
+            if (Str::contains($event, '*')) {
+                $this->wildcards[$event][] = $listener;
+            } else {
+                $this->listeners[$event][] = $listener;
+            }
         }
     }
 
@@ -24,47 +31,44 @@ class EventDispatcher
         unset($this->listeners[$event]);
     }
 
-    public function fire(string|object $event, mixed $payload = [], bool $halt = false): mixed
+    public function fire(string|object $event): mixed
     {
-        return $this->dispatch($event, $payload, $halt);
+        return $this->dispatch($event);
     }
 
-    /**
-     * @param bool          $halt     Stop on first non-null return
-     */
-    public function dispatch(string|object $event, mixed $payload = [], bool $halt = false): mixed
+    public function dispatch(string|object $event, ?string $eventName = null): object
     {
-        if (is_object($event)) {
-            $payload = $event;
-            $event = get_class($event);
+        $name = $eventName ?? $event;
+        if (is_object($event) && !$eventName) {
+            $name = $event instanceof Event && $event->getName() ? $event->getName() : get_class($event);
         }
+        $event = is_object($event) ? $event : new NullEvent($name);
+        $isStoppable = $event instanceof StoppableEventInterface;
 
         $listeners = [];
-        if (isset($this->listeners[$event])) {
-            $listeners = $this->listeners[$event];
+        if (isset($this->listeners[$name])) {
+            $listeners = $this->listeners[$name];
+        }
+        foreach ($this->wildcards as $key => $wildcardListeners) {
+            if (!Str::is($key, $name)) {
+                continue;
+            }
+
+            $listeners = array_merge($listeners, $wildcardListeners);
         }
 
-        $responses = [];
         foreach ($listeners as $listener) {
+            if ($isStoppable && $event->isPropagationStopped()) {
+                return $event;
+            }
+
             if (!is_callable($listener) && is_string($listener) && !Str::contains($listener, '@')) {
                 $listener = $listener . '@handle';
             }
 
-            $response = app()->call($listener, ['event' => $event] + Arr::wrap($payload));
-
-            // Return the events response
-            if ($halt && !is_null($response)) {
-                return $response;
-            }
-
-            // Stop further event propagation
-            if ($response === false) {
-                break;
-            }
-
-            $responses[] = $response;
+            app()->call($listener, ['event' => $event]);
         }
 
-        return $halt ? null : $responses;
+        return $event;
     }
 }
