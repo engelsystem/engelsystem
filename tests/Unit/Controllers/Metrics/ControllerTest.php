@@ -8,6 +8,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Metrics\Controller;
 use Engelsystem\Controllers\Metrics\MetricsEngine;
 use Engelsystem\Controllers\Metrics\Stats;
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Version;
 use Engelsystem\Http\Exceptions\HttpForbidden;
@@ -34,13 +35,15 @@ class ControllerTest extends TestCase
         /** @var Request&MockObject $request */
         /** @var MetricsEngine&MockObject $engine */
         /** @var Stats&MockObject $stats */
+        /** @var EventDispatcher&MockObject $eventDispatcher */
         /** @var Config $config */
         /** @var Version&MockObject $version */
-        list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
+        list($response, $request, $engine, $stats, $eventDispatcher, $config, $version) = $this->getMocks();
 
-        $dispatcher = $this->createStub(EventDispatcher::class);
-        $dispatcher->method('dispatch')->willReturn(null);
-        $this->app->instance('events.dispatcher', $dispatcher);
+        $eventDispatcher->method('dispatch')->willReturnCallback(function (DataEvent $event) {
+            $this->assertNotEmpty($event->metrics);
+            return $event;
+        });
 
         $request->server = new ServerBag();
         $request->server->set('REQUEST_TIME_FLOAT', 0.0123456789);
@@ -221,7 +224,7 @@ class ControllerTest extends TestCase
 
         $this->setExpects($version, 'getVersion', [], '0.42.42');
 
-        $controller = new Controller($response, $engine, $config, $request, $stats, $version);
+        $controller = new Controller($response, $engine, $config, $request, $stats, $version, $eventDispatcher);
         $controller->metrics();
     }
 
@@ -231,9 +234,10 @@ class ControllerTest extends TestCase
         /** @var Request&MockObject $request */
         /** @var MetricsEngine&MockObject $engine */
         /** @var Stats&MockObject $stats */
+        /** @var EventDispatcher&MockObject $eventDispatcher */
         /** @var Config $config */
         /** @var Version&MockObject $version */
-        list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
+        list($response, $request, $engine, $stats, $eventDispatcher, $config, $version) = $this->getMocks();
 
         $request->expects($this->once())
             ->method('get')
@@ -242,7 +246,7 @@ class ControllerTest extends TestCase
 
         $config->set('api_key', 'fooBar!');
 
-        $controller = new Controller($response, $engine, $config, $request, $stats, $version);
+        $controller = new Controller($response, $engine, $config, $request, $stats, $version, $eventDispatcher);
 
         $this->expectException(HttpForbidden::class);
         $this->expectExceptionMessage('The api_key is invalid');
@@ -255,9 +259,10 @@ class ControllerTest extends TestCase
         $request = $this->createMock(Request::class);
         $engine = $this->createMock(MetricsEngine::class);
         $stats = $this->createMock(Stats::class);
+        $dispatcher = $this->createStub(EventDispatcher::class);
         $config = new Config();
         $version = $this->createMock(Version::class);
 
-        return [$response, $request, $engine, $stats, $config, $version];
+        return [$response, $request, $engine, $stats, $dispatcher, $config, $version];
     }
 }

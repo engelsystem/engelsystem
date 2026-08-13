@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Events\Listener\Users;
 use Engelsystem\Helpers\Confirmation;
 use Engelsystem\Mail\EngelsystemMailer;
@@ -54,7 +55,7 @@ class UsersTest extends TestCase
         $this->setExpects($confirm, 'getEmailConfirmationLink', [$user], $confUrl);
 
         $handler = new Users($confirm, $this->log, $mailer);
-        $handler->created($user);
+        $handler->created(new DataEvent('user.created', ['user' => $user]));
     }
 
     protected function setUp(): void

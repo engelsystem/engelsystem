@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Events\Listener;
 
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Helpers\Confirmation;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\User;
@@ -18,8 +19,11 @@ class Users
     ) {
     }
 
-    public function created(User $user): void
+    public function created(DataEvent $event): void
     {
+        /** @var User $user */
+        $user = $event->user;
+
         $confirmationUrl = null;
         if ($this->confirm->confirmationAvailable()) {
             $confirmationUrl = $this->confirm->getEmailConfirmationLink($user);

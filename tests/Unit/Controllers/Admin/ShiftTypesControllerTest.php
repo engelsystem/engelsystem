@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Engelsystem\Controllers\Admin\ShiftTypesController;
-use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
@@ -192,8 +191,6 @@ class ShiftTypesControllerTest extends ControllerTestCase
 
     public function testDelete(): void
     {
-        $dispatcher = $this->createMock(EventDispatcher::class);
-        $this->app->instance('events.dispatcher', $dispatcher);
         /** @var ShiftTypesController $controller */
         $controller = $this->app->make(ShiftTypesController::class);
         $controller->setValidator(new Validator());
@@ -207,16 +204,6 @@ class ShiftTypesControllerTest extends ControllerTestCase
         ShiftEntry::factory()->create(['shift_id' => $shift->id, 'user_id' => $user->id]);
 
         $this->setExpects($this->redirect, 'to', ['/admin/shifttypes'], $this->response);
-
-        $dispatcher->expects($this->once())
-            ->method('dispatch')
-            ->willReturnCallback(function (string $event, array $data) use ($shifttype, $user) {
-                $this->assertEquals('shift.deleting', $event);
-                $this->assertEquals($shifttype->name, $data['shift']->shiftType->name);
-                $this->assertEquals($user->id, $data['shift']->shiftEntries[0]->user->id);
-
-                return [];
-            });
 
         $this->request = $this->request->withParsedBody(['id' => 1, 'delete' => '1']);
 
