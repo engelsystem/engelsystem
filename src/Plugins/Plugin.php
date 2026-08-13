@@ -93,7 +93,9 @@ class Plugin
     {
         foreach ($this->getRoutes() as $route => $data) {
             $data = (array) $data;
-            $collector->addRoute($data[1] ?? 'GET', $route, $data[0]);
+            foreach ((is_array($data[0]) ? $data : [$data]) as $routeData) {
+                $collector->addRoute($routeData[1] ?? 'GET', $route, $routeData[0]);
+            }
         }
     }
 
