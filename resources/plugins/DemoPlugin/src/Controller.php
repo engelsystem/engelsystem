@@ -23,7 +23,7 @@ class Controller extends BaseController
 
     public function handle(): Response
     {
-        return $this->response->withView('demo');
+        return $this->response->withView('demo-plugin/demo');
     }
 
     public function save(Request $request): Response
