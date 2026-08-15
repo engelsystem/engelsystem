@@ -8,6 +8,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Metrics\Controller;
 use Engelsystem\Controllers\Metrics\MetricsEngine;
 use Engelsystem\Controllers\Metrics\Stats;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Version;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Request;
@@ -36,6 +37,10 @@ class ControllerTest extends TestCase
         /** @var Config $config */
         /** @var Version&MockObject $version */
         list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
+
+        $dispatcher = $this->createStub(EventDispatcher::class);
+        $dispatcher->method('dispatch')->willReturn(null);
+        $this->app->instance('events.dispatcher', $dispatcher);
 
         $request->server = new ServerBag();
         $request->server->set('REQUEST_TIME_FLOAT', 0.0123456789);
