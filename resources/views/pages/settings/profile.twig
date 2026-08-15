@@ -133,17 +133,19 @@
                 {{ f.checkbox('email_human', __('settings.profile.email_by_human_allowed'), {
                     'checked': userdata.settings.email_human,
                 }) }}
-                {% if goodie_enabled %}
-                    {% set privacy_email = config('privacy_email') %}
-                    {% set email_goodie_label =
-                        (goodie_tshirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
-                        (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
-                    %}
-                    {{ f.checkbox('email_goodie', email_goodie_label, {
-                        'checked': userdata.settings.email_goodie,
-                        'raw_label': true,
-                    }) }}
-                {% endif %}
+                {% block goodieMail %}
+                    {% if goodie_enabled %}
+                        {% set privacy_email = config('privacy_email') %}
+                        {% set email_goodie_label =
+                            (goodie_tshirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
+                            (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
+                        %}
+                        {{ f.checkbox('email_goodie', email_goodie_label, {
+                            'checked': userdata.settings.email_goodie,
+                            'raw_label': true,
+                        }) }}
+                    {% endif %}
+                {% endblock %}
             </div>
         </div>
 

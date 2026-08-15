@@ -27,12 +27,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class User
 {
     public function __construct(
-        private Authenticator $authenticator,
-        private Config $config,
-        private Connection $dbConnection,
-        private LoggerInterface $logger,
-        private SessionInterface $session,
-        private Validator $validator,
+        protected Authenticator $authenticator,
+        protected Config $config,
+        protected Connection $dbConnection,
+        protected LoggerInterface $logger,
+        protected SessionInterface $session,
+        protected Validator $validator,
     ) {
     }
 

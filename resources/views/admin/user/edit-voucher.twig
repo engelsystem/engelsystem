@@ -12,11 +12,13 @@
         </h1>
 
         {% include 'layouts/parts/messages.twig' %}
+        {% block alert %}
         {{ m.alert(
             forceActive or forceFood
             ? __('voucher.eligible.force', [eligibleVoucherCount])
             : __('voucher.eligible', [eligibleVoucherCount])
         , 'info', true) }}
+        {% endblock %}
 
         <form method="post">
             {{ csrf() }}

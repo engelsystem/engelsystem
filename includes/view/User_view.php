@@ -802,6 +802,7 @@ function User_view(
                         ) : '',
                     ], 'mb-2'),
                     $its_me ? table_buttons([
+                        event()->dispatch('user_view_me_buttons', ['user' => $user_source], true),
                         button(
                             url('/settings/profile'),
                             icon('person-fill-gear') . __('settings.settings')
@@ -911,14 +912,14 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
     $state = [];
 
     if ($freeloader && $admin_user_privilege) {
-        $state[] = '<span class="text-danger">' . icon('exclamation-circle') . __('Freeloader') . '</span>';
+        $state['freeload'] = '<span class="text-danger">' . icon('exclamation-circle') . __('Freeloader') . '</span>';
     }
 
-    $state[] = User_shift_state_render($user_source);
+    $state['shift'] = User_shift_state_render($user_source);
 
     if ($user_source->state->arrived) {
         if ($admin_user_privilege) {
-            $state[] = '<span class="text-success">' . icon('house')
+            $state['arrived'] = '<span class="text-success">' . icon('house')
                 . sprintf(
                     __('Arrived at %s'),
                     $user_source->state->arrival_date
@@ -927,33 +928,33 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
                 . '</span>';
 
             if ($user_source->state->force_active && config('enable_force_active')) {
-                $state[] = '<span class="text-success">' . __('user.force_active') . ' '
+                $state['force_active'] = '<span class="text-success">' . __('user.force_active') . ' '
                     .  __('user.by', [User_Nick_render($user_source->state->forceActiveBy)]) . '</span>';
             } elseif ($user_source->state->active) {
-                $state[] = '<span class="text-success">' . __('user.active') . '</span>';
+                $state['active'] = '<span class="text-success">' . __('user.active') . '</span>';
             }
             if ($user_source->state->force_food && config('enable_force_food')) {
-                $state[] = '<span class="text-success">' . __('user.force_food') . ' '
+                $state['force_food'] = '<span class="text-success">' . __('user.force_food') . ' '
                     .  __('user.by', [User_Nick_render($user_source->state->forceFoodBy)]) . '</span>';
             }
             if ($user_source->state->got_goodie && $goodie_enabled) {
-                $state[] = '<span class="text-success">' . __('Goodie') . ' '
+                $state['goodie'] = '<span class="text-success">' . __('Goodie') . ' '
                     .  __('user.by', [User_Nick_render($user_source->state->gotGoodieBy)]) . '</span>';
             }
         } else {
-            $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
+            $state['arrived'] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
         }
     } else {
         if ($admin_user_privilege) {
             $arrivalDate = $user_source->personalData->planned_arrival_date;
-            $state[] = '<span class="text-danger">'
+            $state['arrived'] = '<span class="text-danger">'
                 . ($arrivalDate ? sprintf(
                     __('Not arrived (Planned: %s)'),
                     $arrivalDate->format(__('general.date'))
                 ) : __('Not arrived'))
                 . '</span>';
         } else {
-            $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
+            $state['arrived'] = '<span class="text-danger">' . __('Not arrived') . '</span>';
         }
     }
 
@@ -967,7 +968,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
         ) {
             $availableVoucher = __('user.state.vouchers.force', [$availableCount]);
         }
-        $state[] = '<span class="'
+        $state['vouchers'] = '<span class="'
             . (($voucherCount > 0) ? 'text-success' : 'text-danger')
             . '">'
             . icon('valentine')
@@ -976,8 +977,10 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
     }
 
     if ($password_reset && $admin_user_privilege) {
-        $state[] = __('Password reset in progress');
+        $state['password'] = __('Password reset in progress');
     }
+
+    $state = event()->dispatch('user_view_states', ['states' => $state, 'user' => $user_source], true) ?? $state;
 
     return div('col-md-2', [
         heading(__('State'), 4),

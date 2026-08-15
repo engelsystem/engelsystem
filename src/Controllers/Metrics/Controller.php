@@ -230,6 +230,8 @@ class Controller extends BaseController
             memory_get_usage(),
         ];
 
+        $data = event()->dispatch('metrics', ['metrics' => $data], true) ?? $data;
+
         return $this->response
             ->withHeader('Content-Type', 'text/plain; version=0.0.4')
             ->withContent($this->engine->get('/metrics', $data));
