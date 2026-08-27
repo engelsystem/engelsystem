@@ -9,7 +9,7 @@ RUN echo -e "xdebug.mode=debug\nxdebug.discover_client_host=1\n" >> /usr/local/e
 
 FROM es_base AS es_webserver
 RUN apk add --no-cache nginx && \
-    sed -i 's/9000/127.0.0.1:9000/' /usr/local/etc/php-fpm.d/zz-docker.conf
+    sed -i 's/9000/127.0.0.1:9000/' /usr/local/etc/php-fpm.d/docker.conf
 COPY docker/entrypoint.sh /
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 ENTRYPOINT /entrypoint.sh
