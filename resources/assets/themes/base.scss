@@ -557,3 +557,8 @@ input[type='number'] {
     min-width: max-content;
   }
 }
+
+.qr-code > svg {
+  --darkreader-background-ffffff: #fff !important;
+  background-color: #fff !important;
+}
