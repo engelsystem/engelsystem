@@ -85,7 +85,7 @@
                                 </td>
                                 <td class="text-nowrap">{% if entry.user %}{{ m.user(entry.user) }}{% endif %}</td>
                                 <td>
-                                    {% if entry.url %}
+                                    {% if entry.url and can('config.edit') %}
                                         <small><a href="{{ entry.url }}">{{ m.icon('bug') }}</a></small>
                                     {% endif %}
                                     {{ entry.message|nl2br }}
