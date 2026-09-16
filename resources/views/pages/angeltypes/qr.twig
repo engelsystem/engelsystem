@@ -16,9 +16,11 @@
             {% if qr_data %}
                 <div class="mb-3">
                     <div class="text-center">
-                    {{ qr(qr_data, 400) }}
-                    {% set expires = session_get('form-data-expires') %}
-                    {% if expires %}
+                        <span class="qr-code">
+                            {{ qr(qr_data, 400) }}
+                        </span>
+                        {% set expires = session_get('form-data-expires') %}
+                        {% if expires %}
                         <p>
                             <span
                                 class="small"
@@ -28,7 +30,7 @@
                                 {{ __('angeltypes.qr.expires') }}
                             </span>
                         </p>
-                    {% endif %}
+                        {% endif %}
                     </div>
                 </div>
 
