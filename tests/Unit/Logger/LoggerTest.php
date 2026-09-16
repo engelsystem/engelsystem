@@ -80,7 +80,7 @@ class LoggerTest extends ServiceProviderTestCase
     {
         return [
             ['Data and {context}', [], 'Data and {context}'],
-            ['Data and {context}', ['context' => null], 'Data and '],
+            ['Data and {context}', ['context' => null], 'Data and'],
             ['Data and {context}', ['context' => new stdClass()], 'Data and {context}'],
             ['Some user asked: {question}', ['question' => 'Foo?'], 'Some user asked: Foo?'],
         ];
@@ -116,6 +116,17 @@ class LoggerTest extends ServiceProviderTestCase
         /** @var LogEntry $entry */
         $entry = LogEntry::find(1);
         $this->assertEquals('Some data and FooBar', $entry->message);
+    }
+
+    public function testCleanup(): void
+    {
+        $logger = new Logger(new LogEntry());
+
+        $logger->error(' Spaced log message! ' . PHP_EOL);
+
+        $entries = LogEntry::all();
+        $this->assertCount(1, $entries);
+        $this->assertEquals('Spaced log message!', $entries[0]->message);
     }
 
     public function testThrowExceptionOnInvalidLevel(): void
