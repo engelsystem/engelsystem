@@ -74,9 +74,8 @@ class UsersController extends ApiController
 
     public function worklogs(Request $request): Response
     {
-        $id = (int) $request->getAttribute('user_id');
-        /** @var User $user */
-        $user = User::findOrFail($id);
+        $id = $request->getAttribute('user_id');
+        $user = $this->getUser($id);
 
         $models = $user->worklogs();
 
