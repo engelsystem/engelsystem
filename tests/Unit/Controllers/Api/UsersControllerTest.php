@@ -185,4 +185,33 @@ class UsersControllerTest extends ApiBaseControllerTestCase
 
         $this->assertEquals($worklog->hours, $firstEntry['hours']);
     }
+
+    public function testWorklogsSelf(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+        /** @var Worklog $worklog */
+        $worklog = Worklog::factory()->create(['user_id' => $user->id, 'hours' => 1.23]);
+        Worklog::factory()->create(['user_id' => $otherUser->id, 'hours' => 4.56]);
+
+        $auth = $this->createMock(Authenticator::class);
+        $this->setExpects($auth, 'user', null, $user, $this->atLeastOnce());
+
+        $request = new Request();
+        $request = $request->withAttribute('user_id', 'self');
+
+        $controller = new UsersController(new Response());
+        $controller->setAuth($auth);
+
+        $response = $controller->worklogs($request);
+        $this->validateApiResponse('/users/{id}/worklogs', 'get', $response);
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertArrayHasKey('data', $data);
+        $this->assertCount(1, $data['data']);
+        $this->assertEquals($worklog->id, $data['data'][0]['id']);
+        $this->assertEquals($worklog->hours, $data['data'][0]['hours']);
+    }
 }
