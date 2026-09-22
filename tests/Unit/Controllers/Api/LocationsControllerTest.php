@@ -103,4 +103,11 @@ class LocationsControllerTest extends ApiBaseControllerTestCase
 
         $this->assertFalse($controller->hasPermission(new Request(), 'index'));
     }
+
+    public function testHasPermissionWithoutAuthSet(): void
+    {
+        $controller = new LocationsController(new Response());
+
+        $this->assertFalse($controller->hasPermission(new Request(), 'index'));
+    }
 }
