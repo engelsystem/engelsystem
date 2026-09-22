@@ -69,6 +69,22 @@ class LocationsControllerTest extends ApiBaseControllerTestCase
         $this->assertEquals(['dect' => $location->dect], $data['data']['contact']);
     }
 
+    public function testShowWithoutDescription(): void
+    {
+        $location = Location::factory()->create(['description' => null]);
+
+        $request = new Request();
+        $request = $request->withAttribute('location_id', (string) $location->id);
+
+        $controller = new LocationsController(new Response());
+
+        $response = $controller->show($request);
+        $data = json_decode($response->getContent(), true);
+
+        // The resource falls back to an empty string instead of null.
+        $this->assertSame('', $data['data']['description']);
+    }
+
     public function testShowNotFound(): void
     {
         $request = new Request();
