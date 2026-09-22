@@ -8,6 +8,7 @@ use Engelsystem\Controllers\Api\NewsController;
 use Engelsystem\Controllers\Api\Resources\NewsCommentResource;
 use Engelsystem\Controllers\Api\Resources\NewsDetailResource;
 use Engelsystem\Controllers\Api\Resources\NewsResource;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\News;
@@ -74,6 +75,32 @@ class NewsControllerTest extends ApiBaseControllerTestCase
         $this->assertCount(1, $data['data']['comments']);
         $this->assertEquals($comment->text, $data['data']['comments'][0]['text']);
         $this->assertEquals($user->id, $data['data']['comments'][0]['user']['id']);
+    }
+
+    public function testShowCommentsOrderedByCreatedAt(): void
+    {
+        $news = News::factory()->create();
+        $userA = User::factory()->create();
+        $userB = User::factory()->create();
+
+        $newer = NewsComment::factory()->create(['news_id' => $news->id, 'user_id' => $userA->id]);
+        $older = NewsComment::factory()->create(['news_id' => $news->id, 'user_id' => $userB->id]);
+
+        // Backdate the second-created comment so it's actually the older one,
+        // independent of real execution timing (both could land in the same second).
+        NewsComment::query()->where('id', $older->id)->update(['created_at' => Carbon::now()->subHour()]);
+
+        $request = new Request();
+        $request = $request->withAttribute('news_id', (string) $news->id);
+
+        $controller = new NewsController(new Response());
+
+        $response = $controller->show($request);
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertCount(2, $data['data']['comments']);
+        $this->assertEquals($older->id, $data['data']['comments'][0]['id']);
+        $this->assertEquals($newer->id, $data['data']['comments'][1]['id']);
     }
 
     public function testShowNotFound(): void
