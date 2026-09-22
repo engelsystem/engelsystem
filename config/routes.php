@@ -149,6 +149,7 @@ $route->addGroup(
                 $route->get('/locations/{location_id:\d+}/shifts', 'Api\ShiftsController@entriesByLocation');
 
                 $route->get('/news', 'Api\NewsController@index');
+                $route->get('/news/{news_id:\d+}', 'Api\NewsController@show');
 
                 $route->get('/shifttypes', 'Api\ShiftTypeController@index');
                 $route->get('/shifttypes/{shifttype_id:\d+}/shifts', 'Api\ShiftsController@entriesByShiftType');

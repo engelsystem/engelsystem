@@ -22,6 +22,7 @@ class NewsResource extends BasicResource
             'is_meeting' => $this->model->is_meeting,
             'is_pinned' => $this->model->is_pinned,
             'is_highlighted' => $this->model->is_highlighted,
+            'comments_count' => $this->model->comments_count,
             'created_at' => $this->model->created_at,
             'updated_at' => $this->model->updated_at,
             'url' => url('/news/' . $this->model->id),
