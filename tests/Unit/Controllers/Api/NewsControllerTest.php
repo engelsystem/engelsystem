@@ -103,6 +103,23 @@ class NewsControllerTest extends ApiBaseControllerTestCase
         $this->assertEquals($newer->id, $data['data']['comments'][1]['id']);
     }
 
+    public function testShowWithoutComments(): void
+    {
+        $news = News::factory()->create();
+
+        $request = new Request();
+        $request = $request->withAttribute('news_id', (string) $news->id);
+
+        $controller = new NewsController(new Response());
+
+        $response = $controller->show($request);
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertEquals(0, $data['data']['comments_count']);
+        $this->assertIsArray($data['data']['comments']);
+        $this->assertCount(0, $data['data']['comments']);
+    }
+
     public function testShowNotFound(): void
     {
         $request = new Request();
