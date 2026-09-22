@@ -91,6 +91,17 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
         $this->assertCount(3, $entriesC[1]['entries']);
     }
 
+    public function testEntriesByLocationNotFound(): void
+    {
+        $request = new Request();
+        $request = $request->withAttribute('location_id', 42);
+
+        $controller = new ShiftsController(new Response());
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->entriesByLocation($request);
+    }
+
     public function testEntriesByAngelType(): void
     {
         /** @var ShiftEntry $firstEntry */
@@ -112,6 +123,17 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
 
         $shift = $data['data'][0];
         $this->assertNotEmpty($shift['needed_angel_types']);
+    }
+
+    public function testEntriesByAngelTypeNotFound(): void
+    {
+        $request = new Request();
+        $request = $request->withAttribute('angeltype_id', 42);
+
+        $controller = new ShiftsController(new Response());
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->entriesByAngeltype($request);
     }
 
     public function testEntriesByShiftType(): void
@@ -150,6 +172,17 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
 
         $this->assertNotEmpty($freeloaded);
         $this->assertEquals(User::first()->id, $freeloaded['id']);
+    }
+
+    public function testEntriesByShiftTypeNotFound(): void
+    {
+        $request = new Request();
+        $request = $request->withAttribute('shifttype_id', 42);
+
+        $controller = new ShiftsController(new Response());
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->entriesByShiftType($request);
     }
 
     public function testEntriesByUser(): void

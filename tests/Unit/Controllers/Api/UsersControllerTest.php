@@ -20,6 +20,7 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
@@ -125,6 +126,17 @@ class UsersControllerTest extends ApiBaseControllerTestCase
         $this->assertArrayNotHasKey('oauth', $data['data']);
     }
 
+    public function testUserNotFound(): void
+    {
+        $request = new Request();
+        $request = $request->withAttribute('user_id', 42);
+
+        $controller = new UsersController(new Response());
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->user($request);
+    }
+
     public function testEntriesByAngeltype(): void
     {
         /** @var User $user */
@@ -213,5 +225,16 @@ class UsersControllerTest extends ApiBaseControllerTestCase
         $this->assertCount(1, $data['data']);
         $this->assertEquals($worklog->id, $data['data'][0]['id']);
         $this->assertEquals($worklog->hours, $data['data'][0]['hours']);
+    }
+
+    public function testWorklogsNotFound(): void
+    {
+        $request = new Request();
+        $request = $request->withAttribute('user_id', 42);
+
+        $controller = new UsersController(new Response());
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->worklogs($request);
     }
 }
