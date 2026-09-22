@@ -88,6 +88,16 @@ class UsesAuthTest extends ApiBaseControllerTestCase
         $this->assertFalse($usesAuth->hasPermission($request, 'worklogs'));
     }
 
+    public function testHasPermissionSelfWithoutAuthSet(): void
+    {
+        $usesAuth = $this->createInstance();
+
+        $request = new Request();
+        $request = $request->withAttribute('user_id', 'self');
+
+        $this->assertFalse($usesAuth->hasPermission($request, 'worklogs'));
+    }
+
     public function testHasPermissionNumericIdFallsBackToDefaultCheck(): void
     {
         $usesAuth = $this->createInstance();

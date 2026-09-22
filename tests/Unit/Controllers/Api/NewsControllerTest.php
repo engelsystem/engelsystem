@@ -64,4 +64,11 @@ class NewsControllerTest extends ApiBaseControllerTestCase
 
         $this->assertFalse($controller->hasPermission(new Request(), 'index'));
     }
+
+    public function testHasPermissionWithoutAuthSet(): void
+    {
+        $controller = new NewsController(new Response());
+
+        $this->assertFalse($controller->hasPermission(new Request(), 'index'));
+    }
 }
