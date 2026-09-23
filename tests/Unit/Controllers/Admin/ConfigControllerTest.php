@@ -357,6 +357,35 @@ class ConfigControllerTest extends ControllerTestCase
         $this->assertEquals('New value', $baz->value);
     }
 
+    public function testSaveIgnoreNotWritableValues(): void
+    {
+        $notWritableDir = __DIR__ . '/Stub/SubDir/Not/Existing';
+        $this->app->instance('path.config', $notWritableDir);
+
+        $this->options['test']['config']['to_be_written_to_file']['required'] = true;
+        $this->config->set('config_options', $this->options);
+
+        $requestData = $this->validTestBody;
+        $requestData['to_be_written_to_file'] = 'frosch sure!';
+
+        $this->request->attributes->set('page', 'test');
+        $this->request = $this->request->withParsedBody($requestData);
+
+        /** @var ConfigController $controller */
+        $controller = $this->app->make(ConfigController::class);
+        $controller->setValidator(new Validator());
+
+        // Ignores value
+        $controller->save($this->request);
+        $this->assertNull(EventConfig::whereName('to_be_written_to_file')->first());
+
+        // Ignores invalid value
+        unset($requestData['to_be_written_to_file']);
+        $this->request = $this->request->withParsedBody($requestData);
+        $controller->save($this->request);
+        $this->assertNull(EventConfig::whereName('to_be_written_to_file')->first());
+    }
+
     public static function validationErrorsProvider(): array
     {
         return [
