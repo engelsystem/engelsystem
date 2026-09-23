@@ -63,9 +63,9 @@ class ConfigController extends BaseConfigController
     public function save(Request $request): Response
     {
         $page = $this->activePage($request);
-        $data = $this->validation($page, $request);
-        $settings = $this->filterShownSettings($this->options[$page]['config']);
         $localConfigWritable = $this->isFileWritable($this->localConfig);
+        $data = $this->validation($page, $request, $localConfigWritable);
+        $settings = $this->filterShownSettings($this->options[$page]['config'], $localConfigWritable);
 
         $changes = [];
         foreach ($settings as $key => $options) {
@@ -152,11 +152,11 @@ class ConfigController extends BaseConfigController
             || (!file_exists($file) && is_writable(dirname($file)));
     }
 
-    protected function validation(string $page, Request $request): array
+    protected function validation(string $page, Request $request, bool $localConfigFileWritable): array
     {
         $rules = [];
         $config = $this->options[$page];
-        $settings = $this->filterShownSettings($config['config']);
+        $settings = $this->filterShownSettings($config['config'], $localConfigFileWritable);
 
         // Generate validation rules
         foreach ($settings as $key => $setting) {
@@ -203,10 +203,12 @@ class ConfigController extends BaseConfigController
         return $this->validate($request, $rules);
     }
 
-    protected function filterShownSettings(array $settings): array
+    protected function filterShownSettings(array $settings, bool $localConfigFileWritable = true): array
     {
         // Ignore values from env
         $settings = array_filter($settings, fn($a) => empty($a['in_env']));
+        // Ignore not writable fields
+        $settings = array_filter($settings, fn($a) => empty($a['write_back']) || $localConfigFileWritable);
         // Skip if permissions don't match
         return array_filter($settings, fn($a) => empty($a['permission']) || $this->auth->can($a['permission']));
     }
