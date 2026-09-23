@@ -175,7 +175,7 @@ editorconfig check:
   image: mstruebing/editorconfig-checker
   stage: validate
   script:
-    - ec -v
+    - editorconfig-checker -v
 
 #
 # Build

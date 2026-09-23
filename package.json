@@ -11,7 +11,7 @@
     "build:watch": "webpack --watch",
     "lint": "yarn lint:biome && yarn lint:ec",
     "lint:biome": "biome check",
-    "lint:ec": "ec",
+    "lint:ec": "editorconfig-checker",
     "lint:fix": "biome check --write",
     "lint:fix:unsafe": "yarn lint:fix --unsafe"
   },
@@ -30,7 +30,7 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",
-    "editorconfig-checker": "^6.1.1",
+    "editorconfig-checker": "^7.0.0",
     "mini-css-extract-plugin": "^2.7.2",
     "postcss": "^8.4.31",
     "postcss-loader": "^7.0.2",
