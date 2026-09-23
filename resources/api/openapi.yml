@@ -39,6 +39,8 @@ tags:
     description: Event information
   - name: location
     description: Event locations
+  - name: message
+    description: Private messages
   - name: news
     description: News and meeting announcements
   - name: shift
@@ -90,6 +92,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    ValidationFailedError: # 422
+      description: The request body failed validation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
 
   schemas:
     AngelType:
@@ -263,6 +271,64 @@ components:
         - description
         - contact
         - url
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 17
+        text:
+          type: string
+          example: Could you cover my shift?
+        sender:
+          $ref: '#/components/schemas/Reference'
+        receiver:
+          $ref: '#/components/schemas/Reference'
+        read:
+          type: boolean
+          example: false
+        created_at:
+          $ref: '#/components/schemas/DateTime'
+        updated_at:
+          $ref: '#/components/schemas/DateTimeOptional'
+      required:
+        - id
+        - text
+        - sender
+        - receiver
+        - read
+        - created_at
+        - updated_at
+    Conversation:
+      type: object
+      properties:
+        other_user:
+          $ref: '#/components/schemas/Reference'
+        latest_message:
+          $ref: '#/components/schemas/Message'
+        unread_messages:
+          type: integer
+          example: 2
+      required:
+        - other_user
+        - latest_message
+        - unread_messages
+    MessageSend:
+      type: object
+      properties:
+        text:
+          type: string
+          example: Could you cover my shift?
+      required:
+        - text
+    MessageSetRead:
+      type: object
+      properties:
+        read:
+          type: boolean
+          example: true
+      required:
+        - read
     NeededAngelType:
       type: object
       properties:
@@ -544,6 +610,20 @@ components:
       properties:
         message:
           type: string
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+      required:
+        - message
+        - errors
     EventInfo:
       type: object
       properties:
@@ -790,6 +870,144 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+
+  /messages:
+    get:
+      tags:
+        - message
+      summary: Get a list of conversations for the current user
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Conversation'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /messages/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The other user's identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - message
+      summary: Get all messages exchanged with the given user
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      other_user:
+                        $ref: '#/components/schemas/Reference'
+                      messages:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Message'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    post:
+      tags:
+        - message
+      summary: Send a message to the given user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageSend'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Message'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationFailedError'
+
+  /messages/{msgId}:
+    parameters:
+      - name: msgId
+        in: path
+        required: true
+        description: Message identifier
+        example: 17
+        schema:
+          type: integer
+    delete:
+      tags:
+        - message
+      summary: Delete a message sent by the current user
+      responses:
+        '204':
+          description: No content
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    patch:
+      tags:
+        - message
+      summary: Set or clear the read status of a message addressed to the current user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageSetRead'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Message'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationFailedError'
 
   /shifttypes:
     get:
