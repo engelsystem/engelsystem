@@ -104,6 +104,10 @@ body {
   mask-size: cover;
 }
 
+h2 .icon-icon_angel {
+  margin: 0 0.15em;
+}
+
 .text-light .icon-icon_angel {
   background-color: map.get($theme-colors, 'light');
 }
