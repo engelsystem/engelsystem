@@ -39,6 +39,34 @@ class RegistrationController extends BaseController
         return $this->renderSignUpPage();
     }
 
+    /**
+     * Override user details with data from OAuth2 session.
+     *
+     * The oauth2_data_* entries are only set for fields that are configured
+     * to be kept in sync with data from the OAuth2 provider.
+     *
+     * @param array $rawData The array of raw user data
+     * @param SessionInterface $session The current user's session
+     * @return array The modified user data with OAuth2 data preferred
+     */
+    private function usePreferredUserDataFromOAuth(array $rawData, SessionInterface $session): array
+    {
+        if ($this->session->has('oauth2_data_username')) {
+            $rawData['username'] = $this->session->get('oauth2_data_username');
+        }
+        if ($this->session->has('oauth2_data_email')) {
+            $rawData['email'] = $this->session->get('oauth2_data_email');
+        }
+        if ($this->session->has('oauth2_data_firstname')) {
+            $rawData['firstname'] = $this->session->get('oauth2_data_firstname');
+        }
+        if ($this->session->has('oauth2_data_lastname')) {
+            $rawData['lastname'] = $this->session->get('oauth2_data_lastname');
+        }
+
+        return $rawData;
+    }
+
     public function save(Request $request): Response
     {
         if ($this->determineRegistrationDisabled()) {
@@ -46,6 +74,8 @@ class RegistrationController extends BaseController
         }
 
         $rawData = $request->getParsedBody();
+        $rawData = $this->usePreferredUserDataFromOAuth($rawData, $this->session);
+
         $user = $this->userFactory->createFromData($rawData);
 
         if (!$this->auth->user()) {
