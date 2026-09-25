@@ -411,6 +411,17 @@ Renders a "checkbox" element that will be styled as switch.
     </div>
 {%- endmacro %}
 
+{#
+Renders a color input field.
+
+@param {string} name - Will be used as value for "id" and "name" attributes.
+@param {string} label - If not empty a "label" element with this text will be rendered.
+@param {string} [opt] - Additional configuration, see input() macro
+#}
+{% macro color(name, label, opt) %}
+    {{ _self.input(name, label, {'type': 'color'}|merge(opt|default({}))) }}
+{%- endmacro %}
+
 {% macro formData(name, default) -%}
     {{ session_pop('form-data-' ~ name|replace({'.': '_'}), default) }}
 {%- endmacro %}
