@@ -716,7 +716,7 @@ msgid "config.url"
 msgstr "Anwendungs-URL"
 
 msgid "config.url.info"
-msgstr "URL und Pfad der Installation, überschreibt die automatisch detektion"
+msgstr "URL und Pfad der Installation, überschreibt die automatisch detektierte"
 
 msgid "config.api_key"
 msgstr "API Key für /metrics"
