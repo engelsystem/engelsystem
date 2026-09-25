@@ -22,7 +22,8 @@ function NeededAngelTypes_by_shift($shift)
             `needed_angel_types`.*,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`shift_self_signup`
+            `angel_types`.`shift_self_signup`,
+            `angel_types`.`shift_signup_before_arrival`
         FROM `needed_angel_types`
         JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
         WHERE `needed_angel_types`.`shift_id` = ?
@@ -39,7 +40,8 @@ function NeededAngelTypes_by_shift($shift)
             `needed_angel_types`.*,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`shift_self_signup`
+            `angel_types`.`shift_self_signup`,
+            `angel_types`.`shift_signup_before_arrival`
         FROM `needed_angel_types`
         JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
         WHERE `needed_angel_types`.`shift_type_id` = ?
@@ -54,7 +56,8 @@ function NeededAngelTypes_by_shift($shift)
             `needed_angel_types`.*,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`shift_self_signup`
+            `angel_types`.`shift_self_signup`,
+            `angel_types`.`shift_signup_before_arrival`
         FROM `needed_angel_types`
         JOIN `angel_types` ON `angel_types`.`id` = `needed_angel_types`.`angel_type_id`
         WHERE `needed_angel_types`.`location_id` = ?
