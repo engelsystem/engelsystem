@@ -44,7 +44,7 @@ FROM php:8.5-fpm-alpine
 WORKDIR /var/www
 RUN apk add --no-cache icu-dev nginx && \
     docker-php-ext-install intl pdo_mysql && \
-    sed -i 's/9000/127.0.0.1:9000/' /usr/local/etc/php-fpm.d/zz-docker.conf
+    sed -i 's/9000/127.0.0.1:9000/' /usr/local/etc/php-fpm.d/docker.conf
 COPY docker/entrypoint.sh /
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 ENTRYPOINT /entrypoint.sh
