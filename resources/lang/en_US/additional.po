@@ -708,7 +708,9 @@ msgid "config.url"
 msgstr "Application URL"
 
 msgid "config.url.info"
-msgstr "URL and base path to use instead of the auto-detected one"
+msgstr ""
+"URL of the installation (incl. protocol, domain and optional path, i.e. https://angel.example.com/helping). "
+"Required to generate links in emails."
 
 msgid "config.api_key"
 msgstr "API key for /metrics"

@@ -375,6 +375,11 @@ return [
                     'type' => 'string',
                     'default' => 'Engelsystem',
                 ],
+                'url' => [
+                    'type' => 'url',
+                    'env' => 'APP_URL',
+                    'required' => true,
+                ],
                 // Locale data is set based on /resources/lang/
                 'locales' => [
                     'type' => 'select_multi',
@@ -564,10 +569,6 @@ return [
                 ],
                 'external_registration_url' => [
                     'type' => 'url',
-                ],
-                'url' => [
-                    'type' => 'url',
-                    'env' => 'APP_URL',
                 ],
                 'api_key' => [
                     'type' => 'string',

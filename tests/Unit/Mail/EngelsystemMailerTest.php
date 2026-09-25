@@ -14,6 +14,7 @@ use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\RawMessage;
@@ -126,5 +127,28 @@ class EngelsystemMailerTest extends TestCase
 
         $status = $mailer->send('to@xam.pel', 'Foo Bar ', 'Lorem Ipsum!');
         $this->assertTrue($status);
+    }
+
+    /**
+     * @covers \Engelsystem\Mail\EngelsystemMailer::send
+     * @covers \Engelsystem\Mail\EngelsystemMailer::isEnabled
+     * @covers \Engelsystem\Mail\EngelsystemMailer::missingConfigDisabled
+     */
+    public function testSendAbortIfAppUrlNotConfigured(): void
+    {
+        $symfonyMailer = $this->createMock(MailerInterface::class);
+        $symfonyMailer->expects($this->never())->method('send');
+
+        $log = new TestLogger();
+
+        $mailer = new EngelsystemMailer($log, $symfonyMailer);
+        $this->assertTrue($mailer->isEnabled());
+
+        $mailer->missingConfigDisabled();
+        $this->assertFalse($mailer->isEnabled());
+
+        $status = $mailer->send('to@xam.pel', 'Foo Bar ', 'Lorem Ipsum!');
+        $this->assertFalse($status);
+        $this->assertTrue($log->hasErrorThatContains('Application URL'));
     }
 }

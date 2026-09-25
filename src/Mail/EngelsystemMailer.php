@@ -13,6 +13,7 @@ use Symfony\Component\Mailer\MailerInterface;
 class EngelsystemMailer extends Mailer
 {
     protected ?string $subjectPrefix = null;
+    protected bool $missingConfigDisabled = false;
 
     public function __construct(
         LoggerInterface $log,
@@ -77,6 +78,14 @@ class EngelsystemMailer extends Mailer
      */
     public function send(string|array $to, string $subject, string $body): bool
     {
+        if ($this->missingConfigDisabled) {
+            $this->log->error(
+                'Unable to send email "{subject}" due to missing Application URL in Config > System!',
+                ['subject' => $subject],
+            );
+            return false;
+        }
+
         if ($this->subjectPrefix) {
             $subject = sprintf('[%s] %s', $this->subjectPrefix, trim($subject));
         }
@@ -92,5 +101,15 @@ class EngelsystemMailer extends Mailer
     public function setSubjectPrefix(string $subjectPrefix): void
     {
         $this->subjectPrefix = $subjectPrefix;
+    }
+
+    public function missingConfigDisabled(): void
+    {
+        $this->missingConfigDisabled = true;
+    }
+
+    public function isEnabled(): bool
+    {
+        return !$this->missingConfigDisabled;
     }
 }
