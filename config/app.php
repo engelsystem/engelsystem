@@ -13,11 +13,11 @@ return [
         \Engelsystem\Config\ConfigServiceProvider::class,
         \Engelsystem\Helpers\ConfigureEnvironmentServiceProvider::class,
         \Engelsystem\Events\EventsServiceProvider::class,
+        \Engelsystem\Database\DatabaseServiceProvider::class,
 
         // Request handling
         \Engelsystem\Http\UrlGeneratorServiceProvider::class,
         \Engelsystem\Renderer\RendererServiceProvider::class,
-        \Engelsystem\Database\DatabaseServiceProvider::class,
         \Engelsystem\Http\RequestServiceProvider::class,
         \Engelsystem\Http\SessionServiceProvider::class,
         \Engelsystem\Helpers\Translation\TranslationServiceProvider::class,
@@ -579,7 +579,6 @@ return [
                 'url' => [
                     'type' => 'url',
                     'env' => 'APP_URL',
-                    'write_back' => true,
                 ],
                 'api_key' => [
                     'type' => 'string',

@@ -22,6 +22,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversMethod(DatabaseServiceProvider::class, 'exitOnError')]
 class DatabaseServiceProviderTest extends ServiceProviderTestCase
 {
+    protected bool $callbackCalled;
+
     public function testRegister(): void
     {
         /** @var Application&MockObject $app */
@@ -80,8 +82,10 @@ class DatabaseServiceProviderTest extends ServiceProviderTestCase
                 }
             });
 
+        DatabaseServiceProvider::$registeredCallback = [$this, 'calledBack'];
         $serviceProvider = new DatabaseServiceProvider($app);
         $serviceProvider->register();
+        $this->assertTrue($this->callbackCalled);
     }
 
     public function testRegisterError(): void
@@ -163,5 +167,22 @@ class DatabaseServiceProviderTest extends ServiceProviderTestCase
         $this->setExpects($dbManager, 'getConnection', [], $connection, $this->atLeastOnce());
 
         return [$app, $dbManager, $pdo, $database, $connection];
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        DatabaseServiceProvider::$registeredCallback = null;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        DatabaseServiceProvider::$registeredCallback = null;
+    }
+
+    public function calledBack(): void
+    {
+        $this->callbackCalled = true;
     }
 }
