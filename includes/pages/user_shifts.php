@@ -364,8 +364,8 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    icon('person-lines-fill') . __('angeltypes.angeltypes') . ' '
-                    . '<a class="icon-link" href="' . url('/angeltypes/about') . '" title="' . __('angeltypes.about') . '" target="_blank">'
+                    icon('person-lines-fill') . __('angeltype.angeltypes') . ' '
+                    . '<a class="icon-link" href="' . url('/angeltypes/about') . '" title="' . __('angeltype.about') . '" target="_blank">'
                     . icon('question-circle') . '</a>',
                     $ownAngelTypes,
                     'limit-height',
