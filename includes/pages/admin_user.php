@@ -197,9 +197,23 @@ function admin_user()
             . '</td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '<br>' . "\n";
-        $html .= '<button type="submit" class="btn btn-primary">'
-            . icon('save') . __('form.save') . '</button>' . "\n";
         $html .= '</form>';
+
+        $html .= '<div class="row justify-content-start">';
+        $html .= '<div class="col-sm-auto">';
+        $html .= '<button type="submit" form="change_password" class="btn btn-primary">'
+            . icon('save') . __('form.save') . '</button>' . "\n";
+        $html .= '</div>';
+        $html .= '<form class="col-sm-auto" action="'
+            . url('/users/' . $user_id . '/password/reset')
+            . '" method="post">' . "\n";
+        $html .= form_csrf();
+        $html .= '<button type="submit" class="btn btn-warning">'
+            . icon('envelope-at')
+            . __('password.recovery.send')
+            . '</button>';
+        $html .= '</form>';
+        $html .= '</div>';
 
         $html .= '<hr>';
 
