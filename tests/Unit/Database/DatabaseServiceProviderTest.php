@@ -19,6 +19,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class DatabaseServiceProviderTest extends ServiceProviderTest
 {
+    protected bool $callbackCalled;
+
     /**
      * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
      */
@@ -49,8 +51,10 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
                 ['db.connection', $connection]
             );
 
+        DatabaseServiceProvider::$registeredCallback = [$this, 'calledBack'];
         $serviceProvider = new DatabaseServiceProvider($app);
         $serviceProvider->register();
+        $this->assertTrue($this->callbackCalled);
     }
 
     /**
@@ -131,5 +135,22 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
         $this->setExpects($dbManager, 'getConnection', [], $connection, $this->atLeastOnce());
 
         return [$app, $dbManager, $pdo, $database, $connection];
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        DatabaseServiceProvider::$registeredCallback = null;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        DatabaseServiceProvider::$registeredCallback = null;
+    }
+
+    public function calledBack(): void
+    {
+        $this->callbackCalled = true;
     }
 }

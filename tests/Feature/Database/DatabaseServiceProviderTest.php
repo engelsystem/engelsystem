@@ -25,4 +25,10 @@ class DatabaseServiceProviderTest extends DatabaseTest
         $serviceProvider->register();
         $this->assertTrue($this->app->has(Database::class));
     }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        DatabaseServiceProvider::$registeredCallback = null;
+    }
 }

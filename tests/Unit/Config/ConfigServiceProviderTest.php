@@ -8,6 +8,7 @@ use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\ConfigServiceProvider;
+use Engelsystem\Database\DatabaseServiceProvider;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\CarbonDay;
 use Engelsystem\Models\EventConfig;
@@ -239,6 +240,26 @@ class ConfigServiceProviderTest extends TestCase
         $serviceProvider = new ConfigServiceProvider($this->app, $config);
         $serviceProvider->register();
         $serviceProvider->boot();
+    }
+
+    /**
+     * @covers \Engelsystem\Config\ConfigServiceProvider::boot
+     */
+    public function testLoadConfigFromDbOnce(): void
+    {
+        $serviceProvider = new ConfigServiceProvider($this->app);
+        $serviceProvider->register();
+        // First boot call
+        $serviceProvider->boot();
+
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $config->set('file', 'no_change');
+
+        // Second boot call, should not change data
+        $serviceProvider->boot();
+        $this->assertEquals('no_change', $config->get('file'));
+        $this->assertNotNull(DatabaseServiceProvider::$registeredCallback);
     }
 
     /**

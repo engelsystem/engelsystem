@@ -8,6 +8,7 @@ use Carbon\Carbon as CarbonCarbon;
 use DateTimeZone;
 use Engelsystem\Application;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Database\DatabaseServiceProvider;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\CarbonDay;
 use Engelsystem\Models\EventConfig;
@@ -68,12 +69,19 @@ class ConfigServiceProvider extends ServiceProvider
                 return !is_null($v);
             }));
         }
+
+        DatabaseServiceProvider::$registeredCallback = [$this, 'boot'];
     }
 
     public function boot(): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');
+
+        if ($config->get('env_config')) {
+            // Already called after registering database
+            return;
+        }
 
         $this->loadConfigFromDb($config);
         $this->loadConfigFromEnv($config);
