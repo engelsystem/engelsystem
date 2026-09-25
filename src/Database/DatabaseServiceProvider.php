@@ -16,6 +16,8 @@ use Throwable;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
+    public static mixed $registeredCallback = null;
+
     public function register(): void
     {
         /** @var Config $config */
@@ -60,6 +62,10 @@ class DatabaseServiceProvider extends ServiceProvider
         $this->app->instance('db', $database);
         $this->app->instance('db.pdo', $pdo);
         $this->app->instance('db.connection', $connection);
+
+        if (is_callable(self::$registeredCallback)) {
+            $this->app->call(self::$registeredCallback);
+        }
     }
 
     /**
