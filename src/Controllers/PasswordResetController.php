@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers;
 
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -50,6 +51,7 @@ class PasswordResetController extends BaseController
             $reset = (new PasswordReset())->findOrNew($user->id);
             $reset->user_id = $user->id;
             $reset->token = bin2hex(random_bytes(16));
+            $reset->created_at = Carbon::now();
             $reset->save();
 
             $this->log->info(
@@ -111,7 +113,9 @@ class PasswordResetController extends BaseController
         $token = $request->getAttribute('token');
 
         /** @var PasswordReset|null $reset */
-        $reset = PasswordReset::whereToken($token)->first();
+        $reset = PasswordReset::whereToken($token)
+            ->where('created_at', '>=', Carbon::now()->subHours(.5))
+            ->first();
 
         if (!$reset) {
             throw new HttpNotFound();
