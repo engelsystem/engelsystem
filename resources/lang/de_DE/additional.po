@@ -599,7 +599,9 @@ msgid "config.app_key"
 msgstr "App Key"
 
 msgid "config.app_key.info"
-msgstr "Zufälliger, langer (min. 32 Zeichen) Alphanumerischer oder base64 enkodierter Schlüssel, zum Signieren benutzt"
+msgstr ""
+"Zufälliger, langer (min. 32 Zeichen) Alphanumerischer oder base64 enkodierter Schlüssel,"
+"u.a. zum Signieren von JWT Tokens beim Beitreten von Engeltypen via Link benutzt."
 
 msgid "config.database.driver"
 msgstr "Datenbank Typ"
