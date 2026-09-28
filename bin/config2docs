@@ -101,6 +101,10 @@ function squashLongValues($value)
 }
 
 foreach ($options as $option) {
+    if (empty($option['config'])) {
+        continue;
+    }
+
     echo PHP_EOL;
     echo '## ' . __($option['title']);
     echo PHP_EOL . PHP_EOL;
