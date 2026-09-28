@@ -70,6 +70,33 @@ class MailerServiceProviderTest extends ServiceProviderTestCase
         $this->assertInstanceOf(SendmailTransport::class, $transport);
     }
 
+    public function testBootDisableMissingConfig(): void
+    {
+        $app = $this->getApplication();
+
+        $serviceProvider = new MailerServiceProvider($app);
+        $serviceProvider->boot();
+
+        /** @var EngelsystemMailer $mailer */
+        $mailer = $app->get('mailer');
+        $this->assertFalse($mailer->isEnabled());
+    }
+
+    public function testBootEnabledMissingConfig(): void
+    {
+        $app = $this->getApplication();
+        /** @var Config $config */
+        $config = $app->get('config');
+        $config->set('url', 'https://example.com/test');
+
+        $serviceProvider = new MailerServiceProvider($app);
+        $serviceProvider->boot();
+
+        /** @var EngelsystemMailer $mailer */
+        $mailer = $app->get('mailer');
+        $this->assertTrue($mailer->isEnabled());
+    }
+
     public static function provideTransports(): array
     {
         return [

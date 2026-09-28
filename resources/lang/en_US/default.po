@@ -1001,7 +1001,7 @@ msgstr ""
 "You got this e-mail because you are registered in the %s."
 
 msgid "password.email.message"
-msgstr "Please visit %s to recover your password."
+msgstr "Please visit %s to recover your password.\nThis link is valid for 30 minutes."
 
 msgid "email.user.welcome.subject"
 msgstr "Welcome to %s!"

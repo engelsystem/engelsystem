@@ -14,6 +14,7 @@ use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\NullLogger;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\RawMessage;
@@ -24,6 +25,8 @@ use Symfony\Component\Mime\RawMessage;
 #[CoversMethod(EngelsystemMailer::class, 'getSubjectPrefix')]
 #[CoversMethod(EngelsystemMailer::class, 'send')]
 #[CoversMethod(EngelsystemMailer::class, 'setSubjectPrefix')]
+#[CoversMethod(EngelsystemMailer::class, 'missingConfigDisabled')]
+#[CoversMethod(EngelsystemMailer::class, 'isEnabled')]
 class EngelsystemMailerTest extends TestCase
 {
     use HasDatabase;
@@ -119,5 +122,23 @@ class EngelsystemMailerTest extends TestCase
 
         $status = $mailer->send('to@xam.pel', 'Foo Bar ', 'Lorem Ipsum!');
         $this->assertTrue($status);
+    }
+
+    public function testSendAbortIfAppUrlNotConfigured(): void
+    {
+        $symfonyMailer = $this->createMock(MailerInterface::class);
+        $symfonyMailer->expects($this->never())->method('send');
+
+        $log = new TestLogger();
+
+        $mailer = new EngelsystemMailer($log, $symfonyMailer);
+        $this->assertTrue($mailer->isEnabled());
+
+        $mailer->missingConfigDisabled();
+        $this->assertFalse($mailer->isEnabled());
+
+        $status = $mailer->send('to@xam.pel', 'Foo Bar ', 'Lorem Ipsum!');
+        $this->assertFalse($status);
+        $this->assertTrue($log->hasErrorThatContains('Application URL'));
     }
 }

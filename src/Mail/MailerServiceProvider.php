@@ -22,6 +22,7 @@ class MailerServiceProvider extends ServiceProvider
         /** @var Config $config */
         $config = $this->app->get('config');
         $mailConfig = $config->get('email');
+        $appUrl = $config->get('url');
 
         $transport = $this->getTransport($mailConfig['driver'], $mailConfig);
         $this->app->instance(TransportInterface::class, $transport);
@@ -39,6 +40,10 @@ class MailerServiceProvider extends ServiceProvider
         $mailer->setSubjectPrefix($config->get('app_name'));
         if (!empty($mailConfig['from']['name'])) {
             $mailer->setFromName($mailConfig['from']['name']);
+        }
+        if (empty($appUrl)) {
+            // Work around host injections by not sending messages with potentially forged URLs
+            $mailer->missingConfigDisabled();
         }
 
         $this->app->instance(EngelsystemMailer::class, $mailer);

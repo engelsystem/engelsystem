@@ -8,6 +8,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\PasswordResetController;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
@@ -115,6 +116,21 @@ class PasswordResetControllerTest extends ControllerTestCase
 
         $this->expectException(HttpNotFound::class);
         $controller->resetPassword(new Request());
+    }
+
+    public function testResetPasswordOldTokenIgnored(): void
+    {
+        $this->initDatabase();
+        $user = $this->createUser();
+        $token = $this->createToken($user);
+        $controller = $this->getController();
+        $request = new Request([], [], ['token' => $token->token]);
+
+        $token->created_at = Carbon::now()->subHours(.55);
+        $token->save();
+
+        $this->expectException(HttpNotFound::class);
+        $controller->resetPassword($request);
     }
 
     public function testPostResetPassword(): void
