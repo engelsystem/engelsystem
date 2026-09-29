@@ -62,7 +62,7 @@ class SessionServiceProvider extends ServiceProvider
                 'name'            => $sessionConfig['name'],
                 'cookie_secure'   => $request->isSecure(),
                 'cookie_httponly' => true,
-                'cookie_lifetime' => (int) ($sessionConfig['lifetime'] * 24 * 60 * 60),
+                'cookie_lifetime' => (int) ($sessionConfig['anonymous_lifetime']),
             ],
             'handler' => $handler,
         ]);
