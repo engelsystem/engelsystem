@@ -7,6 +7,7 @@ namespace Engelsystem\Controllers\Admin;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Controllers\NotificationType;
+use Engelsystem\Helpers\Color;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -60,10 +61,12 @@ class TagController extends BaseController
 
         $data = $this->validate($request, [
             'name' => 'required|max:255',
+            'color' => 'required|HexRgbColor|max:7',
             'delete' => 'optional|checked',
         ]);
 
         $tag->name = $data['name'];
+        $tag->color = $data['color'];
 
         if (
             $this->tag
@@ -98,7 +101,7 @@ class TagController extends BaseController
     {
         return $this->response->withView(
             'pages/tag/edit.twig',
-            ['tag' => $tag]
+            ['tag' => $tag, 'random_color' => Color::random()]
         );
     }
 }

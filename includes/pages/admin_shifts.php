@@ -388,7 +388,8 @@ function admin_shifts()
             if ($tags) {
                 $tagsList = '<br>' . __('tag.tags') . ': ';
                 foreach ($tags as $tagName) {
-                    $tagsList .= ' <span class="badge bg-secondary">' . $tagName . '</span>';
+                    $tag = Tag::whereName($tagName)->first() ?? new Tag(['name' => $tagName]);
+                    $tagsList .= ' ' . coloredBadge($tag->color, htmlspecialchars($tag->name));
                 }
                 $tagsList .= '<br><br>';
             }

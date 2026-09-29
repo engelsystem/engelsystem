@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\Color;
 use Engelsystem\Models\User\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
@@ -502,4 +503,14 @@ function pagination(LengthAwarePaginator $paginator, ?int $selectionSteps = null
 
         </nav>
     ', $items, $dropdown);
+}
+
+function coloredBadge(Color|string|null $color, string $text): string
+{
+    if (!$color instanceof Color) {
+        $color = new Color((string) $color);
+    }
+    $textColor = $color->isLight() ? 'text-dark' : 'text-light';
+
+    return '<span class="badge ' . $textColor . '" style="background-color: ' . $color . '">' . $text . '</span>';
 }

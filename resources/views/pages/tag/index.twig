@@ -24,6 +24,7 @@
                     <thead>
                         <tr>
                             <th>{{ __('general.name') }}</th>
+                            <th>{{ __('general.color') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -33,6 +34,9 @@
                             {% for item in items %}
                                 <tr>
                                     <td>{{ item.name }}</td>
+                                    <td>
+                                        {{ m.colored_badge(item.color, item.color) }}
+                                    </td>
                                     <td>
                                         <div class="d-flex ms-auto">
                                             {{ m.edit(url('admin/tags/edit/' ~ item.id)) }}
