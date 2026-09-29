@@ -348,9 +348,13 @@ function angeltypes_list_controller()
         $angeltype->actions = table_buttons($actions);
     }
 
+    /** @var UserAngelType $user_angeltype */
+    $user_angeltype = UserAngelType::whereUserId($user->id)->where('angel_type_id', $angeltype->id)->first();
+    $isSupporter = !is_null($user_angeltype) && $user_angeltype->supporter;
+
     return [
         angeltypes_title(),
-        AngelTypes_list_view($angeltypes, auth()->can('admin_angel_types')),
+        AngelTypes_list_view($angeltypes, auth()->can('admin_angel_types'), auth()->can('admin_user_angeltypes') || $isSupporter),
     ];
 }
 
@@ -384,16 +388,27 @@ function AngelType_validate_name($name, AngelType $angeltype)
  */
 function AngelTypes_with_user($userId): Collection
 {
+    $countsQuery = UserAngelType::query()
+        ->select('angel_type_id')
+        ->selectRaw('COUNT(*) AS member_count')
+        ->selectRaw('SUM(CASE WHEN confirm_user_id IS NULL THEN 1 ELSE 0 END) AS pending_count')
+        ->groupBy('angel_type_id');
+
     return AngelType::query()
         ->select([
             'angel_types.*',
             'user_angel_type.id AS user_angel_type_id',
             'user_angel_type.confirm_user_id',
             'user_angel_type.supporter',
+            'counts.member_count',
+            'counts.pending_count',
         ])
+        ->selectRaw('COALESCE(counts.member_count, 0) - (CASE WHEN angel_types.restricted THEN COALESCE(counts.pending_count, 0) ELSE 0 END) AS member_count')
+        ->selectRaw('CASE WHEN angel_types.restricted THEN COALESCE(counts.pending_count, 0) ELSE 0 END AS pending_count')
         ->leftJoin('user_angel_type', function (JoinClause $join) use ($userId) {
             $join->on('angel_types.id', 'user_angel_type.angel_type_id');
             $join->where('user_angel_type.user_id', $userId);
         })
+        ->leftJoinSub($countsQuery, 'counts', 'angel_types.id', 'counts.angel_type_id')
         ->get();
 }
