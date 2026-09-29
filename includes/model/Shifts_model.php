@@ -223,7 +223,8 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
             `angel_types`.`id`,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`shift_self_signup`
+            `angel_types`.`shift_self_signup`,
+            `angel_types`.`shift_signup_before_arrival`
         FROM `shifts`
         JOIN `needed_angel_types` ON `needed_angel_types`.`shift_id`=`shifts`.`id`
         JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -241,7 +242,8 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
             `angel_types`.`id`,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`shift_self_signup`
+            `angel_types`.`shift_self_signup`,
+            `angel_types`.`shift_signup_before_arrival`
         FROM `shifts`
         JOIN `needed_angel_types` ON `needed_angel_types`.`shift_type_id`=`shifts`.`shift_type_id`
         JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -261,7 +263,8 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
             `angel_types`.`id`,
             `angel_types`.`name`,
             `angel_types`.`restricted`,
-            `angel_types`.`shift_self_signup`
+            `angel_types`.`shift_self_signup`,
+            `angel_types`.`shift_signup_before_arrival`
         FROM `shifts`
         JOIN `needed_angel_types` ON `needed_angel_types`.`location_id`=`shifts`.`location_id`
         JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -301,7 +304,8 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
                 `angel_types`.`id`,
                 `angel_types`.`name`,
                 `angel_types`.`restricted`,
-                `angel_types`.`shift_self_signup`
+                `angel_types`.`shift_self_signup`,
+                `angel_types`.`shift_signup_before_arrival`
             FROM `shifts`
             JOIN `needed_angel_types` ON `needed_angel_types`.`shift_id`=`shifts`.`id`
             JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -319,7 +323,8 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
                 `angel_types`.`id`,
                 `angel_types`.`name`,
                 `angel_types`.`restricted`,
-                `angel_types`.`shift_self_signup`
+                `angel_types`.`shift_self_signup`,
+                `angel_types`.`shift_signup_before_arrival`
             FROM `shifts`
             JOIN `needed_angel_types` ON `needed_angel_types`.`shift_type_id`=`shifts`.`shift_type_id`
             JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -339,7 +344,8 @@ function NeededAngeltype_by_Shift_and_Angeltype(Shift $shift, AngelType $angelty
                 `angel_types`.`id`,
                 `angel_types`.`name`,
                 `angel_types`.`restricted`,
-                `angel_types`.`shift_self_signup`
+                `angel_types`.`shift_self_signup`,
+                `angel_types`.`shift_signup_before_arrival`
             FROM `shifts`
             JOIN `needed_angel_types` ON `needed_angel_types`.`location_id`=`shifts`.`location_id`
             JOIN `angel_types` ON `angel_types`.`id`= `needed_angel_types`.`angel_type_id`
@@ -554,7 +560,7 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupStatus::NOT_YET, $free_entries);
     }
 
-    if (config('signup_requires_arrival') && !$user->state->arrived) {
+    if (config('signup_requires_arrival') && !$user->state->arrived && !$angeltype->shift_signup_before_arrival) {
         return new ShiftSignupState(ShiftSignupStatus::NOT_ARRIVED, $free_entries);
     }
 
