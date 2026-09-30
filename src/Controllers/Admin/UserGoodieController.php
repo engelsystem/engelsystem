@@ -65,6 +65,7 @@ class UserGoodieController extends BaseController
                 'userdata' => $user,
                 'is_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
                 'goodie_score' => $goodieScore,
+                'goodie_by_user' => $user->state->got_goodie ? $this->user->findOrFail($user->state->got_goodie_by) : null,
             ]
         );
     }

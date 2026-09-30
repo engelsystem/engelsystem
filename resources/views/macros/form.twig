@@ -389,6 +389,7 @@ Renders a "checkbox" element that will be styled as switch.
 @param {string} [opt.info] - If set an additional info icon will be added to the label with the text as tooltip.
 @param {string} [opt.warning] - If set an additional warning icon will be added to the label with the text as tooltip.
 @param {string} [opt.form_text] - If set a describing text is desplayed below.
+@param {bool} [opt.raw_label=false] - Disables text escaping for the label. Defaults to false.
 #}
 {% macro switch(name, label, opt) %}
     <div class="form-check form-switch mb-3">
@@ -398,7 +399,11 @@ Renders a "checkbox" element that will be styled as switch.
             {%- if opt.disabled|default(false) %} disabled{% endif %}
         >
         <label class="form-check-label" for="{{ name }}">
-            {{ label }}
+            {% if opt.raw_label|default(false) %}
+                {{ label|raw }}
+            {% else %}
+                {{ label }}
+            {% endif %}
 
             {% if opt.info is defined %}
                 {{ _self.info(opt.info) }}
