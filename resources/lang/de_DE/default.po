@@ -1907,6 +1907,24 @@ msgstr "Goodie bekommen"
 msgid "user.got_goodie_by"
 msgstr "Goodie bekommen von %s"
 
+msgid "user.reserved_goodie"
+msgstr "Goodie reserviert"
+
+msgid "user.reserved_goodie_by"
+msgstr "Goodie reserviert von %s"
+
+msgid "user.goodie.reserved"
+msgstr "Für diesen Engel wurde ein Goodie reserviert."
+
+msgid "user.goodie.hand_out"
+msgstr "Ausgeben"
+
+msgid 'general.reserved'
+msgstr 'Reserviert'
+
+msgid 'goodie.reserved'
+msgstr 'Reserviertes Goodie'
+
 msgid "message.title"
 msgstr "Nachrichten"
 

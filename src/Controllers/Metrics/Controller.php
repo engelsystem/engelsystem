@@ -168,7 +168,10 @@ class Controller extends BaseController
                 'type' => 'histogram',
                 $this->stats->vouchersBuckets($metrics['voucher']) + ['sum' => $this->stats->vouchers()],
             ],
-            'goodies_issued'       => ['type' => 'counter', 'help' => 'Issued Goodies', $this->stats->goodies()],
+            'goodies'       => ['type' => 'gauge', 'help' => 'Goodies',
+                ['labels' => ['state' => 'issued'], 'value' => $this->stats->goodies(true)],
+                ['labels' => ['state' => 'reserved'], 'value' => $this->stats->goodies(false)],
+            ],
             'tshirt_sizes'         => [
                 'type' => 'gauge',
                 'help' => 'The sizes users have configured',

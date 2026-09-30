@@ -730,11 +730,29 @@ msgstr "Got goodie"
 msgid "user.got_goodie_by"
 msgstr "Got goodie by %s"
 
+msgid "user.reserved_goodie"
+msgstr "Reserved goodie"
+
+msgid "user.reserved_goodie_by"
+msgstr "Reserved goodie by %s"
+
+msgid "user.goodie.reserved"
+msgstr "A goodie is reserved for this angel."
+
+msgid "user.goodie.hand_out"
+msgstr "Hand out"
+
+msgid "goodie.reserved"
+msgstr "Reserved goodie"
+
+msgid "general.reserved"
+msgstr "Reserved"
+
 msgid "message.title"
 msgstr "Messages"
 
 msgid "message.choose_angel"
-msgstr "Choose an Angel"
+msgstr "Choose an angel"
 
 msgid "message.to_conversation"
 msgstr "To Conversation"
