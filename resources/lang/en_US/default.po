@@ -727,6 +727,9 @@ msgstr "Arrive"
 msgid "user.got_goodie"
 msgstr "Got goodie"
 
+msgid "user.got_goodie_by"
+msgstr "Got goodie by %s"
+
 msgid "message.title"
 msgstr "Messages"
 

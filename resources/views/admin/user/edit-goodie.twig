@@ -51,8 +51,9 @@
                         'checked': userdata.state.active,
                     }) }}
 
-                    {{ f.switch('got_goodie', __('user.got_goodie'), {
+                    {{ f.switch('got_goodie', userdata.state.got_goodie ? __('user.got_goodie_by', [m.user(goodie_by_user)]) : __('user.got_goodie') , {
                         'checked': userdata.state.got_goodie,
+                        'raw_label': true,
                     }) }}
                 </div>
                 <div class="col-md-12">

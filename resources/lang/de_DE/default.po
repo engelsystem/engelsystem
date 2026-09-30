@@ -1904,6 +1904,9 @@ msgstr "Ankommen"
 msgid "user.got_goodie"
 msgstr "Goodie bekommen"
 
+msgid "user.got_goodie_by"
+msgstr "Goodie bekommen von %s"
+
 msgid "message.title"
 msgstr "Nachrichten"
 
