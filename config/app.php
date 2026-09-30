@@ -355,6 +355,10 @@ return [
                         'tshirt',
                     ],
                 ],
+                'enable_reserved_goodie' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
                 'enable_email_goodie' => [
                     'type' => 'boolean',
                     'default' => false,

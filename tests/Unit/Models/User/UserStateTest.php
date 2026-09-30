@@ -19,6 +19,9 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(State::class, 'gotGoodieBy')]
 #[CoversMethod(State::class, 'getGotGoodieAttribute')]
 #[CoversMethod(State::class, 'scopeWhereGotGoodie')]
+#[CoversMethod(State::class, 'reservedGoodieBy')]
+#[CoversMethod(State::class, 'getReservedGoodieAttribute')]
+#[CoversMethod(State::class, 'scopeWhereReservedGoodie')]
 #[CoversMethod(State::class, 'getArrivedAttribute')]
 #[CoversMethod(State::class, 'scopeWhereArrived')]
 class UserStateTest extends ModelTestCase
@@ -134,7 +137,6 @@ class UserStateTest extends ModelTestCase
 
     public function testGetGotGoodieAttribute(): void
     {
-
         $state = new State();
         $this->assertFalse($state->got_goodie);
 
@@ -173,5 +175,47 @@ class UserStateTest extends ModelTestCase
         $model->save();
 
         $this->assertEquals($got_goodie_by->id, $model->gotGoodieBy->id);
+    }
+
+    public function testGetReservedGoodieAttribute(): void
+    {
+        $state = new State();
+        $this->assertFalse($state->reserved_goodie);
+
+        $user = User::factory()->create();
+        $state->reserved_goodie_by = $user->id;
+        $this->assertTrue($state->reserved_goodie);
+    }
+
+    public function testScopeWhereReservedGoodie(): void
+    {
+        $user = User::factory()->create();
+        $state = $user->state;
+        $state->reserved_goodie_by = null;
+        $state->save();
+        $this->assertCount(0, State::whereReservedGoodie(true)->get());
+        $this->assertCount(1, State::whereReservedGoodie(false)->get());
+
+        $state->reserved_goodie_by = $user->id;
+        $state->save();
+        $this->assertCount(1, State::whereReservedGoodie(true)->get());
+        $this->assertCount(0, State::whereReservedGoodie(false)->get());
+    }
+
+    public function testReservedGoodieBy(): void
+    {
+        $user = User::factory()->create();
+        $reserved_goodie_by = User::factory()->create();
+
+        $model = new State();
+        $model->user()->associate($user);
+        $model->save();
+
+        $this->assertNull($model->reservedGoodieBy);
+
+        $model->reservedGoodieBy()->associate($reserved_goodie_by);
+        $model->save();
+
+        $this->assertEquals($reserved_goodie_by->id, $model->reservedGoodieBy->id);
     }
 }
