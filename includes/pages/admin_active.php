@@ -31,6 +31,7 @@ function admin_active()
     $request = request();
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_enabled = $goodie !== GoodieType::None;
+    $reserved_enabled = config('enable_reserved_goodie');
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
 
     $msg = '';
@@ -63,6 +64,7 @@ function admin_active()
         if ($request->hasPostData('ack')) {
             State::query()
                 ->whereNull('got_goodie_by')
+                ->whereNull('reserved_goodie_by')
                 ->update(['active' => false]);
 
             $query = User::query()
@@ -284,9 +286,13 @@ function admin_active()
         );
         $userData['active'] = icon_bool($user->state->active);
         $userData['force_active'] = icon_bool($user->state->force_active);
-        $userData['force_food'] = icon_bool($user->state->force_food);
-        $userData['tshirt'] = icon_bool($user->state->got_goodie);
         $userData['shift_count'] = $user['shift_count'];
+
+        if ($reserved_enabled && !$user->state->got_goodie && $user->state->reserved_goodie) {
+            $userData['tshirt'] = icon('archive-fill', 'text-warning', __('general.reserved'));
+        } else {
+            $userData['tshirt'] = icon_bool($user->state->got_goodie);
+        }
 
         $actions = [];
         if (!$user->state->active) {
@@ -357,7 +363,15 @@ function admin_active()
                         . __('user.got_goodie'),
                         'btn-sm',
                         false,
-                        'secondary'
+                        'secondary',
+                        '',
+                        $reserved_enabled && $user->state->reserved_goodie
+                            ? [
+                                'confirm_submit_title' => __('goodie.reserved'),
+                                'confirm_submit_text' => __('user.goodie.reserved'),
+                                'confirm_button_text' => __('user.goodie.hand_out'),
+                            ]
+                            : []
                     )],
                     url('/admin-active', $parametersShirt),
                     false,
@@ -411,16 +425,25 @@ function admin_active()
             $query = State::query()
                 ->leftJoin('users_settings', 'users_state.user_id', '=', 'users_settings.user_id')
                 ->leftJoin('users_personal_data', 'users_state.user_id', '=', 'users_personal_data.user_id')
-                ->where('users_personal_data.shirt_size', '=', $size)
-            ;
-            $given = $query->clone()->whereNotNull('users_state.got_goodie_by')->count();
-            $notGiven = $query->clone()->whereNull('users_state.got_goodie_by')->count();
+                ->where('users_personal_data.shirt_size', '=', $size);
+            $given = $query->clone()
+                ->whereNotNull('users_state.got_goodie_by')
+                ->count();
+            $reserved = $query->clone()
+                ->whereNull('users_state.got_goodie_by')
+                ->whereNotNull('users_state.reserved_goodie_by')
+                ->count();
+            $notGiven = $query->clone()
+                ->whereNull('users_state.got_goodie_by')
+                ->whereNull('users_state.reserved_goodie_by')
+                ->count();
 
             $totalSum = $given + $notGiven;
             $total += $totalSum;
             $goodie_statistics[] = [
                 'size' => $size,
                 'given' => $given,
+                'reserved' => $reserved,
                 'total' => $totalSum,
             ];
         }
@@ -429,6 +452,7 @@ function admin_active()
     $goodie_statistics[] = array_merge(
         ($goodie_tshirt ? ['size' => '<b>' . __('Sum') . '</b>'] : []),
         ['given' => '<b>' . State::whereGotGoodie(true)->count() . '</b>'],
+        ['reserved' => '<b>' . State::whereReservedGoodie(true)->whereNull('got_goodie_by')->count() . '</b>'],
         ['total' => '<b>' . $total . '</b>'],
     );
 
@@ -458,7 +482,7 @@ function admin_active()
                 [
                     'active' => __('Active'),
                 ],
-                (config('enable_force_active') ? ['force_active' => __('Forced'),] : []),
+                (config('enable_force_active') ? ['force_active' => __('Forced')] : []),
                 ($goodie_enabled ? ['tshirt' => __('Goodie')] : []),
                 [
                     'actions' => __('general.actions'),
@@ -470,6 +494,7 @@ function admin_active()
         $goodie_enabled ? table(array_merge(
             ($goodie_tshirt ? ['size' => __('Size')] : []),
             ['given' => __('Given goodies')],
+            $reserved_enabled ? ['reserved' => __('Reserved Goodies')] : [],
             $goodie_tshirt ? ['total' => __('Configured T-shirts')] : [],
         ), $goodie_statistics) : '',
     ]);

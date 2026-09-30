@@ -93,6 +93,7 @@ class UserGoodieControllerTest extends ControllerTestCase
     public function testSaveGoodie(): void
     {
         $this->config->set('goodie_type', GoodieType::Tshirt->value);
+        $this->config->set('enable_reserved_goodie', true);
         $request = $this->request
             ->withAttribute('user_id', 1)
             ->withParsedBody([
@@ -108,12 +109,12 @@ class UserGoodieControllerTest extends ControllerTestCase
 
         $user = User::find(1);
         $auth
-            ->expects($this->exactly(6))
+            ->expects($this->exactly(7))
             ->method('can')
             ->with('admin_arrive')
-            ->willReturnOnConsecutiveCalls(true, true, false, false, true, true);
+            ->willReturnOnConsecutiveCalls(true, true, true, false, false, true, true);
         $this->setExpects($auth, 'user', null, $user, $this->any());
-        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(6));
+        $this->setExpects($redirector, 'back', null, $this->response, $this->exactly(7));
 
         $controller = new UserGoodieController(
             $auth,
@@ -135,6 +136,20 @@ class UserGoodieControllerTest extends ControllerTestCase
         $this->assertFalse($user->state->arrived);
         $this->assertFalse($user->state->active);
         $this->assertFalse($user->state->got_goodie);
+        $this->assertFalse($user->state->reserved_goodie);
+
+        // Set reserved
+        $request = $request
+            ->withParsedBody([
+                'shirt_size' => 'S',
+                'reserved_goodie' => '1',
+            ]);
+
+        $controller->saveGoodie($request);
+
+        $user = User::find(1);
+
+        $this->assertTrue($user->state->reserved_goodie);
 
         // Set active, arrived and got_goodie
         $request = $request
@@ -142,7 +157,7 @@ class UserGoodieControllerTest extends ControllerTestCase
                 'shirt_size' => 'S',
                 'arrived'    => '1',
                 'active'     => '1',
-                'got_goodie'  => '1',
+                'got_goodie' => '1',
             ]);
 
         $controller->saveGoodie($request);
@@ -151,6 +166,7 @@ class UserGoodieControllerTest extends ControllerTestCase
         $this->assertTrue($user->state->active);
         $this->assertTrue($user->state->arrived);
         $this->assertTrue($user->state->got_goodie);
+        $this->assertTrue($user->state->reserved_goodie);
 
         // Shirt size not available
         $request = $request

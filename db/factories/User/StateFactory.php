@@ -20,6 +20,7 @@ class StateFactory extends Factory
         $force_active_by = $this->faker->optional(.1)->passthrough(User::factory());
         $force_food_by = $this->faker->optional(.1)->passthrough(User::factory());
         $got_goodie_by = $this->faker->optional(.3)->passthrough(User::factory());
+        $reserved_goodie_by = $this->faker->optional(.1)->passthrough(User::factory());
 
         return [
             'user_id'      => User::factory(),
@@ -28,6 +29,7 @@ class StateFactory extends Factory
             'active'       => $this->faker->boolean(.3),
             'force_active_by' => $force_active_by,
             'force_food_by' => $force_food_by,
+            'reserved_goodie_by' => $reserved_goodie_by,
             'got_goodie_by'   => $got_goodie_by,
             'got_voucher'  => $this->faker->numberBetween(0, 10),
         ];
