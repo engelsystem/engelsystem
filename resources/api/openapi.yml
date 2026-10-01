@@ -208,6 +208,10 @@ components:
           type: boolean
           example: false
           description: True if the news should be highlightet and shown on the dashboard
+        comments_count:
+          type: integer
+          example: 3
+          description: Number of comments on this news item
         created_at:
           $ref: '#/components/schemas/DateTime'
         updated_at:
@@ -223,9 +227,42 @@ components:
         - is_meeting
         - is_pinned
         - is_highlighted
+        - comments_count
         - created_at
         - updated_at
         - url
+    NewsDetail:
+      allOf:
+        - $ref: '#/components/schemas/News'
+        - type: object
+          properties:
+            comments:
+              type: array
+              items:
+                $ref: '#/components/schemas/NewsComment'
+          required:
+            - comments
+    NewsComment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 17
+        text:
+          type: string
+          example: Looking forward to it!
+        user:
+          $ref: '#/components/schemas/Reference'
+        created_at:
+          $ref: '#/components/schemas/DateTime'
+        updated_at:
+          $ref: '#/components/schemas/DateTimeOptional'
+      required:
+        - id
+        - text
+        - user
+        - created_at
+        - updated_at
     Location:
       type: object
       properties:
@@ -699,6 +736,36 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+
+  /news/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: News identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - news
+      summary: Get a single news item including its comments
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NewsDetail'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
   /locations:
     get:
