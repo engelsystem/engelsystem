@@ -10,11 +10,8 @@ use Engelsystem\Models\Location;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 
-//use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
-
 #[CoversMethod(LocationsController::class, '__construct')]
 #[CoversMethod(LocationsController::class, 'index')]
-//#[AllowMockObjectsWithoutExpectations]
 class LocationsControllerTest extends ControllerTestCase
 {
     protected Redirector|MockObject $redirect;

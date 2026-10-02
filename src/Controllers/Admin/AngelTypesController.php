@@ -87,8 +87,6 @@ class AngelTypesController extends BaseController
             }
         }
 
-        $validation = [];
-
         $data = $this->validate(
             $request,
             [
@@ -104,7 +102,7 @@ class AngelTypesController extends BaseController
                 'hide_on_shift_view' => 'optional|checked',
                 'requires_driver_license' => 'optional|checked',
                 'requires_ifsg_certificate' => 'optional|checked',
-            ] + $validation
+            ]
         );
 
         if ($this->auth->can('angeltypes.edit')) {
@@ -170,8 +168,8 @@ class AngelTypesController extends BaseController
 
         $angelType = $this->angelType->findOrFail($data['id']);
 
-        $shiftsEntries = $angelType->shiftEntries;
-        foreach ($shiftsEntries as $entry) {
+        $shiftEntries = $angelType->shiftEntries;
+        foreach ($shiftEntries as $entry) {
             event('shift.entry.deleting', ['entry' => $entry]);
         }
         $angelType->delete();
