@@ -318,11 +318,6 @@ thead {
 // +--------+        |
 // | Content         |
 // +-----------------+
-//
-// since .col elements have usually no borders, no gutters are implemented.
-// but when adding borders the need for gutters becomes apparent.
-// to add gutters without changing html a margin is added. as a result .col elements would not fit into the
-// bootstrap .row anymore. To fix this the width of used .col elements is recalculated.
 
 .col:has(> h4),
 .col-md-2:has(> h4),
@@ -339,71 +334,27 @@ thead {
 .col-xl-7:has(> h4),
 .col-12:has(> h4),
 .col-md-12:has(> h4) {
-  border-width: 2px !important;
-  border-color: $erp-table-border;
-  border-style: solid;
-  margin: calc(var(--bs-gutter-x) * 0.5);
-}
+  --bs-gutter-x: 1.5rem;
 
-.col-12:has(> h4) {
-  width: calc(100% - var(--bs-gutter-x));
-}
+  position: relative;
+  padding: 0 calc(var(--bs-gutter-x) * .5 + 1rem) calc(var(--bs-gutter-x) * 0.5);
 
-@media (min-width: 576px) {
-  .col-sm-3:has(> h4) {
-    width: calc(25% - var(--bs-gutter-x));
-  }
+  margin-top: calc(var(--bs-gutter-x) * .5);
+  margin-bottom: calc(var(--bs-gutter-x) * .5);
 
-  .col-sm-4:has(> h4) {
-    width: calc(33.33333333% - var(--bs-gutter-x));
-  }
+  min-width: min-content;
 
-  .col-sm-6:has(> h2, > h4) {
-    width: calc(50% - var(--bs-gutter-x));
-  }
-}
-
-@media (min-width: 768px) {
-  .col-md-2:has(> h4) {
-    width: calc(16.66666667% - var(--bs-gutter-x));
-  }
-
-  .col-md-4:has(> h3) {
-    width: calc(33.33333333% - var(--bs-gutter-x));
-  }
-
-  .col-md-6:has(> h4) {
-    width: calc(50% - var(--bs-gutter-x));
-  }
-
-  .col-md-12:has(> h4) {
-    width: calc(100% - var(--bs-gutter-x));
-  }
-}
-
-@media (min-width: 992px) {
-  .col-lg-5:has(> h4) {
-    width: calc(41.66666667% - var(--bs-gutter-x));
-  }
-}
-
-@media (min-width: 1200px) {
-  .col-xl-4:has(> h4) {
-    width: calc(33.33333333% - var(--bs-gutter-x));
-  }
-
-  .col-xl-5:has(> h4) {
-    width: calc(41.66666667% - var(--bs-gutter-x));
-  }
-
-  .col-xl-7:has(> h4) {
-    width: calc(58.33333333% - var(--bs-gutter-x));
-  }
-}
-
-@media (min-width: 1400px) {
-  .col-xxl-4:has(> h4) {
-    width: calc(33.33333333% - var(--bs-gutter-x));
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--bs-gutter-x) * .5);
+    right: calc(var(--bs-gutter-x) * .5);
+    border-width: 2px;
+    border-color: $erp-table-border;
+    border-style: solid;
+    pointer-events: none;
   }
 }
 
@@ -424,10 +375,7 @@ thead {
 .col-md-12 > h4:first-child {
   width: fit-content;
 
-  margin-top: -1px;
-  padding-top: 1px;
-
-  margin-left: calc(var(--bs-gutter-x) * -0.5 - 1px);
+  margin-left: calc(var(--bs-gutter-x) * -0.5 - 2px);
   padding-left: calc(var(--bs-gutter-x) * 0.5);
 
   $triangle-width: 1.3em;
@@ -439,6 +387,8 @@ thead {
   background-size: $triangle-width 100%, calc(100% - $triangle-width) 100%;
   background-position: right top, left top;
   background-repeat: no-repeat;
+
+  text-wrap: nowrap;
 }
 //</editor-fold>
 
@@ -470,11 +420,6 @@ thead {
 
 //<editor-fold desc="edge cases & workarounds">
 
-//fix buttons hugging border on login page
-.col-sm-6.text-center {
-  padding-bottom: calc(var(--bs-gutter-x) * 0.5);
-}
-
 //fix heading on login page
 #welcome-title {
   color: $erp-logo-bg;
@@ -483,18 +428,6 @@ thead {
 
   .icon-icon_angel {
     background-color: $erp-logo-bg;
-  }
-}
-
-//fix padding on faq page
-.row > form > .col-md-12 {
-  padding: 0 calc(var(--bs-gutter-x) * 0.5) calc(var(--bs-gutter-x) * 0.5) calc(var(--bs-gutter-x) * 0.5);
-}
-
-//fix resized .cols to spill over to the right if no general or small .col class is used
-@media (max-width: 767px) {
-  div[class='col-md-2']:has(> h4) {
-    width: calc(100% - var(--bs-gutter-x));
   }
 }
 //</editor-fold>
