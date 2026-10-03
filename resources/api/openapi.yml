@@ -722,6 +722,36 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
 
+  /locations/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Location identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - location
+      summary: Get a single location
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Location'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
   /locations/{id}/shifts:
     parameters:
       - name: id
