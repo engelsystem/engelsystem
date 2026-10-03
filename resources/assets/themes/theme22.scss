@@ -164,7 +164,7 @@ body {
   padding-top: 60px;
 }
 
-h1 {
+h1:first-child, {
   color: $erp-logo-bg;
   background-color: white;
   font-style: italic;
@@ -173,6 +173,10 @@ h1 {
   padding-left: var(--bs-gutter-x);
   padding-right: var(--bs-gutter-x);
   padding-bottom: 2px;
+
+  .icon-icon_angel {
+    background-color: $erp-logo-bg;
+  }
 }
 //</editor-fold>
 
@@ -403,21 +407,21 @@ thead {
   }
 }
 
-.col > h4,
-.col-md-2 > h4,
-.col-sm-3 > h4,
-.col-sm-4 > h4,
-.col-md-4 > h3,
-.col-xl-4 > h4,
-.col-xxl-4 > h4,
-.col-lg-5 > h4,
-.col-xs-6 > h4,
-.col-sm-6 > h2,
-.col-sm-6 > h4,
-.col-md-6 > h4,
-.col-xl-7 > h4,
-.col-12 > h4,
-.col-md-12 > h4 {
+.col > h4:first-child,
+.col-md-2 > h4:first-child,
+.col-sm-3 > h4:first-child,
+.col-sm-4 > h4:first-child,
+.col-md-4 > h3:first-child,
+.col-xl-4 > h4:first-child,
+.col-xxl-4 > h4:first-child,
+.col-lg-5 > h4:first-child,
+.col-xs-6 > h4:first-child,
+.col-sm-6 > h2:first-child,
+.col-sm-6 > h4:first-child,
+.col-md-6 > h4:first-child,
+.col-xl-7 > h4:first-child,
+.col-12 > h4:first-child,
+.col-md-12 > h4:first-child {
   width: fit-content;
 
   margin-top: -1px;
@@ -469,6 +473,17 @@ thead {
 //fix buttons hugging border on login page
 .col-sm-6.text-center {
   padding-bottom: calc(var(--bs-gutter-x) * 0.5);
+}
+
+//fix heading on login page
+#welcome-title {
+  color: $erp-logo-bg;
+  background-color: white;
+  padding-top: 8px;
+
+  .icon-icon_angel {
+    background-color: $erp-logo-bg;
+  }
 }
 
 //fix padding on faq page
