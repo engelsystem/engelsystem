@@ -268,7 +268,7 @@ function user_angeltype_update_controller(): array
     if (!$request->has('user_angeltype_id')) {
         throw new HttpNotFound();
     }
-    if (!auth()->can('angeltypes.edit') && !config('supporters_can_promote')) {
+    if (!auth()->can('user.angeltypes.edit') && !config('supporters_can_promote')) {
         throw new HttpForbidden();
     }
 
@@ -377,7 +377,7 @@ function user_angeltype_add_controller(): array
             ]);
 
             $setSupporter = $request->hasPostData('set_supporter')
-                && (auth()->can('angeltypes.edit') || config('supporters_can_promote'));
+                && (auth()->can('user.angeltypes.edit') || config('supporters_can_promote'));
             if ($setSupporter) {
                 $userAngelType->supporter = true;
             }
