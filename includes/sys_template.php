@@ -137,13 +137,13 @@ function icon_bool($boolean)
  * @param string $dom_id
  * @return string
  */
-function div($class, $content = [], $dom_id = '')
+function div($class, $content = [], $dom_id = '', $plainTag = '')
 {
     if (is_array($content)) {
         $content = join("\n", $content);
     }
     $dom_id = $dom_id != '' ? ' id="' . $dom_id . '"' : '';
-    return '<div' . $dom_id . ' class="' . $class . '">' . $content . '</div>';
+    return '<div' . $dom_id . ' class="' . $class . '"' . ($plainTag != '' ? ' ' . $plainTag : '') . '>' . $content . '</div>';
 }
 
 /**
