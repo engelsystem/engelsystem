@@ -155,7 +155,7 @@ msgid "oauth.invalid_request"
 msgstr "Der OAuth-Provider lehnt die Anfrage aufgrund eines ungültigen oder fehlenden Parameters ab."
 
 msgid "oauth.unauthorized_client"
-msgstr "Authorisierung als Client beim OAuth-Provider ungültig."
+msgstr "Autorisierung als Client beim OAuth-Provider ungültig."
 
 msgid "oauth.access_denied"
 msgstr "Der Nutzer oder der OAuth-Provider hat die Anfrage abgelehnt."
@@ -330,7 +330,7 @@ msgid "jwt.wrong_format"
 msgstr "Der aufgerufene Link ist nicht vollständig"
 
 msgid "jwt.code_error"
-msgstr "Der aufgerufene Link hat probleme"
+msgstr "Der aufgerufene Link ist ungültig."
 
 msgid "config.event"
 msgstr "Event"
@@ -482,10 +482,10 @@ msgid "config.signup_requires_arrival"
 msgstr "Schichten eintragen benötigt Ankommen"
 
 msgid "config.signup_requires_arrival.info"
-msgstr "Nur angekommene benutzer können sich in Schichten eintragen"
+msgstr "Nur angekommene Benutzer können sich in Schichten eintragen"
 
 msgid "config.autoarrive"
-msgstr "Automatisches ankommen"
+msgstr "Automatisches Ankommen"
 
 msgid "config.autoarrive.info"
 msgstr "Setzt Benutzer automatisch bei Registrierung als angekommen"
@@ -500,7 +500,7 @@ msgid "config.join_qr_code"
 msgstr "Beitreten QR Code"
 
 msgid "config.join_qr_code.info"
-msgstr "Erlaubt das beitreten zu einem Engeltypen mit einem QR Code, benötigt app_key"
+msgstr "Erlaubt das Beitreten zu einem Engeltypen mit einem QR Code, benötigt app_key"
 
 msgid "config.certificates"
 msgstr "Zertifikate"
@@ -515,10 +515,10 @@ msgid "config.shifts"
 msgstr "Schichten"
 
 msgid "config.signup_advance_hours"
-msgstr "Eintragen vor start"
+msgstr "Eintragen vor Start"
 
 msgid "config.signup_advance_hours.info"
-msgstr "Erlaube das Eintragen in Schichten erst n Stunden vor begin. Ein Wert von 0 deaktiviert die Einschränkung."
+msgstr "Erlaube das Eintragen in Schichten erst n Stunden vor Beginn. Ein Wert von 0 deaktiviert die Einschränkung."
 
 msgid "config.signup_post_minutes"
 msgstr "Eintragen nach Start"
@@ -545,7 +545,7 @@ msgid "config.last_unsubscribe.info"
 msgstr "Anzahl an Stunden in denen sich ein Benutzer vorher aus einer Schicht austragen kann"
 
 msgid "config.max_freeloadable_shifts"
-msgstr "Maximum schwänzbare Schichten"
+msgstr "Maximal schwänzbare Schichten"
 
 msgid "config.max_freeloadable_shifts.info"
 msgstr ""
@@ -723,7 +723,7 @@ msgid "config.display_users.info"
 msgstr "Anzahl angezeigter Benutzer in einer Tabelle"
 
 msgid "config.filter_max_duration"
-msgstr "Shichten-Filter"
+msgstr "Schichten-Filter"
 
 msgid "config.filter_max_duration.info"
 msgstr ""
@@ -785,13 +785,13 @@ msgid "config.jwt_expiration_time.info"
 msgstr "Anzahl an Minuten nach denen ein JWT abläuft, bspw für max. Zeit zum Engeltyp beitreten"
 
 msgid "config.guzzle_timeout"
-msgstr "HTTP Anfrage timeout"
+msgstr "HTTP Anfrage Timeout"
 
 msgid "config.guzzle_timeout.info"
 msgstr "Anzahl Sekunden die bei externen Anfragen gewartet wird, zum Beispiel beim Aktualisieren des Programms"
 
 msgid "config.warning_logout"
-msgstr "Änderungen führen zum logout aller Benutzer!"
+msgstr "Änderungen führen zum Logout aller Benutzer!"
 
 msgid "plugin.install.success"
 msgstr "Plugin erfolgreich installiert"
