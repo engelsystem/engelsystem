@@ -113,8 +113,8 @@ function admin_user()
         }
 
         $options = [
-            '1' => __('Yes'),
-            '0' => __('No'),
+            '1' => __('general.yes'),
+            '0' => __('general.no'),
         ];
 
         // Arrived?

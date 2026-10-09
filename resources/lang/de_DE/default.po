@@ -722,10 +722,10 @@ msgstr "Alle Engel"
 msgid "This user does not exist."
 msgstr "Benutzer existiert nicht."
 
-msgid "Yes"
+msgid "general.yes"
 msgstr "Ja"
 
-msgid "No"
+msgid "general.no"
 msgstr "Nein"
 
 msgid "Force active"
