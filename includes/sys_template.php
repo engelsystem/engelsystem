@@ -127,8 +127,8 @@ function icon(string $icon_name, string $class = '', string $title = ''): string
 function icon_bool($boolean)
 {
     return $boolean
-        ? icon( 'check-lg', 'text-success', __('Yes'))
-        : icon('x-lg', 'text-danger', __('No'));
+        ? icon('check-lg', 'text-success', __('general.yes'))
+        : icon('x-lg', 'text-danger', __('general.no'));
 }
 
 /**

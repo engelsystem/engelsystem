@@ -1002,6 +1002,12 @@ msgstr "%dh %02dm"
 msgid "general.id"
 msgstr "ID"
 
+msgid "general.yes"
+msgstr "Yes"
+
+msgid "general.no"
+msgstr "No"
+
 msgid "general.user"
 msgstr "User"
 
