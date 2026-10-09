@@ -105,6 +105,9 @@ class SettingsController extends BaseController
         $user->settings->email_news = $data['email_news'] ?: false;
         $user->settings->email_human = $data['email_human'] ?: false;
         $user->settings->email_messages = $data['email_messages'] ?: false;
+        if ($this->auth->can('question.edit')) {
+            $user->settings->email_questions = $data['email_questions'] ?: false;
+        }
 
         if ($goodie_enabled && config('enable_email_goodie')) {
             $user->settings->email_goodie = $data['email_goodie'] ?: false;
@@ -468,6 +471,7 @@ class SettingsController extends BaseController
             'email_human' => 'optional|checked',
             'email_messages' => 'optional|checked',
             'email_goodie' => 'optional|checked',
+            'email_questions' => 'optional|checked',
         ];
         if (config('enable_planned_arrival')) {
             $rules['planned_arrival_date'] = 'required|date:Y-m-d';
