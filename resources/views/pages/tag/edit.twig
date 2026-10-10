@@ -26,6 +26,14 @@
                     }) }}
                 </div>
                 <div class="col-md-12">
+                    {{ f.color('color', __('general.color'), {
+                        'required': true,
+                        'required_icon': true,
+                        'value': tag ? tag.color : random_color,
+                        'max_length': 7,
+                    }) }}
+                </div>
+                <div class="col-md-12">
                     {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
 
                     {% if tag and tag.id %}

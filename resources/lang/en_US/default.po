@@ -52,6 +52,9 @@ msgstr "DECT"
 msgid "general.name"
 msgstr "Name"
 
+msgid "general.color"
+msgstr "Color"
+
 msgid "general.shifts"
 msgstr "Shifts"
 

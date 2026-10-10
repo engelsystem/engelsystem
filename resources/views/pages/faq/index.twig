@@ -52,9 +52,7 @@
                     {% endif %}
 
                     {% for tag in tags|default([]) %}
-                        <a href="{{ url('/faq/tag/' ~ tag.id) }}" class="badge bg-secondary">
-                            {{ tag.name }}
-                        </a>
+                        <a href="{{ url('/faq/tag/' ~ tag.id) }}">{{ m.colored_badge(tag.color, tag.name) }}</a>
                     {% endfor %}
                 </div>
             {% endblock %}
@@ -82,9 +80,8 @@
 
                                 <div class="me-3">
                                     {% for tag in item.tags %}
-                                        <a href="{{ url('/faq/tag/' ~ tag.id ~ '#faq-' ~ item.id) }}" class="badge bg-secondary">
-                                            {{ tag.name }}
-                                        </a>
+                                        <a href="{{ url('/faq/tag/' ~ tag.id ~ '#faq-' ~ item.id) }}"
+                                        >{{ m.colored_badge(tag.color, tag.name) }}</a>
                                     {% endfor %}
                                 </div>
 

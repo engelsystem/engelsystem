@@ -611,6 +611,9 @@ msgstr "Gruppenrechte"
 msgid "general.name"
 msgstr "Name"
 
+msgid "general.color"
+msgstr "Farbe"
+
 msgid "Privileges"
 msgstr "Privilegien"
 
