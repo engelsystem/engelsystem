@@ -94,7 +94,8 @@ class StatsTest extends TestCase
         $this->addUsers();
 
         $stats = new Stats($this->database);
-        $this->assertEquals(2, $stats->goodies());
+        $this->assertEquals(1, $stats->goodies(true));
+        $this->assertEquals(1, $stats->goodies(false));
     }
 
     public function testTshirtSizes(): void
@@ -562,7 +563,7 @@ class StatsTest extends TestCase
             [
                 'arrival_date' => Carbon::now(),
                 'active' => 1,
-                'got_goodie_by' => $user->id,
+                'reserved_goodie_by' => $user->id,
                 'force_active_by' => $user->id,
             ],
         );

@@ -558,6 +558,9 @@ msgstr "Goodie"
 msgid "config.goodie_type"
 msgstr "Goodie Typ"
 
+msgid "config.enable_reserved_goodie"
+msgstr "Reservierbare Goodies"
+
 msgid "config.enable_email_goodie"
 msgstr "E-Mail Opt-In"
 

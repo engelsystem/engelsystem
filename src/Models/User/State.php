@@ -21,6 +21,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property int|null    $force_food_by
  * @property-read bool   $got_goodie
  * @property int|null    $got_goodie_by
+ * @property-read bool   $reserved_goodie
+ * @property int|null    $reserved_goodie_by
  * @property int         $got_voucher
  *
  * @method static QueryBuilder|State[] whereArrived($value)
@@ -33,6 +35,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|State[] whereForceFoodBy($value)
  * @method static QueryBuilder|State[] whereGotGoodie($value)
  * @method static QueryBuilder|State[] whereGotGoodieBy($value)
+ * @method static QueryBuilder|State[] whereReservedGoodie($value)
+ * @method static QueryBuilder|State[] whereReservedGoodieBy($value)
  * @method static QueryBuilder|State[] whereGotVoucher($value)
  */
 class State extends HasUserModel
@@ -44,13 +48,14 @@ class State extends HasUserModel
 
     /** @var array<string, bool|int|null> Default attributes */
     protected $attributes = [ // phpcs:ignore
-        'arrival_date' => null,
-        'user_info'    => null,
-        'active'       => false,
+        'arrival_date'    => null,
+        'user_info'       => null,
+        'active'          => false,
         'force_active_by' => null,
-        'force_food_by' => null,
+        'force_food_by'   => null,
         'got_goodie_by'   => null,
-        'got_voucher'  => 0,
+        'reserved_goodie_by'   => null,
+        'got_voucher'     => 0,
     ];
 
     /** @var array<string, string> */
@@ -60,7 +65,7 @@ class State extends HasUserModel
         'active'       => 'boolean',
         'force_active_by' => 'integer',
         'force_food_by'   => 'integer',
-        'got_goodie_by'   => 'integer',
+        'reserved_goodie_by' => 'integer',
         'got_voucher'  => 'integer',
     ];
 
@@ -77,6 +82,7 @@ class State extends HasUserModel
         'force_active_by',
         'force_food_by',
         'got_goodie_by',
+        'reserved_goodie_by',
         'got_voucher',
     ];
 
@@ -150,6 +156,30 @@ class State extends HasUserModel
         return $value
             ? $query->whereNotNull('got_goodie_by')
             : $query->whereNull('got_goodie_by');
+    }
+
+    public function reservedGoodieBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reserved_goodie_by');
+    }
+
+    /**
+     * Accessor: for reserved_goodie property
+     * Derived from reserved_goodie_by being not null
+     */
+    public function getReservedGoodieAttribute(): bool
+    {
+        return $this->reserved_goodie_by !== null;
+    }
+
+    /**
+     * provide WhereReservedGoodie query scope
+     */
+    public static function scopeWhereReservedGoodie(Builder $query, bool $value): Builder
+    {
+        return $value
+            ? $query->whereNotNull('reserved_goodie_by')
+            : $query->whereNull('reserved_goodie_by');
     }
 
     /**

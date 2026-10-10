@@ -15,6 +15,10 @@
 
         {% include 'layouts/parts/messages.twig' %}
 
+        {% if userdata.state.reserved_goodie and not userdata.state.got_goodie %}
+            {{ m.alert(__('user.goodie.reserved'), 'warning') }}
+        {% endif %}
+
         <div class="row">
             {% set score = goodie_score == '~' ? __('user.goodie_score.enough') : goodie_score %}
             <p>{{ __('user.goodie_score', [score]) }}</p>
@@ -51,8 +55,16 @@
                         'checked': userdata.state.active,
                     }) }}
 
-                    {{ f.switch('got_goodie', __('user.got_goodie'), {
+                    {% if config('enable_reserved_goodie') and not userdata.state.got_goodie %}
+                        {{ f.switch('reserved_goodie', userdata.state.reserved_goodie ? __('user.reserved_goodie_by', [m.user(userdata.state.reservedGoodieBy)]) : __('user.reserved_goodie') , {
+                            'checked': userdata.state.reserved_goodie,
+                            'raw_label': true,
+                        }) }}
+                    {% endif %}
+
+                    {{ f.switch('got_goodie', userdata.state.got_goodie ? __('user.got_goodie_by', [m.user(userdata.state.gotGoodieBy)]) : __('user.got_goodie') , {
                         'checked': userdata.state.got_goodie,
+                        'raw_label': true,
                     }) }}
                 </div>
                 <div class="col-md-12">

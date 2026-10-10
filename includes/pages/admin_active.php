@@ -63,6 +63,7 @@ function admin_active()
         if ($request->hasPostData('ack')) {
             State::query()
                 ->whereNull('got_goodie_by')
+                ->whereNull('reserved_goodie_by')
                 ->update(['active' => false]);
 
             $query = User::query()
@@ -284,9 +285,13 @@ function admin_active()
         );
         $userData['active'] = icon_bool($user->state->active);
         $userData['force_active'] = icon_bool($user->state->force_active);
-        $userData['force_food'] = icon_bool($user->state->force_food);
-        $userData['tshirt'] = icon_bool($user->state->got_goodie);
         $userData['shift_count'] = $user['shift_count'];
+
+        if (config('enable_reserved_goodie') && !$user->state->got_goodie && $user->state->reserved_goodie) {
+            $userData['tshirt'] = icon('archive-fill', 'text-warning', __('general.reserved'));
+        } else {
+            $userData['tshirt'] = icon_bool($user->state->got_goodie);
+        }
 
         $actions = [];
         if (!$user->state->active) {
@@ -357,7 +362,15 @@ function admin_active()
                         . __('user.got_goodie'),
                         'btn-sm',
                         false,
-                        'secondary'
+                        'secondary',
+                        '',
+                        config('enable_reserved_goodie') && $user->state->reserved_goodie
+                            ? [
+                                'confirm_submit_title' => __('goodie.reserved'),
+                                'confirm_submit_text' => __('user.goodie.reserved'),
+                                'confirm_button_text' => __('user.goodie.hand_out'),
+                            ]
+                            : []
                     )],
                     url('/admin-active', $parametersShirt),
                     false,
@@ -458,7 +471,7 @@ function admin_active()
                 [
                     'active' => __('Active'),
                 ],
-                (config('enable_force_active') ? ['force_active' => __('Forced'),] : []),
+                (config('enable_force_active') ? ['force_active' => __('Forced')] : []),
                 ($goodie_enabled ? ['tshirt' => __('Goodie')] : []),
                 [
                     'actions' => __('general.actions'),

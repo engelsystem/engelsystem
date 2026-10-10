@@ -113,9 +113,9 @@ function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '
  * @param string $class
  * @return string
  */
-function icon(string $icon_name, string $class = ''): string
+function icon(string $icon_name, string $class = '', string $title = ''): string
 {
-    return ' <span class="bi bi-' . $icon_name . ($class ? ' ' . $class : '') . '"></span> ';
+    return ' <span class="bi bi-' . $icon_name . ($class ? ' ' . $class : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '></span> ';
 }
 
 /**
@@ -126,9 +126,9 @@ function icon(string $icon_name, string $class = ''): string
  */
 function icon_bool($boolean)
 {
-    return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">'
-        . icon($boolean ? 'check-lg' : 'x-lg')
-        . '</span>';
+    return $boolean
+        ? icon('check-lg', 'text-success', __('general.yes'))
+        : icon('x-lg', 'text-danger', __('general.no'));
 }
 
 /**

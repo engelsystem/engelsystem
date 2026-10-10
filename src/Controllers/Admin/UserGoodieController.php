@@ -82,6 +82,7 @@ class UserGoodieController extends BaseController
             'arrived'    => 'optional|checked',
             'active'     => 'optional|checked',
             'got_goodie' => 'optional|checked',
+            'reserved_goodie' => 'optional|checked',
         ]);
 
         if ($shirtEnabled) {
@@ -91,7 +92,7 @@ class UserGoodieController extends BaseController
 
         if ($this->auth->can('admin_arrive')) {
             if ($user->state->arrived != (bool) $data['arrived']) {
-                if ((bool) $data['arrived']) {
+                if ($data['arrived']) {
                     $user->state->arrival_date = new Carbon();
                 } else {
                     $user->state->arrival_date = null;
@@ -103,11 +104,20 @@ class UserGoodieController extends BaseController
         if ($user->state->got_goodie != (bool) $data['got_goodie']) {
             $user->state->got_goodie_by = $data['got_goodie'] ? $this->auth->user()->id : null;
         }
+        if (
+            config('enable_reserved_goodie')
+            && $user->state->reserved_goodie != (bool) $data['reserved_goodie']
+            && !$user->state->got_goodie
+            && !$data['got_goodie']
+        ) {
+            $user->state->reserved_goodie_by = $data['reserved_goodie'] ? $this->auth->user()->id : null;
+        }
         $user->state->save();
 
         $this->log->info(
             'Updated user goodie state {user} ({id}): '
-            . '{size}, arrived: {arrived}, active: {active}, got goodie: {got_goodie}',
+            . '{size}, arrived: {arrived}, active: {active}, '
+            . 'reserved goodie {reserved_goodie}, got goodie: {got_goodie}',
             [
                 'id'        => $user->id,
                 'user'      => $user->name,
@@ -115,6 +125,7 @@ class UserGoodieController extends BaseController
                 'arrived'   => $user->state->arrived ? 'yes' : 'no',
                 'active'    => $user->state->active ? 'yes' : 'no',
                 'got_goodie' => $user->state->got_goodie ? 'yes' : 'no',
+                'reserved_goodie' => config('enable_reserved_goodie') && $user->state->reserved_goodie ? 'yes' : 'no',
             ]
         );
 
