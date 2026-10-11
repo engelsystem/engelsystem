@@ -11,9 +11,18 @@ use Illuminate\Support\Collection;
 class ShiftCalendarRenderer
 {
     /**
-     * 15m * 60s/m = 900s
+     * Default seconds per row: 15m * 60s/m = 900s
+     * Can be overridden via the 'shift_view_seconds_per_row' config option.
      */
     public const SECONDS_PER_ROW = 900;
+
+    /**
+     * @return int
+     */
+    public static function secondsPerRow(): int
+    {
+        return (int) config('shift_view_seconds_per_row') ?: self::SECONDS_PER_ROW;
+    }
 
     /**
      * Height of a block in pixel.
@@ -177,9 +186,9 @@ class ShiftCalendarRenderer
         $rendered_until = $this->getFirstBlockStartTime();
 
         foreach ($lane->getShifts() as $shift) {
-            while ($rendered_until + ShiftCalendarRenderer::SECONDS_PER_ROW <= $shift->start->timestamp) {
+            while ($rendered_until + self::secondsPerRow() <= $shift->start->timestamp) {
                 $html .= $this->renderTick($rendered_until);
-                $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
+                $rendered_until += self::secondsPerRow();
             }
 
             $needed_angeltypes = collect($this->needed_angeltypes[$shift->id]);
@@ -216,12 +225,12 @@ class ShiftCalendarRenderer
                 auth()->user()
             );
             $html .= $shift_html;
-            $rendered_until += $shift_height * ShiftCalendarRenderer::SECONDS_PER_ROW;
+            $rendered_until += $shift_height * self::secondsPerRow();
         }
 
         while ($rendered_until < $this->getLastBlockEndTime()) {
             $html .= $this->renderTick($rendered_until);
-            $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
+            $rendered_until += self::secondsPerRow();
         }
 
         $bg = 'bg-' . theme_type();
@@ -245,7 +254,7 @@ class ShiftCalendarRenderer
         $class = $label ? 'tick bg-' . theme_type() : 'tick ';
 
         $diffNow = $time->diffInMinutes() * 60;
-        if ($diffNow >= 0 && $diffNow < self::SECONDS_PER_ROW) {
+        if ($diffNow >= 0 && $diffNow < self::secondsPerRow()) {
             $class .= ' now';
         }
 
@@ -282,7 +291,7 @@ class ShiftCalendarRenderer
             ]),
         ];
         for ($block = 0; $block < $this->getBlocksPerSlot(); $block++) {
-            $thistime = $this->getFirstBlockStartTime() + ($block * ShiftCalendarRenderer::SECONDS_PER_ROW);
+            $thistime = $this->getFirstBlockStartTime() + ($block * self::secondsPerRow());
             $time_slot[] = $this->renderTick($thistime, true);
         }
         return div('lane time', $time_slot);
@@ -300,9 +309,9 @@ class ShiftCalendarRenderer
                 $start_time = $shift->start->timestamp;
             }
         }
-        return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(
+        return self::secondsPerRow() * floor(
             ($start_time - ShiftCalendarRenderer::TIME_MARGIN)
-                / ShiftCalendarRenderer::SECONDS_PER_ROW
+                / self::secondsPerRow()
         );
     }
 
@@ -319,9 +328,9 @@ class ShiftCalendarRenderer
             }
         }
 
-        return ShiftCalendarRenderer::SECONDS_PER_ROW * ceil(
+        return self::secondsPerRow() * ceil(
             ($end_time + ShiftCalendarRenderer::TIME_MARGIN)
-                / ShiftCalendarRenderer::SECONDS_PER_ROW
+                / self::secondsPerRow()
         );
     }
 
@@ -332,7 +341,7 @@ class ShiftCalendarRenderer
     {
         return (int) ceil(
             ($this->getLastBlockEndTime() - $this->getFirstBlockStartTime())
-            / ShiftCalendarRenderer::SECONDS_PER_ROW
+            / self::secondsPerRow()
         );
     }
 
