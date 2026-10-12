@@ -1922,11 +1922,11 @@ msgstr "Für diesen Engel wurde ein Goodie reserviert."
 msgid "user.goodie.hand_out"
 msgstr "Ausgeben"
 
-msgid 'general.reserved'
-msgstr 'Reserviert'
+msgid "general.reserved"
+msgstr "Reserviert"
 
-msgid 'goodie.reserved'
-msgstr 'Reserviertes Goodie'
+msgid "goodie.reserved"
+msgstr "Reserviertes Goodie"
 
 msgid "message.title"
 msgstr "Nachrichten"
