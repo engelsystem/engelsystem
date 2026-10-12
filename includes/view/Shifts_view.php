@@ -256,7 +256,7 @@ function Shift_view(
     $tags = [];
     foreach ($shift->tags as $tag) {
         $tags[] = ' <a href="' . url('/user-shifts', ['tag' => $tag->id]) . '">'
-            . '<span class="badge bg-secondary">' . $tag->name . '</span>'
+            . coloredBadge($tag->color, htmlspecialchars($tag->name))
             . '</a>';
     }
 

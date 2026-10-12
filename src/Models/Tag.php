@@ -13,12 +13,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @property int $id
  * @property string $name
+ * @property string $color
  *
  * @property-read Collection|Faq[]   $faqs
  * @property-read Collection|Shift[] $shifts
  *
  * @method static Builder|Group whereId($value)
  * @method static Builder|Group whereName($value)
+ * @method static Builder|Group whereColor($value)
  */
 class Tag extends BaseModel
 {
@@ -27,6 +29,12 @@ class Tag extends BaseModel
     /** @var string[] */
     protected $fillable = [ // phpcs:ignore
         'name',
+        'color',
+    ];
+
+    /** @var array Default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'color' => '#424242',
     ];
 
     public function faqs(): BelongsToMany
