@@ -4,7 +4,7 @@ const path = require('path');
 // biome-ignore-end lint/style/useNodejsImportProtocol: reason
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const MinimizerPlugin = require('minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
@@ -60,7 +60,7 @@ module.exports = {
     clean: true,
   },
   optimization: {
-    minimizer: __DEV__ ? [] : [new CssMinimizerPlugin(), new TerserPlugin()],
+    minimizer: __DEV__ ? [] : [new MinimizerPlugin(), new TerserPlugin()],
   },
   module: {
     rules: [
