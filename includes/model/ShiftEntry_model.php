@@ -57,12 +57,7 @@ function ShiftEntry_onDelete(ShiftEntry $shiftEntry): void
  */
 function ShiftEntries_upcoming_for_user(User $user): Collection
 {
-    return $user->shiftEntries()
-        ->with(['shift', 'shift.shiftType'])
-        ->join('shifts', 'shift_entries.shift_id', 'shifts.id')
-        ->where('shifts.end', '>', Carbon::now())
-        ->orderBy('shifts.end')
-        ->get();
+    return $user->upcomingShiftEntries();
 }
 
 /**
