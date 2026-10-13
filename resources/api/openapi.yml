@@ -347,16 +347,22 @@ components:
           description: The shift entry ID
         user:
           $ref: '#/components/schemas/Reference'
+        freeloaded:
+          type: boolean
+          description: Whether the shift entry has been marked as freeloaded (user did not arrive)
         freeloaded_by:
           oneOf:
             - $ref: '#/components/schemas/Reference'
           nullable: true
           description: >
             Contains a reference to the user who has marked this shift entry as freeloaded, if
-            for a user not arriving to their shift
+            for a user not arriving to their shift. Without the `api` privilege only provided to
+            shift admins (`user_shifts_admin`) and supporters of the entry's angel type, `null`
+            otherwise; use `freeloaded` to check the state.
       required:
         - id
         - user
+        - freeloaded
         - freeloaded_by
     ShiftType:
       type: object
