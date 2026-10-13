@@ -10,6 +10,8 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Location;
+use Engelsystem\Models\Shifts\NeededAngelType;
+use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -18,6 +20,9 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(LocationsController::class, 'index')]
 #[CoversMethod(LocationsController::class, 'show')]
 #[CoversMethod(LocationsController::class, 'hasPermission')]
+#[CoversMethod(LocationsController::class, 'webPermission')]
+#[CoversMethod(LocationsController::class, 'withDetails')]
+#[CoversMethod(LocationsController::class, 'locationData')]
 #[CoversMethod(LocationResource::class, 'toArray')]
 #[AllowMockObjectsWithoutExpectations]
 class LocationsControllerTest extends ApiBaseControllerTestCase
@@ -96,17 +101,75 @@ class LocationsControllerTest extends ApiBaseControllerTestCase
         $controller->show($request);
     }
 
-    public function testHasPermissionWithAuthenticatedUser(): void
+    public function testShowWithoutDetailPrivileges(): void
     {
-        $user = User::factory()->create();
+        $location = Location::factory()->create();
+        NeededAngelType::factory()->create(['location_id' => $location->id, 'shift_id' => null, 'count' => 2]);
 
-        $auth = $this->createMock(Authenticator::class);
-        $this->setExpects($auth, 'user', null, $user);
+        $data = $this->showData($location, ['api']);
+
+        $this->assertNull($data['needed_angel_types']);
+        $this->assertNull($data['shifts_count']);
+    }
+
+    public function testShowNeededAngelTypes(): void
+    {
+        $location = Location::factory()->create();
+        /** @var NeededAngelType $needed */
+        $needed = NeededAngelType::factory()
+            ->create(['location_id' => $location->id, 'shift_id' => null, 'count' => 2]);
+        NeededAngelType::factory()->create(['location_id' => $location->id, 'shift_id' => null, 'count' => 0]);
+
+        $data = $this->showData($location, ['locations.view', 'admin_shifts']);
+
+        $this->assertEquals([[
+            'angel_type' => ['id' => $needed->angelType->id, 'name' => $needed->angelType->name],
+            'count' => 2,
+        ]], $data['needed_angel_types']);
+        $this->assertNull($data['shifts_count']);
+    }
+
+    public function testShowShiftsCount(): void
+    {
+        $location = Location::factory()->create();
+        Shift::factory(2)->create(['location_id' => $location->id]);
+
+        $data = $this->showData($location, ['locations.view', 'locations.edit']);
+
+        $this->assertNull($data['needed_angel_types']);
+        $this->assertEquals(2, $data['shifts_count']);
+    }
+
+    public function testIndexWithDetailPrivileges(): void
+    {
+        $location = Location::factory()->create();
+        Shift::factory()->create(['location_id' => $location->id]);
 
         $controller = new LocationsController(new Response());
-        $controller->setAuth($auth);
+        $controller->setAuth($this->auth(['admin_shifts', 'locations.edit']));
 
+        $response = $controller->index();
+        $this->validateApiResponse('/locations', 'get', $response);
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertEquals([], $data['data'][0]['needed_angel_types']);
+        $this->assertEquals(1, $data['data'][0]['shifts_count']);
+    }
+
+    public function testHasPermission(): void
+    {
+        $controller = new LocationsController(new Response());
+
+        $controller->setAuth($this->auth(['locations.view']));
         $this->assertTrue($controller->hasPermission(new Request(), 'index'));
+        $this->assertTrue($controller->hasPermission(new Request(), 'show'));
+
+        $controller->setAuth($this->auth(['api']));
+        $this->assertTrue($controller->hasPermission(new Request(), 'index'));
+
+        $controller->setAuth($this->auth(['news']));
+        $this->assertFalse($controller->hasPermission(new Request(), 'index'));
+        $this->assertFalse($controller->hasPermission(new Request(), 'show'));
     }
 
     public function testHasPermissionWithoutAuthenticatedUser(): void
@@ -125,5 +188,36 @@ class LocationsControllerTest extends ApiBaseControllerTestCase
         $controller = new LocationsController(new Response());
 
         $this->assertFalse($controller->hasPermission(new Request(), 'index'));
+    }
+
+    /**
+     * @param string[] $privileges
+     */
+    protected function showData(Location $location, array $privileges): array
+    {
+        $request = new Request();
+        $request = $request->withAttribute('location_id', (string) $location->id);
+
+        $controller = new LocationsController(new Response());
+        $controller->setAuth($this->auth($privileges));
+
+        $response = $controller->show($request);
+        $this->validateApiResponse('/locations/{id}', 'get', $response);
+
+        return json_decode($response->getContent(), true)['data'];
+    }
+
+    /**
+     * @param string[] $privileges
+     */
+    protected function auth(array $privileges): Authenticator
+    {
+        $auth = $this->createMock(Authenticator::class);
+        $auth->method('user')->willReturn(User::factory()->create());
+        $auth->method('can')->willReturnCallback(
+            fn(array|string $abilities): bool => empty(array_diff((array) $abilities, $privileges))
+        );
+
+        return $auth;
     }
 }

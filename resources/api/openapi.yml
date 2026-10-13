@@ -257,6 +257,21 @@ components:
           type: string
           example: https://example.com/location/42
           description: Link of the location page
+        needed_angel_types:
+          type: array
+          nullable: true
+          description: >
+            Angel types needed by default for shifts in this location. Only provided by the
+            location endpoints and only with the `admin_shifts` privilege, `null` otherwise.
+          items:
+            $ref: '#/components/schemas/NeededAngelTypeCount'
+        shifts_count:
+          type: integer
+          nullable: true
+          example: 23
+          description: >
+            Number of shifts in this location. Only provided by the location endpoints and only
+            with the `locations.edit` privilege, `null` otherwise.
       required:
         - id
         - name
@@ -283,6 +298,18 @@ components:
         - entries
         - angel_type
         - needs
+    NeededAngelTypeCount:
+      type: object
+      properties:
+        angel_type:
+          $ref: '#/components/schemas/Reference'
+        count:
+          type: integer
+          example: 3
+          description: Number of needed angels
+      required:
+        - angel_type
+        - count
     Shift:
       type: object
       properties:
@@ -739,7 +766,7 @@ paths:
       tags:
         - location
       summary: Get a list of locations
-      description: Requires the `api` privilege.
+      description: Requires the `api` or the `locations.view` privilege.
       responses:
         '200':
           description: Ok
@@ -770,6 +797,7 @@ paths:
       tags:
         - location
       summary: Get a single location
+      description: Requires the `api` or the `locations.view` privilege.
       responses:
         '200':
           description: Ok
