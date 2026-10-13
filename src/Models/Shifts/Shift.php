@@ -252,6 +252,15 @@ class Shift extends BaseModel
     }
 
     /**
+     * Whether the user may sign the given angel out of the shift: users managing the entry (shift
+     * admins and supporters of its angel type) at any time, angels themselves until signOutUntil()
+     */
+    public function signOutAllowed(int $signoutUserId, User $user, bool $managesEntry): bool
+    {
+        return $managesEntry || ($signoutUserId == $user->id && $this->signOutUntil() > Carbon::now());
+    }
+
+    /**
      * Check if the shift is a night shift
      */
     public function isNightShift(): bool

@@ -37,6 +37,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversMethod(Shift::class, 'tags')]
 #[CoversMethod(Shift::class, 'signupAvailableFrom')]
 #[CoversMethod(Shift::class, 'signOutUntil')]
+#[CoversMethod(Shift::class, 'signOutAllowed')]
 class ShiftTest extends ModelTestCase
 {
     public function testShiftType(): void
@@ -277,6 +278,24 @@ class ShiftTest extends ModelTestCase
         $shift = new Shift(['start' => new Carbon('2042-01-02 10:00')]);
         $this->assertEquals(new Carbon('2042-01-02 07:00'), $shift->signOutUntil());
         $this->assertEquals(new Carbon('2042-01-02 10:00'), $shift->start);
+    }
+
+    public function testSignOutAllowed(): void
+    {
+        $this->app->instance('config', new Config(['last_unsubscribe' => 3]));
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $other */
+        $other = User::factory()->create();
+
+        $shift = new Shift(['start' => Carbon::now()->addHours(4)]);
+        $this->assertTrue($shift->signOutAllowed($user->id, $user, false));
+        $this->assertFalse($shift->signOutAllowed($other->id, $user, false));
+        $this->assertTrue($shift->signOutAllowed($other->id, $user, true));
+
+        $shift = new Shift(['start' => Carbon::now()->addHours(2)]);
+        $this->assertFalse($shift->signOutAllowed($user->id, $user, false));
+        $this->assertTrue($shift->signOutAllowed($user->id, $user, true));
     }
 
     public function testIsNightShiftDisabled(): void
