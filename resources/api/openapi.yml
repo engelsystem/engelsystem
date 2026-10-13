@@ -13,7 +13,7 @@ info:
     It is read-only and never grants write access. Without it, an endpoint is available if the
     user has the privilege that grants the same access on the website, and its data is limited
     to what the website shows that user. Each operation lists the privileges it requires; see
-    `resources/api/readme.md` for details.
+    `resources/api/readme.md` for details. `GET /users/self` lists the user's own privileges.
   contact:
     name: GitHub Issues
     url: https://github.com/engelsystem/engelsystem/issues
@@ -458,6 +458,21 @@ components:
               description: OAuth/SSO provider identifiers linked to this user
               items:
                 $ref: '#/components/schemas/OAuthIdentifier'
+            groups:
+              type: array
+              description: Groups the user is a member of
+              items:
+                $ref: '#/components/schemas/Reference'
+            privileges:
+              type: array
+              description: >
+                Names of all privileges the user has through their groups, e.g. to check which
+                endpoints are available
+              items:
+                type: string
+              example:
+                - news
+                - user_shifts
       required:
         - email
         - tshirt_size
@@ -465,6 +480,8 @@ components:
         - language
         - arrived
         - oauth
+        - groups
+        - privileges
     OAuthIdentifier:
       type: object
       description: OAuth/SSO provider reference for a user

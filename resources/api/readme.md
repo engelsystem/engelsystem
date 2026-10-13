@@ -16,6 +16,8 @@ What a user may access follows these rules:
 
 The description of each operation in the [OpenAPI file](openapi.yml) lists the privileges it requires, the description of a field any additional privileges it requires.
 
+`GET /users/self` lists the user's own `groups` and `privileges`, so clients can check which endpoints are available.
+
 ## Links
 * [Engelsystem OpenApi](openapi.yml)
 * [OpenAPI format specification](https://swagger.io/specification/)
