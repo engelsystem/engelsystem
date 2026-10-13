@@ -312,6 +312,50 @@ class RequestTest extends TestCase
         $this->assertEquals($body, $request->getParsedBody());
     }
 
+    public function testGetParsedBodyDecodesJsonContentType(): void
+    {
+        $request = new Request(
+            [],
+            [],
+            [],
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode(['text' => 'hello'])
+        );
+
+        $this->assertEquals(['text' => 'hello'], $request->getParsedBody());
+    }
+
+    public function testGetParsedBodyIgnoresNonJsonContentType(): void
+    {
+        $request = new Request(
+            [],
+            ['foo' => 'lorem'],
+            [],
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/x-www-form-urlencoded']
+        );
+
+        $this->assertEquals(['foo' => 'lorem'], $request->getParsedBody());
+    }
+
+    public function testGetParsedBodyHandlesMalformedJsonGracefully(): void
+    {
+        $request = new Request(
+            [],
+            [],
+            [],
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            'this is not json'
+        );
+
+        $this->assertEquals([], $request->getParsedBody());
+    }
+
     public function testWithParsedBody(): void
     {
         $data = ['test' => 'er'];

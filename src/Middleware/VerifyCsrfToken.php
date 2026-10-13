@@ -24,6 +24,7 @@ class VerifyCsrfToken implements MiddlewareInterface
     {
         if (
             $this->isReading($request)
+            || $this->isSessionlessApiRequest($request)
             || $this->tokensMatch($request)
         ) {
             return $handler->handle($request);
@@ -38,6 +39,18 @@ class VerifyCsrfToken implements MiddlewareInterface
             $request->getMethod(),
             ['GET', 'HEAD', 'OPTIONS']
         );
+    }
+
+    /**
+     * API clients authenticate via API key/bearer token, not a browser session - there is no
+     * session-backed CSRF token to check, and no ambient browser credential for CSRF to protect.
+     *
+     * An API request carrying a logged-in session still needs a token: the Authenticator prefers
+     * the session user over any API key, so a cross-site form could otherwise act as that user.
+     */
+    protected function isSessionlessApiRequest(ServerRequestInterface $request): bool
+    {
+        return $request->getAttribute('route-api') && !$this->session->get('user_id');
     }
 
     protected function tokensMatch(ServerRequestInterface $request): bool

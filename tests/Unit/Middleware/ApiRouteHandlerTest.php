@@ -6,8 +6,10 @@ namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Exceptions\Handler;
 use Engelsystem\Http\Exceptions\HttpNotFound;
+use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Middleware\ApiRouteHandler;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\TestCase;
@@ -129,6 +131,30 @@ class ApiRouteHandlerTest extends TestCase
 
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('{"message":"Not Found"}', (string) $response->getBody());
+    }
+
+    public function testProcessApiValidationException(): void
+    {
+        $validator = new Validator();
+        $validator->addErrors(['text' => ['validation.text.NotEmpty']]);
+
+        $request = Request::create('/api/test');
+        $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
+
+        $handler->expects($this->once())
+            ->method('handle')
+            ->willReturnCallback(function () use ($validator): void {
+                throw new ValidationException($validator);
+            });
+
+        $middleware = new ApiRouteHandler();
+        $response = $middleware->process($request, $handler);
+
+        $this->assertEquals(422, $response->getStatusCode());
+        $this->assertEquals(
+            '{"message":"Validation failed","errors":{"text":["validation.text.NotEmpty"]}}',
+            (string) $response->getBody()
+        );
     }
 
     public function testProcessGenericException(): void
