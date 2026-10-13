@@ -35,6 +35,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversMethod(Shift::class, 'isNightShift')]
 #[CoversMethod(Shift::class, 'getNightShiftMultiplier')]
 #[CoversMethod(Shift::class, 'tags')]
+#[CoversMethod(Shift::class, 'signupAvailableFrom')]
+#[CoversMethod(Shift::class, 'signOutUntil')]
+#[CoversMethod(Shift::class, 'signOutAllowed')]
 class ShiftTest extends ModelTestCase
 {
     public function testShiftType(): void
@@ -243,6 +246,56 @@ class ShiftTest extends ModelTestCase
         $this->assertEquals($previousShift->id, $shift->previousShift()->id);
         $this->assertEquals($otherShift->id, $previousShift->previousShift()->id);
         $this->assertNull($otherShift->previousShift());
+    }
+
+    public function testSignupAvailableFrom(): void
+    {
+        $this->app->instance('config', new Config(['signup_advance_hours' => 24]));
+
+        /** @var ShiftType $shiftType */
+        $shiftType = ShiftType::factory()->create(['signup_advance_hours' => null]);
+        /** @var Shift $shift */
+        $shift = Shift::factory()->create([
+            'shift_type_id' => $shiftType->id,
+            'start' => new Carbon('2042-01-02 10:00'),
+        ]);
+        $this->assertEquals(new Carbon('2042-01-01 10:00'), $shift->signupAvailableFrom());
+
+        $shiftType->update(['signup_advance_hours' => 1.5]);
+        $shift->refresh();
+        $this->assertEquals(new Carbon('2042-01-02 08:30'), $shift->signupAvailableFrom());
+
+        $shiftType->update(['signup_advance_hours' => null]);
+        $this->app->instance('config', new Config(['signup_advance_hours' => 0]));
+        $shift->refresh();
+        $this->assertNull($shift->signupAvailableFrom());
+    }
+
+    public function testSignOutUntil(): void
+    {
+        $this->app->instance('config', new Config(['last_unsubscribe' => 3]));
+
+        $shift = new Shift(['start' => new Carbon('2042-01-02 10:00')]);
+        $this->assertEquals(new Carbon('2042-01-02 07:00'), $shift->signOutUntil());
+        $this->assertEquals(new Carbon('2042-01-02 10:00'), $shift->start);
+    }
+
+    public function testSignOutAllowed(): void
+    {
+        $this->app->instance('config', new Config(['last_unsubscribe' => 3]));
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $other */
+        $other = User::factory()->create();
+
+        $shift = new Shift(['start' => Carbon::now()->addHours(4)]);
+        $this->assertTrue($shift->signOutAllowed($user->id, $user, false));
+        $this->assertFalse($shift->signOutAllowed($other->id, $user, false));
+        $this->assertTrue($shift->signOutAllowed($other->id, $user, true));
+
+        $shift = new Shift(['start' => Carbon::now()->addHours(2)]);
+        $this->assertFalse($shift->signOutAllowed($user->id, $user, false));
+        $this->assertTrue($shift->signOutAllowed($user->id, $user, true));
     }
 
     public function testIsNightShiftDisabled(): void
