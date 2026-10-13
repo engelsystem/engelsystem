@@ -167,8 +167,71 @@ components:
           properties:
               user:
                 $ref: '#/components/schemas/Reference'
+              pronoun:
+                type: string
+                nullable: true
+                description: '`null` if pronouns are disabled'
+              dect:
+                type: string
+                nullable: true
+                description: '`null` if DECT is disabled'
+              driver_license:
+                type: object
+                nullable: true
+                description: >
+                  Driving licenses, only if the angel type requires one and for supporters of the
+                  angel type and with the `angeltypes.edit` or `user.drive.edit` privilege, `null`
+                  otherwise
+                properties:
+                  confirmed:
+                    type: boolean
+                  wants_to_drive:
+                    type: boolean
+                  has_car:
+                    type: boolean
+                  car:
+                    type: boolean
+                  transporter_3_5t:
+                    type: boolean
+                  truck_7_5t:
+                    type: boolean
+                  truck_12t:
+                    type: boolean
+                  forklift:
+                    type: boolean
+              ifsg:
+                type: object
+                nullable: true
+                description: >
+                  IfSG certificates, only if the angel type requires one and for supporters of the
+                  angel type and with the `angeltypes.edit` or `user.ifsg.edit` privilege, `null`
+                  otherwise
+                properties:
+                  confirmed:
+                    type: boolean
+                  certificate:
+                    type: boolean
+                  certificate_light:
+                    type: boolean
+                    nullable: true
+              got_goodie:
+                type: boolean
+                nullable: true
+                description: >
+                  Only with the `angeltypes.goodie.list` and `user.goodie.edit` privileges, if goodies
+                  are enabled, `null` otherwise
+              shirt_size:
+                type: string
+                nullable: true
+                description: Like `got_goodie`, only if the goodie is a T-shirt
           required:
             - user
+            - pronoun
+            - dect
+            - driver_license
+            - ifsg
+            - got_goodie
+            - shirt_size
         - $ref: '#/components/schemas/UserAngelTypeRelation'
     UserAngelTypeRelation:
         properties:
@@ -482,6 +545,103 @@ components:
         - oauth
         - groups
         - privileges
+    UserProfile:
+      type: object
+      description: Details shown on the user's profile page on the website
+      properties:
+        groups:
+          type: array
+          description: Groups the user is a member of
+          items:
+            $ref: '#/components/schemas/Reference'
+        arrived:
+          type: boolean
+          example: true
+        next_shift:
+          type: object
+          nullable: true
+          description: The user's current or next shift, `null` if none or if the user hasn't arrived
+          properties:
+            starts_at:
+              $ref: '#/components/schemas/DateTime'
+            ends_at:
+              $ref: '#/components/schemas/DateTime'
+          required:
+            - starts_at
+            - ends_at
+        vouchers:
+          type: object
+          nullable: true
+          description: >
+            Vouchers of the user. Only for the user themself and with the `admin_user` privilege,
+            if vouchers are enabled, `null` otherwise.
+          properties:
+            received:
+              type: integer
+              example: 2
+            available:
+              type: integer
+              example: 4
+              description: Number of vouchers the user is eligible for in total
+          required:
+            - received
+            - available
+        goodie_score:
+          type: number
+          nullable: true
+          example: 12.5
+          description: >
+            Worked hours counting for the goodie. Only for the user themself and with the
+            `admin_user` or `user.goodie.edit` privilege, if goodies are enabled, `null` otherwise.
+        user_info:
+          type: string
+          nullable: true
+          description: Information about the user, only with the `user.info.view` privilege, `null` otherwise
+        admin_state:
+          type: object
+          nullable: true
+          description: State of the user, only with the `admin_user` privilege, `null` otherwise
+          properties:
+            arrival_date:
+              $ref: '#/components/schemas/DateTimeOptional'
+            planned_arrival_date:
+              $ref: '#/components/schemas/DateTimeOptional'
+            active:
+              type: boolean
+            force_active:
+              type: boolean
+              nullable: true
+              description: '`null` if forcing users active is disabled'
+            force_food:
+              type: boolean
+              nullable: true
+              description: '`null` if forcing food vouchers is disabled'
+            got_goodie:
+              type: boolean
+              nullable: true
+              description: '`null` if goodies are disabled'
+            freeloader:
+              type: boolean
+            password_reset:
+              type: boolean
+              description: Whether a password reset is in progress
+          required:
+            - arrival_date
+            - planned_arrival_date
+            - active
+            - force_active
+            - force_food
+            - got_goodie
+            - freeloader
+            - password_reset
+      required:
+        - groups
+        - arrived
+        - next_shift
+        - vouchers
+        - goodie_score
+        - user_info
+        - admin_state
     OAuthIdentifier:
       type: object
       description: OAuth/SSO provider reference for a user
@@ -691,7 +851,10 @@ paths:
         - angel type
         - user
       summary: Get all users of the requested angel type
-      description: Requires the `api` privilege.
+      description: >
+        Requires the `api` or the `angeltypes.view` privilege. Without the `api` privilege,
+        unconfirmed members are only included for supporters of the angel type and with the
+        `user.angeltypes.edit` privilege.
       responses:
         '200':
           description: Ok
@@ -853,7 +1016,7 @@ paths:
       tags:
         - user
       summary: Get a list of all users
-      description: Requires the `api` privilege.
+      description: Requires the `api` or the `admin_user` privilege.
       responses:
         '200':
           description: Ok
@@ -886,7 +1049,10 @@ paths:
       tags:
         - user
       summary: Get the requesting users information
-      description: Requires the `api` privilege; `self` only requires an authenticated user.
+      description: >
+        Requires an authenticated user. Without the `api` privilege, other users' name, pronoun
+        and contact details are only included if shown on their profile page on the website,
+        unless the user has the `admin_user` privilege.
       responses:
         '200':
           description: Ok
@@ -896,9 +1062,11 @@ paths:
                 type: object
                 properties:
                   data:
-                    anyOf:
-                      - $ref: '#/components/schemas/UserDetail'
-                      - $ref: '#/components/schemas/User'
+                    allOf:
+                      - anyOf:
+                          - $ref: '#/components/schemas/UserDetail'
+                          - $ref: '#/components/schemas/User'
+                      - $ref: '#/components/schemas/UserProfile'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -994,7 +1162,10 @@ paths:
         - worklog
         - user
       summary: Get all worklogs of the requested user
-      description: Requires the `api` privilege; `self` only requires an authenticated user.
+      description: >
+        Requires an authenticated user. Without the `api` privilege, work logs of other users are
+        only included for users with the `admin_user` or `user.goodie.edit` privilege and
+        supporters of one of the user's angel types, as on the website.
       responses:
         '200':
           description: Ok
