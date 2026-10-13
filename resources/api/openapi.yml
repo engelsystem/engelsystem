@@ -920,6 +920,37 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundError'
 
+  /shifts/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Shift identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - shift
+      summary: Get a single shift with its needed angel types and entries
+      description: Requires the `api` or the `user_shifts` privilege.
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Shift'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
   /users:
     get:
       tags:

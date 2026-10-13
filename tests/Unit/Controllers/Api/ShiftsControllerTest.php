@@ -41,6 +41,8 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ShiftsController::class, 'supportedAngelTypes')]
 #[CoversMethod(ShiftsController::class, 'editorData')]
 #[CoversMethod(ShiftsController::class, 'entryDetails')]
+#[CoversMethod(ShiftsController::class, 'show')]
+#[CoversMethod(ShiftsController::class, 'shiftsData')]
 #[CoversMethod(ShiftsController::class, 'webPermission')]
 #[CoversMethod(ShiftsController::class, 'hasPermission')]
 #[AllowMockObjectsWithoutExpectations]
@@ -256,6 +258,7 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
         $controller = new ShiftsController(new Response());
 
         $controller->setAuth($this->auth(User::factory()->create(), ['user_shifts']));
+        $this->assertTrue($controller->hasPermission(new Request(), 'show'));
         $this->assertTrue($controller->hasPermission(new Request(), 'entriesByShiftType'));
         $this->assertTrue($controller->hasPermission(new Request(), 'entriesByUser'));
         $this->assertFalse($controller->hasPermission(new Request(), 'entriesByLocation'));
@@ -345,6 +348,47 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
         }
 
         return $entries;
+    }
+
+    public function testShow(): void
+    {
+        $request = (new Request())->withAttribute('shift_id', (string) $this->shiftA->id);
+
+        $controller = new ShiftsController(new Response());
+        $controller->setAuth($this->auth(User::factory()->create(), ['user_shifts']));
+
+        $response = $controller->show($request);
+        $this->validateApiResponse('/shifts/{id}', 'get', $response);
+
+        $data = json_decode($response->getContent(), true)['data'];
+        $this->assertEquals($this->shiftA->id, $data['id']);
+        $this->assertNotEmpty($data['needed_angel_types']);
+        $this->assertEquals($this->shiftA->shiftType->description, $data['shift_type']['description']);
+    }
+
+    public function testShowWithoutNeededAngelTypes(): void
+    {
+        $request = (new Request())->withAttribute('shift_id', (string) $this->shiftD->id);
+
+        $controller = new ShiftsController(new Response());
+        $controller->setAuth($this->auth(User::factory()->create(), ['api']));
+
+        $response = $controller->show($request);
+        $this->validateApiResponse('/shifts/{id}', 'get', $response);
+
+        $data = json_decode($response->getContent(), true)['data'];
+        $this->assertEquals($this->shiftD->id, $data['id']);
+        $this->assertEquals([], $data['needed_angel_types']);
+    }
+
+    public function testShowNotFound(): void
+    {
+        $request = (new Request())->withAttribute('shift_id', '999999');
+
+        $controller = new ShiftsController(new Response());
+
+        $this->expectException(ModelNotFoundException::class);
+        $controller->show($request);
     }
 
     public function testFreeloadedByHiddenWithoutApiPrivilege(): void

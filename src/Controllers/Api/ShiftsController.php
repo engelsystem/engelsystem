@@ -36,6 +36,7 @@ class ShiftsController extends ApiController
             'entriesByLocation' => 'locations.view',
             'entriesByShiftType' => 'user_shifts',
             'entriesByUser' => true,
+            'show' => 'user_shifts',
             default => null,
         };
     }
@@ -176,7 +177,28 @@ class ShiftsController extends ApiController
         return $this->shiftEntriesResponse($shifts);
     }
 
+    public function show(Request $request): Response
+    {
+        $id = (int) $request->getAttribute('shift_id');
+        Shift::findOrFail($id);
+
+        $data = ['data' => $this->shiftsData(Shift::query()->whereKey($id), false)[0]];
+        return $this->response
+            ->withContent(json_encode($data));
+    }
+
     protected function shiftEntriesResponse(BuilderContract $shifts): Response
+    {
+        $data = ['data' => $this->shiftsData($shifts)];
+        return $this->response
+            ->withContent(json_encode($data));
+    }
+
+    /**
+     * @param bool $skipWithoutAngelTypes Skip shifts without needed angel types or entries
+     * @return array[]
+     */
+    protected function shiftsData(BuilderContract $shifts, bool $skipWithoutAngelTypes = true): array
     {
         $shifts = $shifts
             ->with([
@@ -212,7 +234,7 @@ class ShiftsController extends ApiController
             /** @var Collection|NeededAngelType[] $neededAngelTypes */
             $neededAngelTypes = $this->getNeededAngelTypes($shift);
 
-            if ($neededAngelTypes->isEmpty()) {
+            if ($neededAngelTypes->isEmpty() && $skipWithoutAngelTypes) {
                 continue;
             }
 
@@ -249,9 +271,7 @@ class ShiftsController extends ApiController
             ];
         }
 
-        $data = ['data' => $shiftEntries];
-        return $this->response
-            ->withContent(json_encode($data));
+        return $shiftEntries;
     }
 
     /**
