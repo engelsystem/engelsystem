@@ -26,6 +26,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversMethod(MessagesController::class, 'delete')]
 #[CoversMethod(MessagesController::class, 'setRead')]
 #[CoversMethod(MessagesController::class, 'hasPermission')]
+#[CoversMethod(MessagesController::class, 'webPermission')]
 #[CoversMethod(MessageResource::class, 'toArray')]
 #[AllowMockObjectsWithoutExpectations]
 class MessagesControllerTest extends ApiBaseControllerTestCase
@@ -326,30 +327,34 @@ class MessagesControllerTest extends ApiBaseControllerTestCase
 
     public function testHasPermissionWithUserMessagesPrivilege(): void
     {
-        $user = User::factory()->create();
-
-        $auth = $this->createMock(Authenticator::class);
-        $this->setExpects($auth, 'user', null, $user);
-        $this->setExpects($auth, 'can', ['user_messages'], true);
-
         $controller = new MessagesController(new Response());
-        $controller->setAuth($auth);
+        $controller->setAuth($this->auth(['user_messages']));
 
         $this->assertTrue($controller->hasPermission(new Request(), 'index'));
+        $this->assertTrue($controller->hasPermission($this->request('POST'), 'send'));
+        $this->assertTrue($controller->hasPermission($this->request('PATCH'), 'setRead'));
+        $this->assertTrue($controller->hasPermission($this->request('DELETE'), 'delete'));
+    }
+
+    public function testHasPermissionApiPrivilegeIsReadOnly(): void
+    {
+        $controller = new MessagesController(new Response());
+        $controller->setAuth($this->auth(['api']));
+
+        $this->assertTrue($controller->hasPermission(new Request(), 'index'));
+        $this->assertTrue($controller->hasPermission(new Request(), 'show'));
+        $this->assertFalse($controller->hasPermission($this->request('POST'), 'send'));
+        $this->assertFalse($controller->hasPermission($this->request('PATCH'), 'setRead'));
+        $this->assertFalse($controller->hasPermission($this->request('DELETE'), 'delete'));
     }
 
     public function testHasPermissionWithoutUserMessagesPrivilege(): void
     {
-        $user = User::factory()->create();
-
-        $auth = $this->createMock(Authenticator::class);
-        $this->setExpects($auth, 'user', null, $user);
-        $this->setExpects($auth, 'can', ['user_messages'], false);
-
         $controller = new MessagesController(new Response());
-        $controller->setAuth($auth);
+        $controller->setAuth($this->auth(['news']));
 
         $this->assertFalse($controller->hasPermission(new Request(), 'index'));
+        $this->assertFalse($controller->hasPermission($this->request('POST'), 'send'));
     }
 
     public function testHasPermissionWithoutAuthenticatedUser(): void
@@ -368,5 +373,24 @@ class MessagesControllerTest extends ApiBaseControllerTestCase
         $controller = new MessagesController(new Response());
 
         $this->assertFalse($controller->hasPermission(new Request(), 'index'));
+    }
+
+    /**
+     * @param string[] $privileges
+     */
+    protected function auth(array $privileges): Authenticator
+    {
+        $auth = $this->createMock(Authenticator::class);
+        $auth->method('user')->willReturn(User::factory()->create());
+        $auth->method('can')->willReturnCallback(
+            fn(array|string $abilities): bool => empty(array_diff((array) $abilities, $privileges))
+        );
+
+        return $auth;
+    }
+
+    protected function request(string $method): Request
+    {
+        return (new Request())->withMethod($method);
     }
 }

@@ -876,6 +876,7 @@ paths:
       tags:
         - message
       summary: Get a list of conversations for the current user
+      description: Requires the `api` or the `user_messages` privilege.
       responses:
         '200':
           description: Ok
@@ -906,6 +907,7 @@ paths:
       tags:
         - message
       summary: Get all messages exchanged with the given user
+      description: Requires the `api` or the `user_messages` privilege.
       responses:
         '200':
           description: Ok
@@ -933,6 +935,7 @@ paths:
       tags:
         - message
       summary: Send a message to the given user
+      description: Requires the `user_messages` privilege; the read-only `api` privilege does not apply.
       requestBody:
         required: true
         content:
@@ -971,6 +974,7 @@ paths:
       tags:
         - message
       summary: Delete a message sent by the current user
+      description: Requires the `user_messages` privilege; the read-only `api` privilege does not apply.
       responses:
         '204':
           description: No content
@@ -984,6 +988,7 @@ paths:
       tags:
         - message
       summary: Set or clear the read status of a message addressed to the current user
+      description: Requires the `user_messages` privilege; the read-only `api` privilege does not apply.
       requestBody:
         required: true
         content:

@@ -10,19 +10,18 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
-use Psr\Http\Message\ServerRequestInterface;
 
 class MessagesController extends ApiController
 {
     use UsesAuth;
 
     /**
-     * Messages require the "user_messages" privilege - the same one the website requires -
-     * rather than the separate, stricter "api" privilege.
+     * Messages require the "user_messages" privilege, same as on the website. The read-only "api"
+     * privilege only grants reading them, never sending, deleting or marking them as read.
      */
-    public function hasPermission(ServerRequestInterface $request, string $method): ?bool
+    protected function webPermission(string $method): string|array|bool|null
     {
-        return (bool) $this->auth?->user() && $this->auth->can('user_messages');
+        return 'user_messages';
     }
 
     public function index(): Response
