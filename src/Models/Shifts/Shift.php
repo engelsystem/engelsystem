@@ -230,6 +230,28 @@ class Shift extends BaseModel
     }
 
     /**
+     * When angels can sign up for the shift at the earliest, null if they can sign up at any time
+     */
+    public function signupAvailableFrom(): ?Carbon
+    {
+        $signupAdvanceHours = $this->shiftType->signup_advance_hours ?: config('signup_advance_hours');
+        if (!$signupAdvanceHours) {
+            return null;
+        }
+
+        return $this->start->subSeconds((int) round($signupAdvanceHours * 3600));
+    }
+
+    /**
+     * Until when angels can sign themselves out of the shift (exclusive), shift admins and supporters
+     * of the angel type can sign them out at any time
+     */
+    public function signOutUntil(): Carbon
+    {
+        return $this->start->subHours(config('last_unsubscribe'));
+    }
+
+    /**
      * Check if the shift is a night shift
      */
     public function isNightShift(): bool

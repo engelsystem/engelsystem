@@ -13,7 +13,9 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\Group;
 use Engelsystem\Models\OAuth;
+use Engelsystem\Models\Privilege;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
@@ -70,6 +72,12 @@ class UsersControllerTest extends ApiBaseControllerTestCase
             ->has(OAuth::factory())
             ->create();
 
+        /** @var Group $group */
+        $group = Group::factory()->create(['name' => 'Some group']);
+        $group->privileges()->attach(Privilege::factory()->create(['name' => 'user_shifts']));
+        $group->privileges()->attach(Privilege::factory()->create(['name' => 'news']));
+        $user->groups()->attach($group);
+
         $auth = $this->createMock(Authenticator::class);
         $this->setExpects($auth, 'user', null, $user, $this->atLeastOnce());
 
@@ -95,6 +103,8 @@ class UsersControllerTest extends ApiBaseControllerTestCase
         $this->assertArrayHasKey('dates', $data['data']);
         $this->assertArrayHasKey('contact', $data['data']);
         $this->assertArrayHasKey('oauth', $data['data']);
+        $this->assertEquals([['id' => $group->id, 'name' => 'Some group']], $data['data']['groups']);
+        $this->assertEquals(['news', 'user_shifts'], $data['data']['privileges']);
     }
 
     public function testUserById(): void

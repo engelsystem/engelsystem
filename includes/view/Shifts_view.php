@@ -327,16 +327,16 @@ function Shift_view_alert_render(
 
     if ($shift_signup_state->getState() === ShiftSignupStatus::SIGNED_UP) {
         $alert = info(__('You are signed up for this shift.')
-            . (($shift->start->subHours(config('last_unsubscribe')) < Carbon::now() && $shift->end > Carbon::now())
+            . (($shift->signOutUntil() < Carbon::now() && $shift->end > Carbon::now())
                 ? ' ' . __('shift.sign_out.hint', [config('last_unsubscribe')])
                 : ''), true);
     }
 
-    $signupAdvanceSeconds = ($shift->shiftType->signup_advance_hours ?: config('signup_advance_hours')) * 3600;
-    if ($signupAdvanceSeconds && $shift->start->timestamp > time() + $signupAdvanceSeconds) {
+    $signupAvailableFrom = $shift->signupAvailableFrom();
+    if ($signupAvailableFrom && $signupAvailableFrom->timestamp > time()) {
         $alert = info(sprintf(
             __('This shift is in the far future. It becomes available for signup at %s.'),
-            date(__('general.datetime'), $shift->start->timestamp - $signupAdvanceSeconds)
+            date(__('general.datetime'), $signupAvailableFrom->timestamp)
         ), true);
     }
 
