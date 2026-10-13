@@ -376,6 +376,31 @@ components:
         description:
           type: string
           example: This is a generic build-up shift, mostly involving heavy lifting.
+        signup_advance_hours:
+          type: number
+          nullable: true
+          example: 72
+          description: >
+            How many hours before the start of a shift of this type angels can sign up for it,
+            `null` if the event wide default applies
+        needed_angel_types:
+          type: array
+          nullable: true
+          description: >
+            Angel types needed by default for shifts of this type. Only provided by the shift type
+            endpoints and only with the `shifttypes.view` privilege, `null` otherwise.
+          items:
+            type: object
+            properties:
+              angel_type:
+                $ref: '#/components/schemas/Reference'
+              count:
+                type: integer
+                example: 3
+                description: Number of needed angels
+            required:
+              - angel_type
+              - count
       required:
         - id
         - name
@@ -796,7 +821,7 @@ paths:
       tags:
         - shift type
       summary: Get a list of shift types
-      description: Requires the `api` privilege.
+      description: Requires the `api` or the `user_shifts` privilege.
       responses:
         '200':
           description: Ok
@@ -813,6 +838,37 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+
+  /shifttypes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Shift type identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - shift type
+      summary: Get a single shift type
+      description: Requires the `api` or the `user_shifts` privilege.
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ShiftType'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
   /shifttypes/{id}/shifts:
     parameters:
