@@ -165,6 +165,8 @@ class ShiftsController extends ApiController
             ->get();
         /** @var Shift[]|Collection $shifts */
 
+        $freeloadDetailsVisible = $this->freeloadDetailsVisibility();
+
         $shiftEntries = [];
         // Blob of not-optimized mediocre pseudo-serialization
         foreach ($shifts as $shift) {
@@ -188,7 +190,8 @@ class ShiftsController extends ApiController
                 $entries = $entries->map(fn(ShiftEntry $entry) => [
                     'id' => $entry->id,
                     'user' => UserResource::toIdentifierArray($entry->user),
-                    'freeloaded_by' => $entry->freeloaded_by
+                    'freeloaded' => (bool) $entry->freeloaded_by,
+                    'freeloaded_by' => $entry->freeloaded_by && $freeloadDetailsVisible($entry)
                         ? UserResource::toIdentifierArray($entry->freeloadedBy)
                         : null,
                 ]);
@@ -212,6 +215,27 @@ class ShiftsController extends ApiController
     /**
      * Collect all needed angel types
      */
+    /**
+     * Who marked an entry as freeloaded is only shown to shift admins and supporters of the
+     * entry's angel type on the website; "api" users keep seeing it for all entries
+     *
+     * @return callable(ShiftEntry): bool
+     */
+    protected function freeloadDetailsVisibility(): callable
+    {
+        if ($this->hasApiPrivilege() || $this->auth?->can('user_shifts_admin')) {
+            return fn(ShiftEntry $entry): bool => true;
+        }
+
+        $supportedAngelTypes = $this->auth?->user()
+            ?->userAngelTypes()
+            ->wherePivot('supporter', true)
+            ->pluck('angel_types.id')
+            ?? collect();
+
+        return fn(ShiftEntry $entry): bool => $supportedAngelTypes->contains($entry->angel_type_id);
+    }
+
     protected function getNeededAngelTypes(Shift $shift): Collection
     {
         $neededAngelTypes = new Collection();

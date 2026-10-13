@@ -7,6 +7,13 @@ info:
     This API is as stable as a **beta** version might be.
     It could burst into flames and morph into a monster at any second!
     (But we try to keep it somewhat consistent, at least during events).
+
+
+    **Access:** The `api` privilege (e.g. the "API" group) grants read access to every endpoint.
+    It is read-only and never grants write access. Without it, an endpoint is available if the
+    user has the privilege that grants the same access on the website, and its data is limited
+    to what the website shows that user. Each operation lists the privileges it requires; see
+    `resources/api/readme.md` for details. `GET /users/self` lists the user's own privileges.
   contact:
     name: GitHub Issues
     url: https://github.com/engelsystem/engelsystem/issues
@@ -101,6 +108,18 @@ components:
           type: boolean
           example: false
           description: True if the angel type requires an introduction
+        requires_driver_license:
+          type: boolean
+          example: false
+          description: True if members need a driver license
+        requires_ifsg_certificate:
+          type: boolean
+          example: false
+          description: True if members need an IfSG certificate (food handling)
+        shift_self_signup:
+          type: boolean
+          example: true
+          description: True if members can sign themselves up for shifts
         contact:
           allOf:
             - $ref: '#/components/schemas/ContactName'
@@ -114,6 +133,10 @@ components:
         - id
         - name
         - description
+        - restricted
+        - requires_driver_license
+        - requires_ifsg_certificate
+        - shift_self_signup
         - contact
         - url
     ContactDect:
@@ -340,16 +363,22 @@ components:
           description: The shift entry ID
         user:
           $ref: '#/components/schemas/Reference'
+        freeloaded:
+          type: boolean
+          description: Whether the shift entry has been marked as freeloaded (user did not arrive)
         freeloaded_by:
           oneOf:
             - $ref: '#/components/schemas/Reference'
           nullable: true
           description: >
             Contains a reference to the user who has marked this shift entry as freeloaded, if
-            for a user not arriving to their shift
+            for a user not arriving to their shift. Without the `api` privilege only provided to
+            shift admins (`user_shifts_admin`) and supporters of the entry's angel type, `null`
+            otherwise; use `freeloaded` to check the state.
       required:
         - id
         - user
+        - freeloaded
         - freeloaded_by
     ShiftType:
       type: object
@@ -445,6 +474,21 @@ components:
               description: OAuth/SSO provider identifiers linked to this user
               items:
                 $ref: '#/components/schemas/OAuthIdentifier'
+            groups:
+              type: array
+              description: Groups the user is a member of
+              items:
+                $ref: '#/components/schemas/Reference'
+            privileges:
+              type: array
+              description: >
+                Names of all privileges the user has through their groups, e.g. to check which
+                endpoints are available
+              items:
+                type: string
+              example:
+                - news
+                - user_shifts
       required:
         - email
         - tshirt_size
@@ -452,6 +496,8 @@ components:
         - language
         - arrived
         - oauth
+        - groups
+        - privileges
     OAuthIdentifier:
       type: object
       description: OAuth/SSO provider reference for a user
@@ -595,6 +641,7 @@ paths:
       tags:
         - angel type
       summary: Get a list of angel types
+      description: Requires the `api` or the `angeltypes.view` privilege.
       responses:
         '200':
           description: Ok
@@ -612,6 +659,37 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
 
+  /angeltypes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Angel type identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - angel type
+      summary: Get a single angel type
+      description: Requires the `api` or the `angeltypes.view` privilege.
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AngelType'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
   /angeltypes/{id}/shifts:
     parameters:
       - name: id
@@ -626,6 +704,7 @@ paths:
         - angel type
         - shift
       summary: Get all shifts of the requested angel type
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -659,6 +738,7 @@ paths:
         - angel type
         - user
       summary: Get all users of the requested angel type
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -683,6 +763,7 @@ paths:
       tags:
         - news
       summary: Get a list of all news
+      description: Requires the `api` or the `news` privilege.
       responses:
         '200':
           description: Ok
@@ -705,6 +786,7 @@ paths:
       tags:
         - location
       summary: Get a list of locations
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -736,6 +818,7 @@ paths:
         - location
         - shift
       summary: Get all shifts in the requested location
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -760,6 +843,7 @@ paths:
       tags:
         - shift type
       summary: Get a list of shift types
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -791,6 +875,7 @@ paths:
         - shift type
         - shift
       summary: Get all shifts of the requested shift type
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -815,6 +900,7 @@ paths:
       tags:
         - user
       summary: Get a list of all users
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -847,6 +933,7 @@ paths:
       tags:
         - user
       summary: Get the requesting users information
+      description: Requires the `api` privilege; `self` only requires an authenticated user.
       responses:
         '200':
           description: Ok
@@ -882,6 +969,7 @@ paths:
         - angel type
         - user
       summary: Get the users angel types
+      description: Requires an authenticated user, as the website shows a user's angel types on their profile page.
       responses:
         '200':
           description: Ok
@@ -917,6 +1005,7 @@ paths:
         - shift
         - user
       summary: Get all shifts of the requested user
+      description: Requires the `api` privilege; `self` only requires an authenticated user.
       responses:
         '200':
           description: Ok
@@ -952,6 +1041,7 @@ paths:
         - worklog
         - user
       summary: Get all worklogs of the requested user
+      description: Requires the `api` privilege; `self` only requires an authenticated user.
       responses:
         '200':
           description: Ok
@@ -976,6 +1066,7 @@ paths:
       tags:
         - event
       summary: Get event information
+      description: Does not require any privilege.
       responses:
         '200':
           description: Ok
@@ -996,6 +1087,7 @@ paths:
       tags:
         - api
       summary: Get the OpenAPI definition
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
