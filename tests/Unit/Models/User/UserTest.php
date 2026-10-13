@@ -51,6 +51,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversMethod(User::class, 'newsComments')]
 #[CoversMethod(User::class, 'oauth')]
 #[CoversMethod(User::class, 'shiftEntries')]
+#[CoversMethod(User::class, 'upcomingShiftEntries')]
 #[CoversMethod(User::class, 'sessions')]
 #[CoversMethod(User::class, 'worklogs')]
 #[CoversMethod(User::class, 'worklogsCreated')]
@@ -402,6 +403,24 @@ class UserTest extends ModelTestCase
         $oauth = $user->oauth;
 
         $this->assertCount(1, $oauth);
+    }
+
+    public function testUpcomingShiftEntries(): void
+    {
+        $user = new User($this->data);
+        $user->save();
+
+        $past = Shift::factory()->create(['start' => Carbon::now()->subHours(3), 'end' => Carbon::now()->subHour()]);
+        $later = Shift::factory()->create(['start' => Carbon::now()->addHours(3), 'end' => Carbon::now()->addHours(4)]);
+        $current = Shift::factory()->create(['start' => Carbon::now()->subHour(), 'end' => Carbon::now()->addHour()]);
+        foreach ([$past, $later, $current] as $shift) {
+            ShiftEntry::factory()->create(['shift_id' => $shift->id, 'user_id' => $user->id]);
+        }
+
+        $entries = $user->upcomingShiftEntries();
+        $this->assertCount(2, $entries);
+        $this->assertEquals($current->id, $entries[0]->shift->id);
+        $this->assertEquals($later->id, $entries[1]->shift->id);
     }
 
     public function testShiftEntries(): void
