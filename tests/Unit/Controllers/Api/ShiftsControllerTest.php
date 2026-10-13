@@ -36,6 +36,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ShiftsController::class, 'entriesByAngeltype')]
 #[CoversMethod(ShiftsController::class, 'entriesByShiftType')]
 #[CoversMethod(ShiftsController::class, 'entriesByUser')]
+#[CoversMethod(ShiftsController::class, 'freeloadDetailsVisibility')]
 #[AllowMockObjectsWithoutExpectations]
 class ShiftsControllerTest extends ApiBaseControllerTestCase
 {
@@ -145,6 +146,7 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
         $request = $request->withAttribute('shifttype_id', $firstEntry->shift->shift_type_id);
 
         $controller = new ShiftsController(new Response());
+        $controller->setAuth($this->auth(User::factory()->create(), ['api']));
 
         $response = $controller->entriesByShiftType($request);
         $this->validateApiResponse('/shifttypes/{id}/shifts', 'get', $response);
@@ -159,19 +161,93 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
         $shift = $data['data'][0];
         $this->assertNotEmpty($shift['needed_angel_types']);
 
-        $freeloaded = [];
-        foreach ($shift['needed_angel_types'] as $needed) {
-            foreach ($needed['entries'] as $entry) {
-                if (!$entry['freeloaded_by']) {
-                    continue;
-                }
+        $freeloaded = $this->freeloadedEntry($data);
+        $this->assertTrue($freeloaded['freeloaded']);
+        $this->assertNotEmpty($freeloaded['freeloaded_by']);
+        $this->assertEquals(User::first()->id, $freeloaded['freeloaded_by']['id']);
+    }
 
-                $freeloaded = $entry['freeloaded_by'];
+    public function testFreeloadedByHiddenWithoutApiPrivilege(): void
+    {
+        $data = $this->freeloadResponse(User::factory()->create(), ['user_shifts']);
+
+        $freeloaded = $this->freeloadedEntry($data);
+        $this->assertTrue($freeloaded['freeloaded']);
+        $this->assertNull($freeloaded['freeloaded_by']);
+    }
+
+    public function testFreeloadedByVisibleToShiftAdmin(): void
+    {
+        $data = $this->freeloadResponse(User::factory()->create(), ['user_shifts_admin']);
+
+        $freeloaded = $this->freeloadedEntry($data);
+        $this->assertEquals(User::first()->id, $freeloaded['freeloaded_by']['id']);
+    }
+
+    public function testFreeloadedByVisibleToAngelTypeSupporter(): void
+    {
+        /** @var ShiftEntry $entry */
+        $entry = $this->shiftA->shiftEntries()->whereNotNull('freeloaded_by')->first();
+
+        /** @var User $supporter */
+        $supporter = User::factory()->create();
+        $supporter->userAngelTypes()->attach($entry->angel_type_id, ['supporter' => true]);
+
+        /** @var User $member */
+        $member = User::factory()->create();
+        $member->userAngelTypes()->attach($entry->angel_type_id, ['supporter' => false]);
+
+        $freeloaded = $this->freeloadedEntry($this->freeloadResponse($supporter, []));
+        $this->assertEquals(User::first()->id, $freeloaded['freeloaded_by']['id']);
+
+        $freeloaded = $this->freeloadedEntry($this->freeloadResponse($member, []));
+        $this->assertNull($freeloaded['freeloaded_by']);
+    }
+
+    /**
+     * @param string[] $privileges
+     */
+    protected function freeloadResponse(User $user, array $privileges): array
+    {
+        $request = new Request();
+        $request = $request->withAttribute('shifttype_id', $this->shiftA->shift_type_id);
+
+        $controller = new ShiftsController(new Response());
+        $controller->setAuth($this->auth($user, $privileges));
+
+        $response = $controller->entriesByShiftType($request);
+        $this->validateApiResponse('/shifttypes/{id}/shifts', 'get', $response);
+
+        return json_decode($response->getContent(), true);
+    }
+
+    protected function freeloadedEntry(array $data): array
+    {
+        foreach ($data['data'] as $shift) {
+            foreach ($shift['needed_angel_types'] as $needed) {
+                foreach ($needed['entries'] as $entry) {
+                    if ($entry['freeloaded']) {
+                        return $entry;
+                    }
+                }
             }
         }
 
-        $this->assertNotEmpty($freeloaded);
-        $this->assertEquals(User::first()->id, $freeloaded['id']);
+        $this->fail('No freeloaded entry found');
+    }
+
+    /**
+     * @param string[] $privileges
+     */
+    protected function auth(User $user, array $privileges): Authenticator
+    {
+        $auth = $this->createMock(Authenticator::class);
+        $auth->method('user')->willReturn($user);
+        $auth->method('can')->willReturnCallback(
+            fn(array|string $abilities): bool => empty(array_diff((array) $abilities, $privileges))
+        );
+
+        return $auth;
     }
 
     public function testEntriesByShiftTypeNotFound(): void
@@ -214,7 +290,7 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
         $user = User::query()->first();
 
         $auth = $this->createMock(Authenticator::class);
-        $this->setExpects($auth, 'user', null, $user);
+        $this->setExpects($auth, 'user', null, $user, $this->atLeastOnce());
 
         $request = new Request();
         $request = $request->withAttribute('user_id', 'self');
