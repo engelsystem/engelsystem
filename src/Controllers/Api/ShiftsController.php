@@ -18,10 +18,26 @@ use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
 use Illuminate\Contracts\Database\Query\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
 class ShiftsController extends ApiController
 {
     use UsesAuth;
+
+    /**
+     * Readable with the web privilege of the page showing the shifts on the website. Shifts of
+     * other users are filtered in entriesByUser() like on their profile page.
+     */
+    protected function webPermission(string $method): string|array|bool|null
+    {
+        return match ($method) {
+            'entriesByAngeltype' => 'angeltypes.view',
+            'entriesByLocation' => 'locations.view',
+            'entriesByShiftType' => 'user_shifts',
+            'entriesByUser' => true,
+            default => null,
+        };
+    }
 
     public function entriesByAngeltype(Request $request): Response
     {
@@ -145,6 +161,17 @@ class ShiftsController extends ApiController
             ->groupBy('shifts.id')
             ->select('shifts.*');
 
+        // Like on the profile page on the website, other users' shifts are only shown to shift
+        // admins and to supporters of the angel types of their entries
+        $currentUser = $this->auth?->user();
+        if (
+            $currentUser?->id != $user->id
+            && !$this->hasApiPrivilege()
+            && !$this->auth?->can('user_shifts_admin')
+        ) {
+            $shifts->whereIn('shift_entries.angel_type_id', $this->supportedAngelTypes());
+        }
+
         return $this->shiftEntriesResponse($shifts);
     }
 
@@ -160,12 +187,16 @@ class ShiftsController extends ApiController
                 'shiftType',
                 'scheduleShift',
                 'schedule.shiftType.neededAngelTypes.angelType',
+                'tags',
+                'createdBy',
+                'updatedBy',
             ])
             ->orderBy('start')
             ->get();
         /** @var Shift[]|Collection $shifts */
 
         $freeloadDetailsVisible = $this->freeloadDetailsVisibility();
+        $canSeeEditors = (bool) $this->auth?->can('admin_shifts');
 
         $shiftEntries = [];
         // Blob of not-optimized mediocre pseudo-serialization
@@ -204,7 +235,10 @@ class ShiftsController extends ApiController
             }
 
             $locationData = new LocationResource($shift->location);
-            $shiftEntries[] = (new ShiftWithEntriesResource($shift))->toArray($locationData, $angelTypes);
+            $shiftEntries[] = [
+                ...(new ShiftWithEntriesResource($shift))->toArray($locationData, $angelTypes),
+                ...$this->editorData($shift, $canSeeEditors),
+            ];
         }
 
         $data = ['data' => $shiftEntries];
@@ -227,13 +261,36 @@ class ShiftsController extends ApiController
             return fn(ShiftEntry $entry): bool => true;
         }
 
-        $supportedAngelTypes = $this->auth?->user()
+        $supportedAngelTypes = $this->supportedAngelTypes();
+
+        return fn(ShiftEntry $entry): bool => $supportedAngelTypes->contains($entry->angel_type_id);
+    }
+
+    /**
+     * Ids of the angel types the current user is a supporter of
+     */
+    protected function supportedAngelTypes(): SupportCollection
+    {
+        return $this->auth?->user()
             ?->userAngelTypes()
             ->wherePivot('supporter', true)
             ->pluck('angel_types.id')
-            ?? collect();
+            ?? new SupportCollection();
+    }
 
-        return fn(ShiftEntry $entry): bool => $supportedAngelTypes->contains($entry->angel_type_id);
+    /**
+     * Who created and last edited a shift is only shown on the website with "admin_shifts"
+     */
+    protected function editorData(Shift $shift, bool $canSeeEditors): array
+    {
+        return [
+            'created_by' => $canSeeEditors && $shift->createdBy
+                ? UserResource::toIdentifierArray($shift->createdBy)
+                : null,
+            'updated_by' => $canSeeEditors && $shift->updatedBy
+                ? UserResource::toIdentifierArray($shift->updatedBy)
+                : null,
+        ];
     }
 
     protected function getNeededAngelTypes(Shift $shift): Collection

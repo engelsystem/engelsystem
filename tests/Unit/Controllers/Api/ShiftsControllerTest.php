@@ -19,6 +19,7 @@ use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\Tag;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\User;
@@ -37,6 +38,10 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ShiftsController::class, 'entriesByShiftType')]
 #[CoversMethod(ShiftsController::class, 'entriesByUser')]
 #[CoversMethod(ShiftsController::class, 'freeloadDetailsVisibility')]
+#[CoversMethod(ShiftsController::class, 'supportedAngelTypes')]
+#[CoversMethod(ShiftsController::class, 'editorData')]
+#[CoversMethod(ShiftsController::class, 'webPermission')]
+#[CoversMethod(ShiftsController::class, 'hasPermission')]
 #[AllowMockObjectsWithoutExpectations]
 class ShiftsControllerTest extends ApiBaseControllerTestCase
 {
@@ -167,6 +172,121 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
         $this->assertEquals(User::first()->id, $freeloaded['freeloaded_by']['id']);
     }
 
+    public function testShiftFields(): void
+    {
+        /** @var User $editor */
+        $editor = User::factory()->create();
+        $this->shiftA->shiftType->update(['signup_advance_hours' => 2]);
+        $this->shiftA->update([
+            'url' => 'https://events.example.com/talk/42',
+            'start' => Carbon::parse('2026-12-27 03:00'),
+            'end' => Carbon::parse('2026-12-27 05:00'),
+            'created_by' => $editor->id,
+            'updated_by' => $editor->id,
+        ]);
+        /** @var Tag $tag */
+        $tag = Tag::factory()->create();
+        $this->shiftA->tags()->attach($tag);
+
+        $shift = $this->shiftAData(['api']);
+
+        $this->assertEquals('https://events.example.com/talk/42', $shift['talk_url']);
+        $this->assertEquals([['id' => $tag->id, 'name' => $tag->name]], $shift['tags']);
+        $this->assertTrue($shift['night_shift']);
+        $this->assertEquals($this->shiftA->shiftType->description, $shift['shift_type']['description']);
+        $this->assertEquals(Carbon::parse('2026-12-27 01:00'), Carbon::parse($shift['signup_available_from']));
+        $this->assertEquals(Carbon::parse('2026-12-27 00:00'), Carbon::parse($shift['sign_out_until']));
+        $this->assertNull($shift['created_by']);
+        $this->assertNull($shift['updated_by']);
+
+        $shift = $this->shiftAData(['admin_shifts']);
+        $this->assertEquals($editor->id, $shift['created_by']['id']);
+        $this->assertEquals($editor->id, $shift['updated_by']['id']);
+    }
+
+    public function testShiftFieldsDefaults(): void
+    {
+        $this->shiftA->shiftType->update(['signup_advance_hours' => null]);
+        $this->shiftA->update(['url' => '']);
+
+        $shift = $this->shiftAData(['user_shifts']);
+
+        $this->assertNull($shift['talk_url']);
+        $this->assertEquals([], $shift['tags']);
+        $this->assertNull($shift['signup_available_from']);
+    }
+
+    public function testEntriesByUserOfOtherUserFiltered(): void
+    {
+        /** @var ShiftEntry $entry */
+        $entry = $this->shiftA->shiftEntries()->whereNotNull('freeloaded_by')->first();
+        $request = (new Request())->withAttribute('user_id', $entry->user_id);
+
+        $controller = new ShiftsController(new Response());
+
+        // Regular user without the api privilege
+        $controller->setAuth($this->auth(User::factory()->create(), ['user_shifts']));
+        $data = json_decode($controller->entriesByUser($request)->getContent(), true);
+        $this->assertCount(0, $data['data']);
+
+        // Supporter of the entry's angel type
+        /** @var User $supporter */
+        $supporter = User::factory()->create();
+        $supporter->userAngelTypes()->attach($entry->angel_type_id, ['supporter' => true]);
+        $controller->setAuth($this->auth($supporter, []));
+        $response = $controller->entriesByUser($request);
+        $this->validateApiResponse('/users/{id}/shifts', 'get', $response);
+        $data = json_decode($response->getContent(), true);
+        $this->assertCount(1, $data['data']);
+
+        // Shift admin
+        $controller->setAuth($this->auth(User::factory()->create(), ['user_shifts_admin']));
+        $data = json_decode($controller->entriesByUser($request)->getContent(), true);
+        $this->assertCount(1, $data['data']);
+
+        // The user themself
+        $controller->setAuth($this->auth($entry->user, []));
+        $data = json_decode($controller->entriesByUser($request)->getContent(), true);
+        $this->assertCount(1, $data['data']);
+    }
+
+    public function testHasPermission(): void
+    {
+        $controller = new ShiftsController(new Response());
+
+        $controller->setAuth($this->auth(User::factory()->create(), ['user_shifts']));
+        $this->assertTrue($controller->hasPermission(new Request(), 'entriesByShiftType'));
+        $this->assertTrue($controller->hasPermission(new Request(), 'entriesByUser'));
+        $this->assertFalse($controller->hasPermission(new Request(), 'entriesByLocation'));
+        $this->assertFalse($controller->hasPermission(new Request(), 'entriesByAngeltype'));
+
+        $controller->setAuth($this->auth(User::factory()->create(), ['locations.view', 'angeltypes.view']));
+        $this->assertTrue($controller->hasPermission(new Request(), 'entriesByLocation'));
+        $this->assertTrue($controller->hasPermission(new Request(), 'entriesByAngeltype'));
+        $this->assertFalse($controller->hasPermission(new Request(), 'entriesByShiftType'));
+
+        $controller->setAuth($this->auth(User::factory()->create(), ['api']));
+        $this->assertTrue($controller->hasPermission(new Request(), 'entriesByLocation'));
+    }
+
+    /**
+     * @param string[] $privileges
+     */
+    protected function shiftAData(array $privileges): array
+    {
+        $request = new Request();
+        $request = $request->withAttribute('shifttype_id', $this->shiftA->shift_type_id);
+
+        $controller = new ShiftsController(new Response());
+        $controller->setAuth($this->auth(User::factory()->create(), $privileges));
+
+        $response = $controller->entriesByShiftType($request);
+        $this->validateApiResponse('/shifttypes/{id}/shifts', 'get', $response);
+
+        return collect(json_decode($response->getContent(), true)['data'])
+            ->firstWhere('id', $this->shiftA->id);
+    }
+
     public function testFreeloadedByHiddenWithoutApiPrivilege(): void
     {
         $data = $this->freeloadResponse(User::factory()->create(), ['user_shifts']);
@@ -270,6 +390,7 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
         $request = $request->withAttribute('user_id', $firstEntry->user->id);
 
         $controller = new ShiftsController(new Response());
+        $controller->setAuth($this->auth(User::factory()->create(), ['api']));
 
         $response = $controller->entriesByUser($request);
         $this->validateApiResponse('/users/{id}/shifts', 'get', $response);
@@ -316,6 +437,10 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->config->set('night_shifts', ['enabled' => true, 'start' => 2, 'end' => 8, 'multiplier' => 2]);
+        $this->config->set('last_unsubscribe', 3);
+        $this->config->set('signup_advance_hours', 0);
 
         /*
          * Shift A: Direct shift entries (2 needed)

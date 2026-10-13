@@ -306,7 +306,22 @@ components:
         location:
           $ref: '#/components/schemas/Reference'
         shift_type:
-          $ref: '#/components/schemas/Reference'
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 42
+            name:
+              type: string
+              example: Build-Up
+            description:
+              type: string
+              example: This is a generic build-up shift, mostly involving heavy lifting.
+              description: Shift type description, should be shown before the shift description
+          required:
+            - id
+            - name
+            - description
         schedule_guid:
           type: string
           format: uuid
@@ -325,6 +340,36 @@ components:
           type: string
           example: https://example.com/shifts/42
           description: Direct link to the shift
+        talk_url:
+          type: string
+          nullable: true
+          example: https://events.example.com/talk/42
+          description: Link of the shift, mostly of an imported talk, `null` if not set
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reference'
+        night_shift:
+          type: boolean
+          description: Whether the shift counts as a night shift (if night shifts are enabled)
+        signup_available_from:
+          $ref: '#/components/schemas/DateTimeOptional'
+          description: When angels can sign up for the shift at the earliest, `null` if at any time
+        sign_out_until:
+          $ref: '#/components/schemas/DateTime'
+          description: >
+            Until when angels can sign themselves out of the shift (exclusive). Shift admins and
+            supporters of the angel type can sign them out at any time.
+        created_by:
+          oneOf:
+            - $ref: '#/components/schemas/Reference'
+          nullable: true
+          description: Who created the shift, only with the `admin_shifts` privilege, `null` otherwise
+        updated_by:
+          oneOf:
+            - $ref: '#/components/schemas/Reference'
+          nullable: true
+          description: Who last edited the shift, only with the `admin_shifts` privilege, `null` otherwise
       required:
         - id
         - name
@@ -338,6 +383,13 @@ components:
         - updated_at
         - needed_angel_types
         - url
+        - talk_url
+        - tags
+        - night_shift
+        - signup_available_from
+        - sign_out_until
+        - created_by
+        - updated_by
     ShiftEntry:
       type: object
       properties:
@@ -657,7 +709,7 @@ paths:
         - angel type
         - shift
       summary: Get all shifts of the requested angel type
-      description: Requires the `api` privilege.
+      description: Requires the `api` or the `angeltypes.view` privilege.
       responses:
         '200':
           description: Ok
@@ -771,7 +823,7 @@ paths:
         - location
         - shift
       summary: Get all shifts in the requested location
-      description: Requires the `api` privilege.
+      description: Requires the `api` or the `locations.view` privilege.
       responses:
         '200':
           description: Ok
@@ -828,7 +880,7 @@ paths:
         - shift type
         - shift
       summary: Get all shifts of the requested shift type
-      description: Requires the `api` privilege.
+      description: Requires the `api` or the `user_shifts` privilege.
       responses:
         '200':
           description: Ok
@@ -958,7 +1010,10 @@ paths:
         - shift
         - user
       summary: Get all shifts of the requested user
-      description: Requires the `api` privilege; `self` only requires an authenticated user.
+      description: >
+        Requires an authenticated user. Without the `api` privilege, shifts of other users are
+        only included for shift admins (`user_shifts_admin`) and supporters of the angel type of
+        the user's entry, as on the website.
       responses:
         '200':
           description: Ok
