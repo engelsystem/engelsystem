@@ -7,19 +7,17 @@ namespace Engelsystem\Controllers\Api;
 use Engelsystem\Controllers\Api\Resources\NewsResource;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\News;
-use Psr\Http\Message\ServerRequestInterface;
 
 class NewsController extends ApiController
 {
     use UsesAuth;
 
     /**
-     * News don't require the "api" privilege, unlike the rest of the API - any
-     * authenticated user may read them, same as on the website (the "news" privilege).
+     * Readable with the "news" privilege, same as the news page on the website
      */
-    public function hasPermission(ServerRequestInterface $request, string $method): ?bool
+    protected function webPermission(string $method): string|array|bool|null
     {
-        return (bool) $this->auth?->user();
+        return 'news';
     }
 
     public function index(): Response

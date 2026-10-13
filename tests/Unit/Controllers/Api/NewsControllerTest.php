@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(NewsController::class, 'index')]
 #[CoversMethod(NewsController::class, 'hasPermission')]
+#[CoversMethod(NewsController::class, 'webPermission')]
 #[CoversMethod(NewsResource::class, 'toArray')]
 #[AllowMockObjectsWithoutExpectations]
 class NewsControllerTest extends ApiBaseControllerTestCase
@@ -41,17 +42,28 @@ class NewsControllerTest extends ApiBaseControllerTestCase
         }));
     }
 
-    public function testHasPermissionWithAuthenticatedUser(): void
+    public function testHasPermissionWithNewsPrivilege(): void
     {
-        $user = User::factory()->create();
-
-        $auth = $this->createMock(Authenticator::class);
-        $this->setExpects($auth, 'user', null, $user);
-
         $controller = new NewsController(new Response());
-        $controller->setAuth($auth);
+        $controller->setAuth($this->auth(['news']));
 
         $this->assertTrue($controller->hasPermission(new Request(), 'index'));
+    }
+
+    public function testHasPermissionWithApiPrivilege(): void
+    {
+        $controller = new NewsController(new Response());
+        $controller->setAuth($this->auth(['api']));
+
+        $this->assertTrue($controller->hasPermission(new Request(), 'index'));
+    }
+
+    public function testHasPermissionWithoutPrivilege(): void
+    {
+        $controller = new NewsController(new Response());
+        $controller->setAuth($this->auth(['user_shifts']));
+
+        $this->assertFalse($controller->hasPermission(new Request(), 'index'));
     }
 
     public function testHasPermissionWithoutAuthenticatedUser(): void
@@ -70,5 +82,19 @@ class NewsControllerTest extends ApiBaseControllerTestCase
         $controller = new NewsController(new Response());
 
         $this->assertFalse($controller->hasPermission(new Request(), 'index'));
+    }
+
+    /**
+     * @param string[] $privileges
+     */
+    protected function auth(array $privileges): Authenticator
+    {
+        $auth = $this->createMock(Authenticator::class);
+        $auth->method('user')->willReturn(User::factory()->create());
+        $auth->method('can')->willReturnCallback(
+            fn(array|string $abilities): bool => empty(array_diff((array) $abilities, $privileges))
+        );
+
+        return $auth;
     }
 }
