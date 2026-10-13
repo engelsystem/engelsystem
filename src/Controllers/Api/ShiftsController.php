@@ -16,12 +16,30 @@ use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\User\User;
 use Illuminate\Contracts\Database\Query\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
 class ShiftsController extends ApiController
 {
     use UsesAuth;
+
+    /**
+     * Readable with the web privilege of the page showing the shifts on the website. Shifts of
+     * other users are filtered in entriesByUser() like on their profile page.
+     */
+    protected function webPermission(string $method): string|array|bool|null
+    {
+        return match ($method) {
+            'entriesByAngeltype' => 'angeltypes.view',
+            'entriesByLocation' => 'locations.view',
+            'entriesByShiftType' => 'user_shifts',
+            'entriesByUser' => true,
+            'show' => 'user_shifts',
+            default => null,
+        };
+    }
 
     public function entriesByAngeltype(Request $request): Response
     {
@@ -145,10 +163,42 @@ class ShiftsController extends ApiController
             ->groupBy('shifts.id')
             ->select('shifts.*');
 
+        // Like on the profile page on the website, other users' shifts are only shown to shift
+        // admins and to supporters of the angel types of their entries
+        $currentUser = $this->auth?->user();
+        if (
+            $currentUser?->id != $user->id
+            && !$this->hasApiPrivilege()
+            && !$this->auth?->can('user_shifts_admin')
+        ) {
+            $shifts->whereIn('shift_entries.angel_type_id', $this->supportedAngelTypes());
+        }
+
         return $this->shiftEntriesResponse($shifts);
     }
 
+    public function show(Request $request): Response
+    {
+        $id = (int) $request->getAttribute('shift_id');
+        Shift::findOrFail($id);
+
+        $data = ['data' => $this->shiftsData(Shift::query()->whereKey($id), false)[0]];
+        return $this->response
+            ->withContent(json_encode($data));
+    }
+
     protected function shiftEntriesResponse(BuilderContract $shifts): Response
+    {
+        $data = ['data' => $this->shiftsData($shifts)];
+        return $this->response
+            ->withContent(json_encode($data));
+    }
+
+    /**
+     * @param bool $skipWithoutAngelTypes Skip shifts without needed angel types or entries
+     * @return array[]
+     */
+    protected function shiftsData(BuilderContract $shifts, bool $skipWithoutAngelTypes = true): array
     {
         $shifts = $shifts
             ->with([
@@ -160,10 +210,22 @@ class ShiftsController extends ApiController
                 'shiftType',
                 'scheduleShift',
                 'schedule.shiftType.neededAngelTypes.angelType',
+                'tags',
+                'createdBy',
+                'updatedBy',
             ])
             ->orderBy('start')
             ->get();
         /** @var Shift[]|Collection $shifts */
+
+        $freeloadDetailsVisible = $this->freeloadDetailsVisibility();
+        $access = [
+            'user' => $this->auth?->user(),
+            'shifts_admin' => (bool) $this->auth?->can('user_shifts_admin'),
+            'angeltypes_edit' => (bool) $this->auth?->can('user.angeltypes.edit'),
+            'supported' => $this->supportedAngelTypes(),
+        ];
+        $canSeeEditors = (bool) $this->auth?->can('admin_shifts');
 
         $shiftEntries = [];
         // Blob of not-optimized mediocre pseudo-serialization
@@ -172,7 +234,7 @@ class ShiftsController extends ApiController
             /** @var Collection|NeededAngelType[] $neededAngelTypes */
             $neededAngelTypes = $this->getNeededAngelTypes($shift);
 
-            if ($neededAngelTypes->isEmpty()) {
+            if ($neededAngelTypes->isEmpty() && $skipWithoutAngelTypes) {
                 continue;
             }
 
@@ -188,9 +250,11 @@ class ShiftsController extends ApiController
                 $entries = $entries->map(fn(ShiftEntry $entry) => [
                     'id' => $entry->id,
                     'user' => UserResource::toIdentifierArray($entry->user),
-                    'freeloaded_by' => $entry->freeloaded_by
+                    'freeloaded' => (bool) $entry->freeloaded_by,
+                    'freeloaded_by' => $entry->freeloaded_by && $freeloadDetailsVisible($entry)
                         ? UserResource::toIdentifierArray($entry->freeloadedBy)
                         : null,
+                    ...$this->entryDetails($entry, $shift, $access),
                 ]);
                 $angelTypeData = AngelTypeResource::toIdentifierArray($neededAngelType->angelType);
                 $angelTypes[] = new Collection([
@@ -201,17 +265,87 @@ class ShiftsController extends ApiController
             }
 
             $locationData = new LocationResource($shift->location);
-            $shiftEntries[] = (new ShiftWithEntriesResource($shift))->toArray($locationData, $angelTypes);
+            $shiftEntries[] = [
+                ...(new ShiftWithEntriesResource($shift))->toArray($locationData, $angelTypes),
+                ...$this->editorData($shift, $canSeeEditors),
+            ];
         }
 
-        $data = ['data' => $shiftEntries];
-        return $this->response
-            ->withContent(json_encode($data));
+        return $shiftEntries;
     }
 
     /**
      * Collect all needed angel types
      */
+    /**
+     * Who marked an entry as freeloaded is only shown to shift admins and supporters of the
+     * entry's angel type on the website; "api" users keep seeing it for all entries
+     *
+     * @return callable(ShiftEntry): bool
+     */
+    protected function freeloadDetailsVisibility(): callable
+    {
+        if ($this->hasApiPrivilege() || $this->auth?->can('user_shifts_admin')) {
+            return fn(ShiftEntry $entry): bool => true;
+        }
+
+        $supportedAngelTypes = $this->supportedAngelTypes();
+
+        return fn(ShiftEntry $entry): bool => $supportedAngelTypes->contains($entry->angel_type_id);
+    }
+
+    /**
+     * Entry details the website only shows to some users: the freeload comment to shift admins and
+     * supporters of the entry's angel type, the entry comment only to the user themselves
+     *
+     * @param array{user: ?User, shifts_admin: bool, angeltypes_edit: bool, supported: SupportCollection} $access
+     */
+    protected function entryDetails(ShiftEntry $entry, Shift $shift, array $access): array
+    {
+        $user = $access['user'];
+        $isSupporter = $access['supported']->contains($entry->angel_type_id);
+        $isOwnEntry = $user && $entry->user_id == $user->id;
+
+        return [
+            'freeloaded_comment' => $entry->freeloaded_by && ($access['shifts_admin'] || $isSupporter)
+                ? (string) $entry->freeloaded_comment
+                : null,
+            'user_comment' => $isOwnEntry ? (string) $entry->user_comment : null,
+            'can_sign_out' => $user && $shift->signOutAllowed(
+                $entry->user_id,
+                $user,
+                $access['shifts_admin'] || $isSupporter || $access['angeltypes_edit']
+            ),
+        ];
+    }
+
+    /**
+     * Ids of the angel types the current user is a supporter of
+     */
+    protected function supportedAngelTypes(): SupportCollection
+    {
+        return $this->auth?->user()
+            ?->userAngelTypes()
+            ->wherePivot('supporter', true)
+            ->pluck('angel_types.id')
+            ?? new SupportCollection();
+    }
+
+    /**
+     * Who created and last edited a shift is only shown on the website with "admin_shifts"
+     */
+    protected function editorData(Shift $shift, bool $canSeeEditors): array
+    {
+        return [
+            'created_by' => $canSeeEditors && $shift->createdBy
+                ? UserResource::toIdentifierArray($shift->createdBy)
+                : null,
+            'updated_by' => $canSeeEditors && $shift->updatedBy
+                ? UserResource::toIdentifierArray($shift->updatedBy)
+                : null,
+        ];
+    }
+
     protected function getNeededAngelTypes(Shift $shift): Collection
     {
         $neededAngelTypes = new Collection();
