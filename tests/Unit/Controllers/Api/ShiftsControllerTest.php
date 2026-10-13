@@ -40,6 +40,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ShiftsController::class, 'freeloadDetailsVisibility')]
 #[CoversMethod(ShiftsController::class, 'supportedAngelTypes')]
 #[CoversMethod(ShiftsController::class, 'editorData')]
+#[CoversMethod(ShiftsController::class, 'entryDetails')]
 #[CoversMethod(ShiftsController::class, 'webPermission')]
 #[CoversMethod(ShiftsController::class, 'hasPermission')]
 #[AllowMockObjectsWithoutExpectations]
@@ -272,19 +273,78 @@ class ShiftsControllerTest extends ApiBaseControllerTestCase
     /**
      * @param string[] $privileges
      */
-    protected function shiftAData(array $privileges): array
+    protected function shiftAData(array $privileges, ?User $user = null): array
     {
         $request = new Request();
         $request = $request->withAttribute('shifttype_id', $this->shiftA->shift_type_id);
 
         $controller = new ShiftsController(new Response());
-        $controller->setAuth($this->auth(User::factory()->create(), $privileges));
+        $controller->setAuth($this->auth($user ?? User::factory()->create(), $privileges));
 
         $response = $controller->entriesByShiftType($request);
         $this->validateApiResponse('/shifttypes/{id}/shifts', 'get', $response);
 
         return collect(json_decode($response->getContent(), true)['data'])
             ->firstWhere('id', $this->shiftA->id);
+    }
+
+    public function testEntryDetails(): void
+    {
+        $this->config->set('last_unsubscribe', 3);
+        $this->shiftA->update(['start' => Carbon::now()->addDay(), 'end' => Carbon::now()->addDay()->addHour()]);
+        /** @var ShiftEntry $freeloaded */
+        $freeloaded = $this->shiftA->shiftEntries()->whereNotNull('freeloaded_by')->first();
+        $freeloaded->update(['freeloaded_comment' => 'Did not show up', 'user_comment' => 'Own note']);
+        /** @var ShiftEntry $other */
+        $other = $this->shiftA->shiftEntries()->whereNull('freeloaded_by')->first();
+
+        // The user of the entry: own comment, can sign out before the deadline
+        $entries = $this->entriesById($this->shiftAData(['user_shifts'], $freeloaded->user));
+        $this->assertEquals('Own note', $entries[$freeloaded->id]['user_comment']);
+        $this->assertNull($entries[$freeloaded->id]['freeloaded_comment']);
+        $this->assertTrue($entries[$freeloaded->id]['can_sign_out']);
+        $this->assertNull($entries[$other->id]['user_comment']);
+        $this->assertFalse($entries[$other->id]['can_sign_out']);
+
+        // "api" doesn't grant the new details
+        $entries = $this->entriesById($this->shiftAData(['api']));
+        $this->assertNull($entries[$freeloaded->id]['freeloaded_comment']);
+        $this->assertNull($entries[$freeloaded->id]['user_comment']);
+        $this->assertFalse($entries[$freeloaded->id]['can_sign_out']);
+
+        // Shift admins see the freeload comment and can sign out everyone
+        $entries = $this->entriesById($this->shiftAData(['user_shifts_admin']));
+        $this->assertEquals('Did not show up', $entries[$freeloaded->id]['freeloaded_comment']);
+        $this->assertNull($entries[$other->id]['freeloaded_comment']);
+        $this->assertTrue($entries[$other->id]['can_sign_out']);
+
+        // Supporters only for their angel type
+        /** @var User $supporter */
+        $supporter = User::factory()->create();
+        $supporter->userAngelTypes()->attach($freeloaded->angel_type_id, ['supporter' => true]);
+        $entries = $this->entriesById($this->shiftAData([], $supporter));
+        $this->assertEquals('Did not show up', $entries[$freeloaded->id]['freeloaded_comment']);
+        $this->assertTrue($entries[$freeloaded->id]['can_sign_out']);
+        if ($other->angel_type_id != $freeloaded->angel_type_id) {
+            $this->assertFalse($entries[$other->id]['can_sign_out']);
+        }
+
+        // After the deadline the user can't sign out anymore
+        $this->shiftA->update(['start' => Carbon::now()->addHour(), 'end' => Carbon::now()->addHours(2)]);
+        $entries = $this->entriesById($this->shiftAData(['user_shifts'], $freeloaded->user));
+        $this->assertFalse($entries[$freeloaded->id]['can_sign_out']);
+    }
+
+    protected function entriesById(array $shift): array
+    {
+        $entries = [];
+        foreach ($shift['needed_angel_types'] as $needed) {
+            foreach ($needed['entries'] as $entry) {
+                $entries[$entry['id']] = $entry;
+            }
+        }
+
+        return $entries;
     }
 
     public function testFreeloadedByHiddenWithoutApiPrivilege(): void

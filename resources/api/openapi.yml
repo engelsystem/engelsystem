@@ -411,11 +411,31 @@ components:
             for a user not arriving to their shift. Without the `api` privilege only provided to
             shift admins (`user_shifts_admin`) and supporters of the entry's angel type, `null`
             otherwise; use `freeloaded` to check the state.
+        freeloaded_comment:
+          type: string
+          nullable: true
+          description: >
+            Why the shift entry has been marked as freeloaded. Only provided to shift admins
+            (`user_shifts_admin`) and supporters of the entry's angel type, `null` otherwise or if
+            not freeloaded.
+        user_comment:
+          type: string
+          nullable: true
+          description: The user's own comment on their shift entry, `null` for entries of other users
+        can_sign_out:
+          type: boolean
+          description: >
+            Whether the requesting user may sign this entry out of the shift right now: their own
+            entry until the shift's `sign_out_until`, any entry for shift admins and supporters of
+            the entry's angel type
       required:
         - id
         - user
         - freeloaded
         - freeloaded_by
+        - freeloaded_comment
+        - user_comment
+        - can_sign_out
     ShiftType:
       type: object
       properties:

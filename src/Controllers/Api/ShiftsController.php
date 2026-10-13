@@ -16,6 +16,7 @@ use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\Shifts\ShiftType;
+use Engelsystem\Models\User\User;
 use Illuminate\Contracts\Database\Query\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
@@ -196,6 +197,12 @@ class ShiftsController extends ApiController
         /** @var Shift[]|Collection $shifts */
 
         $freeloadDetailsVisible = $this->freeloadDetailsVisibility();
+        $access = [
+            'user' => $this->auth?->user(),
+            'shifts_admin' => (bool) $this->auth?->can('user_shifts_admin'),
+            'angeltypes_edit' => (bool) $this->auth?->can('user.angeltypes.edit'),
+            'supported' => $this->supportedAngelTypes(),
+        ];
         $canSeeEditors = (bool) $this->auth?->can('admin_shifts');
 
         $shiftEntries = [];
@@ -225,6 +232,7 @@ class ShiftsController extends ApiController
                     'freeloaded_by' => $entry->freeloaded_by && $freeloadDetailsVisible($entry)
                         ? UserResource::toIdentifierArray($entry->freeloadedBy)
                         : null,
+                    ...$this->entryDetails($entry, $shift, $access),
                 ]);
                 $angelTypeData = AngelTypeResource::toIdentifierArray($neededAngelType->angelType);
                 $angelTypes[] = new Collection([
@@ -264,6 +272,31 @@ class ShiftsController extends ApiController
         $supportedAngelTypes = $this->supportedAngelTypes();
 
         return fn(ShiftEntry $entry): bool => $supportedAngelTypes->contains($entry->angel_type_id);
+    }
+
+    /**
+     * Entry details the website only shows to some users: the freeload comment to shift admins and
+     * supporters of the entry's angel type, the entry comment only to the user themselves
+     *
+     * @param array{user: ?User, shifts_admin: bool, angeltypes_edit: bool, supported: SupportCollection} $access
+     */
+    protected function entryDetails(ShiftEntry $entry, Shift $shift, array $access): array
+    {
+        $user = $access['user'];
+        $isSupporter = $access['supported']->contains($entry->angel_type_id);
+        $isOwnEntry = $user && $entry->user_id == $user->id;
+
+        return [
+            'freeloaded_comment' => $entry->freeloaded_by && ($access['shifts_admin'] || $isSupporter)
+                ? (string) $entry->freeloaded_comment
+                : null,
+            'user_comment' => $isOwnEntry ? (string) $entry->user_comment : null,
+            'can_sign_out' => $user && $shift->signOutAllowed(
+                $entry->user_id,
+                $user,
+                $access['shifts_admin'] || $isSupporter || $access['angeltypes_edit']
+            ),
+        ];
     }
 
     /**
