@@ -108,6 +108,18 @@ components:
           type: boolean
           example: false
           description: True if the angel type requires an introduction
+        requires_driver_license:
+          type: boolean
+          example: false
+          description: True if members need a driver license
+        requires_ifsg_certificate:
+          type: boolean
+          example: false
+          description: True if members need an IfSG certificate (food handling)
+        shift_self_signup:
+          type: boolean
+          example: true
+          description: True if members can sign themselves up for shifts
         contact:
           allOf:
             - $ref: '#/components/schemas/ContactName'
@@ -121,6 +133,10 @@ components:
         - id
         - name
         - description
+        - restricted
+        - requires_driver_license
+        - requires_ifsg_certificate
+        - shift_self_signup
         - contact
         - url
     ContactDect:
@@ -625,7 +641,7 @@ paths:
       tags:
         - angel type
       summary: Get a list of angel types
-      description: Requires the `api` privilege.
+      description: Requires the `api` or the `angeltypes.view` privilege.
       responses:
         '200':
           description: Ok
@@ -642,6 +658,37 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+
+  /angeltypes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Angel type identifier
+        example: 42
+        schema:
+          type: integer
+    get:
+      tags:
+        - angel type
+      summary: Get a single angel type
+      description: Requires the `api` or the `angeltypes.view` privilege.
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AngelType'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
   /angeltypes/{id}/shifts:
     parameters:
@@ -922,7 +969,7 @@ paths:
         - angel type
         - user
       summary: Get the users angel types
-      description: Requires the `api` privilege; `self` only requires an authenticated user.
+      description: Requires an authenticated user, as the website shows a user's angel types on their profile page.
       responses:
         '200':
           description: Ok

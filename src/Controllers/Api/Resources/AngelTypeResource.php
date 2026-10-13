@@ -20,6 +20,9 @@ class AngelTypeResource extends BasicResource
             'name' => $this->model->name,
             'description' => $this->model->description,
             'restricted' => $this->model->restricted,
+            'requires_driver_license' => $this->model->requires_driver_license,
+            'requires_ifsg_certificate' => $this->model->requires_ifsg_certificate,
+            'shift_self_signup' => $this->model->shift_self_signup,
             'contact' => [
                 'name' => $this->model->contact_name,
                 'email' => $this->model->contact_email,

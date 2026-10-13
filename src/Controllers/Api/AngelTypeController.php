@@ -14,6 +14,19 @@ class AngelTypeController extends ApiController
 {
     use UsesAuth;
 
+    /**
+     * Readable with the "angeltypes.view" privilege, same as the angel type pages on the website.
+     * A user's angel types are shown to everyone on their profile page.
+     */
+    protected function webPermission(string $method): string|array|bool|null
+    {
+        return match ($method) {
+            'index', 'show' => 'angeltypes.view',
+            'ofUser' => true,
+            default => null,
+        };
+    }
+
     public function index(): Response
     {
         $models = AngelType::query()
@@ -21,6 +34,17 @@ class AngelTypeController extends ApiController
             ->get();
 
         $data = ['data' => AngelTypeResource::collection($models)];
+        return $this->response
+            ->withContent(json_encode($data));
+    }
+
+    public function show(Request $request): Response
+    {
+        $id = (int) $request->getAttribute('angeltype_id');
+        /** @var AngelType $angelType */
+        $angelType = AngelType::findOrFail($id);
+
+        $data = ['data' => (new AngelTypeResource($angelType))->toArray()];
         return $this->response
             ->withContent(json_encode($data));
     }
