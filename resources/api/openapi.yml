@@ -784,6 +784,7 @@ paths:
       tags:
         - news
       summary: Get a single news item including its comments
+      description: Requires the `api` or the `news` privilege.
       responses:
         '200':
           description: Ok

@@ -140,6 +140,7 @@ class NewsControllerTest extends ApiBaseControllerTestCase
         $controller->setAuth($this->auth(['news']));
 
         $this->assertTrue($controller->hasPermission(new Request(), 'index'));
+        $this->assertTrue($controller->hasPermission(new Request(), 'show'));
     }
 
     public function testHasPermissionWithApiPrivilege(): void
@@ -156,6 +157,7 @@ class NewsControllerTest extends ApiBaseControllerTestCase
         $controller->setAuth($this->auth(['user_shifts']));
 
         $this->assertFalse($controller->hasPermission(new Request(), 'index'));
+        $this->assertFalse($controller->hasPermission(new Request(), 'show'));
     }
 
     public function testHasPermissionWithoutAuthenticatedUser(): void
