@@ -156,6 +156,21 @@ function admin_user()
         }
 
         if ($goodie_enabled) {
+            // reserved_goodie
+            if (config('enable_reserved_goodie') && !$user_source->state->got_goodie) {
+                // got goodie?
+                $html .= '  <tr><td>'
+                    . __('goodie.reseved')
+                    . '</td><td>' . "\n";
+                $html .= $user_goodie_edit
+                    ? html_options('reserved_goodie', $options, $user_source->state->reserved_goodie)
+                    : icon_bool($user_source->state->reserved_goodie);
+                if ($user_source->state->reserved_goodie) {
+                    $html .= __('user.by', [User_Nick_render($user_source->state->reservedGoodieBy)]);
+                }
+                $html .= '</td></tr>' . "\n";
+            }
+
             // got goodie?
             $html .= '  <tr><td>'
                 . __('Goodie')
@@ -369,10 +384,20 @@ function admin_user()
                 $user_source->contact->save();
 
                 if ($goodie_enabled && $user_goodie_edit) {
+                    if (
+                        config('enable_reserved_goodie')
+                        && !$request->postData('goodie')
+                        && !$user_source->state->got_goodie
+                        && $user_source->state->reserved_goodie != $request->postData('reserved_goodie')
+                    ) {
+                        $user_source->state->reserved_goodie_by = $request->postData('reserved_goodie') ? $user->id : null;
+                    }
+
                     if ($user_source->state->got_goodie != $request->postData('goodie')) {
                         $user_source->state->got_goodie_by = $request->postData('goodie') ? $user->id : null;
                     }
                 }
+
                 if ($user_info_edit) {
                     $user_source->state->user_info = $request->postData('userInfo');
                 }
