@@ -258,11 +258,13 @@ function admin_user()
             $html .= '<hr>';
         }
 
-        $html .= buttons([
-            button(user_delete_link($user_source->id), icon('trash') . __('form.delete'), 'btn-danger'),
-        ]);
+        if ($my_highest_group > $angel_highest_group || $user->id === $user_source->id) {
+            $html .= buttons([
+                button(user_delete_link($user_source->id), icon('trash') . __('form.delete'), 'btn-danger'),
+            ]);
 
-        $html .= '<hr>';
+            $html .= '<hr>';
+        }
     } else {
         switch ($request->input('action')) {
             case 'save_groups':

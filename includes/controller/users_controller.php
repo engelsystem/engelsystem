@@ -48,8 +48,8 @@ function users_controller()
  */
 function user_delete_controller()
 {
-    $user = auth()->user();
     $auth = auth();
+    $user = $auth->user();
     $request = request();
 
     if ($request->has('user_id')) {
@@ -58,7 +58,12 @@ function user_delete_controller()
         $user_source = $user;
     }
 
-    if (!auth()->can('admin_user')) {
+    if (
+        !auth()->can('admin_user') || (
+            $user->id !== $user_source->id
+            && $user->groups()->orderByDesc('id')->first() > $user_source->groups()->orderByDesc('id')->first()
+        )
+    ) {
         throw_redirect(url('/'));
     }
 
