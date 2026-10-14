@@ -66,6 +66,12 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|Message[]          $messages
  * @property-read Collection|Shift[]            $shiftsCreated
  * @property-read Collection|Shift[]            $shiftsUpdated
+ * @property-read Collection|State[]            $forceFoodByStates
+ * @property-read Collection|State[]            $forceActiveByStates
+ * @property-read Collection|State[]            $gotGoodieByStates
+ * @property-read Collection|State[]            $reservedGoodieByStates
+ * @property-read Collection|UserAngelType[]    $confirmedUserAngelTypes
+ * @property-read Collection|ShiftEntry[]       $freeloadedShiftEntries
  *
  * @method static QueryBuilder|User[] whereId($value)
  * @method static QueryBuilder|User[] whereName($value)
@@ -288,6 +294,36 @@ class User extends BaseModel
     public function shiftsUpdated(): HasMany
     {
         return $this->hasMany(Shift::class, 'updated_by');
+    }
+
+    public function forceFoodByStates(): HasMany
+    {
+        return $this->hasMany(State::class, 'force_food_by');
+    }
+
+    public function forceActiveByStates(): HasMany
+    {
+        return $this->hasMany(State::class, 'force_active_by');
+    }
+
+    public function gotGoodieByStates(): HasMany
+    {
+        return $this->hasMany(State::class, 'got_goodie_by');
+    }
+
+    public function reservedGoodieByStates(): HasMany
+    {
+        return $this->hasMany(State::class, 'reserved_goodie_by');
+    }
+
+    public function confirmedUserAngelTypes(): HasMany
+    {
+        return $this->hasMany(UserAngelType::class, 'confirm_user_id');
+    }
+
+    public function freeloadedShiftEntries(): HasMany
+    {
+        return $this->hasMany(ShiftEntry::class, 'freeloaded_by');
     }
 
     public function getDisplayNameAttribute(): string
