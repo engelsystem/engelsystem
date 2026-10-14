@@ -82,12 +82,16 @@ function user_delete_controller()
         }
 
         if ($valid) {
-            // Move user created news/answers/worklogs/shifts  etc. to deleting user
+            // Move user created news/answers/worklogs/shifts/userStates  etc. to deleting user
             $user_source->news()->update(['user_id' => $user->id]);
             $user_source->questionsAnswered()->update(['answerer_id' => $user->id]);
             $user_source->worklogsCreated()->update(['creator_id' => $user->id]);
             $user_source->shiftsCreated()->update(['created_by' => $user->id]);
             $user_source->shiftsUpdated()->update(['updated_by' => $user->id]);
+            $user_source->forceFoodByStates()->update(['force_food_by' => $user->id]);
+            $user_source->forceActiveByStates()->update(['force_active_by' => $user->id]);
+            $user_source->gotGoodieByStates()->update(['got_goodie_by' => $user->id]);
+            $user_source->reservedGoodieByStates()->update(['reserved_goodie_by' => $user->id]);
 
             // Load data before user deletion to prevent errors when displaying
             $user_source->load(['contact', 'personalData', 'settings', 'state']);
