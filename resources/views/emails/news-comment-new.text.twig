@@ -1,0 +1,5 @@
+{% extends "emails/mail.text.twig" %}
+
+{% block message %}
+{{ __('notification.news.comment.new.text', [comment.user.displayName, news.title, comment.text, url('/news/' ~ news.id)]) }}
+{% endblock %}
