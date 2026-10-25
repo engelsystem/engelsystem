@@ -61,7 +61,7 @@ function user_delete_controller()
     if (
         !auth()->can('admin_user') || (
             $user->id !== $user_source->id
-            && $user->groups()->orderByDesc('id')->first() <= $user_source->groups()->orderByDesc('id')->first()
+            && $user->getHighestGroup()->id <= $user_source->getHighestGroup()->id
         )
     ) {
         throw_redirect(url('/'));
