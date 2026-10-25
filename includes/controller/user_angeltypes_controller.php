@@ -268,7 +268,18 @@ function user_angeltype_update_controller(): array
     if (!$request->has('user_angeltype_id')) {
         throw new HttpNotFound();
     }
-    if (!auth()->can('user.angeltypes.edit') && !config('supporters_can_promote')) {
+
+    /** @var UserAngelType $user_angeltype */
+    $user_angeltype = UserAngelType::findOrFail($request->input('user_angeltype_id'));
+    $angeltype = $user_angeltype->angelType;
+    $user_source = $user_angeltype->user;
+
+    if (
+        !(
+            auth()->can('user.angeltypes.edit')
+            || (config('supporters_can_promote') && auth()->user()->isAngelTypeSupporter($angeltype))
+        )
+    ) {
         throw new HttpForbidden();
     }
 
@@ -278,11 +289,6 @@ function user_angeltype_update_controller(): array
         error(__('No supporter update given.'));
         throw_redirect(url('/angeltypes'));
     }
-
-    /** @var UserAngelType $user_angeltype */
-    $user_angeltype = UserAngelType::findOrFail($request->input('user_angeltype_id'));
-    $angeltype = $user_angeltype->angelType;
-    $user_source = $user_angeltype->user;
 
     if ($request->hasPostData('submit')) {
         $user_angeltype->supporter = $supporter;

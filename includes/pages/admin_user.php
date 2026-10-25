@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Validation\Rules\Username;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
@@ -39,10 +40,9 @@ function admin_user()
 
     $user_id = $request->input('id');
     if (!$request->has('action')) {
-        $user_source = User::find($user_id);
-        if (!$user_source) {
-            error(__('This user does not exist.'));
-            throw_redirect(users_link());
+        $user_source = User::findOrFail($user_id);
+        if ($user->getHighestGroup()->id < $user_source->getHighestGroup()?->id) {
+            throw new HttpForbidden();
         }
 
         $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
@@ -160,7 +160,7 @@ function admin_user()
             if (config('enable_reserved_goodie') && !$user_source->state->got_goodie) {
                 // got goodie?
                 $html .= '  <tr><td>'
-                    . __('goodie.reseved')
+                    . __('goodie.reserved')
                     . '</td><td>' . "\n";
                 $html .= $user_goodie_edit
                     ? html_options('reserved_goodie', $options, $user_source->state->reserved_goodie)
@@ -218,7 +218,6 @@ function admin_user()
 
         $html .= '<hr>';
 
-        /** @var Group $my_highest_group */
         $my_highest_group = $user->getHighestGroup();
         if (!empty($my_highest_group)) {
             $my_highest_group = $my_highest_group->id;

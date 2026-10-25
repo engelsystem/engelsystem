@@ -130,7 +130,7 @@ class User extends BaseModel
         return $this->belongsToMany(Group::class, 'users_groups');
     }
 
-    public function getHighestGroup(): Group
+    public function getHighestGroup(): ?Group
     {
         return $this->groups()->orderByDesc('id')->first();
     }
