@@ -241,7 +241,7 @@ class User
             'theme'           => $this->config->get('theme'),
             'email_human'     => $data['email_by_human_allowed'] ?? false,
             'email_messages'  => $data['email_messages'] ?? false,
-            'email_goodie'     => $data['email_goodie'] === 'consent' ?? false,
+            'email_goodie'    => $data['email_goodie'] === 'consent' ?? false,
             'email_shiftinfo' => $data['email_shiftinfo'] ?? false,
             'email_news'      => $data['email_news'] ?? false,
             'mobile_show'     => $isShowMobileEnabled && $data['mobile_show'],

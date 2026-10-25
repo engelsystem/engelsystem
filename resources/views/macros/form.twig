@@ -443,7 +443,7 @@ Renders a radio button group.
 #}
 {% macro radio(name, label, data, opt) %}
     {% if label -%}
-        <label class="form-label" for="{{ opt.id|default(name) }}">
+        <label class="form-label mt-3" for="{{ opt.id|default(name) }}">
             {{ label }}
             {% if opt.required_icon|default(false) %}
                 {{ _self.entry_required() }}
@@ -458,7 +458,7 @@ Renders a radio button group.
     {% endif %}
     <ul class="list-group pt-1">
         <li class="list-group-item">
-            <div class="form-check gap-2 {{ opt.class is defined ? opt.class : 'mb-3' }}">
+            <div class="form-check gap-2 {{ opt.class is defined ? opt.class : 'mb-3' }}" id="{{ opt.id|default(name) }}">
                 {% for value, description in data %}
                     <div class="form-field">
                         <input class="form-check-input"

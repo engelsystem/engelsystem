@@ -15,265 +15,231 @@
 
     {% include 'layouts/parts/messages.twig' %}
 
-    <form method="post" action="{{ url('/register') }}" novalidate class="mb-5">
+    <form method="post" action="{{ url('/register') }}" novalidate class="col-md-6 mb-5 offset-3">
         {{ csrf() }}
 
         <div class="mb-5">
             <h2>{{ __('registration.login_data') }}</h2>
-            <div class="row">
-                {% if isPronounEnabled %}
-                    <div class="col-md-6">
-                        {{ f.input(
-                            'pronoun',
-                            __('settings.profile.pronoun'),
-                            {
-                                'max_length': 15,
-                                'required': isPronounRequired,
-                                'required_icon': isPronounRequired,
-                                'value': f.formData('pronoun', ''),
-                            }
-                        ) }}
-                    </div>
-                {% endif %}
+            {% if isPronounEnabled %}
+                {{ f.input(
+                    'pronoun',
+                    __('settings.profile.pronoun'),
+                    {
+                        'max_length': 15,
+                        'required': isPronounRequired,
+                        'required_icon': isPronounRequired,
+                        'value': f.formData('pronoun', ''),
+                    }
+                ) }}
+            {% endif %}
 
-                <div class="col-md-6">
-                    {{ f.input(
-                        'username',
-                        __('general.nick'),
+            {{ f.input(
+                'username',
+                __('general.nick'),
+                {
+                    'autocomplete': 'nickname',
+                    'max_length': 24,
+                    'required': true,
+                    'required_icon': true,
+                    'value': f.formData('username', ''),
+                }
+            ) }}
+
+            {% if isPasswordEnabled %}
+                {{ f.input(
+                    'password',
+                    __('settings.password'),
+                    {
+                        'type': 'password',
+                        'autocomplete': 'new-password',
+                        'required': true,
+                        'required_icon': true,
+                        'min_length': minPasswordLength,
+                        'info': __('password.minimal_length', [minPasswordLength]),
+                    }
+                ) }}
+                {{ f.input(
+                    "password_confirmation",
+                    __('settings.password.new_password2'),
+                    {
+                        'type': 'password',
+                        'autocomplete': 'new-password',
+                        'required': true,
+                        'required_icon': true,
+                        'min_length': minPasswordLength,
+                    }
+                ) }}
+            {% endif %}
+
+            {{ f.input(
+                'email',
+                __('general.email'),
+                {
+                    'type': 'email',
+                    'max_length': 254,
+                    'required': true,
+                    'required_icon': true,
+                    'value': f.formData('email', ''),
+                }
+            ) }}
+            <label class="form-label">{{ __('settings.profile.email-preferences') }}</label>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    {# Empty class to prevent the default bottom margin #}
+                    {{ f.checkbox(
+                        'email_system',
+                        __(
+                            'registration.email_system',
+                            [config('app_name')]
+                        ),
                         {
-                            'autocomplete': 'nickname',
-                            'max_length': 24,
+                            'class': '',
+                            'checked': f.formData('email_system', false),
+                            'info': __('registration.email_system.info'),
+                        },
+                    ) }}
+                </li>
+                <li class="list-group-item">
+                    {# Empty class to prevent the default bottom margin #}
+                    {{ f.checkbox(
+                        'email_by_human_allowed',
+                        __('settings.profile.email_by_human_allowed'),
+                        {
+                            'class': '',
+                            'checked': f.formData('email_by_human_allowed', false),
+                        },
+                    ) }}
+                </li>
+            </ul>
+            {% block goodieMail %}
+                {% if isGoodieEnabled %}
+                    {% set privacy_email = config('privacy_email') %}
+                    {% set email_goodie_label =
+                        (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
+                        (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
+                    %}
+                    {{ f.radio(
+                        'email_goodie',
+                        __('settings.profile.email_goodie.label'),
+                        {
+                            'consent': email_goodie_label,
+                            'decline': __('settings.profile.email_goodie.declined'),
+                        },
+                        {
+                            'class': 'mt-3',
+                            'raw_label': true,
                             'required': true,
                             'required_icon': true,
-                            'value': f.formData('username', ''),
-                        }
+                            'selected': f.formData('email_goodie'),
+                        },
                     ) }}
-                </div>
-
-                {% if not isPronounEnabled %}
-                    {# Insert an empty row to keep password / email in line #}
-                    <div class="col-md-6"></div>
                 {% endif %}
-
-                {% if isPasswordEnabled %}
-                    <div class="col-md-6">
-                        {{ f.input(
-                            'password',
-                            __('settings.password'),
-                            {
-                                'type': 'password',
-                                'autocomplete': 'new-password',
-                                'required': true,
-                                'required_icon': true,
-                                'min_length': minPasswordLength,
-                                'info': __('password.minimal_length', [minPasswordLength]),
-                            }
-                        ) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ f.input(
-                            "password_confirmation",
-                            __('settings.password.new_password2'),
-                            {
-                                'type': 'password',
-                                'autocomplete': 'new-password',
-                                'required': true,
-                                'required_icon': true,
-                                'min_length': minPasswordLength,
-                            }
-                        ) }}
-                    </div>
-                {% endif %}
-
-                <div class="col-md-6">
-                    {{ f.input(
-                        'email',
-                        __('general.email'),
-                        {
-                            'type': 'email',
-                            'max_length': 254,
-                            'required': true,
-                            'required_icon': true,
-                            'value': f.formData('email', ''),
-                        }
-                    ) }}
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">{{ __('settings.profile.email-preferences') }}</label>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            {# Empty class to prevent the default bottom margin #}
-                            {{ f.checkbox(
-                                'email_system',
-                                __(
-                                    'registration.email_system',
-                                    [config('app_name')]
-                                ),
-                                {
-                                    'class': '',
-                                    'checked': f.formData('email_system', false),
-                                    'info': __('registration.email_system.info'),
-                                },
-                            ) }}
-                        </li>
-                        <li class="list-group-item">
-                            {# Empty class to prevent the default bottom margin #}
-                            {{ f.checkbox(
-                                'email_by_human_allowed',
-                                __('settings.profile.email_by_human_allowed'),
-                                {
-                                    'class': '',
-                                    'checked': f.formData('email_by_human_allowed', false),
-                                },
-                            ) }}
-                        </li>
-                    </ul>
-                    {% block goodieMail %}
-                        {% if isGoodieEnabled %}
-                            {% set privacy_email = config('privacy_email') %}
-                            {% set email_goodie_label =
-                                (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
-                                (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
-                            %}
-                            {{ f.radio(
-                                'email_goodie',
-                                __('settings.profile.email_goodie.label'),
-                                {
-                                    'consent': email_goodie_label,
-                                    'decline': __('settings.profile.email_goodie.declined'),
-                                },
-                                {
-                                    'class': '',
-                                    'raw_label': true,
-                                    'required': true,
-                                    'required_icon': true,
-                                    'selected': f.formData('email_goodie'),
-                                },
-                            ) }}
-                        {% endif %}
-                    {% endblock %}
-                </div>
-            </div>
+            {% endblock %}
         </div>
 
         {% if isFullNameEnabled %}
             <div class="mb-5">
                 <h2>{{ __('general.name') }}</h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        {{ f.input(
-                            'firstname',
-                            __('settings.profile.firstname'),
-                            {
-                                'autocomplete': 'given-name',
-                                'max_length': 64,
-                                'required': isFirstnameRequired,
-                                'required_icon': isFirstnameRequired,
-                                'value': f.formData('firstname', ''),
-                            }
-                        ) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ f.input(
-                            'lastname',
-                            __('settings.profile.lastname'),
-                            {
-                                'autocomplete': 'family-name',
-                                'max_length': 64,
-                                'required': isLastnameRequired,
-                                'required_icon': isLastnameRequired,
-                                'value': f.formData('lastname', ''),
-                            }
-                        ) }}
-                    </div>
-                </div>
+                {{ f.input(
+                    'firstname',
+                    __('settings.profile.firstname'),
+                    {
+                        'autocomplete': 'given-name',
+                        'max_length': 64,
+                        'required': isFirstnameRequired,
+                        'required_icon': isFirstnameRequired,
+                        'value': f.formData('firstname', ''),
+                    }
+                ) }}
+                {{ f.input(
+                    'lastname',
+                    __('settings.profile.lastname'),
+                    {
+                        'autocomplete': 'family-name',
+                        'max_length': 64,
+                        'required': isLastnameRequired,
+                        'required_icon': isLastnameRequired,
+                        'value': f.formData('lastname', ''),
+                    }
+                ) }}
             </div>
         {% endif %}
 
         <div class="mb-5">
             <h2>{{ __('registration.event_data') }}</h2>
-            <div class="row">
-                {% if isPlannedArrivalDateEnabled %}
-                    <div class="col-md-6">
-                        {{ f.input(
-                            'planned_arrival_date',
-                            __('settings.profile.planned_arrival_date'),
-                            {
-                                'type': 'date',
-                                'min': buildUpStartDate,
-                                'max': tearDownEndDate,
-                                'required': true,
-                                'required_icon': true,
-                                'value': f.formData('planned_arrival_date', buildUpStartDate),
-                            }
-                        ) }}
-                    </div>
-                {% endif %}
-
-                {% if isGoodieTShirt %}
-                    <div class="col-md-6">
-                        {{ f.select(
-                            'tshirt_size',
-                            __('user.shirt_size'),
-                            tShirtSizes,
-                            {
-                                'default_option': __('form.select_placeholder'),
-                                'required': isTShirtSizeRequired,
-                                'required_icon': isTShirtSizeRequired,
-                                'selected': f.formData('tshirt_size', ''),
-                                'info': __('settings.profile.shirt_size.hint'),
-                                'raw_form_text': true,
-                                'form_text': (tShirtLink ? m.icon('info-circle')
-                                    ~ ' <a href="'
-                                    ~ tShirtLink|escape('html_attr')
-                                    ~ '" target="_blank" rel="noopener">'
-                                    ~ __('settings.profile.shirt.link')|e
-                                    ~ '</a>' : ''),
-                            }
-                        ) }}
-                    </div>
-                {% endif %}
-
-                <div class="col-md-6">
+            {% if isPlannedArrivalDateEnabled %}
                     {{ f.input(
-                        'mobile',
-                        __('settings.profile.mobile'),
+                        'planned_arrival_date',
+                        __('settings.profile.planned_arrival_date'),
                         {
-                            'type': 'tel-national',
-                            'max_length': 40,
-                            'required': isMobileRequired,
-                            'required_icon': isMobileRequired,
-                            'value': f.formData('mobile', ''),
+                            'type': 'date',
+                            'min': buildUpStartDate,
+                            'max': tearDownEndDate,
+                            'required': true,
+                            'required_icon': true,
+                            'value': f.formData('planned_arrival_date', buildUpStartDate),
                         }
                     ) }}
-                    {% if isShowMobileEnabled %}
-                        {{ f.checkbox(
-                            'mobile_show',
-                            __('settings.profile.mobile_show'),
-                            {
-                                'raw_label': true,
-                                'checked': f.formData('mobile_show', false),
-                            },
-                        ) }}
-                    {% endif %}
-                </div>
+            {% endif %}
 
-                {% if isDECTEnabled %}
-                    <div class="col-md-6">
-                        {{ f.input(
-                            "dect",
-                            __('general.dect'),
-                            {
-                                'type': 'tel-local',
-                                'max_length': 40,
-                                'required': isDectRequired,
-                                'required_icon': isDectRequired,
-                                'value': f.formData('dect', ''),
-                            }
-                        ) }}
-                    </div>
-                {% endif %}
-            </div>
+            {% if isGoodieTShirt %}
+                {{ f.select(
+                    'tshirt_size',
+                    __('user.shirt_size'),
+                    tShirtSizes,
+                    {
+                        'default_option': __('form.select_placeholder'),
+                        'required': isTShirtSizeRequired,
+                        'required_icon': isTShirtSizeRequired,
+                        'selected': f.formData('tshirt_size', ''),
+                        'info': __('settings.profile.shirt_size.hint'),
+                        'raw_form_text': true,
+                        'form_text': (tShirtLink ? m.icon('info-circle')
+                            ~ ' <a href="'
+                            ~ tShirtLink|escape('html_attr')
+                            ~ '" target="_blank" rel="noopener">'
+                            ~ __('settings.profile.shirt.link')|e
+                            ~ '</a>' : ''),
+                    }
+                ) }}
+            {% endif %}
+
+            {{ f.input(
+                'mobile',
+                __('settings.profile.mobile'),
+                {
+                    'type': 'tel-national',
+                    'max_length': 40,
+                    'required': isMobileRequired,
+                    'required_icon': isMobileRequired,
+                    'value': f.formData('mobile', ''),
+                }
+            ) }}
+
+            {% if isShowMobileEnabled %}
+                {{ f.checkbox(
+                    'mobile_show',
+                    __('settings.profile.mobile_show'),
+                    {
+                        'raw_label': true,
+                        'checked': f.formData('mobile_show', false),
+                    },
+                ) }}
+            {% endif %}
+
+            {% if isDECTEnabled %}
+                {{ f.input(
+                    "dect",
+                    __('general.dect'),
+                    {
+                        'type': 'tel-local',
+                        'max_length': 40,
+                        'required': isDectRequired,
+                        'required_icon': isDectRequired,
+                        'value': f.formData('dect', ''),
+                    }
+                ) }}
+            {% endif %}
         </div>
 
         <div class="mb-5">
@@ -281,32 +247,24 @@
             <div class="row">
                 <p>{{ __('registration.jobs', [url('/angeltypes/about')])|raw }}</p>
             </div>
-            <div class="row mb-3">
-                {% for angelType in angelTypes %}
-                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                        {{ f.checkbox(
-                            'angel_types_' ~ angelType.id,
-                            angelType.name|e ~ (angelType.restricted ? ' ' ~ m.icon('mortarboard-fill', 'text-body') : ''),
-                            {
-                                'value': angelType.id,
-                                'raw_label': true,
-                                'checked': preselectedAngelTypes['angel_types_' ~ angelType.id] ?? false,
-                            }
-                        ) }}
-                    </div>
-                {% endfor %}
+            {% for angelType in angelTypes %}
+                {{ f.checkbox(
+                    'angel_types_' ~ angelType.id,
+                    angelType.name|e ~ (angelType.restricted ? ' ' ~ m.icon('mortarboard-fill', 'text-body') : ''),
+                    {
+                        'value': angelType.id,
+                        'raw_label': true,
+                        'checked': preselectedAngelTypes['angel_types_' ~ angelType.id] ?? false,
+                    }
+                ) }}
+            {% endfor %}
+            <div class="mb-2">
+                {{ m.icon('mortarboard-fill', 'text-body') }}
+                {{ __('angeltype.restricted.hint') }}
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-2">
-                        {{ m.icon('mortarboard-fill', 'text-body') }}
-                        {{ __('angeltype.restricted.hint') }}
-                    </div>
-                    <div>
-                        {{ m.icon('info-circle', 'text-body') }}
-                        {{ __('angeltype.can_change_later') }}
-                    </div>
-                </div>
+            <div>
+                {{ m.icon('info-circle', 'text-body') }}
+                {{ __('angeltype.can_change_later') }}
             </div>
         </div>
 
