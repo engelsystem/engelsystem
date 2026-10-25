@@ -219,12 +219,12 @@ function admin_user()
         $html .= '<hr>';
 
         /** @var Group $my_highest_group */
-        $my_highest_group = $user->groups()->orderByDesc('id')->first();
+        $my_highest_group = $user->getHighestGroup();
         if (!empty($my_highest_group)) {
             $my_highest_group = $my_highest_group->id;
         }
 
-        $angel_highest_group = $user_source->groups()->orderByDesc('id')->first();
+        $angel_highest_group = $user_source->getHighestGroup();
         if (!empty($angel_highest_group)) {
             $angel_highest_group = $angel_highest_group->id;
         }
@@ -272,9 +272,9 @@ function admin_user()
                 $angel = User::findOrFail($user_id);
                 if ($angel->id != $user->id || auth()->can('admin_groups')) {
                     /** @var Group $my_highest_group */
-                    $my_highest_group = $user->groups()->orderByDesc('id')->first();
+                    $my_highest_group = $user->getHighestGroup();
                     /** @var Group $angel_highest_group */
-                    $angel_highest_group = $angel->groups()->orderByDesc('id')->first();
+                    $angel_highest_group = $angel->getHighestGroup();
 
                     if (
                         $my_highest_group

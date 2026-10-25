@@ -41,6 +41,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversMethod(User::class, 'state')]
 #[CoversMethod(User::class, 'news')]
 #[CoversMethod(User::class, 'groups')]
+#[CoversMethod(User::class, 'getHighestGroup')]
 #[CoversMethod(User::class, 'isFreeloader')]
 #[CoversMethod(User::class, 'siftEntriesMarkedFreeloaded')]
 #[CoversMethod(User::class, 'userAngelTypes')]
@@ -245,6 +246,18 @@ class UserTest extends ModelTestCase
         }
 
         $this->assertEquals($relatedModelIds, $user->{$name}->modelKeys());
+    }
+
+    public function testGetHighestGroup(): void
+    {
+        $user = User::factory()->create();
+        $group1 = Group::factory()->create(['id' => 990, 'name' => 'Group 1']);
+        $group2 = Group::factory()->create(['id' => 9920, 'name' => 'Group 2']);
+
+        $user->groups()->attach($group1);
+        $user->groups()->attach($group2);
+
+        $this->assertEquals($group2->id, $user->getHighestGroup()->id);
     }
 
     public function testIsFreeloader(): void
