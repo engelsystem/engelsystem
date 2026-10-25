@@ -722,9 +722,6 @@ msgstr "Die folgenden Engel werden benötigt"
 msgid "All Angels"
 msgstr "Alle Engel"
 
-msgid "This user does not exist."
-msgstr "Benutzer existiert nicht."
-
 msgid "general.yes"
 msgstr "Ja"
 

@@ -59,9 +59,9 @@ function user_delete_controller()
     }
 
     if (
-        !auth()->can('admin_user') || (
+        !$auth->can('admin_user') || (
             $user->id !== $user_source->id
-            && $user->getHighestGroup()->id <= $user_source->getHighestGroup()->id
+            && $user->getHighestGroup()->id <= $user_source->getHighestGroup()?->id
         )
     ) {
         throw_redirect(url('/'));
@@ -87,7 +87,7 @@ function user_delete_controller()
         }
 
         if ($valid) {
-            // Move user created news/answers/worklogs/shifts/userStates  etc. to deleting user
+            // Move user created news/answers/worklogs/shifts/userStates etc. to deleting user
             $user_source->news()->update(['user_id' => $user->id]);
             $user_source->questionsAnswered()->update(['answerer_id' => $user->id]);
             $user_source->worklogsCreated()->update(['creator_id' => $user->id]);
