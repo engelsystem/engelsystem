@@ -1542,7 +1542,7 @@ msgid "settings.profile.mobile_show"
 msgstr "Mache meine Handynummer für andere Benutzer sichtbar."
 
 msgid "settings.profile.email-preferences"
-msgstr "E-Mail Einstellungen"
+msgstr "Event E-Mail Einstellungen"
 
 msgid "general.email"
 msgstr "E-Mail"
@@ -1571,11 +1571,17 @@ msgstr "Erlaube Himmel-Engeln mich per E-Mail zu kontaktieren."
 
 msgid "settings.profile.email_goodie"
 msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "
-"dass mein Nick, E-Mail-Adresse und geleistete Arbeit solange gespeichert werden."
+"dass mein Nick, E-Mail-Adresse, User Infromationen und geleistete Arbeit solange gespeichert werden."
+
+msgid "settings.profile.email_goodie.declined"
+msgstr "Ich möchte <b>keine</b> Voucher erhalten."
+
+msgid "settings.profile.email_goodie.label"
+msgstr "Voucher Einstellungen"
 
 msgid "settings.profile.email_tshirt"
 msgstr "Um gegebenenfalls Voucher für das nächste gleichartige Event zu erhalten stimme ich zu, "
-"dass mein Nick, E-Mail-Adresse, geleistete Arbeit und T-Shirt-Größe solange gespeichert werden."
+"dass mein Nick, E-Mail-Adresse, User Infromationen, geleistete Arbeit und T-Shirt-Größe solange gespeichert werden."
 
 msgid "settings.profile.privacy"
 msgstr ""

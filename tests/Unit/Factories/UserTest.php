@@ -88,6 +88,10 @@ class UserTest extends ServiceProviderTestCase
                     'validation.email.required',
                     'validation.email.email',
                 ],
+                'email_goodie' => [
+                    'validation.email_goodie.required',
+                    'validation.email_goodie.in',
+                ],
                 'password' => [
                     'validation.password.required',
                     'validation.password.length',
@@ -111,6 +115,7 @@ class UserTest extends ServiceProviderTestCase
             'email' => 'fritz@example.com',
             'password' => 's3cret',
             'password_confirmation' => 's3cret',
+            'email_goodie' => 'decline',
         ]);
 
         $this->assertSame('fritz', $user->name);
@@ -136,6 +141,10 @@ class UserTest extends ServiceProviderTestCase
                 'email' =>  [
                     'validation.email.required',
                     'validation.email.email',
+                ],
+                'email_goodie' => [
+                    'validation.email_goodie.required',
+                    'validation.email_goodie.in',
                 ],
                 'password' => [
                     'validation.password.required',
@@ -176,6 +185,7 @@ class UserTest extends ServiceProviderTestCase
                 'planned_arrival_date' => $this->now->subDays(7)->format('Y-m-d'),
                 'dect' => str_repeat('a', 50),
                 'mobile' => str_repeat('a', 50),
+                'email_goodie' => 'notvalid',
             ],
             [
                 'username' =>  [
@@ -183,6 +193,9 @@ class UserTest extends ServiceProviderTestCase
                 ],
                 'email' =>  [
                     'validation.email.email',
+                ],
+                'email_goodie' => [
+                    'validation.email_goodie.in',
                 ],
                 'mobile' =>  [
                     'validation.mobile.length',
@@ -232,6 +245,7 @@ class UserTest extends ServiceProviderTestCase
             'tshirt_size' => 'M',
             'mobile_show' => 1,
             'email_system' => 1,
+            'email_goodie' => 'consent',
         ]);
 
         $this->assertSame('they', $user->personalData->pronoun);
@@ -258,6 +272,7 @@ class UserTest extends ServiceProviderTestCase
                 'email' => 'fritz@example.com',
                 'password' => 's3cret',
                 'password_confirmation' => 'huhuuu',
+                'email_goodie' => 'consent',
             ],
             [
                 'password' => [
@@ -278,6 +293,7 @@ class UserTest extends ServiceProviderTestCase
                 'email' => 'different@example.com',  // Use different email to only test username uniqueness
                 'password' => 's3cret',
                 'password_confirmation' => 's3cret',
+                'email_goodie' => 'consent',
             ],
             [
                 'username' => [
@@ -298,6 +314,7 @@ class UserTest extends ServiceProviderTestCase
                 'email' => 'fritz@example.com',
                 'password' => 's3cret',
                 'password_confirmation' => 's3cret',
+                'email_goodie' => 'consent',
             ],
             [
                 'email' => [
@@ -319,6 +336,7 @@ class UserTest extends ServiceProviderTestCase
                 'email' => 'fritz@example.com',
                 'password' => 's3cret',
                 'password_confirmation' => 's3cret',
+                'email_goodie' => 'consent',
             ],
             [
                 'username' => [
@@ -345,6 +363,7 @@ class UserTest extends ServiceProviderTestCase
             'angel_types_' . $angelTypes[1]->id => 1,
             // some angel type, that does not exist
             'angel_types_asd' => 1,
+            'email_goodie' => 'consent',
         ]);
 
         // Expect an assignment of the normal angel type
@@ -369,6 +388,7 @@ class UserTest extends ServiceProviderTestCase
             'email' => 'fritz@example.com',
             'password' => 's3cret',
             'password_confirmation' => 's3cret',
+            'email_goodie' => 'decline',
         ]);
 
         $this->assertSame('fritz', $user->name);
@@ -386,6 +406,7 @@ class UserTest extends ServiceProviderTestCase
             'email' => 'fritz@example.com',
             'password' => 's3cret',
             'password_confirmation' => 's3cret',
+            'email_goodie' => 'consent',
         ]);
 
         $this->assertSame('fritz', $user->name);
@@ -415,6 +436,7 @@ class UserTest extends ServiceProviderTestCase
                 'password' => 's3cret',
                 'password_confirmation' => 's3cret',
                 'planned_arrival_date' => $this->now->subDays(7)->format('Y-m-d'),
+                'email_goodie' => 'consent',
             ],
             [
                 'planned_arrival_date' =>  [
@@ -438,6 +460,7 @@ class UserTest extends ServiceProviderTestCase
             'email' => 'fritz@example.com',
             'password' => 's3cret',
             'password_confirmation' => 's3cret',
+            'email_goodie' => 'decline',
         ]);
 
         $oAuth = $user->oauth->first();

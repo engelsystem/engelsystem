@@ -267,6 +267,14 @@ table.table-sticky-header thead {
   display: block;
 }
 
+.form-field {
+  margin-bottom: 1em;
+}
+
+.form-check {
+  margin-trim: block-end;
+}
+
 .shift-calendar {
   display: flex;
   flex-direction: row;

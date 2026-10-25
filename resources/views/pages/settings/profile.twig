@@ -120,21 +120,24 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">{{ __('settings.profile.email-preferences') }}</label>
-                {{ f.checkbox('email_shiftinfo', __('settings.profile.email_shiftinfo', [config('app_name')]), {
-                    'checked': userdata.settings.email_shiftinfo,
-                }) }}
-                {{ f.checkbox('email_news', __('settings.profile.email_news'), {
-                    'checked': userdata.settings.email_news,
-                }) }}
-                {{ f.checkbox('email_messages', __('settings.profile.email_messages'), {
-                    'checked': userdata.settings.email_messages,
-                }) }}
-                {{ f.checkbox('email_human', __('settings.profile.email_by_human_allowed'), {
-                    'checked': userdata.settings.email_human,
-                }) }}
+                {% block mailPreferences %}
+                    <label class="form-label">{{ __('settings.profile.email-preferences') }}</label>
+                    {{ f.checkbox('email_shiftinfo', __('settings.profile.email_shiftinfo', [config('app_name')]), {
+                        'checked': userdata.settings.email_shiftinfo,
+                    }) }}
+                    {{ f.checkbox('email_news', __('settings.profile.email_news'), {
+                        'checked': userdata.settings.email_news,
+                    }) }}
+                    {{ f.checkbox('email_messages', __('settings.profile.email_messages'), {
+                        'checked': userdata.settings.email_messages,
+                    }) }}
+                    {{ f.checkbox('email_human', __('settings.profile.email_by_human_allowed'), {
+                        'checked': userdata.settings.email_human,
+                    }) }}
+                {% endblock %}
                 {% block goodieMail %}
                     {% if goodie_enabled %}
+                        <label class="form-label">{{ __('settings.profile.email_goodie.label') }}</label>
                         {% set privacy_email = config('privacy_email') %}
                         {% set email_goodie_label =
                             (goodie_tshirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~

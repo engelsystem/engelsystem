@@ -50,6 +50,12 @@ msgstr "The e-mail address is required."
 msgid "validation.email.email"
 msgstr "This e-mail address is not valid."
 
+msgid "validation.email_goodie.required"
+msgstr "Please choose your Voucher preferences."
+
+msgid "validation.email_goodie.in"
+msgstr "Please choose a valid Voucher preferences option."
+
 msgid "validation.new_password.length"
 msgstr "Your new password is too short."
 

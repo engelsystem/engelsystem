@@ -52,6 +52,12 @@ msgstr "Bitte gib eine E-Mail-Adresse an."
 msgid "validation.email.email"
 msgstr "Die E-Mail-Adresse ist nicht gültig."
 
+msgid "validation.email_goodie.required"
+msgstr "Bitte wähle eine Voucher Einstellung aus."
+
+msgid "validation.email_goodie.in"
+msgstr "Bitte wähle eine gültige Voucher Einstellung aus."
+
 msgid "validation.new_password.length"
 msgstr "Dein neues Passwort ist zu kurz."
 

@@ -419,3 +419,67 @@ Renders a "checkbox" element that will be styled as switch.
 {% macro formData(name, default) -%}
     {{ session_pop('form-data-' ~ name|replace({'.': '_'}), default) }}
 {%- endmacro %}
+
+{#
+Renders a radio button group.
+
+@param {string} name - Will be used as value for "id" and "name" attributes.
+@param {string} label - If not empty a "label" element with this text will be rendered.
+@param {{value, description}} data - Radio buttons. "value" will be the input value, "description" the label.
+                                        "{name}-{value}" will be the input "id".
+@param {string} [opt.id] - Optional value for the element id.
+@param {string} [opt.selected] - Optional value of an input to initially set as "checked".
+@param {bool} [opt.required_icon=false] - Whether an asterisk should be displayed after the label
+                                            to indicate that this field is mandatory.
+                                            Won't be displayed without a label. Defaults to false.
+@param {string} [opt.info] - If set an additional info icon will be added to the label with the text as tooltip.
+                                Won't be displayed without a label.
+@param {string} [opt.warning] - If set an additional warning icon will be added to the label with the text as tooltip.
+@param {string} [opt.class] - Optional additional CSS classes to be added to the div around the radio buttons.
+@param {bool} [opt.required=false] - Whether to add the "required" attribute. Defaults to false.
+@param {bool} [opt.raw_label=false] - Whether to use the raw label value (=do not escape) for input labels.
+                                        Defaults to false.
+@param {string} [opt.form_text] - If set a describing text is desplayed below.
+#}
+{% macro radio(name, label, data, opt) %}
+    {% if label -%}
+        <label class="form-label" for="{{ opt.id|default(name) }}">
+            {{ label }}
+            {% if opt.required_icon|default(false) %}
+                {{ _self.entry_required() }}
+            {% endif %}
+            {% if opt.info is defined %}
+                {{ _self.info(opt.info) }}
+            {% endif %}
+            {% if opt.warning is defined %}
+                {{ _self.warning(opt.warning) }}
+            {% endif %}
+        </label>
+    {% endif %}
+    <ul class="list-group pt-1">
+        <li class="list-group-item">
+            <div class="form-check gap-2 {{ opt.class is defined ? opt.class : 'mb-3' }}">
+                {% for value, description in data %}
+                    <div class="form-field">
+                        <input class="form-check-input"
+                            type="radio"
+                            value="{{ value }}"
+                            name="{{ name }}"
+                            id="{{ name }}-{{ value }}"
+                            {% if opt.selected is defined and (value == opt.selected or (opt.selected is iterable and (value in opt.selected or value in opt.selected|keys))) %} checked{% endif %}
+                            {% if opt.required %} required{% endif %}
+                        >
+                        <label class="form-check-label" for="{{ name }}-{{ value }}">
+                            {%- if opt.raw_label|default(false) -%}
+                                {{ description|raw }}
+                            {%- else -%}
+                                {{ description }}
+                            {%- endif -%}
+                        </label>
+                    </div>
+                {% endfor %}
+                {{ _self.form_text(opt) }}
+            </div>
+        </li>
+    </ul>
+{%- endmacro %}

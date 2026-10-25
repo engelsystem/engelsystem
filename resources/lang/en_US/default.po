@@ -353,7 +353,7 @@ msgid "settings.profile.mobile_show"
 msgstr "Show my mobile number to other users."
 
 msgid "settings.profile.email-preferences"
-msgstr "E-mail preferences"
+msgstr "Event E-mail preferences"
 
 msgid "general.email"
 msgstr "E-mail"
@@ -382,11 +382,17 @@ msgstr "Allow Heaven Angels to contact me by e-mail."
 
 msgid "settings.profile.email_goodie"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
-"that my nick, e-mail address and worked hours will be stored until then."
+"that my nick, e-mail address, user information and worked hours will be stored until then."
+
+msgid "settings.profile.email_goodie.declined"
+msgstr "I do <b>not</b> want to receive vouchers."
+
+msgid "settings.profile.email_goodie.label"
+msgstr "Voucher preferences"
 
 msgid "settings.profile.email_tshirt"
 msgstr "To possibly receive vouchers for the next similar event, I consent "
-"that my nick, e-mail address, worked hours and T-shirt size will be stored until then."
+"that my nick, e-mail address, user information, worked hours and T-shirt size will be stored until then."
 
 msgid "settings.profile.privacy"
 msgstr "You can withdraw your approval during the event in your profile settings as well "
