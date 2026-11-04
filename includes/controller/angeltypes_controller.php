@@ -110,7 +110,7 @@ function angeltype_controller_shiftsFilterDays(AngelType $angeltype)
 }
 
 /**
- * Sets up the shift filter for the angeltype.
+ * Sets up the shift filter for this angeltype.
  *
  * @param AngelType $angeltype
  * @param array     $days

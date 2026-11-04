@@ -19,6 +19,7 @@ use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\SignatureInvalidException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -60,18 +61,43 @@ class AngelTypesController extends BaseController
 
     public function index(): Response
     {
+        $userId = auth()->user()->id;
         $angelTypes = $this->angelType
-            ->with(['userAngelTypes' => function ($query): void {
-                $query->where('user_id', '=', auth()->user()->id);
+            ->with(['userAngelTypes' => function ($query) use ($userId): void {
+                $query->where('user_id', '=', $userId);
             }])
+            ->withCount([
+                'userAngelTypes as member_count' => function (Builder $query): void {
+                    $query->where(function (Builder $membershipQuery): void {
+                        $membershipQuery->where('angel_types.restricted', '=', false)
+                            ->orWhereNotNull('user_angel_type.confirm_user_id');
+                    });
+                },
+                'userAngelTypes as pending_count' => function (Builder $query): void {
+                    $query->where('angel_types.restricted', '=', true)
+                        ->whereNull('user_angel_type.confirm_user_id');
+                },
+            ])
             ->orderBy('name')
             ->get();
+
+        $showPendingCount = auth()->can('user.angeltypes.edit');
+        if (!$showPendingCount) {
+            foreach ($angelTypes as $angelType) {
+                $userAngelType = $angelType->userAngelTypes->first();
+                if ($userAngelType && $userAngelType->pivot->supporter) {
+                    $showPendingCount = true;
+                    break;
+                }
+            }
+        }
 
         return $this->response->withView(
             'pages/angeltypes/index',
             [
                 'angelTypes' => $angelTypes,
                 'is_index' => true,
+                'show_pending_count' => $showPendingCount,
             ]
         );
     }
