@@ -41,6 +41,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversMethod(User::class, 'state')]
 #[CoversMethod(User::class, 'news')]
 #[CoversMethod(User::class, 'groups')]
+#[CoversMethod(User::class, 'getHighestGroup')]
 #[CoversMethod(User::class, 'isFreeloader')]
 #[CoversMethod(User::class, 'siftEntriesMarkedFreeloaded')]
 #[CoversMethod(User::class, 'userAngelTypes')]
@@ -58,6 +59,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversMethod(User::class, 'questionsAnswered')]
 #[CoversMethod(User::class, 'shiftsCreated')]
 #[CoversMethod(User::class, 'shiftsUpdated')]
+#[CoversMethod(User::class, 'forceFoodByStates')]
+#[CoversMethod(User::class, 'forceActiveByStates')]
+#[CoversMethod(User::class, 'gotGoodieByStates')]
+#[CoversMethod(User::class, 'reservedGoodieByStates')]
 #[CoversMethod(User::class, 'getDisplayNameAttribute')]
 class UserTest extends ModelTestCase
 {
@@ -239,6 +244,18 @@ class UserTest extends ModelTestCase
         }
 
         $this->assertEquals($relatedModelIds, $user->{$name}->modelKeys());
+    }
+
+    public function testGetHighestGroup(): void
+    {
+        $user = User::factory()->create();
+        $group1 = Group::factory()->create(['id' => 990, 'name' => 'Group 1']);
+        $group2 = Group::factory()->create(['id' => 9920, 'name' => 'Group 2']);
+
+        $user->groups()->attach($group1);
+        $user->groups()->attach($group2);
+
+        $this->assertEquals($group2->id, $user->getHighestGroup()->id);
     }
 
     public function testIsFreeloader(): void
@@ -517,6 +534,29 @@ class UserTest extends ModelTestCase
         $user2 = User::find(2);
         $this->assertCount(2, $user2->shiftsCreated);
         $this->assertCount(2, $user2->shiftsUpdated);
+    }
+
+    public function testStates(): void
+    {
+        ($user1 = new User($this->data))->save();
+        ($user2 = new User(array_merge($this->data, ['name' => 'foo', 'email' => 'someone@bar.batz'])))->save();
+
+        State::factory()->create(['force_active_by' => $user1->id, 'force_food_by' => $user2->id]);
+        State::factory()->create(['force_active_by' => $user2->id, 'got_goodie_by' => $user1->id]);
+        State::factory()->create(['reserved_goodie_by' => $user2->id, 'got_goodie_by' => $user1->id]);
+        State::factory()->create(['reserved_goodie_by' => $user1->id]);
+
+        $user1 = User::find(1);
+        $this->assertCount(1, $user1->forceActiveByStates);
+        $this->assertCount(0, $user1->forceFoodByStates);
+        $this->assertCount(1, $user1->reservedGoodieByStates);
+        $this->assertCount(2, $user1->gotGoodieByStates);
+
+        $user2 = User::find(2);
+        $this->assertCount(1, $user2->forceActiveByStates);
+        $this->assertCount(1, $user2->forceFoodByStates);
+        $this->assertCount(1, $user2->reservedGoodieByStates);
+        $this->assertCount(0, $user2->gotGoodieByStates);
     }
 
     public static function getDisplayNameAttributeProvider(): array

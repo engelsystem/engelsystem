@@ -107,7 +107,7 @@ function admin_free()
                 ? sprintf('<a href="mailto:%s">%1$s</a>', htmlspecialchars((string) $email))
                 : icon('eye-slash'),
             'actions'     =>
-                auth()->can('admin_user')
+                auth()->user()->getHighestGroup() >= $usr->getHighestGroup() && auth()->can('admin_user')
                     ? button(url('/admin-user', ['id' => $usr->id]), icon('pencil'), 'btn-sm', '', __('form.edit'))
                     : '',
         ];
