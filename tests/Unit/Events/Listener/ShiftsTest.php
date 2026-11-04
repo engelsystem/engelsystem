@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Events\Listener\Shifts;
+use Engelsystem\Events\ModelEvent;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\Translation\Translator;
@@ -23,17 +25,21 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
 
-#[CoversMethod(Shifts::class, 'deletingShiftEntryCreateWorklog')]
-#[CoversMethod(Shifts::class, 'deletingShift')]
 #[CoversMethod(Shifts::class, '__construct')]
+#[CoversMethod(Shifts::class, 'deletingShiftsList')]
+#[CoversMethod(Shifts::class, 'deletingModelWithShifts')]
+#[CoversMethod(Shifts::class, 'deletingModelWithShiftEntries')]
+#[CoversMethod(Shifts::class, 'deletingShiftEntryCreateWorklog')]
 #[CoversMethod(Shifts::class, 'deletingShiftEntrySendEmail')]
-#[CoversMethod(Shifts::class, 'updatedSendEmail')]
+#[CoversMethod(Shifts::class, 'updatingSendEmail')]
 #[AllowMockObjectsWithoutExpectations]
 class ShiftsTest extends TestCase
 {
     use HasDatabase;
 
     protected Authenticator | MockObject $auth;
+
+    protected EventDispatcher | MockObject $event;
 
     protected TestLogger $log;
 
@@ -47,6 +53,60 @@ class ShiftsTest extends TestCase
 
     protected User $user;
 
+    public function testDeletingShiftsList(): void
+    {
+        $anotherShift = Shift::factory([
+            'title' => 'Foo',
+            'start' => Carbon::now(),
+            'end' => Carbon::now()->addHours(2),
+        ])->create();
+
+        $this->event->expects($this->exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function (ModelEvent $event) use ($anotherShift) {
+                $this->assertEquals('model.shifts.shift.deleting', $event->getName());
+                $this->assertTrue(in_array($event->model->id, [$this->shift->id, $anotherShift->id]));
+                $this->assertTrue($event->model->relationLoaded('shiftEntries'));
+                return $this->event;
+            });
+
+        /** @var Shifts $listener */
+        $listener = $this->app->make(Shifts::class);
+        $listener->deletingShiftsList(new DataEvent('shifts.deleting', [$this->shift, $anotherShift]));
+    }
+
+    public function testDeletingModelWithShifts(): void
+    {
+        $location = $this->shift->location;
+        $this->event->expects($this->exactly(1))
+            ->method('dispatch')
+            ->willReturnCallback(function (DataEvent $event) {
+                $this->assertEquals('shifts.deleting', $event->getName());
+                $this->assertCount(1, $event->data);
+                $this->assertEquals($event->data[0], Shift::find($this->shift->id));
+                return $this->event;
+            });
+
+        /** @var Shifts $listener */
+        $listener = $this->app->make(Shifts::class);
+        $listener->deletingModelWithShifts(new ModelEvent('model.location.deleting', $location));
+    }
+
+    public function testDeletingModelWithShiftEntries(): void
+    {
+        $this->event->expects($this->exactly(1))
+            ->method('dispatch')
+            ->willReturnCallback(function (ModelEvent $event) {
+                $this->assertEquals('model.shifts.shiftentry.deleting', $event->getName());
+                $this->assertEquals($event->model, $this->shift->shiftEntries->first());
+                return $this->event;
+            });
+
+        /** @var Shifts $listener */
+        $listener = $this->app->make(Shifts::class);
+        $listener->deletingModelWithShiftEntries(new ModelEvent('model.shifts.shift.deleting', $this->shift));
+    }
+
     public function testDeletingShiftEntryCreateWorklogs(): void
     {
         $this->setExpects($this->auth, 'user', null, $this->user);
@@ -54,24 +114,13 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingShiftEntryCreateWorklog($this->entry);
+        $listener->deletingShiftEntryCreateWorklog(new ModelEvent('model.shifts.shift.deleting', $this->entry));
 
         $this->assertCount(1, $this->user->worklogs);
         $this->assertEquals($this->shift->isNightShift() ? 4 : 2, $this->user->worklogs[0]->hours);
         $this->assertEquals('Text', $this->user->worklogs[0]->description);
 
         $this->assertTrue($this->log->hasInfoThatContains('Created worklog entry'));
-    }
-
-    public function testDeletingShift(): void
-    {
-        $dispatcher = $this->createMock(EventDispatcher::class);
-        $this->setExpects($dispatcher, 'dispatch', ['shift.entry.deleting'], []);
-        $this->app->instance('events.dispatcher', $dispatcher);
-
-        /** @var Shifts $listener */
-        $listener = $this->app->make(Shifts::class);
-        $listener->deletingShift($this->shift);
     }
 
     public function testDeletingShiftEntryCreateWorklogsIgnoreFreeload(): void
@@ -83,7 +132,7 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingShiftEntryCreateWorklog($this->entry);
+        $listener->deletingShiftEntryCreateWorklog(new ModelEvent('model.shifts.shift.deleting', $this->entry));
 
         $this->assertCount(0, $this->user->worklogs);
     }
@@ -95,7 +144,7 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingShiftEntryCreateWorklog($this->entry);
+        $listener->deletingShiftEntryCreateWorklog(new ModelEvent('model.shifts.shift.deleting', $this->entry));
 
         $this->assertCount(0, $this->user->worklogs);
     }
@@ -109,7 +158,7 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingShiftEntrySendEmail($this->entry);
+        $listener->deletingShiftEntrySendEmail(new ModelEvent('model.shifts.shift.deleting', $this->entry));
     }
 
     public function testDeletingShiftEntrySendEmail(): void
@@ -130,26 +179,24 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->deletingShiftEntrySendEmail($this->entry);
+        $listener->deletingShiftEntrySendEmail(new ModelEvent('model.shifts.shift.deleting', $this->entry));
     }
 
     public function testUpdatedSendEmailNoRelevantChange(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());
 
-        $oldShift = Shift::find($this->shift->id);
         $this->shift->description = 'Foo';
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->updatedSendEmail($this->shift, $oldShift);
+        $listener->updatingSendEmail(new ModelEvent('model.shifts.shift.updating', $this->shift));
     }
 
     public function testUpdatedSendEmailNoNotification(): void
     {
         $this->setExpects($this->mailer, 'sendViewTranslated', null, null, $this->never());
 
-        $oldShift = Shift::find($this->shift->id);
         $this->shift->title = 'Bar';
 
         $this->user->settings->email_shiftinfo = false;
@@ -157,7 +204,7 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->updatedSendEmail($this->shift, $oldShift);
+        $listener->updatingSendEmail(new ModelEvent('model.shifts.shift.updating', $this->shift));
     }
 
     public function testUpdatedSendEmailAlreadyEnded(): void
@@ -166,16 +213,19 @@ class ShiftsTest extends TestCase
 
         $oldShift = Shift::find($this->shift->id);
         $oldShift->end = Carbon::now()->subMinutes(42);
+        $oldShift->save();
+
         $this->shift->end = Carbon::now()->subMinutes(42);
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->updatedSendEmail($this->shift, $oldShift);
+        $listener->updatingSendEmail(new ModelEvent('model.shifts.shift.updating', $this->shift));
     }
 
     public function testUpdatedSendEmail(): void
     {
-        $oldShift = Shift::find($this->shift->id);
+        $oldShift = Shift::find($this->shift->id)
+            ->load(['shiftType', 'location']);
         $this->shift->title = 'Bar';
 
         $this->mailer->expects($this->once())
@@ -199,7 +249,7 @@ class ShiftsTest extends TestCase
 
         /** @var Shifts $listener */
         $listener = $this->app->make(Shifts::class);
-        $listener->updatedSendEmail($this->shift, $oldShift);
+        $listener->updatingSendEmail(new ModelEvent('model.shifts.shift.updating', $this->shift));
     }
 
     protected function setUp(): void
@@ -248,5 +298,8 @@ class ShiftsTest extends TestCase
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance('authenticator', $this->auth);
+
+        $this->event = $this->createMock(EventDispatcher::class);
+        $this->app->instance(EventDispatcher::class, $this->event);
     }
 }

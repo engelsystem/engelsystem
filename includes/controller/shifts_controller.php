@@ -150,8 +150,6 @@ function shift_edit_controller()
         }
 
         if ($valid) {
-            $oldShift = Shift::find($shift->id);
-
             $shift->shift_type_id = $shifttype_id;
             $shift->title = $title;
             $shift->description = $description;
@@ -160,11 +158,6 @@ function shift_edit_controller()
             $shift->end = $end;
             $shift->updatedBy()->associate(auth()->user());
             $shift->save();
-
-            event('shift.updating', [
-                'shift' => $shift,
-                'oldShift' => $oldShift,
-            ]);
 
             NeededAngelType::whereShiftId($shift_id)->delete();
             $needed_angel_types_info = [];
@@ -294,8 +287,6 @@ function shift_delete_controller(): void
     $shift_id = $request->input('delete_shift');
     /** @var Shift $shift */
     $shift = Shift::findOrFail($shift_id);
-
-    event('shift.deleting', ['shift' => $shift]);
 
     $shift->delete();
 

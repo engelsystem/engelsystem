@@ -103,8 +103,15 @@ class UserGoodieControllerTest extends ControllerTestCase
         $this->config->set('tshirt_sizes', ['S' => 'Small', 'XS' => 'Extra Small']);
         $redirector = $this->createMock(Redirector::class);
         User::factory()
-            ->has(State::factory())
-            ->has(PersonalData::factory())
+            ->has(State::factory([
+                'active' => false,
+                'arrival_date' => null,
+                'force_active_by' => null,
+                'force_food_by' => null,
+                'got_goodie_by' => null,
+                'reserved_goodie_by' => null,
+            ]))
+            ->has(PersonalData::factory(['shirt_size' => 'S']))
             ->create();
 
         $user = User::find(1);

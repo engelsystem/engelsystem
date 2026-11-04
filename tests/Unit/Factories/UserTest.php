@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Engelsystem\Config\Config;
 use Engelsystem\Events\EventDispatcher;
+use Engelsystem\Events\NullEvent;
 use Engelsystem\Factories\User;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -59,8 +60,8 @@ class UserTest extends ServiceProviderTestCase
         $this->app->alias(Authenticator::class, 'authenticator');
 
         $dispatcher = $this->createStub(EventDispatcher::class);
-        $dispatcher->method('dispatch')->willReturn(null);
-        $this->app->instance('events.dispatcher', $dispatcher);
+        $dispatcher->method('dispatch')->willReturn(new NullEvent());
+        $this->app->instance(EventDispatcher::class, $dispatcher);
 
         $this->subject = $this->app->make(User::class);
     }
