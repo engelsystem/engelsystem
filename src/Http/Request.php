@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Http;
 
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Nyholm\Psr7\UploadedFile;
 use Psr\Http\Message\ServerRequestInterface;
@@ -380,6 +381,13 @@ class Request extends SymfonyRequest implements ServerRequestInterface
      */
     public function getParsedBody(): array|object|null
     {
+        if (Str::startsWith((string) $this->headers->get('Content-Type'), 'application/json')) {
+            $decoded = json_decode((string) $this->getContent(), true);
+            if (is_array($decoded)) {
+                return array_merge($this->request->all(), $decoded);
+            }
+        }
+
         return $this->request->all();
     }
 

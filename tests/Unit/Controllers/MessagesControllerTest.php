@@ -28,7 +28,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversMethod(MessagesController::class, 'listConversations')]
 #[CoversMethod(MessagesController::class, 'latestMessagePerConversation')]
 #[CoversMethod(MessagesController::class, 'numberOfUnreadMessagesPerConversation')]
-#[CoversMethod(MessagesController::class, 'raw')]
 #[CoversMethod(MessagesController::class, 'redirectToConversation')]
 #[CoversMethod(MessagesController::class, 'messagesOfConversation')]
 #[CoversMethod(MessagesController::class, 'send')]

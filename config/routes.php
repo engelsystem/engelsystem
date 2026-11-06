@@ -148,6 +148,12 @@ $route->addGroup(
                 $route->get('/locations', 'Api\LocationsController@index');
                 $route->get('/locations/{location_id:\d+}/shifts', 'Api\ShiftsController@entriesByLocation');
 
+                $route->get('/messages', 'Api\MessagesController@index');
+                $route->get('/messages/{user_id:\d+}', 'Api\MessagesController@show');
+                $route->post('/messages/{user_id:\d+}', 'Api\MessagesController@send');
+                $route->delete('/messages/{msg_id:\d+}', 'Api\MessagesController@delete');
+                $route->patch('/messages/{msg_id:\d+}', 'Api\MessagesController@setRead');
+
                 $route->get('/news', 'Api\NewsController@index');
 
                 $route->get('/shifttypes', 'Api\ShiftTypeController@index');

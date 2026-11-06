@@ -6,6 +6,7 @@ namespace Engelsystem\Middleware;
 
 use Engelsystem\Exceptions\Handler;
 use Engelsystem\Http\Exceptions\HttpException;
+use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -66,6 +67,13 @@ class ApiRouteHandler implements MiddlewareInterface
         } catch (HttpException $e) {
             $response = new Response($e->getMessage(), $e->getStatusCode(), $e->getHeaders());
             $response->setContent($response->getContent() ?: $response->getReasonPhrase());
+        } catch (ValidationException $e) {
+            $response = new Response('', 422);
+            $response->setContent(json_encode([
+                'message' => 'Validation failed',
+                'errors' => $e->getValidator()->getErrors(),
+            ]));
+            $response = $response->withHeader('content-type', 'application/json');
         } catch (Throwable $e) {
             /** @var Handler $handler */
             $handler = app('error.handler');

@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers;
 
-use Engelsystem\Database\Database;
 use Engelsystem\Helpers\Authenticator;
-use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
-use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\RequestInterface;
 
@@ -30,8 +27,6 @@ class MessagesController extends BaseController
         protected Redirector $redirect,
         protected Response $response,
         Request $request,
-        protected Database $db,
-        protected Message $message,
         protected User $user
     ) {
         $this->request = $request;
@@ -103,17 +98,7 @@ class MessagesController extends BaseController
         $currentUser = $this->auth->user();
         $otherUser = $this->user->findOrFail($userId);
 
-        $messages = $this->message
-            ->where(function ($query) use ($currentUser, $otherUser): void {
-                $query->whereUserId($currentUser->id)
-                    ->whereReceiverId($otherUser->id);
-            })
-            ->orWhere(function ($query) use ($currentUser, $otherUser): void {
-                $query->whereUserId($otherUser->id)
-                    ->whereReceiverId($currentUser->id);
-            })
-            ->orderBy('created_at')
-            ->get();
+        $messages = Message::conversationBetween($currentUser, $otherUser);
 
         $unreadMessages = $messages->filter(function ($m) use ($otherUser) {
             return $m->user_id == $otherUser->id && !$m->read;
@@ -144,14 +129,7 @@ class MessagesController extends BaseController
 
         $otherUser = $this->user->findOrFail($userId);
 
-        $newMessage = new Message();
-        $newMessage->sender()->associate($currentUser);
-        $newMessage->receiver()->associate($otherUser);
-        $newMessage->text = $data['text'];
-        $newMessage->read = $otherUser->id == $currentUser->id; // if its to myself, I obviously read it.
-        $newMessage->save();
-
-        event('message.created', ['message' => $newMessage]);
+        Message::sendMessage($currentUser, $otherUser, $data['text']);
 
         return $this->redirect->to('/messages/' . $otherUser->id . '#newest');
     }
@@ -166,13 +144,7 @@ class MessagesController extends BaseController
         $msgId = (int) $request->getAttribute('msg_id');
 
         $currentUser = $this->auth->user();
-        $msg = $this->message->findOrFail($msgId);
-
-        if ($msg->user_id == $currentUser->id) {
-            $msg->delete();
-        } else {
-            throw new HttpForbidden();
-        }
+        Message::deleteOwn($msgId, $currentUser);
 
         return $this->redirect->to('/messages/' . $otherUserId . '#newest');
     }
@@ -183,14 +155,7 @@ class MessagesController extends BaseController
      */
     protected function numberOfUnreadMessagesPerConversation(User $currentUser): Collection
     {
-        return $currentUser->messagesReceived()
-            ->select('user_id', $this->raw('count(*) as amount'))
-            ->where('read', false)
-            ->groupBy('user_id')
-            ->get(['user_id', 'amount'])
-            ->mapWithKeys(function ($unread) {
-                return [$unread->user_id => $unread->amount];
-            });
+        return Message::unreadCountsPerConversationFor($currentUser);
     }
 
     /**
@@ -200,30 +165,7 @@ class MessagesController extends BaseController
      */
     protected function latestMessagePerConversation(User $currentUser): Collection
     {
-        /* requesting the IDs first, grouped by "conversation".
-        The more complex grouping is required for associating the messages to the correct conversations.
-        Without this, a database change might have been needed to realize the "conversations" concept. */
-        $latestMessageIds = $this->message
-            ->select($this->raw('max(id) as last_id'))
-            ->where('user_id', '=', $currentUser->id)
-            ->orWhere('receiver_id', '=', $currentUser->id)
-            ->groupBy($this->raw(
-                '(CASE WHEN user_id = ' . (int) $currentUser->id .
-                ' THEN receiver_id ELSE user_id END)'
-            ));
-
-        // then getting the full message objects for each ID.
-        return $this->message
-            ->joinSub($latestMessageIds, 'conversations', function ($join): void {
-                $join->on('messages.id', '=', 'conversations.last_id');
-            })
-            ->orderBy('created_at', 'DESC')
-            ->get()
+        return Message::latestPerConversationFor($currentUser)
             ->load(['receiver.personalData', 'receiver.state']);
-    }
-
-    protected function raw(mixed $value): QueryExpression
-    {
-        return $this->db->getConnection()->raw($value);
     }
 }
