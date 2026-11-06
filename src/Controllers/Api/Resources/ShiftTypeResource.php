@@ -19,6 +19,7 @@ class ShiftTypeResource extends BasicResource
             'id' => $this->model->id,
             'name' => $this->model->name,
             'description' => $this->model->description,
+            'signup_advance_hours' => $this->model->signup_advance_hours,
         ];
     }
 }
