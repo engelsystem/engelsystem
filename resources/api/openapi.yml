@@ -7,6 +7,13 @@ info:
     This API is as stable as a **beta** version might be.
     It could burst into flames and morph into a monster at any second!
     (But we try to keep it somewhat consistent, at least during events).
+
+
+    **Access:** The `api` privilege (e.g. the "API" group) grants read access to every endpoint.
+    It is read-only and never grants write access. Without it, an endpoint is available if the
+    user has the privilege that grants the same access on the website, and its data is limited
+    to what the website shows that user. Each operation lists the privileges it requires; see
+    `resources/api/readme.md` for details. `GET /users/self` lists the user's own privileges.
   contact:
     name: GitHub Issues
     url: https://github.com/engelsystem/engelsystem/issues
@@ -160,8 +167,71 @@ components:
           properties:
               user:
                 $ref: '#/components/schemas/Reference'
+              pronoun:
+                type: string
+                nullable: true
+                description: '`null` if pronouns are disabled'
+              dect:
+                type: string
+                nullable: true
+                description: '`null` if DECT is disabled'
+              driver_license:
+                type: object
+                nullable: true
+                description: >
+                  Driving licenses, only if the angel type requires one and for supporters of the
+                  angel type and with the `angeltypes.edit` or `user.drive.edit` privilege, `null`
+                  otherwise
+                properties:
+                  confirmed:
+                    type: boolean
+                  wants_to_drive:
+                    type: boolean
+                  has_car:
+                    type: boolean
+                  car:
+                    type: boolean
+                  transporter_3_5t:
+                    type: boolean
+                  truck_7_5t:
+                    type: boolean
+                  truck_12t:
+                    type: boolean
+                  forklift:
+                    type: boolean
+              ifsg:
+                type: object
+                nullable: true
+                description: >
+                  IfSG certificates, only if the angel type requires one and for supporters of the
+                  angel type and with the `angeltypes.edit` or `user.ifsg.edit` privilege, `null`
+                  otherwise
+                properties:
+                  confirmed:
+                    type: boolean
+                  certificate:
+                    type: boolean
+                  certificate_light:
+                    type: boolean
+                    nullable: true
+              got_goodie:
+                type: boolean
+                nullable: true
+                description: >
+                  Only with the `angeltypes.goodie.list` and `user.goodie.edit` privileges, if goodies
+                  are enabled, `null` otherwise
+              shirt_size:
+                type: string
+                nullable: true
+                description: Like `got_goodie`, only if the goodie is a T-shirt
           required:
             - user
+            - pronoun
+            - dect
+            - driver_license
+            - ifsg
+            - got_goodie
+            - shirt_size
         - $ref: '#/components/schemas/UserAngelTypeRelation'
     UserAngelTypeRelation:
         properties:
@@ -340,16 +410,22 @@ components:
           description: The shift entry ID
         user:
           $ref: '#/components/schemas/Reference'
+        freeloaded:
+          type: boolean
+          description: Whether the shift entry has been marked as freeloaded (user did not arrive)
         freeloaded_by:
           oneOf:
             - $ref: '#/components/schemas/Reference'
           nullable: true
           description: >
             Contains a reference to the user who has marked this shift entry as freeloaded, if
-            for a user not arriving to their shift
+            for a user not arriving to their shift. Without the `api` privilege only provided to
+            shift admins (`user_shifts_admin`) and supporters of the entry's angel type, `null`
+            otherwise; use `freeloaded` to check the state.
       required:
         - id
         - user
+        - freeloaded
         - freeloaded_by
     ShiftType:
       type: object
@@ -445,6 +521,21 @@ components:
               description: OAuth/SSO provider identifiers linked to this user
               items:
                 $ref: '#/components/schemas/OAuthIdentifier'
+            groups:
+              type: array
+              description: Groups the user is a member of
+              items:
+                $ref: '#/components/schemas/Reference'
+            privileges:
+              type: array
+              description: >
+                Names of all privileges the user has through their groups, e.g. to check which
+                endpoints are available
+              items:
+                type: string
+              example:
+                - news
+                - user_shifts
       required:
         - email
         - tshirt_size
@@ -452,6 +543,105 @@ components:
         - language
         - arrived
         - oauth
+        - groups
+        - privileges
+    UserProfile:
+      type: object
+      description: Details shown on the user's profile page on the website
+      properties:
+        groups:
+          type: array
+          description: Groups the user is a member of
+          items:
+            $ref: '#/components/schemas/Reference'
+        arrived:
+          type: boolean
+          example: true
+        next_shift:
+          type: object
+          nullable: true
+          description: The user's current or next shift, `null` if none or if the user hasn't arrived
+          properties:
+            starts_at:
+              $ref: '#/components/schemas/DateTime'
+            ends_at:
+              $ref: '#/components/schemas/DateTime'
+          required:
+            - starts_at
+            - ends_at
+        vouchers:
+          type: object
+          nullable: true
+          description: >
+            Vouchers of the user. Only for the user themself and with the `admin_user` privilege,
+            if vouchers are enabled, `null` otherwise.
+          properties:
+            received:
+              type: integer
+              example: 2
+            available:
+              type: integer
+              example: 4
+              description: Number of vouchers the user is eligible for in total
+          required:
+            - received
+            - available
+        goodie_score:
+          type: number
+          nullable: true
+          example: 12.5
+          description: >
+            Worked hours counting for the goodie. Only for the user themself and with the
+            `admin_user` or `user.goodie.edit` privilege, if goodies are enabled, `null` otherwise.
+        user_info:
+          type: string
+          nullable: true
+          description: Information about the user, only with the `user.info.view` privilege, `null` otherwise
+        admin_state:
+          type: object
+          nullable: true
+          description: State of the user, only with the `admin_user` privilege, `null` otherwise
+          properties:
+            arrival_date:
+              $ref: '#/components/schemas/DateTimeOptional'
+            planned_arrival_date:
+              $ref: '#/components/schemas/DateTimeOptional'
+            active:
+              type: boolean
+            force_active:
+              type: boolean
+              nullable: true
+              description: '`null` if forcing users active is disabled'
+            force_food:
+              type: boolean
+              nullable: true
+              description: '`null` if forcing food vouchers is disabled'
+            got_goodie:
+              type: boolean
+              nullable: true
+              description: '`null` if goodies are disabled'
+            freeloader:
+              type: boolean
+            password_reset:
+              type: boolean
+              description: Whether a password reset is in progress
+          required:
+            - arrival_date
+            - planned_arrival_date
+            - active
+            - force_active
+            - force_food
+            - got_goodie
+            - freeloader
+            - password_reset
+      required:
+        - groups
+        - arrived
+        - next_shift
+        - vouchers
+        - goodie_score
+        - user_info
+        - admin_state
     OAuthIdentifier:
       type: object
       description: OAuth/SSO provider reference for a user
@@ -595,6 +785,7 @@ paths:
       tags:
         - angel type
       summary: Get a list of angel types
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -626,6 +817,7 @@ paths:
         - angel type
         - shift
       summary: Get all shifts of the requested angel type
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -659,6 +851,10 @@ paths:
         - angel type
         - user
       summary: Get all users of the requested angel type
+      description: >
+        Requires the `api` or the `angeltypes.view` privilege. Without the `api` privilege,
+        unconfirmed members are only included for supporters of the angel type and with the
+        `user.angeltypes.edit` privilege.
       responses:
         '200':
           description: Ok
@@ -683,6 +879,7 @@ paths:
       tags:
         - news
       summary: Get a list of all news
+      description: Requires the `api` or the `news` privilege.
       responses:
         '200':
           description: Ok
@@ -705,6 +902,7 @@ paths:
       tags:
         - location
       summary: Get a list of locations
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -736,6 +934,7 @@ paths:
         - location
         - shift
       summary: Get all shifts in the requested location
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -760,6 +959,7 @@ paths:
       tags:
         - shift type
       summary: Get a list of shift types
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -791,6 +991,7 @@ paths:
         - shift type
         - shift
       summary: Get all shifts of the requested shift type
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok
@@ -815,6 +1016,7 @@ paths:
       tags:
         - user
       summary: Get a list of all users
+      description: Requires the `api` or the `admin_user` privilege.
       responses:
         '200':
           description: Ok
@@ -847,6 +1049,10 @@ paths:
       tags:
         - user
       summary: Get the requesting users information
+      description: >
+        Requires an authenticated user. Without the `api` privilege, other users' name, pronoun
+        and contact details are only included if shown on their profile page on the website,
+        unless the user has the `admin_user` privilege.
       responses:
         '200':
           description: Ok
@@ -856,9 +1062,11 @@ paths:
                 type: object
                 properties:
                   data:
-                    anyOf:
-                      - $ref: '#/components/schemas/UserDetail'
-                      - $ref: '#/components/schemas/User'
+                    allOf:
+                      - anyOf:
+                          - $ref: '#/components/schemas/UserDetail'
+                          - $ref: '#/components/schemas/User'
+                      - $ref: '#/components/schemas/UserProfile'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -882,6 +1090,7 @@ paths:
         - angel type
         - user
       summary: Get the users angel types
+      description: Requires the `api` privilege; `self` only requires an authenticated user.
       responses:
         '200':
           description: Ok
@@ -917,6 +1126,7 @@ paths:
         - shift
         - user
       summary: Get all shifts of the requested user
+      description: Requires the `api` privilege; `self` only requires an authenticated user.
       responses:
         '200':
           description: Ok
@@ -952,6 +1162,10 @@ paths:
         - worklog
         - user
       summary: Get all worklogs of the requested user
+      description: >
+        Requires an authenticated user. Without the `api` privilege, work logs of other users are
+        only included for users with the `admin_user` or `user.goodie.edit` privilege and
+        supporters of one of the user's angel types, as on the website.
       responses:
         '200':
           description: Ok
@@ -976,6 +1190,7 @@ paths:
       tags:
         - event
       summary: Get event information
+      description: Does not require any privilege.
       responses:
         '200':
           description: Ok
@@ -996,6 +1211,7 @@ paths:
       tags:
         - api
       summary: Get the OpenAPI definition
+      description: Requires the `api` privilege.
       responses:
         '200':
           description: Ok

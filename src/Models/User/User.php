@@ -227,6 +227,21 @@ class User extends BaseModel
         return $this->hasMany(ShiftEntry::class);
     }
 
+    /**
+     * The user's shift entries of current and upcoming shifts, ordered by their end
+     *
+     * @return Collection|ShiftEntry[]
+     */
+    public function upcomingShiftEntries(): Collection
+    {
+        return $this->shiftEntries()
+            ->with(['shift', 'shift.shiftType'])
+            ->join('shifts', 'shift_entries.shift_id', 'shifts.id')
+            ->where('shifts.end', '>', Carbon::now())
+            ->orderBy('shifts.end')
+            ->get();
+    }
+
     public function worklogs(): HasMany
     {
         return $this->hasMany(Worklog::class);
