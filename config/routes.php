@@ -150,6 +150,8 @@ $route->addGroup(
 
                 $route->get('/news', 'Api\NewsController@index');
 
+                $route->get('/shifts/{shift_id:\d+}', 'Api\ShiftsController@show');
+
                 $route->get('/shifttypes', 'Api\ShiftTypeController@index');
                 $route->get('/shifttypes/{shifttype_id:\d+}/shifts', 'Api\ShiftsController@entriesByShiftType');
 
