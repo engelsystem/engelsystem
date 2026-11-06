@@ -181,7 +181,7 @@ function admin_user()
 
         $html .= __('Here you can reset the password of this angel:');
 
-        $html .= '<form action="'
+        $html .= '<form id="change_password" action="'
             . url('/admin-user', ['action' => 'change_pw', 'id' => $user_id])
             . '" method="post">' . "\n";
         $html .= form_csrf();
@@ -197,9 +197,23 @@ function admin_user()
             . '</td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '<br>' . "\n";
-        $html .= '<button type="submit" class="btn btn-primary">'
+
+        $html .= '<div class="row justify-content-start">';
+        $html .= '<div class="col-sm-auto">';
+        $html .= '<button type="submit" form="change_password" class="btn btn-primary">'
             . icon('save') . __('form.save') . '</button>' . "\n";
+        $html .= '</div>';
         $html .= '</form>';
+        $html .= '<form id="send_password_mail" class="col-sm-auto" action="'
+            . url('/users/' . $user_id . '/password/reset')
+            . '" method="post">' . "\n";
+        $html .= form_csrf();
+        $html .= '<button type="submit" form="send_password_mail" class="btn btn-warning">'
+            . icon('envelope-at')
+            . __('password.recovery.send')
+            . '</button>';
+        $html .= '</form>';
+        $html .= '</div>';
 
         $html .= '<hr>';
 
