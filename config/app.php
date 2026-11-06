@@ -725,7 +725,7 @@ return [
                     'hidden' => true,
                 ],
                 'disabled_user_view_columns' => [
-                    'type' => 'select',
+                    'type' => 'select_multi',
                     'default' => [],
                     'hidden' => true,
                 ],
