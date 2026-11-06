@@ -549,8 +549,8 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupStatus::COLLIDES, $free_entries);
     }
 
-    $signupAdvanceHours = $shift->shiftType->signup_advance_hours ?: config('signup_advance_hours');
-    if ($signupAdvanceHours && $shift->start->timestamp > time() + $signupAdvanceHours * 3600) {
+    $signupAvailableFrom = $shift->signupAvailableFrom();
+    if ($signupAvailableFrom && $signupAvailableFrom->timestamp > time()) {
         return new ShiftSignupState(ShiftSignupStatus::NOT_YET, $free_entries);
     }
 
@@ -624,7 +624,7 @@ function Shift_signout_allowed(Shift $shift, AngelType $angeltype, $signout_user
         return true;
     }
 
-    if ($signout_user_id == $user->id && $shift->start->subHours(config('last_unsubscribe')) > Carbon::now()) {
+    if ($signout_user_id == $user->id && $shift->signOutUntil() > Carbon::now()) {
         return true;
     }
 
