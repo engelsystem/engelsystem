@@ -10,6 +10,16 @@ use Engelsystem\Models\News;
 
 class NewsController extends ApiController
 {
+    use UsesAuth;
+
+    /**
+     * Readable with the "news" privilege, same as the news page on the website
+     */
+    protected function webPermission(string $method): string|array|bool|null
+    {
+        return 'news';
+    }
+
     public function index(): Response
     {
         $models = News::query()
