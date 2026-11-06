@@ -22,6 +22,17 @@ class UserDetailResource extends UserResource
                 'provider' => $o->provider,
                 'identifier' => $o->identifier,
             ])->toArray(),
+            'groups' => $this->model->groups
+                ->sortBy('id')
+                ->map(fn($group) => ['id' => $group->id, 'name' => $group->name])
+                ->values()
+                ->toArray(),
+            'privileges' => $this->model->privileges()
+                ->pluck('name')
+                ->unique()
+                ->sort()
+                ->values()
+                ->toArray(),
         ]);
     }
 }
