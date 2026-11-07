@@ -29,3 +29,7 @@
 * The commit message must be meaningful. It should serve as a short overview of the changes.
   If needed, an additional description can be provided.
 * A commit should be self-contained and result in a working Engelsystem.
+
+## LLM usage
+If we suspect that your contribution is created using LLMs or similar technologies, we will close it without comment or discussion.  
+If you try to discuss this topic any further we will consider banning you.

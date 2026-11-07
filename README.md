@@ -11,6 +11,10 @@ Since the Engelsystem is open source, you can help improving it!
 We really love to get pull requests containing fixes or improvements.
 Please read the [CONTRIBUTING.md](CONTRIBUTING.md) and [DEVELOPMENT.md](DEVELOPMENT.md) before you start.
 
+> [!NOTE]
+> We will not accept any contributions created using LLM assistance.
+> This includes but is not limited to code, pull requests, issues, reports, discussions etc.
+
 ## Installation
 The Engelsystem may be installed manually by uploading files to a web hoster or by using the provided [docker setup](#docker).
 
