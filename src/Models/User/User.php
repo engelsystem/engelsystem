@@ -99,6 +99,11 @@ class User extends BaseModel
         'email',
         'api_key',
         'last_login_at',
+        'force_food_by',
+        'force_active_by',
+        'got_goodie_by',
+        'goodie_reserved_by',
+        'reserved_goodie_by',
     ];
 
     /** @var array<string> The attributes that should be hidden for serialization */
@@ -122,6 +127,11 @@ class User extends BaseModel
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'users_groups');
+    }
+
+    public function getHighestGroup(): Group
+    {
+        return $this->groups()->orderByDesc('id')->first();
     }
 
     public function isFreeloader(): bool
@@ -288,6 +298,26 @@ class User extends BaseModel
     public function shiftsUpdated(): HasMany
     {
         return $this->hasMany(Shift::class, 'updated_by');
+    }
+
+    public function forceFoodByStates(): HasMany
+    {
+        return $this->hasMany(State::class, 'force_food_by');
+    }
+
+    public function forceActiveByStates(): HasMany
+    {
+        return $this->hasMany(State::class, 'force_active_by');
+    }
+
+    public function gotGoodieByStates(): HasMany
+    {
+        return $this->hasMany(State::class, 'got_goodie_by');
+    }
+
+    public function reservedGoodieByStates(): HasMany
+    {
+        return $this->hasMany(State::class, 'reserved_goodie_by');
     }
 
     public function getDisplayNameAttribute(): string

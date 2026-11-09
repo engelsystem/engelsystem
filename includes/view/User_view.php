@@ -138,6 +138,7 @@ EOT;
             ? $user->personalData->planned_departure_date->format(__('general.date')) : '';
         $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('general.datetime')) : '';
         $u['actions'] = table_buttons([
+            $auth->user()->getHighestGroup() >= $user->getHighestGroup() ?
             button(
                 url(
                     '/admin-user',
@@ -147,7 +148,7 @@ EOT;
                 'btn-sm',
                 '',
                 __('form.edit')
-            ),
+            ) : '',
         ]);
         $usersList[] = $u;
     }
@@ -750,6 +751,7 @@ function User_view(
     $iCalUrl = url('/ical', ['key' => $user_source->api_key]);
 
     $self_worklog = config('enable_self_worklog') || !$its_me;
+    $canEditUser = $auth->user()->getHighestGroup() >= $user_source->getHighestGroup() && $admin_user_privilege;
 
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
@@ -768,7 +770,7 @@ function User_view(
                             url('/admin/user/' . $user_source->id . '/goodie'),
                             icon('gift') . __('Goodie')
                         ) : '',
-                        $admin_user_privilege ? button(
+                        $canEditUser ? button(
                             url('/admin-user', ['id' => $user_source->id]),
                             icon('pencil') . __('form.edit'),
                         ) : '',

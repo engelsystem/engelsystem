@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Validation\Rules\Username;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
@@ -43,6 +44,9 @@ function admin_user()
         if (!$user_source) {
             error(__('This user does not exist.'));
             throw_redirect(users_link());
+        }
+        if ($user->getHighestGroup() >= $user_source->getHighestGroup()) {
+            throw new HttpForbidden();
         }
 
         $html .= __('Here you can change the user entry. Under the item \'Arrived\' the angel is marked as present, a yes at Active means that the angel was active.');
@@ -156,6 +160,21 @@ function admin_user()
         }
 
         if ($goodie_enabled) {
+            // reserved_goodie
+            if (config('enable_reserved_goodie') && !$user_source->state->got_goodie) {
+                // got goodie?
+                $html .= '  <tr><td>'
+                    . __('goodie.reseved')
+                    . '</td><td>' . "\n";
+                $html .= $user_goodie_edit
+                    ? html_options('reserved_goodie', $options, $user_source->state->reserved_goodie)
+                    : icon_bool($user_source->state->reserved_goodie);
+                if ($user_source->state->reserved_goodie) {
+                    $html .= __('user.by', [User_Nick_render($user_source->state->reservedGoodieBy)]);
+                }
+                $html .= '</td></tr>' . "\n";
+            }
+
             // got goodie?
             $html .= '  <tr><td>'
                 . __('Goodie')
@@ -204,12 +223,12 @@ function admin_user()
         $html .= '<hr>';
 
         /** @var Group $my_highest_group */
-        $my_highest_group = $user->groups()->orderByDesc('id')->first();
+        $my_highest_group = $user->getHighestGroup();
         if (!empty($my_highest_group)) {
             $my_highest_group = $my_highest_group->id;
         }
 
-        $angel_highest_group = $user_source->groups()->orderByDesc('id')->first();
+        $angel_highest_group = $user_source->getHighestGroup();
         if (!empty($angel_highest_group)) {
             $angel_highest_group = $angel_highest_group->id;
         }
@@ -243,11 +262,13 @@ function admin_user()
             $html .= '<hr>';
         }
 
-        $html .= buttons([
-            button(user_delete_link($user_source->id), icon('trash') . __('form.delete'), 'btn-danger'),
-        ]);
+        if ($my_highest_group > $angel_highest_group || $user->id === $user_source->id) {
+            $html .= buttons([
+                button(user_delete_link($user_source->id), icon('trash') . __('form.delete'), 'btn-danger'),
+            ]);
 
-        $html .= '<hr>';
+            $html .= '<hr>';
+        }
     } else {
         switch ($request->input('action')) {
             case 'save_groups':
@@ -255,9 +276,9 @@ function admin_user()
                 $angel = User::findOrFail($user_id);
                 if ($angel->id != $user->id || auth()->can('admin_groups')) {
                     /** @var Group $my_highest_group */
-                    $my_highest_group = $user->groups()->orderByDesc('id')->first();
+                    $my_highest_group = $user->getHighestGroup();
                     /** @var Group $angel_highest_group */
-                    $angel_highest_group = $angel->groups()->orderByDesc('id')->first();
+                    $angel_highest_group = $angel->getHighestGroup();
 
                     if (
                         $my_highest_group
@@ -369,10 +390,20 @@ function admin_user()
                 $user_source->contact->save();
 
                 if ($goodie_enabled && $user_goodie_edit) {
+                    if (
+                        config('enable_reserved_goodie')
+                        && !$request->postData('goodie')
+                        && !$user_source->state->got_goodie
+                        && $user_source->state->reserved_goodie != $request->postData('reserved_goodie')
+                    ) {
+                        $user_source->state->reserved_goodie_by = $request->postData('reserved_goodie') ? $user->id : null;
+                    }
+
                     if ($user_source->state->got_goodie != $request->postData('goodie')) {
                         $user_source->state->got_goodie_by = $request->postData('goodie') ? $user->id : null;
                     }
                 }
+
                 if ($user_info_edit) {
                     $user_source->state->user_info = $request->postData('userInfo');
                 }
