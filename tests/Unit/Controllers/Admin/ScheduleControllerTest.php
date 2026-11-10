@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Controllers\Admin;
 use Engelsystem\Controllers\Admin\ScheduleController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Controllers\NotificationType;
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Schedule\Event as EventData;
@@ -42,8 +43,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversMethod(ScheduleController::class, 'edit')]
 #[CoversMethod(ScheduleController::class, 'save')]
 #[CoversMethod(ScheduleController::class, 'delete')]
-#[CoversMethod(ScheduleController::class, 'fireDeleteShiftEvents')]
-#[CoversMethod(ScheduleController::class, 'deleteEvent')]
+#[CoversMethod(ScheduleController::class, 'deleteShiftsOfEvents')]
 #[CoversMethod(ScheduleController::class, 'loadSchedule')]
 #[CoversMethod(ScheduleController::class, 'getScheduleData')]
 #[CoversMethod(ScheduleController::class, 'importSchedule')]
@@ -53,7 +53,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversMethod(ScheduleController::class, 'getScheduleShiftsByGuid')]
 #[CoversMethod(ScheduleController::class, 'getScheduleShiftsWhereNotGuid')]
 #[CoversMethod(ScheduleController::class, 'eventFromScheduleShift')]
-#[CoversMethod(ScheduleController::class, 'fireUpdateShiftUpdateEvent')]
 #[CoversMethod(ScheduleController::class, 'getAllLocations')]
 #[CoversMethod(ScheduleController::class, 'createLocation')]
 #[CoversMethod(ScheduleController::class, 'createEvent')]
@@ -65,7 +64,7 @@ class ScheduleControllerTest extends ControllerTestCase
     use HasUserNotifications;
 
     protected AngelType $angelType;
-    protected EventDispatcher | MockObject $event;
+    protected EventDispatcher $dispatcher;
     protected Location $location;
     protected Shift $oldShift;
     protected Redirector | MockObject $redirect;
@@ -207,12 +206,13 @@ class ScheduleControllerTest extends ControllerTestCase
 
     public function testSaveDelete(): void
     {
-        $this->setExpects($this->redirect, 'to', ['/admin/schedule'], $this->response);
+        $shifts = Shift::whereIn('id', [1, 2, 3])
+            ->join('schedule_shift', 'schedule_shift.shift_id', 'shifts.id')
+            ->get();
+        $event = new DataEvent('shifts.deleting', $shifts);
+        $this->setExpects($this->dispatcher, 'dispatch', [$event], $event);
 
-        $this->event->expects($this->exactly(3))
-            ->method('dispatch')
-            ->with('shift.deleting')
-            ->willReturn([]);
+        $this->setExpects($this->redirect, 'to', ['/admin/schedule'], $this->response);
 
         $request = Request::create('', 'POST', ['delete' => 'yes'])
             ->withAttribute('schedule_id', $this->schedule->id);
@@ -225,7 +225,7 @@ class ScheduleControllerTest extends ControllerTestCase
         $this->assertNull(Schedule::find($this->schedule->id));
 
         $this->assertHasNotification('schedule.delete.success');
-        $this->assertTrue($this->log->hasInfoThatContains('Deleted schedule ({schedule}) shift'));
+        $this->assertTrue($this->log->hasInfoThatContains('Deleted schedule ({schedule}) with {count} shifts'));
         $this->assertTrue($this->log->hasInfoThatContains('Schedule {name}'));
     }
 
@@ -320,23 +320,20 @@ class ScheduleControllerTest extends ControllerTestCase
 
     public function testImportSchedule(): void
     {
-        $this->setScheduleResponses([new Response(file_get_contents($this->scheduleFile))]);
-        $this->setExpects($this->redirect, 'to', ['/admin/schedule'], $this->response);
+        $this->setScheduleResponses([
+            new Response(file_get_contents($this->scheduleFile)),
+            new Response(file_get_contents($this->scheduleFile)),
+        ]);
+        $this->setExpects($this->redirect, 'to', ['/admin/schedule'], $this->response, $this->exactly(2));
+
+        $shifts = Shift::whereIn('id', [2, 3])
+            ->join('schedule_shift', 'schedule_shift.shift_id', 'shifts.id')
+            ->get();
+        $event = new DataEvent('shifts.deleting', $shifts);
+        $this->setExpects($this->dispatcher, 'dispatch', [$event], $event);
 
         $request = Request::create('', 'POST')
             ->withAttribute('schedule_id', $this->schedule->id);
-
-        $matcher = $this->exactly(3);
-        $this->event->expects($matcher)
-            ->method('dispatch')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->numberOfInvocations() === 1) {
-                    $this->assertSame('shift.updating', $parameters[0]);
-                }
-                if ($matcher->numberOfInvocations() === 2) {
-                    $this->assertSame('shift.deleting', $parameters[0]);
-                }
-                return [];
-            });
 
         /** @var ScheduleController $controller */
         $controller = $this->app->make(ScheduleController::class);
@@ -348,7 +345,7 @@ class ScheduleControllerTest extends ControllerTestCase
         $this->assertTrue($this->log->hasInfoThatContains('Created schedule location'));
         $this->assertTrue($this->log->hasInfoThatContains('Created schedule ({schedule}) shift'));
         $this->assertTrue($this->log->hasInfoThatContains('Updated schedule ({schedule}) shift'));
-        $this->assertTrue($this->log->hasInfoThatContains('Deleted schedule ({schedule}) shift'));
+        $this->assertTrue($this->log->hasInfoThatContains('Deleted schedule ({schedule}) with {count} shifts'));
         $this->assertTrue($this->log->hasInfoThatContains('Ended schedule'));
 
         $this->assertHasNotification('schedule.import.success');
@@ -407,6 +404,10 @@ class ScheduleControllerTest extends ControllerTestCase
         /** @var Shift $shift */
         $shift = $scheduleShift->shift;
         $this->assertStringNotContainsString('such a big thing', $shift->title);
+
+        // Another import should change nothing
+        $response = $controller->importSchedule($request);
+        $this->assertEquals($this->response, $response);
     }
 
     public function testImportScheduleError(): void
@@ -441,8 +442,8 @@ class ScheduleControllerTest extends ControllerTestCase
         $this->redirect = $this->createMock(Redirector::class);
         $this->app->instance('redirect', $this->redirect);
 
-        $this->event = $this->createMock(EventDispatcher::class);
-        $this->app->instance('events.dispatcher', $this->event);
+        $this->dispatcher = $this->createMock(EventDispatcher::class);
+        $this->app->instance(EventDispatcher::class, $this->dispatcher);
 
         $this->shiftType = ShiftType::factory()->create();
         $this->location = Location::factory()->create(['name' => 'Example Room']);

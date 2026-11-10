@@ -6,7 +6,6 @@ namespace Engelsystem\Test\Unit\Controllers;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\MessagesController;
-use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -48,8 +47,6 @@ class MessagesControllerTest extends ControllerTestCase
     protected Carbon $now;
     protected Carbon $oneMinuteAgo;
     protected Carbon $twoMinutesAgo;
-
-    protected EventDispatcher $events;
 
     #[TestDox('index: underNormalConditions -> returnsCorrectViewAndData')]
     public function testIndexUnderNormalConditionsReturnsCorrectViewAndData(): void
@@ -392,8 +389,6 @@ class MessagesControllerTest extends ControllerTestCase
             ->with('http://localhost/messages/' . $this->userB->id . '#newest')
             ->willReturn($this->response);
 
-        $this->setExpects($this->events, 'dispatch', ['message.created'], []);
-
         $this->controller->send($this->request);
 
         $msg = Message::whereText('a')->first();
@@ -412,8 +407,6 @@ class MessagesControllerTest extends ControllerTestCase
             ->method('redirectTo')
             ->with('http://localhost/messages/' . $this->userA->id . '#newest')
             ->willReturn($this->response);
-
-        $this->setExpects($this->events, 'dispatch', ['message.created'], []);
 
         $this->controller->send($this->request);
 
@@ -479,9 +472,6 @@ class MessagesControllerTest extends ControllerTestCase
 
         $this->controller = $this->app->get(MessagesController::class);
         $this->controller->setValidator(new Validator());
-
-        $this->events = $this->createMock(EventDispatcher::class);
-        $this->app->instance('events.dispatcher', $this->events);
     }
 
     protected function assertArrayOrCollection(mixed $obj): void

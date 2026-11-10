@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace Engelsystem\Events\Listener;
 
 use Carbon\Carbon;
+use Engelsystem\Events\DataEvent;
+use Engelsystem\Events\EventDispatcher;
+use Engelsystem\Events\ModelEvent;
 use Engelsystem\Mail\EngelsystemMailer;
+use Engelsystem\Models\AngelType;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
+use Engelsystem\Models\Shifts\ShiftType;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
@@ -17,19 +23,61 @@ class Shifts
 {
     public function __construct(
         protected LoggerInterface $log,
-        protected EngelsystemMailer $mailer
+        protected EngelsystemMailer $mailer,
+        protected EventDispatcher $event,
     ) {
     }
 
-    public function deletingShift(Shift $shift): void
+    public function deletingShiftsList(DataEvent $event): void
     {
-        foreach ($shift->shiftEntries as $entry) {
-            event('shift.entry.deleting', ['entry' => $entry]);
+        $shifts = $event->data;
+        if (!$shifts instanceof Collection) {
+            $shifts = Shift::whereIn('id', $shifts->pluck('id'))->get();
+        }
+        /** @var Collection|Shift[] $shifts */
+        $shifts->load([
+            'shiftEntries.shift.shiftType',
+            'shiftEntries.shift.location',
+            'shiftEntries.user.personalData',
+            'shiftEntries.freeloadedBy',
+            'shiftEntries.angelType',
+        ]);
+
+        foreach ($shifts as $shift) {
+            $this->event->dispatch(new ModelEvent('model.shifts.shift.deleting', $shift));
         }
     }
 
-    public function deletingShiftEntryCreateWorklog(ShiftEntry $entry): void
+    public function deletingModelWithShifts(ModelEvent $event): void
     {
+        /** @var Location|ShiftType $model */
+        $model = $event->model;
+
+        $this->event->dispatch(new DataEvent('shifts.deleting', $model->shifts));
+    }
+
+    public function deletingModelWithShiftEntries(ModelEvent $event): void
+    {
+        /** @var Shift|AngelType $model */
+        $model = $event->model;
+        $entries = $model->shiftEntries;
+        $entries->load([
+            'shift.shiftType',
+            'shift.location',
+            'user.personalData',
+            'freeloadedBy',
+            'angelType',
+        ]);
+
+        foreach ($entries as $entry) {
+            $this->event->dispatch(new ModelEvent('model.shifts.shiftentry.deleting', $entry));
+        }
+    }
+
+    public function deletingShiftEntryCreateWorklog(ModelEvent $event): void
+    {
+        /** @var ShiftEntry $entry */
+        $entry = $event->model;
         $shift = $entry->shift;
         if ($entry->freeloaded_by || $shift->start > Carbon::now()) {
             return;
@@ -59,9 +107,12 @@ class Shifts
         );
     }
 
-    public function deletingShiftEntrySendEmail(ShiftEntry $entry): void
+    public function deletingShiftEntrySendEmail(ModelEvent $event): void
     {
+        /** @var ShiftEntry $entry */
+        $entry = $event->model;
         $shift = $entry->shift;
+
         if (!$entry->user->settings->email_shiftinfo) {
             return;
         }
@@ -78,8 +129,12 @@ class Shifts
         );
     }
 
-    public function updatedSendEmail(Shift $shift, Shift $oldShift): void
+    public function updatingSendEmail(ModelEvent $event): void
     {
+        /** @var Shift $shift */
+        $shift = $event->model;
+        /** @var Shift $oldShift */
+        $oldShift = $shift->newModelQuery()->find($shift->id);
         // Only send e-mail on relevant changes
         if (
             $oldShift->shift_type_id == $shift->shift_type_id

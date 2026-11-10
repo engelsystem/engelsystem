@@ -7,6 +7,8 @@ namespace Engelsystem\Controllers\Admin;
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Controllers\NotificationType;
+use Engelsystem\Events\EventDispatcher;
+use Engelsystem\Events\NewsEvent;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -26,10 +28,11 @@ class NewsController extends BaseController
 
     public function __construct(
         protected Authenticator $auth,
+        protected EventDispatcher $events,
         protected LoggerInterface $log,
         protected News $news,
         protected Redirector $redirect,
-        protected Response $response
+        protected Response $response,
     ) {
     }
 
@@ -109,11 +112,11 @@ class NewsController extends BaseController
         }
         $news->save();
 
-        if ($isNewNews) {
-            event('news.created', ['news' => $news, 'sendNotification' => $notify]);
-        } else {
-            event('news.updated', ['news' => $news, 'sendNotification' => $notify]);
-        }
+        $this->events->dispatch(new NewsEvent(
+            $isNewNews ? 'news.created' : 'news.updated',
+            $news,
+            $notify,
+        ));
 
         $this->log->info(
             'Saved {pinned}{highlighted}{type} "{news}" ({id}): {text}',

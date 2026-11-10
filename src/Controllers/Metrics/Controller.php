@@ -6,6 +6,8 @@ namespace Engelsystem\Controllers\Metrics;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\BaseController;
+use Engelsystem\Events\DataEvent;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Version;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Request;
@@ -21,7 +23,8 @@ class Controller extends BaseController
         protected Config $config,
         protected Request $request,
         protected Stats $stats,
-        protected Version $version
+        protected Version $version,
+        protected EventDispatcher $events,
     ) {
     }
 
@@ -233,7 +236,7 @@ class Controller extends BaseController
             memory_get_usage(),
         ];
 
-        $data = event()->dispatch('metrics', ['metrics' => $data], true) ?? $data;
+        $data = $this->events->dispatch(new DataEvent('metrics', ['metrics' => $data]))->data['metrics'];
 
         return $this->response
             ->withHeader('Content-Type', 'text/plain; version=0.0.4')

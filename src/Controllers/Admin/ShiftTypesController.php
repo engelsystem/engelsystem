@@ -192,11 +192,6 @@ class ShiftTypesController extends BaseController
         ]);
 
         $shiftType = $this->shiftType->findOrFail($data['id']);
-
-        $shifts = $shiftType->shifts;
-        foreach ($shifts as $shift) {
-            event('shift.deleting', ['shift' => $shift]);
-        }
         $shiftType->delete();
 
         $this->log->info('Deleted shift type {name} ({id})', ['name' => $shiftType->name, 'id' => $shiftType->id]);

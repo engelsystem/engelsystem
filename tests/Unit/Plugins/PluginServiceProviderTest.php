@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Plugins;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Events\EventDispatcher;
+use Engelsystem\Events\NullEvent;
 use Engelsystem\Models\Plugin as PluginModel;
 use Engelsystem\Plugins\DisabledPlugin;
 use Engelsystem\Plugins\Plugin;
@@ -209,7 +210,7 @@ class PluginServiceProviderTest extends ServiceProviderTestCase
 
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->app->get(EventDispatcher::class);
-        $dispatcher->dispatch('test_event');
+        $dispatcher->dispatch(new NullEvent('test_event'));
         /** @var EventHandler $handler */
         $handler = $this->app->get(EventHandler::class);
         $this->assertTrue($handler->handled);

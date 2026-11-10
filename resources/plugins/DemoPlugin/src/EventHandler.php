@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demo\Plugin;
 
+use Engelsystem\Events\Event;
 use Psr\Log\LoggerInterface;
 
 class EventHandler
@@ -12,8 +13,8 @@ class EventHandler
     {
     }
 
-    public function handle(string $event): void
+    public function handle(Event $event): void
     {
-        $this->log->info('Demo plugin handled event ' . $event . '!');
+        $this->log->info('Demo plugin handled event ' . $event->getName() . '!');
     }
 }

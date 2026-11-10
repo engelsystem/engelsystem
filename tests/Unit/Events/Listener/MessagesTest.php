@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Events\Listener\Messages;
+use Engelsystem\Events\ModelEvent;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\User\Settings;
@@ -13,7 +14,6 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\Attributes\CoversMethod;
-use Psr\Log\Test\TestLogger;
 
 #[CoversMethod(Messages::class, 'created')]
 #[CoversMethod(Messages::class, '__construct')]
@@ -21,8 +21,6 @@ use Psr\Log\Test\TestLogger;
 class MessagesTest extends TestCase
 {
     use HasDatabase;
-
-    protected TestLogger $log;
 
     public function testCreated(): void
     {
@@ -52,8 +50,8 @@ class MessagesTest extends TestCase
                 return true;
             });
 
-        $handler = new Messages($this->log, $mailer);
-        $handler->created($message);
+        $handler = new Messages($mailer);
+        $handler->created(new ModelEvent('model.message.created', $message));
     }
 
     public function testCreatedNoEmail(): void
@@ -68,14 +66,12 @@ class MessagesTest extends TestCase
         $message = Message::factory()->create(['receiver_id' => $user->id]);
         $mailer->expects($this->never())->method('sendViewTranslated');
 
-        $handler = new Messages($this->log, $mailer);
-        $handler->created($message);
+        $handler = new Messages($mailer);
+        $handler->created(new ModelEvent('model.message.created', $message));
     }
 
     protected function setUp(): void
     {
-        $this->log = new TestLogger();
-
         parent::setUp();
         $this->initDatabase();
         $this->app->instance('config', new Config());

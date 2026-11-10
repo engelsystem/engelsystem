@@ -8,6 +8,8 @@ use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Events\DataEvent;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -30,6 +32,7 @@ class User
         protected Authenticator $authenticator,
         protected Config $config,
         protected Connection $dbConnection,
+        protected EventDispatcher $events,
         protected LoggerInterface $logger,
         protected SessionInterface $session,
         protected Validator $validator,
@@ -309,7 +312,8 @@ class User
 
         $this->dbConnection->commit();
 
-        event('user.created', ['user' => $user]);
+        // Fire event after db commit
+        $this->events->dispatch(new DataEvent('user.created', ['user' => $user]));
 
         return $user;
     }

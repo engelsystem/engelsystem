@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Controllers\Admin;
 use Engelsystem\Controllers\Admin\NewsController;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Events\EventDispatcher;
+use Engelsystem\Events\NewsEvent;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Validation\Validator;
@@ -132,10 +133,10 @@ class NewsControllerTest extends ControllerTestCase
 
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
-            ->willReturnCallback(function (string $event, array $payload) use ($id, $sendNotification) {
-                $this->assertEquals($id ? 'news.updated' : 'news.created', $event);
-                $this->assertEquals($sendNotification, $payload['sendNotification']);
-                $this->assertInstanceOf(News::class, $payload['news']);
+            ->willReturnCallback(function (NewsEvent $event) use ($id, $sendNotification) {
+                $this->assertEquals($id ? 'news.updated' : 'news.created', $event->getName());
+                $this->assertEquals($sendNotification, $event->sendNotification);
+                $this->assertInstanceOf(News::class, $event->news);
 
                 return $this->eventDispatcher;
             });
@@ -313,7 +314,7 @@ class NewsControllerTest extends ControllerTestCase
         $this->eventDispatcher = $this->createMock(EventDispatcher::class);
         $this->eventDispatcher->method('dispatch')
             ->willReturnSelf();
-        $this->app->instance('events.dispatcher', $this->eventDispatcher);
+        $this->app->instance(EventDispatcher::class, $this->eventDispatcher);
 
         $user = User::factory()->create();
         (new News([

@@ -2,6 +2,7 @@
 
 use Carbon\CarbonInterval;
 use Engelsystem\Config\GoodieType;
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\UserVouchers;
 use Engelsystem\Models\AngelType;
@@ -802,7 +803,10 @@ function User_view(
                         ) : '',
                     ], 'mb-2'),
                     $its_me ? table_buttons([
-                        event()->dispatch('user_view_me_buttons', ['user' => $user_source], true),
+                        event(new DataEvent(
+                            'user_view_me_buttons',
+                            ['user' => $user_source, 'content' => ''],
+                        ))->data['content'],
                         button(
                             url('/settings/profile'),
                             icon('person-fill-gear') . __('settings.settings')
@@ -980,7 +984,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
         $state['password'] = __('Password reset in progress');
     }
 
-    $state = event()->dispatch('user_view_states', ['states' => $state, 'user' => $user_source], true) ?? $state;
+    $state = event(new DataEvent('user_view_states', ['states' => $state, 'user' => $user_source]))->data['states'];
 
     return div('col-md-2', [
         heading(__('general.state'), 4),

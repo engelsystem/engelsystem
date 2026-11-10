@@ -73,6 +73,7 @@ return [
 
     // Event handlers
     'event-handlers' => [
+        // event names can contain * wildcards
         // 'event' => [
         //      a list of
         //      'Class@method' or 'Class' (which uses @handle),
@@ -81,21 +82,25 @@ return [
         //      or $function
         // ]
 
-        'message.created' => \Engelsystem\Events\Listener\Messages::class . '@created',
+        'eloquent.*' => \Engelsystem\Events\Listener\Eloquent::class,
+
+        'model.message.created' => \Engelsystem\Events\Listener\Messages::class . '@created',
 
         'news.created' => \Engelsystem\Events\Listener\News::class . '@created',
         'news.updated' => \Engelsystem\Events\Listener\News::class . '@updated',
 
         'oauth2.login' => \Engelsystem\Events\Listener\OAuth2::class . '@login',
 
-        'shift.deleting' => [
-            \Engelsystem\Events\Listener\Shifts::class . '@deletingShift',
-        ],
-        'shift.entry.deleting' => [
+        'shifts.deleting' => \Engelsystem\Events\Listener\Shifts::class . '@deletingShiftsList',
+        'model.location.deleting' => \Engelsystem\Events\Listener\Shifts::class . '@deletingModelWithShifts',
+        'model.shifts.shifttype.deleting' => \Engelsystem\Events\Listener\Shifts::class . '@deletingModelWithShifts',
+        'model.angeltype.deleting' => \Engelsystem\Events\Listener\Shifts::class . '@deletingModelWithShiftEntries',
+        'model.shifts.shift.deleting' => \Engelsystem\Events\Listener\Shifts::class . '@deletingModelWithShiftEntries',
+        'model.shifts.shiftentry.deleting' => [
             \Engelsystem\Events\Listener\Shifts::class . '@deletingShiftEntryCreateWorklog',
             \Engelsystem\Events\Listener\Shifts::class . '@deletingShiftEntrySendEmail',
         ],
-        'shift.updating' => \Engelsystem\Events\Listener\Shifts::class . '@updatedSendEmail',
+        'model.shifts.shift.updating' => \Engelsystem\Events\Listener\Shifts::class . '@updatingSendEmail',
 
         'user.created' => \Engelsystem\Events\Listener\Users::class . '@created',
     ],

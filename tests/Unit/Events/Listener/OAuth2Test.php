@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Events\Listener\OAuth2;
+use Engelsystem\Events\OAuth2Event as OAuth2Event;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
@@ -30,7 +31,7 @@ class OAuth2Test extends TestCase
     /** @var AngelType[] */
     protected array $angelTypes;
 
-    protected Authenticator | MockObject $auth;
+    protected Authenticator|MockObject $auth;
 
     protected Config $config;
 
@@ -43,7 +44,11 @@ class OAuth2Test extends TestCase
         $this->setExpects($this->auth, 'user', null, $this->user);
 
         $instance = new OAuth2($this->config, $this->log, $this->auth);
-        $instance->login('oauth2.login', 'test-provider', collect(['groups_key' => ['/test', '/lorem']]));
+        $instance->login(new OAuth2Event(
+            'oauth2.login',
+            'test-provider',
+            collect(['groups_key' => ['/test', '/lorem']])
+        ));
 
         $user = User::find(1);
         $userAngelTypes = $user->userAngelTypes;
@@ -69,7 +74,11 @@ class OAuth2Test extends TestCase
         $this->setExpects($this->auth, 'user', null, $this->user);
 
         $instance = new OAuth2($this->config, $this->log, $this->auth);
-        $instance->login('oauth2.login', 'unavailable-provider', collect(['foo' => 'bar']));
+        $instance->login(new OAuth2Event(
+            'oauth2.login',
+            'unavailable-provider',
+            collect(['foo' => 'bar'])
+        ));
     }
 
     public function testLoginNoMatchingGroups(): void
@@ -77,7 +86,11 @@ class OAuth2Test extends TestCase
         $this->setExpects($this->auth, 'user', null, $this->user);
 
         $instance = new OAuth2($this->config, $this->log, $this->auth);
-        $instance->login('oauth2.login', 'test-provider', collect(['groups_key' => ['/notMatching']]));
+        $instance->login(new OAuth2Event(
+            'oauth2.login',
+            'test-provider',
+            collect(['groups_key' => ['/notMatching']]),
+        ));
     }
 
     public function testLoginNoChanges(): void
@@ -90,7 +103,11 @@ class OAuth2Test extends TestCase
         );
 
         $instance = new OAuth2($this->config, $this->log, $this->auth);
-        $instance->login('oauth2.login', 'test-provider', collect(['groups_key' => ['/test', '/lorem']]));
+        $instance->login(new OAuth2Event(
+            'oauth2.login',
+            'test-provider',
+            collect(['groups_key' => ['/test', '/lorem']]),
+        ));
 
         /** @var UserAngelType $test */
         $test = UserAngelType::find(1);
@@ -112,7 +129,11 @@ class OAuth2Test extends TestCase
         $this->user->userAngelTypes()->attach($this->angelTypes['lorem']);
 
         $instance = new OAuth2($this->config, $this->log, $this->auth);
-        $instance->login('oauth2.login', 'test-provider', collect(['groups_key' => ['/lorem', '/test']]));
+        $instance->login(new OAuth2Event(
+            'oauth2.login',
+            'test-provider',
+            collect(['groups_key' => ['/lorem', '/test']]),
+        ));
 
         /** @var UserAngelType $userAngelType */
         $userAngelType = UserAngelType::find(2);
@@ -137,7 +158,7 @@ class OAuth2Test extends TestCase
 
         $teams = $instance->getSsoTeams('test-provider');
         $this->assertEquals([
-            '/test'  => ['id' => 21, 'supporter' => false],
+            '/test' => ['id' => 21, 'supporter' => false],
             '/lorem' => ['id' => 42, 'supporter' => true],
         ], $teams);
     }
@@ -150,8 +171,8 @@ class OAuth2Test extends TestCase
         $this->config = new Config(['oauth' => [
             'test-provider' => [
                 'groups' => 'groups_key',
-                'teams'  => [
-                    '/test'  => 21,
+                'teams' => [
+                    '/test' => 21,
                     '/lorem' => ['id' => 42, 'supporter' => true],
                 ],
             ],

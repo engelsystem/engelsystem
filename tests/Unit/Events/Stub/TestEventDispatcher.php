@@ -6,8 +6,10 @@ namespace Engelsystem\Test\Unit\Events\Stub;
 
 class TestEventDispatcher
 {
-    public function handle(): array
+    public static bool $handled = false;
+
+    public function handle(): void
     {
-        return ['default' => 'handler'];
+        self::$handled = true;
     }
 }

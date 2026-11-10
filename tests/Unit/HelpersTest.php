@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Cache;
@@ -196,7 +197,8 @@ class HelpersTest extends TestCase
         Application::setInstance($app);
 
         $dispatcher = $this->createMock(EventDispatcher::class);
-        $this->setExpects($dispatcher, 'dispatch', ['testevent', ['some' => 'thing']], $dispatcher);
+        $event = new DataEvent('testevent', ['some' => 'thing']);
+        $this->setExpects($dispatcher, 'dispatch', [$event], $event);
 
         $app->expects($this->atLeastOnce())
             ->method('get')
@@ -204,7 +206,7 @@ class HelpersTest extends TestCase
             ->willReturn($dispatcher);
 
         $this->assertEquals($dispatcher, event());
-        $this->assertEquals($dispatcher, event('testevent', ['some' => 'thing']));
+        $this->assertEquals($event, event($event));
     }
 
     public function testRedirect(): void
