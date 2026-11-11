@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Models;
 
+use Engelsystem\Helpers\Color;
 use Engelsystem\Models\Shifts\Shift;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -13,12 +14,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @property int $id
  * @property string $name
+ * @property string $color
  *
  * @property-read Collection|Faq[]   $faqs
  * @property-read Collection|Shift[] $shifts
  *
  * @method static Builder|Group whereId($value)
  * @method static Builder|Group whereName($value)
+ * @method static Builder|Group whereColor($value)
  */
 class Tag extends BaseModel
 {
@@ -27,7 +30,19 @@ class Tag extends BaseModel
     /** @var string[] */
     protected $fillable = [ // phpcs:ignore
         'name',
+        'color',
     ];
+
+    /** @var array Default attributes */
+    protected $attributes = [ // phpcs:ignore
+        'color' => '',
+    ];
+
+    public function __construct(array $attributes = [])
+    {
+        $this->attributes['color'] = Color::random();
+        parent::__construct($attributes);
+    }
 
     public function faqs(): BelongsToMany
     {
