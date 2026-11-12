@@ -16,6 +16,7 @@ use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\UserAngelType;
 use Engelsystem\Test\Unit\HasDatabase;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -98,6 +99,65 @@ class AngelTypesControllerTest extends ControllerTestCase
                 $this->assertCount(5, $data['angelTypes'] ?? []);
                 return $this->response;
             });
+
+        $controller->index();
+    }
+
+    public function testIndexMemberCounts(): void
+    {
+        $auth = $this->createMock(Authenticator::class);
+        $this->app->instance('authenticator', $auth);
+        $viewer = User::factory()->create();
+        $this->setExpects($auth, 'user', [], $viewer);
+        $this->setExpects($auth, 'can', ['user.angeltypes.edit'], false);
+
+        $restrictedAngelType = AngelType::factory()->create(['restricted' => true]);
+        $unrestrictedAngelType = AngelType::factory()->create(['restricted' => false]);
+        $confirmedMember = User::factory()->create();
+        $pendingMember = User::factory()->create();
+        $unrestrictedMember = User::factory()->create();
+
+        UserAngelType::factory()->create([
+            'user_id' => $confirmedMember->id,
+            'angel_type_id' => $restrictedAngelType->id,
+            'confirm_user_id' => $viewer->id,
+            'supporter' => false,
+        ]);
+        UserAngelType::factory()->create([
+            'user_id' => $pendingMember->id,
+            'angel_type_id' => $restrictedAngelType->id,
+            'confirm_user_id' => null,
+            'supporter' => false,
+        ]);
+        UserAngelType::factory()->create([
+            'user_id' => $unrestrictedMember->id,
+            'angel_type_id' => $unrestrictedAngelType->id,
+            'confirm_user_id' => null,
+            'supporter' => false,
+        ]);
+        UserAngelType::factory()->create([
+            'user_id' => $viewer->id,
+            'angel_type_id' => $restrictedAngelType->id,
+            'confirm_user_id' => $viewer->id,
+            'supporter' => true,
+        ]);
+
+        /** @var AngelTypesController $controller */
+        $controller = $this->app->make(AngelTypesController::class);
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(
+                function (string $view, array $data) use ($restrictedAngelType, $unrestrictedAngelType) {
+                    $this->assertSame('pages/angeltypes/index', $view);
+                    $angelTypes = $data['angelTypes']->keyBy('id');
+                    $this->assertSame(2, (int) $angelTypes[$restrictedAngelType->id]->member_count);
+                    $this->assertSame(1, (int) $angelTypes[$restrictedAngelType->id]->pending_count);
+                    $this->assertSame(1, (int) $angelTypes[$unrestrictedAngelType->id]->member_count);
+                    $this->assertSame(0, (int) $angelTypes[$unrestrictedAngelType->id]->pending_count);
+                    $this->assertTrue($data['show_pending_count']);
+                    return $this->response;
+                }
+            );
 
         $controller->index();
     }
