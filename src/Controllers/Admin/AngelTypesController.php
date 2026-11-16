@@ -88,11 +88,11 @@ class AngelTypesController extends BaseController
         $data = $this->validate(
             $request,
             [
-                'name' => ($this->auth->can('angeltypes.edit') ? 'required' : 'optional') . '|max:255',
+                'name' => ($this->auth->can('angeltypes.edit') ? 'required' : 'optional') . '|length:0:255',
                 'description' => 'optional',
-                'contact_name' => 'optional|max:255',
-                'contact_dect' => 'optional|max:255',
-                'contact_email' => 'optional|max:255',
+                'contact_name' => 'optional|length:0:255',
+                'contact_dect' => 'optional|length:0:255',
+                'contact_email' => 'optional|length:0:255',
                 'restricted' => 'optional|checked',
                 'shift_self_signup' => 'optional|checked',
                 'show_on_dashboard' => 'optional|checked',

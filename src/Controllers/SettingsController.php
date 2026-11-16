@@ -455,14 +455,13 @@ class SettingsController extends BaseController
     {
         $goodie_tshirt = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
         $rules = [
-            'pronoun' => $this->isRequired('pronoun') . '|max:15',
-            'first_name' => $this->isRequired('firstname') . '|max:64',
-            'last_name' => $this->isRequired('lastname') . '|max:64',
+            'pronoun' => $this->isRequired('pronoun') . '|length:0:15',
+            'first_name' => $this->isRequired('firstname') . '|length:0:64',
+            'last_name' => $this->isRequired('lastname') . '|length:0:64',
             'dect' => $this->isRequired('dect') . '|length:0:40',
-            // dect/mobile can be purely numbers. "max" would have checked their values, not their character length.
             'mobile' => $this->isRequired('mobile') . '|length:0:40',
             'mobile_show' => 'optional|checked',
-            'email' => 'required|email|max:254',
+            'email' => 'required|email|length:0:254',
             'email_shiftinfo' => 'optional|checked',
             'email_news' => 'optional|checked',
             'email_human' => 'optional|checked',

@@ -70,7 +70,7 @@ class UserWorklogController extends BaseController
         $data = $this->validate($request, [
             'work_date' => 'required|date:Y-m-d',
             'work_hours' => 'float|min:0',
-            'description' => 'required|max:200',
+            'description' => 'required|length:0:200',
             'night_shift' => 'optional|checked',
         ]);
 

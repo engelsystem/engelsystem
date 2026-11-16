@@ -62,10 +62,10 @@ class LocationsController extends BaseController
         $data = $this->validate(
             $request,
             [
-                'name'        => 'required|max:35',
+                'name'        => 'required|length:0:35',
                 'description' => 'optional',
                 'dect'        => 'optional',
-                'map_url'     => 'optional|url|max:300',
+                'map_url'     => 'optional|url|length:0:300',
             ] + $validation
         );
 

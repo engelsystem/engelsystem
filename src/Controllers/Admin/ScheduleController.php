@@ -94,7 +94,7 @@ class ScheduleController extends BaseController
         }
 
         $data = $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => 'required|length:0:255',
             'url' => 'required',
             'shift_type' => 'required|int',
             'needed_from_shift_type' => 'optional|checked',
