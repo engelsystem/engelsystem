@@ -59,7 +59,7 @@ class TagController extends BaseController
         }
 
         $data = $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => 'required|length:0:255',
             'delete' => 'optional|checked',
         ]);
 

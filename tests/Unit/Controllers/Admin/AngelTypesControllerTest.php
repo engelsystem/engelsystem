@@ -128,7 +128,7 @@ class AngelTypesControllerTest extends ControllerTestCase
             'name' => 'SomeTestAngelType',
             'description' => 'Something',
             'contact_name' => 'Foo',
-            'contact_dect' => 'DECTNR',
+            'contact_dect' => '9999',
             'contact_email' => '42@example.invalid',
             'restricted' => 'checked',
             'shift_self_signup' => 'checked',

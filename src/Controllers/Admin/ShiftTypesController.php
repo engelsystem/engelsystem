@@ -131,7 +131,7 @@ class ShiftTypesController extends BaseController
         $data = $this->validate(
             $request,
             [
-                'name' => 'required|max:255',
+                'name' => 'required|length:0:255',
                 'description' => 'optional',
                 'signup_advance_hours' => 'optional|float',
             ] + $validation
