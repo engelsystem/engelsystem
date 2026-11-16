@@ -39,7 +39,14 @@ class DatabaseHandler extends AbstractHandler
         } catch (Exception) {
             // There might be some errors on early init
         }
-        $session->save();
+
+        try {
+            $session->save();
+            // @codeCoverageIgnoreStart
+        } catch (Exception) {
+            // @codeCoverageIgnoreEnd
+            // Ignore errors like too long keys etc.
+        }
 
         // The save return can't be used directly as it won't change if the second call is in the same second
         return true;
