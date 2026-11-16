@@ -56,6 +56,10 @@ class SettingsController extends BaseController
                 'isTShirtSizeRequired' => in_array('tshirt_size', $requiredFields),
                 'isMobileRequired' => in_array('mobile', $requiredFields),
                 'isDectRequired' => in_array('dect', $requiredFields),
+                'ssoSyncUserName' => $this->isFromSso('username'),
+                'ssoSyncEMail' => $this->isFromSso('email'),
+                'ssoSyncFirstName' => $this->isFromSso('first_name'),
+                'ssoSyncLastName' => $this->isFromSso('last_name'),
             ]
         );
     }
@@ -73,8 +77,12 @@ class SettingsController extends BaseController
         }
 
         if (config('enable_full_name')) {
-            $user->personalData->first_name = $data['first_name'];
-            $user->personalData->last_name = $data['last_name'];
+            if (!$this->isFromSso('first_name')) {
+                $user->personalData->first_name = $data['first_name'];
+            }
+            if (!$this->isFromSso('last_name')) {
+                $user->personalData->last_name = $data['last_name'];
+            }
         }
 
         if (config('enable_planned_arrival')) {
@@ -100,7 +108,10 @@ class SettingsController extends BaseController
             $user->settings->mobile_show = $data['mobile_show'] ?: false;
         }
 
-        $user->email = $data['email'];
+        if (!$this->isFromSso('email')) {
+            $user->email = $data['email'];
+        }
+
         $user->settings->email_shiftinfo = $data['email_shiftinfo'] ?: false;
         $user->settings->email_news = $data['email_news'] ?: false;
         $user->settings->email_human = $data['email_human'] ?: false;
@@ -442,10 +453,27 @@ class SettingsController extends BaseController
         })->isNotEmpty();
     }
 
-    private function isRequired(string $key): string
+    private function isRequired(string $key): bool
     {
         $requiredFields = $this->config->get('required_user_fields');
-        return in_array($key, $requiredFields) ? 'required' : 'optional';
+        return in_array($key, $requiredFields);
+    }
+
+    private function isFromSso(string $key): bool
+    {
+        $fromSso = false;
+
+        foreach ($this->auth->user()->oauth as $oauth) {
+            $config = config('oauth')[$oauth->provider] ?? [];
+            $fromSso = $fromSso || in_array($key, $config['sso_fields_to_sync'] ?? []);
+        }
+
+        return $fromSso;
+    }
+
+    private function reqStr(bool $isRequired): string
+    {
+        return $isRequired ? 'required' : 'optional';
     }
 
     /**
@@ -454,27 +482,30 @@ class SettingsController extends BaseController
     private function getSaveProfileRules(User $user): array
     {
         $goodie_tshirt = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
+        $firstNameReqStr = $this->reqStr(!$this->isFromSso('first_name') && $this->isRequired('firstname'));
+        $lastNameReqStr = $this->reqStr(!$this->isFromSso('last_name') && $this->isRequired('lastname'));
         $rules = [
-            'pronoun' => $this->isRequired('pronoun') . '|max:15',
-            'first_name' => $this->isRequired('firstname') . '|max:64',
-            'last_name' => $this->isRequired('lastname') . '|max:64',
-            'dect' => $this->isRequired('dect') . '|length:0:40',
+            'pronoun' => $this->reqStr($this->isRequired('pronoun')) . '|max:15',
+            'first_name' => $firstNameReqStr . '|max:64',
+            'last_name' => $lastNameReqStr . '|max:64',
+            'dect' => $this->reqStr($this->isRequired('dect')) . '|length:0:40',
             // dect/mobile can be purely numbers. "max" would have checked their values, not their character length.
-            'mobile' => $this->isRequired('mobile') . '|length:0:40',
+            'mobile' => $this->reqStr($this->isRequired('mobile')) . '|length:0:40',
             'mobile_show' => 'optional|checked',
-            'email' => 'required|email|max:254',
+            'email' => $this->reqStr(!$this->isFromSso('email')) . '|email|max:254',
             'email_shiftinfo' => 'optional|checked',
             'email_news' => 'optional|checked',
             'email_human' => 'optional|checked',
             'email_messages' => 'optional|checked',
             'email_goodie' => 'optional|checked',
         ];
+
         if (config('enable_planned_arrival')) {
             $rules['planned_arrival_date'] = 'required|date:Y-m-d';
             $rules['planned_departure_date'] = 'optional|date:Y-m-d';
         }
         if ($goodie_tshirt && !$user->state->got_goodie) {
-            $rules['shirt_size'] = $this->isRequired('tshirt_size') . '|shirt_size';
+            $rules['shirt_size'] = $this->reqStr($this->isRequired('tshirt_size')) . '|shirt_size';
         }
         return $rules;
     }
