@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Controllers\LocationsController;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\ShiftsFilter;
@@ -68,13 +69,17 @@ function location_controller(): array
  */
 function locations_controller(): array
 {
-    $request = request();
-    $action = $request->input('action');
+    $action = request()->input('action');
+
+    $controller = app(LocationsController::class);
+    if (!in_array($action, ['view', 'list']) && !auth()->can($controller->getPermissions())) {
+        throw new HttpForbidden();
+    }
 
     return match ($action) {
         'view'  => location_controller(),
         'list'  => throw_redirect(url('/locations')),
-        default => ['', app(LocationsController::class)->index()->getContent()],
+        default => ['', $controller->index()->getContent()],
     };
 }
 

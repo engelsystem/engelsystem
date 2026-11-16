@@ -2,6 +2,7 @@
 
 use Engelsystem\Controllers\AngelTypesController;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\UserAngelType;
@@ -17,10 +18,15 @@ function angeltypes_controller()
 {
     $action = request()->input('action');
 
+    $controller = app(AngelTypesController::class);
+    if (!in_array($action, ['view', 'list']) && !$controller->hasPermission(request(), 'index')) {
+        throw new HttpForbidden();
+    }
+
     return match ($action) {
         'view'   => angeltype_controller(),
         'list'   => throw_redirect(url('/angeltypes')),
-        default  =>  ['', app(AngelTypesController::class)->index()->getContent()],
+        default  =>  ['', $controller->index()->getContent()],
     };
 }
 
