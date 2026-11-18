@@ -2,6 +2,7 @@
 
 // Methods to build a html form.
 use Carbon\Carbon;
+use Engelsystem\Models\Tag;
 
 /**
  * Renders a hidden input
@@ -285,6 +286,24 @@ function form_select($name, $label, $values, $selected, $selectText = '', $class
         'form_' . $id ?? $name,
         $class
     );
+}
+
+/**
+ * Renders a multi select of all tags, adapter to the twig-macro
+ *
+ * @param string $name
+ * @param string $label
+ * @param string $value Comma separated tag names
+ * @return string
+ */
+function form_tags(string $name, string $label, string $value): string
+{
+    return view('layouts/parts/form_tags.twig', [
+        'name'  => $name,
+        'label' => $label,
+        'value' => $value,
+        'tags'  => Tag::query()->orderBy('name')->get(),
+    ]);
 }
 
 /**

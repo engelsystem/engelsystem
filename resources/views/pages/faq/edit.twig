@@ -52,11 +52,7 @@
                         'rows': 10,
                         'value': faq ? faq.text : '',
                     }) }}
-                    {{ f.input(
-                        'tags',
-                        __('form.tags'),
-                        {'value': tags, 'info': __('form.tags.info')}
-                    ) }}
+                    {{ f.tags('tags', __('form.tags'), tags, all_tags) }}
 
                     {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
 
