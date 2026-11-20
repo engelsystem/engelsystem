@@ -160,8 +160,8 @@ msgstr "Select a user"
 msgid "form.tags"
 msgstr "Tags"
 
-msgid "form.tags.info"
-msgstr "Comma-separated list of tags"
+msgid "form.tags.add"
+msgstr "Press Enter to add tag <b>%s</b>"
 
 msgid "schedule.import"
 msgstr "Import schedule"

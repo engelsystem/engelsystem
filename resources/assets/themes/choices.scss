@@ -60,3 +60,28 @@ $choices-bg-color-disabled: $input-disabled-bg;
 .#{$choices-selector}[data-type*='text'] .#{$choices-selector}__button {
   margin-right: 0;
 }
+
+// The delete button already reserves some space, together with the regular padding would be too much
+.#{$choices-selector}__list--multiple .#{$choices-selector}__item[data-deletable] {
+  padding-right: 2px !important;
+}
+
+.#{$choices-selector}__list--multiple .#{$choices-selector}__item.#{$choices-selector}__item--colored {
+  background-color: var(--es-choices-item-color);
+  border-color: var(--es-choices-item-color);
+}
+
+.#{$choices-selector}__list--dropdown .#{$choices-selector}__item--colored::before,
+.#{$choices-selector}__list[aria-expanded] .#{$choices-selector}__item--colored::before {
+  background-color: var(--es-choices-item-color);
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: 0.75em;
+  margin-right: 0.5em;
+  width: 0.75em;
+}
+
+.#{$choices-selector}__item--colored.text-dark .#{$choices-selector}__button {
+  background-image: $choices-icon-cross-inverse;
+}

@@ -52,7 +52,8 @@ Renders an input field wrapped in a DIV with mb-3.
 @param {bool} [opt.required=false] - Whether to add the "required" attribute. Defaults to false.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {bool} [opt.readonly=false] - Whether to add the "readonly" attribute. Defaults to false.
-@param {string} [opt.form_text] - If set a describing text is desplayed below.
+@param {string} [opt.form_text] - If set a describing text is displayed below.
+@param {string} [opt.input_class] - Additional classes for the input element.
 #}
 {% macro input(name, label, opt) %}
     <div class="mb-3">
@@ -71,7 +72,7 @@ Renders an input field wrapped in a DIV with mb-3.
             </label>
         {%- endif %}
         <input
-            type="{{ opt.type|default('text') }}" class="form-control"
+            type="{{ opt.type|default('text') }}" class="form-control {{ opt.input_class|default('') }}"
             id="{{ name }}" name="{{ name }}"
             value="{{ opt.value|default('') }}"
             {%- if opt.min_length is defined %} minlength="{{ opt.min_length }}"{% endif %}
@@ -218,7 +219,7 @@ Renders a select element wrapped in a DIV with mb-3.
 @param {bool} [opt.required=false] - Whether to add the "required" attribute. Defaults to false.
 @param {bool} [opt.disabled=false] - Whether to add the "disabled" attribute. Defaults to false.
 @param {bool} [opt.default_option] - If set a default option with the param as label and an empty value will be added.
-@param {string} [opt.form_text] - If set a describing text is desplayed below.
+@param {string} [opt.form_text] - If set a describing text is displayed below.
 #}
 {% macro select(name, label, data, opt) %}
     <div class="mb-3">
@@ -424,7 +425,37 @@ Renders a color input field.
 @param {string} [opt] - Additional configuration, see input() macro
 #}
 {% macro color(name, label, opt) %}
-    {{ _self.input(name, label, {'type': 'color'}|merge(opt|default({}))) }}
+    {{ _self.input(name, label, {'type': 'color', 'input_class': 'form-control-color'}|merge(opt|default({}))) }}
+{%- endmacro %}
+
+{#
+Renders a colored multi select of tags.
+
+@param {string} name - Will be used as value for the "name" attribute of the hidden input and "id" of the select.
+@param {string} label - If not empty a "label" element with this text will be rendered.
+@param {string} value - Comma separated selected tag names.
+@param {Tag[]} tags - All available tags.
+#}
+{% macro tags(name, label, value, tags) %}
+    {% set selected = (value|default(''))|split(',')|map(tagName => tagName|trim)|filter(tagName => tagName != '') %}
+    {% set names = tags|map(tag => tag.name) %}
+    <div class="mb-3">
+        {% if label -%}
+            <label class="form-label" for="{{ name }}">{{ label }}</label>
+        {%- endif %}
+        <input type="hidden" name="{{ name }}" value="{{ selected|join(', ') }}">
+        <select id="{{ name }}" class="form-control" multiple data-tags-input="{{ name }}"
+            data-choices-add data-choices-add-text="{{ __('form.tags.add', ['{value}']) }}">
+            {% for tag in tags %}
+                <option value="{{ tag.name }}"
+                    data-custom-properties="{{ {'color': color(tag.color) ~ '', 'light': color(tag.color).isLight}|json_encode }}"
+                    {%- if tag.name in selected %} selected{% endif %}>{{ tag.name }}</option>
+            {% endfor %}
+            {% for tagName in selected|filter(tagName => tagName not in names) %}
+                <option value="{{ tagName }}" selected>{{ tagName }}</option>
+            {% endfor %}
+        </select>
+    </div>
 {%- endmacro %}
 
 {% macro formData(name, default) -%}

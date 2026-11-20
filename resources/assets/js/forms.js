@@ -237,18 +237,63 @@ ready(() => {
 });
 
 /**
+ * Sync tag selects and the hidden comma separated backing input
+ */
+ready(() => {
+  document.querySelectorAll('select[data-tags-input]').forEach((element) => {
+    const input = element.form?.querySelector(`input[type="hidden"][name="${element.dataset.tagsInput}"]`);
+    if (!input) {
+      return;
+    }
+
+    element.addEventListener('change', () => {
+      input.value = [...element.selectedOptions].map((option) => option.value).join(', ');
+    });
+  });
+});
+
+/**
  * Init select dropdown choices
  */
 ready(() => {
+  const applyColor = (element, data, isItem) => {
+    const color = data.customProperties?.color;
+    if (!color) {
+      return element;
+    }
+
+    element.classList.add('choices__item--colored');
+    element.style.setProperty('--es-choices-item-color', color);
+    if (isItem) {
+      element.classList.add(data.customProperties.light ? 'text-dark' : 'text-light');
+    }
+
+    return element;
+  };
+
   document.querySelectorAll('select').forEach((element) => {
+    const addChoices = element.dataset.choicesAdd !== undefined;
+    const addItemText = element.dataset.choicesAddText;
+
     element.choices = new Choices(element, {
-      allowHTML: true,
+      allowHTML: false,
       shouldSort: false,
       shouldSortItems: false,
       removeItemButton: element.multiple,
+      addChoices: addChoices,
+      duplicateItemsAllowed: false,
+      ...(addItemText ? { addItemText: (value) => addItemText.replace('{value}', value) } : {}),
       classNames: {
-        containerInner: 'choices__inner form-control',
+        containerInner: ['choices__inner', 'form-control'],
       },
+      callbackOnCreateTemplates: () => ({
+        item(...args) {
+          return applyColor(Choices.defaults.templates.item.call(this, ...args), args[1], true);
+        },
+        choice(...args) {
+          return applyColor(Choices.defaults.templates.choice.call(this, ...args), args[1], false);
+        },
+      }),
       fuseOptions: {
         distance: 0,
         ignoreLocation: true,
@@ -259,6 +304,20 @@ ready(() => {
       // do not use Number.MAX_SAFE_INTEGER here, because otherwise the script gets stuck
       searchResultLimit: 9999,
     });
+
+    if (addChoices) {
+      // Clicking the "Press Enter to add" notice adds the entry like pressing Enter does
+      element.choices.dropdown.element.addEventListener('mousedown', (event) => {
+        if (!event.target.closest('.add-choice')) {
+          return;
+        }
+
+        // Fake an Enter-Event in the way Choices.js recognizes
+        const enter = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
+        Object.defineProperty(enter, 'keyCode', { value: 13 });
+        element.choices.input.element.dispatchEvent(enter);
+      });
+    }
   });
 });
 
