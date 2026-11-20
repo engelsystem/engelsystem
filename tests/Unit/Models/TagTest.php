@@ -9,6 +9,7 @@ use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Tag;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Tag::class, '__construct')]
 #[CoversMethod(Tag::class, 'faqs')]
 #[CoversMethod(Tag::class, 'shifts')]
 class TagTest extends ModelTestCase
