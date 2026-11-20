@@ -19,18 +19,15 @@
                         <span class="qr-code">
                             {{ qr(qr_data, 400) }}
                         </span>
-                        {% set expires = session_get('form-data-expires') %}
-                        {% if expires %}
                         <p>
                             <span
                                 class="small"
-                                title="{{ expires.format(__('general.datetime')) }}"
-                                data-countdown-ts="{{ expires.getTimestamp() }}"
+                                title="{{ expires_at.format(__('general.datetime')) }}"
+                                data-countdown-ts="{{ expires_at.getTimestamp() }}"
                             data-countdown-expired-template="{{ __('angeltype.qr.expired') }}">
                                 {{ __('angeltype.qr.expires') }}
                             </span>
                         </p>
-                        {% endif %}
                     </div>
                 </div>
 

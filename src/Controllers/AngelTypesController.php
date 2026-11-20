@@ -4,25 +4,19 @@ declare(strict_types=1);
 
 namespace Engelsystem\Controllers;
 
+use DomainException;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\JWT;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\UserAngelType;
-use Exception;
-use Firebase\JWT\BeforeValidException;
-use Firebase\JWT\ExpiredException;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use Firebase\JWT\SignatureInvalidException;
-use Illuminate\Support\Str;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use UnexpectedValueException;
 
 class AngelTypesController extends BaseController
 {
@@ -34,6 +28,7 @@ class AngelTypesController extends BaseController
         protected Authenticator $auth,
         protected LoggerInterface $log,
         protected AngelType $angelType,
+        protected JWT $jwt,
     ) {
     }
 
@@ -80,40 +75,34 @@ class AngelTypesController extends BaseController
     {
         $this->qrJoinEnabled();
         $angelType = $this->getAngelType($request);
-        $jwtExpirationMin = $this->config->get('jwt_expiration_time');
+        $jwtExpirationMax = $this->config->get('jwt_expiration_time');
+        $minutes = 5;
         $qrData = null;
         $data = [];
 
         if ($request->isMethod('post')) {
             $data = $this->validate($request, [
-                'minutes' => 'required|int|min:1|max:' . $jwtExpirationMin,
+                'minutes' => 'required|int|min:1|max:' . $jwtExpirationMax,
             ]);
             $minutes = (int) $data['minutes'];
-            $time = Carbon::now();
 
-            $key = $this->config->get('app_key');
-            $alg = $this->config->get('jwt_algorithm');
-            $jti = Str::random();
-
-            $iat = $time->timestamp;
-            $exp = $time->addMinutes($minutes)->timestamp;
-            $data['expires'] = $time;
-
-            $payload = [
+            $jwt = $this->jwt->encode([
                 'sub' => 'join_angel_type',
-                'iat' => $iat,
-                'exp' => $exp,
-                'jti' => $jti,
                 'id' => $angelType->id,
                 'by' => $this->auth->user()->id,
-            ];
-            $jwt = JWT::encode($payload, $key, $alg);
+            ], $minutes);
+
             $qrData = url('/angeltypes/' . $angelType->id . '/join', ['token' => $jwt]);
         }
 
         return $this->response->withInput($data)->withView(
             'pages/angeltypes/qr',
-            ['angel_type' => $angelType, 'qr_data' => $qrData, 'qr_max_expiration_minutes' => $jwtExpirationMin],
+            [
+                'angel_type' => $angelType,
+                'qr_data' => $qrData,
+                'qr_max_expiration_minutes' => $jwtExpirationMax,
+                'expires_at' => Carbon::now()->addMinutes($minutes),
+            ],
         );
     }
 
@@ -124,22 +113,10 @@ class AngelTypesController extends BaseController
 
         $jwt = $request->get('token', '');
 
-        $key = $this->config->get('app_key');
-        $alg = $this->config->get('jwt_algorithm');
-
         try {
-            $decoded = JWT::decode($jwt, new Key($key, $alg));
-        } catch (BeforeValidException | ExpiredException) {
-            throw new HttpNotFound('jwt.invalid_time');
-        } catch (UnexpectedValueException | SignatureInvalidException $e) {
-            $this->log->warning('JWT: {message}, token: "{token}"', ['message' => $e->getMessage(), 'token' => $jwt]);
-            if ($e->getMessage() === 'Wrong number of segments') {
-                throw new HttpNotFound('jwt.wrong_format');
-            }
-            throw new HttpNotFound('jwt.code_error');
-        } catch (Exception $e) {
-            $this->log->error('JWT Error, token: "{token}"', ['exception' => $e, 'token' => $jwt]);
-            throw new HttpNotFound();
+            $decoded = $this->jwt->decode($jwt);
+        } catch (DomainException $e) {
+            throw new HttpNotFound($e->getMessage(), [], 0, $e);
         }
 
         $type = $decoded->sub ?? null;

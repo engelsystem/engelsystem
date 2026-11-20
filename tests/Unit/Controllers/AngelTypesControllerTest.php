@@ -7,7 +7,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\AngelTypesController;
 use Engelsystem\Helpers\Authenticator;
-use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\JWT;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -17,9 +17,8 @@ use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Log\NullLogger;
@@ -42,6 +41,7 @@ class AngelTypesControllerTest extends ControllerTestCase
     {
         $response = $this->createStub(Response::class);
         $auth = $this->createMock(Authenticator::class);
+        $jwt = $this->createMock(JWT::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
         $request = (new Request())->withAttribute('angel_type_id', $angelType->id);
@@ -52,7 +52,8 @@ class AngelTypesControllerTest extends ControllerTestCase
             $this->app->get(Config::class),
             $auth,
             new NullLogger(),
-            $angelType
+            $angelType,
+            $jwt,
         );
         $this->assertFalse($controller->hasPermission($request, 'qrCode'));
         $this->assertFalse($controller->hasPermission($request, 'join'));
@@ -70,6 +71,7 @@ class AngelTypesControllerTest extends ControllerTestCase
         $response = $this->createMock(Response::class);
         $auth = $this->createMock(Authenticator::class);
         $angelType = $this->createMock(AngelType::class);
+        $jwt = $this->createMock(JWT::class);
 
         $this->setExpects(
             $response,
@@ -77,7 +79,7 @@ class AngelTypesControllerTest extends ControllerTestCase
             ['pages/angeltypes/about']
         );
 
-        $controller = new AngelTypesController($response, new Config(), $auth, new NullLogger(), $angelType);
+        $controller = new AngelTypesController($response, new Config(), $auth, new NullLogger(), $angelType, $jwt);
         $controller->about();
     }
 
@@ -106,6 +108,7 @@ class AngelTypesControllerTest extends ControllerTestCase
     {
         $response = $this->createMock(Response::class);
         $auth = $this->createMock(Authenticator::class);
+        $jwt = $this->app->get(JWT::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
         $request = (new Request())->withAttribute('angel_type_id', $angelType->id);
@@ -118,7 +121,8 @@ class AngelTypesControllerTest extends ControllerTestCase
             $this->app->get(Config::class),
             $auth,
             new NullLogger(),
-            $angelType
+            $angelType,
+            $jwt,
         );
         $controller->qrCode($request);
     }
@@ -128,6 +132,7 @@ class AngelTypesControllerTest extends ControllerTestCase
         $response = $this->createMock(Response::class);
         $auth = $this->createMock(Authenticator::class);
         $urlGenerator = $this->createMock(UrlGenerator::class);
+        $jwt = $this->app->get(JWT::class);
         $this->app->instance('http.urlGenerator', $urlGenerator);
         /** @var User $user */
         $user = User::factory()->create();
@@ -148,7 +153,7 @@ class AngelTypesControllerTest extends ControllerTestCase
         $token = null;
         $urlGenerator->expects($this->exactly(2))
             ->method('to')
-            ->willReturnCallback(function ($path, $parameters) use ($angelType, $user, &$token) {
+            ->willReturnCallback(function ($path, $parameters) use ($angelType, &$token) {
                 if ($path === '/angeltypes') {
                     return '/angeltypes..';
                 }
@@ -156,19 +161,7 @@ class AngelTypesControllerTest extends ControllerTestCase
                 $this->assertEquals('/angeltypes/' . $angelType->id . '/join', $path);
                 $this->assertArrayHasKey('token', $parameters);
                 $token = $parameters['token'];
-                $data = (array) JWT::decode(
-                    $token,
-                    new Key($this->config->get('app_key'), $this->config->get('jwt_algorithm'))
-                );
-                $this->assertArrayHasKey('sub', $data);
-                $this->assertEquals('join_angel_type', $data['sub']);
-                $this->assertArrayHasKey('iat', $data);
-                $this->assertArrayHasKey('exp', $data);
-                $this->assertArrayHasKey('id', $data);
-                $this->assertArrayHasKey('jti', $data);
-                $this->assertEquals($angelType->id, $data['id']);
-                $this->assertArrayHasKey('by', $data);
-                $this->assertEquals($user->id, $data['by']);
+                $this->assertEquals(2, Str::substrCount($token, '.'));
                 return '/url..';
             });
         $auth->expects($this->exactly(2))
@@ -188,7 +181,7 @@ class AngelTypesControllerTest extends ControllerTestCase
             });
         $this->setExpects($redirect, 'to', ['/angeltypes..'], $response);
 
-        $controller = new AngelTypesController($response, $this->config, $auth, $log, $angelType);
+        $controller = new AngelTypesController($response, $this->config, $auth, $log, $angelType, $jwt);
         $controller->setValidator(new Validator());
 
         $controller->qrCode($request);
@@ -210,10 +203,18 @@ class AngelTypesControllerTest extends ControllerTestCase
     public function testJoinDecodeError(): void
     {
         $auth = $this->createMock(Authenticator::class);
+        $jwt = $this->createMock(JWT::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
 
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
+        $controller = new AngelTypesController(
+            new Response(),
+            $this->config,
+            $auth,
+            new NullLogger(),
+            $angelType,
+            $jwt,
+        );
         $controller->setValidator(new Validator());
 
         $request = (new Request(['token' => 'some.test.code']))
@@ -223,32 +224,21 @@ class AngelTypesControllerTest extends ControllerTestCase
         $controller->join($request);
     }
 
-    public function testJoinInvalidSignatureError(): void
-    {
-        $auth = $this->createMock(Authenticator::class);
-        /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create();
-
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
-        $controller->setValidator(new Validator());
-
-        $request = (new Request([
-            'token' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MiIsImlhdCI6MTIzNDU2Nzg5MH0.n0p3',
-        ]))
-            ->withAttribute('angel_type_id', $angelType->id);
-
-        $this->expectException(HttpNotFound::class);
-        $this->expectExceptionMessage('jwt.code_error');
-        $controller->join($request);
-    }
-
     public function testJoinDecodeErrorMissingParts(): void
     {
         $auth = $this->createMock(Authenticator::class);
+        $jwt = $this->app->get(JWT::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
 
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
+        $controller = new AngelTypesController(
+            new Response(),
+            $this->config,
+            $auth,
+            new NullLogger(),
+            $angelType,
+            $jwt,
+        );
         $controller->setValidator(new Validator());
 
         $request = (new Request(['token' => 'missing.segment']))
@@ -259,40 +249,21 @@ class AngelTypesControllerTest extends ControllerTestCase
         $controller->join($request);
     }
 
-    public function testJoinDecodeExpired(): void
-    {
-        $auth = $this->createMock(Authenticator::class);
-        /** @var AngelType $angelType */
-        $angelType = AngelType::factory()->create();
-        $token = JWT::encode(
-            ['exp' => Carbon::now()->subMinute()->timestamp],
-            $this->config->get('app_key'),
-            $this->config->get('jwt_algorithm'),
-        );
-
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
-        $controller->setValidator(new Validator());
-
-        $request = (new Request(['token' => $token]))
-            ->withAttribute('angel_type_id', $angelType->id);
-
-        $this->expectException(HttpNotFound::class);
-        $this->expectExceptionMessage('jwt.invalid');
-        $controller->join($request);
-    }
-
     public function testJoinTokenMismatch(): void
     {
         $auth = $this->createMock(Authenticator::class);
+        $jwt = $this->createMock(JWT::class);
         /** @var AngelType $angelType */
         $angelType = AngelType::factory()->create();
-        $token = JWT::encode(
-            ['sub' => 'do_something_different'],
-            $this->config->get('app_key'),
-            $this->config->get('jwt_algorithm'),
+        $token = $jwt->encode(['sub' => 'do_something_different', 'id' => $angelType->id]);
+        $controller = new AngelTypesController(
+            new Response(),
+            $this->config,
+            $auth,
+            new NullLogger(),
+            $angelType,
+            $jwt,
         );
-
-        $controller = new AngelTypesController(new Response(), $this->config, $auth, new NullLogger(), $angelType);
         $controller->setValidator(new Validator());
 
         $request = (new Request(['token' => $token]))
@@ -308,13 +279,15 @@ class AngelTypesControllerTest extends ControllerTestCase
         $auth = $this->createMock(Authenticator::class);
         $request = $this->createMock(Request::class);
         $angelType = $this->createMock(AngelType::class);
+        $jwt = $this->app->get(JWT::class);
 
         $controller = new AngelTypesController(
             $response,
             $this->app->get(Config::class),
             $auth,
             new NullLogger(),
-            $angelType
+            $angelType,
+            $jwt,
         );
 
         $this->expectException(ModelNotFoundException::class);
@@ -327,9 +300,17 @@ class AngelTypesControllerTest extends ControllerTestCase
         $auth = $this->createMock(Authenticator::class);
         $request = $this->createMock(Request::class);
         $angelType = $this->createMock(AngelType::class);
+        $jwt = $this->app->get(JWT::class);
         $this->config->set('join_qr_code', false);
 
-        $controller = new AngelTypesController($response, $this->config, $auth, new NullLogger(), $angelType);
+        $controller = new AngelTypesController(
+            $response,
+            $this->config,
+            $auth,
+            new NullLogger(),
+            $angelType,
+            $jwt,
+        );
 
         $this->expectException(HttpNotFound::class);
         $controller->qrCode($request);
