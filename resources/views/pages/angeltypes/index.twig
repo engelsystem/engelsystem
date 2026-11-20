@@ -37,6 +37,10 @@
                             <thead>
                             <tr>
                                 <th>{{ __('general.name') }}</th>
+                                <th>{{ m.icon('people-fill') }} {{ __('Members') }}</th>
+                                {% if show_pending_count|default(false) %}
+                                    <th>{{ m.icon('hourglass-split') }} {{ __('angeltype.unconfirmed') }}</th>
+                                {% endif %}
                                 <th>{{ m.icon('mortarboard-fill') }} {{ __('angeltype.restricted') }}</th>
                                 <th>{{ m.icon('pencil-square') }} {{ __('shift.self_signup.allowed') }}</th>
                                 <th>{{ __('angeltype.membership') }}</th>
@@ -53,6 +57,16 @@
                                             {{ angelType.name }}
                                         </a>
                                     </td>
+
+                                    <td>{{ angelType.member_count }}</td>
+
+                                    {% if show_pending_count|default(false) %}
+                                        <td>
+                                            {% if can('user.angeltypes.edit') or (userAngelType and userAngelType.supporter) %}
+                                                {{ angelType.pending_count }}
+                                            {% endif %}
+                                        </td>
+                                    {% endif %}
 
                                     <td>{{ angelType.restricted ? m.icon('mortarboard-fill'): ''}}</td>
 
