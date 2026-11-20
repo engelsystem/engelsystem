@@ -6,6 +6,8 @@ namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Controllers\BaseController;
 use Engelsystem\Controllers\HasUserNotifications;
+use Engelsystem\Events\DataEvent;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -26,7 +28,8 @@ class ShiftsController extends BaseController
         protected LoggerInterface $log,
         protected Shift $shift,
         protected Redirector $redirect,
-        protected Response $response
+        protected Response $response,
+        protected EventDispatcher $events,
     ) {
     }
 
@@ -51,29 +54,22 @@ class ShiftsController extends BaseController
         $transactionId = $request->postData('transaction_id');
 
         /** @var Shift[]|Collection $shifts */
-        $shifts = $this->shift->with([
-            'location',
-            'shiftEntries',
-            'shiftEntries.angelType',
-            'shiftEntries.user',
-            'shiftType',
-        ])->where('transaction_id', $transactionId)->get();
+        $shifts = $this->shift
+            ->where('transaction_id', $transactionId)
+            ->with('shiftType')
+            ->get();
 
-        $this->log->info(
-            'Deleting {count} shifts with transaction ID: {id}',
-            ['count' => $shifts->count(), 'id' => $transactionId]
-        );
-
+        $info = 'Deleting {count} shifts with transaction ID: {id}' . PHP_EOL;
         foreach ($shifts as $shift) {
-            event('shift.deleting', ['shift' => $shift]);
-            $shift->delete();
-
-            $this->log->info(
-                'Deleted shift ' . $shift->title . ' / ' . $shift->shiftType->name
+            $info .= '  ' . $shift->title . ' / ' . $shift->shiftType->name
                 . ' from ' . $shift->start->format('Y-m-d H:i')
                 . ' to ' . $shift->end->format('Y-m-d H:i')
-            );
+                . PHP_EOL;
         }
+        $this->log->info($info, ['count' => $shifts->count(), 'id' => $transactionId]);
+
+        $this->events->dispatch(new DataEvent('shifts.deleting', $shifts));
+        $shifts->toQuery()->delete();
 
         $this->addNotification('shifts.history.delete.success');
 

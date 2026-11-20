@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\DayOfEvent;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
@@ -51,8 +52,7 @@ function eventAndWeekDayFormat(Carbon $date): ?string
         $info[] = $dayOfEvent;
     }
 
-    $result = event()->dispatch('day_of_event_info', $info, true);
-    $info = $result ?: $info;
+    $info = event(new DataEvent('day_of_event_info', ['info' => $info, 'date' => $date]))->info;
 
     if (empty($info)) {
         return null;

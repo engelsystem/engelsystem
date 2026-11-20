@@ -6,7 +6,6 @@ namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Admin\AngelTypesController;
-use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -177,26 +176,12 @@ class AngelTypesControllerTest extends ControllerTestCase
 
     public function testDelete(): void
     {
-        /** @var EventDispatcher|MockObject $dispatcher */
-        $dispatcher = $this->createMock(EventDispatcher::class);
-        $this->app->instance('events.dispatcher', $dispatcher);
         /** @var ShiftEntry $shiftEntry */
         ShiftEntry::factory()->create(['user_id' => $this->user->id, 'angel_type_id' => $this->angelType->id]);
         $angelType = $this->angelType;
-        $user = $this->user;
 
         $this->setExpects($this->auth, 'can', ['angeltypes.edit'], true, $this->any());
         $this->setExpects($this->redirect, 'to', ['/angeltypes'], $this->response);
-
-        $dispatcher->expects($this->atLeastOnce())
-            ->method('dispatch')
-            ->willReturnCallback(function (string $event, array $data) use ($angelType, $user) {
-                $this->assertEquals('shift.entry.deleting', $event);
-                $this->assertEquals($angelType->id, $data['entry']->angelType->id);
-                $this->assertEquals($user->id, $data['entry']->user->id);
-
-                return [];
-            });
 
         $this->request = $this->request->withParsedBody(['id' => 1, 'delete' => '1']);
 

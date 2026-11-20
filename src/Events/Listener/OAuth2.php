@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Engelsystem\Events\Listener;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Events\OAuth2Event;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 
 class OAuth2
@@ -21,16 +21,13 @@ class OAuth2
         $this->config = $config->get('oauth');
     }
 
-    /**
-     * @param string     $provider OAuth provider name
-     * @param Collection $data OAuth userdata
-     */
-    public function login(string $event, string $provider, Collection $data): void
+    public function login(OAuth2Event $event): void
     {
+        $provider = $event->providerName;
         $user = $this->auth->user();
         $ssoTeams = $this->getSsoTeams($provider);
         $groupsKey = ($this->config[$provider] ?? [])['groups'] ?? 'groups';
-        $userGroups = $data->get($groupsKey, []);
+        $userGroups = $event->userdata->get($groupsKey, []);
 
         foreach ($userGroups as $groupName) {
             if (!isset($ssoTeams[$groupName])) {

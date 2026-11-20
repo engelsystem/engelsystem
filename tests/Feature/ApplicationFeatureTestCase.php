@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Feature;
 use Engelsystem\Application;
 use Engelsystem\Config\ConfigServiceProvider;
 use Engelsystem\Database\DatabaseServiceProvider;
+use Engelsystem\Models\BaseModel;
 use PHPUnit\Framework\TestCase;
 
 abstract class ApplicationFeatureTestCase extends TestCase
@@ -36,6 +37,7 @@ abstract class ApplicationFeatureTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        BaseModel::unsetEventDispatcher();
 
         $this->app = app();
 

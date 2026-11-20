@@ -126,11 +126,6 @@ class LocationsController extends BaseController
         ]);
 
         $location = $this->location->findOrFail($data['id']);
-
-        $shifts = $location->shifts;
-        foreach ($shifts as $shift) {
-            event('shift.deleting', ['shift' => $shift]);
-        }
         $location->delete();
 
         $this->log->info('Deleted location {location}', ['location' => $location->name]);

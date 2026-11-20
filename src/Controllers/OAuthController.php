@@ -6,6 +6,8 @@ namespace Engelsystem\Controllers;
 
 use Carbon\Carbon;
 use Engelsystem\Config\Config;
+use Engelsystem\Events\EventDispatcher;
+use Engelsystem\Events\OAuth2Event;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
@@ -32,11 +34,12 @@ class OAuthController extends BaseController
         protected Authenticator $auth,
         protected AuthController $authController,
         protected Config $config,
+        protected EventDispatcher $events,
         protected LoggerInterface $log,
         protected OAuth $oauth,
         protected Redirector $redirect,
         protected Session $session,
-        protected UrlGenerator $url
+        protected UrlGenerator $url,
     ) {
     }
 
@@ -186,7 +189,7 @@ class OAuthController extends BaseController
         }
 
         $response = $this->authController->loginUser($oauth->user);
-        event('oauth2.login', ['provider' => $providerName, 'data' => $userdata]);
+        $this->events->dispatch(new OAuth2Event(OAuth2Event::$LOGIN, $providerName, $userdata));
 
         return $response;
     }

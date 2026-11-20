@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Engelsystem\Events\Listener;
 
+use Engelsystem\Events\ModelEvent;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
-use Psr\Log\LoggerInterface;
 
 class Messages
 {
     public function __construct(
-        protected LoggerInterface $log,
         protected EngelsystemMailer $mailer
     ) {
     }
 
-    public function created(Message $message): void
+    public function created(ModelEvent $event): void
     {
+        /** @var Message $message */
+        $message = $event->model;
         if (!$message->receiver->settings->email_messages) {
             return;
         }

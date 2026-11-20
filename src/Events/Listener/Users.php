@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Events\Listener;
 
+use Engelsystem\Events\DataEvent;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\User;
 use Psr\Log\LoggerInterface;
@@ -16,8 +17,10 @@ class Users
     ) {
     }
 
-    public function created(User $user): void
+    public function created(DataEvent $event): void
     {
+        /** @var User $user */
+        $user = $event->user;
         $this->mailer->sendViewTranslated(
             $user,
             'email.user.welcome.subject',

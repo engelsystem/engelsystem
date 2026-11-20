@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Engelsystem\Controllers\Admin\LocationsController;
-use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
@@ -126,8 +125,6 @@ class LocationsControllerTest extends ControllerTestCase
 
     public function testDelete(): void
     {
-        $dispatcher = $this->createMock(EventDispatcher::class);
-        $this->app->instance('events.dispatcher', $dispatcher);
         /** @var LocationsController $controller */
         $controller = $this->app->make(LocationsController::class);
         $controller->setValidator(new Validator());
@@ -141,16 +138,6 @@ class LocationsControllerTest extends ControllerTestCase
         ShiftEntry::factory()->create(['shift_id' => $shift->id, 'user_id' => $user->id]);
 
         $this->setExpects($this->redirect, 'to', ['/locations'], $this->response);
-
-        $dispatcher->expects($this->once())
-            ->method('dispatch')
-            ->willReturnCallback(function (string $event, array $data) use ($location, $user) {
-                $this->assertEquals('shift.deleting', $event);
-                $this->assertEquals($location->id, $data['shift']->location->id);
-                $this->assertEquals($user->id, $data['shift']->shiftEntries[0]->user->id);
-
-                return [];
-            });
 
         $this->request = $this->request->withParsedBody(['id' => 1, 'delete' => '1']);
 
