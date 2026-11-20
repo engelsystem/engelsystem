@@ -10,6 +10,7 @@ use Engelsystem\Config\GoodieType;
 use Engelsystem\Controllers\NotificationType;
 use Engelsystem\Controllers\SettingsController;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Confirmation;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Redirector;
@@ -59,6 +60,7 @@ class SettingsControllerTest extends ControllerTestCase
     use HasDatabase;
 
     protected Authenticator&MockObject $auth;
+    protected Confirmation&MockObject $confirm;
 
     protected User $user;
 
@@ -230,6 +232,30 @@ class SettingsControllerTest extends ControllerTestCase
         $this->config->set('goodie_type', GoodieType::None->value);
         $this->controller->saveProfile($this->request);
         $this->assertEquals('', $this->user->personalData->shirt_size);
+    }
+
+    public function testSaveProfileSetEmailChanged(): void
+    {
+        $this->setUpProfileTest();
+        $this->controller->saveProfile($this->request->withParsedBody(array_merge(
+            $this->request->getParsedBody(),
+            ['email' => 'something@example.tld']
+        )));
+        $this->assertFalse($this->user->state->email_confirmed);
+    }
+
+    public function testSaveProfileSendConfirmationEmail(): void
+    {
+        $this->setUpProfileTest();
+
+        $this->setExpects($this->confirm, 'confirmationAvailable', null, true);
+        $this->setExpects($this->confirm, 'sendEmailConfirmationLink', [$this->user], true);
+
+        $this->controller->saveProfile($this->request->withParsedBody(array_merge(
+            $this->request->getParsedBody(),
+            ['email' => 'something@example.tld']
+        )));
+        $this->assertHasNotification('auth.email-confirmation-request', NotificationType::WARNING);
     }
 
     public function testPassword(): void
@@ -997,6 +1023,9 @@ class SettingsControllerTest extends ControllerTestCase
         $this->currentSession = $sessions->first();
         $this->secondSession = $sessions->last();
         $this->session->setId($this->currentSession->id);
+
+        $this->confirm = $this->createMock(Confirmation::class);
+        $this->app->instance(Confirmation::class, $this->confirm);
 
         $this->controller = $this->app->make(SettingsController::class);
         $this->controller->setValidator(new Validator());

@@ -177,6 +177,9 @@ msgstr "Du kannst dich jetzt einloggen und für Schichten eintragen."
 msgid "email.user.welcome.arrive_first"
 msgstr "Du kannst dich jetzt einloggen. Um dich für Schichten eintragen zu können, melde dich bitte vor Ort an."
 
+msgid "email.user.email-confirmation.text"
+msgstr "Bitte bestätige deine E-Mail Adresse indem du den folgenden Link öffnest:"
+
 msgid "password.minimal_length"
 msgstr "Mindestlänge %d Zeichen"
 

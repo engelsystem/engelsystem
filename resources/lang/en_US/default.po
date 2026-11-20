@@ -356,7 +356,7 @@ msgid "settings.profile.mobile_show"
 msgstr "Show my mobile number to other users."
 
 msgid "settings.profile.email-preferences"
-msgstr "Event E-mail preferences"
+msgstr "Event e-mail preferences"
 
 msgid "general.email"
 msgstr "E-mail"
@@ -1089,6 +1089,9 @@ msgstr "You can now log in and sign up for shifts."
 
 msgid "email.user.welcome.arrive_first"
 msgstr "You can now log in. To sign up for shifts, please check in when you arrive at the event."
+
+msgid "email.user.email-confirmation.text"
+msgstr "Please confirm your e-mail address by visiting the following link:"
 
 msgid "password.minimal_length"
 msgstr "Minimal length %d characters"

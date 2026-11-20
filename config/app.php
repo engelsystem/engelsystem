@@ -533,6 +533,10 @@ return [
                     'default' => '/usr/sbin/sendmail -bs',
                     'env' => 'MAIL_SENDMAIL',
                 ],
+                'email_confirmation' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
                 'home_site' => [
                     'type' => 'select',
                     'required' => true,

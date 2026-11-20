@@ -12,6 +12,15 @@ msgstr ""
 msgid "auth.not-found"
 msgstr "No user was found or password is wrong. Please try again. If you are still having problems, ask Heaven."
 
+msgid "auth.email-confirmation-request"
+msgstr "We sent you a confirmation e-mail, please open the link within to enable your account."
+
+msgid "auth.unable-to-confirm"
+msgstr "We were unable to confirm your e-mail address, please try to log in later."
+
+msgid "auth.confirmed"
+msgstr "Your e-mail address is now confirmed!"
+
 msgid "validation.password.required"
 msgstr "The password is required."
 
@@ -336,6 +345,9 @@ msgstr "The opened link is not complete"
 
 msgid "jwt.code_error"
 msgstr "The link is invalid or corrupted"
+
+msgid "email.user.email-confirmation"
+msgstr "E-mail confirmation"
 
 msgid "config.event"
 msgstr "Event"
@@ -707,6 +719,12 @@ msgstr "E-mail password"
 msgid "config.email.sendmail"
 msgstr "Sendmail command"
 
+msgid "config.email_confirmation"
+msgstr "E-mail addresses need confirmation"
+
+msgid "config.email_confirmation.info"
+msgstr "Needs the application URL, app key and a working e-mail configuration"
+
 msgid "config.home_site"
 msgstr "Home site"
 
@@ -754,7 +772,7 @@ msgstr "Application URL"
 msgid "config.url.info"
 msgstr ""
 "URL of the installation (incl. protocol, domain and optional path, i.e. https://angel.example.com/helping). "
-"Required to generate links in emails."
+"Required to generate links in e-mails."
 
 msgid "config.api_key"
 msgstr "API key for /metrics"

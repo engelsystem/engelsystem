@@ -14,6 +14,18 @@ msgstr ""
 "Es wurde kein User gefunden oder das Passwort ist falsch. Probiere es bitte noch einmal. Wenn das Problem "
 "weiterhin besteht, melde dich im Himmel."
 
+msgid "auth.email-confirmation-request"
+msgstr ""
+"Wir haben dir eine Bestätigungs-E-Mail geschickt, "
+"bitte öffne den enthaltenen Link um deinen Account zu aktivieren."
+
+msgid "auth.unable-to-confirm"
+msgstr "Wir konnten deine E-Mail Adresse leider nicht bestätigen, bitte versuche später erneut dich einzuloggen."
+
+msgid "auth.confirmed"
+msgstr "Deine E-Mail Adresse ist nun bestätigt!"
+
+
 msgid "validation.password.required"
 msgstr "Bitte gib ein Passwort an."
 
@@ -337,6 +349,9 @@ msgstr "Der aufgerufene Link ist nicht vollständig"
 
 msgid "jwt.code_error"
 msgstr "Der aufgerufene Link ist ungültig."
+
+msgid "email.user.email-confirmation"
+msgstr "E-Mail Bestätigung"
 
 msgid "config.event"
 msgstr "Event"
@@ -712,6 +727,12 @@ msgstr "E-Mail Passwort"
 
 msgid "config.email.sendmail"
 msgstr "Sendmail Kommando"
+
+msgid "config.email_confirmation"
+msgstr "E-Mail Adressen müssen bestätigt werden"
+
+msgid "config.email_confirmation.info"
+msgstr "Benötigt die Anwendungs-URL, den App Key sowie eine funktionierende E-Mail Konfiguration"
 
 msgid "config.home_site"
 msgstr "Startseite"

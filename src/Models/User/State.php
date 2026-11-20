@@ -24,6 +24,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read bool   $reserved_goodie
  * @property int|null    $reserved_goodie_by
  * @property int         $got_voucher
+ * @property bool        $email_confirmed
  *
  * @method static QueryBuilder|State[] whereArrived($value)
  * @method static QueryBuilder|State[] whereArrivalDate($value)
@@ -38,6 +39,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|State[] whereReservedGoodie($value)
  * @method static QueryBuilder|State[] whereReservedGoodieBy($value)
  * @method static QueryBuilder|State[] whereGotVoucher($value)
+ * @method static QueryBuilder|State[] whereEmailConfirmed($value)
  */
 class State extends HasUserModel
 {
@@ -54,8 +56,9 @@ class State extends HasUserModel
         'force_active_by' => null,
         'force_food_by'   => null,
         'got_goodie_by'   => null,
-        'reserved_goodie_by'   => null,
+        'reserved_goodie_by' => null,
         'got_voucher'     => 0,
+        'email_confirmed' => false,
     ];
 
     /** @var array<string, string> */
@@ -67,6 +70,7 @@ class State extends HasUserModel
         'force_food_by'   => 'integer',
         'reserved_goodie_by' => 'integer',
         'got_voucher'  => 'integer',
+        'email_confirmed' => 'boolean',
     ];
 
     /**
@@ -84,6 +88,7 @@ class State extends HasUserModel
         'got_goodie_by',
         'reserved_goodie_by',
         'got_voucher',
+        'email_confirmed',
     ];
 
     public function forceActiveBy(): BelongsTo

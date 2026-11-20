@@ -7,6 +7,7 @@ namespace Engelsystem\Controllers;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Confirmation;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -100,6 +101,7 @@ class SettingsController extends BaseController
             $user->settings->mobile_show = $data['mobile_show'] ?: false;
         }
 
+        $emailChanged = $user->email !== $data['email'];
         $user->email = $data['email'];
         $user->settings->email_shiftinfo = $data['email_shiftinfo'] ?: false;
         $user->settings->email_news = $data['email_news'] ?: false;
@@ -124,6 +126,16 @@ class SettingsController extends BaseController
         $user->save();
 
         $this->addNotification('settings.success');
+
+        if ($emailChanged) {
+            $user->state->email_confirmed = false;
+            $user->state->save();
+
+            $confirm = app(Confirmation::class);
+            if ($confirm->confirmationAvailable() && $confirm->sendEmailConfirmationLink($user)) {
+                $this->addNotification('auth.email-confirmation-request', NotificationType::WARNING);
+            }
+        }
 
         return $this->redirect->to('/settings/profile');
     }

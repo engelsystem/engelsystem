@@ -32,6 +32,7 @@ class StateFactory extends Factory
             'reserved_goodie_by' => $reserved_goodie_by,
             'got_goodie_by'   => $got_goodie_by,
             'got_voucher'  => $this->faker->numberBetween(0, 10),
+            'email_confirmed'  => $this->faker->boolean(.9),
         ];
     }
 

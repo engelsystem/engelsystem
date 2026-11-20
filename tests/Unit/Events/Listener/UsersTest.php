@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Events\Listener\Users;
+use Engelsystem\Helpers\Confirmation;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
@@ -23,10 +24,10 @@ class UsersTest extends TestCase
 
     public function testCreated(): void
     {
-        $mailer = $this->createMock(EngelsystemMailer::class);
         /** @var User $user */
         $user = User::factory()->create();
-
+        $confUrl = 'https://localhost/email/confirm/test';
+        $mailer = $this->createMock(EngelsystemMailer::class);
         $mailer->expects($this->once())
             ->method('sendViewTranslated')
             ->willReturnCallback(function (
@@ -34,17 +35,25 @@ class UsersTest extends TestCase
                 string $subject,
                 string $template,
                 array $data
-            ) use ($user): bool {
+            ) use (
+                $user,
+                $confUrl
+            ): bool {
                 $this->assertEquals($user->id, $recipient->id);
                 $this->assertEquals('email.user.welcome.subject', $subject);
                 $this->assertEquals('emails/user-welcome', $template);
                 $this->assertArrayHasKey('app_name', $data);
                 $this->assertArrayHasKey('username', $data);
+                $this->assertArrayHasKey('confirmation_url', $data);
                 $this->assertEquals($user->displayName, $data['username']);
+                $this->assertEquals($confUrl, $data['confirmation_url']);
                 return true;
             });
+        $confirm = $this->createMock(Confirmation::class);
+        $this->setExpects($confirm, 'confirmationAvailable', null, true);
+        $this->setExpects($confirm, 'getEmailConfirmationLink', [$user], $confUrl);
 
-        $handler = new Users($this->log, $mailer);
+        $handler = new Users($confirm, $this->log, $mailer);
         $handler->created($user);
     }
 

@@ -1,0 +1,7 @@
+{% extends "emails/mail.text.twig" %}
+
+{% block message %}
+{{ __('email.user.email-confirmation.text') }}
+
+{{ url }}
+{% endblock %}

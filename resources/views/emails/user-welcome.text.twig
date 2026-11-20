@@ -8,4 +8,9 @@
 {% else %}
 {{ __('email.user.welcome.arrive_first') }}
 {% endif %}
+{% if confirmation_url %}
+{{ __('email.user.email-confirmation.text') }}
+
+{{ confirmation_url }}
+{% endif %}
 {% endblock %}

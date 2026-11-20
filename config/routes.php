@@ -72,6 +72,9 @@ $route->addGroup(
     }
 );
 
+// Email confirmation
+$route->get('/email/confirm/{token:.+}', 'AuthController@confirmEmail');
+
 // Metrics
 $route->get('/metrics', 'Metrics\\Controller@metrics');
 

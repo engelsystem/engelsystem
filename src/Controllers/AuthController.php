@@ -7,6 +7,8 @@ namespace Engelsystem\Controllers;
 use Carbon\Carbon;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Confirmation;
+use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -28,7 +30,8 @@ class AuthController extends BaseController
         protected SessionInterface $session,
         protected Redirector $redirect,
         protected Config $config,
-        protected Authenticator $auth
+        protected Authenticator $auth,
+        protected Confirmation $confirm,
     ) {
     }
 
@@ -60,6 +63,16 @@ class AuthController extends BaseController
             return $this->showLogin();
         }
 
+        if ($this->confirm->confirmationAvailable() && !$user->state->email_confirmed) {
+            if ($this->confirm->sendEmailConfirmationLink($user)) {
+                $this->addNotification('auth.email-confirmation-request', NotificationType::WARNING);
+            } else {
+                $this->addNotification('auth.unable-to-confirm', NotificationType::ERROR);
+            }
+
+            return $this->showLogin();
+        }
+
         return $this->loginUser($user);
     }
 
@@ -80,6 +93,21 @@ class AuthController extends BaseController
     public function logout(): Response
     {
         $this->session->invalidate();
+
+        return $this->redirect->to('/');
+    }
+
+    public function confirmEmail(Request $request): Response
+    {
+        if (!$this->confirm->confirmationAvailable()) {
+            throw new HttpNotFound();
+        }
+
+        if ($this->confirm->confirmEmailAddress($request->getAttribute('token'))) {
+            $this->addNotification('auth.confirmed', NotificationType::INFORMATION);
+        } else {
+            $this->addNotification('auth.unable-to-confirm', NotificationType::ERROR);
+        }
 
         return $this->redirect->to('/');
     }
