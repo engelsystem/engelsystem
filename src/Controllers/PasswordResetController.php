@@ -12,6 +12,7 @@ use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Psr\Log\LoggerInterface;
+use Random\RandomException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class PasswordResetController extends BaseController
@@ -24,6 +25,7 @@ class PasswordResetController extends BaseController
         'postReset'         => 'login',
         'resetPassword'     => 'login',
         'postResetPassword' => 'login',
+        'postResetByUserId' => 'admin_user',
     ];
 
     public function __construct(
@@ -48,23 +50,7 @@ class PasswordResetController extends BaseController
         /** @var User $user */
         $user = User::whereEmail($data['email'])->first();
         if ($user) {
-            $reset = (new PasswordReset())->findOrNew($user->id);
-            $reset->user_id = $user->id;
-            $reset->token = bin2hex(random_bytes(16));
-            $reset->created_at = Carbon::now();
-            $reset->save();
-
-            $this->log->info(
-                sprintf('Password recovery for %s (%u)', $user->name, $user->id),
-                ['user' => $user->toJson()]
-            );
-
-            $this->mail->sendViewTranslated(
-                $user,
-                'Password recovery',
-                'emails/password-reset',
-                ['username' => $user->displayName, 'reset' => $reset]
-            );
+            $this->triggerPasswordReset($user);
         }
 
         return $this->showView('pages/password/reset-success', ['type' => 'email']);
@@ -122,5 +108,41 @@ class PasswordResetController extends BaseController
         }
 
         return $reset;
+    }
+
+    public function postResetByUserId(Request $request): Response
+    {
+        $userId = $request->getAttribute('user_id');
+        $requestUser = User::findOrFail($userId);
+        $this->triggerPasswordReset($requestUser);
+        $this->addNotification(__('password.recovery.success.admin'), NotificationType::INFORMATION);
+        return back();
+    }
+
+    /**
+     * Trigger a password reset for the given user. This will email the user!
+     *
+     * @param User $user The user to trigger the password reset for.
+     * @throws RandomException
+     */
+    private function triggerPasswordReset(User $user): void
+    {
+        $reset = (new PasswordReset())->findOrNew($user->id);
+        $reset->user_id = $user->id;
+        $reset->token = bin2hex(random_bytes(16));
+        $reset->created_at = Carbon::now();
+        $reset->save();
+
+        $this->log->info(
+            sprintf('Password recovery for %s (%u)', $user->name, $user->id),
+            ['user' => $user->toJson()]
+        );
+
+        $this->mail->sendViewTranslated(
+            $user,
+            'password.reset.title',
+            'emails/password-reset',
+            ['username' => $user->displayName, 'reset' => $reset]
+        );
     }
 }
