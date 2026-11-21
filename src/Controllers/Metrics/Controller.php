@@ -136,6 +136,7 @@ class Controller extends BaseController
                 ['labels' => ['type' => 'goodie'], 'value' => $this->stats->email('goodie')],
                 ['labels' => ['type' => 'news'], 'value' => $this->stats->email('news')],
             ],
+            'users_email_confirmed' => ['type' => 'gauge', $this->stats->usersEmailConfirmed()],
             'users_working'        => [
                 'type' => 'gauge',
                 ['labels' => ['freeloader' => false], $this->stats->currentlyWorkingUsers(false)],

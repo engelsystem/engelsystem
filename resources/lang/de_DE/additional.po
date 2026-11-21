@@ -335,6 +335,9 @@ msgstr "Die Registrierung ist deaktiviert."
 msgid "registration.successful.supporter"
 msgstr "Registrierung erfolgreich."
 
+msgid "registration.successful.email-confirmation"
+msgstr "Registrierung erfolgreich. Bitte bestätige den Link in deiner e-mail!"
+
 msgid "registration.successful"
 msgstr "Registrierung erfolgreich. Du kannst dich jetzt anmelden!"
 

@@ -59,6 +59,7 @@ use Psr\Log\LogLevel;
 #[CoversMethod(Stats::class, 'forceFoodUsers')]
 #[CoversMethod(Stats::class, 'usersPronouns')]
 #[CoversMethod(Stats::class, 'email')]
+#[CoversMethod(Stats::class, 'usersEmailConfirmed')]
 #[CoversMethod(Stats::class, 'currentlyWorkingUsers')]
 #[CoversMethod(Stats::class, 'faq')]
 #[CoversMethod(Stats::class, 'messages')]
@@ -399,6 +400,14 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->email('news'));
     }
 
+    public function testUsersEmailConfirmed(): void
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(2, $stats->usersEmailConfirmed());
+    }
+
     public function testCurrentlyWorkingUsers(): void
     {
         $this->addUsers();
@@ -527,7 +536,7 @@ class StatsTest extends TestCase
             ['email_human' => true, 'email_goodie' => true, 'email_news' => true]
         );
         $this->addUser(
-            ['arrival_date' => Carbon::now()],
+            ['arrival_date' => Carbon::now(), 'email_confirmed' => true],
             ['pronoun' => 'unicorn'],
             ['language' => 'lo_RM', 'email_shiftinfo' => true]
         );
@@ -542,6 +551,7 @@ class StatsTest extends TestCase
                 'got_voucher' => 9,
                 'force_active_by' => $user->id,
                 'user_info' => 'Info',
+                'email_confirmed' => true,
             ],
             [],
             ['theme' => 1],
