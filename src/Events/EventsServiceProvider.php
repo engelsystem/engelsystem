@@ -6,6 +6,7 @@ namespace Engelsystem\Events;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Models\BaseModel;
 
 class EventsServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,9 @@ class EventsServiceProvider extends ServiceProvider
 
         $this->app->instance(EventDispatcher::class, $dispatcher);
         $this->app->instance('events.dispatcher', $dispatcher);
+
+        $laravelDispatcher = $this->app->make(LaravelEventDispatcher::class);
+        BaseModel::setEventDispatcher($laravelDispatcher);
 
         $this->registerEvents($dispatcher);
     }

@@ -338,7 +338,8 @@ function shift_entry_delete_controller()
     }
 
     if ($request->hasPostData('delete')) {
-        $shiftEntry->delete();
+        // Delete without events to not trigger normal worklog creation or sending emails
+        $shiftEntry->deleteQuietly();
         ShiftEntry_onDelete($shiftEntry);
         success(__('Shift entry removed.'));
         throw_redirect(shift_link($shift));

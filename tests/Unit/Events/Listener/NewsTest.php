@@ -6,6 +6,7 @@ namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Events\Listener\News;
+use Engelsystem\Events\NewsEvent;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\News as NewsModel;
 use Engelsystem\Models\User\Settings;
@@ -48,7 +49,7 @@ class NewsTest extends TestCase
 
         /** @var News $listener */
         $listener = $this->app->make(News::class);
-        $listener->created($this->news);
+        $listener->created(new NewsEvent('news.created', $this->news));
     }
 
     public function testCreatedNoNotification(): void
@@ -57,7 +58,7 @@ class NewsTest extends TestCase
 
         /** @var News $listener */
         $listener = $this->app->make(News::class);
-        $listener->created($this->news, false);
+        $listener->created(new NewsEvent('news.created', $this->news, false));
     }
 
     public function testUpdated(): void
@@ -75,7 +76,7 @@ class NewsTest extends TestCase
 
         /** @var News $listener */
         $listener = $this->app->make(News::class);
-        $listener->updated($this->news);
+        $listener->updated(new NewsEvent('news.updated', $this->news));
     }
 
     public function testUpdatedNoNotification(): void
@@ -84,7 +85,7 @@ class NewsTest extends TestCase
 
         /** @var News $listener */
         $listener = $this->app->make(News::class);
-        $listener->updated($this->news, false);
+        $listener->updated(new NewsEvent('news.updated', $this->news, false));
     }
 
     protected function setUp(): void
