@@ -1354,8 +1354,8 @@ msgstr "Wähle einen User"
 msgid "form.tags"
 msgstr "Tags"
 
-msgid "form.tags.info"
-msgstr "Komma separierte Liste von Tags"
+msgid "form.tags.add"
+msgstr "Enter drücken, um Tag <b>%s</b> hinzuzufügen"
 
 msgid "schedule.import"
 msgstr "Programm importieren"

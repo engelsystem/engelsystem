@@ -550,14 +550,7 @@ function admin_shifts()
                             ]),
                         ]),
                         div('row mt-2', [
-                            form_text(
-                                'tags',
-                                __('form.tags')
-                                . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-                                . htmlspecialchars(__('form.tags.info'))
-                                . '"></span>',
-                                implode(', ', $tags)
-                            ),
+                            form_tags('tags', __('form.tags'), implode(', ', $tags)),
                         ]),
                     ]),
                 ]),

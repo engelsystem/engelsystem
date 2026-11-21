@@ -110,7 +110,7 @@ class FaqController extends BaseController
     {
         return $this->response->withView(
             'pages/faq/edit.twig',
-            ['faq' => $faq, 'tags' => $tags]
+            ['faq' => $faq, 'tags' => $tags, 'all_tags' => Tag::query()->orderBy('name')->get()]
         );
     }
 }

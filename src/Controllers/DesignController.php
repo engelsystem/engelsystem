@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\BarChart;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\Tag;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
@@ -84,6 +85,11 @@ class DesignController extends BaseController
             'timestamp45mago'   => $date->sub(new DateInterval('PT45M')),
             'selectOptions'     => $selectOptions,
             'dateSelectOptions' => $dateSelectOptions,
+            'demoTags'         => [
+                new Tag(['name' => 'Teardown', 'color' => '#dc3545']),
+                new Tag(['name' => 'Build-Up', 'color' => '#ffc107']),
+                new Tag(['name' => 'Important', 'color' => '#0d6efd']),
+            ],
         ];
 
         return $this->response->withView(

@@ -242,14 +242,7 @@ function shift_edit_controller()
                             ]),
                         ]),
                         div('row mt-2', [
-                            form_text(
-                                'tags',
-                                __('form.tags')
-                                . ' <span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-                                . htmlspecialchars(__('form.tags.info'))
-                                . '"></span>',
-                                $shift->tags->implode('name', ', ')
-                            ),
+                            form_tags('tags', __('form.tags'), $shift->tags->implode('name', ', ')),
                         ]),
                     ]),
                 ]),
