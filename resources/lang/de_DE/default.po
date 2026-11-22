@@ -2267,3 +2267,6 @@ msgstr "Plugin aktivieren"
 
 msgid "plugin.disable"
 msgstr "Plugin deaktivieren"
+
+msgid "general.noscript_warning"
+msgstr "JavaScript ist in deinem Browser deaktiviert. Der Admin-Bereich ist ohne JavaScript nicht oder nur eingeschränkt nutzbar."

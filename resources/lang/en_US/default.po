@@ -1330,3 +1330,6 @@ msgstr "Enable plugin"
 
 msgid "plugin.disable"
 msgstr "Disable plugin"
+
+msgid "general.noscript_warning"
+msgstr "JavaScript is disabled in your browser. The admin area is unavailable or limited without JavaScript."
