@@ -40,6 +40,11 @@
 
     <div class="container-fluid">
         <div id="content">
+            {% if is_user() and menu()['Admin'][0] is not empty %}
+                <noscript>
+                    <div class="alert alert-warning mt-3" role="alert">{{ __('general.noscript_warning') }}</div>
+                </noscript>
+            {% endif %}
             {% block content %}
                 {{ content|raw }}
             {% endblock %}
