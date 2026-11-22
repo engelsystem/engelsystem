@@ -8,6 +8,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Confirmation;
+use Engelsystem\Helpers\Goodie;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
@@ -47,9 +48,8 @@ class SettingsController extends BaseController
             [
                 'settings_menu' => $this->settingsMenu(),
                 'userdata' => $user,
-                'goodie_enabled' => $this->config->get('goodie_type') !== GoodieType::None->value
-                    && config('enable_email_goodie'),
-                'goodie_tshirt' => $this->config->get('goodie_type') === GoodieType::Tshirt->value,
+                'goodie_enabled' => Goodie::isMailConsentEnabled(),
+                'goodie_tshirt' => Goodie::type() === GoodieType::Tshirt,
                 'tShirtLink' => $this->config->get('tshirt_link'),
                 'isPronounRequired' => in_array('pronoun', $requiredFields),
                 'isFirstnameRequired' => in_array('firstname', $requiredFields),
@@ -65,9 +65,7 @@ class SettingsController extends BaseController
     {
         $user = $this->auth->user();
         $data = $this->validate($request, $this->getSaveProfileRules($user));
-        $goodie = GoodieType::from(config('goodie_type'));
-        $goodie_enabled = $goodie !== GoodieType::None;
-        $goodie_tshirt = $goodie === GoodieType::Tshirt;
+        $goodie_tshirt = Goodie::type() === GoodieType::Tshirt;
 
         if (config('enable_pronoun')) {
             $user->personalData->pronoun = $data['pronoun'];
@@ -108,7 +106,7 @@ class SettingsController extends BaseController
         $user->settings->email_human = $data['email_human'] ?: false;
         $user->settings->email_messages = $data['email_messages'] ?: false;
 
-        if ($goodie_enabled && config('enable_email_goodie')) {
+        if (Goodie::isMailConsentEnabled()) {
             $user->settings->email_goodie = $data['email_goodie'] ?: false;
         }
 
@@ -465,7 +463,6 @@ class SettingsController extends BaseController
      */
     private function getSaveProfileRules(User $user): array
     {
-        $goodie_tshirt = $this->config->get('goodie_type') === GoodieType::Tshirt->value;
         $rules = [
             'pronoun' => $this->isRequired('pronoun') . '|length:0:15',
             'first_name' => $this->isRequired('firstname') . '|length:0:64',
@@ -484,7 +481,7 @@ class SettingsController extends BaseController
             $rules['planned_arrival_date'] = 'required|date:Y-m-d';
             $rules['planned_departure_date'] = 'optional|date:Y-m-d';
         }
-        if ($goodie_tshirt && !$user->state->got_goodie) {
+        if (Goodie::type() === GoodieType::Tshirt && !$user->state->got_goodie) {
             $rules['shirt_size'] = $this->isRequired('tshirt_size') . '|shirt_size';
         }
         return $rules;

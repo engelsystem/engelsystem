@@ -10,6 +10,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Config\GoodieType;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Helpers\Goodie;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\AngelType;
@@ -87,7 +88,7 @@ class User
             'email_by_human_allowed' => 'optional|checked',
             'email_messages' => 'optional|checked',
             'email_news' => 'optional|checked',
-            'email_goodie' => 'required|in:consent,decline',
+            ...(Goodie::isMailConsentEnabled() ? ['email_goodie' => 'required|in:consent,decline'] : []),
             // Using length here, because min/max would validate dect/mobile as numbers.
             'mobile' => $this->isRequired('mobile') . '|length:0:40',
         ];
@@ -147,8 +148,7 @@ class User
             $validationRules['dect'] = $this->isRequired('dect') . '|length:0:40';
         }
 
-        $goodieType = GoodieType::from($this->config->get('goodie_type'));
-        $isGoodieTShirt = $goodieType === GoodieType::Tshirt;
+        $isGoodieTShirt = Goodie::type() === GoodieType::Tshirt;
 
         if ($isGoodieTShirt) {
             $validationRules['tshirt_size'] = $this->isRequired('tshirt_size') . '|shirt-size';
