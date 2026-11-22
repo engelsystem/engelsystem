@@ -112,7 +112,7 @@
                 </li>
             </ul>
             {% block goodieMail %}
-                {% if isGoodieEnabled %}
+                {% if isGoodieMailConsentEnabled %}
                     {% set privacy_email = config('privacy_email') %}
                     {% set email_goodie_label =
                         (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~

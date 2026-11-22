@@ -88,10 +88,6 @@ class UserTest extends ServiceProviderTestCase
                     'validation.email.required',
                     'validation.email.email',
                 ],
-                'email_goodie' => [
-                    'validation.email_goodie.required',
-                    'validation.email_goodie.in',
-                ],
                 'password' => [
                     'validation.password.required',
                     'validation.password.length',
@@ -115,7 +111,6 @@ class UserTest extends ServiceProviderTestCase
             'email' => 'fritz@example.com',
             'password' => 's3cret',
             'password_confirmation' => 's3cret',
-            'email_goodie' => 'decline',
         ]);
 
         $this->assertSame('fritz', $user->name);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Helpers;
 
+use Engelsystem\Config\GoodieType;
 use Engelsystem\Database\Database;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Expression;
@@ -11,6 +12,19 @@ use Illuminate\Database\Query\Grammars\MySqlGrammar;
 
 class Goodie
 {
+    public static function type(): GoodieType
+    {
+        return GoodieType::from(config('goodie_type'));
+    }
+
+    /**
+     * Whether users are asked for consent for mails regarding the goodie
+     */
+    public static function isMailConsentEnabled(): bool
+    {
+        return self::type() !== GoodieType::None && config('enable_email_goodie');
+    }
+
     /**
      * Generates the query to sum night shifts
      *

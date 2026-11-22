@@ -9,6 +9,7 @@ use Engelsystem\Config\GoodieType;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Factories\User;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Goodie;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -81,7 +82,6 @@ class RegistrationController extends BaseController
 
     private function renderSignUpPage(): Response
     {
-        $goodieType = GoodieType::from($this->config->get('goodie_type'));
         $preselectedAngelTypes = $this->determinePreselectedAngelTypes();
         $requiredFields = $this->config->get('required_user_fields');
 
@@ -103,8 +103,8 @@ class RegistrationController extends BaseController
                 'isPasswordEnabled' => $this->userFactory->determineIsPasswordEnabled(),
                 'isDECTEnabled' => $this->config->get('enable_dect'),
                 'isShowMobileEnabled' => $this->config->get('enable_mobile_show'),
-                'isGoodieEnabled' => $goodieType !== GoodieType::None && config('enable_email_goodie'),
-                'isGoodieTShirt' => $goodieType === GoodieType::Tshirt,
+                'isGoodieMailConsentEnabled' => Goodie::isMailConsentEnabled(),
+                'isGoodieTShirt' => Goodie::type() === GoodieType::Tshirt,
                 'isPronounEnabled' => $this->config->get('enable_pronoun'),
                 'isFullNameEnabled' => $this->config->get('enable_full_name'),
                 'isPlannedArrivalDateEnabled' => $this->config->get('enable_planned_arrival'),
