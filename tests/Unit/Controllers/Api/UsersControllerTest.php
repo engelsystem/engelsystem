@@ -95,6 +95,8 @@ class UsersControllerTest extends ApiBaseControllerTestCase
         $this->assertArrayHasKey('dates', $data['data']);
         $this->assertArrayHasKey('contact', $data['data']);
         $this->assertArrayHasKey('oauth', $data['data']);
+        $this->assertArrayHasKey('dect', $data['data']);
+        $this->assertArrayHasKey('user_info_present', $data['data']);
     }
 
     public function testUserById(): void

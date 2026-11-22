@@ -413,6 +413,10 @@ components:
             email:
               type: string
               example: user@example.com
+            dect:
+              type: string
+              nullable: true
+              example: 2345
             tshirt_size:
               type: string
               nullable: true
@@ -440,6 +444,9 @@ components:
             arrived:
               type: boolean
               example: true
+            user_info_present:
+              type: boolean
+              example: false
             oauth:
               type: array
               description: OAuth/SSO provider identifiers linked to this user
