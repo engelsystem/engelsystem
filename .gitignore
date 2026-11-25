@@ -22,11 +22,18 @@ _vimrc_local.vim
 /.phpstorm.meta.php
 /.vscode
 
-# Docker .env files
+# Local Docker settings
 /docker/.env
 /docker/deployment.env
 /docker/dev/.env
 /docker/dev/deployment.env
+/docker/**/docker-compose.local.yml
+/docker/**/docker-compose.override.yml
+/docker/**/Dockerfile.local
+
+# Local test artifacts
+/.local-tests/
+/.phpunit.cache/
 
 # Project files
 /config/config.php

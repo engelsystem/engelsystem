@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Models;
 
 use Carbon\Carbon;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Builder;
@@ -88,8 +89,10 @@ class LogEntry extends BaseModel
         if (!empty($keyword)) {
             $query
                 ->where(function (Builder $query) use ($keyword): void {
-                    $query->where('message', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('url', 'LIKE', '%' . $keyword . '%');
+                    $query->where('message', 'LIKE', '%' . $keyword . '%');
+                    if (!LegacySchema::enabled()) {
+                        $query->orWhere('url', 'LIKE', '%' . $keyword . '%');
+                    }
                 });
         }
 

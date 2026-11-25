@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Logger;
 
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Http\Request;
 
 class UrlAwareLogger extends Logger
@@ -15,7 +16,7 @@ class UrlAwareLogger extends Logger
      */
     public function createEntry(array $data): void
     {
-        if ($this->request) {
+        if ($this->request && !LegacySchema::enabled()) {
             $data['url'] = $this->request->getUri();
         }
         parent::createEntry($data);

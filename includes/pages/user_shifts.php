@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
@@ -319,7 +320,8 @@ function view_user_shifts()
 
     $tagId = $shiftsFilter->getTag();
     $tags = PHP_EOL;
-    foreach (Tag::whereHas('shifts')->get() as $tag) {
+    $shiftTags = LegacySchema::enabled() ? [] : Tag::whereHas('shifts')->get();
+    foreach ($shiftTags as $tag) {
         $active = $tag->id == $shiftsFilter->getTag();
         $bg = $active ? 'danger' : 'secondary';
         $tags .=

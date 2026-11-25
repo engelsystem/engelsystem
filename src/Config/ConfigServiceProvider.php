@@ -53,6 +53,7 @@ class ConfigServiceProvider extends ServiceProvider
         $this->initConfigOptions($config);
         $this->loadConfigFromEnv($config);
         $this->parseConfigTypes($config);
+        $this->applyLegacySchemaOptions($config);
 
         if (empty($config->get(null))) {
             throw new Exception('Configuration not found');
@@ -87,8 +88,18 @@ class ConfigServiceProvider extends ServiceProvider
         $this->loadConfigFromEnv($config);
 
         $this->parseConfigTypes($config);
+        $this->applyLegacySchemaOptions($config);
 
         $config->set('env_config', $this->envConfig);
+    }
+
+    protected function applyLegacySchemaOptions(Config $config): void
+    {
+        if ($config->get('legacy_database_schema')) {
+            $config->set('night_shifts.enabled', false);
+            $config->set('enable_force_food', false);
+            $config->set('enable_reserved_goodie', false);
+        }
     }
 
     protected function loadConfigFromFiles(Config $config): void

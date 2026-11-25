@@ -3,8 +3,9 @@
 
 use Composer\Autoload\ClassLoader;
 use Engelsystem\Application;
-use Engelsystem\Database\Migration\Migrate;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Database\Migration\Direction;
+use Engelsystem\Database\Migration\Migrate;
 use Engelsystem\Database\Migration\MigrationServiceProvider;
 use Engelsystem\Environment;
 use Engelsystem\Exceptions\Handler;
@@ -47,6 +48,11 @@ if (in_array('help', $argv) || in_array('--help', $argv) || in_array('-h', $argv
     echo '  ' . $script . ' down --prune' . PHP_EOL;
     echo PHP_EOL;
     exit;
+}
+
+if (LegacySchema::enabled()) {
+    fwrite(STDERR, "Disable legacy schema mode before running database migrations.\n");
+    exit(1);
 }
 
 $direction = Direction::UP;

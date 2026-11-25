@@ -7,6 +7,7 @@ namespace Engelsystem\Plugins;
 use DirectoryIterator;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Models\Plugin as PluginModel;
 use Illuminate\Database\QueryException;
@@ -16,6 +17,10 @@ class PluginServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        if (LegacySchema::enabled()) {
+            return;
+        }
+
         $pluginPath = $this->app->get('path.plugins');
         try {
             $enabledPlugins = PluginModel::whereEnabled(true)->get();

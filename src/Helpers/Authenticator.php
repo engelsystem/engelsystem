@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Helpers;
 
 use Carbon\Carbon;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Models\Group;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\User as UserRepository;
@@ -100,8 +101,13 @@ class Authenticator
             $this->loadPermissions();
         }
 
+        $legacySchema = LegacySchema::enabled();
         foreach ($abilities as $ability) {
-            if (!in_array($ability, $this->permissions)) {
+            if ($legacySchema) {
+                $ability = LegacySchema::permission($ability);
+            }
+
+            if ($ability === null || !in_array($ability, $this->permissions)) {
                 return false;
             }
         }

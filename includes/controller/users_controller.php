@@ -2,6 +2,7 @@
 
 use Carbon\CarbonInterval;
 use Engelsystem\Database\Db;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\Goodie;
 use Engelsystem\Models\AngelType;
@@ -273,6 +274,11 @@ function users_list_controller()
         'last_login_at' => 'users.last_login_at',
         'freeloads' => 'freeloads',
     ];
+    if (LegacySchema::enabled()) {
+        $columnMap['force_active'] = 'users_state.force_active';
+        $columnMap['got_goodie'] = 'users_state.got_goodie';
+        unset($columnMap['force_food']);
+    }
 
     $order_by = 'name';
     if ($request->query->has('OrderBy') && array_key_exists($request->query->get('OrderBy'), $columnMap)) {
@@ -298,7 +304,7 @@ function users_list_controller()
                 ->whereNotNull('shift_entries.freeloaded_by'),
             'freeloads'
         )
-        ->addSelect(['arrived' => fn(Builder $q) => $q->select($q->raw('users_state.arrival_date is not null'))])
+        ->addSelect(['arrived' => fn(Builder $q) => $q->selectRaw(State::arrivedExpression())])
         ->orderBy($columnMap[$order_by], $orderDirection)
         ->orderBy('users.name')
         ->paginate($perPage);

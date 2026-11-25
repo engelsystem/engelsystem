@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Models\Shifts;
 
 use Carbon\Carbon;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Location;
 use Engelsystem\Models\Tag;
@@ -137,6 +138,11 @@ class Shift extends BaseModel
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'shift_tags');
+    }
+
+    public function getTagsAttribute(): Collection
+    {
+        return LegacySchema::enabled() ? $this->newCollection() : $this->getRelationValue('tags');
     }
 
     public function updatedBy(): BelongsTo

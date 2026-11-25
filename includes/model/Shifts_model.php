@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
@@ -128,8 +129,10 @@ function Shifts_free($start, $end, ?ShiftsFilter $filter = null)
  */
 function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
+    $supportsTags = !LegacySchema::enabled();
+    $tagJoin = $supportsTags ? 'LEFT JOIN shift_tags AS t on shifts.id = t.shift_id' : '';
     $tagFilter = '';
-    if ($shiftsFilter->getTag()) {
+    if ($supportsTags && $shiftsFilter->getTag()) {
         $tagFilter = 'AND t.tag_id = ' . $shiftsFilter->getTag();
     }
 
@@ -141,7 +144,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
         JOIN `shift_types` ON `shift_types`.`id` = `shifts`.`shift_type_id`
         JOIN `needed_angel_types` ON `needed_angel_types`.`shift_id` = `shifts`.`id`
         LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
-        LEFT JOIN shift_tags AS t on shifts.id = t.shift_id
+        ' . $tagJoin . '
         WHERE `shifts`.`location_id` IN (' . implode(',', $shiftsFilter->getLocations()) . ')
             AND `start` BETWEEN ? AND ?
             AND `needed_angel_types`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
@@ -158,7 +161,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
         JOIN `needed_angel_types` ON `needed_angel_types`.`shift_type_id`=`shifts`.`shift_type_id`
         LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
         LEFT JOIN schedules AS se on s.schedule_id = se.id
-        LEFT JOIN shift_tags AS t on shifts.id = t.shift_id
+        ' . $tagJoin . '
         WHERE `shifts`.`location_id` IN (' . implode(',', $shiftsFilter->getLocations()) . ')
             AND `start` BETWEEN ? AND ?
             AND `needed_angel_types`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
@@ -176,7 +179,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
         JOIN `needed_angel_types` ON `needed_angel_types`.`location_id`=`shifts`.`location_id`
         LEFT JOIN schedule_shift AS s on shifts.id = s.shift_id
         LEFT JOIN schedules AS se on s.schedule_id = se.id
-        LEFT JOIN shift_tags AS t on shifts.id = t.shift_id
+        ' . $tagJoin . '
         WHERE `shifts`.`location_id` IN (' . implode(',', $shiftsFilter->getLocations()) . ')
             AND `start` BETWEEN ? AND ?
             AND `needed_angel_types`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
@@ -205,7 +208,11 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
         $shifts[] = (new Shift())->forceFill($shift);
     }
 
-    $shifts->load(['location', 'shiftType', 'shiftEntries.angelType', 'tags']);
+    $relations = ['location', 'shiftType', 'shiftEntries.angelType'];
+    if ($supportsTags) {
+        $relations[] = 'tags';
+    }
+    $shifts->load($relations);
 
     return $shifts;
 }

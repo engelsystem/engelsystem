@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Models\User;
 
 use Carbon\Carbon;
+use Engelsystem\Database\LegacySchema;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -86,6 +87,30 @@ class State extends HasUserModel
         'got_voucher',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        if (LegacySchema::enabled()) {
+            unset(
+                $this->attributes['force_active_by'],
+                $this->attributes['force_food_by'],
+                $this->attributes['got_goodie_by'],
+                $this->attributes['reserved_goodie_by'],
+            );
+            $this->attributes += ['arrived' => false, 'force_active' => false, 'got_goodie' => false];
+        }
+
+        parent::__construct($attributes);
+    }
+
+    public function setArrivalDateAttribute(mixed $value): void
+    {
+        if (LegacySchema::enabled()) {
+            $this->attributes['arrived'] = $value !== null;
+        }
+
+        $this->attributes['arrival_date'] = $value === null ? null : $this->fromDateTime($value);
+    }
+
     public function forceActiveBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'force_active_by');
@@ -97,7 +122,26 @@ class State extends HasUserModel
      */
     public function getForceActiveAttribute(): bool
     {
+        if (LegacySchema::enabled()) {
+            return (bool) ($this->attributes['force_active'] ?? false);
+        }
+
         return $this->force_active_by !== null;
+    }
+
+    public function setForceActiveByAttribute(mixed $userId): void
+    {
+        if (LegacySchema::enabled()) {
+            $this->attributes['force_active'] = $userId !== null;
+            return;
+        }
+
+        $this->attributes['force_active_by'] = $userId;
+    }
+
+    public static function forceActiveExpression(): string
+    {
+        return LegacySchema::enabled() ? 'users_state.force_active' : 'users_state.force_active_by IS NOT NULL';
     }
 
     /**
@@ -105,6 +149,10 @@ class State extends HasUserModel
      */
     public static function scopeWhereForceActive(Builder $query, bool $value): Builder
     {
+        if (LegacySchema::enabled()) {
+            return $query->where('force_active', $value);
+        }
+
         return $value
             ? $query->whereNotNull('force_active_by')
             : $query->whereNull('force_active_by');
@@ -129,6 +177,10 @@ class State extends HasUserModel
      */
     public static function scopeWhereForceFood(Builder $query, bool $value): Builder
     {
+        if (LegacySchema::enabled()) {
+            return $value ? $query->whereRaw('1 = 0') : $query;
+        }
+
         return $value
             ? $query->whereNotNull('force_food_by')
             : $query->whereNull('force_food_by');
@@ -145,7 +197,21 @@ class State extends HasUserModel
      */
     public function getGotGoodieAttribute(): bool
     {
+        if (LegacySchema::enabled()) {
+            return (bool) ($this->attributes['got_goodie'] ?? false);
+        }
+
         return $this->got_goodie_by !== null;
+    }
+
+    public function setGotGoodieByAttribute(mixed $userId): void
+    {
+        if (LegacySchema::enabled()) {
+            $this->attributes['got_goodie'] = $userId !== null;
+            return;
+        }
+
+        $this->attributes['got_goodie_by'] = $userId;
     }
 
     /**
@@ -153,6 +219,10 @@ class State extends HasUserModel
      */
     public static function scopeWhereGotGoodie(Builder $query, bool $value): Builder
     {
+        if (LegacySchema::enabled()) {
+            return $query->where('got_goodie', $value);
+        }
+
         return $value
             ? $query->whereNotNull('got_goodie_by')
             : $query->whereNull('got_goodie_by');
@@ -177,6 +247,10 @@ class State extends HasUserModel
      */
     public static function scopeWhereReservedGoodie(Builder $query, bool $value): Builder
     {
+        if (LegacySchema::enabled()) {
+            return $value ? $query->whereRaw('1 = 0') : $query;
+        }
+
         return $value
             ? $query->whereNotNull('reserved_goodie_by')
             : $query->whereNull('reserved_goodie_by');
@@ -188,7 +262,16 @@ class State extends HasUserModel
      */
     public function getArrivedAttribute(): bool
     {
+        if (LegacySchema::enabled()) {
+            return (bool) ($this->attributes['arrived'] ?? false);
+        }
+
         return $this->arrival_date !== null;
+    }
+
+    public static function arrivedExpression(): string
+    {
+        return LegacySchema::enabled() ? 'users_state.arrived' : 'users_state.arrival_date IS NOT NULL';
     }
 
     /**
@@ -196,6 +279,10 @@ class State extends HasUserModel
      */
     public static function scopeWhereArrived(Builder $query, bool $value): Builder
     {
+        if (LegacySchema::enabled()) {
+            return $query->where('arrived', $value);
+        }
+
         return $value
             ? $query->whereNotNull('arrival_date')
             : $query->whereNull('arrival_date');

@@ -2,6 +2,7 @@
 
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
+use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
@@ -50,7 +51,7 @@ function admin_free()
                     ->where('shifts.start', '<', Carbon::now())
                     ->where('shifts.end', '>', Carbon::now());
             })
-            ->whereNotNull('users_state.arrival_date')
+            ->whereRaw(State::arrivedExpression())
             ->whereNull('shifts.id')
             ->orderBy('users.name')
             ->groupBy('users.id');

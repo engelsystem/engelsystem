@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Location;
@@ -64,7 +65,7 @@ function admin_shifts()
     }
 
     // The shifts tags, might be empty
-    $tags = collect(explode(',', strip_request_item('tags', '')))
+    $tags = LegacySchema::enabled() ? [] : collect(explode(',', strip_request_item('tags', '')))
         ->transform(fn($value) => trim($value))
         ->filter(fn($value) => $value != '')
         ->unique()
@@ -465,7 +466,9 @@ function admin_shifts()
                 }
             }
 
-            $shift->tags()->attach($tagList);
+            if (!LegacySchema::enabled()) {
+                $shift->tags()->attach($tagList);
+            }
 
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift->shift_type_id]
@@ -548,7 +551,7 @@ function admin_shifts()
                                 __('This description is for single shifts, otherwise please use the description in shift type.'),
                             ]),
                         ]),
-                        div('row mt-2', [
+                        LegacySchema::enabled() ? '' : div('row mt-2', [
                             form_text(
                                 'tags',
                                 __('form.tags')

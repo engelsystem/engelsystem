@@ -928,8 +928,11 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
                 . '</span>';
 
             if ($user_source->state->force_active && config('enable_force_active')) {
-                $state['force_active'] = '<span class="text-success">' . __('user.force_active') . ' '
-                    .  __('user.by', [User_Nick_render($user_source->state->forceActiveBy)]) . '</span>';
+                $state['force_active'] = '<span class="text-success">' . __('user.force_active')
+                    . ($user_source->state->forceActiveBy
+                        ? ' ' . __('user.by', [User_Nick_render($user_source->state->forceActiveBy)])
+                        : '')
+                    . '</span>';
             } elseif ($user_source->state->active) {
                 $state['active'] = '<span class="text-success">' . __('user.active') . '</span>';
             }
@@ -938,8 +941,11 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
                     .  __('user.by', [User_Nick_render($user_source->state->forceFoodBy)]) . '</span>';
             }
             if ($user_source->state->got_goodie && $goodie_enabled) {
-                $state['goodie'] = '<span class="text-success">' . __('Goodie') . ' '
-                    .  __('user.by', [User_Nick_render($user_source->state->gotGoodieBy)]) . '</span>';
+                $state['goodie'] = '<span class="text-success">' . __('Goodie')
+                    . ($user_source->state->gotGoodieBy
+                        ? ' ' . __('user.by', [User_Nick_render($user_source->state->gotGoodieBy)])
+                        : '')
+                    . '</span>';
             }
         } else {
             $state['arrived'] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';

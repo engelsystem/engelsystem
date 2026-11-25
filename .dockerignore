@@ -5,6 +5,11 @@ docker/
 
 # Configuration
 config/config.php
+config/config.local.php
+
+# Local test artifacts
+.local-tests/
+.phpunit.cache/
 
 # Files
 .dockerignore

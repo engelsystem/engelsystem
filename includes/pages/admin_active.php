@@ -63,8 +63,8 @@ function admin_active()
 
         if ($request->hasPostData('ack')) {
             State::query()
-                ->whereNull('got_goodie_by')
-                ->whereNull('reserved_goodie_by')
+                ->whereGotGoodie(false)
+                ->whereReservedGoodie(false)
                 ->update(['active' => false]);
 
             $query = User::query()
@@ -86,15 +86,15 @@ function admin_active()
                 ->leftJoin('shift_entries', 'users.id', '=', 'shift_entries.user_id')
                 ->leftJoin('shifts', 'shift_entries.shift_id', '=', 'shifts.id')
                 ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
-                ->whereNotNull('users_state.arrival_date')
+                ->whereRaw(State::arrivedExpression())
                 ->orWhere(function (EloquentBuilder $userinfo) {
-                    $userinfo->whereNull('users_state.arrival_date')
+                    $userinfo->whereRaw('NOT (' . State::arrivedExpression() . ')')
                         ->whereNotNull('users_state.user_info')
                         ->whereNot('users_state.user_info', '');
                 })
                 ->groupBy('users.id');
             if (config('enable_force_active')) {
-                $query->orderByRaw('(users_state.force_active_by IS NOT NULL) DESC');
+                $query->orderByRaw('(' . State::forceActiveExpression() . ') DESC');
             }
             $query
                 ->orderByDesc('shift_length')
@@ -212,15 +212,15 @@ function admin_active()
             }
         })
         ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
-        ->whereNotNull('users_state.arrival_date')
+        ->whereRaw(State::arrivedExpression())
         ->orWhere(function (EloquentBuilder $userinfo) {
-            $userinfo->whereNull('users_state.arrival_date')
+            $userinfo->whereRaw('NOT (' . State::arrivedExpression() . ')')
                 ->whereNotNull('users_state.user_info')
                 ->whereNot('users_state.user_info', '');
         })
         ->groupBy('users.id');
     if (config('enable_force_active')) {
-        $query->orderByRaw('(users_state.force_active_by IS NOT NULL) DESC');
+        $query->orderByRaw('(' . State::forceActiveExpression() . ') DESC');
     }
     $query
         ->orderByDesc('shift_length')
@@ -427,15 +427,15 @@ function admin_active()
                 ->leftJoin('users_personal_data', 'users_state.user_id', '=', 'users_personal_data.user_id')
                 ->where('users_personal_data.shirt_size', '=', $size);
             $given = $query->clone()
-                ->whereNotNull('users_state.got_goodie_by')
+                ->whereGotGoodie(true)
                 ->count();
             $reserved = $query->clone()
-                ->whereNull('users_state.got_goodie_by')
-                ->whereNotNull('users_state.reserved_goodie_by')
+                ->whereGotGoodie(false)
+                ->whereReservedGoodie(true)
                 ->count();
             $notGiven = $query->clone()
-                ->whereNull('users_state.got_goodie_by')
-                ->whereNull('users_state.reserved_goodie_by')
+                ->whereGotGoodie(false)
+                ->whereReservedGoodie(false)
                 ->count();
 
             $totalSum = $given + $notGiven;
@@ -452,7 +452,7 @@ function admin_active()
     $goodie_statistics[] = array_merge(
         ($goodie_tshirt ? ['size' => '<b>' . __('Sum') . '</b>'] : []),
         ['given' => '<b>' . State::whereGotGoodie(true)->count() . '</b>'],
-        ['reserved' => '<b>' . State::whereReservedGoodie(true)->whereNull('got_goodie_by')->count() . '</b>'],
+        ['reserved' => '<b>' . State::whereReservedGoodie(true)->whereGotGoodie(false)->count() . '</b>'],
         ['total' => '<b>' . $total . '</b>'],
     );
 

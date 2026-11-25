@@ -4,7 +4,31 @@ declare(strict_types=1);
 
 // Application config
 
+$concatConfig = [
+    'client_id'     => env('OAUTH_CLIENT_ID'),
+    'client_secret' => env_secret('OAUTH_CLIENT_SECRET'),
+    'url_auth'      => env('OAUTH_URL_AUTHORIZE'),
+    'url_token'     => env('OAUTH_URL_ACCESS_TOKEN'),
+    'url_info'      => env('OAUTH_URL_RESOURCE'),
+];
+$concatConfigured = $concatConfig === array_filter(
+    $concatConfig,
+    static fn (mixed $value): bool => is_string($value) && $value !== '',
+);
+
 return [
+    'oauth' => $concatConfigured ? [
+        'concat' => [
+            ...$concatConfig,
+            'name'       => 'ConCat',
+            'scope'      => ['pii:basic', 'con:read'],
+            'id'         => 'id',
+            'username'   => 'username',
+            'first_name' => 'firstName',
+            'last_name'  => 'lastName',
+        ],
+    ] : [],
+
     // Service providers
     'providers'  => [
         // Application bootstrap
@@ -434,6 +458,12 @@ return [
                     'validation' => [
                         'length:32',
                     ],
+                ],
+                'legacy_database_schema' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'env' => 'LEGACY_DATABASE_SCHEMA',
+                    'hidden' => true,
                 ],
                 'database.driver' => [
                     'type' => 'select',

@@ -89,12 +89,59 @@ cd docker
 docker compose up -d
 ```
 
+#### ConCat login
+
+Set these variables in the web server environment. Use the application's public URL for `APP_URL`
+and the credentials and endpoints issued for its ConCat client.
+
+```dotenv
+APP_URL=https://volunteers.example.org
+OAUTH_CLIENT_ID=<client ID>
+OAUTH_CLIENT_SECRET=<client secret>
+OAUTH_URL_AUTHORIZE=<authorization endpoint>
+OAUTH_URL_ACCESS_TOKEN=<token endpoint>
+OAUTH_URL_RESOURCE=<user info endpoint>
+```
+
+Register `https://volunteers.example.org/oauth/concat` as the redirect URI in ConCat, using the
+same host and optional path prefix as `APP_URL`. The login button appears once all five
+`OAUTH_*` settings are supplied. To read the client secret from a mounted file, set
+`OAUTH_CLIENT_SECRET_FILE` to its path inside the web server.
+
+For local Docker Compose tests, put the environment file and Compose override in the ignored
+`.local-tests/` directory. Point `es_server.env_file` to the environment file in the override.
+[Local ConCat setup](README_concat.md#run-a-local-test-deployment)
+
 #### Set Up / Migrate Database
 Create the Database Schema (on a fresh install) or import database changes to migrate it to the newest version
 ```bash
 cd docker
 docker compose exec es_server bin/migrate
 ```
+
+### Amazon ECS deployment
+
+The production Terraform configuration supplies `APP_URL` and the three ConCat endpoints to
+the ECS task. The task reads `OAUTH_CLIENT_ID` and `OAUTH_CLIENT_SECRET` from AWS Systems
+Manager Parameter Store. Register `https://engelsystem.furcon.org/oauth/concat` with the ConCat
+client. The application uses the same `pii:basic con:read` scopes as the old fork.
+
+For the existing Further Confusion database, set `LEGACY_DATABASE_SCHEMA=true` in the Terraform
+task environment before deploying this image. [Legacy database setup](README_concat.md#use-the-existing-further-confusion-database-schema)
+
+The [ECS deployment workflow](.github/workflows/deploy.yml) runs its deployment job from
+`main` only when the fork's GitHub Actions repository variable `ECS_DEPLOY_ENABLED` is
+`true`. Before enabling it, configure the deployment role to trust the fork's `main` branch
+with the `sts.amazonaws.com` audience. Use the fork's actual
+[GitHub OIDC subject format](https://docs.github.com/en/actions/reference/security/oidc#configuring-the-subject-in-your-cloud-provider).
+Coordinate the switch from the old fork so that only one workflow publishes the production tags.
+
+When enabled, a push to `main` or a manual run on `main` publishes the image to ECR under
+the commit SHA, `1`, `1.0`, `1.0.<run_number>`, and `latest`. The workflow then redeploys
+the existing ECS service using its current task definition and the tag chosen by Terraform.
+Terraform controls the service's desired task count.
+Set `ECS_WRITE_NEW_TASK_DEFINITION_TAG` to `true` for an intentional override that deploys a
+task definition with the new commit's image.
 
 ### Scripts
 

@@ -62,7 +62,7 @@
                         }) }}
                     {% endif %}
 
-                    {{ f.switch('got_goodie', userdata.state.got_goodie ? __('user.got_goodie_by', [m.user(userdata.state.gotGoodieBy)]) : __('user.got_goodie') , {
+                    {{ f.switch('got_goodie', userdata.state.gotGoodieBy ? __('user.got_goodie_by', [m.user(userdata.state.gotGoodieBy)]) : __('user.got_goodie') , {
                         'checked': userdata.state.got_goodie,
                         'raw_label': true,
                     }) }}

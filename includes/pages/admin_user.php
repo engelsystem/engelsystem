@@ -137,7 +137,7 @@ function admin_user()
             $html .= auth()->can('user.fa.edit')
                 ? html_options('force_active', $options, $user_source->state->force_active)
                 : icon_bool($user_source->state->force_active);
-            if ($user_source->state->force_active) {
+            if ($user_source->state->forceActiveBy) {
                 $html .= __('user.by', [User_Nick_render($user_source->state->forceActiveBy)]);
             }
             $html .= '</td></tr>' . "\n";
@@ -163,7 +163,7 @@ function admin_user()
             $html .= $user_goodie_edit
                 ? html_options('goodie', $options, $user_source->state->got_goodie)
                 : icon_bool($user_source->state->got_goodie);
-            if ($user_source->state->got_goodie) {
+            if ($user_source->state->gotGoodieBy) {
                 $html .= __('user.by', [User_Nick_render($user_source->state->gotGoodieBy)]);
             }
             $html .= '</td></tr>' . "\n";

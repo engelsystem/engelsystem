@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Engelsystem\Models;
 
 use Carbon\Carbon;
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\UsesUserModel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -59,6 +61,38 @@ class Worklog extends BaseModel
         'worked_at',
         'night_shift',
     ];
+
+    public function getDescriptionAttribute(mixed $value): mixed
+    {
+        return LegacySchema::enabled() ? ($this->attributes['comment'] ?? null) : $value;
+    }
+
+    public function setDescriptionAttribute(mixed $value): void
+    {
+        $this->attributes[self::descriptionColumn()] = $value;
+    }
+
+    public static function scopeWhereDescription(Builder $query, mixed $value): Builder
+    {
+        return $query->where(self::descriptionColumn(), $value);
+    }
+
+    protected static function descriptionColumn(): string
+    {
+        return LegacySchema::enabled() ? 'comment' : 'description';
+    }
+
+    public function getNightShiftAttribute(mixed $value): bool
+    {
+        return (bool) $value;
+    }
+
+    public function setNightShiftAttribute(mixed $value): void
+    {
+        if (!LegacySchema::enabled()) {
+            $this->attributes['night_shift'] = $value;
+        }
+    }
 
     public function creator(): BelongsTo
     {

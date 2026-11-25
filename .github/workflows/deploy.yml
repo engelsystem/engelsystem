@@ -1,0 +1,109 @@
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: production-engelsystem
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-west-2
+  AWS_ROLE: arn:aws:iam::474196809376:role/engelsystem-github-deploy
+  CONTAINER_NAME: engelsystem
+  ECR_REPOSITORY: engelsystem
+  ECS_CLUSTER: Fargate
+  ECS_SERVICE: engelsystem
+  MAJOR_VERSION: '1'
+  MINOR_VERSION: '0'
+  PATCH_VERSION: ${{ github.run_number }}
+  WRITE_NEW_TASK_DEFINITION_TAG: ${{ vars.ECS_WRITE_NEW_TASK_DEFINITION_TAG || 'false' }}
+
+jobs:
+  deploy:
+    name: Publish image and deploy
+    if: github.ref == 'refs/heads/main' && vars.ECS_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@03f1aad4c6c7ffd436567f42f9384779290529bd # v2.1.7
+
+      - name: Build and publish image
+        id: build-image
+        shell: bash
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          image="$ECR_REGISTRY/$ECR_REPOSITORY"
+          tags=(
+            "$GITHUB_SHA"
+            "$MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION"
+            "$MAJOR_VERSION"
+            latest
+            "$MAJOR_VERSION.$MINOR_VERSION"
+          )
+          build_tags=()
+          for tag in "${tags[@]}"; do
+            build_tags+=(--tag "$image:$tag")
+          done
+          docker build --file docker/Dockerfile "${build_tags[@]}" .
+          for tag in "${tags[@]}"; do
+            docker push "$image:$tag"
+          done
+          echo "image=$image:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Redeploy the current task definition
+        if: env.WRITE_NEW_TASK_DEFINITION_TAG != 'true'
+        shell: bash
+        run: |
+          # Pull the updated tag selected by Terraform using the existing task definition.
+          aws ecs update-service --cluster "$ECS_CLUSTER" --service "$ECS_SERVICE" \
+            --force-new-deployment --query 'service.serviceName' --output text
+          aws ecs wait services-stable --cluster "$ECS_CLUSTER" --services "$ECS_SERVICE"
+
+      - name: Download the service task definition
+        if: env.WRITE_NEW_TASK_DEFINITION_TAG == 'true'
+        shell: bash
+        run: |
+          task_definition=$(aws ecs describe-services --cluster "$ECS_CLUSTER" --services "$ECS_SERVICE" \
+            --query 'services[0].taskDefinition' --output text)
+          aws ecs describe-task-definition --task-definition "$task_definition" \
+            --query taskDefinition --output json > "$RUNNER_TEMP/task-definition.json"
+
+      - name: Set the task definition image to this commit
+        if: env.WRITE_NEW_TASK_DEFINITION_TAG == 'true'
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@8d79160660ad39c402a16e5fc7cd2a32e8f7d6b7 # v1.9.1
+        with:
+          task-definition: ${{ runner.temp }}/task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy the updated task definition
+        if: env.WRITE_NEW_TASK_DEFINITION_TAG == 'true'
+        uses: aws-actions/amazon-ecs-deploy-task-definition@a00d4d57ac0de1a99b39fe469f3d898d38717c2b # v2.6.4
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true

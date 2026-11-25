@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Database\LegacySchema;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpNotFound;
 use Engelsystem\Http\Redirector;
@@ -181,10 +182,12 @@ function shift_edit_controller()
                 }
             }
 
-            $shift->tags()->detach();
-            foreach ($tagNames as $tagName) {
-                $tag = Tag::whereName($tagName)->firstOrCreate(['name' => $tagName]);
-                $shift->tags()->attach($tag);
+            if (!LegacySchema::enabled()) {
+                $shift->tags()->detach();
+                foreach ($tagNames as $tagName) {
+                    $tag = Tag::whereName($tagName)->firstOrCreate(['name' => $tagName]);
+                    $shift->tags()->attach($tag);
+                }
             }
 
             engelsystem_log(
@@ -241,7 +244,7 @@ function shift_edit_controller()
                                 ),
                             ]),
                         ]),
-                        div('row mt-2', [
+                        LegacySchema::enabled() ? '' : div('row mt-2', [
                             form_text(
                                 'tags',
                                 __('form.tags')
