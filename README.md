@@ -129,19 +129,17 @@ client. The application uses the same `pii:basic con:read` scopes as the old for
 For the existing Further Confusion database, set `LEGACY_DATABASE_SCHEMA=true` in the Terraform
 task environment before deploying this image. [Legacy database setup](README_concat.md#use-the-existing-further-confusion-database-schema)
 
-The [ECS deployment workflow](.github/workflows/deploy.yml) runs its deployment job from
-`main` only when the fork's GitHub Actions repository variable `ECS_DEPLOY_ENABLED` is
-`true`. Before enabling it, configure the deployment role to trust the fork's `main` branch
-with the `sts.amazonaws.com` audience. Use the fork's actual
+The [ECS deployment workflow](.github/workflows/deploy.yml) runs on pushes to `main`.
+Configure the deployment role to trust the fork's `main` branch with the `sts.amazonaws.com`
+audience. Use the fork's actual
 [GitHub OIDC subject format](https://docs.github.com/en/actions/reference/security/oidc#configuring-the-subject-in-your-cloud-provider).
 Coordinate the switch from the old fork so that only one workflow publishes the production tags.
 
-When enabled, a push to `main` or a manual run on `main` publishes the image to ECR under
-the commit SHA, `1`, `1.0`, `1.0.<run_number>`, and `latest`. The workflow then redeploys
-the existing ECS service using its current task definition and the tag chosen by Terraform.
-Terraform controls the service's desired task count.
-Set `ECS_WRITE_NEW_TASK_DEFINITION_TAG` to `true` for an intentional override that deploys a
-task definition with the new commit's image.
+A push to `main` publishes the image to ECR under the commit SHA, `1`, `1.0`,
+`1.0.<run_number>`, and `latest`. The workflow deploys a revision based on the `engelsystem`
+task definition family and uses the image reference from that definition by default. Terraform
+controls the service's desired task count. To deploy the commit-SHA image explicitly, set
+`WRITE_NEW_TASK_DEFINITION_TAG` to `true` in the workflow.
 
 ### Scripts
 

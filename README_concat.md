@@ -151,17 +151,14 @@ so their operator names are unavailable.
    `sts.amazonaws.com` audience. Use the subject format emitted by this repository.
    [GitHub OIDC reference](https://docs.github.com/en/actions/reference/security/oidc#configuring-the-subject-in-your-cloud-provider)
 2. Coordinate the handover from the old fork so one workflow publishes the production image tags.
-   Set the GitHub Actions repository variable `ECS_DEPLOY_ENABLED` to `true` when the fork is ready
-   to publish. The deployment job requires that value and the `main` branch for both push and
-   manual triggers. [Deployment workflow](.github/workflows/deploy.yml)
+   Pushing to `main` triggers the deployment workflow. [Deployment workflow](.github/workflows/deploy.yml)
 3. The workflow builds the image and pushes it to the `engelsystem` ECR repository in `us-west-2`.
    It publishes the commit SHA, `1`, `1.0`, `1.0.<run_number>`, and `latest` tags.
-4. After the push, the workflow forces a new deployment of the `engelsystem` service in the
-   `Fargate` cluster and waits for stability. The current task definition supplies the image tag
-   selected by Terraform, normally `1.0`. Terraform controls the desired task count.
-5. To explicitly deploy the commit-SHA image, set `ECS_WRITE_NEW_TASK_DEFINITION_TAG` to `true`.
-   The workflow reads the current service task definition, updates the container image, and
-   deploys a new task definition revision. The default is `false`.
+4. The workflow deploys a revision based on the `engelsystem` task definition family to the
+   `engelsystem` service in the `Fargate` cluster and waits for stability. By default, it uses
+   the image reference from that definition. Terraform controls the desired task count.
+5. To deploy the commit-SHA image explicitly, set `WRITE_NEW_TASK_DEFINITION_TAG` to `true`
+   in the workflow. The default is `false`.
 
 ### PHP runtime
 
@@ -321,7 +318,7 @@ group disappears. [OAuth login listener](src/Events/Listener/OAuth2.php)
 | `oauth.not-found` or `registration.disabled` | Check the account link, global registration settings, provider settings, and the local `register` permission. |
 | Registration asks for an email or rejects a duplicate | Supply a valid, unique local email. Users with an existing account should sign in to it and link ConCat in settings. |
 | `Authentication Token Mismatch` | Start Connect or Disconnect from the settings form in the current session so the POST includes a valid CSRF token. |
-| ECS deployment job skipped | Check that the run targets `main` and the repository variable `ECS_DEPLOY_ENABLED` is `true`. |
+| ECS workflow did not start | Check that the push updated `main`. |
 | Image published and ECS still runs an older build | Check the service's task definition image tag and the deployment status. The ECR push and the ECS rollout are separate workflow steps. |
 
 ## Verification
