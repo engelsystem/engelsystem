@@ -130,9 +130,8 @@ For the existing Further Confusion database, set `LEGACY_DATABASE_SCHEMA=true` i
 task environment before deploying this image. [Legacy database setup](README_concat.md#use-the-existing-further-confusion-database-schema)
 
 The [ECS deployment workflow](.github/workflows/deploy.yml) runs on pushes to `main`.
-Configure the deployment role to trust the fork's `main` branch with the `sts.amazonaws.com`
-audience. Use the fork's actual
-[GitHub OIDC subject format](https://docs.github.com/en/actions/reference/security/oidc#configuring-the-subject-in-your-cloud-provider).
+Configure the deployment role to trust the fork's immutable OIDC subject for `main` and the
+`sts.amazonaws.com` audience. [Deployment role setup](README_concat.md#publish-and-roll-out-an-image)
 Coordinate the switch from the old fork so that only one workflow publishes the production tags.
 
 A push to `main` publishes the image to ECR under the commit SHA, `1`, `1.0`,

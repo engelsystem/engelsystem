@@ -147,9 +147,12 @@ so their operator names are unavailable.
 
 ### Publish and roll out an image
 
-1. Configure the deployment role's GitHub OIDC trust for this fork's `main` branch and the
-   `sts.amazonaws.com` audience. Use the subject format emitted by this repository.
-   [GitHub OIDC reference](https://docs.github.com/en/actions/reference/security/oidc#configuring-the-subject-in-your-cloud-provider)
+1. In the infrastructure repository, configure the `engelsystem-github-deploy` role's GitHub OIDC
+   trust in `engelsystem_infra.tf`. The repository's default immutable subject for `main` is
+   `repo:anthroarts@11712184/fc-engelsystem@1442394263:ref:refs/heads/main`. Match that exact value
+   in `token.actions.githubusercontent.com:sub` and keep `sts.amazonaws.com` for the audience.
+   Apply the trust policy through the infrastructure repository's Terraform workflow.
+   [GitHub immutable OIDC subject reference](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims)
 2. Coordinate the handover from the old fork so one workflow publishes the production image tags.
    Pushing to `main` triggers the deployment workflow. [Deployment workflow](.github/workflows/deploy.yml)
 3. The workflow builds the image and pushes it to the `engelsystem` ECR repository in `us-west-2`.
@@ -321,6 +324,7 @@ group disappears. [OAuth login listener](src/Events/Listener/OAuth2.php)
 | Registration asks for an email or rejects a duplicate | Supply a valid, unique local email. Users with an existing account should sign in to it and link ConCat in settings. |
 | `Authentication Token Mismatch` | Start Connect or Disconnect from the settings form in the current session so the POST includes a valid CSRF token. |
 | ECS workflow did not start | Check that the push updated `main`. |
+| `Not authorized to perform sts:AssumeRoleWithWebIdentity` | Compare the deployed IAM role's OIDC trust policy with the exact `main` subject and audience in [Publish and roll out an image](#publish-and-roll-out-an-image). |
 | Image published and ECS still runs an older build | Check the service's task definition image tag and the deployment status. The ECR push and the ECS rollout are separate workflow steps. |
 
 ## Verification
