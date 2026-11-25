@@ -162,7 +162,9 @@ so their operator names are unavailable.
 
 ### PHP runtime
 
-The production Dockerfile pins `php:8.5.13-fpm-alpine`. PHP 8.5.13 includes
+The production Dockerfile uses `php:8.5-fpm-alpine`, which tracks the latest published PHP 8.5
+patch release in the official Alpine image. Use `docker build --pull -f docker/Dockerfile .`
+from the repository root to refresh the base image during a local build. PHP 8.5.13 includes
 fixes for PHP-FPM request smuggling (CVE-2026-129289) and session vulnerabilities that can lead
 to remote code execution (CVE-2026-126714 and CVE-2026-115560). The current lock file pins
 `league/oauth2-client` 2.9.0, whose PHP constraint excludes PHP 8.6. The PHP 8.6 trial also produced
