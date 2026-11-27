@@ -105,6 +105,11 @@ class Stats
         };
     }
 
+    public function usersEmailConfirmed(): int
+    {
+        return State::query()->where('email_confirmed', true)->count();
+    }
+
     /**
      * The number of currently working users
      *

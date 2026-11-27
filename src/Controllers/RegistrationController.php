@@ -9,6 +9,7 @@ use Engelsystem\Config\GoodieType;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Factories\User;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Helpers\Confirmation;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -49,7 +50,11 @@ class RegistrationController extends BaseController
         $user = $this->userFactory->createFromData($rawData);
 
         if (!$this->auth->user()) {
-            $this->addNotification('registration.successful');
+            if (app(Confirmation::class)->confirmationAvailable()) {
+                $this->addNotification('registration.successful.email-confirmation');
+            } else {
+                $this->addNotification('registration.successful');
+            }
         } else {
             $this->addNotification('registration.successful.supporter');
         }

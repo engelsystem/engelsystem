@@ -7,6 +7,7 @@ namespace Engelsystem\Test\Unit\Controllers;
 use Engelsystem\Controllers\RegistrationController;
 use Engelsystem\Factories\User;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\User as EngelsystemUser;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -46,8 +47,11 @@ final class RegistrationControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->config->set('oauth', []);
+        $this->config->set('email_confirmation', false);
         $this->app->instance(User::class, $this->userFactory);
         $this->subject = $this->app->make(RegistrationController::class);
+
+        $this->app->instance(EngelsystemMailer::class, $this->createMock(EngelsystemMailer::class));
     }
 
     public function testSave(): void
@@ -83,6 +87,37 @@ final class RegistrationControllerTest extends ControllerTestCase
         // Assert that "show_welcome" is not set in session,
         // because "welcome_msg" is not configured.
         $this->assertFalse($this->session->has('show_welcome'));
+    }
+
+    public function testSaveConfirmation(): void
+    {
+        $this->setPasswordRegistrationEnabledConfig();
+        $this->config->set('email_confirmation', true);
+        $this->config->set('url', 'https://localhost');
+        $this->config->set('app_key', 'S11per5ecR3t');
+
+        $userData = ['user' => 'data'];
+        $request = $this->request->withParsedBody($userData);
+
+        $this->userFactory
+            ->expects(self::once())
+            ->method('createFromData')
+            ->with($userData)
+            ->willReturn(new EngelsystemUser());
+
+        $this->response
+            ->expects(self::once())
+            ->method('redirectTo');
+
+        $this->subject->save($request);
+
+        // Assert that the success notification contains hint for email confirmation
+        self::assertEquals(
+            [
+                'messages.message' => ['registration.successful.email-confirmation'],
+            ],
+            $this->session->all()
+        );
     }
 
     public function testSaveAlreadyLoggedIn(): void
